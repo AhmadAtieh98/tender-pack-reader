@@ -1,0 +1,59 @@
+# Expectations written from the rendered PDF pages (session 02), NOT from program output.
+# Each entry cites where it was read. Tests compare the program against these.
+pages_total: 32
+watermark_per_page: 1                  # one diagonal watermark on every page (rendered pages)
+superscripts: {total: 12, unit_exponents: 11, footnote_markers: 1}
+image_regions:                         # pages whose content includes a raster image
+  - {doc: VOL-II, page: 3, what: "Table 2-4 effluent limits"}
+  - {doc: VOL-IV, page: 6, what: "Form 4-C in Arabic"}
+footnote_12:
+  host: "VOL-I:8.5"                    # VOL-I p4: marker after "Form 4-B."
+  contains: "shall be rejected without further evaluation"
+  contains_exponent: "80,000 m³/day"
+repeated_wording:                      # same words, different clauses (wrong-target traps)
+  - {text: "seventy-two (72) hours", units: ["VOL-II:4.4", "VOL-V:31.3"]}
+  - {text: "sixty per cent (60%)", units: ["VOL-I:11.2", "VOL-V:29.2"]}
+  - {text: "one hundred and twenty (120)", units: ["VOL-I:9.2", "VOL-I:12.2"]}
+printed_pdd_fields:                    # VOL-IV p3 and ADD-01 p3 both print the original date
+  - {unit: "VOL-IV:F4-A/proposal-due-date", contains: "12 November 2026, 14:00 Riyadh time"}
+  - {unit: "ADD-01:AppA/proposal-due-date", contains: "12 November 2026, 14:00 Riyadh time"}
+split_tables:
+  - unit: "VOL-II:T2-6"                # caption p3; rows 2-6.1, 2-6.2 on p3; header repeated + 4 rows on p4
+    rows: ["2-6.1", "2-6.2", "2-6.3", "2-6.4", "2-6.5", "2-6.6"]
+    row_pages: [3, 3, 4, 4, 4, 4]
+    repeated_header_pages: [4]
+  - unit: "ADD-01:S6/QA"               # Q1-Q2 on p1; header repeated + Q3-Q6 on p2
+    rows: ["ADD-01:Q1", "ADD-01:Q2", "ADD-01:Q3", "ADD-01:Q4", "ADD-01:Q5", "ADD-01:Q6"]
+    row_pages: [1, 1, 2, 2, 2, 2]
+    repeated_header_pages: [2]
+caption_across_pages:                  # caption at the foot of VOL-I p5, table on p6
+  unit: "VOL-I:T1-1"
+  pages: [5, 6]
+  rows: 7                              # A-F plus Total
+small_print_notes:                     # ADD-02 p1 notes under the revised table, 7.2 pt
+  - {unit: "ADD-02:T1-1-rev/note(1)", contains: "unchanged at seventy (70) marks"}
+  - {unit: "ADD-02:T1-1-rev/note(2)", contains: "sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial"}
+  - {unit: "ADD-02:T1-1-rev/note(3)", contains: "five-point scale"}
+list_items:
+  - {parent: "VOL-I:9.1", labels: ["(a)", "(b)", "(c)", "(d)", "(e)", "(f)", "(g)", "(h)", "(i)"]}
+  - {parent: "VOL-I:3.2", labels: ["(a)", "(b)", "(c)", "(d)", "(e)", "(f)"]}
+kept_as_content:                       # body text that resembles furniture
+  - {unit: "VOL-I:1.2", contains: "NUPA/ISTP/2026/014"}
+  - {unit: "VOL-I:App3/para1", contains: "NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE"}
+table_2_4_image:                       # read from the native image, VOL-II p3
+  rows: 10
+  cols: 4
+  TN: {limit: "5", unit: "mg/l", basis: "30-day rolling average"}
+form_4c_image:                         # VOL-IV p6
+  text_bands: 23
+  rule_bands: 9
+  footer_band_text: "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+minutes_items:                         # ADD-01 p4: "Present:" and Items 1-7 are separate bold lead-ins
+  - "ADD-01:AppB/present"
+  - "ADD-01:AppB/item-1-opening"
+  - "ADD-01:AppB/item-2-programme"
+  - "ADD-01:AppB/item-3-evaluation"
+  - "ADD-01:AppB/item-4-local-content"
+  - "ADD-01:AppB/item-5-effluent-standards"
+  - "ADD-01:AppB/item-6-site-visit"
+  - "ADD-01:AppB/item-7-close"

@@ -1,0 +1,27 @@
+[project]
+name = "tenderpack"
+version = "0.1.0"
+description = "Reads a tender pack and its addenda into source-referenced units; later stages build the A1-A5 artefacts."
+requires-python = ">=3.11"
+dependencies = [
+    "pymupdf==1.28.2",
+    "numpy>=2.0",
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+tenderpack = "tenderpack.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tenderpack*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

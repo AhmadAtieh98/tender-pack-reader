@@ -1,0 +1,28 @@
+rules:
+- id: WATERMARK
+  reason: diagonal watermark printed on every page
+  text: FICTIONAL - ASSESSMENT PACK
+  color: '#dbdbdb'
+  size:
+  - 30.0
+  - 40.0
+  angle:
+  - 47.0
+  - 57.0
+  expect_per_page: 1
+- id: FOOTER-PAGE
+  reason: running footer printed page number, bottom margin (captured as printed_page)
+  min_y0: 790.0
+  color: '#5a5a5a'
+  size:
+  - 6.0
+  - 7.5
+  pattern: ^Page (?P<printed_page>[0-9]+)$
+- id: HEADER-SYN
+  reason: synthetic running header
+  max_y1: 45.0
+  color: '#5a5a5a'
+  size:
+  - 6.0
+  - 7.5
+  pattern: ^Synthetic Test Volume$

@@ -1,0 +1,565 @@
+{
+ "checks": [
+  {
+   "detail": "1 documents match sources/manifest.json (sha256, pages)",
+   "id": "C01",
+   "ok": true
+  },
+  {
+   "detail": "5 pages accounted for out of 5",
+   "id": "C02",
+   "ok": true
+  },
+  {
+   "detail": "43 of 43 content spans assigned to exactly one unit",
+   "id": "C03",
+   "ok": true
+  },
+  {
+   "detail": "15 spans excluded, all by declared rules: {'FOOTER-PAGE': 5, 'HEADER-SYN': 5, 'WATERMARK': 5}; expected-count problems: none",
+   "id": "C04",
+   "ok": true
+  },
+  {
+   "detail": "3 regions; unread ['SYN-01-p4-r1', 'SYN-01-p4-r2', 'SYN-01-p5-r1']; readings failing checks none; PENDING HUMAN REVIEW: none",
+   "id": "C05",
+   "ok": false
+  },
+  {
+   "detail": "2 superscripts: 1 unit exponents, 1 footnote markers (all paired: True); unclassified 0",
+   "id": "C06",
+   "ok": true
+  }
+ ],
+ "exclusions": [
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    30.7,
+    130.7,
+    40.0
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 1,
+   "reason": "synthetic running header",
+   "rule": "HEADER-SYN",
+   "size": 6.8,
+   "span_id": "SYN-01/p1/s001",
+   "text": "Synthetic Test Volume"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    799.1,
+    83.0,
+    807.9
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 1,
+   "reason": "running footer printed page number, bottom margin (captured as printed_page)",
+   "rule": "FOOTER-PAGE",
+   "size": 6.4,
+   "span_id": "SYN-01/p1/s002",
+   "text": "Page 1"
+  },
+  {
+   "angle": 52.0,
+   "bbox": [
+    121.3,
+    183.0,
+    497.8,
+    646.4
+   ],
+   "color": "#dbdbdb",
+   "doc": "SYN-01",
+   "font": "Helvetica-Bold",
+   "page": 1,
+   "reason": "diagonal watermark printed on every page",
+   "rule": "WATERMARK",
+   "size": 34.0,
+   "span_id": "SYN-01/p1/s003",
+   "text": "FICTIONAL - ASSESSMENT PACK"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    30.7,
+    130.7,
+    40.0
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 2,
+   "reason": "synthetic running header",
+   "rule": "HEADER-SYN",
+   "size": 6.8,
+   "span_id": "SYN-01/p2/s001",
+   "text": "Synthetic Test Volume"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    799.1,
+    83.0,
+    807.9
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 2,
+   "reason": "running footer printed page number, bottom margin (captured as printed_page)",
+   "rule": "FOOTER-PAGE",
+   "size": 6.4,
+   "span_id": "SYN-01/p2/s002",
+   "text": "Page 2"
+  },
+  {
+   "angle": 52.0,
+   "bbox": [
+    121.3,
+    183.0,
+    497.8,
+    646.4
+   ],
+   "color": "#dbdbdb",
+   "doc": "SYN-01",
+   "font": "Helvetica-Bold",
+   "page": 2,
+   "reason": "diagonal watermark printed on every page",
+   "rule": "WATERMARK",
+   "size": 34.0,
+   "span_id": "SYN-01/p2/s003",
+   "text": "FICTIONAL - ASSESSMENT PACK"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    30.7,
+    130.7,
+    40.0
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 3,
+   "reason": "synthetic running header",
+   "rule": "HEADER-SYN",
+   "size": 6.8,
+   "span_id": "SYN-01/p3/s001",
+   "text": "Synthetic Test Volume"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    799.1,
+    83.0,
+    807.9
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 3,
+   "reason": "running footer printed page number, bottom margin (captured as printed_page)",
+   "rule": "FOOTER-PAGE",
+   "size": 6.4,
+   "span_id": "SYN-01/p3/s002",
+   "text": "Page 3"
+  },
+  {
+   "angle": 52.0,
+   "bbox": [
+    121.3,
+    183.0,
+    497.8,
+    646.4
+   ],
+   "color": "#dbdbdb",
+   "doc": "SYN-01",
+   "font": "Helvetica-Bold",
+   "page": 3,
+   "reason": "diagonal watermark printed on every page",
+   "rule": "WATERMARK",
+   "size": 34.0,
+   "span_id": "SYN-01/p3/s003",
+   "text": "FICTIONAL - ASSESSMENT PACK"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    30.7,
+    130.7,
+    40.0
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 4,
+   "reason": "synthetic running header",
+   "rule": "HEADER-SYN",
+   "size": 6.8,
+   "span_id": "SYN-01/p4/s001",
+   "text": "Synthetic Test Volume"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    799.1,
+    83.0,
+    807.9
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 4,
+   "reason": "running footer printed page number, bottom margin (captured as printed_page)",
+   "rule": "FOOTER-PAGE",
+   "size": 6.4,
+   "span_id": "SYN-01/p4/s002",
+   "text": "Page 4"
+  },
+  {
+   "angle": 52.0,
+   "bbox": [
+    121.3,
+    183.0,
+    497.8,
+    646.4
+   ],
+   "color": "#dbdbdb",
+   "doc": "SYN-01",
+   "font": "Helvetica-Bold",
+   "page": 4,
+   "reason": "diagonal watermark printed on every page",
+   "rule": "WATERMARK",
+   "size": 34.0,
+   "span_id": "SYN-01/p4/s003",
+   "text": "FICTIONAL - ASSESSMENT PACK"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    30.7,
+    130.7,
+    40.0
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 5,
+   "reason": "synthetic running header",
+   "rule": "HEADER-SYN",
+   "size": 6.8,
+   "span_id": "SYN-01/p5/s001",
+   "text": "Synthetic Test Volume"
+  },
+  {
+   "angle": 0.0,
+   "bbox": [
+    62.7,
+    799.1,
+    83.0,
+    807.9
+   ],
+   "color": "#5a5a5a",
+   "doc": "SYN-01",
+   "font": "Helvetica",
+   "page": 5,
+   "reason": "running footer printed page number, bottom margin (captured as printed_page)",
+   "rule": "FOOTER-PAGE",
+   "size": 6.4,
+   "span_id": "SYN-01/p5/s002",
+   "text": "Page 5"
+  },
+  {
+   "angle": 52.0,
+   "bbox": [
+    121.3,
+    183.0,
+    497.8,
+    646.4
+   ],
+   "color": "#dbdbdb",
+   "doc": "SYN-01",
+   "font": "Helvetica-Bold",
+   "page": 5,
+   "reason": "diagonal watermark printed on every page",
+   "rule": "WATERMARK",
+   "size": 34.0,
+   "span_id": "SYN-01/p5/s003",
+   "text": "FICTIONAL - ASSESSMENT PACK"
+  }
+ ],
+ "footnotes": [
+  {
+   "host": "SYN-01:1.2",
+   "label": "7",
+   "page": [
+    1
+   ],
+   "text": "A Bidder that submits fewer copies shall be disqualified.",
+   "unit": "SYN-01:1.2#fn7"
+  }
+ ],
+ "pages": [
+  {
+   "assigned": 11,
+   "blank_spans": 0,
+   "content_spans": 11,
+   "doc": "SYN-01",
+   "excluded": {
+    "FOOTER-PAGE": 1,
+    "HEADER-SYN": 1,
+    "WATERMARK": 1
+   },
+   "invisible_spans": 0,
+   "page": 1,
+   "printed_page": "1",
+   "regions": [],
+   "unassigned": [],
+   "units": 5
+  },
+  {
+   "assigned": 12,
+   "blank_spans": 0,
+   "content_spans": 12,
+   "doc": "SYN-01",
+   "excluded": {
+    "FOOTER-PAGE": 1,
+    "HEADER-SYN": 1,
+    "WATERMARK": 1
+   },
+   "invisible_spans": 0,
+   "page": 2,
+   "printed_page": "2",
+   "regions": [],
+   "unassigned": [],
+   "units": 4
+  },
+  {
+   "assigned": 15,
+   "blank_spans": 0,
+   "content_spans": 15,
+   "doc": "SYN-01",
+   "excluded": {
+    "FOOTER-PAGE": 1,
+    "HEADER-SYN": 1,
+    "WATERMARK": 1
+   },
+   "invisible_spans": 0,
+   "page": 3,
+   "printed_page": "3",
+   "regions": [],
+   "unassigned": [],
+   "units": 6
+  },
+  {
+   "assigned": 4,
+   "blank_spans": 0,
+   "content_spans": 4,
+   "doc": "SYN-01",
+   "excluded": {
+    "FOOTER-PAGE": 1,
+    "HEADER-SYN": 1,
+    "WATERMARK": 1
+   },
+   "invisible_spans": 0,
+   "page": 4,
+   "printed_page": "4",
+   "regions": [
+    {
+     "id": "SYN-01-p4-r1",
+     "kind": "image",
+     "reading": "unread"
+    },
+    {
+     "id": "SYN-01-p4-r2",
+     "kind": "vector_graphic",
+     "reading": "unread"
+    }
+   ],
+   "unassigned": [],
+   "units": 4
+  },
+  {
+   "assigned": 1,
+   "blank_spans": 0,
+   "content_spans": 1,
+   "doc": "SYN-01",
+   "excluded": {
+    "FOOTER-PAGE": 1,
+    "HEADER-SYN": 1,
+    "WATERMARK": 1
+   },
+   "invisible_spans": 1,
+   "page": 5,
+   "printed_page": "5",
+   "regions": [
+    {
+     "id": "SYN-01-p5-r1",
+     "kind": "image",
+     "reading": "unread"
+    }
+   ],
+   "unassigned": [],
+   "units": 2
+  }
+ ],
+ "pending_review": [],
+ "problems": [],
+ "regions": [
+  {
+   "bbox": [
+    80.0,
+    110.0,
+    440.0,
+    220.4
+   ],
+   "detection": "embedded raster image (get_image_info)",
+   "doc": "SYN-01",
+   "id": "SYN-01-p4-r1",
+   "kind": "image",
+   "notes": [],
+   "page": 4,
+   "reading_status": "unread",
+   "reading_units": 0
+  },
+  {
+   "bbox": [
+    90.0,
+    370.0,
+    260.0,
+    460.0
+   ],
+   "detection": "non-structural vector paths (curves or free polygons)",
+   "doc": "SYN-01",
+   "id": "SYN-01-p4-r2",
+   "kind": "vector_graphic",
+   "notes": [],
+   "page": 4,
+   "reading_status": "unread",
+   "reading_units": 0
+  },
+  {
+   "bbox": [
+    80.0,
+    100.0,
+    500.0,
+    140.3
+   ],
+   "detection": "embedded raster image (get_image_info)",
+   "doc": "SYN-01",
+   "id": "SYN-01-p5-r1",
+   "kind": "image",
+   "notes": [
+    "invisible text layer overlaps this image; it is not used as content"
+   ],
+   "page": 5,
+   "reading_status": "unread",
+   "reading_units": 0
+  }
+ ],
+ "rotated_content": [
+  {
+   "angle": 90.0,
+   "span": "SYN-01/p1/s014",
+   "text": "Amended by Addendum No. 9, see Clause 1.2",
+   "unit": "SYN-01:rotated:p1-1"
+  },
+  {
+   "angle": 52.0,
+   "span": "SYN-01/p3/s018",
+   "text": "FICTIONAL - ASSESSMENT PACK",
+   "unit": "SYN-01:rotated:p3-1"
+  }
+ ],
+ "small_print": [
+  {
+   "kind": "rotated_text",
+   "max_size": 8.0,
+   "text": "Amended by Addendum No. 9, see Clause 1.2",
+   "unit": "SYN-01:rotated:p1-1"
+  },
+  {
+   "kind": "invisible_text",
+   "max_size": 6.2,
+   "text": "Scanned sentence: deliveries before 10:00 only.",
+   "unit": "SYN-01:invisible:p5"
+  },
+  {
+   "kind": "footnote",
+   "max_size": 7.2,
+   "text": "A Bidder that submits fewer copies shall be disqualified.",
+   "unit": "SYN-01:1.2#fn7"
+  }
+ ],
+ "split_tables": [
+  {
+   "pages": [
+    2,
+    3
+   ],
+   "repeated_headers": [
+    {
+     "page": 3,
+     "spans": [
+      "SYN-01/p3/s004",
+      "SYN-01/p3/s005",
+      "SYN-01/p3/s006"
+     ]
+    }
+   ],
+   "row_pages": {
+    "SYN-01:T9-1/9-1.1": [
+     2
+    ],
+    "SYN-01:T9-1/9-1.2": [
+     2
+    ],
+    "SYN-01:T9-1/9-1.3": [
+     3
+    ],
+    "SYN-01:T9-1/9-1.4": [
+     3
+    ],
+    "SYN-01:T9-1/9-1.5": [
+     3
+    ]
+   },
+   "rows": 5,
+   "title": "Table 9-1 - Test parameters",
+   "unit": "SYN-01:T9-1"
+  }
+ ],
+ "superscripts": [
+  {
+   "class": "unit exponent",
+   "footnote": null,
+   "size": 6.6,
+   "span": "SYN-01/p1/s007",
+   "text": "3",
+   "unit": "SYN-01:1.1"
+  },
+  {
+   "class": "footnote marker",
+   "footnote": "SYN-01:1.2#fn7",
+   "size": 6.6,
+   "span": "SYN-01/p1/s011",
+   "text": "7",
+   "unit": "SYN-01:1.2"
+  }
+ ]
+}

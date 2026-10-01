@@ -1,9 +1,140 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS: PROPOSED. Not approved.** No application code has been written.
-> This document is the planning proposal from session 01 (2026-10-01 UTC / 2026-10-02 Riyadh).
-> It is awaiting review by the repository owner, who may accept, revise or reject any part of it.
-> The planning record for the exchange is in `worklog/2026-10-01_session-01_planning.md`.
+> **STATUS (revision 2, session 02, 2026-10-02):**
+> - **Direction:** accepted by the owner.
+> - **Stage 1:** approved with adjustments, and implemented (see §9).
+> - **Stages 2–6:** remain PROPOSED and wait for the owner's review of the Stage 1 evidence.
+> - **Revision 1:** session 01, planning only, recorded in `worklog/2026-10-01_session-01_planning.md`.
+> - **This revision:** the owner's adjustments and their effects are listed in §R2 directly below. Where a §R2 item conflicts with older text further down, §R2 wins.
+
+## §R2 Revision 2: owner adjustments and corrections (2026-10-02)
+
+| # | Owner instruction or correction | Effect on this plan |
+|---|---|---|
+| R2.1 | Use the assumptions and output formats in the sent email of 1 Oct (thread PDF now in `sources/correspondence/`). Bidder details remain configurable assumptions, not facts. | **Adopted, not challenged.** Planning date = latest addendum date (22 Oct 2026; the ADD-03 date in the session). Unnamed **three-member** consortium, with name and member count editable (note: Appendix 1 has one two-member consortium). Bidder facts flagged for confirmation. External assumptions (holidays, durations, roles) labelled with their basis. **Formats:** A1 CSV + JSON + **Excel**; A2 Markdown + CSV/JSON; A3 one-page PDF; A5 CSV + JSON; A4 = repository, commit history, prompts, model-call log, work log. Offline rebuild, no API key. This settles D1 and the format question. |
+| R2.2 | Keep explicit disqualifiers separate from obligations with no stated consequence. Leave unresolved legal/commercial questions with people. | **D2 settled as recommended:** the A3 main list holds explicit wording only; a separate labelled block lists mandatory items with no stated consequence. Legal and commercial questions become Issues owned by a person. |
+| R2.3 | Matching a quotation and changing the declared target does not prove the target is the right clause. | New **target-verification** design: §R2-A. |
+| R2.4 | Keep original evidence separate from effective amended text. Assembled text may exist on no single page; image text cannot be checked through the text layer. | New **evidence model**: §R2-B. The old check C10 ("verbatim is a substring of the effective text and on the cited page") is replaced. |
+| R2.5 | A clause's own hash is not enough to detect stale interpretations. Track dependencies, and keep partially applied changes separate from the last fully validated state. | New **dependency pins** and **two-state build**: §R2-C. Refines D5. |
+| R2.6 | Withdraw the claim that the amended TN limit necessarily satisfies the missing Environmental Permit. | **Withdrawn** (F8 corrected). The Permit is not in the pack, so compliance with it cannot be established. The system will say "Permit not supplied; compliance with it cannot be established", not "3 mg/l satisfies either reading". |
+| R2.7 | Images, Arabic and image-based tables must work from the foundation, not only for the two known images. | Implemented generically in Stage 1: §R2-D. Exercised on a synthetic mixed page as well as the pack. |
+| R2.8 | Preserve crops and page references beside readings. Tables keep row/column relations, headings, units, limits, basis and notes. Arabic source is kept separate from translation and matching text. Check numerals, RTL order and rendered output. | Implemented in Stage 1: §R2-D. |
+| R2.9 | The owner reads Arabic and will review. Give crops and proposed readings together, with uncertainties marked; sign-off stays pending until approved. | Review packets in `build/review/<region>/`. Approval only through `curation/approvals.yaml`, pinned to the reading's content hash. |
+| R2.10 | Do not discard all rotated text. Identify the watermark specifically and show what was excluded. | Watermark rule matches text, colour, size and angle together. Everything excluded is listed in `build/exclusions.md`. A decoy identical except for colour is kept (tested, including by mutation). |
+| R2.11 | Later: the same program runnable through Claude Code in the app, with optional model calls via OpenRouter or local Ollama on the owner's M5 Pro (48 GB). Small common interface, same validation and review rules, capabilities checked rather than assumed. Implement later; the reviewed build must stay offline-capable. | Design only in this revision: §R2-E. Nothing implemented. |
+| R2.12 | Keep the work log accurate. Finding the second image was an *additional* finding, not a correction of a claim that only one existed. | O5 wording corrected below. Recorded as a characterisation error in the session 02 work log. |
+
+### §R2-A: Catching an operation that points at the wrong clause with the same wording
+
+A quotation found in the declared target, plus a change confined to that target, proves only that the operation is *internally consistent*. It does not prove the addendum meant that clause. In this pack, "seventy-two (72) hours" occurs in VOL-II §4.4 and VOL-V §31.3; an op aimed at §31.3 would pass the substring, uniqueness and scope-leak checks. The defence must come from evidence that is independent of the op author:
+
+1. **Citation resolution (primary).**
+   - The program extracts the target citation from the addendum's own provision text (for example, "In Volume II Clause 4.4, …") and from its section heading ("4. AMENDMENT TO VOLUME II CLAUSE 4.4").
+   - It resolves each, deterministically, to a unit ID, using a grammar covering Volume/Clause/Table/Form/footnote/Appendix and row names inside tables ("the limit for Total Nitrogen (TN)" → `VOL-II:T2-4/TN`).
+   - The op's declared target must equal the resolved target. Body and heading citations must agree with each other.
+   - **On failure:** the op is invalid, with the message "declared target X ≠ cited target Y".
+2. **Ambiguity disclosure (secondary).**
+   - For every quoted "old" text, the program lists *all* units in the pack that contain it.
+   - With more than one candidate, the review view shows the others ("also in VOL-V §31.3 — not targeted") and requires the citation to pick exactly one of them.
+3. **Self-consistency claims in the addendum.**
+   - Statements such as "Volume I Clause 8.6, deleted by Addendum No. 1 Section 4" are checked against the op ledger (was it deleted, and by that provision?).
+   - Statements such as "marks for D increased and B reduced correspondingly" are checked against the data.
+4. **When the addendum cites wrongly itself** (its cited clause does not contain the quoted text): the op cannot be validated. It becomes `unresolved`, with an Issue "addendum citation and quotation disagree", for a person to resolve. Nothing is auto-corrected.
+5. **Tests:**
+   - an op aimed at VOL-V §31.3 using ADD-02 §4.1's quote must fail on citation mismatch;
+   - a synthetic addendum whose citation and quote disagree must produce `unresolved`.
+
+### §R2-B: Original evidence is kept apart from effective (amended) text
+
+Each A1 row and unit carries two different things:
+
+- **Evidence items.** Each is checkable on its own, against the place it came from:
+  - `text_layer`: verbatim span IDs on one page of one document. Checked by re-extracting those spans from the PDF (hash-pinned source).
+  - `image_reading`: a region, a crop (sha256), and the reading's content hash. Checked against the reading record and its approval status, **not** the text layer. A pending reading is evidence marked *pending*, never silently trusted.
+- **Effective text.** Derived, labelled "assembled by ops [...]". It is checked by **replaying the ops** from the original evidence, never by looking for it on a page, because, for example, "… ninety-six (96) hours" after ADD-02 exists on no single page.
+
+A2's chain therefore shows the effective text with its evidence items: the original clause span on VOL-II p4 and the replacement span on ADD-02 p1, each verifiable where it lives.
+
+### §R2-C: Dependency pins and two build states
+
+- **Dependency set per interpretation.** Each reviewed interpretation pins a dependency set, not just its own clause text. The set includes:
+  - its own unit's effective text;
+  - units its text cites, extracted automatically (e.g. fn 12 → the PDD definition §2.6 and §6.1; §2.5 → the Table 2-4 *basis* column);
+  - units that supply its consequence (e.g. VOL-I §9.4 and the Form 4-C Arabic note);
+  - clarification answers and rules that annotate any of these (e.g. ADD-01 §4.2, until ADD-02 §9.2 revoked it);
+  - readings and their approval status;
+  - date-rule anchor values.
+- **Staleness.** A row is STALE when the combined hash of its dependency set changes. Automatically extracted dependencies can be extended by a reviewer, but removing one needs a recorded reason.
+- **Two states.**
+  - `validated/` holds the last state in which every op was accepted and valid and every affected row re-pinned.
+  - `working/` holds the in-progress state, for example ADD-03 half-applied.
+  - Working outputs are labelled DRAFT/PARTIAL and written separately. They never overwrite `validated/`. A3 from the validated state stays available while the working state shows what ADD-03 breaks.
+
+### §R2-D: Image, Arabic and image-table foundation (built in Stage 1)
+
+- **Region detection, generic, not keyed to the two known pages:**
+  - every embedded raster image;
+  - non-structural vector graphics;
+  - invisible text layers (an OCR layer is recorded, never used as content);
+  - ink in a page render that no text, image or drawing explains.
+  - A page that has text can still have unread regions; Form 4-C's page has header, footer and watermark text.
+- **Evidence:** native image bytes as embedded (hashed), a rendered crop, page context with the region outlined, and per-band, per-row and per-cell crops at native resolution.
+- **Raster structure:**
+  - **Skew** is estimated from projection profiles.
+  - **Grid** rules are detected along the skew, giving rows × columns.
+  - **Text bands** are found after despeckling (ink relative to the image's own background, so faint grey text is kept) and after erasing ruling lines.
+  - **Rule bands** are told apart from text by shape.
+  - **Bilingual rows** are split into left and right halves.
+- **Readings:** `curation/readings/<region>.yaml`.
+  - Tables keep title, qualifier, columns (heading + key), rows of cells, and notes. Parsed limits are derived by code (`10` → max 10; `0.5 - 1.0` → range).
+  - Text and forms are blocks of lines, each tied to a band and side.
+  - Arabic `source` is stored as logical Unicode; `translation` is a separate field; matching text is computed by code.
+- **Reading checks:**
+
+  | Check | What it verifies |
+  |---|---|
+  | RD1 | Region position |
+  | RD2 | Native image hash |
+  | RD3 | Grid rows × columns match the reading |
+  | RD4 | Every text band (each side) is read |
+  | RD5 | Logical Unicode (no presentation forms, no undeclared bidi controls); translation present |
+  | RD6 | Every numeral declared; the rendered glyph order matches the order seen in the crop |
+  | RD7 | Warning when text touches the image edge (possible cropping) |
+
+- **Numeral identity:**
+  - It is advisory only: shape comparison against reference glyphs, with the margin reported.
+  - It never decides; a person does.
+  - **Approval** is pinned to the content hash in `curation/approvals.yaml`, and any later edit voids it.
+
+### §R2-E: Model routes (design only; to be implemented in a later stage)
+
+- **Routes.** One small interface, `propose(task_packet) -> proposal_file`, with three routes:
+  - `claude_code`: the coding assistant in the app fills the proposal file directly. This is how session 02's readings were prepared, and it is logged as AI-assisted.
+  - `openrouter`: an HTTP API.
+  - `ollama`: local on the Mac.
+- **What every route shares:**
+  - the same task packet (instructions, the schema of the expected YAML, crops);
+  - the same output path into `curation/`, always `pending`;
+  - the same validation (the RD/C checks);
+  - the same approval rule.
+- **Separation from the build.** No route is ever called by `ingest`/`build`.
+- **Capability checks before use:**
+  - **Ollama:** `/api/show` returns a `capabilities` list (e.g. `"vision"`). Confirmed from Ollama's API documentation on GitHub; `ollama.com` itself is blocked from this cloud environment.
+  - **OpenRouter:** the models listing reports input modalities per model. This could not be verified here (`openrouter.ai` is blocked from this environment) and must be confirmed when the route is built.
+  - A model without image input is refused for reading tasks rather than given text-only context.
+- **Local candidates for an M5 Pro with 48 GB unified memory.** These come from search results and the Qwen GitHub repository, not from tests, so they are a shortlist, not a choice:
+  - Qwen3.8-27B (dense, Aug 2026; image input reported by secondary sources);
+  - Qwen3.6-35B-A3B and Qwen3.5-35B-A3B / 27B (MoE/dense, native vision-language per the Qwen repo; Apache-2.0);
+  - Qwen3-VL-32B and 8B (dedicated vision-language, 2025; reported strong on OCR including Arabic).
+  - At 4-bit, the 27–35B models need about 17–24 GB, so they fit in 48 GB with room for context.
+- **Choosing a model.** Benchmark the shortlist on the owner's Mac against the two readings *after the owner approves them*, scoring:
+  - cell accuracy on Table 2-4;
+  - character accuracy on Form 4-C;
+  - digit identity on ٤-x.
+
+  Keep the measured results; don't rely on blog rankings.
+
+---
 
 Conventions used throughout:
 
@@ -19,7 +150,11 @@ Conventions used throughout:
 - **Original schedule** (brief PDF p1; covering email): deadline 17:00 Wed 23 Sep 2026; session 12:00 Fri 25 Sep 2026, Riyadh time.
 - **Revised schedule** (`sources/correspondence/2026-09-29_reply_to_hiring.md`): the owner chose "the second path", starting Tue 29 Sep, "with 17:00 Monday 5 October as the outside limit".
 - **Time left:** at the time of writing (00:11 Fri 2 Oct, Riyadh) about 3 days 17 hours remain.
-- **Missing correspondence:** the hiring team's email offering that second path is **not** in the attachments. **The live-session date and time are therefore unknown to me.**
+- **Correspondence, revision 2:** the Gmail thread PDF (now in `sources/correspondence/`) shows:
+  - the hiring team offered the second path on 17 Sep 20:00, and the owner chose it on 17 Sep 20:12;
+  - the session is "a ninety-minute slot in the week of 6 October (we will confirm once the panel locks times)", so it is **still to be confirmed**;
+  - the 1 Oct email was **sent** (12:50);
+  - the note file `2026-09-29_reply_to_hiring.md` is headed "29 September", but the reply it quotes was sent on 17 September.
 
 The plan is sized for roughly 3.5 working days, with a hard requirement that the session environment runs offline on the owner's Mac.
 
@@ -95,7 +230,7 @@ The plan is sized for roughly 3.5 working days, with a hard requirement that the
 | O2 | **Confirmed.** The note sets 65/35 and is in small print: 7.2 pt against 9.6 pt body text. The cover summary says only "reissues the technical evaluation table". **Added:** ADD-01 Appendix B (minutes) Item 3 records a non-binding "seventy / thirty split" statement, a third competing value. The same words "sixty per cent (60%) … forty per cent (40%)" also appear in VOL-V §29.2 (indexation), which must **not** change. | ADD-02 §3, Notes to Table 1-1 (revised), note (2), p1 | "(2) The combined score weighting stated in Volume I Clause 11.2 is amended to sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial." | [F] VOL-I §11.2 is effectively 65/35. The §11.3 threshold of 70 is unchanged (note 1). Table 1-1: B 20→15, D 15→20, total 100 (matches the narrative in ADD-02 §3.1). | None on the reading. It is a scored or evaluation parameter, not pass/fail, so it changes bid strategy, not compliance. |
 | O3 | **Confirmed.** Original → deleted → reinstated, amended, with a new consequence. **Added:** ADD-01 §4.2 is itself a rule ("disregard references elsewhere"), and ADD-02 §9.2 **revokes** it, which is an amendment of an amendment. The threshold also rises from 30% to 35%. The original §8.6 had **no** stated consequence. The minutes record that bidders find the certificate hard to obtain in time. A grep shows no other LCC references exist in the pack, apart from the generic VOL-I §9.1(i) "certificates and evidence required under Section 8". | VOL-I §8.6 p4; ADD-01 §4.1–4.2 p1; ADD-01 App B Item 4 p4; ADD-02 §9.1–9.2 p3 | Original: "…not less than thirty per cent (30%) for the construction phase." ADD-01 §4.1: "is deleted in its entirety. No Local Content Certificate is required with the Proposal." ADD-02 §9.1: "…not less than thirty-five per cent (35%) for the construction phase. Failure to submit the certificate shall render the Proposal non-responsive." §9.2: "Section 4.2 of Addendum No. 1 ceases to have effect." Minutes: "A Bidder raised difficulty in obtaining a Local Content Certificate within the programme." | [F] Active, 35%, construction phase, explicit non-responsiveness. It enters A3 **only after ADD-02**. Between 8 Oct and 22 Oct it was deleted. | "Competent authority" is not named. Lead time is not stated, but the pack signals it is long. Only 24 Working Days separate ADD-02 issue and the PDD. The bidder's local-content ratio is unknown. **A5 feasibility is a real risk to surface, not assume away.** |
 | O4 | **Confirmed, and larger than observed.** The reissued Form 4-A prints the old date. It is also a **much shorter form**. It drops commercial registration number, registered address, contact email/telephone, all six numbered confirmations (150-day validity, bid bond enclosed, no multiple participation, Pre-Bid attendance, Authority not bound), signatory name/capacity split, Power of Attorney reference and date, and company seal. Its stated purpose is "to add the acknowledgement of Addenda at paragraph 1", yet it has **no paragraph 1**, and the original already acknowledged addenda in its paragraph 1. | ADD-01 §2.1 p1; ADD-01 App A p3; VOL-IV Form 4-A p3; VOL-IV p2; VOL-I §9.3 p5 | ADD-01 §2.1: "deleting 'Thursday 12 November 2026' and substituting 'Thursday 26 November 2026'". App A: "Bidders shall use this version." … "Proposal Due Date \| 12 November 2026, 14:00 Riyadh time". VOL-IV p2: "Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk." VOL-I §9.3: "An unsigned or improperly executed Form 4-A shall render the Proposal non-responsive." | [F] PDD = Thu 26 Nov 2026, 14:00 (VOL-I §6.1 as amended; precedence §3.2(a)). The mandated form prints 12 Nov. ADD-02 again requires acknowledgement "in Form 4-A" but does not reissue it. | **Human decision:** what date to print and sign; whether to also give the dropped confirmations; whether to raise a clarification **before the 12 Nov cut-off**. The system must flag this, **never auto-correct** it. |
-| O5 | **Confirmed. Also, a second image page was missed.** VOL-IV p6 is a single raster image. The page is *not* text-empty: it carries the running header, the footer and the rotated watermark as text, so a "page has text ⇒ covered" heuristic would wrongly pass it. Coverage must be judged per image region (C05), not per page. My reading (to be verified by an Arabic reader) is listed after this table. **Declaration 4 carries an exclusion consequence that appears nowhere in the English text.** **Missed by the observation:** VOL-II p3 **Table 2-4 (effluent limits) is also an image.** ADD-02 §5.1 amends TN "from the value shown", so the old value (5 mg/l) exists **only in the image**. | VOL-IV p5–p6; VOL-II p3; ADD-02 §5.1 p1; ADD-02 Q9 p2 | Form 4-C decl. 4: "وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض" ("we acknowledge that any incorrect statement leads to the exclusion of the proposal"). Note: "عدم تقديمه كاملاً يجعل العرض غير مستجيب" ("failure to submit it completely renders the proposal non-responsive"). ADD-02 §5.1: "the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l, assessed on the same basis." | [F] Form 4-C remains mandatory in Arabic, one per member (ADD-02 Q9). TN = 3 mg/l, 30-day rolling average ("same basis" resolved from the image). | Arabic transcription and translation need **human verification**. The digit order of "البند ٤-٢" in right-to-left text reads as 4-2, i.e. VOL-I §4.2. That is consistent with "communication rules"; §2.4 is the Working Day definition. Must be verified, not assumed. |
+| O5 | **Confirmed. Additional finding: a second image region exists** (the observation did not claim there was only one). VOL-IV p6 is a single raster image. The page is *not* text-empty: it carries the running header, the footer and the rotated watermark as text, so a "page has text ⇒ covered" heuristic would wrongly pass it. Coverage must be judged per image region (C05), not per page. My reading (to be verified by an Arabic reader) is listed after this table. **Declaration 4 carries an exclusion consequence that appears nowhere in the English text.** **Additional finding:** VOL-II p3 **Table 2-4 (effluent limits) is also an image.** ADD-02 §5.1 amends TN "from the value shown", so the old value (5 mg/l) exists **only in the image**. | VOL-IV p5–p6; VOL-II p3; ADD-02 §5.1 p1; ADD-02 Q9 p2 | Form 4-C decl. 4: "وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض" ("we acknowledge that any incorrect statement leads to the exclusion of the proposal"). Note: "عدم تقديمه كاملاً يجعل العرض غير مستجيب" ("failure to submit it completely renders the proposal non-responsive"). ADD-02 §5.1: "the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l, assessed on the same basis." | [F] Form 4-C remains mandatory in Arabic, one per member (ADD-02 Q9). TN = 3 mg/l, 30-day rolling average ("same basis" resolved from the image). | Arabic transcription and translation need **human verification**. The digit order of "البند ٤-٢" in right-to-left text reads as 4-2, i.e. VOL-I §4.2. That is consistent with "communication rules"; §2.4 is the Working Day definition. Must be verified, not assumed. |
 | O6 | **Confirmed. ADD-01's list is explicitly non-exhaustive** ("including without limitation"). **Added:** VOL-I §8.3, "ISO 9001:2015 … current as at the Proposal Due Date", also moves but is not in ADD-01's list. **Added:** the new clarification cut-off falls on **Thu 12 Nov 2026, the old PDD**. A naive stale-value scan for "12 November 2026" would mis-flag it. | ADD-01 §2.2 p1; VOL-I §2.4, §2.6, §3.4, §5.2, §6.3, §6.7, §7.1, §8.3, fn 12, App 3; VOL-IV Form 4-A ¶2 | ADD-01 §2.2: "Every period in the RFP Documents that is calculated by reference to the Proposal Due Date is adjusted accordingly, including without limitation…" VOL-I §2.4: "Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted." | See §2.5 (date inventory): computed values before and after, fixed dates, and dates anchored to unknown future events. | "days" is undefined (calendar days assumed). Whether "from the PDD" makes the PDD day 0 is unstated. The forward Working-Day convention is unstated. No time-of-day for the cut-off. Public holidays "declared" in the Kingdom need a calendar input (assumption). |
 
 **My reading of Form 4-C (VOL-IV p6). Model transcription; human verification required.** Header: "الهيئة الشمالية للمشتريات المرفقية" / "النموذج ٤-ج" / "إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر" (declaration of no conflict of interest and non-listing on debarment lists). The signatories, as authorised representatives of the named consortium member, declare:
@@ -104,7 +239,7 @@ The plan is sized for roughly 3.5 working days, with a hard requirement that the
 2. The company has not participated, directly or indirectly, in more than one proposal for this tender.
 3. The company is not, and has not been in the previous five years, listed on any debarment list issued by a government entity in the Kingdom.
 4. All information in the proposal is correct and complete, and any incorrect statement leads to exclusion of the proposal.
-5. The signatories commit to the communication rules in clause 4-2 of Volume I.
+5. The signatories commit to the communication rules in clause 4-2 of Volume I. **(Revision 2: the left digit's identity, ٢ or ٣, is uncertain; ٣ would mean clause 4-3, VOL-I §4.3. See the review packet for VOL-IV-p6-r1.)**
 
 Fields: member name, commercial registration number, authorised signatory, capacity, date, signature and seal. Note: the form must be submitted in Arabic for each member, and incomplete submission renders the proposal non-responsive.
 
@@ -136,7 +271,7 @@ Note 1: "Where a parameter is not listed above, the limit stated in the Environm
 | F5 | [F] **Form 4-B (Envelope A) asks for "Contract value (SAR equivalent)"** while §6.2 says "any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive." | VOL-IV p4; VOL-I §6.2 p3 | "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive." | Unchanged. | **Human/clarification.** [I] Probably aimed at this bid's pricing, but the literal reading conflicts. |
 | F6 | [F] **Concession-term conflict, and the Authority declined to resolve it.** | VOL-I §12.1 p6; VOL-V §3.1 p2; ADD-02 Q7 p2; VOL-V Note p2 | VOL-I: "twenty-five (25) years commencing on the Project Commercial Operation Date". VOL-V: "twenty-five (25) years from the Effective Date". Q7: "The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage." VOL-V Note: "A deviation not listed in Form 4-E will be taken as accepted." | [I] By precedence, VOL-I ranks above VOL-V. But the agreement to be executed says Effective Date, and unlisted deviations are "taken as accepted". | **Legal/commercial decision for a person.** It drives the financial model: up to about 3 years' revenue, given the 36-month Scheduled PCOD (VOL-V §12.1). |
 | F7 | [F] **Hydraulic figures are questioned, and the Authority did not answer.** | VOL-II Table 2-6 p3–p4; §4.1, §4.2, §5.2; ADD-02 Q11 p2 | Table 2-6: average 120,000 m³/day; peak hourly (design) 7,500 m³/h; storm "3 x dry weather flow" to full treatment. Q11 answer: "Bidders shall design to the figures stated in Volume II. Volume II Clause 4.2 applies." | Unchanged. | **Engineering decision.** [I] 120,000 m³/day = 5,000 m³/h; if dry weather flow ≈ average, 3× = 15,000 m³/h, which exceeds the 7,500 design peak used to size the main (§5.2). |
-| F8 | [F] **Table 2-4 is "reproduced" from an Environmental Permit that is not supplied, and the Permit prevails over the reproduction.** ADD-02 amends the reproduction. | VOL-II §2.4 p2; p3 header; ADD-02 §5.1; ADD-01 App B Item 5 | "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail." Minutes: "the permit was under review by the regulator". | [I] Addenda prevail among RFP Documents (§3.2(a)). Designing to the stricter 3 mg/l satisfies either reading. | Human confirmation; possible clarification. |
+| F8 | [F] **Table 2-4 is "reproduced" from an Environmental Permit that is not supplied, and the Permit prevails over the reproduction.** ADD-02 amends the reproduction. | VOL-II §2.4 p2; p3 header; ADD-02 §5.1; ADD-01 App B Item 5 | "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail." Minutes: "the permit was under review by the regulator". | ~~[I] Addenda prevail among RFP Documents (§3.2(a)). Designing to the stricter 3 mg/l satisfies either reading.~~ **WITHDRAWN (R2.6):** the Permit is not in the pack, so whether 3 mg/l, or any other design, complies with it cannot be established. What can be said: the amended reproduction says 3 mg/l, and VOL-II §2.4 says the Permit prevails over the reproduction. | Human decision; clarification on which governs, and the Permit itself, should be requested. |
 | F9 | [F] **The Table 2-4 "basis" column (image only) drives obligations elsewhere.** | VOL-II §2.5 p2, §7.2–7.3 p4; VOL-V §29.3, §31.1(b), §31.2, §31.3 p3 | §2.5: "for those parameters identified in Table 2-4 as assessed on a continuous basis". VOL-V §29.3: "a parameter listed in Table 2-4 as assessed on a rolling average basis". §31.2: "not subject to any cap". §31.3: "No cure period applies to an event under Clause 31.1(b)." | The TN tightening propagates to the reliability run (PCOD), Unavailability Events and uncapped deductions. | [I] Continuous monitoring applies to residual chlorine and pH; ramp-up relief applies to BOD5/COD/TSS/TN/TP. Both readings rest on the image. |
 | F10 | [F] **Form 4-G (new) has a non-responsive consequence and new obligations.** It is inserted "after item (e)" of VOL-I §9.1, with re-lettering unspecified. The VOL-IV index ("Forms 4-A to 4-F") is not updated. Undertakings 3–6 (security officer, 24 h incident notice, annual OT penetration test, MFA) are not in VOL-II §6. | ADD-02 §7 p3 | "Failure to submit Form 4-G shall render the Proposal non-responsive." | A new A3 row and new A1 rows. | [I] The effect of answering "No" on an undertaking is undefined. Human decision. |
 | F11 | [F] **Bid Bond.** Valid 180 days from the PDD; SAR 4,500,000; unconditional, first demand; Kingdom-licensed bank rated ≥ A-. The clause states **no rejection consequence**. | VOL-I §6.3–6.4 p3; ADD-01 Q3; ADD-02 Q8 | "…shall remain valid for one hundred and eighty (180) days from the Proposal Due Date…" | [I] A bond drafted against 12 Nov expires about 14 days early. That is a rework item after ADD-01. | Whether it belongs in A3 depends on the decision in §7 (no explicit consequence wording). |
@@ -607,3 +742,41 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 These are the inputs every later decision rests on, and they are the cheapest place to discover that the extraction strategy is wrong.
 
 In parallel, the owner verifies the Arabic transcription of Form 4-C and the Table 2-4 transcription in §2.1, and answers D1–D6.
+
+
+---
+
+## 9. Stage 1 checkpoint (implemented in session 02; for the owner's review)
+
+**Built:**
+
+- **Package and commands.** `tenderpack/` (extract, regions, segment, readings, arabic, packets, coverage, cli). Commands: `ingest`, `show`, `approve`.
+- **Environment.** `pyproject.toml` with `uv.lock`; a `Makefile` with targets `setup`, `evidence`, `test`, `verify`.
+- **Dependencies.**
+  - Runtime: PyMuPDF 1.28.2, numpy, pydantic, PyYAML.
+  - Dev: pytest.
+  - openpyxl is deferred to the stage that writes A1.
+
+**Evidence to review** (regenerate with `make evidence`):
+
+| File | Contents |
+|---|---|
+| `build/units.md` / `build/units.json` | All 525 units of the real pack, including units derived from the two readings, marked PENDING |
+| `build/coverage.md` | Checks C01–C06, page accounting, regions, superscripts, footnotes, split tables, small print |
+| `build/exclusions.md` | The 160 excluded spans (5 rules × 32 pages), with rule, text, angle, colour and size |
+| `build/review/VOL-II-p3-r1/` | Table 2-4 packet: native row and cell crops, side-by-side, checks, uncertainties |
+| `build/review/VOL-IV-p6-r1/` | Form 4-C packet: band crops, side-by-side (Arabic rendered by the program), numeral evidence |
+| `build/fixture/` | The same reports for the synthetic mixed example (`tests/fixtures/make_fixture.py`) |
+
+**Tests:**
+
+- 39 tests: `make test`.
+- Mutation checks were run by hand and are recorded in the session 02 work log.
+
+**Not done in Stage 1 (by design):** amendment operations, dates, register, A1–A5, model routes. **Next, after the owner's review:** Stage 2 (thin end-to-end slice through the hard amendments), which must now include the §R2-A citation resolver and the §R2-C dependency pins and two-state build.
+
+**Decisions still open:**
+
+- **D3:** A1 granularity and scope; recommendation unchanged.
+- **D4:** conservative reading of counting conventions; recommendation unchanged.
+- **Arabic and Table 2-4 sign-off:** with the owner.

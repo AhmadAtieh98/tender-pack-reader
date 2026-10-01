@@ -311,3 +311,11 @@ The full content is in `docs/PLAN.md`; the chat reply condensed it.
     - both printed Form 4-A PDD fields;
     - both image regions.
 - **In parallel, for the owner:** verify the Arabic and Table 2-4 transcriptions, and answer D1–D6.
+
+## Errata (added in session 02, 2026-10-02)
+
+The record above is left as written. Corrections found later:
+- **O5 characterisation.** §4 above and the session 01 reply say the owner's observation "missed" a second image. The observation never claimed only one image existed, so the second image is an *additional finding*. (Session 02 log, E5.)
+- **F8 claim withdrawn.** "Designing to the stricter 3 mg/l satisfies either reading" was unsupported: compliance with an Environmental Permit that is not in the pack cannot be established. (Session 02 log, E6; PLAN §R2.6.)
+- **Form 4-C clause reference.** "٤-٢" was asserted without pixel verification. In session 02 the visual order was verified by rendering. The left digit's identity (٢ or ٣) is marked uncertain for the owner. (Session 02 log, E8.)
+- **Missing correspondence.** The "missing" rescheduling correspondence was later provided (Gmail thread PDF): the session is in the week of 6 Oct, to be confirmed.
