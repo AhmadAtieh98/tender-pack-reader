@@ -1,0 +1,35 @@
+# Evidence item -> activities (tender-independent; reviewable). PROPOSED by the assistant, session 04.
+# Each activity names: an owner discipline, the issuer of what it produces, a lead-time ASSUMPTION key
+# (config/assumptions.yaml), predecessors, and optionally `per` (multiplied by a bidder assumption) and
+# `item` (a physical or documentary item for the marshalling plan). Requirement ids are attached at
+# build time from the A1 rows that need each evidence item; nothing here names a requirement.
+# `finish: deadline_of: <rule_id>` makes a pack date a must-finish-by constraint.
+EV-DELIVERY:
+  - {id: deliver, name: "Seal, mark and deliver Envelopes A and B to the Appendix 3 address", owner: Bid management, issuer: Bidder, duration: delivery, predecessors: [assemble-envelope-a], item: "Sealed Envelopes A and B (1 original, 3 copies, encrypted USB)", finish: {deadline_of: PDD}}
+  - {id: assemble-envelope-a, name: "Assemble Envelope A in the VOL-I 9.1 order (incl. Form 4-G after item (e))", owner: Bid management, issuer: Bidder, duration: envelope_assembly, predecessors: []}
+EV-CLARIFICATIONS:
+  - {id: clarifications, name: "Submit clarification requests (e.g. Form 4-A printed date and fields; Environmental Permit)", owner: Bid management, issuer: Bidder, duration: clarification_drafting, predecessors: [], finish: {deadline_of: CLARIFICATION-CUTOFF}}
+EV-BID-BOND:
+  - {id: bond-approval, name: "Obtain bank approval for the Bid Bond", owner: Commercial, issuer: "Bank licensed in the Kingdom, rated A- or better", duration: bid_bond_bank_approval, predecessors: []}
+  - {id: bond-issue, name: "Issue the Bid Bond (validity per VOL-I 6.3)", owner: Commercial, issuer: "Issuing bank", duration: bid_bond_issue, predecessors: [bond-approval], successors: [assemble-envelope-a], item: "Bid Bond (original)"}
+EV-ISO:
+  - {id: iso-copy, name: "Obtain a copy of the EPC Contractor's current ISO 9001:2015 certificate", owner: Technical, issuer: "EPC Contractor (accredited certification body)", duration: iso_certificate_copy, predecessors: [], successors: [assemble-envelope-a], item: "ISO 9001:2015 certificate copy"}
+EV-REFERENCES:
+  - {id: references, name: "Collect commercial-operation evidence for the reference plants (Form 4-B)", owner: Technical, issuer: "Reference plant owners", duration: reference_evidence, per: reference_plants_offered, predecessors: [], successors: [assemble-envelope-a], item: "Reference evidence and completion certificates"}
+EV-LCC:
+  - {id: lcc-ratio, name: "Compute the construction-phase local content ratio", owner: Commercial, issuer: Bidder, duration: lcc_ratio_calc, predecessors: []}
+  - {id: lcc-certificate, name: "Obtain the Local Content Certificate from the competent authority", owner: Commercial, issuer: "Competent authority (not named in the pack)", duration: lcc_certificate, predecessors: [lcc-ratio], successors: [assemble-envelope-a], item: "Local Content Certificate"}
+EV-POA:
+  - {id: poa, name: "Notarise the Power of Attorney from the lead member", owner: Legal, issuer: "Notary", duration: poa_notarisation, predecessors: [], item: "Notarised Power of Attorney"}
+EV-FORM-4A:
+  - {id: form-4a, name: "Complete and sign Form 4-A (decide the printed date with the bid manager)", owner: Legal, issuer: "PoA holder", duration: form_4a_signature, predecessors: [poa], successors: [assemble-envelope-a], item: "Form 4-A (signed)"}
+EV-FORM-4C:
+  - {id: form-4c-prep, name: "Prepare Form 4-C in Arabic for each member", owner: Legal, issuer: Bidder, duration: form_4c_arabic_prep, predecessors: []}
+  - {id: form-4c-sign, name: "Sign and stamp Form 4-C at each member", owner: Legal, issuer: "Each member's authorised signatory", duration: form_4c_member_sign, per: members, predecessors: [form-4c-prep], successors: [assemble-envelope-a], item: "Form 4-C (Arabic, one per member)"}
+EV-FORM-4G:
+  - {id: form-4g-review, name: "Review the six Form 4-G undertakings with the O&M and OT security leads", owner: Technical, issuer: Bidder, duration: form_4g_review, predecessors: []}
+  - {id: form-4g-sign, name: "Complete and sign Form 4-G", owner: Technical, issuer: Bidder, duration: form_4g_signature, predecessors: [form-4g-review], successors: [assemble-envelope-a], item: "Form 4-G (signed)"}
+EV-TECH-PROPOSAL:
+  - {id: technical-proposal, name: "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration)", owner: Technical, issuer: Bidder, duration: technical_proposal, predecessors: [], successors: [assemble-envelope-a], item: "Technical Proposal narrative (page limit per VOL-I 9.2)"}
+EV-ATTENDANCE:
+  - {id: attendance-notice, name: "If the attendance record is wrong, notify the Authority through the Portal", owner: Bid management, issuer: Bidder, duration: clarification_drafting, predecessors: [], finish: {deadline_of: ATTENDANCE-NOTICE}}

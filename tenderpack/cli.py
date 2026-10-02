@@ -13,6 +13,17 @@
            record a person's approval of a reading, pinned to its review subject (reading +
            uncertainties + evidence). Refuses placeholder names and readings that fail checks.
 
+Stage 2 (from a published evidence build; see tenderpack/stage2.py):
+  outputs  [--evidence build] [--out out] [--pack ...]
+           A1 (xlsx/csv/json), A2, A3 (one-page pdf), A5 for every stage of the amendment path.
+           Exit 0: published (drafts, with pending reviews listed); 2: structural failure, previous
+           outputs kept, candidate in <out>.failed.
+  draft    ADD-0N [--evidence build] [--to PATH]
+           propose ops and dispositions for an addendum (every op PROPOSED); prints or writes YAML.
+           Never writes into curation/ unless --to names a file there explicitly.
+  pin      [--evidence build] [--refresh]
+           pin each interpretation to its dependencies (curation/register/pins.yaml).
+
 Output safety: the output directory may not be the repository, a parent of it, the home or root
 directory, a protected repository folder (sources, config, curation, ...), or anything that
 contains or lies inside an input. An existing directory is replaced only if it is empty or a
@@ -321,6 +332,51 @@ def approve(region_id: str, reviewer: str, notes: str | None, root: Path = ROOT,
     return 0
 
 
+def draft_cmd(addendum: str, evidence: Path, to: str | None) -> int:
+    from .draft import draft
+    units = json.loads((Path(evidence) / "units.json").read_text(encoding="utf-8"))["units"]
+    if not any(u["doc"] == addendum for u in units):
+        print(f"no units for {addendum} in {evidence}")
+        return 1
+    text = ("# DRAFTED by tenderpack.draft; every op PROPOSED. Review, correct and save as curation/amendments/"
+            f"{addendum}.yaml to curate it.\n"
+            + yaml.safe_dump(draft(units, addendum).model_dump(exclude_none=True), allow_unicode=True, sort_keys=False, width=110))
+    if to is None:
+        print(text, end="")
+        return 0
+    dest = Path(to)
+    if dest.exists():
+        print(f"refused: {dest} exists; drafts never overwrite a file")
+        return 2
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(text, encoding="utf-8")
+    print(f"wrote {dest}")
+    return 0
+
+
+def pin_cmd(evidence: Path, pack_path: Path, refresh: bool) -> int:
+    from .amend import Engine, load_opfile
+    from .register import compute_pins, load_rows, pins_path, write_pins
+    cfg = load_yaml(pack_path)
+    units = json.loads((Path(evidence) / "units.json").read_text(encoding="utf-8"))["units"]
+    amend_dir = ROOT / cfg.get("amendments_dir", "curation/amendments")
+    addenda = sorted({u["doc"] for u in units if u["doc"].startswith("ADD-")}, key=lambda x: int(x.split("-")[1]))
+    missing = [a for a in addenda if not (amend_dir / f"{a}.yaml").exists()]
+    if missing:
+        print(f"refused: no curated op file for {missing}; pins are taken only against curated amendments")
+        return 2
+    stages = Engine(units, [load_opfile(amend_dir / f"{a}.yaml") for a in addenda]).run()
+    rows_path = ROOT / cfg.get("register", "curation/register/rows.yaml")
+    rf = load_rows(rows_path)
+    n = compute_pins(rf, stages, refresh)
+    write_pins(rf, pins_path(rows_path),
+               "# Written by `python -m tenderpack pin` (machine-generated; do not edit by hand).\n"
+               "# For each row and interpretation stage: the hash of every dependency when the interpretation\n"
+               "# was drafted. A later change to any of them makes the row STALE until a person re-reviews it.\n")
+    print(f"pinned {n} interpretation(s); wrote {pins_path(rows_path)}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="tenderpack")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -338,7 +394,30 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--notes")
     c.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     c.add_argument("--approvals", help="approvals file (default: the pack's `approvals` path)")
+    d = sub.add_parser("outputs")
+    d.add_argument("--evidence", default=str(ROOT / "build"))
+    d.add_argument("--out", default=str(ROOT / "out"))
+    d.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    e = sub.add_parser("draft")
+    e.add_argument("addendum")
+    e.add_argument("--evidence", default=str(ROOT / "build"))
+    e.add_argument("--to")
+    f = sub.add_parser("pin")
+    f.add_argument("--evidence", default=str(ROOT / "build"))
+    f.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    f.add_argument("--refresh", action="store_true", help="re-pin every interpretation, not only unpinned ones")
     args = ap.parse_args(argv)
+    if args.cmd == "outputs":
+        from .stage2 import build
+        try:
+            return build(Path(args.evidence), Path(args.out), Path(args.pack), ROOT)["exit_code"]
+        except UnsafeOutputError as err:
+            print(f"REFUSED: {err}")
+            return 2
+    if args.cmd == "draft":
+        return draft_cmd(args.addendum, Path(args.evidence), args.to)
+    if args.cmd == "pin":
+        return pin_cmd(Path(args.evidence), Path(args.pack), args.refresh)
     if args.cmd == "ingest":
         try:
             res = ingest(Path(args.pack), Path(args.out), require_approved=args.require_approved)

@@ -1,0 +1,606 @@
+{
+ "activities": [
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "lcc_ratio_calc",
+   "duration_basis": "ASSUMPTION (Commercial): compute the construction-phase local content ratio; not stated",
+   "duration_wd": 5,
+   "evidence": "EV-LCC",
+   "flags": [
+    "INFEASIBLE by 12 WD (latest start 2026-10-06 is before the status date 2026-10-22; not compressed)"
+   ],
+   "id": "lcc-ratio",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-10-12",
+   "latest_start": "2026-10-06",
+   "multiplicity": "",
+   "name": "Compute the construction-phase local content ratio",
+   "owner": "Commercial",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-8.6-01"
+   ],
+   "status": "INFEASIBLE by 12 WD"
+  },
+  {
+   "deadline": "ATTENDANCE-NOTICE = 2026-10-14 (from ADD-01-3.1-01)",
+   "deadline_rule": "ATTENDANCE-NOTICE",
+   "duration_assumption": "clarification_drafting",
+   "duration_basis": "ASSUMPTION (Bid management): draft and submit clarification requests through the Portal; not stated",
+   "duration_wd": 2,
+   "evidence": "EV-ATTENDANCE",
+   "flags": [
+    "DEADLINE PASSED (ATTENDANCE-NOTICE = 2026-10-14 is before the status date 2026-10-22; record whether it was done)"
+   ],
+   "id": "attendance-notice",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-10-14",
+   "latest_start": "2026-10-13",
+   "multiplicity": "",
+   "name": "If the attendance record is wrong, notify the Authority through the Portal",
+   "owner": "Bid management",
+   "predecessors": [],
+   "req_ids": [
+    "ADD-01-3.1-01",
+    "VOL-I-5.4-01"
+   ],
+   "status": "DEADLINE PASSED"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "lcc_certificate",
+   "duration_basis": "ASSUMPTION (Commercial): issuing authority not named and no lead time stated; the (non-binding) minutes record bidders' difficulty obtaining it 'within the programme'; set deliberately long until the owner confirms",
+   "duration_wd": 30,
+   "evidence": "EV-LCC",
+   "flags": [
+    "INFEASIBLE by 7 WD (latest start 2026-10-13 is before the status date 2026-10-22; not compressed)"
+   ],
+   "id": "lcc-certificate",
+   "issuer": "Competent authority (not named in the pack)",
+   "item": "Local Content Certificate",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-10-13",
+   "multiplicity": "",
+   "name": "Obtain the Local Content Certificate from the competent authority",
+   "owner": "Commercial",
+   "predecessors": [
+    "lcc-ratio"
+   ],
+   "req_ids": [
+    "VOL-I-8.6-01"
+   ],
+   "status": "INFEASIBLE by 7 WD"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "technical_proposal",
+   "duration_basis": "ASSUMPTION (Technical): narrative incl. process design to the amended TN limit and standby power; not stated",
+   "duration_wd": 20,
+   "evidence": "EV-TECH-PROPOSAL",
+   "flags": [
+    "IMAGE READING PENDING (VOL-II-T2-4-TN)"
+   ],
+   "id": "technical-proposal",
+   "issuer": "Bidder",
+   "item": "Technical Proposal narrative (page limit per VOL-I 9.2)",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-10-27",
+   "multiplicity": "",
+   "name": "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration)",
+   "owner": "Technical",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-II-4.4-01",
+    "VOL-II-T2-4-TN"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "bid_bond_bank_approval",
+   "duration_basis": "ASSUMPTION (Commercial): bank credit approval for a SAR 4.5m first-demand bond; not stated",
+   "duration_wd": 10,
+   "evidence": "EV-BID-BOND",
+   "flags": [],
+   "id": "bond-approval",
+   "issuer": "Bank licensed in the Kingdom, rated A- or better",
+   "item": "",
+   "latest_finish": "2026-11-18",
+   "latest_start": "2026-11-05",
+   "multiplicity": "",
+   "name": "Obtain bank approval for the Bid Bond",
+   "owner": "Commercial",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-6.3-01",
+    "VOL-I-6.4-01",
+    "VOL-I-6.4-02"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "reference_evidence",
+   "duration_basis": "ASSUMPTION (Technical): commercial-operation evidence for two reference plants; not stated",
+   "duration_wd": 10,
+   "evidence": "EV-REFERENCES",
+   "flags": [],
+   "id": "references",
+   "issuer": "Reference plant owners",
+   "item": "Reference evidence and completion certificates",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-10",
+   "multiplicity": "x2 (reference_plants_offered, assumption)",
+   "name": "Collect commercial-operation evidence for the reference plants (Form 4-B)",
+   "owner": "Technical",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-8.5-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "CLARIFICATION-CUTOFF = 2026-11-12 (from VOL-I-5.2-01)",
+   "deadline_rule": "CLARIFICATION-CUTOFF",
+   "duration_assumption": "clarification_drafting",
+   "duration_basis": "ASSUMPTION (Bid management): draft and submit clarification requests through the Portal; not stated",
+   "duration_wd": 2,
+   "evidence": "EV-CLARIFICATIONS",
+   "flags": [],
+   "id": "clarifications",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-11-12",
+   "latest_start": "2026-11-11",
+   "multiplicity": "",
+   "name": "Submit clarification requests (e.g. Form 4-A printed date and fields; Environmental Permit)",
+   "owner": "Bid management",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-5.2-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "form_4g_review",
+   "duration_basis": "ASSUMPTION (Technical): review the six cybersecurity undertakings with the O&M and OT teams; not stated",
+   "duration_wd": 5,
+   "evidence": "EV-FORM-4G",
+   "flags": [],
+   "id": "form-4g-review",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-11-22",
+   "latest_start": "2026-11-16",
+   "multiplicity": "",
+   "name": "Review the six Form 4-G undertakings with the O&M and OT security leads",
+   "owner": "Technical",
+   "predecessors": [],
+   "req_ids": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "poa_notarisation",
+   "duration_basis": "ASSUMPTION (Legal): typical notarisation of a Power of Attorney; not stated in the pack",
+   "duration_wd": 5,
+   "evidence": "EV-POA",
+   "flags": [],
+   "id": "poa",
+   "issuer": "Notary",
+   "item": "Notarised Power of Attorney",
+   "latest_finish": "2026-11-22",
+   "latest_start": "2026-11-16",
+   "multiplicity": "",
+   "name": "Notarise the Power of Attorney from the lead member",
+   "owner": "Legal",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-9.3-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "form_4c_arabic_prep",
+   "duration_basis": "ASSUMPTION (Legal): prepare the Arabic form per member; not stated",
+   "duration_wd": 2,
+   "evidence": "EV-FORM-4C",
+   "flags": [
+    "IMAGE READING PENDING (VOL-I-9.4-01)",
+    "IMAGE READING PENDING (VOL-IV-F4C-04)",
+    "IMAGE READING PENDING (VOL-IV-F4C-N1)"
+   ],
+   "id": "form-4c-prep",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-11-18",
+   "latest_start": "2026-11-17",
+   "multiplicity": "",
+   "name": "Prepare Form 4-C in Arabic for each member",
+   "owner": "Legal",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-9.4-01",
+    "VOL-IV-F4C-04",
+    "VOL-IV-F4C-N1"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "bid_bond_issue",
+   "duration_basis": "ASSUMPTION (Commercial): issue of the bond after approval; not stated",
+   "duration_wd": 3,
+   "evidence": "EV-BID-BOND",
+   "flags": [],
+   "id": "bond-issue",
+   "issuer": "Issuing bank",
+   "item": "Bid Bond (original)",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-19",
+   "multiplicity": "",
+   "name": "Issue the Bid Bond (validity per VOL-I 6.3)",
+   "owner": "Commercial",
+   "predecessors": [
+    "bond-approval"
+   ],
+   "req_ids": [
+    "VOL-I-6.3-01",
+    "VOL-I-6.4-01",
+    "VOL-I-6.4-02"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "form_4c_member_sign",
+   "duration_basis": "ASSUMPTION (Legal): signature and stamp at each member's office, members in parallel; not stated",
+   "duration_wd": 3,
+   "evidence": "EV-FORM-4C",
+   "flags": [
+    "IMAGE READING PENDING (VOL-I-9.4-01)",
+    "IMAGE READING PENDING (VOL-IV-F4C-04)",
+    "IMAGE READING PENDING (VOL-IV-F4C-N1)"
+   ],
+   "id": "form-4c-sign",
+   "issuer": "Each member's authorised signatory",
+   "item": "Form 4-C (Arabic, one per member)",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-19",
+   "multiplicity": "x3 (members, assumption)",
+   "name": "Sign and stamp Form 4-C at each member",
+   "owner": "Legal",
+   "predecessors": [
+    "form-4c-prep"
+   ],
+   "req_ids": [
+    "VOL-I-9.4-01",
+    "VOL-IV-F4C-04",
+    "VOL-IV-F4C-N1"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "iso_certificate_copy",
+   "duration_basis": "ASSUMPTION (Technical): copy of an existing certificate from the EPC Contractor; not stated",
+   "duration_wd": 2,
+   "evidence": "EV-ISO",
+   "flags": [
+    "REQUIREMENT STALE (VOL-I-8.3-01)"
+   ],
+   "id": "iso-copy",
+   "issuer": "EPC Contractor (accredited certification body)",
+   "item": "ISO 9001:2015 certificate copy",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "multiplicity": "",
+   "name": "Obtain a copy of the EPC Contractor's current ISO 9001:2015 certificate",
+   "owner": "Technical",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-8.3-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "form_4a_signature",
+   "duration_basis": "ASSUMPTION (Legal): signature by the PoA holder; not stated",
+   "duration_wd": 1,
+   "evidence": "EV-FORM-4A",
+   "flags": [],
+   "id": "form-4a",
+   "issuer": "PoA holder",
+   "item": "Form 4-A (signed)",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-23",
+   "multiplicity": "",
+   "name": "Complete and sign Form 4-A (decide the printed date with the bid manager)",
+   "owner": "Legal",
+   "predecessors": [
+    "poa"
+   ],
+   "req_ids": [
+    "VOL-I-7.1-01",
+    "VOL-I-9.3-01",
+    "VOL-IV-F4A-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "form_4g_signature",
+   "duration_basis": "ASSUMPTION (Technical): not stated",
+   "duration_wd": 1,
+   "evidence": "EV-FORM-4G",
+   "flags": [],
+   "id": "form-4g-sign",
+   "issuer": "Bidder",
+   "item": "Form 4-G (signed)",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-23",
+   "multiplicity": "",
+   "name": "Complete and sign Form 4-G",
+   "owner": "Technical",
+   "predecessors": [
+    "form-4g-review"
+   ],
+   "req_ids": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "",
+   "deadline_rule": null,
+   "duration_assumption": "envelope_assembly",
+   "duration_basis": "ASSUMPTION (Bid management): assemble, copy (1 original, 3 copies, USB), seal and mark envelopes; not stated",
+   "duration_wd": 2,
+   "evidence": "EV-DELIVERY",
+   "flags": [],
+   "id": "assemble-envelope-a",
+   "issuer": "Bidder",
+   "item": "",
+   "latest_finish": "2026-11-25",
+   "latest_start": "2026-11-24",
+   "multiplicity": "",
+   "name": "Assemble Envelope A in the VOL-I 9.1 order (incl. Form 4-G after item (e))",
+   "owner": "Bid management",
+   "predecessors": [
+    "bond-issue",
+    "form-4a",
+    "form-4c-sign",
+    "form-4g-sign",
+    "iso-copy",
+    "lcc-certificate",
+    "references",
+    "technical-proposal"
+   ],
+   "req_ids": [
+    "VOL-I-6.1-01"
+   ],
+   "status": "OK"
+  },
+  {
+   "deadline": "PDD = 2026-11-26 (from VOL-I-6.1-01)",
+   "deadline_rule": "PDD",
+   "duration_assumption": "delivery",
+   "duration_basis": "ASSUMPTION (Bid management): courier to the Appendix 3 address before 14:00 on the PDD; not stated",
+   "duration_wd": 1,
+   "evidence": "EV-DELIVERY",
+   "flags": [],
+   "id": "deliver",
+   "issuer": "Bidder",
+   "item": "Sealed Envelopes A and B (1 original, 3 copies, encrypted USB)",
+   "latest_finish": "2026-11-26",
+   "latest_start": "2026-11-26",
+   "multiplicity": "",
+   "name": "Seal, mark and deliver Envelopes A and B to the Appendix 3 address",
+   "owner": "Bid management",
+   "predecessors": [
+    "assemble-envelope-a"
+   ],
+   "req_ids": [
+    "VOL-I-6.1-01"
+   ],
+   "status": "OK"
+  }
+ ],
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "marshalling": [
+  {
+   "activity": "lcc-certificate",
+   "drop_dead_start": "2026-10-13",
+   "flags": [
+    "INFEASIBLE by 7 WD (latest start 2026-10-13 is before the status date 2026-10-22; not compressed)"
+   ],
+   "issuer": "Competent authority (not named in the pack)",
+   "item": "Local Content Certificate",
+   "lead_time_assumption": "lcc_certificate",
+   "lead_time_wd": 30,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Commercial",
+   "req_ids": [
+    "VOL-I-8.6-01"
+   ]
+  },
+  {
+   "activity": "technical-proposal",
+   "drop_dead_start": "2026-10-27",
+   "flags": [
+    "IMAGE READING PENDING (VOL-II-T2-4-TN)"
+   ],
+   "issuer": "Bidder",
+   "item": "Technical Proposal narrative (page limit per VOL-I 9.2)",
+   "lead_time_assumption": "technical_proposal",
+   "lead_time_wd": 20,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-II-4.4-01",
+    "VOL-II-T2-4-TN"
+   ]
+  },
+  {
+   "activity": "references",
+   "drop_dead_start": "2026-11-10",
+   "flags": [],
+   "issuer": "Reference plant owners",
+   "item": "Reference evidence and completion certificates",
+   "lead_time_assumption": "reference_evidence",
+   "lead_time_wd": 10,
+   "multiplicity": "x2 (reference_plants_offered, assumption)",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-I-8.5-01"
+   ]
+  },
+  {
+   "activity": "poa",
+   "drop_dead_start": "2026-11-16",
+   "flags": [],
+   "issuer": "Notary",
+   "item": "Notarised Power of Attorney",
+   "lead_time_assumption": "poa_notarisation",
+   "lead_time_wd": 5,
+   "multiplicity": "",
+   "needed_by": "2026-11-22",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-9.3-01"
+   ]
+  },
+  {
+   "activity": "bond-issue",
+   "drop_dead_start": "2026-11-19",
+   "flags": [],
+   "issuer": "Issuing bank",
+   "item": "Bid Bond (original)",
+   "lead_time_assumption": "bid_bond_issue",
+   "lead_time_wd": 3,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Commercial",
+   "req_ids": [
+    "VOL-I-6.3-01",
+    "VOL-I-6.4-01",
+    "VOL-I-6.4-02"
+   ]
+  },
+  {
+   "activity": "form-4c-sign",
+   "drop_dead_start": "2026-11-19",
+   "flags": [
+    "IMAGE READING PENDING (VOL-I-9.4-01)",
+    "IMAGE READING PENDING (VOL-IV-F4C-04)",
+    "IMAGE READING PENDING (VOL-IV-F4C-N1)"
+   ],
+   "issuer": "Each member's authorised signatory",
+   "item": "Form 4-C (Arabic, one per member)",
+   "lead_time_assumption": "form_4c_member_sign",
+   "lead_time_wd": 3,
+   "multiplicity": "x3 (members, assumption)",
+   "needed_by": "2026-11-23",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-9.4-01",
+    "VOL-IV-F4C-04",
+    "VOL-IV-F4C-N1"
+   ]
+  },
+  {
+   "activity": "iso-copy",
+   "drop_dead_start": "2026-11-22",
+   "flags": [
+    "REQUIREMENT STALE (VOL-I-8.3-01)"
+   ],
+   "issuer": "EPC Contractor (accredited certification body)",
+   "item": "ISO 9001:2015 certificate copy",
+   "lead_time_assumption": "iso_certificate_copy",
+   "lead_time_wd": 2,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-I-8.3-01"
+   ]
+  },
+  {
+   "activity": "form-4a",
+   "drop_dead_start": "2026-11-23",
+   "flags": [],
+   "issuer": "PoA holder",
+   "item": "Form 4-A (signed)",
+   "lead_time_assumption": "form_4a_signature",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-7.1-01",
+    "VOL-I-9.3-01",
+    "VOL-IV-F4A-01"
+   ]
+  },
+  {
+   "activity": "form-4g-sign",
+   "drop_dead_start": "2026-11-23",
+   "flags": [],
+   "issuer": "Bidder",
+   "item": "Form 4-G (signed)",
+   "lead_time_assumption": "form_4g_signature",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01"
+   ]
+  },
+  {
+   "activity": "deliver",
+   "drop_dead_start": "2026-11-26",
+   "flags": [],
+   "issuer": "Bidder",
+   "item": "Sealed Envelopes A and B (1 original, 3 copies, encrypted USB)",
+   "lead_time_assumption": "delivery",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-26",
+   "owner": "Bid management",
+   "req_ids": [
+    "VOL-I-6.1-01"
+   ]
+  }
+ ],
+ "stage": "ADD-02",
+ "status_date": "2026-10-22"
+}

@@ -1,6 +1,6 @@
 """Regression tests for the owner's second review (session 04).
 
-Written BEFORE the fixes and run against commit cb8ff13 to confirm each failure (see the session 04 log).
+Written BEFORE the fixes and run against commit 574f4b3 to confirm each failure (see the session 04 log).
 Mutations are applied to in-memory copies or to disposable fixture copies; nothing writes to the repository.
 """
 from __future__ import annotations

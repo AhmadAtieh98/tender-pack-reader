@@ -1,9 +1,10 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS (revision 3, session 03, 2026-10-02, 04:00 Riyadh):**
+> **STATUS (revision 4, session 04, 2026-10-02):**
 > - **Direction:** accepted by the owner (session 02).
-> - **Stage 1 (evidence and units):** implemented in session 02, revised in session 03 after the owner's review found six gaps (§9). **Not yet accepted by the owner.** The two image readings are **pending the owner's review**; nothing has been approved.
-> - **Stages 2–6:** PROPOSED. Nothing in them is built.
+> - **Stage 1 (evidence and units):** implemented in session 02, revised in sessions 03 and 04 after the owner's reviews (§9). The owner said "good progress" and asked for Stage 2 (session 04); formal acceptance is still open. The two image readings are **pending the owner's review**; nothing has been approved.
+> - **Stage 2 (thin end-to-end slice):** built in session 04 (§10). A representative slice of 26 A1 rows, not the full register; every interpretation and every amendment op is a PROPOSAL, not reviewed by a person.
+> - **Stages 3–6:** PROPOSED. Not started (the owner asked to stop before Stage 3).
 > - **Integrations and model selection** (Claude Code in the app, OpenRouter, local Ollama): designed in §4.6, deliberately **not implemented**; the reviewed build runs offline with no model.
 > - This revision is one consistent document. Earlier revisions are summarised in the history below and kept in the work log; where they differed, the text below is current.
 
@@ -12,6 +13,7 @@
 | 1 | 01 (1 Oct) | Planning only: findings, critique, architecture, staged plan | `worklog/2026-10-01_session-01_planning.md` |
 | 2 | 02 (2 Oct) | Owner adjustments: email assumptions and formats adopted (A1 includes Excel; bidder details configurable); explicit disqualifiers kept apart from obligations with no stated consequence; target verification by citation (§4.4.1); evidence kept apart from effective text (§4.3); dependency pins and two build states (§4.10); image/Arabic foundation (§4.11); model routes designed (§4.6); TN/Permit claim withdrawn (F8); O5 wording corrected. Stage 1 built. | `worklog/2026-10-02_session-02_stage1.md` |
 | 3 | 03 (2 Oct) | Owner's Stage 1 review: six gaps reproduced and fixed: numbered-paragraph and table-continuation boundaries; structural failures fail the build (C07–C10, exit codes); approvals cover reading + uncertainties + evidence and need a named reviewer; table readings validate every cell and keep numbers apart from meaning; drawings of straight lines and dark boxes stay visible; output paths guarded and builds swapped in only on success. Planned check IDs renumbered to avoid the new C07–C10. | `worklog/2026-10-02_session-03_review-fixes.md` |
+| 4 | 04 (2 Oct) | Owner's second review: C10 extended to per-cell order, normalized text and anchor page/geometry/crops; Latin expressions inside Arabic laid out correctly, digits-only verification labelled PARTIAL; `--require-approved` gate applied before publishing. Stage 2 built (§10): amendment engine with one path for existing and future addenda, date rules with every counting reading, register slice with pinned interpretations and STALE, A1/A2/A3/A5; ADD-03 drill. D3, D4, D7 applied as the owner directed (§7). | `worklog/2026-10-02_session-04_repairs-and-stage2.md` |
 
 Conventions used throughout:
 
@@ -231,7 +233,7 @@ Assumptions:
 - VOL-V §12.1: Notice to Proceed +36 months.
 - VOL-V §18.3, §29.3, §29.4, §34.3, §39.4, §42.2.
 
-**Window from ADD-02 issue to PDD:** 35 calendar days, 24 Working Days.
+**Window from ADD-02 issue to PDD:** 35 calendar days; 25 Working Days after 22 Oct up to and including 26 Nov (24 strictly between the two dates). *Corrected in session 04: revisions 1–3 said "24 Working Days" without saying which days were counted.*
 
 ---
 
@@ -630,7 +632,7 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 | Stage | Output | Depends on | Main risk | Acceptance evidence | Owner inspects |
 |---|---|---|---|---|---|
 | **1. Evidence and units** (built sessions 02–03; awaiting the owner's acceptance) | `ingest`, `show`, `approve`; `build/units.json`; coverage, exclusions; review packets and proposed readings for Table 2-4 and Form 4-C | Plan approval; Python env | Segmentation of tables, forms and footnotes; watermark removal eating content; readings trusted before review | C01–C10 pass; golden and regression tests; byte-identical rebuild; readings pending | Coverage report; units against pages; **both readings reviewed and approved or corrected by the owner** |
-| **2. Thin end-to-end slice through the hard amendments** (after Stage 1 is accepted) | `amend` with target verification (§4.4.1), `dates`, minimal `register` with evidence items and pins (§4.3, §4.10), `checks`; ~12 rows (LCC, PDD and dependants, fn 12, 72 h, weighting, TN, Form 4-G, Form 4-C); first A1/A2/A3/A5 renders. **ADD-02 drafted through `draft` as if unseen.** | Stage 1 | The op model is the wrong shape; better found now than later | Golden tests: LCC lifecycle, scope traps incl. the wrong-clause op, date table, Form 4-A Issue; C20 reports exactly the not-yet-mapped provisions | LCC chain in A2; dates table; A3 draft layout |
+| **2. Thin end-to-end slice through the hard amendments** (built session 04, §10; 26 rows) | `amend` with target verification (§4.4.1), `dates`, minimal `register` with evidence items and pins (§4.3, §4.10), `checks`; ~12 rows (LCC, PDD and dependants, fn 12, 72 h, weighting, TN, Form 4-G, Form 4-C); first A1/A2/A3/A5 renders. **ADD-02 drafted through `draft` as if unseen.** | Stage 1 | The op model is the wrong shape; better found now than later | Golden tests: LCC lifecycle, scope traps incl. the wrong-clause op, date table, Form 4-A Issue; C20 reports exactly the not-yet-mapped provisions | LCC chain in A2; dates table; A3 draft layout |
 | **3. Full register and Issues** (Sat 3 Oct) | All units dispositioned; all ADD-01/02 provisions mapped; ~80–120 rows (model-drafted, reviewed in tiers); `issues.yaml` with human-decision items assigned to roles | Stage 2 | Review time; over- or under-splitting rows | `build --strict` passes except deliberate open Issues; C14/C15 sweeps clean; A3 fits one page | A3 candidates (all); Issues list; 15 random rows; the owner's 10 blind golden rows compared |
 | **4. A5 programme and marshalling** (Sat 3 Oct PM – Sun 4 Oct AM) | `schedule`; activity templates; `assumptions.yaml` (with basis and owner); per-stage A5 with replan deltas; optional Gantt rendered from the same data | Stage 3 | Lead-time assumptions dominate the result; infeasibility must be shown, not hidden | Tests: backward pass, the clarification "must finish by" constraint, INFEASIBLE detection, LCC rework, bond re-issue rework, deleted-row activity removal | **The assumption values (owner's call)**; the infeasibility list |
 | **5. Unseen-addendum readiness** (Sun 4 Oct) | `show`, `diff`; drafter hardening; synthetic ADD-03-A and a blind ADD-03-B; two timed rehearsals; one rehearsed "live fix" (add a check and its test) | Stages 2–4 | Live time overrun; brittle patterns | Each rehearsal completes within 30 minutes with all provisions accounted for; defects fixed and logged | Rehearsal timings and work-log error notes |
@@ -646,11 +648,11 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 |---|---|---|---|
 | D1 | **Planning basis for A5:** status date and bidder | — | **Settled (owner, 1 Oct email):** status date = latest addendum issue date (22 Oct 2026; the ADD-03 date live); unnamed bidder, **three members by default, editable in config**; all bidder details are configurable assumptions, flagged for confirmation, never facts. (4 of 5 prequalified consortia have 3 members; Northwind has 2.) |
 | D2 | **A3 inclusion rule** | — | **Settled (owner, session 02):** explicit document wording only (rejection / disqualification / non-responsive / exclusion, including the footnote and the Arabic image), plus a separate line for §11.3 score elimination, and a separate labelled block "Mandatory under §11.1(i) but no stated consequence; human to judge". Unresolved legal and commercial questions stay with people. |
-| D3 | **A1 scope and granularity** | (a) One row per independently evidenced obligation (e.g. bond: amount; form/terms; issuer rating), including VOL-II technical and VOL-V contractual obligations, tagged by assessment type. (b) One row per clause. (c) Bid-stage only. | **(a)**. It gives atomic evidence links for A5 and precise A3 rows, and covers the "one row per requirement" key. Costs more rows (~100) and more review. Sub-row IDs keep clause grouping visible. |
-| D4 | **Conservative-reading policy for unresolved counting conventions** (day 0, inclusive look-back, forward WD, holidays) | (a) Block until a person decides. (b) Compute every reading, schedule on the most conservative, and flag. (c) Pick one silently. | **(b)**. It never hides the ambiguity, and the programme stays usable. The person can override per rule. |
+| D3 | **A1 scope and granularity** | (a) One row per independently evidenced obligation (e.g. bond: amount; form/terms; issuer rating), including VOL-II technical and VOL-V contractual obligations, tagged by assessment type. (b) One row per clause. (c) Bid-stage only. | **Applied (owner, session 04):** independently testable obligations, grouped by clause (`group`) and tagged by scope (`scope`), e.g. VOL-I 6.4 → `VOL-I-6.4-01` (amount and form) and `VOL-I-6.4-02` (issuer rating). |
+| D4 | **Conservative-reading policy for unresolved counting conventions** (day 0, inclusive look-back, forward WD, holidays) | (a) Block until a person decides. (b) Compute every reading, schedule on the most conservative, and flag. (c) Pick one silently. | **Applied (owner, session 04):** every plausible counting reading is computed and shown (A1 Dates sheet); planning uses an explicit, configurable assumption, `planning.counting_policy: conservative` in `config/assumptions.yaml`. |
 | D5 | **Build strictness** | (a) Always strict. (b) Working mode emits with FLAGs and labelled PARTIAL addenda; `--strict` for submission. | **(b)**, refined: structural failures always fail (exit 2, previous build kept); pending review is shown, not a failure (`--require-approved` exits 3); PARTIAL addenda are labelled at the top of A3 and written to `working/` (§4.10). |
 | D6 | **Model use** | Routes of §4.6 | **Deferred by the owner:** the Claude Code / OpenRouter / Ollama routes and model selection come later; the reviewed build stays offline-capable without a model. |
-| D7 | **Committing `build/`** | (a) Keep committing generated evidence. (b) Commit only `units.json` and the packets. (c) Commit nothing generated. | Open; currently (a) so the owner can review from the repository. |
+| D7 | **Committing `build/`** | (a) Keep committing generated evidence. (b) Commit only `units.json` and the packets. (c) Commit nothing generated. | **(a) for now (owner, session 04):** review evidence stays committed: `build/` (Stage 1), `out/` (Stage 2) and the drill (`build/drill-src/`, `build/drill/`, `out-drill/`). |
 
 **Kept visibly with people:**
 
@@ -660,9 +662,9 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 
 ---
 
-## 8. Next step (after the owner accepts Stage 1)
+## 8. Next step
 
-Stage 2, the thin slice through the hard amendments (§6), starting with the op model, target verification (§4.4.1) and the LCC lifecycle, because they are where the design is most likely to be the wrong shape. It does not start until the owner has accepted Stage 1; the readings may still be pending then, and every row built on them carries that status.
+Stage 3 (the full register and Issues, §6). It does not start until the owner has reviewed the Stage 2 slice (§10) and answered its open decisions; the owner asked to stop before Stage 3.
 
 
 ---
@@ -689,3 +691,28 @@ Stage 2, the thin slice through the hard amendments (§6), starting with the op 
 | `build/fixture/` | The same reports for the synthetic mixed example, including the Arabic RTL image table |
 
 **Decisions still open with the owner:** acceptance of Stage 1; review of both readings (packets); D3 (A1 granularity); D4 (counting conventions); D7 (committing `build/`); the session slot once the panel confirms it.
+
+---
+
+## 10. Stage 2 status (session 04; a slice, not the full register)
+
+**Commands:** `outputs` (A1/A2/A3/A5 from a published evidence build), `draft ADD-0N` (propose ops for an addendum), `pin` (pin interpretations to their dependencies); Makefile `outputs`, `drill`. Outputs: `out/`; drill: `build/drill-src/`, `build/drill/`, `out-drill/`.
+
+**Modules:**
+
+| Module | Responsibility |
+|---|---|
+| `citations.py` | Citations in addendum wording ("Volume I Clause 8.5", "footnote 12 to Clause 8.5", "Table 2-4 of Volume II", "Section 4.2 of Addendum No. 1", "Form 4-G", "after item (e)") resolved to unit ids; `verify_target` (§4.4.1) |
+| `amend.py` | Op model (replace_text, set_value, append_text, set_status, replace_unit, insert_unit, annotate) and the engine: stages BASE → ADD-01 → ADD-02 → …, checks C20–C27, provision coverage, scope (C25), the validated vs working state |
+| `draft.py` | Pattern drafter: proposes ops from the addendum's wording; anything it cannot type becomes `unresolved`. Used for every addendum with no curated op file; the curated ADD-01/ADD-02 files started from its output |
+| `dates.py` | Working-Day calendar (VOL-I 2.4), date rules, every plausible counting reading, the planning reading under the configured policy |
+| `register.py` | The A1 slice: rows evaluated at every stage; interpretations pinned to dependency hashes (STALE on change); separate statuses for the documents, the image reading, the interpretation and the ops; printed-date conflicts (C31) |
+| `schedule.py` | A5: activities from the evidence items of rows in force; backward pass in Working Days; INFEASIBLE / DEADLINE PASSED flags; stage-to-stage deltas |
+| `render.py`, `stage2.py` | Deterministic A1 xlsx/csv/json, A3 one-page PDF; orchestration, checks and safe publication |
+
+**Checks implemented in this slice:** structural (nothing published, exit 2): E01 (evidence build OK and current), C16 (each interpretation and consequence quote found in the effective text at every stage where the row is in force), C25, C13, C40, C43. Reported: C20 and C21–C27 (they make an addendum PARTIAL), C11 (STALE), C31 (printed dates, raised as an Issue), C26 as an engine problem. Not yet built: C12, C14, C15, C28, C29 (see below), C30, C32 as a check, C41, C42 for Stage 2 outputs beyond the determinism test.
+
+**Deviation from §4.7 (C29), for the owner to decide:** no person has accepted any op, so applying only accepted ops would produce nothing. This slice applies PROPOSED ops and carries their review status into every output (A1 "Amendment ops review", A2 "Review", the banners of A1 and A3).
+
+**Inputs written by the assistant (proposals, not reviewed):** `curation/amendments/ADD-01.yaml`, `ADD-02.yaml` (ops and dispositions, started from the drafter), `curation/register/rows.yaml` and `issues.yaml`, `curation/activity_templates.yaml`, `config/assumptions.yaml` (lead times with basis and owner). `curation/register/pins.yaml` is machine-written by `pin`.
+

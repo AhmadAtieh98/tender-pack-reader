@@ -1,0 +1,32 @@
+# Planning ASSUMPTIONS for A5 and the date rules. None of these is a fact from the tender pack.
+# Every value carries its basis and an owner who must confirm it. Edit freely; outputs recompute.
+# (Owner's email of 1 Oct: planning date = latest addendum date; unnamed consortium, member count configurable.)
+planning:
+  status_date: latest_validated_addendum_issue_date   # = 22 Oct 2026 after ADD-02; the ADD-03 date in a live session
+  counting_policy: conservative      # D4: plan on the conservative reading; every reading is still shown (A1 Dates sheet)
+  delivery_cutoff_time: "14:00"      # the PDD time in VOL-I 6.1 (stated in the pack)
+calendar:
+  weekend: [Fri, Sat]                # stated in VOL-I 2.4
+  holidays: []                       # ASSUMPTION: the pack declares none; add declared public holidays here
+bidder:
+  name: "Unnamed consortium (the Bidder)"
+  members: 3                         # ASSUMPTION (owner's email): editable; Appendix 1 has one two-member consortium
+  signatories_per_member: 1          # ASSUMPTION
+  reference_plants_offered: 2        # ASSUMPTION: the minimum in VOL-I 8.5 footnote 12
+lead_times:                          # Working Days; ASSUMPTIONS unless the basis says otherwise
+  poa_notarisation:      {value: 5,  basis: "typical notarisation of a Power of Attorney; not stated in the pack", owner: Legal}
+  form_4a_signature:     {value: 1,  basis: "signature by the PoA holder; not stated", owner: Legal}
+  form_4c_arabic_prep:   {value: 2,  basis: "prepare the Arabic form per member; not stated", owner: Legal}
+  form_4c_member_sign:   {value: 3,  basis: "signature and stamp at each member's office, members in parallel; not stated", owner: Legal}
+  bid_bond_bank_approval: {value: 10, basis: "bank credit approval for a SAR 4.5m first-demand bond; not stated", owner: Commercial}
+  bid_bond_issue:        {value: 3,  basis: "issue of the bond after approval; not stated", owner: Commercial}
+  lcc_ratio_calc:        {value: 5,  basis: "compute the construction-phase local content ratio; not stated", owner: Commercial}
+  lcc_certificate:       {value: 30, basis: "issuing authority not named and no lead time stated; the (non-binding) minutes record bidders' difficulty obtaining it 'within the programme'; set deliberately long until the owner confirms", owner: Commercial}
+  iso_certificate_copy:  {value: 2,  basis: "copy of an existing certificate from the EPC Contractor; not stated", owner: Technical}
+  reference_evidence:    {value: 10, basis: "commercial-operation evidence for two reference plants; not stated", owner: Technical}
+  form_4g_review:        {value: 5,  basis: "review the six cybersecurity undertakings with the O&M and OT teams; not stated", owner: Technical}
+  form_4g_signature:     {value: 1,  basis: "not stated", owner: Technical}
+  technical_proposal:    {value: 20, basis: "narrative incl. process design to the amended TN limit and standby power; not stated", owner: Technical}
+  clarification_drafting: {value: 2, basis: "draft and submit clarification requests through the Portal; not stated", owner: Bid management}
+  envelope_assembly:     {value: 2,  basis: "assemble, copy (1 original, 3 copies, USB), seal and mark envelopes; not stated", owner: Bid management}
+  delivery:              {value: 1,  basis: "courier to the Appendix 3 address before 14:00 on the PDD; not stated", owner: Bid management}

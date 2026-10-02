@@ -1,0 +1,770 @@
+# =====================================================================================
+# Stage-2 expectations: INDEPENDENT ORACLE for the amendment engine
+# =====================================================================================
+# Derived ONLY from the source PDFs in sources/candidate_pack/ (read with PyMuPDF
+# get_text / get_text("dict")), from rendered page images, and from the two proposed
+# image transcriptions curation/readings/VOL-II-p3-r1.yaml and VOL-IV-p6-r1.yaml, which
+# were checked against the native embedded images (rendered and viewed at full size).
+# Nothing under tenderpack/, tests/ (except this file), docs/, worklog/, build/ or
+# config/ was read, and no repository code was run.
+#
+# Conventions
+#   * Stages: BASE = volumes as issued (14 Sep 2026); ADD-01 = after Addendum No. 1
+#     (issued 2026-10-08); ADD-02 = after Addendum No. 2 (issued 2026-10-22).
+#   * page = 1-based physical page of the named PDF. In every PDF of the pack the printed
+#     "Page N" footer equals the physical page number, so the two agree.
+#   * doc codes: VOL-I, VOL-II, VOL-IV, VOL-V, ADD-01, ADD-02.
+#   * Unit labels: "VOL-I 6.1" = Volume I Clause 6.1; "VOL-I T1-1" = Table 1-1;
+#     "VOL-I 8.5 fn12" = footnote 12 to Clause 8.5; "ADD-01 Q2" = clarification row 2.
+#   * quote = verbatim text from the PDF text layer, with line breaks joined by one space.
+#     Image-only content is quoted from my own visual reading (marked source_kind: image).
+#   * Dates are ISO strings "YYYY-MM-DD". Weekdays verified with Python's calendar.
+#   * Working Day = Sunday to Thursday (VOL-I 2.4); no public holidays assumed.
+#   * The rotated "FICTIONAL — ASSESSMENT PACK" watermark is ignored throughout.
+# =====================================================================================
+
+meta:
+  schema: stage2_expectations/v1
+  prepared: "2026-10-02"
+  method: "independent reading of source PDFs; no use of the program under test"
+  stages:
+    BASE:
+      description: "Volumes I, II, IV, V as issued"
+      date_of_issue: "2026-09-14"
+      evidence: {doc: VOL-I, page: 1, quote: "Date of Issue: 14 September 2026"}
+    ADD-01:
+      issued: "2026-10-08"
+      weekday: Thursday
+      evidence: {doc: ADD-01, page: 1, quote: "Issued 8 October 2026"}
+    ADD-02:
+      issued: "2026-10-22"
+      weekday: Thursday
+      evidence: {doc: ADD-02, page: 1, quote: "Issued 22 October 2026"}
+  precedence:
+    rule: "Addenda prevail over the volumes; a later Addendum prevails over an earlier one; then VOL-I > VOL-V > VOL-II > VOL-IV > VOL-III"
+    evidence: {doc: VOL-I, page: 2, unit: "VOL-I 3.2", quote: "(a) the Addenda, a later Addendum prevailing over an earlier one; (b) Volume I (Instructions to Bidders); (c) Volume V (Draft Project Agreement); (d) Volume II (Technical Requirements); (e) Volume IV (Form Sheets); (f) Volume III (Drawings)."}
+  other_calendar_facts:
+    pre_bid_conference: {date: "2026-09-30", weekday: Wednesday, time: "10:00", evidence: {doc: VOL-I, page: 3, unit: "VOL-I 5.4", quote: "A Pre-Bid Conference will be held on Wednesday 30 September 2026 at 10:00 Riyadh time"}}
+    site_visit: {date: "2026-10-01", weekday: Thursday, derivation: "the day following the Pre-Bid Conference", evidence: {doc: VOL-I, page: 3, unit: "VOL-I 5.5", quote: "A site visit will be offered on the day following the Pre-Bid Conference."}}
+
+# -------------------------------------------------------------------------------------
+# 1. Proposal Due Date
+# -------------------------------------------------------------------------------------
+pdd:
+  unit: "VOL-I 6.1"
+  BASE:
+    date: "2026-11-12"
+    weekday: Thursday
+    time: "14:00"
+    timezone: "Riyadh time"
+    evidence: {doc: VOL-I, page: 3, unit: "VOL-I 6.1", quote: "Proposals shall be received by the Authority not later than 14:00 hours Riyadh time on Thursday 12 November 2026 at the address given in Appendix 3."}
+  ADD-01:
+    date: "2026-11-26"
+    weekday: Thursday
+    time: "14:00"
+    timezone: "Riyadh time"
+    changed_by: "ADD-01 2.1"
+    evidence: {doc: ADD-01, page: 1, unit: "ADD-01 2.1", quote: "Volume I Clause 6.1 is amended by deleting ‘Thursday 12 November 2026’ and substituting ‘Thursday 26 November 2026’. The time of 14:00 Riyadh time is unchanged."}
+    expected_clause_text: "Proposals shall be received by the Authority not later than 14:00 hours Riyadh time on Thursday 26 November 2026 at the address given in Appendix 3."
+  ADD-02:
+    date: "2026-11-26"
+    weekday: Thursday
+    time: "14:00"
+    timezone: "Riyadh time"
+    changed_by: null
+    note: "ADD-02 contains no provision touching VOL-I 6.1 or the Proposal Due Date; ADD-01's value carries forward."
+    evidence: {doc: ADD-02, page: 1, quote: "All other terms of the RFP Documents remain unchanged."}
+
+# -------------------------------------------------------------------------------------
+# 2. Local Content Certificate (VOL-I 8.6) and ADD-01 Section 4.2
+# -------------------------------------------------------------------------------------
+lcc:
+  unit: "VOL-I 8.6"
+  BASE:
+    status: active
+    percentage: 30
+    percentage_text: "thirty per cent (30%)"
+    phase: "construction phase"
+    consequence_stated: false
+    consequence_quote: null
+    note: "Clause 8.6 itself states no consequence for non-submission (contrast ADD-02 reinstated text). Section 8 is headed 'QUALIFICATION AND MANDATORY REQUIREMENTS' and VOL-I 9.1(i) requires 'the certificates and evidence required under Section 8' in Envelope A, but no explicit sanction is attached to 8.6."
+    evidence: {doc: VOL-I, page: 4, unit: "VOL-I 8.6", quote: "The Bidder shall submit a Local Content Certificate issued by the competent authority evidencing a local content ratio of not less than thirty per cent (30%) for the construction phase."}
+  ADD-01:
+    status: deleted
+    percentage: null
+    consequence_stated: false
+    consequence_quote: null
+    changed_by: "ADD-01 4.1"
+    evidence: {doc: ADD-01, page: 1, unit: "ADD-01 4.1", quote: "Volume I Clause 8.6 (Local Content Certificate) is deleted in its entirety. No Local Content Certificate is required with the Proposal."}
+  ADD-02:
+    status: active-reinstated-amended
+    percentage: 35
+    percentage_text: "thirty-five per cent (35%)"
+    phase: "construction phase"
+    consequence_stated: true
+    consequence_quote: "Failure to submit the certificate shall render the Proposal non-responsive."
+    consequence_category: non-responsive
+    changed_by: "ADD-02 9.1"
+    expected_clause_text: "The Bidder shall submit a Local Content Certificate issued by the competent authority evidencing a local content ratio of not less than thirty-five per cent (35%) for the construction phase. Failure to submit the certificate shall render the Proposal non-responsive."
+    evidence: {doc: ADD-02, page: 3, unit: "ADD-02 9.1", quote: "Volume I Clause 8.6, deleted by Addendum No. 1 Section 4, is reinstated in the following amended form: ‘8.6 The Bidder shall submit a Local Content Certificate issued by the competent authority evidencing a local content ratio of not less than thirty-five per cent (35%) for the construction phase. Failure to submit the certificate shall render the Proposal non-responsive.’"}
+  add01_section_4_2:
+    rule_quote: "Consequentially, any reference to a Local Content Certificate elsewhere in the RFP Documents shall be disregarded."
+    rule_evidence: {doc: ADD-01, page: 1, unit: "ADD-01 4.2"}
+    BASE: not-yet-issued
+    ADD-01: in-effect
+    ADD-02: ceased-to-have-effect
+    ADD-02_evidence: {doc: ADD-02, page: 3, unit: "ADD-02 9.2", quote: "Section 4.2 of Addendum No. 1 ceases to have effect."}
+  explicit_mentions_of_local_content_certificate_in_pack:
+    # Exhaustive text search of all six PDFs for "Local Content":
+    - "VOL-I 8.6 (p4)"
+    - "ADD-01 4.1 (p1)"
+    - "ADD-01 4.2 (p1)"
+    - "ADD-01 Appendix B Item 4 (p4)"
+    - "ADD-02 9.1 (p3)"
+  note: "Apart from 8.6 itself, no volume names the Local Content Certificate explicitly; VOL-I 9.1(i) refers generically to Section 8 certificates."
+
+# -------------------------------------------------------------------------------------
+# 3. Repeated wording: the occurrence that changes vs occurrences that must NOT change
+# -------------------------------------------------------------------------------------
+repeated_wording:
+  - id: seventy_two_hours
+    phrase: "seventy-two (72) hours"
+    changes:
+      unit: "VOL-II 4.4"
+      changed_by: "ADD-02 4.1"
+      BASE_value: "seventy-two (72) hours"
+      ADD-01_value: "seventy-two (72) hours"
+      ADD-02_value: "ninety-six (96) hours"
+      ADD-02_expected_sentence: "Standby power shall be sized to carry the full inlet works, the disinfection stage and the effluent pumping station for not less than ninety-six (96) hours."
+      evidence_base: {doc: VOL-II, page: 4, unit: "VOL-II 4.4", quote: "Standby power shall be sized to carry the full inlet works, the disinfection stage and the effluent pumping station for not less than seventy-two (72) hours."}
+      evidence_amendment: {doc: ADD-02, page: 1, unit: "ADD-02 4.1", quote: "In Volume II Clause 4.4, ‘seventy-two (72) hours’ is deleted and ‘ninety-six (96) hours’ is substituted."}
+    must_not_change:
+      - unit: "VOL-V 31.3"
+        ADD-02_value: "seventy-two (72) hours"
+        meaning: "cure period for an Unavailability Event under Clause 31.1(c)"
+        evidence: {doc: VOL-V, page: 3, unit: "VOL-V 31.3", quote: "A cure period of twenty-four (24) hours applies to an Unavailability Event under Clause 31.1(a) and of seventy-two (72) hours to an event under Clause 31.1(c)."}
+        note: "In the text layer the phrase is split across a line break ('seventy-two' / '(72) hours'); a whitespace-normalising matcher will see it."
+
+  - id: sixty_forty
+    phrase: "sixty per cent (60%) ... forty per cent (40%)"
+    changes:
+      unit: "VOL-I 11.2"
+      changed_by: "ADD-02 Table 1-1 (revised) Note (2)"
+      BASE_value: {technical_pct: 60, commercial_pct: 40}
+      ADD-01_value: {technical_pct: 60, commercial_pct: 40}
+      ADD-02_value: {technical_pct: 65, commercial_pct: 35}
+      ADD-02_expected_wording: "sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial"
+      evidence_base: {doc: VOL-I, page: 5, unit: "VOL-I 11.2", quote: "Proposals reaching stage (iii) will be ranked on a combined score calculated on a weighting of sixty per cent (60%) technical and forty per cent (40%) commercial."}
+      evidence_amendment: {doc: ADD-02, page: 1, unit: "ADD-02 T1-1 note (2)", quote: "The combined score weighting stated in Volume I Clause 11.2 is amended to sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial."}
+    must_not_change:
+      - unit: "VOL-V 29.2"
+        ADD-02_value: "sixty per cent (60%) ... indexed ... forty per cent (40%) remaining fixed"
+        meaning: "indexation split of the Availability Payment (CPI-indexed vs fixed)"
+        evidence: {doc: VOL-V, page: 3, unit: "VOL-V 29.2", quote: "The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed."}
+
+  - id: change_in_law_threshold
+    phrase: "SAR 5,000,000"
+    changes:
+      unit: "VOL-V 36.2"
+      changed_by: "ADD-02 8.1"
+      BASE_value: "SAR 5,000,000"
+      ADD-01_value: "SAR 5,000,000"
+      ADD-02_value: "SAR 2,500,000"
+      ADD-02_expected_sentence: "A General Change in Law entitles the Project Company to compensation only in respect of capital expenditure required by that change and only to the extent that such expenditure exceeds SAR 2,500,000 in aggregate over the term."
+      evidence_base: {doc: VOL-V, page: 4, unit: "VOL-V 36.2", quote: "only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over the term."}
+      evidence_amendment: {doc: ADD-02, page: 3, unit: "ADD-02 8.1", quote: "In Volume V Clause 36.2, ‘SAR 5,000,000’ is deleted and ‘SAR 2,500,000’ is substituted."}
+    must_not_change:
+      - {unit: "VOL-I 6.4", value: "SAR 4,500,000", meaning: "Bid Bond amount", evidence: {doc: VOL-I, page: 3, quote: "The Bid Bond shall be in the amount of SAR 4,500,000 (four million five hundred thousand Saudi Riyals)"}}
+      - {unit: "VOL-V 39.4", value: "SAR 20,000,000", meaning: "Authority default payment threshold", evidence: {doc: VOL-V, page: 4, quote: "exceeding SAR 20,000,000 that continues for sixty (60) days after notice."}}
+    note: "'SAR 5,000,000' occurs only once in the volumes (VOL-V 36.2); the must_not_change entries are near-miss SAR amounts."
+
+  # --- additional pairs found while reading (not requested, but useful negative controls) ---
+  - id: one_hundred_and_twenty
+    phrase: "one hundred and twenty (120) pages"
+    changes:
+      unit: "VOL-I 9.2"
+      changed_by: "ADD-02 2.1"
+      BASE_value: "one hundred and twenty (120) pages"
+      ADD-01_value: "one hundred and twenty (120) pages"
+      ADD-02_value: "one hundred and fifty (150) pages"
+      evidence_base: {doc: VOL-I, page: 5, unit: "VOL-I 9.2", quote: "The Technical Proposal narrative shall not exceed one hundred and twenty (120) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II."}
+      evidence_amendment: {doc: ADD-02, page: 1, unit: "ADD-02 2.1", quote: "In Volume I Clause 9.2, ‘one hundred and twenty (120) pages’ is deleted and ‘one hundred and fifty (150) pages’ is substituted."}
+    must_not_change:
+      - {unit: "VOL-I 12.2", value: "one hundred and twenty (120) days", meaning: "Commercial Close period", evidence: {doc: VOL-I, page: 6, quote: "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days"}}
+      - {unit: "VOL-I 1.3", value: "one hundred and twenty thousand cubic metres per day (120,000 m3/day)", evidence: {doc: VOL-I, page: 2}}
+      - {unit: "VOL-I Appendix 2", value: "120 characters", evidence: {doc: VOL-I, page: 7, quote: "File names shall not exceed 120 characters."}}
+      - {unit: "VOL-I 7.1", value: "one hundred and fifty (150) days", meaning: "Proposal validity — already 150, unrelated to the page limit", evidence: {doc: VOL-I, page: 4}}
+
+  - id: total_nitrogen
+    phrase: "Total Nitrogen"
+    changes:
+      unit: "VOL-II Table 2-4 (TN row)"
+      changed_by: "ADD-02 5.1"
+      BASE_value: "5 mg/l"
+      ADD-02_value: "3 mg/l"
+    must_not_change:
+      - {unit: "VOL-II Table 2-2 (Total Nitrogen row)", value: "Average 55 mg/l; Peak (design) 80 mg/l", meaning: "influent design characteristics", evidence: {doc: VOL-II, page: 2, cells: "Total Nitrogen | mg/l | 55 | 80"}}
+
+  - id: item_e
+    phrase: "item (e)"
+    changes:
+      unit: "VOL-I 9.1"
+      changed_by: "ADD-02 7.1"
+      note: "Form 4-G is inserted after 9.1(e) 'Form 4-E — Schedule of Deviations;'"
+    must_not_change:
+      - {unit: "VOL-I 3.2(e)", value: "(e) Volume IV (Form Sheets);", meaning: "order-of-precedence list also has an item (e)", evidence: {doc: VOL-I, page: 2}}
+
+  - id: twelve_november_on_forms
+    phrase: "12 November 2026"
+    changes:
+      unit: "VOL-I 6.1"
+      changed_by: "ADD-01 2.1"
+      ADD-01_value: "Thursday 26 November 2026"
+    literal_text_not_amended:
+      - {unit: "VOL-IV Form 4-A (Proposal Due Date field)", value: "12 November 2026, 14:00 Riyadh time", evidence: {doc: VOL-IV, page: 3}}
+      - {unit: "ADD-01 Appendix A (reissued Form 4-A, Proposal Due Date field)", value: "12 November 2026, 14:00 Riyadh time", evidence: {doc: ADD-01, page: 3}}
+    note: "ADD-01 2.1 amends only VOL-I 6.1. Neither addendum amends the date printed on Form 4-A, so an engine should not silently rewrite it; it should be reported as stale (see form_4a)."
+
+# -------------------------------------------------------------------------------------
+# 4. Evaluation weighting, Table 1-1 marks, technical threshold
+# -------------------------------------------------------------------------------------
+weighting:
+  clause_11_2:
+    BASE: {technical_pct: 60, commercial_pct: 40, evidence: {doc: VOL-I, page: 5, unit: "VOL-I 11.2", quote: "a weighting of sixty per cent (60%) technical and forty per cent (40%) commercial."}}
+    ADD-01: {technical_pct: 60, commercial_pct: 40, changed_by: null, note: "ADD-01 has no provision amending 11.2. The Technical Director's 'seventy / thirty' remark in the minutes (ADD-01 Appendix B Item 3) is not binding (ADD-01 3.2)."}
+    ADD-02: {technical_pct: 65, commercial_pct: 35, changed_by: "ADD-02 Table 1-1 (revised) note (2)", evidence: {doc: ADD-02, page: 1, unit: "ADD-02 T1-1 note (2)", quote: "The combined score weighting stated in Volume I Clause 11.2 is amended to sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial."}}
+    note: "The ADD-02 opening summary does not list the 11.2 weighting change; it is made only inside Note (2) to the revised Table 1-1."
+  table_1_1:
+    criteria:
+      A: "Process design, treatment performance and compliance with Volume II"
+      B: "Construction methodology, programme and interface management"
+      C: "Operations and maintenance philosophy and lifecycle strategy"
+      D: "Environmental and social management"
+      E: "Organisation, key personnel and consortium governance"
+      F: "Health, safety and security of supply"
+    criteria_titles_unchanged_at_ADD-02: true
+    BASE:
+      marks: {A: 25, B: 20, C: 20, D: 15, E: 10, F: 10}
+      total: 100
+      evidence: {doc: VOL-I, page: 6, unit: "VOL-I T1-1", cells: "A | Process design, treatment performance and compliance with Volume II | 25 ; B | ... | 20 ; C | ... | 20 ; D | Environmental and social management | 15 ; E | ... | 10 ; F | Health, safety and security of supply | 10 ; Total | 100", caption_page: 5, caption_quote: "Table 1-1 — Technical evaluation criteria"}
+    ADD-01:
+      marks: {A: 25, B: 20, C: 20, D: 15, E: 10, F: 10}
+      total: 100
+      changed_by: null
+    ADD-02:
+      marks: {A: 25, B: 15, C: 20, D: 20, E: 10, F: 10}
+      total: 100
+      changed_by: "ADD-02 3.1 (table deleted and replaced)"
+      changed_rows: {B: {from: 20, to: 15}, D: {from: 15, to: 20}}
+      evidence: {doc: ADD-02, page: 1, unit: "ADD-02 3.1", quote: "Table 1-1 of Volume I is deleted and replaced by the table below. The marks available for criterion D are increased and those for criterion B reduced correspondingly."}
+  threshold_11_3:
+    BASE: {marks: 70, out_of: 100, evidence: {doc: VOL-I, page: 5, unit: "VOL-I 11.3", quote: "A Proposal scoring less than seventy (70) marks out of one hundred (100) at the technical evaluation shall not proceed to commercial evaluation and its Envelope B shall be returned unopened."}}
+    ADD-01: {marks: 70, out_of: 100}
+    ADD-02: {marks: 70, out_of: 100, changed: false, evidence: {doc: ADD-02, page: 1, unit: "ADD-02 T1-1 note (1)", quote: "The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks."}}
+  ADD-02_note_3:
+    quote: "Marks are awarded on the Authority's standard five-point scale and multiplied by the weight shown."
+    evidence: {doc: ADD-02, page: 1, unit: "ADD-02 T1-1 note (3)"}
+    uncertain: "New scoring rule with no counterpart at BASE. The 'standard five-point scale' is not defined anywhere in the pack, and the table shows 'Marks', not a 'weight'."
+
+# -------------------------------------------------------------------------------------
+# 5. Table 2-4 Total Nitrogen
+# -------------------------------------------------------------------------------------
+tn:
+  unit: "VOL-II Table 2-4, row 'Total Nitrogen (TN)'"
+  base_value_from_image: true
+  image_note: "Table 2-4 exists only as an embedded raster image (VOL-II page 3, xref 19, 1750x1100 px, placed at bbox [56.7, 143.2, 538.6, 446.1] pt). The page has no text for the table. I confirmed the value visually on the native image."
+  BASE:
+    limit: "5"
+    unit: "mg/l"
+    basis: "30-day rolling average"
+    source_kind: image
+    evidence: {doc: VOL-II, page: 3, unit: "VOL-II T2-4", cells_from_image: "Total Nitrogen (TN) | mg/l | 5 | 30-day rolling average", reading_file: "curation/readings/VOL-II-p3-r1.yaml (row TN)"}
+    table_qualifier: "(all values are maxima; compliance assessed as a 30-day rolling average unless stated)"
+  ADD-01:
+    limit: "5"
+    unit: "mg/l"
+    basis: "30-day rolling average"
+    changed_by: null
+    note: "Minutes Item 5 (non-binding) only says the permit was under review."
+  ADD-02:
+    limit: "3"
+    unit: "mg/l"
+    basis: "30-day rolling average"
+    basis_derivation: "ADD-02 5.1 says 'assessed on the same basis', i.e. the BASE basis read from the image."
+    changed_by: "ADD-02 5.1"
+    evidence: {doc: ADD-02, page: 1, unit: "ADD-02 5.1", quote: "In Volume II Table 2-4, the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l, assessed on the same basis. All other parameters in Table 2-4 are unchanged."}
+    note: "The amendment does not quote the old value ('from the value shown'); the old value 5 is available only from the image."
+  other_rows_unchanged_at_all_stages:
+    # My visual reading of the native image; agrees with curation/readings/VOL-II-p3-r1.yaml
+    BOD5: {limit: "10", unit: "mg/l", basis: "30-day rolling average"}
+    COD: {limit: "50", unit: "mg/l", basis: "30-day rolling average"}
+    TSS: {limit: "10", unit: "mg/l", basis: "30-day rolling average"}
+    TP: {limit: "1", unit: "mg/l", basis: "30-day rolling average"}
+    Turbidity: {limit: "2", unit: "NTU", basis: "Maximum instantaneous"}
+    FaecalColiforms: {limit: "2.2", unit: "MPN/100 ml", basis: "Maximum, any single sample"}
+    ResidualChlorine: {limit: "0.5 - 1.0", unit: "mg/l", basis: "Continuous at outlet"}
+    pH: {limit: "6.0 - 9.0", unit: "-", basis: "Continuous at outlet"}
+    OilGrease: {limit: "1", unit: "mg/l", basis: "Maximum, any single sample"}
+  related_text:
+    - {doc: VOL-II, page: 3, quote: "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail."}
+  uncertain: "VOL-II p3 says the Environmental Permit prevails over this reproduction, and the Permit is not in the pack. Whether ADD-02's 3 mg/l reflects an amended Permit is not stated. The image's title says 'Minimum Effluent Quality Parameters' while its qualifier says 'all values are maxima'."
+
+# -------------------------------------------------------------------------------------
+# 6. Form 4-G
+# -------------------------------------------------------------------------------------
+form_4g:
+  title: "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING"
+  exists:
+    BASE: false
+    ADD-01: false
+    ADD-02: true
+  base_evidence:
+    - {doc: VOL-IV, page: 1, quote: "Forms 4-A to 4-F"}
+    - {doc: VOL-IV, page: 2, note: "Index of Forms lists 4-A to 4-F only"}
+    - {doc: VOL-I, page: 4, unit: "VOL-I 9.1", note: "list (a)-(i) names Forms 4-A to 4-E only"}
+  added_by: "ADD-02 7.1"
+  insertion:
+    target: "VOL-I 9.1"
+    position: "after item (e)"
+    item_e_text: "(e) Form 4-E — Schedule of Deviations;"
+    next_item_text: "(f) the Technical Proposal narrative;"
+    also_added_to: "VOL-IV"
+    evidence: {doc: ADD-02, page: 3, unit: "ADD-02 7.1", quote: "A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e)."}
+  envelope: A
+  consequence:
+    category: non-responsive
+    quote: "Failure to submit Form 4-G shall render the Proposal non-responsive."
+    evidence: {doc: ADD-02, page: 3, unit: "ADD-02 7.2", quote: "Form 4-G shall be completed and submitted with Envelope A. Failure to submit Form 4-G shall render the Proposal non-responsive."}
+  form_items:
+    1: "The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2."
+    2: "An information security management system covering the operational technology environment will be implemented before commissioning."
+    3: "A named accountable security officer will be appointed for the concession period."
+    4: "Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection."
+    5: "An independent penetration test of the operational technology environment will be carried out annually and the report provided to the Authority."
+    6: "Remote access to the control system will require multi-factor authentication and will be logged."
+  confirmed_column: "Yes / No"
+  signature_block: "Signed for and on behalf of the Bidder: ___ Name: ___ Date: ___"
+  unspecified:
+    - "The letter of the new 9.1 entry, and whether existing items (f)-(i) are re-lettered (g)-(j), is not stated."
+    - "The wording of the new 9.1 list entry is not given; the form title is the only wording available."
+    - "Where Form 4-G sits in VOL-IV is not stated, and the VOL-IV cover ('Forms 4-A to 4-F') and Index of Forms (envelope/status columns) are not amended."
+    - "Whether one Form 4-G is needed per Bidder or per consortium member is not stated. The signature line says 'for and on behalf of the Bidder'."
+    - "The consequence of answering 'No' to any undertaking is not stated; only non-submission has a stated consequence."
+    - "The required signatory authority (e.g. a Power of Attorney as for Form 4-A under VOL-I 9.3) is not stated."
+
+# -------------------------------------------------------------------------------------
+# 7. Form 4-C (language requirement; Arabic consequences)
+# -------------------------------------------------------------------------------------
+form_4c:
+  vol_i_9_4_requirement:
+    # The requirement as stated in the English text of VOL-I 9.4. It requires ARABIC, not English.
+    language_required: Arabic
+    english_permitted_as_primary: false
+    translation_allowed: "for convenience only; the Arabic text governs"
+    per_member: true
+    consequence_category: non-responsive
+    consequence_quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."
+    evidence: {doc: VOL-I, page: 5, unit: "VOL-I 9.4", quote: "Form 4-C shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder. A translation may be attached for convenience but the Arabic text shall govern. Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+    repeated_at: {doc: VOL-IV, page: 5, quote: "It shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder, in accordance with Volume I Clause 9.4. Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+    related: {doc: VOL-I, page: 3, unit: "VOL-I 4.1", quote: "shall be in the English language, save where this Volume expressly requires Arabic."}
+    stage_changes: "None. 9.4 is not amended at ADD-01 or ADD-02."
+  arabic_form_image:
+    source_kind: image
+    evidence: {doc: VOL-IV, page: 6, note: "embedded image xref 26, 1654x2339 px, bbox [66.6, 68.4, 528.7, 721.8] pt; no text layer", reading_file: "curation/readings/VOL-IV-p6-r1.yaml"}
+    transcription_verified_visually: true
+  declaration_4:
+    arabic: "رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض."
+    consequence_arabic: "يؤدي إلى استبعاد العرض"
+    my_english_rendering: "Fourth: that all the information provided in this proposal is correct and complete, and we are aware that any incorrect statement will lead to the exclusion of the proposal."
+    consequence_category_literal: "exclusion (استبعاد) of the proposal"
+    uncertain: "استبعاد means exclusion or elimination. The English text of the pack never uses 'exclusion'; it uses 'rejected', 'disqualified', 'non-responsive' and 'disregarded'. Which of these it equals is not stated. The English text has no counterpart consequence for a false statement, so this consequence exists only in the Arabic image."
+  arabic_note:
+    arabic: "ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف. عدم تقديمه كاملاً يجعل العرض غير مستجيب."
+    my_english_rendering: "Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete makes the proposal non-responsive."
+    consequence_category: non-responsive
+    note: "Matches VOL-I 9.4's category (non-responsive), but the Arabic note says only 'complete' (كاملاً), not 'complete and properly executed'."
+  declaration_5_clause_reference:
+    arabic: "خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول."
+    my_english_rendering: "Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I."
+    target: "VOL-I 4.2"
+    uncertain: "On the native image the left glyph reads as ٢ (2) to me, so the reference is 4-2 = VOL-I 4.2 (blackout). The reading file records ٣ (VOL-I 4.3) as an alternative. Both are in VOL-I Section 4, 'Communications and Blackout'."
+  add02_q9:
+    question: "May Form 4-C be submitted in English with an Arabic translation?"
+    answer: "No. Form 4-C shall be completed in Arabic. An English translation may be attached for convenience only."
+    effect: "confirms VOL-I 9.4; no amendment"
+    evidence: {doc: ADD-02, page: 2, unit: "ADD-02 Q9"}
+
+# -------------------------------------------------------------------------------------
+# 8. Form 4-A (printed PDD; reissue; omissions)
+# -------------------------------------------------------------------------------------
+form_4a:
+  original:
+    evidence: {doc: VOL-IV, page: 3, unit: "VOL-IV Form 4-A"}
+    printed_pdd: {date: "2026-11-12", time: "14:00", text: "12 November 2026, 14:00 Riyadh time"}
+    header_fields:
+      - "Tender reference"
+      - "Project"
+      - "Proposal Due Date"
+      - "Name of Bidder / lead member"
+      - "Commercial registration number"
+      - "Registered address"
+      - "Single point of contact (name, title)"
+      - "Contact email and telephone"
+    addressee_line: "To: The Northern Utilities Procurement Authority"
+    numbered_confirmations:
+      1: "Having examined the RFP Documents, including Addenda numbered ______ to ______, the receipt of which is hereby acknowledged, we offer to design, finance, construct, own, operate, maintain and transfer the Project in conformity with the RFP Documents."
+      2: "We confirm that this Proposal is valid for one hundred and fifty (150) days from the Proposal Due Date."
+      3: "We confirm that the Bid Bond required by Volume I Clause 6.4 accompanies this Proposal."
+      4: "We confirm that no member of our consortium participates in any other Proposal for this Project."
+      5: "We confirm that we attended the Pre-Bid Conference held under Volume I Clause 5.4."
+      6: "We understand that the Authority is not bound to accept the lowest or any Proposal."
+    signature_fields:
+      - "Signature"
+      - "Name of signatory"
+      - "Capacity"
+      - "Power of Attorney reference and date"
+      - "Date"
+      - "Company seal"
+  reissued:
+    evidence: {doc: ADD-01, page: 3, unit: "ADD-01 Appendix A", quote: "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1. Bidders shall use this version."}
+    printed_pdd: {date: "2026-11-12", time: "14:00", text: "12 November 2026, 14:00 Riyadh time"}
+    fields:
+      - "Tender reference"
+      - "Project"
+      - "Proposal Due Date"
+      - "Name of Bidder / lead member"
+      - "Addenda acknowledged (numbers)"
+      - "Single point of contact"
+      - "Signature / name / capacity"
+      - "Date"
+    numbered_paragraphs: []
+  governing_form_by_stage:
+    BASE: original
+    ADD-01: reissued
+    ADD-02: reissued
+  printed_pdd_matches_stage_pdd:
+    BASE: {governing_form_pdd: "2026-11-12", stage_pdd: "2026-11-12", matches: true}
+    ADD-01: {governing_form_pdd: "2026-11-12", stage_pdd: "2026-11-26", matches: false}
+    ADD-02: {governing_form_pdd: "2026-11-12", stage_pdd: "2026-11-26", matches: false}
+  reissued_omits_compared_with_original:
+    fields:
+      - "Commercial registration number"
+      - "Registered address"
+      - "Contact email and telephone"
+      - "Power of Attorney reference and date"
+      - "Company seal"
+    addressee_line: "To: The Northern Utilities Procurement Authority"
+    numbered_confirmations:
+      - "1 (offer + acknowledgement of Addenda numbered ___ to ___)"
+      - "2 (validity 150 days from the Proposal Due Date)"
+      - "3 (Bid Bond under VOL-I 6.4 accompanies the Proposal)"
+      - "4 (no member participates in any other Proposal)"
+      - "5 (attended the Pre-Bid Conference under VOL-I 5.4)"
+      - "6 (Authority not bound to accept lowest or any Proposal)"
+    relabelled_or_merged:
+      - "'Single point of contact (name, title)' becomes 'Single point of contact' (the '(name, title)' qualifier is dropped)"
+      - "'Signature', 'Name of signatory' and 'Capacity' are merged into one field 'Signature / name / capacity'"
+    added:
+      - "Addenda acknowledged (numbers)"
+  notes:
+    - "ADD-01 says the reissue adds 'the acknowledgement of Addenda at paragraph 1', but the reissued form has no numbered paragraphs at all. The acknowledgement is a table field, and the original already had it in its paragraph 1."
+    - "The reissued form is in the same Addendum that moved the PDD to 26 November 2026, yet it still prints 12 November 2026."
+    - "ADD-02 neither reissues Form 4-A nor amends its printed date; it says 'Bidders shall acknowledge receipt in Form 4-A'."
+    - "VOL-I 9.3 requires a signatory holding a notarised Power of Attorney; the reissued form drops the 'Power of Attorney reference and date' field. Stated as a fact only."
+
+# -------------------------------------------------------------------------------------
+# 9. Derived dates
+# -------------------------------------------------------------------------------------
+# Working Days are Sun–Thu (VOL-I 2.4). No holidays assumed. "days" in 6.3 and 7.1 are
+# not defined in VOL-I; they are taken as calendar days (uncertain flag below).
+# ADD-01 2.2 confirms that 5.2, 6.3, 7.1 and fn12 move with the PDD:
+#   "Every period in the RFP Documents that is calculated by reference to the Proposal Due
+#    Date is adjusted accordingly, including without limitation the period in Volume I
+#    Clause 5.2 ..., Clause 6.3 ..., Clause 7.1 ... and footnote 12 to Clause 8.5 ..."
+#   (ADD-01 p1, unit ADD-01 2.2)
+dates:
+  assumptions:
+    working_days: "Sunday to Thursday; no public holidays"
+    calendar_days_for_6_3_and_7_1: true
+    uncertain: "'days' is undefined in VOL-I; calendar days assumed. No time of day is stated for the clarification cut-off or the expiry dates."
+  rules:
+    clarification_cutoff: {unit: "VOL-I 5.2", quote: "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date.", page: 3}
+    backward_counting: {unit: "VOL-I 2.4", quote: "Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted.", page: 2}
+    bid_bond: {unit: "VOL-I 6.3", quote: "Envelope A shall be accompanied by a Bid Bond which shall remain valid for one hundred and eighty (180) days from the Proposal Due Date", page: 3}
+    proposal_validity: {unit: "VOL-I 7.1", quote: "Each Proposal shall remain open for acceptance for one hundred and fifty (150) days from the Proposal Due Date.", page: 4}
+    lookback: {unit: "VOL-I 8.5 fn12", quote: "each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date, shall be rejected without further evaluation.", page: 4}
+    add01_3_1: {unit: "ADD-01 3.1", quote: "A Bidder that considers its attendance to have been incorrectly recorded shall notify the Authority through the Portal within five (5) Working Days of this Addendum.", page: 1}
+
+  BASE:
+    pdd: "2026-11-12"          # Thursday
+    clarification_cutoff:
+      # Count back 10 Working Days from Thu 2026-11-12, PDD itself NOT counted (VOL-I 2.4):
+      #  1 Wed 11-11, 2 Tue 11-10, 3 Mon 11-09, 4 Sun 11-08, (Sat 11-07, Fri 11-06 skipped),
+      #  5 Thu 11-05, 6 Wed 11-04, 7 Tue 11-03, 8 Mon 11-02, 9 Sun 11-01,
+      #  (Sat 10-31, Fri 10-30 skipped), 10 Thu 10-29.
+      value: "2026-10-29"
+      weekday: Thursday
+      convention_stated_in_pack: true
+      wrong_if_pdd_counted: "2026-11-01"   # diagnostic only: counting the PDD as day 1 breaches VOL-I 2.4
+    bid_bond_validity_end:
+      # 2026-11-12 + 180 calendar days = 2027-05-11 (Tue) if PDD is day 0;
+      # 2027-05-10 (Mon) if PDD is day 1. Convention not stated in the pack.
+      pdd_as_day_0: "2027-05-11"
+      pdd_as_day_1: "2027-05-10"
+    proposal_validity_end:
+      # 2026-11-12 + 150 = 2027-04-11 (Sun) [day 0]; 2027-04-10 (Sat) [day 1].
+      pdd_as_day_0: "2027-04-11"
+      pdd_as_day_1: "2027-04-10"
+    reference_plant_lookback_start:
+      # Ten years before 2026-11-12 = 2016-11-12. If the 10-year window ends at the PDD
+      # (PDD = day 0) its first day is 2016-11-12; if the PDD itself is the window's last
+      # day (PDD = day 1) the first day is 2016-11-13. Window end = PDD.
+      pdd_as_day_0: "2016-11-12"
+      pdd_as_day_1: "2016-11-13"
+    add01_3_1_window_end: null      # ADD-01 not yet issued at BASE
+
+  ADD-01:
+    pdd: "2026-11-26"          # Thursday
+    clarification_cutoff:
+      # Count back 10 WD from Thu 2026-11-26, PDD not counted:
+      #  1 Wed 11-25, 2 Tue 11-24, 3 Mon 11-23, 4 Sun 11-22, (Sat 21, Fri 20 skipped),
+      #  5 Thu 11-19, 6 Wed 11-18, 7 Tue 11-17, 8 Mon 11-16, 9 Sun 11-15,
+      #  (Sat 14, Fri 13 skipped), 10 Thu 11-12.
+      value: "2026-11-12"
+      weekday: Thursday
+      convention_stated_in_pack: true
+      wrong_if_pdd_counted: "2026-11-15"
+      note: "The new cut-off falls on the original (BASE) Proposal Due Date."
+    bid_bond_validity_end:
+      # 2026-11-26 + 180 = 2027-05-25 (Tue) [day 0]; 2027-05-24 (Mon) [day 1]
+      pdd_as_day_0: "2027-05-25"
+      pdd_as_day_1: "2027-05-24"
+    proposal_validity_end:
+      # 2026-11-26 + 150 = 2027-04-25 (Sun) [day 0]; 2027-04-24 (Sat) [day 1]
+      pdd_as_day_0: "2027-04-25"
+      pdd_as_day_1: "2027-04-24"
+    reference_plant_lookback_start:
+      pdd_as_day_0: "2016-11-26"
+      pdd_as_day_1: "2016-11-27"
+      note: "A reference plant whose commercial operation date is 2016-11-12 to 2016-11-25 qualifies at BASE (day-0 reading) but not at ADD-01."
+    add01_3_1_window_end:
+      # ADD-01 issued Thu 2026-10-08. VOL-I 2.4 states a rule only for counting BACKWARDS;
+      # forward counting is not stated.
+      #  (a) issue date not counted: 1 Sun 10-11, 2 Mon 10-12, 3 Tue 10-13, 4 Wed 10-14, 5 Thu 10-15
+      #  (b) issue date counted as day 1: 1 Thu 10-08, 2 Sun 10-11, 3 Mon 10-12, 4 Tue 10-13, 5 Wed 10-14
+      issue_date_not_counted: "2026-10-15"
+      issue_date_counted: "2026-10-14"
+      convention_stated_in_pack: false
+      uncertain: "'within five (5) Working Days of this Addendum' could run from issue or from receipt; issue date assumed."
+
+  ADD-02:
+    note: "ADD-02 does not change the PDD, so every derived date equals the ADD-01 value."
+    pdd: "2026-11-26"
+    same_as: ADD-01
+
+# -------------------------------------------------------------------------------------
+# 10. Answers / minutes items that quote or rely on a value later changed (facts only)
+# -------------------------------------------------------------------------------------
+answers_quoting_old_values:
+  - id: ADD-01-Q2
+    location: {doc: ADD-01, page: 1, unit: "ADD-01 Q2"}
+    quotes_value: "120-page limit"
+    question_quote: "Does the 120-page limit in Volume I Clause 9.2 include the Form Sheets?"
+    answer_quote: "No. The limit applies to the Technical Proposal narrative only. Form Sheets and the appendices permitted by Volume II are excluded."
+    value_later_changed: {unit: "VOL-I 9.2", by: "ADD-02 2.1", from: "one hundred and twenty (120) pages", to: "one hundred and fifty (150) pages"}
+    old_value_is_in: question   # the answer itself does not restate a number
+    binding_status: "Response in the body of an Addendum (Section 6). Under VOL-I 5.3 responses are published as Addenda. It is not a minutes statement."
+  - id: ADD-01-AppB-Item3
+    location: {doc: ADD-01, page: 4, unit: "ADD-01 Appendix B Item 3"}
+    quotes_value: "seventy / thirty"
+    quote: "The Technical Director stated that ‘the weighting is expected to remain at the customary seventy / thirty split used on comparable projects’."
+    value_at_stages: {BASE: "60/40", ADD-01: "60/40", ADD-02: "65/35"}
+    note: "Differs from 11.2 at every stage. In the same item the Head of Procurement noted that 'the weighting is stated in Volume I Clause 11.2 and that any change would be made by Addendum'."
+    binding_status: "Not binding. ADD-01 3.2: 'Statements recorded in the minutes at Appendix B are a record of what was said and do not bind the Authority unless the substance is confirmed in the body of an Addendum.' Appendix B header: 'Not binding on the Authority except where confirmed in the body of an Addendum (Volume I Clause 5.3).'"
+  - id: ADD-01-AppB-Item4
+    location: {doc: ADD-01, page: 4, unit: "ADD-01 Appendix B Item 4"}
+    relies_on: "ADD-01 Section 4 (deletion of VOL-I 8.6)"
+    quote: "The Authority undertook to review the requirement. (Addressed at Section 4 of this Addendum.)"
+    later_change: "ADD-02 9.1 reinstates 8.6 (35%, non-responsive); ADD-02 9.2 ends ADD-01 4.2."
+    binding_status: "Not binding (minutes; ADD-01 3.2). The cross-referenced Section 4 is in the Addendum body."
+  - id: ADD-01-AppB-Item5
+    location: {doc: ADD-01, page: 4, unit: "ADD-01 Appendix B Item 5"}
+    relies_on: "VOL-II Table 2-4 limits"
+    quote: "A Bidder asked whether the Table 2-4 limits were final. The Technical Director stated that the permit was under review by the regulator and that any change would be issued by Addendum."
+    later_change: "ADD-02 5.1: TN 5 mg/l becomes 3 mg/l."
+    binding_status: "Not binding (minutes; ADD-01 3.2)."
+  - id: ADD-01-Q1
+    location: {doc: ADD-01, page: 1, unit: "ADD-01 Q1"}
+    relies_on: "VOL-II Table 2-4 (and Table 2-2)"
+    quote: "Any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable."
+    later_change: "Table 2-4 TN amended by ADD-02 5.1. Q1 quotes no value; it refers to the table by name."
+    binding_status: "Response in the body of an Addendum."
+  - id: ADD-01-Q5
+    location: {doc: ADD-01, page: 2, unit: "ADD-01 Q5"}
+    relies_on: "VOL-I 8.5 footnote 12"
+    quote: "No. Footnote 12 to Volume I Clause 8.5 requires commercial operation to have been achieved."
+    later_change: "The footnote text is unchanged, but its look-back window moves with the PDD (ADD-01 2.2). Q5 quotes no date."
+    binding_status: "Response in the body of an Addendum."
+  - id: ADD-01-AppA-Form4A
+    location: {doc: ADD-01, page: 3, unit: "ADD-01 Appendix A"}
+    quotes_value: "12 November 2026, 14:00 Riyadh time"
+    value_at_stages: {BASE: "2026-11-12", ADD-01: "2026-11-26", ADD-02: "2026-11-26"}
+    note: "Reissued form (not an answer) prints the pre-ADD-01 PDD. 'Bidders shall use this version.'"
+    binding_status: "Form issued in the body of ADD-01 (Appendix A), with an instruction to use it."
+  - id: ADD-02-5.1
+    location: {doc: ADD-02, page: 1, unit: "ADD-02 5.1"}
+    relies_on: "the TN value shown in the Table 2-4 image (5 mg/l)"
+    quote: "the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l"
+    note: "Refers to the old value without stating it."
+
+# Negative controls: answers that cite or quote values that were NOT changed later.
+answers_quoting_unchanged_values:
+    - {unit: "ADD-01 Q3", refers_to: "VOL-I 6.4 rating requirement", changed_later: false}
+    - {unit: "ADD-01 Q6", refers_to: "VOL-V 29 (availability-based)", changed_later: false}
+    - {unit: "ADD-02 Q8", refers_to: "VOL-I 6.4 fixed Bid Bond amount", changed_later: false}
+    - {unit: "ADD-02 Q10", refers_to: "VOL-I 8.7 PCG from EPC parent only", changed_later: false}
+    - {unit: "ADD-02 Q11", quotes: "7,500 m3/h; 120,000 m3/day", refers_to: "VOL-II Table 2-6, VOL-II 4.2", changed_later: false}
+    - {unit: "ADD-02 Q12", refers_to: "VOL-V 31.2", changed_later: false}
+    - {unit: "ADD-02 Q13", refers_to: "VOL-I 12.2", changed_later: false}
+    - {unit: "ADD-02 Q14", refers_to: "VOL-I 10.5", changed_later: false}
+
+# -------------------------------------------------------------------------------------
+# 11. Complete provision inventory of each addendum
+# -------------------------------------------------------------------------------------
+# kind: clause | qa | appendix | minutes-item | table | table-row | table-note | form | form-item
+# amends: the volume unit the provision changes (null if none); refers_to: units only cited.
+provisions:
+  ADD-01:
+    front_matter:
+      - {page: 1, text: "This Addendum amends the Proposal Due Date, deletes one qualification requirement, amends Volume II Clause 5.3, publishes the minutes of the Pre-Bid Conference, and responds to clarification requests 1 to 6."}
+      - {page: 1, text: "This Addendum forms part of the RFP Documents and takes precedence in accordance with Volume I Clause 3.2. Bidders shall acknowledge receipt in Form 4-A. All other terms of the RFP Documents remain unchanged."}
+    items:
+      - {id: "1.1", kind: clause, page: 1, amends: null, refers_to: ["VOL-I 5.4", "ADD-01 Appendix B"], desc: "Recital: Pre-Bid Conference held 30 Sep 2026; minutes at Appendix B"}
+      - {id: "1.2", kind: clause, page: 1, amends: null, refers_to: ["VOL-I Section 2"], desc: "Recital: capitalised terms have VOL-I meanings"}
+      - {id: "2.1", kind: clause, page: 1, amends: "VOL-I 6.1", desc: "PDD Thursday 12 Nov 2026 becomes Thursday 26 Nov 2026; 14:00 Riyadh time unchanged"}
+      - {id: "2.2", kind: clause, page: 1, amends: ["VOL-I 5.2", "VOL-I 6.3", "VOL-I 7.1", "VOL-I 8.5 fn12"], desc: "Every period calculated by reference to the PDD is adjusted accordingly (non-exhaustive list)"}
+      - {id: "3.1", kind: clause, page: 1, amends: null, refers_to: ["VOL-I 5.4"], desc: "Attendance record held by Authority; Bidder disputing its recorded attendance to notify via Portal within 5 Working Days of this Addendum"}
+      - {id: "3.2", kind: clause, page: 1, amends: null, refers_to: ["VOL-I 5.3", "ADD-01 Appendix B"], desc: "Minutes are a record only; they do not bind unless confirmed in the body of an Addendum"}
+      - {id: "4.1", kind: clause, page: 1, amends: "VOL-I 8.6", desc: "Deletes VOL-I 8.6 (Local Content Certificate) in its entirety; no LCC required"}
+      - {id: "4.2", kind: clause, page: 1, amends: "RFP Documents (any Local Content Certificate reference)", desc: "Any reference to an LCC elsewhere in the RFP Documents to be disregarded (ceases at ADD-02 9.2)"}
+      - {id: "5.1", kind: clause, page: 1, amends: "VOL-II 5.3", desc: "Adds sentence: GRP pipe of equivalent pressure class acceptable for buried sections of the transmission main, subject to the whole-life cost comparison"}
+      - {id: "Q1", kind: qa, page: 1, amends: null, refers_to: ["VOL-II 3.1", "VOL-II T2-4", "VOL-II T2-2"], desc: "MBR not mandatory; any process meeting Table 2-4 under Table 2-2 influent is acceptable"}
+      - {id: "Q2", kind: qa, page: 1, amends: null, refers_to: ["VOL-I 9.2"], desc: "The '120-page limit' covers the Technical Proposal narrative only; Form Sheets and permitted VOL-II appendices are excluded"}
+      - {id: "Q3", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 6.4"], desc: "Bid Bond from a foreign bank branch only if the branch is licensed in the Kingdom and meets the rating requirement"}
+      - {id: "Q4", kind: qa, page: 2, amends: null, refers_to: [], desc: "Ground conditions at the wadi crossing not confirmed; geotechnical report for information; Bidders to satisfy themselves"}
+      - {id: "Q5", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 8.5 fn12"], desc: "Reference project under construction not accepted; commercial operation required"}
+      - {id: "Q6", kind: qa, page: 2, amends: null, refers_to: ["VOL-V 29"], desc: "Offtake volume not guaranteed; payment is availability based"}
+      - {id: "Appendix A", kind: appendix, page: 3, amends: "VOL-IV Form 4-A", desc: "Reissued Form 4-A ('Bidders shall use this version'); 8 fields; still prints PDD 12 November 2026"}
+      - {id: "Appendix B", kind: appendix, page: 4, amends: null, refers_to: ["VOL-I 5.3", "VOL-I 5.4", "VOL-I Appendix 1"], desc: "Minutes of Pre-Bid Conference 30 Sep 2026 10:00 (non-binding header; attendees)"}
+      - {id: "Appendix B Item 1", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I Appendix 1"], desc: "Opening; all five prequalified Bidders represented"}
+      - {id: "Appendix B Item 2", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I 6.1", "ADD-01 2"], desc: "Programme: short PDD extension under consideration (confirmed at ADD-01 Section 2)"}
+      - {id: "Appendix B Item 3", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I 11.2"], desc: "Evaluation: Technical Director's 'seventy / thirty' remark; any change to be made by Addendum"}
+      - {id: "Appendix B Item 4", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I 8.6", "ADD-01 4"], desc: "Local content: difficulty obtaining LCC; Authority to review (addressed at ADD-01 Section 4)"}
+      - {id: "Appendix B Item 5", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-II T2-4"], desc: "Effluent standards: permit under review; any change by Addendum"}
+      - {id: "Appendix B Item 6", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I 5.5"], desc: "Site visit confirmed for following day; optional"}
+      - {id: "Appendix B Item 7", kind: minutes-item, page: 4, amends: null, refers_to: ["VOL-I 4.2"], desc: "Close; reminder of blackout provisions"}
+    appendix_a_fields:
+      - "Tender reference: NUPA/ISTP/2026/014"
+      - "Project: Wadi Sirhan Independent Sewage Treatment Plant"
+      - "Proposal Due Date: 12 November 2026, 14:00 Riyadh time"
+      - "Name of Bidder / lead member"
+      - "Addenda acknowledged (numbers)"
+      - "Single point of contact"
+      - "Signature / name / capacity"
+      - "Date"
+    counts:
+      numbered_clauses: 9          # 1.1 1.2 2.1 2.2 3.1 3.2 4.1 4.2 5.1
+      qa_rows: 6                   # Q1-Q6
+      appendices: 2                # A, B
+      minutes_items: 7             # Items 1-7
+      appendix_a_fields: 8
+      amending_provisions: 6       # 2.1, 2.2, 4.1, 4.2, 5.1, Appendix A
+      items_listed_above: 24       # 9 clauses + 6 QA + 2 appendices + 7 minutes items
+
+  ADD-02:
+    front_matter:
+      - {page: 1, text: "This Addendum amends the page limit, reissues the technical evaluation table, amends Volume II Clauses 4.4 and Table 2-4, adds Form 4-G, amends Volume V Clause 36.2, reinstates Volume I Clause 8.6, and responds to clarification requests 7 to 14."}
+      - {page: 1, text: "This Addendum forms part of the RFP Documents and takes precedence in accordance with Volume I Clause 3.2. Bidders shall acknowledge receipt in Form 4-A. All other terms of the RFP Documents remain unchanged."}
+    items:
+      - {id: "1.1", kind: clause, page: 1, amends: null, refers_to: ["VOL-I 5.3", "VOL-I 3.2", "ADD-01"], desc: "Recital: issued under VOL-I 5.3; takes precedence over Addendum No. 1"}
+      - {id: "2.1", kind: clause, page: 1, amends: "VOL-I 9.2", desc: "Page limit 'one hundred and twenty (120) pages' becomes 'one hundred and fifty (150) pages'"}
+      - {id: "3.1", kind: clause, page: 1, amends: "VOL-I T1-1", desc: "Table 1-1 deleted and replaced; D increased, B reduced correspondingly"}
+      - {id: "T1-1 (revised)", kind: table, page: 1, amends: "VOL-I T1-1", desc: "Revised table: A25 B15 C20 D20 E10 F10, Total 100"}
+      - {id: "T1-1 row A", kind: table-row, page: 1, amends: "VOL-I T1-1 A", desc: "A Process design... 25 (unchanged)"}
+      - {id: "T1-1 row B", kind: table-row, page: 1, amends: "VOL-I T1-1 B", desc: "B Construction methodology... 15 (was 20)"}
+      - {id: "T1-1 row C", kind: table-row, page: 1, amends: "VOL-I T1-1 C", desc: "C Operations and maintenance... 20 (unchanged)"}
+      - {id: "T1-1 row D", kind: table-row, page: 1, amends: "VOL-I T1-1 D", desc: "D Environmental and social management 20 (was 15)"}
+      - {id: "T1-1 row E", kind: table-row, page: 1, amends: "VOL-I T1-1 E", desc: "E Organisation... 10 (unchanged)"}
+      - {id: "T1-1 row F", kind: table-row, page: 1, amends: "VOL-I T1-1 F", desc: "F Health, safety and security of supply 10 (unchanged)"}
+      - {id: "T1-1 row Total", kind: table-row, page: 1, amends: "VOL-I T1-1 Total", desc: "Total 100 (unchanged)"}
+      - {id: "T1-1 note (1)", kind: table-note, page: 1, amends: null, refers_to: ["VOL-I 11.3"], desc: "Technical threshold unchanged at seventy (70) marks"}
+      - {id: "T1-1 note (2)", kind: table-note, page: 1, amends: "VOL-I 11.2", desc: "Weighting amended to 65% technical / 35% commercial"}
+      - {id: "T1-1 note (3)", kind: table-note, page: 1, amends: "VOL-I T1-1 (scoring method; new)", desc: "Marks on the Authority's standard five-point scale multiplied by the weight shown"}
+      - {id: "4.1", kind: clause, page: 1, amends: "VOL-II 4.4", desc: "'seventy-two (72) hours' becomes 'ninety-six (96) hours' (standby power)"}
+      - {id: "5.1", kind: clause, page: 1, amends: "VOL-II T2-4 (TN row)", desc: "TN limit amended to 3 mg/l, same basis; all other Table 2-4 parameters unchanged"}
+      - {id: "5.2", kind: clause, page: 1, amends: null, refers_to: ["VOL-II Section 3"], desc: "Bidders to reflect the amended limit in the process design"}
+      - {id: "Q7", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 12.1", "VOL-V 3.1", "VOL-I 3.2"], desc: "Concession start PCOD vs Effective Date: order of precedence applies; no further amendment considered necessary"}
+      - {id: "Q8", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 6.4"], desc: "Bid Bond amount is fixed, not a percentage"}
+      - {id: "Q9", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 9.4", "VOL-IV Form 4-C"], desc: "Form 4-C must be completed in Arabic; English translation for convenience only"}
+      - {id: "Q10", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 8.7"], desc: "PCG required only from ultimate parent of EPC Contractor, not O&M Operator"}
+      - {id: "Q11", kind: qa, page: 2, amends: null, refers_to: ["VOL-II T2-6", "VOL-II 4.2"], desc: "Peak hourly 7,500 m3/h vs 120,000 m3/day: design to VOL-II figures; VOL-II 4.2 applies"}
+      - {id: "Q12", kind: qa, page: 2, amends: null, refers_to: ["VOL-V 31", "VOL-V 31.2"], desc: "Cap on Clause 31 deductions: refers Bidders to wording of 31.2"}
+      - {id: "Q13", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 12.2"], desc: "Financial Close long-stop: periods in 12.2 unchanged"}
+      - {id: "Q14", kind: qa, page: 2, amends: null, refers_to: ["VOL-I 10.5"], desc: "Alternative technical solution alone: no; 10.5 applies"}
+      - {id: "7.1", kind: clause, page: 3, amends: ["VOL-IV (new Form 4-G)", "VOL-I 9.1"], desc: "New Form 4-G added to VOL-IV and to the VOL-I 9.1 list after item (e)"}
+      - {id: "7.2", kind: clause, page: 3, amends: "VOL-I 9.1 / Form 4-G requirement", desc: "Form 4-G submitted with Envelope A; failure to submit makes the Proposal non-responsive"}
+      - {id: "Form 4-G", kind: form, page: 3, amends: "VOL-IV (new form)", desc: "Cybersecurity Compliance Undertaking form: 6 items with a Yes / No column, plus a signature line"}
+      - {id: "Form 4-G item 1", kind: form-item, page: 3, amends: null, refers_to: ["VOL-II 6.2"], desc: "OT environment segregated from business network per VOL-II 6.2"}
+      - {id: "Form 4-G item 2", kind: form-item, page: 3, amends: null, refers_to: [], desc: "ISMS covering OT implemented before commissioning"}
+      - {id: "Form 4-G item 3", kind: form-item, page: 3, amends: null, refers_to: [], desc: "Named accountable security officer for concession period"}
+      - {id: "Form 4-G item 4", kind: form-item, page: 3, amends: null, refers_to: [], desc: "Security incidents notified within 24 hours of detection"}
+      - {id: "Form 4-G item 5", kind: form-item, page: 3, amends: null, refers_to: [], desc: "Annual independent OT penetration test; report to Authority"}
+      - {id: "Form 4-G item 6", kind: form-item, page: 3, amends: null, refers_to: [], desc: "Remote access to control system requires MFA and is logged"}
+      - {id: "8.1", kind: clause, page: 3, amends: "VOL-V 36.2", desc: "'SAR 5,000,000' becomes 'SAR 2,500,000' (General Change in Law threshold)"}
+      - {id: "9.1", kind: clause, page: 3, amends: "VOL-I 8.6", desc: "Reinstates 8.6 in amended form: LCC at least 35% for construction phase; failure to submit makes the Proposal non-responsive"}
+      - {id: "9.2", kind: clause, page: 3, amends: "ADD-01 4.2", desc: "Addendum No. 1 Section 4.2 ceases to have effect"}
+    counts:
+      numbered_clauses: 11         # 1.1 2.1 3.1 4.1 5.1 5.2 7.1 7.2 8.1 9.1 9.2
+      table_notes: 3               # T1-1 notes (1)(2)(3)
+      table_rows: 7                # A-F + Total
+      qa_rows: 8                   # Q7-Q14
+      forms: 1                     # Form 4-G
+      form_items: 6                # Form 4-G items 1-6
+      amending_provisions: 9       # change existing text: 2.1, 3.1, note (2), 4.1, 5.1, 7.1, 8.1, 9.1, 9.2
+      new_rule_provisions: 2       # add a rule with no BASE counterpart: note (3), 7.2
+      items_listed_above: 37       # 11 clauses + 1 table + 7 rows + 3 notes + 8 QA + 1 form + 6 form items
+      core_without_table_rows_and_form_items: 23   # 11 clauses + 3 notes + 8 QA + 1 form
+
+# -------------------------------------------------------------------------------------
+# Discrepancies noticed in the pack (facts; no resolution implied)
+# -------------------------------------------------------------------------------------
+discrepancies:
+  - "Form 4-A, both the original (VOL-IV p3) and the ADD-01 reissue (ADD-01 p3), prints PDD 12 November 2026 after ADD-01 moved it to 26 November 2026."
+  - "ADD-01 Appendix A says the reissue adds the Addenda acknowledgement 'at paragraph 1', but the reissued form has no numbered paragraphs. It also drops all six numbered confirmations and five fields of the original."
+  - "ADD-01 minutes Item 3 ('seventy / thirty split', said to 'remain') disagree with VOL-I 11.2 (60/40) and with ADD-02 (65/35)."
+  - "ADD-02 makes the 11.2 weighting change only in a note to the revised Table 1-1; its opening summary does not mention it."
+  - "ADD-02 note (3) speaks of 'the weight shown' and a 'standard five-point scale'; the table shows Marks, and the scale is not defined in the pack."
+  - "ADD-01 4.1 deletes VOL-I 8.6; ADD-02 9.1 reinstates it at 35% (BASE 30%) and adds a non-responsiveness consequence that BASE 8.6 lacked."
+  - "Concession term: VOL-I 12.1 runs from PCOD, VOL-V 3.1 from the Effective Date. ADD-02 Q7 declines to amend and points to the VOL-I 3.2 order of precedence."
+  - "Form 4-C Arabic declaration 4 gives 'exclusion (استبعاد) of the proposal' for any incorrect statement. No English text in the pack carries this consequence or uses this category."
+  - "VOL-II Table 2-4 image is titled 'Minimum Effluent Quality Parameters' but its qualifier says 'all values are maxima'. Residual Chlorine and pH are ranges."
+  - "VOL-II p3 says 'The following page is reproduced as issued', but the reproduced table image sits on the same page (p3)."
+  - "VOL-II p3 says the Environmental Permit (not in the pack) prevails over the reproduction, while ADD-02 5.1 amends the reproduction's TN value."
+  - "VOL-II Table 2-6: 'Storm flow to be passed to full treatment' is 3 x dry weather flow. With 120,000 m3/day (5,000 m3/h average) that exceeds the 7,500 m3/h 'Peak hourly flow (design)'. ADD-02 Q11 only points to VOL-II 4.2."
+  - "VOL-I footnote 12 is printed mid-page, between 8.5 and 8.6, not at the page foot."
+  - "ADD-02 7.1 adds Form 4-G to VOL-IV but does not amend the VOL-IV cover ('Forms 4-A to 4-F') or the Index of Forms."
+  - "ADD-01's opening summary does not mention the Form 4-A reissue (Appendix A) or the 3.1 attendance-notification requirement."
+
+# -------------------------------------------------------------------------------------
+# Could not be determined from the pack
+# -------------------------------------------------------------------------------------
+undetermined:
+  - "Counting convention for 'days from the Proposal Due Date' (6.3, 7.1) and for the 10-year look-back (fn12): both day-0 and day-1 readings are given."
+  - "Forward-counting convention for ADD-01 3.1 ('within five (5) Working Days of this Addendum') and its start point (issue or receipt)."
+  - "Time of day for the clarification cut-off (VOL-I 5.2)."
+  - "Whether 'days' in VOL-I 6.3 and 7.1 are calendar days (assumed)."
+  - "Lettering of the Form 4-G item in VOL-I 9.1 and any re-lettering of (f)-(i)."
+  - "Which English consequence category (rejection / disqualification / non-responsive) matches Arabic 'استبعاد العرض'."
+  - "Identity of the left digit in the Form 4-C declaration 5 clause reference (٢ vs ٣, i.e. VOL-I 4.2 vs 4.3). I read ٢."
+  - "Whether the Environmental Permit has been amended to match ADD-02's TN 3 mg/l."
+  - "Whether ADD-01 Q2 remains effective after ADD-02 2.1. Deliberately not decided, per instructions."
