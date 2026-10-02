@@ -36,9 +36,29 @@ The difficult cases, as the outputs show them:
 - **Answers:** ADD-01 Q2 is listed for review after ADD-02 changed the page limit; it stays in force. The minutes are context only.
 - **Coverage:** every provision of ADD-01 (36) and ADD-02 (40) is accounted for: op, no effect (with reason), or **OUTSIDE THE SLICE** (3 and 7).
 
-**Proved by tests** (`tests/test_stage2.py`, `tests/test_drill.py`): wrong-target rejection; dependency staleness; pending image status carried through A1, A3, A5; a partial addendum keeps the last validated state; transcription approval separate from interpretation (in a disposable copy, with "Fixture Test Reviewer"); byte-identical rebuilds; the drill.
+**Proved by tests** (`tests/test_stage2.py`, `tests/test_drill.py`): wrong-target rejection; dependency staleness; pending image status carried through A1, A3, A5; a partial addendum keeps the last validated state; transcription approval separate from interpretation (in a disposable copy, with "Fixture Test Reviewer"); byte-identical rebuilds; the drill. **237 tests pass.**
 
-## 3. Decisions needed from you
+## 3. The ADD-03 drill (`out-drill/`)
+
+A synthetic Addendum No. 3, laid out like Addenda 1 and 2, went through the same path with no curated op file: drafted, then applied by the same engine.
+
+| Provision | Result |
+|---|---|
+| 2.1 PDD 26 Nov → 10 Dec | applied; every dependent date recomputed; six rows STALE for a person to re-read |
+| 3.1 VOL-V 31.3 72 h → 48 h | applied; VOL-II 4.4 untouched |
+| 4.1 delete VOL-I 8.6 | applied: LCC deleted → reinstated → deleted |
+| 5.1 TP → 0.5 mg/l | applied; old value from the pending image reading, flagged |
+| 6.1 "bid security period extended by thirty days" | **unresolved** (no recognisable target) |
+| 7.1 VOL-II 4.4 72 h → 60 h | **rejected** (C23): those words were already replaced by ADD-02; not moved to VOL-V 31.3 |
+| Q16 quotes "26 November 2026" | listed for review, not revoked; Q15 (negative control) not listed |
+
+ADD-03 is **PARTIAL**, so A3 and the main A5 stay on ADD-02 (PDD 26 Nov); the ADD-03 column in A1 and `out-drill/a5/working/ADD-03.json` show the working state.
+
+## 4. The hiring team's reply
+
+Recorded as received: `sources/correspondence/2026-10-02_reply_from_hiring.eml` (body in the `.md` beside it). It confirms the approach on all six points, says Addendum 3 will be a PDF in the same format, and asks for Volume III and Drawing 03-C-114 to be flagged as referenced but not supplied, with their impact. That is now Issue `I-VOL-III` on A3: only the drawing shows the effluent main's delivery point (VOL-II 5.1), and no omission claim is accepted after the PDD (VOL-I 3.4). Delivery: by 17:00 Monday 5 October.
+
+## 5. Decisions needed from you
 
 1. **Stage 2 shape:** accept the op model, the row shape (D3) and the four outputs as the basis for Stage 3, or tell me what to change.
 2. **Proposed vs accepted ops (plan C29):** no op has been accepted, so the slice applies proposed ops and labels them. Keep that for working outputs, or require your acceptance (per op or per addendum) first?

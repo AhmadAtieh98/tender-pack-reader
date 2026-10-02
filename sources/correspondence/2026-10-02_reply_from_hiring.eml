@@ -1,0 +1,292 @@
+Delivered-To: ahmadtalalateya@gmail.com
+Received: by 2002:a05:6214:406d:b0:912:1ef0:63ee with SMTP id qz13csp2053454qvb;
+        Thu, 1 Oct 2026 17:51:06 -0700 (PDT)
+X-Received: by 2002:a05:6808:1701:b0:4f4:8f15:ed59 with SMTP id 5614622812f47-4f529d2f125mr739912b6e.31.1790902266296;
+        Thu, 01 Oct 2026 17:51:06 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1790902266; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=VY0T7wZOSabHHmlvy+ESltpH1hHwmQyRKkhuIjnCaMOq0yDjbkGsMhcIfGIj44howi
+         wICUuJjZ4x0sTde92fxuBNNa/D0Qydy+/x/78s8tdo1AIw3/1sHpGvrvlZnYYT9Yqd5p
+         EGju7Whin3M+R5+U/Mt3ZdHpzW8MFIRqOe/1iktzNyLqb8yXAApg+UjZiujEZfE7JPFt
+         cYLDlQ+d4qvvJefzBmaNDaUCJRGBpMI3ahjDqtYP4cP905yLWYdsI6XoSuY+JSgE9XN4
+         CNvu+eILwCr3GyxrPu6qSvYXZW3UmSk1TIItnALNZSdxkanZBO5HWcoZPzKOjhNHdUut
+         b3xw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=AzkzTq0nRXi767mHYoghIJmmxb7G5abYZ4v8VzMEMq8=;
+        fh=E/cqfPIplpKewrTv7Och4ZUYgU3D/n7rM84uk38+Tao=;
+        b=qqMtBMe76AAkP7EPx1fEv1kFO3ca83b5au1NeP+aSzodo0IYxw44gkN2MFb+SKsKsd
+         i2+rpLMHdt7PjUoBcSlRVGMpv4DM6Va667rNR2k6Z3pGu2FIyZJhSGlZQEl3G6VRjFxP
+         cJTVaCCFjBq3AD9WSGPwKMeRV/KZDl78y/iA3sF+bX8oudbjdPceFddqg7QY2Hb/gUXS
+         +6h8Mi5ukeCl4kbQ5tBIQKe38v0eBFt4iesCPHaXtPu/GRcneHKaBIGQhgFDFTQ7nF8i
+         ycJquEBrcS3f5TddO6nFp+qxkuA1KEiRZyvoViVzhA+rCO5ITZDlWMsYG5QCpuYR+RrS
+         MiEA==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=MQa3QmfZ;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of hiringforhani@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=hiringforhani@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+Return-Path: <hiringforhani@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 5614622812f47-4f5249cf020sor610201b6e.8.2026.10.01.17.51.06
+        for <ahmadtalalateya@gmail.com>
+        (Google Transport Security);
+        Thu, 01 Oct 2026 17:51:06 -0700 (PDT)
+Received-SPF: pass (google.com: domain of hiringforhani@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=MQa3QmfZ;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of hiringforhani@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=hiringforhani@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1790902266; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M66a4jMeDtYycytwhPkFhLzOADI4Xqq/ACbs7scU3yZW3MkUUBukiEAYk9e24ZFT/+
+         1ZfC/AfcVQP7D/tPDobKpZizTCShpeSGl0F9pWAcivGd7L/eAS8WwC0TR9w6QVPS8cT8
+         QT57BOXzD0opH3wY4AZy/t5rwc4yeJ9LcgkLfSybIRe0UM9sWsHEhWRW5rWyuj5h8vWW
+         rXpcJBTsT6u9/VcHOZ1VPh5zFAVrHwiVppnmQIcXKWhyI1ZOD4ZZxqjlWNAjsOg40WgO
+         pq3ytN5W9G5PpL2u2B0nFSUBqInyYqJ+yHdkhgJ+TWtoALd2mGjjldzr49IK4o1gbWot
+         6cPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=AzkzTq0nRXi767mHYoghIJmmxb7G5abYZ4v8VzMEMq8=;
+        fh=E/cqfPIplpKewrTv7Och4ZUYgU3D/n7rM84uk38+Tao=;
+        b=gXhsPnOm3WpzwOuOX//X4w70lZvx8eS7pD6Zjq02dTlUULz1vA+Wu5ROfqkff6Iufy
+         KnHKFzoHKCmWNOe+G1ufTAz55q0k4ggc7yLR8ECOXBHOTrDbrYukocL4bc0e21UQCnpk
+         Jq6CUq1TC7y50+Loc1JTHBqb7MYRzsKhtYlixFiFAFtOoehaQAkEIb9W9RkaJpUPNZod
+         hkQsoGu5A8qfAZFqghz8yOIwInvNNRnP9nDQ0+SZv7R04sHjPjR16ZYqD6A+Cvu/r+u9
+         4KKC1pyIMHLqtPkeJ7h3pKZN2WbJhjodXgA8pnb+Zgaw7fcr3KgI8mEVLnEKhcGxVsoF
+         i9JQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790902266; x=1791507066; dara=google.com;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AzkzTq0nRXi767mHYoghIJmmxb7G5abYZ4v8VzMEMq8=;
+        b=MQa3QmfZYwDcznoHD6TWvQ29jBctGgX3msvdIjy0P7YErbMocIfNyv+QoMNfIZ1+u4
+         Bo5eDhHPbd7Frzpnt2MyHcckyrBOMAomnQ252NkjvZrlVljdKxG37OvMOTDg+onGu5f8
+         ZhyfQmiNPfRrH2jWh5vEJ4SF1M5xi64VMfGkLVV9YdVRn9JJbFye1AzTJdymRdor4RnA
+         2W7k5Dwex7qhHdVUxFJyb3c5C0rKvwTLL+2MrKxA4Uh+q0nrm+o0m2PbcpwcBsTg9nQS
+         FL9uGnJM6mmqMuv9pykrpZRxhTGQUAiuG5XY3KjbTRPu5tDkNJDdfaRcDNP5on18mmTX
+         qoTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790902266; x=1791507066;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AzkzTq0nRXi767mHYoghIJmmxb7G5abYZ4v8VzMEMq8=;
+        b=jvJo1PqACa0vLveLH+SStTo4yhWuzKgtexVbCVe9/89mvVjgVZ6puV5lGb0XwW4/um
+         /g8ysQ4fyDTXamYpOw8OLDpmhs477HuoAEHFSJsFGNx99+NCaleycI7yhbCqatwErRbn
+         Vb+pugqZVwldi0SQ4sIT62exGi+qNzj9jGKYHamhEJs/H+8i6kqOOD+74wuJRcwHGDjH
+         7LgVC4/fDAD+cWANEpvS7nk2O/LCJp1Os2fEy8vpbD6NBHs7iuK3uxgvYIJhgj03rSOw
+         frgjJ/qNECr272vyHc4RkenNUfQ2EZIce/6pNRpIIDzzwf0Oha4bzcwgc3sdNW1SseGC
+         M1/A==
+X-Gm-Message-State: AFuF++lA/J5gAkX6+AE9RnLYdjCAD5Lox6bmJgHHqfB2rtdm2bimolYL
+	A2w5x0XDVInsLl1qvL9GP4NwdI/Yo77XEjQkVrXRSydZTYsh2o84bH3RvDpEC92RCHZismA4vcI
+	aW/UwfTrr66YzZ2RaFQLbXkS7f29ySKN5CjdK
+X-Gm-Gg: AYBFou2zQn6FqtEeKMt4EfHFzRB7PsQoFQ1Sww/u6YN2KMe+ggieEdXTU7eXiVyZItr
+	rqv8Mr+ZeJRIOwTQXtzyJpO10065+Vi8dAmPYfwpSbYrDQVsbuOq3s1dW+LXyUL4nXLnL+5qlI2
+	DtRqcxlUqsafLkcTer10s5ESS602jXhOXVcnjKt/FEtyt0jeD+JOUQVUa9VaEwdpRCZkdpp6MP3
+	bv6qOZEvxLlFvKkCdaAb8DKJ3QAoYuAbBOuItDBfzRyV4MVnpUFC9C/2i+iE11ZGKWHWPfbEzY6
+	erknziwN9hWulEw2MRcd5zQ/pQBtEOSmHZDAZ0YIrBN8RUQNH9Rg8D90xCwDOBsmFywmpXcZtSf
+	ijS6gJY3qvMj8zux9r0z4HInl+YAWjoUaUGSSTw==
+X-Received: by 2002:a05:6808:c40e:b0:4b3:7a14:6b25 with SMTP id
+ 5614622812f47-4f529204068mr1020436b6e.14.1790902265700; Thu, 01 Oct 2026
+ 17:51:05 -0700 (PDT)
+Received: from 313336824172 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 1 Oct 2026 17:51:04 -0700
+Received: from 313336824172 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 1 Oct 2026 17:51:03 -0700
+From: Hiring Bot <hiringforhani@gmail.com>
+In-Reply-To: <CAO=0bm7Ot2TSAx32TPUOzOmFum3RP4wQYQ6V9id6x4G4oFECwA@mail.gmail.com>
+References: <CAO=0bm7Ot2TSAx32TPUOzOmFum3RP4wQYQ6V9id6x4G4oFECwA@mail.gmail.com>
+MIME-Version: 1.0
+Date: Thu, 1 Oct 2026 17:51:04 -0700
+X-Gm-Features: AclHuK-dh9MOKB5A4H3wqBOwtuC05IfTLSkzQDSsBZfd1CdZluS8p43hGR7gzAs
+Message-ID: <CAK9sH5iL9Krie0e9W+mvU6JOqhQzN2rDAwfk7dH8su8YXPY8wQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_Lamar_Holding_=E2=80=94_PPP_AI_Partner=2C_Round_2_assign?=
+	=?UTF-8?Q?ment?=
+To: ahmadtalalateya@gmail.com
+Cc: shady.hajjar@lamar-holding.com, a.hadhi@lamar-holding.com
+Content-Type: multipart/alternative; boundary="0000000000005fe62d065cd0ed9b"
+
+--0000000000005fe62d065cd0ed9b
+Content-Type: text/plain; charset="UTF-8"
+
+Dear Ahmad,
+
+Thank you for the clear note. Good to hear the work is progressing. Answers
+below.
+
+1. Tools: Yes. Hosted APIs, local models and an AI coding assistant are all
+fine, including in the live session, as long as they are documented as you
+describe.
+
+2. Pack completeness: The pack is complete as provided. Treat Volume III
+and Drawing 03-C-114 as referenced but not supplied, and flag the gaps and
+their impact. That is part of the exercise.
+
+3. Addendum 3: Yes, it will be a PDF in the same format as Addenda 1 and 2,
+shared at the start of the live session.
+
+4. Prior Q&A: No written clarifications have been issued to other
+candidates. Anything we share with you is shared on the same basis.
+
+5. A5 programme: Your basis is fine. Use the latest addendum date as the
+planning date, keep the consortium and external assumptions as editable
+settings, and label them clearly.
+
+6. Delivery: Your proposed single archive and formats work for us.
+
+We look forward to receiving it by 17:00 Monday 5 October at the latest.
+
+Best regards,
+Hiring team for Hani Abdelhadi, Lamar Holding
+
+On Thu, Oct 01, 2026 12:50 PM, Ahmad Atieh <ahmadtalalateya@gmail.com>
+wrote:
+
+> Dear Hiring Team,
+>
+> Thank you for accommodating my return. Work is progressing well, and I
+> have a few confirmations and questions. Where I state an intended approach,
+> I will proceed on that basis unless you advise otherwise.
+>
+> *Tools*
+> I will use hosted model APIs (such as Claude) and/or local models on my
+> own machine, together with an AI coding assistant, including during the
+> session. All tools and model usage will be documented.
+>
+> *The Pack*
+> Volume III: Volume III (Drawings) is referenced in the RFP, including
+> Drawing 03-C-114, but was not included among the six PDFs received. I will
+> therefore treat it as referenced but not supplied and flag any resulting
+> gaps. Please confirm that the pack is complete as provided.
+>
+> Third addendum: I am assuming the addendum provided during the session
+> will be a PDF, broadly in the same format as Addenda No. 1 and 2. Please
+> let me know if it will be provided differently.
+>
+> Earlier questions: If any Q&A or clarifications have already been shared
+> with other candidates, I would appreciate receiving them as well.
+>
+> *Planning Inputs for the Programme (A5)*
+> Planning date: As programme dates are calculated backwards from the
+> Proposal Due Date, I will use the latest addendum date as the planning
+> date. Based on the current pack, this is 22 October 2026, and during the
+> session I will update it to the date of the third addendum. Please advise
+> if you prefer another basis.
+>
+> Bidder: The pack does not identify the bidder, but some requirements apply
+> to each consortium member (for example, declarations and powers of
+> attorney), so the plan needs a member count. Unless otherwise instructed, I
+> will plan for an unnamed three-member consortium, with the name and number
+> of members as editable settings. Bidder-specific facts not in the pack,
+> such as references, certificates and financial standing, will be flagged
+> for confirmation rather than assumed.
+>
+> External assumptions: Where the pack does not provide information such as
+> Saudi public holidays, document-issuance durations, or bid-team roles, I
+> will use reasonable external assumptions and clearly label them as editable
+> assumptions with their basis.
+>
+> *Delivery*
+> Formats: I plan to submit one archive containing:
+>
+>    - A1 and A5: CSV and JSON, with A1 also in Excel.
+>    - A2: Markdown report with supporting CSV/JSON tables.
+>    - A3: One-page PDF.
+>    - A4: Repository including commit history, prompts, model-call log and
+>    work log.
+>
+> The outputs can be rebuilt offline, so no API key is needed and none is
+> included.
+>
+> Kind regards,
+> Ahmad
+>
+>>
+
+--0000000000005fe62d065cd0ed9b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div>Dear Ahmad,<br><br>Thank you for the clear note. Good to hear the work=
+ is progressing. Answers below.<br><br>1. Tools: Yes. Hosted APIs, local mo=
+dels and an AI coding assistant are all fine, including in the live session=
+, as long as they are documented as you describe.<br><br>2. Pack completene=
+ss: The pack is complete as provided. Treat Volume III and Drawing 03-C-114=
+ as referenced but not supplied, and flag the gaps and their impact. That i=
+s part of the exercise.<br><br>3. Addendum 3: Yes, it will be a PDF in the =
+same format as Addenda 1 and 2, shared at the start of the live session.<br=
+><br>4. Prior Q&amp;A: No written clarifications have been issued to other =
+candidates. Anything we share with you is shared on the same basis.<br><br>=
+5. A5 programme: Your basis is fine. Use the latest addendum date as the pl=
+anning date, keep the consortium and external assumptions as editable setti=
+ngs, and label them clearly.<br><br>6. Delivery: Your proposed single archi=
+ve and formats work for us.<br><br>We look forward to receiving it by 17:00=
+ Monday 5 October at the latest.<br><br>Best regards,<br>Hiring team for Ha=
+ni Abdelhadi, Lamar Holding</div><br><div class=3D"gmail_extra"><div>On Thu=
+, Oct 01, 2026 12:50 PM, Ahmad Atieh &lt;<a href=3D"mailto:ahmadtalalateya@=
+gmail.com">ahmadtalalateya@gmail.com</a>&gt; wrote:<br><blockquote class=3D=
+"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding=
+-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><p dir=3D"ltr">Dear Hiring Tea=
+m,</p><p dir=3D"ltr">Thank you for accommodating my return. Work is progres=
+sing well, and I have a few confirmations and questions. Where I state an i=
+ntended approach, I will proceed on that basis unless you advise otherwise.=
+</p><p dir=3D"ltr"><strong>Tools</strong><br>I will use hosted model APIs (=
+such as Claude) and/or local models on my own machine, together with an AI =
+coding assistant, including during the session. All tools and model usage w=
+ill be documented.</p><p dir=3D"ltr"><strong>The Pack</strong><br>Volume II=
+I: Volume III (Drawings) is referenced in the RFP, including Drawing 03-C-1=
+14, but was not included among the six PDFs received. I will therefore trea=
+t it as referenced but not supplied and flag any resulting gaps. Please con=
+firm that the pack is complete as provided.</p><p dir=3D"ltr">Third addendu=
+m: I am assuming the addendum provided during the session will be a PDF, br=
+oadly in the same format as Addenda No. 1 and 2. Please let me know if it w=
+ill be provided differently.</p><p dir=3D"ltr">Earlier questions: If any Q&=
+amp;A or clarifications have already been shared with other candidates, I w=
+ould appreciate receiving them as well.</p><p dir=3D"ltr"><strong>Planning =
+Inputs for the Programme (A5)</strong><br>Planning date: As programme dates=
+ are calculated backwards from the Proposal Due Date, I will use the latest=
+ addendum date as the planning date. Based on the current pack, this is 22 =
+October 2026, and during the session I will update it to the date of the th=
+ird addendum. Please advise if you prefer another basis.</p><p dir=3D"ltr">=
+Bidder: The pack does not identify the bidder, but some requirements apply =
+to each consortium member (for example, declarations and powers of attorney=
+), so the plan needs a member count. Unless otherwise instructed, I will pl=
+an for an unnamed three-member consortium, with the name and number of memb=
+ers as editable settings. Bidder-specific facts not in the pack, such as re=
+ferences, certificates and financial standing, will be flagged for confirma=
+tion rather than assumed.</p><p dir=3D"ltr">External assumptions: Where the=
+ pack does not provide information such as Saudi public holidays, document-=
+issuance durations, or bid-team roles, I will use reasonable external assum=
+ptions and clearly label them as editable assumptions with their basis.</p>=
+<p dir=3D"ltr"><strong>Delivery</strong><br>Formats: I plan to submit one a=
+rchive containing:</p><ul dir=3D"ltr"><li>A1 and A5: CSV and JSON, with A1 =
+also in Excel.</li><li>A2: Markdown report with supporting CSV/JSON tables.=
+</li><li>A3: One-page PDF.</li><li>A4: Repository including commit history,=
+ prompts, model-call log and work log.</li></ul><p dir=3D"ltr">The outputs =
+can be rebuilt offline, so no API key is needed and none is included.</p><p=
+ dir=3D"ltr">Kind regards,<br>Ahmad</p></div><div class=3D"gmail_quote"><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex"><div class=3D"gmail_quote"><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex"><div class=3D"gmail_extra"=
+><div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex"><div class=3D"gmail=
+_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
+;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+</blockquote></div>
+</blockquote></div></div>
+</blockquote></div>
+</blockquote></div></div>
+</blockquote></div></div>
+
+--0000000000005fe62d065cd0ed9b--

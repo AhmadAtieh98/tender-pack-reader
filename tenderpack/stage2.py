@@ -109,8 +109,12 @@ def structural_checks(r: dict, a3_fit: dict | None, a5_by_stage: dict) -> list[d
     checks = [{"id": "E01", "ok": not r["problems"], "detail": "; ".join(r["problems"]) or
                "evidence build structurally OK and built from the current inputs"}]
     bad = [f"{e['row'].id}@{st}: {p}" for e in r["evals"] for st, ev in e["stages"].items() for p in ev["problems"]]
+    moved = sorted({f"{e['row'].id}@{st}" for e in r["evals"] for st, ev in e["stages"].items()
+                    if any("quote not found" in x for x in ev["stale"])})
     checks.append({"id": "C16", "ok": not bad, "detail": f"{len(r['evals'])} rows x {len(r['order'])} stages; "
-                   + (f"quotes not found: {bad[:4]}" if bad else "every quote and consequence quote found in the effective text")})
+                   + (f"quotes not found: {bad[:4]}" if bad else "every quote and consequence quote of a current "
+                      "interpretation found in the effective text")
+                   + (f"; quoted text changed under STALE rows (reported as C11): {moved}" if moved else "")})
     leaks = [f"{s.stage}: {x}" for s in r["stages"] for x in s.scope_leak]
     checks.append({"id": "C25", "ok": not leaks, "detail": "; ".join(leaks[:4]) or "no unit changed without an op targeting it"})
     val = r["validated"].stage
@@ -396,8 +400,9 @@ def a2(r: dict) -> dict:
             pa = [d["planning"] for d in a["dates"]] if a["active"] else []
             pb = [d["planning"] for d in b["dates"]] if b["active"] else []
             why = []
-            if a["status"] != b["status"]:
-                why.append("status")
+            here = [h for h in b["ops"] if r["register"].op_stage.get(h) == s.stage]
+            if here or a["active"] != b["active"] or (a["status"] == "NOT ISSUED") != (b["status"] == "NOT ISSUED"):
+                why.append("status")                 # not a relabel such as AMENDED -> ACTIVE (as amended by ...)
             if b["interpretation_stage"] == s.stage and a["interpretation"] != b["interpretation"]:
                 why.append(f"interpretation re-made at {s.stage}" + (f" ({_short(b['interpretation'].get('note') or '', 90)})"
                                                                     if (b["interpretation"] or {}).get("note") else ""))

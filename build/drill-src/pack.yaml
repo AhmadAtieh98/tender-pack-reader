@@ -1,0 +1,35 @@
+# Drill pack: the six received documents as in config/pack.yaml, plus a SYNTHETIC Addendum No. 3
+# (tests/fixtures/make_drill.py; not tender content). Paths are repository-relative, or absolute when the
+# drill was built outside the repository; tenderpack resolves either as root / path.
+pack_id: NUPA-ISTP-2026-014-DRILL
+manifest: build/drill-src/manifest.json
+furniture: build/drill-src/furniture.yaml
+readings_dir: curation/readings
+approvals: build/drill-src/approvals.yaml
+amendments_dir: curation/amendments
+register: curation/register/rows.yaml
+documents:
+- doc_id: VOL-I
+  kind: volume
+  path: sources/candidate_pack/VOL-I_Instructions_to_Bidders.pdf
+- doc_id: VOL-II
+  kind: volume
+  path: sources/candidate_pack/VOL-II_Technical_Requirements.pdf
+- doc_id: VOL-IV
+  kind: volume
+  path: sources/candidate_pack/VOL-IV_Form_Sheets.pdf
+- doc_id: VOL-V
+  kind: volume
+  path: sources/candidate_pack/VOL-V_Draft_Project_Agreement.pdf
+- doc_id: ADD-01
+  kind: addendum
+  number: 1
+  path: sources/candidate_pack/ADD-01_Addendum_No_1.pdf
+- doc_id: ADD-02
+  kind: addendum
+  number: 2
+  path: sources/candidate_pack/ADD-02_Addendum_No_2.pdf
+- doc_id: ADD-03
+  kind: addendum
+  number: 3
+  path: build/drill-src/ADD-03_Addendum_No_3.pdf

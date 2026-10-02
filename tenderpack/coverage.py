@@ -490,7 +490,7 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
 
     total_content = sum(p["content_spans"] for p in pages)
     total_assigned = sum(p["assigned"] for p in pages)
-    checks.append({"id": "C01", "ok": True, "detail": f"{len(pack.docs)} documents match sources/manifest.json (sha256, pages)"})
+    checks.append({"id": "C01", "ok": True, "detail": f"{len(pack.docs)} documents match {getattr(pack, 'manifest', 'sources/manifest.json')} (sha256, pages)"})
     checks.append({"id": "C02", "ok": len(pages) == sum(d.doc.pages for d in pack.docs),
                    "detail": f"{len(pages)} pages accounted for out of {sum(d.doc.pages for d in pack.docs)}"})
     checks.append({"id": "C03", "ok": total_content == total_assigned and not any("assigned twice" in x for x in problems),

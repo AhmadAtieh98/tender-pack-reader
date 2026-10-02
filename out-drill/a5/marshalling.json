@@ -1,0 +1,229 @@
+{
+ "columns": [
+  {
+   "header": "item",
+   "key": "item",
+   "width": 20
+  },
+  {
+   "header": "issuer",
+   "key": "issuer",
+   "width": 20
+  },
+  {
+   "header": "owner",
+   "key": "owner",
+   "width": 20
+  },
+  {
+   "header": "lead_time_wd",
+   "key": "lead_time_wd",
+   "width": 20
+  },
+  {
+   "header": "lead_time_assumption",
+   "key": "lead_time_assumption",
+   "width": 20
+  },
+  {
+   "header": "multiplicity",
+   "key": "multiplicity",
+   "width": 20
+  },
+  {
+   "header": "drop_dead_start",
+   "key": "drop_dead_start",
+   "width": 20
+  },
+  {
+   "header": "needed_by",
+   "key": "needed_by",
+   "width": 20
+  },
+  {
+   "header": "activity",
+   "key": "activity",
+   "width": 20
+  },
+  {
+   "header": "req_ids",
+   "key": "req_ids",
+   "width": 20
+  },
+  {
+   "header": "flags",
+   "key": "flags",
+   "width": 20
+  }
+ ],
+ "rows": [
+  {
+   "activity": "lcc-certificate",
+   "drop_dead_start": "2026-10-13",
+   "flags": [
+    "INFEASIBLE by 7 WD (latest start 2026-10-13 is before the status date 2026-10-22; not compressed)"
+   ],
+   "issuer": "Competent authority (not named in the pack)",
+   "item": "Local Content Certificate",
+   "lead_time_assumption": "lcc_certificate",
+   "lead_time_wd": 30,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Commercial",
+   "req_ids": [
+    "VOL-I-8.6-01"
+   ]
+  },
+  {
+   "activity": "technical-proposal",
+   "drop_dead_start": "2026-10-27",
+   "flags": [
+    "IMAGE READING PENDING (VOL-II-T2-4-TN)"
+   ],
+   "issuer": "Bidder",
+   "item": "Technical Proposal narrative (page limit per VOL-I 9.2)",
+   "lead_time_assumption": "technical_proposal",
+   "lead_time_wd": 20,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-II-4.4-01",
+    "VOL-II-T2-4-TN"
+   ]
+  },
+  {
+   "activity": "references",
+   "drop_dead_start": "2026-11-10",
+   "flags": [],
+   "issuer": "Reference plant owners",
+   "item": "Reference evidence and completion certificates",
+   "lead_time_assumption": "reference_evidence",
+   "lead_time_wd": 10,
+   "multiplicity": "x2 (reference_plants_offered, assumption)",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-I-8.5-01"
+   ]
+  },
+  {
+   "activity": "poa",
+   "drop_dead_start": "2026-11-16",
+   "flags": [],
+   "issuer": "Notary",
+   "item": "Notarised Power of Attorney",
+   "lead_time_assumption": "poa_notarisation",
+   "lead_time_wd": 5,
+   "multiplicity": "",
+   "needed_by": "2026-11-22",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-9.3-01"
+   ]
+  },
+  {
+   "activity": "bond-issue",
+   "drop_dead_start": "2026-11-19",
+   "flags": [],
+   "issuer": "Issuing bank",
+   "item": "Bid Bond (original)",
+   "lead_time_assumption": "bid_bond_issue",
+   "lead_time_wd": 3,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Commercial",
+   "req_ids": [
+    "VOL-I-6.3-01",
+    "VOL-I-6.4-01",
+    "VOL-I-6.4-02"
+   ]
+  },
+  {
+   "activity": "form-4c-sign",
+   "drop_dead_start": "2026-11-19",
+   "flags": [
+    "IMAGE READING PENDING (VOL-I-9.4-01)",
+    "IMAGE READING PENDING (VOL-IV-F4C-04)",
+    "IMAGE READING PENDING (VOL-IV-F4C-N1)"
+   ],
+   "issuer": "Each member's authorised signatory",
+   "item": "Form 4-C (Arabic, one per member)",
+   "lead_time_assumption": "form_4c_member_sign",
+   "lead_time_wd": 3,
+   "multiplicity": "x3 (members, assumption)",
+   "needed_by": "2026-11-23",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-9.4-01",
+    "VOL-IV-F4C-04",
+    "VOL-IV-F4C-N1"
+   ]
+  },
+  {
+   "activity": "iso-copy",
+   "drop_dead_start": "2026-11-22",
+   "flags": [
+    "REQUIREMENT STALE (VOL-I-8.3-01)"
+   ],
+   "issuer": "EPC Contractor (accredited certification body)",
+   "item": "ISO 9001:2015 certificate copy",
+   "lead_time_assumption": "iso_certificate_copy",
+   "lead_time_wd": 2,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "VOL-I-8.3-01"
+   ]
+  },
+  {
+   "activity": "form-4a",
+   "drop_dead_start": "2026-11-23",
+   "flags": [],
+   "issuer": "PoA holder",
+   "item": "Form 4-A (signed)",
+   "lead_time_assumption": "form_4a_signature",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Legal",
+   "req_ids": [
+    "VOL-I-7.1-01",
+    "VOL-I-9.3-01",
+    "VOL-IV-F4A-01"
+   ]
+  },
+  {
+   "activity": "form-4g-sign",
+   "drop_dead_start": "2026-11-23",
+   "flags": [],
+   "issuer": "Bidder",
+   "item": "Form 4-G (signed)",
+   "lead_time_assumption": "form_4g_signature",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-23",
+   "owner": "Technical",
+   "req_ids": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01"
+   ]
+  },
+  {
+   "activity": "deliver",
+   "drop_dead_start": "2026-11-26",
+   "flags": [],
+   "issuer": "Bidder",
+   "item": "Sealed Envelopes A and B (1 original, 3 copies, encrypted USB)",
+   "lead_time_assumption": "delivery",
+   "lead_time_wd": 1,
+   "multiplicity": "",
+   "needed_by": "2026-11-26",
+   "owner": "Bid management",
+   "req_ids": [
+    "VOL-I-6.1-01"
+   ]
+  }
+ ]
+}

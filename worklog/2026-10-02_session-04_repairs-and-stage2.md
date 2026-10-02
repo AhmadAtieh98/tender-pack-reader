@@ -9,7 +9,7 @@
     - a **dates** agent (`tenderpack/dates.py`, `tests/test_dates.py`);
     - a **render** agent (`tenderpack/render.py`, `tests/test_render.py`);
     - an **independent oracle** (`tests/golden/stage2_expectations.yaml`), written from the PDFs and the two pending readings only, without reading or running the program;
-    - a **drill fixture** agent (`tests/fixtures/make_drill.py`). The first launch stopped with an error before writing any file; it was relaunched with a self-contained brief (see §7, E31).
+    - a **drill fixture** agent (`tests/fixtures/make_drill.py`). The first launch stopped with an error before writing any file; the relaunch wrote the builder but stopped before verifying it; the assistant verified and completed the drill itself (§7, E31).
 - **Scope:** reproduce and fix three gaps with failing tests first; then Stage 2 as a representative slice; stop before Stage 3. Approve nothing on the owner's behalf; no model integrations.
 
 ## 1. The exchanges (verbatim)
@@ -45,7 +45,14 @@ return the repair evidence, generated outputs and a short list of decisions need
 Use subagents effectively
 ~~~~
 
-**Other owner message in this session:** "Try again" (after the first drill-fixture agent stopped before writing anything; it was relaunched).
+**Other owner messages in this session, in order:**
+
+| From | Text |
+|---|---|
+| owner | "Try again" (after the first drill-fixture agent stopped before writing anything; it was relaunched) |
+| owner | "test agent stopped because of lost connection, continue , additionally , they replied to my email , record that", with the hiring team's reply attached as an `.eml` file |
+
+**The hiring team's reply** (received Thu 1 Oct 2026 17:51 PDT = Fri 2 Oct 03:51 Riyadh; provided by the owner in this session) is recorded as received in `sources/correspondence/2026-10-02_reply_from_hiring.eml`, with its plain-text body in `2026-10-02_reply_from_hiring.md` and both files in `sources/manifest.json`. It confirms all six points of the owner's 1 Oct email: tools (including in the live session, if documented); the pack is complete as provided, with Volume III and Drawing 03-C-114 to be treated as referenced but not supplied and the gaps and impact flagged; Addendum 3 will be a PDF in the same format, shared at the start of the live session; no written clarifications to other candidates; the A5 basis; the archive and formats. Delivery "by 17:00 Monday 5 October at the latest". Recorded in `docs/PLAN.md` §0, §1.4, F13, D1, D6, and as Issue `I-VOL-III` (on A3).
 
 The assistant's progress notes while working were short status lines; the final reply is preserved verbatim in `2026-10-02_session-04_reply.md`.
 
@@ -131,8 +138,48 @@ Round-2 mutations (`s04/mutations_round2.txt`): A1, A3, A5, A7, A8 caught at onc
 | E28 | Plan §2.5 said "24 Working Days" from ADD-02 to the PDD without saying which days count; `working_days_between(22 Oct, 26 Nov)` = 25 (after 22 Oct up to and including 26 Nov). | The dates agent's tests | Plan corrected (both counts stated) |
 | E29 | Drafter: `_shape` built an invalid regular expression; the citation resolver missed "footnote 12 to Clause 8.5" (ADD-01 PARTIAL); `set_value` reordered a row's text (cells sorted); "also in" listed addendum units. | First engine runs on the real pack | Token wildcards; pattern added; only the changed cell replaced; volumes only |
 | E30 | First Stage 2 outputs: A2 listed ADD-01 Q5 and ADD-02 Q11/Q14 as answers to review because a bare "5", "12" or "120" matched (the question number, footnote 12, 120,000 m³/day); A3 doubled quotation marks and showed "active by addendum"; "WINDOW CLOSED" mixed a passed pack deadline with an infeasible chain; dates shown for rows not yet issued; duplicate "accounted by" entries. My own synthetic staleness op (Q8 → VOL-I 6.3) was rejected by C22 because Q8 does not cite 6.3. | Reading the outputs; the oracle's negative controls; the test | Figures matched with their unit ("120 pages", "12 November", "5 mg/l"), question numbers excluded; class and quote rendered separately, with the translation; DEADLINE PASSED vs INFEASIBLE; dates only for rows in force; deduplicated; the rejected op kept as a second wrong-target test and the staleness test retargeted to 6.4 |
-| E31 | The first drill-fixture subagent stopped with an error before writing any file. | Its completion notice | Relaunched with a self-contained brief |
+| E31 | The drill-fixture subagent stopped twice: first with an error before writing any file; then after writing the builder but before verifying it. | Its completion notices; the owner | Relaunched once; the second time the assistant ran the brief's verification itself (§8) |
+| E32 | Design gap found by the drill test: when a later addendum changes the words an interpretation quoted (ADD-03 moves the PDD that VOL-I-6.1-01 quotes), C16 would have called the whole build a structural failure. The intended behaviour is STALE. | Writing `test_drill.py` before running it | A missing quote is structural only for a current interpretation; for a row already STALE it is added to the staleness ("expected: the interpretation predates the change"); a row that was never pinned is not excused. C16's report names such rows |
+| E33 | C01 always printed "sources/manifest.json", also for the fixture and the drill, which use their own manifests. | Reading the drill's coverage report | C01 names the pack's own manifest (`build/fixture/coverage.*` changes accordingly) |
+| E34 | A2 listed rows as "moving" in the next addendum when only the label changed ("AMENDED (x)" → "ACTIVE (as amended by x)"). | Reading the drill's A2 | "status" is reported only when this addendum's ops touched the row or it came into or out of force |
 
-## 8. Drill and results
+## 8. The ADD-03 drill
 
-In progress at this commit: the drill fixture is being built; the drill run and the final test results are added in the next commit.
+`tests/fixtures/make_drill.py` builds a synthetic "Addendum No. 3" (not tender content) laid out like the received addenda (same fonts, furniture with the WinAnsi em dash, ruled Q&A table) and a seven-document pack around it. Verification, run by the assistant: two builds byte-identical (PDF sha256 `0c1a4917…c694`); `ingest` exit 0 with C01–C10 passing (547 units, 34 pages, 170 furniture spans by the unchanged rules); all 524 real units identical to the real build; the 23 ADD-03 units match the builder's own record (`expected.yaml`) exactly.
+
+There is no curated op file for ADD-03, so `outputs` drafts one with the same drafter and applies it with the same engine (`make drill`: `build/drill-src/`, `build/drill/`, `out-drill/`):
+
+| Provision | Drafted | Engine |
+|---|---|---|
+| 2.1 PDD 26 Nov → 10 Dec | replace_text VOL-I:6.1 | valid; dates recomputed (cut-off 26 Nov, bond 8 Jun 2027, proposal 9 May 2027, look-back 11 Dec 2016); six rows STALE |
+| 3.1 VOL-V 31.3 72 h → 48 h | replace_text VOL-V:31.3 | valid; VOL-II 4.4 untouched; VOL-V-31.3-01 STALE |
+| 4.1 delete VOL-I 8.6 | set_status deleted | valid; LCC chain active → deleted → reinstated → deleted (working state only) |
+| 5.1 TP → 0.5 mg/l | set_value VOL-II:T2-4/TP | valid; old value 1 from the pending image reading, flagged |
+| 6.1 "bid security period extended by thirty days" | unresolved | PARTIAL until a person decides |
+| 7.1 VOL-II 4.4 72 h → 60 h | replace_text VOL-II:4.4 | **invalid (C23)**: the old words are no longer there (ADD-02 made them 96 h); not retargeted |
+| Q15 (cites VOL-I 9.2) | unresolved | not listed for review (negative control) |
+| Q16 (quotes "26 November 2026") | unresolved | listed "REVIEW (not automatically revoked)" |
+
+ADD-03 is **PARTIAL**: the validated state stays ADD-02. A1 shows an ADD-03 column marked WORKING; A3 and the main A5 come from ADD-02 (PDD 26 Nov); the working A5 (`out-drill/a5/working/ADD-03.json`, status date 5 Nov) plans to 10 Dec with no LCC activity; A2 lists the drafted ops, the invalid op and the unresolved provisions. The drafted op file is written to `out-drill/drafted/ADD-03.yaml`, never into `curation/`.
+
+## 9. Results
+
+**Tests:** `make test`: **237 passed** in 143 s.
+
+| File | Tests | |
+|---|---|---|
+| `test_session04_repairs.py` | 17 | repairs (15 written first; 2 added after surviving mutations) |
+| `test_session04_adversary.py` | 66 | the adversarial reviewer's attacks, controls and shared-bug cases |
+| `test_stage2.py` | 35 | oracle comparisons and scenarios (§4) |
+| `test_drill.py` | 10 | the ADD-03 drill (§8) |
+| `test_dates.py` | 20 | calendar and counting readings |
+| `test_render.py` | 10 | A1 workbook and A3 page determinism, one-page limit, right-to-left text |
+| earlier sessions | 79 | unchanged |
+
+**Rebuilds:** Stage 1 `make evidence` leaves `build/` unchanged except the corrected C01 wording in `build/fixture/`; two Stage 2 builds are byte-identical and identical to the committed `out/`.
+
+**Checks on the real pack:** E01, C16, C25, C13, C40, C43 pass (A3 at scale 0.968); C20 and C21–C27: ADD-01 36 provisions and 11 ops, ADD-02 40 provisions and 14 ops, nothing unresolved or invalid; C11 reports VOL-I-8.3-01 STALE at ADD-01 and ADD-02.
+
+## 10. What this does and does not establish
+
+The tests show that the engine reproduces the independent oracle on the slice, that wrong targets and stale old words are rejected, that staleness and pending reading status travel to every output, that a partial addendum never replaces the validated state, and that the same path takes an unseen addendum. They do **not** show that any interpretation, consequence class, translation, lead time or counting choice is right, and nothing has been reviewed or approved by a person: every op and row is a proposal, and both image readings remain pending the owner's review. Passing tests are not correct interpretation, and they are not approval.

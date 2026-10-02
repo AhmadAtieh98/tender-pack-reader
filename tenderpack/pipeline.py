@@ -33,6 +33,7 @@ class PackResult:
     docs: list[DocResult]
     furniture_problems: list[str]
     rules: FurnitureRules | None = None
+    manifest: str = "sources/manifest.json"     # as named in the pack file (reported by C01)
 
 
 def process_document(doc: Document, rules: FurnitureRules, out: Path, root: Path,
@@ -60,4 +61,4 @@ def run_pack(pack_path: Path = ROOT / "config/pack.yaml", out: Path = ROOT / "bu
     rules = FurnitureRules.from_file(root / cfg["furniture"])
     results = [process_document(d, rules, out, root, save_evidence) for d in docs]
     furn = check_expected_counts([p for r in results for p in r.pages], rules)
-    return PackResult(root, out, results, furn, rules)
+    return PackResult(root, out, results, furn, rules, str(cfg["manifest"]))

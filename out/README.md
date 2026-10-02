@@ -17,11 +17,11 @@ Interpretations and ops are PROPOSED (not reviewed); image readings are PENDING 
 | Check | Result | Detail |
 |---|---|---|
 | E01 | pass | evidence build structurally OK and built from the current inputs |
-| C16 | pass | 26 rows x 3 stages; every quote and consequence quote found in the effective text |
+| C16 | pass | 26 rows x 3 stages; every quote and consequence quote of a current interpretation found in the effective text |
 | C25 | pass | no unit changed without an op targeting it |
 | C13 | pass | 9 A3 items, each with an explicit quoted consequence |
 | C40 | pass | every A5 activity cites an A1 row in force |
-| C43 | pass | A3 fits one page at scale 0.983 |
+| C43 | pass | A3 fits one page at scale 0.968 |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 11 ops; invalid: none |
 | C20 ADD-02 | ok | 40 provisions; unresolved or unaccounted: none |
