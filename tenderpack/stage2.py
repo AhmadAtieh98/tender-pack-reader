@@ -19,9 +19,15 @@ Structural checks (any failure: nothing is published; exit 2):
   C25 no addendum changed a unit no op targeted (scope)
   C13 A3's explicit-consequence list holds only rows with an explicit, quoted consequence in force
   C40 every A5 activity cites at least one A1 row in force at that stage
-  C43 A3 fits on one page
+  C44 every deliverable needed by a row in force has A5 activities, or a justified exception
+  C45 every A5 dependency, lead time and resource role is defined
+  C43 A3 fits on one page with no text below A3_MIN_TEXT_PT
 Reported, not structural: C20 provision coverage and C21-C24/C27 op validity (they make an addendum
 PARTIAL), C11 STALE rows, C31 printed dates that disagree with the effective anchor.
+
+Release gate (release_blockers): structurally checked is not approved. A working draft is published with
+its blockers listed (coverage: PARTIAL addenda, dispositions, C15; stale rows; approvals pending); with
+`outputs --strict` any blocker refuses the release (exit 3, candidate in <out>.rejected).
 """
 from __future__ import annotations
 
@@ -870,8 +876,10 @@ BID_STAGE = ("pass_fail", "scored", "procedural")
 
 
 def register_findings(r: dict) -> list[dict]:
-    """Everything a register drafter must clear, as {kind, where, detail}. Used by check-register and by
-    the build's structural checks (C12, C15, C16, C44, D01)."""
+    """Everything a register drafter must clear, as {kind, where, detail}: register files that do not load,
+    unit dispositions and their links to rows, the evidence-item vocabulary, quotes, units, bid-stage rows
+    without a deliverable, and unlinked consequence words (C15). Used by check-register (exit 1) and by the
+    release gate (each kind other than quotes, which C16 already checks structurally, is a coverage blocker)."""
     out = []
     for p in r["load_problems"]:
         out.append({"kind": "load", "where": p.split(":")[0], "detail": p})

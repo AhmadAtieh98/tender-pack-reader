@@ -23,6 +23,7 @@ Separate statuses, never merged:
 from __future__ import annotations
 
 import json
+import re
 from datetime import date
 from pathlib import Path
 from typing import Literal
@@ -30,7 +31,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from .amend import BASE, StageResult, UState
-from .dates import Calendar, DateRule, interpretations, parse_date, planning_value
+from .dates import Calendar, DateRule, Interpretation, interpretations, parse_date, planning_value
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
 
@@ -166,6 +167,26 @@ def _norm(t: str) -> str:
 
 def found(quote: str, text: str) -> bool:
     return _norm(quote) in _norm(text)
+
+
+_NUMBER_WORDS = ("zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|"
+                 "sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|"
+                 "thousand|and")
+
+
+def _rule_shape(text: str):
+    """A rule's words with the period wildcarded: number words and '(n)' match any other number."""
+    parts = []
+    for tok in re.findall(r"\(\d+\)|\d+|[A-Za-z]+(?:-[A-Za-z]+)*|[^\sA-Za-z\d]", normalize_latin(text)):
+        if re.fullmatch(r"\(\d+\)", tok):
+            parts.append(r"\(\d+\)")
+        elif re.fullmatch(r"\d+", tok):
+            parts.append(r"\d+")
+        elif all(w.lower() in _NUMBER_WORDS.split("|") for w in tok.split("-")):
+            parts.append(r"(?:[a-z]+(?:[- ][a-z]+)*)")
+        else:
+            parts.append(re.escape(tok))
+    return re.compile(r"\s*".join(parts), re.I)
 
 
 def stage_order(stages: list[StageResult]) -> list[str]:
@@ -340,13 +361,32 @@ class Register:
         anchors = anchor_values(st, self.rf.anchors, self.issued)
         dates = []
         for rd in row.date_rules:
-            rule = DateRule(rule_id=rd.rule_id, kind=rd.kind, purpose=rd.purpose, anchor=rd.anchor, offset=rd.offset,
+            offset, reread = rd.offset, None
+            src = effective(st, rd.source_unit, True)
+            if (rd.kind == "relative" and re.search(r"\(\d+\)", rd.text) and src is not None and src.status == "active"
+                    and not found(rd.text, src.text)):
+                # the rule's own words are no longer in the effective text (an addendum changed the period): re-read
+                # the period from the amended words of the same shape; the row is STALE and needs a person
+                hits = list(_rule_shape(rd.text).finditer(normalize_latin(src.text)))
+                num = re.search(r"\((\d+)\)", hits[0].group(0)) if len(hits) == 1 else None
+                if num:
+                    offset = int(num.group(1))
+                    reread = (f"period re-read from the effective text of {rd.source_unit}: {offset} (the rule says "
+                              f"{rd.offset}); needs a person")
+                else:
+                    reread = f"the rule's words are not in the effective text of {rd.source_unit}; no date planned"
+            rule = DateRule(rule_id=rd.rule_id, kind=rd.kind, purpose=rd.purpose, anchor=rd.anchor, offset=offset,
                             unit=rd.unit, direction=rd.direction,
                             fixed=date.fromisoformat(rd.fixed) if rd.fixed else None, source_unit=rd.source_unit,
                             text=rd.text)
             ins = interpretations(rule, anchors, self.cal)
             plan = planning_value(rule, ins, self.policy)
+            if reread:
+                flags.append(f"{rd.rule_id}: {reread}")
+                if offset == rd.offset and reread.endswith("no date planned"):
+                    plan = Interpretation(plan.key, "rule words not found", None, plan.basis)
             dates.append({"rule_id": rd.rule_id, "text": rd.text, "source_unit": rd.source_unit, "purpose": rd.purpose,
+                          "reread": reread,
                           "anchor": rd.anchor, "anchor_value": anchors.get(rd.anchor).isoformat() if anchors.get(rd.anchor) else None,
                           "interpretations": [{"key": i.key, "label": i.label, "value": i.value.isoformat() if i.value else None,
                                                "basis": i.basis} for i in ins],

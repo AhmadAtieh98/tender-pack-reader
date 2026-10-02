@@ -230,3 +230,47 @@ def test_an_unknown_dependency_is_a_failure(tmp_path):
     res = stage2.write(stage2.run(ROOT / "build", pack, ROOT), tmp_path / "out")
     assert res["status"] == "structural_failure"
     assert any(not c["ok"] and "no-such-activity" in c["detail"] for c in res["checks"])
+
+
+# ============================================================================ rehearsal live fix: unseen change types
+
+def test_drafter_handles_a_whole_clause_replacement_and_a_new_clause():
+    """Drill B (session 05) met two change types unseen in ADD-01/ADD-02; the drafter flagged them unresolved and a
+    person curated them. These phrasings are now recognised generally (no outcome is hardcoded)."""
+    units = _synthetic("Volume I Clause 6.7 is deleted and replaced by the following: ‘6.7 A Bidder may withdraw its "
+                       "Proposal by written notice through the Portal received before the Proposal Due Date. No Proposal "
+                       "may be modified after it has been submitted.’")
+    units.append({"unit_id": "ADD-09:3.1", "doc": "ADD-09", "kind": "clause", "label": "3.1", "pages": [1],
+                  "text": "The following Clause 4.4 is added to Volume I after Clause 4.3: ‘4.4 Each Bidder shall confirm "
+                          "in writing through the Portal, within three (3) Working Days of this Addendum, the name of its "
+                          "single point of contact.’"})
+    f = draft(units, "ADD-09")
+    by = {o.provision: o for o in f.ops}
+    assert by["ADD-09:2.1"].type == "replace_text" and by["ADD-09:2.1"].target == "VOL-I:6.7"
+    assert by["ADD-09:2.1"].new.startswith("A Bidder may withdraw") and by["ADD-09:2.1"].old_resolved == "matched_in_target"
+    assert by["ADD-09:3.1"].type == "insert_unit" and by["ADD-09:3.1"].anchor == "VOL-I:4.3"
+    assert not [d for d in f.dispositions if d.provision in ("ADD-09:2.1", "ADD-09:3.1")]
+    st = Engine(units, [f]).run()[-1]
+    assert st.status == "APPLIED" and all(x.valid for x in st.ops)
+    assert st.state["VOL-I:6.7"].text.startswith("A Bidder may withdraw its Proposal")
+    assert "VOL-I:4.3+ADD-09" in st.state and "three (3) Working Days" in st.state["VOL-I:4.3+ADD-09"].text
+    assert {o.review for o in f.ops} == {"proposed"}
+
+
+def test_a_changed_period_is_re_read_or_left_unplanned_never_kept_silently():
+    """E46 (drill B): a date rule's period is typed in its row. When an addendum changes the clause's words, the
+    period is re-read from the effective text and flagged for a person; when it cannot be re-read, no date is
+    planned. The typed period is never used silently against changed words. In memory only."""
+    r = stage2.run(ROOT / "build", ROOT / "config/pack.yaml", ROOT)
+    reg, row = r["register"], next(x for x in r["rowfile"].rows if x.id == "VOL-I-5.2-01")
+    s = copy.deepcopy(r["validated"])
+    cutoff = lambda ev: next(d for d in ev["dates"] if d["rule_id"] == "CLARIFICATION-CUTOFF")  # noqa: E731
+    before = cutoff(reg.evaluate(row, s))
+    assert before["reread"] is None
+    s.state["VOL-I:5.2"].text = s.state["VOL-I:5.2"].text.replace("ten (10) Working Days", "seven (7) Working Days")
+    ev = reg.evaluate(row, s)
+    assert cutoff(ev)["planning"]["value"] > before["planning"]["value"]          # 7 WD before the PDD, not 10
+    assert any("period re-read" in f and ": 7 (the rule says 10)" in f for f in ev["flags"])
+    s.state["VOL-I:5.2"].text = "Requests for clarification shall be submitted through the Portal."
+    ev = reg.evaluate(row, s)
+    assert cutoff(ev)["planning"]["value"] is None and any("no date planned" in f for f in ev["flags"])

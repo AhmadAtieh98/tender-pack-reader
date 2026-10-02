@@ -1,0 +1,476 @@
+_exceptions: {}
+EV-DELIVERY:
+- id: deliver
+  name: Deliver both sealed envelopes to Tender Box 4, Administrative Building C,
+    Sakaka before 14:00 Riyadh time on the PDD (VOL-I 6.1, Appendix 3; late Proposals
+    are rejected unopened, VOL-I 6.6)
+  owner: Bid management
+  resource: document_controller
+  issuer: Bidder (courier)
+  duration: delivery
+  predecessors:
+  - seal-and-mark
+  item: Sealed Envelopes A and B delivered to the Appendix 3 address
+  finish:
+    deadline_of: PDD
+- id: seal-and-mark
+  name: Seal Envelopes A and B separately and mark each 'NUPA/ISTP/2026/014 — NOT
+    TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE' (VOL-I 6.2, Appendix 3)
+  owner: Bid management
+  resource: document_controller
+  issuer: Bidder
+  duration: seal_and_mark
+  predecessors:
+  - copies
+  item: Envelopes A and B, sealed and marked per Appendix 3
+- &id001
+  id: copies
+  name: Make three hard copies of each envelope and the searchable electronic copy
+    on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf
+    (max 120 characters, folders max 3 levels); check the electronic copy against
+    the marked original (VOL-I 6.5, Appendix 2)
+  owner: Bid management
+  resource: document_controller
+  issuer: Bidder
+  duration: copies_and_usb
+  predecessors:
+  - assemble-envelope-a
+  - assemble-envelope-b
+  item: 3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)
+- id: assemble-envelope-a
+  name: Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered
+    dividers (Form 4-G after item (e)); check that no price or commercial information
+    appears (VOL-I 6.2)
+  owner: Bid management
+  resource: document_controller
+  issuer: Bidder
+  duration: envelope_assembly
+  predecessors: []
+- id: assemble-envelope-b
+  name: 'Assemble the marked original of Envelope B: Form 4-F and the Financial Model
+    (VOL-I 10.1; placement of the auditor''s opinion and the financing assumptions
+    schedule per the clarification answer)'
+  owner: Bid management
+  resource: document_controller
+  issuer: Bidder
+  duration: envelope_assembly
+  predecessors: []
+EV-COPIES:
+- *id001
+EV-CLARIFICATIONS:
+- id: clarifications
+  name: Submit clarification requests citing Volume, Clause and page (e.g. Form 4-A
+    printed date; Envelope B contents; one USB per envelope)
+  owner: Bid management
+  resource: bid_manager
+  issuer: Bidder
+  duration: clarification_drafting
+  predecessors: []
+  finish:
+    deadline_of: CLARIFICATION-CUTOFF
+EV-ATTENDANCE:
+- id: attendance-notice
+  name: If the attendance record is wrong, notify the Authority through the Portal
+  owner: Bid management
+  resource: bid_manager
+  issuer: Bidder
+  duration: clarification_drafting
+  predecessors: []
+  finish:
+    deadline_of: ATTENDANCE-NOTICE
+EV-GROUND-DD:
+- id: ground-dd
+  name: Review the data-room geotechnical report and satisfy the Bidder as to ground
+    conditions (e.g. the wadi crossing; ADD-01 Q4); feed the construction methodology
+    and the price
+  owner: Technical
+  resource: technical_lead
+  issuer: Bidder
+  duration: ground_due_diligence
+  predecessors: []
+  successors:
+  - fin-model-freeze
+  - assemble-envelope-a
+EV-SPOC:
+- id: spoc
+  name: Confirm the single point of contact to be named in Form 4-A; notify any later
+    change within 2 Working Days (VOL-I 4.3)
+  owner: Bid management
+  resource: bid_manager
+  issuer: Bidder
+  duration: spoc_confirmation
+  predecessors: []
+  successors:
+  - form-4a
+EV-POA:
+- id: poa-resolutions
+  name: Obtain the board resolutions of each member authorising its signatories
+  owner: Legal
+  resource: legal_counsel
+  issuer: Each member's board
+  duration: poa_board_resolutions
+  per: member
+  predecessors: []
+- id: poa
+  name: Notarise the Power of Attorney of each signatory (Form 4-A signatory of the
+    lead member; Form 4-C signatory of each member)
+  owner: Legal
+  resource: legal_counsel
+  issuer: Notary
+  duration: poa_notarisation
+  per: signatory
+  predecessors:
+  - poa-resolutions
+  successors:
+  - assemble-envelope-a
+  item: Notarised Power of Attorney (one per signatory)
+EV-FORM-4A:
+- id: form-4a
+  name: Complete Form 4-A as reissued by ADD-01 Appendix A (acknowledge the Addenda;
+    decide the printed date with the bid manager) and sign by the lead member's PoA
+    holder
+  owner: Legal
+  resource: legal_counsel
+  issuer: PoA holder of the lead member
+  duration: form_4a_signature
+  predecessors:
+  - poa
+  successors:
+  - assemble-envelope-a
+  item: Form 4-A (signed)
+EV-FORM-4B:
+- id: form-4b
+  name: Complete one Form 4-B for each reference project
+  owner: Technical
+  resource: technical_lead
+  issuer: Bidder
+  duration: form_4b_preparation
+  per: reference
+  predecessors:
+  - references
+  successors:
+  - assemble-envelope-a
+  item: Form 4-B (one per reference project)
+EV-COMPLETION-CERT:
+- id: completion-certs
+  name: Obtain the client completion certificate for each reference project (a reference
+    without one is disregarded, VOL-I 9.5)
+  owner: Technical
+  resource: technical_lead
+  issuer: Client of each reference plant
+  duration: completion_certificate
+  per: reference
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: Client completion certificate (one per reference project)
+EV-REFERENCES:
+- id: references
+  name: Collect commercial-operation evidence for the reference plants (capacity,
+    commercial operation within the look-back window)
+  owner: Technical
+  resource: technical_lead
+  issuer: Reference plant owners
+  duration: reference_evidence
+  per: reference
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: Evidence of commercial operation (one per reference plant)
+EV-FORM-4C:
+- id: form-4c-prep
+  name: Prepare Form 4-C in Arabic for each member
+  owner: Legal
+  resource: legal_counsel
+  issuer: Bidder
+  duration: form_4c_arabic_prep
+  predecessors: []
+- id: form-4c-sign
+  name: Sign and stamp Form 4-C at each member (Arabic governs; a translation may
+    be attached)
+  owner: Legal
+  resource: legal_counsel
+  issuer: Each member's authorised signatory
+  duration: form_4c_member_sign
+  per: member
+  predecessors:
+  - form-4c-prep
+  - poa
+  successors:
+  - assemble-envelope-a
+  item: Form 4-C (Arabic, one per member)
+EV-FORM-4D:
+- id: pcg-wording
+  name: Agree the Parent Company Guarantee wording (substantially Form 4-D; unconditional
+    for the construction period) with the EPC Contractor's ultimate parent
+  owner: Legal
+  resource: legal_counsel
+  issuer: Ultimate parent of the EPC Contractor
+  duration: pcg_wording
+  predecessors: []
+- id: pcg-execution
+  name: Obtain the executed Parent Company Guarantee from the ultimate parent
+  owner: Legal
+  resource: legal_counsel
+  issuer: Ultimate parent of the EPC Contractor
+  duration: pcg_execution
+  per: epc_contractor
+  predecessors:
+  - pcg-wording
+  successors:
+  - assemble-envelope-a
+  item: Form 4-D Parent Company Guarantee (executed original)
+EV-FORM-4E:
+- id: deviations-review
+  name: Review Volume V and list every deviation, qualification or reservation
+  owner: Legal
+  resource: legal_counsel
+  issuer: Bidder
+  duration: deviations_review
+  predecessors: []
+- id: form-4e
+  name: Finalise and sign Form 4-E; check that no qualification appears elsewhere
+    in the Proposal (VOL-I 9.6)
+  owner: Legal
+  resource: legal_counsel
+  issuer: Bidder
+  duration: form_4e_finalise
+  predecessors:
+  - deviations-review
+  - poa
+  successors:
+  - assemble-envelope-a
+  item: Form 4-E Schedule of Deviations (signed)
+EV-FORM-4G:
+- id: form-4g-review
+  name: Review the six Form 4-G undertakings with the O&M and OT security leads
+  owner: Technical
+  resource: technical_lead
+  issuer: Bidder
+  duration: form_4g_review
+  predecessors: []
+- id: form-4g-sign
+  name: Complete and sign Form 4-G
+  owner: Technical
+  resource: technical_lead
+  issuer: Bidder
+  duration: form_4g_signature
+  predecessors:
+  - form-4g-review
+  - poa
+  successors:
+  - assemble-envelope-a
+  item: Form 4-G (signed)
+EV-TECH-PROPOSAL:
+- id: technical-proposal
+  name: Write the Technical Proposal narrative (process design to the effective TN
+    limit; standby power duration; page limit as amended)
+  owner: Technical
+  resource: proposal_writers
+  issuer: Bidder
+  duration: technical_proposal
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: Technical Proposal narrative (page limit per VOL-I 9.2 as amended)
+EV-BID-BOND:
+- id: bond-approval
+  name: Obtain bank approval for the Bid Bond
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bank licensed in the Kingdom, rated A- or better
+  duration: bid_bond_bank_approval
+  predecessors: []
+- id: bond-issue
+  name: Issue the Bid Bond (validity per VOL-I 6.3)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Issuing bank
+  duration: bid_bond_issue
+  predecessors:
+  - bond-approval
+  successors:
+  - assemble-envelope-a
+  item: Bid Bond (original)
+EV-ISO:
+- id: iso-copy
+  name: Obtain a copy of the EPC Contractor's ISO 9001:2015 certificate and check
+    it is current at the PDD
+  owner: Technical
+  resource: technical_lead
+  issuer: EPC Contractor (accredited certification body)
+  duration: iso_certificate_copy
+  per: epc_contractor
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: ISO 9001:2015 certificate copy
+EV-FIN-STANDING:
+- id: fin-statements
+  name: Collect each member's most recent audited financial statements (three financial
+    years)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Each member (audited accounts)
+  duration: fin_statements_collection
+  per: member
+  predecessors: []
+- id: fin-standing
+  name: Compute and evidence combined tangible net worth and three-year average turnover,
+    weighted by shareholding (VOL-I 8.4)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bidder
+  duration: fin_standing_calc
+  predecessors:
+  - fin-statements
+  successors:
+  - assemble-envelope-a
+  item: Financial standing evidence (audited accounts of each member and the combined
+    calculation)
+EV-LCC:
+- id: lcc-ratio
+  name: Compute the construction-phase local content ratio
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bidder
+  duration: lcc_ratio_calc
+  predecessors: []
+- id: lcc-certificate
+  name: Obtain the Local Content Certificate from the competent authority
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Competent authority (not named in the pack)
+  duration: lcc_certificate
+  predecessors:
+  - lcc-ratio
+  successors:
+  - assemble-envelope-a
+  item: Local Content Certificate
+EV-OM-EXPERIENCE:
+- id: om-evidence
+  name: Obtain evidence of the O&M Operator's continuous operation of a qualifying
+    facility (VOL-I 8.8)
+  owner: Technical
+  resource: technical_lead
+  issuer: O&M Operator
+  duration: om_experience_evidence
+  per: om_operator
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: O&M Operator experience evidence
+EV-INVESTMENT-LICENCE:
+- id: investment-licence
+  name: 'For each foreign member: a copy of the current investment licence or a signed
+    undertaking to obtain it before Financial Close (VOL-I 8.9)'
+  owner: Legal
+  resource: legal_counsel
+  issuer: Licensing authority / each foreign member
+  duration: investment_licence
+  per: member
+  predecessors:
+  - poa
+  successors:
+  - assemble-envelope-a
+  item: Investment licence or signed undertaking (each foreign member; count assumes
+    every member may be foreign)
+EV-FIN-MODEL:
+- id: fin-model-build
+  name: Complete the Financial Model (unlocked, fully formula-linked Excel, no macros,
+    no hard-coded values in calculation cells)
+  owner: Commercial
+  resource: financial_modeller
+  issuer: Bidder
+  duration: fin_model_build
+  predecessors: []
+- id: fin-model-freeze
+  name: Freeze the Financial Model (final inputs and version) for the audit opinion
+    and Form 4-F
+  owner: Commercial
+  resource: financial_modeller
+  issuer: Bidder
+  duration: fin_model_freeze
+  predecessors:
+  - fin-model-build
+  successors:
+  - assemble-envelope-b
+  item: Financial Model (unlocked Excel, frozen version)
+EV-FIN-ASSUMPTIONS:
+- id: lender-terms
+  name: Obtain indicative financing terms (debt tenor, margin, gearing) for the model
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Lenders
+  duration: lender_terms
+  predecessors: []
+  successors:
+  - fin-model-freeze
+- id: fin-assumptions
+  name: Prepare the schedule of principal financing assumptions to accompany Form
+    4-F (VOL-I 10.6)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bidder
+  duration: fin_assumptions_schedule
+  predecessors:
+  - fin-model-freeze
+  successors:
+  - assemble-envelope-b
+  item: Schedule of principal financing assumptions
+EV-MODEL-AUDIT:
+- id: model-auditor-appoint
+  name: Appoint the independent model auditor (opinion to be addressed to the Authority)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bidder
+  duration: model_auditor_appointment
+  predecessors: []
+- id: model-audit-review
+  name: Rolling review of the draft Financial Model by the model auditor
+  owner: Commercial
+  resource: financial_modeller
+  issuer: Independent model auditor
+  duration: model_audit_review
+  predecessors:
+  - model-auditor-appoint
+- id: model-audit-opinion
+  name: Audit of the frozen Financial Model and issue of the opinion addressed to
+    the Authority (VOL-I 10.3)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Independent model auditor
+  duration: model_audit_opinion
+  predecessors:
+  - model-audit-review
+  - fin-model-freeze
+  successors:
+  - assemble-envelope-b
+  item: Independent model auditor's opinion (original)
+EV-FORM-4F:
+- id: form-4f
+  name: Complete and sign Form 4-F from the frozen Financial Model (single Availability
+    Payment, SAR per annum, excluding VAT)
+  owner: Commercial
+  resource: commercial_manager
+  issuer: Bidder
+  duration: form_4f_preparation
+  predecessors:
+  - fin-model-freeze
+  - poa
+  successors:
+  - assemble-envelope-b
+  item: Form 4-F Financial Proposal Schedule (signed)
+EV-GOOD-STANDING:
+- id: good-standing
+  name: Obtain a certificate of good standing for each member (not before the 30-day
+    window opens)
+  owner: Legal
+  issuer: Each member's registering authority
+  duration: good_standing_certificate
+  per: members
+  predecessors: []
+  successors:
+  - assemble-envelope-a
+  item: Certificate of good standing (one per member)
+  resource: legal_counsel

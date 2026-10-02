@@ -19,7 +19,8 @@ For one stage of the amendment path:
      (a person records whether it was done), plus the requirement flags
      (STALE interpretation, image reading pending) carried from the rows.
 Deltas between consecutive stages: NEW, REMOVED, MOVED (latest start changed), REWORK (the
-requirement behind an activity changed: work done against the earlier version may need redoing).
+requirement behind an activity changed — its interpretation, dates, wording, cells, or it became STALE:
+work done against the earlier version may need redoing).
 
 Both directions are checked (failures are returned in `problems` and are structural in the build):
   C40 every activity cites at least one row in force (an activity needs a requirement)
@@ -283,7 +284,10 @@ def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dic
             continue
         changed_rows = [r for r in c[k]["req_ids"] if r in prev_evals and r in cur_evals and
                         (prev_evals[r]["interpretation"] != cur_evals[r]["interpretation"] or
-                         [d["planning"] for d in prev_evals[r]["dates"]] != [d["planning"] for d in cur_evals[r]["dates"]])]
+                         [d["planning"] for d in prev_evals[r]["dates"]] != [d["planning"] for d in cur_evals[r]["dates"]] or
+                         prev_evals[r].get("text") != cur_evals[r].get("text") or
+                         prev_evals[r].get("cells") != cur_evals[r].get("cells") or
+                         bool(prev_evals[r].get("stale")) != bool(cur_evals[r].get("stale")))]
         if changed_rows:
             out.append({"activity": k, "change": "REWORK", "detail": f"requirement changed: {', '.join(changed_rows)}"})
         if p[k]["latest_start"] != c[k]["latest_start"]:

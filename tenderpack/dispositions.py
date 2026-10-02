@@ -21,7 +21,8 @@ Sweeps (sentence level, English and Arabic):
       person to confirm (reported, not structural)
   C15 consequence language (reject, disqualif, non-responsive, disregard, returned unopened, استبعاد,
       غير مستجيب, ...): every hit is linked to a row whose consequence is quoted from that unit, or to a
-      disposition whose `consequence_note` explains it (structural: an unlinked consequence is an omission)
+      disposition whose `consequence_note` explains it (an unlinked consequence is an omission: a
+      check-register finding and a release blocker)
 """
 from __future__ import annotations
 

@@ -22,6 +22,8 @@ Phrasings recognised (taken from the pack's addenda; extend with new phrasings, 
         in the target by the restated words' shape (the addendum does not quote the old words: flagged)
   "The <thing> in <Volume X Clause N> is unchanged at <words>"                              annotate confirms
   "Bidders shall acknowledge receipt in Form F"                                            annotate adds_obligation
+  "<Volume X Clause N> is deleted and replaced by the following: 'N <text>'"                replace_text (whole clause)
+  "The following Clause N is added to Volume X after Clause M: 'N <text>'"                  insert_unit after Clause M
   the addendum's own cover date line, recitals, and minutes it declares non-binding        no_effect
 """
 from __future__ import annotations
@@ -125,6 +127,19 @@ def _matches(t: str, p: str, st: dict[str, UState], order: list[str], provs: lis
     for m in re.finditer(r"(?:^|(?<=\. ))(The [^.]*?) in (Volume \S+ Clause [\d.]+) is unchanged at (.+?)\.?$", t):
         add(m, type="annotate", targets=[_target(m.group(2))], effect="confirms",
             expect=[{"unit": _target(m.group(2)), "contains": m.group(3).strip()}])
+    # whole clause deleted and replaced (session 05 rehearsal: a change type not seen in ADD-01/ADD-02)
+    for m in re.finditer(r"(Volume \S+ Clause ([\d.]+)) is deleted and replaced by the following: " + Q + r"\s*$", t):
+        target = _target(m.group(1))
+        new_text = re.sub(r"^" + re.escape(m.group(2)) + r"\s+", "", m.group(3)).strip()
+        if target in st and st[target].status == "active":
+            add(m, type="replace_text", target=target, old=st[target].text, old_resolved="matched_in_target", new=new_text,
+                issue="the whole clause is replaced; compare the old and new text for anything dropped")
+    # a new clause inserted after an existing one (session 05 rehearsal: unseen change type)
+    for m in re.finditer(r"The following Clause ([\d.]+) is added to (Volume \S+) after Clause ([\d.]+): " + Q + r"\s*$", t):
+        anchor = _target(f"{m.group(2)} Clause {m.group(3)}")
+        new_text = re.sub(r"^" + re.escape(m.group(1)) + r"\s+", "", m.group(4)).strip()
+        add(m, type="insert_unit", anchor=anchor, new_text=new_text,
+            note=f"new Clause {m.group(1)} inserted after Clause {m.group(3)} (the engine names it {anchor}+{addendum})")
     for m in re.finditer(r"Bidders shall acknowledge receipt (?:of this Addendum )?in Form (\d-[A-Z])\.?", t):
         add(m, type="annotate", targets=[p], effect="adds_obligation",
             note=f"the addendum must be acknowledged in Form {m.group(1)}")

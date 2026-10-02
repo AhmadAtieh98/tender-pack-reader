@@ -81,6 +81,32 @@ def test_every_volume_unit_has_a_disposition_and_every_row_an_owner(real):
     assert c15 == []                                                  # every consequence word is linked
 
 
+def test_consequence_sweeps_catch_an_unlinked_consequence_in_english_and_arabic(real):
+    """C15 is an omission sweep: a consequence word that no row quotes and no disposition explains is a finding
+    (and blocks a release), in either language. C14 lists obligation words in non-requirement units for a person."""
+    import copy
+    from tenderpack.dispositions import UnitDisposition, check_sweeps
+    units = real["units"] + [
+        {"unit_id": "VOL-I:SYN-EN", "doc": "VOL-I", "kind": "clause", "text": "A late notice shall be disregarded."},
+        {"unit_id": "VOL-IV:SYN-AR", "doc": "VOL-IV", "kind": "paragraph", "text": "أي نقص في المستندات يؤدي إلى رفض العرض."},
+    ]
+    disp = {**real["dispositions"], "VOL-I:SYN-EN": UnitDisposition(disposition="informational", reason="synthetic"),
+            "VOL-IV:SYN-AR": UnitDisposition(disposition="informational", reason="synthetic")}
+    c14, c15 = check_sweeps(units, disp, real["rowfile"].rows)
+    assert {(h["unit"], h["lang"]) for h in c15} == {("VOL-I:SYN-EN", "en"), ("VOL-IV:SYN-AR", "ar")}
+    assert any(h["unit"] == "VOL-I:SYN-EN" and h["word"] == "shall" for h in c14)
+    # the pack's own Arabic consequence (Form 4-C declaration 4, image) is caught once no row quotes it
+    decl4 = "VOL-IV:F4-C/image/decl4"
+    rows = [r for r in real["rowfile"].rows
+            if not any(getattr(it.consequence, "unit", None) == decl4 for it in r.interpretations)]
+    assert len(rows) < len(real["rowfile"].rows)
+    _, c15_real = check_sweeps(real["units"], real["dispositions"], rows)
+    assert (decl4, "ar") in {(h["unit"], h["lang"]) for h in c15_real}
+    r = copy.deepcopy(real)
+    r["sweeps"] = (c14, c15)
+    assert any(b["kind"] == "coverage" and "C15" in b["detail"] for b in stage2.release_blockers(r))
+
+
 def test_no_addendum_provision_is_left_outside_the_slice(real):
     for s in real["stages"][1:]:
         assert {c["disposition"] for c in s.coverage} <= {"op", "no_effect"}

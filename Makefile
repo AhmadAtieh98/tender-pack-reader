@@ -1,7 +1,7 @@
 # Stage 1 and Stage 2 workflow. Everything runs offline once the environment is installed.
 PY ?= .venv/bin/python
 
-.PHONY: setup evidence outputs drill test verify
+.PHONY: setup evidence outputs drill rehearsal test verify
 
 setup:            ## create .venv from uv.lock (needs network once)
 	uv sync --extra dev
@@ -18,6 +18,9 @@ drill:            ## synthetic Addendum No. 3 through the same path (no curated 
 	$(PY) tests/fixtures/make_drill.py build/drill-src
 	$(PY) -m tenderpack ingest --pack build/drill-src/pack.yaml --out build/drill
 	$(PY) -m tenderpack outputs --evidence build/drill --pack build/drill-src/pack.yaml --out out-drill
+
+rehearsal:        ## drill B: a second synthetic Addendum No. 3, drafted then curated, into out-drill-b/{src,build,out-drafted,out-curated} (no review)
+	$(PY) tests/fixtures/drill_b/rehearse.py out-drill-b
 
 test:
 	$(PY) -m pytest -q -p no:cacheprovider
