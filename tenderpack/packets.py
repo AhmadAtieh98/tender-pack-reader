@@ -157,7 +157,7 @@ def _render_rows(rows: list[tuple[str, str, str, str, list[str]]], out_prefix: P
 
 
 def _block_html(blk: Block, line) -> str:
-    text = _html_escape(line.source)
+    text = _html_escape(arabic.display_form(line.source) if blk.lang in ("ar", "mixed") else line.source)
     for n in line.numerals:
         if n.uncertain:
             text = text.replace(_html_escape(n.text), f'<span style="color:#c00000">{_html_escape(n.text)}</span>')
@@ -172,8 +172,8 @@ def numeral_evidence(pdf: pymupdf.Document, region: Region, reading: Reading, rd
             for ni, n in enumerate(ln.numerals):
                 item = {"block": blk.key, "band": ln.band, "token": n.text, "visual_ltr_expected": n.visual_ltr_expected,
                         "meaning": n.meaning, "uncertain": n.uncertain, "alternatives": n.alternatives, "note": n.note}
-                ok, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
-                item["render_check"] = {"ok": ok, "detail": how}
+                res, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
+                item["render_check"] = {"ok": res == "pass", "result": res, "detail": how}
                 if n.crop_bbox_pt:
                     adv = arabic.digit_advisory(page, n.crop_bbox_pt)
                     item["glyph_advisory"] = adv
@@ -201,11 +201,12 @@ def numeral_evidence(pdf: pymupdf.Document, region: Region, reading: Reading, rd
         for r in reading.table.rows:
             for n in r.numerals:
                 text = r.cells.get(n.column or "", "")
-                ok, how = arabic.visual_check(text, n.visual_ltr_expected)
+                res, how = arabic.visual_check(text, n.visual_ltr_expected)
                 out.append({"block": f"row {r.key}", "column": n.column, "band": None, "token": n.text,
                             "visual_ltr_expected": n.visual_ltr_expected, "meaning": n.meaning,
                             "uncertain": n.uncertain, "alternatives": n.alternatives, "note": n.note,
-                            "render_check": {"ok": ok, "detail": f"cell rendered right to left: {how}"}})
+                            "render_check": {"ok": res == "pass", "result": res,
+                                             "detail": f"cell rendered right to left: {how}"}})
     return out
 
 
@@ -265,7 +266,8 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
         for i, r in enumerate(t.rows, 1):
             if i not in ev["row_crops"]:
                 continue                                   # grid mismatch: reported by RD3
-            cells = " | ".join(_html_escape(r.cells.get(c.key, "")) or "<i>(blank)</i>" for c in t.columns)
+            cells = " | ".join(_html_escape(arabic.display_form(r.cells.get(c.key, "")) if t.direction == "rtl"
+                                            else r.cells.get(c.key, "")) or "<i>(blank)</i>" for c in t.columns)
             rows.append((f"row {r.key} (grid row {i})", ev["row_crops"][i], cells, table_lang,
                          [f"! {u}" for u in r.uncertain]))
         for blk in t.notes:
@@ -317,7 +319,8 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
               "## Checks run on this reading", "",
               "| Check | Result | Detail |", "|---|---|---|"]
     for c in checks:
-        res = "WARNING" if c.get("severity") == "warning" else ("pass" if c["ok"] else "FAIL")
+        res = "WARNING" if c.get("severity") == "warning" else \
+            ("PARTIAL" if c.get("result") == "partial" else ("pass" if c["ok"] else "FAIL"))
         lines.append(f"| {c['check']} | {res} | {c['detail'].replace('|', '/')} |")
     lines += ["", f"All checks pass: **{'yes' if ok_all else 'NO'}**.", "",
               "## What the checks prove, and what they do not", "",
@@ -343,7 +346,7 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
         for n in nums:
             where = f"cell `{n['column']}`" if n.get("column") else f"band {n['band']}"
             lines.append(f"- `{n['block']}` {where}: stored `{n['token']}`, crop shows `{n['visual_ltr_expected']}` "
-                         f"(left to right). Render check: **{'pass' if n['render_check']['ok'] else 'FAIL'}** "
+                         f"(left to right). Render check: **{n['render_check'].get('result', 'pass').upper()}** "
                          f"({n['render_check']['detail']}). Meaning: {n['meaning']}."
                          + (f" **Uncertain.** Alternatives: {'; '.join(n['alternatives'])}" if n['uncertain'] else ""))
             if "glyph_advisory" in n:
@@ -436,17 +439,19 @@ def _packet_html(region, reading, status, subject, checks, nums, unc, segs, comp
         d = "rtl" if lang in ("ar", "mixed") else "ltr"
         rows.append(f"<tr><td>{_md_inline(label)}</td><td>{_img(base, crop, 900)}</td>"
                     f'<td dir="{d}" class="v">{_md_inline(text)}</td><td>{_md_inline(note)}</td></tr>')
-    chk = "".join(f"<tr><td>{c['check']}</td><td class=\"{'w' if c.get('severity') == 'warning' else ('ok' if c['ok'] else 'bad')}\">"
-                  f"{'WARNING' if c.get('severity') == 'warning' else ('pass' if c['ok'] else 'FAIL')}</td>"
+    label = lambda c: ("WARNING" if c.get("severity") == "warning" else "PARTIAL" if c.get("result") == "partial"  # noqa: E731
+                       else "pass" if c["ok"] else "FAIL")
+    chk = "".join(f"<tr><td>{c['check']}</td><td class=\"{'ok' if label(c) == 'pass' else 'w' if label(c) in ('WARNING', 'PARTIAL') else 'bad'}\">"
+                  f"{label(c)}</td>"
                   f"<td>{e(c['detail'])}</td></tr>" for c in checks)
     num = "".join(f"<li><code>{e(n['block'])}</code> {e(str(n.get('column') or 'band ' + str(n['band'])))}: stored "
                   f"<b dir=\"rtl\">{e(n['token'])}</b>, crop shows <b>{e(n['visual_ltr_expected'])}</b> left to right; "
-                  f"render check <b>{'pass' if n['render_check']['ok'] else 'FAIL'}</b>"
+                  f"render check <b>{e(n['render_check'].get('result', 'pass').upper())}</b>"
                   + (f"; <b class=\"bad\">uncertain</b>, alternatives: {e('; '.join(n['alternatives']))}" if n["uncertain"] else "")
                   + (f"<br>{_img(base, n['image'], 900)}" if n.get("image") else "") + "</li>" for n in nums)
     dec = "".join(f"<li>{_md_inline(u)}</li>" for u in unc)
     failing = ", ".join(sorted({c["check"] for c in checks if not c["ok"]}))
-    warns = "; ".join(e(c["detail"]) for c in checks if c.get("severity") == "warning")
+    warns = "; ".join(e(c["detail"]) for c in checks if c.get("severity") in ("warning", "partial"))
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Review {e(region.region_id)}</title>
 <style>body{{font:14px/1.45 system-ui,sans-serif;margin:16px;max-width:1500px}}table{{border-collapse:collapse}}
 td,th{{border:1px solid #ccc;padding:4px 6px;vertical-align:top}}td.v{{min-width:340px;font-size:18px;font-family:'Noto Naskh Arabic',serif}}

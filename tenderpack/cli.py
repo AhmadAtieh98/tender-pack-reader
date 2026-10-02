@@ -5,7 +5,9 @@
              0  structure OK (readings may still be PENDING HUMAN REVIEW, printed visibly)
              2  STRUCTURAL FAILURE (a coverage check failed); the previous build is kept and the
                 failed build is written to <out>.failed for inspection
-             3  structure OK but readings pending review, and --require-approved was given
+             3  structure OK but readings pending review, and --require-approved was given: the gate
+                is applied BEFORE publishing, so the previous build is kept and this candidate is
+                written to <out>.rejected (with REJECTED.md saying why)
   show     UNIT_ID [--out build]       print a unit with its source references; write a highlighted crop
   approve  REGION_ID --reviewer NAME [--notes TEXT] [--pack ...] [--approvals PATH]
            record a person's approval of a reading, pinned to its review subject (reading +
@@ -52,6 +54,10 @@ def _failed_dir(out: Path) -> Path:
     return out.with_name(out.name + ".failed")
 
 
+def _rejected_dir(out: Path) -> Path:
+    return out.with_name(out.name + ".rejected")
+
+
 def _is_previous_build(d: Path) -> bool:
     return d.is_dir() and ((d / MARKER).is_file() or (d / "BUILD_MANIFEST.json").is_file() or not any(d.iterdir()))
 
@@ -72,7 +78,7 @@ def check_output_dir(out: Path, root: Path, inputs: list[Path]) -> None:
         inp = Path(inp).resolve()
         if inp == out or inp.is_relative_to(out) or out.is_relative_to(inp):
             raise UnsafeOutputError(f"refusing to write the build to {out}: it contains or lies inside the input {inp}")
-    for d in (out, _failed_dir(out)):
+    for d in (out, _failed_dir(out), _rejected_dir(out)):
         if d.exists() and not _is_previous_build(d):
             raise UnsafeOutputError(f"refusing to replace {d}: it exists and is not a previous tenderpack build "
                                     f"(no {MARKER} or BUILD_MANIFEST.json)")
@@ -89,8 +95,18 @@ def _inputs(pack_path: Path, cfg: dict, root: Path) -> list[Path]:
     return paths + [root / d["path"] for d in cfg["documents"]]
 
 
-def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False) -> dict:
-    """Build into a temporary sibling of `out`; replace `out` only if every structural check passes."""
+def _set_aside(tmp: Path, dest: Path, reason: str | None = None) -> None:
+    if dest.exists():
+        shutil.rmtree(dest)                           # a previous candidate; checked safe above
+    if reason:
+        (tmp / "REJECTED.md").write_text(reason, encoding="utf-8")
+    tmp.rename(dest)
+
+
+def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False, require_approved: bool = False) -> dict:
+    """Build into a temporary sibling of `out` and publish it (replace `out`) only if every structural check
+    passes and, with `require_approved`, no reading is pending. Otherwise the previous build stays untouched
+    and the candidate is set aside: <out>.failed (structural failure) or <out>.rejected (approval gate)."""
     pack_path, out, root = Path(pack_path).resolve(), Path(out).resolve(), Path(root).resolve()
     cfg = load_yaml(pack_path)
     check_output_dir(out, root, _inputs(pack_path, cfg, root))
@@ -106,7 +122,8 @@ def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False) -
         shutil.rmtree(tmp, ignore_errors=True)
         raise
     cov = res["coverage"]
-    if cov["status"] == "ok":
+    gate = require_approved and bool(cov["pending_review"])
+    if cov["status"] == "ok" and not gate:
         old = None
         if out.exists():
             old = out.parent / f".{out.name}.old-{os.getpid()}"
@@ -114,18 +131,23 @@ def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False) -
         tmp.rename(out)
         if old is not None:
             shutil.rmtree(old)
-        if _failed_dir(out).exists():
-            shutil.rmtree(_failed_dir(out))          # a stale failure report; checked safe above
+        for stale in (_failed_dir(out), _rejected_dir(out)):
+            if stale.exists():
+                shutil.rmtree(stale)                  # stale candidates; checked safe above
         res["out"] = out
+        res["status"], res["exit_code"] = "ok", 0
+    elif cov["status"] != "ok":
+        _set_aside(tmp, _failed_dir(out))
+        res["out"] = _failed_dir(out)
+        res["status"], res["exit_code"] = cov["status"], 2
     else:
-        failed = _failed_dir(out)
-        if failed.exists():
-            shutil.rmtree(failed)
-        tmp.rename(failed)
-        res["out"] = failed
+        _set_aside(tmp, _rejected_dir(out),
+                   "# Rejected by the approval gate (--require-approved)\n\n"
+                   f"Structure OK, but these readings are pending human review: {', '.join(cov['pending_review'])}.\n"
+                   "This candidate was not published; the previous build (if any) was kept.\n")
+        res["out"] = _rejected_dir(out)
+        res["status"], res["exit_code"] = "rejected_pending_review", 3
     res["pack"].out = res["out"]
-    res["status"] = cov["status"]
-    res["exit_code"] = 0 if cov["status"] == "ok" else 2
     if not quiet:
         _print_summary(res, out, root)
     return res
@@ -142,7 +164,10 @@ def _print_summary(res: dict, out: Path, root: Path) -> None:
     if cov["pending_review"]:
         print(f"PENDING HUMAN REVIEW: {', '.join(cov['pending_review'])} (not approved; units from these readings "
               "carry reading.status = pending)")
-    if cov["status"] == "ok":
+    if res["status"] == "rejected_pending_review":
+        print(f"NOT PUBLISHED: --require-approved was given and readings are pending human review. Previous build kept at "
+              f"{_rel(out, root)} (if any); this candidate written to {_rel(res['out'], root)}.")
+    elif cov["status"] == "ok":
         print(f"STRUCTURE OK. units: {len(res['units'])}  ->  {_rel(out, root)}/units.md, coverage.md, exclusions.md, review/")
     else:
         failed = [c["id"] for c in cov["checks"] if not c["ok"]]
@@ -156,12 +181,12 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
     readings = load_readings(readings_dir)
     approvals_path = root / cfg.get("approvals", "curation/approvals.yaml")
     approvals = load_approvals(approvals_path)
-    packets, r_units = {}, {}
+    packets, r_units, evs = {}, {}, {}
     for d in pack.docs:
         pdf = pymupdf.open(d.doc.path)
         for g in d.regions:
             reading, rpath = readings.get(g.region_id, (None, None))
-            ev = build_evidence(pdf, g, reading, out / "review", out)
+            ev = evs[g.region_id] = build_evidence(pdf, g, reading, out / "review", out)
             packets[g.region_id] = write_packet(pdf, g, reading, approvals, ev, out / "review", out, root, rpath,
                                                 d.doc.sha256, _rel(approvals_path, root))
             if reading is not None:
@@ -177,7 +202,7 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
                 ru = r_units[u["region"]]
                 u["reading"] = {"unit_id": ru[0]["unit_id"], "status": ru[0]["reading"]["status"]}
                 ordered.extend(ru)
-    cov = coverage_report(pack, packets, r_units, orphan)
+    cov = coverage_report(pack, packets, r_units, orphan, evs)
     rules = [{k: v for k, v in r.items() if not k.startswith("_")}
              for r in load_yaml(root / cfg["furniture"])["rules"]]
     title = cfg.get("pack_id", pack_path.stem)
@@ -197,7 +222,7 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
             outputs[p.relative_to(out).as_posix()] = sha256_file(p)   # relative to the build dir
     dump_json({"status": cov["status"], "inputs": inputs, "outputs": outputs,
                "tools": {"python": sys.version.split()[0], "pymupdf": pymupdf.__version__}}, out / "BUILD_MANIFEST.json")
-    return {"pack": pack, "coverage": cov, "units": ordered, "packets": packets}
+    return {"pack": pack, "coverage": cov, "units": ordered, "packets": packets, "evidence": evs}
 
 
 def show(unit_id: str, out: Path, root: Path = ROOT) -> int:
@@ -300,16 +325,11 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
     if args.cmd == "ingest":
         try:
-            res = ingest(Path(args.pack), Path(args.out))
+            res = ingest(Path(args.pack), Path(args.out), require_approved=args.require_approved)
         except UnsafeOutputError as e:
             print(f"REFUSED: {e}")
             return 2
-        if res["exit_code"]:
-            return res["exit_code"]
-        if args.require_approved and res["coverage"]["pending_review"]:
-            print("NOT APPROVED: --require-approved was given and readings are pending human review.")
-            return 3
-        return 0
+        return res["exit_code"]
     if args.cmd == "show":
         return show(args.unit_id, Path(args.out))
     return approve(args.region_id, args.reviewer, args.notes, ROOT, Path(args.pack), args.approvals)

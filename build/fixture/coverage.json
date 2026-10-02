@@ -21,7 +21,7 @@
    "ok": true
   },
   {
-   "detail": "5 regions; unread none; readings failing checks none; readings with no detected region none; PENDING HUMAN REVIEW: ['SYN-01-p4-r1', 'SYN-01-p4-r2', 'SYN-01-p4-r3', 'SYN-01-p5-r1', 'SYN-01-p5-r2']",
+   "detail": "5 regions; unread none; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: ['SYN-01-p4-r1', 'SYN-01-p4-r2', 'SYN-01-p4-r3', 'SYN-01-p5-r1', 'SYN-01-p5-r2']",
    "id": "C05",
    "ok": true
   },
@@ -46,14 +46,14 @@
    "ok": true
   },
   {
-   "detail": "17 text-layer units compared in full with spans re-extracted from the PDF; mismatches: none",
+   "detail": "31 units checked in full: text-layer units against spans re-extracted from the PDF (text, cells in order and column, matching text, anchor page and geometry); image-reading units against their region and crops; mismatches: none",
    "id": "C10",
    "ok": true
   }
  ],
  "evidence": {
   "failures": [],
-  "units_checked": 17
+  "units_checked": 31
  },
  "exclusions": [
   {
@@ -587,6 +587,17 @@
    ],
    "repeated_headers": [
     {
+     "cell_spans": {
+      "Criterion": [
+       "SYN-01/p3/s005"
+      ],
+      "Ref": [
+       "SYN-01/p3/s004"
+      ],
+      "Value": [
+       "SYN-01/p3/s006"
+      ]
+     },
      "page": 3,
      "spans": [
       "SYN-01/p3/s004",

@@ -84,10 +84,11 @@ AR_COLUMNS = [("item", "البند", "ar"), ("limit", "الحد", "mixed"), ("no
 AR_ROWS = [
     # key, cells (logical text as typed), declared numerals: (column, token, glyph order seen left to right)
     ("noise", {"item": "الضوضاء ليلاً", "limit": "45 dB(A)", "note": "من ٢٢:٠٠-٠٦:٠٠"},
-     # UAX #9 in a right-to-left cell: the number and the Latin run get level 2, the trailing ')' takes the
-     # paragraph direction and is mirrored, so the cell displays '(dB(A 45'. The time range is two Arabic-number
-     # runs joined by a hyphen that does not join them, so it displays in reverse order.
-     [("limit", "45 dB(A)", "(dB(A 45"), ("note", "٢٢:٠٠-٠٦:٠٠", "٠٦:٠٠-٢٢:٠٠")]),
+     # A correctly typeset source shows the Latin expression '45 dB(A)' as a left-to-right island in the RTL
+     # cell (the source marks it left to right; see LTR_EXPRESSIONS). Without that markup UAX #9 would display
+     # '(dB(A 45', which is scrambled. The time range is two Arabic-number runs joined by a hyphen that does not
+     # join them, so in a right-to-left cell it displays in reverse order (correct for Arabic).
+     [("limit", "45 dB(A)", "45 dB(A)"), ("note", "٢٢:٠٠-٠٦:٠٠", "٠٦:٠٠-٢٢:٠٠")]),
     ("ph", {"item": "الأس الهيدروجيني", "limit": "٦٫٠ - ٩٫٠", "note": ""},
      [("limit", "٦٫٠ - ٩٫٠", "٩٫٠ - ٦٫٠")]),
     ("samples", {"item": "عدد العينات", "limit": "١٢", "note": "شهرياً"},
@@ -95,6 +96,11 @@ AR_ROWS = [
 ]
 
 
+# How the *source document* marks Latin expressions as left to right inside Arabic cells: an LRE…PDF
+# embedding (MuPDF lays these out correctly; it ignores <span dir="ltr"> inside mixed text and mis-places
+# LRI…PDI isolates). This is the source's own markup, written here independently of tenderpack.
+LTR_EXPRESSIONS = {"45 dB(A)"}
+SOURCE_CONTROLS = {"\u202a", "\u202c"}
 DIGIT_OR_LATIN = set("0123456789٠١٢٣٤٥٦٧٨٩:-٫٬.()/ ") | set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 
 
@@ -111,9 +117,10 @@ def raster_table_image() -> tuple[pymupdf.Pixmap, dict]:
     pg = doc.new_page(width=420, height=140)
     cell = 'style="border:1px solid #000; padding:4px" dir="rtl"'
     rows = [[h for _, h, _ in AR_COLUMNS]] + [[cells[k] for k, _, _ in AR_COLUMNS] for _, cells, _ in AR_ROWS]
+    marked = lambda c: "\u202a" + c + "\u202c" if c in LTR_EXPRESSIONS else c  # noqa: E731
     html = '<table style="border-collapse:collapse; font-size:13px; width:400px">'
     for r in rows:
-        html += "<tr>" + "".join(f"<td {cell}>{c}</td>" for c in reversed(r)) + "</tr>"
+        html += "<tr>" + "".join(f"<td {cell}>{marked(c)}</td>" for c in reversed(r)) + "</tr>"
     html += "</table>"
     pg.insert_htmlbox(pymupdf.Rect(8, 8, 412, 132), html)
     borders = [d["rect"] for d in pg.get_drawings()]
@@ -126,8 +133,8 @@ def raster_table_image() -> tuple[pymupdf.Pixmap, dict]:
         for gc in range(len(xs) - 1):
             inside = sorted((bb[0], ch) for bb, ch in chars
                             if xs[gc] < (bb[0] + bb[2]) / 2 < xs[gc + 1] and ys[gr] < (bb[1] + bb[3]) / 2 < ys[gr + 1])
-            drawn[(gr, gc)] = {"box": [xs[gc], ys[gr], xs[gc + 1], ys[gr + 1]],
-                               "visual": "".join(ch for _, ch in inside if ch in DIGIT_OR_LATIN).strip()}
+            vis = "".join(ch for _, ch in inside if ch in DIGIT_OR_LATIN and ch not in SOURCE_CONTROLS)
+            drawn[(gr, gc)] = {"box": [xs[gc], ys[gr], xs[gc + 1], ys[gr + 1]], "visual": " ".join(vis.split())}
     return pg.get_pixmap(dpi=150), drawn
 
 

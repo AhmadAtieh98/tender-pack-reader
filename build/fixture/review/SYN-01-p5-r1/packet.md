@@ -8,7 +8,7 @@
 | Native image | 875x84 px, sha256 `98ec0f6f15db9471ea3938799bca5f1bd2083e28d63439e640cccee81f4086a1` |
 | Crop | `regions/SYN-01-p5-r1/crop.png` (200 dpi render), page context `regions/SYN-01-p5-r1/context.png` |
 | Reading file | `build/fixture-src/readings/SYN-01-p5-r1.yaml` |
-| Review subject sha256 | `56818d6f0207a0cc7dccea5e45198f3a5c8f9afb31c680827a93689f69889c17` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
+| Review subject sha256 | `a64836699f4cabc82b9bb77a57fd24bbab404d808ab1f9b55fb9353cdb6b1d2e` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
 | Prepared by | fixture generator: ground truth of what it drew (not a reading of pixels) |
 | Method | builder rendered this sentence |
 

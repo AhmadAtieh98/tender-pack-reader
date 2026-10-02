@@ -8,6 +8,16 @@ comparison would never notice. These checks render the stored text with a bundle
 (PyMuPDF ships Noto Naskh Arabic, so the result does not depend on system fonts) and read the
 glyph order back from the rendering.
 
+Latin expressions inside Arabic text ("45 dB(A)", "NUPA/ISTP/2026/014") are laid out as
+left-to-right islands, as a correctly typeset Arabic document shows them. Plain UAX #9 without
+directional markup would display "45 dB(A)" in a right-to-left paragraph as "(dB(A 45". The
+transcription is never changed: the island is marked only in the text handed to the renderer
+(`display_form`, LRE…PDF embedding; MuPDF lays out embeddings correctly but not isolates).
+
+Result of a rendered-order check: "pass" when the whole declared token is found in the rendered
+glyph order; "partial" when only its digits/Latin/punctuation could be verified because the
+token contains Arabic letters that the renderer's text extraction garbles; "fail" otherwise.
+
 Digit identity (is a glyph ٢ or ٣?) is checked separately and only *advisorily*, by comparing
 the shape of each glyph cropped from the source against reference renders of the ten
 Arabic-Indic digits (chamfer distance). A low margin between the best and second-best digit
@@ -15,6 +25,7 @@ is reported as an uncertainty for the human reviewer; it never overrides a readi
 """
 from __future__ import annotations
 
+import re
 import unicodedata
 
 import numpy as np
@@ -37,10 +48,27 @@ def storage_problems(text: str) -> list[str]:
     return out
 
 
+LRE, PDF = "\u202a", "\u202c"
+_LATIN_EXPR = re.compile(r"\(?[A-Za-z0-9][A-Za-z0-9 .,:;/()%+\-]*")
+_ARABIC_LETTER = re.compile("[\u0600-\u065f\u066e-\u06d3\u06d5-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
+
+
+def display_form(text: str) -> str:
+    """Text as handed to the renderer: each Latin expression (a run of Latin letters, European digits,
+    spaces and ASCII punctuation containing at least one Latin letter) is embedded left to right.
+    For display only; never stored."""
+    def wrap(m):
+        expr = m.group(0).rstrip(" .,:;")
+        if not re.search(r"[A-Za-z]", expr):
+            return m.group(0)
+        return LRE + expr + PDF + m.group(0)[len(expr):]
+    return _LATIN_EXPR.sub(wrap, text)
+
+
 def render_rtl(text: str, width: float = 1400, size: float = 22) -> tuple[pymupdf.Document, pymupdf.Page]:
     doc = pymupdf.open()
     page = doc.new_page(width=width, height=size * 3.5)
-    safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    safe = display_form(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     page.insert_htmlbox(pymupdf.Rect(6, 6, width - 6, size * 3.4),
                         f'<p dir="rtl" style="font-size:{size}px; margin:0">{safe}</p>')
     return doc, page
@@ -56,7 +84,8 @@ def visual_order(text: str) -> str:
                 for ch in span["chars"]:
                     chars.append((ch["bbox"][0], ch["c"]))
     chars.sort()
-    return "".join(c for _, c in chars)
+    vis = "".join(c for _, c in chars if c not in BIDI_CONTROLS)
+    return re.sub(r"\s+", " ", vis).strip()
 
 
 def visual_numeral_runs(text: str) -> list[str]:
@@ -156,20 +185,26 @@ def digits_of(s: str) -> list[int]:
     return [unicodedata.digit(c) for c in s if unicodedata.category(c) == "Nd"]
 
 
-def visual_check(source: str, expected_visual: str) -> tuple[bool, str]:
-    """Does rendering `source` RTL put the glyphs of a token in the order seen in the crop?
+def _reliable(t: str) -> str:
+    """The characters whose rendered order can be read back reliably: everything but Arabic letters."""
+    return re.sub(r"\s+", " ", _ARABIC_LETTER.sub(" ", t)).strip()
 
-    First compares the whole token (letters included) against the rendered glyph order after
-    NFKC (which folds Arabic presentation forms back to letters). If that is inconclusive
-    because the renderer's text extraction garbles a letter, falls back to digits and
-    separators only, and says so.
+
+def visual_check(source: str, expected_visual: str) -> tuple[str, str]:
+    """Does rendering `source` right to left put the glyphs of a token in the order seen in the crop?
+
+    Returns ("pass" | "partial" | "fail", detail). The whole token is compared first (after NFKC,
+    which folds Arabic presentation forms back to letters). If that fails and the token contains
+    Arabic letters, whose extraction can be garbled, only the digits, Latin letters and punctuation
+    are compared, in order: a match there is PARTIAL (the Arabic letters' order is not verified).
+    A token with no Arabic letters must match in full.
     """
     vis = unicodedata.normalize("NFKC", visual_order(source))
-    exp = unicodedata.normalize("NFKC", expected_visual)
+    exp = re.sub(r"\s+", " ", unicodedata.normalize("NFKC", expected_visual)).strip()
     if exp in vis:
-        return True, f"'{exp}' found in rendered glyph order"
-    runs = visual_numeral_runs(source)
-    exp_digits = "".join(ch for ch in exp if ch in NUMERAL_CHARS).strip("-./,:٫٬")
-    if exp_digits and exp_digits in runs:
-        return True, f"digit run '{exp_digits}' found in rendered runs {runs} (letter order not verifiable)"
-    return False, f"rendered numeral runs {runs}; expected '{exp}'"
+        return "pass", f"'{exp}' found in rendered glyph order '{vis}'"
+    exp_r, vis_r = _reliable(exp), _reliable(vis)
+    if _ARABIC_LETTER.search(exp) and exp_r and any(c.isdigit() for c in exp_r) and exp_r in vis_r:
+        return "partial", (f"PARTIAL: only digits/Latin/punctuation verified ('{exp_r}' in '{vis_r}'); "
+                           "the order of the Arabic letters could not be read back")
+    return "fail", f"rendered glyph order '{vis}'; expected '{exp}'"

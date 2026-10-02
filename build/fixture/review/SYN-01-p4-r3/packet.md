@@ -8,7 +8,7 @@
 | Native image | none (rendered crop) |
 | Crop | `regions/SYN-01-p4-r3/crop.png` (200 dpi render), page context `regions/SYN-01-p4-r3/context.png` |
 | Reading file | `build/fixture-src/readings/SYN-01-p4-r3.yaml` |
-| Review subject sha256 | `40ceec2d57a225a366f2c4b1c712a619f00214d2a0534c1f5fdb7a1276cb2b58` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
+| Review subject sha256 | `28a44f27be5f082987fb66c93c7755457e8a6546293248d6518b6ffb1cefd1dc` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
 | Prepared by | fixture generator: ground truth of what it drew (not a reading of pixels) |
 | Method | builder drew two Bezier curves |
 

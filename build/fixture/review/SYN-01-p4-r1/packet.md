@@ -5,10 +5,10 @@
 | | |
 |---|---|
 | Source | SYN-01 page 4, bbox [80.0, 110.0, 500.0, 250.2] pt (PDF points) |
-| Native image | 875x292 px, sha256 `de24a7a6aa4609def0d9045f1bb0cb8d76da7dd621c0ae3c8d051129b3d8d62e` |
+| Native image | 875x292 px, sha256 `0cc3c1a90be5e2ae53b4f5d1f58a7f2a95b4b58a79b971da093fc27f96fafa32` |
 | Crop | `regions/SYN-01-p4-r1/crop.png` (200 dpi render), page context `regions/SYN-01-p4-r1/context.png` |
 | Reading file | `build/fixture-src/readings/SYN-01-p4-r1.yaml` |
-| Review subject sha256 | `e062e881841af54e0da1490c84c7a3b35b37f08ccccdaebfde24ce8c0a1b9846` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
+| Review subject sha256 | `a6f2e61aa44dda6fc63261c3f5b1d8d2dabc12a158c6004c15832959d44eabed` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
 | Prepared by | fixture generator: ground truth of what it drew (not a reading of pixels) |
 | Method | cells copied from the builder's AR_ROWS; visual orders from UAX #9 reasoning |
 
@@ -17,23 +17,23 @@
 | Check | Result | Detail |
 |---|---|---|
 | RD1 | pass | region SYN-01 p4 [80.0, 110.0, 500.0, 250.2]; reading says SYN-01 p4 [80.0, 110.0, 500.0, 250.2] |
-| RD2 | pass | native image sha256 de24a7a6aa4609de…; reading made from de24a7a6aa4609de… |
+| RD2 | pass | native image sha256 0cc3c1a90be5e2ae…; reading made from 0cc3c1a90be5e2ae… |
 | RD8 | pass | 3 columns x 3 rows; 1 declared blank cells; every row has exactly one cell per column |
 | RD3 | pass | grid from pixels: 5 horizontal x 4 vertical rules = 4 rows x 3 cols (skew -0.02 deg); reading: header + 3 rows x 3 columns |
 | RD7 | pass | no text touches the image edge |
 | RD4 | pass | 1 text bands and 0 rule bands detected; outside-grid text segments needing a reading: 0; unread: none |
 | RD6 | pass | row noise cell item: numerals none; undeclared none |
 | RD6 | pass | row noise cell limit: numerals ['45']; undeclared none |
-| RD6 | pass | row noise cell limit: stored '45 dB(A)' -> rendered '(dB(A 45' found in rendered glyph order; crop shows '(dB(A 45' (left to right) |
+| RD6 | pass | row noise cell limit: stored '45 dB(A)' -> rendered '45 dB(A)' found in rendered glyph order '45 dB(A)'; crop shows '45 dB(A)' (left to right) |
 | RD6 | pass | row noise cell note: numerals ['٢٢:٠٠-٠٦:٠٠']; undeclared none |
-| RD6 | pass | row noise cell note: stored '٢٢:٠٠-٠٦:٠٠' -> rendered '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order; crop shows '٠٦:٠٠-٢٢:٠٠' (left to right) |
+| RD6 | pass | row noise cell note: stored '٢٢:٠٠-٠٦:٠٠' -> rendered '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'; crop shows '٠٦:٠٠-٢٢:٠٠' (left to right) |
 | RD6 | pass | row ph cell item: numerals none; undeclared none |
 | RD6 | pass | row ph cell limit: numerals ['٦٫٠', '٩٫٠']; undeclared none |
-| RD6 | pass | row ph cell limit: stored '٦٫٠ - ٩٫٠' -> rendered '٩٫٠ - ٦٫٠' found in rendered glyph order; crop shows '٩٫٠ - ٦٫٠' (left to right) |
+| RD6 | pass | row ph cell limit: stored '٦٫٠ - ٩٫٠' -> rendered '٩٫٠ - ٦٫٠' found in rendered glyph order '٩٫٠ - ٦٫٠'; crop shows '٩٫٠ - ٦٫٠' (left to right) |
 | RD6 | pass | row ph cell note: numerals none; undeclared none |
 | RD6 | pass | row samples cell item: numerals none; undeclared none |
 | RD6 | pass | row samples cell limit: numerals ['١٢']; undeclared none |
-| RD6 | pass | row samples cell limit: stored '١٢' -> rendered '١٢' found in rendered glyph order; crop shows '١٢' (left to right) |
+| RD6 | pass | row samples cell limit: stored '١٢' -> rendered '١٢' found in rendered glyph order '١٢'; crop shows '١٢' (left to right) |
 | RD6 | pass | row samples cell note: numerals none; undeclared none |
 
 All checks pass: **yes**.
@@ -54,10 +54,10 @@ From the reading's recorded uncertainties; each is a question for you, not somet
 
 Stored text is in logical order; the program renders it and compares the glyph order with what the crop shows. The glyph-shape comparison is advisory only.
 
-- `row noise` cell `limit`: stored `45 dB(A)`, crop shows `(dB(A 45` (left to right). Render check: **pass** (cell rendered right to left: '(dB(A 45' found in rendered glyph order). Meaning: fixture ground truth.
-- `row noise` cell `note`: stored `٢٢:٠٠-٠٦:٠٠`, crop shows `٠٦:٠٠-٢٢:٠٠` (left to right). Render check: **pass** (cell rendered right to left: '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order). Meaning: fixture ground truth.
-- `row ph` cell `limit`: stored `٦٫٠ - ٩٫٠`, crop shows `٩٫٠ - ٦٫٠` (left to right). Render check: **pass** (cell rendered right to left: '٩٫٠ - ٦٫٠' found in rendered glyph order). Meaning: fixture ground truth.
-- `row samples` cell `limit`: stored `١٢`, crop shows `١٢` (left to right). Render check: **pass** (cell rendered right to left: '١٢' found in rendered glyph order). Meaning: fixture ground truth.
+- `row noise` cell `limit`: stored `45 dB(A)`, crop shows `45 dB(A)` (left to right). Render check: **PASS** (cell rendered right to left: '45 dB(A)' found in rendered glyph order '45 dB(A)'). Meaning: fixture ground truth.
+- `row noise` cell `note`: stored `٢٢:٠٠-٠٦:٠٠`, crop shows `٠٦:٠٠-٢٢:٠٠` (left to right). Render check: **PASS** (cell rendered right to left: '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'). Meaning: fixture ground truth.
+- `row ph` cell `limit`: stored `٦٫٠ - ٩٫٠`, crop shows `٩٫٠ - ٦٫٠` (left to right). Render check: **PASS** (cell rendered right to left: '٩٫٠ - ٦٫٠' found in rendered glyph order '٩٫٠ - ٦٫٠'). Meaning: fixture ground truth.
+- `row samples` cell `limit`: stored `١٢`, crop shows `١٢` (left to right). Render check: **PASS** (cell rendered right to left: '١٢' found in rendered glyph order '١٢'). Meaning: fixture ground truth.
 
 ## Side-by-side
 
@@ -73,7 +73,7 @@ Stored text is in logical order; the program renders it and compares the glyph o
 | &nbsp;&nbsp;heading `note` | ![crop](cells/r00c0.png) | ملاحظة | column language ar |
 | row `noise` | ![crop](rows/r01.png) |  |  |
 | &nbsp;&nbsp;`noise`.`item` | ![crop](cells/r01c2.png) | الضوضاء ليلاً |  |
-| &nbsp;&nbsp;`noise`.`limit` | ![crop](cells/r01c1.png) | 45 dB(A) | numeral `45 dB(A)` shows `(dB(A 45` left to right |
+| &nbsp;&nbsp;`noise`.`limit` | ![crop](cells/r01c1.png) | 45 dB(A) | numeral `45 dB(A)` shows `45 dB(A)` left to right |
 | &nbsp;&nbsp;`noise`.`note` | ![crop](cells/r01c0.png) | من ٢٢:٠٠-٠٦:٠٠ | numeral `٢٢:٠٠-٠٦:٠٠` shows `٠٦:٠٠-٢٢:٠٠` left to right |
 | row `ph` | ![crop](rows/r02.png) |  |  |
 | &nbsp;&nbsp;`ph`.`item` | ![crop](cells/r02c2.png) | الأس الهيدروجيني |  |

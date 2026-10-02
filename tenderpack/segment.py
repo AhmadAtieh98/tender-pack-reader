@@ -77,6 +77,7 @@ class Unit:
     children: list[str] = field(default_factory=list)
     table: dict | None = None        # tables: {columns, header_spans, repeated_headers, title}
     cells: dict | None = None        # table rows: {column: text}
+    cell_spans: dict | None = None   # table rows / form fields: {column: [span ids in reading order]}
     angle: float | None = None
     region: str | None = None        # region units: region id
     reading: dict | None = None      # filled by readings.py
@@ -367,6 +368,10 @@ class Segmenter:
             return " ".join(self._join2(f.spans, unit if not match else None)[k].strip()
                             for f in self._fragments(spans)).strip()
 
+        def cell_order(ri, ci) -> list[str]:
+            """Span ids of a cell in the order its text was built (visual lines, left to right)."""
+            return [s.span_id for f in self._fragments(grid.get((ri, ci), [])) for s in f.spans]
+
         row0_spans = [s for ci in range(ncols) for s in grid.get((0, ci), [])]
         has_header = bool(row0_spans) and all(s.color == "#ffffff" for s in row0_spans)
         header = [cell_text(0, ci) for ci in range(ncols)] if has_header else None
@@ -381,7 +386,8 @@ class Segmenter:
                 and (header is None or header == lt.table["columns"])):
             table = lt
             if has_header:
-                table.table["repeated_headers"].append({"page": pno, "spans": [s.span_id for s in row0_spans]})
+                table.table["repeated_headers"].append({"page": pno, "spans": [s.span_id for s in row0_spans],
+                                                        "cell_spans": {header[ci]: cell_order(0, ci) for ci in range(ncols)}})
                 self._assign(table, row0_spans)
             start = 1 if has_header else 0
         else:
@@ -400,7 +406,9 @@ class Segmenter:
             table = self._new_unit(tid, "table", label=title)
             table.table = {"columns": header, "ncols": ncols, "has_header": has_header, "col_edges": edges,
                            "repeated_headers": [], "title": title, "pages_last": pno,
-                           "form_like": (not has_header and ncols == 2)}
+                           "form_like": (not has_header and ncols == 2),
+                           "caption_spans": [s.span_id for f in self._fragments(cap_spans) for s in f.spans],
+                           "header_cell_spans": {header[ci]: cell_order(0, ci) for ci in range(ncols)} if has_header else {}}
             if cap_spans:
                 self._assign(table, cap_spans)
             if has_header:
@@ -414,7 +422,7 @@ class Segmenter:
             if pno not in table.pages:
                 table.pages.append(pno)
         table.table.setdefault("grid", []).append({"page": pno, "bbox": tb, "rows": t.row_count,
-                                                   "cols": t.col_count})
+                                                   "cols": t.col_count, "col_edges": edges})
 
         cols = table.table["columns"] or [f"col{i + 1}" for i in range(ncols)]
         existing_keys = {self.units[c].label for c in table.children}
@@ -443,11 +451,12 @@ class Segmenter:
             else:
                 rid = f"{table.unit_id}/{key}"
             row = self._new_unit(rid, "table_row", parent=table.unit_id, label=key)
-            row.cells = {}
+            row.cells, row.cell_spans = {}, {}
             for ci in range(ncols):
                 cs = grid.get((ri, ci), [])
                 if cs:
                     row.cells[cols[ci]] = cell_text(ri, ci, row)
+                    row.cell_spans[cols[ci]] = cell_order(ri, ci)
             mtexts = [cell_text(ri, ci, match=True) for ci in range(ncols)]
             if table.table["form_like"]:
                 row.kind = "form_field"
@@ -456,7 +465,7 @@ class Segmenter:
             else:
                 row.text = " | ".join(f"{cols[ci]}: {texts[ci]}" for ci in range(ncols) if texts[ci])
                 row.normalized = normalize_latin(" | ".join(f"{cols[ci]}: {mtexts[ci]}" for ci in range(ncols) if mtexts[ci]))
-            self._assign(row, spans)
+            self._assign(row, [content_by_id[sid] for c in row.cell_spans.values() for sid in c])
         self.last_table = table
         self.after_table = False
         self._close()

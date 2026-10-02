@@ -27,7 +27,9 @@ Checks (each yields a finding; nothing is silently corrected):
   RD5  Arabic stored as logical letters (no presentation forms, no undeclared bidi controls);
        every Arabic line has a translation, kept separate
   RD6  every numeral in an Arabic line or Arabic/mixed table cell is declared, and rendering the
-       stored text right to left reproduces the declared left-to-right glyph order of the crop
+       stored text right to left (Latin expressions as left-to-right islands) reproduces the declared
+       left-to-right glyph order of the crop. Result pass / PARTIAL (only digits, Latin and punctuation
+       could be verified because the token holds Arabic letters) / fail
   RD7  (warning) text touching the image edge: the image may be cropped
   RD8  table structure: unique column and row keys; every row has exactly one cell per column;
        an empty cell only where the row declares it in `blank` (and a declared blank is empty)
@@ -231,8 +233,10 @@ def _grid_y_range(grid) -> tuple[float, float]:
 def check_reading(reading: Reading, region: Region | None, pdf: pymupdf.Document | None) -> list[dict]:
     f: list[dict] = []
 
-    def add(check, ok, detail, severity="error"):
-        f.append({"check": check, "ok": bool(ok), "detail": detail, "severity": "info" if ok else severity})
+    def add(check, ok, detail, severity="error", result=None):
+        result = result or ("pass" if ok else "fail")
+        f.append({"check": check, "ok": bool(ok), "detail": detail, "result": result,
+                  "severity": "partial" if result == "partial" else ("info" if ok else severity)})
 
     if region is None:
         add("RD1", False, f"region {reading.region_id} was not detected in this build")
@@ -318,9 +322,9 @@ def check_reading(reading: Reading, region: Region | None, pdf: pymupdf.Document
                 add("RD6", not undeclared,
                     f"{blk.key} band {ln.band}: numerals in source {found or 'none'}; undeclared {undeclared or 'none'}")
                 for n in ln.numerals:
-                    ok, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
-                    add("RD6", ok, f"{blk.key} band {ln.band}: stored '{n.text}' -> rendered {how}; "
-                                   f"crop shows '{n.visual_ltr_expected}' (left to right)")
+                    res, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
+                    add("RD6", res != "fail", f"{blk.key} band {ln.band}: stored '{n.text}' -> rendered {how}; "
+                                              f"crop shows '{n.visual_ltr_expected}' (left to right)", result=res)
     _table_numerals(reading, add)
     return f
 
@@ -374,9 +378,9 @@ def _table_numerals(reading: Reading, add) -> None:
             add("RD6", not undeclared,
                 f"row {r.key} cell {key}: numerals {found or 'none'}; undeclared {undeclared or 'none'}")
             for n in decl:
-                ok, how = arabic.visual_check(text, n.visual_ltr_expected)
-                add("RD6", ok, f"row {r.key} cell {key}: stored '{n.text}' -> rendered {how}; "
-                               f"crop shows '{n.visual_ltr_expected}' (left to right)")
+                res, how = arabic.visual_check(text, n.visual_ltr_expected)
+                add("RD6", res != "fail", f"row {r.key} cell {key}: stored '{n.text}' -> rendered {how}; "
+                                          f"crop shows '{n.visual_ltr_expected}' (left to right)", result=res)
 
 
 # ------------------------------------------------------------------ units from readings
@@ -433,7 +437,7 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
                      label=row.key, cells=cells,
                      text=" | ".join(f"{k}: {v}" for k, v in cells.items() if v),
                      anchors=[{"page": page, "bbox": evidence.get("row_bbox_pt", {}).get(i + 1, region.bbox),
-                               "spans": [], "crop": evidence.get("row_crops", {}).get(i + 1),
+                               "spans": [], "crop": evidence.get("row_crops", {}).get(i + 1), "grid_row": i + 1,
                                "cell_crops": {cols[c]: evidence.get("cell_crops", {}).get((i + 1, grid_col(c)))
                                               for c in range(ncols)},
                                "cell_bbox_pt": {cols[c]: evidence.get("cell_bbox_pt", {}).get((i + 1, grid_col(c)))
