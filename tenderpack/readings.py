@@ -59,7 +59,10 @@ class Numeral(_Strict):
     """A token containing digits whose rendered order must match the crop.
 
     text                 as stored in `source` or the cell (logical order)
-    visual_ltr_expected  glyph order seen in the crop, left to right (e.g. "٢-٤" for logical "٤-٢")
+    visual_ltr_expected  glyph order seen in the crop, left to right (e.g. "٢-٤" for logical "٤-٢"); it must
+                         hold exactly the token's characters and match a whole rendered run.
+    Several numerals of one line or cell are listed in the order the crop shows them, left to right; the
+    build checks that the rendered line puts them in that order.
     column               table rows only: the column key of the cell holding the token
     """
     column: str | None = None
@@ -322,9 +325,12 @@ def check_reading(reading: Reading, region: Region | None, pdf: pymupdf.Document
                 add("RD6", not undeclared,
                     f"{blk.key} band {ln.band}: numerals in source {found or 'none'}; undeclared {undeclared or 'none'}")
                 for n in ln.numerals:
-                    res, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
+                    res, how = arabic.visual_check(ln.source, n.visual_ltr_expected, n.text)
                     add("RD6", res != "fail", f"{blk.key} band {ln.band}: stored '{n.text}' -> rendered {how}; "
                                               f"crop shows '{n.visual_ltr_expected}' (left to right)", result=res)
+                if len(ln.numerals) > 1:
+                    ok, how = arabic.order_check(ln.source, [n.visual_ltr_expected for n in ln.numerals])
+                    add("RD6", ok, f"{blk.key} band {ln.band}: {how}")
     _table_numerals(reading, add)
     return f
 
@@ -378,9 +384,12 @@ def _table_numerals(reading: Reading, add) -> None:
             add("RD6", not undeclared,
                 f"row {r.key} cell {key}: numerals {found or 'none'}; undeclared {undeclared or 'none'}")
             for n in decl:
-                res, how = arabic.visual_check(text, n.visual_ltr_expected)
+                res, how = arabic.visual_check(text, n.visual_ltr_expected, n.text)
                 add("RD6", res != "fail", f"row {r.key} cell {key}: stored '{n.text}' -> rendered {how}; "
                                           f"crop shows '{n.visual_ltr_expected}' (left to right)", result=res)
+            if len(decl) > 1:
+                ok, how = arabic.order_check(text, [n.visual_ltr_expected for n in decl])
+                add("RD6", ok, f"row {r.key} cell {key}: {how}")
 
 
 # ------------------------------------------------------------------ units from readings
@@ -397,7 +406,9 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
     def line_anchor(ln: BlockLine) -> dict:
         key = (ln.band, ln.side)
         return {"page": page, "bbox": evidence.get("band_bbox_pt", {}).get(key, region.bbox), "spans": [],
-                "crop": evidence.get("band_crops", {}).get(key)}
+                "crop": evidence.get("band_crops", {}).get(key), "band": [ln.band, ln.side]}
+
+    whole = {"page": page, "bbox": region.bbox, "spans": [], "crop": region.crop["path"] if region.crop else None}
 
     def block_unit(blk: Block, uid: str, parent: str) -> dict:
         u = dict(base, unit_id=uid, kind="reading_block", parent=parent, label=blk.key, lang=blk.lang,
@@ -426,7 +437,7 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
                    table={"columns": cols, "title": title, "direction": t.direction,
                           "column_lang": {c.heading: c.lang for c in t.columns},
                           "qualifier": t.qualifier.source if t.qualifier else None},
-                   anchors=[{"page": page, "bbox": region.bbox, "spans": []}])
+                   anchors=[dict(whole)])
         units.append(top)
         ncols = len(cols)
         # grid column on the page for logical column c: right to left tables start at the right
@@ -458,12 +469,10 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
             units.append(block_unit(blk, f"{reading.unit_id}/{blk.key}", reading.unit_id))
     elif reading.content_type == "graphic":
         units.append(dict(base, unit_id=reading.unit_id, kind="graphic", label=reading.title,
-                          text=reading.description or "", description=reading.description,
-                          anchors=[{"page": page, "bbox": region.bbox, "spans": [],
-                                    "crop": region.crop["path"] if region.crop else None}]))
+                          text=reading.description or "", description=reading.description, anchors=[dict(whole)]))
     else:
         units.append(dict(base, unit_id=reading.unit_id, kind="image_text", label=reading.title, text=reading.title,
-                          anchors=[{"page": page, "bbox": region.bbox, "spans": []}]))
+                          anchors=[dict(whole)]))
         for blk in reading.blocks:
             units.append(block_unit(blk, f"{reading.unit_id}/{blk.key}", reading.unit_id))
     for u in units:

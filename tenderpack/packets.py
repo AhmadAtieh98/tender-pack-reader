@@ -172,7 +172,7 @@ def numeral_evidence(pdf: pymupdf.Document, region: Region, reading: Reading, rd
             for ni, n in enumerate(ln.numerals):
                 item = {"block": blk.key, "band": ln.band, "token": n.text, "visual_ltr_expected": n.visual_ltr_expected,
                         "meaning": n.meaning, "uncertain": n.uncertain, "alternatives": n.alternatives, "note": n.note}
-                res, how = arabic.visual_check(ln.source, n.visual_ltr_expected)
+                res, how = arabic.visual_check(ln.source, n.visual_ltr_expected, n.text)
                 item["render_check"] = {"ok": res == "pass", "result": res, "detail": how}
                 if n.crop_bbox_pt:
                     adv = arabic.digit_advisory(page, n.crop_bbox_pt)
@@ -201,7 +201,7 @@ def numeral_evidence(pdf: pymupdf.Document, region: Region, reading: Reading, rd
         for r in reading.table.rows:
             for n in r.numerals:
                 text = r.cells.get(n.column or "", "")
-                res, how = arabic.visual_check(text, n.visual_ltr_expected)
+                res, how = arabic.visual_check(text, n.visual_ltr_expected, n.text)
                 out.append({"block": f"row {r.key}", "column": n.column, "band": None, "token": n.text,
                             "visual_ltr_expected": n.visual_ltr_expected, "meaning": n.meaning,
                             "uncertain": n.uncertain, "alternatives": n.alternatives, "note": n.note,

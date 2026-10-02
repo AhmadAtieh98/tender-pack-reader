@@ -24,16 +24,16 @@
 | RD4 | pass | 1 text bands and 0 rule bands detected; outside-grid text segments needing a reading: 0; unread: none |
 | RD6 | pass | row noise cell item: numerals none; undeclared none |
 | RD6 | pass | row noise cell limit: numerals ['45']; undeclared none |
-| RD6 | pass | row noise cell limit: stored '45 dB(A)' -> rendered '45 dB(A)' found in rendered glyph order '45 dB(A)'; crop shows '45 dB(A)' (left to right) |
+| RD6 | pass | row noise cell limit: stored '45 dB(A)' -> rendered '45 dB(A)' found as a whole run in rendered glyph order '45 dB(A)'; crop shows '45 dB(A)' (left to right) |
 | RD6 | pass | row noise cell note: numerals ['٢٢:٠٠-٠٦:٠٠']; undeclared none |
-| RD6 | pass | row noise cell note: stored '٢٢:٠٠-٠٦:٠٠' -> rendered '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'; crop shows '٠٦:٠٠-٢٢:٠٠' (left to right) |
+| RD6 | pass | row noise cell note: stored '٢٢:٠٠-٠٦:٠٠' -> rendered '٠٦:٠٠-٢٢:٠٠' found as a whole run in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'; crop shows '٠٦:٠٠-٢٢:٠٠' (left to right) |
 | RD6 | pass | row ph cell item: numerals none; undeclared none |
 | RD6 | pass | row ph cell limit: numerals ['٦٫٠', '٩٫٠']; undeclared none |
-| RD6 | pass | row ph cell limit: stored '٦٫٠ - ٩٫٠' -> rendered '٩٫٠ - ٦٫٠' found in rendered glyph order '٩٫٠ - ٦٫٠'; crop shows '٩٫٠ - ٦٫٠' (left to right) |
+| RD6 | pass | row ph cell limit: stored '٦٫٠ - ٩٫٠' -> rendered '٩٫٠ - ٦٫٠' found as a whole run in rendered glyph order '٩٫٠ - ٦٫٠'; crop shows '٩٫٠ - ٦٫٠' (left to right) |
 | RD6 | pass | row ph cell note: numerals none; undeclared none |
 | RD6 | pass | row samples cell item: numerals none; undeclared none |
 | RD6 | pass | row samples cell limit: numerals ['١٢']; undeclared none |
-| RD6 | pass | row samples cell limit: stored '١٢' -> rendered '١٢' found in rendered glyph order '١٢'; crop shows '١٢' (left to right) |
+| RD6 | pass | row samples cell limit: stored '١٢' -> rendered '١٢' found as a whole run in rendered glyph order '١٢'; crop shows '١٢' (left to right) |
 | RD6 | pass | row samples cell note: numerals none; undeclared none |
 
 All checks pass: **yes**.
@@ -54,10 +54,10 @@ From the reading's recorded uncertainties; each is a question for you, not somet
 
 Stored text is in logical order; the program renders it and compares the glyph order with what the crop shows. The glyph-shape comparison is advisory only.
 
-- `row noise` cell `limit`: stored `45 dB(A)`, crop shows `45 dB(A)` (left to right). Render check: **PASS** (cell rendered right to left: '45 dB(A)' found in rendered glyph order '45 dB(A)'). Meaning: fixture ground truth.
-- `row noise` cell `note`: stored `٢٢:٠٠-٠٦:٠٠`, crop shows `٠٦:٠٠-٢٢:٠٠` (left to right). Render check: **PASS** (cell rendered right to left: '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'). Meaning: fixture ground truth.
-- `row ph` cell `limit`: stored `٦٫٠ - ٩٫٠`, crop shows `٩٫٠ - ٦٫٠` (left to right). Render check: **PASS** (cell rendered right to left: '٩٫٠ - ٦٫٠' found in rendered glyph order '٩٫٠ - ٦٫٠'). Meaning: fixture ground truth.
-- `row samples` cell `limit`: stored `١٢`, crop shows `١٢` (left to right). Render check: **PASS** (cell rendered right to left: '١٢' found in rendered glyph order '١٢'). Meaning: fixture ground truth.
+- `row noise` cell `limit`: stored `45 dB(A)`, crop shows `45 dB(A)` (left to right). Render check: **PASS** (cell rendered right to left: '45 dB(A)' found as a whole run in rendered glyph order '45 dB(A)'). Meaning: fixture ground truth.
+- `row noise` cell `note`: stored `٢٢:٠٠-٠٦:٠٠`, crop shows `٠٦:٠٠-٢٢:٠٠` (left to right). Render check: **PASS** (cell rendered right to left: '٠٦:٠٠-٢٢:٠٠' found as a whole run in rendered glyph order '٠٦:٠٠-٢٢:٠٠ نم'). Meaning: fixture ground truth.
+- `row ph` cell `limit`: stored `٦٫٠ - ٩٫٠`, crop shows `٩٫٠ - ٦٫٠` (left to right). Render check: **PASS** (cell rendered right to left: '٩٫٠ - ٦٫٠' found as a whole run in rendered glyph order '٩٫٠ - ٦٫٠'). Meaning: fixture ground truth.
+- `row samples` cell `limit`: stored `١٢`, crop shows `١٢` (left to right). Render check: **PASS** (cell rendered right to left: '١٢' found as a whole run in rendered glyph order '١٢'). Meaning: fixture ground truth.
 
 ## Side-by-side
 

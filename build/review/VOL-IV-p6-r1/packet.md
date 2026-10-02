@@ -26,11 +26,11 @@
 | RD5 | pass | ref-ar: translation present (stored separately from source) |
 | RD5 | pass | ref-ar band 2: stored as logical Unicode Arabic letters |
 | RD6 | pass | ref-ar band 2: numerals in source ['2026/014']; undeclared none |
-| RD6 | pass | ref-ar band 2: stored '2026/014' -> rendered '2026/014' found in rendered glyph order 'NUPA/ISTP/2026/014 :مقر ةصقانم'; crop shows '2026/014' (left to right) |
+| RD6 | pass | ref-ar band 2: stored '2026/014' -> rendered '2026/014' found as a whole run in rendered glyph order 'NUPA/ISTP/2026/014 :مقر ةصقانم'; crop shows '2026/014' (left to right) |
 | RD5 | pass | form-ar: translation present (stored separately from source) |
 | RD5 | pass | form-ar band 4: stored as logical Unicode Arabic letters |
 | RD6 | pass | form-ar band 4: numerals in source ['٤']; undeclared none |
-| RD6 | pass | form-ar band 4: stored '٤-ج' -> rendered 'ج-٤' found in rendered glyph order 'ج-٤ جذومنDŽا'; crop shows 'ج-٤' (left to right) |
+| RD6 | pass | form-ar band 4: stored '٤-ج' -> rendered 'ج-٤' found as a whole run in rendered glyph order 'ج-٤ جذومنDŽا'; crop shows 'ج-٤' (left to right) |
 | RD5 | pass | title: translation present (stored separately from source) |
 | RD5 | pass | title band 5: stored as logical Unicode Arabic letters |
 | RD6 | pass | title band 5: numerals in source none; undeclared none |
@@ -60,7 +60,7 @@
 | RD5 | pass | decl5: translation present (stored separately from source) |
 | RD5 | pass | decl5 band 15: stored as logical Unicode Arabic letters |
 | RD6 | pass | decl5 band 15: numerals in source ['٤-٢']; undeclared none |
-| RD6 | pass | decl5 band 15: stored '٤-٢' -> rendered '٢-٤' found in rendered glyph order '.لو ƾا دǁجمDŽا نم ٢-٤ دنبDŽا يف اهيǁع صوصنمDŽا لاصتƾا دعاوقب مزتǁن :اًسماخ'; crop shows '٢-٤' (left to right) |
+| RD6 | pass | decl5 band 15: stored '٤-٢' -> rendered '٢-٤' found as a whole run in rendered glyph order '.لو ƾا دǁجمDŽا نم ٢-٤ دنبDŽا يف اهيǁع صوصنمDŽا لاصتƾا دعاوقب مزتǁن :اًسماخ'; crop shows '٢-٤' (left to right) |
 | RD5 | pass | field-member-ar: translation present (stored separately from source) |
 | RD5 | pass | field-member-ar band 17: stored as logical Unicode Arabic letters |
 | RD6 | pass | field-member-ar band 17: numerals in source none; undeclared none |
@@ -108,11 +108,11 @@ From the reading's recorded uncertainties; each is a question for you, not somet
 
 Stored text is in logical order; the program renders it and compares the glyph order with what the crop shows. The glyph-shape comparison is advisory only.
 
-- `ref-ar` band 2: stored `2026/014`, crop shows `2026/014` (left to right). Render check: **PASS** ('2026/014' found in rendered glyph order 'NUPA/ISTP/2026/014 :مقر ةصقانم'). Meaning: digits of the tender reference (Latin script run inside Arabic text).
-- `form-ar` band 4: stored `٤-ج`, crop shows `ج-٤` (left to right). Render check: **PASS** ('ج-٤' found in rendered glyph order 'ج-٤ جذومنDŽا'). Meaning: Form 4-C (the Arabic letter ج is used for C).
+- `ref-ar` band 2: stored `2026/014`, crop shows `2026/014` (left to right). Render check: **PASS** ('2026/014' found as a whole run in rendered glyph order 'NUPA/ISTP/2026/014 :مقر ةصقانم'). Meaning: digits of the tender reference (Latin script run inside Arabic text).
+- `form-ar` band 4: stored `٤-ج`, crop shows `ج-٤` (left to right). Render check: **PASS** ('ج-٤' found as a whole run in rendered glyph order 'ج-٤ جذومنDŽا'). Meaning: Form 4-C (the Arabic letter ج is used for C).
   - glyph-shape advisory, left to right: ٥ (best ٥ 0.0416, next ٨ 0.0605, margin 0.312), ٠ (best ٠ 0.2055, next ٧ 0.276, margin 0.255), ٤ (best ٤ 0.0191, next ١ 0.0487, margin 0.608), ٥ (best ٥ 0.0378, next ٨ 0.061, margin 0.381)
   - ![numeral](numerals/form-ar-0-0.png)
-- `decl5` band 15: stored `٤-٢`, crop shows `٢-٤` (left to right). Render check: **PASS** ('٢-٤' found in rendered glyph order '.لو ƾا دǁجمDŽا نم ٢-٤ دنبDŽا يف اهيǁع صوصنمDŽا لاصتƾا دعاوقب مزتǁن :اًسماخ'). Meaning: Clause 4-2 of Volume I, i.e. VOL-I §4.2 (blackout; 'Communications and Blackout' section). **Uncertain.** Alternatives: ٤-٣, i.e. VOL-I §4.3 (single point of contact), if the left glyph is ٣ rather than ٢
+- `decl5` band 15: stored `٤-٢`, crop shows `٢-٤` (left to right). Render check: **PASS** ('٢-٤' found as a whole run in rendered glyph order '.لو ƾا دǁجمDŽا نم ٢-٤ دنبDŽا يف اهيǁع صوصنمDŽا لاصتƾا دعاوقب مزتǁن :اًسماخ'). Meaning: Clause 4-2 of Volume I, i.e. VOL-I §4.2 (blackout; 'Communications and Blackout' section). **Uncertain.** Alternatives: ٤-٣, i.e. VOL-I §4.3 (single point of contact), if the left glyph is ٣ rather than ٢
   - glyph-shape advisory, left to right: ٢ (best ٢ 0.0153, next ٣ 0.0181, margin 0.156, LOW), -, ٤ (best ٤ 0.0184, next ١ 0.0487, margin 0.622)
   - ![numeral](numerals/decl5-0-0.png)
 

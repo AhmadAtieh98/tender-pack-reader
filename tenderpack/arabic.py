@@ -49,8 +49,12 @@ def storage_problems(text: str) -> list[str]:
 
 
 LRE, PDF = "\u202a", "\u202c"
-_LATIN_EXPR = re.compile(r"\(?[A-Za-z0-9][A-Za-z0-9 .,:;/()%+\-]*")
-_ARABIC_LETTER = re.compile("[\u0600-\u065f\u066e-\u06d3\u06d5-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
+# Characters that belong to a Latin expression: Latin letters, digits (European, and Arabic-Indic inside a Latin
+# reference), spaces, ASCII punctuation, unit signs (° µ μ ± ×), super/subscript digits and the hyphen family.
+_EXPR_CHARS = "A-Za-z0-9 .,:;/()%+\\-°µμ±×\u00b2\u00b3\u00b9\u2070-\u209f\u2010-\u2015\u0660-\u0669\u06f0-\u06f9"
+_LATIN_EXPR = re.compile(r"\(?[A-Za-z0-9][" + _EXPR_CHARS + "]*")
+_ARABIC_LETTER = re.compile("[\u0600-\u065f\u066e-\u06d3\u06d5-\u06ef\u06fa-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
+_SEPARATORS = "-./,:٫٬"
 
 
 def display_form(text: str) -> str:
@@ -59,6 +63,8 @@ def display_form(text: str) -> str:
     For display only; never stored."""
     def wrap(m):
         expr = m.group(0).rstrip(" .,:;")
+        while expr.endswith(")") and expr.count(")") > expr.count("("):
+            expr = expr[:-1].rstrip(" .,:;")      # the closing bracket of an enclosing (Arabic) parenthetical
         if not re.search(r"[A-Za-z]", expr):
             return m.group(0)
         return LRE + expr + PDF + m.group(0)[len(expr):]
@@ -190,7 +196,40 @@ def _reliable(t: str) -> str:
     return re.sub(r"\s+", " ", _ARABIC_LETTER.sub(" ", t)).strip()
 
 
-def visual_check(source: str, expected_visual: str) -> tuple[str, str]:
+def _fold(t: str) -> list[str]:
+    """Characters of a token for comparing it with its visual order: NFKC, no spaces, mirrored brackets equal."""
+    return sorted(unicodedata.normalize("NFKC", t).replace(" ", "").translate(str.maketrans(")", "(")))
+
+
+def _bounded(hay: str, needle: str, start: int = 0) -> int:
+    """Index of `needle` in `hay` as a whole numeral/expression run (not part of a longer run), or -1."""
+    i = hay.find(needle, start)
+    while i >= 0:
+        j = i + len(needle)
+        left_bad = i > 0 and (hay[i - 1].isdigit() or (hay[i - 1] in _SEPARATORS and i > 1 and hay[i - 2].isdigit()))
+        right_bad = j < len(hay) and (hay[j].isdigit() or (hay[j] in _SEPARATORS and j + 1 < len(hay) and hay[j + 1].isdigit()))
+        if not left_bad and not right_bad:
+            return i
+        i = hay.find(needle, i + 1)
+    return -1
+
+
+def order_check(source: str, expected_ltr: list[str]) -> tuple[bool, str]:
+    """Several declared tokens of one line, listed in the order the crop shows them (left to right): they must
+    appear in that order in the rendered line."""
+    vis = unicodedata.normalize("NFKC", visual_order(source))
+    pos, at = [], 0
+    for exp in expected_ltr:
+        e = re.sub(r"\s+", " ", unicodedata.normalize("NFKC", exp)).strip()
+        i = _bounded(vis, e, at)
+        if i < 0:
+            return False, f"'{e}' not found after position {at} in rendered '{vis}' (declared left-to-right order {expected_ltr})"
+        pos.append(i)
+        at = i + len(e)
+    return True, f"tokens appear left to right in the declared order at positions {pos}"
+
+
+def visual_check(source: str, expected_visual: str, token: str | None = None) -> tuple[str, str]:
     """Does rendering `source` right to left put the glyphs of a token in the order seen in the crop?
 
     Returns ("pass" | "partial" | "fail", detail). The whole token is compared first (after NFKC,
@@ -199,12 +238,16 @@ def visual_check(source: str, expected_visual: str) -> tuple[str, str]:
     are compared, in order: a match there is PARTIAL (the Arabic letters' order is not verified).
     A token with no Arabic letters must match in full.
     """
-    vis = unicodedata.normalize("NFKC", visual_order(source))
     exp = re.sub(r"\s+", " ", unicodedata.normalize("NFKC", expected_visual)).strip()
-    if exp in vis:
-        return "pass", f"'{exp}' found in rendered glyph order '{vis}'"
+    if not any(c.isdigit() or c.isalpha() for c in exp):
+        return "fail", f"the declared visual order '{expected_visual}' is empty or has no digits or letters"
+    if token is not None and _fold(token) != _fold(expected_visual):
+        return "fail", f"the declared visual order '{expected_visual}' does not hold exactly the characters of '{token}'"
+    vis = unicodedata.normalize("NFKC", visual_order(source))
+    if _bounded(vis, exp) >= 0:
+        return "pass", f"'{exp}' found as a whole run in rendered glyph order '{vis}'"
     exp_r, vis_r = _reliable(exp), _reliable(vis)
-    if _ARABIC_LETTER.search(exp) and exp_r and any(c.isdigit() for c in exp_r) and exp_r in vis_r:
+    if _ARABIC_LETTER.search(exp) and exp_r and any(c.isdigit() for c in exp_r) and _bounded(vis_r, exp_r) >= 0:
         return "partial", (f"PARTIAL: only digits/Latin/punctuation verified ('{exp_r}' in '{vis_r}'); "
                            "the order of the Arabic letters could not be read back")
     return "fail", f"rendered glyph order '{vis}'; expected '{exp}'"

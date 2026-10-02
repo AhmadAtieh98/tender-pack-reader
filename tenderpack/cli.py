@@ -63,21 +63,26 @@ def _is_previous_build(d: Path) -> bool:
 
 
 def check_output_dir(out: Path, root: Path, inputs: list[Path]) -> None:
-    """Refuse output locations that could overwrite the repository, its inputs or unrelated files."""
-    out, root = Path(out).resolve(), Path(root).resolve()
+    """Refuse output locations that could overwrite the repository, its inputs or unrelated files. The same
+    tests apply to the candidate siblings (<out>.failed, <out>.rejected), which a build may replace."""
+    out, root = Path(out).absolute(), Path(root).resolve()
     home = Path.home().resolve()
-    if out == Path(out.anchor) or out == home or home.is_relative_to(out):
-        raise UnsafeOutputError(f"refusing to write the build to {out}: it is the root or home directory or contains it")
-    if out == root or root.is_relative_to(out):
-        raise UnsafeOutputError(f"refusing to write the build to {out}: it is the repository or one of its parents")
-    for name in PROTECTED:
-        prot = root / name
-        if out == prot or out.is_relative_to(prot):
-            raise UnsafeOutputError(f"refusing to write the build to {out}: inside the protected folder {prot}")
-    for inp in inputs:
-        inp = Path(inp).resolve()
-        if inp == out or inp.is_relative_to(out) or out.is_relative_to(inp):
-            raise UnsafeOutputError(f"refusing to write the build to {out}: it contains or lies inside the input {inp}")
+    for d in (out, _failed_dir(out), _rejected_dir(out)):
+        if d.is_symlink():
+            raise UnsafeOutputError(f"refusing to use {d}: it is a symbolic link")
+        r = d.resolve()
+        if r == Path(r.anchor) or r == home or home.is_relative_to(r):
+            raise UnsafeOutputError(f"refusing to write to {r}: it is the root or home directory or contains it")
+        if r == root or root.is_relative_to(r):
+            raise UnsafeOutputError(f"refusing to write to {r}: it is the repository or one of its parents")
+        for name in PROTECTED:
+            prot = root / name
+            if r == prot or r.is_relative_to(prot):
+                raise UnsafeOutputError(f"refusing to write to {r}: inside the protected folder {prot}")
+        for inp in inputs:
+            inp = Path(inp).resolve()
+            if inp == r or inp.is_relative_to(r) or r.is_relative_to(inp):
+                raise UnsafeOutputError(f"refusing to write to {r}: it contains or lies inside the input {inp}")
     for d in (out, _failed_dir(out), _rejected_dir(out)):
         if d.exists() and not _is_previous_build(d):
             raise UnsafeOutputError(f"refusing to replace {d}: it exists and is not a previous tenderpack build "
@@ -107,9 +112,10 @@ def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False, r
     """Build into a temporary sibling of `out` and publish it (replace `out`) only if every structural check
     passes and, with `require_approved`, no reading is pending. Otherwise the previous build stays untouched
     and the candidate is set aside: <out>.failed (structural failure) or <out>.rejected (approval gate)."""
-    pack_path, out, root = Path(pack_path).resolve(), Path(out).resolve(), Path(root).resolve()
+    pack_path, out, root = Path(pack_path).resolve(), Path(out).absolute(), Path(root).resolve()
     cfg = load_yaml(pack_path)
-    check_output_dir(out, root, _inputs(pack_path, cfg, root))
+    check_output_dir(out, root, _inputs(pack_path, cfg, root))   # on the path as given: a symlink is refused
+    out = out.resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.parent / f".{out.name}.building-{os.getpid()}"
     if tmp.exists():
@@ -123,6 +129,18 @@ def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False, r
         raise
     cov = res["coverage"]
     gate = require_approved and bool(cov["pending_review"])
+    try:
+        _publish(res, cov, gate, tmp, out)
+    except BaseException:
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise
+    res["pack"].out = res["out"]
+    if not quiet:
+        _print_summary(res, out, root)
+    return res
+
+
+def _publish(res: dict, cov: dict, gate: bool, tmp: Path, out: Path) -> None:
     if cov["status"] == "ok" and not gate:
         old = None
         if out.exists():
@@ -147,10 +165,6 @@ def ingest(pack_path: Path, out: Path, root: Path = ROOT, quiet: bool = False, r
                    "This candidate was not published; the previous build (if any) was kept.\n")
         res["out"] = _rejected_dir(out)
         res["status"], res["exit_code"] = "rejected_pending_review", 3
-    res["pack"].out = res["out"]
-    if not quiet:
-        _print_summary(res, out, root)
-    return res
 
 
 def _print_summary(res: dict, out: Path, root: Path) -> None:
@@ -181,7 +195,7 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
     readings = load_readings(readings_dir)
     approvals_path = root / cfg.get("approvals", "curation/approvals.yaml")
     approvals = load_approvals(approvals_path)
-    packets, r_units, evs = {}, {}, {}
+    packets, r_units, evs, sources = {}, {}, {}, {}
     for d in pack.docs:
         pdf = pymupdf.open(d.doc.path)
         for g in d.regions:
@@ -192,6 +206,7 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
             if reading is not None:
                 st = review_status(reading, approvals, review_subject(reading, g, d.doc.sha256))
                 r_units[g.region_id] = reading_units(reading, g, st, ev)
+                sources[g.region_id] = (reading, st)
     orphan = sorted(set(readings) - set(packets))
     ordered = []
     for d in pack.docs:
@@ -202,7 +217,7 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
                 ru = r_units[u["region"]]
                 u["reading"] = {"unit_id": ru[0]["unit_id"], "status": ru[0]["reading"]["status"]}
                 ordered.extend(ru)
-    cov = coverage_report(pack, packets, r_units, orphan, evs)
+    cov = coverage_report(pack, packets, r_units, orphan, evs, sources)
     rules = [{k: v for k, v in r.items() if not k.startswith("_")}
              for r in load_yaml(root / cfg["furniture"])["rules"]]
     title = cfg.get("pack_id", pack_path.stem)
@@ -222,7 +237,8 @@ def _build(pack_path: Path, cfg: dict, out: Path, root: Path) -> dict:
             outputs[p.relative_to(out).as_posix()] = sha256_file(p)   # relative to the build dir
     dump_json({"status": cov["status"], "inputs": inputs, "outputs": outputs,
                "tools": {"python": sys.version.split()[0], "pymupdf": pymupdf.__version__}}, out / "BUILD_MANIFEST.json")
-    return {"pack": pack, "coverage": cov, "units": ordered, "packets": packets, "evidence": evs}
+    return {"pack": pack, "coverage": cov, "units": ordered, "packets": packets, "evidence": evs,
+            "reading_sources": sources}
 
 
 def show(unit_id: str, out: Path, root: Path = ROOT) -> int:

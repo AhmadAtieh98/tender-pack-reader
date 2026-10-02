@@ -30,6 +30,8 @@ from pathlib import Path
 import pymupdf
 
 from .extract import extract_page
+from .regions import detect_regions
+from .segment import Segmenter, _col_edges
 from .textnorm import normalize_latin
 from .util import write_text
 
@@ -65,6 +67,30 @@ def _close(a, b, tol=0.21) -> bool:
     return len(a) == len(b) and all(abs(x - y) <= tol for x, y in zip(a, b))
 
 
+_FRESH: dict[tuple, dict] = {}
+
+
+def _fresh(doc_id: str, path, sha256: str, rules) -> dict:
+    """Independent baseline for one source document: spans re-extracted, units re-segmented, ruled tables
+    re-detected. Cached by the file's hash and the furniture rules (never by anything the build produced)."""
+    key = (doc_id, str(path), sha256, repr([{k: v for k, v in r.items() if not k.startswith("_")} for r in rules.rules]))
+    if key not in _FRESH:
+        pdf = pymupdf.open(path)
+        pages = [extract_page(doc_id, pdf[i], rules) for i in range(pdf.page_count)]
+        regs = [g for pt in pages for g in detect_regions(doc_id, pdf[pt.page - 1], pt)]
+        seg = Segmenter(doc_id, pdf, pages, regs)
+        units = seg.run()
+        tables = {}
+        for pt in pages:
+            tables[pt.page] = [{"bbox": [round(float(v), 1) for v in t.bbox], "edges": _col_edges(t),
+                                "rows": [list(r.bbox) for r in t.rows]}
+                               for t in pdf[pt.page - 1].find_tables(strategy="lines").tables
+                               if t.row_count >= 2 and t.col_count >= 2]
+        _FRESH[key] = {"spans": {s.span_id: s for pt in pages for s in pt.content}, "order": list(seg.order),
+                       "units": {k: v.to_dict() for k, v in units.items()}, "tables": tables}
+    return _FRESH[key]
+
+
 def full_evidence(d, rules) -> dict:
     """C10 for text-layer units: re-extract every page and compare each unit in full with its spans.
 
@@ -76,16 +102,116 @@ def full_evidence(d, rules) -> dict:
     caption and each header cell likewise, and the table text is rebuilt from them.
     """
     pdf = pymupdf.open(d.doc.path)
-    fresh = {}
-    for i in range(pdf.page_count):
-        for s in extract_page(d.doc.doc_id, pdf[i], rules).content:
-            fresh[s.span_id] = s
+    base = _fresh(d.doc.doc_id, d.doc.path, d.doc.sha256, rules)
+    fresh = base["spans"]
     page_tables: dict[int, list] = {}
     regions = {g.region_id: g for g in d.regions}
     checked, failures = 0, []
 
     def fail(u, why):
         failures.append({"unit": u.unit_id, "kind": u.kind, "why": why})
+
+    # (a) every field of every unit equals an independent re-segmentation of the fresh extraction
+    if base["order"] != list(d.order):
+        failures.append({"unit": d.doc.doc_id, "kind": "document",
+                         "why": "unit ids or their order differ from an independent re-segmentation: "
+                                f"missing {sorted(set(base['order']) - set(d.order))[:3]}, "
+                                f"extra {sorted(set(d.order) - set(base['order']))[:3]}"})
+    for uid, u in d.units.items():
+        b = base["units"].get(uid)
+        if b is None:
+            continue
+        a = u.to_dict()
+        diff = sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+        if diff:
+            fail(u, f"differs from an independent re-segmentation of the source in: {diff}")
+
+    # (b) geometry independent of the segmenter: tables as ruled on the page, read afresh
+    def tables_on(pno):
+        return base["tables"].get(pno, [])
+
+    claimed: dict[tuple[int, int], str] = {}
+    table_grids: dict[str, dict[int, object]] = {}
+    for u in d.units.values():
+        if u.kind != "table":
+            continue
+        for g in (u.table or {}).get("grid", []):
+            match = [i for i, t in enumerate(tables_on(g["page"])) if _close(t["bbox"], g["bbox"], 0.6)]
+            if len(match) != 1:
+                fail(u, f"grid p{g['page']} {g['bbox']} does not match exactly one ruled table on that page")
+                continue
+            key = (g["page"], match[0])
+            if key in claimed:
+                fail(u, f"ruled table p{g['page']} #{match[0]} is also claimed by {claimed[key]}")
+            claimed[key] = u.unit_id
+            table_grids.setdefault(u.unit_id, {})[g["page"]] = tables_on(g["page"])[match[0]]
+
+    def grid_cell(s, table_id):
+        """(row index, column index) of a span in its table's fresh grid, by the span's centre."""
+        t = table_grids.get(table_id, {}).get(s.page)
+        if t is None:
+            return None
+        ri = next((i for i, r in enumerate(t["rows"]) if r[1] - 0.5 <= s.cy <= r[3] + 0.5), None)
+        edges = t["edges"]
+        ci = max((i for i, x in enumerate(edges[:-1]) if x <= s.cx + 0.5), default=0)
+        return ri, ci
+
+    used_rows: dict[tuple, str] = {}
+    for u in d.units.values():
+        if u.kind == "region" and (u.text or u.normalized):
+            fail(u, "a region placeholder carries text")
+        sids = [sid for a in u.anchors for sid in a["spans"] if sid in fresh]
+        sp = [fresh[x] for x in sids]
+        if sp and (all(s.invisible for s in sp)) != (u.kind == "invisible_text"):
+            fail(u, f"kind {u.kind!r} does not match its spans' visibility")
+        if u.label_span is not None:
+            pg = [x for x in sp if x.page == min(y.page for y in sp)]
+            top = min(pg, key=lambda x: x.y0) if pg else None
+            line1 = [x for x in pg if _same_line(x, top)] if top else []
+            first = min(line1, key=lambda x: x.x0) if line1 else None
+            if u.label_span not in fresh or first is None or first.span_id != u.label_span or \
+                    fresh[u.label_span].text.strip() != (u.label or ""):
+                fail(u, f"label_span {u.label_span} is not the unit's first span printing its label {u.label!r}")
+        elif u.kind in ("clause", "footnote"):
+            fail(u, "a clause or footnote without the span that prints its label")
+        if u.kind not in ("table", "table_row", "form_field") and sp:
+            for p_ in sorted({x.page for x in sp}):
+                bad = _out_of_order([fresh[x] for x in sids if fresh[x].page == p_])
+                if bad:
+                    fail(u, f"spans out of reading order across anchors: {bad}")
+                    break
+        if u.kind in ("table_row", "form_field"):
+            parent = d.units.get(u.parent or "")
+            if parent is None or parent.kind != "table" or u.unit_id not in parent.children:
+                fail(u, "row does not belong to an existing table that lists it")
+                continue
+            cols = parent.table.get("columns") or [f"col{i + 1}" for i in range(parent.table["ncols"])]
+            places = set()
+            for k, ss in (u.cell_spans or {}).items():
+                for sid in ss:
+                    gc = grid_cell(fresh[sid], parent.unit_id) if sid in fresh else None
+                    if gc is None or gc[0] is None:
+                        fail(u, f"span {sid} is not inside its table's ruled grid")
+                        break
+                    if k not in cols or cols[gc[1]] != k:
+                        fail(u, f"cell {k!r}: span {sid} lies in grid column {cols[gc[1]] if gc[1] < len(cols) else gc[1]!r}")
+                        break
+                    places.add((fresh[sid].page, gc[0]))
+            if len(places) > 1:
+                fail(u, f"row spans {len(places)} grid rows")
+            for pl in places:
+                key = (parent.unit_id,) + pl
+                if key in used_rows and used_rows[key] != u.unit_id:
+                    fail(u, f"grid row {pl} also belongs to {used_rows[key]}")
+                used_rows[key] = u.unit_id
+        if u.kind == "table" and (u.table or {}).get("has_header"):
+            for k, ss in (u.table.get("header_cell_spans") or {}).items():
+                cols = u.table.get("columns") or []
+                for sid in ss:
+                    gc = grid_cell(fresh[sid], u.unit_id) if sid in fresh else None
+                    if gc is None or gc[0] != 0 or k not in cols or cols[gc[1]] != k:
+                        fail(u, f"header {k!r}: span {sid} is not in that column of the header row")
+                        break
 
     def anchor_problem(u) -> str | None:
         for a in u.anchors:
@@ -212,21 +338,37 @@ def full_evidence(d, rules) -> dict:
     return {"units_checked": checked, "failures": failures}
 
 
-def reading_evidence(reading_units: dict[str, list[dict]], regions: dict, evidence: dict) -> dict:
-    """C10 for units derived from image readings: every anchor is on the region's page and inside it, and
-    every crop it cites is the crop the evidence index made for that band, row or cell (same bbox), in the
-    reading's own order (row n of the reading is grid row n)."""
+def reading_evidence(reading_units: dict[str, list[dict]], regions: dict, evidence: dict,
+                     sources: dict | None = None) -> dict:
+    """C10 for units derived from image readings.
+
+    (a) The units equal a fresh derivation from their reading (`sources`: {region: (reading, status)}).
+    (b) Independently of that derivation, every unit has at least one anchor, every anchor is on the
+        region's page, inside it, and cites a crop: the whole-region crop for the reading's top unit,
+        the crop of exactly the band and side a block line was read from, or for a table row the crop of
+        its grid row (row n of the reading is grid row n) and, for every column heading, the cell crop
+        and cell box of that column in that row (right-to-left tables: the first column is rightmost).
+    """
+    from .readings import reading_units as derive
     checked, failures = 0, []
     for rid, units in reading_units.items():
         g, ev = regions.get(rid), evidence.get(rid) or {}
-        crops = {}
-        for kind in ("band", "row", "cell"):
-            for k, path in ev.get(f"{kind}_crops", {}).items():
-                crops[path] = ev[f"{kind}_bbox_pt"].get(k)
+        if sources is not None and rid in sources:
+            reading, status = sources[rid]
+            want = derive(reading, g, status, ev)
+            if [u["unit_id"] for u in want] != [u["unit_id"] for u in units]:
+                failures.append({"unit": rid, "kind": "reading", "why": "units or their order differ from the reading"})
+            for a, b in zip(units, want):
+                diff = sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+                if diff:
+                    failures.append({"unit": a["unit_id"], "kind": a.get("kind"), "why": f"differs from its reading in: {diff}"})
+        top = units[0] if units else {}
+        cols = (top.get("table") or {}).get("columns") or []
+        rtl = (top.get("table") or {}).get("direction") == "rtl"
         expect_row = 1
         for u in units:
             checked += 1
-            why = None
+            why = None if u.get("anchors") else "no anchor"
             for a in u.get("anchors", []):
                 if g is None or a["page"] != g.page:
                     why = f"anchor page {a['page']} is not the region's page"
@@ -236,28 +378,44 @@ def reading_evidence(reading_units: dict[str, list[dict]], regions: dict, eviden
                     why = f"anchor bbox {b} lies outside the region {rb}"
                     break
                 crop = a.get("crop")
-                if crop is not None and crop != (g.crop or {}).get("path") and not _close(crops.get(crop) or [], b):
-                    why = f"crop {crop} is not the crop of bbox {b}"
+                if not crop:
+                    why = "anchor cites no crop"
                     break
-                if "grid_row" in a:
-                    if a["grid_row"] != expect_row:
-                        why = f"row unit at reading position {expect_row} cites grid row {a['grid_row']}"
+                if u["kind"] == "table_row":
+                    gr = a.get("grid_row")
+                    if gr != expect_row:
+                        why = f"row unit at reading position {expect_row} cites grid row {gr}"
                         break
                     expect_row += 1
-                    if crop != ev.get("row_crops", {}).get(a["grid_row"]):
-                        why = f"row crop {crop} is not grid row {a['grid_row']}"
+                    if crop != ev.get("row_crops", {}).get(gr) or not _close(b, ev.get("row_bbox_pt", {}).get(gr) or []):
+                        why = f"row crop/bbox is not grid row {gr}"
                         break
-                    for h, cc in (a.get("cell_crops") or {}).items():
-                        if cc is not None and not _close(crops.get(cc) or [], (a.get("cell_bbox_pt") or {}).get(h) or []):
-                            why = f"cell crop {cc} for {h!r} does not match its cell bbox"
+                    cc, cb = a.get("cell_crops") or {}, a.get("cell_bbox_pt") or {}
+                    for i, h in enumerate(cols):
+                        gc = len(cols) - 1 - i if rtl else i
+                        if cc.get(h) is None or cc.get(h) != ev.get("cell_crops", {}).get((gr, gc)) or \
+                                not _close(cb.get(h) or [], ev.get("cell_bbox_pt", {}).get((gr, gc)) or []):
+                            why = f"cell crop/bbox for column {h!r} is not grid cell ({gr}, {gc})"
                             break
+                    if why:
+                        break
+                elif u["kind"] == "reading_block":
+                    key = tuple(a.get("band") or ())
+                    if len(key) != 2 or crop != ev.get("band_crops", {}).get(key) or \
+                            not _close(b, ev.get("band_bbox_pt", {}).get(key) or []):
+                        why = f"block anchor is not the crop and box of band {list(key) or '?'}"
+                        break
+                elif crop != (g.crop or {}).get("path") or not _close(b, g.bbox):
+                    why = f"anchor of {u['kind']} is not the whole-region crop"
+                    break
             if why:
                 failures.append({"unit": u["unit_id"], "kind": u["kind"], "why": why})
     return {"units_checked": checked, "failures": failures}
 
 
 def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, list[dict]],
-                    orphan_readings: list[str] | None = None, evidence_index: dict | None = None) -> dict:
+                    orphan_readings: list[str] | None = None, evidence_index: dict | None = None,
+                    reading_sources: dict | None = None) -> dict:
     checks = []
     pages = []
     exclusions = []
@@ -359,7 +517,8 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
                              f"{sum(1 for s in superscripts if s['class'] == 'unit exponent')} unit exponents, "
                              f"{sum(1 for s in superscripts if s['class'] == 'footnote marker')} footnote markers "
                              f"(all paired: {not unpaired}); unclassified {len(unclassified)}"})
-    rev = reading_evidence(reading_units, {g.region_id: g for d in pack.docs for g in d.regions}, evidence_index or {})
+    rev = reading_evidence(reading_units, {g.region_id: g for d in pack.docs for g in d.regions}, evidence_index or {},
+                           reading_sources)
     evidence["units_checked"] += rev["units_checked"]
     evidence["failures"] += rev["failures"]
     ids = [u.unit_id for d in pack.docs for u in d.units.values()] + \
