@@ -1,7 +1,14 @@
-# Stage 2 outputs (first connected version, DRAFT)
+# A1-A5 outputs (WORKING DRAFT)
 
-Status: **ok**. Validated state: **ADD-02**.
-Interpretations and ops are PROPOSED (not reviewed); image readings are PENDING the owner's review.
+Structural checks: **ok**. Release: **WORKING DRAFT (not releasable)**. Validated state: **ADD-02**.
+Structurally checked does not mean reviewed or approved by a person. Interpretations and ops are PROPOSED; image readings are PENDING the owner's review.
+
+## What blocks a release (`outputs --strict`)
+
+- **stale**: 3 row(s) STALE at ADD-02: VOL-I-8.3-01, VOL-I-3.4-01, VOL-I-6.7-01
+- **approval**: image readings pending the owner's review: VOL-II-p3-r1, VOL-IV-p6-r1
+- **approval**: 202 of 202 register rows not accepted by a person
+- **approval**: 37 amendment op(s) not accepted by a person
 
 | Output | Files |
 |---|---|
@@ -17,13 +24,15 @@ Interpretations and ops are PROPOSED (not reviewed); image readings are PENDING 
 | Check | Result | Detail |
 |---|---|---|
 | E01 | pass | evidence build structurally OK and built from the current inputs |
-| C16 | pass | 26 rows x 3 stages; every quote and consequence quote of a current interpretation found in the effective text |
+| C16 | pass | 202 rows x 3 stages; every quote and consequence quote of a current interpretation found in the effective text |
 | C25 | pass | no unit changed without an op targeting it |
-| C13 | pass | 9 A3 items, each with an explicit quoted consequence |
+| C13 | pass | 18 A3 items, each with an explicit quoted consequence |
 | C40 | pass | every A5 activity cites an A1 row in force |
-| C43 | pass | A3 fits one page at scale 0.968 |
+| C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
+| C45 | pass | every dependency and lead time is defined |
+| C43 | pass | A3 fits one page; smallest text 8.08 pt (scale 0.95) |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
-| C21-C27 ADD-01 | ok | 11 ops; invalid: none |
+| C21-C27 ADD-01 | ok | 15 ops; invalid: none |
 | C20 ADD-02 | ok | 40 provisions; unresolved or unaccounted: none |
-| C21-C27 ADD-02 | ok | 14 ops; invalid: none |
-| C11 | REPORTED | STALE rows: ['VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02'] |
+| C21-C27 ADD-02 | ok | 22 ops; invalid: none |
+| C11 | REPORTED | STALE rows: ['VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02', 'VOL-I-3.4-01@ADD-01', 'VOL-I-3.4-01@ADD-02', 'VOL-I-6.7-01@ADD-01', 'VOL-I-6.7-01@ADD-02'] |

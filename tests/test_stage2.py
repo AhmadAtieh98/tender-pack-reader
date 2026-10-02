@@ -127,8 +127,8 @@ def test_every_oracle_provision_is_accounted_for_and_every_amending_one_has_an_o
         if item.get("amends") and not item["id"].startswith(("T1-1 row", "Form 4-G item")):
             assert all(c["disposition"] in ("op", "outside_slice") for c in hits), (item["id"], [c["disposition"] for c in hits])
             outside += [item["id"] for c in hits if c["disposition"] == "outside_slice"]
-    # the only amending provision left outside the slice: the new scoring method (not defined in the pack)
-    assert outside == ({"ADD-01": [], "ADD-02": ["T1-1 note (3)"]}[add])
+    # since Stage 3 nothing is left outside the slice (session 04 left ADD-02 note (3) out)
+    assert outside == []
 
 
 def test_pdd_moves_and_its_dependants_are_recomputed(real):
@@ -263,8 +263,7 @@ def test_arabic_form_4c_consequences_are_kept_in_arabic_and_pending(real, writte
     a3 = json.loads((written[0] / "a3/a3.json").read_text(encoding="utf-8"))
     item = next(i for s in a3["sections"] for i in s["items"] if i["id"] == "VOL-IV-F4C-04")
     assert item["consequence"] == g["declaration_4"]["consequence_arabic"] and "image reading pending" in item["flags"]
-    assert "I-READING-F4C" in {i["id"] for i in a3["unresolved"]["items"]} or \
-        any("pending" in i["text"] and "VOL-IV-F4C-04" in i["text"] for i in a3["unresolved"]["items"])
+    assert any("pending" in i["text"] and "VOL-IV-F4C-04" in i["rows"] for i in a3["issues_detail"])
 
 
 def test_conflicting_form_4a_printed_date_is_raised_not_corrected(real):
@@ -331,7 +330,7 @@ def test_a1_carries_status_at_each_stage_and_separate_review_statuses(written):
 
 def test_a3_lists_explicit_consequences_only_with_quotes(written, real):
     a3 = json.loads((written[0] / "a3/a3.json").read_text(encoding="utf-8"))
-    explicit = a3["sections"][0]["items"]
+    explicit = a3["explicit"]
     for item in explicit:
         row = next(x for x in real["evals"] if x["row"].id == item["id"])["row"]
         c = real["register"].interp_at(row, "ADD-02").consequence
@@ -339,7 +338,10 @@ def test_a3_lists_explicit_consequences_only_with_quotes(written, real):
     ids = {i["id"] for i in explicit}
     assert {"VOL-I-8.6-01", "ADD-02-7.2-01", "VOL-IV-F4C-04"} <= ids
     assert "VOL-I-6.3-01" not in ids              # no consequence stated: listed separately
-    assert "VOL-I-6.3-01" in {i["id"] for i in a3["sections"][2]["items"]}
+    assert "VOL-I-6.3-01" in a3["none_stated_ids"]
+    # every explicit consequence is grouped under its class on the page
+    on_page = {i["id"]: sec["heading"] for sec in a3["sections"] for i in sec["items"]}
+    assert all(on_page[x["id"]].lower().startswith(x["class"].split(" ")[0].lower()) for x in explicit)
 
 
 def test_a5_is_generated_from_rows_in_force_with_labelled_assumptions(written, real):
@@ -366,10 +368,14 @@ def test_pending_image_status_carries_through_a1_a3_a5(written):
     a5 = json.loads((out / "a5/stages/ADD-02.json").read_text(encoding="utf-8"))
     for rid in ("VOL-II-T2-4-TN", "VOL-IV-F4C-04", "VOL-IV-F4C-N1"):
         assert a1[rid]["transcription"] == "pending"
-        item = next(i for s in a3["sections"] for i in s["items"] if i["id"] == rid)
-        assert "image reading pending" in item["flags"]
         acts = [a for a in a5["activities"] if rid in a["req_ids"]]
         assert acts and all(f"IMAGE READING PENDING ({rid})" in a["flags"] for a in acts)
+    for rid in ("VOL-IV-F4C-04", "VOL-IV-F4C-N1"):                    # on A3: rows with an explicit consequence
+        item = next(i for s in a3["sections"] for i in s["items"] if i["id"] == rid)
+        assert "image reading pending" in item["flags"]
+    # TN is scored with no stated consequence: not an A3 line, but its pending reading is an A3 issue
+    pending = next(i for i in a3["issues_detail"] if i["id"] == "I-AUTO-PENDING-READINGS")
+    assert "VOL-II-T2-4-TN" in pending["rows"]
     assert not (ROOT / "curation/approvals.yaml").exists()
 
 
@@ -403,7 +409,7 @@ def test_wrong_target_is_rejected_and_the_validated_state_is_kept(tmp_path):
 def test_partial_addendum_preserves_the_last_validated_state_in_outputs(tmp_path):
     def drop(data):
         if data["addendum"] == "ADD-02":
-            data["dispositions"] = [d for d in data["dispositions"] if d["provision"] != "ADD-02:Q12"]
+            data["dispositions"] = [d for d in data["dispositions"] if d["provision"] != "ADD-02:1.1"]
     r = stage2.run(EVIDENCE, scenario_pack(tmp_path, mutate_ops=drop), ROOT)
     assert st(r, "ADD-02").status == "PARTIAL" and r["validated"].stage == "ADD-01"
     res = stage2.write(r, tmp_path / "out")

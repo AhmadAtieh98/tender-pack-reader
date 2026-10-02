@@ -44,7 +44,8 @@ PRODUCER = "tenderpack"
 ZIP_TIME = (1980, 1, 1, 0, 0, 0)                   # earliest time a zip entry can carry
 A1_SHEET = "A1 register"
 A1_HEADER_ROW = 4                                  # rows 1-2: banner; row 3: blank
-A3_SCALE_LOW = 0.62                                # below this the page is no longer legible
+A3_SCALE_LOW = 0.9                                 # 8.5 pt body text never drops below 7.6 pt; else: prioritise
+A3_MIN_TEXT_PT = 7.5                               # smallest rendered text allowed on A3 (C43)
 
 
 # ------------------------------------------------------------------ values as text
@@ -214,7 +215,7 @@ _ARABIC = re.compile("[\u0600-\u06ff]")
 _ARABIC_RUN = re.compile("[\u0600-\u06ff](?:[^A-Za-z]*[\u0600-\u06ff])?")   # no Latin letter inside
 
 A3_PAGE = pymupdf.paper_rect("a4")
-A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 30, 26, 20
+A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 30, 24, 26
 A3_CSS = """
 body {font-family: sans-serif; font-size: 8.5px; line-height: 1.22; color: #000}
 .title {font-size: 13px; font-weight: bold; margin: 0 0 1px 0}
@@ -227,11 +228,13 @@ p {margin: 0 0 1.5px 0}
 .note {font-style: italic; color: #444}
 .it {padding-left: 9px; text-indent: -9px}
 .meta {color: #444}
-.flag {color: #b00000; font-size: 7.5px}
+.flag {color: #b00000; font-size: 8.5px}
+.ids {font-size: 8.5px; color: #222}
+a {color: #000; text-decoration: none}
 .none {color: #444; font-style: italic}
 """
 A3_FOOTER_CSS = """
-body {font-family: sans-serif; font-size: 6.5px; line-height: 1.2; color: #444}
+body {font-family: sans-serif; font-size: 8.5px; line-height: 1.2; color: #444}
 .foot {border-top: 0.5px solid #8c8c8c; padding-top: 2px}
 """
 
@@ -270,15 +273,16 @@ def _rich(text: str) -> str:
 
 
 def _a3_item(it: dict) -> str:
-    """Bold id, text, class: "consequence" (proposed translation), source, confidence, flags in red."""
-    parts = [f"<b>{_esc(it['id'])}</b> {_rich(it['text'])}"]
-    if it.get("consequence"):
+    """Bold id (linked to a3_detail.html), text, class: "consequence" (proposed translation), source, confidence,
+    flags in red. A compact item leaves the quotation to the detail page."""
+    parts = [f'<b><a href="a3_detail.html#{_esc(it["id"])}">{_esc(it["id"])}</a></b> {_rich(it["text"])}']
+    if it.get("consequence") and not it.get("compact"):
         cls = f"<i>{_esc(it['class'])}</i>: " if it.get("class") else ""
         parts.append(f"\u2014 {cls}\u201c{_rich(it['consequence'])}\u201d")
         if it.get("gloss"):
             parts.append(f"(proposed translation, not reviewed: \u2018{_esc(it['gloss'])}\u2019)")
     meta = [_rich(it["source"])] if it.get("source") else []
-    if it.get("confidence"):
+    if it.get("confidence") and not it.get("compact"):
         meta.append(f"confidence {_rich(it['confidence'])}")
     if it.get("owner"):
         meta.append(f"owner: {_rich(it['owner'])}")
@@ -295,10 +299,14 @@ def _a3_html(a3: dict) -> str:
         out.append(f'<div class="sub">{_rich(a3["subtitle"])}</div>')
     if a3.get("banner"):
         out.append(f'<div class="banner">{_rich(a3["banner"])}</div>')
-    for sec in [*a3["sections"], a3["unresolved"]]:
+    for sec in [*a3["sections"], *([a3["missing"]] if a3.get("missing") else []), a3["unresolved"]]:
         out.append(f"<h2>{_rich(sec['heading'])}</h2>")
         if sec.get("note"):
             out.append(f'<p class="note">{_rich(sec["note"])}</p>')
+        if sec.get("ids"):
+            out.append('<p class="ids">' + ", ".join(f'<a href="a3_detail.html#{_esc(i)}">{_esc(i)}</a>' for i in sec["ids"])
+                       + "</p>")
+            continue
         out += [_a3_item(it) for it in sec["items"]] or ['<p class="none">None.</p>']
     return "\n".join(out)
 
@@ -315,7 +323,7 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
     body = pymupdf.Rect(A3_MARGIN_X, A3_MARGIN_Y, w - A3_MARGIN_X, h - A3_MARGIN_Y - A3_FOOTER_H - 4)
     # insert_htmlbox places everything or nothing: (-1, scale) when even scale_low does not fit
     spare, scale = page.insert_htmlbox(body, _a3_html(a3), css=A3_CSS, scale_low=A3_SCALE_LOW)
-    if spare < 0 or scale < A3_SCALE_LOW:
+    if spare < 0 or scale < A3_SCALE_LOW or round(8.5 * scale, 2) < A3_MIN_TEXT_PT:
         raise A3OverflowError(f"A3 content does not fit on one A4 page at scale >= {A3_SCALE_LOW} "
                               f"({sum(len(s['items']) for s in a3['sections'])} items, "
                               f"{len(a3['unresolved']['items'])} unresolved); shorten or prioritise it")
@@ -330,6 +338,21 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
                       "creationDate": PDF_DATE, "modDate": PDF_DATE})
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    doc.save(path, garbage=3, deflate=True, no_new_id=True)
+    data = doc.tobytes(garbage=3, deflate=True, no_new_id=True)
     doc.close()
-    return {"pages": 1, "scale": round(scale, 3), "spare_pt": r1(spare)}
+    # Relative hrefs come out as /Launch actions, which many viewers block. The links only become visible after
+    # a save, so reopen and rewrite them as /URI actions (resolved relative to the PDF), then write once.
+    doc = pymupdf.open("pdf", data)
+    page = doc[0]
+
+    def launch_links():
+        return [ln for ln in page.get_links() if ln.get("kind") in (pymupdf.LINK_LAUNCH, pymupdf.LINK_GOTOR)
+                and "/Launch" in doc.xref_object(ln["xref"])]
+    todo = [(ln["from"], (ln.get("file") or "").replace("%23", "#")) for ln in launch_links()]
+    while launch_links():                                  # one at a time: deleting invalidates the list
+        page.delete_link(launch_links()[0])
+    for rect, target in todo:
+        page.insert_link({"kind": pymupdf.LINK_URI, "from": rect, "uri": target})
+    path.write_bytes(doc.tobytes(garbage=3, deflate=True, no_new_id=True))
+    doc.close()
+    return {"pages": 1, "scale": round(scale, 3), "spare_pt": r1(spare), "min_text_pt": round(8.5 * scale, 2)}

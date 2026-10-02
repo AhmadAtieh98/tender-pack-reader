@@ -34,7 +34,8 @@ from .dates import Calendar, DateRule, interpretations, parse_date, planning_val
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
 
-CONSEQUENCE_CLASSES = ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser")
+CONSEQUENCE_CLASSES = ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser",
+                       "contractual")
 BID_OUT = ("rejection", "disqualification", "non_responsive", "exclusion")
 
 
@@ -43,8 +44,8 @@ class _Strict(BaseModel):
 
 
 class Consequence(_Strict):
-    cls: Literal["rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser"] = \
-        Field(alias="class")
+    cls: Literal["rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser",
+                 "contractual"] = Field(alias="class")       # contractual: a post-award remedy (termination, deduction, ...)
     unit: str
     quote: str
     gloss: str | None = None                     # proposed translation of a non-English quote (never checked as evidence)
@@ -87,14 +88,29 @@ class Row(_Strict):
     confidence_reason: str
     issues: list[str] = Field(default_factory=list)
     follows_replacement: bool = False            # a replaced table row / form field continues in its replacement
+    owner: str | None = None                     # role accountable for the row (defaults to the discipline)
+    no_deliverable: str | None = None            # why a bid-stage row needs no deliverable (A5 two-way check)
     review: Literal["proposed", "accepted"] = "proposed"
     reviewer: str | None = None
+
+    @property
+    def owner_role(self) -> str:
+        return self.owner or self.discipline
 
 
 class RowFile(_Strict):
     prepared_by: str
     method: str
     anchors: dict[str, dict]                     # {"PDD": {"name": "Proposal Due Date", "defined_in": "VOL-I:6.1"}}
+    include: list[str] = Field(default_factory=list)   # further row files (globs relative to this file)
+    rows: list[Row]
+    files: dict[str, str] = Field(default_factory=dict)  # row id -> included file it came from (filled on load)
+
+
+class RowPart(_Strict):
+    doc: str
+    prepared_by: str
+    method: str | None = None
     rows: list[Row]
 
 
@@ -102,10 +118,29 @@ def pins_path(rows_path: Path) -> Path:
     return Path(rows_path).with_name("pins.yaml")
 
 
-def load_rows(path: Path) -> RowFile:
+def load_rows(path: Path, lenient: list | None = None) -> RowFile:
     """Rows are hand-curated; their pins are machine-written by `tenderpack pin` into pins.yaml beside them
-    ({row id: {interpretation stage: {unit: hash}}}), so re-pinning never rewrites the curated file."""
+    ({row id: {interpretation stage: {unit: hash}}}), so re-pinning never rewrites the curated file.
+    With `lenient` (a list), an included file that does not load is skipped and its error appended to it
+    (used by check-register while several files are being drafted); otherwise any error raises."""
     rf = RowFile.model_validate(load_yaml(path))
+    seen = {r.id for r in rf.rows}
+    for pattern in rf.include:
+        for f in sorted(Path(path).parent.glob(pattern)):
+            try:
+                part = RowPart.model_validate(load_yaml(f) or {})
+                dup = [r.id for r in part.rows if r.id in seen]
+                if dup:
+                    raise ValueError(f"row ids defined twice: {dup}")
+            except Exception as e:                       # noqa: BLE001
+                if lenient is None:
+                    raise ValueError(f"{f}: {e}") from e
+                lenient.append(f"{f.name}: skipped, does not load: {str(e)[:400]}")
+                continue
+            for r in part.rows:
+                seen.add(r.id)
+                rf.files[r.id] = f.name
+                rf.rows.append(r)
     pp = pins_path(path)
     pins = (load_yaml(pp) or {}).get("pins", {}) if pp.exists() else {}
     for row in rf.rows:
@@ -168,6 +203,10 @@ def dependencies(row: Row, interp: Interp, state: dict[str, UState], anchors: di
     for r in row.date_rules:
         if r.anchor in anchors:
             deps.append(anchors[r.anchor]["defined_in"])
+    for uid in list(deps):                       # a clarification on a table or form reaches its rows and fields
+        par = state[uid].parent if uid in state else None
+        if par in state and state[par].annotations:
+            deps.append(par)
     for uid in list(deps):
         for op_id in (state[uid].annotations if uid in state else []):
             if op_provision.get(op_id):
@@ -175,11 +214,18 @@ def dependencies(row: Row, interp: Interp, state: dict[str, UState], anchors: di
     return sorted(set(deps))
 
 
+PIN_FORMAT = 2       # 2: the image reading's review fingerprint is part of the pin (session 05)
+
+
 def pin_value(state: dict[str, UState], uid: str) -> str:
+    """What an interpretation is pinned to for one dependency: the unit's status, text and cells, the
+    annotations on it, and, for a unit read from an image, the reading's review-subject fingerprint
+    (content, uncertainties and evidence). A changed reading therefore keeps dependent interpretations
+    STALE even after its new transcription is approved; the approval status itself is not pinned."""
     u = state.get(uid)
     if u is None:
         return "absent"
-    return sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)))[:16]
+    return sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or ""))[:16]
 
 
 # ---------------------------------------------------------------------------------------------- evaluation
@@ -253,6 +299,11 @@ class Register:
                 if cu is None or cu.status != "active" or not found(it.consequence.quote, cu.text):
                     problems.append(f"consequence quote not found in {it.consequence.unit} at {s.stage}")
         out["interpretation"] = it.model_dump(by_alias=True, exclude={"pins"}) if it else None
+        base_u = self.stages[0].state.get(row.units[0])
+        out["original_text"] = base_u.text if base_u is not None else ""          # as issued (never assembled)
+        out["source"] = self.source_of(row.units[0], it.quote if it else None, s, row.follows_replacement)
+        out["consequence_source"] = (self.source_of(it.consequence.unit, it.consequence.quote, s)
+                                     if it is not None and isinstance(it.consequence, Consequence) else None)
         # --- staleness
         stale = []
         if it is not None and active:
@@ -307,6 +358,61 @@ class Register:
         out["chain"] = self.chain(row, s)
         return out
 
+    # ------------------------------------------------------------------ provenance (latest reference)
+    def _ref(self, uid: str, st: dict[str, UState]) -> str:
+        u = st.get(uid) or self.stages[0].state.get(uid)
+        doc, _, local = uid.partition(":")
+        pages = u.pages if u is not None else []
+        return f"{doc} {local}" + (f" p{','.join(map(str, pages))}" if pages else "")
+
+    def _op_by_id(self, op_id: str):
+        for s in self.stages:
+            for r in s.ops:
+                if r.op.id == op_id:
+                    return r
+        return None
+
+    def source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
+        """Where the words of `quote` in a unit's effective text come from at stage `s`: the unit as issued,
+        or the addendum provision (with its page) that supplied them. `latest` is the reference to cite for
+        the point; `refs` lists every document involved, oldest first."""
+        st = s.state
+        eff = effective(st, uid, follow)
+        if eff is None:
+            return {"latest": self._ref(uid, st), "refs": [self._ref(uid, st)], "from_amendment": False}
+        base = self.stages[0].state.get(eff.unit_id)
+        refs = [self._ref(uid, self.stages[0].state if uid in self.stages[0].state else st)]
+        if eff.unit_id != uid:                                   # replaced: the replacement is the source
+            by = next((h for h in eff.history if self.op_stage.get(h)), None)
+            latest = f"{self._ref(eff.unit_id, st)} (replacing {refs[0]}" + (f", {by}" if by else "") + ")"
+            return {"latest": latest, "refs": refs + [self._ref(eff.unit_id, st)], "from_amendment": True}
+        hist = [self._op_by_id(h) for h in eff.history]
+        hist = [h for h in hist if h is not None]
+        in_original = base is not None and base.status != "not_issued" and quote is not None and found(quote, base.text)
+        supplied = []
+        for h in hist:
+            words = " ".join(x for x in (h.op.new, h.op.new_text) if x)
+            if quote and words and (found(words, quote) or found(quote, words)):
+                supplied.append(h)
+        if not supplied and not in_original and hist:
+            supplied = [hist[-1]]
+        if base is not None and base.status == "not_issued" and not hist:   # an addendum's own unit
+            return {"latest": self._ref(uid, st), "refs": refs, "from_amendment": False}
+        if supplied:
+            h = supplied[-1]
+            prov = self._ref(h.op.provision, st)
+            words = " ".join(x for x in (h.op.new, h.op.new_text) if x)
+            if quote and words and not found(quote, words):      # original words with amended words inside them
+                latest = f"{refs[0]} as amended by {', '.join(self._ref(x.op.provision, st) for x in supplied)}"
+                return {"latest": latest, "refs": refs + [self._ref(x.op.provision, st) for x in supplied],
+                        "from_amendment": True, "ops": [x.op.id for x in supplied]}
+            verb = {"set_status": "reinstating" if h.op.status == "reinstated" else "changing"}.get(h.op.type, "amending")
+            latest = f"{prov} ({verb} {refs[0].rsplit(' p', 1)[0]})"
+            return {"latest": latest, "refs": refs + [self._ref(x.op.provision, st) for x in supplied],
+                    "from_amendment": True, "ops": [x.op.id for x in supplied]}
+        latest = refs[0] + (f" as amended by {', '.join(self._ref(h.op.provision, st) for h in hist)}" if hist else "")
+        return {"latest": latest, "refs": refs + [self._ref(h.op.provision, st) for h in hist], "from_amendment": False}
+
     def _op_type(self, op_id: str):
         for s in self.stages:
             for r in s.ops:
@@ -347,6 +453,34 @@ def compute_pins(rowfile: RowFile, stages: list[StageResult], refresh: bool = Fa
                 it.pins = reg.pins_for(row, it, by_stage[it.stage])
                 n += 1
     return n
+
+
+def _pin_value_v1(state: dict[str, UState], uid: str) -> str:
+    u = state.get(uid)
+    return "absent" if u is None else sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)))[:16]
+
+
+def migrate_pins(rowfile: RowFile, stages: list[StageResult]) -> tuple[int, list[str]]:
+    """Format 1 -> 2: upgrade a pin only where every dependency still has the value it was pinned to under
+    format 1 (nothing changed since pinning); anything else is left as it is and stays STALE for a person.
+    The fingerprint added in format 2 is taken from the current reading, so run this only when the
+    readings have not changed since the pins were made (recorded in the work log)."""
+    by_stage = {s.stage: s for s in stages}
+    reg = Register(rowfile, stages, Calendar())
+    n, kept = 0, []
+    for row in rowfile.rows:
+        for it in row.interpretations:
+            if not it.pins or it.stage not in by_stage:
+                continue
+            st = by_stage[it.stage].state
+            now = reg.pins_for(row, it, by_stage[it.stage])
+            if set(now) == set(it.pins) and all(_pin_value_v1(st, d) == v for d, v in it.pins.items()):
+                if now != it.pins:
+                    it.pins = now
+                    n += 1
+            else:
+                kept.append(f"{row.id}@{it.stage}")
+    return n, kept
 
 
 def printed_date_conflicts(stage: StageResult, anchors: dict) -> list[dict]:

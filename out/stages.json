@@ -32,12 +32,12 @@
    },
    {
     "accounted_by": [
-     "no_effect"
+     "ADD-01/cover/para3"
     ],
-    "disposition": "no_effect",
+    "disposition": "op",
     "page": 1,
     "provision": "ADD-01:cover/para3",
-    "reason": "recital or cover text; changes nothing by itself",
+    "reason": "",
     "text": "This Addendum amends the Proposal Due Date, deletes one qualification requirement, amends Volume II Clause 5.3, publishes the minutes of the Pre-Bid Conference,"
    },
    {
@@ -132,12 +132,12 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-01/Q1"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 1,
     "provision": "ADD-01:Q1",
-    "reason": "process train (VOL-II 3.1): outside the Stage 2 register slice",
+    "reason": "",
     "text": "No: 1 | Bidder question: Is a membrane bioreactor process mandatory? | Authority response: No. Volume II Clause 3.1 does not mandate a process train. Any proces"
    },
    {
@@ -162,12 +162,12 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-01/Q4"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-01:Q4",
-    "reason": "ground conditions / geotechnical report: outside the slice",
+    "reason": "",
     "text": "No: 4 | Bidder question: Can the Authority confirm the ground conditions at the wadi crossing? | Authority response: The geotechnical report in the data room is"
    },
    {
@@ -182,12 +182,12 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-01/Q6"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-01:Q6",
-    "reason": "offtake volume / payment mechanism (VOL-V 29): outside the slice",
+    "reason": "",
     "text": "No: 6 | Bidder question: Is the treated effluent offtake volume guaranteed? | Authority response: No. The payment mechanism at Volume V Clause 29 is availabilit"
    },
    {
@@ -373,6 +373,45 @@
   ],
   "issued": "2026-10-08",
   "ops": [
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-01:cover/para3 belongs to ADD-01",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['ADD-01:cover/para3']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "adds_obligation",
+     "expect": [],
+     "id": "ADD-01/cover/para3",
+     "note": "Front matter: 'Bidders shall acknowledge receipt in Form 4-A.' The rest of the paragraph summarises the addendum and restates precedence (VOL-I 3.2); it changes nothing by itself.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-01:cover/para3",
+     "review": "proposed",
+     "targets": [
+      "ADD-01:cover/para3"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-01",
+    "valid": true
+   },
    {
     "changed": [
      "VOL-I:6.1"
@@ -715,6 +754,45 @@
     "changed": [],
     "checks": [
      {
+      "detail": "provision ADD-01:Q1 belongs to ADD-01",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-II:3.1']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "interprets",
+     "expect": [],
+     "id": "ADD-01/Q1",
+     "note": "No process train is mandated (an MBR is not required); any process meeting Table 2-4 under the Table 2-2 influent conditions is acceptable.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-01:Q1",
+     "review": "proposed",
+     "targets": [
+      "VOL-II:3.1"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-01",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
       "detail": "provision ADD-01:Q2 belongs to ADD-01",
       "id": "C21",
       "ok": true
@@ -793,6 +871,46 @@
     "changed": [],
     "checks": [
      {
+      "detail": "provision ADD-01:Q4 belongs to ADD-01",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['ADD-01:Q4']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "adds_obligation",
+     "expect": [],
+     "id": "ADD-01/Q4",
+     "issue": "the geotechnical report and the wadi-crossing drawing (Volume III) are referenced but not supplied",
+     "note": "Bidders bear the ground-condition risk at the wadi crossing and must satisfy themselves; the geotechnical report (data room, not in the pack) is for information only.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-01:Q4",
+     "review": "proposed",
+     "targets": [
+      "ADD-01:Q4"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-01",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
       "detail": "provision ADD-01:Q5 belongs to ADD-01",
       "id": "C21",
       "ok": true
@@ -822,6 +940,49 @@
      "review": "proposed",
      "targets": [
       "VOL-I:8.5#fn12"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-01",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-01:Q6 belongs to ADD-01",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-V:29.1', 'VOL-V:29.2', 'VOL-V:29.3', 'VOL-V:29.4', 'VOL-V:29.5']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "interprets",
+     "expect": [],
+     "id": "ADD-01/Q6",
+     "note": "Offtake volume is not guaranteed; the payment mechanism is availability based and does not depend on volume delivered.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-01:Q6",
+     "review": "proposed",
+     "targets": [
+      "VOL-V:29.1",
+      "VOL-V:29.2",
+      "VOL-V:29.3",
+      "VOL-V:29.4",
+      "VOL-V:29.5"
      ],
      "type": "annotate"
     },
@@ -878,6 +1039,21 @@
      },
      {
       "detail": "VOL-IV:F4-A (24 units) replaced by ADD-01:AppA (10 units)",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement ADD-01:AppA is printed in ADD-01",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement is printed after the provision",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement's title names VOL-IV:F4-A: 'APPENDIX A — REVISED FORM 4-A'",
       "id": "C22",
       "ok": true
      }
@@ -956,12 +1132,12 @@
    },
    {
     "accounted_by": [
-     "no_effect"
+     "ADD-02/cover/para3"
     ],
-    "disposition": "no_effect",
+    "disposition": "op",
     "page": 1,
     "provision": "ADD-02:cover/para3",
-    "reason": "recital or cover text; changes nothing by itself",
+    "reason": "",
     "text": "This Addendum amends the page limit, reissues the technical evaluation table, amends Volume II Clauses 4.4 and Table 2-4, adds Form 4-G, amends Volume V Clause "
    },
    {
@@ -1096,12 +1272,12 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/T1-1-rev/note(3)"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 1,
     "provision": "ADD-02:T1-1-rev/note(3)",
-    "reason": "scoring method (the 'standard five-point scale' is not supplied in the pack): outside the slice",
+    "reason": "",
     "text": "(3)  Marks are awarded on the Authority's standard five-point scale and multiplied by the weight shown."
    },
    {
@@ -1136,12 +1312,12 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q7"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q7",
-    "reason": "concession term conflict (VOL-I 12.1 vs VOL-V 3.1); a legal question kept as an open issue for people",
+    "reason": "",
     "text": "No: 7 | Bidder question: Volume I Clause 12.1 states the concession runs from PCOD. Volume V Clause 3.1 states it runs from the Effective Date. Which applies? |"
    },
    {
@@ -1166,52 +1342,52 @@
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q10"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q10",
-    "reason": "parent company guarantee scope (VOL-I 8.7): outside the slice",
+    "reason": "",
     "text": "No: 10 | Bidder question: Is a parent company guarantee also required from the O&M Operator? | Authority response: No. Volume I Clause 8.7 requires a Parent Com"
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q11"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q11",
-    "reason": "design flows (Table 2-6); an engineering question kept as an open issue for people",
+    "reason": "",
     "text": "No: 11 | Bidder question: Table 2-6 shows a peak hourly flow of 7,500 m³/h against a daily average of 120,000 m³/day. Please confirm. | Authority response: Bidd"
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q12"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q12",
-    "reason": "deduction cap (VOL-V 31.2): outside the slice",
+    "reason": "",
     "text": "No: 12 | Bidder question: Are the deductions under Volume V Clause 31 capped? | Authority response: The Authority refers Bidders to the wording of Clause 31.2."
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q13"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q13",
-    "reason": "Financial Close periods (VOL-I 12.2): outside the slice",
+    "reason": "",
     "text": "No: 13 | Bidder question: Will the Authority extend the Financial Close long-stop date? | Authority response: The periods in Volume I Clause 12.2 are unchanged."
    },
    {
     "accounted_by": [
-     "outside_slice"
+     "ADD-02/Q14"
     ],
-    "disposition": "outside_slice",
+    "disposition": "op",
     "page": 2,
     "provision": "ADD-02:Q14",
-    "reason": "alternative solutions (VOL-I 10.5): outside the slice",
+    "reason": "",
     "text": "No: 14 | Bidder question: May an alternative technical solution be submitted alone? | Authority response: No. Volume I Clause 10.5 applies."
    },
    {
@@ -1338,6 +1514,45 @@
   "issued": "2026-10-22",
   "ops": [
    {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:cover/para3 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['ADD-02:cover/para3']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "adds_obligation",
+     "expect": [],
+     "id": "ADD-02/cover/para3",
+     "note": "Front matter: 'Bidders shall acknowledge receipt in Form 4-A.' The rest of the paragraph summarises the addendum and restates precedence (VOL-I 3.2); it changes nothing by itself.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:cover/para3",
+     "review": "proposed",
+     "targets": [
+      "ADD-02:cover/para3"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
     "changed": [
      "VOL-I:9.2"
     ],
@@ -1436,6 +1651,21 @@
      },
      {
       "detail": "VOL-I:T1-1 (8 units) replaced by ADD-02:T1-1-rev (8 units)",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement ADD-02:T1-1-rev is printed in ADD-02",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement is printed after the provision",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "the replacement's title names VOL-I:T1-1: 'Table 1-1 (revised) — Technical evaluation criteria — Ref | '",
       "id": "C22",
       "ok": true
      }
@@ -1597,6 +1827,46 @@
     "valid": true
    },
    {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:T1-1-rev/note(3) belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['ADD-02:T1-1-rev']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "interprets",
+     "expect": [],
+     "id": "ADD-02/T1-1-rev/note(3)",
+     "issue": "the 'standard five-point scale' is not defined in the pack and the table shows Marks, not weights",
+     "note": "New scoring method for the reissued Table 1-1: marks on a 'standard five-point scale' multiplied by 'the weight shown'.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:T1-1-rev/note(3)",
+     "review": "proposed",
+     "targets": [
+      "ADD-02:T1-1-rev"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
     "changed": [
      "VOL-II:4.4"
     ],
@@ -1689,6 +1959,16 @@
       "detail": "target is an active table row with column 'Limit'",
       "id": "C22",
       "ok": true
+     },
+     {
+      "detail": "the provision names the column 'Limit'",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "the provision states the new value '3' mg/l",
+      "id": "C21",
+      "ok": true
      }
     ],
     "details": {
@@ -1751,6 +2031,48 @@
      "review": "proposed",
      "targets": [
       "VOL-II:S3"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q7 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-I:12.1', 'VOL-V:3.1', 'VOL-I:3.2']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q7",
+     "issue": "which start date governs the concession term is not answered; a legal and commercial question for people",
+     "note": "The Authority declines to amend: the order of precedence at VOL-I 3.2 applies to the VOL-I 12.1 / VOL-V 3.1 conflict on when the concession runs.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q7",
+     "review": "proposed",
+     "targets": [
+      "VOL-I:12.1",
+      "VOL-V:3.1",
+      "VOL-I:3.2"
      ],
      "type": "annotate"
     },
@@ -1829,6 +2151,202 @@
      "review": "proposed",
      "targets": [
       "VOL-IV:F4-C"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q10 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-I:8.7']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q10",
+     "note": "A Parent Company Guarantee is required only from the ultimate parent of the EPC Contractor, not from the O&M Operator.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q10",
+     "review": "proposed",
+     "targets": [
+      "VOL-I:8.7"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q11 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-II:4.2']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q11",
+     "issue": "the Table 2-6 peak hourly flow vs storm flow question is not answered",
+     "note": "Bidders shall design to the figures in Volume II; VOL-II 4.2 applies. The question about Table 2-6 is not answered.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q11",
+     "review": "proposed",
+     "targets": [
+      "VOL-II:4.2"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q12 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-V:31.2']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q12",
+     "note": "The Authority refers Bidders to VOL-V 31.2, which states deductions are not capped.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q12",
+     "review": "proposed",
+     "targets": [
+      "VOL-V:31.2"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q13 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-I:12.2']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q13",
+     "note": "The Commercial Close and Financial Close periods in VOL-I 12.2 are unchanged.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q13",
+     "review": "proposed",
+     "targets": [
+      "VOL-I:12.2"
+     ],
+     "type": "annotate"
+    },
+    "stage": "ADD-02",
+    "valid": true
+   },
+   {
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:Q14 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-I:10.5']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [],
+     "id": "ADD-02/Q14",
+     "note": "An alternative technical solution may not be submitted alone; VOL-I 10.5 applies.",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:Q14",
+     "review": "proposed",
+     "targets": [
+      "VOL-I:10.5"
      ],
      "type": "annotate"
     },

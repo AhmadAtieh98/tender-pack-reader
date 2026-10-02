@@ -1,4 +1,30 @@
 {
+ "release": {
+  "blockers": [
+   {
+    "detail": "ADD-03 is PARTIAL; unresolved provisions: ['ADD-03:6.1', 'ADD-03:7.1', 'ADD-03:Q15', 'ADD-03:Q16']",
+    "kind": "coverage"
+   },
+   {
+    "detail": "13 row(s) STALE at ADD-03: VOL-I-6.1-01, VOL-I-5.2-01, VOL-I-6.3-01, VOL-I-7.1-01, VOL-I-8.3-01, VOL-I-8.5-01, VOL-V-31.3-01, VOL-I-3.4-01, VOL-I-6.7-01, VOL-II-T2-4-TP, VOL-V-29.3-01, VOL-V-31.3-02 ...",
+    "kind": "stale"
+   },
+   {
+    "detail": "image readings pending the owner's review: VOL-II-p3-r1, VOL-IV-p6-r1",
+    "kind": "approval"
+   },
+   {
+    "detail": "202 of 202 register rows not accepted by a person",
+    "kind": "approval"
+   },
+   {
+    "detail": "43 amendment op(s) not accepted by a person",
+    "kind": "approval"
+   }
+  ],
+  "note": "structurally checked does not mean reviewed or approved by a person",
+  "status": "WORKING DRAFT (not releasable)"
+ },
  "reported": [
   {
    "detail": "36 provisions; unresolved or unaccounted: none",
@@ -7,7 +33,7 @@
    "stage": "ADD-01"
   },
   {
-   "detail": "11 ops; invalid: none",
+   "detail": "15 ops; invalid: none",
    "id": "C21-C27",
    "ok": true,
    "stage": "ADD-01"
@@ -19,7 +45,7 @@
    "stage": "ADD-02"
   },
   {
-   "detail": "14 ops; invalid: none",
+   "detail": "22 ops; invalid: none",
    "id": "C21-C27",
    "ok": true,
    "stage": "ADD-02"
@@ -31,13 +57,13 @@
    "stage": "ADD-03"
   },
   {
-   "detail": "5 ops; invalid: [\"ADD-03/7.1 (C23: 'seventy-two (72) hours' occurs 0 time(s) in VOL-II:4.4)\"]",
+   "detail": "6 ops; invalid: [\"ADD-03/7.1 (C23: 'seventy-two (72) hours' occurs 0 time(s) in VOL-II:4.4)\"]",
    "id": "C21-C27",
    "ok": false,
    "stage": "ADD-03"
   },
   {
-   "detail": "STALE rows: ['VOL-I-6.1-01@ADD-03', 'VOL-I-5.2-01@ADD-03', 'VOL-I-6.3-01@ADD-03', 'VOL-I-7.1-01@ADD-03', 'VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02', 'VOL-I-8.3-01@ADD-03', 'VOL-I-8.5-01@ADD-03', 'VOL-V-31.3-01@ADD-03']",
+   "detail": "STALE rows: ['VOL-I-6.1-01@ADD-03', 'VOL-I-5.2-01@ADD-03', 'VOL-I-6.3-01@ADD-03', 'VOL-I-7.1-01@ADD-03', 'VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02', 'VOL-I-8.3-01@ADD-03', 'VOL-I-8.5-01@ADD-03', 'VOL-V-31.3-01@ADD-03', 'VOL-I-3.4-01@ADD-01', 'VOL-I-3.4-01@ADD-02', 'VOL-I-3.4-01@ADD-03', 'VOL-I-6.7-01@ADD-01', 'VOL-I-6.7-01@ADD-02', 'VOL-I-6.7-01@ADD-03', 'VOL-II-T2-4-TP@ADD-03', 'VOL-V-29.3-01@ADD-03', 'VOL-V-31.3-02@ADD-03', 'VOL-V-31.3-03@ADD-03']",
    "id": "C11",
    "ok": false
   }
@@ -50,7 +76,7 @@
    "ok": true
   },
   {
-   "detail": "26 rows x 4 stages; every quote and consequence quote of a current interpretation found in the effective text; quoted text changed under STALE rows (reported as C11): ['VOL-I-6.1-01@ADD-03', 'VOL-V-31.3-01@ADD-03']",
+   "detail": "202 rows x 4 stages; every quote and consequence quote of a current interpretation found in the effective text; quoted text changed under STALE rows (reported as C11): ['VOL-I-6.1-01@ADD-03', 'VOL-II-T2-4-TP@ADD-03', 'VOL-V-31.3-01@ADD-03']",
    "id": "C16",
    "ok": true
   },
@@ -60,7 +86,7 @@
    "ok": true
   },
   {
-   "detail": "9 A3 items, each with an explicit quoted consequence",
+   "detail": "18 A3 items, each with an explicit quoted consequence",
    "id": "C13",
    "ok": true
   },
@@ -70,7 +96,17 @@
    "ok": true
   },
   {
-   "detail": "A3 fits one page at scale 0.937",
+   "detail": "every deliverable needed by a row in force has activities or a justified exception",
+   "id": "C44",
+   "ok": true
+  },
+  {
+   "detail": "every dependency and lead time is defined",
+   "id": "C45",
+   "ok": true
+  },
+  {
+   "detail": "A3 fits one page; smallest text 7.87 pt (scale 0.925)",
    "id": "C43",
    "ok": true
   }

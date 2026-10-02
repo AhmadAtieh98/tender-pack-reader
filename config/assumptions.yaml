@@ -1,5 +1,6 @@
-# Planning ASSUMPTIONS for A5 and the date rules. None of these is a fact from the tender pack.
-# Every value carries its basis and an owner who must confirm it. Edit freely; outputs recompute.
+# Planning ASSUMPTIONS for A5 and the date rules. None of these is a fact from the tender pack unless the
+# comment says "stated in the pack". Every figure carries its basis and an owner who must confirm it.
+# Edit freely; outputs recompute. Scenarios (config/scenarios.yaml) override these values in a copy.
 # (Owner's email of 1 Oct: planning date = latest addendum date; unnamed consortium, member count configurable.)
 planning:
   status_date: latest_validated_addendum_issue_date   # = 22 Oct 2026 after ADD-02; the ADD-03 date in a live session
@@ -13,20 +14,72 @@ bidder:
   members: 3                         # ASSUMPTION (owner's email): editable; Appendix 1 has one two-member consortium
   signatories_per_member: 1          # ASSUMPTION
   reference_plants_offered: 2        # ASSUMPTION: the minimum in VOL-I 8.5 footnote 12
-lead_times:                          # Working Days; ASSUMPTIONS unless the basis says otherwise
-  poa_notarisation:      {value: 5,  basis: "typical notarisation of a Power of Attorney; not stated in the pack", owner: Legal}
-  form_4a_signature:     {value: 1,  basis: "signature by the PoA holder; not stated", owner: Legal}
-  form_4c_arabic_prep:   {value: 2,  basis: "prepare the Arabic form per member; not stated", owner: Legal}
-  form_4c_member_sign:   {value: 3,  basis: "signature and stamp at each member's office, members in parallel; not stated", owner: Legal}
-  bid_bond_bank_approval: {value: 10, basis: "bank credit approval for a SAR 4.5m first-demand bond; not stated", owner: Commercial}
-  bid_bond_issue:        {value: 3,  basis: "issue of the bond after approval; not stated", owner: Commercial}
-  lcc_ratio_calc:        {value: 5,  basis: "compute the construction-phase local content ratio; not stated", owner: Commercial}
-  lcc_certificate:       {value: 30, basis: "issuing authority not named and no lead time stated; the (non-binding) minutes record bidders' difficulty obtaining it 'within the programme'; set deliberately long until the owner confirms", owner: Commercial}
-  iso_certificate_copy:  {value: 2,  basis: "copy of an existing certificate from the EPC Contractor; not stated", owner: Technical}
-  reference_evidence:    {value: 10, basis: "commercial-operation evidence for two reference plants; not stated", owner: Technical}
-  form_4g_review:        {value: 5,  basis: "review the six cybersecurity undertakings with the O&M and OT teams; not stated", owner: Technical}
-  form_4g_signature:     {value: 1,  basis: "not stated", owner: Technical}
-  technical_proposal:    {value: 20, basis: "narrative incl. process design to the amended TN limit and standby power; not stated", owner: Technical}
-  clarification_drafting: {value: 2, basis: "draft and submit clarification requests through the Portal; not stated", owner: Bid management}
-  envelope_assembly:     {value: 2,  basis: "assemble, copy (1 original, 3 copies, USB), seal and mark envelopes; not stated", owner: Bid management}
-  delivery:              {value: 1,  basis: "courier to the Appendix 3 address before 14:00 on the PDD; not stated", owner: Bid management}
+  epc_contractors: 1                 # ASSUMPTION: one proposed EPC Contractor (VOL-I 8.3, 8.7 speak of "the" EPC Contractor)
+  om_operators: 1                    # ASSUMPTION: one proposed O&M Operator (VOL-I 8.8)
+bidder_basis:                        # basis and owner of each bidder figure above (multiplicities in A5 documents)
+  members: {basis: "PROVISIONAL ASSUMPTION: owner's email of 1 Oct (unnamed consortium, count configurable); VOL-I Appendix 1 lists one two-member consortium", owner: Bid manager}
+  signatories_per_member: {basis: "PROVISIONAL ASSUMPTION: one authorised signatory per member (signs Form 4-C; the lead member's also signs Form 4-A)", owner: Legal}
+  reference_plants_offered: {basis: "PROVISIONAL ASSUMPTION: the minimum of two reference plants in VOL-I 8.5 footnote 12", owner: Technical}
+  epc_contractors: {basis: "PROVISIONAL ASSUMPTION: one proposed EPC Contractor", owner: Bid manager}
+  om_operators: {basis: "PROVISIONAL ASSUMPTION: one proposed O&M Operator", owner: Bid manager}
+submission:                          # STATED IN THE PACK (not assumptions): what one Proposal is made of
+  marked_originals: 1                # VOL-I 6.5
+  hard_copies: 3                     # VOL-I 6.5
+  electronic_copy: "one searchable electronic copy on encrypted USB media, files named per Appendix 2"   # VOL-I 6.5, App 2
+  source: "VOL-I:6.5; VOL-I:App2/para1; VOL-I:6.2"
+  usb_per_envelope: 1                # ASSUMPTION (reading, PROVISIONAL): VOL-I 6.5 asks for one electronic copy per Proposal
+                                     # and VOL-I 6.2 forbids commercial information in Envelope A, so one USB per envelope
+                                     # is assumed; owner Bid manager; to confirm by clarification
+  exclusive_list: {envelope: B, source_unit: "VOL-I:10.1"}   # VOL-I 10.1: Envelope B contains ONLY Form 4-F and the Financial Model
+resources:                           # roles and how many activities each can run at once (A5 resources); all PROVISIONAL
+  bid_manager:         {capacity: 2, basis: "PROVISIONAL ASSUMPTION: bid manager plus one coordinator, one activity each at a time; not stated in the pack", owner: Bid manager}
+  document_controller: {capacity: 2, basis: "PROVISIONAL ASSUMPTION: two document controllers for assembly, copies, sealing and delivery; not stated", owner: Bid manager}
+  legal_counsel:       {capacity: 2, basis: "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated", owner: Legal}
+  commercial_manager:  {capacity: 2, basis: "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated", owner: Commercial}
+  financial_modeller:  {capacity: 1, basis: "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated", owner: Commercial}
+  technical_lead:      {capacity: 2, basis: "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated", owner: Technical}
+  proposal_writers:    {capacity: 1, basis: "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated", owner: Technical}
+lead_times:                          # Working Days; every value is a PROVISIONAL ASSUMPTION (none is stated in the pack)
+  # ---- Envelope A: forms, PoAs, guarantees
+  poa_board_resolutions: {value: 5,  basis: "PROVISIONAL ASSUMPTION: board resolutions of each member authorising its signatories, members in parallel; not stated in the pack", owner: Legal}
+  poa_notarisation:      {value: 5,  basis: "PROVISIONAL ASSUMPTION: typical notarisation of a Power of Attorney, signatories in parallel; not stated in the pack", owner: Legal}
+  form_4a_signature:     {value: 1,  basis: "PROVISIONAL ASSUMPTION: signature by the PoA holder; not stated", owner: Legal}
+  spoc_confirmation:     {value: 1,  basis: "PROVISIONAL ASSUMPTION: confirm the single point of contact named in Form 4-A; not stated", owner: Bid management}
+  form_4b_preparation:   {value: 3,  basis: "PROVISIONAL ASSUMPTION: complete one Form 4-B per reference project from the reference evidence; not stated", owner: Technical}
+  completion_certificate: {value: 15, basis: "PROVISIONAL ASSUMPTION: obtain a client completion certificate for each reference plant from a third-party client (may already be held); not stated", owner: Technical}
+  form_4c_arabic_prep:   {value: 2,  basis: "PROVISIONAL ASSUMPTION: prepare the Arabic form per member; not stated", owner: Legal}
+  form_4c_member_sign:   {value: 3,  basis: "PROVISIONAL ASSUMPTION: signature and stamp at each member's office, members in parallel; not stated", owner: Legal}
+  pcg_wording:           {value: 10, basis: "PROVISIONAL ASSUMPTION: agree the Parent Company Guarantee wording (substantially Form 4-D) with the EPC Contractor's ultimate parent; not stated", owner: Legal}
+  pcg_execution:         {value: 10, basis: "PROVISIONAL ASSUMPTION: parent board approval and execution of the guarantee; not stated", owner: Legal}
+  deviations_review:     {value: 10, basis: "PROVISIONAL ASSUMPTION: review Volume V and list every deviation, qualification or reservation; not stated", owner: Legal}
+  form_4e_finalise:      {value: 2,  basis: "PROVISIONAL ASSUMPTION: finalise and sign Form 4-E, cross-check that no qualification appears elsewhere (VOL-I 9.6); not stated", owner: Legal}
+  form_4g_review:        {value: 5,  basis: "PROVISIONAL ASSUMPTION: review the six cybersecurity undertakings with the O&M and OT teams; not stated", owner: Technical}
+  form_4g_signature:     {value: 1,  basis: "PROVISIONAL ASSUMPTION: signature for the Bidder; not stated", owner: Technical}
+  technical_proposal:    {value: 20, basis: "PROVISIONAL ASSUMPTION: remaining work on the narrative incl. process design to the amended TN limit and standby power; not stated", owner: Technical}
+  investment_licence:    {value: 5,  basis: "PROVISIONAL ASSUMPTION: copy of a current licence or a signed undertaking per foreign member (the undertaking route); not stated", owner: Legal}
+  # ---- Envelope A: bond, certificates and evidence
+  bid_bond_bank_approval: {value: 10, basis: "PROVISIONAL ASSUMPTION: bank credit approval for a SAR 4.5m first-demand bond; not stated", owner: Commercial}
+  bid_bond_issue:        {value: 3,  basis: "PROVISIONAL ASSUMPTION: issue of the bond after approval; not stated", owner: Commercial}
+  lcc_ratio_calc:        {value: 5,  basis: "PROVISIONAL ASSUMPTION: compute the construction-phase local content ratio; not stated", owner: Commercial}
+  lcc_certificate:       {value: 30, basis: "PROVISIONAL ASSUMPTION: issuing authority not named and no lead time stated; the (non-binding) minutes record bidders' difficulty obtaining it 'within the programme'; set deliberately long until the owner confirms", owner: Commercial}
+  iso_certificate_copy:  {value: 2,  basis: "PROVISIONAL ASSUMPTION: copy of an existing certificate from the EPC Contractor; not stated", owner: Technical}
+  reference_evidence:    {value: 10, basis: "PROVISIONAL ASSUMPTION: commercial-operation evidence for the reference plants, plants in parallel; not stated", owner: Technical}
+  fin_statements_collection: {value: 5, basis: "PROVISIONAL ASSUMPTION: collect each member's most recent audited financial statements, members in parallel; not stated", owner: Commercial}
+  fin_standing_calc:     {value: 3,  basis: "PROVISIONAL ASSUMPTION: combined net worth and turnover weighted by shareholding (VOL-I 8.4); not stated", owner: Commercial}
+  om_experience_evidence: {value: 10, basis: "PROVISIONAL ASSUMPTION: operating-experience evidence from the O&M Operator; not stated", owner: Technical}
+  # ---- Envelope B
+  fin_model_build:       {value: 15, basis: "PROVISIONAL ASSUMPTION: remaining build of a Financial Model already in development (unlocked, formula-linked, no macros); not stated", owner: Commercial}
+  fin_model_freeze:      {value: 1,  basis: "PROVISIONAL ASSUMPTION: freeze inputs and version for audit and Form 4-F; not stated", owner: Commercial}
+  lender_terms:          {value: 10, basis: "PROVISIONAL ASSUMPTION: indicative financing terms (tenor, margin, gearing) from lenders; not stated", owner: Commercial}
+  fin_assumptions_schedule: {value: 2, basis: "PROVISIONAL ASSUMPTION: schedule of principal financing assumptions from the frozen model (VOL-I 10.6); not stated", owner: Commercial}
+  model_auditor_appointment: {value: 5, basis: "PROVISIONAL ASSUMPTION: engage an independent model auditor (opinion addressed to the Authority); not stated", owner: Commercial}
+  model_audit_review:    {value: 10, basis: "PROVISIONAL ASSUMPTION: rolling review of the draft model by the auditor; not stated", owner: Commercial}
+  model_audit_opinion:   {value: 5,  basis: "PROVISIONAL ASSUMPTION: final review of the frozen model and issue of the opinion; not stated", owner: Commercial}
+  form_4f_preparation:   {value: 2,  basis: "PROVISIONAL ASSUMPTION: complete and sign Form 4-F from the frozen model; not stated", owner: Commercial}
+  # ---- both envelopes and actions
+  ground_due_diligence:  {value: 10, basis: "PROVISIONAL ASSUMPTION: review of the data-room geotechnical report and any own investigation needed to price ground risk; not stated", owner: Technical}
+  clarification_drafting: {value: 2, basis: "PROVISIONAL ASSUMPTION: draft and submit clarification requests through the Portal; not stated", owner: Bid management}
+  envelope_assembly:     {value: 1,  basis: "PROVISIONAL ASSUMPTION: assemble the marked original of one envelope in the required order with numbered dividers; not stated", owner: Bid management}
+  copies_and_usb:        {value: 1,  basis: "PROVISIONAL ASSUMPTION: three hard copies of each envelope and the encrypted searchable USB copy named per Appendix 2; not stated", owner: Bid management}
+  seal_and_mark:         {value: 0,  basis: "PROVISIONAL ASSUMPTION: a few hours at the end of the day the copies are finished (0 = no separate Working Day); not stated", owner: Bid management}
+  delivery:              {value: 1,  basis: "PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before 14:00 on the PDD; not stated", owner: Bid management}

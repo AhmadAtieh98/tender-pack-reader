@@ -129,7 +129,9 @@ INTENDED = {
     "ADD-03:cover/para1": {"draft": "no_effect", "why": "the addendum's issue date line (issued_from; stage date "
                                                         "2026-11-05, after ADD-02's 2026-10-22)"},
     "ADD-03:cover/para2": {"draft": "no_effect", "why": "cover text"},
-    "ADD-03:cover/para3": {"draft": "no_effect", "why": "front matter on the cover; changes nothing by itself"},
+    "ADD-03:cover/para3": {"draft": "annotate", "effect": "adds_obligation",
+                           "why": "front matter: 'Bidders shall acknowledge receipt in Form 4-A' is an obligation; the rest "
+                                  "summarises the addendum"},
     "ADD-03:1.1": {"draft": "no_effect", "why": "recital (section 1. RECITALS)"},
     "ADD-03:2.1": {"draft": "replace_text", "target": "VOL-I:6.1", "old": "Thursday 26 November 2026",
                    "new": "Thursday 10 December 2026", "engine": "valid",
@@ -385,10 +387,10 @@ def _expected(layout: dict) -> dict:
         "engine_outcome": {
             "status": "PARTIAL",
             "why": "ADD-03:7.1 is invalid (C23) and ADD-03:6.1, Q15, Q16 are unresolved until a person decides them",
-            "valid_ops": ["ADD-03/2.1", "ADD-03/3.1", "ADD-03/4.1", "ADD-03/5.1"],
+            "valid_ops": ["ADD-03/cover/para3", "ADD-03/2.1", "ADD-03/3.1", "ADD-03/4.1", "ADD-03/5.1"],
             "invalid_ops": ["ADD-03/7.1"],
             "unresolved": ["ADD-03:6.1", "ADD-03:Q15", "ADD-03:Q16"],
-            "no_effect": ["ADD-03:cover/para1", "ADD-03:cover/para2", "ADD-03:cover/para3", "ADD-03:1.1"],
+            "no_effect": ["ADD-03:cover/para1", "ADD-03:cover/para2", "ADD-03:1.1"],
         },
         "layout": layout,
     }

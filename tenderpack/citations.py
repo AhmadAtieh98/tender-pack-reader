@@ -98,6 +98,10 @@ def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
         t = c.target
         if t in unit_ids or any(u.startswith(t + "/") or u.startswith(t + "(") for u in unit_ids):
             out.append(t)
+        elif c.kind == "clause" and t not in unit_ids and any(u.startswith(t + ".") for u in unit_ids):
+            # a whole clause cited ("Volume V Clause 29") that the volume prints only as sub-clauses 29.1, 29.2 ...
+            out += sorted((u for u in unit_ids if u.startswith(t + ".") and u[len(t) + 1:].split("/")[0].isdigit()),
+                          key=lambda u: int(u[len(t) + 1:].split("/")[0]))
         elif c.kind in ("section", "addendum_section"):
             doc, sec = t.split(":")
             if f"{doc}:H:{sec}" in unit_ids:

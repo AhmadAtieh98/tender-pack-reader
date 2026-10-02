@@ -14,15 +14,20 @@
            uncertainties + evidence). Refuses placeholder names and readings that fail checks.
 
 Stage 2 (from a published evidence build; see tenderpack/stage2.py):
-  outputs  [--evidence build] [--out out] [--pack ...]
+  outputs  [--evidence build] [--out out] [--pack ...] [--strict]
            A1 (xlsx/csv/json), A2, A3 (one-page pdf), A5 for every stage of the amendment path.
-           Exit 0: published (drafts, with pending reviews listed); 2: structural failure, previous
-           outputs kept, candidate in <out>.failed.
+           Exit 0: published as a WORKING DRAFT (release blockers listed); 2: structural failure, previous
+           outputs kept, candidate in <out>.failed; 3 (--strict only): release refused because coverage is
+           incomplete, interpretations are stale or approvals are pending; previous outputs kept,
+           candidate in <out>.rejected. The program never approves or accepts anything itself.
   draft    ADD-0N [--evidence build] [--to PATH]
            propose ops and dispositions for an addendum (every op PROPOSED); prints or writes YAML.
            Never writes into curation/ unless --to names a file there explicitly.
   pin      [--evidence build] [--refresh]
            pin each interpretation to its dependencies (curation/register/pins.yaml).
+  check-register [--doc VOL-I]
+           everything a register drafter must clear: rows that do not load, quotes not in the effective text,
+           unit dispositions and their links to rows, evidence items, unlinked consequence words (C15).
 
 Output safety: the output directory may not be the repository, a parent of it, the home or root
 directory, a protected repository folder (sources, config, curation, ...), or anything that
@@ -354,9 +359,9 @@ def draft_cmd(addendum: str, evidence: Path, to: str | None) -> int:
     return 0
 
 
-def pin_cmd(evidence: Path, pack_path: Path, refresh: bool) -> int:
+def pin_cmd(evidence: Path, pack_path: Path, refresh: bool, migrate: bool = False, only: str | None = None) -> int:
     from .amend import Engine, load_opfile
-    from .register import compute_pins, load_rows, pins_path, write_pins
+    from .register import PIN_FORMAT, compute_pins, load_rows, migrate_pins, pins_path, write_pins
     cfg = load_yaml(pack_path)
     units = json.loads((Path(evidence) / "units.json").read_text(encoding="utf-8"))["units"]
     amend_dir = ROOT / cfg.get("amendments_dir", "curation/amendments")
@@ -368,12 +373,35 @@ def pin_cmd(evidence: Path, pack_path: Path, refresh: bool) -> int:
     stages = Engine(units, [load_opfile(amend_dir / f"{a}.yaml") for a in addenda]).run()
     rows_path = ROOT / cfg.get("register", "curation/register/rows.yaml")
     rf = load_rows(rows_path)
-    n = compute_pins(rf, stages, refresh)
+    if only:
+        wanted = {tuple(x.strip().split("@")) for x in only.split(",") if x.strip()}
+        by_stage = {st.stage: st for st in stages}
+        from .register import Register
+        reg = Register(rf, stages, None)
+        n = 0
+        for row in rf.rows:
+            for it in row.interpretations:
+                if (row.id, it.stage) in wanted:
+                    it.pins = reg.pins_for(row, it, by_stage[it.stage])
+                    wanted.discard((row.id, it.stage))
+                    n += 1
+        if wanted:
+            print(f"not found: {sorted(wanted)}")
+            return 1
+        print(f"re-pinned {n} named interpretation(s)")
+    elif migrate:
+        n, kept = migrate_pins(rf, stages)
+        print(f"migrated {n} interpretation(s) to pin format {PIN_FORMAT}; left as they are (stale or unchanged): {len(kept)}")
+    else:
+        n = compute_pins(rf, stages, refresh)
+        print(f"pinned {n} interpretation(s)")
     write_pins(rf, pins_path(rows_path),
                "# Written by `python -m tenderpack pin` (machine-generated; do not edit by hand).\n"
-               "# For each row and interpretation stage: the hash of every dependency when the interpretation\n"
-               "# was drafted. A later change to any of them makes the row STALE until a person re-reviews it.\n")
-    print(f"pinned {n} interpretation(s); wrote {pins_path(rows_path)}")
+               f"# Pin format {PIN_FORMAT}: for each row and interpretation stage, the hash of every dependency (status,\n"
+               "# text, cells, annotations and, for image readings, the review-subject fingerprint) when the\n"
+               "# interpretation was drafted. A later change to any of them makes the row STALE until a person\n"
+               "# re-reviews it. Approving a reading does not change a pin.\n")
+    print(f"wrote {pins_path(rows_path)}")
     return 0
 
 
@@ -398,6 +426,8 @@ def main(argv: list[str] | None = None) -> int:
     d.add_argument("--evidence", default=str(ROOT / "build"))
     d.add_argument("--out", default=str(ROOT / "out"))
     d.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    d.add_argument("--strict", action="store_true",
+                   help="release: refuse (exit 3) while coverage is incomplete, rows are stale or approvals are pending")
     e = sub.add_parser("draft")
     e.add_argument("addendum")
     e.add_argument("--evidence", default=str(ROOT / "build"))
@@ -406,18 +436,29 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--evidence", default=str(ROOT / "build"))
     f.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     f.add_argument("--refresh", action="store_true", help="re-pin every interpretation, not only unpinned ones")
+    f.add_argument("--rows", help="re-pin only these interpretations, as ROW@STAGE[,ROW@STAGE...] (after they were "
+                                  "re-drafted or re-reviewed); every other pin is left as it is")
+    f.add_argument("--migrate-format", action="store_true",
+                   help="upgrade format-1 pins to format 2 (adds the image review fingerprint) where nothing changed")
+    g = sub.add_parser("check-register")
+    g.add_argument("--evidence", default=str(ROOT / "build"))
+    g.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    g.add_argument("--doc", help="only findings for this document (e.g. VOL-I)")
     args = ap.parse_args(argv)
+    if args.cmd == "check-register":
+        from .stage2 import check_register
+        return check_register(Path(args.evidence), Path(args.pack), ROOT, args.doc)
     if args.cmd == "outputs":
         from .stage2 import build
         try:
-            return build(Path(args.evidence), Path(args.out), Path(args.pack), ROOT)["exit_code"]
+            return build(Path(args.evidence), Path(args.out), Path(args.pack), ROOT, strict=args.strict)["exit_code"]
         except UnsafeOutputError as err:
             print(f"REFUSED: {err}")
             return 2
     if args.cmd == "draft":
         return draft_cmd(args.addendum, Path(args.evidence), args.to)
     if args.cmd == "pin":
-        return pin_cmd(Path(args.evidence), Path(args.pack), args.refresh)
+        return pin_cmd(Path(args.evidence), Path(args.pack), args.refresh, args.migrate_format, args.rows)
     if args.cmd == "ingest":
         try:
             res = ingest(Path(args.pack), Path(args.out), require_approved=args.require_approved)

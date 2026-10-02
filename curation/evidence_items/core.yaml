@@ -1,0 +1,33 @@
+# Evidence items (vocabulary): what a requirement needs submitted or done. PROPOSED (session 05), not reviewed.
+# envelope: where it goes (A, B, A+B, or none for an action). per: how many (multiplied by config/assumptions.yaml).
+# counted: included in the VOL-I 6.5 copies (1 marked original + 3 hard copies + 1 encrypted USB copy).
+items:
+  # ---- Envelope A (VOL-I 9.1, in this order)
+  EV-FORM-4A:        {name: "Form 4-A Proposal Submission Letter (signed by the lead member's PoA holder)", envelope: A, issuer: "PoA holder of the lead member", per: proposal, source: "VOL-I:9.1(a); VOL-I:9.3"}
+  EV-FORM-4B:        {name: "Form 4-B Reference Projects Schedule (one per reference project)", envelope: A, issuer: Bidder, per: reference, source: "VOL-I:9.1(b); VOL-I:9.5"}
+  EV-COMPLETION-CERT: {name: "Client completion certificate for each reference project", envelope: A, issuer: "Client of each reference plant", per: reference, source: "VOL-I:9.5"}
+  EV-FORM-4C:        {name: "Form 4-C Conflict of Interest and Debarment Declaration (Arabic, per member)", envelope: A, issuer: "Authorised signatory of each member", per: member, source: "VOL-I:9.1(c); VOL-I:9.4"}
+  EV-FORM-4D:        {name: "Form 4-D Parent Company Guarantee (executed)", envelope: A, issuer: "Ultimate parent of the EPC Contractor", per: epc_contractor, source: "VOL-I:9.1(d); VOL-I:8.7"}
+  EV-FORM-4E:        {name: "Form 4-E Schedule of Deviations", envelope: A, issuer: Bidder, per: proposal, source: "VOL-I:9.1(e); VOL-I:9.6"}
+  EV-FORM-4G:        {name: "Form 4-G Cybersecurity Compliance Undertaking", envelope: A, issuer: Bidder, per: proposal, source: "ADD-02:7.1; ADD-02:7.2"}
+  EV-TECH-PROPOSAL:  {name: "Technical Proposal narrative (page limit per VOL-I 9.2)", envelope: A, issuer: Bidder, per: proposal, source: "VOL-I:9.1(f); VOL-I:9.2; VOL-I:9.7"}
+  EV-BID-BOND:       {name: "Bid Bond (SAR 4,500,000, first demand)", envelope: A, issuer: "Bank licensed in the Kingdom meeting the VOL-I 6.4 rating", per: proposal, source: "VOL-I:9.1(g); VOL-I:6.3; VOL-I:6.4"}
+  EV-POA:            {name: "Notarised Power of Attorney for each signatory", envelope: A, issuer: "Notary", per: signatory, source: "VOL-I:9.1(h); VOL-I:9.3"}
+  EV-ISO:            {name: "EPC Contractor's ISO 9001:2015 certificate", envelope: A, issuer: "Accredited certification body", per: epc_contractor, source: "VOL-I:8.3; VOL-I:9.1(i)"}
+  EV-FIN-STANDING:   {name: "Evidence of financial standing (net worth and other VOL-I 8.4 tests)", envelope: A, issuer: "Each member (audited accounts)", per: member, source: "VOL-I:8.4; VOL-I:9.1(i)"}
+  EV-REFERENCES:     {name: "Evidence of commercial operation of the reference plants", envelope: A, issuer: "Reference plant owners", per: reference, source: "VOL-I:8.5; VOL-I:8.5#fn12"}
+  EV-LCC:            {name: "Local Content Certificate", envelope: A, issuer: "Competent authority (not named in the pack)", per: proposal, source: "VOL-I:8.6 as amended"}
+  EV-OM-EXPERIENCE:  {name: "Evidence of the O&M Operator's operating experience", envelope: A, issuer: "O&M Operator", per: om_operator, source: "VOL-I:8.8"}
+  EV-INVESTMENT-LICENCE: {name: "Investment licence or signed undertaking for each foreign member", envelope: A, issuer: "Licensing authority / each foreign member", per: member, source: "VOL-I:8.9"}
+  # ---- Envelope B (VOL-I 10.1: 'only (a) Form 4-F and (b) the Financial Model'; 10.3 and 10.6 add documents
+  #      that accompany them; whether they count as part of (a)/(b) is an open issue)
+  EV-FORM-4F:        {name: "Form 4-F Financial Proposal Schedule (single Availability Payment, SAR p.a.)", envelope: B, issuer: Bidder, per: proposal, source: "VOL-I:10.1; VOL-I:10.2"}
+  EV-FIN-MODEL:      {name: "Financial Model (unlocked Excel, no macros, no hard-coded calculation cells)", envelope: B, issuer: Bidder, per: proposal, source: "VOL-I:10.1; VOL-I:10.3"}
+  EV-MODEL-AUDIT:    {name: "Independent model auditor's opinion on the Financial Model", envelope: B, issuer: "Independent model auditor", per: proposal, source: "VOL-I:10.3"}
+  EV-FIN-ASSUMPTIONS: {name: "Schedule of principal financing assumptions (tenor, margin, gearing)", envelope: B, issuer: Bidder, per: proposal, source: "VOL-I:10.6"}
+  # ---- both envelopes / actions
+  EV-DELIVERY:       {name: "Delivery of both sealed, marked envelopes to the Appendix 3 address before the deadline", envelope: A+B, issuer: "Bidder (courier)", per: proposal, source: "VOL-I:6.1; VOL-I:6.2; VOL-I:App3/para1", counted: false}
+  EV-COPIES:         {name: "One marked original, three hard copies and an encrypted searchable USB copy, files named per Appendix 2", envelope: A+B, issuer: Bidder, per: proposal, source: "VOL-I:6.5; VOL-I:App2/para1", counted: false}
+  EV-CLARIFICATIONS: {name: "Clarification requests through the Portal (each citing Volume, Clause and page)", envelope: none, issuer: Bidder, per: proposal, source: "VOL-I:5.1; VOL-I:5.2", counted: false}
+  EV-ATTENDANCE:     {name: "Pre-Bid Conference attendance; notice if the attendance record is wrong", envelope: none, issuer: Bidder, per: proposal, source: "VOL-I:5.4; ADD-01:3.1", counted: false}
+  EV-SPOC:           {name: "Single point of contact nominated, changes notified within 2 Working Days", envelope: none, issuer: Bidder, per: proposal, source: "VOL-I:4.3", counted: false}

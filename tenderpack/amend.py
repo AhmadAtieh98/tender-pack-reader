@@ -15,14 +15,17 @@ Operation types (a small closed set; PLAN §4.4):
   insert_unit    a new form (group of addendum units) and, optionally, a new list item after an anchor
   annotate       a clarification answer or rule linked to units: effect none | confirms | interprets |
                  adds_obligation (rules may name a `subject`; the units mentioning it are listed)
-Dispositions for provisions that carry no op: no_effect (reason), outside_slice (not modelled in this
-register slice; listed so partial coverage is visible), unresolved (blocks validation).
+Dispositions for provisions that carry no op: no_effect (reason) or unresolved (blocks validation). Every
+provision is treated: since Stage 3 there is no "outside the slice".
 
-Checks per op (an invalid op is listed and NOT applied):
-  C21 the op's quoted words (old/new/new_text/source_quote) occur in its provision
+Checks per op (an invalid op is listed and changes NOTHING: the state, including history, annotations and
+the unit order, is restored to what it was before the op; ops are applied as transactions):
+  C21 the op's quoted words (old/new/new_text) occur in its provision; a set_value's new value is the figure
+      the provision states (with the row's unit where it has one) and its column is named in the provision
   C22 the target exists and its state allows the operation; the declared target is the one the
       provision (or its section heading) cites (citations.verify_target); claims such as
-      "deleted by Addendum No. 1 Section 4" agree with the ledger
+      "deleted by Addendum No. 1 Section 4" agree with the ledger; replacement and inserted content is
+      printed in the same addendum, after the provision, and a replacement's title names its target
   C23 replace_text: `old` occurs exactly once in the target
   C24 post-conditions: `old` count falls by one and `new` is present
   C27 `expect` assertions (e.g. marks moved between criteria, total unchanged)
@@ -88,7 +91,7 @@ class Op(_Strict):
 
 class Disposition(_Strict):
     provision: str
-    disposition: Literal["no_effect", "outside_slice", "unresolved"]
+    disposition: Literal["no_effect", "unresolved"]
     reason: str
     candidates: list[str] = Field(default_factory=list)
     origin: Literal["pattern", "assistant", "person"] = "assistant"
@@ -121,6 +124,7 @@ class UState:
     origin: str                       # text_layer | image_reading | addendum_op
     reading_status: str | None        # pending | approved (image readings only)
     parent: str | None = None
+    reading_subject: str | None = None  # review-subject fingerprint of the image reading (content + uncertainties + evidence)
     label: str | None = None
     history: list[str] = field(default_factory=list)            # op ids that changed this unit
     annotations: list[str] = field(default_factory=list)        # op ids that annotate it
@@ -144,7 +148,8 @@ def base_state(units: list[dict], addenda: list[str]) -> dict[str, UState]:
             unit_id=u["unit_id"], doc=doc, kind=u["kind"], status="not_issued" if add else "active",
             text=u.get("text", ""), cells=copy.deepcopy(u.get("cells")), pages=list(u.get("pages", [])),
             origin=u.get("origin", "text_layer"), reading_status=(u.get("reading") or {}).get("status"),
-            parent=u.get("parent"), label=u.get("label"), issued_by=doc if add else None)
+            parent=u.get("parent"), label=u.get("label"), issued_by=doc if add else None,
+            reading_subject=(u.get("reading") or {}).get("subject_sha256"))
     return st
 
 
@@ -244,7 +249,15 @@ class Engine:
                     u.status = "active"
             before = {k: u.sha() for k, u in st.items()}
             for op in self._ordered(f):
-                res.ops.append(self._apply(op, st, f.addendum))
+                snap, order = copy.deepcopy(st), list(self.order)
+                r = self._apply(op, st, f.addendum)
+                if not r.valid:                       # a failed op changes nothing: restore state and unit order
+                    st.clear()
+                    st.update(snap)
+                    self.order[:] = order
+                    r.changed = []
+                    r.details.pop("content", None)
+                res.ops.append(r)
             self._coverage(res, f)
             self._scope(res, before, f.addendum)
             if res.problems or res.scope_leak or any(not r.valid for r in res.ops) or \
@@ -391,6 +404,15 @@ class Engine:
                 if not check("C22", t.status == "active" and t.cells is not None and op.column in t.cells,
                              f"target is an active table row with column '{op.column}'"):
                     return r
+                if not check("C21", _names_column(ptext, op.column),
+                             f"the provision names the column '{op.column}'" if _names_column(ptext, op.column)
+                             else f"the provision does not name the column '{op.column}'"):
+                    return r
+                unit = next((v for c, v in t.cells.items() if c.lower() == "unit" and v and v != "-"), None)
+                ok_value = _states_value(ptext, op.new or "", unit)
+                if not check("C21", ok_value, f"the provision states the new value '{op.new}'" + (f" {unit}" if unit else "")
+                             if ok_value else f"the provision does not state the new value '{op.new}'" + (f" {unit}" if unit else "")):
+                    return r
                 old_value = r.details["old_value"] = t.cells[op.column]
                 t.cells[op.column] = op.new
                 cell_before, cell_after = f"{op.column}: {old_value}", f"{op.column}: {op.new}"
@@ -415,6 +437,19 @@ class Engine:
                    and not k.split("/")[-1].startswith(("note", "notes"))]
             if not check("C22", old and new and all(st[k].status == "active" for k in old),
                          f"{op.target} ({len(old)} units) replaced by {op.replacement} ({len(new)} units)"):
+                return r
+            if not check("C22", all(st[k].doc == addendum for k in new),
+                         f"the replacement {op.replacement} is printed in {addendum}" if all(st[k].doc == addendum for k in new)
+                         else f"the replacement {op.replacement} is not content of {addendum}"):
+                return r
+            pos = {k: i for i, k in enumerate(self.order)}
+            after = all(pos.get(k, -1) > pos.get(op.provision, 10 ** 9) for k in new if st[k].kind != "heading")
+            if not check("C22", after, "the replacement is printed after the provision" if after
+                         else "the replacement is not printed after the provision"):
+                return r
+            title = _group_title(st, op.replacement)
+            if not check("C22", _names_target(title, op.target), f"the replacement's title names {op.target}: '{title[:60]}'"
+                         if _names_target(title, op.target) else f"the replacement's title does not name {op.target}: '{title[:60]}'"):
                 return r
             by_label = {st[k].label: k for k in new if st[k].label}
             for k in old:
@@ -465,6 +500,41 @@ class Engine:
                 if o.id == op_id:
                     return o.provision
         return ""
+
+
+def _names_column(provision_text: str, column: str) -> bool:
+    return bool(column) and normalize_latin(column).lower() in normalize_latin(provision_text).lower()
+
+
+def _states_value(provision_text: str, value: str, unit: str | None) -> bool:
+    """The provision states the figure (followed by the row's unit where the row has one)."""
+    if not value.strip():
+        return False
+    t = normalize_latin(provision_text)
+    rx = r"(?<![\d.,])" + re.escape(value.strip()) + r"(?![\d,]|\.\d)"
+    if unit:
+        rx += r"\s*" + re.escape(normalize_latin(unit))
+    return re.search(rx, t, re.I) is not None
+
+
+def _group_title(st: dict[str, UState], group: str) -> str:
+    doc, _, local = group.partition(":")
+    for k in (group, f"{doc}:H:{local}"):
+        if k in st and st[k].text:
+            return st[k].text
+    return ""
+
+
+def _names_target(title: str, target: str) -> bool:
+    """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A."""
+    local = target.partition(":")[2]
+    if re.fullmatch(r"T\d+-\d+", local):
+        phrase = "Table " + local[1:]
+    elif re.fullmatch(r"F\d-[A-Z]", local):
+        phrase = "Form " + local[1:]
+    else:
+        phrase = local
+    return re.search(r"(?<![\w-])" + re.escape(phrase) + r"(?![\w-])", normalize_latin(title), re.I) is not None
 
 
 def _also_in(st: dict[str, UState], target: str, words: str) -> list[str]:

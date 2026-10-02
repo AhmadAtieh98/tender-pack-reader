@@ -12,6 +12,7 @@ method: >-
   quoted from the unit that states them; dates are rules evaluated by tenderpack.dates, never typed.
 anchors:
   PDD: {name: "Proposal Due Date", defined_in: "VOL-I:6.1"}
+include: ["rows/*.yaml"]          # per-document row files (Stage 3); ids are unique across all files
 rows:
   # ---------------------------------------------------------------- submission and deadline dependants
   - id: VOL-I-6.1-01
@@ -361,7 +362,7 @@ rows:
     requirement: "Standby power sized to carry the inlet works, disinfection and effluent pumping for the stated duration"
     units: ["VOL-II:4.4"]
     discipline: Technical
-    assessment: pass_fail
+    assessment: scored
     evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: BASE
@@ -394,6 +395,7 @@ rows:
     units: ["VOL-I:11.2"]
     discipline: Bid management
     assessment: scored
+    no_deliverable: "an evaluation rule the Authority applies; what it weighs are the Technical Proposal and the commercial proposal, required by their own rows"
     interpretations:
       - stage: BASE
         quote: "sixty per cent (60%) technical and forty per cent (40%) commercial"
@@ -415,6 +417,10 @@ rows:
       - stage: BASE
         quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
         parameters: {indexed_pct: 60, fixed_pct: 40}
+      - stage: ADD-01
+        quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
+        parameters: {indexed_pct: 60, fixed_pct: 40}
+        note: "ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed for this row: the indexation split is unchanged."
     confidence: high
     confidence_reason: "verbatim; must not change when VOL-I 11.2's similar words do"
   - id: VOL-I-11.3-01
@@ -424,6 +430,7 @@ rows:
     units: ["VOL-I:11.3"]
     discipline: Technical
     assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: BASE
         quote: "scoring less than seventy (70) marks out of one hundred (100)"
@@ -444,6 +451,7 @@ rows:
     follows_replacement: true
     discipline: Technical
     assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: BASE
         quote: "Marks: 20"
@@ -451,7 +459,7 @@ rows:
       - stage: ADD-02
         quote: "Marks: 15"
         parameters: {marks: 15}
-        note: "Table 1-1 reissued by ADD-02 §3.1; B reduced by 5, D increased by 5, total 100 (checked)."
+        note: "Table 1-1 reissued by ADD-02 §3.1; B reduced by 5, D increased by 5, total 100 (checked). Note (3) adds a scoring method (a 'standard five-point scale' multiplied by 'the weight shown'); the scale is not defined (issue)."
     confidence: high
     confidence_reason: "verbatim table rows"
   - id: VOL-I-T1-1-D
@@ -462,6 +470,7 @@ rows:
     follows_replacement: true
     discipline: Technical
     assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: BASE
         quote: "Marks: 15"
@@ -469,7 +478,7 @@ rows:
       - stage: ADD-02
         quote: "Marks: 20"
         parameters: {marks: 20}
-        note: "Table 1-1 reissued by ADD-02 §3.1."
+        note: "Table 1-1 reissued by ADD-02 §3.1. Note (3) adds a scoring method (a 'standard five-point scale' multiplied by 'the weight shown'); the scale is not defined (issue)."
     confidence: high
     confidence_reason: "verbatim table rows"
   # ---------------------------------------------------------------- image-based TN
@@ -479,7 +488,7 @@ rows:
     requirement: "Treated effluent Total Nitrogen (TN): value shown in Table 2-4, unit and basis of assessment"
     units: ["VOL-II:T2-4/TN"]
     discipline: Technical
-    assessment: pass_fail
+    assessment: scored
     evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: BASE

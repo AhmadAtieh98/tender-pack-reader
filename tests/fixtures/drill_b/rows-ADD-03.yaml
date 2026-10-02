@@ -1,0 +1,39 @@
+doc: ADD-03
+prepared_by: "assistant curation in the drill B rehearsal; not reviewed"
+method: rows for the obligations the synthetic Addendum No. 3 creates
+rows:
+  - id: ADD-03-3.1-01
+    group: ADD-03:3.1
+    scope: [envelope_A, qualification, per_member, new_in_addendum]
+    requirement: "A certificate of good standing for each member, in Envelope A, issued not earlier than 30 days before the PDD"
+    units: ["ADD-03:3.1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-GOOD-STANDING]
+    date_rules:
+      - {rule_id: GOOD-STANDING-NOT-BEFORE, kind: relative, purpose: window_start, anchor: PDD, offset: 30, unit: calendar_day, direction: before, source_unit: "ADD-03:3.1", text: "issued not earlier than thirty (30) days before the Proposal Due Date"}
+    interpretations:
+      - stage: ADD-03
+        quote: "Each member of the Bidder shall submit with Envelope A a certificate of good standing issued not earlier than thirty (30) days before the Proposal Due Date"
+        consequence: {class: non_responsive, unit: "ADD-03:3.1", quote: "Failure to submit the certificate for any member shall render the Proposal non-responsive."}
+        note: "New in ADD-03. The issuing authority is not named."
+    confidence: high
+    confidence_reason: "verbatim new requirement with a stated consequence; issuer not named"
+  - id: VOL-I-4.4-01
+    group: VOL-I:4.3+ADD-03
+    scope: [communications, procedural, new_in_addendum]
+    requirement: "Confirm the single point of contact in writing through the Portal within three Working Days of Addendum No. 3"
+    units: ["VOL-I:4.3+ADD-03"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-SPOC]
+    date_rules:
+      - {rule_id: SPOC-CONFIRMATION, kind: relative, purpose: deadline, anchor: ADD-03-issue, offset: 3, unit: working_day, direction: after, source_unit: "ADD-03:6.1", text: "within three (3) Working Days of this Addendum"}
+    interpretations:
+      - stage: ADD-03
+        quote: "within three (3) Working Days of this Addendum, the name of its single point of contact"
+        note: "New Clause 4.4 inserted by ADD-03 6.1. No consequence stated."
+    confidence: medium
+    confidence_reason: "forward Working Day counting is not defined (two readings); no consequence stated"
