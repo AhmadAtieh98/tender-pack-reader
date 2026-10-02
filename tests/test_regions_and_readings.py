@@ -7,7 +7,7 @@ import pymupdf
 import pytest
 
 from tenderpack import arabic
-from tenderpack.readings import Reading, check_reading, load_readings, review_status
+from tenderpack.readings import Reading, check_reading, load_readings, review_status, review_subject
 from tenderpack.regions import despeckle, detect_grid, image_array, text_bands, unexplained_ink
 from tenderpack.textnorm import normalize_arabic
 
@@ -31,14 +31,18 @@ def test_image_page_with_text_layer_still_needs_reading(pack):
 
 
 def test_synthetic_regions(synthetic):
+    """Every region the builder placed is detected (image table, straight-line triangle, curve, scan, dark box);
+    each has a reading from the builder's ground truth, so coverage passes and every reading stays PENDING."""
+    exp = synthetic["expected"]
     kinds = sorted((r["page"], r["kind"]) for r in synthetic["coverage"]["regions"])
-    assert kinds == [(4, "image"), (4, "vector_graphic"), (5, "image")]
-    p5 = next(r for r in synthetic["coverage"]["regions"] if r["page"] == 5)
+    assert kinds == sorted([(4, k) for k in exp["p4"]["regions"]] + [(5, k) for k in exp["p5"]["regions"]])
+    p5 = next(r for r in synthetic["coverage"]["regions"] if r["page"] == 5 and r["kind"] == "image")
     assert any("invisible text" in n for n in p5["notes"])
     inv = synthetic["by_id"]["SYN-01:invisible:p5"]
-    assert inv["text"] == synthetic["expected"]["p5"]["invisible_text"]
+    assert inv["text"] == exp["p5"]["invisible_text"]
     c05 = next(c for c in synthetic["coverage"]["checks"] if c["id"] == "C05")
-    assert not c05["ok"] and "SYN-01-p4-r1" in c05["detail"]       # unread regions fail coverage, visibly
+    assert c05["ok"] and "PENDING HUMAN REVIEW" in c05["detail"]
+    assert {pk["status"] for pk in synthetic["packets"].values()} == {"pending"}   # nothing approved by itself
 
 
 def test_unexplained_ink_is_found_when_nothing_explains_it():
@@ -92,7 +96,7 @@ def test_both_readings_pass_their_checks_and_stay_pending(pack):
         assert not failed, failed
     tn = pack["by_id"]["VOL-II:T2-4/TN"]
     assert tn["reading"]["status"] == "pending" and tn["origin"] == "image_reading"
-    assert tn["cells"]["Limit"] == "5" and tn["parsed"]["limit"]["max"] == 5.0
+    assert tn["cells"]["Limit"] == "5" and tn["numeric"]["Limit"]["values"] == [5.0]
     assert tn["cells"]["Basis of assessment"] == "30-day rolling average"
     assert pack["by_id"]["VOL-IV:F4-C/image/decl4"]["reading"]["status"] == "pending"
 
@@ -147,15 +151,19 @@ def test_presentation_forms_are_rejected(form4c):
     assert _failed(r, region, pdf, "RD5")
 
 
-def test_approval_is_pinned_to_content(form4c):
-    reading, _, _ = form4c
-    approvals = [{"region_id": reading.region_id, "reviewer": "test", "date": "2026-10-02",
-                  "content_sha256": reading.content_sha256()}]
-    assert review_status(reading, approvals)["status"] == "approved"
+def test_approval_is_pinned_to_content(form4c, pack):
+    reading, region, _ = form4c
+    doc_sha = next(d.doc.sha256 for d in pack["pack"].docs if d.doc.doc_id == "VOL-IV")
+    subj = review_subject(reading, region, doc_sha)
+    approvals = [{"region_id": reading.region_id, "reviewer": "Test Reviewer", "date": "2026-10-02",
+                  "subject_sha256": subj["sha256"]}]
+    assert review_status(reading, approvals, subj)["status"] == "approved"
     changed = Reading.model_validate(copy.deepcopy(reading.model_dump()))
     changed.blocks[0].lines[0].source += " x"
-    st = review_status(changed, approvals)
+    st = review_status(changed, approvals, review_subject(changed, region, doc_sha))
     assert st["status"] == "pending" and "changed after" in st["reason"]
+    old_style = [{"region_id": reading.region_id, "reviewer": "Test Reviewer", "content_sha256": "x" * 64}]
+    assert review_status(reading, old_style, subj)["status"] == "pending"
 
 
 def test_bidi_render_oracle():

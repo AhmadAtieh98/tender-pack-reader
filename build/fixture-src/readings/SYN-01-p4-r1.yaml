@@ -1,0 +1,67 @@
+region_id: SYN-01-p4-r1
+unit_id: SYN-01:T-AR-1
+title: Synthetic Arabic table (image, RTL)
+source:
+  doc: SYN-01
+  page: 4
+  bbox_pt:
+  - 80.0
+  - 110.0
+  - 500.0
+  - 250.2
+  native_sha256: de24a7a6aa4609def0d9045f1bb0cb8d76da7dd621c0ae3c8d051129b3d8d62e
+content_type: table
+languages:
+- ar
+- en
+prepared_by: 'fixture generator: ground truth of what it drew (not a reading of pixels)'
+method: 'cells copied from the builder''s AR_ROWS; visual orders from UAX #9 reasoning'
+table:
+  direction: rtl
+  columns:
+  - key: item
+    heading: البند
+    lang: ar
+  - key: limit
+    heading: الحد
+    lang: mixed
+  - key: note
+    heading: ملاحظة
+    lang: ar
+  rows:
+  - key: noise
+    cells:
+      item: الضوضاء ليلاً
+      limit: 45 dB(A)
+      note: من ٢٢:٠٠-٠٦:٠٠
+    numerals:
+    - column: limit
+      text: 45 dB(A)
+      visual_ltr_expected: (dB(A 45
+      meaning: fixture ground truth
+    - column: note
+      text: ٢٢:٠٠-٠٦:٠٠
+      visual_ltr_expected: ٠٦:٠٠-٢٢:٠٠
+      meaning: fixture ground truth
+  - key: ph
+    cells:
+      item: الأس الهيدروجيني
+      limit: ٦٫٠ - ٩٫٠
+      note: ''
+    numerals:
+    - column: limit
+      text: ٦٫٠ - ٩٫٠
+      visual_ltr_expected: ٩٫٠ - ٦٫٠
+      meaning: fixture ground truth
+    blank:
+    - note
+  - key: samples
+    cells:
+      item: عدد العينات
+      limit: ١٢
+      note: شهرياً
+    numerals:
+    - column: limit
+      text: ١٢
+      visual_ltr_expected: ١٢
+      meaning: fixture ground truth

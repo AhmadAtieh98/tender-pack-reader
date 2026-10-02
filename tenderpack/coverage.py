@@ -4,18 +4,95 @@ C01  sources match the manifest (sha256, page count)            -> sources.py ra
 C02  every page accounted for (content spans, exclusions, regions)
 C03  every content span is assigned to exactly one unit
 C04  every exclusion matched a declared furniture rule; rules with an expected count matched it on every page
-C05  every region has a reading; readings pass their checks; pending review is shown, never hidden
+C05  every region has a reading and every reading has a region; readings pass their checks;
+     pending review is shown, never hidden (pending is not a failure)
 C06  every superscript is classified (unit exponent or footnote marker) and every footnote is paired
+C07  unit ids are unique across the pack (text-layer and reading units); nothing was renamed
+C08  every content span appears exactly once in exactly one unit's anchors, and every anchored
+     span exists on its page
+C09  segmentation reported no problems
+C10  full evidence: every text-layer unit is compared with spans re-extracted from the PDF.
+     Flow units: the whole printed text (label excluded) and the whole matching text must equal
+     the spans' text, character for character apart from whitespace. Tables, rows and form
+     fields: the characters of the title, headers and cells must be exactly the characters of
+     their spans (same multiset), and each cell must appear in the row text.
+
+Any failing check is a structural failure: `ingest` exits non-zero and keeps the previous build.
+Pending human review is a separate status, not a failure.
 """
 from __future__ import annotations
 
+import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import pymupdf
+
+from .extract import extract_page
+from .textnorm import normalize_latin
 from .util import write_text
 
 
-def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, list[dict]]) -> dict:
+def _chars(text: str) -> str:
+    """Characters for evidence comparison: NFKC (a superscript ³ compares as 3), whitespace removed."""
+    return "".join(unicodedata.normalize("NFKC", text).split())
+
+
+def full_evidence(d, rules) -> dict:
+    """C10: re-extract every page of the document and compare each text-layer unit in full."""
+    pdf = pymupdf.open(d.doc.path)
+    fresh = {}
+    for i in range(pdf.page_count):
+        for s in extract_page(d.doc.doc_id, pdf[i], rules).content:
+            fresh[s.span_id] = s
+    checked, failures = 0, []
+
+    def fail(u, why):
+        failures.append({"unit": u.unit_id, "kind": u.kind, "why": why})
+
+    for u in d.units.values():
+        sids = [sid for a in u.anchors for sid in a["spans"]]
+        if u.kind == "region":
+            continue
+        checked += 1
+        missing = [sid for sid in sids if sid not in fresh]
+        if missing:
+            fail(u, f"anchored spans not found when the PDF is re-extracted: {missing[:3]}")
+            continue
+        spans = [fresh[sid] for sid in sids]
+        if not spans:
+            if u.text.strip():
+                fail(u, "text with no source spans")
+            continue
+        if u.kind == "table":
+            t = u.table or {}
+            header = "".join(t.get("columns") or [])
+            want = Counter(_chars((t.get("title") or "") + header + header * len(t.get("repeated_headers", []))))
+            if Counter(_chars("".join(s.text for s in spans))) != want:
+                fail(u, "title and header characters differ from the caption and header spans")
+            elif u.text != (t["title"] + " — " if t.get("title") else "") + " | ".join(t.get("columns") or []):
+                fail(u, "table text is not its title and header")
+            continue
+        if u.kind in ("table_row", "form_field"):
+            cells = list((u.cells or {}).values())
+            if Counter(_chars("".join(s.text for s in spans))) != Counter(_chars("".join(cells))):
+                fail(u, "cell characters differ from the row's spans")
+            elif not all(c in u.text for c in cells):
+                fail(u, "a cell value is missing from the row text")
+            continue
+        body = [s for s in spans if s.span_id != u.label_span]
+        markers = {m["span_id"] for m in u.footnote_markers}
+        printed = _chars("".join(s.text for s in body))
+        match = _chars(normalize_latin("".join(s.text for s in body if s.span_id not in markers)))
+        if _chars(u.text) != printed:
+            fail(u, "printed text differs from its spans")
+        elif _chars(u.normalized) != match:
+            fail(u, "matching text differs from its spans")
+    return {"units_checked": checked, "failures": failures}
+
+
+def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, list[dict]],
+                    orphan_readings: list[str] | None = None) -> dict:
     checks = []
     pages = []
     exclusions = []
@@ -25,6 +102,9 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
     small_print = []
     rotated_content = []
     problems = []
+    notices = []
+    anchor_twice, anchor_none, anchor_unknown, duplicates = [], [], [], []
+    evidence = {"units_checked": 0, "failures": []}
     for d in pack.docs:
         doc_id = d.doc.doc_id
         assigned = Counter(d.span_unit.values())
@@ -73,10 +153,17 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
             if u.style.get("small_print"):
                 small_print.append({"unit": u.unit_id, "kind": u.kind, "max_size": u.style.get("max_size"),
                                     "text": u.text[:160]})
-        dup = [sid for sid, n in Counter(sid for u in d.units.values() for a in u.anchors for sid in a["spans"]).items() if n > 1]
         problems += [f"{doc_id}: {x}" for x in d.problems]
-        if dup:
-            problems.append(f"{doc_id}: spans listed in more than one unit: {dup[:5]}")
+        notices += [f"{doc_id}: {x}" for x in getattr(d, "notices", [])]
+        anchored = Counter(sid for u in d.units.values() for a in u.anchors for sid in a["spans"])
+        content = {s.span_id for p in d.pages for s in p.content}
+        anchor_twice += [sid for sid, n in anchored.items() if n > 1]
+        anchor_none += [sid for sid in content if sid not in anchored]
+        anchor_unknown += [sid for sid in anchored if sid not in content]
+        duplicates += list(getattr(d, "duplicates", []))
+        ev = full_evidence(d, pack.rules)
+        evidence["units_checked"] += ev["units_checked"]
+        evidence["failures"] += ev["failures"]
 
     total_content = sum(p["content_spans"] for p in pages)
     total_assigned = sum(p["assigned"] for p in pages)
@@ -93,8 +180,10 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
     unread = [g.region_id for g in regions if g.region_id not in packets or packets[g.region_id]["status"] == "unread"]
     failing = [rid for rid, pk in packets.items() if any(not c["ok"] for c in pk.get("checks", []))]
     pending = [rid for rid, pk in packets.items() if pk.get("status") == "pending"]
-    checks.append({"id": "C05", "ok": not unread and not failing,
+    orphan = sorted(orphan_readings or [])
+    checks.append({"id": "C05", "ok": not unread and not failing and not orphan,
                    "detail": f"{len(regions)} regions; unread {unread or 'none'}; readings failing checks {failing or 'none'}; "
+                             f"readings with no detected region {orphan or 'none'}; "
                              f"PENDING HUMAN REVIEW: {pending or 'none'}"})
     unclassified = [s for s in superscripts if s["class"] == "unclassified"]
     unpaired = [s for s in superscripts if s["class"] == "footnote marker" and not s["footnote"]]
@@ -103,7 +192,22 @@ def coverage_report(pack, packets: dict[str, dict], reading_units: dict[str, lis
                              f"{sum(1 for s in superscripts if s['class'] == 'unit exponent')} unit exponents, "
                              f"{sum(1 for s in superscripts if s['class'] == 'footnote marker')} footnote markers "
                              f"(all paired: {not unpaired}); unclassified {len(unclassified)}"})
-    return {"checks": checks, "pages": pages, "exclusions": exclusions, "superscripts": superscripts,
+    ids = [u.unit_id for d in pack.docs for u in d.units.values()] + \
+          [u["unit_id"] for us in reading_units.values() for u in us]
+    id_dups = sorted({i for i, n in Counter(ids).items() if n > 1} | set(duplicates))
+    checks.append({"id": "C07", "ok": not id_dups,
+                   "detail": f"{len(ids)} unit ids; produced more than once: {id_dups or 'none'}"})
+    checks.append({"id": "C08", "ok": not (anchor_twice or anchor_none or anchor_unknown),
+                   "detail": f"{total_content} content spans; in more than one anchor: {sorted(anchor_twice)[:5] or 'none'}; "
+                             f"in no anchor: {sorted(anchor_none)[:5] or 'none'}; anchored but not on the page: "
+                             f"{sorted(anchor_unknown)[:5] or 'none'}"})
+    checks.append({"id": "C09", "ok": not problems,
+                   "detail": f"segmentation problems: {len(problems)}" + (f" (see Problems): {problems[:3]}" if problems else "")})
+    checks.append({"id": "C10", "ok": not evidence["failures"],
+                   "detail": f"{evidence['units_checked']} text-layer units compared in full with spans re-extracted from "
+                             f"the PDF; mismatches: {[f['unit'] for f in evidence['failures']][:5] or 'none'}"})
+    status = "ok" if all(c["ok"] for c in checks) else "structural_failure"
+    return {"status": status, "checks": checks, "evidence": evidence, "notices": notices, "pages": pages, "exclusions": exclusions, "superscripts": superscripts,
             "footnotes": footnotes, "split_tables": split_tables, "small_print": small_print,
             "rotated_content": rotated_content, "problems": problems,
             "regions": [{"id": g.region_id, "doc": g.doc, "page": g.page, "kind": g.kind, "bbox": g.bbox,
@@ -118,6 +222,9 @@ def coverage_markdown(cov: dict, title: str) -> str:
          "Generated by `python -m tenderpack ingest`. Deterministic: no timestamps. "
          "Accounting is not correctness: a span assigned to a unit says the text was captured, "
          "not that its meaning has been interpreted.", ""]
+    if cov["status"] != "ok":
+        L += [f"> **STRUCTURAL FAILURE:** checks {', '.join(c['id'] for c in cov['checks'] if not c['ok'])} failed. "
+              "This build is not usable; the previous build (if any) was kept.", ""]
     if cov["pending_review"]:
         L += [f"> **PENDING HUMAN REVIEW:** {', '.join(cov['pending_review'])}. Units derived from these readings are "
               "marked `reading.status = pending`.", ""]
@@ -153,7 +260,11 @@ def coverage_markdown(cov: dict, title: str) -> str:
     L += ["", "## Rotated text kept as content", ""]
     L += [f"- `{r['span']}` angle {r['angle']}: {r['text']} -> `{r['unit']}`" for r in cov["rotated_content"]] or \
          ["None in this pack: every rotated span matched the WATERMARK rule (see exclusions)."]
+    L += ["", "## Full evidence check (C10) mismatches", ""] + (
+        [f"- `{f['unit']}` ({f['kind']}): {f['why']}" for f in cov["evidence"]["failures"]] or
+        [f"None: {cov['evidence']['units_checked']} units compared in full."])
     L += ["", "## Problems", ""] + ([f"- {p}" for p in cov["problems"]] or ["None."])
+    L += ["", "## Notices (reported, not failures)", ""] + ([f"- {p}" for p in cov["notices"]] or ["None."])
     return "\n".join(L) + "\n"
 
 

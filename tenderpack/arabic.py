@@ -22,7 +22,7 @@ import pymupdf
 
 PRESENTATION_FORMS = [(0xFB50, 0xFDFF), (0xFE70, 0xFEFF)]
 BIDI_CONTROLS = set("‎‏‪‫‬‭‮⁦⁧⁨⁩")
-NUMERAL_CHARS = set("0123456789٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹-./,:")
+NUMERAL_CHARS = set("0123456789٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹-./,:٫٬")
 
 
 def storage_problems(text: str) -> list[str]:
@@ -68,10 +68,10 @@ def visual_numeral_runs(text: str) -> list[str]:
             cur += ch
         else:
             if any(c.isdigit() for c in cur):
-                runs.append(cur.strip("-./,:"))
+                runs.append(cur.strip("-./,:٫٬"))
             cur = ""
     if any(c.isdigit() for c in cur):
-        runs.append(cur.strip("-./,:"))
+        runs.append(cur.strip("-./,:٫٬"))
     return runs
 
 
@@ -169,7 +169,7 @@ def visual_check(source: str, expected_visual: str) -> tuple[bool, str]:
     if exp in vis:
         return True, f"'{exp}' found in rendered glyph order"
     runs = visual_numeral_runs(source)
-    exp_digits = "".join(ch for ch in exp if ch in NUMERAL_CHARS).strip("-./,:")
+    exp_digits = "".join(ch for ch in exp if ch in NUMERAL_CHARS).strip("-./,:٫٬")
     if exp_digits and exp_digits in runs:
         return True, f"digit run '{exp_digits}' found in rendered runs {runs} (letter order not verifiable)"
     return False, f"rendered numeral runs {runs}; expected '{exp}'"

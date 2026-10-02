@@ -1,140 +1,17 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS (revision 2, session 02, 2026-10-02):**
-> - **Direction:** accepted by the owner.
-> - **Stage 1:** approved with adjustments, and implemented (see §9).
-> - **Stages 2–6:** remain PROPOSED and wait for the owner's review of the Stage 1 evidence.
-> - **Revision 1:** session 01, planning only, recorded in `worklog/2026-10-01_session-01_planning.md`.
-> - **This revision:** the owner's adjustments and their effects are listed in §R2 directly below. Where a §R2 item conflicts with older text further down, §R2 wins.
+> **STATUS (revision 3, session 03, 2026-10-02, 04:00 Riyadh):**
+> - **Direction:** accepted by the owner (session 02).
+> - **Stage 1 (evidence and units):** implemented in session 02, revised in session 03 after the owner's review found six gaps (§9). **Not yet accepted by the owner.** The two image readings are **pending the owner's review**; nothing has been approved.
+> - **Stages 2–6:** PROPOSED. Nothing in them is built.
+> - **Integrations and model selection** (Claude Code in the app, OpenRouter, local Ollama): designed in §4.6, deliberately **not implemented**; the reviewed build runs offline with no model.
+> - This revision is one consistent document. Earlier revisions are summarised in the history below and kept in the work log; where they differed, the text below is current.
 
-## §R2 Revision 2: owner adjustments and corrections (2026-10-02)
-
-| # | Owner instruction or correction | Effect on this plan |
-|---|---|---|
-| R2.1 | Use the assumptions and output formats in the sent email of 1 Oct (thread PDF now in `sources/correspondence/`). Bidder details remain configurable assumptions, not facts. | **Adopted, not challenged.** Planning date = latest addendum date (22 Oct 2026; the ADD-03 date in the session). Unnamed **three-member** consortium, with name and member count editable (note: Appendix 1 has one two-member consortium). Bidder facts flagged for confirmation. External assumptions (holidays, durations, roles) labelled with their basis. **Formats:** A1 CSV + JSON + **Excel**; A2 Markdown + CSV/JSON; A3 one-page PDF; A5 CSV + JSON; A4 = repository, commit history, prompts, model-call log, work log. Offline rebuild, no API key. This settles D1 and the format question. |
-| R2.2 | Keep explicit disqualifiers separate from obligations with no stated consequence. Leave unresolved legal/commercial questions with people. | **D2 settled as recommended:** the A3 main list holds explicit wording only; a separate labelled block lists mandatory items with no stated consequence. Legal and commercial questions become Issues owned by a person. |
-| R2.3 | Matching a quotation and changing the declared target does not prove the target is the right clause. | New **target-verification** design: §R2-A. |
-| R2.4 | Keep original evidence separate from effective amended text. Assembled text may exist on no single page; image text cannot be checked through the text layer. | New **evidence model**: §R2-B. The old check C10 ("verbatim is a substring of the effective text and on the cited page") is replaced. |
-| R2.5 | A clause's own hash is not enough to detect stale interpretations. Track dependencies, and keep partially applied changes separate from the last fully validated state. | New **dependency pins** and **two-state build**: §R2-C. Refines D5. |
-| R2.6 | Withdraw the claim that the amended TN limit necessarily satisfies the missing Environmental Permit. | **Withdrawn** (F8 corrected). The Permit is not in the pack, so compliance with it cannot be established. The system will say "Permit not supplied; compliance with it cannot be established", not "3 mg/l satisfies either reading". |
-| R2.7 | Images, Arabic and image-based tables must work from the foundation, not only for the two known images. | Implemented generically in Stage 1: §R2-D. Exercised on a synthetic mixed page as well as the pack. |
-| R2.8 | Preserve crops and page references beside readings. Tables keep row/column relations, headings, units, limits, basis and notes. Arabic source is kept separate from translation and matching text. Check numerals, RTL order and rendered output. | Implemented in Stage 1: §R2-D. |
-| R2.9 | The owner reads Arabic and will review. Give crops and proposed readings together, with uncertainties marked; sign-off stays pending until approved. | Review packets in `build/review/<region>/`. Approval only through `curation/approvals.yaml`, pinned to the reading's content hash. |
-| R2.10 | Do not discard all rotated text. Identify the watermark specifically and show what was excluded. | Watermark rule matches text, colour, size and angle together. Everything excluded is listed in `build/exclusions.md`. A decoy identical except for colour is kept (tested, including by mutation). |
-| R2.11 | Later: the same program runnable through Claude Code in the app, with optional model calls via OpenRouter or local Ollama on the owner's M5 Pro (48 GB). Small common interface, same validation and review rules, capabilities checked rather than assumed. Implement later; the reviewed build must stay offline-capable. | Design only in this revision: §R2-E. Nothing implemented. |
-| R2.12 | Keep the work log accurate. Finding the second image was an *additional* finding, not a correction of a claim that only one existed. | O5 wording corrected below. Recorded as a characterisation error in the session 02 work log. |
-
-### §R2-A: Catching an operation that points at the wrong clause with the same wording
-
-A quotation found in the declared target, plus a change confined to that target, proves only that the operation is *internally consistent*. It does not prove the addendum meant that clause. In this pack, "seventy-two (72) hours" occurs in VOL-II §4.4 and VOL-V §31.3; an op aimed at §31.3 would pass the substring, uniqueness and scope-leak checks. The defence must come from evidence that is independent of the op author:
-
-1. **Citation resolution (primary).**
-   - The program extracts the target citation from the addendum's own provision text (for example, "In Volume II Clause 4.4, …") and from its section heading ("4. AMENDMENT TO VOLUME II CLAUSE 4.4").
-   - It resolves each, deterministically, to a unit ID, using a grammar covering Volume/Clause/Table/Form/footnote/Appendix and row names inside tables ("the limit for Total Nitrogen (TN)" → `VOL-II:T2-4/TN`).
-   - The op's declared target must equal the resolved target. Body and heading citations must agree with each other.
-   - **On failure:** the op is invalid, with the message "declared target X ≠ cited target Y".
-2. **Ambiguity disclosure (secondary).**
-   - For every quoted "old" text, the program lists *all* units in the pack that contain it.
-   - With more than one candidate, the review view shows the others ("also in VOL-V §31.3 — not targeted") and requires the citation to pick exactly one of them.
-3. **Self-consistency claims in the addendum.**
-   - Statements such as "Volume I Clause 8.6, deleted by Addendum No. 1 Section 4" are checked against the op ledger (was it deleted, and by that provision?).
-   - Statements such as "marks for D increased and B reduced correspondingly" are checked against the data.
-4. **When the addendum cites wrongly itself** (its cited clause does not contain the quoted text): the op cannot be validated. It becomes `unresolved`, with an Issue "addendum citation and quotation disagree", for a person to resolve. Nothing is auto-corrected.
-5. **Tests:**
-   - an op aimed at VOL-V §31.3 using ADD-02 §4.1's quote must fail on citation mismatch;
-   - a synthetic addendum whose citation and quote disagree must produce `unresolved`.
-
-### §R2-B: Original evidence is kept apart from effective (amended) text
-
-Each A1 row and unit carries two different things:
-
-- **Evidence items.** Each is checkable on its own, against the place it came from:
-  - `text_layer`: verbatim span IDs on one page of one document. Checked by re-extracting those spans from the PDF (hash-pinned source).
-  - `image_reading`: a region, a crop (sha256), and the reading's content hash. Checked against the reading record and its approval status, **not** the text layer. A pending reading is evidence marked *pending*, never silently trusted.
-- **Effective text.** Derived, labelled "assembled by ops [...]". It is checked by **replaying the ops** from the original evidence, never by looking for it on a page, because, for example, "… ninety-six (96) hours" after ADD-02 exists on no single page.
-
-A2's chain therefore shows the effective text with its evidence items: the original clause span on VOL-II p4 and the replacement span on ADD-02 p1, each verifiable where it lives.
-
-### §R2-C: Dependency pins and two build states
-
-- **Dependency set per interpretation.** Each reviewed interpretation pins a dependency set, not just its own clause text. The set includes:
-  - its own unit's effective text;
-  - units its text cites, extracted automatically (e.g. fn 12 → the PDD definition §2.6 and §6.1; §2.5 → the Table 2-4 *basis* column);
-  - units that supply its consequence (e.g. VOL-I §9.4 and the Form 4-C Arabic note);
-  - clarification answers and rules that annotate any of these (e.g. ADD-01 §4.2, until ADD-02 §9.2 revoked it);
-  - readings and their approval status;
-  - date-rule anchor values.
-- **Staleness.** A row is STALE when the combined hash of its dependency set changes. Automatically extracted dependencies can be extended by a reviewer, but removing one needs a recorded reason.
-- **Two states.**
-  - `validated/` holds the last state in which every op was accepted and valid and every affected row re-pinned.
-  - `working/` holds the in-progress state, for example ADD-03 half-applied.
-  - Working outputs are labelled DRAFT/PARTIAL and written separately. They never overwrite `validated/`. A3 from the validated state stays available while the working state shows what ADD-03 breaks.
-
-### §R2-D: Image, Arabic and image-table foundation (built in Stage 1)
-
-- **Region detection, generic, not keyed to the two known pages:**
-  - every embedded raster image;
-  - non-structural vector graphics;
-  - invisible text layers (an OCR layer is recorded, never used as content);
-  - ink in a page render that no text, image or drawing explains.
-  - A page that has text can still have unread regions; Form 4-C's page has header, footer and watermark text.
-- **Evidence:** native image bytes as embedded (hashed), a rendered crop, page context with the region outlined, and per-band, per-row and per-cell crops at native resolution.
-- **Raster structure:**
-  - **Skew** is estimated from projection profiles.
-  - **Grid** rules are detected along the skew, giving rows × columns.
-  - **Text bands** are found after despeckling (ink relative to the image's own background, so faint grey text is kept) and after erasing ruling lines.
-  - **Rule bands** are told apart from text by shape.
-  - **Bilingual rows** are split into left and right halves.
-- **Readings:** `curation/readings/<region>.yaml`.
-  - Tables keep title, qualifier, columns (heading + key), rows of cells, and notes. Parsed limits are derived by code (`10` → max 10; `0.5 - 1.0` → range).
-  - Text and forms are blocks of lines, each tied to a band and side.
-  - Arabic `source` is stored as logical Unicode; `translation` is a separate field; matching text is computed by code.
-- **Reading checks:**
-
-  | Check | What it verifies |
-  |---|---|
-  | RD1 | Region position |
-  | RD2 | Native image hash |
-  | RD3 | Grid rows × columns match the reading |
-  | RD4 | Every text band (each side) is read |
-  | RD5 | Logical Unicode (no presentation forms, no undeclared bidi controls); translation present |
-  | RD6 | Every numeral declared; the rendered glyph order matches the order seen in the crop |
-  | RD7 | Warning when text touches the image edge (possible cropping) |
-
-- **Numeral identity:**
-  - It is advisory only: shape comparison against reference glyphs, with the margin reported.
-  - It never decides; a person does.
-  - **Approval** is pinned to the content hash in `curation/approvals.yaml`, and any later edit voids it.
-
-### §R2-E: Model routes (design only; to be implemented in a later stage)
-
-- **Routes.** One small interface, `propose(task_packet) -> proposal_file`, with three routes:
-  - `claude_code`: the coding assistant in the app fills the proposal file directly. This is how session 02's readings were prepared, and it is logged as AI-assisted.
-  - `openrouter`: an HTTP API.
-  - `ollama`: local on the Mac.
-- **What every route shares:**
-  - the same task packet (instructions, the schema of the expected YAML, crops);
-  - the same output path into `curation/`, always `pending`;
-  - the same validation (the RD/C checks);
-  - the same approval rule.
-- **Separation from the build.** No route is ever called by `ingest`/`build`.
-- **Capability checks before use:**
-  - **Ollama:** `/api/show` returns a `capabilities` list (e.g. `"vision"`). Confirmed from Ollama's API documentation on GitHub; `ollama.com` itself is blocked from this cloud environment.
-  - **OpenRouter:** the models listing reports input modalities per model. This could not be verified here (`openrouter.ai` is blocked from this environment) and must be confirmed when the route is built.
-  - A model without image input is refused for reading tasks rather than given text-only context.
-- **Local candidates for an M5 Pro with 48 GB unified memory.** These come from search results and the Qwen GitHub repository, not from tests, so they are a shortlist, not a choice:
-  - Qwen3.8-27B (dense, Aug 2026; image input reported by secondary sources);
-  - Qwen3.6-35B-A3B and Qwen3.5-35B-A3B / 27B (MoE/dense, native vision-language per the Qwen repo; Apache-2.0);
-  - Qwen3-VL-32B and 8B (dedicated vision-language, 2025; reported strong on OCR including Arabic).
-  - At 4-bit, the 27–35B models need about 17–24 GB, so they fit in 48 GB with room for context.
-- **Choosing a model.** Benchmark the shortlist on the owner's Mac against the two readings *after the owner approves them*, scoring:
-  - cell accuracy on Table 2-4;
-  - character accuracy on Form 4-C;
-  - digit identity on ٤-x.
-
-  Keep the measured results; don't rely on blog rankings.
-
----
+| Revision | Session | What changed | Record |
+|---|---|---|---|
+| 1 | 01 (1 Oct) | Planning only: findings, critique, architecture, staged plan | `worklog/2026-10-01_session-01_planning.md` |
+| 2 | 02 (2 Oct) | Owner adjustments: email assumptions and formats adopted (A1 includes Excel; bidder details configurable); explicit disqualifiers kept apart from obligations with no stated consequence; target verification by citation (§4.4.1); evidence kept apart from effective text (§4.3); dependency pins and two build states (§4.10); image/Arabic foundation (§4.11); model routes designed (§4.6); TN/Permit claim withdrawn (F8); O5 wording corrected. Stage 1 built. | `worklog/2026-10-02_session-02_stage1.md` |
+| 3 | 03 (2 Oct) | Owner's Stage 1 review: six gaps reproduced and fixed: numbered-paragraph and table-continuation boundaries; structural failures fail the build (C07–C10, exit codes); approvals cover reading + uncertainties + evidence and need a named reviewer; table readings validate every cell and keep numbers apart from meaning; drawings of straight lines and dark boxes stay visible; output paths guarded and builds swapped in only on success. Planned check IDs renumbered to avoid the new C07–C10. | `worklog/2026-10-02_session-03_review-fixes.md` |
 
 Conventions used throughout:
 
@@ -149,8 +26,8 @@ Conventions used throughout:
 
 - **Original schedule** (brief PDF p1; covering email): deadline 17:00 Wed 23 Sep 2026; session 12:00 Fri 25 Sep 2026, Riyadh time.
 - **Revised schedule** (`sources/correspondence/2026-09-29_reply_to_hiring.md`): the owner chose "the second path", starting Tue 29 Sep, "with 17:00 Monday 5 October as the outside limit".
-- **Time left:** at the time of writing (00:11 Fri 2 Oct, Riyadh) about 3 days 17 hours remain.
-- **Correspondence, revision 2:** the Gmail thread PDF (now in `sources/correspondence/`) shows:
+- **Time left:** at revision 3 (04:00 Fri 2 Oct, Riyadh) about 3 days 13 hours remain to the outside limit.
+- **Correspondence:** the Gmail thread PDF in `sources/correspondence/` shows:
   - the hiring team offered the second path on 17 Sep 20:00, and the owner chose it on 17 Sep 20:12;
   - the session is "a ninety-minute slot in the week of 6 October (we will confirm once the panel locks times)", so it is **still to be confirmed**;
   - the 1 Oct email was **sent** (12:50);
@@ -166,10 +43,10 @@ The plan is sized for roughly 3.5 working days, with a hard requirement that the
 
 | Artefact | What the brief requires (quoted or closely paraphrased) | Notes |
 |---|---|---|
-| **A1** Obligations and compliance register | "One row per requirement." Columns: identifier; **verbatim source text**; **document, clause and page**; **pass/fail or scored**; **discipline that owns it**; **evidence needed**; **status after each addendum**; **confidence**. "Machine-readable — CSV or JSON — plus whatever interface you prefer." | "Status after each addendum" requires one status column per stage, not just a final value. |
-| **A2** Addendum reconciliation | "What each addendum changed, added and deleted. Which register rows move as a result. Which earlier answers are now wrong. We must be able to trace any row back through the chain to the original document." | Needs the full operation history, not a before/after diff alone. |
-| **A3** One page: what would disqualify us | "Every requirement whose breach would put a bid out — **the ones the documents themselves say cause rejection, disqualification or non-responsiveness, not every obligation in the pack** — with your confidence in each. And, explicitly, the list of things your system could not resolve, and why. We read this page first." | The inclusion test is explicit document wording. One page is a hard constraint. |
-| **A4** Work log | "The repository with its real commit history. The prompts and model calls you used. And a short written note of every place your system was wrong while you were building it, and how you caught it." | Timestamped and append-only. Kept separate from the deterministic outputs. |
+| **A1** Obligations and compliance register | "One row per requirement." Columns: identifier; **verbatim source text**; **document, clause and page**; **pass/fail or scored**; **discipline that owns it**; **evidence needed**; **status after each addendum**; **confidence**. "Machine-readable — CSV or JSON — plus whatever interface you prefer." | "Status after each addendum" requires one status column per stage, not just a final value. **Formats (owner's sent email of 1 Oct): CSV + JSON + Excel.** |
+| **A2** Addendum reconciliation | "What each addendum changed, added and deleted. Which register rows move as a result. Which earlier answers are now wrong. We must be able to trace any row back through the chain to the original document." | Needs the full operation history, not a before/after diff alone. Formats: Markdown + CSV/JSON. |
+| **A3** One page: what would disqualify us | "Every requirement whose breach would put a bid out — **the ones the documents themselves say cause rejection, disqualification or non-responsiveness, not every obligation in the pack** — with your confidence in each. And, explicitly, the list of things your system could not resolve, and why. We read this page first." | The inclusion test is explicit document wording (D2). One page, PDF, is a hard constraint. |
+| **A4** Work log | "The repository with its real commit history. The prompts and model calls you used. And a short written note of every place your system was wrong while you were building it, and how you caught it." | Timestamped and append-only, kept separate from the deterministic outputs. Records the owner's prompts for each session and every error, including the assistant's. |
 | **A5** Bid programme and marshalling plan | "Generated by your system from A1 — not drawn by hand." **Programme:** activities, durations, dependencies, owners by discipline, resources. "Every activity must carry the requirement ID or IDs from A1 that it discharges, and **every date must be computed backwards from the deadline, not typed in**." **Marshalling plan:** "every physical and documentary item the pack requires, who issues it, how long that takes, and the drop-dead date to start it." Output is data (CSV/JSON); a chart is optional and is not the deliverable. | Scoring (§6): "does it survive the lead times the documents actually impose". |
 
 ### 1.2 Constraints (brief §4 and §6, PDF p5–p7)
@@ -210,12 +87,11 @@ The plan is sized for roughly 3.5 working days, with a hard requirement that the
 **Limitations:**
 
 - **Volume III (Drawings) is not in the pack.** This is consistent with the brief's "Six documents, thirty-two pages" (7+5+9+4+4+3 = 32), but Volume III is referenced in VOL-I §3.1, §3.2(f) and VOL-II §5.1 (Drawing 03-C-114).
-- **Missing correspondence:**
-  - The hiring team's rescheduling email is absent.
-  - `2026-10-01_questions_to_hiring.md` is labelled as a *draft*. I do not know whether it was sent as written; it promises A1 in Excel and A3 as a one-page PDF.
-  - No reply to it is in the files.
-- **Arabic:** my reading of Form 4-C is a model reading. It must be verified by a competent Arabic reader before it is relied on.
-- **No OCR engine** is installed in this container. The two images were read visually by me, not by OCR.
+- **Correspondence:**
+  - The 1 Oct email to the hiring team was **sent** (Gmail thread PDF in `sources/correspondence/`); its assumptions and formats are adopted (D1, §1.1). The markdown note `2026-10-01_questions_to_hiring.md` is labelled as a draft; the thread is the record.
+  - No reply to it is on file.
+- **Arabic:** my reading of Form 4-C is a model reading. The owner reads Arabic and will review it; until then it is pending and is not relied on.
+- **No OCR engine** is used. The two images were read visually (AI-assisted) and are recorded as proposed readings with crops, pending the owner's review.
 - **This is not a register.** The inventories below are findings from a careful read. I have **not** established complete coverage of every obligation; that is what the system's coverage checks are for.
 
 ---
@@ -230,16 +106,16 @@ The plan is sized for roughly 3.5 working days, with a hard requirement that the
 | O2 | **Confirmed.** The note sets 65/35 and is in small print: 7.2 pt against 9.6 pt body text. The cover summary says only "reissues the technical evaluation table". **Added:** ADD-01 Appendix B (minutes) Item 3 records a non-binding "seventy / thirty split" statement, a third competing value. The same words "sixty per cent (60%) … forty per cent (40%)" also appear in VOL-V §29.2 (indexation), which must **not** change. | ADD-02 §3, Notes to Table 1-1 (revised), note (2), p1 | "(2) The combined score weighting stated in Volume I Clause 11.2 is amended to sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial." | [F] VOL-I §11.2 is effectively 65/35. The §11.3 threshold of 70 is unchanged (note 1). Table 1-1: B 20→15, D 15→20, total 100 (matches the narrative in ADD-02 §3.1). | None on the reading. It is a scored or evaluation parameter, not pass/fail, so it changes bid strategy, not compliance. |
 | O3 | **Confirmed.** Original → deleted → reinstated, amended, with a new consequence. **Added:** ADD-01 §4.2 is itself a rule ("disregard references elsewhere"), and ADD-02 §9.2 **revokes** it, which is an amendment of an amendment. The threshold also rises from 30% to 35%. The original §8.6 had **no** stated consequence. The minutes record that bidders find the certificate hard to obtain in time. A grep shows no other LCC references exist in the pack, apart from the generic VOL-I §9.1(i) "certificates and evidence required under Section 8". | VOL-I §8.6 p4; ADD-01 §4.1–4.2 p1; ADD-01 App B Item 4 p4; ADD-02 §9.1–9.2 p3 | Original: "…not less than thirty per cent (30%) for the construction phase." ADD-01 §4.1: "is deleted in its entirety. No Local Content Certificate is required with the Proposal." ADD-02 §9.1: "…not less than thirty-five per cent (35%) for the construction phase. Failure to submit the certificate shall render the Proposal non-responsive." §9.2: "Section 4.2 of Addendum No. 1 ceases to have effect." Minutes: "A Bidder raised difficulty in obtaining a Local Content Certificate within the programme." | [F] Active, 35%, construction phase, explicit non-responsiveness. It enters A3 **only after ADD-02**. Between 8 Oct and 22 Oct it was deleted. | "Competent authority" is not named. Lead time is not stated, but the pack signals it is long. Only 24 Working Days separate ADD-02 issue and the PDD. The bidder's local-content ratio is unknown. **A5 feasibility is a real risk to surface, not assume away.** |
 | O4 | **Confirmed, and larger than observed.** The reissued Form 4-A prints the old date. It is also a **much shorter form**. It drops commercial registration number, registered address, contact email/telephone, all six numbered confirmations (150-day validity, bid bond enclosed, no multiple participation, Pre-Bid attendance, Authority not bound), signatory name/capacity split, Power of Attorney reference and date, and company seal. Its stated purpose is "to add the acknowledgement of Addenda at paragraph 1", yet it has **no paragraph 1**, and the original already acknowledged addenda in its paragraph 1. | ADD-01 §2.1 p1; ADD-01 App A p3; VOL-IV Form 4-A p3; VOL-IV p2; VOL-I §9.3 p5 | ADD-01 §2.1: "deleting 'Thursday 12 November 2026' and substituting 'Thursday 26 November 2026'". App A: "Bidders shall use this version." … "Proposal Due Date \| 12 November 2026, 14:00 Riyadh time". VOL-IV p2: "Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk." VOL-I §9.3: "An unsigned or improperly executed Form 4-A shall render the Proposal non-responsive." | [F] PDD = Thu 26 Nov 2026, 14:00 (VOL-I §6.1 as amended; precedence §3.2(a)). The mandated form prints 12 Nov. ADD-02 again requires acknowledgement "in Form 4-A" but does not reissue it. | **Human decision:** what date to print and sign; whether to also give the dropped confirmations; whether to raise a clarification **before the 12 Nov cut-off**. The system must flag this, **never auto-correct** it. |
-| O5 | **Confirmed. Additional finding: a second image region exists** (the observation did not claim there was only one). VOL-IV p6 is a single raster image. The page is *not* text-empty: it carries the running header, the footer and the rotated watermark as text, so a "page has text ⇒ covered" heuristic would wrongly pass it. Coverage must be judged per image region (C05), not per page. My reading (to be verified by an Arabic reader) is listed after this table. **Declaration 4 carries an exclusion consequence that appears nowhere in the English text.** **Additional finding:** VOL-II p3 **Table 2-4 (effluent limits) is also an image.** ADD-02 §5.1 amends TN "from the value shown", so the old value (5 mg/l) exists **only in the image**. | VOL-IV p5–p6; VOL-II p3; ADD-02 §5.1 p1; ADD-02 Q9 p2 | Form 4-C decl. 4: "وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض" ("we acknowledge that any incorrect statement leads to the exclusion of the proposal"). Note: "عدم تقديمه كاملاً يجعل العرض غير مستجيب" ("failure to submit it completely renders the proposal non-responsive"). ADD-02 §5.1: "the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l, assessed on the same basis." | [F] Form 4-C remains mandatory in Arabic, one per member (ADD-02 Q9). TN = 3 mg/l, 30-day rolling average ("same basis" resolved from the image). | Arabic transcription and translation need **human verification**. The digit order of "البند ٤-٢" in right-to-left text reads as 4-2, i.e. VOL-I §4.2. That is consistent with "communication rules"; §2.4 is the Working Day definition. Must be verified, not assumed. |
+| O5 | **Confirmed. Additional finding: a second image region exists** (the observation did not claim there was only one). VOL-IV p6 is a single raster image. The page is *not* text-empty: it carries the running header, the footer and the rotated watermark as text, so a "page has text ⇒ covered" heuristic would wrongly pass it. Coverage must be judged per image region (C05), not per page. My reading (to be verified by an Arabic reader) is listed after this table. **Declaration 4 carries an exclusion consequence that appears nowhere in the English text.** **Additional finding:** VOL-II p3 **Table 2-4 (effluent limits) is also an image.** ADD-02 §5.1 amends TN "from the value shown", so the old value (5 mg/l) exists **only in the image**. | VOL-IV p5–p6; VOL-II p3; ADD-02 §5.1 p1; ADD-02 Q9 p2 | Form 4-C decl. 4: "وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض" ("we acknowledge that any incorrect statement leads to the exclusion of the proposal"). Note: "عدم تقديمه كاملاً يجعل العرض غير مستجيب" ("failure to submit it completely renders the proposal non-responsive"). ADD-02 §5.1: "the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l, assessed on the same basis." | [F] Form 4-C remains mandatory in Arabic, one per member (ADD-02 Q9). TN = 3 mg/l, 30-day rolling average ("same basis" resolved from the image). | Arabic transcription and translation are **pending the owner's review**. The order of "البند ٤-٢" is settled (logical 4-x); whether the second digit is ٢ (§4.2) or ٣ (§4.3) is not, and is the owner's decision. |
 | O6 | **Confirmed. ADD-01's list is explicitly non-exhaustive** ("including without limitation"). **Added:** VOL-I §8.3, "ISO 9001:2015 … current as at the Proposal Due Date", also moves but is not in ADD-01's list. **Added:** the new clarification cut-off falls on **Thu 12 Nov 2026, the old PDD**. A naive stale-value scan for "12 November 2026" would mis-flag it. | ADD-01 §2.2 p1; VOL-I §2.4, §2.6, §3.4, §5.2, §6.3, §6.7, §7.1, §8.3, fn 12, App 3; VOL-IV Form 4-A ¶2 | ADD-01 §2.2: "Every period in the RFP Documents that is calculated by reference to the Proposal Due Date is adjusted accordingly, including without limitation…" VOL-I §2.4: "Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted." | See §2.5 (date inventory): computed values before and after, fixed dates, and dates anchored to unknown future events. | "days" is undefined (calendar days assumed). Whether "from the PDD" makes the PDD day 0 is unstated. The forward Working-Day convention is unstated. No time-of-day for the cut-off. Public holidays "declared" in the Kingdom need a calendar input (assumption). |
 
-**My reading of Form 4-C (VOL-IV p6). Model transcription; human verification required.** Header: "الهيئة الشمالية للمشتريات المرفقية" / "النموذج ٤-ج" / "إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر" (declaration of no conflict of interest and non-listing on debarment lists). The signatories, as authorised representatives of the named consortium member, declare:
+**My reading of Form 4-C (VOL-IV p6). AI-assisted reading; pending the owner's review.** Header: "الهيئة الشمالية للمشتريات المرفقية" / "النموذج ٤-ج" / "إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر" (declaration of no conflict of interest and non-listing on debarment lists). The signatories, as authorised representatives of the named consortium member, declare:
 
 1. There is no actual or potential conflict of interest between them and the Authority or any of its advisors regarding this project.
 2. The company has not participated, directly or indirectly, in more than one proposal for this tender.
 3. The company is not, and has not been in the previous five years, listed on any debarment list issued by a government entity in the Kingdom.
 4. All information in the proposal is correct and complete, and any incorrect statement leads to exclusion of the proposal.
-5. The signatories commit to the communication rules in clause 4-2 of Volume I. **(Revision 2: the left digit's identity, ٢ or ٣, is uncertain; ٣ would mean clause 4-3, VOL-I §4.3. See the review packet for VOL-IV-p6-r1.)**
+5. The signatories commit to the communication rules in clause 4-2 of Volume I. **The left digit's identity, ٢ or ٣, is uncertain; ٣ would mean clause 4-3, VOL-I §4.3. It is one of the owner's review decisions (packet VOL-IV-p6-r1).**
 
 Fields: member name, commercial registration number, authorised signatory, capacity, date, signature and seal. Note: the form must be submitted in Arabic for each member, and incomplete submission renders the proposal non-responsive.
 
@@ -271,7 +147,7 @@ Note 1: "Where a parameter is not listed above, the limit stated in the Environm
 | F5 | [F] **Form 4-B (Envelope A) asks for "Contract value (SAR equivalent)"** while §6.2 says "any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive." | VOL-IV p4; VOL-I §6.2 p3 | "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive." | Unchanged. | **Human/clarification.** [I] Probably aimed at this bid's pricing, but the literal reading conflicts. |
 | F6 | [F] **Concession-term conflict, and the Authority declined to resolve it.** | VOL-I §12.1 p6; VOL-V §3.1 p2; ADD-02 Q7 p2; VOL-V Note p2 | VOL-I: "twenty-five (25) years commencing on the Project Commercial Operation Date". VOL-V: "twenty-five (25) years from the Effective Date". Q7: "The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage." VOL-V Note: "A deviation not listed in Form 4-E will be taken as accepted." | [I] By precedence, VOL-I ranks above VOL-V. But the agreement to be executed says Effective Date, and unlisted deviations are "taken as accepted". | **Legal/commercial decision for a person.** It drives the financial model: up to about 3 years' revenue, given the 36-month Scheduled PCOD (VOL-V §12.1). |
 | F7 | [F] **Hydraulic figures are questioned, and the Authority did not answer.** | VOL-II Table 2-6 p3–p4; §4.1, §4.2, §5.2; ADD-02 Q11 p2 | Table 2-6: average 120,000 m³/day; peak hourly (design) 7,500 m³/h; storm "3 x dry weather flow" to full treatment. Q11 answer: "Bidders shall design to the figures stated in Volume II. Volume II Clause 4.2 applies." | Unchanged. | **Engineering decision.** [I] 120,000 m³/day = 5,000 m³/h; if dry weather flow ≈ average, 3× = 15,000 m³/h, which exceeds the 7,500 design peak used to size the main (§5.2). |
-| F8 | [F] **Table 2-4 is "reproduced" from an Environmental Permit that is not supplied, and the Permit prevails over the reproduction.** ADD-02 amends the reproduction. | VOL-II §2.4 p2; p3 header; ADD-02 §5.1; ADD-01 App B Item 5 | "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail." Minutes: "the permit was under review by the regulator". | ~~[I] Addenda prevail among RFP Documents (§3.2(a)). Designing to the stricter 3 mg/l satisfies either reading.~~ **WITHDRAWN (R2.6):** the Permit is not in the pack, so whether 3 mg/l, or any other design, complies with it cannot be established. What can be said: the amended reproduction says 3 mg/l, and VOL-II §2.4 says the Permit prevails over the reproduction. | Human decision; clarification on which governs, and the Permit itself, should be requested. |
+| F8 | [F] **Table 2-4 is "reproduced" from an Environmental Permit that is not supplied, and the Permit prevails over the reproduction.** ADD-02 amends the reproduction. | VOL-II §2.4 p2; p3 header; ADD-02 §5.1; ADD-01 App B Item 5 | "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail." Minutes: "the permit was under review by the regulator". | The Permit is not in the pack, so whether 3 mg/l, or any other design, complies with it **cannot be established**. What can be said: the amended reproduction says 3 mg/l, and VOL-II §2.4 says the Permit prevails over the reproduction. (Revision 1 claimed 3 mg/l "satisfies either reading"; that claim was withdrawn at the owner's instruction.) | Human decision; clarification on which governs, and the Permit itself, should be requested. |
 | F9 | [F] **The Table 2-4 "basis" column (image only) drives obligations elsewhere.** | VOL-II §2.5 p2, §7.2–7.3 p4; VOL-V §29.3, §31.1(b), §31.2, §31.3 p3 | §2.5: "for those parameters identified in Table 2-4 as assessed on a continuous basis". VOL-V §29.3: "a parameter listed in Table 2-4 as assessed on a rolling average basis". §31.2: "not subject to any cap". §31.3: "No cure period applies to an event under Clause 31.1(b)." | The TN tightening propagates to the reliability run (PCOD), Unavailability Events and uncapped deductions. | [I] Continuous monitoring applies to residual chlorine and pH; ramp-up relief applies to BOD5/COD/TSS/TN/TP. Both readings rest on the image. |
 | F10 | [F] **Form 4-G (new) has a non-responsive consequence and new obligations.** It is inserted "after item (e)" of VOL-I §9.1, with re-lettering unspecified. The VOL-IV index ("Forms 4-A to 4-F") is not updated. Undertakings 3–6 (security officer, 24 h incident notice, annual OT penetration test, MFA) are not in VOL-II §6. | ADD-02 §7 p3 | "Failure to submit Form 4-G shall render the Proposal non-responsive." | A new A3 row and new A1 rows. | [I] The effect of answering "No" on an undertaking is undefined. Human decision. |
 | F11 | [F] **Bid Bond.** Valid 180 days from the PDD; SAR 4,500,000; unconditional, first demand; Kingdom-licensed bank rated ≥ A-. The clause states **no rejection consequence**. | VOL-I §6.3–6.4 p3; ADD-01 Q3; ADD-02 Q8 | "…shall remain valid for one hundred and eighty (180) days from the Proposal Due Date…" | [I] A bond drafted against 12 Nov expires about 14 days early. That is a rework item after ADD-01. | Whether it belongs in A3 depends on the decision in §7 (no explicit consequence wording). |
@@ -366,7 +242,7 @@ Assumptions:
 | **A. Evidence before interpretation** | **Sound; keep it light.** | Hashes, page counts and page/bbox anchors are cheap, and they are exactly what the "show me the page within a minute" check needs. | **Watermark contamination.** In layout mode, pdftotext interleaves watermark letters ("CK", "PA", "EN", "SS", …) into clause text. Extraction must be rotation-aware (drop lines whose direction ≠ horizontal) or verbatim matching will fail. **Keep normalisation minimal and declared:** de-hyphenation, whitespace, quote marks, superscript marking, watermark/header/footer removal by **exact, audited patterns**. Don't build a general normaliser. |
 | **B. Original units + ordered typed amendments → derived effective state** | **Sound and recommended.** This is the core of the system. | It is the only representation that answers "what did it say, what changed it, what is it now" without drift. | (1) **Not all amendments are text patches.** The pack has clarification answers, a global re-anchoring rule (ADD-01 §2.2), a suppression rule and its revocation (ADD-01 §4.2 / ADD-02 §9.2), a new form, a table reissue, a value restated without quoting the old text (note 2, TN), and non-binding minutes. The op vocabulary must cover these with ~8 types (§4.4), not an open-ended DSL. (2) **The biggest failure mode is not the text; it is the interpretation drifting from the text.** A register row's reviewed attributes (consequence, parameters, evidence) can silently go stale when the unit underneath is amended. Fix: **pin every reviewed interpretation to the hash of the unit text it was reviewed against**. A changed hash makes the row STALE until a person re-reviews it. This is the mechanism that prevents stale downstream values. (3) **Atomicity:** an addendum is one legal act. Apply its ops in section order, but report it as APPLIED only if every provision is accounted for. Anything else is PARTIAL, labelled at the top of A3. |
 | **C. Deterministic trusted build from reviewed inputs; models propose** | **Sound. The manual-work worry is real but manageable.** | Building ~100 rows by hand is too slow, and an un-reviewed model build is indefensible. | **Practical balance:** a model (or pattern) **drafts**, the build only consumes records marked `accepted`, and checks catch what review misses. Review depth is tiered: every A3 candidate, every amended row and every image transcription gets full review; other rows get mechanical verbatim checks plus spot review, and their confidence says so. For the live 30 minutes: a pattern drafter handles the common phrasings seen in ADD-01/02; anything else becomes an `unresolved` op carrying its verbatim text, which a person converts to a typed op or `no_effect` in minutes. The model drafter is an accelerator, not a dependency, so the build works offline. |
-| **D. Coverage over retrieval; no vector DB/RAG** | **Agree.** | 32 pages, roughly 25k tokens: everything fits in one model context and in one person's afternoon (brief §2). Retrieval would only add a way to miss things. | "The parser found text" ≠ "every obligation captured". Coverage is shown by **accounting** (every line and image region belongs to a unit; every unit has a disposition) and by **sweeps** (every obligation or consequence phrase, in English and Arabic, maps to a row or an explicit disposition). Correctness is shown separately, by independently written golden tests. |
+| **D. Coverage over retrieval; no vector DB/RAG** | **Agree.** | 32 pages, roughly 25k tokens: everything fits in one model context and in one person's afternoon (brief §2). Retrieval would only add a way to miss things. | "The parser found text" ≠ "every obligation captured". Coverage is shown by **accounting** (every span and image region belongs to exactly one unit; every unit has a disposition) and by **sweeps** (every obligation or consequence phrase, in English and Arabic, maps to a row or an explicit disposition). Correctness is shown separately, by independently written golden tests. |
 | **E. Outputs from shared structured data** | **Agree.** | A2, A3 and A5 must be pure functions of the A1 register plus the op history and assumptions. | Two distinctions are needed: (a) `consequence` (explicit, quoted, with source) vs `none_stated`, which keeps A3 honest; (b) `read_confidence` (how sure we are of what the pack says) vs `compliance_status` (the bidder's position: unknown by default). For A5, tender facts and assumptions must live in different files, and every assumption needs a basis and an owner. |
 | **F. Small and inspectable: Python, typed records, schemas, CLI** | **Agree.** | — | Minimum dependency set and module boundaries are in §4.9. One caution: PyMuPDF is AGPL-licensed (see §4.9). |
 
@@ -387,12 +263,13 @@ Assumptions:
 ### 4.1 Data flow
 
 ```
-sources/*.pdf ──(1) ingest──► build/extract/*.json        spans: text, font, size, bbox, superscript, direction
-     │ sha256, pages                │                      furniture removed by audited rules
+sources/*.pdf ──(1) extract + regions──► spans (font, size, bbox, superscript, angle); furniture excluded by
+     │ sha256, pages                │        audited rules; regions = images, drawings, invisible text, stray ink
      ▼                              ▼
 sources/manifest.json        (2) segment ──► build/units.json   SourceUnits with stable IDs (clause, footnote,
                                     ▲                            table row, form field, list item, note, Q&A)
-curation/transcriptions/*.yaml ─────┘  image regions → units (human-verified)
+curation/readings/*.yaml ───────────┘  region readings → units (status pending until a person approves;
+curation/approvals.yaml (written only by `approve`)    approval pins reading + uncertainties + evidence)
                                     │
 curation/amendments/ADD-0N.yaml ─(3) amend──► build/states/{BASE,ADD-01,ADD-02,…}.json
    (typed ops, status=accepted)     │          effective unit text + status + op history + text sha per stage
@@ -408,7 +285,8 @@ config/assumptions.yaml ─(5) dates──┤ calendar, holidays, conventions, p
                          (7) render: A1, A2 (from op history + stage snapshots), A3 (filter + issues),
                                      A5 (backward scheduler over evidence→activity templates)
                                     ▼
-                         out/ (deterministic; no timestamps) + out/BUILD_MANIFEST.json (input/output hashes)
+                         build/ (deterministic; no timestamps) + build/BUILD_MANIFEST.json (input/output hashes);
+                         written to a temporary sibling and swapped in only if every structural check passes
 
 New addendum:  sources/ADD-03.pdf → ingest/segment → (8) draft ops (patterns → optional model → `unresolved`)
                → person reviews/accepts → build → `diff ADD-02..ADD-03` = "what it broke" → A5 replan.
@@ -416,45 +294,50 @@ New addendum:  sources/ADD-03.pdf → ingest/segment → (8) draft ops (patterns
 
 ### 4.2 Modules (one responsibility each)
 
-Package `tpr/`; final name to be confirmed, and there is no product naming.
+Package `tenderpack/` (a working name for the code, not a product name). Built in Stage 1 unless marked *planned*.
 
 | Module | Responsibility | Why separate |
 |---|---|---|
-| `ingest.py` | Hash and page manifest; span extraction; furniture removal by declared patterns; image-region detection | The only module touching the PDF library. It can be swapped (e.g. for pdfplumber) without touching anything else. |
-| `segment.py` | Spans → SourceUnits: clause numbering from bold leading numbers, footnote pairing (marker ↔ body by number and page), unit-exponent marking, table rows (white-on-dark header detection), form fields, list items, Q&A rows | Segmentation errors are the most likely ingest bug, so they get their own tests. |
-| `model.py` | Typed records (pydantic) and JSON Schema export | A single definition of every entity. |
-| `amend.py` | Applies accepted ops per stage; pre/post-condition checks; scope-leak diff; op ledger | Core correctness logic, kept pure. |
-| `dates.py` | Calendar (weekend, holidays), date rules (fixed / relative / external-anchor), conventions, per-stage evaluation | Date errors are high-impact; pure functions. |
-| `register.py` | Joins interpretations with stage states; verbatim and pin checks; status per stage | — |
-| `checks.py` | Registry of check functions plus data lexicons (obligation and consequence phrases in EN/AR, unit tokens) | This is where the live "catch this kind of error" change happens. |
-| `schedule.py` | Evidence → activity templates → backward pass → A5 programme and marshalling | — |
-| `render/` | `a1.py`, `a2.py`, `a3.py` (one-page PDF), `a5.py` | Presentation only; no logic. |
-| `draft.py` | Pattern drafter for ops; `unresolved` stubs; optional model drafter that writes proposals and logs prompts | Never imported by `build`. |
-| `cli.py` | `ingest`, `draft ADD-0N`, `build [--strict]`, `show ID`, `diff A..B`, `verify` | — |
+| `sources.py` | Source integrity (C01): hashes and page counts against `sources/manifest.json` | Nothing runs on unverified inputs |
+| `extract.py` | Span extraction; furniture exclusion by declared rules (text, colour, size, position, angle together) | The only text-layer reader; swappable |
+| `regions.py` | Regions outside the text layer (images, non-structural drawings, invisible text, unexplained ink); evidence crops; raster grid and text bands | Image handling is generic, not keyed to known pages |
+| `segment.py` | Spans → SourceUnits: clauses, footnotes (marker ↔ body), unit exponents, tables and split tables, form fields, list items, numbered paragraphs, notes, Q&A rows | Segmentation errors are the most likely ingest bug, so they get their own tests |
+| `readings.py`, `arabic.py` | Reading records (pydantic), reading checks RD1–RD9, review subject and status, rendered right-to-left checks | One definition of what a reading is and what an approval covers |
+| `packets.py` | Review packets: each crop beside the reading it supports, checks, decisions for the reviewer | Presentation for a person; no logic that decides |
+| `coverage.py` | Checks C01–C10 and the coverage reports | Accounting is separate from segmentation |
+| `cli.py` | `ingest`, `show`, `approve`; output-path guard; atomic build swap; exit codes | — |
+| `amend.py` *(planned)* | Applies accepted ops per stage; pre/post-conditions; target verification (§4.4.1); scope-leak diff; op ledger | Core correctness logic, kept pure |
+| `dates.py` *(planned)* | Calendar, date rules, conventions, per-stage evaluation | Date errors are high-impact; pure functions |
+| `register.py` *(planned)* | Joins interpretations with stage states; evidence and pin checks; status per stage | — |
+| `checks.py` *(planned)* | Registry of register-level checks plus data lexicons (EN/AR obligation and consequence phrases) | Where the live "catch this kind of error" change happens |
+| `schedule.py` *(planned)* | Evidence → activity templates → backward pass → A5 | — |
+| `render/` *(planned)* | A1 (CSV, JSON, Excel), A2, A3 (one-page PDF), A5 | Presentation only |
+| `draft.py` *(planned)* | Pattern drafter and the model routes of §4.6; writes proposals only | Never imported by the build |
 
 ### 4.3 Essential entities
 
 - **SourceDocument**
   - Fields: `doc_id`, `path`, `sha256`, `pages`, `kind` (volume/addendum), `number`, `issue_date`.
-- **Region**
-  - Fields: `doc_id`, `page`, `bbox`, `kind` (text/image).
-  - Image regions need a **Transcription**: `text`, `lang`, `translation`, `method` (model/human), `verified_by`, `source_sha`.
-- **SourceUnit**
-  - Fields: `unit_id`, `doc_id`, `kind`, `parent`, `pages` and `bboxes`, `verbatim`, `normalized`, `origin` (text-layer / transcription), `lang`, `binding` (e.g. minutes = false).
-  - Example IDs: `VOL-I:8.5`, `VOL-I:8.5#fn12`, `VOL-II:T2-4:TN`, `VOL-IV:F4-C:decl4`, `ADD-01:AppA:F4-A:pdd`, `ADD-02:3:note2`, `ADD-02:Q7`.
+- **Region** (built)
+  - Fields: `region_id`, `doc`, `page`, `bbox`, `kind` (image / vector_graphic / invisible_text / unexplained_ink), native image (sha256), crop, context.
+  - Each region needs a **Reading** (`curation/readings/<region>.yaml`, §4.11): `content_type` (table / text / form / graphic), source claims, content, numerals, uncertainties, `prepared_by`, `method`. Its status is `pending` until an approval with a named reviewer matches its **review subject** (the reading, its uncertainties and its evidence).
+- **SourceUnit** (built)
+  - Fields: `unit_id`, `doc`, `kind`, `parent`, `pages`, `anchors` (page, bbox, span IDs), `label` and `label_span`, `text` (as printed), `normalized` (matching only), `origin` (text_layer / image_reading), `reading` status for image units; table rows carry `cells`, and image-table rows also `numeric` (the numbers a cell shows, no meaning) and `context` (headings, qualifier, notes; `interpretation: null` until a person decides).
+  - Example IDs: `VOL-I:8.5`, `VOL-I:8.5#fn12`, `VOL-II:T2-4/TN`, `VOL-IV:F4-C/image/decl4`, `VOL-IV:F4-A/proposal-due-date`, `ADD-02:Q7`.
+- **Evidence items vs effective text** (planned with the register). Each A1 row carries (a) **evidence items**, each checkable where it lives: `text_layer` items are span IDs re-extracted from their page; `image_reading` items are a region, its crop and the reading's review status (a pending reading is evidence marked *pending*, never silently trusted); and (b) **effective text**, labelled "assembled by ops [...]", checked by **replaying the ops** from the evidence, never by searching a page (e.g. "… ninety-six (96) hours" after ADD-02 exists on no single page).
 - **Operation**
   - Fields: `op_id`, `addendum`, `provision` (unit of the addendum), `source_quote`, `type`, `target`, `params` (`old`, `new`, `occurrence`, `new_unit`, `status`), `expect` (optional assertions), `review` (`status`: proposed/accepted/rejected/unresolved; `origin`: pattern/model/human; `by`).
 - **UnitState** (derived)
   - Fields: `unit_id`, `stage`, `status` (active/deleted/revoked), `text`, `text_sha`, `history` (op IDs).
 - **Requirement** (A1 row)
   - Fields:
-    - identity and source: `req_id`, `units`, `verbatim` (must match stage text);
+    - identity and source: `req_id`, `units`, `evidence_items`, `effective_text` (replayed from ops per stage);
     - classification: `kind`, `assessment` (pass_fail / scored / contractual-post-award / procedural / informational);
     - `consequence`: `{class, quote, unit}` or `none_stated`;
     - ownership and evidence: `discipline`, `evidence` (EvidenceItem IDs), `parameters`;
     - links: `date_rules`, `depends_on`, `issues`;
     - confidence: `read_confidence` `{level, reasons}`;
-    - review: `reviewed` `{by, against_sha, stage}`.
+    - review: `reviewed` `{by, pins, stage}`, where `pins` is the dependency set of §4.10.
   - Per-stage overrides are stored only where the interpretation differs.
 - **EvidenceItem**
   - Fields: `ev_id`, `type`, `issuer` (internal role / external body), `per` (bidder / member / signatory / reference / envelope), `multiplicity`, `req_ids`.
@@ -464,7 +347,7 @@ Package `tpr/`; final name to be confirmed, and there is no product naming.
   - Fields: `issue_id`, `kind` (inconsistency / ambiguity / missing_source / untranscribed / human_decision / bidder_fact), `units`, `statement`, `options`, `owner` (a person's role), `status`, `decision`, `decided_by`.
 - **Assumption**
   - Fields: `key`, `value`, `basis`, `owner`.
-  - Used for: planning date, bidder, holidays, lead times, resources.
+  - Used for: planning date (latest addendum date), bidder (unnamed consortium, **default three members, editable**; all bidder details are assumptions, not facts), holidays, lead times, resources.
 - **Activity** (derived)
   - Fields: `act_id`, `req_ids`, `ev_id`, `owner_discipline`, `issuer`, `duration` (+ assumption key), `predecessors`, `LS`/`LF`, `flags` (OK / INFEASIBLE(n WD) / REWORK / NEW / REMOVED).
 
@@ -473,7 +356,7 @@ Package `tpr/`; final name to be confirmed, and there is no product naming.
 | Type | Covers (examples from the pack) | Preconditions checked |
 |---|---|---|
 | `replace_text` | ADD-01 §2.1 (date), ADD-02 §2.1 (pages), §4.1 (72→96 h), §8.1 (SAR 5m→2.5m) | `old` occurs **exactly once** in the target unit's normalised text (or `occurrence` is given) |
-| `set_value` | ADD-02 note (2) (11.2 → 65/35), §5.1 (TN "from the value shown" → 3 mg/l, same basis) | Target is a value-bearing unit (a parameter in clause text, or a table cell from a verified transcription). The old value is resolved and recorded. |
+| `set_value` | ADD-02 note (2) (11.2 → 65/35), §5.1 (TN "from the value shown" → 3 mg/l, same basis) | Target is a value-bearing unit (a parameter in clause text, or a table cell from a reading; a pending reading makes the op's result pending). The old value is resolved and recorded. |
 | `append_text` | ADD-01 §5.1 (GRP pipe sentence added to VOL-II §5.3) | Target active; appended text not already present |
 | `set_status` | ADD-01 §4.1 (delete VOL-I §8.6); ADD-02 §9.1 (reinstate with new text); ADD-02 §9.2 (revoke ADD-01 §4.2) | delete ⇒ active; reinstate ⇒ deleted; revoke ⇒ active rule |
 | `replace_unit` | ADD-02 §3.1 (Table 1-1 reissued); ADD-01 App A (Form 4-A reissued) | Target exists; replacement content is itself segmented into units |
@@ -490,6 +373,16 @@ Package `tpr/`; final name to be confirmed, and there is no product naming.
 - **Target not identifiable.** The op becomes `unresolved`. Nothing is applied, rows that are candidate targets are marked AMENDMENT-PENDING, and A3 lists it with the reason. A person resolves it by editing the op, not by editing outputs.
 - **Duplicate application.** Op IDs are unique and applied once per build from a clean BASE. Post-conditions require the `old` count to fall by exactly one and `new` to be present. The ledger records the unit-text sha before and after each op, and a second application fails its own precondition.
 - **Partial application.** Addendum status is APPLIED only if every provision is covered and every op is accepted and valid. Otherwise it is PARTIAL, with the exact unapplied provisions printed in A3's header. `--strict` refuses PARTIAL.
+
+#### 4.4.1 Target verification: catching an op aimed at the wrong clause with the same wording
+
+A quotation found in the declared target, plus a change confined to that target, proves only that the op is *internally consistent*, not that the addendum meant that clause. In this pack, "seventy-two (72) hours" occurs in VOL-II §4.4 and VOL-V §31.3; an op aimed at §31.3 would pass the substring, uniqueness and scope-leak checks. The defence uses evidence independent of the op author:
+
+1. **Citation resolution (primary).** The program extracts the target citation from the addendum's own provision text ("In Volume II Clause 4.4, …") and its section heading, and resolves each to a unit ID with a small grammar (Volume/Clause/Table/Form/footnote/Appendix and row names inside tables, e.g. "the limit for Total Nitrogen (TN)" → `VOL-II:T2-4/TN`). The op's declared target must equal the resolved target, and body and heading citations must agree. Failure: op invalid, "declared target X ≠ cited target Y".
+2. **Ambiguity disclosure (secondary).** For every quoted "old" text, list *all* units containing it; the review view shows the others ("also in VOL-V §31.3 — not targeted").
+3. **Self-consistency claims** in the addendum ("Volume I Clause 8.6, deleted by Addendum No. 1 Section 4") are checked against the op ledger.
+4. **When the addendum's own citation and quotation disagree**, the op is `unresolved`, with an Issue for a person. Nothing is auto-corrected.
+5. **Tests:** an op aimed at VOL-V §31.3 with ADD-02 §4.1's quote fails on citation mismatch; a synthetic addendum whose citation and quote disagree yields `unresolved`.
 
 ### 4.5 Worked example: Local Content Certificate
 
@@ -551,10 +444,10 @@ Resulting state: `VOL-I:8.6` is DELETED. The row's status after ADD-01 is DELETE
 Check results:
 
 - C21: both quotes are found verbatim in ADD-02 p3.
-- C22: the preconditions hold.
+- C22: the preconditions hold; §4.4.1: the cited target ("Volume I Clause 8.6") resolves to `VOL-I:8.6`.
 - C25: no other unit changed.
 
-The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a person re-reviews it at stage ADD-02: `parameters.local_content_min_pct: 35`, `consequence: {class: non_responsive, quote: "Failure to submit the certificate shall render the Proposal non-responsive.", unit: VOL-I:8.6}`, `reviewed.against = s2`.
+The row's pins (§4.10) include the text of `VOL-I:8.6`, which is now s2 ≠ s0. The row is **STALE** until a person re-reviews it at stage ADD-02: `parameters.local_content_min_pct: 35`, `consequence: {class: non_responsive, quote: "Failure to submit the certificate shall render the Proposal non-responsive.", unit: VOL-I:8.6}`, re-pinned at stage ADD-02.
 
 **5. Outputs.**
 
@@ -575,41 +468,49 @@ The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a perso
 
 **PDD in brief.** `VOL-I:6.1` is amended by `replace_text` (ADD-01/2.1). The PDD DateRule is re-parsed from the effective text; the change in sha forces re-review of the parse. Relative rules recompute: §5.2, §6.3, §7.1, fn 12, §8.3 and Form 4-A ¶2. Fixed rules don't. Printed copies of the old value (`VOL-IV:F4-A:pdd`, `ADD-01:AppA:F4-A:pdd`) trip check C31 and **raise an Issue**. They are never rewritten.
 
-### 4.6 Model use
+### 4.6 Model use and routes (design only; integrations and model selection deferred)
 
-- **Drafting only:**
-  - requirement rows (discipline, evidence, assessment type) from unit text;
-  - op proposals for provisions the patterns don't recognise;
-  - first-pass image transcriptions.
-- **Outputs are YAML records** with `origin: model:<call-id>` and `review.status: proposed`.
-- **Logging:** every prompt and response is logged under `worklog/model_calls/` with hashes and token counts.
-- **The build never calls a model.** If the network or API is unavailable in the session, the pattern drafter plus `unresolved` stubs plus manual typing still work.
+- **Models draft; people decide; the build never calls a model.** Drafts are YAML records with `origin` and `status: proposed` (readings: `pending`), checked by the same RD/C checks and approved only by a person. The offline build, with no model and no API key, is the reviewed path.
+- **One small interface, three routes:** `propose(task_packet) -> proposal_file`.
+  - `claude_code`: the coding assistant in the Claude Code app fills the proposal file directly (this is how the two Stage 1 readings were prepared, logged as AI-assisted);
+  - `openrouter`: an HTTP API;
+  - `ollama`: local on the owner's Mac (M5 Pro, 48 GB).
+- **Shared by every route:** the same task packet (instructions, expected schema, crops), the same output path into `curation/` (always pending), the same validation, the same approval rule, and a log of every prompt and response under `worklog/model_calls/`.
+- **Capabilities are checked, not assumed:** Ollama's `/api/show` reports `capabilities` (e.g. `vision`); OpenRouter's model listing reports input modalities (not verifiable from this cloud environment, whose network policy blocks `openrouter.ai` and `ollama.com`). A model without image input is refused for reading tasks.
+- **Model selection is deferred.** The session 02 shortlist for the Mac (Qwen3.8-27B; Qwen3.6-35B-A3B and Qwen3.5-35B-A3B/27B; Qwen3-VL-32B/8B; about 17–24 GB at 4-bit) comes from search results, not tests. When the routes are built, candidates are benchmarked on the owner's Mac against the two readings *after the owner has approved them* (Table 2-4 cell accuracy, Form 4-C character accuracy, the ٤-x digit), and the measured results decide.
 
 ### 4.7 Checks: what is checked and what happens on failure
 
 **Failure actions:**
 
-- **ABORT:** the build stops and prints offending items.
+- **ABORT (structural failure):** the build exits non-zero (2), prints the failing checks, keeps the previous build and writes this one to `<out>.failed` for inspection.
 - **FLAG:** the build continues; the item is marked in A1/A2 and listed in A3 "could not resolve".
 - **Strict mode** (`build --strict`, used for submission) turns every FLAG into ABORT, except the Issues that are *meant* to stay open for a person.
+- **Pending human review is not a failure.** It is printed as PENDING HUMAN REVIEW and carried on every unit derived from a pending reading; `ingest --require-approved` exits 3 while anything is pending.
+
+C01–C10 are built (Stage 1). The rest are planned; their IDs were renumbered in revision 3 where they collided (old C07 → C14, old C08 → C15, old C10 → C16).
 
 | ID | Check | Failure action |
 |---|---|---|
-| C01 | Source sha256 and page count match `sources/manifest.json` (curated records are pinned to these hashes) | ABORT |
-| C02 | Every page is classified (content / cover / boilerplate) and has ≥1 unit unless it is a cover | ABORT |
-| C03 | Every non-furniture text line belongs to exactly one unit | ABORT, listing orphan lines with page and bbox |
-| C04 | Every line removed as furniture matches a declared pattern exactly (header, footer, watermark); per-page counts reported | ABORT (prevents a rule from eating content) |
-| C05 | Every image region has a Transcription with `verified_by` set | FLAG ("page X region not read") |
-| C06 | Every superscript is either a unit exponent (preceded by a unit token) or a footnote marker paired with a body of the same number on the same page; footnote bodies without markers are also reported | ABORT |
-| C07 | Obligation-language sweep: every sentence containing obligation markers (shall, must, required, mandatory, failure to, not acceptable, will not, …) lies in a unit with a disposition (requirement / definition / informational, with reason) | FLAG |
-| C08 | Consequence-language sweep, EN + AR lexicon (reject, disqualif, non-responsive, disregard, returned unopened, removed before evaluation, own risk, taken as accepted, استبعاد, غير مستجيب, …): every hit is linked to a requirement's `consequence` or explicitly dispositioned | ABORT |
-| C10 | **Unsupported requirement:** each row's `verbatim` is a normalised substring of its unit's effective text at every stage where the row is active, and the cited page contains it | ABORT |
-| C11 | **Stale interpretation:** `reviewed.against` ≠ current unit-text sha | FLAG (row status STALE) |
+| C01 | Source sha256 and page count match `sources/manifest.json` | ABORT (before anything runs) |
+| C02 | Every page is accounted for (content spans, exclusions, regions) | ABORT |
+| C03 | Every content span is assigned to exactly one unit | ABORT, listing orphan spans |
+| C04 | Every excluded span matched a declared furniture rule on all its attributes; rules with an expected count matched it on every page | ABORT (prevents a rule from eating content) |
+| C05 | Every region has a reading and every reading has a region; readings pass RD1–RD9; pending review is shown | ABORT on unread / failing / orphan; pending is shown, not a failure |
+| C06 | Every superscript is a unit exponent or a footnote marker paired with its body on the same page | ABORT |
+| C07 | Unit IDs are unique across the pack (text-layer and reading units); nothing renamed | ABORT |
+| C08 | Every content span appears exactly once in exactly one unit's anchors; every anchored span exists | ABORT |
+| C09 | Segmentation reported no problems | ABORT |
+| C10 | **Full evidence:** each text-layer unit's whole printed and matching text equals its spans re-extracted from the PDF (tables, rows, form fields: same characters as their spans) | ABORT |
+| C14 | Obligation-language sweep: every sentence containing obligation markers (shall, must, required, mandatory, failure to, not acceptable, will not, …) lies in a unit with a disposition (requirement / definition / informational, with reason) | FLAG |
+| C15 | Consequence-language sweep, EN + AR lexicon (reject, disqualif, non-responsive, disregard, returned unopened, removed before evaluation, own risk, taken as accepted, استبعاد, غير مستجيب, …): every hit is linked to a requirement's `consequence` or explicitly dispositioned | ABORT |
+| C16 | **Evidence items** (§4.3): text-layer items re-extract from their page; image-reading items match their reading and show its review status; effective text equals the replay of accepted ops over the evidence at every stage where the row is active | ABORT |
+| C11 | **Stale interpretation:** the combined hash of a row's pins (§4.10) differs from the one it was reviewed against | FLAG (row status STALE) |
 | C12 | Row IDs are unique and never disappear between builds (deleted rows keep their ID and status) | ABORT |
 | C13 | A row appears in the A3 main list only if `consequence.class` is explicit and its `quote` is found verbatim in a unit | ABORT |
 | C20 | **Provision coverage:** every provision of each addendum (paragraphs, table notes, appendix items, Q&A rows, form items) is referenced by ≥1 op | FLAG → addendum PARTIAL |
 | C21 | Op `source_quote` is found verbatim in its provision | op invalid (FLAG) |
-| C22 | Target exists and state preconditions hold (delete⇒active, reinstate⇒deleted, revoke⇒active) | op invalid (FLAG) |
+| C22 | Target exists and state preconditions hold (delete⇒active, reinstate⇒deleted, revoke⇒active); declared target equals the cited target (§4.4.1) | op invalid (FLAG) |
 | C23 | `replace_text`: `old` found exactly once in the scoped unit. Zero ⇒ "not found"; >1 ⇒ "ambiguous" | op invalid (FLAG) |
 | C24 | Post-conditions: `old` count falls by 1; `new` present; re-application would fail | ABORT (bug) |
 | C25 | **Scope leak:** the set of units changed by an addendum equals the set of declared targets | ABORT |
@@ -622,7 +523,7 @@ The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a perso
 | C32 | Every relative rule declares its counting convention; `unresolved` conventions are computed both ways, shown as a range, and scheduled on the conservative reading | FLAG |
 | C40 | A3 ⊆ A1; every A5 activity cites ≥1 A1 row that is ACTIVE at the latest stage; activities citing DELETED rows are removed with a delta note | ABORT |
 | C41 | No literal dates in A5 inputs except tender facts and assumptions; any activity whose latest start is before the planning date is marked INFEASIBLE(n WD) | FLAG (always surfaced) |
-| C42 | Build manifest: input hashes, code commit and output hashes; outputs contain no timestamps; `verify` rebuilds in a temporary directory and compares | ABORT on mismatch |
+| C42 | Build manifest: input hashes, code commit and output hashes; outputs contain no timestamps; `verify` rebuilds in disposable directories and compares | ABORT on mismatch |
 | C43 | A3 renders to exactly one page | ABORT (forces prioritisation; no silent overflow) |
 
 ### 4.8 A5 scheduling approach
@@ -644,19 +545,20 @@ The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a perso
 - **PyMuPDF.** Spans with font, size, bbox and superscript flag; image extraction; page rendering for `show`; also writes the one-page A3 PDF, so no second PDF library is needed. **Licence: AGPL-3.0.** That is fine for this assessment. If Lamar later builds on it commercially, swap the `ingest`/`render` internals for pdfplumber + pypdfium2 (MIT/BSD-style licences), which is a one-module change.
 - **pydantic.** Typed records and JSON Schema in one dependency.
 - **PyYAML.** Curated inputs, using `safe_load`. Dates are kept as strings validated by the schema, to avoid YAML's implicit date typing.
-- **openpyxl.** Only because the owner's draft email promises A1 in Excel. It can be dropped if that promise was not sent.
+- **numpy.** Raster structure of image regions (grid, bands).
+- **openpyxl.** For A1 in Excel, as the owner's sent email specifies. Added in the stage that writes A1.
 
 **Dev dependency:** pytest.
 
-**Excluded:** pandas, any DB, web framework, vector store, LangChain, OCR engine. Images are handled by verified transcription records, not OCR, at this scale.
+**Excluded:** pandas, any DB, web framework, vector store, LangChain, OCR engine. Images are handled by readings that a person reviews and approves, not by OCR, at this scale.
 
-**Optional extra:** the `anthropic` SDK, for the drafter only.
+**Optional extras (later, §4.6):** HTTP clients for the OpenRouter and Ollama routes, for the drafter only.
 
 **Reproducibility:**
 
-- Python 3.12 pinned.
-- `uv` with a hash-locked `uv.lock` (fallback: `pip` with a `--require-hashes` lock file).
-- `make verify` performs a clean rebuild and compares output hashes with the committed `out/BUILD_MANIFEST.json`.
+- Python ≥ 3.11 (3.11 used in this environment), dependencies hash-locked in `uv.lock`.
+- `make verify` runs the tests, then two clean rebuilds in disposable directories, and compares their output hashes.
+- **Output safety:** the build directory may not be the repository, a parent of it, home, `/`, a protected folder (sources, config, curation, tenderpack, tests, docs, worklog, .git, .venv) or anything containing or inside an input. An existing directory is replaced only if it is empty or a previous build. Builds are written to a temporary sibling and swapped in only on success.
 - Outputs carry no timestamps and use sorted keys, so Linux (cloud) and macOS should produce byte-identical outputs. This is verified on the Mac, not assumed.
 
 **Offline:** on the Mac, install while online, then run `make verify && pytest` with networking disabled, before submission and again before the session.
@@ -664,8 +566,36 @@ The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a perso
 **Log separation:**
 
 - `worklog/` is timestamped, append-only and human-written: prompts, model calls, errors.
-- `out/` is deterministic generated deliverables.
-- `build/` holds intermediates, regenerated rather than edited. Whether it is committed is decided in Stage 1; the proposal is to commit `build/units.json` only, because it is the audit trail for segmentation.
+- `build/` holds deterministic generated evidence, regenerated rather than edited. It is committed for now so the owner can review it; whether to keep committing it is an open question for the owner (§7).
+- The deliverables A1–A5 will be generated into their own directory by the later stages, under the same output rules.
+
+### 4.10 Staleness and two build states (planned)
+
+- **Dependency set per interpretation.** Each reviewed interpretation pins: its own unit's effective text; units its text cites (extracted automatically, e.g. fn 12 → the PDD definition; §2.5 → the Table 2-4 *basis* column); units that supply its consequence (e.g. VOL-I §9.4 and the Form 4-C Arabic note); clarification answers and rules that annotate any of these (e.g. ADD-01 §4.2 until ADD-02 §9.2 revoked it); readings and their review status; date-rule anchor values.
+- **Staleness.** A row is STALE when the combined hash of its pins changes (C11). Reviewers may add dependencies; removing one needs a recorded reason.
+- **Two states.** `validated/` holds the last state where every op was accepted and valid and every affected row re-pinned; `working/` holds an in-progress state (e.g. ADD-03 half-applied), labelled DRAFT/PARTIAL and never written over `validated/`.
+
+### 4.11 Images, Arabic and image tables (built in Stage 1)
+
+- **Regions, generic:** every embedded image; every drawing that is not structure (structure = axis-aligned rules, rectangles that are stroked only, lightly filled or thinner than 2.5 pt, and dark bands with text on them; so a triangle of straight lines, a curve, or a dark box with no text stays a region for review); invisible text layers (recorded, never content); ink nothing explains. A page with text can still have unread regions.
+- **Evidence:** native image bytes (hashed), rendered crop, page context, and per-band, per-row and per-cell crops at native resolution; cell crops and positions follow the table's direction.
+- **Readings** (`curation/readings/<region>.yaml`, unknown fields rejected): tables (direction ltr/rtl, optional title and qualifier, columns with key, heading and language, rows with every cell, explicit `blank` list, numerals per cell), text and forms (blocks of lines tied to bands), graphics (description). Arabic `source` in logical Unicode order; `translation` separate; matching text computed by code. Numbers in cells are recorded as read (`numeric`: single or range, values in logical order) with the table's headings, qualifier and notes beside them; **what a number means (maximum, minimum, target) is left for a person** (`interpretation: null`).
+- **Reading checks:**
+
+  | Check | What it verifies |
+  |---|---|
+  | RD1 | Region position (doc, page, bbox within 0.5 pt) |
+  | RD2 | Native image hash |
+  | RD3 | Grid rows × columns from pixels match the reading |
+  | RD4 | Every text band (each side) outside a table grid is read (not for graphics) |
+  | RD5 | Logical Unicode (no presentation forms, no undeclared bidi controls); translation present |
+  | RD6 | Every numeral in Arabic text or Arabic/mixed cells is declared; rendering right to left reproduces the glyph order seen in the crop |
+  | RD7 | Warning when text touches the image edge (possible cropping) |
+  | RD8 | Unique column and row keys; every row has exactly one cell per column; empty cells only where declared in `blank` |
+  | RD9 | Graphic readings carry a description and declare no text |
+
+- **What the checks do not prove:** that any word, mark, digit or value is the one printed, that a translation is right, or what a value means. Numeral identity (e.g. ٢ vs ٣) is advisory only (shape comparison) and never decides.
+- **Approval** is recorded only by a person running `tenderpack approve REGION --reviewer "Name"`. It refuses placeholder names and readings that fail checks, and pins the **review subject**: the whole reading (content, uncertainties, source claims, preparer, method) and its evidence (source PDF sha256, region page, bbox and kind, native image sha256). Any change to any of these, even with the transcription unchanged, makes the reading pending again. The program never writes an approval itself.
 
 ---
 
@@ -680,14 +610,14 @@ The text sha of `VOL-I:8.6` is now s2 ≠ s0. The row is **STALE** until a perso
 
 | Risk | Test(s) | Independent oracle | Deliberate input change |
 |---|---|---|---|
-| Missed footnote | `fn12` unit exists with marker pairing. The row has consequence `rejection` and parameters (2 plants, ≥80,000 m³/day, COD within 10 y of PDD). The C08 sweep maps "rejected without further evaluation" on p4. | Golden YAML from p4 render | Synthetic page with an extra footnote 13 and no matching marker ⇒ C06 ABORT. Footnote text removed ⇒ C03/C08 fail. Footnote moved to the next page ⇒ pairing error reported, not silently orphaned. |
+| Missed footnote | `fn12` unit exists with marker pairing. The row has consequence `rejection` and parameters (2 plants, ≥80,000 m³/day, COD within 10 y of PDD). The C15 sweep maps "rejected without further evaluation" on p4. | Golden YAML from p4 render | Synthetic page with an extra footnote 13 and no matching marker ⇒ C06 ABORT. Footnote text removed ⇒ C03/C15 fail. Footnote moved to the next page ⇒ pairing error reported, not silently orphaned. |
 | Unit superscript mistaken for footnote (and vice versa) | All 11 m³ exponents classified as unit exponents (the pack has 12 superscript spans: 11 × "3" after "m" and 1 × "12" after "Form 4-B."; in Table 2-6 the "m" is a separate span, so look-behind must cross spans); "Form 4-B.¹²" yields marker 12 and never a form ID "4-B.12" | Font-level evidence table (§2.1 O1) | Synthetic "Clause 3.1²" with no body ⇒ ABORT. Synthetic "50 m²" ⇒ unit. |
-| Missed image region | With transcription records present, the Form 4-C decl. 4 row exists with consequence `exclusion` and the Table 2-4 TN unit exists | Owner's (or a second reader's) verified Arabic reading | Delete the Form 4-C transcription ⇒ C05 FLAG, A3 lists "VOL-IV p6 not read". The decl. 4 row must **disappear with an explicit gap**, never be replaced by "no consequence". Delete the Table 2-4 transcription ⇒ ADD-02/5.1 becomes `unresolved` ("target only in unread image"). |
+| Missed image region | With readings present, the Form 4-C decl. 4 row exists with consequence `exclusion` (marked pending until approved) and the Table 2-4 TN unit exists | The owner's reviewed Arabic reading | Delete the Form 4-C reading ⇒ C05 structural failure, "VOL-IV p6 not read". The decl. 4 row must **disappear with an explicit gap**, never be replaced by "no consequence". Delete the Table 2-4 reading ⇒ ADD-02/5.1 becomes `unresolved` ("target only in unread image"). Built so far: a straight-line drawing, a dark box and an Arabic right-to-left image table in the synthetic fixture are detected and must be read. |
 | Wrong occurrence of repeated text | After ADD-02: VOL-II §4.4 = 96 h **and** VOL-V §31.3 still 72 h; VOL-I §11.2 = 65/35 **and** VOL-V §29.2 still 60/40; Table 2-4 TN = 3 **and** Table 2-2 TN = 55/80; §12.2 still 120 days | Golden values from the pages | Synthetic op targeting VOL-V §31.3 with ADD-02's quote ⇒ provenance mismatch (C21/C25). Synthetic unit containing "seventy-two (72) hours" twice ⇒ C23 "ambiguous". A deliberately buggy global replace in a test double ⇒ C25 ABORT. |
 | Deadline change moves dependent dates, preserves fixed ones | Table §2.5 values at BASE and ADD-01 stages; fixed dates unchanged; printed Form 4-A dates raise Issues, not edits | Hand calculation (§2.5), cross-checked against a printed calendar | Synthetic ADD-03 moving the PDD to Thu 3 Dec 2026 ⇒ all relative rules move, fixed don't. Add a holiday on 9 Nov to config ⇒ cut-off moves back one WD. Change convention day0→day1 ⇒ ranges displayed and flagged. |
 | Deletion and reinstatement | LCC lifecycle per §4.5 across three stages (A1 statuses, A3 membership only at ADD-02, A5 removal then rework); ADD-01 §4.2 revoked | Golden lifecycle YAML | Swap addendum order ⇒ C26 ABORT. Reinstate a never-deleted unit ⇒ C22. Delete twice ⇒ C22. Drop ADD-02/9.2 ⇒ C20 PARTIAL. |
 | Unresolved or unfamiliar wording | Drafter emits `unresolved` for unseen phrasings; build (working mode) applies nothing for them and marks candidate rows AMENDMENT-PENDING; strict build fails | Synthetic provisions written to defeat the patterns | e.g. "Clause 7.1 shall be read as though 'one hundred and fifty' were 'one hundred and eighty'"; "The bid security period is extended by thirty days" (no clause cited). A model-proposed op whose `old` text does not exist ⇒ C23. |
-| Traceability | For every A1 row: unit → page → bbox re-extraction contains `verbatim`; amended rows' chains resolve to addendum provisions whose `source_quote` re-extracts from their pages. Timed drill: 3 random rows in under 60 s total. | The PDFs themselves | Inject a row with no unit ⇒ C10 ABORT. Inject a row whose verbatim was "improved" by a model ⇒ C10 ABORT. |
+| Traceability | Built: C10 compares every text-layer unit in full with its re-extracted spans. Planned: for every A1 row, evidence items re-extract from their pages and effective text replays from the ops (C16). Timed drill: 3 random rows in under 60 s total. | The PDFs themselves | Built: a unit whose text or one table cell was altered ⇒ C10 structural failure. Planned: a row with no unit, or whose verbatim was "improved" by a model ⇒ C16 ABORT. |
 | Reproducible rebuild | `verify`: two clean builds produce identical output hashes; Linux vs macOS manifests compare equal; network disabled | Hash comparison | Flip one byte in a source PDF ⇒ C01 ABORT. Edit a curated file without re-review ⇒ C11 STALE. |
 | Live adaptability | **Rehearsals:** (1) treat ADD-02 as unseen early, drafting ops through `draft` rather than by hand; (2) synthetic ADD-03-A written to hit known weak spots; (3) a blind synthetic ADD-03-B written by someone else or a separate model session without sight of this design. Each is timed against the 30-minute budget, with defects logged. | Separately authored addenda | Includes: an image page, a small-print note, a deletion of a reinstated clause, a new form, a clarification answer that changes substance, an incomplete cover summary. |
 
@@ -699,14 +629,14 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 
 | Stage | Output | Depends on | Main risk | Acceptance evidence | Owner inspects |
 |---|---|---|---|---|---|
-| **1. Evidence and units** (Fri 2 Oct AM) | `ingest`, `segment`; `build/units.json`; page/line/image coverage report; transcription records for Table 2-4 and Form 4-C | Plan approval; Python env | Segmentation of tables, forms and footnotes; watermark removal eating content | C01–C06 pass; golden unit tests (fn 12, m³ ×11, TN row, Form 4-C decl. 4, both "72 hours" units, Form 4-A pdd fields) | Coverage report; 10 random units against pages; **Arabic transcription verified by a competent reader** |
-| **2. Thin end-to-end slice through the hard amendments** (Fri 2 Oct PM) | `amend`, `dates`, minimal `register`, `checks`; ~12 rows (LCC, PDD and dependants, fn 12, 72 h, weighting, TN, Form 4-G, Form 4-C); first A1/A2/A3/A5 renders. **ADD-02 drafted through `draft` as if unseen.** | Stage 1 | The op model is the wrong shape; better found now than on Sunday | Golden tests: LCC lifecycle, scope traps, date table, Form 4-A Issue; C20 reports exactly the not-yet-mapped provisions | LCC chain in A2; dates table; A3 draft layout |
-| **3. Full register and Issues** (Sat 3 Oct) | All units dispositioned; all ADD-01/02 provisions mapped; ~80–120 rows (model-drafted, reviewed in tiers); `issues.yaml` with human-decision items assigned to roles | Stage 2 | Review time; over- or under-splitting rows | `build --strict` passes except deliberate open Issues; C07/C08 sweeps clean; A3 fits one page | A3 candidates (all); Issues list; 15 random rows; the owner's 10 blind golden rows compared |
+| **1. Evidence and units** (built sessions 02–03; awaiting the owner's acceptance) | `ingest`, `show`, `approve`; `build/units.json`; coverage, exclusions; review packets and proposed readings for Table 2-4 and Form 4-C | Plan approval; Python env | Segmentation of tables, forms and footnotes; watermark removal eating content; readings trusted before review | C01–C10 pass; golden and regression tests; byte-identical rebuild; readings pending | Coverage report; units against pages; **both readings reviewed and approved or corrected by the owner** |
+| **2. Thin end-to-end slice through the hard amendments** (after Stage 1 is accepted) | `amend` with target verification (§4.4.1), `dates`, minimal `register` with evidence items and pins (§4.3, §4.10), `checks`; ~12 rows (LCC, PDD and dependants, fn 12, 72 h, weighting, TN, Form 4-G, Form 4-C); first A1/A2/A3/A5 renders. **ADD-02 drafted through `draft` as if unseen.** | Stage 1 | The op model is the wrong shape; better found now than later | Golden tests: LCC lifecycle, scope traps incl. the wrong-clause op, date table, Form 4-A Issue; C20 reports exactly the not-yet-mapped provisions | LCC chain in A2; dates table; A3 draft layout |
+| **3. Full register and Issues** (Sat 3 Oct) | All units dispositioned; all ADD-01/02 provisions mapped; ~80–120 rows (model-drafted, reviewed in tiers); `issues.yaml` with human-decision items assigned to roles | Stage 2 | Review time; over- or under-splitting rows | `build --strict` passes except deliberate open Issues; C14/C15 sweeps clean; A3 fits one page | A3 candidates (all); Issues list; 15 random rows; the owner's 10 blind golden rows compared |
 | **4. A5 programme and marshalling** (Sat 3 Oct PM – Sun 4 Oct AM) | `schedule`; activity templates; `assumptions.yaml` (with basis and owner); per-stage A5 with replan deltas; optional Gantt rendered from the same data | Stage 3 | Lead-time assumptions dominate the result; infeasibility must be shown, not hidden | Tests: backward pass, the clarification "must finish by" constraint, INFEASIBLE detection, LCC rework, bond re-issue rework, deleted-row activity removal | **The assumption values (owner's call)**; the infeasibility list |
 | **5. Unseen-addendum readiness** (Sun 4 Oct) | `show`, `diff`; drafter hardening; synthetic ADD-03-A and a blind ADD-03-B; two timed rehearsals; one rehearsed "live fix" (add a check and its test) | Stages 2–4 | Live time overrun; brittle patterns | Each rehearsal completes within 30 minutes with all provisions accounted for; defects fixed and logged | Rehearsal timings and work-log error notes |
-| **6. Packaging and Mac verification** (Mon 5 Oct, by 14:00) | Strict build; A3 PDF; A1 CSV/JSON (+XLSX); A2 MD+CSV/JSON; A5 CSV/JSON; one-page operating procedure; final work log; archive | Stage 5 | Environment drift on the Mac; time | `make verify` on the Mac with networking off; manifests equal to cloud build | Final A3 read cold; archive contents |
+| **6. Packaging and Mac verification** (Mon 5 Oct, by 14:00) | Strict build; A3 PDF; A1 CSV/JSON/Excel; A2 MD+CSV/JSON; A5 CSV/JSON; one-page operating procedure; final work log; archive | Stage 5 | Environment drift on the Mac; time | `make verify` on the Mac with networking off; manifests equal to cloud build | Final A3 read cold; archive contents |
 
-**If behind schedule, cut in this order:** XLSX → Gantt → model drafter (keep patterns plus `unresolved`) → second rehearsal. Never cut: C10/C13/C25 checks, A3 unresolved list, Stage 5 rehearsal 1.
+**If behind schedule, cut in this order:** Gantt → model drafter (keep patterns plus `unresolved`) → second rehearsal. A1 Excel stays (owner's specified format). Never cut: C10/C13/C16/C25 checks, A3 unresolved list, Stage 5 rehearsal 1.
 
 ---
 
@@ -714,69 +644,48 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 
 | # | Decision | Options | Recommendation and trade-off |
 |---|---|---|---|
-| D1 | **Planning basis for A5:** status date and bidder | (a) Status date = latest addendum issue date (22 Oct 2026; becomes the ADD-03 date live), unnamed bidder with a configurable member count (default 3). (b) A named Appendix 1 consortium. (c) Real-world date. | **(a)**, as in the owner's 1 Oct email. Keep member count and names in config. Note that 4 of 5 prequalified consortia have 3 members and Northwind has 2. Real-world 1 Oct 2026 precedes both addenda, so (c) makes the programme meaningless. |
-| D2 | **A3 inclusion rule** | (a) Explicit document wording only (rejection / disqualification / non-responsive / exclusion, including the footnote and the Arabic image), plus a separate line for §11.3 score elimination. (b) Also include mandatory Section 8 / bond items with no stated consequence. | **(a)**, with a short labelled block "Mandatory under §11.1(i) but no stated consequence; human to judge". This matches the brief's test ("the documents themselves say") and avoids asserting consequences the pack does not state, while still surfacing them. |
+| D1 | **Planning basis for A5:** status date and bidder | — | **Settled (owner, 1 Oct email):** status date = latest addendum issue date (22 Oct 2026; the ADD-03 date live); unnamed bidder, **three members by default, editable in config**; all bidder details are configurable assumptions, flagged for confirmation, never facts. (4 of 5 prequalified consortia have 3 members; Northwind has 2.) |
+| D2 | **A3 inclusion rule** | — | **Settled (owner, session 02):** explicit document wording only (rejection / disqualification / non-responsive / exclusion, including the footnote and the Arabic image), plus a separate line for §11.3 score elimination, and a separate labelled block "Mandatory under §11.1(i) but no stated consequence; human to judge". Unresolved legal and commercial questions stay with people. |
 | D3 | **A1 scope and granularity** | (a) One row per independently evidenced obligation (e.g. bond: amount; form/terms; issuer rating), including VOL-II technical and VOL-V contractual obligations, tagged by assessment type. (b) One row per clause. (c) Bid-stage only. | **(a)**. It gives atomic evidence links for A5 and precise A3 rows, and covers the "one row per requirement" key. Costs more rows (~100) and more review. Sub-row IDs keep clause grouping visible. |
 | D4 | **Conservative-reading policy for unresolved counting conventions** (day 0, inclusive look-back, forward WD, holidays) | (a) Block until a person decides. (b) Compute every reading, schedule on the most conservative, and flag. (c) Pick one silently. | **(b)**. It never hides the ambiguity, and the programme stays usable. The person can override per rule. |
-| D5 | **Build strictness** | (a) Always strict. (b) Working mode emits with FLAGs and labelled PARTIAL addenda; `--strict` for submission. | **(b)**. In the live session the panel needs to see what broke, not a stack trace. PARTIAL is labelled at the top of A3, so nothing is silently partial. |
-| D6 | **Model use in the live session** | (a) Hosted model drafter allowed, with offline fallback. (b) Patterns and manual only. | **(a)**, with every call logged and the fallback rehearsed with networking off. |
+| D5 | **Build strictness** | (a) Always strict. (b) Working mode emits with FLAGs and labelled PARTIAL addenda; `--strict` for submission. | **(b)**, refined: structural failures always fail (exit 2, previous build kept); pending review is shown, not a failure (`--require-approved` exits 3); PARTIAL addenda are labelled at the top of A3 and written to `working/` (§4.10). |
+| D6 | **Model use** | Routes of §4.6 | **Deferred by the owner:** the Claude Code / OpenRouter / Ollama routes and model selection come later; the reviewed build stays offline-capable without a model. |
+| D7 | **Committing `build/`** | (a) Keep committing generated evidence. (b) Commit only `units.json` and the packets. (c) Commit nothing generated. | Open; currently (a) so the owner can review from the repository. |
 
 **Kept visibly with people:**
 
 - These are surfaced as Issues, not as decisions the system makes.
-- **The issues:** Form 4-A date and missing fields (O4); Envelope B contents (F4); Form 4-B contract value (F5); concession term (F6); design flows (F7); Permit vs Table 2-4 (F8); Form 4-G "No" answers (F10); what to raise as clarifications before 12 Nov 2026; Arabic verification (O5).
+- **The issues:** Form 4-A date and missing fields (O4); Envelope B contents (F4); Form 4-B contract value (F5); concession term (F6); design flows (F7); Permit vs Table 2-4 (F8); Form 4-G "No" answers (F10); what to raise as clarifications before 12 Nov 2026; the owner's review of both image readings (O5, Table 2-4), including what the Table 2-4 ranges under "all values are maxima" mean.
 - **Bidder facts:** all bidder facts.
 
 ---
 
-## 8. Recommended first implementation step (after approval)
+## 8. Next step (after the owner accepts Stage 1)
 
-**Stage 1, with a 2-hour time box.** Implement `ingest` and `segment` for the six PDFs, producing `build/units.json` and the coverage report. The first tests are the golden unit tests for:
-
-- the footnote 12 pairing;
-- the eleven m³ unit exponents;
-- the two "seventy-two (72) hours" units;
-- the two Form 4-A printed-PDD fields;
-- the image-region detection on VOL-II p3 and VOL-IV p6.
-
-These are the inputs every later decision rests on, and they are the cheapest place to discover that the extraction strategy is wrong.
-
-In parallel, the owner verifies the Arabic transcription of Form 4-C and the Table 2-4 transcription in §2.1, and answers D1–D6.
+Stage 2, the thin slice through the hard amendments (§6), starting with the op model, target verification (§4.4.1) and the LCC lifecycle, because they are where the design is most likely to be the wrong shape. It does not start until the owner has accepted Stage 1; the readings may still be pending then, and every row built on them carries that status.
 
 
 ---
 
-## 9. Stage 1 checkpoint (implemented in session 02; for the owner's review)
+## 9. Stage 1 status (sessions 02 and 03; awaiting the owner's acceptance)
 
 **Built:**
 
-- **Package and commands.** `tenderpack/` (extract, regions, segment, readings, arabic, packets, coverage, cli). Commands: `ingest`, `show`, `approve`.
-- **Environment.** `pyproject.toml` with `uv.lock`; a `Makefile` with targets `setup`, `evidence`, `test`, `verify`.
-- **Dependencies.**
-  - Runtime: PyMuPDF 1.28.2, numpy, pydantic, PyYAML.
-  - Dev: pytest.
-  - openpyxl is deferred to the stage that writes A1.
+- **Package and commands.** `tenderpack/` (sources, extract, regions, segment, readings, arabic, packets, coverage, cli). Commands: `ingest [--require-approved]`, `show`, `approve --reviewer NAME [--approvals PATH]`.
+- **Exit codes.** 0 structure OK (pending review printed); 2 structural failure (previous build kept, failed build in `<out>.failed`) or refused output path; 3 pending review with `--require-approved`.
+- **Environment.** `pyproject.toml` with `uv.lock`; `Makefile` targets `setup`, `evidence`, `test`, `verify`. Runtime: PyMuPDF 1.28.2, numpy, pydantic, PyYAML. Dev: pytest. openpyxl comes with the A1 stage.
+
+**Session 03 (owner's review):** six gaps reproduced, regression tests written first and seen failing, then fixed: §3.3 numbered-paragraph boundary and table continuation across intervening content (§2 of the session log); structural errors fail (C07–C10, exit codes) and C10 compares whole texts; approvals pin reading + uncertainties + evidence and need a named reviewer; RD8 cell validation and number-vs-meaning separation; straight-line drawings and dark boxes stay visible; the Arabic right-to-left image table exercised end to end; output paths guarded and builds atomic. Details, failures and test results: `worklog/2026-10-02_session-03_review-fixes.md`; summary: `docs/session-03_before-after.md`.
 
 **Evidence to review** (regenerate with `make evidence`):
 
 | File | Contents |
 |---|---|
-| `build/units.md` / `build/units.json` | All 525 units of the real pack, including units derived from the two readings, marked PENDING |
-| `build/coverage.md` | Checks C01–C06, page accounting, regions, superscripts, footnotes, split tables, small print |
-| `build/exclusions.md` | The 160 excluded spans (5 rules × 32 pages), with rule, text, angle, colour and size |
-| `build/review/VOL-II-p3-r1/` | Table 2-4 packet: native row and cell crops, side-by-side, checks, uncertainties |
-| `build/review/VOL-IV-p6-r1/` | Form 4-C packet: band crops, side-by-side (Arabic rendered by the program), numeral evidence |
-| `build/fixture/` | The same reports for the synthetic mixed example (`tests/fixtures/make_fixture.py`) |
+| `build/units.md` / `build/units.json` | All 524 units of the real pack, including units from the two readings, marked PENDING |
+| `build/coverage.md` | Checks C01–C10, page accounting, regions, superscripts, footnotes, split tables, small print, full-evidence results |
+| `build/exclusions.md` | The 160 excluded spans (5 rules × 32 pages) |
+| `build/review/VOL-II-p3-r1/packet.html` (and `.md`) | Table 2-4: each heading, row and cell crop beside its reading; checks; points for decision |
+| `build/review/VOL-IV-p6-r1/packet.html` (and `.md`) | Form 4-C: each band crop beside its reading and translation; numeral evidence; points for decision |
+| `build/fixture/` | The same reports for the synthetic mixed example, including the Arabic RTL image table |
 
-**Tests:**
-
-- 39 tests: `make test`.
-- Mutation checks were run by hand and are recorded in the session 02 work log.
-
-**Not done in Stage 1 (by design):** amendment operations, dates, register, A1–A5, model routes. **Next, after the owner's review:** Stage 2 (thin end-to-end slice through the hard amendments), which must now include the §R2-A citation resolver and the §R2-C dependency pins and two-state build.
-
-**Decisions still open:**
-
-- **D3:** A1 granularity and scope; recommendation unchanged.
-- **D4:** conservative reading of counting conventions; recommendation unchanged.
-- **Arabic and Table 2-4 sign-off:** with the owner.
+**Decisions still open with the owner:** acceptance of Stage 1; review of both readings (packets); D3 (A1 granularity); D4 (counting conventions); D7 (committing `build/`); the session slot once the panel confirms it.

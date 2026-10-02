@@ -21,16 +21,40 @@
    "ok": true
   },
   {
-   "detail": "3 regions; unread ['SYN-01-p4-r1', 'SYN-01-p4-r2', 'SYN-01-p5-r1']; readings failing checks none; PENDING HUMAN REVIEW: none",
+   "detail": "5 regions; unread none; readings failing checks none; readings with no detected region none; PENDING HUMAN REVIEW: ['SYN-01-p4-r1', 'SYN-01-p4-r2', 'SYN-01-p4-r3', 'SYN-01-p5-r1', 'SYN-01-p5-r2']",
    "id": "C05",
-   "ok": false
+   "ok": true
   },
   {
    "detail": "2 superscripts: 1 unit exponents, 1 footnote markers (all paired: True); unclassified 0",
    "id": "C06",
    "ok": true
+  },
+  {
+   "detail": "31 unit ids; produced more than once: none",
+   "id": "C07",
+   "ok": true
+  },
+  {
+   "detail": "43 content spans; in more than one anchor: none; in no anchor: none; anchored but not on the page: none",
+   "id": "C08",
+   "ok": true
+  },
+  {
+   "detail": "segmentation problems: 0",
+   "id": "C09",
+   "ok": true
+  },
+  {
+   "detail": "17 text-layer units compared in full with spans re-extracted from the PDF; mismatches: none",
+   "id": "C10",
+   "ok": true
   }
  ],
+ "evidence": {
+  "failures": [],
+  "units_checked": 17
+ },
  "exclusions": [
   {
    "angle": 0.0,
@@ -314,6 +338,7 @@
    "unit": "SYN-01:1.2#fn7"
   }
  ],
+ "notices": [],
  "pages": [
   {
    "assigned": 11,
@@ -383,16 +408,21 @@
     {
      "id": "SYN-01-p4-r1",
      "kind": "image",
-     "reading": "unread"
+     "reading": "pending"
     },
     {
      "id": "SYN-01-p4-r2",
      "kind": "vector_graphic",
-     "reading": "unread"
+     "reading": "pending"
+    },
+    {
+     "id": "SYN-01-p4-r3",
+     "kind": "vector_graphic",
+     "reading": "pending"
     }
    ],
    "unassigned": [],
-   "units": 4
+   "units": 5
   },
   {
    "assigned": 1,
@@ -411,22 +441,33 @@
     {
      "id": "SYN-01-p5-r1",
      "kind": "image",
-     "reading": "unread"
+     "reading": "pending"
+    },
+    {
+     "id": "SYN-01-p5-r2",
+     "kind": "vector_graphic",
+     "reading": "pending"
     }
    ],
    "unassigned": [],
-   "units": 2
+   "units": 3
   }
  ],
- "pending_review": [],
+ "pending_review": [
+  "SYN-01-p4-r1",
+  "SYN-01-p4-r2",
+  "SYN-01-p4-r3",
+  "SYN-01-p5-r1",
+  "SYN-01-p5-r2"
+ ],
  "problems": [],
  "regions": [
   {
    "bbox": [
     80.0,
     110.0,
-    440.0,
-    220.4
+    500.0,
+    250.2
    ],
    "detection": "embedded raster image (get_image_info)",
    "doc": "SYN-01",
@@ -434,8 +475,24 @@
    "kind": "image",
    "notes": [],
    "page": 4,
-   "reading_status": "unread",
-   "reading_units": 0
+   "reading_status": "pending",
+   "reading_units": 4
+  },
+  {
+   "bbox": [
+    100.0,
+    250.0,
+    220.0,
+    330.0
+   ],
+   "detection": "uncertain drawing (diagonal or free-form lines, curves, or a dark fill with no text on it); needs a reading",
+   "doc": "SYN-01",
+   "id": "SYN-01-p4-r2",
+   "kind": "vector_graphic",
+   "notes": [],
+   "page": 4,
+   "reading_status": "pending",
+   "reading_units": 1
   },
   {
    "bbox": [
@@ -444,14 +501,14 @@
     260.0,
     460.0
    ],
-   "detection": "non-structural vector paths (curves or free polygons)",
+   "detection": "uncertain drawing (diagonal or free-form lines, curves, or a dark fill with no text on it); needs a reading",
    "doc": "SYN-01",
-   "id": "SYN-01-p4-r2",
+   "id": "SYN-01-p4-r3",
    "kind": "vector_graphic",
    "notes": [],
    "page": 4,
-   "reading_status": "unread",
-   "reading_units": 0
+   "reading_status": "pending",
+   "reading_units": 1
   },
   {
    "bbox": [
@@ -468,8 +525,24 @@
     "invisible text layer overlaps this image; it is not used as content"
    ],
    "page": 5,
-   "reading_status": "unread",
-   "reading_units": 0
+   "reading_status": "pending",
+   "reading_units": 2
+  },
+  {
+   "bbox": [
+    80.0,
+    300.0,
+    300.0,
+    330.0
+   ],
+   "detection": "uncertain drawing (diagonal or free-form lines, curves, or a dark fill with no text on it); needs a reading",
+   "doc": "SYN-01",
+   "id": "SYN-01-p5-r2",
+   "kind": "vector_graphic",
+   "notes": [],
+   "page": 5,
+   "reading_status": "pending",
+   "reading_units": 1
   }
  ],
  "rotated_content": [
@@ -544,6 +617,7 @@
    "unit": "SYN-01:T9-1"
   }
  ],
+ "status": "ok",
  "superscripts": [
   {
    "class": "unit exponent",

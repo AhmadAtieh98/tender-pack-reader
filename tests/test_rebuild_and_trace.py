@@ -16,7 +16,9 @@ def test_rebuild_is_byte_identical(pack, tmp_path):
 
 
 def test_text_layer_units_trace_to_their_page(pack):
-    """For every text-layer unit, re-extracting the page inside its anchor box finds its words."""
+    """Locality only: re-extracting the page inside each unit's anchor box finds its first word.
+    This is a weak oracle (it looks at a few letters); full evidence is check C10, which compares the whole
+    text of every unit with its spans (tests/test_review_regressions.py)."""
     docs = {d.doc.doc_id: pymupdf.open(d.doc.path) for d in pack["pack"].docs}
     checked = 0
     for u in pack["units"]:

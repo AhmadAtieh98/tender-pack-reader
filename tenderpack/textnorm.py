@@ -48,9 +48,10 @@ def slug(text: str) -> str:
 
 
 def numerals(text: str) -> list[dict]:
-    """Every run of digits (any script) with separators, in logical order."""
+    """Every run of digits (any script) joined by separators (. , - / : and the Arabic decimal and
+    thousands separators ٫ ٬), in logical order."""
     out = []
-    pattern = re.compile(r"[0-9٠-٩۰-۹](?:[0-9٠-٩۰-۹]|[.,\-/][0-9٠-٩۰-۹])*")
+    pattern = re.compile(r"[0-9٠-٩۰-۹](?:[0-9٠-٩۰-۹]|[.,\-/:٫٬][0-9٠-٩۰-۹])*")
     for m in pattern.finditer(text):
         s = m.group(0)
         scripts = sorted({"arabic-indic" if c in ARABIC_INDIC else

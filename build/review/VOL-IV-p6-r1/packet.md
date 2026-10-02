@@ -8,7 +8,7 @@
 | Native image | 1654x2339 px, sha256 `521e024a9cc624d8669d12300f97f1b653375029b1af5963ea39f922a673f6ff` |
 | Crop | `regions/VOL-IV-p6-r1/crop.png` (200 dpi render), page context `regions/VOL-IV-p6-r1/context.png` |
 | Reading file | `curation/readings/VOL-IV-p6-r1.yaml` |
-| Content sha256 | `4ca1481c69009d26651d565f1095cc525761f6ab4e0556bf8a493cc465c5c6c7` (an approval pins this value) |
+| Review subject sha256 | `f433c2ca4e56267920ad7819090469185ae2b28ac9dc5d52ee04390fec934247` — an approval pins this value. It covers the reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256). |
 | Prepared by | AI-assisted: Claude Code session 02 (2026-10-02), read visually from the native 1654x2339 px image; disputed marks re-checked on native pixels |
 | Method | Visual reading of the embedded image. No OCR. Text bands, rule bands and left/right splits measured from pixels by tenderpack.regions.text_bands. Digit glyphs in the clause reference compared against Noto Naskh Arabic renders (advisory only). |
 
@@ -85,15 +85,24 @@
 | RD5 | pass | note band 30: stored as logical Unicode Arabic letters |
 | RD6 | pass | note band 30: numerals in source none; undeclared none |
 
-All checks pass: **yes**. Passing checks do not approve the reading; they show the reading is complete, positioned and renders as printed. Whether each word and value is right is the reviewer's call.
+All checks pass: **yes**.
 
-## Uncertainties to resolve
+## What the checks prove, and what they do not
+
+They prove: the reading points at the detected region (RD1) and at the same image bytes (RD2); a table reading has the row and column count the pixels show (RD3) and exactly one cell per column, with blanks declared (RD8); every text band outside a table grid is covered by a reading line (RD4); Arabic is stored as logical letters with a separate translation (RD5); every numeral in Arabic text or Arabic/mixed cells is declared and the stored text, rendered right to left, puts its glyphs in the order the crop shows (RD6).
+
+They do NOT prove: that any word, letter, mark, digit or value is the one printed; that a translation is right; what a value means (maximum, minimum, range, target); that nothing was cut off at the image edge. Those are your decisions. Passing checks never approve a reading.
+
+## Points recorded for your decision
+
+From the reading's recorded uncertainties; each is a question for you, not something the program decided.
 
 1. Diacritics (tanween on أولاً, ثانياً, ثالثاً, رابعاً, خامساً, كاملاً; hamza forms) were checked on native pixels; at reduced zoom they disappear, so review the native crops, not a scaled view.
 2. Where printed tanween sits relative to the final alef is not visible; it is stored after the alef. Matching text removes tashkeel, so this does not affect matching.
 3. Blank fill-in lines under each field label are rule bands (structure), not text.
 4. `decl4`: translation of استبعاد العرض as 'exclusion of the proposal': the English text of the pack never uses 'exclusion'; how it maps to the pack's rejection / disqualification / non-responsiveness categories is for a person to decide
 5. `decl5` numeral `٤-٢`: Order is settled: the crop shows the hyphenated pair left to right as [digit]-[٤], which is what logical 4-x renders as. Identity of the left digit is not settled by machine: shape (chamfer) comparison favours ٢ over ٣ at three thresholds, a template-overlap score favoured ٣, and the preparer's visual comparison favours ٢. Reviewer to read the crop.
+6. Read every segment below against its crop and either approve the reading as a whole or correct the reading file (see the end of this packet).
 
 ## Numerals
 
@@ -112,45 +121,45 @@ Stored text is in logical order; the program renders it and compares the glyph o
 ![compare](compare-1.png)
 ![compare](compare-2.png)
 
-## Line by line
+## Line by line (each crop beside its reading)
 
-| Segment | Source crop | Proposed source | Translation / notes |
+| Segment | Source crop | Proposed reading | Translation / notes |
 |---|---|---|---|
-| `hdr-en` band 1 left | ![b](bands/b01-left.png) | NORTHERN UTILITIES PROCUREMENT AUTHORITY |  |
-| `hdr-ar` band 1 right | ![b](bands/b01-right.png) | الهيئة الشمالية للمشتريات المرفقية | Northern Utilities Procurement Authority |
-| `ref-en` band 2 left | ![b](bands/b02-left.png) | Tender Ref: NUPA/ISTP/2026/014 |  |
-| `ref-ar` band 2 right | ![b](bands/b02-right.png) | مناقصة رقم: NUPA/ISTP/2026/014 | Tender number: NUPA/ISTP/2026/014 |
-| `form-en` band 4 left | ![b](bands/b04-left.png) | FORM 4-C |  |
-| `form-ar` band 4 right | ![b](bands/b04-right.png) | النموذج ٤-ج | Form 4-C |
-| `title` band 5 full | ![b](bands/b05-full.png) | إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر | Declaration of no conflict of interest and of non-inclusion in debarment lists |
-| `intro` band 6 full | ![b](bands/b06-full.png) | نحن الموقعون أدناه، وبصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، | We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
-| `intro` band 7 full | ![b](bands/b07-full.png) | نقر ونتعهد بما يلي: | We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
-| `decl1` band 8 full | ![b](bands/b08-full.png) | أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من | First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
-| `decl1` band 9 full | ![b](bands/b09-full.png) | مستشاريها فيما يتعلق بهذا المشروع. | First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
-| `decl2` band 10 full | ![b](bands/b10-full.png) | ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة. | Second: that the company has not participated, directly or indirectly, in more than one proposal for this tender. |
-| `decl3` band 11 full | ![b](bands/b11-full.png) | ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر | Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
-| `decl3` band 12 full | ![b](bands/b12-full.png) | صادرة عن جهة حكومية في المملكة. | Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
-| `decl4` band 13 full | ![b](bands/b13-full.png) | رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح | Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
-| `decl4` band 14 full | ![b](bands/b14-full.png) | يؤدي إلى استبعاد العرض. | Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
-| `decl5` band 15 full | ![b](bands/b15-full.png) | خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول. | Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I. |
-| `field-member-en` band 17 left | ![b](bands/b17-left.png) | Name of consortium member |  |
-| `field-member-ar` band 17 right | ![b](bands/b17-right.png) | اسم العضو في الائتلاف : | Name of the member of the consortium: |
-| `field-cr-en` band 19 left | ![b](bands/b19-left.png) | Commercial registration number |  |
-| `field-cr-ar` band 19 right | ![b](bands/b19-right.png) | رقم السجل التجاري : | Commercial registration number: |
-| `field-signatory-en` band 21 left | ![b](bands/b21-left.png) | Name of authorised signatory |  |
-| `field-signatory-ar` band 21 right | ![b](bands/b21-right.png) | اسم المفوض بالتوقيع : | Name of the person authorised to sign: |
-| `field-capacity-en` band 23 left | ![b](bands/b23-left.png) | Capacity |  |
-| `field-capacity-ar` band 23 right | ![b](bands/b23-right.png) | الصفة : | Capacity: |
-| `field-date-en` band 25 left | ![b](bands/b25-left.png) | Date |  |
-| `field-date-ar` band 25 right | ![b](bands/b25-right.png) | التاريخ : | Date: |
-| `field-signature-en` band 27 left | ![b](bands/b27-left.png) | Signature and company seal |  |
-| `field-signature-ar` band 27 right | ![b](bands/b27-right.png) | التوقيع والختم : | Signature and seal: |
-| `note` band 29 full | ![b](bands/b29-full.png) | ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف. | Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
-| `note` band 30 full | ![b](bands/b30-full.png) | عدم تقديمه كاملاً يجعل العرض غير مستجيب. | Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
-| `image-footer` band 31 full | ![b](bands/b31-full.png) | FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. |  |
+| `hdr-en` band 1 left | ![crop](bands/b01-left.png) | NORTHERN UTILITIES PROCUREMENT AUTHORITY |  |
+| `hdr-ar` band 1 right | ![crop](bands/b01-right.png) | الهيئة الشمالية للمشتريات المرفقية | Northern Utilities Procurement Authority |
+| `ref-en` band 2 left | ![crop](bands/b02-left.png) | Tender Ref: NUPA/ISTP/2026/014 |  |
+| `ref-ar` band 2 right | ![crop](bands/b02-right.png) | مناقصة رقم: NUPA/ISTP/2026/014 | Tender number: NUPA/ISTP/2026/014 |
+| `form-en` band 4 left | ![crop](bands/b04-left.png) | FORM 4-C |  |
+| `form-ar` band 4 right | ![crop](bands/b04-right.png) | النموذج ٤-ج | Form 4-C |
+| `title` band 5 full | ![crop](bands/b05-full.png) | إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر | Declaration of no conflict of interest and of non-inclusion in debarment lists |
+| `intro` band 6 full | ![crop](bands/b06-full.png) | نحن الموقعون أدناه، وبصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، | We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
+| `intro` band 7 full | ![crop](bands/b07-full.png) | نقر ونتعهد بما يلي: | We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
+| `decl1` band 8 full | ![crop](bands/b08-full.png) | أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من | First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
+| `decl1` band 9 full | ![crop](bands/b09-full.png) | مستشاريها فيما يتعلق بهذا المشروع. | First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
+| `decl2` band 10 full | ![crop](bands/b10-full.png) | ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة. | Second: that the company has not participated, directly or indirectly, in more than one proposal for this tender. |
+| `decl3` band 11 full | ![crop](bands/b11-full.png) | ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر | Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
+| `decl3` band 12 full | ![crop](bands/b12-full.png) | صادرة عن جهة حكومية في المملكة. | Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
+| `decl4` band 13 full | ![crop](bands/b13-full.png) | رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح | Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
+| `decl4` band 14 full | ![crop](bands/b14-full.png) | يؤدي إلى استبعاد العرض. | Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
+| `decl5` band 15 full | ![crop](bands/b15-full.png) | خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول. | Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I. |
+| `field-member-en` band 17 left | ![crop](bands/b17-left.png) | Name of consortium member |  |
+| `field-member-ar` band 17 right | ![crop](bands/b17-right.png) | اسم العضو في الائتلاف : | Name of the member of the consortium: |
+| `field-cr-en` band 19 left | ![crop](bands/b19-left.png) | Commercial registration number |  |
+| `field-cr-ar` band 19 right | ![crop](bands/b19-right.png) | رقم السجل التجاري : | Commercial registration number: |
+| `field-signatory-en` band 21 left | ![crop](bands/b21-left.png) | Name of authorised signatory |  |
+| `field-signatory-ar` band 21 right | ![crop](bands/b21-right.png) | اسم المفوض بالتوقيع : | Name of the person authorised to sign: |
+| `field-capacity-en` band 23 left | ![crop](bands/b23-left.png) | Capacity |  |
+| `field-capacity-ar` band 23 right | ![crop](bands/b23-right.png) | الصفة : | Capacity: |
+| `field-date-en` band 25 left | ![crop](bands/b25-left.png) | Date |  |
+| `field-date-ar` band 25 right | ![crop](bands/b25-right.png) | التاريخ : | Date: |
+| `field-signature-en` band 27 left | ![crop](bands/b27-left.png) | Signature and company seal |  |
+| `field-signature-ar` band 27 right | ![crop](bands/b27-right.png) | التوقيع والختم : | Signature and seal: |
+| `note` band 29 full | ![crop](bands/b29-full.png) | ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف. | Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
+| `note` band 30 full | ![crop](bands/b30-full.png) | عدم تقديمه كاملاً يجعل العرض غير مستجيب. | Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
+| `image-footer` band 31 full | ![crop](bands/b31-full.png) | FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. |  |
 
 ## How to approve or correct
 
-1. Correct `curation/readings/VOL-IV-p6-r1.yaml` directly if anything is wrong (the content sha256 will change).
-2. When it is right, record approval: `python -m tenderpack approve VOL-IV-p6-r1 --reviewer "<name>"`. This appends to `curation/approvals.yaml` with today's date and the current content sha256.
-3. Re-run `python -m tenderpack ingest`. Any later edit to the reading voids the approval automatically.
+1. Correct `curation/readings/VOL-IV-p6-r1.yaml` directly if anything is wrong, including adding or removing uncertainties.
+2. When it is right, record your approval yourself: `python -m tenderpack approve VOL-IV-p6-r1 --reviewer "Your Name"`. It refuses placeholder names, re-detects the region from the source PDF, re-runs the checks, and appends to `curation/approvals.yaml` your name, today's date and the review subject sha256 above. The program never writes an approval by itself.
+3. Re-run `python -m tenderpack ingest`. Any later change to the reading, its uncertainties, the source PDF, the region's position or the image makes the reading pending again.

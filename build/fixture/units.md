@@ -23,7 +23,18 @@ One line per unit, in reading order. `text` is as printed (superscripts shown as
 | `SYN-01:rotated:p3-1` | rotated_text | 3 | rotated 52.0° | FICTIONAL - ASSESSMENT PACK |
 | `SYN-01:4.1` | clause | 4 |  | The limits in the inserted table below apply at the site boundary. |
 | `SYN-01:region:SYN-01-p4-r1` | region | 4 |  |  |
-| `SYN-01:4.2` | clause | 4 |  | Readings shall be taken quarterly. |
+| `SYN-01:T-AR-1` | table | 4 | image reading: **PENDING** | Synthetic Arabic table (image, RTL) |
+| `SYN-01:T-AR-1/noise` | table_row | 4 | image reading: **PENDING** | البند: الضوضاء ليلاً / الحد: 45 dB(A) / ملاحظة: من ٢٢:٠٠-٠٦:٠٠ |
+| `SYN-01:T-AR-1/ph` | table_row | 4 | image reading: **PENDING** | البند: الأس الهيدروجيني / الحد: ٦٫٠ - ٩٫٠ |
+| `SYN-01:T-AR-1/samples` | table_row | 4 | image reading: **PENDING** | البند: عدد العينات / الحد: ١٢ / ملاحظة: شهرياً |
 | `SYN-01:region:SYN-01-p4-r2` | region | 4 |  |  |
+| `SYN-01:fig-triangle` | graphic | 4 | image reading: **PENDING** | Outline of a triangle; no text. |
+| `SYN-01:4.2` | clause | 4 |  | Readings shall be taken quarterly. |
+| `SYN-01:region:SYN-01-p4-r3` | region | 4 |  |  |
+| `SYN-01:fig-curve` | graphic | 4 | image reading: **PENDING** | A hand-drawn style curve with no text, like a signature. |
 | `SYN-01:region:SYN-01-p5-r1` | region | 5 |  |  |
+| `SYN-01:scan-1` | image_text | 5 | image reading: **PENDING** | Scanned sentence (image with OCR layer) |
+| `SYN-01:scan-1/sentence` | reading_block | 5 | image reading: **PENDING** | Scanned sentence: deliveries before 10:00 only. |
+| `SYN-01:region:SYN-01-p5-r2` | region | 5 |  |  |
+| `SYN-01:fig-box` | graphic | 5 | image reading: **PENDING** | A solid black rectangle with no text on it (could hide content, e.g. a redaction). |
 | `SYN-01:invisible:p5` | invisible_text | 5 | small print 6.2pt | Scanned sentence: deliveries before 10:00 only. |

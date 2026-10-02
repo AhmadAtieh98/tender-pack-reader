@@ -39,5 +39,6 @@ def synthetic(tmp_path_factory):
     res = ingest(src / "pack.yaml", out, ROOT, quiet=True)
     res["expected"] = expected
     res["src"] = src
+    res["out"] = out
     res["by_id"] = {u["unit_id"]: u for u in res["units"]}
     return res

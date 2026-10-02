@@ -6,13 +6,24 @@ in order of precedence, each based on style and pattern rather than page coordin
   heading      bold Helvetica >= 10 pt (consecutive heading lines merge)
   caption      bold Helvetica line beginning "Table N-N" -> titles the next table (also across a page break)
   table        ruled grid (PyMuPDF find_tables, strategy=lines); cell text comes from our own content
-               spans, so excluded furniture (the watermark) never leaks into cells. A table that opens a
-               page and repeats the previous table's header row continues that table (split table).
+               spans, so excluded furniture (the watermark) never leaks into cells. A table continues
+               the previous one across a page break only if nothing came between them (no text,
+               heading, caption, region or rotated text after the earlier part), it is the first item
+               on the next page, its column edges match, and its header row (if any) repeats the
+               earlier header. Matching columns alone never join two tables.
   footnote     small text at the page foot starting with a number that matches a superscript marker
   clause       line opening with a bold number such as 8.5 / 2.1
-  list item    "(a)" / "(iv)" opening a line after a line ending ":" or ";"
+  list item    "(a)" / "(iv)" opening a line, inside a clause or list whose text so far ends ":", ";",
+               ",", "and" or "or" (a list item may also end "." when it closes a sentence)
   note         "Notes to Table ..." block; "(1)" items inside it
-  numbered     "1. Having examined ..." paragraphs (not bold), e.g. form paragraphs
+  numbered     "1. Having examined ..." paragraphs (not bold), e.g. form paragraphs. A number at the
+               start of a line opens a numbered paragraph only if it is in sequence (1, or one more
+               than the previous numbered paragraph in this section) and the line does not continue
+               an unfinished sentence: open text not ending . : ; ? !, the line close enough to
+               continue it, and the previous line wrapped (the new line's first word would not have
+               fitted in the room left at the end of the previous line, measured against the
+               page's text column). "...under Section / 5. A Bidder..." therefore stays one clause,
+               while "To: The Authority / 1. Having examined..." starts item 1.
   lead-in      a line opening with a bold run, e.g. "Item 3 — Evaluation."
   paragraph    anything else; following lines continue it while the style and spacing match
   rotated      rotated content text (not the watermark), kept with its angle
@@ -36,6 +47,8 @@ from .textnorm import SUPERSCRIPT, normalize_latin, slug
 from .util import bbox_r
 
 LINE_GAP_SPLIT = 30.0          # pt: a horizontal gap this large splits a visual line into fragments
+TERMINAL = (".", ":", ";", "?", "!")
+TABLE_EDGE_TOL = 2.0           # pt: column edges of two table parts must agree within this to continue
 UNIT_TOKEN = re.compile(r"(?:^|[\s(/0-9])(?:m|km|cm|mm)$|/m$")
 CLAUSE_NO = re.compile(r"^\d+(?:\.\d+)+$")
 LIST_ITEM = re.compile(r"^\(([a-z]{1,3}|[0-9]{1,2})\)\s")
@@ -52,6 +65,7 @@ class Unit:
     kind: str
     parent: str | None = None
     label: str | None = None
+    label_span: str | None = None    # the span printing the label (clause / footnote number), not in `text`
     text: str = ""
     normalized: str = ""
     pages: list[int] = field(default_factory=list)
@@ -106,6 +120,17 @@ class Fragment:
         return "".join(s.text for s in self.spans)
 
 
+def _col_edges(t) -> list[float]:
+    """x positions of the column boundaries of a found table, from its fullest row."""
+    row = max(t.rows, key=lambda r: sum(c is not None for c in r.cells))
+    cells = [c for c in row.cells if c is not None]
+    return [round(float(c[0]), 1) for c in cells] + [round(float(max(c[2] for c in cells)), 1)]
+
+
+def _same_edges(a: list[float], b: list[float]) -> bool:
+    return len(a) == len(b) and all(abs(x - y) <= TABLE_EDGE_TOL for x, y in zip(a, b))
+
+
 class Segmenter:
     def __init__(self, doc_id: str, pdf: pymupdf.Document, pages: list[PageText], regions: list[Region]):
         self.doc_id = doc_id
@@ -115,6 +140,7 @@ class Segmenter:
         self.units: dict[str, Unit] = {}
         self.order: list[str] = []
         self.problems: list[str] = []
+        self.duplicates: list[str] = []                # unit ids that were produced twice (structural failure)
         self.span_unit: dict[str, str] = {}
         self.markers: list[dict] = []                 # superscript footnote markers found
         # table pre-pass: tables per page, and body size measured on flow text only
@@ -136,7 +162,9 @@ class Segmenter:
         self.pending_caption: tuple[str, list[Span]] | None = None
         self.notes_for: str | None = None
         self.last_table: Unit | None = None
-        self.last_item_page_first = False
+        self.after_table = False                       # content has followed the last table
+        self.page_right: dict[int, float] = {}         # right edge of the text column per page
+        self.last_numbered: dict[str, int] = {}        # context -> last numbered paragraph number
 
     # ------------------------------------------------------------------ helpers
     def _new_unit(self, uid: str, kind: str, **kw) -> Unit:
@@ -145,6 +173,7 @@ class Segmenter:
             n += 1
             uid = f"{base}~{n}"
         if n > 1:
+            self.duplicates.append(base)
             self.problems.append(f"duplicate unit id {base}; renamed {uid}")
         u = Unit(unit_id=uid, doc=self.doc_id, kind=kind, **kw)
         self.units[uid] = u
@@ -342,10 +371,13 @@ class Segmenter:
         has_header = bool(row0_spans) and all(s.color == "#ffffff" for s in row0_spans)
         header = [cell_text(0, ci) for ci in range(ncols)] if has_header else None
 
-        # continuation of a table split across a page break
+        # continuation of a table split across a page break: nothing in between, first on the next
+        # page, same column geometry, and a header row (if printed) that repeats the earlier one
         lt = self.last_table
-        if (first_item_on_page and lt is not None and lt.table["pages_last"] == pno - 1
-                and lt.table["ncols"] == ncols and self.pending_caption is None
+        edges = _col_edges(t)
+        if (first_item_on_page and lt is not None and not self.after_table
+                and lt.table["pages_last"] == pno - 1 and self.pending_caption is None
+                and lt.table["ncols"] == ncols and _same_edges(lt.table["col_edges"], edges)
                 and (header is None or header == lt.table["columns"])):
             table = lt
             if has_header:
@@ -366,7 +398,7 @@ class Segmenter:
                 self.counters[(self.context, "T")] += 1
                 tid = f"{self.doc_id}:{self.context}/T{self.counters[(self.context, 'T')]}"
             table = self._new_unit(tid, "table", label=title)
-            table.table = {"columns": header, "ncols": ncols, "has_header": has_header,
+            table.table = {"columns": header, "ncols": ncols, "has_header": has_header, "col_edges": edges,
                            "repeated_headers": [], "title": title, "pages_last": pno,
                            "form_like": (not has_header and ncols == 2)}
             if cap_spans:
@@ -426,6 +458,7 @@ class Segmenter:
                 row.normalized = normalize_latin(" | ".join(f"{cols[ci]}: {mtexts[ci]}" for ci in range(ncols) if mtexts[ci]))
             self._assign(row, spans)
         self.last_table = table
+        self.after_table = False
         self._close()
         return table
 
@@ -451,7 +484,10 @@ class Segmenter:
         tables, cell_of = self.page_tables[pno]
         flow = [s for s in horiz if s.span_id not in cell_of]
         items: list[tuple[float, float, str, object]] = []
-        for f in self._fragments(flow):
+        frags = self._fragments(flow)
+        if frags:
+            self.page_right[pno] = max(f.bbox[2] for f in frags)
+        for f in frags:
             items.append((f.bbox[1], f.bbox[0], "frag", f))
         for ti, t in enumerate(tables):
             items.append((t.bbox[1], t.bbox[0], "table", ti))
@@ -463,10 +499,12 @@ class Segmenter:
         items.sort(key=lambda it: (round(it[0], 0), it[1]))
         for n, (_, _, kind, obj) in enumerate(items):
             first = n == 0
+            if kind == "table":
+                self._build_table(tables[obj], obj, cell_of, content_by_id, pno, first)
+                continue
+            self.after_table = True            # anything after a table ends its chance to continue
             if kind == "frag":
                 self._fragment(obj, first)
-            elif kind == "table":
-                self._build_table(tables[obj], obj, cell_of, content_by_id, pno, first)
             elif kind == "region":
                 self._region(obj)
             else:
@@ -548,7 +586,7 @@ class Segmenter:
                 and f.bbox[1] > 0.4 * self.page_h):
             num = lead.text.strip()
             self._close()
-            u = self._new_unit(f"{self.doc_id}:fn{num}@p{f.page}", "footnote", label=num)
+            u = self._new_unit(f"{self.doc_id}:fn{num}@p{f.page}", "footnote", label=num, label_span=lead.span_id)
             self._append_text(u, spans[1:])
             self._assign(u, spans)
             self.open, self.open_last, self.open_kind_group = u, f, "footnote"
@@ -576,15 +614,17 @@ class Segmenter:
         if lead.bold and CLAUSE_NO.match(lead.text.strip()):
             self._close()
             num = lead.text.strip()
-            u = self._new_unit(f"{self.doc_id}:{num}", "clause", label=num)
+            u = self._new_unit(f"{self.doc_id}:{num}", "clause", label=num, label_span=lead.span_id)
             self._append_text(u, [s for s in spans if s is not lead])
             self._assign(u, spans)
             self.open, self.open_last, self.open_kind_group = u, f, "small" if small else "body"
             self.notes_for = None
             return
         # list item inside an open clause or list
+        open_text = self.open.text.rstrip() if self.open is not None else ""
         if lm and self.open is not None and self.open.kind in ("clause", "list_item") \
-                and (self.open.text.rstrip().endswith((":", ";", "and", "or")) or self.open.kind == "list_item"):
+                and (open_text.endswith((":", ";", ",", " and", " or"))
+                     or (self.open.kind == "list_item" and open_text.endswith("."))):
             parent = self.open if self.open.kind == "clause" else self.units[self.open.parent]
             u = self._new_unit(f"{parent.unit_id}({lm.group(1)})", "list_item", parent=parent.unit_id,
                                label=f"({lm.group(1)})")
@@ -594,7 +634,8 @@ class Segmenter:
             return
         # numbered paragraph (not bold)
         nm = NUMBERED.match(text)
-        if nm and not lead.bold:
+        if nm and not lead.bold and self._starts_numbered(int(nm.group(1)), f, small, size, first_on_page):
+            self.last_numbered[self.context] = int(nm.group(1))
             self._close()
             u = self._new_unit(f"{self.doc_id}:{self.context}/item{nm.group(1)}", "numbered_paragraph",
                                label=nm.group(1))
@@ -615,18 +656,11 @@ class Segmenter:
             self.open, self.open_last, self.open_kind_group = u, f, "small" if small else "body"
             return
         # continuation of the open unit
-        if self.open is not None and self.open.kind != "heading" and self.open_last is not None:
-            same_group = self.open_kind_group == ("footnote" if self.open.kind == "footnote" else
-                                                  ("small" if small else "body"))
-            if self.open.kind == "footnote":
-                same_group = small
-            gap = f.body_bbox[1] - self.open_last.body_bbox[3]
-            cross_page = f.page != self.open_last.page and first_on_page
-            if same_group and (cross_page or (f.page == self.open_last.page and -2 < gap < 1.2 * size)):
-                self._append_text(self.open, spans)
-                self._assign(self.open, spans)
-                self.open_last = f
-                return
+        if self._continues(f, small, size, first_on_page):
+            self._append_text(self.open, spans)
+            self._assign(self.open, spans)
+            self.open_last = f
+            return
         # lead-in paragraph (bold run then text) or plain paragraph
         self._close()
         kind = "lead_in_paragraph" if lead.bold and len(spans) > 1 and not all(s.bold for s in spans) else "paragraph"
@@ -639,6 +673,38 @@ class Segmenter:
         self._append_text(u, spans)
         self._assign(u, spans)
         self.open, self.open_last, self.open_kind_group = u, f, "small" if small else "body"
+
+    def _continues(self, f: Fragment, small: bool, size: float, first_on_page: bool) -> bool:
+        """Would this line continue the open unit (same type size group, normal line spacing)?"""
+        if self.open is None or self.open.kind == "heading" or self.open_last is None:
+            return False
+        same_group = self.open_kind_group == ("small" if small else "body")
+        if self.open.kind == "footnote":
+            same_group = small
+        gap = f.body_bbox[1] - self.open_last.body_bbox[3]
+        cross_page = f.page != self.open_last.page and first_on_page
+        return same_group and (cross_page or (f.page == self.open_last.page and -2 < gap < 1.2 * size))
+
+    def _starts_numbered(self, n: int, f: Fragment, small: bool, size: float, first_on_page: bool) -> bool:
+        """A line beginning "N. " starts a numbered paragraph only if N is in sequence and the line
+        does not carry on an unfinished sentence ("... under Section" / "5. A Bidder ...")."""
+        in_sequence = n == 1 or self.last_numbered.get(self.context) == n - 1
+        if not in_sequence:
+            return False
+        if self.open is None or self.open.kind == "heading":
+            return True
+        unfinished = not self.open.text.rstrip().endswith(TERMINAL)
+        return not (unfinished and self._continues(f, small, size, first_on_page) and self._wrapped(f, size))
+
+    def _wrapped(self, f: Fragment, size: float) -> bool:
+        """Did the open unit's last line run out of room? True if the first word of `f` (plus a
+        space) would not have fitted between the end of that line and the text column's right edge."""
+        prev = self.open_last
+        right = self.page_right.get(prev.page, prev.bbox[2])
+        lead = next((s for s in f.spans if s.text.strip()), f.spans[0])
+        word = lead.text.strip().split()[0] if lead.text.strip() else ""
+        word_w = (lead.x1 - lead.x0) * len(word) / max(len(lead.text), 1)
+        return right - prev.bbox[2] < word_w + 0.3 * size
 
     def _heading_id(self) -> str:
         base = f"{self.doc_id}:H:{self.context}"

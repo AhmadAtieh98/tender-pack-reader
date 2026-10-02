@@ -37,8 +37,7 @@ One line per unit, in reading order. `text` is as printed (superscripts shown as
 | `VOL-I:3.2(d)` | list_item | 2 |  | (d) Volume II (Technical Requirements); |
 | `VOL-I:3.2(e)` | list_item | 2 |  | (e) Volume IV (Form Sheets); |
 | `VOL-I:3.2(f)` | list_item | 2 |  | (f) Volume III (Drawings). |
-| `VOL-I:3.3` | clause | 2 |  | A Bidder that identifies a conflict, ambiguity or discrepancy shall raise it as a request for clarification under Section |
-| `VOL-I:S3/item5` | numbered_paragraph | 2 |  | 5. A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation. |
+| `VOL-I:3.3` | clause | 2 |  | A Bidder that identifies a conflict, ambiguity or discrepancy shall raise it as a request for clarification under Section 5. A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation. |
 | `VOL-I:3.4` | clause | 3 |  | Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal. No claim arising from an alleged omission shall be entertained after the Proposal Due Date. |
 | `VOL-I:H:S4` | heading | 3 |  | SECTION 4 — COMMUNICATIONS AND BLACKOUT |
 | `VOL-I:4.1` | clause | 3 |  | All communications between a Bidder and the Authority shall be made exclusively through the Portal and shall be in the English language, save where this Volume expressly requires Arabic. |

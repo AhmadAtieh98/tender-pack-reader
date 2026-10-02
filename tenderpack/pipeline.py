@@ -21,7 +21,9 @@ class DocResult:
     units: dict[str, Unit]
     order: list[str]
     span_unit: dict[str, str]
-    problems: list[str] = field(default_factory=list)
+    problems: list[str] = field(default_factory=list)      # segmentation problems: fail C09
+    duplicates: list[str] = field(default_factory=list)    # unit ids produced twice: fail C07
+    notices: list[str] = field(default_factory=list)       # reported, not failures (e.g. page numbering)
 
 
 @dataclass
@@ -30,6 +32,7 @@ class PackResult:
     out: Path
     docs: list[DocResult]
     furniture_problems: list[str]
+    rules: FurnitureRules | None = None
 
 
 def process_document(doc: Document, rules: FurnitureRules, out: Path, root: Path,
@@ -44,11 +47,10 @@ def process_document(doc: Document, rules: FurnitureRules, out: Path, root: Path
             save_region_evidence(pdf, g, out / "regions", out)
     seg = Segmenter(doc.doc_id, pdf, pages, regions)
     units = seg.run()
-    problems = list(seg.problems)
-    for pt in pages:
-        if pt.printed_page is not None and pt.printed_page != str(pt.page):
-            problems.append(f"{doc.doc_id} p{pt.page}: printed page '{pt.printed_page}' differs from PDF page")
-    return DocResult(doc, pages, regions, units, seg.order, seg.span_unit, problems)
+    notices = [f"{doc.doc_id} p{pt.page}: printed page '{pt.printed_page}' differs from PDF page"
+               for pt in pages if pt.printed_page is not None and pt.printed_page != str(pt.page)]
+    return DocResult(doc, pages, regions, units, seg.order, seg.span_unit, list(seg.problems),
+                     list(seg.duplicates), notices)
 
 
 def run_pack(pack_path: Path = ROOT / "config/pack.yaml", out: Path = ROOT / "build",
@@ -58,4 +60,4 @@ def run_pack(pack_path: Path = ROOT / "config/pack.yaml", out: Path = ROOT / "bu
     rules = FurnitureRules.from_file(root / cfg["furniture"])
     results = [process_document(d, rules, out, root, save_evidence) for d in docs]
     furn = check_expected_counts([p for r in results for p in r.pages], rules)
-    return PackResult(root, out, results, furn)
+    return PackResult(root, out, results, furn, rules)

@@ -19,6 +19,12 @@
    "severity": "info"
   },
   {
+   "check": "RD8",
+   "detail": "4 columns x 10 rows; 0 declared blank cells; every row has exactly one cell per column",
+   "ok": true,
+   "severity": "info"
+  },
+  {
    "check": "RD3",
    "detail": "grid from pixels: 12 horizontal x 5 vertical rules = 11 rows x 4 cols (skew -0.34 deg); reading: header + 10 rows x 4 columns",
    "ok": true,
@@ -40,13 +46,37 @@
  "compare": [
   "review/VOL-II-p3-r1/compare-1.png"
  ],
- "content_sha256": "be491090615b274806ab7721e0fe6f20b0292af42ac2ff3b7e85612a80aa69c3",
+ "decisions": [
+  "The table is a scan with speckle and a measured skew of about -0.34 degrees; values were read at native resolution.",
+  "Table 2-4 is stated to be reproduced from an Environmental Permit that is not in the pack; this reading says what the image shows, nothing about the Permit.",
+  "`note1`: Note 1 is the last line of the image and touches its bottom edge; the image may be cropped. The page continues with 'End of reproduction.' in the text layer, but whether a further note was cut off cannot be established from the pack.",
+  "row `FaecalColiforms`: decimal point in 2.2: clear at native resolution, but a speckled scan can imitate a point; reviewer to confirm",
+  "row `ResidualChlorine`: printed as a range although the qualifier says 'all values are maxima'; whether 0.5 is a binding minimum is an interpretation for a person, not a reading question",
+  "row `pH`: unit cell shows a dash, read as 'no unit'",
+  "row `pH`: range printed under a 'maxima' qualifier (see Residual Chlorine)"
+ ],
  "doc": "VOL-II",
+ "html": "review/VOL-II-p3-r1/packet.html",
  "kind": "image",
  "numerals": [],
  "page": 3,
  "reading": "curation/readings/VOL-II-p3-r1.yaml",
  "region_id": "VOL-II-p3-r1",
  "status": "pending",
- "status_reason": "not yet reviewed by a person"
+ "status_reason": "not yet reviewed by a person",
+ "subject_covers": "reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256)",
+ "subject_evidence": {
+  "bbox": [
+   56.7,
+   143.2,
+   538.6,
+   446.1
+  ],
+  "doc": "VOL-II",
+  "doc_sha256": "4874b612da9c93a9648cc58690b4fc5458cce6eae817b3b577d978d15dd12e04",
+  "kind": "image",
+  "native_sha256": "27373c58a989d8ddc62ac537efca5551184ed992ae34ee3cc0b4fb33ff3acec6",
+  "page": 3
+ },
+ "subject_sha256": "6bc6505956429dc7fef21c829905f5e0177568e81a74481593d324460101f012"
 }

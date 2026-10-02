@@ -1,0 +1,213 @@
+{
+ "bbox": [
+  80.0,
+  110.0,
+  500.0,
+  250.2
+ ],
+ "checks": [
+  {
+   "check": "RD1",
+   "detail": "region SYN-01 p4 [80.0, 110.0, 500.0, 250.2]; reading says SYN-01 p4 [80.0, 110.0, 500.0, 250.2]",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD2",
+   "detail": "native image sha256 de24a7a6aa4609de…; reading made from de24a7a6aa4609de…",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD8",
+   "detail": "3 columns x 3 rows; 1 declared blank cells; every row has exactly one cell per column",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD3",
+   "detail": "grid from pixels: 5 horizontal x 4 vertical rules = 4 rows x 3 cols (skew -0.02 deg); reading: header + 3 rows x 3 columns",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD7",
+   "detail": "no text touches the image edge",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD4",
+   "detail": "1 text bands and 0 rule bands detected; outside-grid text segments needing a reading: 0; unread: none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row noise cell item: numerals none; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row noise cell limit: numerals ['45']; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row noise cell limit: stored '45 dB(A)' -> rendered '(dB(A 45' found in rendered glyph order; crop shows '(dB(A 45' (left to right)",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row noise cell note: numerals ['٢٢:٠٠-٠٦:٠٠']; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row noise cell note: stored '٢٢:٠٠-٠٦:٠٠' -> rendered '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order; crop shows '٠٦:٠٠-٢٢:٠٠' (left to right)",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row ph cell item: numerals none; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row ph cell limit: numerals ['٦٫٠', '٩٫٠']; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row ph cell limit: stored '٦٫٠ - ٩٫٠' -> rendered '٩٫٠ - ٦٫٠' found in rendered glyph order; crop shows '٩٫٠ - ٦٫٠' (left to right)",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row ph cell note: numerals none; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row samples cell item: numerals none; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row samples cell limit: numerals ['١٢']; undeclared none",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row samples cell limit: stored '١٢' -> rendered '١٢' found in rendered glyph order; crop shows '١٢' (left to right)",
+   "ok": true,
+   "severity": "info"
+  },
+  {
+   "check": "RD6",
+   "detail": "row samples cell note: numerals none; undeclared none",
+   "ok": true,
+   "severity": "info"
+  }
+ ],
+ "compare": [
+  "review/SYN-01-p4-r1/compare-1.png"
+ ],
+ "decisions": [],
+ "doc": "SYN-01",
+ "html": "review/SYN-01-p4-r1/packet.html",
+ "kind": "image",
+ "numerals": [
+  {
+   "alternatives": [],
+   "band": null,
+   "block": "row noise",
+   "column": "limit",
+   "meaning": "fixture ground truth",
+   "note": null,
+   "render_check": {
+    "detail": "cell rendered right to left: '(dB(A 45' found in rendered glyph order",
+    "ok": true
+   },
+   "token": "45 dB(A)",
+   "uncertain": false,
+   "visual_ltr_expected": "(dB(A 45"
+  },
+  {
+   "alternatives": [],
+   "band": null,
+   "block": "row noise",
+   "column": "note",
+   "meaning": "fixture ground truth",
+   "note": null,
+   "render_check": {
+    "detail": "cell rendered right to left: '٠٦:٠٠-٢٢:٠٠' found in rendered glyph order",
+    "ok": true
+   },
+   "token": "٢٢:٠٠-٠٦:٠٠",
+   "uncertain": false,
+   "visual_ltr_expected": "٠٦:٠٠-٢٢:٠٠"
+  },
+  {
+   "alternatives": [],
+   "band": null,
+   "block": "row ph",
+   "column": "limit",
+   "meaning": "fixture ground truth",
+   "note": null,
+   "render_check": {
+    "detail": "cell rendered right to left: '٩٫٠ - ٦٫٠' found in rendered glyph order",
+    "ok": true
+   },
+   "token": "٦٫٠ - ٩٫٠",
+   "uncertain": false,
+   "visual_ltr_expected": "٩٫٠ - ٦٫٠"
+  },
+  {
+   "alternatives": [],
+   "band": null,
+   "block": "row samples",
+   "column": "limit",
+   "meaning": "fixture ground truth",
+   "note": null,
+   "render_check": {
+    "detail": "cell rendered right to left: '١٢' found in rendered glyph order",
+    "ok": true
+   },
+   "token": "١٢",
+   "uncertain": false,
+   "visual_ltr_expected": "١٢"
+  }
+ ],
+ "page": 4,
+ "reading": "build/fixture-src/readings/SYN-01-p4-r1.yaml",
+ "region_id": "SYN-01-p4-r1",
+ "status": "pending",
+ "status_reason": "not yet reviewed by a person",
+ "subject_covers": "reading (content, uncertainties, source claims, preparer, method) + evidence (source PDF sha256, region page/bbox/kind, native image sha256)",
+ "subject_evidence": {
+  "bbox": [
+   80.0,
+   110.0,
+   500.0,
+   250.2
+  ],
+  "doc": "SYN-01",
+  "doc_sha256": "47369520eeef1801e528da236c0fe32a8b4596ce24441ac604cc1c508c4fd3d4",
+  "kind": "image",
+  "native_sha256": "de24a7a6aa4609def0d9045f1bb0cb8d76da7dd621c0ae3c8d051129b3d8d62e",
+  "page": 4
+ },
+ "subject_sha256": "e062e881841af54e0da1490c84c7a3b35b37f08ccccdaebfde24ce8c0a1b9846"
+}

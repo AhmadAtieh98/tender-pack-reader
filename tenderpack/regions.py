@@ -7,7 +7,13 @@ was read, so every such region becomes a Region that needs a reading.
 
 Detection methods (all deterministic):
   image            every embedded raster image (get_image_info), any size
-  vector_graphic   drawing paths that are not structural (rules, thin strokes, rectangular fills)
+  vector_graphic   drawing paths that are not structure. Structure is only: axis-aligned straight rules;
+                   rectangles that are stroked only, lightly filled, or thinner than 2.5 pt (a rule
+                   drawn as a filled bar); and dark-filled rectangles with
+                   text printed on them (e.g. a table header band). Diagonal or free-form straight
+                   lines (a triangle, an arrow), curves, and dark fills with no text on them (which
+                   could hide content, e.g. a redaction box) are uncertain drawings and stay visible
+                   as regions for a person to review.
   invisible_text   text with render mode 3 / opacity 0 (e.g. an OCR layer); never trusted as content
   unexplained_ink  dark pixels in a page render that no text span, image or drawing accounts for
 
@@ -51,20 +57,34 @@ class Region:
         return asdict(self)
 
 
-def _is_structural(path: dict) -> bool:
-    """Table rules, thin strokes and plain rectangular fills are structure, not content."""
+LIGHT_FILL = 0.8               # fill luminance at or above which a rectangle is background shading
+RULE_PT = 2.5                  # a filled rectangle thinner than this is a rule (a border drawn as a box)
+
+
+def _axis_aligned(p, q, tol: float = 0.5) -> bool:
+    return abs(p.x - q.x) <= tol or abs(p.y - q.y) <= tol
+
+
+def _is_structural(path: dict, text_points: list[pymupdf.Point]) -> bool:
+    """Rules, borders and shading are structure; anything else drawn is content to be reviewed."""
     items = path.get("items", [])
     if not items:
         return True
     kinds = {it[0] for it in items}
-    if kinds <= {"l"}:
-        return True                                   # straight line segments
-    if kinds <= {"re", "qu"}:
-        return True                                   # rectangles (cell fills, borders)
     r = pymupdf.Rect(path["rect"])
-    if min(r.width, r.height) < 2.5 and kinds <= {"l", "re", "qu"}:
-        return True
-    return False                                      # curves or free polygons: treat as graphic
+    if kinds <= {"l"}:
+        return all(_axis_aligned(it[1], it[2]) for it in items)      # rules; a diagonal is a drawing
+    if kinds <= {"re", "qu"}:
+        if any(it[0] == "qu" and not it[1].is_rectangular for it in items):
+            return False
+        if all(min(pymupdf.Rect(it[1].rect if it[0] == "qu" else it[1]).width,
+                   pymupdf.Rect(it[1].rect if it[0] == "qu" else it[1]).height) < RULE_PT for it in items):
+            return True                                              # thin filled bars: rules drawn as boxes
+        fill = path.get("fill")
+        if fill is None or (0.299 * fill[0] + 0.587 * fill[1] + 0.114 * fill[2]) >= LIGHT_FILL:
+            return True                                              # borders, light cell shading
+        return any(r.contains(pt) for pt in text_points)             # dark band carrying text (header)
+    return False                                                     # curves, mixed paths: a drawing
 
 
 def _merge_rects(rects: list[pymupdf.Rect], gap: float = 6.0) -> list[pymupdf.Rect]:
@@ -145,15 +165,17 @@ def detect_regions(doc_id: str, page: pymupdf.Page, text: PageText) -> list[Regi
                               "embedded raster image (get_image_info)", xref=info.get("xref") or None))
 
     # 2. vector drawings that are not table structure
+    text_points = [pymupdf.Point(s.cx, s.cy) for s in text.content if s.text.strip()]
     graphic = []
     for path in page.get_drawings():
         r = pymupdf.Rect(path["rect"])
         explained.append(r)
-        if not _is_structural(path):
+        if not _is_structural(path, text_points):
             graphic.append(r)
     for r in _merge_rects(graphic):
         regions.append(Region("", doc_id, pno, "vector_graphic", bbox_r(r),
-                              "non-structural vector paths (curves or free polygons)"))
+                              "uncertain drawing (diagonal or free-form lines, curves, or a dark fill with no "
+                              "text on it); needs a reading"))
 
     # 3. invisible text (never trusted as content; flags the area for reading)
     inv = [pymupdf.Rect(tr["bbox"]) for tr in page.get_texttrace()
