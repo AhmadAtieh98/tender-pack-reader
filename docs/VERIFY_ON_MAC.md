@@ -10,7 +10,7 @@
 | `a1.xlsx` opens | written and re-read by openpyxl; **not opened in Excel** | yes: open it in Excel |
 | Repository bundle clones with full history | yes | step 2 |
 | Offline install, rebuild, outputs identical, tests pass | yes, with no network at all (`unshare -n`) | step 3 (Wi-Fi off) |
-| macOS wheels install | **no** (no Mac here) | step 3 |
+| macOS wheel files | parts joined and checksum OK; every requirement resolves **offline** for Apple silicon (macOS 11+) and Intel (macOS 14+) with Python 3.11, 3.12 and 3.13 (uv resolver, no network). **Not installed or imported on a Mac** | step 3 |
 
 ## 1. Unpack and check
 

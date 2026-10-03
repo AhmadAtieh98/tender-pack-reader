@@ -53,6 +53,11 @@ All times are UTC, from the session's tool-call timestamps.
 | 08:58 | Full suite started. |
 | 08:58–09:00 | Review packets: looked at batch 1 and the Arabic Form 4-C packet. The full packets were not in the review folder or the archive (E80): copied and linked; test added. |
 | 09:00–09:02 | Wheel sizes checked (the PyMuPDF wheel alone is about 24 MB); Mac wheels split into 15 MB parts. `VERIFY_ON_MAC.md` rewritten short (tested vs. to verify). Operating guide, README, plan revision 7. |
+| 09:02–09:06 | First full suite (collected before the packets change): 346 passed. Work log; reply drafted. |
+| 09:06–09:13 | Regenerated with the packets; **final full suite: 347 passed** (6 min 35 s). |
+| 09:13 | Commit `9888b63`, pushed. Archive built from it (28.4 MB, 215 files); Mac wheels as 5 + 4 parts of at most 15 MiB. |
+| 09:14–09:23 | Archive verified in a fresh folder, offline (§6). In parallel the Mac wheel parts were joined, checksummed and resolved offline for every target (§6; E83). |
+| 09:24– | Results recorded; final commit; archive rebuilt from it and checked; package sent; reply recorded. |
 
 ## 3. What the real summaries leave out (read from the printed addenda before any code)
 
@@ -163,4 +168,71 @@ It is never structural, never a release blocker, and never on A3 (whose page is 
 | E80 | The full review packets (every band and cell; Arabic Form 4-C) were named only as a `build/review` path and were not in the archive | Looking at batch 1 rendered | Copied into `review/packets/` and linked; test added |
 | E81 | Three mistakes in the first version of the new tests: the A1 Issues sheet was read as a list; a convoluted release-blocker assertion; the first "omitted" finding was picked instead of Appendix A's | Running them | Corrected; no expectation about the pack was changed after seeing output, except 3.1's kind (decided before implementing, §4.1) |
 | E82 | The first full-suite run (08:58) had collected the code before the packets change | Timing check | Full suite run again on the final code (§6) |
+| E83 | The first offline check of the Mac wheels used pip 24's `--python-version` dry run, which evaluates requirement markers against the running interpreter (3.11): it wrongly asked for numpy 2.4.6 on 3.12/3.13 | Its output | Checked with uv's resolver for each target platform and Python version instead (all resolve; Intel needs macOS 14, as documented) |
 
+## 6. Results
+
+### 6.1 Tests
+
+- **Full suite on the final code: 347 passed** in 395 s (09:06–09:13 UTC), up from 339.
+- **The 8 new tests** are in `tests/test_session07_summary.py`:
+
+  | Test | What it shows |
+  |---|---|
+  | Real ADD-01 | Its omissions are reported |
+  | Real ADD-02 | Its omissions, understatement and unmentioned consequences are reported |
+  | Report only | C28 is never structural, never a release blocker; it reaches A2 and A1 Issues |
+  | Misleading summary over the real ADD-02 | Every applied unit is identical |
+  | Drafter | It drafts no change from cover text |
+  | Misleading synthetic Addendum No. 3, end to end | Same drafted ops and state as the truthful one; every planted error reported |
+  | Blind rehearsal | The key's six summary omissions are reported |
+  | Review folder | It carries both full packets, linked |
+
+- **Failing first:** 6 of the first 6 failed before C28 existed (§2).
+
+### 6.2 Outputs (real pack)
+
+- C28 reports for ADD-01: omitted 2, understated 1. For ADD-02: omitted 3, understated 1, consequence not mentioned 2.
+- A3 is unchanged (7.91 pt, no condensation).
+- Release blockers are unchanged: 3 STALE rows, 2 readings, 202 rows and 37 ops without a decision. C28 adds none.
+
+### 6.3 The archive from `9888b63`, checked in a fresh folder
+
+The check is `scripts/verify_archive.py` (Linux x86_64, CPython 3.11). It ran from 09:14:21 to 09:23:05, 524 s in total.
+
+| Step | Result |
+|---|---|
+| Extraction | 216 entries |
+| `SHA256SUMS` | 215 files match; no unlisted file |
+| A3 | One page; 272 `/URI` links (68 targets), each to an id in `a3_detail.html` |
+| Review pages | 13 pages, including the two full packets; 245 `src`/`href`, all resolved inside the archive |
+| Bundle | Clones to HEAD `9888b63`, 18 commits, tree clean. The full history, including `6a5d6cb`, is kept as the owner asked |
+| Network | None inside `unshare -n` |
+| Offline install | Linux wheelhouse, 12 s |
+| Offline regeneration | `make evidence` 13 s, `outputs` 11 s, `drill` 25 s, `rehearsal` 38 s; blind re-ingest and rebuild 26 s |
+| Clean tree | Every regenerated file is byte-identical to the committed one |
+| Archive comparison | Rebuilt A1/A2/A3/A5/REVIEW identical to the archive (167 files) |
+| Tests | **347 passed** offline in 397 s |
+
+### 6.4 The Mac setup files
+
+- **Parts:** each architecture's zip is byte-split into 15 MiB parts (arm64: 70.8 MB in 5 parts; x86_64: 53.6 MB in 4 parts). Joined with `cat`, both match their `.sha256` and unzip.
+- **Offline resolution:** with uv's resolver and no network, every requirement in `requirements.txt` resolves from the wheel files:
+  - Apple silicon (macOS 11+): Python 3.11, 3.12 and 3.13;
+  - Intel with a macOS 14 target: Python 3.11, 3.12 and 3.13;
+  - Intel against macOS 13: fails, because the numpy wheels need macOS 14 (documented).
+- **Not done:** installing or importing on a Mac.
+- **Delivery:** recorded in the reply (`worklog/2026-10-03_session-07_reply.md`), which is written after the final archive is built.
+
+## 7. What this does and does not establish
+
+- **It establishes** that:
+  - each addendum's summary is compared with its provisions, and the differences are reported where a person reads them;
+  - the summary cannot change what is applied, through the engine or the drafter;
+  - the archive verifies and rebuilds byte for byte offline from its own bundle;
+  - the Mac wheel files are complete for the stated targets.
+- **It does not establish** that:
+  - every C28 judgement is right. Descriptive claims are matched by word overlap, so a match can be wrong; every match is listed in A2 for a person;
+  - anything works on a Mac;
+  - any interpretation, reading, row, op, disposition, lead time or scenario value is right. None has been reviewed: both readings are pending, all rows and ops are proposed, the three STALE-row proposals are not applied, and A5 values stay PROVISIONAL;
+  - anything has been submitted. It has not.
