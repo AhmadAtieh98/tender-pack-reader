@@ -34,15 +34,23 @@ BASIS_WD_BACKWARD = "VOL-I §2.4"
 BASIS_NOT_STATED = "not stated in the pack"
 BASIS_WD_FORWARD = "not stated in the pack (VOL-I §2.4 covers backward counting only)"
 
-KINDS = ("anchor", "relative", "fixed", "as_at", "external")
+KINDS = ("anchor", "relative", "fixed", "as_at", "external", "unresolved")
 PURPOSES = ("deadline", "validity_end", "window_start", "as_at", "event")
-UNITS = ("calendar_day", "working_day", "year")
+UNITS = ("calendar_day", "working_day", "week", "month", "year")
 DIRECTIONS = ("after", "before")
 
 
 def long_date(d: date) -> str:
     """'Thursday 12 November 2026' (locale-independent)."""
     return f"{WEEKDAYS[d.weekday()]} {d.day} {MONTHS[d.month - 1]} {d.year}"
+
+
+def shift_months(d: date, n: int) -> date:
+    """d moved by n calendar months, same day of the month, clamped to the month's last day (31 Jan + 1 -> 28/29 Feb)."""
+    m = d.month - 1 + n
+    y, m = d.year + m // 12, m % 12 + 1
+    last = (date(y + (m == 12), m % 12 + 1, 1) - timedelta(days=1)).day
+    return date(y, m, min(d.day, last))
 
 
 def shift_years(d: date, n: int) -> date:
@@ -177,11 +185,12 @@ class DateRule:
     purpose: str       # "deadline" | "validity_end" | "window_start" | "as_at" | "event"
     anchor: str | None = None     # e.g. "PDD", "ADD-01-issue", "PBN" (external events have no value)
     offset: int = 0
-    unit: str = "calendar_day"    # "calendar_day" | "working_day" | "year"
+    unit: str = "calendar_day"    # "calendar_day" | "working_day" | "week" | "month" | "year"
     direction: str = "after"      # "after" | "before"
     fixed: date | None = None     # kind == "fixed"
     source_unit: str = ""         # unit id the rule was read from, e.g. "VOL-I:5.2"
     text: str = ""                # the words the rule was read from (quoted from the source)
+    note: str = ""                # kind == "unresolved": why the program does not compute it
 
     def __post_init__(self) -> None:
         for field, value, allowed in (("kind", self.kind, KINDS), ("purpose", self.purpose, PURPOSES),
@@ -196,6 +205,8 @@ class DateRule:
             raise ValueError(f"rule {self.rule_id}: kind fixed needs a fixed date")
         if self.kind == "as_at" and not self.anchor and self.fixed is None:
             raise ValueError(f"rule {self.rule_id}: kind as_at needs an anchor or a fixed date")
+        if self.kind == "unresolved" and not (self.text.strip() and self.note.strip()):
+            raise ValueError(f"rule {self.rule_id}: kind unresolved needs the words (text) and why it is not computed (note)")
 
 
 @dataclass(frozen=True)
@@ -217,6 +228,9 @@ def interpretations(rule: DateRule, anchors: dict[str, date | None], cal: Calend
     """Every plausible way of counting `rule`, in a fixed order (see the module docstring)."""
     if rule.kind == "external":
         return _unknown(rule)
+    if rule.kind == "unresolved":
+        return [Interpretation("unresolved", f"Not computed: {rule.note}. The words '{rule.text}' stay with a person.",
+                               None, BASIS_NOT_STATED)]
     if rule.kind == "fixed":
         return [Interpretation("as_stated", f"Stated date: {long_date(rule.fixed)}.", rule.fixed,
                                f"stated in {rule.source_unit}" if rule.source_unit else "stated in the pack")]
@@ -234,7 +248,9 @@ def interpretations(rule: DateRule, anchors: dict[str, date | None], cal: Calend
                                f"stated in {rule.source_unit}" if rule.source_unit else "stated in the pack")]
 
     # kind == "relative"
-    if rule.unit == "calendar_day":
+    if rule.unit in ("calendar_day", "week"):
+        if rule.unit == "week":
+            n, ax = n * 7, f"{ax} ({rule.offset} week{'s' if rule.offset != 1 else ''} = {n * 7} calendar days)"
         sign, way = (-1, "before") if back else (1, "after")
         v0, v1 = x + timedelta(days=sign * n), x + timedelta(days=sign * (n - 1))
         return [
@@ -263,23 +279,24 @@ def interpretations(rule: DateRule, anchors: dict[str, date | None], cal: Calend
                                                  f"{a} itself, gives {long_date(excl)}.", excl, BASIS_WD_FORWARD),
             Interpretation("event_day_counted", cnt_label, cnt, BASIS_WD_FORWARD),
         ]
-    # rule.unit == "year": a window of n years before x (start) or after x (end)
+    # rule.unit == "month" or "year": a window of n months / years before x (start) or after x (end)
+    shift, word = (shift_months, "month") if rule.unit == "month" else (shift_years, "year")
     if back:
-        start = shift_years(x, -n)
+        start = shift(x, -n)
         nxt = start + timedelta(days=1)
         return [
-            Interpretation("boundary_inclusive", f"The {n}-year window before {ax} starts on {long_date(start)}, "
+            Interpretation("boundary_inclusive", f"The {n}-{word} window before {ax} starts on {long_date(start)}, "
                                                  f"and an event on that day counts.", start, BASIS_NOT_STATED),
-            Interpretation("boundary_exclusive", f"The {n}-year window before {ax} excludes {long_date(start)}, "
+            Interpretation("boundary_exclusive", f"The {n}-{word} window before {ax} excludes {long_date(start)}, "
                                                  f"so the earliest day that counts is {long_date(nxt)}.",
                            nxt, BASIS_NOT_STATED),
         ]
-    end = shift_years(x, n)
+    end = shift(x, n)
     prev = end - timedelta(days=1)
     return [
-        Interpretation("boundary_inclusive", f"The {n}-year period after {ax} ends on {long_date(end)}, "
+        Interpretation("boundary_inclusive", f"The {n}-{word} period after {ax} ends on {long_date(end)}, "
                                              f"and an event on that day counts.", end, BASIS_NOT_STATED),
-        Interpretation("boundary_exclusive", f"The {n}-year period after {ax} excludes {long_date(end)}, "
+        Interpretation("boundary_exclusive", f"The {n}-{word} period after {ax} excludes {long_date(end)}, "
                                              f"so the last day that counts is {long_date(prev)}.",
                        prev, BASIS_NOT_STATED),
     ]

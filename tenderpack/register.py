@@ -1,4 +1,4 @@
-"""The A1 register slice: requirement rows evaluated at every stage of the amendment path.
+"""The A1 register: requirement rows evaluated at every stage of the amendment path.
 
 Rows (curation/register/rows.yaml) are independently testable obligations (D3), grouped by the
 clause they come from (`group`) and tagged by scope. Each row carries one or more
@@ -72,6 +72,14 @@ class RuleDef(_Strict):
     fixed: str | None = None
     source_unit: str
     text: str
+    note: str = ""                               # kind unresolved: why the program does not compute it
+
+
+class DateNote(_Strict):
+    """A date or period phrase in the row's units that no date rule plans, with the reason (C30)."""
+    text: str                                    # the words, as printed
+    treatment: Literal["duration", "post_award", "not_a_date", "unresolved"]
+    reason: str
 
 
 class Row(_Strict):
@@ -85,6 +93,7 @@ class Row(_Strict):
     evidence: list[str] = Field(default_factory=list)
     interpretations: list[Interp]
     date_rules: list[RuleDef] = Field(default_factory=list)
+    date_notes: list[DateNote] = Field(default_factory=list)
     confidence: Literal["high", "medium", "low"]
     confidence_reason: str
     issues: list[str] = Field(default_factory=list)
@@ -378,7 +387,7 @@ class Register:
             rule = DateRule(rule_id=rd.rule_id, kind=rd.kind, purpose=rd.purpose, anchor=rd.anchor, offset=offset,
                             unit=rd.unit, direction=rd.direction,
                             fixed=date.fromisoformat(rd.fixed) if rd.fixed else None, source_unit=rd.source_unit,
-                            text=rd.text)
+                            text=rd.text, note=rd.note)
             ins = interpretations(rule, anchors, self.cal)
             plan = planning_value(rule, ins, self.policy)
             if reread:
@@ -403,7 +412,8 @@ class Register:
         u = st.get(uid) or self.stages[0].state.get(uid)
         doc, _, local = uid.partition(":")
         pages = u.pages if u is not None else []
-        return f"{doc} {local}" + (f" p{','.join(map(str, pages))}" if pages else "")
+        shown = f"{u.number} (issued as {local})" if u is not None and u.number else local
+        return f"{doc} {shown}" + (f" p{','.join(map(str, pages))}" if pages else "")
 
     def _op_by_id(self, op_id: str):
         for s in self.stages:
@@ -413,6 +423,14 @@ class Register:
         return None
 
     def source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
+        out = self._source_of(uid, quote, s, follow)
+        num = s.state[uid].number if uid in s.state else None
+        if num:                                       # renumbered: cite the number in force, with the issued one
+            doc, _, local = uid.partition(":")
+            out["latest"] = out["latest"].replace(f"{doc} {local}", f"{doc} {num} (issued as {local})", 1)
+        return out
+
+    def _source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
         """Where the words of `quote` in a unit's effective text come from at stage `s`: the unit as issued,
         or the addendum provision (with its page) that supplied them. `latest` is the reference to cite for
         the point; `refs` lists every document involved, oldest first."""

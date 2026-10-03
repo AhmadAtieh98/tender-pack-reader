@@ -1,0 +1,53 @@
+# PROPOSED updates for the three register rows that are STALE at ADD-01 and ADD-02. Prepared by the assistant
+# (session 06). NOT applied, NOT pinned, NOT accepted: the owner decides. To use one:
+#   python -m tenderpack apply-proposal P-STALE-VOL-I-8.3-01 --by "Your Name"     (writes it, pins it, row is PROPOSED)
+#   python -m tenderpack accept VOL-I-8.3-01 --reviewer "Your Name" [--note ...]   (your decision, bound to content)
+# or reject the row with a note, or edit the proposal first.
+# Why these rows are STALE: their dates hang on the Proposal Due Date, defined in VOL-I 6.1, which ADD-01 2.1
+# changed (12 -> 26 November 2026). Their BASE readings were made against the old date. A1 already shows the
+# recomputed dates; what is missing is a person's confirmation that each reading still holds.
+proposals:
+  - id: P-STALE-VOL-I-8.3-01
+    row: VOL-I-8.3-01
+    changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
+    add_interpretation:
+      stage: ADD-01
+      quote: "current as at the Proposal Due Date"
+      note: >-
+        Re-read after ADD-01 2.1 moved the Proposal Due Date (VOL-I 6.1) from 12 to 26 November 2026: the EPC
+        Contractor's ISO 9001:2015 certificate must be current on 26 November 2026, so a certificate expiring between
+        12 and 26 November now fails. VOL-I 8.3 is not named in ADD-01 2.2, whose list is not exhaustive. No consequence
+        is stated (I-NO-CONSEQUENCE).
+    effect: "ISO-CURRENT-AT planned as 2026-11-26 (as A1 already shows); the row stops being STALE and is PROPOSED until accepted"
+    decision_needed: >-
+      Confirm that the certificate must be current on 26 November 2026 (the moved Proposal Due Date), and that VOL-I 8.3
+      follows the moved date although ADD-01 2.2 does not name it.
+  - id: P-STALE-VOL-I-3.4-01
+    row: VOL-I-3.4-01
+    changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
+    add_interpretation:
+      stage: ADD-01
+      quote: "Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal."
+      consequence: {class: lesser, unit: "VOL-I:3.4", quote: "No claim arising from an alleged omission shall be entertained after the Proposal Due Date."}
+      note: >-
+        Re-read after ADD-01 2.1 moved the Proposal Due Date to 26 November 2026: no omission claim is entertained after
+        26 November 2026. In practice the known gaps (Volume III; Drawing 03-C-114, the effluent delivery point in
+        VOL-II 5.1) must be raised as clarification requests before the VOL-I 5.2 cut-off, 12 November 2026 on the
+        conservative counting reading.
+    effect: "OMISSION-CLAIM-CUTOFF planned as 2026-11-26; the row stops being STALE and is PROPOSED until accepted"
+    decision_needed: >-
+      Confirm the cut-off for omission claims is 26 November 2026; and decide whether to raise the Volume III /
+      Drawing 03-C-114 gap as a clarification request before 12 November 2026 (I-VOL-III).
+  - id: P-STALE-VOL-I-6.7-01
+    row: VOL-I-6.7-01
+    changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
+    add_interpretation:
+      stage: ADD-01
+      quote: "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
+      consequence: {class: lesser, unit: "VOL-I:6.7", quote: "No modification will be accepted thereafter."}
+      note: >-
+        Re-read after ADD-01 2.1 moved the Proposal Due Date to 26 November 2026, 14:00 Riyadh time: a withdrawal or
+        modification must be notified in writing through the Portal before then; none is accepted afterwards.
+    effect: "MODIFY-CUTOFF planned as 2026-11-26; the row stops being STALE and is PROPOSED until accepted"
+    decision_needed: >-
+      Confirm the withdraw/modify cut-off follows the moved Proposal Due Date (26 November 2026, 14:00 Riyadh time).

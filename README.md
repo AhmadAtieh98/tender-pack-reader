@@ -2,14 +2,22 @@
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 
-**Status (session 05, `docs/PLAN.md` revision 5):**
+**Status (session 06, `docs/PLAN.md` revision 6): DRAFT handover.**
 
-- **Stage 1** (evidence and units): implemented, and revised after the owner's reviews.
-- **Stage 2:** the amendment path for ADD-01, ADD-02 and any future addendum. The owner's five code-review findings were fixed in session 05.
-- **Stage 3** (full register: dispositions for every unit, 202 A1 rows, English and Arabic consequence sweeps) and **Stage 4** (A5 for both envelopes with counts, issuers, resources, infeasibility drivers and scenarios): built as **working drafts**.
-- Every row, op, disposition and lead time is a **proposal, not reviewed by a person**. Both image readings are **pending the owner's review**, and nothing has been approved.
-- A strict release (`outputs --strict`) is refused in this state.
-- Packaging and final submission (Stage 6) have not started.
+- **Stages 1–4** (evidence, the amendment path, the full register, A5) are the working basis. The owner's four session 06 code-review findings are fixed, each with failing-first tests.
+- **Review is the owner's, and none has been given:**
+  - both image readings are **pending**;
+  - every row (202) and op (37) is **proposed**;
+  - three rows are STALE, with prepared proposals that have **not** been applied.
+
+  Decisions are recorded only with `tenderpack accept|reject`, bound to the item's current content. A YAML flag is never an approval.
+- **A strict release** (`outputs --strict`) is refused in this state.
+- **Live-addendum tooling:**
+  - `show ROW`, `diff`, review batches (`out/review/`);
+  - checks C12 (stable ids), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
+- **Tested:** one blind rehearsal against an independently written Addendum No. 3 (`rehearsals/blind-01/`).
+- **Draft archive:** built by `scripts/make_draft_archive.py`. See `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md` and `docs/COST_AND_EFFORT.md`.
+- **Deferred, as directed:** the Claude Code app, OpenRouter and Ollama integrations.
 
 ```
 make setup      # once, needs network: creates .venv from uv.lock
@@ -26,8 +34,14 @@ python -m tenderpack check-register [--doc VOL-I]                  # disposition
 python -m tenderpack draft ADD-03 [--to FILE]                      # propose ops for an addendum (never applied by itself)
 python -m tenderpack pin [--rows ROW@STAGE,...]                    # pin unpinned interpretations, or re-pin named ones after review
 python -m tenderpack pin --migrate-format                          # format 1 -> 2 pins, only where nothing changed
+python -m tenderpack check-register --update-ids                   # record new row ids in curation/register/ids.yaml (C12)
 python -m tenderpack show "VOL-I:8.5#fn12"                         # a unit, its page and a highlighted crop
-python -m tenderpack approve VOL-IV-p6-r1 --reviewer "Your Name"   # run by the reviewer only
+python -m tenderpack show VOL-I-8.6-01                             # an A1 row: pages, crops, amendment chain, A5 (also show/<ROW>/index.html)
+python -m tenderpack diff [--from ADD-01] [--to ADD-02] [--md FILE]  # what an addendum changed: requirements, STALE, readings, A3, programme
+python -m tenderpack approve VOL-IV-p6-r1 --reviewer "Your Name"   # a reading; run by the reviewer only
+python -m tenderpack accept VOL-I-8.6-01 ADD-02/9.1 --reviewer "Your Name" [--note "..."]   # rows and ops; the reviewer only
+python -m tenderpack reject ADD-02/8.1 --reviewer "Your Name" --note "what is wrong"         # a rejected op is withdrawn (addendum PARTIAL)
+python -m tenderpack apply-proposal P-STALE-VOL-I-8.3-01 --by "Your Name"                   # a prepared STALE-row update; then accept/reject
 ```
 
 **`ingest` exit codes.** `0`: structure OK; readings may still be pending, which is printed as PENDING HUMAN REVIEW and carried on every unit derived from them. `2`: STRUCTURAL FAILURE (any of checks C01–C10 failed, e.g. duplicate unit IDs, a span in two units, unit text that does not match its spans, an unread region), or an output path that was refused. The previous build is kept and the failed one is written to `<out>.failed`. `3`: structure OK, but readings are pending and `--require-approved` was given.
@@ -49,11 +63,13 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 
 - **coverage:** PARTIAL addenda, units without a disposition, unlinked consequence words;
 - **stale:** STALE interpretations;
-- **approval:** readings pending, rows and ops not accepted by a person.
+- **approval:** readings pending, rows and ops without a person's decision bound to their current content.
 
 `outputs --strict` refuses the release while any remains (exit 3; the candidate goes to `out.rejected` with `RELEASE_REJECTED.md`). The program never approves or accepts anything itself.
 
-**Approvals.** Only a person approves, by running `approve` with their own name; placeholders such as `<name>` are refused, as are readings that fail their checks. An approval pins the review subject: the reading (content, uncertainties, source claims), and its evidence (source PDF, region position, native image). Any change to these makes the reading pending again. `--approvals PATH` writes to another file (used in tests); by default it is `curation/approvals.yaml`, which does not exist yet.
+**Decisions on rows and ops.** `accept` and `reject` append to `curation/reviews/decisions.yaml` (it does not exist yet). Each decision is bound to a fingerprint of the item, its evidence items and its dependency values; when any of them changes, the decision shows as CHANGED and no longer counts. The `review:` fields in the YAML are drafting flags and never count.
+
+**Approvals of readings.** Only a person approves, by running `approve` with their own name; placeholders such as `<name>` are refused, as are readings that fail their checks. An approval pins the review subject: the reading (content, uncertainties, source claims), and its evidence (source PDF, region position, native image). Any change to these makes the reading pending again. `--approvals PATH` writes to another file (used in tests); by default it is `curation/approvals.yaml`, which does not exist yet.
 
 | Path | Contents |
 |---|---|
@@ -61,20 +77,24 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `sources/brief/` | The candidate brief as received |
 | `sources/correspondence/` | Correspondence received and sent, as provided by the owner |
 | `sources/manifest.json` | SHA-256, size and page count for every source file |
-| `docs/PLAN.md` | Source findings and the engineering plan (revision 5) |
+| `docs/PLAN.md` | Source findings and the engineering plan (revision 6) |
 | `docs/session-03_before-after.md` | Short before/after report on the six gaps found in the owner's Stage 1 review |
 | `docs/session-04_report.md` | Session 04: repair evidence, Stage 2 outputs, decisions needed |
 | `docs/session-05_report.md` | Session 05: review fixes, working outputs, rehearsal results, remaining gaps, prioritised decisions |
+| `docs/session-06_report.md` | Session 06: the four findings, the accept workflow, live commands, the blind rehearsal, the draft archive, decisions needed |
+| `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md`, `docs/COST_AND_EFFORT.md` | Operating guide (incl. the live-addendum procedure), offline verification on a Mac, cost and effort |
 | `tenderpack/` | **The program.** Stage 1: extraction, regions, units, readings, review packets, coverage. Stage 2: citations, amend, draft, dates, register, schedule, render, stage2. Stages 3–4: dispositions (and sweeps), evidence (item vocabulary), programme (documents, resources, drivers, scenarios) |
 | `config/` | Pack definition, declared furniture rules, planning assumptions (`assumptions.yaml`: calendar, counting policy, bidder, copies, resources, lead times with basis and owner, all PROVISIONAL), A5 scenarios (`scenarios.yaml`) |
 | `curation/readings/` | Proposed readings of image regions, pending review; approvals go in `curation/approvals.yaml` |
 | `curation/amendments/` | Op files for ADD-01 and ADD-02 (proposed ops and dispositions; every provision accounted for) |
-| `curation/register/` | **The A1 register:** `rows.yaml` (core rows; includes `rows/*.yaml` per volume), unit dispositions (`dispositions/*.yaml`), open issues (`issues.yaml`, `issues/*.yaml`), machine-written pins (`pins.yaml`) |
+| `curation/register/` | **The A1 register:** `rows.yaml` (core rows; includes `rows/*.yaml` per volume), unit dispositions (`dispositions/*.yaml`), open issues (`issues.yaml`, `issues/*.yaml`), machine-written pins (`pins.yaml`), the row-id ledger (`ids.yaml`), prepared proposals not yet applied (`proposals/`) |
 | `curation/evidence_items/` | The evidence-item vocabulary: envelope, issuer, multiplicity, counted |
 | `curation/activity_templates.yaml` | Evidence item → A5 activities (owner, issuer, duration key, dependencies, resource role) |
 | `build/` | Generated evidence: `units.md`, `coverage.md`, `exclusions.md`, `review/<region>/packet.html` (crops beside readings; also `.md`), `fixture/`, `drill/` and `drill-src/` (ADD-03 drill) |
-| `out/` | **Working outputs:** `a1/` (xlsx, csv, json); `a2/` (md, csv, json); `a3/a3.pdf` with `a3_detail.html`; `a5/` (programme, marshalling, documents, resources, drivers, replan deltas, scenario comparison and `scenarios/`); `checks.json` (structural checks and release blockers); `README.md` |
+| `out/` | **Working outputs:** `a1/` (xlsx, csv, json); `a2/` (md, csv, json); `a3/a3.pdf` with `a3_detail.html`; `a5/` (programme, marshalling, documents, resources, drivers, replan deltas, scenario comparison and `scenarios/`); `review/` (the owner's review batches: crops beside readings and quotes, the exact decisions); `checks.json` (structural checks and release blockers); `README.md` |
 | `out-drill/` | The same outputs for the pack plus the synthetic ADD-03 (PARTIAL; validated state stays ADD-02) |
 | `out-drill-b/` | Drill B rehearsal: the drill pack (`src/`), its evidence (`build/`), outputs with ADD-03 drafted (`out-drafted/`, PARTIAL) and curated (`out-curated/`, APPLIED). No review of any kind |
+| `rehearsals/blind-01/` | Blind rehearsal: an independently written Addendum No. 3, its frozen and sealed answer key, the curation, outputs and `COMPARISON.md` (score and timeline) |
+| `scripts/` | `make_draft_archive.py` (the A1–A5 draft archive from a clean commit), `compare_outputs.py` (rebuilt outputs vs an archive) |
 | `tests/` | Tests, golden expectations written from the rendered pages, synthetic fixture builder |
 | `worklog/` | Timestamped development log: prompts, actions, errors and corrections |

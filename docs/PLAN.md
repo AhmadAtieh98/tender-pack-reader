@@ -1,12 +1,12 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS (revision 5, session 05, 2026-10-02):**
+> **STATUS (revision 6, session 06, 2026-10-03):**
 > - **Direction:** accepted by the owner (session 02).
 > - **Stage 1 (evidence and units):** implemented in session 02, revised in sessions 03 and 04 after the owner's reviews (§9). Formal acceptance is still open. The two image readings are **pending the owner's review**; nothing has been approved.
-> - **Stage 2 (thin end-to-end slice):** built in session 04 (§10); the owner's code review of it (five findings) was reproduced and fixed in session 05 (§11).
-> - **Stage 3 (full register) and Stage 4 (A5):** built in session 05 as working drafts (§11): every volume unit has a disposition, every addendum provision is treated, 202 A1 rows; A5 covers both envelopes with counts, issuers, resources, infeasibility drivers and scenarios. **Every row, op and lead time is a PROPOSAL**: structurally checked, not reviewed; a strict release is refused until people review them (§11).
-> - **Stage 5 (unseen-addendum readiness):** partly done: two synthetic Addendum No. 3 drills (A in session 04, B in session 05, with change types not seen in ADD-01/ADD-02) and one live fix of the drafter. A blind addendum written by someone else (§5) has not been run.
-> - **Stage 6 (packaging, Mac verification, final submission):** not started; stopped before final submission as the owner asked.
+> - **Stage 2 (the amendment path):** built in session 04 (§10). The owner's code reviews of it were reproduced and fixed: five findings in session 05 (§11), four in session 06 (§12).
+> - **Stage 3 (full register) and Stage 4 (A5):** built in session 05 as working drafts (§11): every volume unit has a disposition, every addendum provision is treated, 202 A1 rows; A5 covers both envelopes with counts, issuers, resources, infeasibility drivers and scenarios. **Every row, op and lead time is a PROPOSAL**: structurally checked, not reviewed; a strict release is refused until people review them (§11). Session 06 added the named decision workflow (`accept`/`reject`, D8) and review batches; no decision has been recorded (§12).
+> - **Stage 5 (unseen-addendum readiness):** two synthetic drills (A, session 04; B, session 05) and **one blind rehearsal** (session 06, §12): an Addendum No. 3 written by an independent agent, with its answer key frozen by hash before the start. 22 hits, 4 partials, 1 miss; 12 min 13 s from receipt to replanned outputs; four live fixes. `show ROW` and `diff` built.
+> - **Stage 6 (packaging, Mac verification, final submission):** a **draft** archive organised around A1–A5 (session 06, §12), verified in the cloud container (extraction, links, a bundle clone, an offline install and rebuild, the tests). Mac verification is given as exact commands (`docs/VERIFY_ON_MAC.md`); it has not been run on a Mac. Final submission is not started.
 > - **Integrations and model selection** (Claude Code in the app, OpenRouter, local Ollama): designed in §4.6, deliberately **not implemented**; the reviewed build runs offline with no model.
 > - This revision is one consistent document. Earlier revisions are summarised in the history below and kept in the work log; where they differed, the text below is current.
 
@@ -17,6 +17,7 @@
 | 3 | 03 (2 Oct) | Owner's Stage 1 review: six gaps reproduced and fixed: numbered-paragraph and table-continuation boundaries; structural failures fail the build (C07–C10, exit codes); approvals cover reading + uncertainties + evidence and need a named reviewer; table readings validate every cell and keep numbers apart from meaning; drawings of straight lines and dark boxes stay visible; output paths guarded and builds swapped in only on success. Planned check IDs renumbered to avoid the new C07–C10. | `worklog/2026-10-02_session-03_review-fixes.md` |
 | 4 | 04 (2 Oct) | Owner's second review: C10 extended to per-cell order, normalized text and anchor page/geometry/crops; Latin expressions inside Arabic laid out correctly, digits-only verification labelled PARTIAL; `--require-approved` gate applied before publishing. Stage 2 built (§10): amendment engine with one path for existing and future addenda, date rules with every counting reading, register slice with pinned interpretations and STALE, A1/A2/A3/A5; ADD-03 drill. D3, D4, D7 applied as the owner directed (§7). The hiring team's reply of 2 Oct recorded (§0). | `worklog/2026-10-02_session-04_repairs-and-stage2.md` |
 | 5 | 05 (2 Oct) | Owner's code review: five findings reproduced, failing tests first, fixed (transactional ops; value, column and replacement-content checks; two changes in one paragraph; evidence verified against the manifest; review fingerprint pinned; latest source cited, original quotations kept apart from effective text; A5 checked in both directions, C44/C45). Stage 3 (dispositions for every unit, 202 rows, C14/C15 sweeps in English and Arabic, "outside the slice" replaced by treatment) and Stage 4 (both envelopes, counts, issuers, resources, drivers, scenarios) built as working drafts; release gate (`outputs --strict`, exit 3); readable one-page A3 with linked detail; drill B rehearsal (§11). | `worklog/2026-10-02_session-05_review-stage3-stage4.md` |
+| 6 | 06 (3 Oct) | Owner's code review: four findings reproduced, failing tests first, fixed (inserted content needs evidence for the whole change, C21 and the new structural C47; an exception after "unchanged" wording is unresolved; new and amended obligations traced to A1/A3/A5, C46; the release gate counts only decisions bound to content; A3 keeps each item's confidence and the full requirement text; "slice" labels replaced). `accept`/`reject` (D8), stale-row proposals (`apply-proposal`), review batches; `show ROW`, `diff`; C12 (id ledger), C30 (date coverage, `unresolved` kept explicit), C32 (counting conventions); months and weeks; renumbering; summary currency. Blind rehearsal (§12). Draft archive, operating guide, cost and effort. | `worklog/2026-10-03_session-06_review-accept-blind-archive.md` |
 
 Conventions used throughout:
 
@@ -494,7 +495,7 @@ The row's pins (§4.10) include the text of `VOL-I:8.6`, which is now s2 ≠ s0.
 - **Strict mode** (`build --strict`, used for submission) turns every FLAG into ABORT, except the Issues that are *meant* to stay open for a person.
 - **Pending human review is not a failure.** It is printed as PENDING HUMAN REVIEW and carried on every unit derived from a pending reading; `ingest --require-approved` exits 3 while anything is pending.
 
-C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (reported), C15 (release blocker), C16, C20–C27, C31, C40, C43 (with a minimum text size), C44, C45. Not built: C12, C28, C29 (see §10), C30, C32 as a check, C41, C42 beyond the determinism check. IDs were renumbered in revision 3 where they collided (old C07 → C14, old C08 → C15, old C10 → C16).
+C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (reported), C15 (release blocker), C16, C20–C27, C31, C40, C43 (with a minimum text size), C44, C45. Built in session 06 (§12): C12 (structural, with the id ledger), C29 as the decision gate (D8), C30 (release blocker), C32 (reported), C46 (release blocker) and C47 (structural). Not built: C28, C41, C42 beyond the determinism check. IDs were renumbered in revision 3 where they collided (old C07 → C14, old C08 → C15, old C10 → C16).
 
 **Implemented action vs this table (session 05):** C15 and unit dispositions block a strict release and fail `check-register`; they do not abort a working draft, which is published labelled WORKING DRAFT with every blocker listed. `outputs --strict` refuses the release (exit 3) while any coverage, stale or approval blocker remains.
 
@@ -535,6 +536,8 @@ C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (
 | C43 | A3 renders to exactly one page, no text below 7.5 pt | ABORT (forces prioritisation; no silent overflow) |
 | C44 | Every deliverable needed by a row in force has A5 activities, or a justified exception (`_exceptions: {EV-ID: reason}` in the templates file) | ABORT (added session 05) |
 | C45 | Every A5 dependency, lead time and resource role is defined; an activity listed under two items is defined identically; a dependency not needed at this stage is shown, never dropped | ABORT (added session 05) |
+| C46 | Every obligation an op creates or amends reaches an A1 row in force, A3 when its provision carries consequence words, and an A5 activity or deliverable | release blocker (coverage); A3 issue (added session 06) |
+| C47 | Every word a unit gains at a stage is printed in that stage's addendum | ABORT (added session 06) |
 
 ### 4.8 A5 scheduling approach
 
@@ -661,8 +664,8 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 | D5 | **Build strictness** | (a) Always strict. (b) Working mode emits with FLAGs and labelled PARTIAL addenda; `--strict` for submission. | **(b)**, refined: structural failures always fail (exit 2, previous build kept); pending review is shown, not a failure (`--require-approved` exits 3); PARTIAL addenda are labelled at the top of A3 and written to `working/` (§4.10). |
 | D6 | **Model use** | Routes of §4.6 | **Deferred by the owner** (the hiring team confirmed on 2 Oct that hosted APIs, local models and an AI coding assistant are fine, including live, if documented): the Claude Code / OpenRouter / Ollama routes and model selection come later; the reviewed build stays offline-capable without a model. |
 | D7 | **Committing `build/`** | (a) Keep committing generated evidence. (b) Commit only `units.json` and the packets. (c) Commit nothing generated. | **(a) for now (owner, session 04):** review evidence stays committed: `build/` (Stage 1), `out/` (Stage 2) and the drills (`build/drill-src/`, `build/drill/`, `out-drill/`; drill B in `out-drill-b/`). |
-| D8 | **How a person accepts rows and ops** (C29 deviation, §10) | (a) The reviewer edits `review: accepted` and `reviewer:` on each row and op, then runs `pin --rows ROW@STAGE,...`. (b) A `tenderpack accept` command like `approve` (named reviewer, pins what was accepted). | **Open (session 05).** Recommendation (b): one command, refuses placeholder names, records what was accepted. Until then nothing is accepted and the release gate stays closed. |
-| D9 | **Provisional A5 assumptions** (lead times, resources, counting of copies) | Owner or a named person per discipline confirms or corrects `config/assumptions.yaml` | **Open (session 05).** The LCC lead time decides the main infeasibility (§11). |
+| D8 | **How a person accepts rows and ops** (C29 deviation, §10) | (a) Edit `review:` flags. (b) A named `tenderpack accept` / `reject` command. | **Built as (b) in session 06** at the owner's direction: decisions bound to the fingerprint of the item, its evidence and its dependencies (`curation/reviews/decisions.yaml`); a later change voids them; flags never count. Using it is the owner's step. |
+| D9 | **Provisional A5 assumptions** (lead times, resources, counting of copies) | Owner or a named person per discipline confirms or corrects `config/assumptions.yaml` | **Open (sessions 05, 06).** The LCC lead time decides the main infeasibility (§11). |
 
 **Kept visibly with people:**
 
@@ -674,7 +677,7 @@ Each stage ends with a commit and a work-log entry. **Inspect** means what the o
 
 ## 8. Next step
 
-The owner's review of the session 05 working drafts and decisions (`docs/session-05_report.md`): the two image readings, the LCC lead time, D8 (how to accept rows and ops), the three STALE rows and the legal calls. Then Stage 5 (a blind addendum) and Stage 6 (packaging and Mac verification). Final submission is not started; the owner asked to stop before it.
+The owner's review, in the order of `out/review/index.html`: the two image readings, the disqualifier rows, the amendment ops, the three STALE-row proposals, then the remaining rows; the LCC lead time and the legal calls (`docs/session-06_report.md` §4). Then the Mac verification (`docs/VERIFY_ON_MAC.md`) and the live session. Final submission is not started; the owner asked to stop before it.
 
 
 ---
@@ -779,3 +782,46 @@ Before/after evidence: work log §2 and §4.
 - results in `docs/session-05_report.md` §3.
 
 **Open:** the owner's decisions in `docs/session-05_report.md` §5. These include D8 (how a person accepts rows and ops) and D9 (A5 assumptions).
+
+## 12. Session 06 status (review fixes, decisions, live commands, blind rehearsal, draft archive)
+
+**The owner's four findings:** reproduced on `3c97a8d`, then 12 failing tests (with 4 passing controls) before any fix. Each fix is a rule, not a case:
+
+| Finding | Fix |
+|---|---|
+| 1 | The whole inserted text must be printed in the addendum (C21); every word a unit gains must be printed in that stage's addendum (C47, structural) |
+| 2 | Benign wording must match a whole sentence; any qualifier or change words in the remainder make the provision unresolved |
+| 3 | Obligation trace to A1, A3 and A5 (C46) |
+| 4 | The release gate counts only decisions bound to content. A3 shows each item's confidence and the full requirement, and appends the current quote where its figures are missing; accurate status labels |
+
+**D8 built:**
+
+- `accept`/`reject` bind each decision to a fingerprint of the row or op, its evidence items and its dependency values; a change shows it as CHANGED;
+- a rejected op is withdrawn and its addendum becomes PARTIAL;
+- three STALE-row proposals are prepared and not applied (`apply-proposal`);
+- review batches in `out/review/`.
+
+**Live commands:**
+
+- `show ROW`: pages, crops, amendment chain, A5;
+- `diff`: requirements, STALE, voided decisions, image-read values, A3, programme.
+
+**Coverage:**
+
+- C12 (row-id ledger);
+- C30 (every date or period phrase treated; an `unresolved` kind and note keep unsupported periods explicit, never computed);
+- C32 (counting conventions reported);
+- month and week units;
+- renumbering as an annotation effect;
+- requirement summaries checked against the effective text.
+
+**Blind rehearsal** (`rehearsals/blind-01/COMPARISON.md`):
+
+- An independent agent wrote Addendum No. 3 from the sources and the brief; its key was frozen by hash in `53ad76f` before the start.
+- 22 hits, 4 partials, 1 miss (renumbering); 12 min 13 s; four generic live fixes; one refusal (A3 over one page) resolved before publication.
+- Three fixes after the comparison are not counted.
+- **Limits:** the brief named the categories of change; the curator was the assistant.
+
+**Draft archive:** `scripts/make_draft_archive.py`; the verification is recorded in the session 06 work log §7.
+
+**Open:** the owner's decisions in `docs/session-06_report.md` §4.

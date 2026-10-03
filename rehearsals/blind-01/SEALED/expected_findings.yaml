@@ -1,0 +1,673 @@
+# SEALED ANSWER KEY -- Addendum No. 3 (blind fixture blind01)
+# Written by the independent test author BEFORE any system processed ADD-03_Addendum_No_3.pdf.
+# Sources read: VOL-I, VOL-II, VOL-IV, VOL-V, ADD-01, ADD-02 (candidate_pack), the Round 2 brief,
+# and the 2026-10-02 hiring reply. Nothing else in the repository was read.
+#
+# Page numbers: "page" for pack documents = the page number printed in that document's footer
+# (identical to the 1-based PDF page index). "add03_page" = page of ADD-03 where the provision sits.
+
+schema_version: 1
+
+fixture:
+  file: ADD-03_Addendum_No_3.pdf
+  pages: 3
+  addendum_number: 3
+  tender: NUPA/ISTP/2026/014
+  issue_date_printed: "Issued 5 November 2026"
+  issue_date_iso: "2026-11-05"          # Thursday (ADD-01 8 Oct and ADD-02 22 Oct 2026 are also Thursdays)
+  numbered_sections: 13                  # sections 1-12 amend/recite, 13 = Q&A
+  sub_provisions: ["1.1", "1.2", "2.1", "2.2", "2.3", "3.1", "3.2", "4.1", "5.1", "6.1", "7.1",
+                   "8.1", "8.1-quoted-10.5", "8.2", "9.1", "9.2", "10.1", "11.1", "11.2", "12.1", "12.2"]
+  clarification_requests: [15, 16, 17, 18, 19, 20]
+  layout_on_pages:
+    page_1: [cover, "1", "2", "3", "4", "5", "6"]
+    page_2: ["7", "8", "9", "10", "11", "12", "13 (Q15-Q17)"]
+    page_3: ["13 (Q18-Q20, header row repeated)"]
+
+conventions:
+  working_day: >-
+    VOL-I Clause 2.4 (page 2): Sunday to Thursday inclusive, excluding public holidays declared in the
+    Kingdom; when counting a Working-Day period backwards from a stated date, the stated date is NOT counted.
+  public_holidays_assumed: >-
+    None between 5 November 2026 and 10 December 2026 (the pack is silent; Saudi fixed/Eid public holidays
+    fall outside this window). If a holiday were declared, the 5.2 cut-off moves one Working Day earlier per
+    holiday falling inside the counted span.
+  calendar_day_periods: >-
+    Pack is silent on calendar-day counting. Primary convention used here: "N days from the Proposal Due Date"
+    = PDD + N calendar days (PDD is day 0). Alternative (PDD counted as day 1) shown where it changes the date.
+    Neither convention is wrong; a correct system states which it used.
+  planning_date: >-
+    2026-11-05 (latest addendum date), per the hiring team's reply of 2 Oct 2026 ("Use the latest addendum date
+    as the planning date").
+
+baseline_before_add03:          # state of the pack after ADD-01 and ADD-02 (what ADD-03 starts from)
+  proposal_due_date: "14:00 Riyadh time, Thursday 26 November 2026 (VOL-I 6.1 as amended by ADD-01 2.1)"
+  clarification_cutoff: "Thursday 12 November 2026 (10 WD before 26 Nov 2026; no time of day stated)"
+  bid_bond_amount: "SAR 4,500,000 (VOL-I 6.4)"
+  bid_bond_validity_end: "Tuesday 25 May 2027 (26 Nov 2026 + 180 days)"
+  proposal_validity_end: "Sunday 25 April 2027 (26 Nov 2026 + 150 days)"
+  footnote12: "2 reference STPs, each >= 80,000 m3/day, COD within 10 years preceding PDD (on/after 26 Nov 2016)"
+  local_content: "VOL-I 8.6 as reinstated by ADD-02 9.1: >= 35%, failure to submit -> non-responsive"
+  fc_period: "270 days after Preferred Bidder Notification (VOL-I 12.2; ADD-02 Q13 said unchanged)"
+  table_2_4_TSS: "10 mg/l, 30-day rolling average (image only, VOL-II page 3)"
+  table_2_4_TN: "3 mg/l, 30-day rolling average (ADD-02 5.1; image shows 5)"
+  table_2_6_peak_hourly: "7,500 m3/h (row 2-6.2, VOL-II page 3)"
+  control_room: "permanently manned (VOL-II 6.1)"
+  copies: "1 marked original + 3 hard copies + 1 encrypted USB (VOL-I 6.5)"
+
+cover_text:
+  add03_page: 1
+  printed:
+    header_left: "Addendum No. 3"
+    header_right: "NUPA/ISTP/2026/014"
+    cover_band: ["ADDENDUM NO. 3", "Issued 5 November 2026", "Tender NUPA/ISTP/2026/014"]
+    project: "Wadi Sirhan Independent Sewage Treatment Plant"
+    summary: >-
+      This Addendum amends the Proposal Due Date, the clarification period, the Bid Bond amount and the number of
+      copies to be submitted, amends footnote 12 to Volume I Clause 8.5 and Volume I Clauses 8.6 and 12.2, inserts a
+      new Volume I Clause 10.5, amends Volume II Tables 2-4 and 2-6 and Form 4-C, and responds to clarification
+      requests 15 to 20.
+    standard_paragraph: >-
+      This Addendum forms part of the RFP Documents and takes precedence in accordance with Volume I Clause 3.2.
+      Bidders shall acknowledge receipt in Form 4-A. All other terms of the RFP Documents remain unchanged.
+  effects:
+    - "Precedence: ADD-03 > ADD-02 > ADD-01 > VOL-I > VOL-V > VOL-II > VOL-IV > VOL-III (VOL-I 3.2, page 2)."
+    - "Form 4-A acknowledgement must now cover Addenda 1 to 3 (existing obligation, extended; no new consequence)."
+    - "Planning date for the programme becomes 2026-11-05."
+  traps:
+    - trap: "The summary is NOT exhaustive."
+      correct: >-
+        It omits: 2.3 (correction of ADD-01 Appendix A), 3.2 (time of day added to cut-off), 8.2 (renumbering of
+        10.5/10.6 and re-pointing of ADD-02 Q14), 9.2 (ADD-02 Q13 superseded), the substantive amendment of VOL-II
+        Clause 6.1 made inside the answer to Q16, and the new restriction on affiliate references in Q17. A correct
+        system takes its change list from the body and the Q&A table, not from the summary.
+
+provisions:
+
+  - number: "1.1"
+    add03_page: 1
+    text: "This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2."
+    targets: [{doc: VOL-I, ref: "Clause 3.2(a)", page: 2}, {doc: VOL-I, ref: "Clause 5.3", page: 3}]
+    change_type: recital / precedence statement
+    effect: no change to any requirement
+    no_effect: true
+    no_effect_reason: "Restates VOL-I 3.2(a) (later Addendum prevails). Only the precedence chain gains ADD-03."
+
+  - number: "1.2"
+    add03_page: 1
+    text: "A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated."
+    change_type: interpretation rule
+    effect: no change to any requirement
+    no_effect: true
+    no_effect_reason: >-
+      Interpretive only. It confirms that e.g. "Volume I Clause 6.1" means 6.1 as amended by ADD-01 and "Table 2-4"
+      means Table 2-4 with TN = 3 mg/l (ADD-02). Useful for resolving 2.1 and 10.1; creates no register row.
+
+  - number: "2.1"
+    add03_page: 1
+    targets:
+      - {doc: VOL-I, ref: "Clause 6.1", page: 3}
+      - {doc: ADD-01, ref: "Section 2.1", page: 1}
+    change_type: date substitution in text already amended by an earlier addendum (amendment chain)
+    old: "Thursday 26 November 2026"      # the text of 6.1 as amended by ADD-01; VOL-I itself prints 'Thursday 12 November 2026'
+    new: "Thursday 10 December 2026"
+    unchanged: "The time of 14:00 Riyadh time is unchanged."
+    effect: amended requirement (submission deadline)
+    consequence:
+      category: rejection (rejected unopened)
+      source: {doc: VOL-I, ref: "Clause 6.6", page: 3}
+      quote: "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder."
+    dates_moved:
+      - item: Proposal Due Date
+        from: "14:00 Riyadh, Thursday 26 November 2026"
+        to: "14:00 Riyadh, Thursday 10 December 2026"
+        arithmetic: "+14 calendar days, +10 Working Days"
+      - item: "Last moment to withdraw/modify a Proposal (VOL-I 6.7, page 3)"
+        to: "before 14:00 Riyadh, Thursday 10 December 2026"
+    a3_change: "Late-submission line: deadline becomes 14:00 Riyadh time, Thursday 10 December 2026 (VOL-I 6.1/6.6)."
+    programme_impact: >-
+      Every activity scheduled backwards from the deadline shifts by 14 calendar days. From the planning date
+      (Thu 5 Nov 2026) there are 35 calendar days to submission: 24 full Working Days (Sun 8 Nov - Wed 9 Dec)
+      plus the morning of Thu 10 Dec. Physical delivery to Tender Box 4, Ground Floor, Administrative Building C,
+      Sakaka (VOL-I Appendix 3, page 7) by 14:00.
+    traps:
+      - trap: "'Thursday 26 November 2026' does not occur in VOL-I; VOL-I 6.1 prints 'Thursday 12 November 2026'."
+        correct: "Resolve through the chain VOL-I 6.1 -> ADD-01 2.1 -> ADD-03 2.1. Final value 10 Dec 2026, 14:00. Not a failed edit."
+      - trap: "Appendix 3 marking 'NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE' (VOL-I page 7)."
+        correct: "Unchanged text; it is defined by reference to the PDD so it now means 10 Dec 2026."
+
+  - number: "2.2"
+    add03_page: 1
+    text: "Section 2.2 of Addendum No. 1 applies mutatis mutandis to the amendment made by Section 2.1 of this Addendum."
+    targets:
+      - {doc: ADD-01, ref: "Section 2.2", page: 1}
+      - {doc: VOL-I, ref: "Clause 5.2", page: 3}
+      - {doc: VOL-I, ref: "Clause 6.3", page: 3}
+      - {doc: VOL-I, ref: "Clause 7.1", page: 4}
+      - {doc: VOL-I, ref: "footnote 12 to Clause 8.5", page: 4}
+    change_type: mutatis mutandis application of an earlier addendum's knock-on clause
+    effect: amended (dates recomputed; wording of the clauses unchanged)
+    dates_moved:
+      - item: "Clarification cut-off (VOL-I 5.2) -- combined with ADD-03 3.1/3.2"
+        to: "14:00 Riyadh time, Thursday 19 November 2026"
+        see: "3.1"
+      - item: "Bid Bond validity (VOL-I 6.3: 180 days from the PDD)"
+        from: "Tuesday 25 May 2027"
+        to: "Tuesday 8 June 2027"
+        arithmetic: "10 Dec 2026 + 180 days: 21 (to 31 Dec) + 31 Jan + 28 Feb + 31 Mar + 30 Apr + 31 May = 172; + 8 = 180 -> 8 June 2027"
+        alternative_convention: "Monday 7 June 2027 if the PDD is counted as day 1"
+        recommended_for_bond_wording: "expiry not earlier than 8 June 2027"
+      - item: "Proposal validity (VOL-I 7.1: 150 days from the PDD; also Form 4-A para 2, VOL-IV page 3)"
+        from: "Sunday 25 April 2027"
+        to: "Sunday 9 May 2027"
+        arithmetic: "21 + 31 + 28 + 31 + 30 = 141 to 30 Apr; + 9 = 150 -> 9 May 2027"
+        alternative_convention: "Saturday 8 May 2027 if the PDD is counted as day 1"
+      - item: "Footnote 12 reference-plant look-back (COD within the 10 years preceding the PDD)"
+        from: "COD on or after 26 November 2016"
+        to: "COD on or after 10 December 2016 (window 10 Dec 2016 - 10 Dec 2026)"
+        note: "The window START moves LATER. A plant with COD between 26 Nov 2016 and 9 Dec 2016 qualified under ADD-01 and no longer does."
+      - item: "ISO 9001:2015 certificate 'current as at the Proposal Due Date' (VOL-I 8.3, page 4) -- not named in ADD-01 2.2 but calculated by reference to the PDD"
+        to: "must be current on 10 December 2026"
+    a3_change: "Footnote-12 line: window anchor now 10 Dec 2026 (COD on/after 10 Dec 2016). See 6.1 and Q17 for the other changes to that line."
+    programme_impact: >-
+      Bid Bond to be issued valid to at least 8 June 2027. Proposal validity statement unchanged in words
+      (150 days) but now runs to 9 May 2027. Check ISO certificate expiry against 10 Dec 2026. Re-screen
+      reference plants against the later window start.
+    traps:
+      - trap: "Applying only the new PDD and leaving the derived dates at their ADD-01 values."
+        correct: "All four ADD-01 2.2 periods (and other PDD-anchored tests) are recomputed from 10 Dec 2026."
+      - trap: "Believing the look-back is unaffected because ADD-03 6.1 says 'the look-back period ... is unchanged'."
+        correct: "The length (ten years) is unchanged; its anchor (the PDD) moved by 2.1/2.2."
+
+  - number: "2.3"
+    add03_page: 1
+    targets:
+      - {doc: ADD-01, ref: "Appendix A -- revised Form 4-A, field 'Proposal Due Date'", page: 3}
+    change_type: correction of an erratum in an earlier addendum (ADD-01 never updated its own reissued form)
+    old: "12 November 2026, 14:00 Riyadh time"
+    new: "10 December 2026, 14:00 Riyadh time"
+    effect: amended form field (no new obligation)
+    a3_change: none
+    programme_impact: "Form 4-A to be completed with the corrected date and 'Addenda acknowledged: 1, 2, 3'."
+    traps:
+      - trap: "Correcting it to 26 November (the ADD-01 date) or leaving 12 November."
+        correct: "10 December 2026, 14:00 Riyadh time."
+      - trap: "The original Form 4-A in VOL-IV (page 3) also prints '12 November 2026, 14:00 Riyadh time'."
+        correct: >-
+          ADD-03 corrects only the ADD-01 Appendix A version, which ADD-01 says Bidders shall use. A careful system
+          notes the stale VOL-IV value as superseded (not as a live conflict). Pre-existing issue also worth flagging:
+          the ADD-01 reissued Form 4-A omits paragraphs 1-6 of the VOL-IV version.
+
+  - number: "3.1"
+    add03_page: 1
+    targets: [{doc: VOL-I, ref: "Clause 5.2", page: 3}]
+    change_type: period change in Working Days, scoped to one occurrence of wording that appears in three places
+    old: "ten (10) Working Days"
+    new: "fifteen (15) Working Days"
+    scope_statement: "This amendment applies to Clause 5.2 only. The periods of ten (10) Working Days in Volume I Clause 12.3 and Volume V Clause 29.4 are unchanged."
+    other_occurrences_not_amended:
+      - {doc: VOL-I, ref: "Clause 12.3 (standstill period)", page: 6}
+      - {doc: VOL-V, ref: "Clause 29.4 (invoices within ten (10) Working Days of month end)", page: 3}
+    effect: amended requirement (clarification deadline)
+    consequence:
+      category: "late request not answered (NOT a disqualifier)"
+      quote_after_3_2: "Requests received after 14:00 Riyadh time on the last day for submission will not be answered."
+    dates_moved:
+      - item: "Clarification cut-off"
+        from: "Thursday 12 November 2026 (no time stated)"
+        to: "Thursday 19 November 2026, 14:00 Riyadh time"
+        arithmetic: >-
+          Count back 15 Working Days from Thu 10 Dec 2026, not counting 10 Dec (VOL-I 2.4); Fri/Sat excluded;
+          no public holidays assumed. Wed 9, Tue 8, Mon 7, Sun 6 Dec (4); Thu 3, Wed 2, Tue 1 Dec, Mon 30, Sun 29
+          Nov (9); Thu 26, Wed 25, Tue 24, Mon 23, Sun 22 Nov (14); Thu 19 Nov (15).
+        wrong_answers_and_their_cause:
+          "Thu 26 Nov 2026": "new PDD but old 10-WD period"
+          "Thu 5 Nov 2026": "new 15-WD period but old PDD 26 Nov (coincides with the ADD-03 issue date)"
+          "Thu 12 Nov 2026": "nothing updated"
+          "Sun 22 Nov 2026": "counting the stated date 10 Dec as a Working Day (contrary to VOL-I 2.4)"
+          "Wed 25 Nov 2026": "15 calendar days instead of Working Days"
+          "Thu 29 Oct 2026": "original VOL-I PDD 12 Nov with 10 WD (pre-ADD-01)"
+    a3_change: none (not a disqualifier)
+    programme_impact: >-
+      Clarification window from the planning date: 10 Working Days (Sun 8 - Thu 12 Nov, Sun 15 - Thu 19 Nov),
+      14 calendar days. Questions arising from ADD-03 (above all the Form 4-C Arabic text, 12.1) must be lodged
+      through the Portal by 14:00 on 19 Nov 2026.
+    traps:
+      - trap: "Global find-and-replace of 'ten (10) Working Days'."
+        correct: "Change 5.2 only; VOL-I 12.3 and VOL-V 29.4 remain ten (10) Working Days."
+
+  - number: "3.2"
+    add03_page: 1
+    targets: [{doc: VOL-I, ref: "Clause 5.2, second sentence", page: 3}]
+    change_type: sentence substitution (adds a time of day to the cut-off)
+    old: "Requests received after that time will not be answered."
+    new: "Requests received after 14:00 Riyadh time on the last day for submission will not be answered."
+    effect: amended requirement
+    consequence: {category: "not answered (not a disqualifier)", quote: "Requests received after 14:00 Riyadh time on the last day for submission will not be answered."}
+    dates_moved: [{item: "Clarification cut-off", to: "14:00 Riyadh time, Thursday 19 November 2026"}]
+    a3_change: none
+
+  - number: "4.1"
+    add03_page: 1
+    targets: [{doc: VOL-I, ref: "Clause 6.4", page: 3}]
+    change_type: value substitution in clause text
+    old: "SAR 4,500,000 (four million five hundred thousand Saudi Riyals)"
+    new: "SAR 6,000,000 (six million Saudi Riyals)"
+    unchanged: "unconditional; payable on first written demand; issuing bank licensed to operate in the Kingdom with long-term rating not lower than A- (ADD-01 Q3 on foreign-bank branches still applies)."
+    effect: amended requirement
+    consequence:
+      category: none stated in the pack
+      note: >-
+        Neither VOL-I 6.3 nor 6.4 states rejection / non-responsiveness for a non-compliant Bid Bond. A system must
+        NOT invent a consequence. It may list the bond as "critical, no document-stated consequence -- human to assess".
+    a3_change: "None as a document-stated disqualifier. (If the A3 sheet carries a 'critical but no stated consequence' list, update the amount there.)"
+    programme_impact: "Bank credit approval for the higher amount; amend any bond already drafted; validity to at least 8 June 2027 (see 2.2)."
+    earlier_answers_affected:
+      - {ref: "ADD-02 Q8", status: "still correct (fixed amount stated in 6.4); the amount itself is now SAR 6,000,000"}
+    traps:
+      - trap: "Adding a rejection consequence to the Bid Bond row."
+        correct: "Consequence category = none stated."
+
+  - number: "5.1"
+    add03_page: 1
+    targets: [{doc: VOL-I, ref: "Clause 6.5, first sentence", page: 3}]
+    change_type: deletion of a requirement by sentence replacement
+    old: "Each Proposal shall be submitted as one (1) marked original, three (3) hard copies, and one (1) searchable electronic copy on encrypted USB media."
+    new: "Each Proposal shall be submitted as one (1) marked original and one (1) searchable electronic copy on encrypted USB media."
+    deleted_requirement: "three (3) hard copies"
+    unchanged: "Second sentence (file naming per Appendix 2) and third sentence (marked original governs where the electronic copy materially differs)."
+    effect: deleted requirement (hard copies); marked original and encrypted USB copy remain
+    consequence: {category: none (none before or after)}
+    a3_change: none
+    programme_impact: "Marshalling plan: remove printing, binding and checking of three hard copies. Keep marked original, encrypted USB, Appendix 2 file naming."
+    traps:
+      - trap: "Deleting the whole of 6.5, or the USB copy / file-naming requirement."
+        correct: "Only the three hard copies go."
+
+  - number: "6.1"
+    add03_page: 1
+    targets: [{doc: VOL-I, ref: "footnote 12 to Clause 8.5", page: 4}]
+    change_type: amendment of a footnote (footnote carries a disqualifier)
+    old: "80,000 m3/day"
+    new: "60,000 m3/day"
+    unchanged: "at least two (2) reference sewage treatment plants; commercial operation within the ten (10) years preceding the Proposal Due Date; 'shall be rejected without further evaluation'."
+    effect: amended (relaxed) disqualifier threshold
+    consequence:
+      category: rejection
+      source: {doc: VOL-I, ref: "footnote 12", page: 4}
+      quote: "shall be rejected without further evaluation"
+    a3_change: >-
+      Reference-plant line becomes: fewer than two reference STPs, each of nominal capacity not less than
+      60,000 m3/day, each having achieved commercial operation on or after 10 Dec 2016 (within 10 years before the
+      PDD of 10 Dec 2026), each one for which the consortium member itself was responsible (Q17: affiliates'
+      projects disregarded), each evidenced by a client completion certificate (VOL-I 9.5, else disregarded)
+      -> Proposal rejected without further evaluation (VOL-I footnote 12).
+    programme_impact: "Re-screen reference list: plants of 60,000-80,000 m3/day now usable; Form 4-B per plant with completion certificate."
+    traps:
+      - trap: "Ignoring footnotes or failing to extract 'm3' with superscript."
+        correct: "Footnote 12 is binding and is the source of the rejection consequence."
+      - trap: "Changing VOL-I 8.8 (O&M Operator, 50,000 m3/day)."
+        correct: "8.8 is untouched."
+      - trap: "'look-back period ... is unchanged' read as 'window dates unchanged'."
+        correct: "Length unchanged; anchor moved to 10 Dec 2026 (2.2)."
+
+  - number: "7.1"
+    add03_page: 2
+    targets:
+      - {doc: VOL-I, ref: "Clause 8.6 as reinstated by ADD-02 Section 9.1", page: 4}
+      - {doc: ADD-02, ref: "Section 9.1", page: 3}
+    change_type: value change expressed relative to another addendum's text
+    old: "thirty-five per cent (35%)"
+    new: "thirty per cent (30%)"
+    unchanged: "Second sentence as reinstated: 'Failure to submit the certificate shall render the Proposal non-responsive.'"
+    resulting_text: >-
+      8.6 The Bidder shall submit a Local Content Certificate issued by the competent authority evidencing a local
+      content ratio of not less than thirty per cent (30%) for the construction phase. Failure to submit the
+      certificate shall render the Proposal non-responsive.
+    effect: amended requirement (value relaxed); consequence retained
+    consequence:
+      category: non-responsive
+      quote: "Failure to submit the certificate shall render the Proposal non-responsive."
+    a3_change: "Local Content Certificate line: ratio 30% (was 35%); still non-responsive if not submitted; submit in Envelope A (Q15)."
+    traps:
+      - trap: "Treating 30% as reverting to the original VOL-I 8.6 (which had no consequence) and dropping the non-responsive wording."
+        correct: "Only the percentage changes; ADD-02's consequence sentence stays."
+      - trap: "Reviving ADD-01 Section 4 (deletion) or 4.2."
+        correct: "ADD-01 4.2 ceased to have effect under ADD-02 9.2; ADD-03 does not revive it."
+    human_note: "The stated consequence attaches to failure to SUBMIT; a certificate showing < 30% is non-compliant without explicit consequence words (person to judge)."
+
+  - number: "8.1"
+    add03_page: 2
+    targets: [{doc: VOL-I, ref: "new Clause 10.5, inserted after Clause 10.4", page: 5}]
+    change_type: insertion of a new requirement carrying an explicit consequence
+    new_text: >-
+      10.5 The Availability Payment quoted in Form 4-F shall not exceed SAR 210,000,000 per annum (year 1 of
+      operations, exclusive of value added tax). A Proposal that quotes an Availability Payment exceeding this
+      amount shall be rejected.
+    effect: new requirement (pass/fail; tested when Envelope B is opened, i.e. stage (iii) of VOL-I 11.1)
+    consequence:
+      category: rejection
+      quote: "A Proposal that quotes an Availability Payment exceeding this amount shall be rejected."
+    a3_change: "ADD: Availability Payment in Form 4-F above SAR 210,000,000 per annum (year 1 of operations, excl. VAT) -> rejected (VOL-I 10.5, new)."
+    programme_impact: >-
+      Pricing and Financial Model iteration against the ceiling; independent model-audit opinion (VOL-I 10.3,
+      now unchanged in number) must cover the final model; executive price sign-off. Equal to the ceiling is
+      compliant ('shall not exceed').
+    human_decisions: ["Bid / no-bid and price strategy under the ceiling (commercial decision)."]
+
+  - number: "8.2"
+    add03_page: 2
+    targets:
+      - {doc: VOL-I, ref: "Clause 10.5 (old) -> 10.6", page: 5}
+      - {doc: VOL-I, ref: "Clause 10.6 (old) -> 10.7", page: 5}
+      - {doc: ADD-02, ref: "Q&A 14 response 'No. Volume I Clause 10.5 applies.'", page: 2}
+    change_type: renumbering of existing clauses with re-pointing of cross-references (incl. inside an earlier addendum)
+    mapping:
+      "10.5 (conditional / alternative price -> non-responsive; alternative technical solution only as supplement)": "10.6"
+      "10.6 (schedule of financing assumptions with Form 4-F)": "10.7"
+    effect: no substantive change to those requirements; identifiers change
+    consequence_carried:
+      clause: "10.6 (formerly 10.5)"
+      category: non-responsive
+      quote: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive."
+    a3_change: "Conditional / alternative price line now cites VOL-I 10.6 (formerly 10.5); wording unchanged."
+    earlier_answers_affected:
+      - {ref: "ADD-02 Q14", status: "now reads 'Volume I Clause 10.6 applies'; substance unchanged (alternative technical solution only as a supplement)."}
+    traps:
+      - trap: "Treating renumbering as delete + add (losing lineage), or merging old 10.5 into the new affordability clause."
+        correct: "Register rows keep their history: old 10.5 -> 10.6, old 10.6 -> 10.7; new 10.5 is a new row."
+      - trap: "Reading ADD-02 Q14's 'Clause 10.5' as the new affordability ceiling."
+        correct: "It points to 10.6 (alternative solutions)."
+
+  - number: "9.1"
+    add03_page: 2
+    targets: [{doc: VOL-I, ref: "Clause 12.2", page: 6}]
+    change_type: period change in calendar days
+    old: "two hundred and seventy (270) days"
+    new: "three hundred (300) days"
+    unchanged: "Commercial Close within one hundred and twenty (120) days of the Preferred Bidder Notification."
+    effect: amended requirement (post-award)
+    consequence:
+      category: "post-award: Bid Bond call and loss of Preferred Bidder position (not a submission disqualifier)"
+      quote: "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."
+    dates_moved:
+      - item: "Financial Close long-stop"
+        from: "PBN + 270 days"
+        to: "PBN + 300 days"
+        note: "PBN date unknown -> no calendar date can be computed; a system that prints one is inventing it."
+    a3_change: "Only if the sheet carries post-award forfeiture items: long-stop 300 days."
+    traps:
+      - trap: "'one hundred and twenty (120)' also appears in VOL-I 9.2 (pages, already 150 by ADD-02)."
+        correct: "Neither 9.2 nor Commercial Close is touched."
+    human_decisions: ["Bond exposure: Bid Bond valid to 8 June 2027 vs FC long-stop PBN+300 days (bond extendable on demand under 6.3) -- legal/commercial."]
+
+  - number: "9.2"
+    add03_page: 2
+    targets: [{doc: ADD-02, ref: "Q&A 13", page: 2}]
+    change_type: supersession of an earlier clarification response
+    old: "The periods in Volume I Clause 12.2 are unchanged."
+    new: "(superseded -- FC period now 300 days per 9.1)"
+    effect: earlier answer withdrawn
+    earlier_answers_affected: [{ref: "ADD-02 Q13", status: "superseded / now wrong"}]
+
+  - number: "10.1"
+    add03_page: 2
+    targets: [{doc: VOL-II, ref: "Table 2-4, row Total Suspended Solids (TSS) -- IMAGE ONLY", page: 3}]
+    change_type: amendment of two cells of an image-only table (old values must be read from the image)
+    old: {limit: "10 mg/l", basis: "30-day rolling average"}
+    new: {limit: "15 mg/l", basis: "Maximum, any single sample"}
+    unchanged: "All other entries, including TN 3 mg/l (ADD-02 5.1). Table note 'all values are maxima; compliance assessed as a 30-day rolling average unless stated' -- TSS is now 'stated' otherwise."
+    effect: amended requirement (number relaxed, statistical basis tightened)
+    knock_on:
+      - {doc: VOL-V, ref: "Clause 29.3 (Ramp-Up)", page: 3, effect: "Ramp-up relief covers only parameters 'assessed on a rolling average basis' -> TSS no longer relieved; TSS exceedances attract deductions from PCOD."}
+      - {doc: VOL-V, ref: "Clauses 31.1(b), 31.3", page: 3, effect: "Any single TSS sample > 15 mg/l = Unavailability Event, no cure period."}
+      - {doc: VOL-II, ref: "Clauses 7.2, 7.3 (reliability run)", page: 4, effect: "A single-sample TSS failure restarts the 30-day run."}
+      - {doc: VOL-II, ref: "Clause 2.5 (continuous online monitoring)", page: 2, effect: "NOT triggered: single sample is not 'assessed on a continuous basis'."}
+    consequence: {category: none stated (performance / payment, not bid rejection)}
+    a3_change: none
+    programme_impact: "Process design (tertiary solids removal) and Technical Proposal narrative; deduction risk in the Financial Model."
+    traps:
+      - trap: "Reading 'from the value shown' without reading the image."
+        correct: "Old = 10 mg/l, 30-day rolling average (image, VOL-II page 3)."
+      - trap: "Adding TSS to continuous monitoring (II 2.5)."
+        correct: "Not required."
+      - trap: "Treating 10 -> 15 mg/l as purely a relaxation."
+        correct: "Basis change makes it stricter in practice and removes ramp-up relief; flag for a process engineer."
+    human_decisions: ["Net effect of single-sample basis on design and deduction risk; whether to confirm the Environmental Permit has been aligned (VOL-II 2.4: permit prevails over the reproduction)."]
+
+  - number: "11.1"
+    add03_page: 2
+    targets: [{doc: VOL-II, ref: "Table 2-6, row 2-6.2 'Peak hourly flow (design)' (text-layer table; row on page 3, table continues on page 4)", page: 3}]
+    change_type: value change in a cell of a text-layer table
+    old: "7,500"
+    new: "9,000"
+    unit: "m3/h (unchanged)"
+    unchanged: "No other row of Table 2-6 is amended (2-6.1 average 120,000 m3/day; 2-6.4 storm flow 3 x DWF etc.)."
+    effect: amended requirement
+    knock_on:
+      - {doc: VOL-II, ref: "Clause 4.1 hydraulic profile", page: 3}
+      - {doc: VOL-II, ref: "Clauses 5.2 / 5.3 transmission main", page: 4, effect: "Main sized for peak hourly flow at max 2.0 m/s: 9,000 m3/h = 2.5 m3/s; DN1200 bore gives ~2.21 m/s (> 2.0); needs ~1,262 mm -> DN1300 or larger. At 7,500 m3/h DN1200 gave ~1.84 m/s. DN1200 in 5.3 is a minimum, so no textual conflict, but design and capex change."}
+      - {doc: VOL-II, ref: "Clause 4.5 surge protection", page: 4, effect: "surge analysis to be re-run"}
+    consequence: {category: none stated}
+    a3_change: none
+    earlier_answers_affected:
+      - {ref: "ADD-02 Q11", status: "Answer ('design to the figures stated in Volume II') still applies, but the 7,500 m3/h figure it addressed is now 9,000 m3/h."}
+    traps:
+      - trap: "11.2 mentions only Volume II Section 4."
+        correct: "Section 5 (transmission main sizing, 5.2) also depends on the Table 2-6 peak hourly flow."
+      - trap: "Changing 2-6.1 or 2-6.4."
+        correct: "Only 2-6.2 changes. Peaking factor becomes 1.8 (was 1.5); storm-flow row 2-6.4 (3 x DWF) remains inconsistent -- pre-existing, flag for a human."
+
+  - number: "11.2"
+    add03_page: 2
+    text: "Bidders shall reflect the amended flow in the hydraulic design submitted under Volume II Section 4."
+    change_type: consequential direction
+    effect: amended requirement (design submission must use 9,000 m3/h)
+    a3_change: none
+
+  - number: "12.1"
+    add03_page: 2
+    targets:
+      - {doc: VOL-IV, ref: "Form 4-C (Arabic, IMAGE ONLY)", page: 6}
+      - {doc: VOL-IV, ref: "Form 4-C introduction", page: 5}
+      - {doc: VOL-I, ref: "Clause 9.4", page: 5}
+    change_type: amendment of an image-only Arabic form by English text, without reissuing the form
+    existing_form_content_from_image: >-
+      Five numbered Arabic declarations: (1) no actual or potential conflict of interest with the Authority or its
+      advisers; (2) the company has not participated directly or indirectly in more than one proposal; (3) not on,
+      and not within the previous five years on, any government debarment list in the Kingdom; (4) all information
+      correct and complete, any incorrect statement leads to exclusion of the proposal; (5) undertaking to respect
+      the communication rules in Volume I Clause 4.2. Fields: member name, CR number, signatory, capacity, date,
+      signature and seal. Arabic note: form must be submitted in Arabic by each consortium member; failure to
+      submit it complete makes the proposal non-responsive.
+    new_text_english_only: "Sixth: that neither the member nor any of its directors has, within the preceding five (5) years, been convicted in the Kingdom of an offence involving fraud, bribery or corruption."
+    effect: new requirement (sixth declaration by every member)
+    consequence:
+      category: non-responsive (inherited, not stated in ADD-03)
+      source: {doc: VOL-I, ref: "Clause 9.4", page: 5}
+      quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."
+    a3_change: >-
+      Form 4-C line: complete and properly executed Form 4-C for each member, in Arabic, now including the sixth
+      declaration -> otherwise non-responsive. Must ALSO appear on the 'could not resolve' list (see ambiguity).
+    designated_ambiguity:
+      summary: >-
+        ADD-03 gives the sixth declaration only in English. VOL-I 9.4 requires Form 4-C to be completed in Arabic
+        with the Arabic text governing; ADD-02 Q9 confirms Arabic; VOL-IV page 2 requires Forms to be reproduced
+        without alteration. ADD-03 issues no Arabic text and no reissued form, and does not say where the sixth
+        declaration is to be placed. A bidder-made translation would itself become the governing text of the
+        declaration, so a translation error risks an 'improperly executed' Form 4-C (non-responsive).
+      what_a_careful_bid_team_does: >-
+        Raise a clarification through the Portal before 14:00 Thu 19 Nov 2026 asking the Authority to issue the
+        Arabic text of the sixth declaration (ideally a reissued Form 4-C) and to confirm placement; meanwhile
+        prepare a certified Arabic translation as a fallback and plan re-execution by every member.
+      correct_system_behaviour: >-
+        Create the new requirement row, status 'requires clarification / unresolved', list it on the A3
+        'could not resolve' list, create a clarification-request activity due by 19 Nov 2026 14:00. Do NOT present a
+        machine translation as the governing text, and do NOT mark Form 4-C compliant.
+    programme_impact: >-
+      Re-execution (signature + stamp) of Form 4-C by an authorised signatory of every member (foreign members:
+      courier / notarisation lead time); directors' conviction-record due diligence before signing; dependency on
+      the Authority's answer, which can only arrive by a later Addendum (date unknown) -> schedule risk.
+    human_decisions:
+      - "Whether to rely on own translation or wait for the Authority's Arabic text (legal)."
+      - "Whether every member can truthfully give the declaration (directors' records) (legal/compliance)."
+
+  - number: "12.2"
+    add03_page: 2
+    text: "Each member of the Bidder shall give the sixth declaration in its Form 4-C. Volume I Clause 9.4 applies."
+    change_type: application / restatement
+    effect: confirms the 12.1 requirement applies per member and that VOL-I 9.4 (Arabic, signature and stamp, non-responsive) applies
+    consequence: {category: non-responsive (via 9.4), quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+    trap: "'Volume I Clause 9.4 applies' is exactly what creates the English/Arabic conflict -- it does not resolve it."
+
+clarifications:
+
+  - number: 15
+    add03_page: 2
+    classification: restates the pack (no change in substance)
+    question: "Must the Local Content Certificate required by Volume I Clause 8.6, as reinstated by Addendum No. 2, be submitted with the Proposal or may it follow at Financial Close?"
+    answer: "It shall be submitted with the Proposal, in Envelope A, as part of the evidence required under Section 8 (Volume I Clause 9.1). The required ratio is amended by Section 7 of this Addendum."
+    targets: [{doc: VOL-I, ref: "Clause 8.6 (as reinstated)", page: 4}, {doc: VOL-I, ref: "Clause 9.1 (item (i) in the original lettering)", page: 4}]
+    effect: unchanged requirement; evidence location confirmed (Envelope A); cross-reference to 7.1 (30%)
+    trap: "A system still carrying ADD-01 4.1 ('No Local Content Certificate is required with the Proposal') is wrong; ADD-02 reinstated 8.6."
+
+  - number: 16
+    add03_page: 2
+    classification: CHANGES SUBSTANCE (amendment made inside a Q&A answer; not in the cover summary)
+    question: "Volume II Clause 6.1 requires unattended operation of the whole Facility and a permanently manned central control room. Must the control room be manned 24 hours a day?"
+    targets: [{doc: VOL-II, ref: "Clause 6.1", page: 4}]
+    old: "a permanently manned central control room"
+    new: "a central control room manned between 06:00 and 22:00 daily"
+    unchanged: "VOL-II Clause 8.3 (plant manager; minimum two certified operators on shift at all times)."
+    effect: amended (relaxed) requirement
+    consequence: {category: none stated}
+    a3_change: none
+    programme_impact: "O&M organisation / staffing plan and opex in the Technical and Financial Proposals."
+    traps:
+      - trap: "Classifying Q16 as an answer only, without amending VOL-II 6.1."
+        correct: "VOL-II 6.1 register row amended by ADD-03 Q16."
+      - trap: "Also relaxing VOL-II 8.3."
+        correct: "8.3 explicitly unchanged."
+
+  - number: 17
+    add03_page: 2
+    classification: CHANGES SUBSTANCE (new restriction on qualifying evidence)
+    question: "May a consortium member rely on a reference project delivered by its parent company or another affiliate for the purposes of Volume I Clause 8.5?"
+    answer: "No. Only a reference project for which the consortium member itself was responsible for design, construction or operation will be considered. A reference project of an affiliate will be disregarded."
+    targets: [{doc: VOL-I, ref: "Clause 8.5 and footnote 12", page: 4}, {doc: VOL-IV, ref: "Form 4-B", page: 4}]
+    effect: new restriction (affiliates' projects excluded)
+    consequence:
+      category: "evidence disregarded -> can trigger footnote-12 rejection"
+      quote: "A reference project of an affiliate will be disregarded."
+      knock_on_quote: "shall be rejected without further evaluation"
+    a3_change: "Footnote-12 line gains 'project of the member itself, not an affiliate (Q17)'."
+    human_decisions: ["Which entities count as 'the consortium member itself' (predecessors, JV shares, subsidiaries) -- legal; optional further clarification."]
+
+  - number: 18
+    add03_page: 3
+    classification: restates the pack (no change)
+    question: "Does the Total Nitrogen limit introduced by Addendum No. 2 apply during the reliability run under Volume II Clause 7.2?"
+    answer: "Yes. Volume II Clause 7.2 requires every parameter in Table 2-4, as amended, to be met during the reliability run."
+    effect: unchanged; note 'as amended' also brings the ADD-03 TSS change (10.1) into the reliability run
+    no_effect: true
+
+  - number: 19
+    add03_page: 3
+    classification: no effect
+    question: "Will a further site visit be offered?"
+    answer: "No further site visit will be held. Volume I Clause 5.5 applies."
+    effect: none (the only site visit was optional and has taken place; bidders remain responsible for site conditions)
+    no_effect: true
+
+  - number: 20
+    add03_page: 3
+    classification: restates the pack (no change)
+    question: "Are the appendices permitted by Volume II counted within the 150-page limit introduced by Addendum No. 2?"
+    answer: "No. Volume I Clause 9.2, as amended by Addendum No. 2, excludes the Form Sheets and the appendices expressly permitted by Volume II."
+    effect: unchanged (VOL-I 9.2 as amended by ADD-02; consistent with ADD-01 Q2)
+    no_effect: true
+
+dates_summary:            # after ADD-03 (primary convention); planning date 2026-11-05
+  addendum_issue: "Thu 5 Nov 2026"
+  clarification_cutoff: "Thu 19 Nov 2026, 14:00 Riyadh"
+  proposal_due_date: "Thu 10 Dec 2026, 14:00 Riyadh"
+  bid_bond_valid_to: "Tue 8 Jun 2027 (alt. Mon 7 Jun 2027)"
+  proposal_valid_to: "Sun 9 May 2027 (alt. Sat 8 May 2027)"
+  reference_plant_COD_on_or_after: "10 Dec 2016"
+  iso9001_current_on: "10 Dec 2026"
+  commercial_close: "PBN + 120 days (unchanged)"
+  financial_close_long_stop: "PBN + 300 days (was 270)"
+  standstill: "10 Working Days after PBN (unchanged)"
+  invoices_V_29_4: "10 Working Days after month end (unchanged)"
+
+disqualifier_sheet_changes:      # what must change on the one-page 'what puts the bid out' sheet (A3)
+  add:
+    - "VOL-I 10.5 (new): Availability Payment > SAR 210,000,000 p.a. (year 1, excl. VAT) -> 'shall be rejected'."
+  amend:
+    - "VOL-I footnote 12: >= 2 STPs each >= 60,000 m3/day (was 80,000), COD on/after 10 Dec 2016, member's own projects only (Q17), completion certificate (9.5) -> 'rejected without further evaluation'."
+    - "VOL-I 8.6 (as reinstated): LCC >= 30% (was 35%), failure to submit -> 'non-responsive'."
+    - "VOL-I 6.1/6.6: received after 14:00 Riyadh Thu 10 Dec 2026 -> 'rejected unopened'."
+    - "VOL-I 9.4 + ADD-03 12.1/12.2: Form 4-C per member, in Arabic, incl. sixth declaration -> 'non-responsive'; UNRESOLVED (Arabic text not issued)."
+  renumber:
+    - "Conditional / alternative price -> 'non-responsive': now VOL-I 10.6 (formerly 10.5)."
+  must_not_add:
+    - "Bid Bond (6.4, now SAR 6,000,000): no document-stated consequence."
+    - "Three hard copies: deleted, never had a consequence."
+    - "TSS / Table 2-6 / control room: performance requirements, no rejection words."
+    - "Clarification cut-off: late requests simply not answered."
+  unchanged_examples: ["VOL-I 1.4", "4.2", "5.4", "6.2", "8.1", "8.2", "9.3", "9.6", "11.3", "11.5", "ADD-02 7.2 (Form 4-G)"]
+  could_not_resolve_list_must_include:
+    - "Form 4-C sixth declaration: English-only text vs Arabic-governing form (ADD-03 12.1/12.2 vs VOL-I 9.4, ADD-02 Q9)."
+  could_not_resolve_list_may_include:
+    - "Q17: meaning of 'the consortium member itself'."
+    - "TSS change vs Environmental Permit (VOL-II 2.4)."
+    - "Storm flow 2-6.4 vs peak flow 9,000 m3/h (pre-existing)."
+    - "Bid Bond validity vs FC long-stop (post-award exposure)."
+    - "Concession start (ADD-02 Q7) -- pre-existing, no correct answer."
+
+programme_impacts:
+  - {activity: "Raise ADD-03 clarifications (Form 4-C Arabic text first)", due: "Thu 19 Nov 2026 14:00", driver: "3.1/3.2, 12.1"}
+  - {activity: "Bid Bond SAR 6,000,000 -- bank approval, issue, validity >= 8 Jun 2027", driver: "4.1, 2.2"}
+  - {activity: "Re-screen reference plants (>= 60,000 m3/day; COD >= 10 Dec 2016; own projects); Form 4-B + completion certificates", driver: "6.1, 2.2, Q17"}
+  - {activity: "Local Content Certificate >= 30%, into Envelope A", driver: "7.1, Q15"}
+  - {activity: "Form 4-C re-execution by every member incl. sixth declaration (Arabic)", driver: "12.1/12.2", risk: "depends on Authority answer"}
+  - {activity: "Price within SAR 210m ceiling; Financial Model + model-audit opinion on final model; financing assumptions schedule (now 10.7)", driver: "8.1, 8.2"}
+  - {activity: "Process design update for TSS single-sample 15 mg/l; deduction risk in model", driver: "10.1"}
+  - {activity: "Hydraulic design for 9,000 m3/h; transmission main >= DN1300; surge analysis", driver: "11.1/11.2"}
+  - {activity: "O&M staffing: control room 06:00-22:00; 2 certified operators on shift at all times", driver: "Q16"}
+  - {activity: "Form 4-A: PDD field '10 December 2026, 14:00 Riyadh time'; acknowledge Addenda 1-3", driver: "2.3, cover"}
+  - {activity: "Marshalling: drop 3 hard copies; marked original + encrypted USB; deliver Sakaka by 14:00 10 Dec 2026", driver: "5.1, 2.1"}
+  - {activity: "ISO 9001 certificate current on 10 Dec 2026", driver: "2.2"}
+
+earlier_answers_now_wrong_or_modified:
+  - {ref: "ADD-01 Section 2.1 (PDD 26 Nov 2026)", status: superseded by ADD-03 2.1}
+  - {ref: "ADD-01 Appendix A Form 4-A PDD field", status: corrected by ADD-03 2.3}
+  - {ref: "ADD-02 Section 9.1 (35%)", status: amended to 30% by ADD-03 7.1 (consequence retained)}
+  - {ref: "ADD-02 Q13", status: superseded by ADD-03 9.2}
+  - {ref: "ADD-02 Q14", status: re-pointed to Clause 10.6 by ADD-03 8.2}
+  - {ref: "ADD-02 Q8", status: still correct; amount changed to SAR 6,000,000}
+  - {ref: "ADD-02 Q11", status: figure in question changed to 9,000 m3/h; answer still applies}
+  - {ref: "ADD-02 Section 5.1 (TN 3 mg/l)", status: unchanged (expressly)}
+  - {ref: "ADD-01 Q1, Q2, Q3, Q4, Q5, Q6; ADD-02 Q7, Q9, Q10, Q12", status: unchanged}
+
+no_effect_provisions:
+  - {ref: "1.1", reason: "precedence recital"}
+  - {ref: "1.2", reason: "interpretation only"}
+  - {ref: "Q18", reason: "restates VOL-II 7.2"}
+  - {ref: "Q19", reason: "no further site visit; VOL-I 5.5 restated"}
+  - {ref: "Q20", reason: "restates VOL-I 9.2 as amended by ADD-02 and ADD-01 Q2"}
+  - {ref: "Q15", reason: "restates submission with Proposal in Envelope A (only cross-refers to 7.1)"}
+  - ref: "express 'unchanged' sentences"
+    reason: >-
+      2.1 (time 14:00), 3.1 (VOL-I 12.3, VOL-V 29.4), 4.1 (other bond terms), 5.1 (second/third sentences),
+      6.1 (rest of footnote 12), 7.1 (second sentence), 9.1 (Commercial Close), 10.1 (other Table 2-4 entries,
+      TN), 11.1 (unit, other rows), Q16 (VOL-II 8.3) -- a system that changes any of these is wrong.
+  - {ref: "cover standard paragraph", reason: "boilerplate identical to ADD-01/02"}
+
+pre_existing_issues_not_caused_by_add03:   # credit if flagged, no penalty if not
+  - "ADD-01 Appendix A Form 4-A omits paragraphs 1-6 of VOL-IV Form 4-A."
+  - "VOL-IV Form 4-A (page 3) still shows 12 November 2026."
+  - "VOL-I 9.1 lettering after ADD-02 7.1 inserted Form 4-G 'after item (e)' (relettering not stated)."
+  - "Table 2-6 storm flow (3 x DWF) vs peak hourly flow; ADD-02 Q11 deflected."
+  - "Concession start VOL-I 12.1 (PCOD) vs VOL-V 3.1 (Effective Date) -- ADD-02 Q7 non-answer; human call."
+  - "Volume III / Drawing 03-C-114 referenced but not supplied."

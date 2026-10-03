@@ -10,6 +10,8 @@ Recognised forms (as written in the pack; extend the patterns, not the outcomes)
   Volume II Section 3 · Section 4.2 of Addendum No. 1 · Addendum No. 1 Section 4 · Form 4-A
   "the list at Volume I Clause 9.1 ... after item (e)" -> the list item VOL-I:9.1(e)
   a parenthesised abbreviation such as "(TN)" names a row of a cited table whose key matches
+  (session 06 blind rehearsal) Appendix A to Addendum No. 1 · clarification request 13 in Addendum No. 2 ·
+  "in row 2-6.2" · "the entry against 'Proposal Due Date'" · "the fifth numbered declaration" (-> decl5)
 A bare "Clause 4.2" takes its volume from the nearest preceding volume citation in the same text.
 """
 from __future__ import annotations
@@ -61,6 +63,10 @@ def citations(text: str) -> list[Citation]:
         add(m, f"{_addendum(m.group(1))}:S{m.group(2)}", "addendum_section")
     for m in re.finditer(r"\bForm (\d-[A-Z])\b", t):
         add(m, f"VOL-IV:F{m.group(1)}", "form")
+    for m in re.finditer(r"\bAppendix ([A-Z])\b,? (?:to|of) Addendum No\.? ?(\d+)", t, re.I):
+        add(m, f"{_addendum(m.group(2))}:App{m.group(1).upper()}", "appendix")
+    for m in re.finditer(r"\bclarification requests? (\d+) (?:in|of|to) Addendum No\.? ?(\d+)", t, re.I):
+        add(m, f"{_addendum(m.group(2))}:Q{m.group(1)}", "answer")
     # bare "Clause N" after a volume citation in the same text
     last_vol = None
     for m in re.finditer(_VOL + r"|\bClause (\d+(?:\.\d+)*)", t):
@@ -87,8 +93,21 @@ def citations(text: str) -> list[Citation]:
 
 
 def row_names(text: str) -> list[str]:
-    """Parenthesised abbreviations that can name a table row, e.g. 'Total Nitrogen (TN)' -> ['TN']."""
-    return re.findall(r"\(([A-Z][A-Za-z0-9]{0,7})\)", normalize_latin(text))
+    """Names a provision gives a table row: a parenthesised abbreviation ('Total Nitrogen (TN)' -> 'TN') or the row's
+    reference after the word 'row' ('in row 2-6.2' -> '2-6.2'; session 06)."""
+    t = normalize_latin(text)
+    names = re.findall(r"\(([A-Z][A-Za-z0-9]{0,7})\)", t) + re.findall(r"\brow (\d[\w-]*(?:\.\d+)*)", t)
+    names += re.findall(r"\b(?:entry|field|line) (?:against|for) ['\"]([^'\"]+)['\"]", t)
+    names += [f"decl{_ORDINALS.index(m.group(1).lower()) + 1}"
+              for m in re.finditer(r"\b(" + "|".join(_ORDINALS) + r") (?:numbered )?declaration\b", t, re.I)]
+    return names
+
+
+_ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
+
+
+def _slug(s) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", normalize_latin(str(s or "")).lower()).strip("-")
 
 
 def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
@@ -124,7 +143,8 @@ def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None)
     for c in cited:
         if target.startswith(c + "/"):
             label = row_label_of(target) if row_label_of else target.rsplit("/", 1)[-1]
-            if label in names:
+            keys = {_slug(label), _slug(target.rsplit("/", 1)[-1])} - {""}
+            if label in names or keys & {_slug(n) for n in names}:
                 return True, f"declared target {target} is row '{label}' of cited {c}", cited
             return False, f"declared target {target} is a row of cited {c}, but the provision does not name it", cited
     return False, f"declared target {target} is not cited; the provision cites {cited}", cited

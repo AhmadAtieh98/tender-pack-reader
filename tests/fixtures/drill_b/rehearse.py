@@ -5,9 +5,11 @@
   3. curation: the files in this folder (op file, rows, evidence item, A5 template, lead time) are copied into
      a COPY of the register and configuration inside <root>/src (never into curation/ or config/)
   4. outputs with the curated op file                                                -> <root>/out-curated
-Optionally (`fixture_review=True`, disposable runs only): before step 4, the Table 2-4 reading is approved and
-two rows are accepted by "Fixture Test Reviewer" in the drill copy, to show what happens to an earlier approved
-state. Nothing is ever approved in the repository; the committed rehearsal outputs are made without it.
+Optionally (`fixture_review=True`, disposable runs only): the Table 2-4 reading is approved and two rows and one op
+are accepted by "Fixture Test Reviewer" with `tenderpack accept` semantics (review.decide), bound to their content
+BEFORE ADD-03 existed (the repository's own BASE..ADD-02 build), into the drill copy's decisions file, to show what
+happens to an earlier approved state. Nothing is ever approved or accepted in the repository; the committed
+rehearsal outputs are made without it.
 
 Usage: python tests/fixtures/drill_b/rehearse.py ROOT_DIR [--fixture-review]
 """
@@ -28,6 +30,7 @@ sys.path.insert(0, str(HERE.parent))
 
 FIXTURE_REVIEWER = "Fixture Test Reviewer"
 ACCEPTED_ROWS = ("VOL-I-5.2-01", "VOL-I-9.3-01")       # one ADD-03 touches, one it does not
+ACCEPTED_OPS = ("ADD-01/2.1",)                          # an earlier op ADD-03 does not touch
 
 
 def _rel(p: Path) -> str:
@@ -48,13 +51,24 @@ def prepare(src: Path) -> None:
     cfg = yaml.safe_load((src / "pack.yaml").read_text(encoding="utf-8"))
     cfg.update({"register": _rel(reg / "rows.yaml"), "issues": _rel(reg / "issues.yaml"),
                 "dispositions_dir": _rel(reg / "dispositions"), "evidence_items_dir": _rel(ev),
-                "activity_templates": _rel(src / "activity_templates.yaml"), "assumptions": _rel(src / "assumptions.yaml")})
+                "activity_templates": _rel(src / "activity_templates.yaml"), "assumptions": _rel(src / "assumptions.yaml"),
+                "decisions": _rel(src / "decisions.yaml"), "row_ids": _rel(reg / "ids.yaml")})
     (src / "pack.yaml").write_text(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False), encoding="utf-8")
 
 
+def fixture_decisions(src: Path) -> None:
+    """Disposable runs only: decisions by the fixture reviewer, bound to the rows and op as they were BEFORE ADD-03
+    (the repository's BASE..ADD-02 build and register, identical to the drill copy's at this point)."""
+    from tenderpack import review, stage2
+    r0 = stage2.run(REPO / "build", REPO / "config/pack.yaml", REPO)
+    code, msgs = review.decide(r0, [*ACCEPTED_ROWS, *ACCEPTED_OPS], "accept", FIXTURE_REVIEWER,
+                               "drill B rehearsal (disposable)", src / "decisions.yaml", today="2026-10-30")
+    assert code == 0, msgs
+
+
 def curate(src: Path, fixture_review: bool = False) -> None:
-    """Step 3: add the curated ADD-03 files to the drill's copies (op file, rows, evidence item, A5 template,
-    PROVISIONAL lead time). With fixture_review, two rows are marked accepted by the fixture reviewer."""
+    """Step 3: add the curated ADD-03 files to the drill's copies (op file, rows, row updates, evidence item, A5
+    template, PROVISIONAL lead time)."""
     (src / "amendments" / "ADD-03.yaml").write_bytes((HERE / "ADD-03.yaml").read_bytes())
     reg = src / "register"
     shutil.copy(HERE / "rows-ADD-03.yaml", reg / "rows" / "ADD-03.yaml")
@@ -65,12 +79,18 @@ def curate(src: Path, fixture_review: bool = False) -> None:
     asm = yaml.safe_load((src / "assumptions.yaml").read_text(encoding="utf-8"))
     asm["lead_times"].update(yaml.safe_load((HERE / "lead-times-ADD-03.yaml").read_text(encoding="utf-8")))
     (src / "assumptions.yaml").write_text(yaml.safe_dump(asm, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    if fixture_review:
-        rows = yaml.safe_load((reg / "rows.yaml").read_text(encoding="utf-8"))
-        for r in rows["rows"]:
-            if r["id"] in ACCEPTED_ROWS:
-                r["review"], r["reviewer"] = "accepted", FIXTURE_REVIEWER
-        (reg / "rows.yaml").write_text(yaml.safe_dump(rows, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    # changes to existing rows (session 06: the acknowledgement row extended to ADD-03's cover, found by C46)
+    upd = yaml.safe_load((HERE / "updates-ADD-03.yaml").read_text(encoding="utf-8"))["rows"]
+    for f in [reg / "rows.yaml", *sorted((reg / "rows").glob("*.yaml"))]:
+        data = yaml.safe_load(f.read_text(encoding="utf-8"))
+        hit = False
+        for r in data.get("rows") or []:
+            if r["id"] in upd:
+                r["units"] = r["units"] + [u for u in upd[r["id"]].get("add_units", []) if u not in r["units"]]
+                r["interpretations"] = r["interpretations"] + upd[r["id"]].get("add_interpretations", [])
+                hit = True
+        if hit:
+            f.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=120), encoding="utf-8")
 
 
 def rehearse(root: Path, fixture_review: bool = False, quiet: bool = True) -> dict:
@@ -82,7 +102,7 @@ def rehearse(root: Path, fixture_review: bool = False, quiet: bool = True) -> di
     t = {}
     t0 = time.perf_counter()
     expected = make_drill_b.build(src)
-    for leftover in (src / "amendments" / "ADD-03.yaml", src / "approvals.yaml"):   # a rerun starts undrafted, unreviewed
+    for leftover in (src / "amendments" / "ADD-03.yaml", src / "approvals.yaml", src / "decisions.yaml"):  # a rerun starts clean
         leftover.unlink(missing_ok=True)
     prepare(src)
     t["1 build drill pack"] = time.perf_counter() - t0
@@ -95,6 +115,7 @@ def rehearse(root: Path, fixture_review: bool = False, quiet: bool = True) -> di
     t["2 outputs with ADD-03 drafted"] = time.perf_counter() - t0
     curate(src, fixture_review)
     if fixture_review:
+        fixture_decisions(src)
         cfg = yaml.safe_load((src / "pack.yaml").read_text(encoding="utf-8"))
         assert approve("VOL-II-p3-r1", FIXTURE_REVIEWER, "drill B rehearsal (disposable)", REPO, src / "pack.yaml",
                        REPO / cfg["approvals"] if not Path(cfg["approvals"]).is_absolute() else Path(cfg["approvals"])) == 0
@@ -105,6 +126,8 @@ def rehearse(root: Path, fixture_review: bool = False, quiet: bool = True) -> di
     # dependencies ADD-03 changed stay STALE for a person
     from tenderpack.cli import pin_cmd
     assert pin_cmd(build, src / "pack.yaml", refresh=False) == 0
+    from tenderpack.stage2 import run, update_ids               # the curator records the new row ids (C12)
+    update_ids(run(build, src / "pack.yaml", REPO, lenient=True))
     t0 = time.perf_counter()
     curated = stage2.build(build, root / "out-curated", src / "pack.yaml", REPO, quiet=quiet)
     t["4 outputs with ADD-03 curated"] = time.perf_counter() - t0

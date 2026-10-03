@@ -5,8 +5,8 @@ It holds two changes in one paragraph (2.1), a new obligation with a consequence
 replaced; 6.1 a new clause inserted) and two answers (Q15 quotes a replaced figure; Q16 cites an unchanged
 clause). The rehearsal (tests/fixtures/drill_b/rehearse.py) builds and ingests it, publishes the drafted working
 draft, applies the curation in a copy of the register, and publishes again. In this disposable copy only,
-"Fixture Test Reviewer" approves the Table 2-4 reading and accepts two rows first, to show what happens to an
-earlier approved state. Nothing is approved in the repository.
+"Fixture Test Reviewer" approves the Table 2-4 reading and accepts two rows and one op (decisions bound to their
+content before ADD-03), to show what happens to an earlier approved state. Nothing is approved in the repository.
 """
 from __future__ import annotations
 
@@ -84,12 +84,26 @@ def test_stale_dependencies_and_preserved_approved_state(drill):
     a1 = {x["id"]: x for x in drill["load"]("out-curated/a1/a1.json")["rows"]}
     # the fixture approval of the Table 2-4 transcription is preserved; the interpretation of the changed row is STALE
     assert a1["VOL-II-T2-4-TSS"]["transcription"] == "approved" and "STALE" in a1["VOL-II-T2-4-TSS"]["status:ADD-03"]
-    # an accepted row ADD-03 changed keeps its acceptance but is STALE (a release blocker); one it did not change is not
-    assert a1["VOL-I-5.2-01"]["interpretation"] == "accepted by Fixture Test Reviewer" and ev["VOL-I-5.2-01"]["stale"]
-    assert a1["VOL-I-9.3-01"]["interpretation"] == "accepted by Fixture Test Reviewer" and not ev["VOL-I-9.3-01"]["stale"]
+    # a row accepted before ADD-03 and changed by it: the decision is kept and shown, but no longer counts
+    assert a1["VOL-I-5.2-01"]["interpretation"].startswith("accepted by Fixture Test Reviewer")
+    assert "CHANGED since: review again" in a1["VOL-I-5.2-01"]["interpretation"] and ev["VOL-I-5.2-01"]["stale"]
+    # a row and an op ADD-03 did not touch keep their acceptance
+    assert a1["VOL-I-9.3-01"]["interpretation"].startswith("accepted by Fixture Test Reviewer")
+    assert "CHANGED" not in a1["VOL-I-9.3-01"]["interpretation"] and not ev["VOL-I-9.3-01"]["stale"]
+    reviews = drill["res"]["curated"]["run"]["reviews"]
+    assert reviews[("op", "ADD-01/2.1")]["status"] == "accepted" and reviews[("row", "VOL-I-5.2-01")]["status"] == "changed"
     blockers = " ".join(b["detail"] for b in drill["res"]["curated"]["blockers"])
     assert "VOL-I-5.2-01" in blockers and "VOL-IV-p6-r1" in blockers and "VOL-II-p3-r1" not in blockers
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    assert "changed 1" in blockers
+    assert not (ROOT / "curation/approvals.yaml").exists() and not (ROOT / "curation/reviews/decisions.yaml").exists()
+
+
+def test_every_new_obligation_reaches_the_outputs_after_curation(drill):
+    """C46: after curation every ADD-03 obligation has its row (A1), consequence (A3) and deliverable (A5); the drafted
+    run lists what is missing, including the acknowledgement that no row held before session 06's curation fix."""
+    assert drill["res"]["curated"]["run"]["trace"] == []
+    drafted = {(t["op"], t["output"]) for t in drill["res"]["drafted"]["run"]["trace"]}
+    assert ("ADD-03/cover/para3", "A1") in drafted
 
 
 def test_question_quoting_a_replaced_period_is_listed_for_review(drill):

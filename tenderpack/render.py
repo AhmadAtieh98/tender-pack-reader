@@ -215,9 +215,9 @@ _ARABIC = re.compile("[\u0600-\u06ff]")
 _ARABIC_RUN = re.compile("[\u0600-\u06ff](?:[^A-Za-z]*[\u0600-\u06ff])?")   # no Latin letter inside
 
 A3_PAGE = pymupdf.paper_rect("a4")
-A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 30, 24, 26
+A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 26, 20, 26
 A3_CSS = """
-body {font-family: sans-serif; font-size: 8.5px; line-height: 1.22; color: #000}
+body {font-family: sans-serif; font-size: 8.5px; line-height: 1.16; color: #000}
 .title {font-size: 13px; font-weight: bold; margin: 0 0 1px 0}
 .sub {color: #333; margin: 0 0 4px 0}
 .banner {background-color: #e3e3e3; border: 0.5px solid #8c8c8c; padding: 2px 5px; font-weight: bold;
@@ -282,7 +282,7 @@ def _a3_item(it: dict) -> str:
         if it.get("gloss"):
             parts.append(f"(proposed translation, not reviewed: \u2018{_esc(it['gloss'])}\u2019)")
     meta = [_rich(it["source"])] if it.get("source") else []
-    if it.get("confidence") and not it.get("compact"):
+    if it.get("confidence"):
         meta.append(f"confidence {_rich(it['confidence'])}")
     if it.get("owner"):
         meta.append(f"owner: {_rich(it['owner'])}")
@@ -304,8 +304,12 @@ def _a3_html(a3: dict) -> str:
         if sec.get("note"):
             out.append(f'<p class="note">{_rich(sec["note"])}</p>')
         if sec.get("ids"):
-            out.append('<p class="ids">' + ", ".join(f'<a href="a3_detail.html#{_esc(i)}">{_esc(i)}</a>' for i in sec["ids"])
-                       + "</p>")
+            own = sec.get("owners") or {}
+            out.append('<p class="ids">' + ", ".join(f'<a href="a3_detail.html#{_esc(i)}">{_esc(i)}</a>'
+                                                     + (f' <span class="meta">({_esc(own[i])})</span>' if own.get(i) else "")
+                                                     for i in sec["ids"]) + "</p>")
+            continue
+        if "ids" in sec and not sec.get("items"):
             continue
         out += [_a3_item(it) for it in sec["items"]] or ['<p class="none">None.</p>']
     return "\n".join(out)

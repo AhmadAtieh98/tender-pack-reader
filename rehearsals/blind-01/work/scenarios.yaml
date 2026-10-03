@@ -1,0 +1,33 @@
+# A5 planning scenarios. Each one overrides config/assumptions.yaml in a COPY (deep merge: mappings merge,
+# lists and values replace) and the programme is rebuilt and compared with the baseline
+# (tenderpack.programme.run_scenarios). PROPOSED by the assistant (Stage 4); every value here is a
+# PROVISIONAL ASSUMPTION or a HYPOTHETICAL, never a fact from the tender pack. Owner: Bid manager.
+scenarios:
+  consortium-2:
+    purpose: "Two-member consortium (as in the one consortium of VOL-I Appendix 1): per-member documents and signatories drop."
+    overrides:
+      bidder: {members: 2}
+  consortium-4:
+    purpose: "Four-member consortium: per-member documents, Powers of Attorney and Form 4-C signatures rise."
+    overrides:
+      bidder: {members: 4}
+  lcc-15wd:
+    purpose: "Local Content Certificate obtainable in 15 Working Days instead of the deliberately long 30: does the LCC chain become feasible?"
+    overrides:
+      lead_times:
+        lcc_certificate: {value: 15, basis: "SCENARIO lcc-15wd (PROVISIONAL ASSUMPTION): the competent authority issues the certificate in 15 Working Days; not stated in the pack"}
+  hypothetical-holidays:
+    purpose: "HYPOTHETICAL declared public holidays inside the bid window (Sun 15 to Wed 18 November 2026, four Working Days, about the length of an Eid break); the pack declares none and no real holiday is claimed for these dates."
+    hypothetical: true
+    overrides:
+      calendar:
+        holidays: ["2026-11-15", "2026-11-16", "2026-11-17", "2026-11-18"]
+  combined-4-members-lcc-15wd-holidays:
+    purpose: "Combined stress test: four members, LCC in 15 Working Days and the hypothetical holidays above."
+    hypothetical: true
+    overrides:
+      bidder: {members: 4}
+      lead_times:
+        lcc_certificate: {value: 15, basis: "SCENARIO combined (PROVISIONAL ASSUMPTION): LCC in 15 Working Days; not stated in the pack"}
+      calendar:
+        holidays: ["2026-11-15", "2026-11-16", "2026-11-17", "2026-11-18"]

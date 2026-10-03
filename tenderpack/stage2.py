@@ -2,7 +2,7 @@
 
     build/ (Stage 1, structure OK)                    units with their evidence
     curation/amendments/ADD-0N.yaml (or drafted)       ops for every addendum in the pack (amend.py)
-    curation/register/rows.yaml, issues.yaml          the A1 slice and the open issues (register.py)
+    curation/register/rows.yaml, issues.yaml          the A1 register and the open issues (register.py)
     config/assumptions.yaml, curation/activity_templates.yaml   planning assumptions (schedule.py)
       -> out/a1 (xlsx, csv, json)  out/a2 (md, csv, json)  out/a3 (one-page pdf, json)  out/a5 (csv, json)
          out/checks.json, out/stages.json, out/README.md
@@ -39,7 +39,7 @@ from pathlib import Path
 
 import yaml
 
-from .amend import BASE, Engine, StageResult, load_opfile, validated_stage
+from .amend import BASE, Engine, StageResult, load_opfile, unevidenced_additions, validated_stage
 from .citations import citations
 from .dates import calendar_from_config
 from .dispositions import check_dispositions, check_sweeps, load_dispositions
@@ -49,6 +49,10 @@ from .register import BID_OUT, Consequence, Register, load_rows, printed_date_co
 from .render import A3OverflowError, write_a1, write_a3_pdf, write_csv_json
 from . import programme
 from .schedule import deltas, in_force, plan
+from .trace import obligation_trace
+from .datecover import counting_conventions, date_coverage
+from . import review
+from .textnorm import normalize_latin
 from .util import dump_json, load_yaml, sha256_file, write_text
 
 CLASS_WORDS = {"rejection": "rejection", "disqualification": "disqualification", "non_responsive": "non-responsive",
@@ -56,9 +60,10 @@ CLASS_WORDS = {"rejection": "rejection", "disqualification": "disqualification",
                "contractual": "contractual remedy (post-award)"}
 
 
-def _doc_ref(unit_id: str, pages) -> str:
+def _doc_ref(unit_id: str, pages, number: str | None = None) -> str:
     doc, _, local = unit_id.partition(":")
-    return f"{doc} {local} p{','.join(map(str, pages))}" if pages else f"{doc} {local}"
+    shown = f"{number} (issued as {local})" if number else local
+    return f"{doc} {shown} p{','.join(map(str, pages))}" if pages else f"{doc} {shown}"
 
 
 def _short(t: str, n: int = 150) -> str:
@@ -146,19 +151,41 @@ def run(evidence_dir: Path, pack_path: Path, root: Path, lenient: bool = False) 
             f = draft(units, a)
             drafted[a] = f
             opfiles.append(f)
-    stages = Engine(units, opfiles).run()
-    val = validated_stage(stages)
-    reg = Register(rowfile, stages, cal, policy)
-    evals = reg.all()
-    order = [s.stage for s in stages]
-    working = stages[-1] if stages[-1].stage != val.stage else None
-    return {"cfg": cfg, "root": root, "units": units, "problems": problems, "assumptions": assumptions, "cal": cal, "policy": policy,
-            "templates": templates, "curated_issues": curated_issues, "rowfile": rowfile, "opfiles": opfiles,
-            "drafted": drafted, "stages": stages, "validated": val, "working": working, "register": reg,
-            "evals": evals, "order": order, "dispositions": dispositions,
-            "disposition_problems": dproblems + check_dispositions(units, dispositions, rowfile.rows),
-            "evidence_items": evidence_items, "evidence_problems": eproblems, "load_problems": load_problems + issue_problems,
-            "sweeps": check_sweeps(units, dispositions, rowfile.rows)}
+    decisions_file = review.decisions_path(cfg, root)
+    decisions = review.load_decisions(decisions_file)
+    r = {"cfg": cfg, "root": root, "units": units, "problems": problems, "assumptions": assumptions, "cal": cal, "policy": policy,
+         "templates": templates, "curated_issues": curated_issues, "rowfile": rowfile, "opfiles": opfiles,
+         "drafted": drafted, "dispositions": dispositions,
+         "disposition_problems": dproblems + check_dispositions(units, dispositions, rowfile.rows),
+         "evidence_items": evidence_items, "evidence_problems": eproblems, "load_problems": load_problems + issue_problems,
+         "sweeps": check_sweeps(units, dispositions, rowfile.rows), "decisions_file": decisions_file, "decisions": decisions,
+         "evidence_dir": Path(evidence_dir)}
+    for _ in range(3):
+        stages = Engine(units, opfiles).run()
+        val = validated_stage(stages)
+        reg = Register(rowfile, stages, cal, policy)
+        r.update({"stages": stages, "validated": val, "working": stages[-1] if stages[-1].stage != val.stage else None,
+                  "register": reg, "evals": reg.all(), "order": [s.stage for s in stages]})
+        r["reviews"] = review.compute(r, decisions)
+        # a person's current rejection of an op withdraws it (the engine then treats its provision as not applied)
+        newly = [o for f in opfiles for o in f.ops if r["reviews"].get(("op", o.id), {}).get("status") == "rejected"
+                 and o.review != "rejected"]
+        if not newly:
+            break
+        for o in newly:
+            o.review, o.reviewer = "rejected", r["reviews"][("op", o.id)]["reviewer"]
+    r["trace"] = obligation_trace(r)
+    r["date_coverage"] = date_coverage(r)
+    r["c32"] = counting_conventions(r)
+    ledger_path = root / cfg.get("row_ids", "curation/register/ids.yaml")
+    ledger = (load_yaml(ledger_path) or {}) if ledger_path.exists() else {}
+    known, withdrawn = set((ledger.get("ids") or {})), dict(ledger.get("withdrawn") or {})
+    current = [e["row"].id for e in r["evals"]]
+    r["ids"] = {"path": ledger_path, "missing": sorted(known - set(current) - set(withdrawn)),
+                "new": sorted(set(current) - known), "withdrawn": withdrawn,
+                "duplicates": sorted({i for i in current if current.count(i) > 1}),
+                "back": sorted(set(current) & set(withdrawn))}
+    return r
 
 
 # ---------------------------------------------------------------------------------------------- checks
@@ -175,6 +202,14 @@ def structural_checks(r: dict, a3_fit: dict | None, a5_by_stage: dict) -> list[d
                    + (f"; quoted text changed under STALE rows (reported as C11): {moved}" if moved else "")})
     leaks = [f"{s.stage}: {x}" for s in r["stages"] for x in s.scope_leak]
     checks.append({"id": "C25", "ok": not leaks, "detail": "; ".join(leaks[:4]) or "no unit changed without an op targeting it"})
+    ids = r["ids"]
+    bad12 = ids["missing"] + ids["duplicates"] + ids["back"]
+    checks.append({"id": "C12", "ok": not bad12, "detail": (f"row ids missing without a recorded withdrawal: {ids['missing']}; "
+                   f"duplicated: {ids['duplicates']}; withdrawn ids reused: {ids['back']}") if bad12 else
+                   f"every row id in the ledger is present or withdrawn with a reason ({len(ids['withdrawn'])} withdrawn)"})
+    added = [f"{b.stage}: {x}" for a, b in zip(r["stages"], r["stages"][1:]) for x in unevidenced_additions(a.state, b.state, b.stage)]
+    checks.append({"id": "C47", "ok": not added, "detail": "; ".join(added[:4]) if added else
+                   "every word a unit gains at a stage is printed in that stage's addendum"})
     val = r["validated"].stage
     a3_ids = (a3_fit or {}).get("explicit_ids", [])
     bad13 = [i for i in a3_ids if not any(e["row"].id == i and isinstance(r["register"].interp_at(e["row"], val).consequence, Consequence)
@@ -211,6 +246,19 @@ def reported_checks(r: dict) -> list[dict]:
         out.append({"id": "C21-C27", "stage": s.stage, "ok": not inv, "detail": f"{len(s.ops)} ops; invalid: {inv or 'none'}"})
     stale = [f"{e['row'].id}@{st}" for e in r["evals"] for st, ev in e["stages"].items() if ev["stale"]]
     out.append({"id": "C11", "ok": not stale, "detail": f"STALE rows: {stale or 'none'}"})
+    dc = r.get("date_coverage", [])
+    unc = [f"{x['unit']} '{x['phrase']}'" for x in dc if x["treatment"] == "UNCOVERED"]
+    nc = [f"{x['unit']} '{x['phrase']}'" for x in dc if x["treatment"] == "NOT COMPUTED"]
+    out.append({"id": "C30", "ok": not unc, "detail": f"{len(dc)} date/period phrases in force; uncovered: {unc or 'none'}; "
+                f"explicitly not computed: {nc or 'none'}"})
+    out.append({"id": "C32", "ok": True, "detail": f"{len(r.get('c32', []))} date rule(s) with unstated counting conventions: "
+                "every reading shown (A1 Dates), planning uses the configured policy"})
+    if r.get("ids", {}).get("new"):
+        out.append({"id": "C12-new", "ok": False, "detail": f"{len(r['ids']['new'])} row id(s) not yet in the id ledger "
+                    f"({r['ids']['path'].name}): {r['ids']['new'][:8]}; record them with `check-register --update-ids`"})
+    tr = r.get("trace", [])
+    out.append({"id": "C46", "ok": not tr, "detail": "every new or amended obligation reaches A1, A3 where it carries a "
+                "consequence, and A5" if not tr else f"{len(tr)} gap(s): " + "; ".join(f"{t['op']} [{t['output']}]" for t in tr[:8])})
     return out
 
 
@@ -225,13 +273,15 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
     out = []
     for iid, it in r["curated_issues"].items():
         out.append({"id": iid, "text": it["text"], "owner": it["owner"], "source": "curated (proposed wording)",
-                    "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3"))})
+                    "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3")), "a3": it.get("a3")})
     for c in printed_date_conflicts(val, r["rowfile"].anchors):
         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
                     "text": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; "
                             f"the effective date ({c['defined_in']}) is {c['effective']}. Not corrected: a person decides "
                             "what to print and sign, and whether to seek clarification",
-                    "owner": "Legal", "source": "C31 (automatic)", "rows": [], "show_in_a3": True})
+                    "owner": "Legal", "source": "C31 (automatic)", "rows": [], "show_in_a3": True,
+                    "a3": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; effective "
+                          f"{c['effective']}. Not corrected: what to print and sign is for a person"})
     for s in r["stages"][1:]:
         for x in s.ops:
             if x.op.issue:
@@ -242,27 +292,51 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
         if unres or inv or s.status == "PARTIAL":
             out.append({"id": f"I-PARTIAL-{s.stage}", "text": f"{s.stage} is PARTIAL: unresolved provisions {unres or 'none'}; "
                         f"invalid ops {inv or 'none'}. The validated state stays at {val.stage}",
-                        "owner": "Bid manager", "source": "C20/C21-C27 (automatic)", "rows": [], "show_in_a3": True})
-        outside = sum(1 for c in s.coverage if c["disposition"] == "outside_slice")
-        if outside:
-            out.append({"id": f"I-SLICE-{s.stage}", "text": f"{s.stage}: {outside} of {len(s.coverage)} provisions are outside "
-                        "this register slice (listed in A2); their effect on rows not in the slice is not modelled",
-                        "owner": "Bid manager", "source": "C20 (automatic)", "rows": [], "show_in_a3": False})
+                        "owner": "Bid manager", "source": "C20/C21-C27 (automatic)", "rows": [], "show_in_a3": True,
+                        "a3": f"{s.stage} is PARTIAL (unresolved: {_ids(unres)}; invalid: {_ids(inv)}): A3 and A5 stay on "
+                              f"{val.stage}"})
+        gaps: dict[str, list[str]] = {}
+        for t in r.get("trace", []):
+            if t["stage"] == s.stage:
+                gaps.setdefault(t["op"], []).append(t["output"])
+        if gaps:
+            words = {t["op"]: t["detail"].split(": '", 1)[-1].rstrip("'") for t in r["trace"] if t["stage"] == s.stage}
+            out.append({"id": f"I-AUTO-UNTRACED-{s.stage}", "text": f"{s.stage}: obligation(s) not carried through to the "
+                        "outputs (C46): " + "; ".join(f"{op} [{', '.join(sorted(set(o)))}] '{words[op][:110]}'"
+                                                      for op, o in gaps.items())
+                        + ". A row, its consequence or its deliverable is missing; a person must add it",
+                        "owner": "Bid manager", "source": "C46 (automatic)", "rows": [], "show_in_a3": True,
+                        "a3": f"{s.stage}: obligations not carried to the outputs (C46): "
+                              + "; ".join(f"{op} [{', '.join(sorted(set(o)))}]" for op, o in gaps.items())
+                              + ". A row, consequence or deliverable must be added"})
+    dc = r.get("date_coverage", [])
+    open_dates = [x for x in dc if x["treatment"] in ("UNCOVERED", "NOT COMPUTED")]
+    if open_dates:
+        out.append({"id": "I-AUTO-DATES", "text": "Date or period phrases not planned (C30): " + "; ".join(
+            f"{x['unit']} '{x['phrase']}' {x['treatment']}" + (f" ({x['by']})" if x["treatment"] != "UNCOVERED" else "")
+            for x in open_dates), "owner": "Bid manager", "source": "C30 (automatic)", "rows": [], "show_in_a3": True,
+            "a3": f"{len(open_dates)} date/period phrase(s) not computed or not accounted for (C30): "
+                  + _ids([f"{x['unit']} '{x['phrase']}'" for x in open_dates], 3)})
     stale = [e["row"].id for e in r["evals"] if e["stages"][val.stage]["stale"]]
     if stale:
         out.append({"id": "I-AUTO-STALE", "text": f"{len(stale)} row(s) STALE at {val.stage}: a dependency changed after the "
                     f"interpretation was made (dates recomputed; the reading needs a person). Rows: {', '.join(stale)}",
-                    "owner": "Bid manager", "source": "C11 (automatic)", "rows": stale, "show_in_a3": True})
+                    "owner": "Bid manager", "source": "C11 (automatic)", "rows": stale, "show_in_a3": True,
+                    "a3": f"{len(stale)} row(s) STALE at {val.stage} (a dependency changed; dates recomputed, the reading "
+                          f"needs a person): {_ids(stale)}"})
     differ = sorted({d["rule_id"] for e in r["evals"] for d in e["stages"][val.stage]["dates"] if d["readings_differ"]})
     if differ:
         out.append({"id": "I-AUTO-COUNTING", "text": f"Counting conventions not stated in the pack for {', '.join(differ)}: every "
                     f"reading is shown (A1 Dates); planning uses the {r['policy']} reading (config/assumptions.yaml)",
-                    "owner": "Bid manager", "source": "D4 (automatic)", "rows": [], "show_in_a3": True})
+                    "owner": "Bid manager", "source": "D4 (automatic)", "rows": [], "show_in_a3": True,
+                    "a3": f"Counting conventions not stated for {len(differ)} date rule(s): every reading in A1 Dates; planning "
+                          f"uses the {r['policy']} one"})
     pend = sorted({e["row"].id for e in r["evals"] if e["stages"][val.stage]["transcription"] == "pending"})
     if pend:
         out.append({"id": "I-AUTO-PENDING-READINGS", "text": f"{len(pend)} row(s) rely on image readings (Table 2-4, "
                     f"Form 4-C) still pending the owner's review. Rows: {', '.join(pend)}", "owner": "Owner",
-                    "source": "readings (automatic)", "rows": pend, "show_in_a3": True})
+                    "source": "readings (automatic)", "rows": pend, "show_in_a3": True,
+                    "a3": f"{len(pend)} row(s) rely on the image readings (Table 2-4, Form 4-C) pending the owner's review"})
     if a5:
         bad = [a for a in a5["activities"] if a["status"] != "OK"]
         for a in bad:
@@ -274,11 +348,45 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
             out.append({"id": "I-A5-FEASIBILITY", "text": "A5 at the status date: " + "; ".join(
                 f"{a['id']} {a['flags'][0].split(' (')[0]}" for a in late) + ". Lead times are PROVISIONAL assumptions "
                 "(A5 drivers)", "owner": "Bid manager", "source": "A5 (automatic)",
-                "rows": sorted({x for a in late for x in a["req_ids"]}), "show_in_a3": True})
+                "rows": sorted({x for a in late for x in a["req_ids"]}), "show_in_a3": True,
+                "a3": "A5 at the status date: " + _ids([f"{a['id']} {a['flags'][0].split(' (')[0]}" for a in sorted(
+                    late, key=lambda a: (-int((re.search(r"by (\d+)", a["status"]) or [0, 0])[1]), a["id"]))], 5) + " (lead times PROVISIONAL)"})
     return out
 
 
 # ---------------------------------------------------------------------------------------------- A1
+
+def _ids(xs: list[str], n: int = 6) -> str:
+    """Ids for an A3 line: all of them when few, otherwise the first n and an explicit count of the rest."""
+    xs = list(xs)
+    if not xs:
+        return "none"
+    return ", ".join(xs[:n]) + (f" and {len(xs) - n} more (a3_detail.html)" if len(xs) > n else "")
+
+
+_SUMMARY_FIG = re.compile(r"\d[\d,]*(?:\.\d+)?%?")
+
+
+def summary_currency(r: dict) -> list[dict]:
+    """A row's requirement summary is stage-neutral text written by a person. When it states a figure that its units
+    printed as issued but no longer print at the validated stage (an addendum changed it: '80,000' -> '60,000'), the
+    summary is out of date. Flagged in A1, A3 and check-register; never rewritten by the program."""
+    val, base = r["validated"].state, r["stages"][0].state
+    norm = lambda t: normalize_latin(t or "").replace(" ", "")  # noqa: E731
+    out = []
+    for e in r["evals"]:
+        row = e["row"]
+        if not in_force(e["stages"][r["validated"].stage]["status"]):
+            continue
+        now = " ".join(norm(val[k].text) + " " + " ".join(norm(v) for v in (val[k].cells or {}).values())
+                       for k in row.units if k in val)
+        then = " ".join(norm(base[k].text) for k in row.units if k in base and base[k].status != "not_issued")
+        for fig in dict.fromkeys(_SUMMARY_FIG.findall(row.requirement)):
+            f = norm(fig)
+            if len(re.sub(r"\D", "", f)) >= 2 and f in then and f not in now:
+                out.append({"row": row.id, "figure": fig})
+    return out
+
 
 def a1_table(r: dict, issues: list[dict]) -> dict:
     val, order = r["validated"].stage, r["order"]
@@ -298,6 +406,7 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
              ("ops_review", "Amendment ops review", 14), ("chain", "Evidence chain (original -> ops)", 50),
              ("issues", "Issues", 20)]
     rows = []
+    summary_stale = summary_currency(r)
     for e in r["evals"]:
         row, stg = e["row"], e["stages"]
         v = stg[val]
@@ -322,10 +431,11 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         rec["dates"] = [f"{d['rule_id']}: {d['planning']['value']} ({d['planning']['key']})" for d in v["dates"]]
         rec["confidence"] = f"{row.confidence}: {row.confidence_reason}"
         rec["transcription"] = v["transcription"]
-        rec["interpretation"] = row.review + (f" by {row.reviewer}" if row.reviewer else " (not reviewed)")
-        rec["ops_review"] = ", ".join(v["ops_review"]) or "n/a"
+        rec["interpretation"] = review.label(r["reviews"][("row", row.id)])
+        rec["ops_review"] = "; ".join(f"{h}: {r['reviews'][('op', h)]['status']}" for h in v["ops"]
+                                      if ("op", h) in r["reviews"]) or "n/a"
         rec["chain"] = v["chain"]
-        rec["issues"] = row.issues
+        rec["issues"] = row.issues + [f"SUMMARY OUT OF DATE: '{x['figure']}'" for x in summary_stale if x["row"] == row.id]
         rows.append(rec)
     dates_rows = []
     for e in r["evals"]:
@@ -338,9 +448,9 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                                    "readings_differ": d["readings_differ"]})
     stages_rows = [{"stage": s.stage, "addendum": s.addendum or "", "issued": s.issued or "", "status": s.status,
                     "ops": len(s.ops), "invalid_ops": sum(1 for x in s.ops if not x.valid),
-                    "ops_review": ", ".join(sorted({x.op.review for x in s.ops})) or "",
+                    "ops_review": ", ".join(f"{k} {n}" for k, n in sorted(_count(
+                        r["reviews"][("op", x.op.id)]["status"] for x in s.ops).items())) or "",
                     "provisions": len(s.coverage),
-                    "outside_slice": sum(1 for c in s.coverage if c["disposition"] == "outside_slice"),
                     "unresolved": sum(1 for c in s.coverage if c["disposition"] in ("unresolved", "UNACCOUNTED")),
                     "validated": s.stage == val or r["order"].index(s.stage) < r["order"].index(val)} for s in r["stages"]]
     asm = r["assumptions"]
@@ -361,11 +471,18 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                          "basis": "the pack declares none (VOL-I 2.4 excludes declared public holidays)", "owner": "Bid manager"}]
     sheet = lambda rows, keys: {"columns": [{"key": k, "header": k.replace("_", " ").capitalize(), "width": w} for k, w in keys],  # noqa: E731
                                 "rows": rows}
+    rc = _count(r["reviews"][("row", e["row"].id)]["status"] for e in r["evals"])
+    oc = _count(v["status"] for (k, _), v in r["reviews"].items() if k == "op")
+    pending = sorted({u["reading"]["region"] for u in r["units"] if (u.get("reading") or {}).get("status") == "pending"
+                      and "region" in u["reading"]})
     return {
-        "title": "A1 Obligations and compliance register — SLICE (Stage 2 first connected version)",
-        "notice": (f"DRAFT. {len(rows)} representative rows, not the full register. Interpretations and amendment ops are "
-                   "PROPOSED by the assistant and not reviewed by a person; image readings are PENDING the owner's review. "
-                   f"Validated state: {val}" + (f"; working state {working} is PARTIAL" if working else "") + "."),
+        "title": "A1 Obligations and compliance register — WORKING DRAFT",
+        "notice": (f"WORKING DRAFT, full register: {len(rows)} rows (review status: "
+                   + ", ".join(f"{k} {n}" for k, n in sorted(rc.items())) + "; amendment ops: "
+                   + ", ".join(f"{k} {n}" for k, n in sorted(oc.items())) + "). Rows and ops count as accepted only with a "
+                   "named person's decision bound to their current content. Image readings pending the owner's review: "
+                   + (", ".join(pending) or "none") + f". Validated state: {val}"
+                   + (f"; working state {working} is PARTIAL" if working else "") + "."),
         "stages": order, "validated_stage": val, "working_stage": working,
         "columns": [{"key": k, "header": h, "width": w} for k, h, w in cols], "rows": rows,
         "sheets": {
@@ -374,9 +491,12 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             "Issues": sheet([{k: i[k] for k in ("id", "text", "owner", "source", "rows")} for i in issues],
                             [("id", 26), ("text", 90), ("owner", 16), ("source", 22), ("rows", 30)]),
             "Stages": sheet(stages_rows, [("stage", 9), ("addendum", 9), ("issued", 11), ("status", 10), ("ops", 6),
-                                          ("invalid_ops", 9), ("ops_review", 12), ("provisions", 10), ("outside_slice", 10),
+                                          ("invalid_ops", 9), ("ops_review", 24), ("provisions", 10),
                                           ("unresolved", 10), ("validated", 9)]),
             "Assumptions": sheet(assumption_rows, [("key", 30), ("value", 14), ("basis", 90), ("owner", 16)]),
+            "Date coverage": sheet([{k: x[k] for k in ("unit", "phrase", "treatment", "by", "sentence")}
+                                    for x in r.get("date_coverage", [])],
+                                   [("unit", 22), ("phrase", 26), ("treatment", 14), ("by", 60), ("sentence", 80)]),
         },
     }
 
@@ -417,6 +537,9 @@ def answers_to_review(r: dict, s: StageResult) -> list[dict]:
     for x in s.ops:
         if x.valid and x.op.type in ("replace_text", "set_value", "set_status", "replace_unit"):
             changed[x.op.target] = x
+        if x.valid and x.op.effect == "renumbers":           # an answer citing a renumbered clause reads differently now
+            for k in x.op.renumber:
+                changed[k] = x
     figures = {}                                   # (label, regex) -> op: a replaced figure WITH its unit
     for t, x in changed.items():
         for label, rx in replaced_figures(x, s.state):
@@ -441,11 +564,11 @@ def answers_to_review(r: dict, s: StageResult) -> list[dict]:
 def a2(r: dict) -> dict:
     val = r["validated"].stage
     stages = r["stages"]
-    md = ["# A2 Addendum reconciliation — Stage 2 first connected version", "",
+    md = ["# A2 Addendum reconciliation — WORKING DRAFT", "",
           f"**DRAFT.** Ops are PROPOSED (not reviewed by a person). Validated state: **{val}**"
           + (f"; working state **{r['working'].stage}** is PARTIAL and does not replace it." if r["working"] else "."),
           "Every provision of every addendum is accounted for below: by an op, as content of an op, as no effect "
-          "(with the reason), as OUTSIDE THE SLICE, or as UNRESOLVED.", ""]
+          "(with the reason), or as UNRESOLVED (a person must decide it).", ""]
     changes, provs, moved, answers = [], [], [], []
     for i, s in enumerate(stages[1:], 1):
         prev = stages[i - 1]
@@ -480,9 +603,9 @@ def a2(r: dict) -> dict:
             pu = s.state.get(o.provision)
             bad = "; ".join(c["id"] + ": " + c["detail"] for c in x.checks if not c["ok"])
             md.append(f"| {o.id} | {o.type} | {tgt} | {ch.replace('|', '/')} | {o.provision} p{pu.pages[0] if pu and pu.pages else '?'} | "
-                      f"{'yes' if x.valid else 'NO — ' + bad.replace('|', '/')} | {o.review} ({o.origin}) |")
+                      f"{'yes' if x.valid else 'NO — ' + bad.replace('|', '/')} | {review.label(r['reviews'][('op', o.id)])} ({o.origin}) |")
             changes.append({"stage": s.stage, "op": o.id, "type": o.type, "target": tgt, "change": ch, "provision": o.provision,
-                            "valid": x.valid, "failed_checks": bad, "review": o.review, "origin": o.origin,
+                            "valid": x.valid, "failed_checks": bad, "review": review.label(r["reviews"][("op", o.id)]), "origin": o.origin,
                             "issue": o.issue or ""})
         md += ["", "### Register rows that move", "", "| Row | Before | After | Why |", "|---|---|---|---|"]
         for e in r["evals"]:
@@ -518,7 +641,7 @@ def a2(r: dict) -> dict:
             md += [f"- `{c['provision']}`: {_short(c['text'], 160)}" for c in nb]
         md += ["", "### Provision coverage", "", "| Provision | Page | Disposition | Accounted by | Reason |", "|---|---|---|---|---|"]
         for c in s.coverage:
-            disp = c["disposition"].upper() if c["disposition"] in ("outside_slice", "unresolved", "UNACCOUNTED") else c["disposition"]
+            disp = c["disposition"].upper() if c["disposition"] in ("unresolved", "UNACCOUNTED") else c["disposition"]
             md.append(f"| {c['provision']} | {c['page']} | {disp} | {', '.join(c['accounted_by'])} | {c['reason'].replace('|', '/')} |")
             provs.append({"stage": s.stage, **{k: c[k] for k in ("provision", "page", "disposition", "reason")},
                           "accounted_by": c["accounted_by"], "text": c["text"]})
@@ -549,6 +672,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             for rid in a["req_ids"]:
                 infeasible.setdefault(rid, []).append(a["id"])
     explicit, score, none_stated = [], [], []
+    summary_currency_cache = summary_currency(r)
     for e in r["evals"]:
         row, ev = e["row"], e["stages"][v]
         if not in_force(ev["status"]):
@@ -562,6 +686,17 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             flags.append("STALE")
         if row.id in infeasible:
             flags.append("INFEASIBLE: " + ", ".join(infeasible[row.id]))
+        narrowed = []                    # clarifications that add to, narrow or renumber the row's units
+        for uid in row.units:
+            for oid in (val.state[uid].annotations if uid in val.state else []):
+                x = r["register"]._op_by_id(oid)
+                if x is not None and x.op.effect in ("adds_obligation", "interprets", "renumbers") and oid not in narrowed:
+                    narrowed.append(oid)
+        if narrowed:
+            flags.append("see " + ", ".join(narrowed))
+        stale_fig = [x["figure"] for x in summary_currency_cache if x["row"] == row.id]
+        if stale_fig:
+            flags.append("SUMMARY OUT OF DATE: " + ", ".join(stale_fig) + " no longer in the text; the quote governs")
         if ev["status"].startswith("NEW"):
             flags.append("new by addendum")
         elif ev["status"].startswith("REINSTATED"):
@@ -569,15 +704,15 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         elif ev["status"].startswith("AMENDED") or "as amended" in ev["status"]:
             flags.append("amended by addendum")
         csrc = (ev.get("consequence_source") or {}).get("latest")
-        base = {"id": row.id, "text": row.requirement, "short": _short(row.requirement, 92), "confidence": row.confidence,
+        base = {"id": row.id, "text": _a3_text(row.requirement, it.quote if it else ""), "confidence": row.confidence,
                 "flags": flags, "row_source": (ev.get("source") or {}).get("latest", "")}
         if isinstance(cons, Consequence) and cons.cls in BID_OUT:
             cu = val.state.get(cons.unit)
             explicit.append({**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote,
-                             "gloss": cons.gloss, "source": csrc or _doc_ref(cons.unit, cu.pages if cu else [])})
+                             "gloss": cons.gloss, "source": csrc or _doc_ref(cons.unit, cu.pages if cu else [], cu.number if cu else None)})
         elif isinstance(cons, Consequence) and cons.cls == "score_elimination":
             score.append({**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote,
-                          "source": csrc or _doc_ref(cons.unit, val.state[cons.unit].pages)})
+                          "source": csrc or _doc_ref(cons.unit, val.state[cons.unit].pages, val.state[cons.unit].number)})
         elif not isinstance(cons, Consequence) and row.assessment == "pass_fail":
             none_stated.append({**base, "consequence": "", "source": base["row_source"]})
     shown = [i for i in issues if i["show_in_a3"]]
@@ -585,7 +720,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     unresolved = [i for i in shown if i not in missing]
     pdd = next((d["anchor_value"] for e in r["evals"] for d in e["stages"][v]["dates"] if d["anchor"] == "PDD"), None)
     working = r["working"]
-    compact = lambda x: {**x, "text": x["short"], "compact": True}  # noqa: E731
+    compact = lambda x: {**x, "compact": True}  # noqa: E731  (the consequence quote is on a3_detail.html; nothing cut)
     sections = []
     for cls, title in A3_CLASS_ORDER:
         items = [compact(x) for x in explicit if x["cls"] == cls]
@@ -605,9 +740,9 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                   "review. Explicit wording only. Quotations, sources and flags for every line: a3_detail.html.",
         "sections": sections,
         "missing": {"heading": f"Referenced but not supplied — impact: {len(missing)}",
-                    "items": [{"id": i["id"], "text": _short(i["text"], 205), "owner": i["owner"]} for i in missing]},
+                    "items": [{"id": i["id"], "text": i.get("a3") or i["text"], "owner": i["owner"]} for i in missing]},
         "unresolved": {"heading": f"Could not resolve — kept with people: {len(unresolved)}",
-                       "items": [{"id": i["id"], "text": _short(i["text"], 160), "owner": i["owner"]} for i in unresolved]},
+                       "items": [{"id": i["id"], "text": i.get("a3") or i["text"], "owner": i["owner"]} for i in unresolved]},
         "footer": "tenderpack: evidence build + curation + config/assumptions.yaml. Each id links to a3_detail.html "
                   "(quotes, sources, flags) and traces to A1 and A2.",
         "explicit": explicit, "score": score, "none_stated": none_stated,
@@ -615,6 +750,36 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         "explicit_ids": [x["id"] for x in explicit],
         "issues_detail": [{"id": i["id"], "text": i["text"], "owner": i["owner"], "rows": i["rows"]} for i in shown],
     }
+
+
+def condense_a3(a3d: dict, level: int) -> dict:
+    """What goes on the one page when the full text does not fit at a readable size (C43). The explicit
+    consequences are never condensed. Level 1: issue lines become their linked ids and owners. Level 2: the
+    no-consequence list becomes a count. Each step is stated on the page; the full text is on a3_detail.html."""
+    if level == 0:
+        return a3d
+    page = {**a3d, "sections": [dict(s) for s in a3d["sections"]]}
+    note = "condensed to fit one page: the text of each item is on a3_detail.html"
+    for key in ("missing", "unresolved"):
+        sec = a3d[key]
+        page[key] = {"heading": sec["heading"], "note": note,
+                     "ids": [i["id"] for i in sec["items"]], "owners": {i["id"]: i.get("owner") for i in sec["items"]}}
+    if level >= 2:
+        for sec in page["sections"]:
+            if sec.get("ids"):
+                sec["note"], sec["ids"] = f"{len(sec['ids'])} rows, listed on a3_detail.html ({note})", []
+    page["subtitle"] = a3d["subtitle"] + f" Condensed (level {level}) to fit one page."
+    return page
+
+
+_FIG = re.compile(r"\d+(?:[.,]\d+)*%?")
+
+
+def _a3_text(requirement: str, quote: str) -> str:
+    """The A3 line: the requirement in full and, when the requirement does not state every figure of the words the
+    current interpretation relies on (a threshold, an amount, a period), those words verbatim. Never truncated."""
+    missing = [f for f in _FIG.findall(quote or "") if f not in requirement]
+    return requirement + (f" — “{quote}”" if missing else "")
 
 
 def a3_detail_html(a3d: dict) -> str:
@@ -676,12 +841,16 @@ def write(r: dict, out: Path) -> dict:
     main = progs.get(val)
     issues = collect_issues(r, main)
     a3d = a3(r, issues, main)
-    a3_fit: dict
-    try:
-        fit = write_a3_pdf(a3d, out / "a3" / "a3.pdf")
-        a3_fit = dict(fit, explicit_ids=a3d["explicit_ids"])
-    except A3OverflowError as e:
-        a3_fit = {"pages": 0, "error": str(e), "explicit_ids": a3d["explicit_ids"]}
+    a3_fit: dict = {}
+    for level in (0, 1, 2):
+        page = condense_a3(a3d, level)
+        try:
+            fit = write_a3_pdf(page, out / "a3" / "a3.pdf")
+            a3_fit = dict(fit, explicit_ids=a3d["explicit_ids"], condensed=level)
+            a3d["condensed"] = level
+            break
+        except A3OverflowError as e:
+            a3_fit = {"pages": 0, "error": str(e), "explicit_ids": a3d["explicit_ids"], "condensed": level}
     dump_json(a3d, out / "a3" / "a3.json")
     write_text(out / "a3" / "a3_detail.html", a3_detail_html(a3d))
     a1d = a1_table(r, issues)
@@ -714,6 +883,8 @@ def write(r: dict, out: Path) -> dict:
     if r["working"] and r["working"].stage in progs:
         dump_json(programme.stage_planner(r, r["working"].stage)(r["assumptions"]),
                   out / "a5" / "working" / f"{r['working'].stage}.json")
+    from .batches import write_batches
+    write_batches(r, out / "review", r["evidence_dir"])
     for a, f in r["drafted"].items():
         write_text(out / "drafted" / f"{a}.yaml",
                    f"# DRAFTED by tenderpack.draft for this build; every op PROPOSED; not curated.\n"
@@ -739,10 +910,10 @@ def write(r: dict, out: Path) -> dict:
     readme += [f"- **{b['kind']}**: {b['detail']}" for b in blockers] or ["- nothing"]
     readme += ["",
               "| Output | Files |", "|---|---|",
-              "| A1 register slice, status at each stage | a1/a1.xlsx, a1/a1.csv, a1/a1.json |",
+              "| A1 compliance register (every row), status at each stage, review decisions | a1/a1.xlsx, a1/a1.csv, a1/a1.json |",
               "| A2 reconciliation: changes, rows that move, answers to review, provision coverage, evidence chains | a2/a2.md, a2/*.csv, a2/*.json |",
-              "| A3 one-page draft | a3/a3.pdf, a3/a3.json |",
-              "| A5 programme, marshalling plan, replan deltas | a5/programme.*, a5/marshalling.*, a5/replan_deltas.*, a5/stages/*.json |",
+              "| A3 one-page disqualification sheet, with linked detail | a3/a3.pdf, a3/a3_detail.html, a3/a3.json |",
+              "| A5 programme, marshalling plan, documents, resources, infeasibility drivers, scenarios, replan deltas | a5/*.csv, a5/*.json, a5/scenarios/, a5/stages/ |",
               "| Engine results per stage | stages.json |", "| Checks | checks.json |", "",
               "## Checks", "", "| Check | Result | Detail |", "|---|---|---|"]
     readme += [f"| {c['id']} | {'pass' if c['ok'] else 'FAIL'} | {c['detail'].replace('|', '/')} |" for c in checks]
@@ -861,12 +1032,26 @@ def release_blockers(r: dict) -> list[dict]:
                       for u in r["units"] if (u.get("reading") or {}).get("status") == "pending"})
     if pending:
         out.append({"kind": "approval", "detail": f"image readings pending the owner's review: {', '.join(pending)}"})
-    proposed_rows = [e["row"].id for e in r["evals"] if e["row"].review != "accepted"]
-    if proposed_rows:
-        out.append({"kind": "approval", "detail": f"{len(proposed_rows)} of {len(r['evals'])} register rows not accepted by a person"})
-    proposed_ops = [x.op.id for s in r["stages"][1:] for x in s.ops if x.op.review != "accepted"]
-    if proposed_ops:
-        out.append({"kind": "approval", "detail": f"{len(proposed_ops)} amendment op(s) not accepted by a person"})
+    for kind, what, ids in (("row", "register rows", [e["row"].id for e in r["evals"]]),
+                            ("op", "amendment op(s)", [x.op.id for s in r["stages"][1:] for x in s.ops])):
+        st = [r["reviews"][(kind, i)] for i in ids]
+        open_ = [i for i, s in zip(ids, st) if s["status"] != "accepted"]
+        if not open_:
+            continue
+        c = _count(s["status"] for s in st if s["status"] != "accepted")
+        flags = sum(1 for s in st if s.get("flag_only"))
+        out.append({"kind": "approval", "detail": f"{len(open_)} of {len(ids)} {what} not accepted by a person (a named "
+                    "decision bound to the current content): " + ", ".join(f"{k} {n}" for k, n in sorted(c.items()))
+                    + (f"; {flags} carry the file flag 'accepted' with no bound decision (not counted)" if flags else "")
+                    + ("; rejected: " + ", ".join(i for i, s in zip(ids, st) if s["status"] == "rejected")
+                       if c.get("rejected") else "")})
+    return out
+
+
+def _count(values) -> dict[str, int]:
+    out: dict[str, int] = {}
+    for v in values:
+        out[v] = out.get(v, 0) + 1
     return out
 
 
@@ -905,11 +1090,42 @@ def register_findings(r: dict) -> list[dict]:
     for h in c15:
         out.append({"kind": "C15", "where": h["unit"], "detail": f"consequence word '{h['word']}' ({h['lang']}) not linked "
                     f"to a row's consequence or a consequence_note: {h['sentence'][:140]}"})
+    for t in r.get("trace", []):
+        out.append({"kind": "C46", "where": t["op"], "detail": f"[{t['output']}] {t['detail']}"})
+    for x in summary_currency(r):
+        out.append({"kind": "summary", "where": x["row"], "detail": f"the requirement summary states '{x['figure']}', which "
+                    "the effective text no longer contains: rewrite the summary (or make it stage-neutral)"})
+    for x in r.get("date_coverage", []):
+        if x["treatment"] == "UNCOVERED":
+            out.append({"kind": "C30", "where": x["unit"], "detail": f"date/period phrase '{x['phrase']}' accounted for by no "
+                        f"rule, anchor, quote, date note or disposition: {x['sentence'][:140]}"})
+    for i in r.get("ids", {}).get("new", []):
+        out.append({"kind": "C12", "where": i, "detail": "row id not yet recorded in the id ledger (check-register --update-ids)"})
     return out
 
 
-def check_register(evidence_dir: Path, pack_path: Path, root: Path, doc: str | None = None) -> int:
+def update_ids(r: dict) -> int:
+    """C12: record every current row id in the ledger (a curation step, not a review). Ids are never removed here; a
+    row taken out of the register must be entered under `withdrawn:` with a reason, by hand."""
+    path = r["ids"]["path"]
+    data = (load_yaml(path) or {}) if path.exists() else {}
+    ids = dict(data.get("ids") or {})
+    new = [e["row"].id for e in r["evals"] if e["row"].id not in ids]
+    for i in new:
+        ids[i] = {"first_listed": date.today().isoformat()}
+    write_text(path, "# Every A1 row id ever listed (C12). Maintained by `tenderpack check-register --update-ids`; a row\n"
+                     "# removed from the register must be listed under `withdrawn:` with the reason, so ids never vanish.\n"
+               + yaml.safe_dump({"ids": dict(sorted(ids.items())), "withdrawn": data.get("withdrawn") or {}},
+                                allow_unicode=True, sort_keys=False))
+    print(f"recorded {len(new)} new row id(s) in {path}")
+    return 0
+
+
+def check_register(evidence_dir: Path, pack_path: Path, root: Path, doc: str | None = None, update: bool = False) -> int:
     r = run(Path(evidence_dir), Path(pack_path), Path(root), lenient=True)
+    if update:
+        update_ids(r)
+        r = run(Path(evidence_dir), Path(pack_path), Path(root), lenient=True)
     found = register_findings(r)
     def mine(w: str) -> bool:                                   # 'VOL-I' must not match 'VOL-II' or 'VOL-IV'
         return w == doc or w.startswith(doc + ":") or w.startswith(doc + "-")

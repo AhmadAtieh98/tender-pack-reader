@@ -45,15 +45,16 @@ def test_release_blockers_name_each_kind(real):
 def test_the_gate_opens_only_when_everything_is_reviewed(real):
     """In memory only: the gate's own logic, with every review simulated. Nothing is written."""
     import copy
+    from tenderpack import review
     r = copy.deepcopy(real)
     assert stage2.release_blockers(r)
     for e in r["evals"]:
-        e["row"].review = "accepted"
         for ev in e["stages"].values():
             ev["stale"] = []
-    for s in r["stages"][1:]:
-        for x in s.ops:
-            x.op.review = "accepted"
+    # session 06: acceptance is a named decision bound to each item's current fingerprint (flags do not count)
+    decisions = [{"kind": k, "item": i, "decision": "accept", "reviewer": "Fixture Test Reviewer", "fingerprint": v["fingerprint"]}
+                 for (k, i), v in r["reviews"].items()]
+    r["reviews"] = review.compute(r, decisions)
     assert {b["kind"] for b in stage2.release_blockers(r)} == {"approval"}       # the readings are still pending
     for u in r["units"]:
         if (u.get("reading") or {}).get("status") == "pending":

@@ -14,14 +14,18 @@ Operation types (a small closed set; PLAN §4.4):
   replace_unit   a table or form replaced by one printed in the addendum (rows/fields follow by key)
   insert_unit    a new form (group of addendum units) and, optionally, a new list item after an anchor
   annotate       a clarification answer or rule linked to units: effect none | confirms | interprets |
-                 adds_obligation (rules may name a `subject`; the units mentioning it are listed)
+                 adds_obligation | renumbers (with `renumber: {unit: new number}`, each number printed in the
+                 provision; ids keep their issued numbers and outputs cite "10.6 (issued as 10.5)"). Rules may name
+                 a `subject`; the units mentioning it are listed
 Dispositions for provisions that carry no op: no_effect (reason) or unresolved (blocks validation). Every
-provision is treated: since Stage 3 there is no "outside the slice".
+provision is treated (an op, op content or a disposition).
 
 Checks per op (an invalid op is listed and changes NOTHING: the state, including history, annotations and
 the unit order, is restored to what it was before the op; ops are applied as transactions):
   C21 the op's quoted words (old/new/new_text) occur in its provision; a set_value's new value is the figure
-      the provision states (with the row's unit where it has one) and its column is named in the provision
+      the provision states (with the row's unit where it has one) and its column is named in the provision;
+      an inserted list item's WHOLE text is printed by the provision, the new group or a named unit of the
+      same addendum (never a unit of the pack, never a supported quotation with words added around it)
   C22 the target exists and its state allows the operation; the declared target is the one the
       provision (or its section heading) cites (citations.verify_target); claims such as
       "deleted by Addendum No. 1 Section 4" agree with the ledger; replacement and inserted content is
@@ -77,7 +81,8 @@ class Op(_Strict):
     replacement: str | None = None                             # replace_unit: group in the addendum
     new_group: str | None = None                               # insert_unit: group in the addendum
     anchor: str | None = None                                  # insert_unit list item: insert after this unit
-    effect: Literal["none", "confirms", "interprets", "adds_obligation"] | None = None
+    effect: Literal["none", "confirms", "interprets", "adds_obligation", "renumbers"] | None = None
+    renumber: dict[str, str] = Field(default_factory=dict)     # annotate/renumbers: unit id -> its new printed number
     subject: str | None = None                                 # annotate rule: phrase whose mentions are listed
     covers: list[str] = Field(default_factory=list)            # provisions that are content of this op
     claims: list[dict] = Field(default_factory=list)           # [{unit, status, by_provision_prefix}]
@@ -126,6 +131,7 @@ class UState:
     parent: str | None = None
     reading_subject: str | None = None  # review-subject fingerprint of the image reading (content + uncertainties + evidence)
     label: str | None = None
+    number: str | None = None                                    # its printed number after a renumbering op, if any
     history: list[str] = field(default_factory=list)            # op ids that changed this unit
     annotations: list[str] = field(default_factory=list)        # op ids that annotate it
     superseded_by: str | None = None
@@ -166,6 +172,39 @@ def _contains(text: str, phrase: str) -> int:
 
 def _quoted_in(provision_text: str, phrase: str) -> bool:
     return normalize_latin(phrase).replace("'", "") in normalize_latin(provision_text).replace("'", "")
+
+
+def _evidence_form(t: str) -> str:
+    return " ".join(normalize_latin(t or "").replace("'", "").split()).lower()
+
+
+def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], addendum: str) -> list[str]:
+    """C47, independent of the op types: every word a unit of the pack gains between two consecutive stages
+    (a new unit, words inserted or substituted in its text, a new cell value) must be printed somewhere in that
+    stage's addendum. Returns 'unit: added words' for each run of added words the addendum does not print."""
+    import difflib
+    evidence = " \n ".join(_evidence_form(u.text) for u in cur.values() if u.doc == addendum)
+    out = []
+    for k, u in cur.items():
+        if u.doc == addendum:
+            continue
+        p = prev.get(k)
+        runs: list[str] = []
+        if p is None:
+            runs = [u.text or ""]
+        else:
+            if (u.text or "") != (p.text or ""):
+                a, b = (p.text or "").split(), (u.text or "").split()
+                for tag, _, _, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
+                    if tag in ("insert", "replace"):
+                        runs.append(" ".join(b[j1:j2]))
+            if u.cells and p.cells:
+                runs += [v for c, v in u.cells.items() if v and v != p.cells.get(c)]
+        for run in runs:
+            w = _evidence_form(run).strip(" ,;:.")
+            if w and w not in evidence:
+                out.append(f"{k}: '{run[:160]}'")
+    return out
 
 
 # ---------------------------------------------------------------------------------------------- results
@@ -343,6 +382,16 @@ class Engine:
                 if not check("C22", all(cited_ok), "every annotated target is cited by the provision"
                              if all(cited_ok) else f"not cited: {[t for t, ok in zip(op.targets, cited_ok) if not ok]}"):
                     return r
+            if op.effect == "renumbers":
+                bad = [k for k in op.renumber if k not in op.targets or k not in st]
+                unstated = [v for v in op.renumber.values() if not re.search(r"(?<![\d.])" + re.escape(v) + r"(?![\d])", ptext)]
+                if not check("C21", op.renumber and not bad and not unstated,
+                             f"renumbering {op.renumber} stated in {op.provision}" if op.renumber and not bad and not unstated
+                             else f"renumbering not supported by the provision: targets {bad}, numbers not printed {unstated}"):
+                    return r
+                for k, v in op.renumber.items():
+                    st[k].number = v
+                r.details["renumbered"] = dict(op.renumber)
             for t in op.targets:
                 for k in ([t] if t in st else group_members(st, t)):
                     st[k].annotations.append(op.id)
@@ -394,6 +443,11 @@ class Engine:
                              and _contains(new_text, op.new) >= 1, "post-condition: old removed once, new present"):
                     return r
                 r.details["before"], t.text = t.text, new_text
+                if t.cells:                  # a table row: the cell that holds the words changes with the text
+                    hit = [c for c, v in t.cells.items() if v and _contains(v, op.old) == 1]
+                    if len(hit) == 1:
+                        r.details["cell"] = hit[0]
+                        t.cells[hit[0]] = _replace_once(t.cells[hit[0]], op.old, op.new)
             elif op.type == "append_text":
                 if not check("C22", t.status == "active", f"target is {t.status}"):
                     return r
@@ -409,7 +463,9 @@ class Engine:
                              else f"the provision does not name the column '{op.column}'"):
                     return r
                 unit = next((v for c, v in t.cells.items() if c.lower() == "unit" and v and v != "-"), None)
-                ok_value = _states_value(ptext, op.new or "", unit)
+                if not re.fullmatch(r"[<>≤≥]?\s*-?\d[\d,]*(?:\.\d+)?(?:\s*[-–]\s*\d[\d,]*(?:\.\d+)?)?", (op.new or "").strip()):
+                    unit = None              # a text cell (e.g. a basis of assessment) is quoted as it stands, with no unit
+                ok_value = _states_value(ptext, op.new or "", unit) if unit else _quoted_in(ptext, op.new or "")
                 if not check("C21", ok_value, f"the provision states the new value '{op.new}'" + (f" {unit}" if unit else "")
                              if ok_value else f"the provision does not state the new value '{op.new}'" + (f" {unit}" if unit else "")):
                     return r
@@ -480,9 +536,22 @@ class Engine:
                 a = st.get(op.anchor)
                 if not check("C22", a is not None and a.status == "active", f"anchor {op.anchor} exists and is active"):
                     return r
+                if op.new_text_from and not check(
+                        "C21", op.new_text_from in st and st[op.new_text_from].doc == addendum,
+                        f"the inserted text is taken from {op.new_text_from}, a unit of {addendum}"
+                        if op.new_text_from in st and st[op.new_text_from].doc == addendum
+                        else f"{op.new_text_from} is not a unit of {addendum}: not evidence of what {addendum} inserts"):
+                    return r
                 text = op.new_text or (st[op.new_text_from].text if op.new_text_from in st else "")
                 if not check("C22", bool(text), "the inserted item has text (quoted or taken from a named unit)"):
                     return r
+                # evidence for the WHOLE inserted text: printed in full by the provision, the new group or the named unit
+                evid = [op.provision] + content + ([op.new_text_from] if op.new_text_from else [])
+                where = next((k for k in evid if k in st and st[k].doc == addendum and _quoted_in(st[k].text, text)), None)
+                if not check("C21", where is not None, f"the whole inserted text is printed in {where}" if where
+                             else f"the inserted text is not printed in full by {addendum}: '{text[:120]}'"):
+                    return r
+                r.details["evidence"] = where
                 new_id = f"{op.anchor}+{addendum}"
                 if not check("C22", new_id not in st, f"{new_id} is a new id"):
                     return r

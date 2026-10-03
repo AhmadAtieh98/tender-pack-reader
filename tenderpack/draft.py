@@ -8,8 +8,10 @@ each recognised change becomes its own op, and any remaining text that states so
 existing addenda (whose op files were then curated) and for any future addendum.
 
 Phrasings recognised (taken from the pack's addenda; extend with new phrasings, never with outcomes):
-  "<Volume X Clause N> is amended by deleting '<old>' and substituting '<new>'"          replace_text
-  "In <Volume X Clause N>, '<old>' is deleted and '<new>' is substituted"                  replace_text
+  "<Volume X Clause N>[, as amended by ...,] is [further] amended by deleting '<old>' and substituting '<new>'"
+                                                                                          replace_text
+  "In [footnote N to] <Volume X Clause N>[, as reinstated by ...,] '<old>' is deleted and '<new>' is substituted"
+                                                                                          replace_text
   "<Volume X Clause N> is amended by adding at the end: '<text>'"                          append_text
   "<Volume X Clause N> (...) is deleted in its entirety"                                   set_status deleted
   "<Volume X Clause N>, deleted by ..., is reinstated in the following amended form: '..'" set_status reinstated
@@ -23,7 +25,7 @@ Phrasings recognised (taken from the pack's addenda; extend with new phrasings, 
   "The <thing> in <Volume X Clause N> is unchanged at <words>"                              annotate confirms
   "Bidders shall acknowledge receipt in Form F"                                            annotate adds_obligation
   "<Volume X Clause N> is deleted and replaced by the following: 'N <text>'"                replace_text (whole clause)
-  "The following Clause N is added to Volume X after Clause M: 'N <text>'"                  insert_unit after Clause M
+  "The following [new] Clause N is added to / inserted in Volume X after Clause M: 'N <text>'"  insert_unit after Clause M
   the addendum's own cover date line, recitals, and minutes it declares non-binding        no_effect
 """
 from __future__ import annotations
@@ -73,10 +75,16 @@ def _matches(t: str, p: str, st: dict[str, UState], order: list[str], provs: lis
     def add(m, covered=(), **kw):
         out.append((m.start(), m.end(), kw, list(covered)))
 
-    for m in re.finditer(r"(Volume \S+ Clause [\d.]+) is amended by deleting " + Q + " and substituting " + Q, t):
+    # session 06 live fix (blind rehearsal): a citation may carry a qualifier ("as amended by Addendum No. 1 Section
+    # 2.1", "as reinstated by ...") and a change may be "further" amended; a footnote may be the target
+    qual = r"(?:, as (?:further )?(?:amended|reinstated|corrected) by [^,‘'\"]+?)?"
+    for m in re.finditer(r"(Volume \S+ Clause [\d.]+)" + qual + r",? is (?:further )?amended by deleting " + Q + " and substituting " + Q, t):
         add(m, type="replace_text", target=_target(m.group(1)), old=m.group(2), new=m.group(3))
-    for m in re.finditer(r"\bIn (Volume \S+ (?:Clause|Table) [\d.-]+), " + Q + " is deleted and " + Q + " is substituted", t, I):
-        add(m, type="replace_text", target=_target(m.group(1)) or _target(m.group(1), "table"), old=m.group(2), new=m.group(3))
+    for m in re.finditer(r"\bIn ((?:footnote \d+ to )?Volume \S+ (?:Clause|Table) [\d.-]+)" + qual + ", " + Q
+                         + " is deleted and " + Q + " is substituted", t, I):
+        tgt = (_target(m.group(1), "footnote") if m.group(1).lower().startswith("footnote") else None) \
+            or _target(m.group(1)) or _target(m.group(1), "table")
+        add(m, type="replace_text", target=tgt, old=m.group(2), new=m.group(3))
     for m in re.finditer(r"(Volume \S+ Clause [\d.]+) is amended by adding at the end: " + Q + r"\s*$", t):
         add(m, type="append_text", target=_target(m.group(1)), new=m.group(2))
     for m in re.finditer(r"(Volume \S+ Clause [\d.]+)(?: \([^)]*\))? is deleted in its entirety", t):
@@ -135,7 +143,8 @@ def _matches(t: str, p: str, st: dict[str, UState], order: list[str], provs: lis
             add(m, type="replace_text", target=target, old=st[target].text, old_resolved="matched_in_target", new=new_text,
                 issue="the whole clause is replaced; compare the old and new text for anything dropped")
     # a new clause inserted after an existing one (session 05 rehearsal: unseen change type)
-    for m in re.finditer(r"The following Clause ([\d.]+) is added to (Volume \S+) after Clause ([\d.]+): " + Q + r"\s*$", t):
+    for m in re.finditer(r"The following (?:new )?Clause ([\d.]+) is (?:added to|inserted in) (Volume \S+) after Clause ([\d.]+): "
+                         + Q + r"\s*$", t):
         anchor = _target(f"{m.group(2)} Clause {m.group(3)}")
         new_text = re.sub(r"^" + re.escape(m.group(1)) + r"\s+", "", m.group(4)).strip()
         add(m, type="insert_unit", anchor=anchor, new_text=new_text,
@@ -153,13 +162,32 @@ def _matches(t: str, p: str, st: dict[str, UState], order: list[str], provs: lis
     return kept
 
 
-_BENIGN = re.compile(r"\b(?:is|are|remains?) unchanged\b|^all other terms\b|^this addendum (?:amends|forms part|is issued)\b"
-                     r"|\b(?:remain|remains) unchanged\.?$", re.I)
+# A sentence is harmless only if it is, as a WHOLE, a statement that nothing changes or that the addendum is part
+# of the RFP Documents (or, in cover text only, the addendum's summary of itself). Any exception, qualifier or
+# obligation in it ("... unchanged except that each bidder shall ...") makes it substantive: it is left unresolved.
+_BENIGN_WHOLE = [
+    re.compile(r"[\w\s,()'’\-:/.]*?\b(?:is|are|remains?|shall remain) unchanged(?: at [^;]+?)?\.?", re.I),
+    re.compile(r"this addendum (?:forms part of|is issued (?:under|pursuant to|in accordance with)|takes precedence)[^;]*?\.?",
+               re.I),
+]
+_COVER_SUMMARY = re.compile(r"this addendum (?:amends|adds|deletes|reissues|publishes|responds|corrects|clarifies|withdraws|"
+                            r"replaces|confirms)\b[^;]*?\.?", re.I)
+_QUALIFIER = re.compile(r"\b(?:except|save|provided|unless|subject to|other than|but|however|notwithstanding|apart from|"
+                        r"exception|instead|in addition|additionally|shall|must|required|mandatory|non-responsive|"
+                        r"reject\w*|disqualif\w*|deemed)\b", re.I)
 _FILLER = {"and", "or", "also", "further", "then", "in", "addition", "the", "following"}
 
 
-def _remainder(t: str, spans: list[tuple[int, int]]) -> str:
-    """Provision text no op accounts for, minus statements that nothing changes and connecting words."""
+def _benign(sentence: str, cover: bool = False) -> bool:
+    s = sentence.strip(" ,;")
+    if not s or _QUALIFIER.search(re.sub(r"\bshall remain unchanged\b", "", s, flags=re.I)):
+        return False
+    pats = _BENIGN_WHOLE + ([_COVER_SUMMARY] if cover else [])
+    return any(p.fullmatch(s) for p in pats)
+
+
+def _remainder(t: str, spans: list[tuple[int, int]], cover: bool = False) -> str:
+    """Provision text no op accounts for, minus whole sentences that state nothing changes and connecting words."""
     keep, pos = [], 0
     for a, b in spans:
         keep.append(t[pos:a])
@@ -170,7 +198,7 @@ def _remainder(t: str, spans: list[tuple[int, int]]) -> str:
     for chunk in "".join(keep).split("|"):
         for sent in re.split(r"(?<=[.;])\s+", chunk):
             words = re.findall(r"[A-Za-z0-9']+", sent)
-            if not words or all(w.lower() in _FILLER for w in words) or _BENIGN.search(sent.strip()):
+            if not words or all(w.lower() in _FILLER for w in words) or _benign(sent, cover):
                 continue
             rest.append(sent.strip(" ,;"))
     return " ".join(rest).strip()
@@ -202,7 +230,7 @@ def draft(units: list[dict], addendum: str, prepared_by: str = "pattern drafter 
                 ops.append(Op(id=oid if len(found) == 1 else f"{oid}({chr(97 + i)})", provision=p, origin="pattern",
                               review="proposed", **kw))
                 covered.update(cov)
-            rest = _remainder(t, [(a, b) for a, b, _, _ in found])
+            rest = _remainder(t, [(a, b) for a, b, _, _ in found], cover=p.startswith(f"{addendum}:cover/"))
             if rest:
                 disp.append(Disposition(provision=p, disposition="unresolved", origin="pattern",
                                         reason=f"text not covered by any op: '{rest[:240]}'",
@@ -213,8 +241,15 @@ def draft(units: list[dict], addendum: str, prepared_by: str = "pattern drafter 
             disp.append(Disposition(provision=p, disposition="no_effect", origin="pattern",
                                     reason="the addendum's issue date line (used as the stage date)"))
         elif re.search(r"RECITALS", head) or p.startswith(f"{addendum}:cover/"):
-            disp.append(Disposition(provision=p, disposition="no_effect", origin="pattern",
-                                    reason="recital or cover text; changes nothing by itself"))
+            rest = _remainder(t, [], cover=True)
+            if rest and (_QUALIFIER.search(rest) or re.search(r"\b(?:amended|deleted|substituted|replaced|added|inserted|"
+                                                              r"extended|reduced|increased)\b", rest, re.I)):
+                disp.append(Disposition(provision=p, disposition="unresolved", origin="pattern",
+                                        reason=f"cover or recital text that states an obligation, exception or change: "
+                                               f"'{rest[:240]}'", candidates=[c.target for c in citations(rest)]))
+            else:
+                disp.append(Disposition(provision=p, disposition="no_effect", origin="pattern",
+                                        reason="recital or cover text; changes nothing by itself"))
         elif any(p.startswith(g) for g in nonbinding):
             src = next(v for g, v in nonbinding.items() if p.startswith(g))
             disp.append(Disposition(provision=p, disposition="no_effect", origin="pattern",

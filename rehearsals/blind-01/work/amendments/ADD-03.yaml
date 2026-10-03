@@ -1,0 +1,77 @@
+# Amendment operations for ADD-03 of BLIND REHEARSAL 01 (an independently written synthetic Addendum No. 3; not tender
+# content). origin: pattern = written by tenderpack.draft (after the session 06 live fix); origin: assistant = written by
+# the assistant acting as the live-session curator. Every op is PROPOSED: decisions are made only with
+# `tenderpack accept|reject` by a named person. Written without sight of the sealed answer key.
+addendum: ADD-03
+issued_from: ADD-03:cover/para1
+prepared_by: 'blind rehearsal 01 curation (session 06): pattern drafter + assistant as curator; every op PROPOSED'
+method: tenderpack.draft over the Stage 1 units, then every remaining provision treated by the assistant from its words
+ops:
+- {id: ADD-03/cover/para3, provision: ADD-03:cover/para3, type: annotate, targets: ['ADD-03:cover/para3'], effect: adds_obligation,
+   note: the addendum must be acknowledged in Form 4-A, origin: pattern, review: proposed}
+- {id: ADD-03/2.1, provision: ADD-03:2.1, type: replace_text, target: VOL-I:6.1, old: Thursday 26 November 2026, new: Thursday 10 December 2026,
+   claims: [{unit: 'VOL-I:6.1', status: active, by_provision_prefix: 'ADD-01:2.1'}], origin: pattern, review: proposed}
+- {id: ADD-03/2.2, provision: ADD-03:2.2, type: annotate, targets: ['ADD-01:2.2'], effect: interprets, origin: assistant, review: proposed,
+   note: "ADD-01 2.2's re-anchoring rule applies to this second move of the Proposal Due Date: every period calculated from the PDD moves with it (non-exhaustive; VOL-I 3.4, 6.7 and 8.3 also refer to the PDD). Dates are recomputed from the effective PDD; dependent rows are flagged for re-review."}
+- {id: ADD-03/2.3, provision: ADD-03:2.3, type: replace_text, target: 'ADD-01:AppA/proposal-due-date', old: '12 November 2026, 14:00 Riyadh time',
+   old_resolved: matched_in_target, new: '10 December 2026, 14:00 Riyadh time', origin: assistant, review: proposed,
+   note: corrects the printed date the reissued Form 4-A carried since ADD-01 (C31 raised it); the provision does not quote the old words}
+- {id: ADD-03/3.1, provision: ADD-03:3.1, type: replace_text, target: VOL-I:5.2, old: ten (10) Working Days, new: fifteen (15) Working Days, origin: pattern, review: proposed}
+- {id: ADD-03/3.1(scope), provision: ADD-03:3.1, type: annotate, targets: ['VOL-I:12.3', 'VOL-V:29.4'], effect: confirms, origin: assistant, review: proposed,
+   note: 'scope: the 10 -> 15 Working Days change applies to VOL-I 5.2 only; the same words in VOL-I 12.3 and VOL-V 29.4 are unchanged',
+   expect: [{unit: 'VOL-I:12.3', contains: ten (10) Working Days}, {unit: 'VOL-V:29.4', contains: ten (10) Working Days}]}
+- {id: ADD-03/3.2, provision: ADD-03:3.2, type: replace_text, target: VOL-I:5.2, old: Requests received after that time will not be answered.,
+   new: Requests received after 14:00 Riyadh time on the last day for submission will not be answered., origin: pattern, review: proposed}
+- {id: ADD-03/4.1, provision: ADD-03:4.1, type: replace_text, target: VOL-I:6.4, old: 'SAR 4,500,000 (four million five hundred thousand Saudi Riyals)',
+   new: 'SAR 6,000,000 (six million Saudi Riyals)', origin: pattern, review: proposed}
+- {id: ADD-03/5.1, provision: ADD-03:5.1, type: replace_text, target: VOL-I:6.5, old_resolved: matched_in_target,
+   old: 'Each Proposal shall be submitted as one (1) marked original, three (3) hard copies, and one (1) searchable electronic copy on encrypted USB media.',
+   new: 'Each Proposal shall be submitted as one (1) marked original and one (1) searchable electronic copy on encrypted USB media.',
+   origin: assistant, review: proposed, issue: 'the three hard copies are deleted: the A5 copy counts (config submission.hard_copies) must follow (replanned in this rehearsal)'}
+- {id: ADD-03/6.1, provision: ADD-03:6.1, type: replace_text, target: 'VOL-I:8.5#fn12', old: '80,000 m3/day', new: '60,000 m3/day', origin: pattern, review: proposed}
+- {id: ADD-03/6.1(rest), provision: ADD-03:6.1, type: annotate, targets: ['VOL-I:8.5#fn12'], effect: confirms, origin: assistant, review: proposed,
+   note: 'the number of reference plants, the look-back period and the rejection consequence of footnote 12 are unchanged',
+   expect: [{unit: 'VOL-I:8.5#fn12', contains: two (2) reference}, {unit: 'VOL-I:8.5#fn12', contains: shall be rejected}]}
+- {id: ADD-03/7.1, provision: ADD-03:7.1, type: replace_text, target: VOL-I:8.6, old: thirty-five per cent (35%), new: thirty per cent (30%),
+   claims: [{unit: 'VOL-I:8.6', status: active, by_provision_prefix: 'ADD-02:9.1'}], origin: pattern, review: proposed}
+- {id: ADD-03/8.1, provision: ADD-03:8.1, type: insert_unit, anchor: VOL-I:10.4, origin: pattern, review: proposed,
+   new_text: 'The Availability Payment quoted in Form 4-F shall not exceed SAR 210,000,000 per annum (year 1 of operations, exclusive of value added tax). A Proposal that quotes an Availability Payment exceeding this amount shall be rejected.',
+   note: new Clause 10.5 inserted after Clause 10.4 (the engine names it VOL-I:10.4+ADD-03)}
+- {id: ADD-03/8.2, provision: ADD-03:8.2, type: annotate, targets: ['VOL-I:10.5', 'VOL-I:10.6'], effect: renumbers, origin: assistant, review: proposed,
+   renumber: {'VOL-I:10.5': '10.6', 'VOL-I:10.6': '10.7'},
+   note: "RENUMBERING: the issued VOL-I 10.5 is now 10.6 and 10.6 is now 10.7, and references to them (including ADD-02 Q14) are read accordingly. Unit ids keep their issued numbers (VOL-I:10.5 is the clause now numbered 10.6); the new 10.5 is VOL-I:10.4+ADD-03."}
+- {id: ADD-03/9.1, provision: ADD-03:9.1, type: replace_text, target: VOL-I:12.2, old: two hundred and seventy (270) days, new: three hundred (300) days, origin: pattern, review: proposed}
+- {id: ADD-03/9.2, provision: ADD-03:9.2, type: set_status, target: 'ADD-02:Q13', status: revoked, origin: assistant, review: proposed,
+   note: "ADD-02 Q13 ('the periods in Volume I Clause 12.2 are unchanged') is superseded by ADD-03 9.1"}
+- {id: ADD-03/10.1(a), provision: ADD-03:10.1, type: set_value, target: 'VOL-II:T2-4/TSS', column: Limit, new: '15', origin: assistant, review: proposed,
+   note: "image table: the reading (pending review) shows the limit before the change; the amended value is read from '15 mg/l'"}
+- {id: ADD-03/10.1(b), provision: ADD-03:10.1, type: set_value, target: 'VOL-II:T2-4/TSS', column: Basis of assessment, new: 'Maximum, any single sample',
+   origin: assistant, review: proposed, issue: "TSS is now assessed on any single sample, not the 30-day rolling average the table's qualifier states for all values: a stricter test (process design)"}
+- {id: ADD-03/11.1, provision: ADD-03:11.1, type: replace_text, target: 'VOL-II:T2-6/2-6.2', old: '7,500', new: '9,000', origin: assistant, review: proposed}
+- {id: ADD-03/11.2, provision: ADD-03:11.2, type: annotate, targets: ['ADD-03:11.2'], effect: adds_obligation, origin: assistant, review: proposed,
+   note: 'the hydraulic design (Volume II Section 4) must reflect the amended peak hourly flow of 9,000 m3/h'}
+- {id: ADD-03/12.1, provision: ADD-03:12.1, type: insert_unit, anchor: 'VOL-IV:F4-C/image/decl5', origin: assistant, review: proposed,
+   new_text: 'Sixth: that neither the member nor any of its directors has, within the preceding five (5) years, been convicted in the Kingdom of an offence involving fraud, bribery or corruption.',
+   issue: 'Form 4-C is an Arabic form whose Arabic text governs (VOL-I 9.4); the sixth declaration is given only in English'}
+- {id: ADD-03/12.2, provision: ADD-03:12.2, type: annotate, targets: ['VOL-I:9.4'], effect: adds_obligation, origin: assistant, review: proposed,
+   note: each member gives the sixth declaration in its Form 4-C; VOL-I 9.4 (and its non-responsive consequence) applies}
+- {id: ADD-03/Q15, provision: ADD-03:Q15, type: annotate, targets: ['VOL-I:8.6', 'VOL-I:9.1'], effect: confirms, origin: assistant, review: proposed,
+   note: the Local Content Certificate is submitted with the Proposal in Envelope A; the ratio is as amended by ADD-03 7.1}
+- {id: ADD-03/Q16, provision: ADD-03:Q16, type: replace_text, target: VOL-II:6.1, old: a permanently manned central control room,
+   new: a central control room manned between 06:00 and 22:00 daily, origin: pattern, review: proposed,
+   issue: a substantive amendment made in a clarification answer}
+- {id: ADD-03/Q17, provision: ADD-03:Q17, type: annotate, targets: ['VOL-I:8.5'], effect: adds_obligation, origin: assistant, review: proposed,
+   note: "only a reference project for which the member itself was responsible counts; an affiliate's is disregarded"}
+- {id: ADD-03/Q18, provision: ADD-03:Q18, type: annotate, targets: ['VOL-II:7.2'], effect: confirms, origin: assistant, review: proposed,
+   note: every Table 2-4 parameter as amended (TN 3 mg/l; TSS 15 mg/l on any single sample) applies during the reliability run}
+- {id: ADD-03/Q19, provision: ADD-03:Q19, type: annotate, targets: ['VOL-I:5.5'], effect: confirms, origin: assistant, review: proposed,
+   note: no further site visit; VOL-I 5.5 applies}
+- {id: ADD-03/Q20, provision: ADD-03:Q20, type: annotate, targets: ['VOL-I:9.2'], effect: confirms, origin: assistant, review: proposed,
+   note: the appendices expressly permitted by Volume II are outside the 150-page limit (none is found in the Volume II extract; I-VOL-I-APPENDICES)}
+dispositions:
+- {provision: ADD-03:cover/para1, disposition: no_effect, reason: "the addendum's issue date line (used as the stage date)", origin: pattern}
+- {provision: ADD-03:cover/para2, disposition: no_effect, reason: tender reference on the cover, origin: pattern}
+- {provision: ADD-03:1.1, disposition: no_effect, reason: recital (issued under VOL-I 5.3; precedence under VOL-I 3.2), origin: pattern}
+- {provision: ADD-03:1.2, disposition: no_effect, origin: assistant,
+   reason: "rule for reading this addendum's own references (to clauses as amended by Addenda 1 and 2); applied in curating the ops above; it changes no clause"}
+# (after the comparison) 8.2 uses the `renumbers` effect added after the rehearsal.

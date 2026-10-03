@@ -1,0 +1,667 @@
+{
+ "anchors": {
+  "PDD": "2026-12-10"
+ },
+ "columns": [
+  {
+   "header": "resource",
+   "key": "resource",
+   "width": 20
+  },
+  {
+   "header": "iso_week",
+   "key": "iso_week",
+   "width": 20
+  },
+  {
+   "header": "week_start",
+   "key": "week_start",
+   "width": 20
+  },
+  {
+   "header": "week_end",
+   "key": "week_end",
+   "width": 20
+  },
+  {
+   "header": "days_loaded",
+   "key": "days_loaded",
+   "width": 20
+  },
+  {
+   "header": "peak_concurrent",
+   "key": "peak_concurrent",
+   "width": 20
+  },
+  {
+   "header": "capacity",
+   "key": "capacity",
+   "width": 20
+  },
+  {
+   "header": "status",
+   "key": "status",
+   "width": 20
+  },
+  {
+   "header": "overloaded_days",
+   "key": "overloaded_days",
+   "width": 20
+  },
+  {
+   "header": "activities",
+   "key": "activities",
+   "width": 20
+  },
+  {
+   "header": "capacity_basis",
+   "key": "capacity_basis",
+   "width": 20
+  },
+  {
+   "header": "capacity_owner",
+   "key": "capacity_owner",
+   "width": 20
+  }
+ ],
+ "notes": [
+  "Load at the latest dates (as late as possible): each activity counts once per Working Day between its latest start and latest finish, whatever its multiplicity; an activity waiting on an external issuer counts for the role that chases it. Starting earlier spreads the load. Capacities are PROVISIONAL ASSUMPTIONS (config/assumptions.yaml resources:).",
+  "attendance-notice: deadline passed before the status date (not loaded)",
+  "lcc-ratio: latest finish 2026-10-26 is before the status date (INFEASIBLE; not loaded, see drivers)",
+  "lcc-certificate: window 2026-10-27..2026-12-07 clipped at the status date 2026-11-05 (INFEASIBLE; see drivers)"
+ ],
+ "notice": "PROPOSAL, not reviewed. Every lead time, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Latest dates come from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; INFEASIBLE is reported, never compressed.",
+ "roles": {
+  "bid_manager": {
+   "basis": "PROVISIONAL ASSUMPTION: bid manager plus one coordinator, one activity each at a time; not stated in the pack",
+   "capacity": 2,
+   "owner": "Bid manager"
+  },
+  "commercial_manager": {
+   "basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity": 2,
+   "owner": "Commercial"
+  },
+  "document_controller": {
+   "basis": "PROVISIONAL ASSUMPTION: two document controllers for assembly, copies, sealing and delivery; not stated",
+   "capacity": 2,
+   "owner": "Bid manager"
+  },
+  "financial_modeller": {
+   "basis": "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated",
+   "capacity": 1,
+   "owner": "Commercial"
+  },
+  "legal_counsel": {
+   "basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity": 2,
+   "owner": "Legal"
+  },
+  "proposal_writers": {
+   "basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity": 1,
+   "owner": "Technical"
+  },
+  "technical_lead": {
+   "basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated",
+   "capacity": 2,
+   "owner": "Technical"
+  }
+ },
+ "rows": [
+  {
+   "activities": [
+    "clarifications"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: bid manager plus one coordinator, one activity each at a time; not stated in the pack",
+   "capacity_owner": "Bid manager",
+   "days_loaded": 2,
+   "iso_week": "2026-W47",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "bid_manager",
+   "status": "OK",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "spoc"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: bid manager plus one coordinator, one activity each at a time; not stated in the pack",
+   "capacity_owner": "Bid manager",
+   "days_loaded": 1,
+   "iso_week": "2026-W49",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "bid_manager",
+   "status": "OK",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "lcc-certificate"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 2,
+   "iso_week": "2026-W45",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "commercial_manager",
+   "status": "OK",
+   "week_end": "2026-11-08",
+   "week_start": "2026-11-02"
+  },
+  {
+   "activities": [
+    "lcc-certificate",
+    "model-auditor-appoint"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W46",
+   "overloaded_days": [],
+   "peak_concurrent": 2,
+   "resource": "commercial_manager",
+   "status": "OK",
+   "week_end": "2026-11-15",
+   "week_start": "2026-11-09"
+  },
+  {
+   "activities": [
+    "bond-approval",
+    "lcc-certificate",
+    "lender-terms",
+    "model-auditor-appoint"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W47",
+   "overloaded_days": [
+    "2026-11-16",
+    "2026-11-19",
+    "2026-11-22"
+   ],
+   "peak_concurrent": 3,
+   "resource": "commercial_manager",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "bond-approval",
+    "fin-statements",
+    "lcc-certificate",
+    "lender-terms"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W48",
+   "overloaded_days": [
+    "2026-11-23",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26",
+    "2026-11-29"
+   ],
+   "peak_concurrent": 4,
+   "resource": "commercial_manager",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-29",
+   "week_start": "2026-11-23"
+  },
+  {
+   "activities": [
+    "bond-approval",
+    "bond-issue",
+    "fin-assumptions",
+    "fin-standing",
+    "fin-statements",
+    "form-4f",
+    "lcc-certificate",
+    "model-audit-opinion"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W49",
+   "overloaded_days": [
+    "2026-11-30",
+    "2026-12-01",
+    "2026-12-02",
+    "2026-12-03",
+    "2026-12-06"
+   ],
+   "peak_concurrent": 6,
+   "resource": "commercial_manager",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "bond-issue",
+    "fin-assumptions",
+    "fin-standing",
+    "form-4f",
+    "lcc-certificate",
+    "model-audit-opinion"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a bank, an authority or an auditor counts as one; not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 1,
+   "iso_week": "2026-W50",
+   "overloaded_days": [
+    "2026-12-07"
+   ],
+   "peak_concurrent": 6,
+   "resource": "commercial_manager",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-13",
+   "week_start": "2026-12-07"
+  },
+  {
+   "activities": [
+    "assemble-envelope-a",
+    "assemble-envelope-b",
+    "copies",
+    "deliver",
+    "seal-and-mark"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two document controllers for assembly, copies, sealing and delivery; not stated",
+   "capacity_owner": "Bid manager",
+   "days_loaded": 3,
+   "iso_week": "2026-W50",
+   "overloaded_days": [],
+   "peak_concurrent": 2,
+   "resource": "document_controller",
+   "status": "OK",
+   "week_end": "2026-12-13",
+   "week_start": "2026-12-07"
+  },
+  {
+   "activities": [
+    "fin-model-build"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W46",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "financial_modeller",
+   "status": "OK",
+   "week_end": "2026-11-15",
+   "week_start": "2026-11-09"
+  },
+  {
+   "activities": [
+    "fin-model-build",
+    "model-audit-review"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W47",
+   "overloaded_days": [
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-22"
+   ],
+   "peak_concurrent": 2,
+   "resource": "financial_modeller",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "fin-model-build",
+    "model-audit-review"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 5,
+   "iso_week": "2026-W48",
+   "overloaded_days": [
+    "2026-11-23",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26",
+    "2026-11-29"
+   ],
+   "peak_concurrent": 2,
+   "resource": "financial_modeller",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-29",
+   "week_start": "2026-11-23"
+  },
+  {
+   "activities": [
+    "fin-model-freeze",
+    "model-audit-review"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor queries); not stated",
+   "capacity_owner": "Commercial",
+   "days_loaded": 1,
+   "iso_week": "2026-W49",
+   "overloaded_days": [
+    "2026-11-30"
+   ],
+   "peak_concurrent": 2,
+   "resource": "financial_modeller",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "pcg-wording"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity_owner": "Legal",
+   "days_loaded": 4,
+   "iso_week": "2026-W46",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "legal_counsel",
+   "status": "OK",
+   "week_end": "2026-11-15",
+   "week_start": "2026-11-09"
+  },
+  {
+   "activities": [
+    "deviations-review",
+    "pcg-wording",
+    "poa-resolutions"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity_owner": "Legal",
+   "days_loaded": 5,
+   "iso_week": "2026-W47",
+   "overloaded_days": [
+    "2026-11-22"
+   ],
+   "peak_concurrent": 3,
+   "resource": "legal_counsel",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "deviations-review",
+    "pcg-execution",
+    "pcg-wording",
+    "poa",
+    "poa-resolutions"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity_owner": "Legal",
+   "days_loaded": 5,
+   "iso_week": "2026-W48",
+   "overloaded_days": [
+    "2026-11-23",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26",
+    "2026-11-29"
+   ],
+   "peak_concurrent": 3,
+   "resource": "legal_counsel",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-29",
+   "week_start": "2026-11-23"
+  },
+  {
+   "activities": [
+    "deviations-review",
+    "form-4c-prep",
+    "form-4c-sign",
+    "form-4e",
+    "investment-licence",
+    "pcg-execution",
+    "poa"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity_owner": "Legal",
+   "days_loaded": 5,
+   "iso_week": "2026-W49",
+   "overloaded_days": [
+    "2026-11-30",
+    "2026-12-01",
+    "2026-12-02",
+    "2026-12-03",
+    "2026-12-06"
+   ],
+   "peak_concurrent": 4,
+   "resource": "legal_counsel",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "form-4a",
+    "form-4c-sign",
+    "form-4e",
+    "investment-licence",
+    "pcg-execution"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an activity waiting on a notary or a member counts as one; not stated",
+   "capacity_owner": "Legal",
+   "days_loaded": 1,
+   "iso_week": "2026-W50",
+   "overloaded_days": [
+    "2026-12-07"
+   ],
+   "peak_concurrent": 5,
+   "resource": "legal_counsel",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-13",
+   "week_start": "2026-12-07"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 4,
+   "iso_week": "2026-W46",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "proposal_writers",
+   "status": "OK",
+   "week_end": "2026-11-15",
+   "week_start": "2026-11-09"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W47",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "proposal_writers",
+   "status": "OK",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W48",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "proposal_writers",
+   "status": "OK",
+   "week_end": "2026-11-29",
+   "week_start": "2026-11-23"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W49",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "proposal_writers",
+   "status": "OK",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 1,
+   "iso_week": "2026-W50",
+   "overloaded_days": [],
+   "peak_concurrent": 1,
+   "resource": "proposal_writers",
+   "status": "OK",
+   "week_end": "2026-12-13",
+   "week_start": "2026-12-07"
+  },
+  {
+   "activities": [
+    "completion-certs",
+    "ground-dd",
+    "references"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W47",
+   "overloaded_days": [
+    "2026-11-19",
+    "2026-11-22"
+   ],
+   "peak_concurrent": 3,
+   "resource": "technical_lead",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-22",
+   "week_start": "2026-11-16"
+  },
+  {
+   "activities": [
+    "completion-certs",
+    "ground-dd",
+    "om-evidence",
+    "references"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W48",
+   "overloaded_days": [
+    "2026-11-23",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26",
+    "2026-11-29"
+   ],
+   "peak_concurrent": 4,
+   "resource": "technical_lead",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-11-29",
+   "week_start": "2026-11-23"
+  },
+  {
+   "activities": [
+    "completion-certs",
+    "form-4b",
+    "form-4g-review",
+    "iso-copy",
+    "om-evidence",
+    "references"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 5,
+   "iso_week": "2026-W49",
+   "overloaded_days": [
+    "2026-11-30",
+    "2026-12-01",
+    "2026-12-02",
+    "2026-12-03",
+    "2026-12-06"
+   ],
+   "peak_concurrent": 5,
+   "resource": "technical_lead",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-06",
+   "week_start": "2026-11-30"
+  },
+  {
+   "activities": [
+    "completion-certs",
+    "form-4b",
+    "form-4g-sign",
+    "iso-copy",
+    "om-evidence"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references and Form 4-G; not stated",
+   "capacity_owner": "Technical",
+   "days_loaded": 1,
+   "iso_week": "2026-W50",
+   "overloaded_days": [
+    "2026-12-07"
+   ],
+   "peak_concurrent": 5,
+   "resource": "technical_lead",
+   "status": "OVERLOAD (provisional)",
+   "week_end": "2026-12-13",
+   "week_start": "2026-12-07"
+  }
+ ],
+ "stage": "ADD-03",
+ "status_date": "2026-11-05"
+}

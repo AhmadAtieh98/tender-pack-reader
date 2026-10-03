@@ -8,7 +8,14 @@
              3  structure OK but readings pending review, and --require-approved was given: the gate
                 is applied BEFORE publishing, so the previous build is kept and this candidate is
                 written to <out>.rejected (with REJECTED.md saying why)
-  show     UNIT_ID [--out build]       print a unit with its source references; write a highlighted crop
+  show     UNIT_ID | ROW_ID [--out build] [--to show]
+           a unit: its source references and a highlighted crop. An A1 row id: its requirement, owner, evidence,
+           review decision, status/quote/consequence/dates at every stage, source pages with crops, the amendment
+           chain and the A5 activities; also written to show/<ROW_ID>/index.html (crops beside the text).
+  diff     [--from STAGE] [--to STAGE] [--md FILE]
+           what an addendum changed (default: the last two stages): its status and unresolved provisions,
+           requirements new/out/changed and why, STALE rows, voided decisions, image-read values changed, C46
+           gaps, disqualifiers entering or leaving A3, programme impact (activities, feasibility, documents).
   approve  REGION_ID --reviewer NAME [--notes TEXT] [--pack ...] [--approvals PATH]
            record a person's approval of a reading, pinned to its review subject (reading +
            uncertainties + evidence). Refuses placeholder names and readings that fail checks.
@@ -25,9 +32,18 @@ Stage 2 (from a published evidence build; see tenderpack/stage2.py):
            Never writes into curation/ unless --to names a file there explicitly.
   pin      [--evidence build] [--refresh]
            pin each interpretation to its dependencies (curation/register/pins.yaml).
-  check-register [--doc VOL-I]
+  check-register [--doc VOL-I] [--update-ids]
            everything a register drafter must clear: rows that do not load, quotes not in the effective text,
-           unit dispositions and their links to rows, evidence items, unlinked consequence words (C15).
+           unit dispositions and their links to rows, evidence items, unlinked consequence words (C15),
+           obligations an addendum creates or amends that do not reach A1/A3/A5 (C46).
+  accept   ITEM [ITEM ...] --reviewer NAME [--note TEXT] [--decisions PATH]
+  reject   ITEM [ITEM ...] --reviewer NAME --note TEXT [--decisions PATH]
+           a person's decision on A1 rows (VOL-I-8.6-01) or amendment ops (ADD-02/9.1), bound to the fingerprint
+           of the item, its evidence and its dependencies (tenderpack/review.py). A later change voids it.
+           Refuses placeholder names, STALE rows, invalid ops (accept) and rejections without a note.
+  apply-proposal PROPOSAL_ID --by NAME [--proposals PATH]
+           write a prepared proposal (e.g. a re-made interpretation for a STALE row) into the register and pin
+           that interpretation only; the row is then PROPOSED again and needs `accept`.
 
 Output safety: the output directory may not be the repository, a parent of it, the home or root
 directory, a protected repository folder (sources, config, curation, ...), or anything that
@@ -290,6 +306,24 @@ def show(unit_id: str, out: Path, root: Path = ROOT) -> int:
     return 0
 
 
+def show_cmd(item: str, evidence: Path, pack_path: Path, to: Path) -> int:
+    """A unit id shows the unit; an A1 row id shows the row (see live.show_row)."""
+    from .register import load_rows
+    cfg = load_yaml(pack_path)
+    rows = {x.id for x in load_rows(ROOT / cfg.get("register", "curation/register/rows.yaml")).rows}
+    if item not in rows:
+        return show(item, evidence)
+    from . import live, stage2
+    if to.resolve() == ROOT.resolve() or ROOT.resolve() in [*evidence.resolve().parents, evidence.resolve()] and \
+            to.resolve() in [evidence.resolve(), *[evidence.resolve() / x for x in ("review", "regions")]]:
+        print(f"refused: --to {to} would write into the evidence build or the repository root")
+        return 2
+    text, page = live.show_row(stage2.run(evidence, pack_path, ROOT), item, to, evidence)
+    print(text)
+    print(f"\n  page with crops: {_rel(page, ROOT)}")
+    return 0
+
+
 def approve(region_id: str, reviewer: str, notes: str | None, root: Path = ROOT,
             pack_path: Path | None = None, approvals_path: Path | None = None) -> int:
     """Record a person's approval. Only a person runs this; the program never approves anything itself."""
@@ -405,6 +439,18 @@ def pin_cmd(evidence: Path, pack_path: Path, refresh: bool, migrate: bool = Fals
     return 0
 
 
+def decide_cmd(items: list[str], decision: str, reviewer: str, note: str | None, evidence: Path, pack_path: Path,
+               decisions: str | None) -> int:
+    """`accept` / `reject`: only a person runs these; the program never decides anything itself."""
+    from . import review, stage2
+    cfg = load_yaml(pack_path)
+    path = Path(decisions).resolve() if decisions else review.decisions_path(cfg, ROOT)
+    r = stage2.run(evidence, pack_path, ROOT)
+    code, msgs = review.decide(r, items, decision, reviewer, note, path)
+    print("\n".join(msgs))
+    return code
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="tenderpack")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -414,8 +460,16 @@ def main(argv: list[str] | None = None) -> int:
     a.add_argument("--require-approved", action="store_true",
                    help="exit 3 if any reading is still pending human review")
     b = sub.add_parser("show")
-    b.add_argument("unit_id")
-    b.add_argument("--out", default=str(ROOT / "build"))
+    b.add_argument("unit_id", help="a unit id (VOL-I:8.6) or an A1 row id (VOL-I-8.6-01)")
+    b.add_argument("--out", default=str(ROOT / "build"), help="the evidence build")
+    b.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    b.add_argument("--to", default=str(ROOT / "show"), help="where a row's page with crops is written")
+    dd = sub.add_parser("diff")
+    dd.add_argument("--from", dest="frm")
+    dd.add_argument("--to")
+    dd.add_argument("--evidence", default=str(ROOT / "build"))
+    dd.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    dd.add_argument("--md", help="also write the report to this file")
     c = sub.add_parser("approve")
     c.add_argument("region_id")
     c.add_argument("--reviewer", required=True)
@@ -444,10 +498,30 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--evidence", default=str(ROOT / "build"))
     g.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     g.add_argument("--doc", help="only findings for this document (e.g. VOL-I)")
+    g.add_argument("--update-ids", action="store_true", help="record new row ids in the id ledger (C12) first")
+    for name in ("accept", "reject"):
+        h = sub.add_parser(name)
+        h.add_argument("items", nargs="+", help="A1 row ids and/or op ids (ADD-0N/<provision>)")
+        h.add_argument("--reviewer", required=True)
+        h.add_argument("--note", required=(name == "reject"))
+        h.add_argument("--evidence", default=str(ROOT / "build"))
+        h.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+        h.add_argument("--decisions", help="decisions file (default: the pack's `decisions` path)")
+    k = sub.add_parser("apply-proposal")
+    k.add_argument("proposal_id")
+    k.add_argument("--by", required=True, help="the person applying it")
+    k.add_argument("--evidence", default=str(ROOT / "build"))
+    k.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    k.add_argument("--proposals", default=str(ROOT / "curation/register/proposals"))
     args = ap.parse_args(argv)
+    if args.cmd in ("accept", "reject"):
+        return decide_cmd(args.items, args.cmd, args.reviewer, args.note, Path(args.evidence), Path(args.pack), args.decisions)
+    if args.cmd == "apply-proposal":
+        from .proposals import apply_proposal
+        return apply_proposal(args.proposal_id, args.by, Path(args.evidence), Path(args.pack), Path(args.proposals), ROOT)
     if args.cmd == "check-register":
         from .stage2 import check_register
-        return check_register(Path(args.evidence), Path(args.pack), ROOT, args.doc)
+        return check_register(Path(args.evidence), Path(args.pack), ROOT, args.doc, args.update_ids)
     if args.cmd == "outputs":
         from .stage2 import build
         try:
@@ -467,7 +541,14 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         return res["exit_code"]
     if args.cmd == "show":
-        return show(args.unit_id, Path(args.out))
+        return show_cmd(args.unit_id, Path(args.out), Path(args.pack), Path(args.to))
+    if args.cmd == "diff":
+        from . import live, stage2
+        text, _ = live.diff(stage2.run(Path(args.evidence), Path(args.pack), ROOT), args.frm, args.to)
+        print(text, end="")
+        if args.md:
+            Path(args.md).write_text(text, encoding="utf-8")
+        return 0
     return approve(args.region_id, args.reviewer, args.notes, ROOT, Path(args.pack), args.approvals)
 
 
