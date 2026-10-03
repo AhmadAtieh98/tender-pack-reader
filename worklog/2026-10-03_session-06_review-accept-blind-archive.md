@@ -383,6 +383,8 @@ Each fix has a test in `tests/test_session06_live.py`.
 | E70 | `pip download` evaluated markers with the wrong interpreter; an old macOS x86 tag found nothing | Wheelhouse | `uvx --python <ver>`; `macosx_14_0_x86_64` |
 | E71 | COST_AND_EFFORT guessed the reading unit counts | Checking against `units.json` | Corrected to 12 and 28 |
 | E72 | The first rows of this log's timeline were written from memory (e.g. "00:52" for the failing tests, really 00:48) | Checking against the transcript | Table rebuilt from the tool-call timestamps |
+| E73 | The archive's A3 link check failed: PyMuPDF reports a relative `/URI` link as a "file" link with no `uri` | First verification run | The check reads each link's PDF object; the links were already `/S /URI` |
+| E74 | The first Mac steps (`make evidence`, `make outputs`) would leave a clone with `build/drill*` deleted: `ingest` replaces `build/` as a whole | Writing the clean-tree check | The steps regenerate both drills too; `git status --short` must print nothing |
 
 ## 9. Results
 

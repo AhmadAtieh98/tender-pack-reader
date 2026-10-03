@@ -48,7 +48,7 @@ brew install uv            # or: curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync --extra dev        # creates .venv from uv.lock (Python 3.11+)
 ```
 
-**Option B, fully offline, with the wheelhouse archive.** This needs `python3` 3.11, 3.12 or 3.13 (`python3 --version`; e.g. `brew install python@3.12` beforehand):
+**Option B, fully offline, with the wheelhouse archive.** This needs `python3` 3.11, 3.12 or 3.13 (`python3 --version`; e.g. `brew install python@3.12` beforehand). The Intel (x86_64) wheels were selected for macOS 14 or later. On an older Intel Mac, use option A:
 
 ```
 unzip ../../LAMAR-PPP-R2-DRAFT_<sha>_wheels-macos.zip -d ../wheels

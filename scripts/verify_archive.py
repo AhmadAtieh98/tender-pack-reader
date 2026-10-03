@@ -115,10 +115,17 @@ def main(zpath: Path, work: Path, wheels: Path | None, python: str, tests: bool)
     a3 = root / "A3_disqualification_sheet"
     doc = pymupdf.open(a3 / "a3.pdf")
     say(doc.page_count == 1, f"A3 is one page ({doc.page_count})")
-    links = [l.get("uri", "") for l in doc[0].get_links()]
+    # Read each link's own PDF object: PyMuPDF reports a relative /URI action as a "file" link, so check that the
+    # action really is /URI (not /Launch, which viewers block) and that its target exists.
+    links = []
+    for ln in doc[0].get_links():
+        obj = doc.xref_object(ln["xref"])
+        m = re.search(r"/S /URI\s+/URI \((.*?)\)", obj)
+        links.append(m.group(1) if m else f"not a /URI action: {obj[:80]}")
     detail_ids = parse(a3 / "a3_detail.html").ids
     broken = [u for u in links if not (u.startswith("a3_detail.html#") and unquote(u.split("#", 1)[1]) in detail_ids)]
-    say(bool(links) and not broken, f"A3: {len(links)} links, each to an id in a3_detail.html; broken: {broken[:5]}")
+    say(bool(links) and not broken, f"A3: {len(links)} /URI links ({len(set(links))} targets), each to an id in "
+        f"a3_detail.html; broken: {broken[:5]}")
     pages = sorted((root / "REVIEW").rglob("*.html")) + [a3 / "a3_detail.html"]
     cache: dict = {}
     problems, nref = [], 0

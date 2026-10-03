@@ -145,7 +145,8 @@ def main(dest: Path, wheels: Path | None) -> int:
             "Offline Python setup for the tender-pack-reader repository (see VERIFY_ON_MAC.md section 3, option B).\n"
             "python3 -m venv .venv\n"
             ".venv/bin/python -m pip install --no-index --find-links <this folder>/macos-$(uname -m) -r <this folder>/requirements.txt\n"
-            "Wheels for CPython 3.11, 3.12 and 3.13, from PyPI, pinned by uv.lock.\n", encoding="utf-8")
+            "Wheels for CPython 3.11, 3.12 and 3.13, from PyPI, pinned by uv.lock. Apple silicon: macOS 11 or later;\n"
+            "Intel: macOS 14 or later (on an older Intel Mac, set up with network once: uv sync --extra dev).\n", encoding="utf-8")
         wz = dest / f"{wstage.name}.zip"
         write_zip(wstage, wz, stamp)
         print(f"wheelhouse: {wz} ({wz.stat().st_size / 1e6:.1f} MB)")
