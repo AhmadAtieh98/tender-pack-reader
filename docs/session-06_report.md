@@ -127,7 +127,14 @@ tenderpack reject ADD-02/8.1 --reviewer "Your Name" --note "..."
 - `LAMAR-PPP-R2-DRAFT_<sha>.zip`, organised as `A1_compliance_register/`, `A2_…`, `A3_…`, `A4_work_log/` (work logs, plan, reports, `repository.bundle` with the full history), `A5_programme/`, `REVIEW/`, `REHEARSALS/blind-01/`, the three guides and `SHA256SUMS`;
 - optionally, a macOS wheelhouse for an offline Python setup (Apple silicon and Intel; CPython 3.11–3.13).
 
-**Verification:** recorded in the work log, §7. Where it could not be tested (on a Mac), the exact commands are in `docs/VERIFY_ON_MAC.md`.
+**Verified in a fresh location**, on Linux x86_64 with CPython 3.11, using `scripts/verify_archive.py` (work log §7):
+
+- extraction; all 209 checksums;
+- all 272 A3 links and 146 review-page references resolve inside the archive;
+- the bundle clones to the archive's commit with its 14-commit history;
+- inside a namespace with **no network**: a wheelhouse install, regeneration of everything committed (byte-identical, clean tree), outputs identical to the archive (163 files), and **339 tests passed**.
+
+**Not tested:** a Mac, Preview's handling of the A3 links, and Excel itself. The exact Mac commands are in `docs/VERIFY_ON_MAC.md`.
 
 ## 6. Remaining gaps
 

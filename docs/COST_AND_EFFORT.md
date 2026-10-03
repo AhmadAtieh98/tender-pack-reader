@@ -14,7 +14,7 @@
 | 03 | 1 Oct 22:59–2 Oct 01:10 | ~2.2 h | Owner's Stage 1 review: six gaps, fixed |
 | 04 | 2 Oct 07:32–13:00 | ~5.5 h | Second review repairs; adversarial review; Stage 2 slice; drill A |
 | 05 | 2 Oct 13:31–18:25, with a pause at a usage limit (~1 h) | ~4 h of work | Five review findings; Stage 3 (full register) and Stage 4 (A5) with subagents; drill B |
-| 06 | 3 Oct 00:42–01:54 and from 05:41, with a pause at a usage limit (3 h 47 min) | about 2 h of work (final figure in the work log) | Four findings; accept workflow; `show`/`diff`; C12/C30/C32/C46/C47; blind rehearsal; archive |
+| 06 | 3 Oct 00:42–01:54 and from 05:41, with a pause at a usage limit (3 h 47 min) | about 1 h 55 min of work (00:42–01:54 and 05:41–about 06:05) | Four findings; accept workflow; `show`/`diff`; C12/C30/C32/C46/C47; blind rehearsal; archive |
 | **Total so far** | | **about 15 h of assistant wall-clock time** | |
 
 **Subagents** (each started cold from a written brief; the orchestrator checked their output):

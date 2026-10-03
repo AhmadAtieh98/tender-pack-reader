@@ -1,6 +1,6 @@
 # Session 06: second code review, the accept workflow, live commands, blind rehearsal, draft archive
 
-- **Date:** 3 Oct 2026, 00:42–01:54 and from 05:41 UTC (03:42 Riyadh), with a pause at a usage limit.
+- **Date:** 3 Oct 2026, 00:42–01:54 and from 05:41 UTC (03:42–04:54 and from 08:41 Riyadh), with a pause at a usage limit.
 - **Who:**
   - **The owner:** reviewed session 05 and set Stages 3 and 4 as the working basis. The four findings below are the owner's.
   - **The assistant** (Claude Code, in the cloud container): orchestrator. It reproduces, writes the failing tests, makes the fixes, builds the commands, runs the rehearsal and assembles the archive.
@@ -63,6 +63,9 @@ Times are UTC, taken from the timestamps of the session's own tool calls (checke
 | 01:47–01:54 | Full suite: 339 passed. Blind timings and information boundary checked against the transcript (§6.1); determinism (§9); drills regenerated; this log. |
 | 01:54–05:41 | **Paused:** the owner's usage limit was reached; work resumed when it reset (3 h 47 min, not counted as work). |
 | 05:41–05:50 | Work log, comparison timeline completed, README, plan revision 6, session report, `scripts/verify_archive.py`. |
+| 05:47 | Commit `ccd57e3`, pushed; archive built from it (21.9 MB, 209 files) and the macOS wheelhouse (124 MB). |
+| 05:48–05:56 | Archive verified in a fresh location, offline (§7.2); every step passes. The link check was corrected first (E73). |
+| 05:57–06:05 | §7 and the results recorded; final commit; final archive built and re-verified; package sent; reply recorded. |
 
 ## 3. Reproduction on commit 3c97a8d (before any fix)
 
@@ -355,7 +358,65 @@ Each fix has a test in `tests/test_session06_live.py`.
 
 ## 7. Draft archive and offline verification
 
-(§7 is completed after the archive is built and verified; see below.)
+### 7.1 What the archive is
+
+`scripts/make_draft_archive.py DEST --wheels WHEELHOUSE` refuses a dirty tree, so the archive equals a commit. It writes:
+
+- **`LAMAR-PPP-R2-DRAFT_<sha>.zip`**, deterministic (sorted entries, times fixed to the commit date):
+
+  | Path | Contents |
+  |---|---|
+  | `00_README.md` | Status, release blockers and the review counts |
+  | `A1_compliance_register/` | xlsx, csv, json |
+  | `A2_addendum_reconciliation/` | |
+  | `A3_disqualification_sheet/` | The one-page PDF, its linked detail, json |
+  | `A4_work_log/` | Every session's log, the plan and reports, `repository.bundle` (`git bundle --all`: the real history), `HISTORY.md` |
+  | `A5_programme/` | |
+  | `REVIEW/` | The review batches |
+  | `REHEARSALS/blind-01/` | Comparison, frozen key, sealed files, the blind input, diff, the scored A3 |
+  | Guides | `OPERATING_GUIDE.md`, `COST_AND_EFFORT.md`, `VERIFY_ON_MAC.md` |
+  | `STATUS.md`, `checks.json`, `SHA256SUMS` | |
+
+- **`LAMAR-PPP-R2-DRAFT_<sha>_wheels-macos.zip`**: wheels from PyPI pinned by `uv.lock`, for Apple silicon (macOS 11+) and Intel (macOS 14+), CPython 3.11–3.13, with `requirements.txt` and `INSTALL.txt`. Downloaded with `uvx --python <ver> pip download --only-binary :all: --platform <tag>` (E70). Linux wheels were downloaded the same way for the offline test below.
+
+### 7.2 Verification in a fresh location
+
+`scripts/verify_archive.py ZIP WORKDIR --wheels <linux wheels> --python /usr/local/bin/python3` (Linux x86_64, CPython 3.11) ran on the archive built from `ccd57e3`, in a new scratch folder:
+
+| Step | Result |
+|---|---|
+| Extraction | 210 entries, one folder |
+| `SHA256SUMS` | 209 files match; no unlisted file |
+| A3 | One page; 272 `/URI` links (68 targets), each resolving to an element id in `a3_detail.html` |
+| Review pages and A3 detail | 11 pages, 146 `src`/`href`; every one resolves inside the archive (files and anchors); no external link |
+| Bundle | `git clone` from `repository.bundle`: HEAD `ccd57e3` equals the archive's commit; 14 commits; tree clean |
+| Network | Inside `unshare -n`, `pypi.org` and `1.1.1.1` are both unreachable |
+| Offline install | Virtualenv and `pip install --no-index` from the Linux wheelhouse: 13 s |
+| Offline regeneration in the clone | `make evidence` 13 s, `outputs` 12 s, `drill` 25 s, `rehearsal` 37 s; blind rehearsal re-ingested and `out-after-fixes` rebuilt 25 s |
+| Clean tree | Every regenerated file equals the committed one (`git status` clean) |
+| Archive comparison | `compare_outputs.py`: rebuilt A1/A2/A3/A5/REVIEW identical to the archive (163 files) |
+| Tests | **339 passed** offline in 342 s |
+| **Total** | **469 s** (05:48:36–05:56:25 UTC) |
+
+**Fix found by the verification:** PyMuPDF reports a relative `/URI` link as a "file" link. The first run of the link check therefore failed on the A3 links. The links themselves were right (`/S /URI`, target `a3_detail.html#<id>`), so the check now reads each link's own PDF object (E73).
+
+### 7.3 What could not be tested here
+
+- **A Mac.** `docs/VERIFY_ON_MAC.md` gives the exact commands:
+  - unpack and `shasum -a 256 -c`;
+  - open A3 and the review pages;
+  - clone the bundle;
+  - set up offline from the wheelhouse;
+  - with Wi-Fi off: `make evidence outputs drill rehearsal`, `git status --short` (should print nothing), `compare_outputs.py`, `make test`;
+  - `show`, `diff` and `outputs --strict` (exit 3).
+- **A PDF viewer's behaviour.** Whether Preview follows the relative link from `a3.pdf` to `a3_detail.html` was not tested. The links are standard `/URI` actions; some viewers ask before opening a local file.
+- **Excel itself.** `a1.xlsx` is written by openpyxl and re-read by the tests, but was not opened in Excel here.
+
+### 7.4 The final archive
+
+- **Built from:** the commit that records these results. The verification above ran on the archive from `ccd57e3`. The later commits change only the docs, the work log and the two archive scripts (the verify checks and the wheelhouse install note).
+- **Re-verified:** the final archive was checked with the same script (the result is in the reply, `worklog/2026-10-03_session-06_reply.md`).
+- **Sizes:** archive about 22 MB, of which `repository.bundle` is 17.7 MB. The macOS wheelhouse is about 124 MB.
 
 ## 8. Errors in this session (continuing from E50)
 
@@ -407,3 +468,18 @@ Each fix has a test in `tests/test_session06_live.py`.
   - **Drill A, drafted:** C20/C21 and C46 report what the uncurated draft leaves (expected).
   - **Drill B, curated:** ADD-03 APPLIED; 9 STALE rows; one summary finding.
   - **Blind, curated:** ADD-03 APPLIED; 28 STALE rows.
+- **Archive:** verified in a fresh location, with no network for the install, rebuild and tests (§7.2).
+- **Session 06 work time:** about 1 h 55 min (00:42–01:54 and 05:41–about 06:05), with a pause of 3 h 47 min at a usage limit.
+
+### What this does and does not establish
+
+- **It establishes** that:
+  - the four reproduced faults are now refused by general rules;
+  - every decision the program counts must be a named person's, tied to the current content;
+  - a new addendum can be taken from receipt to replanned outputs in about 12 minutes on this machine, with the checks refusing what is incomplete;
+  - the archive rebuilds byte for byte offline from its own repository bundle.
+- **It does not establish** that:
+  - any interpretation, owner, lead time, disposition or reading is right. None has been reviewed; both readings are pending; 202 rows and 37 ops are proposed; 3 rows are STALE;
+  - the blind result generalises. It was one addendum, its author was told the kinds of change, and the curator wrote the code;
+  - the archive works on a Mac. The commands are in `docs/VERIFY_ON_MAC.md`.
+- **The decisions needed** are in `docs/session-06_report.md` §4.
