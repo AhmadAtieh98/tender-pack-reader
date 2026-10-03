@@ -404,7 +404,16 @@ def _rel(p: Path) -> str:
     return p.relative_to(ROOT).as_posix() if p.is_relative_to(ROOT) else p.as_posix()
 
 
-def build(out_dir: Path) -> dict:
+def build(out_dir: Path, front: list[str] | None = None) -> dict:
+    """`front` replaces the printed front matter (the cover summary paragraphs); used by the session 07 C28 test to
+    print a misleading summary over the same provisions. The default build is unchanged."""
+    global FRONT
+    if front is not None:
+        saved, FRONT = FRONT, list(front)
+        try:
+            return build(out_dir)
+        finally:
+            FRONT = saved
     out = Path(out_dir).resolve()
     out.mkdir(parents=True, exist_ok=True)
     pdf_path = out / PDF_NAME

@@ -180,6 +180,13 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
                                                                  "is treated and every op is valid" if sto.status != "APPLIED" else "")]
         md += [f"- UNRESOLVED {c['provision']}: {c.get('text', '')[:200]}" for c in unres]
         md += [f"- INVALID {x.op.id}: " + "; ".join(c["id"] + " " + c["detail"] for c in x.checks if not c["ok"]) for x in inv]
+        sc = next((x for x in r.get("summary_check", []) if x["stage"] == to), None)
+        if sc is not None:                     # C28 (session 07): the cover summary is never applied, only compared
+            found = [f for f in sc["findings"] if f["kind"] != "unchecked"]
+            md.append(f"- cover summary vs provisions (C28, report only): "
+                      + (f"{len(found)} finding(s)" if found else "no omission or contradiction found"))
+            md += [f"  - {f['kind']}: {f['detail']}" for f in found]
+            data["summary_check"] = sc["findings"]
         md.append("")
     # ---- requirements
     new, gone, changed = [], [], []

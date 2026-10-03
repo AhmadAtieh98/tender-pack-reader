@@ -43,4 +43,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C11 | REPORTED | STALE rows: ['VOL-I-5.2-01@ADD-03', 'VOL-I-6.4-01@ADD-03', 'VOL-I-6.4-02@ADD-03', 'VOL-I-7.1-01@ADD-03', 'VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02', 'VOL-I-8.3-01@ADD-03', 'ADD-01-AppA-01@ADD-01', 'ADD-01-AppA-01@ADD-02', 'VOL-I-3.4-01@ADD-01', 'VOL-I-3.4-01@ADD-02', 'VOL-I-3.4-01@ADD-03', 'VOL-I-6.7-01@ADD-01', 'VOL-I-6.7-01@ADD-02', 'VOL-I-6.7-01@ADD-03', 'VOL-II-T2-4-TSS@ADD-03', 'VOL-V-29.3-01@ADD-03'] |
 | C30 | ok | 48 date/period phrases in force; uncovered: none; explicitly not computed: none |
 | C32 | ok | 7 date rule(s) with unstated counting conventions: every reading shown (A1 Dates), planning uses the configured policy |
+| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2, understated 1; report only, the summary is never applied (A2) |
+| C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
+| C28 ADD-03 | REPORTED | cover summary (4 claims) vs provisions: consequence not mentioned 1, not found 1, omitted 1; report only, the summary is never applied (A2) |
 | C46 | ok | every new or amended obligation reaches A1, A3 where it carries a consequence, and A5 |

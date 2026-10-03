@@ -50,6 +50,7 @@ from .render import A3OverflowError, write_a1, write_a3_pdf, write_csv_json
 from . import programme
 from .schedule import deltas, in_force, plan
 from .trace import obligation_trace
+from .summary import summary_check
 from .datecover import counting_conventions, date_coverage
 from . import review
 from .textnorm import normalize_latin
@@ -175,6 +176,7 @@ def run(evidence_dir: Path, pack_path: Path, root: Path, lenient: bool = False) 
         for o in newly:
             o.review, o.reviewer = "rejected", r["reviews"][("op", o.id)]["reviewer"]
     r["trace"] = obligation_trace(r)
+    r["summary_check"] = summary_check(r["stages"], units, r["rowfile"].anchors)     # C28: report only, never applied
     r["date_coverage"] = date_coverage(r)
     r["c32"] = counting_conventions(r)
     ledger_path = root / cfg.get("row_ids", "curation/register/ids.yaml")
@@ -256,6 +258,14 @@ def reported_checks(r: dict) -> list[dict]:
     if r.get("ids", {}).get("new"):
         out.append({"id": "C12-new", "ok": False, "detail": f"{len(r['ids']['new'])} row id(s) not yet in the id ledger "
                     f"({r['ids']['path'].name}): {r['ids']['new'][:8]}; record them with `check-register --update-ids`"})
+    for sc in r.get("summary_check", []):
+        n = {}
+        for f in sc["findings"]:
+            n[f["kind"]] = n.get(f["kind"], 0) + 1
+        out.append({"id": "C28", "stage": sc["stage"], "ok": not sc["findings"],
+                    "detail": (f"cover summary ({len(sc['claims'])} claims) vs provisions: "
+                               + (", ".join(f"{k} {v}" for k, v in sorted(n.items())) if n else "consistent")
+                               + "; report only, the summary is never applied (A2)")})
     tr = r.get("trace", [])
     out.append({"id": "C46", "ok": not tr, "detail": "every new or amended obligation reaches A1, A3 where it carries a "
                 "consequence, and A5" if not tr else f"{len(tr)} gap(s): " + "; ".join(f"{t['op']} [{t['output']}]" for t in tr[:8])})
@@ -309,6 +319,14 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
                         "a3": f"{s.stage}: obligations not carried to the outputs (C46): "
                               + "; ".join(f"{op} [{', '.join(sorted(set(o)))}]" for op, o in gaps.items())
                               + ". A row, consequence or deliverable must be added"})
+    for sc in r.get("summary_check", []):
+        f = [x for x in sc["findings"] if x["kind"] not in ("unchecked",)]
+        if f:
+            out.append({"id": f"I-AUTO-SUMMARY-{sc['stage']}", "text": f"{sc['stage']}'s cover summary does not match its "
+                        f"provisions (C28): " + "; ".join(f"[{x['kind']}] {x['detail']}" for x in f)
+                        + ". The summary is never applied; a person decides whether to raise a clarification",
+                        "owner": "Bid manager", "source": "C28 (automatic)", "rows": [], "show_in_a3": False,
+                        "a3": f"{sc['stage']} cover summary vs provisions (C28): {len(f)} finding(s); see A2"})
     dc = r.get("date_coverage", [])
     open_dates = [x for x in dc if x["treatment"] in ("UNCOVERED", "NOT COMPUTED")]
     if open_dates:
@@ -569,7 +587,7 @@ def a2(r: dict) -> dict:
           + (f"; working state **{r['working'].stage}** is PARTIAL and does not replace it." if r["working"] else "."),
           "Every provision of every addendum is accounted for below: by an op, as content of an op, as no effect "
           "(with the reason), or as UNRESOLVED (a person must decide it).", ""]
-    changes, provs, moved, answers = [], [], [], []
+    changes, provs, moved, answers, summary_rows = [], [], [], [], []
     for i, s in enumerate(stages[1:], 1):
         prev = stages[i - 1]
         md += [f"## {s.stage} (issued {s.issued}) — {s.status}", "",
@@ -635,6 +653,23 @@ def a2(r: dict) -> dict:
         md += ["", "### Earlier answers to review (never revoked automatically)", ""]
         md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}. {x['status']}." for x in ans] or ["None found."]
         answers += [dict(x, stage=s.stage) for x in ans]
+        sc = next((x for x in r.get("summary_check", []) if x["stage"] == s.stage), None)
+        if sc is not None:
+            md += ["", "### Cover summary vs provisions (C28)", "",
+                   "The cover summary is the Authority's description of the addendum. It is never applied: only the "
+                   "provisions are. Report only; a person decides whether a difference needs a clarification.", ""]
+            if sc["cover"]:
+                md += [f"Summary ({sc['cover']} p{sc['page']}): “{sc['sentence']}”", "",
+                       "| # | Claim | Matched | Status |", "|---|---|---|---|"]
+                for c in sc["claims"]:
+                    extra = [q for q in c["matched_provisions"] if q.replace(":", "/", 1) not in c["matched"]]
+                    shown = c["matched"] + extra[:3] + ([f"and {len(extra) - 3} more no-effect provisions"] if len(extra) > 3 else [])
+                    md.append(f"| {c['n']} | {c['text']} | {', '.join(shown) or '—'} | {c['status']} |")
+                md.append("")
+            md += [f"- **{f['kind']}**: {f['detail']}".replace("|", "/") for f in sc["findings"]] or \
+                  ["No omission or contradiction found."]
+            summary_rows += [{"stage": s.stage, "kind": f["kind"], "claim": f.get("claim", ""), "op": f.get("op", ""),
+                              "provision": f.get("provision", ""), "detail": f["detail"]} for f in sc["findings"]]
         nb = [c for c in s.coverage if c["disposition"] == "no_effect" and "non-binding" in c["reason"]]
         if nb:
             md += ["", "### Non-binding statements (context only; not answers, not revoked, not applied)", ""]
@@ -651,7 +686,8 @@ def a2(r: dict) -> dict:
         ch = e["stages"][r["order"][-1]]["chain"]
         if len(ch) > 1:
             md.append(f"- **{e['row'].id}**: " + " ← ".join(reversed(ch)))
-    return {"markdown": "\n".join(md) + "\n", "changes": changes, "provisions": provs, "rows_moved": moved, "answers": answers}
+    return {"markdown": "\n".join(md) + "\n", "changes": changes, "provisions": provs, "rows_moved": moved, "answers": answers,
+            "summary": summary_rows}
 
 
 # ---------------------------------------------------------------------------------------------- A3
@@ -862,6 +898,7 @@ def write(r: dict, out: Path) -> dict:
     write_csv_json(tbl(a2d["provisions"]), out / "a2", "a2_provisions")
     write_csv_json(tbl(a2d["rows_moved"]), out / "a2", "a2_rows_moved")
     write_csv_json(tbl(a2d["answers"]), out / "a2", "a2_answers_to_review")
+    write_csv_json(tbl(a2d["summary"]), out / "a2", "a2_cover_summary_check")
     if main:
         # A5 at the validated stage: programme, marshalling with document counts, resources, infeasibility drivers,
         # and the scenarios (consortium size, lead times, working calendar) run through the same planner

@@ -1,6 +1,6 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS (revision 6, session 06, 2026-10-03):**
+> **STATUS (revision 7, session 07, 2026-10-03):**
 > - **Direction:** accepted by the owner (session 02).
 > - **Stage 1 (evidence and units):** implemented in session 02, revised in sessions 03 and 04 after the owner's reviews (§9). Formal acceptance is still open. The two image readings are **pending the owner's review**; nothing has been approved.
 > - **Stage 2 (the amendment path):** built in session 04 (§10). The owner's code reviews of it were reproduced and fixed: five findings in session 05 (§11), four in session 06 (§12).
@@ -8,6 +8,7 @@
 > - **Stage 5 (unseen-addendum readiness):** two synthetic drills (A, session 04; B, session 05) and **one blind rehearsal** (session 06, §12): an Addendum No. 3 written by an independent agent, with its answer key frozen by hash before the start. 22 hits, 4 partials, 1 miss; 12 min 13 s from receipt to replanned outputs; four live fixes. `show ROW` and `diff` built.
 > - **Stage 6 (packaging, Mac verification, final submission):** a **draft** archive organised around A1–A5 (session 06, §12), verified in the cloud container (extraction, links, a bundle clone, an offline install and rebuild, the tests). Mac verification is given as exact commands (`docs/VERIFY_ON_MAC.md`); it has not been run on a Mac. Final submission is not started.
 > - **Integrations and model selection** (Claude Code in the app, OpenRouter, local Ollama): designed in §4.6, deliberately **not implemented**; the reviewed build runs offline with no model.
+> - **Session 07:** C28 built (each addendum's cover summary against its provisions; report only, never applied); the drafter no longer drafts changes from cover text; the full packets of both image readings ship with the review batches (§13). The owner kept the full git history as it is.
 > - This revision is one consistent document. Earlier revisions are summarised in the history below and kept in the work log; where they differed, the text below is current.
 
 | Revision | Session | What changed | Record |
@@ -18,6 +19,7 @@
 | 4 | 04 (2 Oct) | Owner's second review: C10 extended to per-cell order, normalized text and anchor page/geometry/crops; Latin expressions inside Arabic laid out correctly, digits-only verification labelled PARTIAL; `--require-approved` gate applied before publishing. Stage 2 built (§10): amendment engine with one path for existing and future addenda, date rules with every counting reading, register slice with pinned interpretations and STALE, A1/A2/A3/A5; ADD-03 drill. D3, D4, D7 applied as the owner directed (§7). The hiring team's reply of 2 Oct recorded (§0). | `worklog/2026-10-02_session-04_repairs-and-stage2.md` |
 | 5 | 05 (2 Oct) | Owner's code review: five findings reproduced, failing tests first, fixed (transactional ops; value, column and replacement-content checks; two changes in one paragraph; evidence verified against the manifest; review fingerprint pinned; latest source cited, original quotations kept apart from effective text; A5 checked in both directions, C44/C45). Stage 3 (dispositions for every unit, 202 rows, C14/C15 sweeps in English and Arabic, "outside the slice" replaced by treatment) and Stage 4 (both envelopes, counts, issuers, resources, drivers, scenarios) built as working drafts; release gate (`outputs --strict`, exit 3); readable one-page A3 with linked detail; drill B rehearsal (§11). | `worklog/2026-10-02_session-05_review-stage3-stage4.md` |
 | 6 | 06 (3 Oct) | Owner's code review: four findings reproduced, failing tests first, fixed (inserted content needs evidence for the whole change, C21 and the new structural C47; an exception after "unchanged" wording is unresolved; new and amended obligations traced to A1/A3/A5, C46; the release gate counts only decisions bound to content; A3 keeps each item's confidence and the full requirement text; "slice" labels replaced). `accept`/`reject` (D8), stale-row proposals (`apply-proposal`), review batches; `show ROW`, `diff`; C12 (id ledger), C30 (date coverage, `unresolved` kept explicit), C32 (counting conventions); months and weeks; renumbering; summary currency. Blind rehearsal (§12). Draft archive, operating guide, cost and effort. | `worklog/2026-10-03_session-06_review-accept-blind-archive.md` |
+| 7 | 07 (3 Oct) | C28 built: claims parsed from each cover summary and matched to the provisions' ops (citations, register anchors, answer ranges, best-matching description); omissions, understatements, unmentioned consequences, contradictions and unsupported claims reported in A2, A1 Issues, `diff` and checks.json, never applied. The drafter drafts no change from cover text. Review packets copied into the review folder. Archive rebuilt and verified. | `worklog/2026-10-03_session-07_cover-summary-archive.md` |
 
 Conventions used throughout:
 
@@ -495,7 +497,7 @@ The row's pins (§4.10) include the text of `VOL-I:8.6`, which is now s2 ≠ s0.
 - **Strict mode** (`build --strict`, used for submission) turns every FLAG into ABORT, except the Issues that are *meant* to stay open for a person.
 - **Pending human review is not a failure.** It is printed as PENDING HUMAN REVIEW and carried on every unit derived from a pending reading; `ingest --require-approved` exits 3 while anything is pending.
 
-C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (reported), C15 (release blocker), C16, C20–C27, C31, C40, C43 (with a minimum text size), C44, C45. Built in session 06 (§12): C12 (structural, with the id ledger), C29 as the decision gate (D8), C30 (release blocker), C32 (reported), C46 (release blocker) and C47 (structural). Not built: C28, C41, C42 beyond the determinism check. IDs were renumbered in revision 3 where they collided (old C07 → C14, old C08 → C15, old C10 → C16).
+C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (reported), C15 (release blocker), C16, C20–C27, C31, C40, C43 (with a minimum text size), C44, C45. Built in session 06 (§12): C12 (structural, with the id ledger), C29 as the decision gate (D8), C30 (release blocker), C32 (reported), C46 (release blocker) and C47 (structural). Built in session 07 (§13): C28 (reported). Not built: C41, C42 beyond the determinism check. IDs were renumbered in revision 3 where they collided (old C07 → C14, old C08 → C15, old C10 → C16).
 
 **Implemented action vs this table (session 05):** C15 and unit dispositions block a strict release and fail `check-register`; they do not abort a working draft, which is published labelled WORKING DRAFT with every blocker listed. `outputs --strict` refuses the release (exit 3) while any coverage, stale or approval blocker remains.
 
@@ -525,7 +527,7 @@ C01–C10 are built (Stage 1). Built by session 05 (§10, §11): C11, C13, C14 (
 | C25 | **Scope leak:** the set of units changed by an addendum equals the set of declared targets | ABORT |
 | C26 | Addenda are applied in number order with non-decreasing issue dates; ops reference only earlier or same addenda | ABORT |
 | C27 | `expect` assertions hold (e.g. Table 1-1 deltas, total = 100) | op invalid (FLAG) |
-| C28 | Cover-summary cross-check: summary claims vs enumerated provisions; mismatches reported in A2 | report only |
+| C28 | Cover-summary cross-check: summary claims vs the provisions (tables, notes, appendices, answers); omissions and contradictions reported in A2, A1 Issues and `diff`; the summary is never applied | report only (built session 07) |
 | C29 | Only `accepted` ops are applied; `proposed` and `unresolved` are listed | report; ABORT in strict |
 | C30 | Every date-bearing phrase in an active unit maps to a DateRule or a disposition | FLAG |
 | C31 | Printed fixed dates that equal a superseded anchor value raise an Issue (inconsistency); never auto-corrected | Issue (always surfaced in A3) |
@@ -825,3 +827,33 @@ Before/after evidence: work log §2 and §4.
 **Draft archive:** `scripts/make_draft_archive.py`; the verification is recorded in the session 06 work log §7.
 
 **Open:** the owner's decisions in `docs/session-06_report.md` §4.
+
+## 13. Session 07 status (cover-summary check, review packets, archive)
+
+**C28** (`tenderpack/summary.py`):
+
+- Each addendum's "This Addendum …" sentence is parsed into claims (verb + the things it names). Claims are matched to the provisions' ops by:
+  - cited targets (including plural "Clauses 4.4 and Table 2-4");
+  - the register's date anchors ("the Proposal Due Date" → VOL-I 6.1);
+  - answer ranges;
+  - for descriptive claims, the best-matching subject.
+- It reports, for a person: **omitted** (a change or obligation no claim covers), **understated** (an answer that changes or adds something; a clause reinstated in an amended form), **consequence not mentioned**, **contradicted** (verb, range or count), **not found**, **claimed, not applied** (the op is invalid or rejected) and **unchecked** (a provision still unresolved).
+- **Report only:** A2, the A1 Issues sheet (`I-AUTO-SUMMARY-<stage>`), `diff` and checks.json. Never structural, never a release blocker, never on A3.
+- **The summary is never applied:** the engine does not read it, and the drafter now removes summary sentences before matching and drafts only obligations from cover text.
+
+**Real pack:**
+
+- **ADD-01:** Appendix A's reissue of Form 4-A and 3.1's five-Working-Day reporting duty are omitted; the answer to request 4 adds a duty.
+- **ADD-02:** note (2) to the reissued table amends VOL-I 11.2 (60/40 → 65/35); 9.2 ends ADD-01 4.2; 5.2 adds a design duty — all omitted. 9.1 reinstates 8.6 in an amended form (35%, a new consequence) and 7.2's non-responsive consequence is not mentioned.
+
+**Tests** (`tests/test_session07_summary.py`):
+
+- the real-pack findings, written from the printed addenda before C28 existed;
+- a misleading summary over the same provisions leaves every applied unit identical;
+- a misleading synthetic Addendum No. 3, end to end: every planted error is reported;
+- the drafter drafts no change from cover text;
+- a regression on blind rehearsal 01, where the key's six summary omissions are reported. This is not blind evidence: C28 was written after the key was opened.
+
+**Review packets:** `out/review/packets/` carries the full packets of both image readings (native crops beside every band, cell and numeral; Arabic right to left), linked from batch 1 and the index.
+
+**Open:** the owner's review and the decisions in `docs/session-06_report.md` §4. Decision 8 is settled: keep the full history as it is.

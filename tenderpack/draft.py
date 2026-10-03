@@ -27,6 +27,10 @@ Phrasings recognised (taken from the pack's addenda; extend with new phrasings, 
   "<Volume X Clause N> is deleted and replaced by the following: 'N <text>'"                replace_text (whole clause)
   "The following [new] Clause N is added to / inserted in Volume X after Clause M: 'N <text>'"  insert_unit after Clause M
   the addendum's own cover date line, recitals, and minutes it declares non-binding        no_effect
+
+Cover text (session 07): the addendum's summary of itself ("This Addendum amends ..., deletes ...") is never drafted;
+C28 (tenderpack/summary.py) compares it with the provisions and reports differences. From the rest of the cover the
+drafter takes only the obligations it states; a change stated in cover text is left unresolved for a person.
 """
 from __future__ import annotations
 
@@ -34,6 +38,7 @@ import re
 
 from .amend import PROVISION_KINDS, Disposition, Op, OpFile, UState, base_state, heading_of
 from .citations import citations, row_names
+from .summary import SUMMARY_RE
 from .textnorm import normalize_latin
 
 Q = r"[‘'\"](.+?)[’'\"]"
@@ -222,18 +227,27 @@ def draft(units: list[dict], addendum: str, prepared_by: str = "pattern drafter 
             continue
         u = st[p]
         t = _clean(normalize_latin(u.text))
+        cover = p.startswith(f"{addendum}:cover/")
+        if cover:
+            # the addendum's summary of itself is never drafted: C28 compares it with the provisions (session 07)
+            t = SUMMARY_RE.sub(" ", t).strip()
         head = heading_of(order, st, p)
         oid = f"{addendum}/{p.split(':', 1)[1]}"
         found = _matches(t, p, st, order, provs, addendum)
+        if cover:
+            # cover text never drafts a change, only the obligations it states ("Bidders shall acknowledge receipt
+            # in Form 4-A"); a change stated in the cover stays unresolved for a person (session 07)
+            found = [f for f in found if f[2].get("type") == "annotate" and f[2].get("effect") == "adds_obligation"]
         if found:
             for i, (a, b, kw, cov) in enumerate(found):
                 ops.append(Op(id=oid if len(found) == 1 else f"{oid}({chr(97 + i)})", provision=p, origin="pattern",
                               review="proposed", **kw))
                 covered.update(cov)
-            rest = _remainder(t, [(a, b) for a, b, _, _ in found], cover=p.startswith(f"{addendum}:cover/"))
+            rest = _remainder(t, [(a, b) for a, b, _, _ in found], cover=cover)
             if rest:
                 disp.append(Disposition(provision=p, disposition="unresolved", origin="pattern",
-                                        reason=f"text not covered by any op: '{rest[:240]}'",
+                                        reason=("cover text the drafter never applies (a person decides): " if cover
+                                                else "text not covered by any op: ") + f"'{rest[:240]}'",
                                         candidates=[c.target for c in citations(rest)]))
             continue
         # dispositions the drafter can justify from the addendum's own words

@@ -119,3 +119,4 @@ See the session 06 work log, §6, for the code. Each fix has a test.
 1. A requirement summary that states a figure the effective text no longer contains is flagged (A1, A3, `check-register`, release blocker). It is not silently rewritten.
 2. Renumbering is an op effect (`renumbers`). Outputs cite the current number, with the issued one in brackets; answers citing a renumbered clause are listed for review.
 3. A3 lines show clarifications that add to or narrow a row's units (e.g. Q17 on footnote 12).
+4. **Session 07, C28 (cover summary vs provisions):** the summary's omissions are now reported: 2.3, 3.2, 8.2, 9.2, the change inside the answer to Q16 and the restriction in Q17, which are the key's six. The scored "Cover: partial" stays as it was. C28 was written after the key was opened, so this is a regression, not a blind result (`tests/test_session07_summary.py`).

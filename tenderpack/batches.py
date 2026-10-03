@@ -3,6 +3,9 @@
   out/review/index.html                       the batches, their counts and review status, how decisions work
   out/review/batch-01-image-readings.html     the two image readings: crops beside each read row/band, the points
                                               for decision, `tenderpack approve` (or correct the reading)
+  out/review/packets/<region>.html            the full Stage 1 packet of each reading (every band, cell and numeral
+                                              at native resolution, Arabic right to left), copied from the evidence
+                                              build so the folder is complete on its own (session 07)
   out/review/batch-02-disqualifiers.html      every A3 row: crops of its source units beside the quote and the
                                               consequence, the decision, `tenderpack accept | reject`
   out/review/batch-03-amendments.html         every amendment op: the provision's crop beside the target's, the
@@ -61,6 +64,20 @@ def _cmd_row(rid: str) -> str:
             f'python -m tenderpack reject {rid} --reviewer "Your Name" --note "what is wrong"</pre>')
 
 
+def _packet_link(build_dir: Path, out: Path, rg: str) -> str:
+    """The Stage 1 review packet of a reading (every band, cell and numeral at native resolution, Arabic right to
+    left; self-contained HTML) copied next to the batches so the review folder is complete on its own (session 07)."""
+    src = Path(build_dir) / "review" / rg / "packet.html"
+    if not src.exists():
+        return f"<p>Full packet: not found in the evidence build ({_e(str(src))}); run <code>make evidence</code>.</p>"
+    (out / "packets").mkdir(exist_ok=True)
+    shutil.copyfile(src, out / "packets" / f"{rg}.html")
+    return (f'<p><a href="packets/{_e(rg)}.html">Full packet for {_e(rg)}</a>: every band, cell and numeral at native '
+            "resolution beside its reading (Arabic shown right to left); the crops below are the same regions, one per "
+            "unit. Scroll sideways in the packet: crops are kept at native size so diacritics and decimal points stay "
+            "visible.</p>")
+
+
 def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
     out = Path(out)
     if out.exists():
@@ -107,7 +124,7 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                     f"<code>curation/readings/{_e(rg)}.yaml</code> and re-run <code>make evidence</code>. Points to check:"
                     f"<ul>{decisions}</ul><pre>python -m tenderpack approve {_e(rg)} --reviewer \"Your Name\" "
                     f"[--notes \"...\"]</pre></div>"
-                    f"<p>Full packet with every band and cell: <code>build/review/{_e(rg)}/packet.html</code></p>" + "".join(rows))
+                    + _packet_link(build_dir, out, rg) + "".join(rows))
         items.append({"batch": 1, "kind": "reading", "id": rg, "status": status, "fingerprint": packet.get("subject_sha256", ""),
                       "decision": "approve the reading (or correct it)", "command": f'python -m tenderpack approve {rg} --reviewer "Your Name"'})
     (out / "batch-01-image-readings.html").write_text(_page(
@@ -251,7 +268,10 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                 "accepted for you. A decision is recorded only by the commands shown, with your name, and binds to the item's "
                 "current content: if the item, its evidence or a dependency changes later, it needs review again. "
                 "The <code>review:</code> flags in the YAML files are drafting flags and never count.",
-                ["<table><tr><th>Batch</th><th>Items</th><th>Status</th></tr>" + "".join(lines) + "</table>"])
+                ["<table><tr><th>Batch</th><th>Items</th><th>Status</th></tr>" + "".join(lines) + "</table>"]
+                + ([f"<p>Full review packets of the image readings (native crops beside every band and cell): "
+                    + ", ".join(f'<a href="packets/{_e(q.name)}">{_e(q.stem)}</a>' for q in sorted((out / "packets").glob("*.html")))
+                    + "</p>"] if (out / "packets").exists() else []))
     (out / "index.html").write_text(idx, encoding="utf-8")
     (out / "items.json").write_text(json.dumps({"items": items}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     import csv

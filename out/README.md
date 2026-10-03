@@ -40,4 +40,6 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C11 | REPORTED | STALE rows: ['VOL-I-8.3-01@ADD-01', 'VOL-I-8.3-01@ADD-02', 'VOL-I-3.4-01@ADD-01', 'VOL-I-3.4-01@ADD-02', 'VOL-I-6.7-01@ADD-01', 'VOL-I-6.7-01@ADD-02'] |
 | C30 | ok | 46 date/period phrases in force; uncovered: none; explicitly not computed: none |
 | C32 | ok | 5 date rule(s) with unstated counting conventions: every reading shown (A1 Dates), planning uses the configured policy |
+| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2, understated 1; report only, the summary is never applied (A2) |
+| C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
 | C46 | ok | every new or amended obligation reaches A1, A3 where it carries a consequence, and A5 |

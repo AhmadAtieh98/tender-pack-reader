@@ -2,7 +2,7 @@
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 
-**Status (session 06, `docs/PLAN.md` revision 6): DRAFT handover.**
+**Status (session 07, `docs/PLAN.md` revision 7): DRAFT handover.**
 
 - **Stages 1–4** (evidence, the amendment path, the full register, A5) are the working basis. The owner's four session 06 code-review findings are fixed, each with failing-first tests.
 - **Review is the owner's, and none has been given:**
@@ -14,7 +14,7 @@ Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 - **A strict release** (`outputs --strict`) is refused in this state.
 - **Live-addendum tooling:**
   - `show ROW`, `diff`, review batches (`out/review/`);
-  - checks C12 (stable ids), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
+  - checks C12 (stable ids), C28 (cover summary vs provisions, report only), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
 - **Tested:** one blind rehearsal against an independently written Addendum No. 3 (`rehearsals/blind-01/`).
 - **Draft archive:** built by `scripts/make_draft_archive.py`. See `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md` and `docs/COST_AND_EFFORT.md`.
 - **Deferred, as directed:** the Claude Code app, OpenRouter and Ollama integrations.
@@ -77,7 +77,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `sources/brief/` | The candidate brief as received |
 | `sources/correspondence/` | Correspondence received and sent, as provided by the owner |
 | `sources/manifest.json` | SHA-256, size and page count for every source file |
-| `docs/PLAN.md` | Source findings and the engineering plan (revision 6) |
+| `docs/PLAN.md` | Source findings and the engineering plan (revision 7) |
 | `docs/session-03_before-after.md` | Short before/after report on the six gaps found in the owner's Stage 1 review |
 | `docs/session-04_report.md` | Session 04: repair evidence, Stage 2 outputs, decisions needed |
 | `docs/session-05_report.md` | Session 05: review fixes, working outputs, rehearsal results, remaining gaps, prioritised decisions |
@@ -91,7 +91,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `curation/evidence_items/` | The evidence-item vocabulary: envelope, issuer, multiplicity, counted |
 | `curation/activity_templates.yaml` | Evidence item → A5 activities (owner, issuer, duration key, dependencies, resource role) |
 | `build/` | Generated evidence: `units.md`, `coverage.md`, `exclusions.md`, `review/<region>/packet.html` (crops beside readings; also `.md`), `fixture/`, `drill/` and `drill-src/` (ADD-03 drill) |
-| `out/` | **Working outputs:** `a1/` (xlsx, csv, json); `a2/` (md, csv, json); `a3/a3.pdf` with `a3_detail.html`; `a5/` (programme, marshalling, documents, resources, drivers, replan deltas, scenario comparison and `scenarios/`); `review/` (the owner's review batches: crops beside readings and quotes, the exact decisions); `checks.json` (structural checks and release blockers); `README.md` |
+| `out/` | **Working outputs:** `a1/` (xlsx, csv, json); `a2/` (md, csv, json, including the C28 cover-summary check); `a3/a3.pdf` with `a3_detail.html`; `a5/` (programme, marshalling, documents, resources, drivers, replan deltas, scenario comparison and `scenarios/`); `review/` (the owner's review batches: crops beside readings and quotes, the exact decisions; `packets/` holds the full packets of both image readings); `checks.json` (structural checks and release blockers); `README.md` |
 | `out-drill/` | The same outputs for the pack plus the synthetic ADD-03 (PARTIAL; validated state stays ADD-02) |
 | `out-drill-b/` | Drill B rehearsal: the drill pack (`src/`), its evidence (`build/`), outputs with ADD-03 drafted (`out-drafted/`, PARTIAL) and curated (`out-curated/`, APPLIED). No review of any kind |
 | `rehearsals/blind-01/` | Blind rehearsal: an independently written Addendum No. 3, its frozen and sealed answer key, the curation, outputs and `COMPARISON.md` (score and timeline) |

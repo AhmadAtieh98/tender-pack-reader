@@ -56,6 +56,7 @@ Times are from the blind rehearsal (`rehearsals/blind-01/COMPARISON.md`). Total:
    - add rows for new obligations (C46 lists any that are missing);
    - re-make the interpretations of rows whose quoted words changed;
    - add issues for what a person must decide;
+   - read the C28 findings (A2, `diff`): the cover summary is never applied, and a difference may need a clarification;
    - update `config/assumptions.yaml` when a pack fact in it changed (e.g. the number of copies).
 5. **Check.** Run each of these; every one must be clean:
    ```
@@ -74,7 +75,7 @@ Times are from the blind rehearsal (`rehearsals/blind-01/COMPARISON.md`). Total:
 
 Open `out/review/index.html` and work through the batches in order:
 
-1. **Image readings.** Approve a reading only after comparing every crop with what is read beside it:
+1. **Image readings.** Batch 1 shows each unit's crop beside its reading. `out/review/packets/` has the full packets: every band, cell and numeral at native resolution, with the Arabic right to left. Approve a reading only after comparing every crop with what is read beside it:
    `python -m tenderpack approve VOL-II-p3-r1 --reviewer "Your Name"`.
    Or correct `curation/readings/<region>.yaml` and run `make evidence`.
 2. **Disqualifiers (A3 rows), amendment ops, remaining rows.** Decide each one:
@@ -101,6 +102,7 @@ The `review:` fields in the YAML files are drafting flags. They never count.
 | C16 | Every quote is in the effective text |
 | C20–C27 | Every provision is treated; each op is valid (quotes, targets, scope) |
 | C25 / C47 | Nothing changes without an op; every added word is printed by the addendum |
+| C28 | Each addendum's cover summary is compared with its provisions (tables, notes, appendices, answers): omissions, understatements, unmentioned consequences, contradictions. Report only (A2, A1 Issues, `diff`): the summary is never applied |
 | C30 | Every date or period phrase is planned, or explicitly not computed |
 | C40 / C44 / C45 | A5 activities and deliverables, both ways; dependencies defined |
 | C46 | Every new or amended obligation reaches A1, A3 and A5 |
