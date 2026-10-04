@@ -241,7 +241,20 @@ Revision 8 (`docs/PLAN.md`): status, a revision row, §4.6 restating that every 
 
 ## 6. Verification results
 
-(Completed after the final runs; see below.)
+All runs on the cloud container: Linux x86_64, CPython 3.11.15, PyMuPDF 1.28.2, openpyxl 3.1.5. No Mac, native Excel or native PDF viewer was used.
+
+| Check | Result |
+|---|---|
+| The four findings' regressions (`tests/test_session08_audit.py`) | Failed before the fixes (19:34, §3) and pass now |
+| Session 08 tests (`test_session08_outputs.py`, `test_session08_a5.py`, `test_blind02_live_fixes.py`) | Pass |
+| Full suite on `2708261` (before the blind-02 live fixes) | **386 passed** in 29 min 37 s (06:20–06:50) |
+| Full suite with the four live fixes (the code as committed in `c6bcbdb`; later commits change documents only) | **390 passed** in 29 min 59 s (07:01–07:31) |
+| Fresh build of the real pack with today's code | `outputs` into a new folder: exit 0. **Every file byte-identical to `out/`**, the review packets included (07:00) |
+| Strict mode (`outputs --strict`) | **Exit 3: release refused**; the previous outputs kept. Blockers: 205 of 205 rows and 37 of 37 ops without a named decision. No reading blocker (both readings carry the owner's confirmations), no STALE row, no structural failure |
+| Unseen-style rehearsal | `rehearsals/blind-02/COMPARISON.md`: 24 hit, 6 partial, 0 missed, out of 30; C28 missed both planted cover errors; four live fixes; post-key fixes kept apart |
+| Archive | Built from the commit that records these results, then checked in a fresh folder with `scripts/verify_archive.py`. Its result is recorded in the next commit (§6.1): an archive cannot contain its own verification |
+
+**Content and rendering are reported apart** (`scripts/compare_outputs.py`). Content identity covers the text deliverables (CSV, JSON, Markdown, HTML, YAML, SVG): byte-identical, or the content differs. For the rendered files (PDF, PNG, XLSX), the bytes are compared first; if they differ, the content is compared: every PDF page's text and link targets, a PNG's size, every cell of every sheet. Bytes that differ with identical content are a platform rendering difference (fonts, image encoding, zip compression), reported but not a failure. Only the Linux container was checked. On a Mac, the PDF and XLSX bytes may differ while their content matches (`docs/VERIFY_ON_MAC.md`).
 
 ## 7. What this establishes, and what it does not
 

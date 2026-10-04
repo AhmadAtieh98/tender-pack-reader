@@ -22,7 +22,7 @@ For the owner. The full record is `worklog/2026-10-03_session-08_review-confirma
 ## 2. Verification (actual results)
 
 - **Regressions:** the four findings' tests failed before their fixes and pass now (`tests/test_session08_audit.py`), alongside `test_session08_outputs.py`, `test_session08_a5.py` and `test_blind02_live_fixes.py`.
-- **Full suite:** 386 passed on `2708261` (29 min 37 s). The final run, which includes the four live fixes, is recorded in the work log §6.
+- **Full suite:** 386 passed on `2708261` (29 min 37 s); **390 passed** with the four live fixes (29 min 59 s).
 - **Fresh build:** the real pack's outputs rebuilt with today's code are byte-identical to `out/` (every file, including the review packets).
 - **Strict mode:** `outputs --strict` exits 3 and refuses the release. The only blockers are 205 rows and 37 ops without a named decision; there is no reading or STALE blocker. This is the correct answer until you decide them.
 - **Archive:** rebuilt from a clean clone, offline, and checked (work log §6). Two kinds of identity are reported separately: **content** (text deliverables byte-identical, or rendered files with the same text, links and cell values) and **rendering** (PDF, PNG and XLSX bytes, which vary with fonts and compression).
