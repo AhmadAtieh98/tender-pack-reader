@@ -1,0 +1,491 @@
+# Answer key for blind rehearsal 02: Addendum No. 3 to tender NUPA/ISTP/2026/014.
+# SEALED. Do not show to the engineer running the tool until the run is complete.
+#
+# Conventions
+#   kind vocabulary: amend_text | set_table_value | delete | reinstate | replace_table_or_form |
+#                    insert | answer_with_effect | answer_without_effect | renumber | recital
+#   Dates are Riyadh time. Working Day (VOL-I 2.4) = Sunday to Thursday, the stated date not counted
+#   when counting backwards; no public holiday falls in the windows used below.
+#   "Day N from the Proposal Due Date" is computed as PDD date + N calendar days.
+
+meta:
+  input_pdf: rehearsals/blind-02/input/ADD-03_Addendum_No_3.pdf
+  pages: 4
+  addendum_number: 3
+  issue_date: 2026-11-03          # printed "Issued 3 November 2026" (a Tuesday)
+  tender: NUPA/ISTP/2026/014
+  header_left: "Addendum No. 3"
+  precedence: "Prevails over Addenda Nos. 1 and 2 and over Volumes I to V (VOL-I 3.2(a), restated at ADD-03 1.1)."
+  page_map:
+    1: [cover, "1.1-1.2", "2.1-2.4 (incl. quoted new 6.8)", "3.1-3.3", "4.1", "4.2 (lead-in only)"]
+    2: ["quoted new 12.5", "4.3", "5.1-5.3", "6.1-6.2", "7.1-7.2", "Q&A 15-19"]
+    3: ["Q&A 20-21 (table header repeated)"]
+    4: ["Appendix A: Table 2-2 (revised) and Notes (1)-(4)"]
+  state_before_this_addendum:
+    proposal_due_date: "Thursday 26 November 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1)"
+    submission_address: "Tender Box 4, Ground Floor, NUPA, Administrative Building C, Sakaka (VOL-I App. 3)"
+    proposal_validity_days: 150
+    bid_bond_validity_days: 180
+    bid_bond_issuer: "bank licensed to operate in the Kingdom, A- or better; per ADD-01 Q3 a licensed branch of a foreign bank is acceptable"
+    vol2_4_4_standby_hours: 96          # ADD-02 4.1
+    page_limit_pages: 150               # ADD-02 2.1
+
+# ---------------------------------------------------------------------------
+# Cover summary paragraph (page 1) - planted errors
+# ---------------------------------------------------------------------------
+cover_summary:
+  text: >-
+    This Addendum amends the time for receipt of Proposals and the submission address, introduces
+    registration of the persons delivering Proposals, extends the Proposal validity period, removes the
+    model audit opinion from the Proposal, re-letters Volume I Clause 9.1, amends Volume II Clauses 3.5,
+    4.4 and 8.4, reissues Volume II Table 2-2, and responds to clarification requests 15 to 21. The
+    Proposal Due Date is unchanged.
+  planted_errors:
+    - id: E1
+      type: contradiction_misleading
+      cover_says: "The Proposal Due Date is unchanged."
+      truth: >-
+        VOL-I 2.6 defines the Proposal Due Date as the date AND time stated in Clause 6.1. Section 2.1
+        moves the time from 14:00 to 11:00 on the same date. The Proposal Due Date becomes Thursday
+        26 November 2026, 11:00 Riyadh time (three hours earlier). Only the calendar date is unchanged.
+      expected_reader_behaviour: "Report the PDD as changed (time), flag the cover statement as inaccurate."
+    - id: E2
+      type: omission
+      cover_says: "extends the Proposal validity period"
+      truth: >-
+        Section 3.2 also extends the Bid Bond validity in VOL-I 6.3 from 180 to 210 days. Not mentioned
+        on the cover, and the Section 3 heading ("PROPOSAL VALIDITY") does not mention it either.
+      expected_reader_behaviour: "Detect the 6.3 amendment from the body; list it as a cover omission."
+  secondary_undisclosed_effects:   # not planted as cover "errors", but the cover does not itemise them
+    - "Note (4) to Table 2-2 (revised) amends VOL-II Clause 2.3 (expansion provision 50% -> 25%)."
+    - "Note (3) to Table 2-2 (revised) creates a new Technical Proposal deliverable (process simulation report) with a scoring consequence."
+    - "Total Phosphorus peak (design) value changes 14 -> 16 in the reissued table (not mentioned on the cover NOR in the narrative at 6.1)."
+    - "New VOL-I Clause 12.5 (post-award model audit opinion) and deletion of two Form 4-F rows (4.2, 4.3) - only partly signalled by 'removes the model audit opinion from the Proposal'."
+    - "VOL-II 4.4 change is a revocation of ADD-02 4.1 (reinstatement of 72 hours), described on the cover as 'amends'."
+    - "Index of Forms entry for Form 4-G (7.2)."
+    - "Clarification responses with binding effect: Q15 (withdraws ADD-01 Q3; Bid Bond issuer), Q16 (legalisation of Powers of Attorney), Q20 (second USB in Envelope B; password deadline)."
+  accurate_parts: "Every other item on the cover corresponds to a body provision."
+
+standard_paragraph:
+  text: "Bidders shall acknowledge receipt in Form 4-A."
+  effect: "Form 4-A paragraph 1 must now acknowledge Addenda Nos. 1 to 3 (existing obligation, no new consequence)."
+
+# ---------------------------------------------------------------------------
+# Body provisions
+# ---------------------------------------------------------------------------
+provisions:
+
+  - id: "1.1"
+    page: 1
+    kind: recital
+    target: null
+    effect: none
+    note: "Precedence over Addenda Nos. 1 and 2 under VOL-I 3.2."
+
+  - id: "1.2"
+    page: 1
+    kind: recital
+    target: "Clarification request 18"
+    effect: none
+    note: "Request 18 withdrawn by the submitting Bidder; not answered (consistent with the Q&A row 18)."
+
+  - id: "2.1"
+    page: 1
+    kind: amend_text
+    target: "VOL-I Clause 6.1 (as amended by ADD-01 2.1)"
+    old: "14:00 hours Riyadh time"
+    new: "11:00 hours Riyadh time"
+    unchanged: "date Thursday 26 November 2026"
+    final_text: >-
+      Proposals shall be received by the Authority not later than 11:00 hours Riyadh time on Thursday
+      26 November 2026 at the address given in Appendix 3.
+    dates:
+      proposal_due_date: {old: "2026-11-26 14:00", new: "2026-11-26 11:00"}
+    consequences_now_bound_to_new_time:
+      - "VOL-I 6.6: a Proposal received after the time stated in Clause 6.1 'will be rejected unopened and returned to the Bidder' - now after 11:00."
+      - "VOL-I 6.7: withdrawal/modification before the PDD - now before 11:00."
+    knock_on:
+      - "VOL-I 2.6 (definition of PDD) - PDD time changes."
+      - "Appendix 3 marking (replaced by 2.3 with 11:00)."
+      - "Q20 password window ends 12:00 (one hour after 11:00)."
+      - "Form 4-A 'Proposal Due Date' pre-filled entry (VOL-IV and ADD-01 Appendix A) still reads '12 November 2026, 14:00 Riyadh time'; no addendum has corrected it; it is now wrong on both date and time. Expected: flag as unresolved / stale form entry; correct value 26 November 2026, 11:00."
+      - "Date-based periods counted from the PDD (5.2 cut-off, 6.3, 7.1, footnote 12) keep their dates; only the time-of-day reading may differ (see ambiguities)."
+    a3: "Late-submission rejection (6.6) now bites at 11:00; the A5 drop-dead for physical delivery moves three hours earlier."
+    cover: "Mentioned ('amends the time for receipt'), but contradicted by E1."
+
+  - id: "2.2"
+    page: 1
+    kind: delete
+    target: "ADD-01 Section 2.1, second sentence ('The time of 14:00 Riyadh time is unchanged.')"
+    effect: "Earlier addendum statement ceases to have effect; the chain for VOL-I 6.1 must show ADD-01 (date) then ADD-03 (time)."
+
+  - id: "2.3"
+    page: 1
+    kind: replace_table_or_form   # replacement of an appendix
+    target: "VOL-I Appendix 3 (Submission address)"
+    old: >-
+      Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C,
+      Sakaka. Marked: 'NUPA/ISTP/2026/014 - NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE'.
+    new: >-
+      Tender Box 2, First Floor, Northern Utilities Procurement Authority, Administrative Building A,
+      Sakaka. Marked: "NUPA/ISTP/2026/014 - NOT TO BE OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE".
+    packaging:
+      - "Delivery location changes: Tender Box 2, First Floor, Administrative Building A (was Box 4, Ground Floor, Building C)."
+      - "Envelope marking text changes: '...NOT TO BE OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE' (was 14:00)."
+    cover: "Mentioned ('the submission address')."
+
+  - id: "2.4"
+    page: 1
+    kind: insert
+    target: "VOL-I new Clause 6.8 (after 6.7; no renumbering)"
+    new_text: >-
+      6.8 Each Bidder shall, not later than five (5) Working Days before the Proposal Due Date, register
+      through the Portal the names and identity document numbers of not more than two (2) representatives
+      who will deliver its Proposal. Access to Administrative Building A will be refused to any person who
+      is not so registered. A Proposal that is not received by the time stated in Clause 6.1 for that
+      reason shall be treated as a late Proposal under Clause 6.6.
+    new_obligation: "Register up to two delivery representatives (names + identity document numbers) through the Portal."
+    stated_consequence:
+      - "Access to Administrative Building A will be refused to any person who is not so registered."
+      - "A Proposal that is not received by the time stated in Clause 6.1 for that reason shall be treated as a late Proposal under Clause 6.6."
+    consequence_resolved: "VOL-I 6.6: rejected unopened and returned to the Bidder."
+    dates:
+      registration_deadline: "2026-11-19 (Thursday) - 5 Working Days before Thu 26 Nov 2026 (25,24,23,22 Nov, then 19 Nov)"
+    a3: "Yes - add (pass/fail via late-Proposal rejection)."
+    a5: "New milestone: delivery-team registration by Thu 19 Nov 2026; feeds the physical delivery activity."
+    cover: "Mentioned ('introduces registration of the persons delivering Proposals')."
+
+  - id: "3.1"
+    page: 1
+    kind: amend_text
+    target: "VOL-I Clause 7.1 (Proposal validity)"
+    old: "one hundred and fifty (150) days"
+    new: "one hundred and eighty (180) days"
+    dates:
+      proposal_validity_expiry: {old: "2027-04-25", new: "2027-05-25"}
+    cover: "Mentioned ('extends the Proposal validity period')."
+
+  - id: "3.2"
+    page: 1
+    kind: amend_text
+    target: "VOL-I Clause 6.3 (Bid Bond validity)"
+    old: "one hundred and eighty (180) days"
+    new: "two hundred and ten (210) days"
+    dates:
+      bid_bond_validity_expiry: {old: "2027-05-25", new: "2027-06-24"}
+    marshalling: "Bid Bond wording/instruction to the issuing bank must state 210 days from the PDD; combine with Q15 issuer restriction."
+    cover: "OMITTED (planted error E2)."
+    trap: "Same old figure '180 days' appears as the NEW value in 3.1 and the OLD value in 3.2; the heading says only 'PROPOSAL VALIDITY'."
+
+  - id: "3.3"
+    page: 1
+    kind: amend_text
+    target: "VOL-IV Form 4-A paragraph 2"
+    old: "We confirm that this Proposal is valid for one hundred and fifty (150) days from the Proposal Due Date."
+    new: "...valid for one hundred and eighty (180) days from the Proposal Due Date. (implied by 'shall be read accordingly')"
+    trap: "The new value is not written in the provision; it must be derived from 3.1. Note the asymmetry: Form 4-A paragraph 2 is addressed, the Form 4-A PDD entry is not."
+
+  - id: "4.1"
+    page: 1
+    kind: delete
+    target: "VOL-I Clause 10.3"
+    deleted_words: ", and shall be accompanied by an opinion from an independent model auditor addressed to the Authority"
+    final_text: >-
+      The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format,
+      without macros and without hard-coded values in calculation cells.
+    effect: "Requirement for a model audit opinion WITH THE PROPOSAL is deleted ('No model audit opinion is required with the Proposal'). The rest of 10.3 stands."
+    a1: "Row for the model-audit-opinion requirement: status deleted at ADD-03 (moved post-award, see 4.2)."
+    a5: "Remove model auditor appointment / audit opinion from the pre-submission programme and marshalling plan."
+    cover: "Mentioned ('removes the model audit opinion from the Proposal')."
+
+  - id: "4.2"
+    page: "1-2"
+    kind: insert
+    target: "VOL-I new Clause 12.5 (after 12.4; no renumbering)"
+    new_text: >-
+      12.5 The Preferred Bidder shall deliver to the Authority, not later than forty-five (45) days after
+      the Preferred Bidder Notification, an opinion from an independent model auditor on the Financial
+      Model, addressed to the Authority.
+    new_obligation: "Post-award: model audit opinion within 45 days after Preferred Bidder Notification."
+    stated_consequence: null    # none stated
+    dates:
+      model_audit_opinion_due: "Preferred Bidder Notification + 45 days (date not determinable now)"
+    a3: "No (post-award, no stated consequence)."
+    cover: "Not separately mentioned (secondary)."
+
+  - id: "4.3"
+    page: 2
+    kind: replace_table_or_form   # form amended by deleting rows
+    target: "VOL-IV Form 4-F (Financial Proposal Schedule)"
+    deleted_rows: ["Model auditor", "Date of model audit opinion"]
+    cover: "Not separately mentioned (secondary)."
+
+  - id: "5.1"
+    page: 2
+    kind: amend_text
+    target: "VOL-II Clause 3.5 (noise)"
+    old: "45 dB(A) by night"
+    new: "40 dB(A) by night"
+    unchanged: "55 dB(A) by day"
+    final_text: "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 40 dB(A) by night."
+    cover: "Mentioned."
+
+  - id: "5.2"
+    page: 2
+    kind: reinstate
+    target: "VOL-II Clause 4.4 (standby power autonomy) via revocation of ADD-02 Section 4.1"
+    chain: "Original 72 h -> ADD-02 4.1: 96 h -> ADD-03 5.2: ADD-02 4.1 revoked, 72 h reinstated"
+    final_value: "seventy-two (72) hours"
+    final_text: >-
+      Standby provision for all rotating equipment shall be N+1. Standby power shall be sized to carry the
+      full inlet works, the disinfection stage and the effluent pumping station for not less than
+      seventy-two (72) hours.
+    trap: "A diff of ADD-03 against the original Volume II shows no net change; the register must show the ADD-02 change undone, not 96 h."
+    cover: "Mentioned as 'amends Volume II Clause 4.4' (loosely accurate)."
+
+  - id: "5.3"
+    page: 2
+    kind: amend_text
+    target: "VOL-II Clause 8.4 (sludge)"
+    changes:
+      - {old: "22% dry solids", new: "25% dry solids"}
+      - old: "Disposal to landfill of sludge exceeding 500 tonnes per annum shall require the Authority's prior written consent."
+        new: "No sludge shall be disposed of to landfill without the Authority's prior written consent."
+    final_text: >-
+      Sludge shall be dewatered to not less than 25% dry solids and shall be disposed of or reused in
+      accordance with the applicable regulations. No sludge shall be disposed of to landfill without the
+      Authority's prior written consent.
+    note: "Second change is a tightening (the 500 t/yr threshold disappears; consent needed for any landfill disposal), not a deletion of the requirement."
+    cover: "Mentioned."
+
+  - id: "6.1"
+    page: 2
+    kind: replace_table_or_form
+    target: "VOL-II Table 2-2 (Design influent characteristics) -> Table 2-2 (revised), Appendix A, including its Notes"
+    cell_changes:
+      - {row: "Total Nitrogen", column: "Average", old: "55", new: "60"}
+      - {row: "Total Nitrogen", column: "Peak (design)", old: "80", new: "85"}
+      - {row: "Ammonia nitrogen (NH4-N)", change: "new row", unit: "mg/l", average: "42", peak_design: "62"}
+      - {row: "Total Phosphorus", column: "Peak (design)", old: "14", new: "16", trap: "not mentioned in the 6.1 narrative ('principal changes') nor on the cover"}
+      - {row: "Temperature", column: "Peak (design)", old: "34 (max) / 14 (min)", new: "34 (max) / 12 (min)"}
+    unchanged_cells: "BOD5 320/480; COD 640/950; Total Suspended Solids 350/520; Total Phosphorus average 9; Temperature average 24 and max 34; all units."
+    cover: "Mentioned ('reissues Volume II Table 2-2')."
+
+  - id: "6.2"
+    page: 2
+    kind: amend_text   # restated design obligation
+    target: "VOL-II Section 3 process design"
+    new_obligation: "Reflect Table 2-2 (revised) in the process design."
+    stated_consequence: null
+
+  - id: "7.1"
+    page: 2
+    kind: renumber
+    target: "VOL-I Clause 9.1 list (as amended by ADD-02 7.1)"
+    final_list:
+      a: "Form 4-A - Proposal Submission Letter"
+      b: "Form 4-B - Reference Projects Schedule"
+      c: "Form 4-C - Conflict of Interest and Debarment Declaration"
+      d: "Form 4-D - Parent Company Guarantee (executed)"
+      e: "Form 4-E - Schedule of Deviations"
+      f: "Form 4-G - Cybersecurity Compliance Undertaking"
+      g: "the Technical Proposal narrative (former f)"
+      h: "the Bid Bond (former g)"
+      i: "notarised Powers of Attorney for each signatory (former h)"
+      j: "the certificates and evidence required under Section 8 (former i)"
+    packaging: "Envelope A numbered dividers follow the re-lettered order (ten items)."
+    cover: "Mentioned ('re-letters Volume I Clause 9.1')."
+
+  - id: "7.2"
+    page: 2
+    kind: insert
+    target: "VOL-IV Index of Forms"
+    new_row: {form: "4-G", title: "Cybersecurity Compliance Undertaking", envelope: "A", status: "Mandatory"}
+    note: "Cross-reference housekeeping for the ADD-02 insertion of Form 4-G."
+    cover: "Not mentioned (minor)."
+
+# ---------------------------------------------------------------------------
+# Clarification responses (Section 8, pages 2-3)
+# ---------------------------------------------------------------------------
+clarifications:
+
+  - no: 15
+    page: 2
+    kind: answer_with_effect
+    withdraws: "ADD-01 response to clarification request 3"
+    target: "VOL-I Clause 6.4 (Bid Bond issuer)"
+    effect: >-
+      Issuer must be a bank INCORPORATED in the Kingdom meeting the A- rating requirement. A Bid Bond issued
+      by a branch of a foreign bank is not accepted, whether or not confirmed (reverses ADD-01 Q3, which
+      allowed a licensed branch).
+    stated_consequence: "A Bid Bond issued by a branch of a foreign bank, whether or not confirmed, will not be accepted."
+    a3: "Yes - Bid Bond is required with Envelope A (6.3); an unaccepted bond leaves Envelope A without one. The final step to rejection is inferential (not stated) - medium confidence."
+    a2: "ADD-01 Q3 answer must be marked withdrawn/now wrong."
+
+  - no: 16
+    page: 2
+    kind: answer_with_effect
+    target: "VOL-I Clause 9.1(i) as re-lettered (notarised Powers of Attorney); linked to 9.3"
+    new_obligation: >-
+      A Power of Attorney executed outside the Kingdom must, in addition to notarisation, be legalised by an
+      embassy or consulate of the Kingdom in the country of execution, or apostilled where that country is
+      a party to the Apostille Convention.
+    stated_consequence: "A Power of Attorney that does not comply will be treated as not submitted."
+    chain: "9.3: Form 4-A must be signed by a holder of a notarised Power of Attorney; an improperly executed Form 4-A renders the Proposal non-responsive."
+    trap: "The cross-reference '(i) ... as re-lettered by Section 7' = Powers of Attorney. Without applying 7.1, item (i) would wrongly resolve to 'certificates and evidence under Section 8'."
+    a3: "Yes (stated consequence; non-responsiveness via 9.3 is inferential)."
+    a5: "Long-lead item: legalisation/apostille of each foreign-executed Power of Attorney before the PDD."
+
+  - no: 17
+    page: 2
+    kind: answer_without_effect
+    confirms: "ADD-02 response to clarification request 10"
+    effect: "None. No guarantee or security from the O&M Operator; VOL-I 8.7 (EPC parent only) unchanged."
+    trap: "Must NOT be read as withdrawing ADD-02 Q10 or as adding an O&M PCG obligation."
+
+  - no: 18
+    page: 2
+    kind: answer_without_effect
+    effect: "None. Request withdrawn (see 1.2)."
+
+  - no: 19
+    page: 2
+    kind: answer_without_effect
+    target: "VOL-I 12.1 vs VOL-V 3.1 (concession term commencement; ADD-02 Q7)"
+    effect: >-
+      None. Statement of intent only ('intends to address ... in the execution version'); expressly no
+      amendment. The conflict remains open and is a matter for a human (commercial/legal); a Bidder may
+      propose wording in Form 4-E.
+    trap: "Must NOT be treated as conforming VOL-V 3.1 to PCOD or as resolving the conflict."
+
+  - no: 20
+    page: 3
+    kind: answer_with_effect
+    target: "VOL-I Clauses 6.5 and 10.1 (electronic copies / Envelope B)"
+    effects:
+      - "Financial Model on a second, separate encrypted USB media placed in Envelope B."
+      - "The 6.5 electronic copy (USB) contains Envelope A only."
+      - "Password for EACH USB media submitted through the Portal within one (1) hour after the PDD."
+    packaging_quantities:
+      marked_original: "1 (unchanged)"
+      hard_copies: "3 (unchanged)"
+      encrypted_usb_media: {old: 1, new: 2, detail: "one with the Envelope A electronic copy; one with the Financial Model in Envelope B"}
+    dates:
+      usb_passwords_via_portal: "Thursday 26 November 2026, after 11:00 and not later than 12:00 Riyadh time (relies on 2.1; a reader that kept 14:00 would wrongly say 15:00)"
+    stated_consequence: "Commercial information on the Envelope A media will be treated in accordance with Volume I Clause 6.2."
+    consequence_resolved: "VOL-I 6.2: commercial information within Envelope A renders the Proposal non-responsive."
+    a3: "Yes (via 6.2, existing rule applied to the new media split)."
+    a5: "New post-deadline action (password upload) and an extra encrypted USB."
+
+  - no: 21
+    page: 3
+    kind: answer_without_effect
+    effect: "None in itself: the date is not extended. Points to Section 2 (time moved to 11:00)."
+    trap: "Reinforces E1; must not be read as 'the Proposal Due Date including time is unchanged'."
+
+# ---------------------------------------------------------------------------
+# Appendix A notes (page 4) - provisions hidden outside numbered clauses
+# ---------------------------------------------------------------------------
+appendix_a_notes:
+
+  - id: "Note (1)"
+    kind: insert
+    target: "Table 2-2 (revised)"
+    effect: "Definitional: flow-weighted 24-hour composite values at the inlet works; peak (design) = 95th percentile. No obligation."
+
+  - id: "Note (2)"
+    kind: insert
+    target: "VOL-II Section 3 / nitrification design"
+    new_obligation: "Use the minimum temperature of 12 degC for the design of the nitrification stage."
+    stated_consequence: null
+
+  - id: "Note (3)"
+    kind: insert
+    target: "Technical Proposal (VOL-I 9.1(g) as re-lettered); VOL-I 9.2 page limit; Table 1-1 (revised) criterion A"
+    new_obligation: >-
+      Submit, as an appendix to the Technical Proposal, a process simulation report demonstrating Table 2-4
+      (as amended; TN 3 mg/l per ADD-02) under the Table 2-2 (revised) peak (design) values at the minimum
+      design temperature; not more than 25 pages; excluded from the 150-page limit in VOL-I 9.2.
+    stated_consequence: "A Technical Proposal that does not include the report will be awarded no marks under criterion A of Table 1-1 (revised)."
+    consequence_resolved: >-
+      Criterion A carries 25 of 100 marks (ADD-02 Table 1-1 (revised)); the technical threshold is 70
+      (VOL-I 11.3, unchanged). Omission caps the technical score at 75 - a scored consequence, not stated
+      as disqualifying. Expected: register as scored with a severe-risk flag; A3 should either exclude it or
+      list it separately as a de facto threshold risk (calibration test), not as a stated disqualification.
+    packaging: "New deliverable in Envelope A (Technical Proposal appendix)."
+    cover: "Not mentioned (secondary)."
+
+  - id: "Note (4)"
+    kind: amend_text
+    target: "VOL-II Clause 2.3 (future expansion provision)"
+    old: "50% of nominal capacity"
+    new: "25% of nominal capacity"
+    final_text: >-
+      The Facility shall be designed to accommodate a future expansion of 25% of nominal capacity without
+      demolition of permanent structures. Space provision only is required; no expansion works form part of
+      the Works.
+    trap: "A clause amendment placed in a table note; not on the cover and not in the 6.1 narrative."
+
+# ---------------------------------------------------------------------------
+# Derived dates (Riyadh time)
+# ---------------------------------------------------------------------------
+dates:
+  issue_date: "2026-11-03 (Tue)"
+  clarification_cutoff: "2026-11-12 (Thu) - 10 Working Days before PDD; date unchanged by this Addendum"
+  delivery_representative_registration_deadline: "2026-11-19 (Thu) - new, VOL-I 6.8"
+  proposal_due_date: "2026-11-26 (Thu) 11:00 - time moved from 14:00"
+  usb_password_window: "2026-11-26 11:00 to 12:00 - new, Q20"
+  proposal_validity_expiry: "2027-05-25 (Tue) - 180 days from PDD (was 2027-04-25)"
+  bid_bond_validity_expiry: "2027-06-24 (Thu) - 210 days from PDD (was 2027-05-25)"
+  model_audit_opinion: "Preferred Bidder Notification + 45 days - new, VOL-I 12.5 (post-award)"
+  reference_project_lookback_start: "2016-11-26 - footnote 12 to VOL-I 8.5, unchanged"
+  dates_that_do_not_move: ["calendar date of the PDD", "clarification cut-off date", "footnote 12 look-back", "VOL-I 12.2 / 12.3 / 12.4 periods"]
+
+# ---------------------------------------------------------------------------
+# Effects on copies, packaging and deliverables (marshalling plan)
+# ---------------------------------------------------------------------------
+marshalling_effects:
+  added:
+    - "Delivery-team registration (<=2 persons, names and ID numbers) via Portal by 19 Nov 2026 (6.8)."
+    - "Second encrypted USB media inside Envelope B carrying the Financial Model (Q20)."
+    - "Password upload for each USB via the Portal, 11:00-12:00 on 26 Nov 2026 (Q20)."
+    - "Process simulation report, <=25 pages, appendix to the Technical Proposal (Note (3))."
+    - "Legalisation/apostille of each Power of Attorney executed outside the Kingdom (Q16)."
+  changed:
+    - "Physical delivery: Tender Box 2, First Floor, Administrative Building A, Sakaka, by 11:00 on 26 Nov 2026 (2.1, 2.3)."
+    - "Envelope marking: 'NUPA/ISTP/2026/014 - NOT TO BE OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE' (2.3)."
+    - "Bid Bond: validity 210 days from PDD (3.2); issuer a bank incorporated in the Kingdom, no foreign-bank branches (Q15); amount SAR 4,500,000 unchanged."
+    - "Form 4-A: paragraph 2 validity 180 days (3.3); acknowledge Addenda 1-3; PDD entry still stale - flag."
+    - "Form 4-F: rows 'Model auditor' and 'Date of model audit opinion' removed (4.3)."
+    - "Envelope A dividers: ten items in the re-lettered order with Form 4-G at (f) (7.1)."
+    - "The 6.5 electronic copy carries Envelope A only (Q20)."
+  removed:
+    - "Independent model audit opinion with the Proposal (4.1) - moved post-award (4.2)."
+  unchanged_quantities: "1 marked original; 3 hard copies."
+
+# ---------------------------------------------------------------------------
+# A3 (disqualification page) delta
+# ---------------------------------------------------------------------------
+a3_delta:
+  add_or_update:
+    - "6.1/6.6: late Proposal rejected unopened - deadline now 11:00 (update)."
+    - "6.8: unregistered delivery persons refused access; Proposal not received in time treated as late (add)."
+    - "Q15: Bid Bond from a foreign-bank branch not accepted (add; inferential link to rejection)."
+    - "Q16: non-compliant Power of Attorney treated as not submitted (add; chain via 9.3)."
+    - "Q20 + 6.2: commercial information on the Envelope A media (add/update)."
+  not_disqualifying_but_flag:
+    - "Note (3): missing process simulation report -> zero marks under criterion A (25 marks) -> technical score capped at 75 vs threshold 70."
+  unresolved_for_human:
+    - "VOL-I 12.1 vs VOL-V 3.1 concession commencement (Q19 makes no amendment)."
+    - "Form 4-A pre-filled PDD entry ('12 November 2026, 14:00') inconsistent with VOL-I 6.1 as amended (26 November 2026, 11:00)."
+
+# ---------------------------------------------------------------------------
+# False-positive traps: things a correct reader must NOT report as changed
+# ---------------------------------------------------------------------------
+must_not_report:
+  - "A change to the calendar date of the Proposal Due Date (still Thursday 26 November 2026)."
+  - "A new O&M Operator guarantee (Q17 confirms none)."
+  - "Any amendment to VOL-V 3.1 or VOL-I 12.1 (Q19)."
+  - "A change to the Bid Bond amount, the number of hard copies, the 150-page limit, Table 1-1 (revised), the 65/35 weighting, the 70-mark threshold, VOL-I 8.6 (35%), or Table 2-4."
+  - "VOL-II 4.4 at 96 hours (it is 72 hours again)."
+  - "Changes to BOD5, COD or TSS in Table 2-2."

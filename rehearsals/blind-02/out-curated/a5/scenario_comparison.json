@@ -1,0 +1,558 @@
+{
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "columns": [
+  {
+   "header": "scenario",
+   "key": "scenario",
+   "width": 20
+  },
+  {
+   "header": "purpose",
+   "key": "purpose",
+   "width": 20
+  },
+  {
+   "header": "hypothetical",
+   "key": "hypothetical",
+   "width": 20
+  },
+  {
+   "header": "overrides",
+   "key": "overrides",
+   "width": 20
+  },
+  {
+   "header": "activities_moved",
+   "key": "activities_moved",
+   "width": 20
+  },
+  {
+   "header": "latest_start_shift_wd",
+   "key": "latest_start_shift_wd",
+   "width": 20
+  },
+  {
+   "header": "status_changes",
+   "key": "status_changes",
+   "width": 20
+  },
+  {
+   "header": "infeasible_base",
+   "key": "infeasible_base",
+   "width": 20
+  },
+  {
+   "header": "infeasible",
+   "key": "infeasible",
+   "width": 20
+  },
+  {
+   "header": "deadline_passed_base",
+   "key": "deadline_passed_base",
+   "width": 20
+  },
+  {
+   "header": "deadline_passed",
+   "key": "deadline_passed",
+   "width": 20
+  },
+  {
+   "header": "physical_A_base",
+   "key": "physical_A_base",
+   "width": 20
+  },
+  {
+   "header": "physical_A",
+   "key": "physical_A",
+   "width": 20
+  },
+  {
+   "header": "physical_B_base",
+   "key": "physical_B_base",
+   "width": 20
+  },
+  {
+   "header": "physical_B",
+   "key": "physical_B",
+   "width": 20
+  },
+  {
+   "header": "document_changes",
+   "key": "document_changes",
+   "width": 20
+  },
+  {
+   "header": "overloads_base",
+   "key": "overloads_base",
+   "width": 20
+  },
+  {
+   "header": "overloads",
+   "key": "overloads",
+   "width": 20
+  },
+  {
+   "header": "resource_changes",
+   "key": "resource_changes",
+   "width": 20
+  },
+  {
+   "header": "drivers",
+   "key": "drivers",
+   "width": 20
+  }
+ ],
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-03 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-03). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; DELIVERY-REGISTRATION 2026-11-19; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_date": "2026-11-03",
+ "rows": [
+  {
+   "activities_moved": 0,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [
+    "EV-FIN-STANDING: x3 -> x2 (physical 12 -> 8)",
+    "EV-FORM-4C: x3 -> x2 (physical 12 -> 8)",
+    "EV-POA: x3 -> x2 (physical 12 -> 8)"
+   ],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 5 WD (pcg_wording <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "technical-proposal: INFEASIBLE by 5 WD (technical_proposal <= 15 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 5 WD (pcg_execution <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 5 WD (poa_legalisation <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-model-freeze: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-assumptions: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "form-4f: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "assemble-envelope-a: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): envelope_assembly, lcc_ratio_calc, lcc_certificate, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "copies: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): copies_and_usb, lcc_ratio_calc, lcc_certificate, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): seal_and_mark, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): delivery, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": false,
+   "infeasible": 17,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "",
+   "overloads": 6,
+   "overloads_base": 7,
+   "overrides": [
+    "bidder.members = 2"
+   ],
+   "physical_A": 88,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "Two-member consortium (as in the one consortium of VOL-I Appendix 1), one of them foreign: per-member documents and signatories drop.",
+   "resource_changes": [
+    "new OVERLOAD: legal_counsel 2026-11-22..2026-11-22 (2.483/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-08..2026-11-09 (2.2/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-22..2026-11-23 (2.65/2)"
+   ],
+   "scenario": "consortium-2",
+   "status_changes": []
+  },
+  {
+   "activities_moved": 0,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [
+    "EV-FIN-STANDING: x3 -> x4 (physical 12 -> 16)",
+    "EV-FORM-4C: x3 -> x4 (physical 12 -> 16)",
+    "EV-POA: x3 -> x4 (physical 12 -> 16)"
+   ],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 5 WD (pcg_wording <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "technical-proposal: INFEASIBLE by 5 WD (technical_proposal <= 15 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 5 WD (pcg_execution <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 5 WD (poa_legalisation <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-model-freeze: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-assumptions: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "form-4f: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "assemble-envelope-a: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): envelope_assembly, lcc_ratio_calc, lcc_certificate, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "copies: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): copies_and_usb, lcc_ratio_calc, lcc_certificate, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): seal_and_mark, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): delivery, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": false,
+   "infeasible": 17,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "",
+   "overloads": 7,
+   "overloads_base": 7,
+   "overrides": [
+    "bidder.members = 4"
+   ],
+   "physical_A": 112,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "Four-member consortium, one of them foreign: per-member documents, Powers of Attorney and Form 4-C signatures rise.",
+   "resource_changes": [
+    "OVERLOAD changed: legal_counsel 2026-11-08..2026-11-09 (2.2/2) -> legal_counsel 2026-11-08..2026-11-09 (2.4/2)",
+    "OVERLOAD changed: legal_counsel 2026-11-22..2026-11-23 (2.65/2) -> legal_counsel 2026-11-22..2026-11-23 (2.817/2)"
+   ],
+   "scenario": "consortium-4",
+   "status_changes": []
+  },
+  {
+   "activities_moved": 0,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [
+    "EV-INVESTMENT-LICENCE: x1 -> x0 (physical 4 -> 0)"
+   ],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 5 WD (pcg_wording <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "technical-proposal: INFEASIBLE by 5 WD (technical_proposal <= 15 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 5 WD (pcg_execution <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-model-freeze: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-assumptions: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "form-4f: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "assemble-envelope-a: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): envelope_assembly, lcc_ratio_calc, lcc_certificate, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "copies: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): copies_and_usb, lcc_ratio_calc, lcc_certificate, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): seal_and_mark, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): delivery, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": false,
+   "infeasible": 16,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "",
+   "overloads": 6,
+   "overloads_base": 7,
+   "overrides": [
+    "bidder.foreign_members = 0"
+   ],
+   "physical_A": 96,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "No foreign member (all three members domestic): VOL-I 8.9 then asks for no investment licence or undertaking.",
+   "resource_changes": [
+    "new OVERLOAD: legal_counsel 2026-11-22..2026-11-22 (2.35/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-17..2026-11-18 (2.2/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-22..2026-11-23 (2.65/2)"
+   ],
+   "scenario": "foreign-0",
+   "status_changes": [
+    "poa-legalise: INFEASIBLE by 5 WD -> NOT NEEDED",
+    "investment-licence: OK -> NOT NEEDED"
+   ]
+  },
+  {
+   "activities_moved": 0,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [
+    "EV-INVESTMENT-LICENCE: x1 -> x2 (physical 4 -> 8)"
+   ],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 20 WD (lcc_certificate <= 10 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 5 WD (pcg_wording <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "technical-proposal: INFEASIBLE by 5 WD (technical_proposal <= 15 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 5 WD (pcg_execution <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 5 WD (poa_legalisation <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-model-freeze: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-assumptions: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "form-4f: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "assemble-envelope-a: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): envelope_assembly, lcc_ratio_calc, lcc_certificate, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "copies: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): copies_and_usb, lcc_ratio_calc, lcc_certificate, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): seal_and_mark, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 20 WD (not enough on its own (even at 0 WD): delivery, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": false,
+   "infeasible": 17,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "",
+   "overloads": 7,
+   "overloads_base": 7,
+   "overrides": [
+    "bidder.foreign_members = 2"
+   ],
+   "physical_A": 104,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "Two of the three members foreign: one investment licence or signed undertaking per foreign member (VOL-I 8.9).",
+   "resource_changes": [
+    "OVERLOAD changed: legal_counsel 2026-11-17..2026-11-18 (2.2/2) -> legal_counsel 2026-11-17..2026-11-18 (2.5/2)",
+    "OVERLOAD changed: legal_counsel 2026-11-22..2026-11-23 (2.65/2) -> legal_counsel 2026-11-22..2026-11-23 (2.95/2)"
+   ],
+   "scenario": "foreign-2",
+   "status_changes": []
+  },
+  {
+   "activities_moved": 2,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 5 WD (lcc_certificate <= 10 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 5 WD (pcg_wording <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "technical-proposal: INFEASIBLE by 5 WD (technical_proposal <= 15 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 5 WD (lcc_certificate <= 10 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 5 WD (poa_notarisation <= 0 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 5 WD (pcg_execution <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 5 WD (poa_legalisation <= 5 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-model-freeze: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-assumptions: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "form-4f: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "assemble-envelope-a: INFEASIBLE by 5 WD (not enough on its own (even at 0 WD): envelope_assembly, technical_proposal, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 3 WD (fin_model_build <= 12 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "copies: INFEASIBLE by 5 WD (not enough on its own (even at 0 WD): copies_and_usb, technical_proposal, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 5 WD (not enough on its own (even at 0 WD): seal_and_mark, technical_proposal, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 5 WD (not enough on its own (even at 0 WD): delivery, technical_proposal, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": false,
+   "infeasible": 17,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "15..15",
+   "overloads": 7,
+   "overloads_base": 7,
+   "overrides": [
+    "lead_times.lcc_certificate.value = 15",
+    "lead_times.lcc_certificate.basis = SCENARIO lcc-15wd (PROVISIONAL ASSUMPTION): the competent authority issues the certificate in 15 Working Days; not stated in the pack"
+   ],
+   "physical_A": 100,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "Local Content Certificate obtainable in 15 Working Days instead of the deliberately long 30: does the LCC chain become feasible?",
+   "resource_changes": [],
+   "scenario": "lcc-15wd",
+   "status_changes": [
+    "lcc-ratio: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD",
+    "lcc-certificate: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD",
+    "assemble-envelope-a: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD",
+    "copies: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD",
+    "seal-and-mark: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD",
+    "deliver: INFEASIBLE by 20 WD -> INFEASIBLE by 5 WD"
+   ]
+  },
+  {
+   "activities_moved": 23,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 24 WD (lcc_certificate <= 6 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "lcc-certificate: INFEASIBLE by 24 WD (lcc_certificate <= 6 WD (now 30; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 9 WD (pcg_wording <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): poa_board_resolutions, poa_notarisation, poa_legalisation, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "technical-proposal: INFEASIBLE by 9 WD (technical_proposal <= 11 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 7 WD (fin_model_build <= 8 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "completion-certs: INFEASIBLE by 4 WD (completion_certificate <= 11 WD (now 15; PROVISIONAL ASSUMPTION, owner Technical))",
+    "poa: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): poa_notarisation, poa_board_resolutions, poa_legalisation, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "references: INFEASIBLE by 3 WD (reference_evidence <= 7 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "bond-approval: INFEASIBLE by 2 WD (bid_bond_bank_approval <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "ground-dd: INFEASIBLE by 2 WD (ground_due_diligence <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "lender-terms: INFEASIBLE by 2 WD (lender_terms <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "deviations-review: INFEASIBLE by 1 WD (deviations_review <= 9 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 9 WD (pcg_execution <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 9 WD (poa_legalisation <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "investment-licence: INFEASIBLE by 4 WD (investment_licence <= 1 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "form-4b-prep: INFEASIBLE by 3 WD (form_4b_preparation <= 0 WD (now 3; PROVISIONAL ASSUMPTION, owner Technical))",
+    "bond-issue: INFEASIBLE by 2 WD (bid_bond_issue <= 1 WD (now 3; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-model-freeze: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): fin_model_freeze, fin_model_build, fin_assumptions_schedule, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4c-sign: INFEASIBLE by 2 WD (form_4c_member_sign <= 1 WD (now 3; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-assumptions: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): fin_assumptions_schedule, fin_model_build, fin_model_freeze, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4e: INFEASIBLE by 1 WD (form_4e_finalise <= 1 WD (now 2; PROVISIONAL ASSUMPTION, owner Legal))",
+    "form-4f: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): form_4f_preparation, fin_model_build, fin_model_freeze, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4b: INFEASIBLE by 3 WD (reference_evidence <= 7 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "assemble-envelope-a: INFEASIBLE by 24 WD (not enough on its own (even at 0 WD): envelope_assembly, lcc_ratio_calc, lcc_certificate, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): envelope_assembly, fin_model_build, fin_model_freeze, form_4f_preparation, copies_and_usb, seal_and_mark, delivery)",
+    "copies: INFEASIBLE by 24 WD (not enough on its own (even at 0 WD): copies_and_usb, lcc_ratio_calc, lcc_certificate, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 24 WD (not enough on its own (even at 0 WD): seal_and_mark, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 24 WD (not enough on its own (even at 0 WD): delivery, lcc_ratio_calc, lcc_certificate, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": true,
+   "infeasible": 29,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "-4..0",
+   "overloads": 8,
+   "overloads_base": 7,
+   "overrides": [
+    "calendar.holidays = [2026-11-15, 2026-11-16, 2026-11-17, 2026-11-18]"
+   ],
+   "physical_A": 100,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "HYPOTHETICAL declared public holidays inside the bid window (Sun 15 to Wed 18 November 2026, four Working Days, about the length of an Eid break); the pack declares none and no real holiday is claimed for these dates.",
+   "resource_changes": [
+    "new OVERLOAD: financial_modeller 2026-11-03..2026-11-12 (1.875/1)",
+    "new OVERLOAD: legal_counsel 2026-11-03..2026-11-03 (7.889/2)",
+    "new OVERLOAD: legal_counsel 2026-11-11..2026-11-12 (2.289/2)",
+    "new OVERLOAD: proposal_writers 2026-11-03..2026-11-23 (4.091/3)",
+    "new OVERLOAD: technical_lead 2026-11-04..2026-11-23 (3.148/2)",
+    "OVERLOAD cleared: financial_modeller 2026-11-03..2026-11-18 (1.25/1)",
+    "OVERLOAD cleared: legal_counsel 2026-11-08..2026-11-09 (2.2/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-17..2026-11-18 (2.2/2)",
+    "OVERLOAD cleared: technical_lead 2026-11-10..2026-11-22 (2.95/2)",
+    "OVERLOAD changed: commercial_manager 2026-11-22..2026-11-23 (2.533/2) -> commercial_manager 2026-11-22..2026-11-23 (2.606/2)"
+   ],
+   "scenario": "hypothetical-holidays",
+   "status_changes": [
+    "lcc-ratio: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD",
+    "lcc-certificate: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD",
+    "pcg-wording: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "poa-resolutions: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "technical-proposal: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "fin-model-build: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "completion-certs: OK -> INFEASIBLE by 4 WD",
+    "poa: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "references: OK -> INFEASIBLE by 3 WD",
+    "bond-approval: OK -> INFEASIBLE by 2 WD",
+    "ground-dd: OK -> INFEASIBLE by 2 WD",
+    "lender-terms: OK -> INFEASIBLE by 2 WD",
+    "deviations-review: OK -> INFEASIBLE by 1 WD",
+    "pcg-execution: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "poa-legalise: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "investment-licence: OK -> INFEASIBLE by 4 WD",
+    "form-4b-prep: OK -> INFEASIBLE by 3 WD",
+    "bond-issue: OK -> INFEASIBLE by 2 WD",
+    "fin-model-freeze: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4c-sign: OK -> INFEASIBLE by 2 WD",
+    "fin-assumptions: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4e: OK -> INFEASIBLE by 1 WD",
+    "form-4f: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4b: OK -> INFEASIBLE by 3 WD",
+    "assemble-envelope-a: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD",
+    "assemble-envelope-b: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "copies: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD",
+    "seal-and-mark: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD",
+    "deliver: INFEASIBLE by 20 WD -> INFEASIBLE by 24 WD"
+   ]
+  },
+  {
+   "activities_moved": 23,
+   "deadline_passed": 0,
+   "deadline_passed_base": 0,
+   "document_changes": [
+    "EV-FIN-STANDING: x3 -> x4 (physical 12 -> 16)",
+    "EV-FORM-4C: x3 -> x4 (physical 12 -> 16)",
+    "EV-POA: x3 -> x4 (physical 12 -> 16)"
+   ],
+   "drivers": [
+    "lcc-ratio: INFEASIBLE by 9 WD (lcc_certificate <= 6 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "pcg-wording: INFEASIBLE by 9 WD (pcg_wording <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-resolutions: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): poa_board_resolutions, poa_notarisation, poa_legalisation, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "technical-proposal: INFEASIBLE by 9 WD (technical_proposal <= 11 WD (now 20; PROVISIONAL ASSUMPTION, owner Technical))",
+    "fin-model-build: INFEASIBLE by 7 WD (fin_model_build <= 8 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "completion-certs: INFEASIBLE by 4 WD (completion_certificate <= 11 WD (now 15; PROVISIONAL ASSUMPTION, owner Technical))",
+    "lcc-certificate: INFEASIBLE by 9 WD (lcc_certificate <= 6 WD (now 15; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "poa: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): poa_notarisation, poa_board_resolutions, poa_legalisation, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "references: INFEASIBLE by 3 WD (reference_evidence <= 7 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "bond-approval: INFEASIBLE by 2 WD (bid_bond_bank_approval <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "ground-dd: INFEASIBLE by 2 WD (ground_due_diligence <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "lender-terms: INFEASIBLE by 2 WD (lender_terms <= 8 WD (now 10; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "deviations-review: INFEASIBLE by 1 WD (deviations_review <= 9 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "pcg-execution: INFEASIBLE by 9 WD (pcg_execution <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "poa-legalise: INFEASIBLE by 9 WD (poa_legalisation <= 1 WD (now 10; PROVISIONAL ASSUMPTION, owner Legal))",
+    "investment-licence: INFEASIBLE by 4 WD (investment_licence <= 1 WD (now 5; PROVISIONAL ASSUMPTION, owner Legal))",
+    "form-4b-prep: INFEASIBLE by 3 WD (form_4b_preparation <= 0 WD (now 3; PROVISIONAL ASSUMPTION, owner Technical))",
+    "bond-issue: INFEASIBLE by 2 WD (bid_bond_issue <= 1 WD (now 3; PROVISIONAL ASSUMPTION, owner Commercial))",
+    "fin-model-freeze: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): fin_model_freeze, fin_model_build, fin_assumptions_schedule, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4c-sign: INFEASIBLE by 2 WD (form_4c_member_sign <= 1 WD (now 3; PROVISIONAL ASSUMPTION, owner Legal))",
+    "fin-assumptions: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): fin_assumptions_schedule, fin_model_build, fin_model_freeze, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4e: INFEASIBLE by 1 WD (form_4e_finalise <= 1 WD (now 2; PROVISIONAL ASSUMPTION, owner Legal))",
+    "form-4f: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): form_4f_preparation, fin_model_build, fin_model_freeze, envelope_assembly, copies_and_usb, seal_and_mark, delivery)",
+    "form-4b: INFEASIBLE by 3 WD (reference_evidence <= 7 WD (now 10; PROVISIONAL ASSUMPTION, owner Technical))",
+    "assemble-envelope-a: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): envelope_assembly, technical_proposal, copies_and_usb, seal_and_mark, delivery)",
+    "assemble-envelope-b: INFEASIBLE by 7 WD (not enough on its own (even at 0 WD): envelope_assembly, fin_model_build, fin_model_freeze, form_4f_preparation, copies_and_usb, seal_and_mark, delivery)",
+    "copies: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): copies_and_usb, technical_proposal, envelope_assembly, seal_and_mark, delivery)",
+    "seal-and-mark: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): seal_and_mark, technical_proposal, envelope_assembly, copies_and_usb, delivery)",
+    "deliver: INFEASIBLE by 9 WD (not enough on its own (even at 0 WD): delivery, technical_proposal, envelope_assembly, copies_and_usb, seal_and_mark)"
+   ],
+   "hypothetical": true,
+   "infeasible": 29,
+   "infeasible_base": 17,
+   "latest_start_shift_wd": "-4..11",
+   "overloads": 8,
+   "overloads_base": 7,
+   "overrides": [
+    "bidder.members = 4",
+    "lead_times.lcc_certificate.value = 15",
+    "lead_times.lcc_certificate.basis = SCENARIO combined (PROVISIONAL ASSUMPTION): LCC in 15 Working Days; not stated in the pack",
+    "calendar.holidays = [2026-11-15, 2026-11-16, 2026-11-17, 2026-11-18]"
+   ],
+   "physical_A": 112,
+   "physical_A_base": 100,
+   "physical_B": 16,
+   "physical_B_base": 16,
+   "purpose": "Combined stress test: four members, LCC in 15 Working Days and the hypothetical holidays above.",
+   "resource_changes": [
+    "new OVERLOAD: financial_modeller 2026-11-03..2026-11-12 (1.875/1)",
+    "new OVERLOAD: legal_counsel 2026-11-03..2026-11-03 (8.889/2)",
+    "new OVERLOAD: legal_counsel 2026-11-11..2026-11-12 (2.289/2)",
+    "new OVERLOAD: proposal_writers 2026-11-03..2026-11-23 (4.091/3)",
+    "new OVERLOAD: technical_lead 2026-11-04..2026-11-23 (3.148/2)",
+    "OVERLOAD cleared: financial_modeller 2026-11-03..2026-11-18 (1.25/1)",
+    "OVERLOAD cleared: legal_counsel 2026-11-08..2026-11-09 (2.2/2)",
+    "OVERLOAD cleared: legal_counsel 2026-11-17..2026-11-18 (2.2/2)",
+    "OVERLOAD cleared: technical_lead 2026-11-10..2026-11-22 (2.95/2)",
+    "OVERLOAD changed: commercial_manager 2026-11-22..2026-11-23 (2.533/2) -> commercial_manager 2026-11-22..2026-11-23 (2.606/2)",
+    "OVERLOAD changed: legal_counsel 2026-11-22..2026-11-23 (2.65/2) -> legal_counsel 2026-11-22..2026-11-23 (2.817/2)"
+   ],
+   "scenario": "combined-4-members-lcc-15wd-holidays",
+   "status_changes": [
+    "lcc-ratio: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD",
+    "pcg-wording: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "poa-resolutions: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "technical-proposal: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "fin-model-build: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "completion-certs: OK -> INFEASIBLE by 4 WD",
+    "lcc-certificate: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD",
+    "poa: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "references: OK -> INFEASIBLE by 3 WD",
+    "bond-approval: OK -> INFEASIBLE by 2 WD",
+    "ground-dd: OK -> INFEASIBLE by 2 WD",
+    "lender-terms: OK -> INFEASIBLE by 2 WD",
+    "deviations-review: OK -> INFEASIBLE by 1 WD",
+    "pcg-execution: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "poa-legalise: INFEASIBLE by 5 WD -> INFEASIBLE by 9 WD",
+    "investment-licence: OK -> INFEASIBLE by 4 WD",
+    "form-4b-prep: OK -> INFEASIBLE by 3 WD",
+    "bond-issue: OK -> INFEASIBLE by 2 WD",
+    "fin-model-freeze: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4c-sign: OK -> INFEASIBLE by 2 WD",
+    "fin-assumptions: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4e: OK -> INFEASIBLE by 1 WD",
+    "form-4f: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "form-4b: OK -> INFEASIBLE by 3 WD",
+    "assemble-envelope-a: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD",
+    "assemble-envelope-b: INFEASIBLE by 3 WD -> INFEASIBLE by 7 WD",
+    "copies: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD",
+    "seal-and-mark: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD",
+    "deliver: INFEASIBLE by 20 WD -> INFEASIBLE by 9 WD"
+   ]
+  }
+ ],
+ "stage": "ADD-03",
+ "status_date": "2026-11-03"
+}

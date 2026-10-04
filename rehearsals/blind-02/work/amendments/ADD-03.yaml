@@ -1,0 +1,374 @@
+# Amendment operations for ADD-03 of BLIND REHEARSAL 02 (an independently written synthetic Addendum No. 3; not tender
+# content). origin: pattern = as written by tenderpack.draft; origin: assistant = written by the assistant acting as the
+# live-session curator. Every op is PROPOSED: decisions are made only with `tenderpack accept|reject` by a named person.
+# Written without sight of the sealed answer key (session 08).
+addendum: ADD-03
+issued_from: ADD-03:cover/para1
+prepared_by: 'blind rehearsal 02 curation (session 08): pattern drafter + assistant as curator; every op PROPOSED'
+method: tenderpack.draft over the Stage 1 units, then every remaining provision treated by the assistant from its words
+ops:
+- id: ADD-03/cover/para3
+  provision: ADD-03:cover/para3
+  type: annotate
+  targets:
+  - ADD-03:cover/para3
+  effect: adds_obligation
+  note: the addendum must be acknowledged in Form 4-A (the Proposal Due Date is stated to be unchanged)
+  origin: pattern
+  review: proposed
+- id: ADD-03/2.1
+  provision: ADD-03:2.1
+  type: replace_text
+  target: VOL-I:6.1
+  old: 14:00 hours Riyadh time
+  new: 11:00 hours Riyadh time
+  claims:
+  - unit: VOL-I:6.1
+    status: active
+    by_provision_prefix: ADD-01:2.1
+  origin: pattern
+  review: proposed
+- id: ADD-03/2.1(date)
+  provision: ADD-03:2.1
+  type: annotate
+  targets:
+  - VOL-I:6.1
+  effect: confirms
+  note: the date of Thursday 26 November 2026 (ADD-01 2.1) is not changed; only the time moves to 11:00
+  expect:
+  - unit: VOL-I:6.1
+    contains: Thursday 26 November 2026
+  origin: assistant
+  review: proposed
+- id: ADD-03/2.2
+  provision: ADD-03:2.2
+  type: replace_text
+  target: ADD-01:2.1
+  old: The time of 14:00 Riyadh time is unchanged.
+  new: ''
+  note: 'the sentence ceases to have effect: removed from ADD-01 2.1 as it stands from this stage'
+  origin: assistant
+  review: proposed
+- id: ADD-03/2.3
+  provision: ADD-03:2.3
+  type: replace_text
+  target: VOL-I:App3/para1
+  old: 'Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka. Marked: ‘NUPA/ISTP/2026/014 — NOT TO BE
+    OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE’.'
+  old_resolved: matched_in_target
+  new: 'Tender Box 2, First Floor, Northern Utilities Procurement Authority, Administrative Building A, Sakaka. Marked: “NUPA/ISTP/2026/014 — NOT TO BE
+    OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE”.'
+  note: 'Appendix 3 deleted and replaced: Tender Box 4 -> 2, Ground -> First Floor, Building C -> A, marking 14:00 -> 11:00; the provision does not quote
+    the old words'
+  issue: 'the reissued Form 4-A (ADD-01 App A) still prints ''Proposal Due Date: 12 November 2026, 14:00 Riyadh time'': both its date and now its time differ
+    from VOL-I 6.1 as amended'
+  origin: assistant
+  review: proposed
+- id: ADD-03/2.4
+  provision: ADD-03:2.4
+  type: insert_unit
+  anchor: VOL-I:6.7
+  new_text: Each Bidder shall, not later than five (5) Working Days before the Proposal Due Date, register through the Portal the names and identity document
+    numbers of not more than two (2) representatives who will deliver its Proposal. Access to Administrative Building A will be refused to any person who
+    is not so registered. A Proposal that is not received by the time stated in Clause 6.1 for that reason shall be treated as a late Proposal under Clause
+    6.6.
+  note: new Clause 6.8 inserted after Clause 6.7 (the engine names it VOL-I:6.7+ADD-03)
+  origin: pattern
+  review: proposed
+- id: ADD-03/3.1
+  provision: ADD-03:3.1
+  type: replace_text
+  target: VOL-I:7.1
+  old: one hundred and fifty (150) days
+  new: one hundred and eighty (180) days
+  origin: pattern
+  review: proposed
+- id: ADD-03/3.2
+  provision: ADD-03:3.2
+  type: replace_text
+  target: VOL-I:6.3
+  old: one hundred and eighty (180) days
+  new: two hundred and ten (210) days
+  origin: pattern
+  review: proposed
+- id: ADD-03/3.3
+  provision: ADD-03:3.3
+  type: annotate
+  targets:
+  - VOL-IV:F4-A
+  effect: interprets
+  note: '''Paragraph 2 of Form 4-A shall be read accordingly'': paragraph 2 of Form 4-A as issued confirms validity for 150 days; read as 180 days (VOL-I
+    7.1 as amended). The Form 4-A in force is the one reissued by ADD-01 App A, which has no numbered paragraphs and no validity statement'
+  issue: ADD-03 3.3 refers to paragraph 2 of Form 4-A, which exists only in the form as originally issued; the reissued form (ADD-01 App A) has no paragraph
+    2 (see also I-F4A-FIELDS)
+  origin: assistant
+  review: proposed
+- id: ADD-03/4.1
+  provision: ADD-03:4.1
+  type: replace_text
+  target: VOL-I:10.3
+  old: ', and shall be accompanied by an opinion from an independent model auditor addressed to the Authority'
+  new: ''
+  note: the words are deleted; 'No model audit opinion is required with the Proposal.' (the opinion moves to post-award, new Clause 12.5)
+  origin: assistant
+  review: proposed
+- id: ADD-03/4.2
+  provision: ADD-03:4.2
+  type: insert_unit
+  anchor: VOL-I:12.4
+  new_text: The Preferred Bidder shall deliver to the Authority, not later than forty-five (45) days after the Preferred Bidder Notification, an opinion
+    from an independent model auditor on the Financial Model, addressed to the Authority.
+  note: new Clause 12.5 inserted after Clause 12.4 (the engine names it VOL-I:12.4+ADD-03)
+  origin: pattern
+  review: proposed
+- id: ADD-03/4.3(a)
+  provision: ADD-03:4.3
+  type: set_status
+  target: VOL-IV:F4-F/model-auditor
+  status: deleted
+  origin: assistant
+  review: proposed
+- id: ADD-03/4.3(b)
+  provision: ADD-03:4.3
+  type: set_status
+  target: VOL-IV:F4-F/date-of-model-audit-opinion
+  status: deleted
+  origin: assistant
+  review: proposed
+- id: ADD-03/5.1
+  provision: ADD-03:5.1
+  type: replace_text
+  target: VOL-II:3.5
+  old: 45 dB(A) by night
+  new: 40 dB(A) by night
+  origin: pattern
+  review: proposed
+- id: ADD-03/5.1(day)
+  provision: ADD-03:5.1
+  type: annotate
+  targets:
+  - VOL-II:3.5
+  effect: confirms
+  note: the daytime limit (55 dB(A)) is unchanged
+  expect:
+  - unit: VOL-II:3.5
+    contains: 55 dB(A) by day
+  origin: assistant
+  review: proposed
+- id: ADD-03/5.2(a)
+  provision: ADD-03:5.2
+  type: set_status
+  target: ADD-02:4.1
+  status: revoked
+  note: ADD-02 4.1 (72 -> 96 hours) is revoked
+  origin: assistant
+  review: proposed
+- id: ADD-03/5.2(b)
+  provision: ADD-03:5.2
+  type: replace_text
+  target: VOL-II:4.4
+  old: ninety-six (96) hours
+  old_resolved: matched_in_target
+  new: seventy-two (72) hours
+  claims:
+  - unit: VOL-II:4.4
+    status: active
+    by_provision_prefix: ADD-02:4.1
+  note: '''The period in Volume II Clause 4.4 is seventy-two (72) hours, as originally issued'': the text ADD-02 4.1 put in is taken out again'
+  origin: assistant
+  review: proposed
+- id: ADD-03/5.3
+  provision: ADD-03:5.3
+  type: replace_text
+  target: VOL-II:8.4
+  old: 22% dry solids
+  new: 25% dry solids
+  origin: pattern
+  review: proposed
+- id: ADD-03/5.3(b)
+  provision: ADD-03:5.3
+  type: replace_text
+  target: VOL-II:8.4
+  old: Disposal to landfill of sludge exceeding 500 tonnes per annum shall require the Authority's prior written consent.
+  old_resolved: matched_in_target
+  new: No sludge shall be disposed of to landfill without the Authority's prior written consent.
+  note: 'the second sentence is replaced: the 500 tonnes per annum threshold goes; any landfill disposal now needs prior written consent'
+  origin: assistant
+  review: proposed
+- id: ADD-03/6.1
+  provision: ADD-03:6.1
+  type: replace_unit
+  target: VOL-II:T2-2
+  replacement: ADD-03:T2-2-rev
+  covers:
+  - ADD-03:AppA/para1
+  - ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n
+  - ADD-03:T2-2-rev/bod5
+  - ADD-03:T2-2-rev/cod
+  - ADD-03:T2-2-rev/note(1)
+  - ADD-03:T2-2-rev/note(2)
+  - ADD-03:T2-2-rev/note(3)
+  - ADD-03:T2-2-rev/notes
+  - ADD-03:T2-2-rev/temperature
+  - ADD-03:T2-2-rev/total-nitrogen
+  - ADD-03:T2-2-rev/total-phosphorus
+  - ADD-03:T2-2-rev/total-suspended-solids
+  note: 'Table 2-2 replaced with its Notes (the issued table had none): TN 55/80 -> 60/85 mg/l; NH4-N 42/62 mg/l added; TP peak 14 -> 16 mg/l; minimum temperature
+    14 -> 12 °C. Note (2) fixes 12 °C for the nitrification design; note (3) requires a process simulation report (an appendix of the Technical Proposal,
+    at most 25 pages, outside the VOL-I 9.2 page limit; no marks under criterion A if it is missing); note (4) amends VOL-II 2.3 (its own op)'
+  issue: the process design basis changes (nitrogen load and minimum temperature); rows citing Table 2-2 are re-read at this stage
+  origin: assistant
+  review: proposed
+- id: ADD-03/6.2
+  provision: ADD-03:6.2
+  type: annotate
+  targets:
+  - ADD-03:6.2
+  effect: adds_obligation
+  note: the process design submitted under Volume II Section 3 must reflect Table 2-2 (revised)
+  origin: assistant
+  review: proposed
+- id: ADD-03/T2-2-rev/note(4)
+  provision: ADD-03:T2-2-rev/note(4)
+  type: replace_text
+  target: VOL-II:2.3
+  old: 50% of nominal capacity
+  new: 25% of nominal capacity
+  origin: pattern
+  review: proposed
+- id: ADD-03/7.1
+  provision: ADD-03:7.1
+  type: annotate
+  targets:
+  - VOL-I:9.1(e)+ADD-02
+  - VOL-I:9.1(f)
+  - VOL-I:9.1(g)
+  - VOL-I:9.1(h)
+  - VOL-I:9.1(i)
+  effect: renumbers
+  renumber:
+    VOL-I:9.1(e)+ADD-02: (f)
+    VOL-I:9.1(f): (g)
+    VOL-I:9.1(g): (h)
+    VOL-I:9.1(h): (i)
+    VOL-I:9.1(i): (j)
+  note: 'RE-LETTERING: Form 4-G (inserted by ADD-02 7.1 after item (e)) is item (f); former (f) to (i) become (g) to (j). Unit ids keep their issued letters
+    (VOL-I:9.1(h) is the Powers of Attorney item, now (i)). The numbered dividers in Envelope A follow the re-lettered list'
+  origin: assistant
+  review: proposed
+- id: ADD-03/7.2
+  provision: ADD-03:7.2
+  type: annotate
+  targets:
+  - ADD-03:7.2
+  effect: adds_obligation
+  note: 'Form 4-G is added to the Index of Forms (the Volume IV cover table, VOL-IV:cover/T1) as ''Cybersecurity Compliance Undertaking'', Envelope A, Mandatory:
+    consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered'
+  issue: the entry is given in prose, so it is recorded as an annotation, not as a new row of the index table; the cover line 'Forms 4-A to 4-F' is not
+    amended
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q15(a)
+  provision: ADD-03:Q15
+  type: set_status
+  target: ADD-01:Q3
+  status: revoked
+  note: the response to clarification request 3 in Addendum No. 1 is withdrawn
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q15(b)
+  provision: ADD-03:Q15
+  type: annotate
+  targets:
+  - VOL-I:6.4
+  effect: adds_obligation
+  note: the Bid Bond must be issued by a bank incorporated in the Kingdom meeting the VOL-I 6.4 rating; a bond issued by a branch of a foreign bank, confirmed
+    or not, 'will not be accepted'
+  issue: 'a clarification answer narrows VOL-I 6.4 (''a bank licensed to operate in the Kingdom'') to a bank incorporated in the Kingdom: a substantive
+    change made in an answer, not in the body of an Addendum'
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q16
+  provision: ADD-03:Q16
+  type: annotate
+  targets:
+  - VOL-I:9.1
+  effect: adds_obligation
+  note: 'a Power of Attorney executed outside the Kingdom must, besides notarisation, be legalised by a Saudi embassy or consulate in the country of execution,
+    or apostilled where that country is party to the Apostille Convention; one that does not comply ''will be treated as not submitted''. The answer cites
+    ''item (i) of Volume I Clause 9.1 as re-lettered'': that is the Powers of Attorney item issued as (h) (VOL-I:9.1(h)), not the issued item (i) (certificates)'
+  issue: 'the answer cites the list by its re-lettered letter: read as issued, item (i) is the Section 8 certificates, not the Powers of Attorney'
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q17
+  provision: ADD-03:Q17
+  type: annotate
+  targets:
+  - VOL-I:8.7
+  effect: confirms
+  note: no guarantee or other security is required for the O&M Operator; the Parent Company Guarantee is for the EPC Contractor only (ADD-02 Q10 confirmed)
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q19
+  provision: ADD-03:Q19
+  type: annotate
+  targets:
+  - VOL-V:3.1
+  - VOL-I:12.1
+  effect: confirms
+  note: 'no amendment: the Authority ''intends to address the commencement of the term in the execution version of the Project Agreement''; a Bidder may
+    propose wording in Form 4-E. The VOL-I 12.1 / VOL-V 3.1 difference stays as issued'
+  expect:
+  - unit: VOL-V:3.1
+    contains: from the Effective Date
+  - unit: VOL-I:12.1
+    contains: commencing on the Project Commercial Operation Date
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q20
+  provision: ADD-03:Q20
+  type: annotate
+  targets:
+  - VOL-I:6.5
+  - VOL-I:10.1
+  effect: adds_obligation
+  note: the Financial Model goes on a second, separate encrypted USB in Envelope B; the VOL-I 6.5 electronic copy holds Envelope A only; the password for
+    each USB is submitted through the Portal within one hour after the Proposal Due Date; commercial information on the Envelope A media is treated under
+    VOL-I 6.2 (non-responsive)
+  issue: a submission rule (a second USB, passwords after the deadline) set in a clarification answer; VOL-I 6.5 still reads 'one (1) searchable electronic
+    copy'
+  origin: assistant
+  review: proposed
+- id: ADD-03/Q21
+  provision: ADD-03:Q21
+  type: annotate
+  targets:
+  - ADD-03:2.1
+  effect: confirms
+  note: the date for receipt of Proposals is not extended (the time moves to 11:00 under Section 2)
+  expect:
+  - unit: VOL-I:6.1
+    contains: Thursday 26 November 2026
+  origin: assistant
+  review: proposed
+dispositions:
+- provision: ADD-03:cover/para1
+  disposition: no_effect
+  reason: the addendum's issue date line (used as the stage date)
+  origin: pattern
+- provision: ADD-03:cover/para2
+  disposition: no_effect
+  reason: tender reference on the cover
+  origin: pattern
+- provision: ADD-03:1.1
+  disposition: no_effect
+  reason: recital (issued under VOL-I 5.3; precedence over Addenda 1 and 2 under VOL-I 3.2)
+  origin: pattern
+- provision: ADD-03:1.2
+  disposition: no_effect
+  reason: clarification request 18 was withdrawn and is not answered
+  origin: assistant
+- provision: ADD-03:Q18
+  disposition: no_effect
+  reason: withdrawn by the Bidder that asked it; not answered (ADD-03 1.2)
+  origin: assistant

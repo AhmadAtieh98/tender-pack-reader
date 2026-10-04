@@ -206,10 +206,14 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
             runs = [u.text or ""]
         else:
             if (u.text or "") != (p.text or ""):
-                a, b = (p.text or "").split(), (u.text or "").split()
+                # words compared without the punctuation around them: a deletion moves a full stop or comma onto the
+                # word before it ('cells, and ... Authority.' -> 'cells.'), which gains no word (session 08 blind rehearsal)
+                # (the words are aligned without it; the added words are then checked as printed, punctuation included)
+                bw = (u.text or "").split()
+                a, b = [w.strip(",;:.") for w in (p.text or "").split()], [w.strip(",;:.") for w in bw]
                 for tag, _, _, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
                     if tag in ("insert", "replace"):
-                        runs.append(" ".join(b[j1:j2]))
+                        runs.append(" ".join(bw[j1:j2]))
             if u.cells and p.cells:
                 runs += [v for c, v in u.cells.items() if v and v != p.cells.get(c)]
         for run in runs:
@@ -446,7 +450,8 @@ class Engine:
                     return r
             if op.effect == "renumbers":
                 bad = [k for k in op.renumber if k not in op.targets or k not in st]
-                unstated = [v for v in op.renumber.values() if not re.search(r"(?<![\d.])" + re.escape(v) + r"(?![\d])", ptext)]
+                stated = ptext + " " + _letter_ranges(ptext)       # "(g) to (j)" states (g), (h), (i) and (j)
+                unstated = [v for v in op.renumber.values() if not re.search(r"(?<![\d.])" + re.escape(v) + r"(?![\d])", stated)]
                 if not check("C21", op.renumber and not bad and not unstated,
                              f"renumbering {op.renumber} stated in {op.provision}" if op.renumber and not bad and not unstated
                              else f"renumbering not supported by the provision: targets {bad}, numbers not printed {unstated}"):
@@ -672,6 +677,17 @@ def _also_in(st: dict[str, UState], target: str, words: str) -> list[str]:
     """Other active volume units with the same words (addenda quoting them are not targets)."""
     return [k for k, u in st.items() if u.status == "active" and k != target and not u.doc.startswith("ADD-")
             and _contains(u.text, words)]
+
+
+def _letter_ranges(text: str) -> str:
+    """Every item letter inside a printed range: 'items (g) to (j)' -> '(g) (h) (i) (j)' (session 08 blind rehearsal:
+    a re-lettering is usually stated as a range, and each new letter is then stated without being printed)."""
+    out = []
+    for m in re.finditer(r"\(([a-z])\) to \(([a-z])\)", text):
+        a, b = ord(m.group(1)), ord(m.group(2))
+        if a < b <= a + 12:
+            out += [f"({chr(c)})" for c in range(a, b + 1)]
+    return " ".join(out)
 
 
 def _replace_once(text: str, old: str, new: str) -> str:
