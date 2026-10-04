@@ -172,7 +172,7 @@ def main(zpath: Path, work: Path, wheels: Path | None, python: str, tests: bool)
         t = time.time()
         rc = run(["make", target, f"PY={py}"], clone, log, offline=True)
         say(rc == 0, f"offline: make {target} in the clone ({time.time() - t:.0f} s)")
-    for b, target in (("rehearsals/blind-01", "out-after-fixes"), ("rehearsals/blind-02", "out-curated")):
+    for b, target in (("rehearsals/blind-01", "out-after-fixes"), ("rehearsals/blind-02", "out-after-fixes")):
         if not (clone / b / "work/pack.yaml").exists():
             continue
         t = time.time()
@@ -182,7 +182,7 @@ def main(zpath: Path, work: Path, wheels: Path | None, python: str, tests: bool)
         say(rc == 0, f"offline: {b} pack re-ingested and {target} rebuilt ({time.time() - t:.0f} s)")
     dirty = subprocess.run(["git", "status", "--porcelain"], cwd=clone, capture_output=True, text=True).stdout.strip()
     say(not dirty, "every regenerated file equals the committed one (build/, out/, out-drill/, out-drill-b/, "
-        f"blind-01 out-after-fixes, blind-02 out-curated; git status clean){': ' + dirty[:400] if dirty else ''}")
+        f"blind-01 and blind-02 out-after-fixes; git status clean){': ' + dirty[:400] if dirty else ''}")
     r = subprocess.run([py, "scripts/compare_outputs.py", "out", str(root)], cwd=clone, capture_output=True, text=True)
     say(r.returncode == 0, f"rebuilt outputs vs the archive: {r.stdout.strip().splitlines()[-1] if r.stdout.strip() else r.stderr[-300:]}")
     if tests:
