@@ -31,7 +31,7 @@ Elapsed from receipt to the scored output: **32 minutes**. That includes about t
 
 ## Results
 
-**Count:** 30 provisions, answers and notes: 24 hits, 6 partial, 0 missed. The scored outputs reproduce every expected date. Every "must not report" trap was avoided. **But:** the cover-summary check (C28) missed both planted cover errors, and A3 is missing two inferential disqualifiers that the key expects.
+**Count:** 30 provisions, answers and notes: 24 hits, 6 partial, 0 missed. The scored outputs reproduce every expected date (one, the look-back start, by its alternative reading; see below). Every "must not report" trap was avoided. **But:** the cover-summary check (C28) missed both planted cover errors, and A3 is missing two inferential disqualifiers that the key expects.
 
 ### Body provisions
 
@@ -87,14 +87,15 @@ Elapsed from receipt to the scored output: **32 minutes**. That includes about t
 
 ### Dates, marshalling, A3 and traps
 
-- **Dates: all correct.**
+- **Dates: all correct, or one day apart by a stated convention.**
   - clarification cut-off 2026-11-12 (unchanged);
   - registration 2026-11-19;
   - PDD 26 Nov 2026 at 11:00 (text and quotes; the date column shows dates only);
   - password window 11:00–12:00 (row text);
   - validity 2027-05-25; bond 2027-06-24;
   - model audit opinion: PBN + 45 days (not dated);
-  - the footnote 12 look-back is unchanged.
+  - the footnote 12 look-back is unchanged. Its planning value is 2016-11-27 (boundary exclusive); the key's 2016-11-26 is
+    the inclusive reading, which A1 records as the second of "two readings" (C32). One day apart, by stated convention.
   - The day-0 / day-1 readings are shown (C32), and the stated convention gives the key's dates.
 - **Marshalling plan.**
   - Added and changed items are all present: registration, second USB, password step, simulation report, legalisation, address and marking, bond issuer, dividers, Envelope A-only USB, Form 4-A notes.
