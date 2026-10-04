@@ -100,7 +100,9 @@ def test_multi_unit_rows_keep_every_value_and_citation_in_a1(written):
     units = r["Every unit the row cites (reference at the validated state; amending ops)"]
     assert units.count("VOL-II T2-2/") == 6 and "VOL-II 2.1 p2" in units
     tn = rows["VOL-II-T2-4-TN"]
-    assert "source: VOL-II T2-4/TN p3 as amended by ADD-02 5.1" in tn["Status after ADD-02"]
+    assert tn["Status after ADD-02"].startswith("AMENDED (ADD-02/5.1)")
+    assert "VOL-II T2-4/TN p3 as amended by ADD-02 5.1" in tn["Source after ADD-02 (latest reference for the quoted words)"]
+    assert tn["Source after BASE (latest reference for the quoted words)"] == "VOL-II T2-4/TN p3"
 
 
 def test_no_post_award_row_has_a_blank_evidence_field_or_claims_evidence(real, written):

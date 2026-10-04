@@ -466,6 +466,7 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             ("assessment", "Pass/fail or scored", 13),
             ("discipline", "Discipline", 13), ("owner", "Owner (role)", 14), ("evidence", "Evidence needed", 16)]
     cols += [(f"status:{s}", f"Status after {s}" + (" (WORKING, not validated)" if s == working else ""), 22) for s in order]
+    cols += [(f"source:{s}", f"Source after {s} (latest reference for the quoted words)", 26) for s in order]
     cols += [("consequence", "Stated consequence (quoted)", 40), ("consequence_source", "Consequence source", 18),
              ("dates", "Dates (planning reading; all readings in Dates sheet)", 30), ("confidence", "Confidence", 30),
              ("transcription", "Image reading status", 14), ("interpretation", "Interpretation review", 14),
@@ -501,12 +502,10 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                "assessment": row.assessment, "discipline": row.discipline, "owner": row.owner_role,
                "evidence": row.evidence + ([row.post_award_evidence.text] if row.post_award_evidence else [])
                or ([f"none: {row.no_deliverable}"] if row.no_deliverable else [])}
-        base_ref = (stg[order[0]].get("source") or {}).get("latest")
         for s in order:
             ev = stg[s]
-            ref = (ev.get("source") or {}).get("latest")
-            rec[f"status:{s}"] = ev["status"] + (" — STALE" if ev["stale"] else "") + \
-                (f" — source: {ref}" if ref and ref != base_ref and ev["status"] != "NOT ISSUED" else "")
+            rec[f"status:{s}"] = ev["status"] + (" — STALE" if ev["stale"] else "")
+            rec[f"source:{s}"] = "" if ev["status"] == "NOT ISSUED" else (ev.get("source") or {}).get("latest", "")
         rec["consequence"] = ((f"{CLASS_WORDS[cons.cls]}: \"{cons.quote}\""
                                + (f" (proposed translation, not reviewed: '{cons.gloss}')" if cons.gloss else ""))
                               if isinstance(cons, Consequence) else "none stated in the documents")

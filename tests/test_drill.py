@@ -101,7 +101,8 @@ def test_lcc_chain_continues_in_the_working_state_only(drill):
     r = drill["r"]
     assert [ev(r, "VOL-I-8.6-01", s)["status"].split(" ")[0] for s in ("BASE", "ADD-01", "ADD-02", "ADD-03")] == \
         ["ACTIVE", "DELETED", "REINSTATED-AMENDED", "DELETED"]
-    assert len(ev(r, "VOL-I-8.6-01", "ADD-03")["chain"]) == 4
+    ops = [c.split(" ")[0] for c in ev(r, "VOL-I-8.6-01", "ADD-03")["chain"] if " <- " in c]   # every unit, then ops
+    assert ops[:2] == ["ADD-01/4.1", "ADD-02/9.1"] and ops[-1].startswith("ADD-03/") and len(ops) == 4
 
 
 def test_question_quoting_a_replaced_value_is_listed_for_review(drill):

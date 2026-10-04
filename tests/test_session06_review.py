@@ -307,5 +307,7 @@ def test_a3_condenses_in_labelled_steps_and_never_drops_a_disqualifier(page, tmp
         text = " ".join(pymupdf.open(tmp_path / f"a3-{level}.pdf")[0].get_text().split()).replace("- ", "-")  # wrapped ids
         assert fit["pages"] == 1 and f"Condensed (level {level})" in text
         assert all(i["id"] in text for i in a3["explicit"] + a3["score"])
-        assert all(i["id"] in text for i in a3["unresolved"]["items"])                 # ids stay, linked
+        # ids stay, linked: each issue shown, or folded into the issue it duplicates (session 08 grouping)
+        folded = {f: i["id"] for g in a3["groups"]["groups"] for i in g["items"] for f in i["folds"]}
+        assert all(i["id"] in text or folded.get(i["id"], "") in text for i in a3["unresolved"]["items"])
         assert "a3_detail.html" in text
