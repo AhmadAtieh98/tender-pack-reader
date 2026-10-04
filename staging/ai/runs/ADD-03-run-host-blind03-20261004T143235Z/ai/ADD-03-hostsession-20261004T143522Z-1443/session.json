@@ -1,0 +1,740 @@
+{
+ "run_id": "ADD-03-hostsession-20261004T143522Z-1443",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:5.1",
+  "ADD-03:5.2",
+  "ADD-03:6.1",
+  "ADD-03:6.2",
+  "ADD-03:7.1",
+  "ADD-03:7.2"
+ ],
+ "started": "2026-10-04T14:35:22.405945+00:00",
+ "elapsed_s": 90.5,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": null,
+ "model_reported": [
+  "claude-sonnet-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01LLqfBVH8KSSAELCg6LW8Kf",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:T2-4",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01K4aKBPkMf1BDeHCrdcqZ4X",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "VOL-II:T2-4",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01325kvj5ydfWer86g2hV7DW",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "VOL-II:T2-4"
+   },
+   "ok": true,
+   "images": 2
+  },
+  {
+   "id": "toolu_01VtWkhZCKagDSaoBLteDnQ9",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-V:29.3",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01MjCPGW9XenEBaXqPkoxQLz",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-V:31.4",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01B1vrD8X3R3v1j9i18a5bcU",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-V:39.3",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_015jJAM3mcx7qDkpCpFnMzVg",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-02:F4-G",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_019zHEoE5LQhJQ5ke96yrnpf",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:F4-G",
+    "stage": "latest"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01LiLzggRkuGdksVcMQoFPws",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-02:7.2",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01PQvoSYuQC49S6aj6uSrcey",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/5.1",
+      "provision": "ADD-03:5.1",
+      "type": "set_value",
+      "target": "VOL-II:T2-4/TP",
+      "column": "Limit",
+      "old": "1",
+      "new": "0.5",
+      "old_resolved": "quoted"
+     },
+     {
+      "id": "ADD-03/5.2",
+      "provision": "ADD-03:5.2",
+      "type": "annotate",
+      "target": "VOL-II:S3",
+      "effect": "adds_obligation",
+      "note": "Bidders to reflect amended TP limit in process design"
+     },
+     {
+      "id": "ADD-03/6.1",
+      "provision": "ADD-03:6.1",
+      "type": "replace_text",
+      "target": "VOL-V:29.3",
+      "old": "ninety per cent (90%)",
+      "new": "eighty-five per cent (85%)",
+      "old_resolved": "quoted"
+     },
+     {
+      "id": "ADD-03/6.2(a)",
+      "provision": "ADD-03:6.2",
+      "type": "set_status",
+      "target": "VOL-V:31.4",
+      "status": "deleted"
+     },
+     {
+      "id": "ADD-03/6.2(b)",
+      "provision": "ADD-03:6.2",
+      "type": "set_status",
+      "target": "VOL-V:39.3",
+      "status": "deleted"
+     },
+     {
+      "id": "ADD-03/7.1",
+      "provision": "ADD-03:7.1",
+      "type": "replace_unit",
+      "target": "ADD-02:F4-G",
+      "replacement": "ADD-03:F4-G"
+     },
+     {
+      "id": "ADD-03/7.2",
+      "provision": "ADD-03:7.2",
+      "type": "annotate",
+      "target": "ADD-02:7.2",
+      "effect": "adds_obligation",
+      "note": "applies to reissued Form 4-G; not countersigned by O&M Operator = not submitted"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_013iSn55SJPuYTYB6zkd7rwg",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Table 2-4 (image reading) prints the TP row with Limit 1, unit mg/l, basis 30-day rolling average; the row unit VOL-II:T2-4/TP carries Limit 1 at ADD-02."
+      },
+      {
+       "id": "S2",
+       "kind": "interpretation",
+       "text": "The 'row for Total Phosphorus (TP)' in ADD-03 5.1 is the row unit VOL-II:T2-4/TP and the changed cell is Limit."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/5.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:5.1",
+       "target": "VOL-II:T2-4/TP",
+       "payload": {
+        "id": "ADD-03/5.1",
+        "provision": "ADD-03:5.1",
+        "type": "set_value",
+        "target": "VOL-II:T2-4/TP",
+        "column": "Limit",
+        "old": "1",
+        "new": "0.5",
+        "old_resolved": "quoted"
+       },
+       "previous_value": "1",
+       "proposed_value": "0.5",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "in the row for Total Phosphorus (TP), the limit is amended from 1 mg/l to 0.5 mg/l."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:T2-4/TP",
+         "page": 3,
+         "kind": "cell",
+         "words": "Parameter: Total Phosphorus (TP) | Unit: mg/l | Limit: 1 | Basis of assessment: 30-day rolling average",
+         "cell": {
+          "row_key": "TP",
+          "column": "Limit"
+         }
+        }
+       ],
+       "dependencies": [
+        "VOL-II:T2-4"
+       ],
+       "statements": [
+        "S1",
+        "S2"
+       ],
+       "model_rationale": "I viewed the Table 2-4 crop. The TP row shows mg/l, 1 and 30-day rolling average, which matches the row unit. Unit and basis are unchanged."
+      },
+      {
+       "id": "ADD-03/5.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:5.2",
+       "target": "VOL-II:S3",
+       "payload": {
+        "provision": "ADD-03:5.2",
+        "disposition": "unresolved",
+        "reason": "The provision says 'Bidders shall reflect the amended limit in the process design submitted under Volume II Section 3.' It obliges bidders but prints no change to Section 3 text. An annotate op was rejected by the engine (target VOL-II:S3 is a group, not a unit). A person must decide whether this is a new obligation to record.",
+        "candidates": [
+         "VOL-II:S3"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall reflect the amended limit in the process design submitted under Volume II Section 3."
+        }
+       ],
+       "dependencies": [
+        "ADD-03/5.1"
+       ],
+       "statements": [
+        "S2"
+       ],
+       "missing_information": [
+        "a unit-level target in Volume II Section 3"
+       ],
+       "model_rationale": "Obligation without a text change; the engine could not take an annotate on the section group."
+      },
+      {
+       "id": "ADD-03/6.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:6.1",
+       "target": "VOL-V:29.3",
+       "payload": {
+        "id": "ADD-03/6.1",
+        "provision": "ADD-03:6.1",
+        "type": "replace_text",
+        "target": "VOL-V:29.3",
+        "old": "ninety per cent (90%)",
+        "new": "eighty-five per cent (85%)",
+        "old_resolved": "quoted"
+       },
+       "previous_value": "ninety per cent (90%)",
+       "proposed_value": "eighty-five per cent (85%)",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:6.1",
+         "page": 2,
+         "kind": "span",
+         "words": "‘ninety per cent (90%)’ is deleted and ‘eighty-five per cent (85%)’ is substituted"
+        },
+        {
+         "doc": "VOL-V",
+         "unit_id": "VOL-V:29.3",
+         "page": 3,
+         "kind": "span",
+         "words": "the Availability Payment shall be paid at ninety per cent (90%) of the full rate"
+        }
+       ],
+       "dependencies": [],
+       "statements": [],
+       "model_rationale": "Printed quoted old/new pair; occurs once in target."
+      },
+      {
+       "id": "ADD-03/6.2(a)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:6.2",
+       "target": "VOL-V:31.4",
+       "payload": {
+        "id": "ADD-03/6.2(a)",
+        "provision": "ADD-03:6.2",
+        "type": "set_status",
+        "target": "VOL-V:31.4",
+        "status": "deleted"
+       },
+       "previous_value": "active",
+       "proposed_value": "deleted",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:6.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Volume V Clause 31.4 is deleted in its entirety."
+        },
+        {
+         "doc": "VOL-V",
+         "unit_id": "VOL-V:31.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period, entitles the Authority to require a remediation plan"
+        }
+       ],
+       "dependencies": [],
+       "statements": [],
+       "model_rationale": "Explicit deletion."
+      },
+      {
+       "id": "ADD-03/6.2(b)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:6.2",
+       "target": "VOL-V:39.3",
+       "payload": {
+        "id": "ADD-03/6.2(b)",
+        "provision": "ADD-03:6.2",
+        "type": "set_status",
+        "target": "VOL-V:39.3",
+        "status": "deleted"
+       },
+       "previous_value": "active",
+       "proposed_value": "deleted",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:6.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Volume V Clause 39.3, which provides for termination for persistent breach in the circumstances described in Clause 31.4, is also deleted."
+        },
+        {
+         "doc": "VOL-V",
+         "unit_id": "VOL-V:39.3",
+         "page": 4,
+         "kind": "span",
+         "words": "The Authority may terminate for persistent breach in the circumstances described in Clause 31.4."
+        }
+       ],
+       "dependencies": [
+        "ADD-03/6.2(a)"
+       ],
+       "statements": [],
+       "model_rationale": "Explicit deletion. 'Not renumbered' means no renumber op is needed."
+      },
+      {
+       "id": "ADD-03/7.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:7.1",
+       "target": "ADD-02:F4-G",
+       "payload": {
+        "id": "ADD-03/7.1",
+        "provision": "ADD-03:7.1",
+        "type": "replace_unit",
+        "target": "ADD-02:F4-G",
+        "replacement": "ADD-03:F4-G",
+        "issue": "The reissued form differs from the ADD-02 form beyond the stated countersignature: it adds item 7 (security screening of personnel approved by the Authority) and a countersignature block. Compare before accepting."
+       },
+       "previous_value": "FORM 4-G (9 units, six undertakings, Bidder signature only)",
+       "proposed_value": "FORM 4-G (10 units, seven undertakings, Bidder signature and O&M Operator countersignature)",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is deleted and replaced by the reissued Form 4-G at Appendix A to this Addendum, which provides for its countersignature by the proposed O&M Operator."
+        },
+        {
+         "doc": "ADD-02",
+         "unit_id": "ADD-02:F4-G/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Signed for and on behalf of the Bidder: _______________________ Name: _______________________ Date: ____________"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:F4-G/T1/7",
+         "page": 4,
+         "kind": "span",
+         "words": "Personnel with privileged or remote access to the control system will be subject to security screening approved by the Authority before access is granted."
+        }
+       ],
+       "dependencies": [],
+       "statements": [],
+       "model_rationale": "Engine confirmed the replacement. Item 7 is new and not mentioned in 7.1, so a person should review it. A1 rows needed (C46)."
+      },
+      {
+       "id": "ADD-03/7.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "8b7bf5f1d0dbab0eb0b79a4b392bed579c9cb27f22e02a151fcc43e59e930d72",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:7.2",
+       "target": "ADD-02:7.2",
+       "payload": {
+        "provision": "ADD-03:7.2",
+        "disposition": "unresolved",
+        "reason": "The provision says 'A Form 4-G that is not countersigned by the proposed O&M Operator shall be treated as not submitted.' This adds a responsiveness consequence, since ADD-02 7.2 says 'Failure to submit Form 4-G shall render the Proposal non-responsive.' It prints no text change, and the engine rejected an annotate on ADD-02:7.2 (target not found). A person must record the obligation.",
+        "candidates": [
+         "ADD-02:7.2",
+         "ADD-03:F4-G"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 2,
+         "kind": "span",
+         "words": "A Form 4-G that is not countersigned by the proposed O&M Operator shall be treated as not submitted."
+        },
+        {
+         "doc": "ADD-02",
+         "unit_id": "ADD-02:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "Failure to submit Form 4-G shall render the Proposal non-responsive."
+        }
+       ],
+       "dependencies": [
+        "ADD-03/7.1"
+       ],
+       "statements": [],
+       "model_rationale": "Obligation with no printed text change; annotate target not accepted by the engine."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [
+  "VOL-II:T2-4"
+ ],
+ "images_received": [
+  {
+   "unit_id": "VOL-II:T2-4",
+   "sent": [
+    {
+     "sha256": "ef270c2506ac5f6c58912ab201de592974a22ab82b29ce14cbac8b33029d70dc",
+     "path_in_build": "regions/VOL-II-p3-r1/crop.png",
+     "kind": "unit",
+     "bytes": 392696,
+     "attached": true
+    },
+    {
+     "sha256": "27373c58a989d8ddc62ac537efca5551184ed992ae34ee3cc0b4fb33ff3acec6",
+     "path_in_build": "regions/VOL-II-p3-r1/native.png",
+     "kind": "native",
+     "bytes": 436966,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 392696,
+     "sha256": "ef270c2506ac5f6c58912ab201de592974a22ab82b29ce14cbac8b33029d70dc"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 436966,
+     "sha256": "27373c58a989d8ddc62ac537efca5551184ed992ae34ee3cc0b4fb33ff3acec6"
+    }
+   ]
+  }
+ ],
+ "submission": {
+  "run_id": "ADD-03-host-20261004T143646Z-6929",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind03-20261004T143235Z/ai/ADD-03-host-20261004T143646Z-6929",
+  "coverage": {
+   "provisions_total": 35,
+   "accounted": 4,
+   "unaccounted": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:4.3",
+    "ADD-03:4.4",
+    "ADD-03:6.2",
+    "ADD-03:7.1",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:AppA/para1",
+    "ADD-03:F4-G/T1/1",
+    "ADD-03:F4-G/T1/2",
+    "ADD-03:F4-G/T1/3",
+    "ADD-03:F4-G/T1/4",
+    "ADD-03:F4-G/T1/5",
+    "ADD-03:F4-G/T1/6",
+    "ADD-03:F4-G/T1/7",
+    "ADD-03:F4-G/para1"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 35,
+   "accounted": 4,
+   "resolved": 1,
+   "pending": 3,
+   "invalid": 2,
+   "unaccounted": 29,
+   "pending_provisions": [
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:7.2"
+   ],
+   "invalid_provisions": [
+    "ADD-03:6.2",
+    "ADD-03:7.1"
+   ],
+   "no_change_on_amendment_language": [],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/5.1",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/5.2",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/6.1",
+    "status": "evidence_verified"
+   },
+   {
+    "id": "ADD-03/6.2(a)",
+    "status": "invalid"
+   },
+   {
+    "id": "ADD-03/6.2(b)",
+    "status": "invalid"
+   },
+   {
+    "id": "ADD-03/7.1",
+    "status": "invalid"
+   },
+   {
+    "id": "ADD-03/7.2",
+    "status": "evidence_verified"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/5.1": "insufficient_evidence",
+  "ADD-03/5.2": "insufficient_evidence",
+  "ADD-03/6.1": "evidence_verified",
+  "ADD-03/6.2(a)": "invalid",
+  "ADD-03/6.2(b)": "invalid",
+  "ADD-03/7.1": "invalid",
+  "ADD-03/7.2": "evidence_verified"
+ },
+ "num_turns": 12,
+ "usage": {
+  "input_tokens": 8,
+  "cache_creation_input_tokens": 41172,
+  "cache_read_input_tokens": 87091,
+  "output_tokens": 8584,
+  "output_tokens_details": {
+   "thinking_tokens": 666
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 41172,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 320,
+    "cache_read_input_tokens": 36985,
+    "cache_creation_input_tokens": 7502,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 7502
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 0.2679622,
+ "final_text": "Run `ADD-03-host-20261004T143646Z-6929` came back with status `partial`. I read the crop for `VOL-II:T2-4`.\n\nOf the six provisions in my batch (5.1, 5.2, 6.1, 6.2, 7.1, 7.2), only 6.1 came back `evidence_verified`. The other 29 provisions in the addendum belong to other batches, so they still show as unaccounted.\n\n- **5.1:** `insufficient_evidence`.\n- **5.2:** `insufficient_evidence`.\n- **6.1:** `evidence_verified`.\n- **6.2:** both ops (31.4 and 39.3) came back `invalid`.\n- **7.1:** `invalid`. In the dry run it passed, with item 7 and the countersignature block flagged for review.\n- **7.2:** `evidence_verified`.\n\nI did not investigate why 5.1, 6.2 and 7.1 differ from their dry-run results.",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind03-20261004T143235Z/ai/ADD-03-hostsession-20261004T143522Z-1443"
+}

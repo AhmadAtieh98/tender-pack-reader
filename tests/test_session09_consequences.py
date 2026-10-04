@@ -45,8 +45,8 @@ def test_refusal_and_zero_marks_words_are_consequence_words_for_c46():
 
 
 @pytest.fixture(scope="module")
-def blind02(tmp_path_factory):
-    r = stage2.run(B / "build", B / "work/pack.yaml", ROOT)
+def blind02(blind02_run, tmp_path_factory):
+    r = blind02_run
     out = tmp_path_factory.mktemp("b02") / "out"
     return {"r": r, "res": stage2.write(r, out), "out": out}
 

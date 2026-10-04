@@ -60,6 +60,9 @@ from .textnorm import normalize_latin
 VERBS = {
     "amends": "change", "corrects": "change", "extends": "change", "reduces": "change", "increases": "change",
     "modifies": "change", "revises": "change", "varies": "change", "updates": "change",
+    # session 10 (blind rehearsal 04): verbs a cover uses for a changed limit, a split clause or a conditional change
+    "relaxes": "change", "tightens": "change", "divides": "change", "splits": "change",
+    "makes a conditional amendment to": "change", "makes conditional amendments to": "change",
     "deletes": "delete", "removes": "delete",
     "reinstates": "reinstate", "restores": "reinstate",
     "revokes": "revoke", "withdraws": "revoke", "cancels": "revoke",

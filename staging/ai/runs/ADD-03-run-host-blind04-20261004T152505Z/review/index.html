@@ -1,0 +1,851 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Review: ADD-03, run ADD-03-run-host-blind04-20261004T152505Z</title><style>body{font:14px/1.45 sans-serif;max-width:1200px;margin:16px auto;padding:0 16px;color:#111}table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid #bbb;padding:3px 6px;vertical-align:top;font-size:13px}th{background:#eee}code{background:#f3f3f3;padding:0 3px}li.sub{margin-left:24px;list-style:circle}blockquote{background:#fde2e2;border:2px solid #b00000;color:#7a0000;padding:6px 10px;margin:8px 0;font-weight:bold}</style></head><body><div class="tp-candidate-banner" style="background:#fde2e2;border:2px solid #b00000;color:#7a0000;font:bold 14px sans-serif;padding:6px 10px;margin:0 0 8px 0">CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted</div><h1>Review packet: ADD-03, AI workflow run ADD-03-run-host-blind04-20261004T152505Z</h1>
+<blockquote><strong>CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted.</strong> Statuses are the controller's; a person decides every item. The real <code>curation/</code>, <code>config/</code> and <code>out/</code> were only read: everything below lives in this run's folder.</blockquote>
+<ul>
+<li>PDF: <code>/home/user/tender-pack-reader/rehearsals/blind-04/input/ADD-03_Addendum_No_3.pdf</code> (sha256 99728136b5653acd…, 5 pages); preceding state: pack <code>/home/user/tender-pack-reader/config/pack.yaml</code> (NUPA-ISTP-2026-014), previous evidence build <code>/home/user/tender-pack-reader/build</code></li>
+<li>route <strong>host</strong>; model requested <code>claude-code headless (opus)</code>, reported <code>None</code>; host sessions report: claude-opus-5-5</li>
+<li>status <strong>partial</strong>: the candidate outputs build was refused (pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02); out-before stays the last validated state</li>
+<li>usage: 0 call(s), 0 input / 0 output tokens; cost not computed</li>
+</ul>
+<h2>What is candidate and what is real</h2>
+<ul>
+<li><strong>Candidate</strong> (proposed by this run, nothing accepted): <code>../candidate/</code> — a copy of the curation and configuration with ADD-03 added, its evidence build, its op file, rows, issues, templates and outputs.</li>
+<li><strong>Last validated state</strong>: <code>../candidate/out-before/</code> (the pre-addendum outputs built from the copied curation and the previous evidence build; done)</li>
+<li><strong>Real</strong> (untouched): <code>curation/</code>, <code>config/</code>, <code>out/</code>; the owner's approvals and readings were copied unchanged and used read-only.</li>
+</ul>
+<ul>
+<li>real inputs changed since the run started: none</li>
+</ul>
+<h2>Candidate outputs</h2>
+<p><strong>The candidate outputs build was REFUSED</strong> (exit 2): pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02</p>
+<p>The last validated state stays <code>../candidate/out-before/</code>.</p>
+<ul>
+<li>ADD-03 is <strong>PARTIAL</strong> in the candidate (provisions unresolved): A3 and the A5 programme show the validated state (ADD-02); ADD-03 as proposed is in A1's <code>Status after ADD-03</code> column, in A2, in <code>a5/working/ADD-03.json</code> and in the diff below.</li>
+</ul>
+<h2>Timings (wall clock per step)</h2>
+<table>
+<tr><th>Step</th><th>Seconds</th><th>Status</th></tr>
+<tr><td>ingest</td><td>19.4</td><td>done</td></tr>
+<tr><td>readings</td><td>230.7</td><td>done</td></tr>
+<tr><td>analysis</td><td>2844.4</td><td>done</td></tr>
+<tr><td>validation</td><td>7.6</td><td>done</td></tr>
+<tr><td>downstream</td><td>1335.1</td><td>done</td></tr>
+<tr><td>downstream_validation</td><td>0.8</td><td>done</td></tr>
+<tr><td>promotion</td><td>9.8</td><td>done</td></tr>
+<tr><td>pin</td><td>3.2</td><td>done</td></tr>
+<tr><td>check_register</td><td>9.0</td><td>done</td></tr>
+<tr><td>outputs</td><td>116.4</td><td>done</td></tr>
+<tr><td>diff</td><td>5.0</td><td>done</td></tr>
+<tr><td>review</td><td>0.9</td><td>running</td></tr>
+<tr><td><strong>total</strong></td><td><strong>4582.3</strong> (76.4 min)</td><td>target 30 min from the PDF to candidate outputs and this packet, human review excluded</td></tr>
+</table>
+<h2>Readings of the addendum's image regions (AI-proposed, PENDING HUMAN REVIEW)</h2>
+<p>Ingest first refused the candidate because these image regions had no reading (C05): ADD-03-p4-r1. Each reading below was proposed by the route of this run, checked by readings.check_reading and written into the candidate's readings; it is an interpretation of an image, never approved, and every unit made from it carries <code>reading.status: pending</code>.</p>
+<ul>
+<li><strong>ADD-03-p4-r1</strong> — done; controller status <strong>interpretation_pending</strong>; unit <code>ADD-03:p4-image</code>; file <code>../candidate/curation/readings/ADD-03-p4-r1.yaml</code></li>
+<li class=sub>the reading beside its crops (the build's review packet): <a href="../candidate/build/review/ADD-03-p4-r1/packet.html">../candidate/build/review/ADD-03-p4-r1/packet.html</a></li>
+<li class=sub>form reading, languages ['ar', 'en']; prepared by: AI-assisted: headless host session ADD-03-hostsession-20261004T152526Z-9f15 (claude-code headless (opus); the CLI reported claude-opus-5-5), in AI workflow run ADD-03-run-host-blind04-20261004T152505Z (reading-ADD-03-p4-r1), 2026-10-04T15:28:59Z; proposed for a person's review, not approved</li>
+<li class=sub>uncertainty: Diacritics (tanween on أولاً, ثانياً, ثالثاً, عرضاً, يوماً, كاملاً; shadda with tanween on أيٌّ; hamza forms) were read on the enlarged crops; review the native crops, not a scaled view.</li>
+<li class=sub>uncertainty: Bands 22, 23, 24, 27 and 28 were not split by the band measurement although each holds an English label on the left and an Arabic label on the right; both labels are recorded against the full band.</li>
+<li class=sub>uncertainty: The beneficial-owner table (bands 14-21) is an empty fill-in table of 5 columns and 4 numbered rows; no vertical rules were measured, so it is read as blocks (header band 15, row ٤ band 19).</li>
+<li class=sub>uncertainty: Blank fill-in lines under each field label are rule bands (structure), not text.</li>
+</ul>
+<h2>First: unresolved provisions and escalations</h2>
+<p>12 of 70 provisions are not answered by a promoted item (each is <code>unresolved</code> in the candidate op file with the reason); 3 escalation(s).</p>
+<ul>
+<li><strong>ESCALATED ADD-03/5.2</strong> (ADD-03:5.2): The provision amends an earlier addendum's amending text (ADD-01:5.1) 'With effect from 8 October 2026'. A replace_text on ADD-01:5.1 simulates as structurally valid, but the engine reports the same words also in VOL-II:5.3 (where ADD-01:5.1 placed them) and that op changes only ADD-01:5.1, leaving…</li>
+<li class=sub>unsupported: A change to an earlier addendum's amending words that must cascade to the clause it amended (VOL-II:5.3), with a deferred effective date (8 October 2026). A person must decide the target (ADD-01:5.1, VOL-II:5.3 or both) and how the effective date is recorded. Candidate op for review: replace_text, …</li>
+<li class=sub>evidence: ADD-03:5.2 p1: “With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the buried sections of the transmission main’ and substituting ‘for …”; ADD-01:5.1 p1: “Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main, subject to the whole-life cost co…”; VOL-II:5.3 p4: “Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main, subject to the whole-life cost co…”; VOL-II:5.4 p4: “Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.”</li>
+<li class=sub>affected scope: units ADD-01:5.1, VOL-II:5.4; rows VOL-II-5.4-01, VOL-II-5.4-02; activities technical-proposal; clarifications none</li>
+<li><strong>ESCALATED ADD-03/6.1</strong> (ADD-03:6.1): The provision replaces Table 1-1 (revised) and its Notes issued by ADD-02 Section 3. The natural op (replace_unit ADD-02:T1-1-rev with replacement ADD-03:T1-1) fails C22 in simulation: 'the provision cites no clause, table, form or section that exists in the pack'. The provision refers to the table…</li>
+<li class=sub>unsupported: Replacing an addendum-issued table and its separate Notes units when the citation ('Section 3 of Addendum No. 2') is not resolvable by the engine (C22). A person must confirm the target ADD-02:T1-1-rev (+ notes) and the replacement ADD-03:T1-1 (+ ADD-03:S6/para1).</li>
+<li class=sub>evidence: ADD-03:6.1 p2: “Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced by the table and Notes below, which add criterion G (e…”; ADD-02:T1-1-rev p1: “Table 1-1 (revised) — Technical evaluation criteria — Ref | Criterion | Marks”; ADD-02:T1-1-rev/note(1) p1: “The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/7.2</strong> (ADD-03:7.2): ADD-03:7.2 prints a deletion in VOL-II:1.4 (', together with a grid connection point at the site boundary') and moves the grid connection, and its cost, to the Project Company, but only 'Where this Section 7 has effect', that is, only if the Authority gives the notice in ADD-03:7.1 by 12 November 2…</li>
+<li class=sub>unsupported: A conditional amendment: the op types have no condition or trigger, so replace_text (deleting ', together with a grid connection point at the site boundary') cannot be made to depend on a future Authority notice. Limbs (b) and (c) also add a scope and cost allocation (grid connection procured by th…</li>
+<li class=sub>evidence: ADD-03:7.2 p2: “Where this Section 7 has effect: (a) in Volume II Clause 1.4, the words ‘together with a grid connection point at the site boundary’, and the comma before them…”; ADD-03:7.2 p2: “(c) the cost of the grid connection works forms part of the Estimated Project Cost.”; VOL-II:1.4 p2: “, together with a grid connection point at the site boundary”</li>
+<li class=sub>affected scope: units VOL-II:1.4; rows VOL-II-1.4-01; activities technical-proposal; clarifications none</li>
+<li><strong>UNRESOLVED ADD-03:cover/para3</strong> (paragraph, p1): not promotable: ADD-03/cover/para3 conflicting (declared_conflicts: the proposer declares: ADD-03:8.3)</li>
+<li><strong>UNRESOLVED ADD-03:T1-1/G</strong> (table_row, p2): not promotable: ADD-03/T1-1/G insufficient_evidence (missing_information: the proposer declares missing: the accepted op answering ADD-03:6.1 (replacement of ADD-02:T1-1-rev by ADD-03:T1-1); a dry run of that op failed C22)</li>
+<li><strong>UNRESOLVED ADD-03:T1-1/total</strong> (table_row, p2): not promotable: ADD-03/T1-1/total insufficient_evidence (missing_information: the proposer declares missing: the accepted op answering ADD-03:6.1; a dry run of that op failed C22; how the threshold in VOL-I:11.3 is read once the total is…)</li>
+<li><strong>UNRESOLVED ADD-03:7.1</strong> (clause, p2): not promotable: ADD-03/7.1 insufficient_evidence (missing_information: the proposer declares missing: whether the Authority will give the Portal notice under ADD-03:7.1 by 12 November 2026)</li>
+<li><strong>UNRESOLVED ADD-03:8.2</strong> (clause, p2): not promotable: ADD-03/8.2 conflicting (declared_conflicts: the proposer declares: Arabic Form 4-H (governing) threshold ١٠٪ vs English Appendix B 25%); ADD-03/8.2-issue conflicting (declared_conflicts: the proposer declares: ADD-03:p4-image/decl1 vs ADD-03:F4-H/para1)</li>
+<li><strong>UNRESOLVED ADD-03:8.3</strong> (clause, p2): not promotable: ADD-03/8.3 insufficient_evidence (missing_information: the proposer declares missing: the pack's rule for counting Working Days forward from an event (VOL-I 2.4 covers backward counting only); the deadline is 2 or …)</li>
+<li><strong>UNRESOLVED ADD-03:Q17</strong> (table_row, p3): not promotable: ADD-03/Q17 insufficient_evidence (missing_information: the proposer declares missing: Appendix C to ADD-03 (reference specific energy consumption in kWh/m3 and Energy Performance Statement format) is not in the evi…)</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/decl1</strong> (reading_block, p4): not promotable: ADD-03/p4-image/decl1 conflicting (declared_conflicts: the proposer declares: ADD-03:F4-H/para1); ADD-03/p4-image/decl1/issue conflicting (declared_conflicts: the proposer declares: ADD-03:F4-H/para1)</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/note</strong> (reading_block, p4): not promotable: ADD-03/p4-image/note insufficient_evidence (missing_information: the proposer declares missing: Reading status is pending. The reading flags that the final letter of العربي in band b29 may be printed without dots (العربى); a…)</li>
+</ul>
+<h2>Per provision: source evidence → proposed transition → validation → downstream impact → output difference</h2>
+<h3>ADD-03:cover/para1 (paragraph, p1) — answered</h3>
+<ul>
+<li>source: “Issued 9 November 2026”</li>
+<li>transition: <code>ADD-03/cover/para1</code> disposition no_effect: Issue date line 'Issued 9 November 2026'; dates the addendum (stage date) and changes no provision.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para2 (paragraph, p1) — answered</h3>
+<ul>
+<li>source: “Tender NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/cover/para2</code> disposition no_effect: Title/reference line 'Tender NUPA/ISTP/2026/014' under heading 'ADDENDUM NO. 3'; identifies the tender, changes nothing.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para3 (paragraph, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “This Addendum amends the definition of Estimated Project Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velocity limit for the treated effluent transmission main, amends Section 5.1 of Addendum No. 1, reissues the technical evaluation table to add a criterion for energy e…”</li>
+<li>transition: <code>ADD-03/cover/para3</code> amendment_op annotate ADD-03:cover/para3 effect adds_obligation</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:8.3</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-COVER-PARA3</code> escalation (esc:ADD-03:cover/para3): <strong>conflicting</strong></li>
+<li class=sub>downstream proposal <code>CQ-F4H-TIMING</code> clarification_item (esc:ADD-03:cover/para3): <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:1.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.”</li>
+<li>transition: <code>ADD-03/1.1</code> disposition no_effect: Recital: 'takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2' restates the existing rule in VOL-I 3.2(a) '(a) the Addenda, a lat…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:1.2 (clause, p1) — answered</h3>
+<ul>
+<li>source: “A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.”</li>
+<li>transition: <code>ADD-03/1.2</code> disposition no_effect: Interpretation rule for references within this Addendum: 'A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended b…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong> — semantic: no_effect on amendment language: a person must confirm (its words carry 'unless')</li>
+</ul>
+<h3>ADD-03:2.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “In Volume V Clause 1.3, ‘as set out in the agreed Financial Model at Financial Close’ is deleted and ‘as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development fees’ is substituted.”</li>
+<li>transition: <code>ADD-03/2.1</code> amendment_op replace_text VOL-V:1.3 “as set out in the agreed Financial Model at Financial Close” → “as stated by the Bidder in Form 4-F, excluding financing costs, interest during…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-V:1.3; rows citing them none</li>
+<li class=sub>downstream proposal <code>DEP-ADD03-F4F-TO-8.4</code> dependency (act:fin-standing): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-FORM-4F</code> activity (act:form-4f): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-FIN-MODEL-BUILD</code> activity (act:fin-model-build): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-FIN-MODEL-FREEZE</code> activity (act:fin-model-freeze): <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:2.2 (clause, p1) — answered</h3>
+<ul>
+<li>source: “The definition in Volume V Clause 1.3, as amended by Section 2.1, applies wherever the expression Estimated Project Cost is used in the RFP Documents.”</li>
+<li>transition: <code>ADD-03/2.2</code> amendment_op annotate VOL-V:1.3 effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:3.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “In Volume I Clause 8.4, ‘SAR 800,000,000’ is deleted and ‘twenty-five per cent (25%) of the Estimated Project Cost’ is substituted. Limb (b) of Clause 8.4 is unchanged.”</li>
+<li>transition: <code>ADD-03/3.1</code> amendment_op replace_text VOL-I:8.4 “SAR 800,000,000” → “twenty-five per cent (25%) of the Estimated Project Cost”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-I:8.4; rows citing them VOL-I-8.4-01, VOL-I-8.4-02</li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-8.4-01</code> row_reading (row:VOL-I-8.4-01): <strong>conflicting</strong></li>
+<li class=sub>downstream proposal <code>I-ADD03-NETWORTH-ENV-A</code> issue (row:VOL-I-8.4-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>CQ-ADD03-NETWORTH-ENV-A</code> clarification_item (row:VOL-I-8.4-01): <strong>insufficient_evidence</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-8.4-02</code> row_reading (row:VOL-I-8.4-02): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-FIN-STATEMENTS</code> activity (act:fin-statements): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-FIN-STANDING</code> activity (act:fin-standing): <strong>insufficient_evidence</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-8.4-01; CHANGED VOL-I-8.4-02; A5 REWORK fin-standing; A5 REWORK fin-statements; A5 REVIEW (proposed relationship) fin-standing; A5 REVIEW (possible impact) fin-standing; A5 REVIEW (proposed relationship) fin-statements; A5 REVIEW (possible impact) fin-statements</li>
+</ul>
+<h3>ADD-03:4.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “In Volume V Clause 18.1, ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay’ is substituted. Volume V Clause 18.4 is unchanged.”</li>
+<li>transition: <code>ADD-03/4.1</code> amendment_op replace_text VOL-V:18.1 “SAR 180,000 for each day of delay” → “one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each da…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-V:18.1; rows citing them none</li>
+<li class=sub>downstream proposal <code>RR-VOL-V-12.1-01</code> row_reading (row:VOL-V-12.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RN-ADD-03-4.1-01</code> row_new (c46:ADD-03/4.1): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>IS-ADD03-EPC-LINKED</code> issue (c46:ADD-03/4.1): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED ADD-03-4.1-01</li>
+</ul>
+<h3>ADD-03:5.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted. The minimum residual head of 15 m at the delivery point is unchanged.”</li>
+<li>transition: <code>ADD-03/5.1</code> amendment_op replace_text VOL-II:5.2 “2.0 m/s” → “1.5 m/s”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-II:5.2; rows citing them VOL-II-5.2-01, VOL-II-5.2-02</li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-II-5.2-01</code> row_reading (row:VOL-II-5.2-01): <strong>insufficient_evidence</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-II-5.2-02</code> row_reading (row:VOL-II-5.2-02): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-II-5.2-01; CHANGED VOL-II-5.2-02; A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:5.2 (clause, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the buried sections of the transmission main’ and substituting ‘for the buried sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used’.”</li>
+<li>transition: <code>ADD-03/5.2</code> escalation why: The provision amends an earlier addendum's amending text (ADD-01:5.1) 'With effect from 8 October 2026'. A replace_text on ADD-01:5.1 simulates as structurally valid, but the engine reports the same …</li>
+<li class=sub>validation: <strong>escalated</strong> — missing_information: the proposer declares missing: How the engine should carry a deferred effective date (8 October 2026); Whether the change must be applied to VOL-II:5.3 as well as ADD-01:5.1</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-5.2</code> escalation (esc:ADD-03:5.2): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:6.1 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced by the table and Notes below, which add criterion G (energy efficiency). The marks for criteria A to F are unchanged.”</li>
+<li>transition: <code>ADD-03/6.1</code> escalation why: The provision replaces Table 1-1 (revised) and its Notes issued by ADD-02 Section 3. The natural op (replace_unit ADD-02:T1-1-rev with replacement ADD-03:T1-1) fails C22 in simulation: 'the provision…</li>
+<li class=sub>validation: <strong>escalated</strong> — missing_information: the proposer declares missing: A resolvable target for 'Table 1-1 (revised) ... issued by Section 3 of Addendum No. 2'; How the Notes units are to be replaced</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-6.1</code> escalation (esc:ADD-03:6.1): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:T1-1/A (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks: 25”</li>
+<li>transition: <code>ADD-03/T1-1/A</code> disposition no_effect: Row A of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/A and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/B (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15”</li>
+<li>transition: <code>ADD-03/T1-1/B</code> disposition no_effect: Row B of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/B and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/C (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20”</li>
+<li>transition: <code>ADD-03/T1-1/C</code> disposition no_effect: Row C of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/C and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/D (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: D | Criterion: Environmental and social management | Marks: 20”</li>
+<li>transition: <code>ADD-03/T1-1/D</code> disposition no_effect: Row D of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/D and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/E (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10”</li>
+<li>transition: <code>ADD-03/T1-1/E</code> disposition no_effect: Row E of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/E and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/F (table_row, p2) — answered</h3>
+<ul>
+<li>source: “Ref: F | Criterion: Health, safety and security of supply | Marks: 10”</li>
+<li>transition: <code>ADD-03/T1-1/F</code> disposition no_effect: Row F of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/F and ADD-03:6.1 states 'The marks for criteria A to F are unc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:T1-1/G (table_row, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Ref: G | Criterion: Energy efficiency and specific energy consumption | Marks: 20”</li>
+<li>transition: <code>ADD-03/T1-1/G</code> disposition unresolved: Insufficient evidence in this batch. Row G is a new criterion, not present in ADD-02 Table 1-1 (revised), and is introduced by ADD-03:6.1: 'which add criterion…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: the accepted op answering ADD-03:6.1 (replacement of ADD-02:T1-1-rev by ADD-03:T1-1); a dry run of that op failed C22</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T1-1-G</code> escalation (esc:ADD-03:T1-1/G): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:T1-1/total (table_row, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Criterion: Total | Marks: 120”</li>
+<li>transition: <code>ADD-03/T1-1/total</code> disposition unresolved: Insufficient evidence in this batch. The Total changes from 'Criterion: Total | Marks: 100' (ADD-02:T1-1-rev/total) to 'Criterion: Total | Marks: 120'. That ch…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: the accepted op answering ADD-03:6.1; a dry run of that op failed C22; how the threshold in VOL-I:11.3 is read once the total is 120 (this depends on ADD-03:6.2, which is in another batch)</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T1-1-TOTAL</code> escalation (esc:ADD-03:T1-1/total): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:S6/para1 (paragraph, p2) — answered</h3>
+<ul>
+<li>source: “Notes to Table 1-1 (second revision): (1) The technical score threshold in Volume I Clause 11.3 is unchanged at seventy per cent (70%). (2) The combined score weighting stated in Volume I Clause 11.2 is amended to seventy per cent (70%) technical and thirty per cent (30%) commercial. (3) Marks are awarded on the Authority's standard five-point scale and mul…”</li>
+<li>transition: <code>ADD-03/S6/para1(a)</code> amendment_op annotate VOL-I:11.3 effect confirms</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: VOL-I:11.3 as it stands at ADD-02 sets 70 marks out of 100; Note (1) calls a 70% threshold 'unchanged' while Table 1-1 now totals 120 marks</li>
+<li>transition: <code>ADD-03/S6/para1(b)</code> amendment_op replace_text VOL-I:11.2 “sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial” → “seventy per cent (70%) technical and thirty per cent (30%) commercial”</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li>transition: <code>ADD-03/S6/para1(c)</code> amendment_op annotate ADD-03:T1-1 effect confirms</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li>transition: <code>ADD-03/S6/para1(d)</code> amendment_op annotate ADD-03:T1-1/G effect adds_obligation</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: Appendix C to ADD-03 (format of the Energy Performance Statement and reference specific energy consumption) is not in the evidence build</li>
+<li class=sub>downstream: units changed VOL-I:11.2; rows citing them VOL-I-11.2-01</li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-11.2-01</code> row_reading (row:VOL-I-11.2-01): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-11.2-01</li>
+</ul>
+<h3>ADD-03:6.2 (clause, p2) — answered</h3>
+<ul>
+<li>source: “Volume I Clause 11.3 is deleted and replaced by the following two Clauses: ‘11.3 A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in Table 1-1 shall not proceed to commercial evaluation.’ ‘11.3A The Envelope B of a Proposal that does not proceed to commercial evaluation shall be retained unopened by the Autho…”</li>
+<li>transition: <code>ADD-03/6.2(a)</code> amendment_op replace_text VOL-I:11.3 “A Proposal scoring less than seventy (70) marks out of one hundred (100) at the…” → “A Proposal whose technical score is less than seventy per cent (70%) of the tot…”</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li>transition: <code>ADD-03/6.2(b)</code> amendment_op insert_unit VOL-I:11.3 “The Envelope B of a Proposal that does not proceed to commercial evaluation shall be retained unopened by the Authority…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-I:11.3, VOL-I:11.3+ADD-03; rows citing them VOL-I-11.3-01</li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-11.3-01</code> row_reading (row:VOL-I-11.3-01): <strong>insufficient_evidence</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-11.3-01; A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:7.1 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “This Section 7 has effect only if the Authority notifies Bidders through the Portal, not later than ten (10) Working Days before the Proposal Due Date, that the grid connection point referred to in Volume II Clause 1.4 will not be energised at least twelve (12) months before the Scheduled PCOD. If no such notice is given by that time, this Section 7 lapses.”</li>
+<li>transition: <code>ADD-03/7.1</code> amendment_op annotate VOL-II:1.4 effect interprets</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: whether the Authority will give the Portal notice under ADD-03:7.1 by 12 November 2026</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-7.1</code> escalation (esc:ADD-03:7.1): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:7.2 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Where this Section 7 has effect: (a) in Volume II Clause 1.4, the words ‘together with a grid connection point at the site boundary’, and the comma before them, are deleted; (b) the grid connection is a utility to be procured by the Project Company under the second sentence of Volume II Clause 1.4; and (c) the cost of the grid connection works forms part of…”</li>
+<li>transition: <code>ADD-03/7.2</code> escalation why: ADD-03:7.2 prints a deletion in VOL-II:1.4 (', together with a grid connection point at the site boundary') and moves the grid connection, and its cost, to the Project Company, but only 'Where this S…</li>
+<li class=sub>validation: <strong>escalated</strong> — missing_information: the proposer declares missing: whether the Authority notice under ADD-03:7.1 is given by 12 November 2026</li>
+<li class=sub>downstream proposal <code>CQ-ADD03-S7-NOTICE</code> clarification_item (esc:ADD-03:7.2): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>I-ADD03-S7-CONDITIONAL</code> issue (esc:ADD-03:7.2): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ESC-ADD03-7.2</code> escalation (esc:ADD-03:7.2): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:8.1 (clause, p2) — answered</h3>
+<ul>
+<li>source: “A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after Form 4-G. Form 4-H is reproduced at Appendix A to this Addendum.”</li>
+<li>transition: <code>ADD-03/8.1</code> amendment_op insert_unit VOL-I:9.1</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>downstream: units changed ADD-03:F4-H/T1, ADD-03:F4-H/T1/1, ADD-03:F4-H/T1/2, ADD-03:F4-H/T1/3, ADD-03:F4-H/T1/4, ADD-03:F4-H/para1, ADD-03:F4-H/para2, ADD-03:H:F4-H, VOL-I:9.1+ADD-03; rows citing them none</li>
+</ul>
+<h3>ADD-03:8.2 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Form 4-H shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder. The Arabic text governs. The English translation at Appendix B is provided for convenience only.”</li>
+<li>transition: <code>ADD-03/8.2</code> amendment_op annotate ADD-03:H:F4-H effect adds_obligation</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: Arabic Form 4-H (governing) threshold ١٠٪ vs English Appendix B 25%</li>
+<li>transition: <code>ADD-03/8.2-issue</code> issue {"text": "The governing Arabic Form 4-H (Appendix A) defines a beneficial owner at ten per cent (١٠٪) or more, while the English translation at Appendix B states twenty-five per cent (25%). Under ADD…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:p4-image/decl1 vs ADD-03:F4-H/para1</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-8.2</code> escalation (esc:ADD-03:8.2): <strong>conflicting</strong></li>
+<li class=sub>downstream proposal <code>CQ-ADD03-F4H-THRESHOLD</code> clarification_item (esc:ADD-03:8.2): <strong>insufficient_evidence</strong> — held back: linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']</li>
+</ul>
+<h3>ADD-03:8.3 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Form 4-H shall be submitted with Envelope A. A member of the Bidder that is incorporated outside the Kingdom may instead submit its Form 4-H through the Portal not later than five (5) Working Days after the Proposal Due Date.”</li>
+<li>transition: <code>ADD-03/8.3</code> amendment_op annotate ADD-03:H:F4-H effect adds_obligation</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: the pack's rule for counting Working Days forward from an event (VOL-I 2.4 covers backward counting only); the deadline is 2 or 3 December 2026</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-8.3</code> escalation (esc:ADD-03:8.3): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>CQ-ADD03-83-COUNTING</code> clarification_item (esc:ADD-03:8.3): <strong>insufficient_evidence</strong> — held back: linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']</li>
+</ul>
+<h3>ADD-03:8.4 (clause, p2) — answered</h3>
+<ul>
+<li>source: “Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the time required by Section 8.3 shall render the Proposal non-responsive.”</li>
+<li>transition: <code>ADD-03/8.4</code> amendment_op annotate ADD-03:H:F4-H effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:Q15 (table_row, p3) — answered</h3>
+<ul>
+<li>source: “No: 15 | Bidder question: Volume I Clause 8.7 requires a Parent Company Guarantee that is unconditional as to the EPC Contractor's obligations during the construction period. Will the Authority accept a guarantee limited to a fixed amount? | Authority response: No. The Parent Company Guarantee shall be unlimited as to the guaranteed obligations and shall no…”</li>
+<li>transition: <code>ADD-03/Q15</code> amendment_op annotate VOL-I:8.7, VOL-IV:F4-D effect confirms</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-8.7-01</code> row_reading (row:VOL-I-8.7-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-01</code> row_reading (row:VOL-IV-F4D-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-02</code> row_reading (row:VOL-IV-F4D-02): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-03</code> row_reading (row:VOL-IV-F4D-03): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-04</code> row_reading (row:VOL-IV-F4D-04): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-05</code> row_reading (row:VOL-IV-F4D-05): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-06</code> row_reading (row:VOL-IV-F4D-06): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-07</code> row_reading (row:VOL-IV-F4D-07): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4D-08</code> row_reading (row:VOL-IV-F4D-08): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-PCG-WORDING</code> activity (act:pcg-wording): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-PCG-EXECUTION</code> activity (act:pcg-execution): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-8.7-01; CHANGED VOL-IV-F4D-01; A5 REWORK pcg-execution; A5 REWORK pcg-wording</li>
+</ul>
+<h3>ADD-03:Q16 (table_row, p3) — answered</h3>
+<ul>
+<li>source: “No: 16 | Bidder question: Does the Estimated Project Cost to be stated in Form 4-F include the cost of the grid connection works? | Authority response: Only if Section 7 of this Addendum has effect. Otherwise the grid connection point is provided by the Authority in accordance with Volume II Clause 1.4.”</li>
+<li>transition: <code>ADD-03/Q16</code> amendment_op annotate VOL-II:1.4, VOL-IV:F4-F effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-II-1.4-01</code> row_reading (row:VOL-II-1.4-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4F-01</code> row_reading (row:VOL-IV-F4F-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-VOL-IV-F4F-02</code> row_reading (row:VOL-IV-F4F-02): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-IV-F4F-01; A5 REWORK fin-model-build; A5 REWORK fin-model-freeze; A5 REWORK form-4f; A5 REWORK technical-proposal; A5 REVIEW (proposed relationship) fin-standing; A5 REVIEW (proposed relationship) fin-statements</li>
+</ul>
+<h3>ADD-03:Q17 (table_row, p3) — UNRESOLVED</h3>
+<ul>
+<li>source: “No: 17 | Bidder question: Will the Authority publish the reference specific energy consumption against which criterion G of Table 1-1 will be assessed? | Authority response: The reference specific energy consumption, in kWh per cubic metre of treated effluent, is stated in Appendix C to this Addendum together with the format of the Energy Performance Statem…”</li>
+<li>transition: <code>ADD-03/Q17</code> disposition unresolved: insufficient evidence: the response says the reference specific energy consumption 'is stated in Appendix C to this Addendum together with the format of the En…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: Appendix C to ADD-03 (reference specific energy consumption in kWh/m3 and Energy Performance Statement format) is not in the evidence build</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-Q17</code> escalation (esc:ADD-03:Q17): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DEP-ADD03-APPC-MISSING</code> dependency (esc:ADD-03:Q17): <strong>invalid</strong></li>
+</ul>
+<h3>ADD-03:Q18 (table_row, p3) — answered</h3>
+<ul>
+<li>source: “No: 18 | Bidder question: Does the maximum velocity in Volume II Clause 5.2 apply to the trenchless crossings? | Authority response: Yes. Volume II Clause 5.2, as amended by Section 5.1 of this Addendum, applies to the whole length of the transmission main, including the crossings required by Volume II Clause 5.4.”</li>
+<li>transition: <code>ADD-03/Q18</code> amendment_op annotate VOL-II:5.2, VOL-II:5.4 effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-II-5.4-01</code> row_reading (row:VOL-II-5.4-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-II-5.4-02</code> row_reading (row:VOL-II-5.4-02): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:Q19 (table_row, p3) — answered</h3>
+<ul>
+<li>source: “No: 19 | Bidder question: How is compliance with Volume I Clause 8.4(a), as amended, to be demonstrated in Envelope A, given that the Estimated Project Cost is stated only in Form 4-F? | Authority response: The Authority notes the question. Volume I Clauses 6.2 and 11.1 apply. The Authority does not consider further amendment necessary at this stage.”</li>
+<li>transition: <code>ADD-03/Q19</code> amendment_op annotate VOL-I:8.4, VOL-I:6.2, VOL-I:11.1 effect none</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li>transition: <code>ADD-03/Q19/issue</code> issue {"text": "If ADD-03 3.1 makes the VOL-I 8.4(a) net worth threshold a percentage of the Estimated Project Cost, a figure stated only in Form 4-F (Envelope B only), then showing compliance in Envelope …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-6.2-01</code> row_reading (row:VOL-I-6.2-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>RR-ADD-03-VOL-I-6.2-02</code> row_reading (row:VOL-I-6.2-02): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-ASSEMBLE-ENV-B</code> activity (act:assemble-envelope-b): <strong>insufficient_evidence</strong></li>
+<li class=sub>downstream proposal <code>I-ADD03-EPC-ENV-A</code> issue (act:fin-standing): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>CQ-EPC-ENV-A</code> clarification_item (act:fin-standing): <strong>insufficient_evidence</strong></li>
+<li class=sub>output difference: A5 REWORK assemble-envelope-a; A5 REWORK assemble-envelope-b; A5 REWORK copies; A5 REWORK deliver; A5 REWORK seal-and-mark</li>
+</ul>
+<h3>ADD-03:Q20 (table_row, p3) — answered</h3>
+<ul>
+<li>source: “No: 20 | Bidder question: Must the certified copy of the register of shareholders attached to Form 4-H be legalised where the member is incorporated outside the Kingdom? | Authority response: No. Legalisation is not required for the purposes of Form 4-H.”</li>
+<li>transition: <code>ADD-03/Q20</code> amendment_op annotate ADD-03:p4-image/decl3, ADD-03:F4-H/para1 effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:AppA/para1 (paragraph, p3) — answered</h3>
+<ul>
+<li>source: “Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum.”</li>
+<li>transition: <code>ADD-03/AppA/para1</code> disposition no_effect: introductory text to Appendix A. The words 'Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong> — semantic: no_effect on amendment language: a person must confirm (its words carry 'shall' (cites ADD-03:F4-H))</li>
+<li>transition: <code>ADD-03/AppA/para1/issue</code> issue {"text": "The Arabic Form 4-H reproduced 'as issued' at Appendix A (which governs under ADD-03 8.2) defines a beneficial owner at ten per cent (10%) or more. The English translation at Appendix B (F4…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/hdr-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “NORTHERN UTILITIES PROCUREMENT AUTHORITY”</li>
+<li>transition: <code>ADD-03/p4-image/hdr-en</code> disposition no_effect: Letterhead line of the Form 4-H image reproduced at Appendix A ('NORTHERN UTILITIES PROCUREMENT AUTHORITY'); names the issuing authority and changes no clause,…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/hdr-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “الهيئة الشمالية للمشتريات المرفقية”</li>
+<li>transition: <code>ADD-03/p4-image/hdr-ar</code> disposition no_effect: Arabic letterhead line of the Form 4-H image ('الهيئة الشمالية للمشتريات المرفقية'); names the issuing authority and changes nothing by itself. The form's addi…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/ref-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Tender Ref: NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/p4-image/ref-en</code> disposition no_effect: Tender reference line of the Form 4-H image ('Tender Ref: NUPA/ISTP/2026/014'); identification only, changes nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/ref-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “مناقصة رقم: NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/p4-image/ref-ar</code> disposition no_effect: Arabic tender reference line of the Form 4-H image ('مناقصة رقم: NUPA/ISTP/2026/014'); identification only, changes nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/form-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “FORM 4-H”</li>
+<li>transition: <code>ADD-03/p4-image/form-en</code> disposition no_effect: Form label 'FORM 4-H' on the reproduced form; the form itself is added by ADD-03:8.1 ('A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/form-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “النموذج ٤-ح”</li>
+<li>transition: <code>ADD-03/p4-image/form-ar</code> disposition no_effect: Arabic form label 'النموذج ٤-ح' on the reproduced form; the form is added by ADD-03:8.1; this label changes nothing by itself.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/title (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “إقرار المستفيد الحقيقي”</li>
+<li>transition: <code>ADD-03/p4-image/title</code> disposition no_effect: Arabic form title 'إقرار المستفيد الحقيقي' on the reproduced form; heading only; the form is added by ADD-03:8.1.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/intro (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي:”</li>
+<li>transition: <code>ADD-03/p4-image/intro</code> disposition no_effect: Opening words of the declaration inside the reproduced Form 4-H: 'نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونت…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/decl1 (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “أولاً: أن الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو، والمستفيد الحقيقي هو كل شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، ما نسبته عشرة في المائة (١٠٪) أو أكثر من رأس مال العضو أو من حقوق التصويت فيه، أو يسيطر على العضو بأي وسيلة أخرى.”</li>
+<li>transition: <code>ADD-03/p4-image/decl1</code> disposition unresolved: Insufficient evidence to settle by an op or no_effect. This is the first declaration of the new Form 4-H (added by ADD-03:8.1, another batch). The Arabic print…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:F4-H/para1</li>
+<li>transition: <code>ADD-03/p4-image/decl1/issue</code> issue {"text": "Form 4-H beneficial-owner threshold differs between the governing Arabic text (Appendix A: 'عشرة في المائة (١٠٪)', 10%) and the English convenience translation (Appendix B: 'twenty-five per…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:F4-H/para1</li>
+<li class=sub>downstream proposal <code>I-ADD03-F4H-THRESHOLD</code> issue (esc:ADD-03:p4-image/decl1): <strong>conflicting</strong></li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-DECL1</code> escalation (esc:ADD-03:p4-image/decl1): <strong>conflicting</strong></li>
+</ul>
+<h3>ADD-03:p4-image/decl2 (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “ثانياً: أنه لا يملك أيٌّ من المستفيدين الحقيقيين، بصورة مباشرة أو غير مباشرة، أي حصة في عضو في ائتلاف آخر يقدم عرضاً لهذه المناقصة.”</li>
+<li>transition: <code>ADD-03/p4-image/decl2</code> disposition no_effect: Content of the new Form 4-H reproduced at Appendix A ('Form 4-H is reproduced at Appendix A to this Addendum', ADD-03:8.1); the declaration 'أنه لا يملك أيٌّ م…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/decl3 (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين في العضو، صادرة خلال الثلاثين (٣٠) يوماً السابقة لتاريخ تقديم العروض.”</li>
+<li>transition: <code>ADD-03/p4-image/decl3</code> disposition no_effect: Content of the new Form 4-H reproduced at Appendix A ('Form 4-H is reproduced at Appendix A to this Addendum', ADD-03:8.1). The declaration 'أننا أرفقنا بهذا ا…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/table-header (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “م | اسم المستفيد الحقيقي | الجنسية | نسبة الملكية (٪) | مباشرة / غير مباشرة”</li>
+<li>transition: <code>ADD-03/p4-image/table-header</code> disposition no_effect: Column headings of the beneficial-owner table in the new Form 4-H ('م | اسم المستفيد الحقيقي | الجنسية | نسبة الملكية (٪) | مباشرة / غير مباشرة'); form layout …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/table-row4 (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “٤”</li>
+<li>transition: <code>ADD-03/p4-image/table-row4</code> disposition no_effect: Row number '٤' (4) of the blank beneficial-owner table in the new Form 4-H; form layout carried in by ADD-03:8.1 ('Form 4-H is reproduced at Appendix A to this…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/table-row4-blank (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “”</li>
+<li>transition: <code>ADD-03/p4-image/table-row4-blank</code> disposition no_effect: Empty cells of row 4 of the beneficial-owner table in the new Form 4-H (the unit's text is empty: nothing is printed); blanks for the bidder to complete, carri…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-member-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Name of consortium member”</li>
+<li>transition: <code>ADD-03/p4-image/field-member-en</code> disposition no_effect: English field label 'Name of consortium member' of the new Form 4-H; form layout carried in by ADD-03:8.1 ('Form 4-H is reproduced at Appendix A to this Addend…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-member-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “اسم العضو في الائتلاف :”</li>
+<li>transition: <code>ADD-03/p4-image/field-member-ar</code> disposition no_effect: Arabic field label 'اسم العضو في الائتلاف :' of the new Form 4-H; form layout carried in by ADD-03:8.1 ('Form 4-H is reproduced at Appendix A to this Addendum'…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-cr-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Commercial registration number”</li>
+<li>transition: <code>ADD-03/p4-image/field-cr-en</code> disposition no_effect: Field label 'Commercial registration number' of the blank completion block of Form 4-H as reproduced in Appendix A; it prints no change words and amends no exi…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-cr-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “رقم السجل التجاري :”</li>
+<li>transition: <code>ADD-03/p4-image/field-cr-ar</code> disposition no_effect: Arabic field label 'رقم السجل التجاري :' of the blank completion block of Form 4-H in Appendix A; it prints no change words and amends no existing provision.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-signatory-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Name of authorised signatory”</li>
+<li>transition: <code>ADD-03/p4-image/field-signatory-en</code> disposition no_effect: Field label 'Name of authorised signatory' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-signatory-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “اسم المفوض بالتوقيع :”</li>
+<li>transition: <code>ADD-03/p4-image/field-signatory-ar</code> disposition no_effect: Arabic field label 'اسم المفوض بالتوقيع :' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-capacity-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Capacity”</li>
+<li>transition: <code>ADD-03/p4-image/field-capacity-en</code> disposition no_effect: Field label 'Capacity' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-capacity-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “الصفة :”</li>
+<li>transition: <code>ADD-03/p4-image/field-capacity-ar</code> disposition no_effect: Arabic field label 'الصفة :' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-date-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Date”</li>
+<li>transition: <code>ADD-03/p4-image/field-date-en</code> disposition no_effect: Field label 'Date' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-date-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “التاريخ :”</li>
+<li>transition: <code>ADD-03/p4-image/field-date-ar</code> disposition no_effect: Arabic field label 'التاريخ :' of the blank completion block of Form 4-H in Appendix A; no change words; amends nothing.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-signature-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Signature and company seal”</li>
+<li>transition: <code>ADD-03/p4-image/field-signature-en</code> disposition no_effect: Blank form field label 'Signature and company seal' in the reproduced Form 4-H (Appendix A); it amends, obliges or excepts nothing by itself. The form is intro…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/field-signature-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “التوقيع والختم :”</li>
+<li>transition: <code>ADD-03/p4-image/field-signature-ar</code> disposition no_effect: Blank Arabic form field label 'التوقيع والختم :' in the reproduced Form 4-H (Appendix A); it amends, obliges or excepts nothing by itself. The form is introduc…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:p4-image/note (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد. عدم تقديمه كاملاً يجعل العرض غير مستجيب.”</li>
+<li>transition: <code>ADD-03/p4-image/note</code> disposition no_effect: The note obliges ('يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف') and states precedence and a consequence ('والنص العربي هو المعتمد', 'عدم …</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: Reading status is pending. The reading flags that the final letter of العربي in band b29 may be printed without dots (العربى); a reviewer should confirm on the crop. This does not change t…</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-NOTE</code> escalation (esc:ADD-03:p4-image/note): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:p4-image/image-footer (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.”</li>
+<li>transition: <code>ADD-03/p4-image/image-footer</code> disposition no_effect: Footer printed on the form image ('FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.'): a document marking, not tender content. …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:AppB/para1 (paragraph, p5) — answered</h3>
+<ul>
+<li>source: “This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A governs.”</li>
+<li>transition: <code>ADD-03/AppB/para1</code> disposition no_effect: Precedence statement 'The Arabic text of Form 4-H at Appendix A governs.' repeats ADD-03:8.2 ('The Arabic text governs. The English translation at Appendix B i…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong> — semantic: no_effect on amendment language: a person must confirm (its words carry 'provided' (cites ADD-03:F4-H))</li>
+<li>transition: <code>ADD-03/AppB/para1-issue</code> issue {"text": "The governing Arabic Form 4-H (Appendix A, declaration First) defines a beneficial owner by a holding of ten per cent (١٠٪) or more. The English convenience translation (Appendix B, ADD-03:…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:p4-image/decl1; ADD-03:F4-H/para1</li>
+</ul>
+<h3>ADD-03:F4-H/para1 (paragraph, p5) — answered</h3>
+<ul>
+<li>source: “We, the undersigned, as the authorised representatives of the member of the Bidder's consortium named below, declare and undertake as follows: First: that the natural persons listed in the table below are all of the beneficial owners of the member, a beneficial owner being each natural person who owns, directly or indirectly, twenty-five per cent (25%) or m…”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h3>ADD-03:F4-H/T1/1 (table_row, p5) — answered</h3>
+<ul>
+<li>source: “No: 1”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h3>ADD-03:F4-H/T1/2 (table_row, p5) — answered</h3>
+<ul>
+<li>source: “No: 2”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h3>ADD-03:F4-H/T1/3 (table_row, p5) — answered</h3>
+<ul>
+<li>source: “No: 3”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h3>ADD-03:F4-H/T1/4 (table_row, p5) — answered</h3>
+<ul>
+<li>source: “No: 4”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h3>ADD-03:F4-H/para2 (paragraph, p5) — answered</h3>
+<ul>
+<li>source: “Name of consortium member: _______________________ Commercial registration number: _______________ Name of authorised signatory: _______________________ Capacity: _______________ Date: ____________ Signature and company seal: _______________ Note: This Form shall be submitted in the Arabic language for each member of the consortium, and the Arabic text gove…”</li>
+<li>transition: content of ADD-03/8.1</li>
+</ul>
+<h2>Downstream proposals (validated in the candidate)</h2>
+<table>
+<tr><th>Item</th><th>Type</th><th>Task</th><th>Status</th><th>First failed check, or what a person confirms</th></tr>
+<tr><td>RR-ADD-03-VOL-I-11.2-01</td><td>row_reading</td><td>row:VOL-I-11.2-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-I-11.3-01</td><td>row_reading</td><td>row:VOL-I-11.3-01</td><td>insufficient_evidence</td><td>replace_requirement: replace_requirement.old is not the row's requirement (or new is empty)</td></tr>
+<tr><td>RR-ADD-03-VOL-I-6.2-01</td><td>row_reading</td><td>row:VOL-I-6.2-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-I-6.2-02</td><td>row_reading</td><td>row:VOL-I-6.2-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-I-8.4-01</td><td>row_reading</td><td>row:VOL-I-8.4-01</td><td>conflicting</td><td>declared_conflicts: the proposer declares: VOL-I-6.2-02</td></tr>
+<tr><td>I-ADD03-NETWORTH-ENV-A</td><td>issue</td><td>row:VOL-I-8.4-01</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>CQ-ADD03-NETWORTH-ENV-A</td><td>clarification_item</td><td>row:VOL-I-8.4-01</td><td>insufficient_evidence</td><td>clarify.check: CQ-ADD03-NETWORTH-ENV-A: not verbatim in VOL-I:8.4: 'twenty-five per cent (25%) of the Estimated Project Cost'</td></tr>
+<tr><td>RR-ADD-03-VOL-I-8.4-02</td><td>row_reading</td><td>row:VOL-I-8.4-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-I-8.7-01</td><td>row_reading</td><td>row:VOL-I-8.7-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-II-1.4-01</td><td>row_reading</td><td>row:VOL-II-1.4-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-II-5.2-01</td><td>row_reading</td><td>row:VOL-II-5.2-01</td><td>insufficient_evidence</td><td>replace_requirement: replace_requirement.old is not the row's requirement (or new is empty)</td></tr>
+<tr><td>RR-ADD-03-VOL-II-5.2-02</td><td>row_reading</td><td>row:VOL-II-5.2-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-II-5.4-01</td><td>row_reading</td><td>row:VOL-II-5.4-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-ADD-03-VOL-II-5.4-02</td><td>row_reading</td><td>row:VOL-II-5.4-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-01</td><td>row_reading</td><td>row:VOL-IV-F4D-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-02</td><td>row_reading</td><td>row:VOL-IV-F4D-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-03</td><td>row_reading</td><td>row:VOL-IV-F4D-03</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-04</td><td>row_reading</td><td>row:VOL-IV-F4D-04</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-05</td><td>row_reading</td><td>row:VOL-IV-F4D-05</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-06</td><td>row_reading</td><td>row:VOL-IV-F4D-06</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-07</td><td>row_reading</td><td>row:VOL-IV-F4D-07</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4D-08</td><td>row_reading</td><td>row:VOL-IV-F4D-08</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4F-01</td><td>row_reading</td><td>row:VOL-IV-F4F-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-IV-F4F-02</td><td>row_reading</td><td>row:VOL-IV-F4F-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RR-VOL-V-12.1-01</td><td>row_reading</td><td>row:VOL-V-12.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>RN-ADD-03-4.1-01</td><td>row_new</td><td>c46:ADD-03/4.1</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>IS-ADD03-EPC-LINKED</td><td>issue</td><td>c46:ADD-03/4.1</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-ACT-ASSEMBLE-ENV-B</td><td>activity</td><td>act:assemble-envelope-b</td><td>insufficient_evidence</td><td>missing_information: the proposer declares missing: How the Envelope B figure (Estimated Project Cost) relates to the Envelope A demonstration of VOL-I 8.4(a); Q19 makes no amendment</td></tr>
+<tr><td>DS-ADD03-ACT-FIN-STATEMENTS</td><td>activity</td><td>act:fin-statements</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-FIN-STANDING</td><td>activity</td><td>act:fin-standing</td><td>insufficient_evidence</td><td>missing_information: the proposer declares missing: How 8.4(a) compliance is to be shown in Envelope A when the Estimated Project Cost is stated only in Form 4-F (Q19 unanswered in substance)</td></tr>
+<tr><td>I-ADD03-EPC-ENV-A</td><td>issue</td><td>act:fin-standing</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>CQ-EPC-ENV-A</td><td>clarification_item</td><td>act:fin-standing</td><td>insufficient_evidence</td><td>clarify.check: CQ-EPC-ENV-A: not verbatim in VOL-I:8.4: 'twenty-five per cent (25%) of the Estimated Project Cost'</td></tr>
+<tr><td>DEP-ADD03-F4F-TO-8.4</td><td>dependency</td><td>act:fin-standing</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>DS-ADD03-ACT-PCG-WORDING</td><td>activity</td><td>act:pcg-wording</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-PCG-EXECUTION</td><td>activity</td><td>act:pcg-execution</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-FORM-4F</td><td>activity</td><td>act:form-4f</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-FIN-MODEL-BUILD</td><td>activity</td><td>act:fin-model-build</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-FIN-MODEL-FREEZE</td><td>activity</td><td>act:fin-model-freeze</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>ESC-ADD03-COVER-PARA3</td><td>escalation</td><td>esc:ADD-03:cover/para3</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:8.3; ADD-03:5.1</td></tr>
+<tr><td>CQ-F4H-TIMING</td><td>clarification_item</td><td>esc:ADD-03:cover/para3</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>ESC-ADD03-5.2</td><td>escalation</td><td>esc:ADD-03:5.2</td><td>escalated</td><td>missing_information: the proposer declares missing: An accepted op for ADD-03:5.2 and a decision on staging an effective date earlier than the issue date</td></tr>
+<tr><td>ESC-ADD03-6.1</td><td>escalation</td><td>esc:ADD-03:6.1</td><td>escalated</td><td>missing_information: the proposer declares missing: An accepted op answering ADD-03:6.1; ADD-03 Appendix C (Energy Performance Statement format; reference specific energy consumption)</td></tr>
+<tr><td>ESC-ADD03-T1-1-G</td><td>escalation</td><td>esc:ADD-03:T1-1/G</td><td>escalated</td><td>missing_information: the proposer declares missing: An accepted op for ADD-03:6.1; ADD-03 Appendix C</td></tr>
+<tr><td>ESC-ADD03-T1-1-TOTAL</td><td>escalation</td><td>esc:ADD-03:T1-1/total</td><td>escalated</td><td>missing_information: the proposer declares missing: an accepted op answering ADD-03:6.1 (the replacement of Table 1-1) that passes C22</td></tr>
+<tr><td>ESC-ADD03-7.1</td><td>escalation</td><td>esc:ADD-03:7.1</td><td>escalated</td><td>missing_information: the proposer declares missing: whether the Authority will give the Portal notice under ADD-03:7.1 by Thursday 12 November 2026</td></tr>
+<tr><td>CQ-ADD03-S7-NOTICE</td><td>clarification_item</td><td>esc:ADD-03:7.2</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>I-ADD03-S7-CONDITIONAL</td><td>issue</td><td>esc:ADD-03:7.2</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>ESC-ADD03-7.2</td><td>escalation</td><td>esc:ADD-03:7.2</td><td>escalated</td><td>missing_information: the proposer declares missing: whether the condition in ADD-03:7.1 is met</td></tr>
+<tr><td>ESC-ADD03-8.2</td><td>escalation</td><td>esc:ADD-03:8.2</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:p4-image/decl1 vs ADD-03:F4-H/para1 (10% vs 25%)</td></tr>
+<tr><td>I-ADD03-F4H-THRESHOLD</td><td>issue</td><td>esc:ADD-03:p4-image/decl1</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:p4-image/decl1 vs ADD-03:F4-H/para1</td></tr>
+<tr><td>CQ-ADD03-F4H-THRESHOLD</td><td>clarification_item</td><td>esc:ADD-03:8.2</td><td>insufficient_evidence</td><td>held back: linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']</td></tr>
+<tr><td>ESC-ADD03-8.3</td><td>escalation</td><td>esc:ADD-03:8.3</td><td>escalated</td><td>missing_information: the proposer declares missing: the pack's rule for counting Working Days forward from an event</td></tr>
+<tr><td>CQ-ADD03-83-COUNTING</td><td>clarification_item</td><td>esc:ADD-03:8.3</td><td>insufficient_evidence</td><td>held back: linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']</td></tr>
+<tr><td>ESC-ADD03-Q17</td><td>escalation</td><td>esc:ADD-03:Q17</td><td>escalated</td><td>missing_information: the proposer declares missing: Appendix C to ADD-03</td></tr>
+<tr><td>DEP-ADD03-APPC-MISSING</td><td>dependency</td><td>esc:ADD-03:Q17</td><td>invalid</td><td>relationships.validate: a missing_document entry blocks rows or units only; not: ['EV-TECH-PROPOSAL']</td></tr>
+<tr><td>ESC-ADD03-P4-DECL1</td><td>escalation</td><td>esc:ADD-03:p4-image/decl1</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:p4-image/decl1 vs ADD-03:F4-H/para1</td></tr>
+<tr><td>ESC-ADD03-P4-NOTE</td><td>escalation</td><td>esc:ADD-03:p4-image/note</td><td>escalated</td><td>missing_information: the proposer declares missing: approval of the ADD-03 page 4 reading of band b29</td></tr>
+</table>
+<h2>Promoted into the candidate (PROPOSED; nothing accepted)</h2>
+<ul>
+<li>ops: ADD-03/2.1, ADD-03/2.2, ADD-03/3.1, ADD-03/4.1, ADD-03/5.1, ADD-03/S6/para1(b), ADD-03/S6/para1(c), ADD-03/6.2(a), ADD-03/6.2(b), ADD-03/8.1, ADD-03/8.4, ADD-03/Q15, ADD-03/Q16, ADD-03/Q18, ADD-03/Q19, ADD-03/Q20</li>
+<li>dispositions: ADD-03:cover/para1: no_effect, ADD-03:cover/para2: no_effect, ADD-03:1.1: no_effect, ADD-03:1.2: no_effect, ADD-03:T1-1/A: no_effect, ADD-03:T1-1/B: no_effect, ADD-03:T1-1/C: no_effect, ADD-03:T1-1/D: no_effect, ADD-03:T1-1/E: no_effect, ADD-03:T1-1/F: no_effect, ADD-03:AppA/para1: no_effect, ADD-03:p4-image/hdr-en: no_effect, ADD-03:p4-image/hdr-ar: no_effect, ADD-03:p4-image/ref-en: no_effect, ADD-03:p4-image/ref-ar: no_effect, ADD-03:p4-image/form-en: no_effect, ADD-03:p4-image/form-ar: no_effect, ADD-03:p4-image/title: no_effect, ADD-03:p4-image/intro: no_effect, ADD-03:p4-image/decl2: no_effect, ADD-03:p4-image/decl3: no_effect, ADD-03:p4-image/table-header: no_effect, ADD-03:p4-image/table-row4: no_effect, ADD-03:p4-image/table-row4-blank: no_effect, ADD-03:p4-image/field-member-en: no_effect, ADD-03:p4-image/field-member-ar: no_effect, ADD-03:p4-image/field-cr-en: no_effect, ADD-03:p4-image/field-cr-ar: no_effect, ADD-03:p4-image/field-signatory-en: no_effect, ADD-03:p4-image/field-signatory-ar: no_effect, ADD-03:p4-image/field-capacity-en: no_effect, ADD-03:p4-image/field-capacity-ar: no_effect, ADD-03:p4-image/field-date-en: no_effect, ADD-03:p4-image/field-date-ar: no_effect, ADD-03:p4-image/field-signature-en: no_effect, ADD-03:p4-image/field-signature-ar: no_effect, ADD-03:p4-image/image-footer: no_effect, ADD-03:AppB/para1: no_effect</li>
+<li>rows new: ADD-03-4.1-01</li>
+<li>readings: VOL-I-11.2-01, VOL-I-6.2-01, VOL-I-6.2-02, VOL-I-8.4-02, VOL-I-8.7-01, VOL-II-1.4-01, VOL-II-5.2-02, VOL-II-5.4-01, VOL-II-5.4-02, VOL-IV-F4D-01, VOL-IV-F4D-02, VOL-IV-F4D-03, VOL-IV-F4D-04, VOL-IV-F4D-05, VOL-IV-F4D-06, VOL-IV-F4D-07, VOL-IV-F4D-08, VOL-IV-F4F-01, VOL-IV-F4F-02, VOL-V-12.1-01</li>
+<li>issues: I-ADD03-EPC-ENV-A, I-ADD03-EPC-LINKED, I-ADD03-NETWORTH-ENV-A, I-ADD03-S7-CONDITIONAL</li>
+<li>activities: fin-statements, pcg-wording, pcg-execution, form-4f, fin-model-build, fin-model-freeze</li>
+<li>clarifications: CQ-F4H-TIMING, CQ-ADD03-S7-NOTICE</li>
+<li>relationships: REL-AI-001</li>
+<li>unresolved provisions: 12</li>
+</ul>
+<h2>check-register on the candidate</h2>
+<ul>
+<li>exit 1; 11 finding(s) {'disposition': 1, 'quote': 3, 'C46': 7}</li>
+<li class=sub>[disposition] VOL-V: row ADD-03-4.1-01 uses VOL-V:18.1, whose disposition does not list it as a requirement</li>
+<li class=sub>[quote] ADD-03-4.1-01: BASE: no interpretation made at or before BASE</li>
+<li class=sub>[quote] ADD-03-4.1-01: ADD-01: no interpretation made at or before ADD-01</li>
+<li class=sub>[quote] ADD-03-4.1-01: ADD-02: no interpretation made at or before ADD-02</li>
+<li class=sub>[C46] ADD-03/6.2(b): [A1] ADD-03/6.2(b) (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:11.3; a row of the anchor VOL-I:11.3 does not count): 'Volume I…</li>
+<li class=sub>[C46] ADD-03/6.2(b): [A3] ADD-03/6.2(b) brings in consequence words ['not proceed'] that no row's consequence carries at ADD-03: 'Volume I Clause 11.3 is deleted and replaced by the following two Clauses: ‘11.3 A Proposa…</li>
+<li class=sub>[C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-…</li>
+<li class=sub>[C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the new ADD-03:F4-H; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-H (Declaration…</li>
+<li class=sub>[C46] ADD-03/8.1: [A3] ADD-03/8.1 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list…</li>
+<li class=sub>[C46] ADD-03/8.4: [A1] ADD-03/8.4 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the t…</li>
+<li class=sub>[C46] ADD-03/8.4: [A3] ADD-03/8.4 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder …</li>
+</ul>
+<h2>Coverage</h2>
+<ul>
+<li>provisions: 70; accounted for by the combined set: 70; states {'validated': 70}</li>
+<li>resolution (controller): resolved 7, pending 63, invalid 0, unaccounted 0; approved 0</li>
+<li>structural units of ADD-03 that are not provisions (listed so nothing is dropped): ADD-03:H:cover (heading), ADD-03:H:cover-2 (heading), ADD-03:H:S1 (heading), ADD-03:H:S2 (heading), ADD-03:H:S3 (heading), ADD-03:H:S4 (heading), ADD-03:H:S5 (heading), ADD-03:H:S6 (heading), ADD-03:T1-1 (table), ADD-03:H:S7 (heading), ADD-03:H:S8 (heading), ADD-03:H:S9 (heading), ADD-03:S9/QA (table), ADD-03:H:AppA (heading), ADD-03:region:ADD-03-p4-r1 (region), ADD-03:p4-image (image_text), ADD-03:H:AppB (heading), ADD-03:H:F4-H (heading), ADD-03:F4-H/T1 (table)</li>
+<li>batches: reading-ADD-03-p4-r1 done, analysis-001 done, analysis-002 done, analysis-003 done, analysis-004 done, analysis-005 done, analysis-006 done, analysis-007 done, analysis-008 done, analysis-009 done, analysis-010 skipped, downstream-001 done, downstream-002 done, downstream-003 failed (the host session's final message is not a DownstreamSet: the answer is not vali…), downstream-004 done, downstream-005 done</li>
+</ul>
+<h2>Manual interventions (and automatic host sessions, named as such: not a person)</h2>
+<ul>
+<li>2026-10-04T15:28:59Z: host session (automatic) — batch reading-ADD-03-p4-r1 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session reading an image; not a person</li>
+<li>2026-10-04T15:33:47Z: host session (automatic) — batch analysis-001 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T15:36:52Z: host session (automatic) — batch analysis-002 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T15:41:07Z: host session (automatic) — batch analysis-003 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T15:48:44Z: host session (automatic) — batch analysis-004 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T15:55:29Z: host session (automatic) — batch analysis-005 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T15:59:57Z: host session (automatic) — batch analysis-006 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:05:57Z: host session (automatic) — batch analysis-007 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:08:13Z: host session (automatic) — batch analysis-008 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:08:15Z: host session (automatic) — batch analysis-009 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:08:24Z: host session (automatic) — batch downstream-001 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:08:26Z: host session (automatic) — batch downstream-002 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:08:28Z: host session (automatic) — batch downstream-003 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:08:30Z: host session (automatic) — batch downstream-004 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:08:32Z: host session (automatic) — batch downstream-005 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:47:28Z: host session (automatic) — batch analysis-008 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:52:00Z: host session (automatic) — batch analysis-009 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-04T16:55:53Z: host session (automatic) — batch downstream-001 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T16:58:53Z: host session (automatic) — batch downstream-002 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T17:05:23Z: host session (automatic) — batch downstream-003 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T17:10:40Z: host session (automatic) — batch downstream-004 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-04T17:14:05Z: host session (automatic) — batch downstream-005 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+</ul>
+<h2>The diff (ADD-02 → ADD-03; <a href="diff.md">diff.md</a>)</h2>
+<h2>What changed from ADD-02 to ADD-03</h2>
+<h3>ADD-03: PARTIAL (issued 2026-11-09)</h3>
+<ul>
+<li>ops: 16 (0 invalid); provisions: 70 (12 unresolved)</li>
+<li>validated state: ADD-02 — this addendum does NOT replace it until every provision is treated and every op is valid</li>
+<li>UNRESOLVED ADD-03:cover/para3: This Addendum amends the definition of Estimated Project Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated damages in Vol</li>
+<li>UNRESOLVED ADD-03:5.2: With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the buried sections of the transmission main’ and substituting ‘for t</li>
+<li>UNRESOLVED ADD-03:6.1: Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced by the table and Notes below, which add criterion G (en</li>
+<li>UNRESOLVED ADD-03:T1-1/G: Ref: G | Criterion: Energy efficiency and specific energy consumption | Marks: 20</li>
+<li>UNRESOLVED ADD-03:T1-1/total: Criterion: Total | Marks: 120</li>
+<li>UNRESOLVED ADD-03:7.1: This Section 7 has effect only if the Authority notifies Bidders through the Portal, not later than ten (10) Working Days before the Proposal Due Date, that the</li>
+<li>UNRESOLVED ADD-03:7.2: Where this Section 7 has effect: (a) in Volume II Clause 1.4, the words ‘together with a grid connection point at the site boundary’, and the comma before them,</li>
+<li>UNRESOLVED ADD-03:8.2: Form 4-H shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder. The Arabic text governs. The Eng</li>
+<li>UNRESOLVED ADD-03:8.3: Form 4-H shall be submitted with Envelope A. A member of the Bidder that is incorporated outside the Kingdom may instead submit its Form 4-H through the Portal </li>
+<li>UNRESOLVED ADD-03:Q17: No: 17 | Bidder question: Will the Authority publish the reference specific energy consumption against which criterion G of Table 1-1 will be assessed? | Author</li>
+<li>UNRESOLVED ADD-03:p4-image/decl1: أولاً: أن الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو، والمستفيد الحقيقي هو كل شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، </li>
+<li>UNRESOLVED ADD-03:p4-image/note: ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد. عدم تقديمه كاملاً يجعل العرض غير مستجيب.</li>
+<li>cover summary vs provisions (C28, report only): 7 finding(s)</li>
+<li class=sub>not found: 'amends the definition of Estimated Project Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velocity limit for the treated effluent transmission main': no provision of ADD-03 matches 'relaxes the velocity limit for the treated effluent transmission main'</li>
+<li class=sub>not found: 'amends Section 5.1 of Addendum No. 1': no provision of ADD-03 does this</li>
+<li class=sub>not found: 'reissues the technical evaluation table to add a criterion for energy efficiency, divides Volume I Clause 11.3 into two Clauses, makes a conditional amendment to Volume II Clause 1.4': no provision of ADD-03 matches 'makes a conditional amendment to Volume II Clause 1.4'</li>
+<li class=sub>consequence not mentioned: ADD-03:8.4 states 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the time required by Section 8.3 shall render the Proposal non-responsive.'; the summary says only 'adds a Declaration of Beneficial Ownership (Form 4-H) which all Bidders may submit through the Portal within five Working Days after the Proposal Due Date'</li>
+<li class=sub>omitted: ADD-03/2.1 amends VOL-V:1.3; the summary does not mention it: 'In Volume V Clause 1.3, ‘as set out in the agreed Financial Model at Financial Close’ is deleted and ‘as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development fees’ is substituted.'</li>
+<li class=sub>omitted: ADD-03/5.1 amends VOL-II:5.2; the summary does not mention it: 'In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted. The minimum residual head of 15 m at the delivery point is unchanged.'</li>
+<li class=sub>omitted: ADD-03/6.2(b) inserts new text after VOL-I:11.3; the summary does not mention it: 'Volume I Clause 11.3 is deleted and replaced by the following two Clauses: ‘11.3 A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in Table 1-1 shall not proceed to commercial evaluation.’ ‘1…'</li>
+</ul>
+<h3>Requirements</h3>
+<ul>
+<li>new: 0; out of force: 0; changed: 10</li>
+</ul>
+<ul>
+<li>CHANGED VOL-I-11.2-01: wording; quoted words (by ADD-03/S6/para1(b))</li>
+<li>CHANGED VOL-I-11.3-01: wording (by ADD-03/6.2(a))</li>
+<li>CHANGED ADD-03-4.1-01: wording; quoted words (by ADD-03/4.1)</li>
+<li>CHANGED VOL-I-8.4-01: wording (by ADD-03/3.1)</li>
+<li>CHANGED VOL-I-8.4-02: wording (by ADD-03/3.1)</li>
+<li>CHANGED VOL-I-8.7-01: quoted words</li>
+<li>CHANGED VOL-II-5.2-01: wording (by ADD-03/5.1)</li>
+<li>CHANGED VOL-II-5.2-02: wording (by ADD-03/5.1)</li>
+<li>CHANGED VOL-IV-F4D-01: secondary units VOL-IV:F4-D/guarantor-ultimate-parent-of-epc-contractor, VOL-IV:F4-D/jurisdiction-of-incorporation, VOL-IV:F4-D/epc-contractor-guaranteed, VOL-IV:F4-D/guaranteed-obligations, VOL-IV:F4-D/limit-of-liability, VOL-IV:F4-D/expiry, VOL-IV:F4-D/governing-law, VOL-IV:F4-D/signature, VOL-IV:F4-D/name-and-capacity, VOL-IV:F4-D/date, VOL-IV:F4-D/corporate-authority-reference annotated by ADD-03/Q15 (by ADD-03/Q15)</li>
+<li>CHANGED VOL-IV-F4F-01: secondary units VOL-IV:F4-F/bidder, VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations, VOL-IV:F4-F/availability-payment-in-words, VOL-IV:F4-F/estimated-project-cost-sar, VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close, VOL-IV:F4-F/assumed-senior-debt-margin-bps, VOL-IV:F4-F/assumed-gearing-debt-equity, VOL-IV:F4-F/project-irr-nominal-post-tax, VOL-IV:F4-F/equity-irr-nominal-post-tax, VOL-IV:F4-F/indexation-basis-assumed, VOL-IV:F4-F/model-auditor, VOL-IV:F4-F/date-of-model-audit-opinion, VOL-IV:F4-F/signature, VOL-IV:F4-F/name-and-capacity, VOL-IV:F4-F/date annotated by ADD-03/Q16 (by ADD-03/Q16)</li>
+</ul>
+<h3>Stale readings and decisions</h3>
+<ul>
+<li>STALE VOL-I-11.3-01: VOL-I:11.3 changed since ADD-02 (by ADD-03/6.2(a)); quote not found in the effective text at ADD-03: 'scoring less than seventy (70) marks out of one hundred (100' (expected: the interpretation predates the change); cons</li>
+<li>STALE VOL-I-8.4-01: new dependency ADD-03:Q19; VOL-I:8.4 changed since BASE (by ADD-03/3.1, ADD-03/Q19); quote not found in the effective text at ADD-03: '(a) a consolidated tangible net worth of not less than SAR 8' (expected: the interpre</li>
+<li>STALE VOL-II-5.2-01: new dependency ADD-03:Q18; VOL-II:5.2 changed since BASE (by ADD-03/5.1, ADD-03/Q18); quote not found in the effective text at ADD-03: 'The main shall be sized for the peak hourly flow in Table 2-' (expected: the interpr</li>
+</ul>
+<h3>Obligations not reaching the outputs (C46)</h3>
+<ul>
+<li>ADD-03/6.2(b) [A1]: ADD-03/6.2(b) (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:11.3; a row of the anchor VOL-I:11.3 does not count): 'Volume I Clause 11.3 is deleted and replaced by the fo</li>
+<li>ADD-03/6.2(b) [A3]: ADD-03/6.2(b) brings in consequence words ['not proceed'] that no row's consequence carries at ADD-03: 'Volume I Clause 11.3 is deleted and replaced by the following two Clauses: ‘11.3  A Proposal whose technical score is less than seventy </li>
+<li>ADD-03/8.1 [A1]: ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-H (Declaration of Beneficial Ownership) is add</li>
+<li>ADD-03/8.1 [A1]: ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the new ADD-03:F4-H; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume I</li>
+<li>ADD-03/8.1 [A3]: ADD-03/8.1 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after </li>
+<li>ADD-03/8.4 [A1]: ADD-03/8.4 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the time required by Section 8.3 shall render the P</li>
+<li>ADD-03/8.4 [A3]: ADD-03/8.4 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the time required by Section 8.3 shall rend</li>
+</ul>
+<h3>Reached through relationships (indirect: for review, not direct citations)</h3>
+<p>Curated links (relationships file) followed from what changed. The requirements above cite a changed unit; these are reached through another provision, in three classes that are never merged. A5 marks the activities that serve them REVIEW with their dates unchanged.</p>
+<h4>Confirmed dependency (0)</h4>
+<ul>
+<li>none</li>
+</ul>
+<h4>Proposed relationship (1)</h4>
+<ul>
+<li>VOL-I-8.4-01 (row; AMENDED (ADD-03/3.1)) &lt;- VOL-IV-F4F-01 via REL-AI-001 [feeds_calculation; link proposed]; also changed directly</li>
+</ul>
+<h4>Possible impact (10)</h4>
+<ul>
+<li>VOL-I-8.10-01 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-DEBARMENT [member_scope; link possible]</li>
+<li>VOL-I-8.2-01 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-MULTIPLE-PARTICIPATION [member_scope; link possible]</li>
+<li>VOL-I-8.4-01 (row; AMENDED (ADD-03/3.1)) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FIN-STANDING [member_scope; link possible]; also changed directly</li>
+<li>VOL-I-8.4-02 (row; AMENDED (ADD-03/3.1)) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FIN-STANDING [member_scope; link possible]; also changed directly</li>
+<li>VOL-I-8.9-01 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-INVESTMENT-LICENCE [member_scope; link possible]</li>
+<li>VOL-I-9.4-01 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FORM-4C [member_scope; link possible]</li>
+<li>VOL-IV-F4C-02 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-MULTIPLE-PARTICIPATION [member_scope; link possible]</li>
+<li>VOL-IV-F4C-03 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-DEBARMENT [member_scope; link possible]</li>
+<li>VOL-IV-F4C-N1 (row; ACTIVE) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FORM-4C [member_scope; link possible]</li>
+<li>calc:financial-standing (calculation) &lt;- words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FIN-STANDING [member_scope; link possible]</li>
+</ul>
+<h4>Referenced but not supplied: conclusions in play that cannot be established (0)</h4>
+<ul>
+<li>none</li>
+</ul>
+<h3>Disqualifiers (A3)</h3>
+<ul>
+<li>no change</li>
+</ul>
+<h3>Programme impact (status date 2026-10-22 -&gt; 2026-11-09)</h3>
+<ul>
+<li>REWORK assemble-envelope-a: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK assemble-envelope-b: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK copies: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK deliver: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK fin-model-build: requirement changed: VOL-IV-F4F-02</li>
+<li>REWORK fin-model-freeze: requirement changed: VOL-IV-F4F-02</li>
+<li>REWORK fin-standing: requirement changed: VOL-I-8.4-01, VOL-I-8.4-02</li>
+<li>REWORK fin-statements: requirement changed: VOL-I-8.4-01, VOL-I-8.4-02</li>
+<li>REWORK form-4f: requirement changed: VOL-IV-F4F-01, VOL-IV-F4F-02</li>
+<li>REWORK pcg-execution: requirement changed: VOL-I-8.7-01, VOL-IV-F4D-01, VOL-IV-F4D-02, VOL-IV-F4D-03, VOL-IV-F4D-04, VOL-IV-F4D-05, VOL-IV-F4D-06, VOL-IV-F4D-07, VOL-IV-F4D-08</li>
+<li>REWORK pcg-wording: requirement changed: VOL-I-8.7-01, VOL-IV-F4D-01, VOL-IV-F4D-02, VOL-IV-F4D-03, VOL-IV-F4D-04, VOL-IV-F4D-05, VOL-IV-F4D-06, VOL-IV-F4D-07, VOL-IV-F4D-08</li>
+<li>REWORK seal-and-mark: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK technical-proposal: requirement changed: VOL-I-11.3-01, VOL-II-1.4-01, VOL-II-5.2-01, VOL-II-5.2-02, VOL-II-5.4-01, VOL-II-5.4-02</li>
+<li>REVIEW (proposed relationship) fin-standing: VOL-I-8.4-01 reached from VOL-IV-F4F-01 via REL-AI-001; dates unchanged</li>
+<li>REVIEW (possible impact) fin-standing: VOL-I-8.4-01, VOL-I-8.4-02 reached from words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FIN-STANDING; dates unchanged</li>
+<li>REVIEW (proposed relationship) fin-statements: VOL-I-8.4-01 reached from VOL-IV-F4F-01 via REL-AI-001; dates unchanged</li>
+<li>REVIEW (possible impact) fin-statements: VOL-I-8.4-01, VOL-I-8.4-02 reached from words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-FIN-STANDING; dates unchanged</li>
+<li>REVIEW (possible impact) form-4c-prep: VOL-I-8.10-01, VOL-I-8.2-01, VOL-I-9.4-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-N1 reached from words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-DEBARMENT, REL-MEMBER-FORM-4C, REL-MEMBER-MULTIPLE-PARTICIPATION; dates unchanged</li>
+<li>REVIEW (possible impact) form-4c-sign: VOL-I-8.10-01, VOL-I-8.2-01, VOL-I-9.4-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-N1 reached from words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-DEBARMENT, REL-MEMBER-FORM-4C, REL-MEMBER-MULTIPLE-PARTICIPATION; dates unchanged</li>
+<li>REVIEW (possible impact) investment-licence: VOL-I-8.9-01 reached from words:consortium member, words:member of the Bidder, words:member of the consortium via REL-MEMBER-INVESTMENT-LICENCE; dates unchanged</li>
+<li>FEASIBILITY lcc-ratio: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+<li>FEASIBILITY lcc-certificate: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+<li>FEASIBILITY fin-model-build: OK -&gt; INFEASIBLE by 10 WD</li>
+<li>FEASIBILITY model-auditor-appoint: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY pcg-wording: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY technical-proposal: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY ground-dd: OK -&gt; INFEASIBLE by 5 WD</li>
+<li>FEASIBILITY lender-terms: OK -&gt; INFEASIBLE by 5 WD</li>
+<li>FEASIBILITY completion-certs: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY model-audit-review: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY poa-resolutions: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY references: OK -&gt; INFEASIBLE by 3 WD</li>
+<li>FEASIBILITY bond-approval: OK -&gt; INFEASIBLE by 2 WD</li>
+<li>FEASIBILITY deviations-review: OK -&gt; INFEASIBLE by 1 WD</li>
+<li>FEASIBILITY pcg-execution: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY poa: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY fin-model-freeze: OK -&gt; INFEASIBLE by 10 WD</li>
+<li>FEASIBILITY investment-licence: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY model-audit-opinion: OK -&gt; INFEASIBLE by 10 WD</li>
+<li>FEASIBILITY form-4b-prep: OK -&gt; INFEASIBLE by 3 WD</li>
+<li>FEASIBILITY bond-issue: OK -&gt; INFEASIBLE by 2 WD</li>
+<li>FEASIBILITY form-4c-sign: OK -&gt; INFEASIBLE by 2 WD</li>
+<li>FEASIBILITY fin-assumptions: OK -&gt; INFEASIBLE by 7 WD</li>
+<li>FEASIBILITY form-4e: OK -&gt; INFEASIBLE by 1 WD</li>
+<li>FEASIBILITY form-4f: OK -&gt; INFEASIBLE by 7 WD</li>
+<li>FEASIBILITY form-4b: OK -&gt; INFEASIBLE by 3 WD</li>
+<li>FEASIBILITY assemble-envelope-a: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+<li>FEASIBILITY assemble-envelope-b: OK -&gt; INFEASIBLE by 10 WD</li>
+<li>FEASIBILITY copies: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+<li>FEASIBILITY seal-and-mark: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+<li>FEASIBILITY deliver: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 24 WD</li>
+</ul>
+<h2>Next (a person)</h2>
+<ul>
+<li>read the unresolved and escalated provisions first, then each item against its evidence (<code>../ai/ADD-03-run-host-blind04-20261004T152505Z-combined/proposals.yaml</code>, <code>../downstream/proposals.yaml</code>)</li>
+<li>nothing here is applied to the real curation: to take an item over, add the PDF to the pack (OPERATING_GUIDE §3 steps 1-2) and copy the reviewed files listed in <code>promotion.json</code>; then <code>pin</code>, <code>check-register</code>, <code>outputs</code> and decide with <code>accept</code> / <code>reject</code> as usual</li>
+</ul></body></html>

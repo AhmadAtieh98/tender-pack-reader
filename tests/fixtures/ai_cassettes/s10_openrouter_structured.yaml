@@ -1,0 +1,30 @@
+# RECORDED HTTP FIXTURE (hand-written; NOT a live endpoint's output; openrouter.ai is blocked from the environment
+# where this was written). Session 10, W4. The listing names `structured_outputs`, so POST /chat/completions carries
+# response_format json_schema (strict) with the same fitted schema; the final content is parsed and validated locally.
+name: s10-openrouter-structured
+exchanges:
+  - request: {method: GET, path: /models}
+    response:
+      body:
+        data:
+          - {id: vendor/model-a, context_length: 200000, architecture: {input_modalities: [text, image]},
+             supported_parameters: [tools, structured_outputs, response_format], top_provider: {max_completion_tokens: 64000}}
+  - request:
+      method: POST
+      path: /chat/completions
+      body_has: [response_format.json_schema.schema.properties.items, response_format.json_schema.name, tools]
+      contains: ["\"strict\": true"]
+    response:
+      body:
+        model: vendor/model-a
+        choices:
+          - finish_reason: stop
+            message:
+              content: |
+                {"addendum": "ADD-03", "state": ${state}, "statements": [],
+                 "items": [
+                  {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+                   "payload": "{\"provision\": \"ADD-03:cover/para1\", \"disposition\": \"no_effect\", \"reason\": \"the addendum's issue date line\"}",
+                   "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]}
+                 ]}
+        usage: {prompt_tokens: 13000, completion_tokens: 300}

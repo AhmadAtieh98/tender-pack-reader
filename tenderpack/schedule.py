@@ -594,13 +594,17 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
 # ---------------------------------------------------------------------------------------------- plan
 
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
-         anchors: dict, evidence_items: dict | None = None, anchor_details: dict | None = None, notified_days: list[str] | None = None) -> dict:
+         anchors: dict, evidence_items: dict | None = None, anchor_details: dict | None = None, notified_days: list[str] | None = None,
+         reached: list[dict] | None = None) -> dict:
     """evals: [{"row": Row, "stages": {stage: evaluation}}] from register.Register.all().
     evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope.
     status_date: the planning date (the stage's addendum issue date).
     anchor_details (optional): register.anchor_details at this stage (stage2.evaluate's r["anchor_details"][stage]);
     without it, the same is read from the evaluations (details_from_evals). It fills the placeholders of activity
-    names and items and the PDD milestone, and gives the PDD time in the planning basis."""
+    names and items and the PDD milestone, and gives the PDD time in the planning basis.
+    reached (optional, session 10): the relationship records of this stage (relationships.impact). An activity whose
+    rows, evidence items or own id a relationship reaches carries `relationship_review` and a flag "REVIEW (<class>):
+    ..." per class; its dates and timing status are unchanged (a relationship marks work for review, never moves it)."""
     if anchor_details is None:
         anchor_details = details_from_evals(evals, stage, anchors)
     need: dict[str, list[str]] = {}
@@ -710,7 +714,13 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         for r in sorted(named_rows.get(aid, set()) - set(a["req_ids"])):
             flags += [f"{x} ({r}, quoted in the activity's text)" for x in row_flags.get(r, [])]
         flags += [f"dependency '{d}' not required at this stage" for d in a.pop("not_required_here")]
-        status = timing_status(flags)
+        status = timing_status(flags)                          # before the review flags: they never set the timing
+        if reached:
+            from .relationships import activity_review, review_flag
+            rv = activity_review(reached, a)
+            if rv:
+                a["relationship_review"] = rv
+                flags += [review_flag(x) for x in rv]
         g = a["gated_by"]
         ls = t["ls"]
         decision = "READY" if not g else (
@@ -769,7 +779,8 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
 
 
 def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dict]:
-    """NEW / REMOVED / MOVED / REWORK between the programme of two stages."""
+    """NEW / REMOVED / MOVED / REWORK between the programme of two stages, then REVIEW (<class>) for each activity of
+    `cur` that a relationship reaches at its stage (plan(reached=...)): never merged with REWORK, which is direct."""
     p = {a["id"]: a for a in prev["activities"]}
     c = {a["id"]: a for a in cur["activities"]}
     out = []
@@ -790,4 +801,9 @@ def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dic
             out.append({"activity": k, "change": "REWORK", "detail": f"requirement changed: {', '.join(changed_rows)}"})
         if p[k]["latest_start"] != c[k]["latest_start"]:
             out.append({"activity": k, "change": "MOVED", "detail": f"latest start {p[k]['latest_start']} -> {c[k]['latest_start']}"})
+    for k in sorted(c):                       # session 10: reached through a relationship (kept apart from REWORK)
+        for rv in c[k].get("relationship_review") or []:
+            out.append({"activity": k, "change": f"REVIEW ({rv['class']})",
+                        "detail": f"{', '.join(rv['targets'])} reached from {', '.join(rv['sources'])} via "
+                                  f"{', '.join(rv['entries'])}; dates unchanged"})
     return out

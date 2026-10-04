@@ -1,0 +1,477 @@
+# Blind rehearsal 04 - SEALED answer key for ADD-03_Addendum_No_3.pdf
+# Author: W6 (independent; did not read the tool, its tests, curation, config or any
+# earlier rehearsal's key). All "old" quotations below were matched by script against
+# the extracted pack text (whitespace-normalised); every date was computed by script.
+
+meta:
+  rehearsal: blind-04
+  input: rehearsals/blind-04/input/ADD-03_Addendum_No_3.pdf
+  tender: NUPA/ISTP/2026/014
+  document: Addendum No. 3
+  printed_issue_date: "Issued 9 November 2026"
+  issue_date: 2026-11-09            # Monday, a Working Day
+  pages: 5
+  page_map:
+    1: cover band, summary, Sections 1-5
+    2: Section 6 (Table 1-1 second revision + Notes, Clause 11.3 split), Section 7, Section 8
+    3: Section 9 (clarification responses 15-20), Appendix A heading
+    4: IMAGE-ONLY page - Form 4-H in Arabic (scanned raster 1654x2339, no text layer except the page furniture)
+    5: Appendix B - English translation of Form 4-H (convenience only)
+  base_state: pack as amended by ADD-01 (8 Oct 2026) and ADD-02 (22 Oct 2026) only. Does NOT stack on blind-01/02/03.
+  proposal_due_date: "Thursday 26 November 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1) - NOT changed by ADD-03"
+  a5_planning_date: 2026-11-09
+  working_days: Sunday-Thursday; no Saudi public holiday falls between 22 Oct and 3 Dec 2026
+  backward_count_rule: "VOL-I 2.4 - the stated date itself is not counted"
+  text_layer_fonts: [Helvetica, Helvetica-Bold, Times-Roman, Times-Bold]
+  arabic_in_text_layer: none - all Arabic is in the page-4 image
+  appendices_present: [A, B]
+  appendices_referenced_but_absent: [C]
+  pdf_sha256: 99728136b5653acdd75d0e7b682f990f877ae2587452ffee58be0bd85b28452e
+  author_model: "claude-opus-5-5 (system prompt); get_session record: configured_model claude-opus-5-5, session_context.model / last_served_model claude-fable-5-1"
+
+# ---------------------------------------------------------------------------
+# Pack text before ADD-03 (verbatim; page = page of the source PDF)
+# ---------------------------------------------------------------------------
+state_before:
+  - {ref: VOL-I 2.4, page: 2, text: "Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday in the Kingdom. Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."}
+  - {ref: VOL-I 3.2(a), page: 2, text: "(a) the Addenda, a later Addendum prevailing over an earlier one;"}
+  - {ref: VOL-I 3.3, page: 2, text: "A Bidder that identifies a conflict, ambiguity or discrepancy shall raise it as a request for clarification under Section 5. A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation."}
+  - {ref: VOL-I 5.2, page: 3, text: "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered."}
+  - {ref: VOL-I 6.2, page: 3, text: "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal). The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive."}
+  - {ref: VOL-I 6.7, page: 3, text: "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter."}
+  - {ref: VOL-I 8.2, page: 4, text: "No firm, and no affiliate of a firm, shall participate in more than one Proposal. Participation in more than one Proposal shall cause every Proposal in which that firm or affiliate participates to be rejected."}
+  - {ref: VOL-I 8.4, page: 4, text: "The Bidder shall demonstrate, on a combined basis across consortium members weighted by shareholding, (a) a consolidated tangible net worth of not less than SAR 800,000,000 as at the most recent audited financial statements, and (b) an average annual turnover over the last three (3) audited financial years of not less than SAR 1,200,000,000."}
+  - {ref: VOL-I 8.7, page: 4, text: "The Bidder shall submit an executed Parent Company Guarantee from the ultimate parent company of the proposed EPC Contractor, substantially in the form set out in Form 4-D, unconditional as to the EPC Contractor's obligations during the construction period."}
+  - {ref: VOL-I 9.1 (lead-in), page: 4, text: "Envelope A shall contain, in the following order and separated by numbered dividers:"}
+  - {ref: VOL-I 9.7, page: 5, text: "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel."}
+  - {ref: VOL-I 10.1, page: 5, text: "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B."}
+  - {ref: VOL-I 11.1, page: 5, text: "Proposals will be evaluated in three stages: (i) a responsiveness and mandatory compliance check on a pass or fail basis; (ii) technical evaluation of those Proposals that pass stage (i); and (iii) commercial evaluation of those Proposals that pass stage (ii)."}
+  - {ref: VOL-I 11.2, page: 5, text: "Proposals reaching stage (iii) will be ranked on a combined score calculated on a weighting of sixty per cent (60%) technical and forty per cent (40%) commercial."}
+  - {ref: VOL-I 11.3, page: 5, text: "A Proposal scoring less than seventy (70) marks out of one hundred (100) at the technical evaluation shall not proceed to commercial evaluation and its Envelope B shall be returned unopened."}
+  - {ref: VOL-II 1.4, page: 2, text: "The Authority will provide the site free of encumbrance, together with a grid connection point at the site boundary. All other utilities shall be procured by the Project Company."}
+  - {ref: VOL-II 4.5, page: 4, text: "The transmission main shall be provided with surge protection designed for the full range of operating scenarios including simultaneous pump trip."}
+  - {ref: VOL-II 5.2, page: 4, text: "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s and a minimum residual head of 15 m at the delivery point."}
+  - {ref: VOL-II 5.3 (as issued), page: 4, text: "The main shall be of ductile iron to the relevant international standard, internally lined and externally protected, with a minimum nominal diameter of DN1200. Alternative materials will be considered only where supported by a whole-life cost comparison."}
+  - {ref: VOL-II 5.4, page: 4, text: "Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods. Crossing permits shall be obtained by the Project Company."}
+  - {ref: VOL-II Table 2-6 row 2-6.2, page: 3, text: "2-6.2 Peak hourly flow (design) 7,500 m3/h"}
+  - {ref: VOL-IV Index of Forms (note), page: 2, text: "Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk."}
+  - {ref: VOL-IV Form 4-D (row), page: 7, text: "Limit of liability Unlimited as to the guaranteed obligations"}
+  - {ref: VOL-IV Form 4-D para 3, page: 7, text: "3. This guarantee is not conditional on any demand first being made of the EPC Contractor."}
+  - {ref: VOL-IV Form 4-F (row), page: 9, text: "Estimated Project Cost (SAR)"}
+  - {ref: VOL-V 1.3, page: 2, text: "Estimated Project Cost means the aggregate capital cost of the Facility as set out in the agreed Financial Model at Financial Close."}
+  - {ref: VOL-V 12.1, page: 2, text: "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)."}
+  - {ref: VOL-V 18.1, page: 2, text: "If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay."}
+  - {ref: VOL-V 18.2, page: 2, text: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to its termination rights under Clause 39."}
+  - {ref: VOL-V 18.3, page: 2, text: "If PCOD has not been achieved within three hundred and sixty-five (365) days after the Scheduled PCOD, the Authority may terminate under Clause 39.2."}
+  - {ref: VOL-V 18.4, page: 2, text: "The aggregate liability of the Project Company for delay liquidated damages under this Clause 18 shall not exceed ten per cent (10%) of the Estimated Project Cost."}
+  - {ref: ADD-01 cover, page: 1, text: "Issued 8 October 2026"}
+  - {ref: ADD-01 5.1, page: 1, text: "Volume II Clause 5.3 is amended by adding at the end: ‘Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main, subject to the whole-life cost comparison required by this Clause.’"}
+  - {ref: "ADD-01 Appendix B Item 3 (minutes, not binding - ADD-01 3.2)", page: 4, text: "the weighting is expected to remain at the customary seventy / thirty split used on comparable projects"}
+  - {ref: ADD-02 3.1, page: 1, text: "Table 1-1 of Volume I is deleted and replaced by the table below. The marks available for criterion D are increased and those for criterion B reduced correspondingly."}
+  - {ref: ADD-02 Table 1-1 (revised), page: 1, text: "A 25; B 15; C 20; D 20; E 10; F 10; Total 100"}
+  - {ref: ADD-02 Note (1), page: 1, text: "(1) The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks."}
+  - {ref: ADD-02 Note (2), page: 1, text: "(2) The combined score weighting stated in Volume I Clause 11.2 is amended to sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial."}
+  - {ref: ADD-02 Note (3), page: 1, text: "(3) Marks are awarded on the Authority's standard five-point scale and multiplied by the weight shown."}
+  - {ref: ADD-02 7.1, page: 3, text: "A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e)."}
+
+# ---------------------------------------------------------------------------
+# Cover summary and its planted errors
+# ---------------------------------------------------------------------------
+cover_summary_verbatim: >-
+  This Addendum amends the definition of Estimated Project Cost, the financial capacity requirement in
+  Volume I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velocity limit
+  for the treated effluent transmission main, amends Section 5.1 of Addendum No. 1, reissues the technical
+  evaluation table to add a criterion for energy efficiency, divides Volume I Clause 11.3 into two Clauses,
+  makes a conditional amendment to Volume II Clause 1.4, adds a Declaration of Beneficial Ownership (Form
+  4-H) which all Bidders may submit through the Portal within five Working Days after the Proposal Due
+  Date, and responds to clarification requests 15 to 20.
+
+cover_planted_errors:
+  - id: E1
+    mechanism: direction reversal (the item is named correctly; the direction of the change is inverted)
+    cover_claim: "relaxes the velocity limit for the treated effluent transmission main"
+    truth: >-
+      Section 5.1 lowers the MAXIMUM velocity in VOL-II 5.2 from 2.0 m/s to 1.5 m/s. A lower maximum
+      velocity is MORE onerous: the main must be larger. The number goes down; the requirement tightens.
+    detect_by: compare the cover verb with Section 5.1; reason that "maximum velocity" is a ceiling, so 2.0 -> 1.5 tightens.
+    consequence_if_missed: >-
+      A reader who trusts the cover keeps DN1200 (VOL-II 5.3 minimum) and misses that the main and the
+      four trenchless crossings must be re-sized (see S1), with knock-on cost in the Estimated Project Cost.
+    expected: flag the cover statement as wrong (high confidence); the register follows Section 5.1.
+  - id: E2
+    mechanism: half-true itemisation that hides a second change inside a reissued item
+    cover_claim: "reissues the technical evaluation table to add a criterion for energy efficiency"
+    truth: >-
+      True as far as it goes (criterion G, 20 marks, is added; A-F are unchanged, as Section 6.1 also says).
+      Hidden inside the reissued Notes, which replace the ADD-02 Notes wholesale: Note (2) changes the
+      combined weighting from 65/35 (ADD-02 Note (2)) to 70% technical / 30% commercial; Note (1) restates
+      the threshold as "seventy per cent (70%)", which with the new total of 120 means 84 marks, not 70;
+      Note (4) adds a new deliverable (Energy Performance Statement) whose format is in an Appendix C that is
+      not supplied. Neither the cover nor the narrative of Section 6.1 mentions the weighting change.
+    detect_by: diff the ADD-02 Table 1-1 (revised) Notes against the Notes to Table 1-1 (second revision); recompute 70% x 120.
+    consequence_if_missed: A1/A2 keep 65/35 and a 70-mark threshold; the commercial team mis-models the combined score.
+    expected: flag cover as incomplete/misleading; register VOL-I 11.2 = 70/30 (source ADD-03 Note (2)) and threshold 84/120.
+  - id: E3
+    mechanism: claim about "all Bidders" that the provision limits to a subset
+    cover_claim: "Form 4-H ... which all Bidders may submit through the Portal within five Working Days after the Proposal Due Date"
+    truth: >-
+      Section 8.3: Form 4-H "shall be submitted with Envelope A". Only "a member of the Bidder that is
+      incorporated outside the Kingdom" may instead submit its own Form 4-H through the Portal, not later
+      than five Working Days after the PDD (Thursday 3 December 2026). A Kingdom-incorporated member's
+      Form 4-H must be in Envelope A at 14:00 on Thursday 26 November 2026. Section 8.4: failure by the
+      required time = non-responsive.
+    detect_by: read Section 8.3; the relief is per member and limited by place of incorporation.
+    consequence_if_missed: a Saudi member's Form 4-H submitted late through the Portal -> Proposal non-responsive (8.4).
+    expected: flag cover as wrong (high confidence); A3 row states the split deadline.
+
+cover_true_but_incomplete:           # not planted errors; credit if noticed, no penalty if not
+  - claim: "divides Volume I Clause 11.3 into two Clauses"
+    note: "the division also changes content (threshold re-based to 70% of total marks; Envelope B now retained until after the Preferred Bidder Notification). See S4."
+  - claim: "amends Section 5.1 of Addendum No. 1"
+    note: "silent on the stated retroactive effective date (8 October 2026)."
+
+# ---------------------------------------------------------------------------
+# Provisions of ADD-03
+# ---------------------------------------------------------------------------
+provisions:
+  - id: ADD-03 1.1
+    type: recital
+    expected: no register change; ADD-03 prevails over ADD-01 and ADD-02 (VOL-I 3.2(a)).
+  - id: ADD-03 1.2
+    type: interpretation
+    expected: references are to the pack as amended by ADD-01/02.
+
+  - id: ADD-03 2.1
+    type: definition change used in several volumes
+    target: VOL-V 1.3 (Estimated Project Cost)
+    old: "as set out in the agreed Financial Model at Financial Close"
+    new: "as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development fees"
+    final_text: "Estimated Project Cost means the aggregate capital cost of the Facility as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development fees."
+    uses_not_citing_1_3: ["VOL-IV Form 4-F row 'Estimated Project Cost (SAR)' (p9)", VOL-V 18.4, VOL-V 18.1 as amended (ADD-03 4.1), VOL-I 8.4(a) as amended (ADD-03 3.1), ADD-03 7.2(c), Q16, Q19]
+    consequence: none stated; it changes what the Form 4-F figure must contain and makes it the contractual basis of 18.1/18.4 and of the 8.4(a) test.
+    a3: no
+  - id: ADD-03 2.2
+    type: scope statement (applies wherever the expression is used)
+    expected: the reader must find the uses; ADD-03 does not list them.
+
+  - id: ADD-03 3.1
+    type: change expressed as a percentage of another value (formula)
+    target: VOL-I 8.4(a)
+    old: "SAR 800,000,000"
+    new: "twenty-five per cent (25%) of the Estimated Project Cost"
+    final_text: "(a) a consolidated tangible net worth of not less than twenty-five per cent (25%) of the Estimated Project Cost as at the most recent audited financial statements"
+    unchanged: limb (b) turnover SAR 1,200,000,000; combined basis weighted by shareholding.
+    computed: "equal to the old SAR 800,000,000 only when EPC = SAR 3,200,000,000; lower below that, higher above it"
+    consequence: no sanction stated; pass/fail by inference (Section 8 "mandatory requirements"; VOL-I 11.1 stage (i)).
+    a3: yes, medium confidence (inferred), and listed as UNRESOLVED because of A1.
+    expected: do NOT state that the requirement is relaxed or tightened without an EPC figure.
+
+  - id: ADD-03 4.1
+    type: change expressed as a formula on another value
+    target: VOL-V 18.1
+    old: "SAR 180,000 for each day of delay"
+    new: "one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay"
+    final_text: "If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay liquidated damages at the rate of one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay."
+    computed:
+      breakeven_epc: "SAR 360,000,000 (0.05% x EPC = SAR 180,000)"
+      cap_reached_after_days: 200          # 18.4 unchanged: 10% / 0.05%
+      termination_right_after_days: 365    # 18.3 unchanged
+    consequence: contract stage (Form 4-E / pricing); no bid-stage sanction.
+    a3: no
+
+  - id: ADD-03 5.1
+    type: value replacement whose effect runs through a calculation
+    target: VOL-II 5.2
+    old: "2.0 m/s"
+    new: "1.5 m/s"
+    final_text: "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 1.5 m/s and a minimum residual head of 15 m at the delivery point."
+    direction: tightening (contrary to the cover - E1)
+    computed:
+      peak_flow: "7,500 m3/h = 2.083 m3/s (Table 2-6 row 2-6.2, unchanged)"
+      min_bore_at_2_0: 1.152 m
+      min_bore_at_1_5: 1.330 m
+      dn1200_velocity_at_peak: 1.842 m/s (> 1.5 -> non-compliant)
+      effective_minimum: "DN1400 (next standard size); VOL-II 5.3 still prints DN1200"
+    a3: no (technical / scored)
+
+  - id: ADD-03 5.2
+    type: amendment of an amendment, with a stated (retroactive) effective date
+    target: ADD-01 5.1 (which added the GRP sentence to VOL-II 5.3)
+    effective_date: 2026-10-08    # the issue date of ADD-01
+    old: "for the buried sections of the transmission main"
+    new: "for the buried sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used"
+    final_text_vol_ii_5_3_last_sentence: "Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used, subject to the whole-life cost comparison required by this Clause."
+    expected: >-
+      Chain VOL-II 5.3 <- ADD-01 5.1 <- ADD-03 5.2 (effective 8 Oct 2026, i.e. as if ADD-01 had always
+      read so). GRP remains acceptable elsewhere on the buried main; ductile iron only at the 3 road + 1 wadi
+      trenchless crossings. ADD-01 5.1 is narrowed, not withdrawn.
+    a3: no
+
+  - id: ADD-03 6.1
+    type: reissue of an addendum table with a weight change that shifts a threshold; hidden note change
+    target: ADD-02 Section 3 Table 1-1 (revised) and its Notes (replaced)
+    new_table: {A: 25, B: 15, C: 20, D: 20, E: 10, F: 10, G: 20, Total: 120}
+    new_criterion_G: "Energy efficiency and specific energy consumption"
+    notes:
+      "(1)": "The technical score threshold in Volume I Clause 11.3 is unchanged at seventy per cent (70%)."
+      "(2)": "The combined score weighting stated in Volume I Clause 11.2 is amended to seventy per cent (70%) technical and thirty per cent (30%) commercial."
+      "(3)": "Marks are awarded on the Authority's standard five-point scale and multiplied by the weight shown."
+      "(4)": "Criterion G is assessed on the Energy Performance Statement, which shall be included in the Technical Proposal in the format at Appendix C to this Addendum."
+    computed:
+      threshold_marks: 84              # 70% x 120 (was 70 of 100)
+      weighting_chain: "VOL-I 11.2 60/40 -> ADD-02 Note (2) 65/35 -> ADD-03 Note (2) 70/30"
+    a3: threshold - see a3_delta
+  - id: ADD-03 6.2
+    type: split of one clause into two (with content change)
+    target: VOL-I 11.3
+    new_11_3: "A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in Table 1-1 shall not proceed to commercial evaluation."
+    new_11_3A: "The Envelope B of a Proposal that does not proceed to commercial evaluation shall be retained unopened by the Authority and returned to the Bidder after the Preferred Bidder Notification."
+    expected: >-
+      11.3 now holds the threshold (as a percentage: 84/120 with Table 1-1 second revision); 11.3A holds the
+      Envelope B treatment, which changes from "returned unopened" to "retained unopened ... returned after
+      the Preferred Bidder Notification". No renumbering of 11.4 / 11.5. ADD-02 Note (1)'s "seventy (70)
+      marks" is superseded (its Notes were replaced by 6.1).
+
+  - id: ADD-03 7
+    type: conditional amendment that applies only if a stated event occurs
+    target: VOL-II 1.4
+    condition: "the Authority notifies Bidders through the Portal, not later than ten (10) Working Days before the PDD, that the grid connection point will not be energised at least twelve (12) months before the Scheduled PCOD"
+    condition_deadline: 2026-11-12      # Thursday; 10 WD back from Thu 26 Nov, 26th not counted
+    status_at_issue: PENDING - not in effect; lapses automatically if no notice by Thu 12 Nov 2026
+    if_triggered:
+      vol_ii_1_4_first_sentence: "The Authority will provide the site free of encumbrance."
+      effects: [grid connection procured by the Project Company as a utility, grid connection works cost forms part of the Estimated Project Cost]
+    expected: >-
+      Register VOL-II 1.4 as UNCHANGED with a conditional flag and the trigger date; do not show it as
+      amended. A5: a decision milestone on Thu 12 Nov 2026 and dual-scenario pricing until then.
+    a3: no
+
+  - id: ADD-03 8.1-8.4
+    type: new Arabic-governed form, image-only; per-member; split submission time by member subset
+    target: VOL-IV (new Form 4-H); VOL-I 9.1 list (after Form 4-G)
+    requirements:
+      - completed in Arabic, signed and stamped by an authorised signatory of EACH member (8.2)
+      - Arabic text governs; Appendix B translation is for convenience only (8.2)
+      - submitted with Envelope A (8.3)
+      - member incorporated outside the Kingdom MAY instead submit its own Form 4-H through the Portal by Thu 3 Dec 2026 (8.3)
+      - failure to submit a complete and properly executed Form 4-H for each member by the required time -> non-responsive (8.4)
+    governing_content (from the Arabic image):
+      beneficial_owner_threshold: "10% (عشرة في المائة (١٠٪)) - NOT the 25% of the English translation"
+      second_declaration: no beneficial owner holds any interest, direct or indirect, in a member of another consortium submitting a Proposal
+      third_declaration: certified copy of the register of partners or shareholders, issued within the 30 days preceding the date for submission of Proposals
+    a3: "yes, high confidence (stated: non-responsive)"
+
+# ---------------------------------------------------------------------------
+# Arabic (exact source strings of the image; logical order)
+# ---------------------------------------------------------------------------
+arabic_form_4h:
+  title: "إقرار المستفيد الحقيقي"
+  form_no: "النموذج ٤-ح"
+  authority: "الهيئة الشمالية للمشتريات المرفقية"
+  tender: "مناقصة رقم: NUPA/ISTP/2026/014"
+  intro: "نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي:"
+  first: "أولاً: أن الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو، والمستفيد الحقيقي هو كل شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، ما نسبته عشرة في المائة (١٠٪) أو أكثر من رأس مال العضو أو من حقوق التصويت فيه، أو يسيطر على العضو بأي وسيلة أخرى."
+  second: "ثانياً: أنه لا يملك أيٌّ من المستفيدين الحقيقيين، بصورة مباشرة أو غير مباشرة، أي حصة في عضو في ائتلاف آخر يقدم عرضاً لهذه المناقصة."
+  third: "ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين في العضو، صادرة خلال الثلاثين (٣٠) يوماً السابقة لتاريخ تقديم العروض."
+  table_header_rtl: ["م", "اسم المستفيد الحقيقي", "الجنسية", "نسبة الملكية (٪)", "مباشرة / غير مباشرة"]
+  table_rows: ["١", "٢", "٣", "٤"]
+  fields: ["اسم العضو في الائتلاف :", "رقم السجل التجاري :", "اسم المفوض بالتوقيع :", "الصفة :", "التاريخ :", "التوقيع والختم :"]
+  note: ["ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد.", "عدم تقديمه كاملاً يجعل العرض غير مستجيب."]
+  diacritics_present: ["أولاً", "ثانياً", "ثالثاً", "أيٌّ", "عرضاً", "يوماً", "كاملاً"]
+  translation_discrepancy:
+    location: First declaration
+    arabic: "عشرة في المائة (١٠٪)"
+    english_appendix_b: "twenty-five per cent (25%)"
+    governs: Arabic (ADD-03 8.2; Appendix B heading note) -> 10%
+    trap: 25% is also the figure a reader may "know" from general beneficial-ownership practice; do not use it.
+  no_other_discrepancy: >-
+    The rest of Appendix B is a faithful translation (including the second and third declarations, the
+    table headers, the fields and the note). Wording differences of style are not discrepancies.
+  expected_handling: >-
+    The tool must read the image (OCR / vision), keep the Arabic verbatim as the source text of the Form 4-H
+    rows, and record 10% as the operative threshold, citing the Arabic; English 25% recorded only as a
+    flagged non-governing translation.
+
+# ---------------------------------------------------------------------------
+# Clarification responses
+# ---------------------------------------------------------------------------
+answers:
+  - {no: 15, kind: DECOY, effect: none, note: "Restates VOL-I 8.7 and Form 4-D ('Unlimited as to the guaranteed obligations'; para 3 'not conditional on any demand first being made'). Imperative 'shall' wording, no change. Must not create a new row or report Form 4-D as amended."}
+  - {no: 16, kind: confirming, effect: none, note: "Confirms ADD-03 7 is conditional; while not triggered the grid connection point is the Authority's and is outside EPC."}
+  - {no: 17, kind: refers to missing evidence, effect: none by itself, note: "Says the reference specific energy consumption (kWh per m3 of treated effluent) and the Energy Performance Statement format are in Appendix C. Appendix C is not in ADD-03 (appendices A and B only). Flag as referenced but not supplied; do not invent a value."}
+  - {no: 18, kind: confirming, effect: supports S1, note: "VOL-II 5.2 (1.5 m/s) applies to the whole main including the trenchless crossings -> crossings bored for the larger pipe."}
+  - {no: 19, kind: non-answer, effect: ambiguity A1 remains open, note: "'Volume I Clauses 6.2 and 11.1 apply. The Authority does not consider further amendment necessary' - does not say how 8.4(a) is evidenced in Envelope A."}
+  - {no: 20, kind: neutral, effect: none, note: "No legalisation of the certified register for Form 4-H purposes. Do not add a legalisation activity."}
+
+# ---------------------------------------------------------------------------
+# Secondary, undisclosed effects (not stated as amendments anywhere in ADD-03)
+# ---------------------------------------------------------------------------
+secondary_undisclosed_effects:
+  - {id: S1, from: ADD-03 5.1 (+ Q18), effect: "DN1200 minimum in VOL-II 5.3 no longer sufficient: bore >= 1.33 m -> DN1400 in practice, including the four trenchless crossings (VOL-II 5.4); surge design (VOL-II 4.5) to be redone. ADD-03 does not amend 5.3's DN figure."}
+  - {id: S2, from: ADD-03 6.1 Note (2), effect: "Combined weighting 70/30 (was 65/35 under ADD-02). Coincides with the non-binding ADD-01 minutes Item 3 - the binding source is ADD-03 Note (2), not the minutes."}
+  - {id: S3, from: ADD-03 6.1 Note (1) + 6.2, effect: "Technical threshold 84 marks of 120 (70%); was 70 of 100."}
+  - {id: S4, from: ADD-03 6.2 (11.3A), effect: "Envelope B of a failed Proposal is retained unopened until after the Preferred Bidder Notification, then returned (was simply 'returned unopened')."}
+  - {id: S5, from: Form 4-H second declaration (Arabic), effect: "Stricter than VOL-I 8.2: ANY interest of a member's beneficial owner in a member of another consortium bidding for this tender makes the declaration impossible to give -> incomplete Form 4-H -> non-responsive (8.4). Needs a cross-check of ownership chains of all members."}
+  - {id: S6, from: Form 4-H third declaration (Arabic), effect: "Certified shareholder/partner register per member, issued 27 Oct - 25 Nov 2026 (30 days preceding the PDD) - also for foreign members who use the 3 Dec Portal route."}
+  - {id: S7, from: ADD-03 4.1 + VOL-V 18.4 + 18.3, effect: "LD cap reached on the 200th day of delay; termination right only after 365 days; 18.2 makes LDs the sole financial remedy -> a 165-day window with no further LD and no termination right. Commercial point for Form 4-E / EPC back-to-back LDs; for a person, not the tool, to judge."}
+  - {id: S8, from: ADD-03 2.1, effect: "Form 4-F 'Estimated Project Cost (SAR)' row must exclude financing costs, IDC and development fees and now fixes the LD rate, the LD cap and the 8.4(a) threshold. Financial Model must reconcile."}
+  - {id: S9, from: ADD-03 2.1 + 5.1 + 7.2(c), effect: "Anything that raises EPC (DN1400 main; grid works if Section 7 triggers) raises the daily LD, the LD cap and the 8.4(a) net-worth threshold."}
+  - {id: S10, from: ADD-03 6.1 Note (4), effect: "New Technical Proposal deliverable (Energy Performance Statement) not listed in VOL-I 9.7; format and reference value in missing Appendix C; whether it counts toward the 150-page limit (VOL-I 9.2 as amended by ADD-02) is not stated."}
+  - {id: S11, from: ADD-03 8.1, effect: "Envelope A divider order: Form 4-H inserted after Form 4-G in the VOL-I 9.1 list. The VOL-IV Index of Forms is not amended (do not report it as amended)."}
+
+# ---------------------------------------------------------------------------
+# Indirect effects: the chains a careful reader must trace
+# ---------------------------------------------------------------------------
+indirect_effects:
+  - id: IE1
+    trigger: ADD-03 5.1 (VOL-II 5.2 velocity 2.0 -> 1.5 m/s)
+    chain:
+      - "Table 2-6 row 2-6.2 peak 7,500 m3/h = 2.083 m3/s (unchanged)"
+      - "required bore = sqrt(4Q / (pi v)) = 1.330 m at 1.5 m/s (was 1.152 m)"
+      - "DN1200 gives 1.842 m/s > 1.5 -> VOL-II 5.3 minimum DN1200 silently insufficient -> DN1400"
+      - "Q18: applies at the 3 road + 1 wadi trenchless crossings (VOL-II 5.4) -> larger bores; ductile iron only there (ADD-03 5.2)"
+      - "VOL-II 4.5 surge analysis redone"
+      - "EPC up (ADD-03 2.1) -> 18.1 daily LD up, 18.4 cap up, 8.4(a) TNW threshold up"
+    rows_affected_not_citing_5_2: [VOL-II 5.3, VOL-II 5.4, VOL-II 4.5, VOL-IV Form 4-F EPC row, VOL-V 18.1, VOL-V 18.4, VOL-I 8.4(a)]
+  - id: IE2
+    trigger: ADD-03 2.1 (definition of Estimated Project Cost)
+    chain:
+      - "VOL-IV Form 4-F row 'Estimated Project Cost (SAR)' becomes the defined EPC (exclusions apply)"
+      - "VOL-V 18.4 cap = 10% of that figure; VOL-V 18.1 (as amended) = 0.05% of it per day"
+      - "VOL-I 8.4(a) (as amended) = 25% of it"
+      - "the figure sits in Envelope B (VOL-I 10.1) -> ambiguity A1"
+  - id: IE3
+    trigger: ADD-03 4.1 (LD formula) with VOL-V 18.4 unchanged
+    chain:
+      - "cap / rate = 10% / 0.05% = 200 days, independent of EPC"
+      - "VOL-V 18.3 termination only after 365 days; 18.2 LDs sole financial remedy"
+      - "days 201-365: no further LDs, no termination right (commercial review item, S7)"
+  - id: IE4
+    trigger: ADD-03 6.1 (criterion G, total 120) + Note (1) + 6.2
+    chain:
+      - "threshold 70% x 120 = 84 marks (not 70)"
+      - "with the five-point scale (Note 3) the marks lost on G now count against the threshold"
+      - "Note (2): combined score 70/30 -> commercial model sensitivity changes"
+      - "Note (4): Energy Performance Statement -> new A5 activity, blocked on missing Appendix C"
+  - id: IE5
+    trigger: ADD-03 7 (conditional)
+    chain:
+      - "trigger window closes Thu 12 Nov 2026 (10 WD before PDD, same day as the clarification cut-off)"
+      - "if triggered: grid connection becomes a Project Company utility (VOL-II 1.4 second sentence) and its cost enters EPC (7.2(c))"
+      - "EPC up -> 18.1/18.4/8.4(a) as in IE2"
+  - id: IE6
+    trigger: ADD-03 8 + Arabic Form 4-H
+    chain:
+      - "one Form 4-H per member (3 under the A5 planning assumption of a three-member consortium)"
+      - "each needs a certified register issued 27 Oct - 25 Nov 2026"
+      - "beneficial owners at >= 10% (Arabic) - not 25% (translation) - must be listed"
+      - "second declaration requires cross-checking every beneficial owner against the other prequalified consortia (VOL-I Appendix 1)"
+      - "Kingdom-incorporated members: Envelope A by 14:00 Thu 26 Nov; foreign members: Envelope A or Portal by Thu 3 Dec"
+  - id: IE7
+    trigger: ADD-03 6.1 replacing the ADD-02 Notes
+    chain:
+      - "ADD-02 Note (1) ('seventy (70) marks') and Note (2) (65/35) cease to have effect"
+      - "VOL-I 11.2 final = 70/30 with ADD-03 as source; VOL-I 11.3 final = new 11.3/11.3A"
+
+# ---------------------------------------------------------------------------
+# Dates (computed by script; Working Days Sun-Thu; VOL-I 2.4 backward counting)
+# ---------------------------------------------------------------------------
+derived_dates:
+  - {item: ADD-03 issue / A5 planning date, date: 2026-11-09, weekday: Monday}
+  - {item: "Clarification cut-off (VOL-I 5.2, unchanged)", date: 2026-11-12, weekday: Thursday, basis: "10 WD before Thu 26 Nov, 26th not counted: 25,24,23,22,19,18,17,16,15,12 Nov"}
+  - {item: Section 7 trigger deadline (grid notice), date: 2026-11-12, weekday: Thursday, basis: same backward count}
+  - {item: Form 4-H - member incorporated outside the Kingdom (Portal route), date: 2026-12-03, weekday: Thursday, basis: "5 WD after the PDD: 29 Nov, 30 Nov, 1, 2, 3 Dec", accept_alternative: "2026-12-02 if the tool states that it counts the PDD itself; time of day not stated (conservative 14:00)"}
+  - {item: Form 4-H - all other members, date: 2026-11-26, time: "14:00 Riyadh", basis: Envelope A at the PDD}
+  - {item: Certified register issue window (Form 4-H third declaration), from: 2026-10-27, to: 2026-11-25, basis: "30 calendar days preceding the PDD", accept_alternative: "boundary conventions 26 Oct or 26 Nov if stated"}
+  - {item: ADD-01 5.1 as amended - effective date, date: 2026-10-08, basis: stated in ADD-03 5.2 (retroactive to ADD-01)}
+  - {item: LD cap reached, value: "200th day of delay", basis: "10% / 0.05%"}
+  - {item: Technical threshold, value: "84 of 120 marks", basis: "70% x 120"}
+  - {item: Proposal Due Date, date: 2026-11-26, time: "14:00 Riyadh", note: unchanged}
+
+marshalling_effects:
+  - {item: "Form 4-H (Arabic) x each member", issuer: "each member (authorised signatory, stamp)", timing: "Envelope A at PDD; foreign members may use Portal by Thu 3 Dec 2026", drop_dead_note: "Saudi members cannot use the Portal route (E3)"}
+  - {item: "Certified copy of register of partners/shareholders x each member", issuer: commercial registry or company secretary as certifier, window: "issued 27 Oct - 25 Nov 2026", legalisation: "not required (Q20)"}
+  - {item: "Beneficial-ownership cross-check against other consortia", issuer: bid team / legal, timing: before signing Form 4-H (second declaration)}
+  - {item: "Envelope A order", change: "Form 4-H after Form 4-G (VOL-I 9.1 as amended by ADD-02 7.1 and ADD-03 8.1)"}
+  - {item: "Energy Performance Statement in the Technical Proposal", issuer: process / energy lead, status: "BLOCKED - format and reference value in Appendix C, not supplied"}
+  - {item: "Form 4-F EPC figure and Financial Model", change: "EPC excludes financing costs, IDC, development fees; drives LD and 8.4(a)"}
+  - {item: "Grid connection decision milestone", date: 2026-11-12, change: "price both scenarios until then"}
+  - {item: "Transmission main re-sizing (DN1400) and crossings", issuer: hydraulic / pipeline design, note: "feeds EPC"}
+  - {item: "Further clarification request on A1 (optional)", date: 2026-11-12, basis: "VOL-I 3.3 + 5.2 cut-off; the decision to raise it is for a person"}
+
+a3_delta:
+  add:
+    - {row: "Form 4-H, complete and properly executed, for EACH member (Arabic governs: 10% beneficial-owner threshold; second and third declarations)", deadline: "Envelope A at PDD; foreign-incorporated member may instead use Portal by Thu 3 Dec 2026", source: "ADD-03 8.2-8.4 + Appendix A (image)", consequence: non-responsive (stated), confidence: high}
+    - {row: "Technical score >= 70% of total marks in Table 1-1 (= 84 of 120)", source: "VOL-I 11.3 as replaced by ADD-03 6.2 + ADD-03 Note (1)", consequence: "does not proceed to commercial evaluation", confidence: "high if the tool already treats 11.3 as a knock-out; otherwise accept listing as an evaluation threshold"}
+  modify:
+    - {row: "VOL-I 8.4(a) net worth", new: "25% of the Estimated Project Cost (Form 4-F figure, excl. financing costs, IDC, development fees)", consequence: "pass/fail by inference (no stated sanction)", confidence: medium}
+  unresolved_to_list:
+    - "A1 - how 8.4(a) is evidenced in Envelope A without disclosing the Form 4-F EPC (VOL-I 6.2 non-responsive risk); Q19 does not resolve it"
+    - "Appendix C (criterion G format + reference specific energy consumption) referenced but not supplied - scored, not pass/fail, but the deliverable cannot be prepared"
+    - "Section 7 grid condition pending until Thu 12 Nov 2026 (not a disqualifier)"
+  not_a3:
+    - ADD-03 4.1 (LDs), 5.1/5.2 (pipe), 2.1 (definition), Q15 (decoy), Q20
+
+missing_evidence:
+  - {ref: "Appendix C to ADD-03", referenced_by: ["Notes to Table 1-1 (second revision) Note (4)", "Q17"], content_said_to_be_there: ["format of the Energy Performance Statement", "reference specific energy consumption in kWh per m3 of treated effluent"], status: "not supplied (ADD-03 has Appendices A and B only)", expected: "flag; no invented value or format"}
+
+must_not_report:
+  - The Proposal Due Date or time changed (it is Thu 26 Nov 2026, 14:00).
+  - VOL-II 1.4 amended (Section 7 is conditional and not triggered at issue).
+  - Form 4-D amended, or a new PCG requirement, from Q15 (decoy).
+  - A legalisation requirement for the Form 4-H register (Q20 says none).
+  - The Form 4-H beneficial-owner threshold as 25% (the English translation does not govern).
+  - Form 4-H Portal submission after the PDD as open to all members or all Bidders (E3).
+  - The 8.4(a) requirement as "relaxed" or "tightened" without an EPC value; the LD rate as "reduced" or "increased" without an EPC value.
+  - The cover's "relaxes the velocity limit" as the effect of Section 5.1 (E1).
+  - The combined weighting as 65/35, or the technical threshold as 70 marks.
+  - The ADD-01 minutes (Item 3) as the source of the 70/30 weighting.
+  - Renumbering of VOL-I 11.4 / 11.5 (the split inserts 11.3A; nothing is renumbered).
+  - ADD-01 5.1 deleted or GRP prohibited on the whole main (only at the trenchless crossings).
+  - VOL-II 5.3 text amended to DN1400 by ADD-03 (it is an undisclosed consequence, S1, not an amendment of the text).
+  - The VOL-IV Index of Forms amended, or Volume I 9.1 items re-lettered.
+  - Any content for Appendix C (format or reference kWh/m3 value).
+  - A resolution of A1 presented as the answer (e.g. "state the EPC in Envelope A" or "8.4(a) is checked after Envelope B is opened").
+  - Arabic replaced by its translation as the source text of the Form 4-H rows.
+  - >-
+    Any blind-01/02/03 subject (none is touched) - PDD/time/address; VOL-I 5.2 period; 6.3, 6.4, 6.5, 6.8, 7.1, 8.6, 8.8, 9.1 re-lettering, 10.3, 10.5 insertion, 12.2, 12.5; footnote 12; Working Day definition / office closure; VOL-II 3.5, 4.4, 6.1, 8.4, Table 2-2, Table 2-4 (any row), Table 2-6; Form 4-A, Form 4-C, Form 4-F rows, Form 4-G; VOL-V 29.3, 31.4, 39.3; Environmental Permit; Schedule 11.
+
+deliberate_ambiguities:
+  - id: A1
+    kind: NO CORRECT ANSWER - escalate, do not resolve
+    issue: >-
+      ADD-03 3.1 makes VOL-I 8.4(a) a percentage of the Estimated Project Cost, which ADD-03 2.1 defines as
+      the figure the Bidder states in Form 4-F. Form 4-F goes only in Envelope B (VOL-I 10.1). VOL-I 8.4 is a
+      Section 8 mandatory requirement checked at stage (i) on a pass/fail basis (VOL-I 11.1), before
+      Envelope B is opened (and a failed Proposal's Envelope B stays unopened - 11.3A). Stating the EPC in
+      Envelope A risks non-responsiveness under VOL-I 6.2 ("any price, rate, or other commercial
+      information"). Not stating it leaves 8.4(a) undemonstrable at stage (i). Q19 asked exactly this and
+      the Authority declined to answer.
+    sources: [ADD-03 2.1, ADD-03 3.1, ADD-03 Q19, VOL-I 6.2, VOL-I 10.1, VOL-I 11.1, ADD-03 6.2 (11.3A), VOL-I 3.3]
+    expected: >-
+      List in A3 "could not resolve" with both horns and the sources; recommend a person decide (e.g. a
+      further clarification before the Thu 12 Nov 2026 cut-off, or a legal view on whether an EPC-free
+      demonstration such as "TNW of SAR X, which is not less than 25% of our EPC" is acceptable). No machine
+      resolution. A tool that picks one horn as the answer fails this item.
+  - id: A2
+    kind: convention - accept either if stated
+    issue: forward counting of "five (5) Working Days after the Proposal Due Date" (Thu 3 Dec vs Wed 2 Dec) and the time of day on that date.
+  - id: A3
+    kind: convention - accept if stated
+    issue: boundary of "within the thirty (30) days preceding" the PDD for the register (27 Oct - 25 Nov expected).
+  - id: A4
+    kind: flag
+    issue: whether the Energy Performance Statement counts toward the 150-page narrative limit (VOL-I 9.2 as amended by ADD-02); ADD-03 says only "included in the Technical Proposal".
+  - id: A5
+    kind: flag
+    issue: practical diameter after 5.1 (DN1400 assumes standard ductile-iron sizes and lined bore close to DN); VOL-II 5.3 still prints DN1200 - report as derived, medium confidence.
+  - id: A6
+    kind: flag
+    issue: the retroactive effective date of ADD-03 5.2 has no practical bid-stage consequence beyond the chain record; a tool may note it.
+
+not_touched_by_add_03:
+  - VOL-I 6.1 / Proposal Due Date and time; Appendix 3 address
+  - VOL-I 2.4 Working Day definition
+  - Table 2-4 and the Environmental Permit; Table 2-2; Table 2-6 values
+  - Forms 4-A, 4-B, 4-C, 4-E, 4-F (text), 4-G
+  - VOL-V Clauses other than 1.3 and 18.1

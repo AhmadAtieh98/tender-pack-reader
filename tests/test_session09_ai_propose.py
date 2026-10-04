@@ -15,7 +15,7 @@ import sys
 import pytest
 import yaml
 
-from ai_fixture import CASSETTES, CURATED_ADD03, EVIDENCE, ROOT, Untouched, workspace
+from ai_fixture import CASSETTES, CURATED_ADD03, ROOT, Untouched, workspace
 from tenderpack.ai import budget as B
 from tenderpack.ai import config as C
 from tenderpack.ai import controller
@@ -26,8 +26,8 @@ DECISIONS = ROOT / "curation/reviews/decisions.yaml"
 
 
 @pytest.fixture(scope="module")
-def ws(tmp_path_factory):
-    return workspace(tmp_path_factory.mktemp("ai-propose"))
+def ws(tmp_path_factory, blind02_build):
+    return workspace(tmp_path_factory.mktemp("ai-propose"), evidence=blind02_build)
 
 
 def _propose(ws, cassette, **kw):
@@ -174,10 +174,10 @@ def test_stale_evidence_makes_every_item_invalid(ws):
     assert "STALE" in md and data["controller"]["state_differences"]
 
 
-def test_a_rejected_op_is_conflicting(tmp_path):
+def test_a_rejected_op_is_conflicting(tmp_path, blind02_build):
     rej = [{"kind": "op", "item": "ADD-03/2.1", "decision": "reject", "reviewer": "Fixture Test Reviewer",
             "date": "2026-10-04", "note": "fixture: the time is wrong", "fingerprint": "fixture"}]
-    w = workspace(tmp_path, decisions=rej)
+    w = workspace(tmp_path, decisions=rej, evidence=blind02_build)
     assert w.identity().decisions_sha256 is not None
     ps = controller.propose(w, "ADD-03", "recorded", C.load(), cassette=CASSETTES / "add03_propose.yaml",
                             sleep=lambda s: None)
@@ -274,10 +274,10 @@ def test_a_second_orchestrator_is_refused_and_only_a_person_breaks_the_lock(ws):
 
 # ---------------------------------------------------------------------------------------------- the CLI
 
-def test_the_cli_runs_a_recorded_proposal_and_a_tool(ws, tmp_path):
+def test_the_cli_runs_a_recorded_proposal_and_a_tool(ws, tmp_path, blind02_build):
     out, wl = tmp_path / "staging", tmp_path / "worklog"
     base = [sys.executable, "-m", "tenderpack", "ai"]
-    common = ["--evidence", str(EVIDENCE), "--pack", str(ws.pack)]
+    common = ["--evidence", str(blind02_build), "--pack", str(ws.pack)]
     p = subprocess.run(base + ["propose", "ADD-03", "--route", "recorded", "--cassette",
                                str(CASSETTES / "add03_propose.yaml"), "--out", str(out), "--worklog", str(wl)] + common,
                        cwd=ROOT, capture_output=True, text=True, timeout=300)

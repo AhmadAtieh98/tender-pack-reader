@@ -1,8 +1,11 @@
 """Session 09 AI-layer test helpers: blind rehearsal 02 as a FRESH addendum (ADD-03 arrived, no curated op file yet),
-in disposable directories. The rehearsal's own files are read, never written."""
+in disposable directories. The rehearsal's own files are read, never written. Its evidence build is the test
+session's disposable ingest of rehearsals/blind-02/work/pack.yaml (tests/conftest.py, fixture `blind02_build`), never
+the uncommitted rehearsals/blind-02/build."""
 from __future__ import annotations
 
 import hashlib
+import os
 import shutil
 from pathlib import Path
 
@@ -10,9 +13,39 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 BLIND = ROOT / "rehearsals/blind-02"
-EVIDENCE = BLIND / "build"
 CASSETTES = ROOT / "tests/fixtures/ai_cassettes"
 CURATED_ADD03 = BLIND / "work/amendments/ADD-03.yaml"
+BUILDS = None          # the test session's rehearsal builds (tests/conftest.py registers its RehearsalBuilds here)
+
+
+def session_evidence() -> Path:
+    """The session's disposable blind-02 evidence build (the `blind02_build` fixture), ingested on first use."""
+    if BUILDS is None:
+        raise RuntimeError("the blind-02 evidence build is made by the pytest session (tests/conftest.py); "
+                           "outside it, pass evidence= explicitly")
+    return BUILDS.build("blind-02")
+
+
+class _SessionEvidence(os.PathLike):
+    """EVIDENCE, kept for callers written before session 10 (new tests take the `blind02_build` fixture): stands for
+    session_evidence() wherever it is used as a path."""
+
+    def __fspath__(self) -> str:
+        return os.fspath(session_evidence())
+
+    __str__ = __fspath__
+
+    def __truediv__(self, other) -> Path:
+        return session_evidence() / other
+
+    def __getattr__(self, name):
+        return getattr(session_evidence(), name)
+
+    def __repr__(self) -> str:
+        return "EVIDENCE(the test session's disposable blind-02 build)"
+
+
+EVIDENCE = _SessionEvidence()
 
 
 def fresh_pack(d: Path, decisions: list[dict] | None = None) -> Path:
@@ -31,10 +64,12 @@ def fresh_pack(d: Path, decisions: list[dict] | None = None) -> Path:
     return d / "pack.yaml"
 
 
-def workspace(d: Path, decisions: list[dict] | None = None):
+def workspace(d: Path, decisions: list[dict] | None = None, evidence: Path | None = None):
+    """`evidence` defaults to the session's disposable blind-02 build (the `blind02_build` fixture)."""
     from tenderpack.ai.tools import Workspace
     pack = fresh_pack(Path(d) / "pack", decisions)
-    return Workspace(EVIDENCE, pack, ROOT, Path(d) / "staging", Path(d) / "worklog", ROOT / "config/ai.yaml")
+    return Workspace(evidence or session_evidence(), pack, ROOT, Path(d) / "staging", Path(d) / "worklog",
+                     ROOT / "config/ai.yaml")
 
 
 def tree_hash(*dirs: Path) -> str:
@@ -44,16 +79,21 @@ def tree_hash(*dirs: Path) -> str:
         if not base.exists():
             h.update(f"absent {base}".encode())
             continue
+        h.update(f"tree {base}".encode())
         for p in sorted(base.rglob("*")):
             if p.is_file():
-                h.update(p.relative_to(ROOT).as_posix().encode())
+                h.update(p.relative_to(base).as_posix().encode())
                 h.update(hashlib.sha256(p.read_bytes()).digest())
     return h.hexdigest()
 
 
-HARD = [ROOT / "build", EVIDENCE]                     # nothing else writes here during a test run
+def hard() -> list[Path]:
+    """Nothing else writes here during a test run: build/ and, once this session has made it, the blind-02 build."""
+    built = BUILDS.built("blind-02") if BUILDS is not None else None
+    return [ROOT / "build"] + ([built] if built else [])
+
+
 SOFT = [ROOT / "curation", BLIND / "work"]            # other engineers may edit these concurrently
-PROTECTED = HARD + SOFT
 
 
 def tree_files(*dirs: Path) -> dict[str, str]:
@@ -121,7 +161,8 @@ class Untouched:
     the audit establishes, and the files are reported)."""
 
     def __enter__(self):
-        self.hard, self.soft = tree_hash(*HARD), tree_files(*SOFT)
+        self.hard_dirs = hard()                          # the evidence build lives outside the repository now
+        self.hard, self.soft = tree_hash(*self.hard_dirs), tree_files(*SOFT)
         self.audit = WriteAudit().__enter__()
         return self
 
@@ -129,8 +170,10 @@ class Untouched:
         self.audit.__exit__(*exc)
         if exc[0] is not None:
             return False
-        assert tree_hash(*HARD) == self.hard, "build/ or the evidence build changed"
+        assert tree_hash(*self.hard_dirs) == self.hard, "build/ or the evidence build changed"
         assert self.audit.under(ROOT) == [], f"this process wrote inside the repository: {self.audit.under(ROOT)}"
+        wrote = [p for d in self.hard_dirs for p in self.audit.under(d)]
+        assert wrote == [], f"this process wrote inside the evidence build: {wrote}"
         after = tree_files(*SOFT)
         changed = sorted(k for k in set(self.soft) | set(after) if self.soft.get(k) != after.get(k))
         if changed:

@@ -9,27 +9,22 @@
 3. citations() matched "Form N-X" case-sensitively, so a provision whose only naming of the form is its section
    heading ("4. AMENDMENT TO FORM 4-C") could not carry an op on that form.
 
-The blind-03 build is used where the rehearsal's own build is current (it is not committed), else a fresh ingest."""
+The blind-03 evidence build is a fresh, disposable ingest of the rehearsal's pack (tests/conftest.py)."""
 from __future__ import annotations
 
 import pytest
 
-from tenderpack import stage2, summary
+from tenderpack import summary
 from tenderpack.amend import Engine, Op, OpFile, load_opfile
 from tenderpack.citations import citations, resolve
-from tenderpack.cli import ingest
 from tenderpack.util import ROOT
 
 B = ROOT / "rehearsals/blind-03"
 
 
 @pytest.fixture(scope="module")
-def blind03(tmp_path_factory):
-    evidence = B / "build"
-    if not (evidence.exists() and not stage2.load_evidence(evidence, ROOT)[1]):
-        evidence = tmp_path_factory.mktemp("blind-03") / "build"
-        assert ingest(B / "work/pack.yaml", evidence, ROOT, quiet=True)["exit_code"] == 0
-    return stage2.run(evidence, B / "work/pack.yaml", ROOT)
+def blind03(blind03_run):
+    return blind03_run
 
 
 def _rec(r, add="ADD-03"):

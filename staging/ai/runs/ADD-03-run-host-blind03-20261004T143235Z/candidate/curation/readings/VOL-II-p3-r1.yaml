@@ -1,0 +1,72 @@
+# PROPOSED READING — PENDING HUMAN REVIEW. Not approved.
+# Approval is recorded only in curation/approvals.yaml, by the reviewer running `python -m tenderpack approve`.
+# It pins the review subject: this reading (cells, uncertainties, source claims) and its evidence (source
+# PDF, region position, native image). Changing any of them after approval makes the reading pending again.
+# Every row lists every column; an empty cell must be written as "" and listed in the row's `blank`.
+region_id: VOL-II-p3-r1
+unit_id: "VOL-II:T2-4"
+title: "Table 2-4 (image): Minimum Effluent Quality Parameters at the Point of Discharge"
+source:
+  doc: VOL-II
+  page: 3
+  bbox_pt: [56.7, 143.2, 538.6, 446.1]
+  native_sha256: 27373c58a989d8ddc62ac537efca5551184ed992ae34ee3cc0b4fb33ff3acec6
+content_type: table
+languages: [en]
+prepared_by: "AI-assisted: Claude Code session 02 (2026-10-02), read visually from the native 1750x1100 px image"
+method: >-
+  Visual reading of the embedded image at native resolution. No OCR. Grid structure (rows, columns)
+  measured from pixels by tenderpack.regions.detect_grid; band positions by text_bands.
+table:
+  title:
+    key: title
+    lang: en
+    role: table-title
+    lines:
+      - {band: 0, source: "Table 2-4   Minimum Effluent Quality Parameters at the Point of Discharge"}
+  qualifier:
+    key: qualifier
+    lang: en
+    role: table-qualifier
+    lines:
+      - {band: 1, source: "(all values are maxima; compliance assessed as a 30-day rolling average unless stated)"}
+  columns:
+    - {key: parameter, heading: "Parameter"}
+    - {key: unit, heading: "Unit"}
+    - {key: limit, heading: "Limit"}
+    - {key: basis, heading: "Basis of assessment"}
+  rows:
+    - key: BOD5
+      cells: {parameter: "Biochemical Oxygen Demand (BOD5)", unit: "mg/l", limit: "10", basis: "30-day rolling average"}
+    - key: COD
+      cells: {parameter: "Chemical Oxygen Demand (COD)", unit: "mg/l", limit: "50", basis: "30-day rolling average"}
+    - key: TSS
+      cells: {parameter: "Total Suspended Solids (TSS)", unit: "mg/l", limit: "10", basis: "30-day rolling average"}
+    - key: TN
+      cells: {parameter: "Total Nitrogen (TN)", unit: "mg/l", limit: "5", basis: "30-day rolling average"}
+    - key: TP
+      cells: {parameter: "Total Phosphorus (TP)", unit: "mg/l", limit: "1", basis: "30-day rolling average"}
+    - key: Turbidity
+      cells: {parameter: "Turbidity", unit: "NTU", limit: "2", basis: "Maximum instantaneous"}
+    - key: FaecalColiforms
+      cells: {parameter: "Faecal Coliforms", unit: "MPN/100 ml", limit: "2.2", basis: "Maximum, any single sample"}
+      uncertain: ["decimal point in 2.2: clear at native resolution, but a speckled scan can imitate a point; reviewer to confirm"]
+    - key: ResidualChlorine
+      cells: {parameter: "Residual Chlorine", unit: "mg/l", limit: "0.5 - 1.0", basis: "Continuous at outlet"}
+      uncertain: ["printed as a range although the qualifier says 'all values are maxima'; whether 0.5 is a binding minimum is an interpretation for a person, not a reading question"]
+    - key: pH
+      cells: {parameter: "pH", unit: "-", limit: "6.0 - 9.0", basis: "Continuous at outlet"}
+      uncertain: ["unit cell shows a dash, read as 'no unit'", "range printed under a 'maxima' qualifier (see Residual Chlorine)"]
+    - key: OilGrease
+      cells: {parameter: "Oil and Grease", unit: "mg/l", limit: "1", basis: "Maximum, any single sample"}
+  notes:
+    - key: note1
+      lang: en
+      role: table-note
+      lines:
+        - {band: 24, source: "Note 1:  Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply."}
+      uncertain:
+        - "Note 1 is the last line of the image and touches its bottom edge; the image may be cropped. The page continues with 'End of reproduction.' in the text layer, but whether a further note was cut off cannot be established from the pack."
+uncertainties:
+  - "The table is a scan with speckle and a measured skew of about -0.34 degrees; values were read at native resolution."
+  - "Table 2-4 is stated to be reproduced from an Environmental Permit that is not in the pack; this reading says what the image shows, nothing about the Permit."

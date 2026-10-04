@@ -1,0 +1,50 @@
+# RECORDED HTTP FIXTURE (hand-written for offline tests; NOT a live endpoint's or model's output). Session 10, W4.
+# The Messages API route with NATIVE structured outputs: the models endpoint reports structured outputs, so every
+# POST /v1/messages carries output_config.format (json_schema) merged with the configured effort, beside the tools.
+# Under the schema limits an item's payload travels as a JSON-encoded string; the controller decodes it and validates
+# everything locally as before. Expected statuses: ADD-03/2.1 and ADD-03/cover/para1 evidence_verified.
+name: s10-anthropic-structured
+exchanges:
+  - request: {method: GET, path: /v1/models/claude-opus-5-5}
+    response:
+      body: {id: claude-opus-5-5, max_input_tokens: 1000000, max_tokens: 128000,
+             capabilities: {image_input: {supported: true}, structured_outputs: {supported: true}}}
+  - request:
+      method: POST
+      path: /v1/messages
+      body_has: [output_config.format.schema.properties.items, output_config.effort, tools]
+      contains: ["\"type\": \"json_schema\"", "JSON-ENCODED STRING", "TASK PACKET"]
+    response:
+      body:
+        model: claude-opus-5-5
+        stop_reason: tool_use
+        usage: {input_tokens: 14000, output_tokens: 90}
+        content:
+          - {type: text, text: "Reading the target first."}
+          - {type: tool_use, id: tu1, name: get_unit, input: {unit_id: "VOL-I:6.1", stage: "ADD-02"}}
+  - request:
+      method: POST
+      path: /v1/messages
+      body_has: [output_config.format.schema, output_config.effort]
+      contains: ["tool_result", "tu1"]
+    response:
+      body:
+        model: claude-opus-5-5
+        stop_reason: end_turn
+        usage: {input_tokens: 15500, output_tokens: 900}
+        content:
+          - type: text
+            text: |
+              {"addendum": "ADD-03", "state": ${state}, "statements": [],
+               "items": [
+                {"id": "ADD-03/2.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+                 "payload": "{\"id\": \"ADD-03/2.1\", \"provision\": \"ADD-03:2.1\", \"type\": \"replace_text\", \"target\": \"VOL-I:6.1\", \"old\": \"14:00 hours Riyadh time\", \"new\": \"11:00 hours Riyadh time\"}",
+                 "previous_value": "14:00 hours Riyadh time", "proposed_value": "11:00 hours Riyadh time",
+                 "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                               "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"},
+                              {"doc": "VOL-I", "unit_id": "VOL-I:6.1", "page": 3, "kind": "span",
+                               "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"}]},
+                {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+                 "payload": "{\"provision\": \"ADD-03:cover/para1\", \"disposition\": \"no_effect\", \"reason\": \"the addendum's issue date line\"}",
+                 "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]}
+               ]}

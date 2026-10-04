@@ -47,8 +47,8 @@ def test_arabic_old_words_are_found_and_replaced_whatever_the_diacritics():
 # ---------------------------------------------------------------------------- a notified non-working day
 
 @pytest.fixture(scope="module")
-def units():
-    return json.load(open(B / "build/units.json", encoding="utf-8"))["units"]
+def units(blind03_build):
+    return json.load(open(blind03_build / "units.json", encoding="utf-8"))["units"]
 
 
 def _stages(units, extra_ops, dispositions=()):
@@ -103,11 +103,12 @@ def test_pin_rows_builds_the_register_with_the_packs_calendar(monkeypatch):
 
 # ---------------------------------------------------------------------------- the controller's evidence rule
 
-def test_a_whole_cell_value_is_evidence_however_short_and_an_approved_reading_amended_is_not_a_conflict(tmp_path):
+def test_a_whole_cell_value_is_evidence_however_short_and_an_approved_reading_amended_is_not_a_conflict(tmp_path,
+                                                                                                        blind02_build):
     from tenderpack.ai import controller as C
     from tenderpack.ai.contract import EvidenceRef
     from tests.fixtures.ai_fixture import workspace
-    ws = workspace(tmp_path)
+    ws = workspace(tmp_path, evidence=blind02_build)
     r = ws.r
     st = next(s for s in r["stages"] if s.stage == "ADD-02").state
     row = next(u for u in st.values() if u.doc == "VOL-II" and u.kind == "table_row" and u.cells

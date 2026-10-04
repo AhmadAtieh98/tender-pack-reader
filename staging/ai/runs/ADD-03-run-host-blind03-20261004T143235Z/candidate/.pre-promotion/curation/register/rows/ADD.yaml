@@ -1,0 +1,129 @@
+# A1 register rows for obligations that the addenda create themselves (Stage 3). PROPOSED: drafted by the register
+# agent, session 05. No row has been reviewed or accepted by a person. Rows already held in
+# curation/register/rows.yaml (ADD-01-3.1-01, ADD-02-7.2-01, ADD-02-F4G-01 for Form 4-G items 3-6) are not repeated.
+# The BASE stage does not exist for these units: each row's first interpretation is at its addendum's stage.
+doc: ADD
+prepared_by: "AI-assisted draft (register agent, session 05); not reviewed"
+method: >-
+  Every ADD-01 and ADD-02 provision whose op adds an obligation (effect adds_obligation), plus addendum text that
+  states one directly (acknowledgement in Form 4-A, Form 4-G items 1-2 and signature). Quotes copied from the
+  effective text at the addendum's stage (tenderpack.amend); consequences quoted only where stated, never inferred.
+rows:
+  # ---------------------------------------------------------------- ADD-01
+  - id: ADD-01-AppA-01
+    group: "ADD-01:AppA"
+    scope: [envelope_A, forms, addenda_acknowledgement, reissued_form, new_in_addendum]
+    requirement: "Acknowledge receipt of each Addendum in Form 4-A (reissued form field 'Addenda acknowledged (numbers)')"
+    units: ["ADD-01:cover/para3", "ADD-01:AppA/addenda-acknowledged-numbers", "ADD-01:AppA/para1", "ADD-02:cover/para3"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: ADD-01
+        quote: "Bidders shall acknowledge receipt in Form 4-A."
+        note: "App A reissues Form 4-A 'to add the acknowledgement of Addenda at paragraph 1', but the reissued form has no paragraph 1; it has an 'Addenda acknowledged (numbers)' field. No consequence stated; whether a missing acknowledgement makes Form 4-A 'improperly executed' (VOL-I 9.3) is for a person."
+      - stage: ADD-02
+        quote: "Bidders shall acknowledge receipt in Form 4-A."
+        note: "ADD-02's cover repeats 'Bidders shall acknowledge receipt in Form 4-A.' and does not reissue the form; the ADD-01 App A version remains the one to use."
+    confidence: medium
+    confidence_reason: "verbatim; the reissued form's stated purpose ('paragraph 1') does not match its layout"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE]
+  - id: ADD-01-Q4-01
+    group: "ADD-01:Q4"
+    scope: [site_conditions, risk, data_gap, new_in_addendum]
+    requirement: "Satisfy yourselves as to ground conditions (asked for the wadi crossing); the data-room geotechnical report is for information"
+    units: ["ADD-01:Q4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: procedural
+    evidence: [EV-GROUND-DD]
+    interpretations:
+      - stage: ADD-01
+        quote: "Bidders shall satisfy themselves as to ground conditions."
+        note: "The question concerned the wadi crossing (VOL-II 5.4: trenchless). The geotechnical report 'in the data room' is not in the pack, and Volume III (Drawings) is referenced but not supplied (I-VOL-III), so ground conditions cannot be assessed from the pack. No consequence stated."
+    confidence: medium
+    confidence_reason: "verbatim answer; the report it refers to and the drawings are not in the pack"
+    issues: [I-VOL-III]
+  # ---------------------------------------------------------------- ADD-02
+  - id: ADD-02-5.2-01
+    group: "ADD-02:5.2"
+    scope: [technical_design, effluent, new_in_addendum]
+    requirement: "Reflect the amended Total Nitrogen limit (3 mg/l, ADD-02 5.1) in the process design submitted under Volume II Section 3"
+    units: ["ADD-02:5.2", "ADD-02:5.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: ADD-02
+        quote: "Bidders shall reflect the amended limit in the process design submitted under Volume II Section 3."
+        parameters: {tn_limit_mg_l: 3}
+        note: "The amended limit is '3 mg/l, assessed on the same basis' (ADD-02 5.1; row VOL-II-T2-4-TN). The old value and the basis exist only in the Table 2-4 image (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit prevails over the reproduction and is not supplied (I-PERMIT). No consequence stated."
+    confidence: medium
+    confidence_reason: "verbatim; the basis of assessment rests on the image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit is not supplied"
+    issues: [I-NO-CONSEQUENCE, I-PERMIT, I-READING-T24]
+  - id: ADD-02-T1-1-N3-01
+    group: "ADD-02:T1-1-rev"
+    scope: [evaluation, scoring, new_in_addendum]
+    requirement: "Technical marks awarded on the Authority's 'standard five-point scale' and multiplied by the weight shown (reissued Table 1-1)"
+    units: ["ADD-02:T1-1-rev/note(3)", "ADD-02:T1-1-rev"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: ADD-02
+        quote: "Marks are awarded on the Authority's standard five-point scale and multiplied by the weight shown."
+        note: "A new scoring method in a small-print note. The scale is not defined in the pack and the reissued table shows 'Marks', not weights; how it combines with the 70-mark threshold (VOL-I 11.3) is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; the method it states cannot be applied from the pack"
+    issues: [I-VOL-IV-SCALE]
+  - id: ADD-02-F4G-02
+    group: "ADD-02:F4-G"
+    scope: [forms, post_award, cybersecurity, new_in_addendum]
+    requirement: "Form 4-G undertaking 1: segregate the OT environment from any business network per VOL-II 6.2 (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2."
+        note: "Restates VOL-II 6.2 as an undertaking. The effect of answering 'No' is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-03
+    group: "ADD-02:F4-G"
+    scope: [forms, post_award, cybersecurity, new_in_addendum]
+    requirement: "Form 4-G undertaking 2: implement an information security management system covering the OT environment before commissioning"
+    units: ["ADD-02:F4-G/T1/2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "An information security management system covering the operational technology environment will be implemented before commissioning."
+        note: "Compare VOL-II 6.3 (implement and maintain the system; security architecture for review prior to commissioning). The effect of answering 'No' is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-04
+    group: "ADD-02:F4-G"
+    scope: [envelope_A, forms, new_in_addendum]
+    requirement: "Sign Form 4-G for and on behalf of the Bidder, with name and date"
+    units: ["ADD-02:F4-G/para1"]
+    discipline: Technical
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "Signed for and on behalf of the Bidder"
+        note: "ADD-02 7.2 states non-responsiveness for failure to submit Form 4-G (row ADD-02-7.2-01); no consequence is stated for signing, and who may sign is not stated."
+    confidence: high
+    confidence_reason: "verbatim signature line"
+    issues: [I-NO-CONSEQUENCE]

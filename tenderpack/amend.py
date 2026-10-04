@@ -803,8 +803,9 @@ def _group_title(st: dict[str, UState], group: str) -> str:
 def _names_target(title: str, target: str) -> bool:
     """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A."""
     local = target.partition(":")[2]
-    if re.fullmatch(r"T\d+-\d+", local):
-        phrase = "Table " + local[1:]
+    if re.fullmatch(r"T\d+-\d+(?:-[A-Za-z0-9]+)?", local):
+        # an addendum's issue of a table carries a suffix (ADD-02:T1-1-rev); its title still names "Table 1-1"
+        phrase = "Table " + re.match(r"T(\d+-\d+)", local).group(1)
     elif re.fullmatch(r"F\d-[A-Z]", local):
         phrase = "Form " + local[1:]
     else:

@@ -8,11 +8,11 @@ import sys
 
 import pytest
 
-from ai_fixture import EVIDENCE, ROOT, fresh_pack
+from ai_fixture import ROOT, fresh_pack
 
 
 @pytest.fixture(scope="module")
-def session(tmp_path_factory):
+def session(tmp_path_factory, blind02_build):
     d = tmp_path_factory.mktemp("ai-mcp")
     pack = fresh_pack(d / "pack")
     msgs = [
@@ -31,7 +31,7 @@ def session(tmp_path_factory):
         {"jsonrpc": "2.0", "id": 10, "method": "tools/call", "params": {"name": "get_state", "arguments": {}}},
     ]
     text = "\n".join(json.dumps(m) for m in msgs) + "\n{not json\n"
-    p = subprocess.run([sys.executable, "-m", "tenderpack", "ai", "serve-mcp", "--evidence", str(EVIDENCE), "--pack", str(pack),
+    p = subprocess.run([sys.executable, "-m", "tenderpack", "ai", "serve-mcp", "--evidence", str(blind02_build), "--pack", str(pack),
                         "--out", str(d / "staging"), "--worklog", str(d / "worklog")],
                        input=text, capture_output=True, text=True, cwd=ROOT, timeout=300)
     assert p.returncode == 0, p.stderr

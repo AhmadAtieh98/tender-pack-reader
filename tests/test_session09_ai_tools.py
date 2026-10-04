@@ -12,8 +12,8 @@ from tenderpack.ai.tools import MODEL_TOOLS, TOOLS, ToolError, call_tool
 
 
 @pytest.fixture(scope="module")
-def ws(tmp_path_factory):
-    return workspace(tmp_path_factory.mktemp("ai-tools"))
+def ws(tmp_path_factory, blind02_build):
+    return workspace(tmp_path_factory.mktemp("ai-tools"), evidence=blind02_build)
 
 
 def test_the_state_identity_names_the_build_and_the_stages(ws):

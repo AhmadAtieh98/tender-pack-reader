@@ -9,7 +9,6 @@ import pytest
 
 from tenderpack import live, stage2
 from tenderpack.amend import UState
-from tenderpack.cli import ingest
 from tenderpack.util import ROOT
 
 T22 = ["bod5", "cod", "total-suspended-solids", "total-nitrogen", "total-phosphorus", "temperature"]
@@ -23,13 +22,9 @@ def real():
 
 
 @pytest.fixture(scope="module")
-def blind02(tmp_path_factory):
-    """Blind rehearsal 02's own build when it is current (it is not committed), else a fresh ingest into a tmp dir."""
-    pack, evidence = ROOT / "rehearsals/blind-02/work/pack.yaml", ROOT / "rehearsals/blind-02/build"
-    if not evidence.exists() or stage2.load_evidence(evidence, ROOT)[1]:
-        evidence = tmp_path_factory.mktemp("blind-02") / "build"
-        assert ingest(pack, evidence, ROOT, quiet=True)["exit_code"] == 0
-    return stage2.run(evidence, pack, ROOT)
+def blind02(blind02_run):
+    """Blind rehearsal 02 on a fresh, disposable ingest of its pack (tests/conftest.py)."""
+    return blind02_run
 
 
 def _line(text, rid):

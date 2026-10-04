@@ -9,9 +9,22 @@
     output_config.effort for a model that supports it); nothing else is added.
   * No server-side model fallback is requested: a refusal (stop_reason "refusal") is a ProviderError, so the run ends
     `provider_failed` rather than being silently answered by another model.
-  * Capabilities: GET {base_url}/v1/models/{model} when a key is present (max_input_tokens, max_tokens,
-    capabilities.image_input / structured_outputs); tool use comes from config. If the models endpoint cannot be
-    reached, the config values are used with source "config, unverified against the endpoint".
+  * Capabilities (session 10: no silent fallback): GET {base_url}/v1/models/{model} (shape from the bundled claude-api
+    skill, shared/models.md "Programmatic Model Discovery" -> "Raw HTTP": `max_input_tokens` is the context window,
+    `max_tokens` the output cap, `capabilities.<leaf>.supported` per feature: image_input, structured_outputs). Without
+    a key, when the endpoint cannot be reached or does not list the model, or when it omits max_input_tokens or
+    max_tokens, live use is REFUSED ("capabilities unverified"); the configured `capabilities:` block is used only with
+    --allow-unverified-capabilities (base.unverified: marked, logged, shown in the review request). A leaf the endpoint
+    omits is unknown (None), never filled from config. Tool use is a Messages API feature for every listed model (the
+    documented models response has no tool-use leaf); a model that rejected `tools` would fail its first call visibly.
+  * Native structured outputs (session 10): when a request carries `response_schema` (the controller's proposal-set
+    schema), the endpoint reports `structured_outputs`, and the route's `structured_output.mode` is `native`, the body
+    gets `output_config.format = {type: "json_schema", schema}` (merged with any `output_config` from request_extra,
+    e.g. effort), sent with the tools on every turn; see structured.py for the schema and its limits. A 400 that rejects
+    the schema switches this provider to the plain path for the rest of the run, with a route notice, and the attempt is
+    retried (counted as a call) without the format. The controller parses and validates the answer locally either way.
+  * Token counting: count_tokens(request) -> POST {base_url}/v1/messages/count_tokens with model, system, messages and
+    tools (shared/token-counting.md; it samples nothing). Used by the batch planner when a key is set.
   * One attempt per complete(); retries, backoff on 408/409/429/5xx/529 and timeouts (honouring retry-after) are
     done by base.complete_with_retries, bounded by the run's caps.
 """
@@ -19,20 +32,31 @@ from __future__ import annotations
 
 import os
 
-from .base import Capabilities, ProviderError, Request, Response, ToolCall, http_json, image_b64
+from . import structured as SO
+from .base import (ALLOW_UNVERIFIED_KEY, Capabilities, ProviderError, Request, Response, ToolCall, configured_capabilities,
+                   http_json, image_b64, notice, unverified)
 
 
 class AnthropicProvider:
     name = "anthropic"
     paid = True
 
-    def __init__(self, model: str, rcfg: dict, model_cfg: dict | None = None, env=os.environ):
+    def __init__(self, model: str, rcfg: dict, model_cfg: dict | None = None, env=os.environ,
+                 allow_unverified: bool = False, fetch=None):
         self.model, self.rcfg, self.mcfg = model, rcfg, model_cfg or {}
         self.base_url = (rcfg.get("base_url") or "https://api.anthropic.com").rstrip("/")
         self.version = rcfg.get("api_version") or "2023-06-01"
         self.key_env = rcfg.get("api_key_env") or "ANTHROPIC_API_KEY"
         self._key = env.get(self.key_env)
         self._caps: Capabilities | None = None
+        self.allow_unverified = bool(allow_unverified or rcfg.get(ALLOW_UNVERIFIED_KEY))
+        self._fetch = fetch                     # None: base.http_json, looked up at call time (tests patch the module)
+        self.structured_mode = str((rcfg.get("structured_output") or {}).get("mode", "native"))
+        self._plain_reason: str | None = None   # set when native structured output is not (or no longer) used
+        self.format_sent = False                # the last request body carried output_config.format
+
+    def _http(self, *a):
+        return (self._fetch or http_json)(*a)
 
     def _headers(self) -> dict:
         if not self._key:
@@ -47,31 +71,62 @@ class AnthropicProvider:
     def capabilities(self) -> Capabilities:
         if self._caps is not None:
             return self._caps
-        declared = dict(self.mcfg.get("capabilities") or {})
         retention = self.rcfg.get("retention", "provider policy; not verified by this tool")
-        caps = Capabilities(images=declared.get("images"), tools=declared.get("tools", True),
-                            structured_output=declared.get("structured_output"),
-                            context_tokens=declared.get("context_tokens"), retention=retention,
-                            source="config, unverified against the endpoint" + ("" if self._key else
-                                                                                  f" (no {self.key_env} in the environment)"),
-                            max_output_tokens=declared.get("max_output_tokens"))
-        if self._key:
+        endpoint = f"GET /v1/models/{self.model}"
+        configured = (configured_capabilities(self.mcfg, retention, "config/ai.yaml capabilities")
+                      if self.mcfg.get("capabilities") else None)
+        if not self._key:
+            self._caps = unverified("anthropic", self.model, f"no {self.key_env} in the environment, so {endpoint} "
+                                    "cannot be called", configured, self.allow_unverified)
+            return self._caps
+        try:
+            _, _, m = self._http("GET", f"{self.base_url}/v1/models/{self.model}", self._headers(), None, 20)
+        except ProviderError as e:
+            what = "does not list the model" if e.status == 404 else "could not be reached"
+            self._caps = unverified("anthropic", self.model, f"the models endpoint {what} ({endpoint}: {e.kind})",
+                                    configured, self.allow_unverified)
+            return self._caps
+        missing = [k for k in ("max_input_tokens", "max_tokens") if not isinstance(m.get(k), int)]
+        if missing:
+            self._caps = unverified("anthropic", self.model, f"{endpoint} does not report {' or '.join(missing)}",
+                                    configured, self.allow_unverified)
+            return self._caps
+        c = m.get("capabilities") if isinstance(m.get("capabilities"), dict) else {}
+        leaf = lambda k: (c.get(k) or {}).get("supported") if isinstance(c.get(k), dict) else None  # noqa: E731
+        self._caps = Capabilities(images=leaf("image_input"), tools=True, structured_output=leaf("structured_outputs"),
+                                  context_tokens=m["max_input_tokens"], retention=retention,
+                                  source=f"{endpoint} (context, output cap, image input, structured outputs; tool use "
+                                         "is a Messages API feature of every listed model)",
+                                  max_output_tokens=m["max_tokens"],
+                                  details={"model_id_reported": m.get("id"),
+                                           "leaves_not_reported": [k for k in ("image_input", "structured_outputs")
+                                                                   if leaf(k) is None]})
+        return self._caps
+
+    # ------------------------------------------------------------------ structured outputs
+    def native_format(self, request: Request) -> dict | None:
+        """output_config.format for this request, or None (plain path: the answer is parsed locally as text)."""
+        if request.response_schema is None:
+            return None
+        why = self._plain_reason
+        if why is None and self.structured_mode != "native":
+            why = f"routes.anthropic.structured_output.mode is {self.structured_mode!r}"
+        if why is None:
+            caps = self._caps
+            if caps is None or caps.structured_output is not True:
+                why = (f"the endpoint does not report structured outputs for {self.model} "
+                       f"(structured_output={None if caps is None else caps.structured_output})")
+        if why is None:
             try:
-                _, _, m = http_json("GET", f"{self.base_url}/v1/models/{self.model}", self._headers(), None, 20)
-                c = m.get("capabilities") or {}
-                leaf = lambda k: (c.get(k) or {}).get("supported") if isinstance(c.get(k), dict) else None  # noqa: E731
-                caps = Capabilities(images=leaf("image_input") if leaf("image_input") is not None else caps.images,
-                                    tools=caps.tools,
-                                    structured_output=leaf("structured_outputs") if leaf("structured_outputs") is not None
-                                    else caps.structured_output,
-                                    context_tokens=m.get("max_input_tokens") or caps.context_tokens, retention=retention,
-                                    source=f"GET /v1/models/{self.model} (tool use from config)",
-                                    max_output_tokens=m.get("max_tokens") or caps.max_output_tokens,
-                                    details={"model_id_reported": m.get("id")})
-            except ProviderError as e:
-                caps.source = f"config, unverified against the endpoint (models endpoint: {e.kind})"
-        self._caps = caps
-        return caps
+                return {"type": "json_schema", "schema": SO.for_provider(request.response_schema, "anthropic")}
+            except SO.SchemaUnsupported as e:
+                why = f"the proposal-set schema cannot be expressed within the structured-output limits ({e})"
+        if self._plain_reason is None:
+            self._plain_reason = why
+            notice("structured_output_not_used", f"native structured output not used ({why}); the final answer is "
+                                                 "parsed and validated locally from text", route="anthropic",
+                   model=self.model)
+        return None
 
     # ------------------------------------------------------------------ translation
     @staticmethod
@@ -109,11 +164,35 @@ class AnthropicProvider:
                              for t in request.tools]
         for k, v in (self.mcfg.get("request_extra") or {}).items():
             body.setdefault(k, v)
+        fmt = self.native_format(request)
+        self.format_sent = fmt is not None
+        if fmt is not None:                     # merged with request_extra's output_config (e.g. effort), never replacing it
+            body["output_config"] = {**(body.get("output_config") or {}), "format": fmt}
         return body
 
+    def count_tokens(self, request: Request) -> int:
+        """POST /v1/messages/count_tokens (free; samples nothing): the input tokens of this request as the endpoint
+        counts them for this model."""
+        b = self.body(request)
+        body = {k: b[k] for k in ("model", "system", "messages", "tools") if k in b}
+        _, _, data = self._http("POST", f"{self.base_url}/v1/messages/count_tokens", self._headers(), body,
+                                request.timeout_s)
+        if not isinstance(data.get("input_tokens"), int):
+            raise ProviderError("count_tokens", f"no input_tokens in the reply ({str(data)[:200]})", False)
+        return data["input_tokens"]
+
     def complete(self, request: Request) -> Response:
-        _, _, data = http_json("POST", f"{self.base_url}/v1/messages", self._headers(), self.body(request),
-                               request.timeout_s)
+        body = self.body(request)
+        try:
+            _, _, data = self._http("POST", f"{self.base_url}/v1/messages", self._headers(), body, request.timeout_s)
+        except ProviderError as e:
+            if self.format_sent and SO.is_schema_rejection(e):
+                self._plain_reason = f"the endpoint rejected the structured-output schema ({e.kind}: {e.message[:200]})"
+                notice("structured_output_rejected", f"{self._plain_reason}; the run continued on the plain tool-use "
+                                                     "path (final answer parsed and validated locally)",
+                       route="anthropic", model=self.model)
+                raise ProviderError("structured_output_rejected", self._plain_reason, True, e.status, 0.0) from None
+            raise
         if data.get("type") == "error":
             raise ProviderError("api_error", str(data.get("error"))[:300], False)
         if data.get("stop_reason") == "refusal":

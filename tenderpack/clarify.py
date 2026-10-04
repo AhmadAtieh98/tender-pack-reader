@@ -10,8 +10,10 @@ register, and a person decides what to raise through the Portal (VOL-I 5.1) befo
       unavailable_material:  referenced material not in the pack, its impact and handling (never a prerequisite)
     -> out/a4/clarification_register.{md,csv,json}; the A3 groups list the question ids; A1's Issues sheet links them
 
-Checks (check-register, release gate as coverage): every quotation is verbatim in its unit's text on the stated page;
-every entry has the fields the owner asked for, including a decision owner and at least one verbatim source; the
+Checks (check-register, release gate as coverage): every quotation is verbatim in its unit's text on the stated page,
+and names a unit, a page and non-blank words (session 10: an empty or whitespace quotation is found in any text, so it
+is refused, never checked); every entry has the fields the owner asked for, each non-blank after stripping, including
+a decision owner (whitespace is not an owner) and at least one verbatim source; the
 response status is exactly one of RESPONSE_STATES (anything else, e.g. "answered", "sent" or "pending", is an unknown
 state); "answered by addendum" needs `answer: {unit, page, words}` quoting a unit of an addendum (ADD-) verbatim on
 that page: an answer is evidence-backed only this way, and unknown answers stay unknown; linked issues exist.
@@ -102,8 +104,18 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
     by_id = {u["unit_id"]: u for u in units}
     out = []
 
+    def blank(v) -> bool:
+        return v is None or (isinstance(v, str) and not v.strip())
+
     def quotes(where: str, items) -> None:
         for q in items or []:
+            if not isinstance(q, dict) or any(blank(q.get(k)) for k in ("unit", "page")):
+                out.append(f"{where}: a quotation needs a unit, a page and the words; got {q!r}")
+                continue
+            if blank(q.get("words")):
+                out.append(f"{where}: empty quotation from {q.get('unit')} p{q.get('page')}: the words are required "
+                           "(an empty or whitespace quotation would be found in any text)")
+                continue
             u = by_id.get(q.get("unit"))
             if u is None:
                 out.append(f"{where}: unit {q.get('unit')} does not exist")
@@ -120,9 +132,10 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
         if cid in seen:
             out.append(f"{cid}: duplicate id")
         seen.add(cid)
-        missing = [k for k in REQUIRED if c.get(k) in (None, "")]
+        missing = [k for k in REQUIRED if blank(c.get(k))]
         if missing:
-            out.append(f"{cid}: missing {missing}")
+            out.append(f"{cid}: missing {missing}" + (" (blank: whitespace only)" if any(
+                isinstance(c.get(k), str) and c.get(k) for k in missing) else ""))
         if not isinstance(c.get("sources"), list) or not c.get("sources"):
             out.append(f"{cid}: no sources: every question needs at least one verbatim source (unit, page, words)")
         status = c.get("response_status")
@@ -133,7 +146,7 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
                        + ("; " + evidenced if "answer" in str(status).lower() else ""))
         ans = c.get("answer")
         if status == "answered by addendum":
-            if not isinstance(ans, dict) or any(ans.get(k) in (None, "") for k in ("unit", "page", "words")):
+            if not isinstance(ans, dict) or any(blank(ans.get(k)) for k in ("unit", "page", "words")):
                 out.append(f"{cid}: response_status 'answered by addendum' without answer evidence: {evidenced}")
             elif ans.get("unit") in by_id and not str(by_id[ans["unit"]].get("doc", "")).startswith("ADD-"):
                 out.append(f"{cid}: answer unit {ans.get('unit')} is not a unit of an Addendum (ADD-): {evidenced}")

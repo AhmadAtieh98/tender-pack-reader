@@ -1,0 +1,83 @@
+[ADD-03-run-host-blind04-20261004T152505Z] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p4-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-blind04-20261004T152505Z] readings ...
+  reading-ADD-03-p4-r1: done (interpretation_pending; /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/curation/readings/ADD-03-p4-r1.yaml)
+  ingest with the proposed readings: ok (613 units; readings PENDING HUMAN REVIEW: ['ADD-03-p4-r1'])
+  candidate built: 70 provisions of ADD-03 (+19 structural units listed)
+[ADD-03-run-host-blind04-20261004T152505Z] analysis ...
+  70 provisions in 10 batch(es) of at most 8
+  analysis-001: done (8 item(s); run ADD-03-host-20261004T153340Z-a436)
+  analysis-002: done (4 item(s); run ADD-03-host-20261004T153642Z-9753)
+  analysis-003: done (8 item(s); run ADD-03-host-20261004T154102Z-6d03)
+  analysis-004: done (13 item(s); run ADD-03-host-20261004T154836Z-cf01)
+  analysis-005: done (9 item(s); run ADD-03-host-20261004T155523Z-04c2)
+  analysis-006: done (8 item(s); run ADD-03-host-20261004T155951Z-be2f)
+  analysis-007: done (9 item(s); run ADD-03-host-20261004T160550Z-25da)
+  analysis-008: failed (the host session submitted nothing (the host ended with an error (success: 429)))
+  analysis-009: failed (the host session submitted nothing (the host ended with an error (success: 429)))
+[ADD-03-run-host-blind04-20261004T152505Z] validation ...
+  combined set: 59 item(s); 57/70 provisions accounted for; {'evidence_verified': 9, 'conflicting': 6, 'interpretation_pending': 35, 'escalated': 3, 'insufficient_evidence': 6}
+[ADD-03-run-host-blind04-20261004T152505Z] downstream ...
+  downstream-001: failed (the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them))
+  downstream-002: failed (the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them))
+  downstream-003: failed (the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them))
+  downstream-004: failed (the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them))
+  downstream-005: failed (the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them))
+  downstream: 55 task(s) {'row_reading': 23, 'row_new': 4, 'clarification_item': 4, 'activity': 13, 'escalation': 11}
+[ADD-03-run-host-blind04-20261004T152505Z] downstream_validation ...
+  downstream items: {}
+[ADD-03-run-host-blind04-20261004T152505Z] promotion ...
+  promoted into the candidate: 16 op(s), 26 disposition(s), 24 unresolved, 0 new row(s), 0 reading(s), 0 issue(s), 0 activit(y/ies), 0 clarification(s), 0 relationship(s)
+[ADD-03-run-host-blind04-20261004T152505Z] pin ...
+[ADD-03-run-host-blind04-20261004T152505Z] check_register ...
+  check-register: exit 1, 8 finding(s) {'C46': 8}
+[ADD-03-run-host-blind04-20261004T152505Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out (exit 0; 81 file(s) carry the banner)
+[ADD-03-run-host-blind04-20261004T152505Z] diff ...
+[ADD-03-run-host-blind04-20261004T152505Z] review ...
+timings (wall clock per step):
+  ingest                     19.4 s  done
+  readings                  230.7 s  done
+  analysis                 2338.7 s  done
+  validation                  3.9 s  done
+  downstream                 13.7 s  done
+  downstream_validation       0.3 s  done
+  promotion                   2.7 s  done
+  pin                         1.8 s  done
+  check_register              4.7 s  done
+  outputs                   114.0 s  done
+  diff                        2.6 s  done
+  review                      0.9 s  done
+  total (steps)            2733.4 s  (45.6 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind04-20261004T152505Z: partial (24 provision(s) unresolved in the candidate (listed first in the review packet))
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind04-20261004T152505Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "24 provision(s) unresolved in the candidate (listed first in the review packet)",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z",
+ "provisions": {
+  "validated": 57,
+  "pending": 13
+ },
+ "timings": {
+  "ingest": 19.4,
+  "readings": 230.7,
+  "analysis": 2338.7,
+  "validation": 3.9,
+  "downstream": 13.7,
+  "downstream_validation": 0.3,
+  "promotion": 2.7,
+  "pin": 1.8,
+  "check_register": 4.7,
+  "outputs": 114.0,
+  "diff": 2.6,
+  "review": 0.9
+ },
+ "total_seconds": 2733.4,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.md",
+ "waiting": []
+}
+exit 0

@@ -12,7 +12,6 @@ import copy
 import pytest
 
 from tenderpack import clarify, stage2
-from tenderpack.cli import ingest
 from tenderpack.util import load_yaml, ROOT
 
 UNITS = [  # synthetic units in the pack's style (not tender content)
@@ -107,27 +106,15 @@ def test_a_wrong_cut_off_date_or_time_is_a_finding():
 
 # ---------------------------------------------------------------------------------------------- the packs
 
-def _usable(evidence, pack):
-    return evidence.exists() and not stage2.load_evidence(evidence, ROOT)[1]
-
-
 @pytest.fixture(scope="module")
 def real():
     return stage2.run(ROOT / "build", ROOT / "config/pack.yaml", ROOT)
 
 
-def _rehearsal(name, tmp_path_factory):
-    """The rehearsal's own build when it is current (it is not committed), else a fresh ingest into a tmp dir."""
-    pack, evidence = ROOT / f"rehearsals/{name}/work/pack.yaml", ROOT / f"rehearsals/{name}/build"
-    if not _usable(evidence, pack):
-        evidence = tmp_path_factory.mktemp(name) / "build"
-        assert ingest(pack, evidence, ROOT, quiet=True)["exit_code"] == 0
-    return stage2.run(evidence, pack, ROOT)
-
-
 @pytest.fixture(scope="module")
-def blind02(tmp_path_factory):
-    return _rehearsal("blind-02", tmp_path_factory)
+def blind02(blind02_run):
+    """Blind rehearsal 02 on a fresh, disposable ingest of its pack (tests/conftest.py)."""
+    return blind02_run
 
 
 def _clar(r):
@@ -177,11 +164,11 @@ def test_blind_02_register_follows_its_amended_proposal_due_date_time(blind02):
     assert any("does not state the effective PDD time 11:00" in f for f in found), found
 
 
-def test_blind_01_cut_off_is_computed_from_its_moved_due_date_not_assumed(tmp_path_factory):
+def test_blind_01_cut_off_is_computed_from_its_moved_due_date_not_assumed(blind01_run):
     """Blind 01's ADD-03 moved the Proposal Due Date to 10 December 2026 and the 5.2 period to fifteen Working Days,
     so its cut-off is 19 November 2026, computed from the effective text. The pack has its own register copy
     (session 09) carrying that date; the real register's 12 November, read against this pack, is reported."""
-    r = _rehearsal("blind-01", tmp_path_factory)
+    r = blind01_run
     eff = clarify.effective_cutoff(r)
     assert (eff["stage"], eff["pdd"]["date"], eff["pdd"]["time"], eff["date"]) == ("ADD-03", "2026-12-10", "14:00", "2026-11-19")
     assert r["clarifications"]["cut_off"]["date"] == "2026-11-19" and "19 November 2026" in r["clarifications"]["cut_off"]["note"]

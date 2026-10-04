@@ -11,11 +11,15 @@ Read-only (they compute from the published evidence build and the curated inputs
                                               text as separate fields (only the source text is evidence)
   get_group(group_id, stage)                  members of a table, form or list with cells, the heading and notes
   get_crop(unit_id)                           path and sha256 of the native image / crops in the evidence build
-                                              (refused for text-layer units, and for any path outside the build)
+                                              (refused for text-layer units, and for any path outside the build); each
+                                              file is checked against the sha256 the build recorded: a file replaced
+                                              after the build is an integrity failure (ToolError), never served
   compare_state(from_stage, to_stage)         live.diff plus every unit whose status, text, cells or annotations differ
   calculate(kind, args)                       approved date calculations only (dates.py): relative periods with every
                                               counting reading, working days between, adding working days, a working
-                                              day test, and the date printed in a named unit; no arithmetic on free text
+                                              day test, and the date printed in a named unit; no arithmetic on free text.
+                                              Each result carries `inputs_fingerprint` (StateIdentity.fingerprint(): the
+                                              assumptions, amendment files, evidence build, ... it was computed under)
   simulate_amendment(addendum, ops, dispositions)   engine dry run (amend.Engine through stage2.evaluate on a copy;
                                               nothing persisted): per-op validity with the C21-C27 check records,
                                               coverage, unevidenced additions (C47), scope leak, changed units, C46
@@ -29,12 +33,18 @@ Writers (staging only, never curation/):
   request_review(proposal_set) / submit_proposals(proposal_set, host_model)   validate a set and write
                                               staging/ai/<run_id>/{proposals.yaml, review_request.md, log.jsonl}
 
+Every evidence read runs on a verified version (session 10): the Workspace's inputs are those it loaded (otherwise
+"workspace stale: reload"; a tool call reloads first) and the evidence build verified against its manifest (otherwise
+"integrity failure").
+
 The tool layer never executes model text: arguments are checked against each tool's schema (unknown keys, types,
 enums) and used as data. Unit and stage ids are looked up, never used as paths; the only file paths a tool returns
 are crops inside the evidence build, checked after resolution.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 import os
 import re
@@ -61,8 +71,16 @@ class ToolError(Exception):
 # ---------------------------------------------------------------------------------------------- workspace
 
 class Workspace:
-    """One evidence build + pack, evaluated lazily with stage2.run; `refresh()` re-evaluates when any input file
-    changed (a long-lived MCP server sees a decision recorded after it started)."""
+    """One evidence build + pack, evaluated lazily with stage2.run.
+
+    Loading (session 10). `refresh()` loads, and reloads when any input changed since the last load: the pack, the
+    curated inputs (decisions, approvals, readings, clarifications, assumptions, activity templates, amendment files,
+    register, dispositions, evidence items), BUILD_MANIFEST.json and every file it records (units.json, the crops,
+    ...). A tool call refreshes first (a long-lived MCP server sees a decision recorded after it started), and so does
+    every controller step. Between loads, nothing is served from a version whose inputs changed: `check_fresh()` (run
+    by every evidence read and by `identity()`) refuses with "workspace stale: reload". The state identity is computed
+    from the bytes of the inputs at load time (contract.StateIdentity), and a crop is served only when its bytes are the
+    ones the evidence build recorded ("integrity failure" otherwise, never silently)."""
 
     def __init__(self, evidence: Path | None = None, pack: Path | None = None, root: Path = ROOT,
                  staging: Path | None = None, worklog: Path | None = None, ai_config: Path | None = None):
@@ -73,41 +91,163 @@ class Workspace:
         self.worklog = Path(worklog) if worklog else self.root / "worklog/model_calls"
         self.ai_config = ai_config
         self._r = self._key = self._index = self._by_id = None
+        self._identity: StateIdentity | None = None
+        self._recorded: dict[str, str] = {}        # evidence-build path -> sha256 the build recorded (or, for a crop
+        self._unrecorded: dict[str, str] = {}      # the manifest does not record, the sha256 read when loading)
+        self._cache: dict = {}
 
     def _p(self, p) -> Path:
         p = Path(p)
         return p if p.is_absolute() else self.root / p
 
-    def _inputs_key(self) -> tuple:
+    def _curated(self, cfg: dict) -> dict:
+        """The curated input files and directories the pack names (defaults relative to the repository root)."""
+        return {k: self._p(cfg.get(k, d)) for k, d in (
+            ("decisions", "curation/reviews/decisions.yaml"), ("approvals", "curation/approvals.yaml"),
+            ("clarifications", "curation/clarifications/register.yaml"), ("assumptions", "config/assumptions.yaml"),
+            ("activity_templates", "curation/activity_templates.yaml"), ("amendments_dir", "curation/amendments"),
+            ("dispositions_dir", "curation/register/dispositions"), ("evidence_items_dir", "curation/evidence_items"),
+            ("readings_dir", "curation/readings"), ("register", "curation/register/rows.yaml"))}
+
+    def _input_files(self) -> list[Path]:
         cfg = load_yaml(self.pack) or {}
-        files = [self.pack, self.evidence / "BUILD_MANIFEST.json"]
-        for k, d in (("decisions", "curation/reviews/decisions.yaml"), ("approvals", "curation/approvals.yaml"),
-                     ("clarifications", "curation/clarifications/register.yaml"), ("assumptions", "config/assumptions.yaml"),
-                     ("activity_templates", "curation/activity_templates.yaml")):
-            files.append(self._p(cfg.get(k, d)))
-        for k, d in (("amendments_dir", "curation/amendments"), ("dispositions_dir", "curation/register/dispositions"),
-                     ("evidence_items_dir", "curation/evidence_items")):
-            dd = self._p(cfg.get(k, d))
-            files += sorted(dd.glob("**/*.yaml")) if dd.is_dir() else []
-        reg = self._p(cfg.get("register", "curation/register/rows.yaml")).parent
+        c = self._curated(cfg)
+        man = self.evidence / "BUILD_MANIFEST.json"
+        files = [self.pack, man] + [c[k] for k in ("decisions", "approvals", "clarifications", "assumptions",
+                                                  "activity_templates")]
+        for k in ("amendments_dir", "dispositions_dir", "evidence_items_dir", "readings_dir"):
+            files += sorted(c[k].glob("**/*.yaml")) if c[k].is_dir() else []
+        reg = c["register"].parent
         files += sorted(reg.glob("**/*.yaml")) if reg.is_dir() else []
+        try:                                       # session 10: the curated relationships stage2.run reads, if any
+            from .. import relationships
+            files.append(relationships.default_path(cfg, self.root))
+        except (ImportError, AttributeError):
+            pass
+        try:
+            outputs = json.loads(man.read_text(encoding="utf-8")).get("outputs") or {}
+        except (OSError, ValueError):
+            outputs = {}
+        files += [self.evidence / p for p in sorted(outputs)]
+        return files
+
+    def _inputs_key(self) -> tuple:
         out = []
-        for f in files:
+        for f in self._input_files():
             try:
                 st = f.stat()
-                out.append((str(f), st.st_mtime_ns, st.st_size))
+                out.append((str(f), st.st_mtime_ns, st.st_size, st.st_ino))
             except OSError:
-                out.append((str(f), None, None))
+                out.append((str(f), None, None, None))
         return tuple(out)
 
     def refresh(self) -> dict:
-        """Re-evaluate when any input file changed since the last evaluation (called at the start of every tool call
-        and controller step, so a long-lived MCP server sees a decision recorded after it started)."""
+        """Load, or reload when any input changed since the last load (see the class docstring). The inputs are keyed
+        before and after loading; a change while loading is loaded again once, then refused."""
         key = self._inputs_key()
-        if self._r is None or key != self._key:
-            self._r = stage2.run(self.evidence, self.pack, self.root)
-            self._key, self._index, self._by_id = key, None, None
-        return self._r
+        if self._r is not None and key == self._key:
+            return self._r
+        for _ in range(2):
+            r = stage2.run(self.evidence, self.pack, self.root)
+            identity, recorded, unrecorded = self._identity_of(r)
+            after = self._inputs_key()
+            if after == key:
+                self._r, self._key, self._identity = r, key, identity
+                self._recorded, self._unrecorded = recorded, unrecorded
+                self._index = self._by_id = None
+                self._cache = {}
+                return r
+            key = after
+        raise ToolError("workspace stale: reload (its inputs kept changing while they were being loaded)")
+
+    def _identity_of(self, r: dict) -> tuple[StateIdentity, dict, dict]:
+        """The state identity from the bytes of the inputs as loaded, the sha256 the evidence build recorded for each
+        file it wrote, and the sha256 (read now) of any crop the units name that the build did not record."""
+        cfg, c = r["cfg"], self._curated(r["cfg"])
+        man = self.evidence / "BUILD_MANIFEST.json"
+        recorded = dict(json.loads(man.read_text(encoding="utf-8")).get("outputs") or {})
+        unrecorded = {}
+        for rel in sorted({rel for u in r["units"] for _, rel, _ in _crop_paths(u)} - set(recorded)):
+            p = (self.evidence / rel).resolve()
+            if p.is_relative_to(self.evidence) and p.is_file():
+                unrecorded[rel] = sha256_file(p)
+        order = r["order"]
+        upto = order.index(r["working"].stage) if r["working"] else len(order)
+        amend_dir = c["amendments_dir"]
+        amendments = [amend_dir / f"{a}.yaml" for a in order[1:upto]]
+        readings = [c["approvals"]] + (sorted(c["readings_dir"].glob("*.yaml")) if c["readings_dir"].is_dir() else [])
+        dec = Path(r["decisions_file"])
+        ident = StateIdentity(pack_id=str(cfg.get("pack_id") or self.pack.stem), evidence_build_id=sha256_file(man),
+                              validated_stage=r["validated"].stage,
+                              working_stage=r["working"].stage if r["working"] else None,
+                              decisions_sha256=sha256_file(dec) if dec.exists() else None,
+                              assumptions_sha256=_sha_or_none(c["assumptions"]),
+                              activity_templates_sha256=_sha_or_none(c["activity_templates"]),
+                              readings_sha256=_files_sha(readings), amendments_sha256=_files_sha(amendments),
+                              unrecorded_crops_sha256=_files_sha([], unrecorded) if unrecorded else None)
+        return ident, recorded, unrecorded
+
+    def check_fresh(self) -> None:
+        """Refuse ("workspace stale: reload") when any input changed since the workspace was loaded: nothing is served
+        from a version whose inputs changed (refresh() reloads; a tool call does that first)."""
+        if self._r is None:
+            return
+        key = self._inputs_key()
+        if key == self._key:
+            return
+        old, new = {k[0]: k[1:] for k in self._key}, {k[0]: k[1:] for k in key}
+        changed = [self._rel(f) for f in sorted(set(old) | set(new)) if old.get(f) != new.get(f)]
+        raise ToolError(f"workspace stale: reload (changed since it was loaded: {', '.join(changed[:4])}"
+                        f"{f' and {len(changed) - 4} more' if len(changed) > 4 else ''})")
+
+    def verified(self) -> dict:
+        """The loaded run, for an evidence read: the inputs are those loaded (check_fresh) and the evidence build
+        verified against its BUILD_MANIFEST.json when it was loaded (E01), else an integrity failure."""
+        self.check_fresh()
+        r = self.r
+        if r["problems"]:
+            raise ToolError("integrity failure: the evidence build does not verify against its BUILD_MANIFEST.json "
+                            "(E01): " + "; ".join(r["problems"])[:600])
+        return r
+
+    def check_file(self, rel: str) -> str:
+        """sha256 of an evidence-build file, after checking it is the file the build recorded (or, for a crop the
+        manifest does not record, the file read when loading). ToolError otherwise: never served silently."""
+        self.r
+        p = (self.evidence / rel).resolve()
+        if not p.is_relative_to(self.evidence) or not p.is_file():
+            raise ToolError(f"integrity failure: {rel} is not a file of the evidence build")
+        actual = sha256_file(p)
+        expected = self._recorded.get(rel) or self._unrecorded.get(rel)
+        if expected is None:
+            raise ToolError(f"integrity failure: {rel} is neither recorded in BUILD_MANIFEST.json nor read when the "
+                            "workspace was loaded")
+        if actual != expected:
+            try:
+                now = (json.loads((self.evidence / "BUILD_MANIFEST.json").read_text(encoding="utf-8"))
+                       .get("outputs") or {}).get(rel)
+            except (OSError, ValueError):
+                now = None
+            if now == actual:
+                raise ToolError(f"workspace stale: reload (the evidence build was rebuilt since it was loaded: {rel})")
+            raise ToolError(f"integrity failure: {rel} (sha256 {actual[:16]}…) is not the file the evidence build "
+                            f"recorded (sha256 {expected[:16]}…): it was replaced or edited after the build; nothing "
+                            "served")
+        return actual
+
+    def memo(self, key, fn):
+        """A value computed once per loaded version (cleared on reload)."""
+        self.r
+        if key not in self._cache:
+            self._cache[key] = fn()
+        return self._cache[key]
+
+    def _rel(self, f: str) -> str:
+        p = Path(f)
+        for base, tag in ((self.evidence, "evidence build: "), (self.root, "")):
+            if p.is_relative_to(base):
+                return tag + p.relative_to(base).as_posix()
+        return p.name
 
     @property
     def r(self) -> dict:
@@ -127,13 +267,10 @@ class Workspace:
         return self._by_id
 
     def identity(self) -> StateIdentity:
-        r = self.r
-        dec = r["decisions_file"]
-        return StateIdentity(pack_id=str(r["cfg"].get("pack_id") or self.pack.stem),
-                             evidence_build_id=sha256_file(self.evidence / "BUILD_MANIFEST.json"),
-                             validated_stage=r["validated"].stage,
-                             working_stage=r["working"].stage if r["working"] else None,
-                             decisions_sha256=sha256_file(dec) if Path(dec).exists() else None)
+        """The state identity of the loaded inputs; refused ("workspace stale: reload") when they changed since."""
+        self.r
+        self.check_fresh()
+        return self._identity.model_copy()
 
     def stage_name(self, stage: str | None) -> str:
         r = self.r
@@ -159,6 +296,35 @@ class Workspace:
 
     def addenda(self) -> list[str]:
         return [s for s in self.r["order"] if s != amend.BASE]
+
+
+def _sha_or_none(p: Path) -> str | None:
+    return sha256_file(p) if Path(p).is_file() else None
+
+
+def _files_sha(paths: list[Path], named: dict[str, str] | None = None) -> str:
+    """One sha256 over files, by name and content (a disposable copy with the same files has the same value); an
+    absent file counts as absent. `named` adds {name: sha256} pairs already computed."""
+    h = hashlib.sha256()
+    pairs = [(Path(p).name, sha256_file(p) if Path(p).is_file() else "absent") for p in paths]
+    for name, sha in sorted(pairs) + sorted((named or {}).items()):
+        h.update(f"{name}\0{sha}\n".encode("utf-8"))
+    return h.hexdigest()
+
+
+def _crop_paths(u: dict) -> list[tuple[str, str, str | None]]:
+    """(kind, path in the evidence build, column) of every image file a unit names."""
+    found: list[tuple[str, str, str | None]] = []
+    region = u.get("region")
+    if region:
+        found += [("native", f"regions/{region}/native.png", None), ("region_crop", f"regions/{region}/crop.png", None)]
+    for a in u.get("anchors", []):
+        if a.get("crop"):
+            found.append(("unit", a["crop"], None))
+        for col, c in (a.get("cell_crops") or {}).items():
+            if c:
+                found.append(("cell", c, col))
+    return list(dict.fromkeys(found))
 
 
 def _num(addendum: str) -> int:
@@ -205,6 +371,7 @@ def search_evidence(ws: Workspace, query: str, docs: list[str] | None = None, ki
     q = query.strip()
     if not q:
         raise ToolError("empty query")
+    ws.verified()
     limit = max(1, min(int(limit), 50))
     idx = _index(ws)
     qt = list(dict.fromkeys(_tokens(q)))
@@ -249,6 +416,7 @@ def _ops_info(ws: Workspace, op_ids: list[str]) -> list[dict]:
 
 
 def get_unit(ws: Workspace, unit_id: str, stage: str | None = None) -> dict:
+    ws.verified()                    # never cached text of a version whose inputs changed, or of an unverified build
     s = ws.stage(stage)
     u = ws.units_by_id.get(unit_id)
     us = s.state.get(unit_id)
@@ -295,6 +463,7 @@ def _sorted_members(ws: Workspace, ids) -> list[str]:
 
 
 def get_group(ws: Workspace, group_id: str, stage: str | None = None) -> dict:
+    ws.verified()
     s = ws.stage(stage)
     members = _sorted_members(ws, amend.group_members(s.state, group_id))
     if not members:
@@ -316,27 +485,23 @@ def get_group(ws: Workspace, group_id: str, stage: str | None = None) -> dict:
 
 
 def get_crop(ws: Workspace, unit_id: str) -> dict:
+    """The unit's image files, each checked against the sha256 the evidence build recorded (Workspace.check_file): a
+    file replaced or edited after the build is an integrity failure (ToolError), never served; then the workspace must
+    be fresh and the build verified (Workspace.verified)."""
     u = ws.units_by_id.get(unit_id)
     if u is None:
         raise ToolError(f"no unit {unit_id!r} in the evidence build")
-    found: list[tuple[str, str, str | None]] = []
     region = u.get("region")
-    if region:
-        found += [("native", f"regions/{region}/native.png", None), ("region_crop", f"regions/{region}/crop.png", None)]
-    for a in u.get("anchors", []):
-        if a.get("crop"):
-            found.append(("unit", a["crop"], None))
-        for col, c in (a.get("cell_crops") or {}).items():
-            if c:
-                found.append(("cell", c, col))
     base = ws.evidence
     crops = []
-    for kind, rel, col in dict.fromkeys(found):
+    for kind, rel, col in _crop_paths(u):
         p = (base / rel).resolve()
         if not p.is_relative_to(base) or not p.is_file():
             continue                                         # outside the evidence build, or missing: never returned
+        sha = ws.check_file(p.relative_to(base).as_posix())
         crops.append({"kind": kind, "path": str(p), "path_in_build": p.relative_to(base).as_posix(),
-                      "sha256": sha256_file(p), "column": col, "media_type": "image/png"})
+                      "sha256": sha, "column": col, "media_type": "image/png"})
+    ws.verified()
     if not crops:
         raise ToolError(f"no image crop for {unit_id}: it is a text-layer unit (its words are in get_unit) or its crop "
                         "is not in the evidence build")
@@ -347,7 +512,7 @@ def get_crop(ws: Workspace, unit_id: str) -> dict:
 
 def compare_state(ws: Workspace, from_stage: str, to_stage: str) -> dict:
     from .. import live
-    r = ws.r
+    r = ws.verified()
     a, b = ws.stage(from_stage), ws.stage(to_stage)
     md, data = live.diff(r, a.stage, b.stage)
     units = []
@@ -386,8 +551,23 @@ def _iso(v, what: str) -> date:
         raise ToolError(f"{what} must be an ISO date (YYYY-MM-DD), got {v!r}") from None
 
 
+def computed_under(ws: Workspace) -> dict:
+    """What a calculation or a simulation states it was computed under: the fingerprint of the state identity (it
+    binds the assumptions: calendar, holidays, counting policy; the amendment files; the evidence build; ...) and the
+    parts of it a date depends on. A result whose fingerprint differs from the current state's was made under other
+    inputs."""
+    ident = ws.identity()
+    return {"inputs_fingerprint": ident.fingerprint(),
+            "computed_under": {k: getattr(ident, k) for k in ("evidence_build_id", "assumptions_sha256",
+                                                              "amendments_sha256", "validated_stage", "working_stage")}}
+
+
 def calculate(ws: Workspace, kind: str, args: dict) -> dict:
-    r = ws.r
+    r = ws.verified()
+    return {**_calculate(ws, r, kind, args), **computed_under(ws)}
+
+
+def _calculate(ws: Workspace, r: dict, kind: str, args: dict) -> dict:
     last = r["order"][-1]
     cal = r["register"].cal_by_stage.get(last, r["cal"])
     calinfo = {"weekend": sorted(cal.weekend), "holidays": sorted(h.isoformat() for h in cal.holidays),
@@ -461,6 +641,7 @@ def simulate(ws: Workspace, addendum: str, ops: list[dict], dispositions: list[d
     Returns (summary, the evaluated copy of the run) — the copy is the controller's input for impact; nothing is
     written anywhere."""
     from ..amend import Disposition, Op, OpFile, unevidenced_additions
+    ws.check_fresh()
     r = ws.require_ok()
     if addendum not in r["order"] or addendum == amend.BASE:
         raise ToolError(f"{addendum} is not an addendum of this pack ({r['order'][1:]})")
@@ -516,7 +697,8 @@ def simulate(ws: Workspace, addendum: str, ops: list[dict], dispositions: list[d
              "changed_units": changed,
              "c46_needs": [{"op": t["op"], "output": t["output"], "rows": t.get("rows", []), "detail": _short(t["detail"], 300)}
                            for t in r2.get("trace", []) if t["stage"] == addendum],
-             "note": "dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance"}, r2)
+             "note": "dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance",
+             **computed_under(ws)}, r2)
 
 
 def simulate_amendment(ws: Workspace, addendum: str, ops: list[dict] | None = None,
@@ -526,6 +708,7 @@ def simulate_amendment(ws: Workspace, addendum: str, ops: list[dict] | None = No
 
 def simulate_programme(ws: Workspace, stage: str | None = None) -> dict:
     from .. import programme
+    ws.check_fresh()
     r = ws.require_ok()
     st = ws.stage_name(stage)
     try:
@@ -541,14 +724,16 @@ def simulate_programme(ws: Workspace, stage: str | None = None) -> dict:
                            for d in (p.get("drivers") or [])][:30],
             "activity_status_counts": dict(Counter(a["status"].split(" ")[0] for a in acts)),
             "activities": len(acts), "problems": (p.get("problems") or [])[:20],
-            "note": "every lead time is a PROVISIONAL ASSUMPTION (config/assumptions.yaml); negative float is INFEASIBLE"}
+            "note": "every lead time is a PROVISIONAL ASSUMPTION (config/assumptions.yaml); negative float is INFEASIBLE",
+            **computed_under(ws)}
 
 
 def get_state(ws: Workspace) -> dict:
     r = ws.r
-    return {"state": ws.identity().model_dump(), "stages": [{"stage": s.stage, "status": s.status, "issued": s.issued,
-                                                            "ops": len(s.ops), "opfile": s.prepared_by}
-                                                           for s in r["stages"]],
+    ident = ws.identity()
+    return {"state": ident.model_dump(), "inputs_fingerprint": ident.fingerprint(),
+            "stages": [{"stage": s.stage, "status": s.status, "issued": s.issued, "ops": len(s.ops),
+                        "opfile": s.prepared_by} for s in r["stages"]],
             "evidence_problems": r["problems"],
             "drafted_addenda": sorted(r.get("drafted") or {}),
             "note": "copy `state` into every proposal; a proposal made against another state is stale"}
@@ -684,7 +869,8 @@ def call_tool(ws: Workspace, name: str, args: dict | None, caller: str = "model"
                         f"{MODEL_TOOLS if caller == 'model' else list(TOOLS)}")
     args = dict(args or {})
     check_args(t.input_schema, args)
-    ws.refresh()
+    if name not in STATELESS:                    # the region tools read a (possibly refused) build's files only
+        ws.refresh()
     if name in ("get_task_packet", "request_review", "submit_proposals"):
         args["_caller"] = caller
     try:
@@ -693,3 +879,35 @@ def call_tool(ws: Workspace, name: str, args: dict | None, caller: str = "model"
         raise
     except KeyError as e:
         raise ToolError(f"{name}: not found: {e}") from None
+
+
+# ---------------------------------------------------------------------------------------------- region tools (s10)
+# The workflow's readings step (tenderpack/ai/regionread.py): an addendum image region with no reading stops ingest
+# (C05); these read the refused build's region evidence (and nothing of the stage 2 state, which such a build does not
+# have) so a host can propose a reading. Offered over MCP and to the readings step; not to the amendment proposer.
+
+def _get_region(ws: Workspace, region_id: str, bands: list[int] | None = None, cells: bool = False) -> dict:
+    from .regionread import tool_get_region
+    return tool_get_region(ws, region_id, bands, cells)
+
+
+def _validate_reading(ws: Workspace, reading: dict) -> dict:
+    from .regionread import tool_validate_reading
+    return tool_validate_reading(ws, reading)
+
+
+STATELESS = {"get_region", "validate_reading"}
+TOOLS["get_region"] = Tool(
+    "get_region", "An image region of the evidence build (also a refused one): doc, page, bbox, native image sha256 and "
+    "size, the text and rule bands measured from pixels with their crops, the ruled grid if any, a content-type guess, "
+    "and its images (the native image and the page context; or the band crops asked for with `bands`, at most three "
+    "images per call, and the cell crops with `cells`). Every file is checked against BUILD_MANIFEST.json.",
+    _obj({"region_id": S, "bands": {"type": "array", "items": {"type": "integer"}}, "cells": B}, ["region_id"]),
+    _get_region, model=False)
+TOOLS["validate_reading"] = Tool(
+    "validate_reading", "Check a draft reading of an image region (a tenderpack Reading: the shape of the pack's own "
+    "readings) with readings.check_reading: the region and native image, the ruled grid, every text band read, Arabic "
+    "stored in logical order with a separate translation, numerals in their visual order, table structure. Returns "
+    "the findings; writes nothing; nothing is approved.",
+    _obj({"reading": {"type": "object"}}, ["reading"]), _validate_reading, model=False)
+

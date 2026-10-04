@@ -1,0 +1,281 @@
+# Rehearsal copy (blind-02): the curated relationships of the real pack, read against this pack's register (session 10).
+# Relationships between rows, units, calculations, evidence and A5 activities (tenderpack.relationships; session 10).
+# PROPOSED curation (W2, session 10); not reviewed. Every entry is `review: proposed`: a drafting flag, never a decision.
+#
+#   status confirmed  the documents themselves state the link: `evidence` quotes the cross-reference verbatim, on its
+#                     page, and check-register checks every quote like any other
+#   status proposed   inferred by a curator (or a model); `basis` says why; a person decides
+#   status possible   a weaker inference; anything reached through a `words:` trigger is at most this
+# `from`: a row id, a unit id (a table or form id also stands for each of its members), calc:<name>, or words:<phrase>
+# (an op of the stage adds or removes words containing the phrase). `to`: a row, unit, A5 activity, evidence item, date
+# rule or calc:<name>. A row reached also reaches the A5 activities that serve it (their evidence items), which are
+# marked REVIEW (<class>) with their dates unchanged. Durations and the bidder configuration stay labelled assumptions
+# (config/assumptions.yaml); nothing here changes them. Open questions are linked through `issues`, never resolved.
+prepared_by: "session 10 (W2): curated from the volumes' own words; the blind rehearsal 03 gaps (S9, S10, M8, U5) as general entries"
+method: "each link read in the PDF text layer or the approved image readings; a quote for every confirmed link; an inferred link is proposed with its basis"
+relationships:
+  # ------------------------------------------------------------------ who is a member (VOL-I 8.1) -> per-member rules
+  - id: REL-MEMBER-FIN-STANDING
+    from: ["VOL-I:8.1", "words:member of the Bidder", "words:consortium member", "words:member of the consortium"]
+    to: [VOL-I-8.4-01, VOL-I-8.4-02, "calc:financial-standing"]
+    kind: member_scope
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:8.4", page: 4, words: "on a combined basis across consortium members weighted by shareholding"}
+      - {unit: "VOL-I:8.1", page: 4, words: "No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority."}
+    note: "The financial standing is combined across the members and weighted by shareholding: a member added, removed or re-weighted changes the calculation (the members and their shares are bidder facts, I-BIDDER-FACTS)."
+    issues: [I-BIDDER-FACTS]
+    origin: curator
+    review: proposed
+  - id: REL-MEMBER-FORM-4C
+    from: ["VOL-I:8.1", "words:member of the Bidder", "words:consortium member", "words:member of the consortium"]
+    to: [VOL-I-9.4-01, VOL-IV-F4C-N1]
+    kind: member_scope
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:9.4", page: 5, words: "signed and stamped by an authorised signatory of each member of the Bidder"}
+      - {unit: "VOL-I:9.4", page: 5, words: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+      - {unit: "VOL-IV:F4-C/image/note", page: 6, words: "يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف"}
+    note: "One Form 4-C per member: a new member gives its own (in Arabic, signed and stamped by its authorised signatory)."
+    issues: [I-BIDDER-FACTS]
+    origin: curator
+    review: proposed
+  - id: REL-MEMBER-MULTIPLE-PARTICIPATION
+    from: ["VOL-I:8.1", "words:member of the Bidder", "words:consortium member", "words:member of the consortium"]
+    to: [VOL-I-8.2-01, VOL-IV-F4C-02]
+    kind: member_scope
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:8.2", page: 4, words: "No firm, and no affiliate of a firm, shall participate in more than one Proposal."}
+      - {unit: "VOL-IV:F4-C/image/intro", page: 6, words: "بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض"}
+      - {unit: "VOL-IV:F4-C/image/decl2", page: 6, words: "أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة"}
+    note: "Each member declares in its Form 4-C (declaration 2, given for 'the member named below') that it has not taken part in more than one proposal: a new member, and its affiliates, must be checked against VOL-I 8.2."
+    issues: [I-BIDDER-FACTS]
+    origin: curator
+    review: proposed
+  - id: REL-MEMBER-DEBARMENT
+    from: ["VOL-I:8.1", "words:member of the Bidder", "words:consortium member", "words:member of the consortium"]
+    to: [VOL-I-8.10-01, VOL-IV-F4C-03]
+    kind: member_scope
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:8.10", page: 4, words: "No member of the Bidder shall be the subject of, or have been the subject of within the preceding five (5) years, any debarment by a public authority in the Kingdom."}
+      - {unit: "VOL-I:8.10", page: 4, words: "A declaration to this effect shall be given in Form 4-C."}
+    issues: [I-BIDDER-FACTS]
+    origin: curator
+    review: proposed
+  - id: REL-MEMBER-INVESTMENT-LICENCE
+    from: ["VOL-I:8.1", "words:member of the Bidder", "words:consortium member", "words:member of the consortium"]
+    to: [VOL-I-8.9-01]
+    kind: member_scope
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:8.9", page: 4, words: "evidence of a current investment licence for each foreign consortium member"}
+    note: "Whether a new member is foreign is a bidder fact (bidder.foreign_members is a labelled assumption)."
+    issues: [I-BIDDER-FACTS]
+    origin: curator
+    review: proposed
+  # ------------------------------------------------------------------ effluent limits (VOL-II Table 2-4) -> where they apply
+  - id: REL-T24-PROCESS-DESIGN
+    from: ["VOL-II:T2-4"]
+    to: [VOL-II-3.1-01]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-II:3.1", page: 3, words: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."}
+    note: "A changed limit, unit or basis of assessment changes what the process design must achieve. The qualifier 'all values are maxima' and the chlorine and pH ranges stay an open question (I-VOL-II-T24-TENSIONS)."
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  - id: REL-T24-RELIABILITY-RUN
+    from: ["VOL-II:T2-4"]
+    to: [VOL-II-7.2-01]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-II:7.2", page: 4, words: "during which every parameter in Table 2-4 has been met"}
+      - {unit: "VOL-II:7.3", page: 4, words: "A failure of any Table 2-4 parameter during the reliability run shall restart the run in full."}
+    note: "The 30-day reliability run before PCOD must meet every Table 2-4 parameter as amended; a failure restarts it in full."
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  - id: REL-T24-UNAVAILABILITY
+    from: ["VOL-II:T2-4"]
+    to: [VOL-V-31.1-02]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-V:31.1", page: 3, words: "(b) the treated effluent fails any parameter in Volume II Table 2-4"}
+    note: "After PCOD a failure of any Table 2-4 parameter is an Unavailability Event (VOL-V 31.1(b)), with deductions and no cure period."
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  - id: REL-T24-RAMP-UP-DEDUCTIONS
+    from: ["VOL-II:T2-4"]
+    to: [VOL-V-29.3-01]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-V:29.3", page: 3, words: "no availability deduction shall apply to a parameter listed in Table 2-4 as assessed on a rolling average basis"}
+    note: "The second limb of 29.3 turns on which parameters Table 2-4 assesses on a rolling average: a changed basis of assessment changes the Ramp-Up relief."
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  - id: REL-T24-COMPLIANCE-MONITORING-STREAMS
+    from: ["VOL-II:T2-4"]
+    to: [VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-4.3-02]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-II:2.4", page: 2, words: "The treated effluent shall at all times comply with the parameters set out in Table 2-4."}
+      - {unit: "VOL-II:2.5", page: 2, words: "continuous online monitoring for those parameters identified in Table 2-4 as assessed on a continuous basis"}
+      - {unit: "VOL-II:4.3", page: 4, words: "such that the Facility can meet Table 2-4 with any one stream out of service"}
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  # ------------------------------------------------------------------ payment mechanism (VOL-V Clause 29) -> the price and the model
+  - id: REL-PAY-MECHANISM
+    from: ["VOL-V:29.1", "VOL-V:29.2", "VOL-V:29.3", "VOL-V:29.4", "VOL-V:29.5"]
+    to: ["calc:availability-payment"]
+    kind: feeds_calculation
+    status: confirmed
+    evidence:
+      - {unit: "VOL-V:1.1", page: 2, words: "Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause 31."}
+      - {unit: "VOL-V:H:C29", page: 3, words: "CLAUSE 29 — PAYMENT MECHANISM"}
+    note: "Every sub-clause of Clause 29 is part of the payment mechanism the Availability Payment is calculated under (the Ramp-Up payment of 29.3 included)."
+    origin: curator
+    review: proposed
+  - id: REL-PAY-DEDUCTIONS
+    from: ["VOL-V:31.1", "VOL-V:31.2", "VOL-V:31.3", "VOL-V:31.4", "VOL-V:31.5"]
+    to: ["calc:availability-payment"]
+    kind: depends_on
+    status: proposed
+    evidence:
+      - {unit: "VOL-V:1.1", page: 2, words: "Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause 31."}
+      - {unit: "VOL-I:10.2", page: 5, words: "calculated in accordance with the payment mechanism at Volume V Clause 29"}
+    basis: "The definition says the Availability Payment is adjusted under Clause 31, but the price quoted under VOL-I 10.2 is calculated under Clause 29 only: whether a change to the deductions changes the quoted price, or only the risk priced into it, is a commercial judgement (inferred, not stated)."
+    origin: curator
+    review: proposed
+  - id: REL-PAY-QUOTED-PRICE
+    from: ["calc:availability-payment"]
+    to: [VOL-I-10.2-01]
+    kind: feeds_calculation
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:10.2", page: 5, words: "The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum, calculated in accordance with the payment mechanism at Volume V Clause 29."}
+    origin: curator
+    review: proposed
+  - id: REL-PAY-FORM-4F
+    from: ["calc:availability-payment"]
+    to: [VOL-IV-F4F-01]
+    kind: feeds_calculation
+    status: confirmed
+    evidence:
+      - {unit: "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations", page: 9, words: "Availability Payment (SAR per annum, year 1 of operations):"}
+      - {unit: "VOL-IV:F4-F/indexation-basis-assumed", page: 9, words: "Indexation basis assumed: Per Volume V Clause 29.2"}
+    origin: curator
+    review: proposed
+  - id: REL-PAY-FINANCIAL-MODEL
+    from: ["calc:availability-payment"]
+    to: [VOL-I-10.3-01]
+    kind: depends_on
+    status: proposed
+    evidence:
+      - {unit: "VOL-IV:F4-F/para1", page: 9, words: "has been derived from the Financial Model submitted with this Form"}
+      - {unit: "VOL-I:10.2", page: 5, words: "calculated in accordance with the payment mechanism at Volume V Clause 29"}
+    basis: "Form 4-F states that the Availability Payment is derived from the Financial Model, and VOL-I 10.2 that it is calculated under the payment mechanism of Volume V Clause 29; so the model must reproduce Clause 29 (the Ramp-Up payment of 29.3 included). That a change to Clause 29 requires the model to be re-run is the curator's inference, not a stated link."
+    note: "Reaches the Envelope B modelling activities (fin-model-build, fin-model-freeze) through the row's evidence item (EV-FIN-MODEL)."
+    origin: curator
+    review: proposed
+  - id: REL-MODEL-FORM-4F
+    from: [VOL-I-10.3-01]
+    to: [VOL-IV-F4F-02]
+    kind: feeds_calculation
+    status: confirmed
+    evidence:
+      - {unit: "VOL-IV:F4-F/para1", page: 9, words: "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form."}
+    origin: curator
+    review: proposed
+  - id: REL-PAY-FINANCING-ASSUMPTIONS
+    from: ["calc:availability-payment"]
+    to: [VOL-I-10.6-01]
+    kind: depends_on
+    status: possible
+    evidence:
+      - {unit: "VOL-I:10.6", page: 5, words: "a schedule of the principal financing assumptions underlying the Availability Payment"}
+    basis: "The schedule states the financing assumptions underlying the Availability Payment; whether a change to the payment mechanism changes them (for example debt sized on the Ramp-Up revenue) is a commercial judgement."
+    origin: curator
+    review: proposed
+  # ------------------------------------------------------------------ referenced but not supplied
+  - id: REL-MISSING-SCHEDULE-11-DEFAULTS
+    from: ["VOL-V:39.1"]
+    to: [VOL-V-39.1-01]
+    kind: missing_document
+    status: confirmed
+    document: "Volume V Schedule 11 (Project Company Events of Default)"
+    document_id: VOL-V-SCHEDULE-11
+    blocks: "which events are Project Company Events of Default, so how to avoid them and whether to reserve the position in Form 4-E"
+    evidence:
+      - {unit: "VOL-V:39.1", page: 4, words: "The Authority may terminate for a Project Company Event of Default, being the events listed in Schedule 11."}
+    issues: [I-VOL-V-MISSING]
+    origin: curator
+    review: proposed
+  - id: REL-MISSING-SCHEDULE-11-LATE-COMPLETION
+    from: ["VOL-V:39.1"]
+    to: ["VOL-V:18.2"]
+    kind: missing_document
+    status: confirmed
+    document: "Volume V Schedule 11 (Project Company Events of Default)"
+    document_id: VOL-V-SCHEDULE-11
+    blocks: "whether late completion short of the VOL-V 18.3 long-stop is itself an Event of Default giving a termination right under 39.1, so whether delay liquidated damages are in practice the only remedy for late completion"
+    evidence:
+      - {unit: "VOL-V:18.2", page: 2, words: "without prejudice to its termination rights under Clause 39"}
+      - {unit: "VOL-V:39.1", page: 4, words: "being the events listed in Schedule 11"}
+    issues: [I-VOL-V-MISSING]
+    origin: curator
+    review: proposed
+  - id: REL-MISSING-SCHEDULE-11-PERSISTENT-BREACH
+    from: ["VOL-V:39.1"]
+    to: [VOL-V-31.4-01, "VOL-V:39.3"]
+    kind: missing_document
+    status: proposed
+    document: "Volume V Schedule 11 (Project Company Events of Default)"
+    document_id: VOL-V-SCHEDULE-11
+    blocks: "whether persistent breach (three or more Unavailability Events in a rolling 90 days) is also an Event of Default listed in Schedule 11, giving a termination right under 39.1 independent of 31.4 and 39.3; so an amendment or deletion of 31.4 or 39.3 cannot be concluded to remove that exposure"
+    evidence:
+      - {unit: "VOL-V:39.1", page: 4, words: "being the events listed in Schedule 11"}
+      - {unit: "VOL-V:31.4", page: 3, words: "on a second occurrence, to terminate under Clause 39.3"}
+      - {unit: "VOL-V:39.3", page: 4, words: "The Authority may terminate for persistent breach in the circumstances described in Clause 31.4."}
+    basis: "31.4 and 39.3 give a termination right for persistent breach; 39.1 gives one for the Events of Default in Schedule 11, which is not supplied. The documents do not say whether persistent breach is also listed there: that it may be is the curator's inference."
+    issues: [I-VOL-V-MISSING, I-VOL-V-PERSISTENT-BREACH]
+    origin: curator
+    review: proposed
+  - id: REL-MISSING-SCHEDULE-7-DEDUCTIONS
+    from: ["VOL-V:31.2"]
+    to: [VOL-V-31.1-01, VOL-V-31.1-02, VOL-V-31.1-03]
+    kind: missing_document
+    status: confirmed
+    document: "Volume V Schedule 7 (deductions)"
+    document_id: VOL-V-SCHEDULE-7
+    blocks: "the amount of the deduction for each Unavailability Event under 31.1(a), (b) and (c), so the price risk of each"
+    evidence:
+      - {unit: "VOL-V:31.2", page: 3, words: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+    issues: [I-VOL-V-MISSING]
+    origin: curator
+    review: proposed
+  - id: REL-MISSING-ENVIRONMENTAL-PERMIT
+    from: ["VOL-II:2.4", "VOL-II:T2-4-heading/para1"]
+    to: [VOL-II-2.4-01, VOL-II-T2-4-BOD5, VOL-II-T2-4-COD, VOL-II-T2-4-TSS, VOL-II-T2-4-TN, VOL-II-T2-4-TP, VOL-II-T2-4-Turbidity,
+         VOL-II-T2-4-FaecalColiforms, VOL-II-T2-4-ResidualChlorine, VOL-II-T2-4-pH, VOL-II-T2-4-OilGrease, VOL-II-T2-4-NOTE1]
+    kind: missing_document
+    status: confirmed
+    document: "the Environmental Permit issued for the site"
+    document_id: ENVIRONMENTAL-PERMIT
+    blocks: "that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed"
+    evidence:
+      - {unit: "VOL-II:2.4", page: 2, words: "Table 2-4 is reproduced overleaf from the Environmental Permit issued for the site"}
+      - {unit: "VOL-II:T2-4-heading/para1", page: 3, words: "In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail."}
+      - {unit: "VOL-II:T2-4/note1", page: 3, words: "Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply."}
+    issues: [I-PERMIT]
+    origin: curator
+    review: proposed

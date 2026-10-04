@@ -1,0 +1,36 @@
+# RECORDED FIXTURE (hand-written for offline tests; not a live model's output). Session 10, W4: a proposal run on blind
+# rehearsal 02's ADD-03 whose items exercise the critic's selection:
+#   ADD-03/2.1      a valid op with a conflict the proposer declares        -> conflicting      (selected: conflicting)
+#   ADD-03/3.3      an annotation that interprets, on a form (a group)      -> interpretation_pending
+#                                                                            (selected: consequential_interpretation, uncertain_target)
+#   ADD-03/4.3(a)   set_status deleted on a Form 4-F row                    -> (selected: removal)
+#   ADD-03/cover/para1   a no_effect disposition resting on no statement    -> not selected
+name: s10-critic-source
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - response:
+      usage: {input_tokens: 14000, output_tokens: 1200}
+      text: |
+        {"addendum": "ADD-03", "state": ${state}, "statements": [],
+         "items": [
+          {"id": "ADD-03/2.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+           "payload": {"id": "ADD-03/2.1", "provision": "ADD-03:2.1", "type": "replace_text", "target": "VOL-I:6.1",
+                       "old": "14:00 hours Riyadh time", "new": "11:00 hours Riyadh time"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                         "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"}],
+           "conflicts": ["fixture: the proposer declares that ADD-03 2.1 conflicts with another provision"]},
+          {"id": "ADD-03/3.3", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.3", "target": "VOL-IV:F4-A",
+           "payload": {"id": "ADD-03/3.3", "provision": "ADD-03:3.3", "type": "annotate", "targets": ["VOL-IV:F4-A"],
+                       "effect": "interprets", "note": "paragraph 2 of Form 4-A is read as 180 days"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.3", "page": 1, "kind": "span",
+                         "words": "Paragraph 2 of Form 4-A shall be read accordingly."}]},
+          {"id": "ADD-03/4.3(a)", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:4.3", "target": "VOL-IV:F4-F/model-auditor",
+           "payload": {"id": "ADD-03/4.3(a)", "provision": "ADD-03:4.3", "type": "set_status", "target": "VOL-IV:F4-F/model-auditor",
+                       "status": "deleted"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:4.3", "page": 2, "kind": "span",
+                         "words": "the rows ‘Model auditor’ and ‘Date of model audit opinion’ are deleted"}]},
+          {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+           "payload": {"provision": "ADD-03:cover/para1", "disposition": "no_effect", "reason": "the addendum's issue date line"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]}
+         ]}

@@ -172,7 +172,7 @@ def test_synthetic_misleading_summary_end_to_end(drills):
     assert "Form 4-H" in a2 and "never applied" in a2
 
 
-def test_blind_addendum_summary_omissions_match_the_sealed_key(tmp_path):
+def test_blind_addendum_summary_omissions_match_the_sealed_key(blind01_run):
     """Regression on rehearsal 01 (NOT blind evidence: C28 was written after the key was unsealed). The key's trap for
     the cover (SEALED/expected_findings.yaml, cover_text.traps) lists what the summary omits: 2.3, 3.2, 8.2, 9.2, the
     change inside the answer to Q16 and the new restriction in Q17. Each must be reported."""
@@ -182,9 +182,7 @@ def test_blind_addendum_summary_omissions_match_the_sealed_key(tmp_path):
     trap = key["cover_text"]["traps"][0]["correct"]
     for n in ("2.3", "3.2", "8.2", "9.2", "Q16", "Q17"):
         assert n in trap
-    res = ingest(b / "work/pack.yaml", tmp_path / "evidence", ROOT, quiet=True)
-    assert res["exit_code"] == 0
-    r = stage2.run(tmp_path / "evidence", b / "work/pack.yaml", ROOT)
+    r = blind01_run                    # a fresh, disposable ingest of b/work/pack.yaml (its exit code 0 is asserted there)
     sc = by_add(r)["ADD-03"]
     flagged = {f.get("op") for f in sc["findings"] if f["kind"] in ("omitted", "understated")}
     assert {"ADD-03/2.3", "ADD-03/3.2", "ADD-03/8.2", "ADD-03/9.2", "ADD-03/Q16", "ADD-03/Q17"} <= flagged

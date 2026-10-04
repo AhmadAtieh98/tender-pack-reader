@@ -60,6 +60,12 @@ def citations(text: str) -> list[Citation]:
         add(m, f"{VOLUMES[m.group(1)]}:T{m.group(2)}", "table")
     for m in re.finditer(r"Table (\d+-\d+) of " + _VOL, t):
         add(m, f"{VOLUMES[m.group(2)]}:T{m.group(1)}", "table")
+    # a table an addendum issued: "Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2"
+    # names the issue of Table 1-1 that lives under that addendum (ADD-02:T1-1-rev), resolved by resolve() (session 10)
+    for m in re.finditer(r"Table (\d+-\d+)(?: \((?:revised|second revision|third revision|as revised)\))?[^.;]{0,80}?"
+                         r"\b(?:issued|published|set out|reissued|introduced) (?:by|in|under|at) (?:Section \d+(?:\.\d+)? of )?"
+                         r"Addendum No\.? ?(\d+)", t, re.I):
+        add(m, f"{_addendum(m.group(2))}:T{m.group(1)}", "table")
     for m in re.finditer(_VOL + r" Section (\d+)\b", t):
         add(m, f"{VOLUMES[m.group(1)]}:S{m.group(2)}", "section")
     for m in re.finditer(r"Section (\d+\.\d+) of Addendum No\.? ?(\d+)", t, re.I):
@@ -159,6 +165,13 @@ def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
             # issue of it is a candidate (the op names which one it targets or replaces) (session 09)
             local = t.split(":", 1)[1]
             out += sorted({u.split(":", 1)[0] + ":" + local for u in unit_ids if u.split(":", 1)[1].startswith(local + "/")})
+        elif c.kind == "table" and ":" in t:
+            # a table an addendum issued carries a suffix in that addendum (ADD-02:T1-1-rev): the citation names the
+            # addendum and the table number, the group id is whatever that addendum printed (session 10)
+            doc, local = t.split(":", 1)
+            pat = re.compile(r"^" + re.escape(local) + r"(?:-[A-Za-z0-9]+)?$")
+            out += sorted({f"{doc}:{u.split(':', 1)[1].split('/')[0]}" for u in unit_ids
+                           if u.split(":", 1)[0] == doc and "/" in u.split(":", 1)[1] and pat.match(u.split(":", 1)[1].split("/")[0])})
     return list(dict.fromkeys(out))                 # a target named twice (body and heading) is listed once
 
 

@@ -1,0 +1,1813 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T153340Z-a436
+  created: '2026-10-04T15:33:40Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+  statements:
+  - id: F1
+    kind: fact
+    text: ADD-03 Section 2.1 deletes 'as set out in the agreed Financial Model at Financial Close' in VOL-V Clause
+      1.3 and substitutes 'as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction
+      and development fees'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: In Volume V Clause 1.3, ‘as set out in the agreed Financial Model at Financial Close’ is deleted and
+        ‘as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development
+        fees’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.3
+      page: 2
+      kind: span
+      words: Estimated Project Cost means the aggregate capital cost of the Facility as set out in the agreed Financial
+        Model at Financial Close.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F2
+    kind: fact
+    text: ADD-03 Section 3.1 deletes 'SAR 800,000,000' in VOL-I Clause 8.4 and substitutes 'twenty-five per cent
+      (25%) of the Estimated Project Cost'; limb (b) is stated to be unchanged.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: In Volume I Clause 8.4, ‘SAR 800,000,000’ is deleted and ‘twenty-five per cent (25%) of the Estimated
+        Project Cost’ is substituted. Limb (b) of Clause 8.4 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.4
+      page: 4
+      kind: span
+      words: (a) a consolidated tangible net worth of not less than SAR 800,000,000 as at the most recent audited
+        financial statements
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F3
+    kind: fact
+    text: The ADD-03 cover paragraph states 'Bidders shall acknowledge receipt in Form 4-A.'; ADD-02's identical
+      cover sentence was handled as an annotation on its own cover paragraph.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: Bidders shall acknowledge receipt in Form 4-A.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F4
+    kind: fact
+    text: The cover summary describes Form 4-H as a declaration 'which all Bidders may submit through the Portal
+      within five Working Days after the Proposal Due Date', whereas operative Section 8.3 requires submission with
+      Envelope A and allows Portal submission within five Working Days only to a member incorporated outside the
+      Kingdom.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: which all Bidders may submit through the Portal within five Working Days after the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.3
+      page: 2
+      kind: span
+      words: Form 4-H shall be submitted with Envelope A. A member of the Bidder that is incorporated outside the
+        Kingdom may instead submit its Form 4-H through the Portal not later than five (5) Working Days after the
+        Proposal Due Date.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F5
+    kind: fact
+    text: VOL-I 3.2(a) already places the Addenda first in precedence, a later Addendum prevailing over an earlier
+      one.
+    evidence:
+    - doc: VOL-I
+      unit_id: VOL-I:3.2(a)
+      page: 2
+      kind: span
+      words: (a) the Addenda, a later Addendum prevailing over an earlier one;
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:1.1
+      page: 1
+      kind: span
+      words: This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in
+        accordance with Volume I Clause 3.2.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F6
+    kind: fact
+    text: ADD-03 Section 2.2 states that the amended definition applies wherever the expression Estimated Project
+      Cost is used in the RFP Documents; the expression is used in VOL-V 18.4, Form 4-F and (after Section 3.1)
+      VOL-I 8.4.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The definition in Volume V Clause 1.3, as amended by Section 2.1, applies wherever the expression Estimated
+        Project Cost is used in the RFP Documents.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.3
+      page: 2
+      kind: span
+      words: Estimated Project Cost means the aggregate capital cost of the Facility
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: I1
+    kind: interpretation
+    text: The cover summary is descriptive; where it differs from Section 8.3 (Form 4-H submission route), the operative
+      Section 8.3 governs and the cover summary creates no separate right for all Bidders to submit Form 4-H via
+      the Portal after the Proposal Due Date. Needs confirmation (possible clarification to the Authority).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: which all Bidders may submit through the Portal within five Working Days after the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: I2
+    kind: interpretation
+    text: Section 2.2 extends the application of the VOL-V 1.3 definition to the whole RFP Documents (including
+      VOL-I 8.4 as amended); it changes no text and is recorded as an interpreting annotation on VOL-V:1.3.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: applies wherever the expression Estimated Project Cost is used in the RFP Documents
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: I3
+    kind: interpretation
+    text: Section 1.2 is a rule for reading references in ADD-03 (targets as amended by ADD-01 and ADD-02, i.e.
+      stage ADD-02) and itself changes no unit.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.2
+      page: 1
+      kind: span
+      words: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended
+        by Addenda Nos. 1 and 2, unless otherwise stated.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/cover/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:cover/para1
+    target: null
+    payload:
+      provision: ADD-03:cover/para1
+      disposition: no_effect
+      reason: Issue date line 'Issued 9 November 2026'; dates the addendum (stage date) and changes no provision.
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 9 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:cover/para1 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para1 at ADD-02
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        the addendum''s issue date line (used as the stage date)): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: evidence_verified
+    model_rationale: 'Date line only. Note for reviewers: issue date is three calendar days before the Proposal
+      Due Date stated in Form 4-A (''12 November 2026, 14:00 Riyadh time''); no VOL-I rule on minimum addendum notice
+      was found by search.'
+    review: null
+  - id: ADD-03/cover/para2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:cover/para2
+    target: null
+    payload:
+      provision: ADD-03:cover/para2
+      disposition: no_effect
+      reason: Title/reference line 'Tender NUPA/ISTP/2026/014' under heading 'ADDENDUM NO. 3'; identifies the tender,
+        changes nothing.
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para2
+      page: 1
+      kind: span
+      words: Tender NUPA/ISTP/2026/014
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:cover/para2 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para2 at ADD-02
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        recital or cover text; changes nothing by itself): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: evidence_verified
+    model_rationale: Cover identification text.
+    review: null
+  - id: ADD-03/cover/para3
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:cover/para3
+    target: ADD-03:cover/para3
+    payload:
+      id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      targets:
+      - ADD-03:cover/para3
+      effect: adds_obligation
+      note: Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A (item 1 of reissued Form 4-A). The cover's
+        summary of Form 4-H submission ('all Bidders may submit through the Portal within five Working Days after
+        the Proposal Due Date') differs from operative Section 8.3; the summary is not treated as operative.
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: Bidders shall acknowledge receipt in Form 4-A.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: which all Bidders may submit through the Portal within five Working Days after the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.3
+      page: 2
+      kind: span
+      words: A member of the Bidder that is incorporated outside the Kingdom may instead submit its Form 4-H through
+        the Portal not later than five (5) Working Days after the Proposal Due Date.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:8.3
+    - VOL-IV:F4-A
+    conflicts:
+    - ADD-03:8.3
+    missing_information: []
+    statements:
+    - F3
+    - F4
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para3 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.3 p2
+      ok: true
+      detail: verbatim in ADD-03:8.3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:8.3'
+      aspect: decision
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: conflicting
+    model_rationale: 'Same pattern as ADD-02/cover/para3 (annotate, adds_obligation). The rest of the paragraph
+      is a summary of the operative sections, accounted for by their own items. Conflict flagged: the cover says
+      all Bidders may use the Portal route for Form 4-H within five Working Days after the Proposal Due Date; Section
+      8.3 says Envelope A, with the Portal route only for members incorporated outside the Kingdom. Which governs
+      is an interpretation (I1) for a person; a clarification to the Authority may be needed.'
+    review: null
+  - id: ADD-03/1.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:1.1
+    target: null
+    payload:
+      provision: ADD-03:1.1
+      disposition: no_effect
+      reason: 'Recital: ''takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2'' restates
+        the existing rule in VOL-I 3.2(a) ''(a) the Addenda, a later Addendum prevailing over an earlier one;''
+        and cites the issuing power in VOL-I 5.3; no text is changed.'
+      candidates:
+      - VOL-I:5.3
+      - VOL-I:3.2
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.1
+      page: 1
+      kind: span
+      words: This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in
+        accordance with Volume I Clause 3.2.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:3.2(a)
+      page: 2
+      kind: span
+      words: (a) the Addenda, a later Addendum prevailing over an earlier one;
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - F5
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:1.1 p1
+      ok: true
+      detail: verbatim in ADD-03:1.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:3.2(a) p2
+      ok: true
+      detail: verbatim in VOL-I:3.2(a) at ADD-02
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        recital or cover text; changes nothing by itself): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: evidence_verified
+    model_rationale: Precedence already follows from VOL-I 3.2(a); recital adds nothing.
+    review: null
+  - id: ADD-03/1.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:1.2
+    target: null
+    payload:
+      provision: ADD-03:1.2
+      disposition: no_effect
+      reason: 'Interpretation rule for references within this Addendum: ''A reference in this Addendum to a Clause,
+        Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.''
+        It changes no unit; it directs that targets are read as they stand at stage ADD-02, which is how every op
+        in this set reads them. A person confirms.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.2
+      page: 1
+      kind: span
+      words: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended
+        by Addenda Nos. 1 and 2, unless otherwise stated.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:1.2 p1
+      ok: true
+      detail: verbatim in ADD-03:1.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I3: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''unless'')'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Reading rule, applied by reading targets at ADD-02. The 'unless otherwise stated' exception
+      is handled per provision (e.g. Section 5 amends Addendum No. 1 itself).
+    review: null
+  - id: ADD-03/2.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:2.1
+    target: VOL-V:1.3
+    payload:
+      id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-V:1.3
+      old: as set out in the agreed Financial Model at Financial Close
+      old_resolved: quoted
+      new: as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development
+        fees
+      origin: assistant
+    previous_value: as set out in the agreed Financial Model at Financial Close
+    proposed_value: as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction
+      and development fees
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: In Volume V Clause 1.3, ‘as set out in the agreed Financial Model at Financial Close’ is deleted and
+        ‘as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and development
+        fees’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.3
+      page: 2
+      kind: span
+      words: Estimated Project Cost means the aggregate capital cost of the Facility as set out in the agreed Financial
+        Model at Financial Close.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:1.3
+    - VOL-IV:F4-F
+    conflicts: []
+    missing_information: []
+    statements:
+    - F1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''as set out in the agreed Financial Model at Financial Close'' matches VOL-V:1.3 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''as stated by the Bidder in Form 4-F, excluding financing costs, interest during construction and
+        development fees'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:1.3 p2
+      ok: true
+      detail: verbatim in VOL-V:1.3 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Quoted old/new pair; old occurs once in VOL-V:1.3 at ADD-02 (C23 ok in simulation).
+    review: null
+  - id: ADD-03/2.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:2.2
+    target: VOL-V:1.3
+    payload:
+      id: ADD-03/2.2
+      provision: ADD-03:2.2
+      type: annotate
+      targets:
+      - VOL-V:1.3
+      effect: interprets
+      note: The definition in VOL-V 1.3 as amended by ADD-03 Section 2.1 applies wherever 'Estimated Project Cost'
+        is used in the RFP Documents (incl. VOL-I 8.4 as amended, VOL-V 18.1/18.4, Form 4-F).
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The definition in Volume V Clause 1.3, as amended by Section 2.1, applies wherever the expression Estimated
+        Project Cost is used in the RFP Documents.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.3
+      page: 2
+      kind: span
+      words: Estimated Project Cost means the aggregate capital cost of the Facility as set out in the agreed Financial
+        Model at Financial Close.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/2.1
+    - VOL-V:1.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - F6
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:1.3 p2
+      ok: true
+      detail: verbatim in VOL-V:1.3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: No text change is printed; the provision widens where the definition applies (otherwise a VOL-V
+      definition might be read as confined to the Project Agreement). Recorded as an 'interprets' annotation; depends
+      on interpretation I2, so it stays pending for a person.
+    review: null
+  - id: ADD-03/3.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.1
+    target: VOL-I:8.4
+    payload:
+      id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-I:8.4
+      old: SAR 800,000,000
+      old_resolved: quoted
+      new: twenty-five per cent (25%) of the Estimated Project Cost
+      origin: assistant
+    previous_value: SAR 800,000,000
+    proposed_value: twenty-five per cent (25%) of the Estimated Project Cost
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: In Volume I Clause 8.4, ‘SAR 800,000,000’ is deleted and ‘twenty-five per cent (25%) of the Estimated
+        Project Cost’ is substituted. Limb (b) of Clause 8.4 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.4
+      page: 4
+      kind: span
+      words: (a) a consolidated tangible net worth of not less than SAR 800,000,000 as at the most recent audited
+        financial statements
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:8.4
+    - ADD-03/2.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''SAR 800,000,000'' matches VOL-I:8.4 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''twenty-five per cent (25%) of the Estimated Project Cost'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:8.4 p4
+      ok: true
+      detail: verbatim in VOL-I:8.4 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: 'Quoted old/new pair; ''SAR 800,000,000'' occurs once in VOL-I:8.4 (limb (a)); limb (b) ''SAR
+      1,200,000,000'' is a different string and stays unchanged, as the provision says. Downstream point for reviewers
+      (not a defect in the op): how limb (a) is assessed in Envelope A when the Estimated Project Cost is stated
+      only in Form 4-F is raised by clarification Q19, answered in another batch.'
+    review: null
+  coverage:
+    provisions_total: 70
+    accounted: 8
+    unaccounted:
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref-en
+    - ADD-03:p4-image/ref-ar
+    - ADD-03:p4-image/form-en
+    - ADD-03:p4-image/form-ar
+    - ADD-03:p4-image/title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 8
+    resolved: 5
+    pending: 3
+    invalid: 0
+    unaccounted: 62
+    pending_provisions:
+    - ADD-03:cover/para3
+    - ADD-03:1.2
+    - ADD-03:2.2
+    invalid_provisions: []
+    no_change_on_amendment_language:
+    - ADD-03:1.2
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-V:1.3 p2
+        ok: true
+        detail: verbatim in VOL-V:1.3 at ADD-02
+        aspect: null
+    F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.1 p1
+        ok: true
+        detail: verbatim in ADD-03:3.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-I:8.4 p4
+        ok: true
+        detail: verbatim in VOL-I:8.4 at ADD-02
+        aspect: null
+    F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+        aspect: null
+    F4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:8.3 p2
+        ok: true
+        detail: verbatim in ADD-03:8.3 at ADD-02
+        aspect: null
+    F5:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-I:3.2(a) p2
+        ok: true
+        detail: verbatim in VOL-I:3.2(a) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:1.1 p1
+        ok: true
+        detail: verbatim in ADD-03:1.1 at ADD-02
+        aspect: null
+    F6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+        aspect: null
+      - check: evidence VOL-V:1.3 p2
+        ok: true
+        detail: verbatim in VOL-V:1.3 at ADD-02
+        aspect: null
+    I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+        aspect: null
+    I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+        aspect: null
+    I3:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:1.2 p1
+        ok: true
+        detail: verbatim in ADD-03:1.2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      target: ADD-03:cover/para3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:cover/para3 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:cover/para3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-V:1.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:2.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:1.3 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:1.3 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''as set out in the agreed Financial Model at Financial Close'' occurs 1 time(s) in VOL-V:1.3'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:1.3
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-V:1.3
+        - VOL-IV:F4-F
+        also_in: []
+    - id: ADD-03/2.2
+      provision: ADD-03:2.2
+      type: annotate
+      target: VOL-V:1.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-V:1.3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-I:8.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:8.4 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:8.4 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''SAR 800,000,000'' occurs 1 time(s) in VOL-I:8.4'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-I:8.4
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-I:8.4
+        also_in: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para3
+      disposition: op
+      accounted_by:
+      - ADD-03/cover/para3
+    - provision: ADD-03:1.1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:1.2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:2.1
+      disposition: op
+      accounted_by:
+      - ADD-03/2.1
+    - provision: ADD-03:2.2
+      disposition: op
+      accounted_by:
+      - ADD-03/2.2
+    - provision: ADD-03:3.1
+      disposition: op
+      accounted_by:
+      - ADD-03/3.1
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/A
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/B
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/C
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/D
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/E
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/F
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/G
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/total
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/form-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/form-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4-blank
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref-en
+    - ADD-03:p4-image/ref-ar
+    - ADD-03:p4-image/form-en
+    - ADD-03:p4-image/form-ar
+    - ADD-03:p4-image/title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-I:8.4
+    - VOL-V:1.3
+    c46_needs:
+    - op: ADD-03/cover/para3
+      output: A1
+      rows: []
+      detail: 'ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''This Addendum amends the definition of Estimated Project Cost, the financial capacity requirement in Volume
+        I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velo…'
+    - op: ADD-03/cover/para3
+      output: A3
+      rows: []
+      detail: 'ADD-03/cover/para3 brings in consequence words [''liquidated damages''] that no row''s consequence
+        carries at ADD-03: ''This Addendum amends the definition of Estimated Project Cost, the financial capacity
+        requirement in Volume I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, rela…'
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: c0fe4c9caefc1db5508dc786cd5be5715e2c5cd5ba2097c5fcb14205d3dabe74
+    computed_under:
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings:
+    - '1 provision with amendment language carries no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 1 need a person): ADD-03:1.2'
+    clean: false
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - VOL-I:8.4
+    - VOL-V:1.3
+    rows_citing_changed_units:
+    - VOL-I-8.4-01
+    - VOL-I-8.4-02
+    rows_stale_at_addendum:
+    - row: VOL-I-8.4-01
+      why:
+      - VOL-I:8.4 changed since BASE (by ADD-03/3.1)
+      - 'quote not found in the effective text at ADD-03: ''(a) a consolidated tangible net worth of not less than
+        SAR 8'' (expected: the interpretation predates the change)'
+    - row: VOL-I-8.4-02
+      why:
+      - VOL-I:8.4 changed since BASE (by ADD-03/3.1)
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units: []
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: not found
+        claim: 1
+        detail: '''amends the definition of Estimated Project Cost, the financial capacity requirement in Volume
+          I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velocity limit for
+          the treated effluent transmission main'': no provision of ADD-03 matches ''the delay liquidated damages
+          in Volume V Clause 18.1'''
+      - kind: not found
+        claim: 1
+        detail: '''amends the definition of Estimated Project Cost, the financial capacity requirement in Volume
+          I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1, relaxes the velocity limit for
+          the treated effluent transmission main'': no provision of ADD-03 matches ''relaxes the velocity limit
+          for the treated effluent transmission main'''
+      - kind: not found
+        claim: 2
+        detail: '''amends Section 5.1 of Addendum No. 1'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 3
+        detail: '''reissues the technical evaluation table to add a criterion for energy efficiency, divides Volume
+          I Clause 11.3 into two Clauses, makes a conditional amendment to Volume II Clause 1.4'': no provision
+          of ADD-03 does this'
+      - kind: not found
+        claim: 4
+        detail: '''adds a Declaration of Beneficial Ownership (Form 4-H) which all Bidders may submit through the
+          Portal within five Working Days after the Proposal Due Date'': no provision of ADD-03 does this'
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.1
+        detail: ADD-03:4.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.1
+        detail: ADD-03:5.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:6.1
+        detail: ADD-03:6.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/A
+        detail: ADD-03:T1-1/A is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/B
+        detail: ADD-03:T1-1/B is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/C
+        detail: ADD-03:T1-1/C is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/D
+        detail: ADD-03:T1-1/D is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/E
+        detail: ADD-03:T1-1/E is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/F
+        detail: ADD-03:T1-1/F is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/G
+        detail: ADD-03:T1-1/G is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-1/total
+        detail: ADD-03:T1-1/total is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:S6/para1
+        detail: ADD-03:S6/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:6.2
+        detail: ADD-03:6.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.1
+        detail: ADD-03:8.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.2
+        detail: ADD-03:8.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.3
+        detail: ADD-03:8.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.4
+        detail: ADD-03:8.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-en
+        detail: ADD-03:p4-image/hdr-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-ar
+        detail: ADD-03:p4-image/hdr-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/ref-en
+        detail: ADD-03:p4-image/ref-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/ref-ar
+        detail: ADD-03:p4-image/ref-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/form-en
+        detail: ADD-03:p4-image/form-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/form-ar
+        detail: ADD-03:p4-image/form-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/title
+        detail: ADD-03:p4-image/title is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/intro
+        detail: ADD-03:p4-image/intro is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/decl1
+        detail: ADD-03:p4-image/decl1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/decl2
+        detail: ADD-03:p4-image/decl2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/decl3
+        detail: ADD-03:p4-image/decl3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-header
+        detail: ADD-03:p4-image/table-header is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-row4
+        detail: ADD-03:p4-image/table-row4 is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-row4-blank
+        detail: ADD-03:p4-image/table-row4-blank is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-member-en
+        detail: ADD-03:p4-image/field-member-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-member-ar
+        detail: ADD-03:p4-image/field-member-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-cr-en
+        detail: ADD-03:p4-image/field-cr-en is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-cr-ar
+        detail: ADD-03:p4-image/field-cr-ar is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-signatory-en
+        detail: ADD-03:p4-image/field-signatory-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-signatory-ar
+        detail: ADD-03:p4-image/field-signatory-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-capacity-en
+        detail: ADD-03:p4-image/field-capacity-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-capacity-ar
+        detail: ADD-03:p4-image/field-capacity-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-date-en
+        detail: ADD-03:p4-image/field-date-en is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-date-ar
+        detail: ADD-03:p4-image/field-date-ar is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-signature-en
+        detail: ADD-03:p4-image/field-signature-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/field-signature-ar
+        detail: ADD-03:p4-image/field-signature-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note
+        detail: ADD-03:p4-image/note is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/image-footer
+        detail: ADD-03:p4-image/image-footer is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para1
+        detail: ADD-03:AppB/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/para1
+        detail: ADD-03:F4-H/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/1
+        detail: ADD-03:F4-H/T1/1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/2
+        detail: ADD-03:F4-H/T1/2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/3
+        detail: ADD-03:F4-H/T1/3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/4
+        detail: ADD-03:F4-H/T1/4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/para2
+        detail: ADD-03:F4-H/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      requirements:
+        new: []
+        out: []
+        changed:
+        - VOL-I-8.4-01
+        - VOL-I-8.4-02
+        secondary: {}
+      stale:
+      - VOL-I-8.4-01
+      - VOL-I-8.4-02
+      relationships:
+        confirmed dependency: []
+        proposed relationship: []
+        possible impact: []
+        not supplied: []
+      a3:
+        enters: []
+        leaves: []
+      programme:
+      - activity: fin-standing
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.4-01, VOL-I-8.4-02'
+      - activity: fin-statements
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.4-01, VOL-I-8.4-02'
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-09)\n\n- ops: 2 (0\
+      \ invalid); provisions: 70 (65 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para3: This Addendum amends\
+      \ the definition of Estimated Project Cost, the financial capacity requirement in Volume I Clause 8.4 and\
+      \ the delay liquidated damages in Vol\n- UNRESOLVED ADD-03:1.2: A reference in this Addendum to a Clause,\
+      \ Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.\n\
+      - UNRESOLVED ADD-03:2.2: The definition in Volume V Clause 1.3, as amended by Section 2.1, applies wherever\
+      \ the expression Estimated Project Cost is used in the RFP Documents.\n- UNRESOLVED ADD-03:4.1: In Volume\
+      \ V Clause 18.1, ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per cent (0.05%)\
+      \ of the Estimated Project Cost for each day of\n- UNRESOLVED ADD-03:5.1: In Volume II Clause 5.2, ‘2.0 m/s’\
+      \ is deleted and ‘1.5 m/s’ is substituted. The minimum residual head of 15 m at the delivery point is unchanged.\n\
+      - UNRESOLVED ADD-03:5.2: With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting\
+      \ ‘for the buried sections of the transmission main’ and substituting ‘for t\n- UNRESOLVED ADD-03:6.1: Table\
+      \ 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced by the\
+      \ table and Notes below, which add criterion G (en\n- UNRESOLVED ADD-03:T1-1/A: Ref: A | Criterion: Process\
+      \ design, treatment performance and compliance with Volume II | Marks: 25\n- UNRESOLVED ADD-03:T1-1/B: Ref:\
+      \ B | Criterion: Construction methodology, programme and interface management | Marks: 15\n- UNRESOLVED ADD-03:T1-1/C:\
+      \ Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20\n- UNRESOLVED\
+      \ ADD-03:T1-1/D: Ref: D | Criterion: Environmental and social management | Marks: 20\n- UNRESOLVED ADD-03:T1-1/E:\
+      \ Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10\n- UNRESOLVED ADD-03:T1-1/F:\
+      \ Ref: F | Criterion: Health, safety and security of supply | Marks: 10\n- UNRESOLVED ADD-03:T1-1/G: Ref:\
+      \ G | Criterion: Energy efficiency and specific energy consumption | Marks: 20\n- UNRESOLVED ADD-03:T1-1/total:\
+      \ Criterion: Total | Marks: 120\n- UNRESOLVED ADD-03:S6/para1: Notes to Table 1-1 (second revision): (1) \
+      \ The technical score threshold in Volume I Clause 11.3 is unchanged at seventy per cent (70%). (2)  The combined\
+      \ score\n- UNRESOLVED ADD-03:6.2: Volume I Clause 11.3 is deleted and replaced by the following two Clauses:\
+      \ ‘11.3  A Proposal whose technical score is less than seventy per cent (70%) of the to\n- UNRESOLVED ADD-03:7.1:\
+      \ This Section 7 has effect only if the Authority notifies Bidders through the Portal, not later than ten\
+      \ (10) Working Days before the Proposal Due Date, that the\n- UNRESOLVED ADD-03:7.2: Where this Section 7\
+      \ has effect: (a) in Volume II Clause 1.4, the words ‘together with a grid connection point at the site boundary’,\
+      \ and the comma before them,\n- UNRESOLVED ADD-03:8.1: A new Form 4-H (Declaration of Beneficial Ownership)\
+      \ is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after Form 4-G. Form 4-H is\
+      \ re\n- UNRESOLVED ADD-03:8.2: Form 4-H shall be completed in the Arabic language, signed and stamped by an\
+      \ authorised signatory of each member of the Bidder. The Arabic text governs. The Eng\n- UNRESOLVED ADD-03:8.3:\
+      \ Form 4-H shall be submitted with Envelope A. A member of the Bidder that is incorporated outside the Kingdom\
+      \ may instead submit its Form 4-H through the Portal \n- UNRESOLVED ADD-03:8.4: Failure to submit a complete\
+      \ and properly executed Form 4-H for each member of the Bidder by the time required by Section 8.3 shall render\
+      \ the Proposal non-resp\n- UNRESOLVED ADD-03:Q15: No: 15 | Bidder question: Volume I Clause 8.7 requires a\
+      \ Parent Company Guarantee that is unconditional as to the EPC Contractor's obligations during the constr\n\
+      - UNRESOLVED ADD-03:Q16: No: 16 | Bidder question: Does the Estimated Project Cost to be stated in Form 4-F\
+      \ include the cost of the grid connection works? | Authority response: Only if \n- UNRESOLVED ADD-03:Q17:\
+      \ No: 17 | Bidder question: Will the Authority publish the reference specific energy consumption against which\
+      \ criterion G of Table 1-1 will be assessed? | Author\n- UNRESOLVED ADD-03:Q18: No: 18 | Bidder question:\
+      \ Does the maximum velocity in Volume II Clause 5.2 apply to the trenchless crossings? | Authority response:\
+      \ Yes. Volume II Clause 5.2, \n- UNRESOLVED ADD-03:Q19: No: 19 | Bidder question: How is compliance with Volume\
+      \ I Clause 8.4(a), as amended, to be demonstrated in Envelope A, given that the Estimated Project Cost is\
+      \ \n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder question: Must the certified copy of the register of shareholders\
+      \ attached to Form 4-H be legalised where the member is incorporated outside the\n- UNRESOLVED ADD-03:AppA/para1:\
+      \ Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in\
+      \ accordance with Section 8 of this Addendum.\n- UNRESOLVED ADD-03:p4-image/hdr-en: NORTHERN UTILITIES PROCUREMENT\
+      \ AUTHORITY\n- UNRESOLVED ADD-03:p4-image/hdr-ar: الهيئة الشمالية للمشتريات المرفقية\n- UNRESOLVED ADD-03:p4-image/ref-en:\
+      \ Tender Ref: NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:p4-image/ref-ar: مناقصة رقم: NUPA/ISTP/2026/014\n- UNRESOLVED\
+      \ ADD-03:p4-image/form-en: FORM 4-H\n- UNRESOLVED ADD-03:p4-image/form-ar: النموذج ٤-ح\n- UNRESOLVED ADD-03:p4-image/title:\
+      \ إقرار المستفيد الحقيقي\n- UNRESOLVED ADD-03:p4-image/intro: نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن\
+      \ العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي:\n- UNRESOLVED ADD-03:p4-image/decl1: أولاً:\
+      \ أن الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو، والمستفيد الحقيقي هو\
+      \ كل شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، \n- UNRESOLVED ADD-03:p4-image/decl2: ثانياً: أنه لا يملك\
+      \ أيٌّ من المستفيدين الحقيقيين، بصورة مباشرة أو غير مباشرة، أي حصة في عضو في ائتلاف آخر يقدم عرضاً لهذه المناقصة.\n\
+      - UNRESOLVED ADD-03:p4-image/decl3: ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين\
+      \ في العضو، صادرة خلال الثلاثين (٣٠) يوماً السابقة لتاريخ تقديم العروض.\n- UNRESOLVED ADD-03:p4-image/table-header:\
+      \ م | اسم المستفيد الحقيقي | الجنسية | نسبة الملكية (٪) | مباشرة / غير مباشرة\n- UNRESOLVED ADD-03:p4-image/table-row4:\
+      \ ٤\n- UNRESOLVED ADD-03:p4-image/table-row4-blank: \n- UNRESOLVED ADD-03:p4-image/field-member-en: Name of\
+      \ consortium member\n- UNRESOLVED ADD-03:p4-image/field-member-ar: اسم العضو في الائتلاف :\n- UNRESOLVED ADD-03:p4-image/field-cr-en:\
+      \ Commercial registration number\n- UNRESOLVED ADD-03:p4-image/field-cr-ar: رقم السجل التجاري :\n- UNRESOLVED\
+      \ ADD-03:p4-image/field-signatory-en: Name of authorised signatory\n- UNRESOLVED ADD-03:p4-image/field-signatory-ar:\
+      \ اسم المفوض بالتوقيع :\n- UNRESOLVED ADD-03:p4-image/field-capacity-en: Capacity\n- UNRESOLVED ADD-03:p4-image/field-capacity-ar:\
+      \ الصفة :\n- UNRESOLVED ADD-03:p4-image/field-date-en: Date\n- UNRESOLVED ADD-03:p4-image/field-date-ar: التاريخ\
+      \ :\n- UNRESOLVED ADD-03:p4-image/field-signature-en: Signature and company seal\n- UNRESOLVED ADD-03:p4-image/field-signature-ar:\
+      \ التوقيع والختم :\n- UNRESOLVED ADD-03:p4-image/note: ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل\
+      \ عضو من أعضاء الائتلاف، والنص العربي هو المعتمد. عدم تقديمه كاملاً يجعل العرض غير مستجيب.\n- UNRESOLVED ADD-03:p4-image/image-footer:\
+      \ FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.\n- UNRESOLVED ADD-03:AppB/para1:\
+      \ This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A governs.\n\
+      - UNRESOLVED ADD-03:F4-H/para1: We, the undersigned, as the authorised representatives of the member of the\
+      \ Bidder's consortium named below, declare and undertake as follows: First: that the n\n- UNRESOLVED ADD-03:F4-H/T1/1:\
+      \ No: 1\n- UNRESOLVED ADD-03:F4-H/T1/2: No: 2\n- UNRESOLVED ADD-03:F4-H/T1/3: No: 3\n- UNRESOLVED ADD-03:F4-H/T1/4:\
+      \ No: 4\n- UNRESOLVED ADD-03:F4-H/para2: Name of consortium member: _______________________ Commercial registration\
+      \ number: _______________ Name of authorised signatory: _______________________ Capacit\n- cover summary vs\
+      \ provisions (C28, report only): 5 finding(s)\n  - not found: 'amends the definition of Estimated Project\
+      \ Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated damages in Volume\
+      \ V Clause 18.1, relaxes the velocity limit for the treated effluent transmission main': no provision of ADD-03\
+      \ matches 'the delay liquidated damages in Volume V Clause 18.1'\n  - not found: 'amends the definition of\
+      \ Estimated Project Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated\
+      \ damages in Volume V Clause 18.1, relaxes the velocity limit for the treated effluent transmission main':\
+      \ no provision of ADD-03 matches 'relaxes the velocity limit for the treated effluent transmission main'\n\
+      \  - not found: 'amends Section 5.1 of Addendum No. 1': no provision of ADD-03 does this\n  - not found: 'reissues\
+      \ the technical evaluation table to add a criterion for energy efficiency, divides Volume I Clause 11.3 into\
+      \ two Clauses, makes a conditional amendment to Volume II Clause 1.4': no provision of ADD-03 does this\n\
+      \  - not found: 'adds a Declaration of Beneficial Ownership (Form 4-H) which all Bidders may submit through\
+      \ the Portal within five Working Days after the Proposal Due Date': no provision of ADD-03 does this\n\n##\
+      \ Requirements\n\n- new: 0; out of force: 0; changed: 2\n\n- CHANGED VOL-I-8.4-01: wording (by ADD-03/3.1)\n\
+      - CHANGED VOL-I-8.4-02: wording (by ADD-03/3.1)\n\n## Stale readings and decisions\n\n- STALE VOL-I-8.4-01:\
+      \ VOL-I:8.4 changed since BASE (by ADD-03/3.1); quote not found in the effective text at ADD-03: '(a) a consolidated\
+      \ tangible net worth of not less than SAR 8' (expected: the interpretation predates the change)\n- STALE VOL-I-8.4-02:\
+      \ VOL-I:8.4 changed since BASE (by ADD-03/3.1)\n\n## Obligations not reaching the outputs (C46)\n\n- none\n\
+      \n## Reached through relationships (indirect: for review, not direct citations)\n\nCurated links (relationships\
+      \ file) followed from what changed. The requirements above cite a changed unit; these are reached through\
+      \ another provision, in three classes that are never merged. A5 marks the activities that serve them REVIEW\
+      \ with their dates unchanged.\n\n### Confirmed dependency (0)\n- none\n\n### Proposed relationship (0)\n-\
+      \ none\n\n### Possible impact (0)\n- none\n\n### Referenced but not supplied: conclusions in play that cannot\
+      \ be established (0)\n- none\n\n## Disqualifiers (A3)\n\n- no change\n\n## Programme impact (status date 2026-10-22\
+      \ -> 2026-11-09)\n\n- REWORK fin-standing: requirement changed: VOL-I-8.4-01, VOL-I-8.4-02\n- REWORK fin-statements:\
+      \ requirement changed: VOL-I-8.4-01, VOL-I-8.4-02\n- FEASIBILITY lcc-ratio: INFEASIBLE by 12 WD -> INFEASIBLE\
+      \ by 24 WD\n- FEASIBILITY lcc-certificate: INFEASIBLE by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY fin-model-build:\
+      \ OK -> INFEASIBLE by 10 WD\n- FEASIBILITY model-auditor-appoint: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY\
+      \ pcg-wording: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY technical-proposal: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY\
+      \ ground-dd: OK -> INFEASIBLE by 5 WD\n- FEASIBILITY lender-terms: OK -> INFEASIBLE by 5 WD\n- FEASIBILITY\
+      \ completion-certs: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY model-audit-review: OK -> INFEASIBLE by 9 WD\n\
+      - FEASIBILITY poa-resolutions: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY references: OK -> INFEASIBLE by 3 WD\n\
+      - FEASIBILITY bond-approval: OK -> INFEASIBLE by 2 WD\n- FEASIBILITY deviations-review: OK -> INFEASIBLE by\
+      \ 1 WD\n- FEASIBILITY pcg-execution: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY poa: OK -> INFEASIBLE by 4 WD\n\
+      - FEASIBILITY fin-model-freeze: OK -> INFEASIBLE by 10 WD\n- FEASIBILITY investment-licence: OK -> INFEASIBLE\
+      \ by 4 WD\n- FEASIBILITY model-audit-opinion: OK -> INFEASIBLE by 10 WD\n- FEASIBILITY form-4b-prep: OK ->\
+      \ INFEASIBLE by 3 WD\n- FEASIBILITY bond-issue: OK -> INFEASIBLE by 2 WD\n- FEASIBILITY form-4c-sign: OK ->\
+      \ INFEASIBLE by 2 WD\n- FEASIBILITY fin-assumptions: OK -> INFEASIBLE by 7 WD\n- FEASIBILITY form-4e: OK ->\
+      \ INFEASIBLE by 1 WD\n- FEASIBILITY form-4f: OK -> INFEASIBLE by 7 WD\n- FEASIBILITY form-4b: OK -> INFEASIBLE\
+      \ by 3 WD\n- FEASIBILITY assemble-envelope-a: INFEASIBLE by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY assemble-envelope-b:\
+      \ OK -> INFEASIBLE by 10 WD\n- FEASIBILITY copies: INFEASIBLE by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY\
+      \ seal-and-mark: INFEASIBLE by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY deliver: INFEASIBLE by 12 WD ->\
+      \ INFEASIBLE by 24 WD\n"
+    findings:
+    - '1 provision with amendment language carries no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 1 need a person): ADD-03:1.2'
+  reference: null
+  findings:
+  - '1 provision with amendment language carries no change (0 contradict a change the pattern drafter drafts from
+    their words: invalid; 1 need a person): ADD-03:1.2'

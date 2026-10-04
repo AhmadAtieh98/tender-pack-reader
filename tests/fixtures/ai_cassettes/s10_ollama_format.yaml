@@ -1,0 +1,23 @@
+# RECORDED HTTP FIXTURE (hand-written; NOT a live endpoint's output; no Ollama is reachable from the environment where
+# this was written). Session 10, W4. Ollama with `structured_output.with_tools: true` (as a person would set it after
+# checking on the Mac): POST /api/chat carries `format` (the JSON schema; free-form payload objects allowed there).
+name: s10-ollama-format
+exchanges:
+  - request: {method: POST, path: /api/show}
+    response:
+      body: {capabilities: [completion, tools, vision], model_info: {qwen3vl.context_length: 262144}}
+  - request: {method: POST, path: /api/chat, body_has: [format.properties.items, tools, options.num_ctx]}
+    response:
+      body:
+        model: qwen3-vl:32b
+        done_reason: stop
+        prompt_eval_count: 12000
+        eval_count: 250
+        message:
+          content: |
+            {"addendum": "ADD-03", "state": ${state}, "statements": [],
+             "items": [
+              {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+               "payload": {"provision": "ADD-03:cover/para1", "disposition": "no_effect", "reason": "the addendum's issue date line"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]}
+             ]}

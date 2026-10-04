@@ -1,0 +1,1364 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T154102Z-6d03
+  created: '2026-10-04T15:41:02Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 Clause 6.1 deletes Table 1-1 (revised) and its Notes issued by Section 3 of Addendum No. 2 and
+      replaces them with the table and Notes that follow, adding criterion G, and states the marks for A to F are
+      unchanged.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced
+        by the table and Notes below, which add criterion G (energy efficiency). The marks for criteria A to F are
+        unchanged.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: The rows A to F of ADD-03 Table 1-1 (second revision) have the same Ref, Criterion and Marks cells as
+      rows A to F of ADD-02 Table 1-1 (revised) as effective at ADD-02.
+    evidence:
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/A
+      page: 1
+      kind: span
+      words: 'Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks: 25'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/B
+      page: 1
+      kind: span
+      words: 'Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/C
+      page: 1
+      kind: span
+      words: 'Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/D
+      page: 1
+      kind: span
+      words: 'Ref: D | Criterion: Environmental and social management | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/E
+      page: 1
+      kind: span
+      words: 'Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/F
+      page: 1
+      kind: span
+      words: 'Ref: F | Criterion: Health, safety and security of supply | Marks: 10'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: fact
+    text: ADD-02 Table 1-1 (revised) has no criterion G and its Total row reads 100 marks; ADD-03 Table 1-1 (second
+      revision) adds row G (20 marks) and its Total row reads 120 marks.
+    evidence:
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/total
+      page: 1
+      kind: span
+      words: 'Criterion: Total | Marks: 100'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/G
+      page: 2
+      kind: span
+      words: 'Ref: G | Criterion: Energy efficiency and specific energy consumption | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/total
+      page: 2
+      kind: span
+      words: 'Criterion: Total | Marks: 120'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S4
+    kind: fact
+    text: In a dry run, an op for ADD-03:6.1 replacing ADD-02:T1-1-rev with ADD-03:T1-1 failed check C22 ('the provision
+      cites no clause, table, form or section that exists in the pack'). ADD-03:6.1 belongs to another batch.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: issued by Section 3 of Addendum No. 2, are deleted and replaced by the table and Notes below
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S5
+    kind: fact
+    text: 'The threshold before ADD-03 is stated in marks: ADD-02 note (1) to Table 1-1 (revised) reads ''unchanged
+      at seventy (70) marks''. ADD-03 Clause 6.2 restates it as 70% of the total marks available in Table 1-1.'
+    evidence:
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/note(1)
+      page: 1
+      kind: span
+      words: (1)  The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.2
+      page: 2
+      kind: span
+      words: A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in
+        Table 1-1 shall not proceed to commercial evaluation.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: I1
+    kind: interpretation
+    text: Rows A to F of ADD-03 Table 1-1 are the content of the replacement table issued under ADD-03:6.1. They
+      carry no amending words of their own and reproduce the ADD-02 rows unchanged, so each one changes nothing
+      by itself. The replacement is the op that answers ADD-03:6.1.
+    evidence: []
+    note: null
+  - id: I2
+    kind: interpretation
+    text: 'Rows G and Total add new evaluation content: a new criterion worth 20 marks, and the total rises from
+      100 to 120. That content takes effect only through the replacement under ADD-03:6.1. Its op is in another
+      batch and failed C22 in the dry run, so this batch cannot establish how these rows are carried. A person must
+      decide, together with the 6.1 item and with 6.2/S6 for the threshold.'
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/T1-1/A
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/A
+    target: ADD-02:T1-1-rev/A
+    payload:
+      provision: ADD-03:T1-1/A
+      disposition: no_effect
+      reason: 'Row A of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/A
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/A
+      origin: assistant
+    previous_value: 'Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks:
+      25'
+    proposed_value: 'Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks:
+      25'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/A
+      page: 2
+      kind: span
+      words: 'Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks: 25'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/A
+      page: 1
+      kind: span
+      words: 'Ref: A | Criterion: Process design, treatment performance and compliance with Volume II | Marks: 25'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/A
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/A is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/A p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/A at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/A p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/A at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Row A matches the ADD-02 row word for word and 6.1 says that A–F marks
+      are unchanged.
+    review: null
+  - id: ADD-03/T1-1/B
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/B
+    target: ADD-02:T1-1-rev/B
+    payload:
+      provision: ADD-03:T1-1/B
+      disposition: no_effect
+      reason: 'Row B of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/B
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/B
+      origin: assistant
+    previous_value: 'Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15'
+    proposed_value: 'Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/B
+      page: 2
+      kind: span
+      words: 'Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/B
+      page: 1
+      kind: span
+      words: 'Ref: B | Criterion: Construction methodology, programme and interface management | Marks: 15'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/B
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/B is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/B p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/B at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/B p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/B at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Identical to the ADD-02 row B.
+    review: null
+  - id: ADD-03/T1-1/C
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/C
+    target: ADD-02:T1-1-rev/C
+    payload:
+      provision: ADD-03:T1-1/C
+      disposition: no_effect
+      reason: 'Row C of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/C
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/C
+      origin: assistant
+    previous_value: 'Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20'
+    proposed_value: 'Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/C
+      page: 2
+      kind: span
+      words: 'Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/C
+      page: 1
+      kind: span
+      words: 'Ref: C | Criterion: Operations and maintenance philosophy and lifecycle strategy | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/C
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/C is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/C p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/C at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/C p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/C at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Identical to the ADD-02 row C.
+    review: null
+  - id: ADD-03/T1-1/D
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/D
+    target: ADD-02:T1-1-rev/D
+    payload:
+      provision: ADD-03:T1-1/D
+      disposition: no_effect
+      reason: 'Row D of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/D
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/D
+      origin: assistant
+    previous_value: 'Ref: D | Criterion: Environmental and social management | Marks: 20'
+    proposed_value: 'Ref: D | Criterion: Environmental and social management | Marks: 20'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/D
+      page: 2
+      kind: span
+      words: 'Ref: D | Criterion: Environmental and social management | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/D
+      page: 1
+      kind: span
+      words: 'Ref: D | Criterion: Environmental and social management | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/D
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/D is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/D p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/D at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/D p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/D at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Identical to the ADD-02 row D.
+    review: null
+  - id: ADD-03/T1-1/E
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/E
+    target: ADD-02:T1-1-rev/E
+    payload:
+      provision: ADD-03:T1-1/E
+      disposition: no_effect
+      reason: 'Row E of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/E
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/E
+      origin: assistant
+    previous_value: 'Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10'
+    proposed_value: 'Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/E
+      page: 2
+      kind: span
+      words: 'Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/E
+      page: 1
+      kind: span
+      words: 'Ref: E | Criterion: Organisation, key personnel and consortium governance | Marks: 10'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/E
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/E is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/E p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/E at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/E p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/E at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Identical to the ADD-02 row E.
+    review: null
+  - id: ADD-03/T1-1/F
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/F
+    target: ADD-02:T1-1-rev/F
+    payload:
+      provision: ADD-03:T1-1/F
+      disposition: no_effect
+      reason: 'Row F of the replacement Table 1-1 (second revision). Its cells are identical to ADD-02:T1-1-rev/F
+        and ADD-03:6.1 states ''The marks for criteria A to F are unchanged.'' The row has no amending words of
+        its own; the table replacement is carried by the item answering ADD-03:6.1. Interpretation: a person confirms.'
+      candidates:
+      - ADD-02:T1-1-rev/F
+      origin: assistant
+    previous_value: 'Ref: F | Criterion: Health, safety and security of supply | Marks: 10'
+    proposed_value: 'Ref: F | Criterion: Health, safety and security of supply | Marks: 10'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/F
+      page: 2
+      kind: span
+      words: 'Ref: F | Criterion: Health, safety and security of supply | Marks: 10'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/F
+      page: 1
+      kind: span
+      words: 'Ref: F | Criterion: Health, safety and security of supply | Marks: 10'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The marks for criteria A to F are unchanged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev/F
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/F is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/F p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/F at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/F p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/F at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Text-layer row, no crop. Identical to the ADD-02 row F.
+    review: null
+  - id: ADD-03/T1-1/G
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/G
+    target: ADD-03:T1-1
+    payload:
+      provision: ADD-03:T1-1/G
+      disposition: unresolved
+      reason: 'Insufficient evidence in this batch. Row G is a new criterion, not present in ADD-02 Table 1-1 (revised),
+        and is introduced by ADD-03:6.1: ''which add criterion G (energy efficiency)''. It takes effect only through
+        the replacement of ADD-02:T1-1-rev under ADD-03:6.1, which is answered in another batch. A dry-run replace_unit
+        op for 6.1 failed C22, so how the new row is carried cannot be established here. A person must decide, together
+        with the 6.1 item.'
+      candidates:
+      - ADD-02:T1-1-rev
+      origin: assistant
+    previous_value: null
+    proposed_value: 'Ref: G | Criterion: Energy efficiency and specific energy consumption | Marks: 20'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/G
+      page: 2
+      kind: span
+      words: 'Ref: G | Criterion: Energy efficiency and specific energy consumption | Marks: 20'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: are deleted and replaced by the table and Notes below, which add criterion G (energy efficiency)
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-02:T1-1-rev
+    conflicts: []
+    missing_information:
+    - the accepted op answering ADD-03:6.1 (replacement of ADD-02:T1-1-rev by ADD-03:T1-1); a dry run of that op
+      failed C22
+    statements:
+    - S1
+    - S3
+    - S4
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/G is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/G p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/G at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: the accepted op answering ADD-03:6.1 (replacement of ADD-02:T1-1-rev
+        by ADD-03:T1-1); a dry run of that op failed C22'
+      aspect: evidence
+    verification_status: insufficient_evidence
+    model_rationale: Text-layer row, no crop. This is a new criterion with no counterpart at ADD-02. I am not guessing
+      an insert_row op into a table that 6.1 deletes entirely.
+    review: null
+  - id: ADD-03/T1-1/total
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:T1-1/total
+    target: ADD-02:T1-1-rev/total
+    payload:
+      provision: ADD-03:T1-1/total
+      disposition: unresolved
+      reason: 'Insufficient evidence in this batch. The Total changes from ''Criterion: Total | Marks: 100'' (ADD-02:T1-1-rev/total)
+        to ''Criterion: Total | Marks: 120''. That change takes effect through the replacement under ADD-03:6.1,
+        which is answered in another batch and whose dry-run op failed C22. The total also feeds the technical threshold:
+        ADD-02 note (1) reads ''unchanged at seventy (70) marks'', while ADD-03:6.2 reads ''seventy per cent (70%)
+        of the total marks available in Table 1-1''. A person must decide this row together with 6.1, 6.2 and S6/para1.'
+      candidates:
+      - ADD-02:T1-1-rev/total
+      - VOL-I:11.3
+      origin: assistant
+    previous_value: 'Criterion: Total | Marks: 100'
+    proposed_value: 'Criterion: Total | Marks: 120'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/total
+      page: 2
+      kind: span
+      words: 'Criterion: Total | Marks: 120'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/total
+      page: 1
+      kind: span
+      words: 'Criterion: Total | Marks: 100'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/note(1)
+      page: 1
+      kind: span
+      words: (1)  The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.2
+      page: 2
+      kind: span
+      words: A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in
+        Table 1-1 shall not proceed to commercial evaluation.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:6.1
+    - ADD-03:6.2
+    - ADD-03:S6/para1
+    - ADD-02:T1-1-rev/total
+    conflicts: []
+    missing_information:
+    - the accepted op answering ADD-03:6.1; a dry run of that op failed C22
+    - how the threshold in VOL-I:11.3 is read once the total is 120 (this depends on ADD-03:6.2, which is in another
+      batch)
+    statements:
+    - S3
+    - S4
+    - S5
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T1-1/total is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:T1-1/total p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1/total at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/total p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/total at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev/note(1) p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev/note(1) at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:6.2 p2
+      ok: true
+      detail: verbatim in ADD-03:6.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: the accepted op answering ADD-03:6.1; a dry run of that op failed
+        C22; how the threshold in VOL-I:11.3 is read once the total is 120 (this depends on ADD-03:6.2, which is
+        in another batch)'
+      aspect: evidence
+    verification_status: insufficient_evidence
+    model_rationale: Text-layer row, no crop. The total changes and interacts with the 11.3 threshold, so this is
+      left unresolved for a person rather than marked no_effect.
+    review: null
+  coverage:
+    provisions_total: 70
+    accounted: 8
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref-en
+    - ADD-03:p4-image/ref-ar
+    - ADD-03:p4-image/form-en
+    - ADD-03:p4-image/form-ar
+    - ADD-03:p4-image/title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 8
+    resolved: 0
+    pending: 8
+    invalid: 0
+    unaccounted: 62
+    pending_provisions:
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:6.1 p2
+        ok: true
+        detail: verbatim in ADD-03:6.1 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-02:T1-1-rev/A p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/A at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/B p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/B at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/C p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/C at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/D p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/D at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/E p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/E at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/F p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/F at ADD-02
+        aspect: null
+    S3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-02:T1-1-rev/total p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/total at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-1/G p2
+        ok: true
+        detail: verbatim in ADD-03:T1-1/G at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-1/total p2
+        ok: true
+        detail: verbatim in ADD-03:T1-1/total at ADD-02
+        aspect: null
+    S4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:6.1 p2
+        ok: true
+        detail: verbatim in ADD-03:6.1 at ADD-02
+        aspect: null
+    S5:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-02:T1-1-rev/note(1) p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/note(1) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:6.2 p2
+        ok: true
+        detail: verbatim in ADD-03:6.2 at ADD-02
+        aspect: null
+    I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/A
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/B
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/C
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/D
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/E
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/F
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T1-1/G
+      disposition: unresolved
+      accounted_by:
+      - unresolved
+    - provision: ADD-03:T1-1/total
+      disposition: unresolved
+      accounted_by:
+      - unresolved
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/form-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/form-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4-blank
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref-en
+    - ADD-03:p4-image/ref-ar
+    - ADD-03:p4-image/form-en
+    - ADD-03:p4-image/form-ar
+    - ADD-03:p4-image/title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: c0fe4c9caefc1db5508dc786cd5be5715e2c5cd5ba2097c5fcb14205d3dabe74
+    computed_under:
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []

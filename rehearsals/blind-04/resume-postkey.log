@@ -1,0 +1,68 @@
+[ADD-03-run-host-blind04-20261004T152505Z] analysis ...
+  analysis-008: done (8 item(s); run ADD-03-host-20261004T164722Z-4d3d)
+  analysis-009: done (6 item(s); run ADD-03-host-20261004T165154Z-2f79)
+[ADD-03-run-host-blind04-20261004T152505Z] validation ...
+  combined set: 73 item(s); 70/70 provisions accounted for; {'evidence_verified': 9, 'conflicting': 7, 'interpretation_pending': 47, 'escalated': 3, 'insufficient_evidence': 7}
+[ADD-03-run-host-blind04-20261004T152505Z] downstream ...
+  downstream-001: done (14 item(s))
+  downstream-002: done (13 item(s))
+  downstream-003: failed (the host session's final message is not a DownstreamSet: the answer is not valid JSON: Expecting ',' delimiter: line 1 column 11968 (char 11967))
+  downstream-004: done (16 item(s))
+  downstream-005: done (14 item(s))
+  downstream: 56 task(s) {'row_reading': 23, 'row_new': 4, 'clarification_item': 4, 'activity': 13, 'escalation': 12}
+[ADD-03-run-host-blind04-20261004T152505Z] downstream_validation ...
+  downstream items: {'interpretation_pending': 34, 'insufficient_evidence': 8, 'conflicting': 5, 'escalated': 9, 'invalid': 1}; held back 2
+[ADD-03-run-host-blind04-20261004T152505Z] promotion ...
+  promoted into the candidate: 16 op(s), 38 disposition(s), 12 unresolved, 1 new row(s), 20 reading(s), 4 issue(s), 6 activit(y/ies), 2 clarification(s), 1 relationship(s)
+[ADD-03-run-host-blind04-20261004T152505Z] pin ...
+[ADD-03-run-host-blind04-20261004T152505Z] check_register ...
+  check-register: exit 1, 11 finding(s) {'disposition': 1, 'quote': 3, 'C46': 7}
+[ADD-03-run-host-blind04-20261004T152505Z] outputs ...
+  outputs REFUSED before the build: pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02
+[ADD-03-run-host-blind04-20261004T152505Z] diff ...
+[ADD-03-run-host-blind04-20261004T152505Z] review ...
+timings (wall clock per step):
+  ingest                     19.4 s  done
+  readings                  230.7 s  done
+  analysis                 2844.4 s  done
+  validation                  7.6 s  done
+  downstream               1335.1 s  done
+  downstream_validation       0.8 s  done
+  promotion                   9.8 s  done
+  pin                         3.2 s  done
+  check_register              9.0 s  done
+  outputs                   116.4 s  done
+  diff                        5.0 s  done
+  review                      4.4 s  done
+  total (steps)            4585.8 s  (76.4 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind04-20261004T152505Z: partial (the candidate outputs build was refused (pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02); out-before stays the last validated state)
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind04-20261004T152505Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "the candidate outputs build was refused (pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02); out-before stays the last validated state",
+ "exit_code": 1,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z",
+ "provisions": {
+  "validated": 70
+ },
+ "timings": {
+  "ingest": 19.4,
+  "readings": 230.7,
+  "analysis": 2844.4,
+  "validation": 7.6,
+  "downstream": 1335.1,
+  "downstream_validation": 0.8,
+  "promotion": 9.8,
+  "pin": 3.2,
+  "check_register": 9.0,
+  "outputs": 116.4,
+  "diff": 5.0,
+  "review": 4.4
+ },
+ "total_seconds": 4585.8,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.md",
+ "waiting": []
+}
+exit 1

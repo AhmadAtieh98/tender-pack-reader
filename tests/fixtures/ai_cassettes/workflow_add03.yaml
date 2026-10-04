@@ -1,0 +1,197 @@
+# RECORDED WORKFLOW (hand-written for offline tests; NOT a live model's output and not a live integration).
+# The workflow (tenderpack ai run --route recorded) on blind rehearsal 02's Addendum No. 3 added to the real pack.
+# Each session is the provider turns of ONE batch; a batch no session covers fails ("no recorded session") and its
+# provisions stay pending, so the run ends PARTIAL with every provision listed. ${state} is replaced with the state
+# identity from the batch's task packet (what a model is asked to copy).
+#
+# analysis (batch size 8 gives 7 batches; three are recorded):
+#   cover + 1.x   cover/para1 and 1.2 no_effect; cover/para2, cover/para3 and 1.1 left unanswered (unaccounted)
+#   2.x + 3.x     2.1 and 3.1 replace_text, 2.4 insert_unit (new Clause 6.8), after a simulate_amendment tool call;
+#                 2.2, 2.3, 3.2 and 3.3 left unanswered
+#   7.x           7.1 proposed as an op of a change type the engine does not have ('reletter_items': the workflow
+#                 turns it into an escalation with its evidence and scope); 7.2 escalated
+#   4.x-6.x, Q15-Q21 and Appendix A: not recorded (the batches fail; the provisions stay pending)
+# downstream (one session, for the batch holding the row tasks of VOL-I 7.1 and the new Clause 6.8):
+#   a re-made reading of VOL-I-7.1-01 (180 days), a new row for Clause 6.8 with a new evidence item and an A5 activity
+#   (its duration a PROVISIONAL ASSUMPTION), an issue, a draft clarification question, a proposed relationship, and a
+#   reading of VOL-I-6.1-01 whose quotation is FABRICATED (insufficient_evidence)
+name: workflow-add03
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 400000,
+               retention: "recorded fixture: nothing leaves the process", source: "cassette (recorded fixture)"}
+sessions:
+  - phase: analysis
+    when: {provisions_include: ["ADD-03:cover/para1", "ADD-03:1.2"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "ADD-03:cover/para1"]}
+        response:
+          usage: {input_tokens: 21000, output_tokens: 700}
+          text: |
+            {"addendum": "ADD-03", "state": ${state}, "statements": [],
+             "items": [
+              {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+               "payload": {"provision": "ADD-03:cover/para1", "disposition": "no_effect", "reason": "the addendum's issue date line (the stage date)"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]},
+              {"id": "ADD-03/1.2", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:1.2",
+               "payload": {"provision": "ADD-03:1.2", "disposition": "no_effect", "reason": "clarification request 18 was withdrawn and is not answered: nothing in the RFP Documents changes"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:1.2", "page": 1, "kind": "span",
+                             "words": "Clarification request 18 was withdrawn by the Bidder that submitted it and is not answered."}]}
+             ]}
+  - phase: analysis
+    when: {provisions_include: ["ADD-03:2.1", "ADD-03:3.1"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "ADD-03:2.4"]}
+        response:
+          text: "Checking the three ops with the engine."
+          usage: {input_tokens: 24000, output_tokens: 400}
+          tool_calls:
+            - id: w1
+              name: simulate_amendment
+              arguments:
+                addendum: ADD-03
+                ops:
+                  - {id: ADD-03/2.1, provision: "ADD-03:2.1", type: replace_text, target: "VOL-I:6.1",
+                     old: "14:00 hours Riyadh time", new: "11:00 hours Riyadh time"}
+                  - {id: ADD-03/3.1, provision: "ADD-03:3.1", type: replace_text, target: "VOL-I:7.1",
+                     old: "one hundred and fifty (150) days", new: "one hundred and eighty (180) days"}
+      - match: {last_role: tool, tool_results: [simulate_amendment]}
+        response:
+          usage: {input_tokens: 26000, output_tokens: 2100}
+          text: |
+            {"addendum": "ADD-03", "state": ${state},
+             "statements": [
+              {"id": "S1", "kind": "fact", "text": "ADD-03 2.4 inserts a new Clause 6.8 in Volume I after Clause 6.7.",
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span",
+                             "words": "The following new Clause 6.8 is inserted in Volume I after Clause 6.7"}]}],
+             "items": [
+              {"id": "ADD-03/2.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+               "payload": {"id": "ADD-03/2.1", "provision": "ADD-03:2.1", "type": "replace_text", "target": "VOL-I:6.1",
+                           "old": "14:00 hours Riyadh time", "new": "11:00 hours Riyadh time"},
+               "previous_value": "14:00 hours Riyadh time", "proposed_value": "11:00 hours Riyadh time",
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                             "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"},
+                            {"doc": "VOL-I", "unit_id": "VOL-I:6.1", "page": 3, "kind": "span",
+                             "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"}]},
+              {"id": "ADD-03/2.4", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.4", "target": "VOL-I:6.7",
+               "payload": {"id": "ADD-03/2.4", "provision": "ADD-03:2.4", "type": "insert_unit", "anchor": "VOL-I:6.7",
+                           "new_text": "Each Bidder shall, not later than five (5) Working Days before the Proposal Due Date, register through the Portal the names and identity document numbers of not more than two (2) representatives who will deliver its Proposal. Access to Administrative Building A will be refused to any person who is not so registered. A Proposal that is not received by the time stated in Clause 6.1 for that reason shall be treated as a late Proposal under Clause 6.6.",
+                           "note": "new Clause 6.8 inserted after Clause 6.7"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span",
+                             "words": "The following new Clause 6.8 is inserted in Volume I after Clause 6.7"},
+                            {"doc": "VOL-I", "unit_id": "VOL-I:6.7", "page": 3, "kind": "span",
+                             "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date"}],
+               "statements": ["S1"]},
+              {"id": "ADD-03/3.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.1", "target": "VOL-I:7.1",
+               "payload": {"id": "ADD-03/3.1", "provision": "ADD-03:3.1", "type": "replace_text", "target": "VOL-I:7.1",
+                           "old": "one hundred and fifty (150) days", "new": "one hundred and eighty (180) days"},
+               "previous_value": "150", "proposed_value": "180",
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.1", "page": 1, "kind": "span",
+                             "words": "‘one hundred and fifty (150) days’ is deleted and ‘one hundred and eighty (180) days’ is substituted"},
+                            {"doc": "VOL-I", "unit_id": "VOL-I:7.1", "page": 4, "kind": "span",
+                             "words": "remain open for acceptance for one hundred and fifty (150) days"}]}
+             ]}
+  - phase: analysis
+    when: {provisions_include: ["ADD-03:7.1"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "ADD-03:7.1"]}
+        response:
+          usage: {input_tokens: 19000, output_tokens: 900}
+          text: |
+            {"addendum": "ADD-03", "state": ${state}, "statements": [],
+             "items": [
+              {"id": "ADD-03/7.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:7.1", "target": "VOL-I:9.1",
+               "payload": {"id": "ADD-03/7.1", "provision": "ADD-03:7.1", "type": "reletter_items", "target": "VOL-I:9.1",
+                           "mapping": {"Form 4-G": "(f)", "(f)": "(g)", "(g)": "(h)", "(h)": "(i)", "(i)": "(j)"}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:7.1", "page": 2, "kind": "span",
+                             "words": "the items of Volume I Clause 9.1 are re-lettered: Form 4-G is item (f), and former items (f) to (i) become items (g) to (j) respectively"}],
+               "model_rationale": "a re-lettering of a list"},
+              {"id": "ADD-03/7.2", "state": ${state}, "statement_type": "escalation", "provision": "ADD-03:7.2", "target": null,
+               "payload": {"why": "the provision adds an Index of Forms entry stated in prose", "what_is_unsupported": "a new row of the Volume IV Index of Forms given only in words"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:7.2", "page": 2, "kind": "span",
+                             "words": "an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’"}]}
+             ]}
+  - phase: downstream
+    when: {tasks_include: ["row:VOL-I-7.1-01", "c46:ADD-03/2.4"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "propose_downstream", "VOL-I:6.7+ADD-03"]}
+        response:
+          text: "Reading the inserted clause as it stands after the proposed ops."
+          usage: {input_tokens: 30000, output_tokens: 300}
+          tool_calls:
+            - {id: d1, name: get_unit, arguments: {unit_id: "ADD-03:2.4", stage: "ADD-02"}}
+      - match: {last_role: tool, tool_results: [get_unit], tool_error: false}
+        response:
+          usage: {input_tokens: 33000, output_tokens: 3900}
+          text: |
+            {"addendum": "ADD-03", "state": ${state},
+             "statements": [
+              {"id": "S1", "kind": "interpretation", "text": "A Proposal not received by the VOL-I 6.1 time because its representatives were not registered is a late Proposal under VOL-I 6.6, which is rejected unopened.",
+               "evidence": [{"doc": "VOL-I", "unit_id": "VOL-I:6.7+ADD-03", "page": 1, "kind": "span", "words": "shall be treated as a late Proposal under Clause 6.6"}]}],
+             "items": [
+              {"id": "D1", "state": ${state}, "statement_type": "row_reading", "task": "row:VOL-I-7.1-01", "provision": "ADD-03:3.1", "target": "VOL-I-7.1-01",
+               "payload": {"row": "VOL-I-7.1-01",
+                           "interpretation": {"stage": "ADD-03", "quote": "one hundred and eighty (180) days from the Proposal Due Date",
+                                              "parameters": {"validity_days": 180},
+                                              "note": "ADD-03 3.1: 150 -> 180 days. The row's date rule still names the issued period; the build re-reads 180 and flags it for a person."},
+                           "replace_requirement": {"old": "Proposal open for acceptance for 150 days from the Proposal Due Date",
+                                                   "new": "Proposal open for acceptance for 180 days from the Proposal Due Date"}},
+               "evidence": [{"doc": "VOL-I", "unit_id": "VOL-I:7.1", "page": 4, "kind": "span", "words": "remain open for acceptance for one hundred and eighty (180) days from the Proposal Due Date"},
+                            {"doc": "ADD-03", "unit_id": "ADD-03:3.1", "page": 1, "kind": "span", "words": "‘one hundred and eighty (180) days’ is substituted"}]},
+              {"id": "D2", "state": ${state}, "statement_type": "row_reading", "task": "row:VOL-I-6.1-01", "provision": "ADD-03:2.1", "target": "VOL-I-6.1-01",
+               "payload": {"row": "VOL-I-6.1-01",
+                           "interpretation": {"stage": "ADD-03", "quote": "not later than 10:00 hours Riyadh time on Thursday 26 November 2026",
+                                              "note": "the delivery time as amended"}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span", "words": "‘11:00 hours Riyadh time’ is substituted"}]},
+              {"id": "D3", "state": ${state}, "statement_type": "row_new", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4", "target": "VOL-I:6.7+ADD-03",
+               "payload": {"row": {"id": "ADD-03-6.8-01", "group": "ADD-03:2.4", "scope": ["bid_submission", "deadline", "delivery", "new_in_addendum"],
+                                   "requirement": "Register through the Portal, at least five Working Days before the Proposal Due Date, the names and identity document numbers of up to two representatives who will deliver the Proposal",
+                                   "units": ["VOL-I:6.7+ADD-03", "ADD-03:2.4"], "discipline": "Bid management", "owner": "Bid manager", "assessment": "pass_fail",
+                                   "evidence": ["EV-DELIVERY", "EV-DELIVERY-REGISTRATION"],
+                                   "date_rules": [{"rule_id": "DELIVERY-REGISTRATION", "kind": "relative", "purpose": "deadline", "anchor": "PDD", "offset": 5,
+                                                   "unit": "working_day", "direction": "before", "source_unit": "VOL-I:6.7+ADD-03",
+                                                   "text": "not later than five (5) Working Days before the Proposal Due Date"}],
+                                   "interpretations": [{"stage": "ADD-03",
+                                                        "quote": "register through the Portal the names and identity document numbers of not more than two (2) representatives who will deliver its Proposal",
+                                                        "parameters": {"representatives_max": 2, "where": "the Portal"},
+                                                        "consequence": {"class": "rejection", "unit": "VOL-I:6.7+ADD-03", "quote": "shall be treated as a late Proposal under Clause 6.6"},
+                                                        "note": "New Clause 6.8 (ADD-03 2.4). Access to the delivery address is refused to anyone not registered; a Proposal not received by the VOL-I 6.1 time for that reason is a late Proposal under 6.6."}],
+                                   "confidence": "high", "confidence_reason": "verbatim inserted clause; the consequence is stated by reference to VOL-I 6.6",
+                                   "issues": ["I-ADD03-DELIVERY-REG"]}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "register through the Portal the names and identity document numbers of not more than two (2) representatives who will deliver its Proposal"}],
+               "statements": ["S1"]},
+              {"id": "D4", "state": ${state}, "statement_type": "evidence_item", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4",
+               "payload": {"id": "EV-DELIVERY-REGISTRATION",
+                           "item": {"name": "Registration through the Portal of the names and identity document numbers of up to two representatives who will deliver the Proposal",
+                                    "envelope": "none", "issuer": "Bidder", "per": "proposal", "source": "VOL-I:6.7+ADD-03 (new Clause 6.8, ADD-03 2.4)", "counted": false}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "register through the Portal the names and identity document numbers"}]},
+              {"id": "D5", "state": ${state}, "statement_type": "activity", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4",
+               "payload": {"evidence_item": "EV-DELIVERY-REGISTRATION",
+                           "activity": {"id": "register-delivery-reps", "name": "Register through the Portal the names and identity document numbers of up to two representatives who will deliver the Proposal (new Clause 6.8)",
+                                        "owner": "Bid management", "discipline": "Bid management", "resource": "bid_manager", "issuer": "Bidder",
+                                        "duration": "delivery_registration", "predecessors": [], "successors": ["deliver"],
+                                        "finish": {"deadline_of": "DELIVERY-REGISTRATION"}},
+                           "rows": ["ADD-03-6.8-01"],
+                           "duration_assumption": {"key": "delivery_registration", "value": 1, "basis": "PROVISIONAL ASSUMPTION: one Working Day to register two representatives through the Portal; the pack states no duration",
+                                                   "owner": "Bid management", "effort_wd": 0.25, "waiting_on": "", "effort_basis": "PROVISIONAL ASSUMPTION: a quarter day of the bid manager"}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "not later than five (5) Working Days before the Proposal Due Date"}]},
+              {"id": "D6", "state": ${state}, "statement_type": "issue", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4",
+               "payload": {"id": "I-ADD03-DELIVERY-REG", "owner": "Bid manager", "theme": "envelopes",
+                           "short": "register the delivery representatives five Working Days before the PDD (new VOL-I 6.8)",
+                           "text": "New VOL-I Clause 6.8 (ADD-03 2.4): up to two representatives who will deliver the Proposal are registered through the Portal five Working Days before the Proposal Due Date; access to the delivery address is refused to anyone not registered, and a Proposal not received in time for that reason is late (VOL-I 6.6). Who delivers is a bidder decision."},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "Access to Administrative Building A will be refused to any person who is not so registered"}]},
+              {"id": "D7", "state": ${state}, "statement_type": "clarification_item", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4",
+               "payload": {"entry": {"id": "CQ-ADD03-DELIVERY-REPS", "kind": "missing_information", "volume": "VOL-I", "clause": "6.8 (inserted by ADD-03 2.4)", "page": 1,
+                                     "units": ["ADD-03:2.4"],
+                                     "sources": [{"unit": "ADD-03:2.4", "page": 1, "words": "register through the Portal the names and identity document numbers of not more than two (2) representatives who will deliver its Proposal"}],
+                                     "gap": "The new Clause 6.8 does not say whether a registered representative may be replaced after the registration deadline, or how the Portal confirms a registration.",
+                                     "already_settled": "Up to two representatives; five Working Days before the Proposal Due Date; access refused to anyone not registered.",
+                                     "practical_impact": "A representative who falls ill after the deadline could not deliver, and the Proposal would be late (VOL-I 6.6).",
+                                     "proposed_question": "Addendum No. 3, Section 2.4 (new Volume I Clause 6.8), page 1: may a registered representative be replaced after the registration deadline, and will the Portal confirm each registration?",
+                                     "interim_handling": "Register two representatives at the earliest date and keep the Portal's record of the registration.",
+                                     "decision_owner": "Bid manager", "response_status": "sent", "linked_issues": ["I-ADD03-DELIVERY-REG"], "theme": "envelopes"}},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "register through the Portal the names and identity document numbers"}]},
+              {"id": "D8", "state": ${state}, "statement_type": "dependency", "task": "c46:ADD-03/2.4", "provision": "ADD-03:2.4",
+               "payload": {"from": "VOL-I:6.7+ADD-03", "to": "deliver", "kind": "depends_on", "status": "confirmed",
+                           "basis": "the delivery depends on the representatives being registered: access to the delivery address is refused to anyone not registered (new Clause 6.8)"},
+               "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.4", "page": 1, "kind": "span", "words": "Access to Administrative Building A will be refused to any person who is not so registered"}]}
+             ]}

@@ -17,10 +17,24 @@ Failures raise ProviderError(kind, retryable, status, retry_after). complete_wit
 (timeouts, connection errors, 408/409/429/5xx/529) up to `retries` times with exponential backoff (or the server's
 retry-after), charging each attempt to the budget; then the error propagates and the controller records
 `provider_failed` with the partial log kept. No adapter falls back to another model or endpoint.
+
+Capability policy (session 10). A live route's capabilities come from its endpoint. When the endpoint cannot be reached,
+does not list the model, or omits a limit the controller relies on (the context window), live use is REFUSED with the
+reason (`unverified()` raises ProviderError "capabilities_unverified"). The configured `capabilities:` block is used
+only by the recorded route (a cassette) or when a person passes --allow-unverified-capabilities: then the values are
+marked `details.unverified`, the source says UNVERIFIED, and a route notice carries "capabilities unverified" into the
+run log and the review request.
+
+Route notices: anything a person must see about how a run was served (capabilities used unverified; a structured-output
+schema the provider rejected, so the run fell back to the plain tool-use path) is recorded with `notice()`. The
+controller's propose() collects them per run (`collect_notices`); they are written to the run log, the staged
+proposals.yaml (controller.route_notices) and the review request. A notice never changes a status.
 """
 from __future__ import annotations
 
 import base64
+import contextlib
+import contextvars
 import json
 import socket
 import time
@@ -136,6 +150,81 @@ def http_json(method: str, url: str, headers: dict, body: dict | None, timeout: 
         raise ProviderError("network", str(reason)[:300], True) from None
     except (ConnectionError, OSError) as e:
         raise ProviderError("network", str(e)[:300], True) from None
+
+
+# ---------------------------------------------------------------------------------------------- capability policy
+
+ALLOW_UNVERIFIED_FLAG = "--allow-unverified-capabilities"
+ALLOW_UNVERIFIED_KEY = "_allow_unverified_capabilities"     # set in the loaded config dict by propose / the CLI flag
+
+
+def configured_capabilities(model_cfg: dict, retention: str, source: str) -> Capabilities:
+    """The `capabilities:` block of config/ai.yaml for a model (values as declared; nothing checked)."""
+    d = dict((model_cfg or {}).get("capabilities") or {})
+    return Capabilities(images=d.get("images"), tools=d.get("tools"), structured_output=d.get("structured_output"),
+                        context_tokens=d.get("context_tokens"), retention=retention, source=source,
+                        max_output_tokens=d.get("max_output_tokens"))
+
+
+def unverified(route: str, model: str, reason: str, configured: Capabilities | None, allow: bool) -> Capabilities:
+    """The endpoint did not verify the model's capabilities (`reason`). Refuse live use, unless a person passed
+    --allow-unverified-capabilities: then the configured values are returned, marked unverified, with a route notice."""
+    if not allow or configured is None:
+        why = "" if configured is not None else " (and no `capabilities:` block is configured for this model)"
+        raise ProviderError("capabilities_unverified",
+                            f"{route} {model}: capabilities unverified: {reason}; live use is refused{why}. The configured "
+                            f"values are used only by the recorded route or with {ALLOW_UNVERIFIED_FLAG} (logged, and "
+                            "shown in the review request)", False)
+    configured.source = f"config/ai.yaml capabilities, UNVERIFIED ({reason}; {ALLOW_UNVERIFIED_FLAG})"
+    configured.details = {**configured.details, "unverified": True, "unverified_reason": reason}
+    notice("capabilities_unverified", f"capabilities unverified: {route} {model} ran on the configured values because "
+                                      f"{reason} ({ALLOW_UNVERIFIED_FLAG} was given)", route=route, model=model,
+           capabilities=configured.to_dict())
+    return configured
+
+
+# ---------------------------------------------------------------------------------------------- route notices
+
+_NOTICES: contextvars.ContextVar[list | None] = contextvars.ContextVar("tenderpack_route_notices", default=None)
+
+
+def notice(kind: str, message: str, **data) -> dict:
+    """Record a route notice for the current run (see the module docstring). Without a collector it is only returned."""
+    rec = {"kind": kind, "message": message, **data}
+    cur = _NOTICES.get()
+    if cur is not None and rec not in cur:
+        cur.append(rec)
+    return rec
+
+
+def current_notices() -> list[dict]:
+    return list(_NOTICES.get() or [])
+
+
+@contextlib.contextmanager
+def collect_notices():
+    """`with collect_notices() as notes:` around one run; nested collectors share the outer list."""
+    outer = _NOTICES.get()
+    if outer is not None:
+        yield outer
+        return
+    notes: list[dict] = []
+    token = _NOTICES.set(notes)
+    try:
+        yield notes
+    finally:
+        _NOTICES.reset(token)
+
+
+def render_notices(notes: list[dict]) -> list[str]:
+    """Markdown lines for the review request (empty when there is nothing to say)."""
+    if not notes:
+        return []
+    out = ["## Route notices (how this run was served; they change no status)", ""]
+    for n in notes:
+        tag = "capabilities unverified" if n.get("kind") == "capabilities_unverified" else n.get("kind", "notice")
+        out.append(f"- **{tag}**: {n.get('message', '')}")
+    return out + [""]
 
 
 def complete_with_retries(provider: Provider, request: Request, retries: int = 2, backoff_s: float = 2.0,

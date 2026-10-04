@@ -14,7 +14,6 @@ import pytest
 from tenderpack import stage2
 from tenderpack.amend import Engine, OpFile, UState, unevidenced_additions
 from tenderpack.citations import after_row, citations, is_index_table, row_names
-from tenderpack.util import ROOT
 
 PROSE = ("The Index of Forms in Volume IV is amended by adding, after the entry for Form 4-F, an entry for Form 4-G with "
          "the title ‘Cybersecurity Compliance Undertaking’, Envelope ‘A’ and Status ‘Mandatory’.")
@@ -113,9 +112,8 @@ def test_c47_still_flags_a_new_row_whose_cell_the_addendum_does_not_print():
 # ------------------------------------------------------------------------------------------------ blind rehearsal 02
 
 @pytest.fixture(scope="module")
-def blind02():
-    b = ROOT / "rehearsals/blind-02"
-    return stage2.run(b / "build", b / "work/pack.yaml", ROOT)
+def blind02(blind02_run):
+    return blind02_run
 
 
 def test_blind02_add03_7_2_inserts_form_4g_in_the_index_and_the_row_quotes_it(blind02):

@@ -1,0 +1,33 @@
+# RECORDED READING (hand-written for offline tests; NOT a live model's output and not a live integration).
+# The workflow's readings step on a synthetic addendum: blind rehearsal 02's Addendum No. 3 with an image of two English
+# lines added on page 3 (built by tests/test_session10_workflow.py; region ADD-03-p3-r1, no text layer). The proposer
+# looks at the region with get_region, then answers with a reading in the shape of the pack's own readings. ${state} is
+# the region's source (doc, page, bbox_pt, native_sha256) from the packet, copied as reading.source.
+name: workflow-reading
+model: recorded-fixture-model
+capabilities: {images: true, tools: true, structured_output: false, context_tokens: 400000,
+               retention: "recorded fixture: nothing leaves the process", source: "cassette (recorded fixture)"}
+sessions:
+  - phase: reading
+    when: {regions_include: ["ADD-03-p3-r1"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "propose_region_reading", "ADD-03-p3-r1"]}
+        response:
+          text: "Looking at the image first."
+          usage: {input_tokens: 9000, output_tokens: 80}
+          tool_calls:
+            - {id: r1, name: get_region, arguments: {region_id: "ADD-03-p3-r1"}}
+      - match: {last_role: tool, tool_results: [get_region], tool_error: false}
+        response:
+          usage: {input_tokens: 12000, output_tokens: 600}
+          text: |
+            {"region_id": "ADD-03-p3-r1",
+             "reading": {"region_id": "ADD-03-p3-r1", "unit_id": "ADD-03:p3-image", "title": "Note on page 3 (image)",
+                         "source": ${state}, "content_type": "text", "languages": ["en"],
+                         "prepared_by": "the proposer (overwritten by the controller)",
+                         "method": "Visual reading of the embedded image at native resolution; bands from get_region.",
+                         "blocks": [{"key": "note", "lang": "en", "role": "note",
+                                     "lines": [{"band": 0, "source": "Note: Bidders shall also submit one additional USB copy of Envelope B."},
+                                               {"band": 1, "source": "The additional USB copy shall be encrypted as Clause 6.5 requires."}]}],
+                         "uncertainties": []},
+             "model_rationale": "two printed lines; no table, no Arabic"}

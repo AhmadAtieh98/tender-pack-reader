@@ -39,8 +39,11 @@ def _build(evidence, pack, tmp_path_factory, name):
 
 
 @pytest.fixture(scope="module")
-def blind02(tmp_path_factory):
-    return _build(ROOT / "rehearsals/blind-02/build", ROOT / "rehearsals/blind-02/work/pack.yaml", tmp_path_factory, "b02")
+def blind02(blind02_run, tmp_path_factory):
+    """The session's run of blind rehearsal 02 on a fresh, disposable ingest (tests/conftest.py), written here."""
+    out = tmp_path_factory.mktemp("b02")
+    stage2.write(blind02_run, out)
+    return blind02_run, out
 
 
 @pytest.fixture(scope="module")

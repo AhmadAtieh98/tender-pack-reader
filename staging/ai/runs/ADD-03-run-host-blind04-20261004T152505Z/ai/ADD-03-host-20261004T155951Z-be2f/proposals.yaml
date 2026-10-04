@@ -1,0 +1,1128 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T155951Z-be2f
+  created: '2026-10-04T15:59:51Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+  statements:
+  - id: S-F1
+    kind: fact
+    text: ADD-03 Clause 8.1 adds a new Form 4-H to Volume IV and states that it is reproduced at Appendix A.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:8.1
+      page: 2
+      kind: span
+      words: A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list at Volume
+        I Clause 9.1, to be inserted after Form 4-G. Form 4-H is reproduced at Appendix A to this Addendum.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F2
+    kind: fact
+    text: Appendix A states the form on the following page is reproduced as issued; Appendix B states the Arabic
+      text governs.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 3
+      kind: span
+      words: Form 4-H is reproduced on the following page as issued.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:AppB/para1
+      page: 5
+      kind: span
+      words: The Arabic text of Form 4-H at Appendix A governs.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F3
+    kind: fact
+    text: The page-4 image (region ADD-03-p4-r1) shows a bilingual letterhead box (authority name and tender reference
+      in English left, Arabic right), the label FORM 4-H / النموذج ٤-ح, the Arabic title and the Arabic opening
+      declaration, as read in the eight reading blocks; the readings are status pending.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/hdr-en
+      page: 4
+      kind: reading
+      words: NORTHERN UTILITIES PROCUREMENT AUTHORITY
+      cell: null
+      crop_sha256: 1be21c3d011871394036ab9cac9954902e4d3964d26c54ec0d0fd091a363d641
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/intro
+      page: 4
+      kind: reading
+      words: 'نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما
+        يلي:'
+      cell: null
+      crop_sha256: 94ac60f68dd525fbc7c8ac528f3b80dfc39829288f6a4e0ac73ec228bca592f4
+    note: null
+  - id: S-A1
+    kind: assumption
+    text: The pending readings of the eight blocks are taken as correct; I compared each band crop with its source_text
+      and found them to agree, but the readings are not yet approved by a person.
+    evidence: []
+    note: null
+  - id: S-I1
+    kind: interpretation
+    text: The eight blocks are identification and content of the reproduced Form 4-H (letterhead, tender reference,
+      form label, title, opening words); none of them amends, deletes or replaces any clause, table or form by itself.
+      The form's addition to the documents is effected by ADD-03:8.1 (answered in another batch).
+    evidence: []
+    note: null
+  - id: S-I2
+    kind: interpretation
+    text: The words 'نقر ونتعهد بما يلي' in the intro block are the signatory's declaration within the form text
+      that a bidder completes; they are not an amendment of tender text and impose nothing beyond what the insertion
+      of Form 4-H under ADD-03:8.1 brings in. A person must confirm.
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/p4-image/hdr-en
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/hdr-en
+    target: null
+    payload:
+      provision: ADD-03:p4-image/hdr-en
+      disposition: no_effect
+      reason: Letterhead line of the Form 4-H image reproduced at Appendix A ('NORTHERN UTILITIES PROCUREMENT AUTHORITY');
+        names the issuing authority and changes no clause, table or form by itself. The form's addition is effected
+        by ADD-03:8.1.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/hdr-en
+      page: 4
+      kind: reading
+      words: NORTHERN UTILITIES PROCUREMENT AUTHORITY
+      cell: null
+      crop_sha256: 1be21c3d011871394036ab9cac9954902e4d3964d26c54ec0d0fd091a363d641
+    dependencies:
+    - ADD-03:8.1
+    - ADD-03:AppA/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/hdr-en is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/hdr-en p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/hdr-en at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b00-left shows the bold English letterhead 'NORTHERN UTILITIES PROCUREMENT AUTHORITY'
+      in the top-left of the boxed header of the page-4 form image; it is a letterhead, not an amending instruction.
+    review: null
+  - id: ADD-03/p4-image/hdr-ar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/hdr-ar
+    target: null
+    payload:
+      provision: ADD-03:p4-image/hdr-ar
+      disposition: no_effect
+      reason: Arabic letterhead line of the Form 4-H image ('الهيئة الشمالية للمشتريات المرفقية'); names the issuing
+        authority and changes nothing by itself. The form's addition is effected by ADD-03:8.1.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/hdr-ar
+      page: 4
+      kind: reading
+      words: الهيئة الشمالية للمشتريات المرفقية
+      cell: null
+      crop_sha256: 3405a1edc744cee5606aa1e7d8c05c175e937c47fc2f8e787bcf7b47b3fe4802
+    dependencies:
+    - ADD-03:8.1
+    - ADD-03:AppA/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/hdr-ar is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/hdr-ar p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/hdr-ar at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b00-right shows the bold Arabic letterhead in the top-right of the boxed header,
+      Arabic script, matching the source_text; letterhead only.
+    review: null
+  - id: ADD-03/p4-image/ref-en
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/ref-en
+    target: null
+    payload:
+      provision: ADD-03:p4-image/ref-en
+      disposition: no_effect
+      reason: 'Tender reference line of the Form 4-H image (''Tender Ref: NUPA/ISTP/2026/014''); identification
+        only, changes nothing.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/ref-en
+      page: 4
+      kind: reading
+      words: 'Tender Ref: NUPA/ISTP/2026/014'
+      cell: null
+      crop_sha256: 665035d6ca06ff77f1ffd5c230652609c2a712b76049528b90f1c23f460c6e3b
+    dependencies:
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/ref-en is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/ref-en p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/ref-en at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Band crop b01-left shows ''Tender Ref: NUPA/ISTP/2026/014'' in the second line of the header
+      box, left side; a reference, not a change.'
+    review: null
+  - id: ADD-03/p4-image/ref-ar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/ref-ar
+    target: null
+    payload:
+      provision: ADD-03:p4-image/ref-ar
+      disposition: no_effect
+      reason: 'Arabic tender reference line of the Form 4-H image (''مناقصة رقم: NUPA/ISTP/2026/014''); identification
+        only, changes nothing.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/ref-ar
+      page: 4
+      kind: reading
+      words: 'مناقصة رقم: NUPA/ISTP/2026/014'
+      cell: null
+      crop_sha256: 19afb80b8511fa9228d5a20d2cd843de7a7761d8372de2710e043412de09f494
+    dependencies:
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/ref-ar is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/ref-ar p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/ref-ar at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b01-right shows the Arabic label 'مناقصة رقم:' at the right with the Latin reference
+      NUPA/ISTP/2026/014 to its left (mixed script); same reference as the English line.
+    review: null
+  - id: ADD-03/p4-image/form-en
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/form-en
+    target: null
+    payload:
+      provision: ADD-03:p4-image/form-en
+      disposition: no_effect
+      reason: Form label 'FORM 4-H' on the reproduced form; the form itself is added by ADD-03:8.1 ('A new Form
+        4-H (Declaration of Beneficial Ownership) is added to Volume IV'); this label changes nothing by itself.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/form-en
+      page: 4
+      kind: reading
+      words: FORM 4-H
+      cell: null
+      crop_sha256: 18d446e756601924eb10fb152aa3d2b6d0627c8ddbfdfde7293194d22198e0f6
+    - doc: ADD-03
+      unit_id: ADD-03:8.1
+      page: 2
+      kind: span
+      words: A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/form-en is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/form-en p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/form-en at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.1 p2
+      ok: true
+      detail: verbatim in ADD-03:8.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b02-left shows the bold English label 'FORM 4-H' below the header box at left; a
+      label of the form being added, not an amendment.
+    review: null
+  - id: ADD-03/p4-image/form-ar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/form-ar
+    target: null
+    payload:
+      provision: ADD-03:p4-image/form-ar
+      disposition: no_effect
+      reason: Arabic form label 'النموذج ٤-ح' on the reproduced form; the form is added by ADD-03:8.1; this label
+        changes nothing by itself.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/form-ar
+      page: 4
+      kind: reading
+      words: النموذج ٤-ح
+      cell: null
+      crop_sha256: 9fe1f7ee60b93051988ea66317b9ba1667dada8f25cb86bc3901f4f272db1962
+    dependencies:
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/form-ar is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/form-ar p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/form-ar at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b02-right shows the bold Arabic label 'النموذج ٤-ح' at right, with Arabic-Indic digit
+      ٤ and the letter ح (the Arabic counterpart of H).
+    review: null
+  - id: ADD-03/p4-image/title
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/title
+    target: null
+    payload:
+      provision: ADD-03:p4-image/title
+      disposition: no_effect
+      reason: Arabic form title 'إقرار المستفيد الحقيقي' on the reproduced form; heading only; the form is added
+        by ADD-03:8.1.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/title
+      page: 4
+      kind: reading
+      words: إقرار المستفيد الحقيقي
+      cell: null
+      crop_sha256: b6496c80a4b1b23bc2c579f9e72a02f1356f1b7eaf671db13a0e1c8936f5af60
+    dependencies:
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F3
+    - S-A1
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/title is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/title p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/title at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crop b03-full shows the large bold Arabic title 'إقرار المستفيد الحقيقي' (with hamza under
+      the initial alif) beneath the form label; a heading.
+    review: null
+  - id: ADD-03/p4-image/intro
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+    statement_type: disposition
+    provision: ADD-03:p4-image/intro
+    target: null
+    payload:
+      provision: ADD-03:p4-image/intro
+      disposition: no_effect
+      reason: 'Opening words of the declaration inside the reproduced Form 4-H: ''نحن الموقعون أدناه، بصفتنا ممثلين
+        مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي:''. The words ''نقر ونتعهد'' (declare
+        and undertake) are the signatory''s declaration within the form content, not an amendment of any clause;
+        the form (with this content) enters the documents through ADD-03:8.1 (''Form 4-H is reproduced at Appendix
+        A to this Addendum'') and AppA/para1. Person to confirm.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/intro
+      page: 4
+      kind: reading
+      words: 'نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما
+        يلي:'
+      cell: null
+      crop_sha256: 94ac60f68dd525fbc7c8ac528f3b80dfc39829288f6a4e0ac73ec228bca592f4
+    - doc: ADD-03
+      unit_id: ADD-03:8.1
+      page: 2
+      kind: span
+      words: Form 4-H is reproduced at Appendix A to this Addendum.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:8.1
+    - ADD-03:AppA/para1
+    - ADD-03:AppB/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-A1
+    - S-I1
+    - S-I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/intro is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/intro p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/intro at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.1 p2
+      ok: true
+      detail: verbatim in ADD-03:8.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I2: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Band crops b04-full and b05-full show the Arabic opening declaration over two lines, the second
+      line being 'نقر ونتعهد بما يلي:' ending in a colon that introduces the numbered declarations (أولاً/ثانياً/ثالثاً)
+      below. It is form content a bidder signs; the governing-Arabic point (AppB/para1) matters to how 8.1's insertion
+      is drafted, in another batch. Depends on interpretation S-I2, so it stays pending for a person.
+    review: null
+  coverage:
+    provisions_total: 70
+    accounted: 8
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 8
+    resolved: 0
+    pending: 8
+    invalid: 0
+    unaccounted: 62
+    pending_provisions:
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref-en
+    - ADD-03:p4-image/ref-ar
+    - ADD-03:p4-image/form-en
+    - ADD-03:p4-image/form-ar
+    - ADD-03:p4-image/title
+    - ADD-03:p4-image/intro
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:8.1 p2
+        ok: true
+        detail: verbatim in ADD-03:8.1 at ADD-02
+        aspect: null
+    S-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppA/para1 p3
+        ok: true
+        detail: verbatim in ADD-03:AppA/para1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:AppB/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:AppB/para1 at ADD-02
+        aspect: null
+    S-F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/hdr-en p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/hdr-en at ADD-02
+        aspect: null
+      - check: evidence ADD-03:p4-image/intro p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/intro at ADD-02
+        aspect: null
+    S-A1:
+      kind: assumption
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/A
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/B
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/C
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/D
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/E
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/F
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/G
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/total
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/ref-en
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/ref-ar
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/form-en
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/form-ar
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/title
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/intro
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-row4-blank
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/decl1
+    - ADD-03:p4-image/decl2
+    - ADD-03:p4-image/decl3
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/table-row4
+    - ADD-03:p4-image/table-row4-blank
+    - ADD-03:p4-image/field-member-en
+    - ADD-03:p4-image/field-member-ar
+    - ADD-03:p4-image/field-cr-en
+    - ADD-03:p4-image/field-cr-ar
+    - ADD-03:p4-image/field-signatory-en
+    - ADD-03:p4-image/field-signatory-ar
+    - ADD-03:p4-image/field-capacity-en
+    - ADD-03:p4-image/field-capacity-ar
+    - ADD-03:p4-image/field-date-en
+    - ADD-03:p4-image/field-date-ar
+    - ADD-03:p4-image/field-signature-en
+    - ADD-03:p4-image/field-signature-ar
+    - ADD-03:p4-image/note
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: c0fe4c9caefc1db5508dc786cd5be5715e2c5cd5ba2097c5fcb14205d3dabe74
+    computed_under:
+      evidence_build_id: 57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []

@@ -27,8 +27,8 @@ B = ROOT / "rehearsals/blind-02"
 
 
 @pytest.fixture(scope="module")
-def blind02():
-    units = json.loads((B / "build/units.json").read_text(encoding="utf-8"))["units"]
+def blind02(blind02_build):
+    units = json.loads((blind02_build / "units.json").read_text(encoding="utf-8"))["units"]
     opfiles = [load_opfile(B / f"work/amendments/ADD-0{i}.yaml") for i in (1, 2, 3)]
     rf = load_rows(B / "work/register/rows.yaml")
     return {"units": units, "opfiles": opfiles, "stages": Engine(units, opfiles, set()).run(), "rf": rf}

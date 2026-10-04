@@ -1,0 +1,33 @@
+# RECORDED HTTP FIXTURE (hand-written; NOT a live endpoint's output). Session 10, W4. The endpoint REJECTS the
+# structured-output schema (a 400 naming output_config.format): the adapter switches to the plain tool-use path for the
+# rest of the run, with a route notice in the run log and the review request (never silently), and the attempt is
+# retried (counted as a call) WITHOUT output_config.format; the effort setting is kept. The answer is parsed and
+# validated locally. Expected: ADD-03/2.1 evidence_verified.
+name: s10-anthropic-schema-rejected
+exchanges:
+  - request: {method: GET, path: /v1/models/claude-opus-5-5}
+    response:
+      body: {id: claude-opus-5-5, max_input_tokens: 1000000, max_tokens: 128000,
+             capabilities: {image_input: {supported: true}, structured_outputs: {supported: true}}}
+  - request: {method: POST, path: /v1/messages, body_has: [output_config.format.schema]}
+    error: {status: 400, retryable: false,
+            message: "{\"type\": \"invalid_request_error\", \"message\": \"output_config.format.schema: too many optional properties (recorded fixture)\"}"}
+  - request: {method: POST, path: /v1/messages, body_has: [output_config.effort, tools], body_lacks: [output_config.format]}
+    response:
+      body:
+        model: claude-opus-5-5
+        stop_reason: end_turn
+        usage: {input_tokens: 15000, output_tokens: 700}
+        content:
+          - type: text
+            text: |
+              {"addendum": "ADD-03", "state": ${state}, "statements": [],
+               "items": [
+                {"id": "ADD-03/2.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+                 "payload": {"id": "ADD-03/2.1", "provision": "ADD-03:2.1", "type": "replace_text", "target": "VOL-I:6.1",
+                             "old": "14:00 hours Riyadh time", "new": "11:00 hours Riyadh time"},
+                 "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                               "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"},
+                              {"doc": "VOL-I", "unit_id": "VOL-I:6.1", "page": 3, "kind": "span",
+                               "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"}]}
+               ]}

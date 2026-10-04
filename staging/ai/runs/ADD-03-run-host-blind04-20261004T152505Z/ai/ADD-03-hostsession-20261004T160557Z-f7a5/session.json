@@ -1,0 +1,1063 @@
+{
+ "run_id": "ADD-03-hostsession-20261004T160557Z-f7a5",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:p4-image/field-cr-en",
+  "ADD-03:p4-image/field-cr-ar",
+  "ADD-03:p4-image/field-signatory-en",
+  "ADD-03:p4-image/field-signatory-ar",
+  "ADD-03:p4-image/field-capacity-en",
+  "ADD-03:p4-image/field-capacity-ar",
+  "ADD-03:p4-image/field-date-en",
+  "ADD-03:p4-image/field-date-ar"
+ ],
+ "started": "2026-10-04T16:05:57.610460+00:00",
+ "elapsed_s": 135.4,
+ "exit_code": 1,
+ "timed_out": false,
+ "error": "the host ended with an error (success: 429)",
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01U5AqM9AHYM1FDA9GvPTXZg",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-cr-ar",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01ALXBtdqXYDwzW8Ga2NRcep",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-cr-ar"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_0196x4QLVWZLFrXx2AqCBQ36",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:F4-H"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_0116DFSnRYsE74YgNVD2TFqC",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-signatory-ar"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_015PMkqJurWCpQoFqfS9tkGv",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-capacity-en"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_014HKBjXaonb6R8bmqLivrCU",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-capacity-ar"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_014HYK5zLwp3TNfd3PP5vabN",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-date-ar"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_012c1WSZKLXJuQ5oQ9MbzZWo",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:AppA/para1",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01E5mnVhMy5npFUzgzpJKH9j",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-cr-en"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01SiAipgjENfTRgSG8awqikn",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-signatory-en"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01Ge6BKkY8BcnW2VE5BEcE6Q",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-date-en"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01DBt9BgdAjfVUAcwYPY3eBU",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/field-capacity-ar",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01C1StDiXRHtPriDxmRKcDo7",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "dispositions": [
+     {
+      "provision": "ADD-03:p4-image/field-cr-en",
+      "disposition": "no_effect",
+      "reason": "Blank field label 'Commercial registration number' on the reproduced Arabic Form 4-H (Appendix A); it prints no change, obligation or exception. The form's issue and use are governed by ADD-03:AppA/para1 and Section 8 (other batch)."
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01UyBYFaZD1fzNjLcTSWfP9N",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Page 4 of ADD-03 (region ADD-03-p4-r1) is an image of Form 4-H in Arabic with bilingual signature-block field labels: each band prints an English label at left and an Arabic label ending in ' :' at right above a blank rule line, with nothing written in the fields. The readings of these bands are pending approval.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-cr-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "رقم السجل التجاري :",
+         "crop_sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-signatory-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "اسم المفوض بالتوقيع :",
+         "crop_sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-capacity-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "الصفة :",
+         "crop_sha256": "2472d063cf85cc1ed1c9d69925b2cffbfd6be5b9fe5e80055612830f3af5a684"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-date-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "التاريخ :",
+         "crop_sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "ADD-03 Appendix A introduces the page: 'Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum.'",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "interpretation",
+       "text": "A blank form field label (Commercial registration number / Name of authorised signatory / Capacity / Date, in English and Arabic) prints no change, obligation or exception to any unit of the pack by itself; the issue of Form 4-H and the obligation to complete it are carried by ADD-03:AppA/para1 and ADD-03 Section 8 (8.1-8.4), which belong to another batch. These labels therefore have no effect of their own.",
+       "evidence": []
+      }
+     ],
+     "items": []
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01J1jH3YQNchUwsC4o7mrZcw",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Page 4 of ADD-03 (region ADD-03-p4-r1) is an image of Form 4-H in Arabic with bilingual signature-block field labels: each band prints an English label at left and an Arabic label ending in ' :' at right above a blank rule line, with nothing written in the fields. The readings of these bands are pending approval.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-cr-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "رقم السجل التجاري :",
+         "crop_sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-signatory-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "اسم المفوض بالتوقيع :",
+         "crop_sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-capacity-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "الصفة :",
+         "crop_sha256": "2472d063cf85cc1ed1c9d69925b2cffbfd6be5b9fe5e80055612830f3af5a684"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-date-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "التاريخ :",
+         "crop_sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "ADD-03 Appendix A introduces the page: 'Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum.'",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "interpretation",
+       "text": "A blank form field label (Commercial registration number / Name of authorised signatory / Capacity / Date, in English and Arabic) prints no change, obligation or exception to any unit of the pack by itself; the issue of Form 4-H and the obligation to complete it are carried by ADD-03:AppA/para1 and ADD-03 Section 8 (8.1-8.4), which belong to another batch. These labels therefore have no effect of their own.",
+       "evidence": []
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/p4-image/field-cr-en",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-cr-en",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-cr-en",
+        "disposition": "no_effect",
+        "reason": "Blank field label 'Commercial registration number' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-cr-en",
+         "page": 4,
+         "kind": "reading",
+         "words": "Commercial registration number",
+         "crop_sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b23-full shows the English label 'Commercial registration number' (Latin script, left) beside the Arabic 'رقم السجل التجاري :' (right) above an empty rule line; nothing written in. A label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-cr-ar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-cr-ar",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-cr-ar",
+        "disposition": "no_effect",
+        "reason": "Blank Arabic field label 'رقم السجل التجاري :' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-cr-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "رقم السجل التجاري :",
+         "crop_sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b23-full shows the Arabic-script label 'رقم السجل التجاري :' right-aligned with a colon and a blank rule line beneath; no entry. Form label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-signatory-en",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-signatory-en",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-signatory-en",
+        "disposition": "no_effect",
+        "reason": "Blank field label 'Name of authorised signatory' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-signatory-en",
+         "page": 4,
+         "kind": "reading",
+         "words": "Name of authorised signatory",
+         "crop_sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b24-full shows 'Name of authorised signatory' (Latin, left) and 'اسم المفوض بالتوقيع :' (Arabic, right) over an empty line. Label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-signatory-ar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-signatory-ar",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-signatory-ar",
+        "disposition": "no_effect",
+        "reason": "Blank Arabic field label 'اسم المفوض بالتوقيع :' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-signatory-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "اسم المفوض بالتوقيع :",
+         "crop_sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b24-full shows the Arabic-script label 'اسم المفوض بالتوقيع :' at right with a colon and an empty rule line; no entry. Label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-capacity-en",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-capacity-en",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-capacity-en",
+        "disposition": "no_effect",
+        "reason": "Blank field label 'Capacity' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-capacity-en",
+         "page": 4,
+         "kind": "reading",
+         "words": "Capacity",
+         "crop_sha256": "78292ca1e69a01c03e5ca9dcebebf4e5deac42cfeaae51f19d6cb8e1541d93e0"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b25-left shows only the Latin-script word 'Capacity'; the full page shows it above a blank rule line in the signature block. Label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-capacity-ar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-capacity-ar",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-capacity-ar",
+        "disposition": "no_effect",
+        "reason": "Blank Arabic field label 'الصفة :' in the signature block of the reproduced Form 4-H image; it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-capacity-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "الصفة :",
+         "crop_sha256": "2472d063cf85cc1ed1c9d69925b2cffbfd6be5b9fe5e80055612830f3af5a684"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b25-right shows only the Arabic-script word 'الصفة' followed by a colon, right-aligned; nothing entered. Label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-date-en",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-date-en",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-date-en",
+        "disposition": "no_effect",
+        "reason": "Blank field label 'Date' in the signature block of the reproduced Form 4-H image; no date is printed in it, and it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-date-en",
+         "page": 4,
+         "kind": "reading",
+         "words": "Date",
+         "crop_sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b27-full shows 'Date' (Latin, left) and 'التاريخ :' (Arabic, right) over an empty rule line; no date value is printed, so there is nothing to calculate. Label only."
+      },
+      {
+       "id": "ADD-03/p4-image/field-date-ar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/field-date-ar",
+       "target": null,
+       "payload": {
+        "provision": "ADD-03:p4-image/field-date-ar",
+        "disposition": "no_effect",
+        "reason": "Blank Arabic field label 'التاريخ :' in the signature block of the reproduced Form 4-H image; no date is printed in it, and it prints no change, obligation or exception. The form's issue and completion are governed by ADD-03:AppA/para1 and Section 8 (other batch).",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/field-date-ar",
+         "page": 4,
+         "kind": "reading",
+         "words": "التاريخ :",
+         "crop_sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:AppA/para1"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3"
+       ],
+       "model_rationale": "Crop b27-full shows the Arabic-script label 'التاريخ :' right-aligned with an empty rule line; no digits (Arabic-Indic or Western) appear. Label only."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [
+  "ADD-03:p4-image/field-cr-ar",
+  "ADD-03:p4-image/field-signatory-ar",
+  "ADD-03:p4-image/field-capacity-en",
+  "ADD-03:p4-image/field-capacity-ar",
+  "ADD-03:p4-image/field-date-ar",
+  "ADD-03:p4-image/field-cr-en",
+  "ADD-03:p4-image/field-signatory-en",
+  "ADD-03:p4-image/field-date-en"
+ ],
+ "images_received": [
+  {
+   "unit_id": "ADD-03:p4-image/field-cr-ar",
+   "sent": [
+    {
+     "sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b23-full.png",
+     "kind": "unit",
+     "bytes": 17037,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 17037,
+     "sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-signatory-ar",
+   "sent": [
+    {
+     "sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b24-full.png",
+     "kind": "unit",
+     "bytes": 16391,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 16391,
+     "sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-capacity-en",
+   "sent": [
+    {
+     "sha256": "78292ca1e69a01c03e5ca9dcebebf4e5deac42cfeaae51f19d6cb8e1541d93e0",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b25-left.png",
+     "kind": "unit",
+     "bytes": 4007,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 4007,
+     "sha256": "78292ca1e69a01c03e5ca9dcebebf4e5deac42cfeaae51f19d6cb8e1541d93e0"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-capacity-ar",
+   "sent": [
+    {
+     "sha256": "2472d063cf85cc1ed1c9d69925b2cffbfd6be5b9fe5e80055612830f3af5a684",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b25-right.png",
+     "kind": "unit",
+     "bytes": 3111,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 3111,
+     "sha256": "2472d063cf85cc1ed1c9d69925b2cffbfd6be5b9fe5e80055612830f3af5a684"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-date-ar",
+   "sent": [
+    {
+     "sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b27-full.png",
+     "kind": "unit",
+     "bytes": 9607,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 9607,
+     "sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-cr-en",
+   "sent": [
+    {
+     "sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b23-full.png",
+     "kind": "unit",
+     "bytes": 17037,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 17037,
+     "sha256": "930187d8b85a682d786cb92239df9b625803086e924a97de0bb9b975090c4be1"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-signatory-en",
+   "sent": [
+    {
+     "sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b24-full.png",
+     "kind": "unit",
+     "bytes": 16391,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 16391,
+     "sha256": "4a53e404d4a09fcb2a8078b7b65d01c8b0c80c11e8dd7a633d0758e007418270"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/field-date-en",
+   "sent": [
+    {
+     "sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b27-full.png",
+     "kind": "unit",
+     "bytes": 9607,
+     "attached": true
+    },
+    {
+     "sha256": "0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 516863,
+     "attached": true
+    },
+    {
+     "sha256": "c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 432662,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 9607,
+     "sha256": "2ceb57551e4bb9dad6218a87b783defa1370ee4285d56c9474b7fc8708817d8d"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 430422,
+     "sha256": "d52c71847b3ea3328abe68c06ef3a902cf21e5f04066e72f8216f06e70cc0898"
+    },
+    {
+     "media_type": "image/jpeg",
+     "bytes": 469006,
+     "sha256": "f0288e21f7ce6c4e391644c634c969558ec3c8da3546deef90bc7ec43896dc0c"
+    }
+   ]
+  }
+ ],
+ "submission": null,
+ "statuses": {},
+ "num_turns": 16,
+ "usage": {
+  "input_tokens": 12,
+  "cache_creation_input_tokens": 89751,
+  "cache_read_input_tokens": 290034,
+  "output_tokens": 11046,
+  "output_tokens_details": {
+   "thinking_tokens": 624
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 89751,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 7872,
+    "cache_read_input_tokens": 90615,
+    "cache_creation_input_tokens": 2917,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 2917
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 0.9969828000000001,
+ "final_text": "You've hit your session limit · resets 4:30pm (UTC)",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/ai/ADD-03-hostsession-20261004T160557Z-f7a5"
+}

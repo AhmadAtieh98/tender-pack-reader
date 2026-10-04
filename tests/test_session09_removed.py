@@ -17,7 +17,6 @@ from tenderpack.amend import Engine, OpFile
 from tenderpack.dates import Calendar
 from tenderpack.register import Register, RowFile
 from tenderpack.schedule import in_force
-from tenderpack.util import ROOT
 
 OPINION = ", and shall be accompanied by an opinion from an independent model auditor"
 
@@ -79,7 +78,8 @@ def test_a_removal_that_the_amendment_path_does_not_support_is_a_problem(removed
     stages = _stages()
     reg, row = _register(stages, {"quote": QUOTE, "removed": removed})
     ev = reg.evaluate(row, stages[1])
-    assert ev["status"].startswith("REMOVED") and any(why in p for p in ev["problems"]), ev["problems"]
+    # session 10: an unsupported removal is a problem AND leaves the row in force (it used to show REMOVED)
+    assert in_force(ev["status"]) and any(why in p for p in ev["problems"]), (ev["status"], ev["problems"])
 
 
 def test_the_removed_quote_must_be_in_the_unit_before_the_op():
@@ -87,7 +87,9 @@ def test_the_removed_quote_must_be_in_the_unit_before_the_op():
     reg, row = _register(stages, {"quote": "shall be certified by the Authority", "removed": {"by": "ADD-01/4.1"}})
     assert any("as it stood before the op" in p for p in reg.evaluate(row, stages[1])["problems"])
     reg, row = _register(stages, {"quote": "The Financial Model shall be submitted", "removed": {"by": "ADD-01/4.1"}})
-    assert reg.evaluate(row, stages[1])["problems"] == []            # what remained is also in the clause before the op
+    # session 10 (owner's finding): what remained of the clause is NOT removed by the op; this used to pass
+    ev = reg.evaluate(row, stages[1])
+    assert any("the row's words survive the op" in p for p in ev["problems"]) and in_force(ev["status"]), ev
 
 
 def test_a_quote_lost_to_a_deletion_of_words_is_reported_until_a_person_decides():
@@ -106,9 +108,8 @@ def test_a_quote_lost_to_a_deletion_of_words_is_reported_until_a_person_decides(
 # ------------------------------------------------------------------------------------------------ blind rehearsal 02
 
 @pytest.fixture(scope="module")
-def blind02():
-    b = ROOT / "rehearsals/blind-02"
-    r = stage2.run(b / "build", b / "work/pack.yaml", ROOT)
+def blind02(blind02_run):
+    r = blind02_run
     return {"r": r, "a5": stage2.a5_all(r)}
 
 

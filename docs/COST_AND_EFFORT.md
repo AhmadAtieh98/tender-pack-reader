@@ -17,7 +17,8 @@
 | 06 | 3 Oct 00:42–01:54 and from 05:41, with a pause at a usage limit (3 h 47 min) | about 1 h 55 min of work (00:42–01:54 and 05:41–about 06:05) | Four findings; accept workflow; `show`/`diff`; C12/C30/C32/C46/C47; blind rehearsal; archive |
 | 07 | 3 Oct from 08:32 | about 1 h (see the work log) | C28 cover-summary check; drafter cover rule; review packets in the review folder; archive rebuilt and verified; Mac wheels split |
 | 08 | 3 Oct 19:30–20:27 and 4 Oct 05:17–about 08:15, with a pause at a usage limit (8 h 50 min) | about 4 h of work | Four findings; the owner's confirmations recorded; interpretations via proposals; A1–A3; A5 and Gantt; clarification register; blind rehearsal 02; archive |
-| 09 | 4 Oct 08:42–about 13:00, no pause | about 4 h 20 min of work (the coordinator as Fable 5.1; seven Opus 5.5 subagents, five of them in parallel) | Six control findings; the AI layer and four routes; blind rehearsal 03 with the AI layer in the loop; records. Uncommitted at the owner's instruction |
+| 09 | 4 Oct 08:42–about 13:00, no pause | about 4 h 20 min of work (the coordinator as Fable 5.1; seven Opus 5.5 subagents, five of them in parallel) |
+| 10 | 4 Oct 13:33–(provisional; cost and pricing left provisional at the owner's instruction) | the coordinator as Fable 5.1; six Opus 5.5 subagents (W1 393,636 tokens; W2 559,500; W3 691,476 + 761,072 after its resume; W4 485,159; W5 228,008; W6 382,414); the headless host sessions of blind-04 ran on the host's own plan (the CLI's cost figures are the host's, not the application's; no API key, no application spend) | Six control findings; the AI layer and four routes; blind rehearsal 03 with the AI layer in the loop; records. Uncommitted at the owner's instruction |
 | **Total so far** | | **about 20 h of assistant wall-clock time** | |
 
 **Subagents** (each started cold from a written brief; the orchestrator checked their output):

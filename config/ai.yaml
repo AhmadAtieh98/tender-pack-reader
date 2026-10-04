@@ -2,10 +2,21 @@
 # values, and every choice can be changed without touching code. Nothing in this file is a credential: keys are read
 # from the environment variables named below and never written to a file, a log or Git.
 #
-# Statuses written here are claims about this file, not measurements:
+# Statuses written here are claims, not measurements:
 #   "unverified"              the identifier or capability was not checked against the endpoint from this environment
 #   "candidate, unmeasured"   a local model that has not been benchmarked on the owner's Mac
 # Retention: provider policy; not verified by this tool.
+#
+# Capability policy (session 10). A live route's capabilities come from its endpoint (anthropic: GET /v1/models/{id};
+# openrouter: GET /models; ollama: POST /api/show). When the endpoint cannot be reached, does not list the model or
+# omits the context window, live use is REFUSED ("capabilities unverified"). A `capabilities:` block below is used
+# only by the recorded route (its cassette) or when a person passes --allow-unverified-capabilities: then the run log's
+# capabilities event says UNVERIFIED and the review request shows "capabilities unverified".
+#
+# Structured output (session 10), per route `structured_output.mode`: native | off. With `native`, the proposal set's
+# JSON schema (derived from contract.ProposalSet) is sent in the provider's own structured-output field when the
+# endpoint reports support; the controller still parses and validates the answer itself. A schema the provider rejects
+# switches the run to the plain tool-use path with a route notice (log and review request), never silently.
 version: 1
 lock_stale_after_min: 120        # an orchestrator lock older than this (or whose process is dead) is reported as stale
 
@@ -34,10 +45,11 @@ routes:
     api_version: "2023-06-01"
     api_key_env: ANTHROPIC_API_KEY
     retention: provider policy; not verified by this tool
+    structured_output: {mode: native}   # output_config.format {type: json_schema, schema}, with the tools, when GET /v1/models reports structured_outputs
     models:
       propose:                   # proposing amendments (tool use, long context)
         id: claude-opus-5-5
-        status: unverified (configured; capabilities are confirmed from GET /v1/models/{id} when a key is set)
+        status: unverified (configured; a live run needs GET /v1/models/{id} to confirm the capabilities, else it is refused)
         capabilities: {images: true, tools: true, structured_output: true, context_tokens: 1000000, max_output_tokens: 128000}
         request_extra: {output_config: {effort: high}}
       check:                     # cheap checks
@@ -58,6 +70,7 @@ routes:
     api_key_env: OPENROUTER_API_KEY
     app_title: tenderpack
     retention: OpenRouter and upstream provider policy; not verified by this tool
+    structured_output: {mode: native}   # response_format json_schema (strict) only when the listing names structured_outputs; unverified here (blocked)
     models:
       propose: {id: anthropic/claude-opus-5.5, status: "unverified (slug not checked: openrouter.ai is blocked from this environment)"}
       check: {id: anthropic/claude-haiku-4.5, status: unverified}
@@ -75,6 +88,10 @@ routes:
     base_url: http://127.0.0.1:11434
     base_url_env: TENDERPACK_OLLAMA_URL
     note: candidates only; capabilities come from /api/show; no performance is claimed until measured on the Mac
+    # `format: <schema>` on /api/chat. with_tools false: withheld on a turn that offers tools (a format grammar may stop
+    # tool calls; check on the Mac, then set true). Requests without tools (the critic) carry it. Unverified here.
+    structured_output: {mode: native, with_tools: false}
+    batching: {prior_turns_tokens: 8000}   # a 32768 bound leaves little room for later turns (overrides batching below)
     models:
       vision:
         id: qwen3-vl:32b
@@ -86,6 +103,43 @@ routes:
         status: candidate, unmeasured
         num_ctx: 32768
     caps: {max_calls: 40, max_input_tokens: 2000000, max_output_tokens: 200000, max_usd: null, timeout_s: 3600, concurrency: 1}
+
+# Bounded batches (tenderpack/ai/batching.py; `tenderpack ai plan-batches ADD-NN`). A batch's request must fit the
+# model's VERIFIED context window and output cap: input = system + tools + the packet without its provisions + the
+# batch's provisions (+ their crops) + prior_turns_tokens; output = output_tokens_fixed + output_tokens_per_provision
+# per provision; input + output <= context x (1 - context_margin). Nothing is dropped: a provision too large alone is
+# its own batch, flagged "too large: needs a person to split", with its size. Sizes are estimates unless calibrated
+# with the token-count endpoint (--count-tokens, anthropic, needs a key).
+batching:
+  chars_per_token: 3.5             # the controller's estimate; not a tokenizer count
+  image_tokens: 4800               # per image crop, an upper estimate (full-resolution image, current models)
+  output_tokens_per_provision: 700 # blind-03 host run: 68,854 characters for 35 provisions (about 562 tokens each) + 25%
+  output_tokens_fixed: 1500        # the set's envelope, state and statements
+  prior_turns_tokens: 30000        # allowance for tool calls and results before the answer
+  context_margin: 0.10
+
+# Independent critic (tenderpack/ai/critic.py; `tenderpack ai critic RUN_ID`): a second model pass over SELECTED items
+# only, with its own system prompt and the evidence inline (no tools). It writes review.critic and changes no status:
+# agreement between models is not approval.
+critic:
+  route: host                      # host (headless `claude -p`, the host's plan) | recorded | anthropic | openrouter | ollama
+  model: null                      # null: the route's default (host: the CLI's default; API routes: models.check, else models.propose)
+  select: [removal, conflicting, consequential_interpretation, uncertain_target]
+  max_items: 25                    # items over the limit are listed as not reviewed
+  host: {timeout_s: 240, max_turns: 3}   # claude -p --tools "" --system-prompt <critic> --json-schema <answer> --output-format json
+
+# Actual host session (tenderpack/ai/hostsession.py; `tenderpack ai host-session ADD-NN --provisions ...`):
+#   claude -p --mcp-config <run>/mcp.json --strict-mcp-config --tools "" --allowedTools "mcp__tenderpack__*"
+#     --disallowedTools mcp__tenderpack__get_task_packet,mcp__tenderpack__request_review --permission-prompts none
+#     --no-session-persistence --output-format stream-json --verbose --max-turns N --system-prompt <rules> [--model M]
+# with the task packet on stdin; the MCP server is `.venv/bin/python -m tenderpack ai serve-mcp --evidence <abs>
+# --pack <abs> --out <staging> --worklog <log>`. No built-in tool: the host works only through the MCP tools.
+host_session:
+  claude_bin: claude
+  model: null                      # null: the CLI's default model (recorded as the CLI reports it)
+  max_turns: 40
+  timeout_s: 900
+  output_format: stream-json       # every tool call and result is recorded; the final result has the json fields
 
 # USD per million tokens, {model: {input_per_mtok: N, output_per_mtok: N}}. With a price, cost_usd is computed from
 # the usage the endpoint reports and max_usd can be enforced; without one, cost_usd is null ("no price configured")

@@ -9,8 +9,11 @@
                 a row cites is compared, not only its first, so a row whose secondary unit was replaced, amended,
                 deleted, issued or annotated is listed with that unit and the op that changed it); rows that
                 became STALE, review decisions it voided and image-read values it changed; obligations that do
-                not reach the outputs (C46); disqualifiers that enter or leave A3; and the programme impact
-                (new / removed / moved / rework activities, feasibility changes, document counts).
+                not reach the outputs (C46); what the change reaches through the curated relationships (session 10:
+                confirmed dependency / proposed relationship / possible impact, and documents not supplied whose
+                blocked conclusions are in play; never merged with the direct changes); disqualifiers that enter or
+                leave A3; and the programme impact (new / removed / moved / rework activities, REVIEW through a
+                relationship, feasibility changes, document counts).
 Both read a published evidence build and the curated inputs; neither writes into a build, the outputs or curation.
 """
 from __future__ import annotations
@@ -21,7 +24,7 @@ from pathlib import Path
 
 import pymupdf
 
-from . import programme, review
+from . import programme, relationships, review
 from .register import BID_OUT, Consequence
 from .schedule import deltas
 
@@ -101,7 +104,12 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
                                          if k in r["evidence_items"] else k for k in row.evidence)
                                 or f"none: {row.no_deliverable}"),
              f"  review: {review.label(rv)} (fingerprint {rv['fingerprint'][:16]})",
-             f"  issues: {', '.join(row.issues) or 'none'}", "", "  stage      status / quote / consequence / dates"]
+             f"  issues: {', '.join(row.issues) or 'none'}"]
+    if r.get("relationships"):                                   # session 10: curated links naming this row
+        from .stage2 import relationship_lines
+        rel = relationship_lines(r).get(row_id, [])
+        lines += ["  relationships:"] + [f"    {x}" for x in rel] if rel else []
+    lines += ["", "  stage      status / quote / consequence / dates"]
     for st in order:
         ev = e["stages"][st]
         it = r["register"].interp_at(row, st)
@@ -303,6 +311,26 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
     tr = [t for t in r.get("trace", []) if t["stage"] == to]
     md += ["", "## Obligations not reaching the outputs (C46)", ""]
     md += [f"- {t['op']} [{t['output']}]: {t['detail'][:240]}" for t in tr] or ["- none"]
+    # ---- relationships (session 10): what the change reaches through other provisions; never merged with the above
+    if r.get("relationships"):
+        consecutive = order.index(to) - order.index(frm) == 1
+        imp = (r.get("relationship_impact") or {}).get(to) if consecutive else None
+        imp = imp if imp is not None else relationships.impact_between(r, frm, to)
+        recs = imp["records"]
+        md += ["", "## Reached through relationships (indirect: for review, not direct citations)", "",
+               "Curated links (relationships file) followed from what changed. The requirements above cite a changed "
+               "unit; these are reached through another provision, in three classes that are never merged. A5 marks the "
+               "activities that serve them REVIEW with their dates unchanged.", ""]
+        data["relationships"] = {}
+        for cls, items in relationships.by_class(recs):
+            md.append(f"### {cls[0].upper() + cls[1:]} ({len(items)})")
+            md += [f"- {relationships.label(x)}" for x in items] or ["- none"]
+            md.append("")
+            data["relationships"][cls] = sorted({x["target"] for x in items})
+        gp = relationships.gaps(recs)
+        md.append(f"### Referenced but not supplied: conclusions in play that cannot be established ({len(gp)})")
+        md += [f"- {relationships.label(x, r['relationships'])}" for x in gp] or ["- none"]
+        data["relationships"]["not supplied"] = sorted({x["target"] for x in gp})
     # ---- A3
     def a3set(st):
         out = {}

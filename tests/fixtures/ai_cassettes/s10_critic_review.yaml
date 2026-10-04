@@ -1,0 +1,18 @@
+# RECORDED FIXTURE (hand-written; not a live model's output). Session 10, W4: the critic's answers, one turn per selected
+# item, in the run's item order. It disagrees on one of them; agreement or disagreement changes no status.
+name: s10-critic-review
+model: recorded-critic-model
+capabilities: {images: false, tools: false, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - match: {last_role: user, contains: ["CRITIC REQUEST", "ADD-03/2.1", "conflicting"]}
+    response:
+      usage: {input_tokens: 2500, output_tokens: 120}
+      text: '{"agrees": true, "concerns": ["the declared conflict is not shown by the evidence; a person should read ADD-03 2.1 beside it"], "evidence_checked": ["ADD-03:2.1", "VOL-I:6.1"]}'
+  - match: {last_role: user, contains: ["CRITIC REQUEST", "ADD-03/3.3", "consequential_interpretation"]}
+    response:
+      usage: {input_tokens: 2600, output_tokens: 140}
+      text: '{"agrees": false, "concerns": ["Form 4-A as reissued may have no paragraph 2: the reading of 180 days is not shown by the words"], "evidence_checked": ["ADD-03:3.3"]}'
+  - match: {last_role: user, contains: ["CRITIC REQUEST", "ADD-03/4.3(a)", "removal"]}
+    response:
+      usage: {input_tokens: 2400, output_tokens: 90}
+      text: '{"agrees": true, "concerns": [], "evidence_checked": ["ADD-03:4.3", "VOL-IV:F4-F/model-auditor"]}'

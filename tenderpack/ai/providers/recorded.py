@@ -16,6 +16,20 @@ In `text` and in string tool arguments, the placeholder ${state} is replaced wit
 from the task packet in the first user message (what a model is asked to copy), so a recording stays valid for the
 evidence build it is replayed against; a cassette that hard-codes another state tests the stale path.
 A request that does not satisfy a turn's matcher raises ProviderError("cassette_mismatch") (not retryable).
+
+HttpCassette (session 10) replays recorded HTTP exchanges for the LIVE adapters (anthropic, openrouter, ollama), so
+their real request bodies and response parsing run offline. It stands in for base.http_json; every request is kept
+(`requests`) so a test can check the exact body an adapter would send. Cassette:
+    name: <label>
+    exchanges:                                  consumed in order (an exchange with `repeat: true` is not consumed)
+      - request: {method: GET|POST, path: <url suffix>, body_has: [dotted.key, ...], body_lacks: [dotted.key, ...],
+                  contains: [text in the JSON body, ...]}
+        response: {status: 200, body: {...}}    (`${state}` in any string is replaced as above, from the task packet
+                                                 in the request's first user message)
+      - request: {...}
+        error: {status: 400, message: ..., retryable: false}      (raised as base.ProviderError, like http_json does)
+A request that does not match the next exchange raises ProviderError("cassette_mismatch"). Hand-written: NOT a live
+model's or endpoint's output.
 """
 from __future__ import annotations
 
@@ -123,3 +137,91 @@ class RecordedProvider:
                         model_reported=r.get("model_reported", self.data.get("model")),
                         raw={"recorded_turn": self.pos - 1, "cassette": self.cassette_path},
                         stop_reason=r.get("stop_reason") or ("tool_use" if calls else "end_turn"))
+
+
+# ---------------------------------------------------------------------------------------------- HTTP cassettes (s10)
+
+def _dotted(obj, key: str):
+    cur = obj
+    for part in key.split("."):
+        if isinstance(cur, dict) and part in cur:
+            cur = cur[part]
+        elif isinstance(cur, list) and part.isdigit() and int(part) < len(cur):
+            cur = cur[int(part)]
+        else:
+            return _MISSING
+    return cur
+
+
+_MISSING = object()
+
+
+def _state_in_body(body) -> dict | None:
+    """The task packet's state from a request body's first user message (any adapter's message shape)."""
+    text = json.dumps(body or {}, ensure_ascii=False)
+    i = text.find(json.dumps(PACKET_MARK)[1:-1])
+    if i < 0:
+        return None
+    for m in (body or {}).get("messages") or []:
+        content = m.get("content")
+        parts = content if isinstance(content, list) else [{"type": "text", "text": content}]
+        for p in parts:
+            t = p.get("text") if isinstance(p, dict) else None
+            if isinstance(t, str) and t.startswith(PACKET_MARK):
+                try:
+                    return json.loads(t[len(PACKET_MARK):]).get("state")
+                except ValueError:
+                    return None
+    return None
+
+
+class HttpCassette:
+    """A replay of recorded HTTP exchanges with the signature of base.http_json (see the module docstring)."""
+
+    def __init__(self, cassette: Path | dict):
+        data = cassette if isinstance(cassette, dict) else (load_yaml(Path(cassette)) or {})
+        self.path = None if isinstance(cassette, dict) else str(cassette)
+        self.exchanges = list(data.get("exchanges") or [])
+        self.pos = 0
+        self.requests: list[dict] = []
+        self.state: dict | None = None
+
+    def _fill(self, obj):
+        if isinstance(obj, str):
+            return obj.replace("${state}", json.dumps(self.state, ensure_ascii=False)) if self.state is not None else obj
+        if isinstance(obj, dict):
+            return {k: self._fill(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [self._fill(v) for v in obj]
+        return obj
+
+    def __call__(self, method: str, url: str, headers: dict, body, timeout: float):
+        self.requests.append({"method": method, "url": url, "body": body})
+        self.state = _state_in_body(body) or self.state
+        if self.pos >= len(self.exchanges):
+            raise ProviderError("cassette_exhausted", f"no recorded HTTP exchange left for {method} {url}")
+        ex = self.exchanges[self.pos]
+        rq = ex.get("request") or {}
+        why = None
+        if rq.get("method") and rq["method"] != method:
+            why = f"method {method}, expected {rq['method']}"
+        elif rq.get("path") and not url.endswith(rq["path"]):
+            why = f"url {url} does not end with {rq['path']}"
+        else:
+            missing = [k for k in rq.get("body_has") or [] if _dotted(body, k) is _MISSING]
+            present = [k for k in rq.get("body_lacks") or [] if _dotted(body, k) is not _MISSING]
+            text = json.dumps(body or {}, ensure_ascii=False)
+            absent = [s for s in rq.get("contains") or [] if s not in text]
+            if missing or present or absent:
+                why = f"body lacks {missing}, has {present}, does not contain {absent}"
+        if why:
+            raise ProviderError("cassette_mismatch", f"exchange {self.pos}: {why}")
+        if not ex.get("repeat"):
+            self.pos += 1
+        if "error" in ex:
+            e = ex["error"] or {}
+            st = e.get("status")
+            raise ProviderError(e.get("kind") or (f"http_{st}" if st else "network"), str(e.get("message", "recorded")),
+                                bool(e.get("retryable", False)), st)
+        resp = ex.get("response") or {}
+        return int(resp.get("status", 200)), {}, self._fill(resp.get("body") or {})

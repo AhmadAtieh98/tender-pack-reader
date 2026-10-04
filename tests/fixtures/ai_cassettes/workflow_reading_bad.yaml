@@ -1,0 +1,20 @@
+# RECORDED READING (hand-written; NOT a live model's output). The same region read INCOMPLETELY: the second printed
+# line (band 1) is missing, so readings.check_reading fails RD4 and the reading cannot be used.
+name: workflow-reading-bad
+model: recorded-fixture-model
+capabilities: {images: true, tools: true, structured_output: false, context_tokens: 400000,
+               retention: "recorded fixture: nothing leaves the process", source: "cassette (recorded fixture)"}
+sessions:
+  - phase: reading
+    when: {regions_include: ["ADD-03-p3-r1"]}
+    turns:
+      - match: {last_role: user, contains: ["TASK PACKET", "propose_region_reading"]}
+        response:
+          usage: {input_tokens: 9000, output_tokens: 400}
+          text: |
+            {"region_id": "ADD-03-p3-r1",
+             "reading": {"region_id": "ADD-03-p3-r1", "unit_id": "ADD-03:p3-image", "title": "Note on page 3 (image)",
+                         "source": ${state}, "content_type": "text", "languages": ["en"], "prepared_by": "x",
+                         "method": "visual reading",
+                         "blocks": [{"key": "note", "lang": "en", "role": "note",
+                                     "lines": [{"band": 0, "source": "Note: Bidders shall also submit one additional USB copy of Envelope B."}]}]}}

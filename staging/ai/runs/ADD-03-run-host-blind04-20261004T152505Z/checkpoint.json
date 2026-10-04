@@ -1,0 +1,5817 @@
+{
+ "format": "tenderpack-ai-run/1",
+ "run_id": "ADD-03-run-host-blind04-20261004T152505Z",
+ "addendum": "ADD-03",
+ "settings": {
+  "addendum": "ADD-03",
+  "pdf": "/home/user/tender-pack-reader/rehearsals/blind-04/input/ADD-03_Addendum_No_3.pdf",
+  "route": "host",
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "staging": "/home/user/tender-pack-reader/staging/ai",
+  "worklog": "/home/user/tender-pack-reader/worklog/model_calls",
+  "ai_config": "/home/user/tender-pack-reader/config/ai.yaml",
+  "batch_size": 8,
+  "downstream_batch_size": 12,
+  "model": null,
+  "cassette": null,
+  "caps": {
+   "timeout_s": 1500.0,
+   "max_turns": 60
+  },
+  "host_model": null,
+  "host_mode": "auto",
+  "host_session_model": "opus",
+  "allow_unverified_capabilities": false,
+  "background_before": true,
+  "cache": true
+ },
+ "inputs": {
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "pdf": {
+   "path": "/home/user/tender-pack-reader/rehearsals/blind-04/input/ADD-03_Addendum_No_3.pdf",
+   "sha256": "99728136b5653acdd75d0e7b682f990f877ae2587452ffee58be0bd85b28452e",
+   "pages": 5,
+   "bytes": 422517
+  },
+  "copied": {
+   "manifest": "sources/manifest.json",
+   "furniture": "config/furniture.yaml",
+   "readings_dir": "curation/readings",
+   "approvals": "curation/approvals.yaml",
+   "clarifications": "curation/clarifications/register.yaml",
+   "amendments_dir": "curation/amendments",
+   "register": "curation/register/rows.yaml",
+   "issues": "curation/register/issues.yaml",
+   "dispositions_dir": "curation/register/dispositions",
+   "row_ids": "curation/register/ids.yaml",
+   "evidence_items_dir": "curation/evidence_items",
+   "activity_templates": "curation/activity_templates.yaml",
+   "assumptions": "config/assumptions.yaml",
+   "scenarios": "config/scenarios.yaml",
+   "relationships": "curation/relationships.yaml"
+  },
+  "real_hashes": {
+   "config/assumptions.yaml": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+   "config/furniture.yaml": "1fd1b89520a26e7df1ac9b3017b1151256fbb093f482e57898b9535dda0a7533",
+   "config/pack.yaml": "52788e8474d401f70c7eb544431270ea8c00d3cff5c2629dd717eb6831ac0363",
+   "config/scenarios.yaml": "cf25bff61c3211f4346e731a1e5b77bcfd4a4c442ba16783834604f0890dac69",
+   "curation/activity_templates.yaml": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+   "curation/amendments/ADD-01.yaml": "5d2b4718313f9f6580bc4875e8d167025d48a3cb329efa8053ce45bee735342c",
+   "curation/amendments/ADD-02.yaml": "56130032fdad9d2ed7b0236057e6a6bb3078ff5f0a0cfe638b122ace5cf6f6de",
+   "curation/approvals.yaml": "23d2dc4d8061ba062601837140c3843467808082350fe269d8b806dbf679e393",
+   "curation/clarifications/register.yaml": "0ca5deb40a5e9dfe7a27f55f5a3c972c2972eeecbc7d898c02a6c7fc9b2c8f58",
+   "curation/evidence_items/VOL-IV.yaml": "6b577b671dec85b568c6b5ab3f158419a2bf1715338f29c42670729052cc30c7",
+   "curation/evidence_items/core.yaml": "b9bf90b7e40751c97608c25aaa50348f6565f56d9113a7f20bab7f80986ba73b",
+   "curation/reading-snapshots/VOL-II-p3-r1@6bc6505956429dc7.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/reading-snapshots/VOL-IV-p6-r1@f433c2ca4e562679.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/readings/VOL-II-p3-r1.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/readings/VOL-IV-p6-r1.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/register/dispositions/VOL-I.yaml": "125b676e7de62f10d5da30ee920db0b2b4bd04658f2ae3159499a55c792997fa",
+   "curation/register/dispositions/VOL-II.yaml": "aa50a1d13ea819b7bcbcd3b224f0a6e4ad966fecdb8bc2f8f5663c2e20e0e135",
+   "curation/register/dispositions/VOL-IV.yaml": "0458a38ebb9ce760ba4b3267c4c6c52e8d23ccf0ec641d9ce2689319f69a1112",
+   "curation/register/dispositions/VOL-V.yaml": "8afd80b9c90781fc18416722c0d6bdb6a5fefbf0ec72b7c10fe84b3bf01eb145",
+   "curation/register/ids.yaml": "431d8b329cda9fe96606c035b533ac22a1f0bb49ec81b503a3dcbe30f23dae83",
+   "curation/register/issues.yaml": "777b037b6c9277d018b2f7c0b420f9e430438ed117922f596128010951b6ef05",
+   "curation/register/issues/VOL-I.yaml": "47779bac43928ccb6f1ae19223881816c785c18c5225c8dea84b46ec224dbae5",
+   "curation/register/issues/VOL-II-V.yaml": "ed1372cb535eface9d350b66b27fcee97f9adf404addf201235e07efe1b275aa",
+   "curation/register/issues/VOL-IV.yaml": "366e0bc2765e3a900d85fa2b887440dde07d60d5dc9e2b29fa006d520672f4b8",
+   "curation/register/pins.yaml": "e1f3eaff46462e317f4c926a8ff8ebeed0df175b319a99757b91d50177d92ff1",
+   "curation/register/proposals/2026-10-03_session-08_owner-directed.yaml": "c5ef0ea4d35d3b70ea6eb106106b0e4c2ec4d5d49ed4686563c2b2ada6466f49",
+   "curation/register/proposals/2026-10-03_stale-rows.yaml": "0fadce50465c75f76cd6fdd1c9f69cb4477810aab80f3a39c42892e217d97869",
+   "curation/register/rows.yaml": "b63972221cba5a8704cbdb6e875f368374090e2ccf2d40863dde7cb67c6fb8d3",
+   "curation/register/rows/ADD.yaml": "eb047c1ecfd9d7a8681660682a1e5c14ae758f3ad1bb76bb64a72aeb3462a8f9",
+   "curation/register/rows/VOL-I.yaml": "a41a7ea8f9929b71df614060a60c0507466a8bcf16de4675b0d95dfeddc99b7d",
+   "curation/register/rows/VOL-II.yaml": "954fb66d46e581bac64e1b1d189724d51fd3cfa0421513981606ab6c75a01067",
+   "curation/register/rows/VOL-IV.yaml": "e510440f10e7836df1c130fe40f47c54af53cced2a1b2034af69c2799c99a336",
+   "curation/register/rows/VOL-V.yaml": "9c8357331d25a46f49182797a8d606004c2336d1b20003885196374bd259a104",
+   "curation/relationships.yaml": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+   "sources/manifest.json": "6c01add4c30c9f1eaeb34e2a8175d504a613e20ff3b870707070485a6adac4c9"
+  },
+  "preceding_pack_id": "NUPA-ISTP-2026-014",
+  "candidate_state": {
+   "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+   "evidence_build_id": "57d76e1ca885ba7c31034ccdcaabd98d124b5d233adcf4ba251e959076b179a8",
+   "validated_stage": "ADD-02",
+   "working_stage": "ADD-03",
+   "decisions_sha256": null,
+   "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+   "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+   "readings_sha256": "d5b499584ad0d6fccf3de99c11fd4a432c21068762a8f845095631c13d6141dc",
+   "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+   "unrecorded_crops_sha256": null
+  }
+ },
+ "candidate": {
+  "dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate",
+  "pack": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/pack.yaml",
+  "pack_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/pack-before.yaml",
+  "build": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/build",
+  "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out",
+  "out_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out-before",
+  "pdf_copy": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/input/ADD-03_Addendum_No_3.pdf"
+ },
+ "created": "2026-10-04T15:25:06Z",
+ "updated": "2026-10-04T17:14:27Z",
+ "status": "partial",
+ "status_reason": "the candidate outputs build was refused (pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02); out-before stays the last validated state",
+ "steps": {
+  "ingest": {
+   "status": "done",
+   "seconds": 19.444,
+   "attempts": 1,
+   "started": "2026-10-04T15:25:06Z",
+   "exit_code": 2,
+   "units": 584,
+   "pending_review": [],
+   "failed_checks": [
+    "C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none"
+   ],
+   "refused_for_readings": true,
+   "unread_regions": [
+    "ADD-03-p4-r1"
+   ],
+   "reason": "STRUCTURAL FAILURE: C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none",
+   "finished": "2026-10-04T15:25:25Z"
+  },
+  "readings": {
+   "status": "done",
+   "seconds": 230.676,
+   "attempts": 1,
+   "started": "2026-10-04T15:25:25Z",
+   "batches": {
+    "reading-ADD-03-p4-r1": "done"
+   },
+   "readings": {
+    "ADD-03-p4-r1": {
+     "status": "interpretation_pending",
+     "file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/curation/readings/ADD-03-p4-r1.yaml"
+    }
+   },
+   "reingest": {
+    "exit_code": 0,
+    "units": 613,
+    "pending_review": [
+     "ADD-03-p4-r1"
+    ],
+    "failed_checks": []
+   },
+   "provisions": 70,
+   "structure_units": 19,
+   "finished": "2026-10-04T15:29:16Z"
+  },
+  "analysis": {
+   "status": "done",
+   "seconds": 2844.361,
+   "attempts": 2,
+   "started": "2026-10-04T15:29:16Z",
+   "plan_notes": [],
+   "batches": {
+    "analysis-001": "done",
+    "analysis-002": "done",
+    "analysis-003": "done",
+    "analysis-004": "done",
+    "analysis-005": "done",
+    "analysis-006": "done",
+    "analysis-007": "done",
+    "analysis-008": "done",
+    "analysis-009": "done",
+    "analysis-010": "skipped"
+   },
+   "provisions": {
+    "validated": 70
+   },
+   "finished": "2026-10-04T16:52:00Z"
+  },
+  "validation": {
+   "status": "done",
+   "seconds": 7.641,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:15Z",
+   "staged": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/ai/ADD-03-run-host-blind04-20261004T152505Z-combined",
+   "set_status": "partial",
+   "coverage": {
+    "provisions_total": 70,
+    "accounted": 70,
+    "unaccounted": []
+   },
+   "statuses": {
+    "evidence_verified": 9,
+    "conflicting": 7,
+    "interpretation_pending": 47,
+    "escalated": 3,
+    "insufficient_evidence": 7
+   },
+   "converted": [],
+   "resolution": {
+    "provisions_total": 70,
+    "accounted": 70,
+    "resolved": 7,
+    "pending": 63,
+    "invalid": 0,
+    "unaccounted": 0,
+    "pending_provisions": [
+     "ADD-03:cover/para3",
+     "ADD-03:1.2",
+     "ADD-03:2.2",
+     "ADD-03:5.2",
+     "ADD-03:6.1",
+     "ADD-03:T1-1/A",
+     "ADD-03:T1-1/B",
+     "ADD-03:T1-1/C",
+     "ADD-03:T1-1/D",
+     "ADD-03:T1-1/E",
+     "ADD-03:T1-1/F",
+     "ADD-03:T1-1/G",
+     "ADD-03:T1-1/total",
+     "ADD-03:S6/para1",
+     "ADD-03:6.2",
+     "ADD-03:7.1",
+     "ADD-03:7.2",
+     "ADD-03:8.1",
+     "ADD-03:8.2",
+     "ADD-03:8.3",
+     "ADD-03:8.4",
+     "ADD-03:Q15",
+     "ADD-03:Q16",
+     "ADD-03:Q17",
+     "ADD-03:Q18",
+     "ADD-03:Q19",
+     "ADD-03:Q20",
+     "ADD-03:AppA/para1",
+     "ADD-03:p4-image/hdr-en",
+     "ADD-03:p4-image/hdr-ar",
+     "ADD-03:p4-image/ref-en",
+     "ADD-03:p4-image/ref-ar",
+     "ADD-03:p4-image/form-en",
+     "ADD-03:p4-image/form-ar",
+     "ADD-03:p4-image/title",
+     "ADD-03:p4-image/intro",
+     "ADD-03:p4-image/decl1",
+     "ADD-03:p4-image/decl2",
+     "ADD-03:p4-image/decl3",
+     "ADD-03:p4-image/table-header",
+     "ADD-03:p4-image/table-row4",
+     "ADD-03:p4-image/table-row4-blank",
+     "ADD-03:p4-image/field-member-en",
+     "ADD-03:p4-image/field-member-ar",
+     "ADD-03:p4-image/field-cr-en",
+     "ADD-03:p4-image/field-cr-ar",
+     "ADD-03:p4-image/field-signatory-en",
+     "ADD-03:p4-image/field-signatory-ar",
+     "ADD-03:p4-image/field-capacity-en",
+     "ADD-03:p4-image/field-capacity-ar",
+     "ADD-03:p4-image/field-date-en",
+     "ADD-03:p4-image/field-date-ar",
+     "ADD-03:p4-image/field-signature-en",
+     "ADD-03:p4-image/field-signature-ar",
+     "ADD-03:p4-image/note",
+     "ADD-03:p4-image/image-footer",
+     "ADD-03:AppB/para1",
+     "ADD-03:F4-H/para1",
+     "ADD-03:F4-H/T1/1",
+     "ADD-03:F4-H/T1/2",
+     "ADD-03:F4-H/T1/3",
+     "ADD-03:F4-H/T1/4",
+     "ADD-03:F4-H/para2"
+    ],
+    "invalid_provisions": [],
+    "no_change_on_amendment_language": [
+     "ADD-03:1.2",
+     "ADD-03:AppA/para1",
+     "ADD-03:AppB/para1"
+    ],
+    "approved": 0
+   },
+   "finished": "2026-10-04T16:52:04Z"
+  },
+  "downstream": {
+   "status": "done",
+   "seconds": 1335.107,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:19Z",
+   "tasks": 56,
+   "by_kind": {
+    "row_reading": 23,
+    "row_new": 4,
+    "clarification_item": 4,
+    "activity": 13,
+    "escalation": 12
+   },
+   "batches": {
+    "downstream-001": "done",
+    "downstream-002": "done",
+    "downstream-003": "failed",
+    "downstream-004": "done",
+    "downstream-005": "done"
+   },
+   "finished": "2026-10-04T17:14:05Z"
+  },
+  "downstream_validation": {
+   "status": "done",
+   "seconds": 0.761,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:32Z",
+   "items": 57,
+   "statuses": {
+    "interpretation_pending": 34,
+    "insufficient_evidence": 8,
+    "conflicting": 5,
+    "escalated": 9,
+    "invalid": 1
+   },
+   "held_back": {
+    "CQ-ADD03-F4H-THRESHOLD": "linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']",
+    "CQ-ADD03-83-COUNTING": "linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']"
+   },
+   "schedule_problems": [],
+   "interactions": [],
+   "staged": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/downstream/proposals.yaml",
+   "finished": "2026-10-04T17:14:06Z"
+  },
+  "promotion": {
+   "status": "done",
+   "seconds": 9.808,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:33Z",
+   "ops": [
+    "ADD-03/2.1",
+    "ADD-03/2.2",
+    "ADD-03/3.1",
+    "ADD-03/4.1",
+    "ADD-03/5.1",
+    "ADD-03/S6/para1(b)",
+    "ADD-03/S6/para1(c)",
+    "ADD-03/6.2(a)",
+    "ADD-03/6.2(b)",
+    "ADD-03/8.1",
+    "ADD-03/8.4",
+    "ADD-03/Q15",
+    "ADD-03/Q16",
+    "ADD-03/Q18",
+    "ADD-03/Q19",
+    "ADD-03/Q20"
+   ],
+   "dispositions": [
+    "ADD-03:cover/para1: no_effect",
+    "ADD-03:cover/para2: no_effect",
+    "ADD-03:1.1: no_effect",
+    "ADD-03:1.2: no_effect",
+    "ADD-03:T1-1/A: no_effect",
+    "ADD-03:T1-1/B: no_effect",
+    "ADD-03:T1-1/C: no_effect",
+    "ADD-03:T1-1/D: no_effect",
+    "ADD-03:T1-1/E: no_effect",
+    "ADD-03:T1-1/F: no_effect",
+    "ADD-03:AppA/para1: no_effect",
+    "ADD-03:p4-image/hdr-en: no_effect",
+    "ADD-03:p4-image/hdr-ar: no_effect",
+    "ADD-03:p4-image/ref-en: no_effect",
+    "ADD-03:p4-image/ref-ar: no_effect",
+    "ADD-03:p4-image/form-en: no_effect",
+    "ADD-03:p4-image/form-ar: no_effect",
+    "ADD-03:p4-image/title: no_effect",
+    "ADD-03:p4-image/intro: no_effect",
+    "ADD-03:p4-image/decl2: no_effect",
+    "ADD-03:p4-image/decl3: no_effect",
+    "ADD-03:p4-image/table-header: no_effect",
+    "ADD-03:p4-image/table-row4: no_effect",
+    "ADD-03:p4-image/table-row4-blank: no_effect",
+    "ADD-03:p4-image/field-member-en: no_effect",
+    "ADD-03:p4-image/field-member-ar: no_effect",
+    "ADD-03:p4-image/field-cr-en: no_effect",
+    "ADD-03:p4-image/field-cr-ar: no_effect",
+    "ADD-03:p4-image/field-signatory-en: no_effect",
+    "ADD-03:p4-image/field-signatory-ar: no_effect",
+    "ADD-03:p4-image/field-capacity-en: no_effect",
+    "ADD-03:p4-image/field-capacity-ar: no_effect",
+    "ADD-03:p4-image/field-date-en: no_effect",
+    "ADD-03:p4-image/field-date-ar: no_effect",
+    "ADD-03:p4-image/field-signature-en: no_effect",
+    "ADD-03:p4-image/field-signature-ar: no_effect",
+    "ADD-03:p4-image/image-footer: no_effect",
+    "ADD-03:AppB/para1: no_effect"
+   ],
+   "unresolved": [
+    "ADD-03:cover/para3",
+    "ADD-03:5.2",
+    "ADD-03:6.1",
+    "ADD-03:T1-1/G",
+    "ADD-03:T1-1/total",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:8.2",
+    "ADD-03:8.3",
+    "ADD-03:Q17",
+    "ADD-03:p4-image/decl1",
+    "ADD-03:p4-image/note"
+   ],
+   "rows_new": [
+    "ADD-03-4.1-01"
+   ],
+   "readings": [
+    "VOL-I-11.2-01",
+    "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
+    "VOL-I-8.4-02",
+    "VOL-I-8.7-01",
+    "VOL-II-1.4-01",
+    "VOL-II-5.2-02",
+    "VOL-II-5.4-01",
+    "VOL-II-5.4-02",
+    "VOL-IV-F4D-01",
+    "VOL-IV-F4D-02",
+    "VOL-IV-F4D-03",
+    "VOL-IV-F4D-04",
+    "VOL-IV-F4D-05",
+    "VOL-IV-F4D-06",
+    "VOL-IV-F4D-07",
+    "VOL-IV-F4D-08",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "VOL-V-12.1-01"
+   ],
+   "issues": [
+    "I-ADD03-EPC-ENV-A",
+    "I-ADD03-EPC-LINKED",
+    "I-ADD03-NETWORTH-ENV-A",
+    "I-ADD03-S7-CONDITIONAL"
+   ],
+   "evidence_items": [],
+   "activities": [
+    "fin-statements",
+    "pcg-wording",
+    "pcg-execution",
+    "form-4f",
+    "fin-model-build",
+    "fin-model-freeze"
+   ],
+   "lead_times": [],
+   "clarifications": [
+    "CQ-F4H-TIMING",
+    "CQ-ADD03-S7-NOTICE"
+   ],
+   "relationships": [
+    "REL-AI-001"
+   ],
+   "notes": [],
+   "files_written": 26,
+   "finished": "2026-10-04T17:14:13Z"
+  },
+  "pin": {
+   "status": "done",
+   "seconds": 3.196,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:35Z",
+   "exit_code": 0,
+   "output": "pinned 21 interpretation(s) wrote /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/curation/register/pins.yaml",
+   "finished": "2026-10-04T17:14:14Z"
+  },
+  "check_register": {
+   "status": "done",
+   "seconds": 8.983,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:37Z",
+   "exit_code": 1,
+   "findings": 11,
+   "by_kind": {
+    "disposition": 1,
+    "quote": 3,
+    "C46": 7
+   },
+   "first": [
+    "[disposition] VOL-V: row ADD-03-4.1-01 uses VOL-V:18.1, whose disposition does not list it as a requirement",
+    "[quote] ADD-03-4.1-01: BASE: no interpretation made at or before BASE",
+    "[quote] ADD-03-4.1-01: ADD-01: no interpretation made at or before ADD-01",
+    "[quote] ADD-03-4.1-01: ADD-02: no interpretation made at or before ADD-02",
+    "[C46] ADD-03/6.2(b): [A1] ADD-03/6.2(b) (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:11.3; a row of the anchor VOL-I:11.3 does not count): 'Volume I…",
+    "[C46] ADD-03/6.2(b): [A3] ADD-03/6.2(b) brings in consequence words ['not proceed'] that no row's consequence carries at ADD-03: 'Volume I Clause 11.3 is deleted and replaced by the following two Clauses: ‘11.3 A Proposa…",
+    "[C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-…",
+    "[C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the new ADD-03:F4-H; a row of the anchor VOL-I:9.1 does not count): 'A new Form 4-H (Declaration…",
+    "[C46] ADD-03/8.1: [A3] ADD-03/8.1 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list…",
+    "[C46] ADD-03/8.4: [A1] ADD-03/8.4 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder by the t…",
+    "[C46] ADD-03/8.4: [A3] ADD-03/8.4 brings in consequence words ['non-responsive'] that no row's consequence carries at ADD-03: 'Failure to submit a complete and properly executed Form 4-H for each member of the Bidder …"
+   ],
+   "finished": "2026-10-04T17:14:19Z"
+  },
+  "outputs": {
+   "status": "done",
+   "seconds": 116.354,
+   "attempts": 2,
+   "started": "2026-10-04T16:08:42Z",
+   "before": {
+    "status": "done",
+    "key": "791ef67dda647b63b53cb99d9fd19afa1093c076c5e2045d77c38ec9e530d2a7",
+    "started": "2026-10-04T15:25:25Z",
+    "evidence": "/home/user/tender-pack-reader/build",
+    "result": {
+     "key": "791ef67dda647b63b53cb99d9fd19afa1093c076c5e2045d77c38ec9e530d2a7",
+     "exit_code": 0,
+     "status": "ok",
+     "release": "WORKING DRAFT (not releasable)",
+     "blockers": 2,
+     "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out-before",
+     "seconds": 96.603
+    }
+   },
+   "before_wait_s": 0.0,
+   "exit_code": 2,
+   "release": "WORKING DRAFT (not releasable)",
+   "blockers": 6,
+   "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out",
+   "refused": true,
+   "marked": 81,
+   "unmarked": [],
+   "row_statuses": {
+    "proposed (existing row; not changed by this run; not reviewed)": 175,
+    "UNRESOLVED": 30
+   },
+   "finished": "2026-10-04T17:14:21Z",
+   "preflight": [
+    {
+     "id": "C16",
+     "detail": "ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02"
+    }
+   ],
+   "reason": "pre-flight: C16 ADD-03-4.1-01@BASE: no interpretation made at or before BASE; ADD-03-4.1-01@ADD-01: no interpretation made at or before ADD-01; ADD-03-4.1-01@ADD-02: no interpretation made at or before ADD-02"
+  },
+  "diff": {
+   "status": "done",
+   "seconds": 5.035,
+   "attempts": 2,
+   "started": "2026-10-04T16:10:36Z",
+   "stage": "ADD-02 -> ADD-03",
+   "new": 0,
+   "out": 0,
+   "changed": 10,
+   "stale": 3,
+   "a3": {
+    "enters": [],
+    "leaves": []
+   },
+   "programme": 20,
+   "outputs": {},
+   "finished": "2026-10-04T17:14:24Z"
+  },
+  "review": {
+   "status": "done",
+   "seconds": 4.442,
+   "attempts": 2,
+   "started": "2026-10-04T16:10:39Z",
+   "path": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.md",
+   "html": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/review/index.html",
+   "lines": 786,
+   "finished": "2026-10-04T17:14:27Z"
+  }
+ },
+ "batches": {
+  "reading-ADD-03-p4-r1": {
+   "phase": "reading",
+   "region": "ADD-03-p4-r1",
+   "status": "done",
+   "attempts": 1,
+   "seconds": 214.257,
+   "pid": 9419,
+   "started": "2026-10-04T15:25:25Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/reading-ADD-03-p4-r1.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T152526Z-9f15",
+    "elapsed_s": 212.7,
+    "error": null,
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "tool_calls": 8,
+    "note": "the session's final message is the proposed reading"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/reading-ADD-03-p4-r1.result.json",
+   "verification_status": "interpretation_pending",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5",
+   "reading_file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/curation/readings/ADD-03-p4-r1.yaml",
+   "unit_id": "ADD-03:p4-image"
+  },
+  "analysis-001": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:3.1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 270.491,
+   "pid": 9419,
+   "started": "2026-10-04T15:29:16Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-001.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T152916Z-2d67",
+    "elapsed_s": 270.1,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T153340Z-a436",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/cover/para1",
+    "ADD-03/cover/para2",
+    "ADD-03/cover/para3",
+    "ADD-03/1.1",
+    "ADD-03/1.2",
+    "ADD-03/2.1",
+    "ADD-03/2.2",
+    "ADD-03/3.1"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:3.1"
+   ]
+  },
+  "analysis-002": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:4.1",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:6.1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 185.2,
+   "pid": 9419,
+   "started": "2026-10-04T15:33:47Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-002.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T153347Z-5309",
+    "elapsed_s": 184.9,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T153642Z-9753",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/4.1",
+    "ADD-03/5.1",
+    "ADD-03/5.2",
+    "ADD-03/6.1"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:4.1",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:6.1"
+   ]
+  },
+  "analysis-003": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:T1-1/A",
+    "ADD-03:T1-1/B",
+    "ADD-03:T1-1/C",
+    "ADD-03:T1-1/D",
+    "ADD-03:T1-1/E",
+    "ADD-03:T1-1/F",
+    "ADD-03:T1-1/G",
+    "ADD-03:T1-1/total"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 254.924,
+   "pid": 9419,
+   "started": "2026-10-04T15:36:52Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-003.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T153652Z-de5e",
+    "elapsed_s": 254.6,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T154102Z-6d03",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/T1-1/A",
+    "ADD-03/T1-1/B",
+    "ADD-03/T1-1/C",
+    "ADD-03/T1-1/D",
+    "ADD-03/T1-1/E",
+    "ADD-03/T1-1/F",
+    "ADD-03/T1-1/G",
+    "ADD-03/T1-1/total"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:T1-1/A",
+    "ADD-03:T1-1/B",
+    "ADD-03:T1-1/C",
+    "ADD-03:T1-1/D",
+    "ADD-03:T1-1/E",
+    "ADD-03:T1-1/F",
+    "ADD-03:T1-1/G",
+    "ADD-03:T1-1/total"
+   ]
+  },
+  "analysis-004": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:S6/para1",
+    "ADD-03:6.2",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:8.1",
+    "ADD-03:8.2",
+    "ADD-03:8.3",
+    "ADD-03:8.4"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 457.831,
+   "pid": 9419,
+   "started": "2026-10-04T15:41:07Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-004.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T154107Z-d503",
+    "elapsed_s": 457.4,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/note",
+     "ADD-03:p4-image/decl1"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T154836Z-cf01",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/S6/para1(a)",
+    "ADD-03/S6/para1(b)",
+    "ADD-03/S6/para1(c)",
+    "ADD-03/S6/para1(d)",
+    "ADD-03/6.2(a)",
+    "ADD-03/6.2(b)",
+    "ADD-03/7.1",
+    "ADD-03/7.2",
+    "ADD-03/8.1",
+    "ADD-03/8.2",
+    "ADD-03/8.3",
+    "ADD-03/8.4",
+    "ADD-03/8.2-issue"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:S6/para1",
+    "ADD-03:6.2",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:8.1",
+    "ADD-03:8.2",
+    "ADD-03:8.3",
+    "ADD-03:8.4"
+   ]
+  },
+  "analysis-005": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:AppA/para1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 404.151,
+   "pid": 9419,
+   "started": "2026-10-04T15:48:45Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-005.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T154845Z-d29d",
+    "elapsed_s": 403.8,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/decl3"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T155523Z-04c2",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/Q15",
+    "ADD-03/Q16",
+    "ADD-03/Q17",
+    "ADD-03/Q18",
+    "ADD-03/Q19",
+    "ADD-03/Q19/issue",
+    "ADD-03/Q20",
+    "ADD-03/AppA/para1",
+    "ADD-03/AppA/para1/issue"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:AppA/para1"
+   ]
+  },
+  "analysis-006": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/ref-en",
+    "ADD-03:p4-image/ref-ar",
+    "ADD-03:p4-image/form-en",
+    "ADD-03:p4-image/form-ar",
+    "ADD-03:p4-image/title",
+    "ADD-03:p4-image/intro"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 268.751,
+   "pid": 9419,
+   "started": "2026-10-04T15:55:29Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-006.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T155529Z-5aff",
+    "elapsed_s": 268.3,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/hdr-en",
+     "ADD-03:p4-image/hdr-ar",
+     "ADD-03:p4-image/ref-en",
+     "ADD-03:p4-image/ref-ar",
+     "ADD-03:p4-image/form-en",
+     "ADD-03:p4-image/form-ar",
+     "ADD-03:p4-image/title",
+     "ADD-03:p4-image/intro"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T155951Z-be2f",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/hdr-en",
+    "ADD-03/p4-image/hdr-ar",
+    "ADD-03/p4-image/ref-en",
+    "ADD-03/p4-image/ref-ar",
+    "ADD-03/p4-image/form-en",
+    "ADD-03/p4-image/form-ar",
+    "ADD-03/p4-image/title",
+    "ADD-03/p4-image/intro"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/ref-en",
+    "ADD-03:p4-image/ref-ar",
+    "ADD-03:p4-image/form-en",
+    "ADD-03:p4-image/form-ar",
+    "ADD-03:p4-image/title",
+    "ADD-03:p4-image/intro"
+   ]
+  },
+  "analysis-007": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/decl1",
+    "ADD-03:p4-image/decl2",
+    "ADD-03:p4-image/decl3",
+    "ADD-03:p4-image/table-header",
+    "ADD-03:p4-image/table-row4",
+    "ADD-03:p4-image/table-row4-blank",
+    "ADD-03:p4-image/field-member-en",
+    "ADD-03:p4-image/field-member-ar"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 359.457,
+   "pid": 9419,
+   "started": "2026-10-04T15:59:58Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-007.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T155958Z-f72c",
+    "elapsed_s": 359.0,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/decl1",
+     "ADD-03:p4-image/decl2",
+     "ADD-03:p4-image/decl3",
+     "ADD-03:p4-image/table-header",
+     "ADD-03:p4-image/table-row4",
+     "ADD-03:p4-image/table-row4-blank",
+     "ADD-03:p4-image/field-member-en",
+     "ADD-03:p4-image/field-member-ar"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T160550Z-25da",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/decl1",
+    "ADD-03/p4-image/decl1/issue",
+    "ADD-03/p4-image/decl2",
+    "ADD-03/p4-image/decl3",
+    "ADD-03/p4-image/table-header",
+    "ADD-03/p4-image/table-row4",
+    "ADD-03/p4-image/table-row4-blank",
+    "ADD-03/p4-image/field-member-en",
+    "ADD-03/p4-image/field-member-ar"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/decl1",
+    "ADD-03:p4-image/decl2",
+    "ADD-03:p4-image/decl3",
+    "ADD-03:p4-image/table-header",
+    "ADD-03:p4-image/table-row4",
+    "ADD-03:p4-image/table-row4-blank",
+    "ADD-03:p4-image/field-member-en",
+    "ADD-03:p4-image/field-member-ar"
+   ]
+  },
+  "analysis-008": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/field-cr-en",
+    "ADD-03:p4-image/field-cr-ar",
+    "ADD-03:p4-image/field-signatory-en",
+    "ADD-03:p4-image/field-signatory-ar",
+    "ADD-03:p4-image/field-capacity-en",
+    "ADD-03:p4-image/field-capacity-ar",
+    "ADD-03:p4-image/field-date-en",
+    "ADD-03:p4-image/field-date-ar"
+   ],
+   "status": "done",
+   "attempts": 2,
+   "seconds": 369.792,
+   "pid": 481,
+   "started": "2026-10-04T16:43:34Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-008.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T164338Z-7c6a",
+    "elapsed_s": 230.0,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/field-cr-ar",
+     "ADD-03:p4-image/field-signatory-en",
+     "ADD-03:p4-image/field-capacity-en",
+     "ADD-03:p4-image/field-capacity-ar",
+     "ADD-03:p4-image/field-date-en",
+     "ADD-03:p4-image/field-cr-en",
+     "ADD-03:p4-image/field-signatory-ar",
+     "ADD-03:p4-image/field-date-ar"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T164722Z-4d3d",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/field-cr-en",
+    "ADD-03/p4-image/field-cr-ar",
+    "ADD-03/p4-image/field-signatory-en",
+    "ADD-03/p4-image/field-signatory-ar",
+    "ADD-03/p4-image/field-capacity-en",
+    "ADD-03/p4-image/field-capacity-ar",
+    "ADD-03/p4-image/field-date-en",
+    "ADD-03/p4-image/field-date-ar"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/field-cr-en",
+    "ADD-03:p4-image/field-cr-ar",
+    "ADD-03:p4-image/field-signatory-en",
+    "ADD-03:p4-image/field-signatory-ar",
+    "ADD-03:p4-image/field-capacity-en",
+    "ADD-03:p4-image/field-capacity-ar",
+    "ADD-03:p4-image/field-date-en",
+    "ADD-03:p4-image/field-date-ar"
+   ]
+  },
+  "analysis-009": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/field-signature-en",
+    "ADD-03:p4-image/field-signature-ar",
+    "ADD-03:p4-image/note",
+    "ADD-03:p4-image/image-footer",
+    "ADD-03:AppB/para1"
+   ],
+   "status": "done",
+   "attempts": 2,
+   "seconds": 273.67,
+   "pid": 481,
+   "started": "2026-10-04T16:47:29Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/analysis-009.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T164729Z-92b2",
+    "elapsed_s": 271.2,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/field-signature-en",
+     "ADD-03:p4-image/note",
+     "ADD-03:p4-image/image-footer"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ]
+   },
+   "staged_run": "ADD-03-host-20261004T165154Z-2f79",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/field-signature-en",
+    "ADD-03/p4-image/field-signature-ar",
+    "ADD-03/p4-image/note",
+    "ADD-03/p4-image/image-footer",
+    "ADD-03/AppB/para1",
+    "ADD-03/AppB/para1-issue"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/field-signature-en",
+    "ADD-03:p4-image/field-signature-ar",
+    "ADD-03:p4-image/note",
+    "ADD-03:p4-image/image-footer",
+    "ADD-03:AppB/para1"
+   ]
+  },
+  "analysis-010": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:F4-H/para1",
+    "ADD-03:F4-H/T1/1",
+    "ADD-03:F4-H/T1/2",
+    "ADD-03:F4-H/T1/3",
+    "ADD-03:F4-H/T1/4",
+    "ADD-03:F4-H/para2"
+   ],
+   "status": "skipped",
+   "attempts": 0,
+   "seconds": 0.0,
+   "reason": "every provision of the batch was accounted for by an earlier batch"
+  },
+  "downstream-001": {
+   "phase": "downstream",
+   "tasks": [
+    "row:VOL-I-11.2-01",
+    "row:VOL-I-11.3-01",
+    "row:VOL-I-6.2-01",
+    "row:VOL-I-6.2-02",
+    "row:VOL-I-8.4-01",
+    "row:VOL-I-8.4-02",
+    "row:VOL-I-8.7-01",
+    "row:VOL-II-1.4-01",
+    "row:VOL-II-5.2-01",
+    "row:VOL-II-5.2-02",
+    "row:VOL-II-5.4-01",
+    "row:VOL-II-5.4-02"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 226.724,
+   "pid": 481,
+   "started": "2026-10-04T16:52:07Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-001.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T165207Z-d621",
+    "elapsed_s": 226.7,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "note": "a downstream session submits nothing: its final message is the set"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-001.result.json",
+   "items": [
+    "RR-ADD-03-VOL-I-11.2-01",
+    "RR-ADD-03-VOL-I-11.3-01",
+    "RR-ADD-03-VOL-I-6.2-01",
+    "RR-ADD-03-VOL-I-6.2-02",
+    "RR-ADD-03-VOL-I-8.4-01",
+    "I-ADD03-NETWORTH-ENV-A",
+    "CQ-ADD03-NETWORTH-ENV-A",
+    "RR-ADD-03-VOL-I-8.4-02",
+    "RR-ADD-03-VOL-I-8.7-01",
+    "RR-ADD-03-VOL-II-1.4-01",
+    "RR-ADD-03-VOL-II-5.2-01",
+    "RR-ADD-03-VOL-II-5.2-02",
+    "RR-ADD-03-VOL-II-5.4-01",
+    "RR-ADD-03-VOL-II-5.4-02"
+   ],
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5"
+  },
+  "downstream-002": {
+   "phase": "downstream",
+   "tasks": [
+    "row:VOL-IV-F4D-01",
+    "row:VOL-IV-F4D-02",
+    "row:VOL-IV-F4D-03",
+    "row:VOL-IV-F4D-04",
+    "row:VOL-IV-F4D-05",
+    "row:VOL-IV-F4D-06",
+    "row:VOL-IV-F4D-07",
+    "row:VOL-IV-F4D-08",
+    "row:VOL-IV-F4F-01",
+    "row:VOL-IV-F4F-02",
+    "row:VOL-V-12.1-01",
+    "c46:ADD-03/4.1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 179.439,
+   "pid": 481,
+   "started": "2026-10-04T16:55:53Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-002.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T165554Z-9eec",
+    "elapsed_s": 179.4,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "note": "a downstream session submits nothing: its final message is the set"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-002.result.json",
+   "items": [
+    "RR-VOL-IV-F4D-01",
+    "RR-VOL-IV-F4D-02",
+    "RR-VOL-IV-F4D-03",
+    "RR-VOL-IV-F4D-04",
+    "RR-VOL-IV-F4D-05",
+    "RR-VOL-IV-F4D-06",
+    "RR-VOL-IV-F4D-07",
+    "RR-VOL-IV-F4D-08",
+    "RR-VOL-IV-F4F-01",
+    "RR-VOL-IV-F4F-02",
+    "RR-VOL-V-12.1-01",
+    "RN-ADD-03-4.1-01",
+    "IS-ADD03-EPC-LINKED"
+   ],
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5"
+  },
+  "downstream-003": {
+   "phase": "downstream",
+   "tasks": [
+    "c46:ADD-03/6.2(b)",
+    "c46:ADD-03/8.1",
+    "c46:ADD-03/8.4",
+    "clar:CQ-DWF-STORM-FLOW",
+    "clar:CQ-VOL-III-DRAWINGS",
+    "clar:CQ-PCOD-RELIABILITY-RUN",
+    "clar:CQ-SCORING-METHOD",
+    "act:technical-proposal",
+    "act:deliver",
+    "act:seal-and-mark",
+    "act:copies",
+    "act:assemble-envelope-a"
+   ],
+   "status": "failed",
+   "attempts": 1,
+   "seconds": 390.405,
+   "pid": 481,
+   "started": "2026-10-04T16:58:53Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-003.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T165853Z-1c8d",
+    "elapsed_s": 390.3,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "note": "a downstream session submits nothing: its final message is the set"
+   },
+   "error": "the host session's final message is not a DownstreamSet: the answer is not valid JSON: Expecting ',' delimiter: line 1 column 11968 (char 11967)"
+  },
+  "downstream-004": {
+   "phase": "downstream",
+   "tasks": [
+    "act:assemble-envelope-b",
+    "act:fin-statements",
+    "act:fin-standing",
+    "act:pcg-wording",
+    "act:pcg-execution",
+    "act:form-4f",
+    "act:fin-model-build",
+    "act:fin-model-freeze",
+    "esc:ADD-03:cover/para3",
+    "esc:ADD-03:5.2",
+    "esc:ADD-03:6.1",
+    "esc:ADD-03:T1-1/G"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 316.402,
+   "pid": 481,
+   "started": "2026-10-04T17:05:23Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-004.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T170523Z-70a1",
+    "elapsed_s": 316.3,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "note": "a downstream session submits nothing: its final message is the set"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-004.result.json",
+   "items": [
+    "DS-ADD03-ACT-ASSEMBLE-ENV-B",
+    "DS-ADD03-ACT-FIN-STATEMENTS",
+    "DS-ADD03-ACT-FIN-STANDING",
+    "I-ADD03-EPC-ENV-A",
+    "CQ-EPC-ENV-A",
+    "DEP-ADD03-F4F-TO-8.4",
+    "DS-ADD03-ACT-PCG-WORDING",
+    "DS-ADD03-ACT-PCG-EXECUTION",
+    "DS-ADD03-ACT-FORM-4F",
+    "DS-ADD03-ACT-FIN-MODEL-BUILD",
+    "DS-ADD03-ACT-FIN-MODEL-FREEZE",
+    "ESC-ADD03-COVER-PARA3",
+    "CQ-F4H-TIMING",
+    "ESC-ADD03-5.2",
+    "ESC-ADD03-6.1",
+    "ESC-ADD03-T1-1-G"
+   ],
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5"
+  },
+  "downstream-005": {
+   "phase": "downstream",
+   "tasks": [
+    "esc:ADD-03:T1-1/total",
+    "esc:ADD-03:7.1",
+    "esc:ADD-03:7.2",
+    "esc:ADD-03:8.2",
+    "esc:ADD-03:8.3",
+    "esc:ADD-03:Q17",
+    "esc:ADD-03:p4-image/decl1",
+    "esc:ADD-03:p4-image/note"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 205.481,
+   "pid": 481,
+   "started": "2026-10-04T17:10:40Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-005.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261004T171040Z-9d22",
+    "elapsed_s": 205.4,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "note": "a downstream session submits nothing: its final message is the set"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-005.result.json",
+   "items": [
+    "ESC-ADD03-T1-1-TOTAL",
+    "ESC-ADD03-7.1",
+    "CQ-ADD03-S7-NOTICE",
+    "I-ADD03-S7-CONDITIONAL",
+    "ESC-ADD03-7.2",
+    "ESC-ADD03-8.2",
+    "I-ADD03-F4H-THRESHOLD",
+    "CQ-ADD03-F4H-THRESHOLD",
+    "ESC-ADD03-8.3",
+    "CQ-ADD03-83-COUNTING",
+    "ESC-ADD03-Q17",
+    "DEP-ADD03-APPC-MISSING",
+    "ESC-ADD03-P4-DECL1",
+    "ESC-ADD03-P4-NOTE"
+   ],
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5"
+  }
+ },
+ "provisions": {
+  "ADD-03:cover/para1": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/cover/para1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:cover/para2": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para2": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/cover/para2": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:cover/para3": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para3": "conflicting"
+   },
+   "final": {
+    "items": {
+     "ADD-03/cover/para3": "conflicting"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:1.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/1.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/1.1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/1.1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:1.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/1.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/1.2": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/1.2": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:2.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/2.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/2.1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/2.1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:2.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/2.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/2.2": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/2.2": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:3.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/3.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:33:47Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/3.1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/3.1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:4.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/4.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/4.1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/4.1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:5.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/5.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/5.1": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/5.1": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:5.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/5.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/5.2": "escalated"
+   },
+   "final": {
+    "items": {
+     "ADD-03/5.2": "escalated"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:6.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/6.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:36:52Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/6.1": "escalated"
+   },
+   "final": {
+    "items": {
+     "ADD-03/6.1": "escalated"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/A": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/A"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/A": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/A": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/B": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/B"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/B": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/B": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/C": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/C"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/C": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/C": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/D": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/D"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/D": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/D": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/E": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/E"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/E": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/E": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/F": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/F"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/F": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/F": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/G": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/G"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/G": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/G": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:T1-1/total": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/T1-1/total"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:41:07Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/T1-1/total": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/T1-1/total": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:S6/para1": {
+   "kind": "paragraph",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/S6/para1(a)",
+    "ADD-03/S6/para1(b)",
+    "ADD-03/S6/para1(c)",
+    "ADD-03/S6/para1(d)"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/S6/para1(a)": "conflicting",
+    "ADD-03/S6/para1(b)": "interpretation_pending",
+    "ADD-03/S6/para1(c)": "interpretation_pending",
+    "ADD-03/S6/para1(d)": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/S6/para1(a)": "conflicting",
+     "ADD-03/S6/para1(b)": "interpretation_pending",
+     "ADD-03/S6/para1(c)": "interpretation_pending",
+     "ADD-03/S6/para1(d)": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:6.2": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/6.2(a)",
+    "ADD-03/6.2(b)"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/6.2(a)": "interpretation_pending",
+    "ADD-03/6.2(b)": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/6.2(a)": "interpretation_pending",
+     "ADD-03/6.2(b)": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:7.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/7.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.1": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/7.1": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:7.2": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/7.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.2": "escalated"
+   },
+   "final": {
+    "items": {
+     "ADD-03/7.2": "escalated"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:8.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/8.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/8.1": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/8.1": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:8.2": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/8.2",
+    "ADD-03/8.2-issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/8.2": "conflicting",
+    "ADD-03/8.2-issue": "conflicting"
+   },
+   "final": {
+    "items": {
+     "ADD-03/8.2": "conflicting",
+     "ADD-03/8.2-issue": "conflicting"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:8.3": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/8.3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/8.3": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/8.3": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:8.4": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/8.4"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/8.4": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/8.4": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q15": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q15"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q15": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q15": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q16": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q16"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q16": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q16": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q17": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q17"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q17": "insufficient_evidence"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q17": "insufficient_evidence"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q18": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q18"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q18": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q18": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q19": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q19",
+    "ADD-03/Q19/issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q19": "interpretation_pending",
+    "ADD-03/Q19/issue": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q19": "interpretation_pending",
+     "ADD-03/Q19/issue": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:Q20": {
+   "kind": "table_row",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/Q20"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q20": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/Q20": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:AppA/para1": {
+   "kind": "paragraph",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/AppA/para1",
+    "ADD-03/AppA/para1/issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:55:29Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/AppA/para1": "interpretation_pending",
+    "ADD-03/AppA/para1/issue": "evidence_verified"
+   },
+   "final": {
+    "items": {
+     "ADD-03/AppA/para1": "interpretation_pending",
+     "ADD-03/AppA/para1/issue": "evidence_verified"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/hdr-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/hdr-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/hdr-en": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/hdr-en": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/hdr-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/hdr-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/hdr-ar": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/hdr-ar": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/ref-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/ref-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/ref-en": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/ref-en": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/ref-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/ref-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/ref-ar": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/ref-ar": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/form-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/form-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/form-en": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/form-en": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/form-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/form-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/form-ar": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/form-ar": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/title": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/title"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/title": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/title": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/intro": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/intro"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:59:58Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/intro": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/intro": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/decl1": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/decl1",
+    "ADD-03/p4-image/decl1/issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/decl1": "conflicting",
+    "ADD-03/p4-image/decl1/issue": "conflicting"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/decl1": "conflicting",
+     "ADD-03/p4-image/decl1/issue": "conflicting"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/decl2": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/decl2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/decl2": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/decl2": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/decl3": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/decl3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/decl3": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/decl3": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/table-header": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/table-header"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/table-header": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/table-header": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/table-row4": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/table-row4"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/table-row4": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/table-row4": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/table-row4-blank": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/table-row4-blank"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/table-row4-blank": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/table-row4-blank": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/field-member-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/field-member-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/field-member-en": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-member-en": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/field-member-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/field-member-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:05:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/field-member-ar": "interpretation_pending"
+   },
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-member-ar": "interpretation_pending"
+    },
+    "accounted": true
+   }
+  },
+  "ADD-03:p4-image/field-cr-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-cr-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-cr-en": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-cr-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-cr-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-cr-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-cr-ar": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-cr-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-signatory-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-signatory-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-signatory-en": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-signatory-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-signatory-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-signatory-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-signatory-ar": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-signatory-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-capacity-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-capacity-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-capacity-en": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-capacity-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-capacity-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-capacity-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-capacity-ar": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-capacity-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-date-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-date-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-date-en": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-date-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-date-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/field-date-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:47:29Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-date-ar": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-date-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-signature-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/field-signature-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-signature-en": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-signature-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/field-signature-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/field-signature-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/field-signature-ar": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/field-signature-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/note": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/note"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/note": "insufficient_evidence"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/note": "insufficient_evidence"
+   }
+  },
+  "ADD-03:p4-image/image-footer": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/image-footer"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/p4-image/image-footer": "interpretation_pending"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/p4-image/image-footer": "interpretation_pending"
+   }
+  },
+  "ADD-03:AppB/para1": {
+   "kind": "paragraph",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/AppB/para1",
+    "ADD-03/AppB/para1-issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T16:52:00Z",
+     "status": "validated"
+    }
+   ],
+   "final": {
+    "items": {
+     "ADD-03/AppB/para1": "interpretation_pending",
+     "ADD-03/AppB/para1-issue": "conflicting"
+    },
+    "accounted": true
+   },
+   "statuses": {
+    "ADD-03/AppB/para1": "interpretation_pending",
+    "ADD-03/AppB/para1-issue": "conflicting"
+   }
+  },
+  "ADD-03:F4-H/para1": {
+   "kind": "paragraph",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  },
+  "ADD-03:F4-H/T1/1": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  },
+  "ADD-03:F4-H/T1/2": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  },
+  "ADD-03:F4-H/T1/3": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  },
+  "ADD-03:F4-H/T1/4": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  },
+  "ADD-03:F4-H/para2": {
+   "kind": "paragraph",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-04T15:29:16Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-04T15:48:45Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/8.1"
+   ],
+   "answered_in": "analysis-004",
+   "statuses": {},
+   "final": {
+    "items": {},
+    "accounted": true
+   }
+  }
+ },
+ "structure": [
+  {
+   "unit_id": "ADD-03:H:cover",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "ADDENDUM NO. 3",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:cover-2",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "Wadi Sirhan Independent Sewage Treatment Plant",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S1",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "1. RECITALS",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S2",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "2. DEFINITION OF ESTIMATED PROJECT COST",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S3",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "3. AMENDMENT TO VOLUME I CLAUSE 8.4",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S4",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "4. AMENDMENT TO VOLUME V CLAUSE 18.1",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S5",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "5. TREATED EFFLUENT TRANSMISSION MAIN",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S6",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "6. TECHNICAL EVALUATION",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:T1-1",
+   "kind": "table",
+   "pages": [
+    2
+   ],
+   "text": "Table 1-1 (second revision) — Technical evaluation criteria — Ref | Criterion | Marks",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S7",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "7. CONDITIONAL AMENDMENT TO VOLUME II CLAUSE 1.4",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S8",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "8. NEW FORM 4-H — DECLARATION OF BENEFICIAL OWNERSHIP",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S9",
+   "kind": "heading",
+   "pages": [
+    3
+   ],
+   "text": "9. RESPONSES TO CLARIFICATION REQUESTS 15 TO 20",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:S9/QA",
+   "kind": "table",
+   "pages": [
+    3
+   ],
+   "text": "No | Bidder question | Authority response",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:AppA",
+   "kind": "heading",
+   "pages": [
+    3
+   ],
+   "text": "APPENDIX A — FORM 4-H (ARABIC)",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:region:ADD-03-p4-r1",
+   "kind": "region",
+   "pages": [
+    4
+   ],
+   "text": "",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:p4-image",
+   "kind": "image_text",
+   "pages": [
+    4
+   ],
+   "text": "Form 4-H (image, Arabic with English labels): Beneficial Owner Declaration",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:AppB",
+   "kind": "heading",
+   "pages": [
+    5
+   ],
+   "text": "APPENDIX B — ENGLISH TRANSLATION OF FORM 4-H",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:F4-H",
+   "kind": "heading",
+   "pages": [
+    5
+   ],
+   "text": "FORM 4-H — DECLARATION OF BENEFICIAL OWNERSHIP",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:F4-H/T1",
+   "kind": "table",
+   "pages": [
+    5
+   ],
+   "text": "No | Name of beneficial owner | Nationality | Ownership (%) | Direct / indirect",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  }
+ ],
+ "downstream": {
+  "tasks": {
+   "row:VOL-I-11.2-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-11.3-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-6.2-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-6.2-02": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-8.4-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-8.4-02": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-I-8.7-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-II-1.4-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-II-5.2-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-II-5.2-02": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-II-5.4-01": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-II-5.4-02": {
+    "kind": "row_reading",
+    "batch": "downstream-001"
+   },
+   "row:VOL-IV-F4D-01": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-02": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-03": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-04": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-05": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-06": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-07": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4D-08": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4F-01": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-IV-F4F-02": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "row:VOL-V-12.1-01": {
+    "kind": "row_reading",
+    "batch": "downstream-002"
+   },
+   "c46:ADD-03/4.1": {
+    "kind": "row_new",
+    "batch": "downstream-002"
+   },
+   "c46:ADD-03/6.2(b)": {
+    "kind": "row_new",
+    "batch": "downstream-003"
+   },
+   "c46:ADD-03/8.1": {
+    "kind": "row_new",
+    "batch": "downstream-003"
+   },
+   "c46:ADD-03/8.4": {
+    "kind": "row_new",
+    "batch": "downstream-003"
+   },
+   "clar:CQ-DWF-STORM-FLOW": {
+    "kind": "clarification_item",
+    "batch": "downstream-003"
+   },
+   "clar:CQ-VOL-III-DRAWINGS": {
+    "kind": "clarification_item",
+    "batch": "downstream-003"
+   },
+   "clar:CQ-PCOD-RELIABILITY-RUN": {
+    "kind": "clarification_item",
+    "batch": "downstream-003"
+   },
+   "clar:CQ-SCORING-METHOD": {
+    "kind": "clarification_item",
+    "batch": "downstream-003"
+   },
+   "act:technical-proposal": {
+    "kind": "activity",
+    "batch": "downstream-003"
+   },
+   "act:deliver": {
+    "kind": "activity",
+    "batch": "downstream-003"
+   },
+   "act:seal-and-mark": {
+    "kind": "activity",
+    "batch": "downstream-003"
+   },
+   "act:copies": {
+    "kind": "activity",
+    "batch": "downstream-003"
+   },
+   "act:assemble-envelope-a": {
+    "kind": "activity",
+    "batch": "downstream-003"
+   },
+   "act:assemble-envelope-b": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:fin-statements": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:fin-standing": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:pcg-wording": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:pcg-execution": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:form-4f": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:fin-model-build": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "act:fin-model-freeze": {
+    "kind": "activity",
+    "batch": "downstream-004"
+   },
+   "esc:ADD-03:cover/para3": {
+    "kind": "escalation",
+    "batch": "downstream-004"
+   },
+   "esc:ADD-03:5.2": {
+    "kind": "escalation",
+    "batch": "downstream-004"
+   },
+   "esc:ADD-03:6.1": {
+    "kind": "escalation",
+    "batch": "downstream-004"
+   },
+   "esc:ADD-03:T1-1/G": {
+    "kind": "escalation",
+    "batch": "downstream-004"
+   },
+   "esc:ADD-03:T1-1/total": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:7.1": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:7.2": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:8.2": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:8.3": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:Q17": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:p4-image/decl1": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   },
+   "esc:ADD-03:p4-image/note": {
+    "kind": "escalation",
+    "batch": "downstream-005"
+   }
+  },
+  "items": {
+   "downstream-001/RR-ADD-03-VOL-I-11.2-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-11.2-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:S6/para1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-I-11.2-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-11.3-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-11.3-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:6.2",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "RR-ADD-03-VOL-I-11.3-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-6.2-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-6.2-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q19",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-I-6.2-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-6.2-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-6.2-02",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q19",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-I-6.2-02",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-8.4-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-8.4-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:3.1",
+    "verification_status": "conflicting",
+    "id_in_set": "RR-ADD-03-VOL-I-8.4-01",
+    "held_back": null
+   },
+   "downstream-001/I-ADD03-NETWORTH-ENV-A": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "issue",
+    "task": "row:VOL-I-8.4-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:3.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "I-ADD03-NETWORTH-ENV-A",
+    "held_back": null
+   },
+   "downstream-001/CQ-ADD03-NETWORTH-ENV-A": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "row:VOL-I-8.4-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:3.1",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "CQ-ADD03-NETWORTH-ENV-A",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-8.4-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-8.4-02",
+    "batch": "downstream-001",
+    "provision": "ADD-03:3.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-I-8.4-02",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-I-8.7-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-I-8.7-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-I-8.7-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-II-1.4-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-II-1.4-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q16",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-II-1.4-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-II-5.2-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-II-5.2-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:5.1",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "RR-ADD-03-VOL-II-5.2-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-II-5.2-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-II-5.2-02",
+    "batch": "downstream-001",
+    "provision": "ADD-03:5.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-II-5.2-02",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-II-5.4-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-II-5.4-01",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q18",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-II-5.4-01",
+    "held_back": null
+   },
+   "downstream-001/RR-ADD-03-VOL-II-5.4-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:55:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-II-5.4-02",
+    "batch": "downstream-001",
+    "provision": "ADD-03:Q18",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-ADD-03-VOL-II-5.4-02",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-01",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-01",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-02",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-02",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-03": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-03",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-03",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-04": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-04",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-04",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-05": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-05",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-05",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-06": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-06",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-06",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-07": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-07",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-07",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4D-08": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4D-08",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4D-08",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4F-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4F-01",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q16",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4F-01",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-IV-F4F-02": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-IV-F4F-02",
+    "batch": "downstream-002",
+    "provision": "ADD-03:Q16",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-IV-F4F-02",
+    "held_back": null
+   },
+   "downstream-002/RR-VOL-V-12.1-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_reading",
+    "task": "row:VOL-V-12.1-01",
+    "batch": "downstream-002",
+    "provision": "ADD-03:4.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RR-VOL-V-12.1-01",
+    "held_back": null
+   },
+   "downstream-002/RN-ADD-03-4.1-01": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "row_new",
+    "task": "c46:ADD-03/4.1",
+    "batch": "downstream-002",
+    "provision": "ADD-03:4.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "RN-ADD-03-4.1-01",
+    "held_back": null
+   },
+   "downstream-002/IS-ADD03-EPC-LINKED": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T16:58:53Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "issue",
+    "task": "c46:ADD-03/4.1",
+    "batch": "downstream-002",
+    "provision": "ADD-03:4.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "IS-ADD03-EPC-LINKED",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-ASSEMBLE-ENV-B": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:assemble-envelope-b",
+    "batch": "downstream-004",
+    "provision": "ADD-03:Q19",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "DS-ADD03-ACT-ASSEMBLE-ENV-B",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-FIN-STATEMENTS": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:fin-statements",
+    "batch": "downstream-004",
+    "provision": "ADD-03:3.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-FIN-STATEMENTS",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-FIN-STANDING": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:fin-standing",
+    "batch": "downstream-004",
+    "provision": "ADD-03:3.1",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "DS-ADD03-ACT-FIN-STANDING",
+    "held_back": null
+   },
+   "downstream-004/I-ADD03-EPC-ENV-A": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "issue",
+    "task": "act:fin-standing",
+    "batch": "downstream-004",
+    "provision": "ADD-03:Q19",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "I-ADD03-EPC-ENV-A",
+    "held_back": null
+   },
+   "downstream-004/CQ-EPC-ENV-A": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "act:fin-standing",
+    "batch": "downstream-004",
+    "provision": "ADD-03:Q19",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "CQ-EPC-ENV-A",
+    "held_back": null
+   },
+   "downstream-004/DEP-ADD03-F4F-TO-8.4": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "dependency",
+    "task": "act:fin-standing",
+    "batch": "downstream-004",
+    "provision": "ADD-03:2.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DEP-ADD03-F4F-TO-8.4",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-PCG-WORDING": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:pcg-wording",
+    "batch": "downstream-004",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-PCG-WORDING",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-PCG-EXECUTION": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:pcg-execution",
+    "batch": "downstream-004",
+    "provision": "ADD-03:Q15",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-PCG-EXECUTION",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-FORM-4F": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:form-4f",
+    "batch": "downstream-004",
+    "provision": "ADD-03:2.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-FORM-4F",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-FIN-MODEL-BUILD": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:fin-model-build",
+    "batch": "downstream-004",
+    "provision": "ADD-03:2.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-FIN-MODEL-BUILD",
+    "held_back": null
+   },
+   "downstream-004/DS-ADD03-ACT-FIN-MODEL-FREEZE": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "activity",
+    "task": "act:fin-model-freeze",
+    "batch": "downstream-004",
+    "provision": "ADD-03:2.1",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "DS-ADD03-ACT-FIN-MODEL-FREEZE",
+    "held_back": null
+   },
+   "downstream-004/ESC-ADD03-COVER-PARA3": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:cover/para3",
+    "batch": "downstream-004",
+    "provision": "ADD-03:cover/para3",
+    "verification_status": "conflicting",
+    "id_in_set": "ESC-ADD03-COVER-PARA3",
+    "held_back": null
+   },
+   "downstream-004/CQ-F4H-TIMING": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "esc:ADD-03:cover/para3",
+    "batch": "downstream-004",
+    "provision": "ADD-03:cover/para3",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "CQ-F4H-TIMING",
+    "held_back": null
+   },
+   "downstream-004/ESC-ADD03-5.2": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:5.2",
+    "batch": "downstream-004",
+    "provision": "ADD-03:5.2",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-5.2",
+    "held_back": null
+   },
+   "downstream-004/ESC-ADD03-6.1": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:6.1",
+    "batch": "downstream-004",
+    "provision": "ADD-03:6.1",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-6.1",
+    "held_back": null
+   },
+   "downstream-004/ESC-ADD03-T1-1-G": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:10:40Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:T1-1/G",
+    "batch": "downstream-004",
+    "provision": "ADD-03:T1-1/G",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-T1-1-G",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-T1-1-TOTAL": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:T1-1/total",
+    "batch": "downstream-005",
+    "provision": "ADD-03:T1-1/total",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-T1-1-TOTAL",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-7.1": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:7.1",
+    "batch": "downstream-005",
+    "provision": "ADD-03:7.1",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-7.1",
+    "held_back": null
+   },
+   "downstream-005/CQ-ADD03-S7-NOTICE": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "esc:ADD-03:7.2",
+    "batch": "downstream-005",
+    "provision": "ADD-03:7.2",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "CQ-ADD03-S7-NOTICE",
+    "held_back": null
+   },
+   "downstream-005/I-ADD03-S7-CONDITIONAL": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "issue",
+    "task": "esc:ADD-03:7.2",
+    "batch": "downstream-005",
+    "provision": "ADD-03:7.2",
+    "verification_status": "interpretation_pending",
+    "id_in_set": "I-ADD03-S7-CONDITIONAL",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-7.2": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:7.2",
+    "batch": "downstream-005",
+    "provision": "ADD-03:7.2",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-7.2",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-8.2": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:8.2",
+    "batch": "downstream-005",
+    "provision": "ADD-03:8.2",
+    "verification_status": "conflicting",
+    "id_in_set": "ESC-ADD03-8.2",
+    "held_back": null
+   },
+   "downstream-005/I-ADD03-F4H-THRESHOLD": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "issue",
+    "task": "esc:ADD-03:p4-image/decl1",
+    "batch": "downstream-005",
+    "provision": "ADD-03:p4-image/decl1",
+    "verification_status": "conflicting",
+    "id_in_set": "I-ADD03-F4H-THRESHOLD",
+    "held_back": null
+   },
+   "downstream-005/CQ-ADD03-F4H-THRESHOLD": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "esc:ADD-03:8.2",
+    "batch": "downstream-005",
+    "provision": "ADD-03:8.2",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "CQ-ADD03-F4H-THRESHOLD",
+    "held_back": "linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']"
+   },
+   "downstream-005/ESC-ADD03-8.3": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:8.3",
+    "batch": "downstream-005",
+    "provision": "ADD-03:8.3",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-8.3",
+    "held_back": null
+   },
+   "downstream-005/CQ-ADD03-83-COUNTING": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "clarification_item",
+    "task": "esc:ADD-03:8.3",
+    "batch": "downstream-005",
+    "provision": "ADD-03:8.3",
+    "verification_status": "insufficient_evidence",
+    "id_in_set": "CQ-ADD03-83-COUNTING",
+    "held_back": "linked issues not promotable: ['I-ADD03-F4H-THRESHOLD']"
+   },
+   "downstream-005/ESC-ADD03-Q17": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:Q17",
+    "batch": "downstream-005",
+    "provision": "ADD-03:Q17",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-Q17",
+    "held_back": null
+   },
+   "downstream-005/DEP-ADD03-APPC-MISSING": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "dependency",
+    "task": "esc:ADD-03:Q17",
+    "batch": "downstream-005",
+    "provision": "ADD-03:Q17",
+    "verification_status": "invalid",
+    "id_in_set": "DEP-ADD03-APPC-MISSING",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-P4-DECL1": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:p4-image/decl1",
+    "batch": "downstream-005",
+    "provision": "ADD-03:p4-image/decl1",
+    "verification_status": "conflicting",
+    "id_in_set": "ESC-ADD03-P4-DECL1",
+    "held_back": null
+   },
+   "downstream-005/ESC-ADD03-P4-NOTE": {
+    "status": "validated",
+    "history": [
+     {
+      "ts": "2026-10-04T17:14:05Z",
+      "status": "proposed"
+     },
+     {
+      "ts": "2026-10-04T17:14:06Z",
+      "status": "validated"
+     }
+    ],
+    "type": "escalation",
+    "task": "esc:ADD-03:p4-image/note",
+    "batch": "downstream-005",
+    "provision": "ADD-03:p4-image/note",
+    "verification_status": "escalated",
+    "id_in_set": "ESC-ADD03-P4-NOTE",
+    "held_back": null
+   }
+  },
+  "tasks_sha": "3e078ebeae0b05095ef25dbef3f58a93db79d298bf862e8d2483b4f831a16e64",
+  "superseded": [
+   {
+    "ts": "2026-10-04T16:52:07Z",
+    "batches": {
+     "downstream-001": {
+      "phase": "downstream",
+      "tasks": [
+       "row:VOL-I-11.2-01",
+       "row:VOL-I-11.3-01",
+       "row:VOL-I-6.2-01",
+       "row:VOL-I-6.2-02",
+       "row:VOL-I-8.4-01",
+       "row:VOL-I-8.4-02",
+       "row:VOL-I-8.7-01",
+       "row:VOL-II-1.4-01",
+       "row:VOL-II-5.2-01",
+       "row:VOL-II-5.2-02",
+       "row:VOL-II-5.4-01",
+       "row:VOL-II-5.4-02"
+      ],
+      "status": "pending",
+      "attempts": 1,
+      "seconds": 2.046,
+      "pid": 9419,
+      "started": "2026-10-04T16:08:22Z",
+      "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-001.packet.json",
+      "host_session": {
+       "run_id": "ADD-03-hostsession-20261004T160822Z-7497",
+       "elapsed_s": 2.0,
+       "error": "the host ended with an error (success: 429)",
+       "model_reported": [
+        "claude-opus-5-5"
+       ],
+       "note": "a downstream session submits nothing: its final message is the set"
+      },
+      "error": "the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them)"
+     },
+     "downstream-002": {
+      "phase": "downstream",
+      "tasks": [
+       "row:VOL-IV-F4D-01",
+       "row:VOL-IV-F4D-02",
+       "row:VOL-IV-F4D-03",
+       "row:VOL-IV-F4D-04",
+       "row:VOL-IV-F4D-05",
+       "row:VOL-IV-F4D-06",
+       "row:VOL-IV-F4D-07",
+       "row:VOL-IV-F4D-08",
+       "row:VOL-IV-F4F-01",
+       "row:VOL-IV-F4F-02",
+       "row:VOL-V-12.1-01",
+       "c46:ADD-03/4.1"
+      ],
+      "status": "pending",
+      "attempts": 1,
+      "seconds": 1.943,
+      "pid": 9419,
+      "started": "2026-10-04T16:08:24Z",
+      "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-002.packet.json",
+      "host_session": {
+       "run_id": "ADD-03-hostsession-20261004T160824Z-713c",
+       "elapsed_s": 1.9,
+       "error": "the host ended with an error (success: 429)",
+       "model_reported": [
+        "claude-opus-5-5"
+       ],
+       "note": "a downstream session submits nothing: its final message is the set"
+      },
+      "error": "the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them)"
+     },
+     "downstream-003": {
+      "phase": "downstream",
+      "tasks": [
+       "c46:ADD-03/6.2(b)",
+       "c46:ADD-03/8.1",
+       "c46:ADD-03/8.4",
+       "clar:CQ-DWF-STORM-FLOW",
+       "clar:CQ-VOL-III-DRAWINGS",
+       "clar:CQ-PCOD-RELIABILITY-RUN",
+       "clar:CQ-SCORING-METHOD",
+       "act:technical-proposal",
+       "act:deliver",
+       "act:seal-and-mark",
+       "act:copies",
+       "act:assemble-envelope-a"
+      ],
+      "status": "pending",
+      "attempts": 1,
+      "seconds": 2.395,
+      "pid": 9419,
+      "started": "2026-10-04T16:08:26Z",
+      "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-003.packet.json",
+      "host_session": {
+       "run_id": "ADD-03-hostsession-20261004T160826Z-2100",
+       "elapsed_s": 2.4,
+       "error": "the host ended with an error (success: 429)",
+       "model_reported": [
+        "claude-opus-5-5"
+       ],
+       "note": "a downstream session submits nothing: its final message is the set"
+      },
+      "error": "the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them)"
+     },
+     "downstream-004": {
+      "phase": "downstream",
+      "tasks": [
+       "act:assemble-envelope-b",
+       "act:fin-statements",
+       "act:fin-standing",
+       "act:pcg-wording",
+       "act:pcg-execution",
+       "act:form-4f",
+       "act:fin-model-build",
+       "act:fin-model-freeze",
+       "esc:ADD-03:cover/para3",
+       "esc:ADD-03:5.2",
+       "esc:ADD-03:6.1",
+       "esc:ADD-03:T1-1/G"
+      ],
+      "status": "pending",
+      "attempts": 1,
+      "seconds": 2.298,
+      "pid": 9419,
+      "started": "2026-10-04T16:08:28Z",
+      "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-004.packet.json",
+      "host_session": {
+       "run_id": "ADD-03-hostsession-20261004T160828Z-112b",
+       "elapsed_s": 2.2,
+       "error": "the host ended with an error (success: 429)",
+       "model_reported": [
+        "claude-opus-5-5"
+       ],
+       "note": "a downstream session submits nothing: its final message is the set"
+      },
+      "error": "the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them)"
+     },
+     "downstream-005": {
+      "phase": "downstream",
+      "tasks": [
+       "esc:ADD-03:T1-1/total",
+       "esc:ADD-03:7.1",
+       "esc:ADD-03:7.2",
+       "esc:ADD-03:8.2",
+       "esc:ADD-03:8.3",
+       "esc:ADD-03:Q17",
+       "esc:ADD-03:p4-image/decl1"
+      ],
+      "status": "pending",
+      "attempts": 1,
+      "seconds": 2.018,
+      "pid": 9419,
+      "started": "2026-10-04T16:08:30Z",
+      "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/batches/downstream-005.packet.json",
+      "host_session": {
+       "run_id": "ADD-03-hostsession-20261004T160830Z-226a",
+       "elapsed_s": 2.0,
+       "error": "the host ended with an error (success: 429)",
+       "model_reported": [
+        "claude-opus-5-5"
+       ],
+       "note": "a downstream session submits nothing: its final message is the set"
+      },
+      "error": "the host session's final message is not a DownstreamSet: the answer is not a single JSON object (found 0 fenced block(s) and text outside them)"
+     }
+    },
+    "items": {}
+   }
+  ]
+ },
+ "interventions": [
+  {
+   "ts": "2026-10-04T15:28:59Z",
+   "kind": "host session (automatic)",
+   "batch": "reading-ADD-03-p4-r1",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session reading an image; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:33:47Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-001",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:36:52Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-002",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:41:07Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-003",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:48:44Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-004",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:55:29Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-005",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T15:59:57Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-006",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:05:57Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-007",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:13Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-008",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:15Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-009",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:24Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-001",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:26Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-002",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:28Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-003",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:30Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-004",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:08:32Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-005",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:47:28Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-008",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:52:00Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-009",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:55:53Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-001",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T16:58:53Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-002",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T17:05:23Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-003",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T17:10:40Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-004",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  },
+  {
+   "ts": "2026-10-04T17:14:05Z",
+   "kind": "host session (automatic)",
+   "batch": "downstream-005",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session; not a person"
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null
+ },
+ "events": [
+  {
+   "ts": "2026-10-04T15:25:06Z",
+   "event": "started",
+   "by_pid": 9419
+  },
+  {
+   "ts": "2026-10-04T15:29:00Z",
+   "event": "reading_written",
+   "region": "ADD-03-p4-r1",
+   "file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/curation/readings/ADD-03-p4-r1.yaml",
+   "status": "interpretation_pending"
+  },
+  {
+   "ts": "2026-10-04T16:43:34Z",
+   "event": "resumed",
+   "by_pid": 481,
+   "status_before": "partial"
+  },
+  {
+   "ts": "2026-10-04T16:52:07Z",
+   "event": "downstream_replanned",
+   "why": "the downstream tasks changed since the batches were planned"
+  }
+ ],
+ "out_before": {
+  "status": "done",
+  "pid": 9445,
+  "key": "791ef67dda647b63b53cb99d9fd19afa1093c076c5e2045d77c38ec9e530d2a7",
+  "started": "2026-10-04T15:25:25Z",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "result": {
+   "key": "791ef67dda647b63b53cb99d9fd19afa1093c076c5e2045d77c38ec9e530d2a7",
+   "exit_code": 0,
+   "status": "ok",
+   "release": "WORKING DRAFT (not releasable)",
+   "blockers": 2,
+   "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-20261004T152505Z/candidate/out-before",
+   "seconds": 96.603
+  }
+ }
+}

@@ -150,7 +150,7 @@ No bidder references, certificates, attendance or financial standing are assumed
 | envelope_assembly | 1 | 1 | - | PROVISIONAL ASSUMPTION: assemble the marked original of one envelope in the required order with numbered dividers; not stated | PROVISIONAL ASSUMPTION: one document-controller day per envelope; internal | Bid management |
 | copies_and_usb | 1 | 2 | - | PROVISIONAL ASSUMPTION: three hard copies of each envelope and the encrypted searchable USB copy named per Appendix 2; not stated | PROVISIONAL ASSUMPTION: both document controllers for the day; internal | Bid management |
 | seal_and_mark | 0 | 0.25 | - | PROVISIONAL ASSUMPTION: a few hours at the end of the day the copies are finished (0 = no separate Working Day); not stated | PROVISIONAL ASSUMPTION: a quarter document-controller day, on the copies day | Bid management |
-| delivery | 1 | 1 | - | PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before 14:00 on the PDD; not stated | PROVISIONAL ASSUMPTION: one document controller accompanies the delivery and obtains the receipt; internal | Bid management |
+| delivery | 1 | 1 | - | PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before the Proposal Due Date time stated in VOL-I 6.1 as amended (the time is derived, not assumed); not stated | PROVISIONAL ASSUMPTION: one document controller accompanies the delivery and obtains the receipt; internal | Bid management |
 
 ## Scenarios (config/scenarios.yaml)
 

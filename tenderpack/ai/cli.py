@@ -15,6 +15,21 @@
                                                     and, with a key, anthropic); prints the source of each value
   promote RUN_ID --by NAME                          a person copies verified items into curation as PROPOSED drafts
   locks [--break ADDENDUM --by NAME]                list (or break) orchestrator locks
+
+The workflow (session 10; tenderpack/ai/workflow.py): from a new addendum PDF and the preceding state to isolated
+candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging/ai/runs/<run_id>/):
+  run ADD-NN --pdf PATH [--route recorded|host|anthropic|openrouter|ollama] [--pack config/pack.yaml]
+          [--evidence build] [--run-id ID] [--batch-size N] [--downstream-batch-size N] [--model M] [--cassette P]
+          [--host-model M] [--host-manual] [--stop-after STEP] [--no-background] [--no-cache] [caps]
+          Exit 0 when the run finished (complete or partial) or stopped where asked, 1 when a step failed or the
+          candidate outputs build was refused, 2 when refused before anything ran (or ingest failed structurally),
+          4 when it waits for a host submission.
+  resume RUN_ID [--stop-after STEP] [--no-retry]    continue from the checkpoint (a failed batch is asked again)
+  submit-batch RUN_ID FILE --by NAME [--host-model M] [--batch ID] [--no-continue]
+          the manual host path: the set answering a waiting batch's packet (batches/<id>.packet.json); recorded
+          (who, when, the file's sha256) and validated as an API run's; the run then continues
+  run-status RUN_ID                                 the checkpoint summary and the timings
+Routes layer (tenderpack/ai/cli_routes.py, when present): critic, host-session, plan-batches.
 """
 from __future__ import annotations
 
@@ -49,6 +64,9 @@ def add_parser(sub) -> None:
     p.add_argument("--include-crop", action="append", default=[], help="unit id whose image crop the task includes")
     p.add_argument("--reference", help="op file to compare the proposals with (report only)")
     p.add_argument("--break-lock", action="store_true")
+    p.add_argument("--allow-unverified-capabilities", action="store_true",
+                   help="a person's choice: run on the configured capabilities when the endpoint does not verify them "
+                        "(logged; shown in the review request)")
     p.add_argument("--by", help="the person breaking a lock")
     common(p)
     t = s.add_parser("task")
@@ -75,6 +93,7 @@ def add_parser(sub) -> None:
     c.add_argument("--route", required=True, choices=["recorded", "anthropic", "openrouter", "ollama", "host"])
     c.add_argument("--model")
     c.add_argument("--cassette")
+    c.add_argument("--allow-unverified-capabilities", action="store_true")
     c.add_argument("--config", default=str(ROOT / "config/ai.yaml"))
     pr = s.add_parser("promote")
     pr.add_argument("run_id")
@@ -86,6 +105,85 @@ def add_parser(sub) -> None:
     lk.add_argument("--break", dest="brk")
     lk.add_argument("--by")
     common(lk)
+    _add_workflow(s, common)
+    routes = _routes()
+    if routes is not None:
+        routes.add_subcommands(s)
+
+
+def _routes():
+    try:
+        from . import cli_routes
+    except ImportError:
+        return None
+    return cli_routes if hasattr(cli_routes, "add_subcommands") and hasattr(cli_routes, "handle") else None
+
+
+def _add_workflow(s, common) -> None:
+    from .checkpoint import STEPS
+    r = s.add_parser("run", help="the workflow: a new addendum PDF -> candidate A1-A5 outputs and a review packet")
+    r.add_argument("addendum")
+    r.add_argument("--pdf", required=True)
+    r.add_argument("--route", default="host", choices=["recorded", "host", "anthropic", "openrouter", "ollama"])
+    r.add_argument("--run-id")
+    r.add_argument("--batch-size", type=int, default=8, help="provisions per analysis batch (at most)")
+    r.add_argument("--downstream-batch-size", type=int, default=12, help="downstream tasks per batch (at most)")
+    r.add_argument("--model")
+    r.add_argument("--cassette", help="recorded route: the recorded workflow to replay")
+    r.add_argument("--host-model", help="host route: the model the host uses (recorded as declared)")
+    r.add_argument("--host-manual", action="store_true", help="host route: always write the packets and wait for "
+                                                              "submit-batch, even when a host session could run")
+    r.add_argument("--host-model-alias", help="host route: the model the headless host session is started with "
+                                              "(claude --model; default: config host_session.model, else the CLI's)")
+    r.add_argument("--allow-unverified-capabilities", action="store_true",
+                   help="API routes: a person's choice to run on configured capabilities the endpoint does not verify")
+    r.add_argument("--stop-after", choices=list(STEPS))
+    r.add_argument("--no-background", action="store_true", help="build the pre-addendum outputs at the outputs step")
+    r.add_argument("--no-cache", action="store_true", help="do not reuse cached pre-addendum outputs")
+    for cap, t in (("max-usd", float), ("max-calls", int), ("max-input-tokens", int), ("max-output-tokens", int),
+                   ("timeout-s", float), ("max-turns", int)):
+        r.add_argument(f"--{cap}", type=t)
+    common(r)
+    rs = s.add_parser("resume", help="continue a workflow run from its checkpoint")
+    rs.add_argument("run_id")
+    rs.add_argument("--stop-after", choices=list(STEPS))
+    rs.add_argument("--no-retry", action="store_true", help="do not ask failed batches again")
+    common(rs)
+    sb = s.add_parser("submit-batch", help="the manual host path: submit the set answering a waiting batch")
+    sb.add_argument("run_id")
+    sb.add_argument("file")
+    sb.add_argument("--by", required=True, help="who submits (a person, or the host session); recorded")
+    sb.add_argument("--host-model", help="the model the host used (analysis batches: required unless the run has it)")
+    sb.add_argument("--batch", help="the batch answered (default: the one waiting)")
+    sb.add_argument("--no-continue", action="store_true", help="record the submission without continuing the run")
+    common(sb)
+    st = s.add_parser("run-status", help="a workflow run's checkpoint summary and timings")
+    st.add_argument("run_id")
+    common(st)
+
+
+def _run_workflow(a) -> int:
+    from . import workflow as W
+    if a.ai_cmd == "run":
+        caps = {"max_usd": a.max_usd, "max_calls": a.max_calls, "max_input_tokens": a.max_input_tokens,
+                "max_output_tokens": a.max_output_tokens, "timeout_s": a.timeout_s, "max_turns": a.max_turns}
+        res = W.start(a.addendum, Path(a.pdf), route=a.route, pack=Path(a.pack), evidence=Path(a.evidence),
+                      staging=Path(a.out), worklog=Path(a.worklog), ai_config=Path(a.config), run_id=a.run_id,
+                      batch_size=a.batch_size, downstream_batch_size=a.downstream_batch_size, model=a.model,
+                      cassette=Path(a.cassette) if a.cassette else None, caps=caps, host_model=a.host_model,
+                      host_mode="manual" if a.host_manual else "auto", host_session_model=a.host_model_alias,
+                      allow_unverified_capabilities=a.allow_unverified_capabilities, stop_after=a.stop_after,
+                      background_before=not a.no_background, cache=not a.no_cache)
+    elif a.ai_cmd == "resume":
+        res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry)
+    elif a.ai_cmd == "submit-batch":
+        res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue)
+    else:
+        cp = W.load(a.run_id, Path(a.out))
+        res = W.summary(cp)
+        print("\n".join(W.timing_lines(cp)))
+    _print(res)
+    return int(res.get("exit_code", 1))
 
 
 def _ws(a):
@@ -103,12 +201,24 @@ def run(a) -> int:
     from . import config as C
     from . import controller
     from .tools import ToolError, call_tool
+    routes = _routes()
+    if routes is not None and a.ai_cmd in getattr(routes, "COMMANDS", ()):
+        return routes.handle(a)
     try:
+        if a.ai_cmd in ("run", "resume", "submit-batch", "run-status"):
+            from .candidate import CandidateError
+            try:
+                return _run_workflow(a)
+            except CandidateError as e:
+                print(f"REFUSED: {e}")
+                return 2
         if a.ai_cmd == "capabilities":
             from .providers import make
             from .providers.base import ProviderError
             cfg = C.load(Path(a.config))
             rcfg = C.route(cfg, a.route)
+            if getattr(a, "allow_unverified_capabilities", False):
+                cfg["_allow_unverified_capabilities"] = True
             prov = make(a.route, a.model or C.default_model(rcfg), cfg, a.cassette)
             try:
                 _print({"route": a.route, "model": prov.model, **prov.capabilities().to_dict()})
@@ -127,7 +237,8 @@ def run(a) -> int:
             ps = controller.propose(ws, a.addendum, a.route, cfg, model=a.model, cassette=a.cassette, caps=caps,
                                     include_crops=a.include_crop or None,
                                     provisions=[x.strip() for x in a.provisions.split(",")] if a.provisions else None,
-                                    reference=a.reference, break_lock_by=a.by if a.break_lock else None)
+                                    reference=a.reference, break_lock_by=a.by if a.break_lock else None,
+                                    allow_unverified_capabilities=a.allow_unverified_capabilities)
             counts: dict[str, int] = {}
             for it in ps.items:
                 counts[it.verification_status] = counts.get(it.verification_status, 0) + 1

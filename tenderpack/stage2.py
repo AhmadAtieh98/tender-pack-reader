@@ -52,7 +52,7 @@ from .schedule import deltas, in_force, plan
 from .trace import obligation_trace
 from .summary import date_changes_by_stage, rule_index, summary_check
 from .datecover import counting_conventions, date_coverage
-from . import clarify, review
+from . import clarify, relationships, review
 from .textnorm import normalize_latin
 from .util import dump_json, load_yaml, sha256_file, write_text
 
@@ -157,13 +157,22 @@ def run(evidence_dir: Path, pack_path: Path, root: Path, lenient: bool = False) 
             opfiles.append(f)
     decisions_file = review.decisions_path(cfg, root)
     decisions = review.load_decisions(decisions_file)
+    rel_path = relationships.default_path(cfg, root)               # session 10: curated indirect links
+    try:
+        rels, rel_problems = relationships.load(rel_path), []
+    except Exception as e:                                   # noqa: BLE001
+        if not lenient:
+            raise
+        rels, rel_problems = [], [f"{rel_path.name}: skipped, does not load: {str(e)[:300]}"]
     r = {"cfg": cfg, "root": root, "units": units, "problems": problems, "assumptions": assumptions, "cal": cal, "policy": policy,
          "templates": templates, "curated_issues": curated_issues, "rowfile": rowfile, "opfiles": opfiles,
          "drafted": drafted, "dispositions": dispositions,
          "disposition_problems": dproblems + check_dispositions(units, dispositions, rowfile.rows),
-         "evidence_items": evidence_items, "evidence_problems": eproblems, "load_problems": load_problems + issue_problems,
+         "evidence_items": evidence_items, "evidence_problems": eproblems,
+         "load_problems": load_problems + issue_problems + rel_problems,
          "sweeps": check_sweeps(units, dispositions, rowfile.rows), "decisions_file": decisions_file, "decisions": decisions,
-         "evidence_dir": Path(evidence_dir), "clarifications": clarify.load(cfg, root)}
+         "evidence_dir": Path(evidence_dir), "clarifications": clarify.load(cfg, root),
+         "relationships": rels, "relationships_path": rel_path}
     return evaluate(r)
 
 
@@ -190,6 +199,9 @@ def evaluate(r: dict) -> dict:
                                        date_changes=date_changes_by_stage(r["evals"], r["order"]))
     r["date_coverage"] = date_coverage(r)
     r["c32"] = counting_conventions(r)
+    # session 10: what each addendum reaches through the curated relationships (labelled classes, never merged with the
+    # direct-citation changes); A2, A3, A5 and `diff` read it
+    r["relationship_impact"] = relationships.impact(r)
     ledger_path = root / cfg.get("row_ids", "curation/register/ids.yaml")
     ledger = (load_yaml(ledger_path) or {}) if ledger_path.exists() else {}
     known, withdrawn = set((ledger.get("ids") or {})), dict(ledger.get("withdrawn") or {})
@@ -298,6 +310,7 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
         out.append({"id": iid, "text": it["text"], "owner": it["owner"], "source": "curated (proposed wording)",
                     "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3")), "a3": it.get("a3"),
                     "theme": it.get("theme"), "short": it.get("short"), "folds": list(it.get("folds") or [])})
+    out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
     for c in printed_date_conflicts(val, r["rowfile"].anchors):
         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
                     "text": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; "
@@ -386,6 +399,33 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
                 "rows": sorted({x for a in late for x in a["req_ids"]}), "show_in_a3": True,
                 "a3": "A5 at the status date: " + _ids([f"{a['id']} {a['flags'][0].split(' (')[0]}" for a in sorted(
                     late, key=lambda a: (-int((re.search(r"by (\d+)", a["status"]) or [0, 0])[1]), a["id"]))], 5) + " (lead times PROVISIONAL)"})
+    return out
+
+
+def missing_document_issues(r: dict) -> list[dict]:
+    """One open issue per document the relationships file records as referenced but not supplied (kind
+    missing_document; session 10): where the pack refers to it, and, against each row or unit whose conclusion it
+    blocks, what cannot be established, with the link's status. Theme 'missing' (A3's 'Referenced but not supplied'
+    group); the curated issues it relates to are named, never resolved."""
+    out = []
+    curated = r.get("curated_issues") or {}
+    for did, d in relationships.missing_documents(r.get("relationships") or []).items():
+        refs = ", ".join(f.replace(":", " ", 1) for f in d["sources"])
+        linked = sorted({i for e in d["entries"] for i in e.get("issues") or []})
+        owner = next((curated[i]["owner"] for i in linked if i in curated and curated[i].get("owner")), "Bid manager")
+        blocks = "; ".join(f"{', '.join(relationships.ends(e, 'to'))} ({e['id']}, link {e.get('status')}): "
+                           f"{e.get('blocks')}" for e in d["entries"])
+        rows = sorted({t for e in d["entries"] for t in relationships.ends(e, "to") if ":" not in t})
+        targets = list(d["targets"])
+        out.append({"id": f"I-AUTO-NOT-SUPPLIED-{did}", "owner": owner, "source": "relationships (automatic)",
+                    "text": f"{d['document']} is referenced but not supplied (referenced in {refs}). Without it these "
+                            f"conclusions cannot be established: {blocks}"
+                            + (f". Linked open issues: {', '.join(linked)}" if linked else "")
+                            + ". Not a prerequisite for completing the bid; a person decides whether to raise a "
+                              "clarification or reserve the position",
+                    "rows": rows, "show_in_a3": True, "theme": "missing",
+                    "a3": f"{d['document']} not supplied ({refs}): blocks conclusions on {_ids(targets, 4)}",
+                    "short": f"{d['document']} not supplied: blocks {_ids(targets, 3)}", "folds": []})
     return out
 
 
@@ -481,8 +521,12 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
              ("transcription", "Image reading status", 14), ("interpretation", "Interpretation review", 14),
              ("ops_review", "Amendment ops review", 14), ("chain", "Evidence chain (original -> ops)", 50),
              ("issues", "Issues", 20)]
+    if r.get("relationships"):                   # session 10; a pack without a relationships file keeps its A1 as it was
+        cols.append(("relationships", "Relationships (curated links, their status; reached at the validated stage; "
+                                      "documents not supplied)", 50))
     rows = []
     summary_stale = summary_currency(r)
+    row_rel = relationship_lines(r)
     for e in r["evals"]:
         row, stg = e["row"], e["stages"]
         v = stg[val]
@@ -528,6 +572,8 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                                       if ("op", h) in r["reviews"]) or "n/a"
         rec["chain"] = stg[order[-1]]["chain"]                 # every unit and every op, through the last stage
         rec["issues"] = row.issues + [f"SUMMARY OUT OF DATE: '{x['figure']}'" for x in summary_stale if x["row"] == row.id]
+        if r.get("relationships"):
+            rec["relationships"] = row_rel.get(row.id, [])
         rows.append(rec)
     dates_rows = []
     for e in r["evals"]:
@@ -593,8 +639,65 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             "Date coverage": sheet([{k: x[k] for k in ("unit", "phrase", "treatment", "by", "sentence")}
                                     for x in r.get("date_coverage", [])],
                                    [("unit", 22), ("phrase", 26), ("treatment", 14), ("by", 60), ("sentence", 80)]),
+            **({"Relationships": sheet(relationship_sheet(r), [
+                ("id", 30), ("kind", 16), ("status", 11), ("class", 20), ("from", 30), ("to", 34), ("evidence", 70),
+                ("basis", 60), ("note", 50), ("document", 30), ("blocks", 60), ("issues", 20), ("origin", 12),
+                ("review", 10), ("reached", 30)])} if r.get("relationships") else {}),
         },
     }
+
+
+def relationship_lines(r: dict) -> dict[str, list[str]]:
+    """Per row id, the A1 'Relationships' lines (session 10): each curated link naming the row (status, kind, the other
+    end), each document not supplied that blocks a conclusion of the row (what cannot be established), and what reached
+    the row at the validated stage (class, source, path). Rows without any have none."""
+    ents = r.get("relationships") or []
+    out: dict[str, list[str]] = {}
+    rows = {e["row"].id for e in r["evals"]}
+    for e in ents:
+        if not isinstance(e, dict) or not e.get("id"):
+            continue
+        tag = f"{e['id']} [{e.get('status')} {e.get('kind')}]"
+        for t in relationships.ends(e, "to"):
+            if t not in rows:
+                continue
+            if e.get("kind") == "missing_document":
+                out.setdefault(t, []).append(f"NOT SUPPLIED: {e.get('document')} ({e['id']}, link {e.get('status')}): "
+                                             f"cannot be established: {e.get('blocks')}")
+            else:
+                out.setdefault(t, []).append(f"<- {tag} from {', '.join(relationships.ends(e, 'from'))}")
+        for f in relationships.ends(e, "from"):
+            if f in rows and e.get("kind") != "missing_document":
+                out.setdefault(f, []).append(f"-> {tag} to {', '.join(relationships.ends(e, 'to'))}")
+    val = r["validated"].stage
+    for rec in ((r.get("relationship_impact") or {}).get(val) or {}).get("records", []):
+        if rec["target"] in rows and rec["kind"] != "missing_document":
+            out.setdefault(rec["target"], []).append(
+                f"REACHED at {val} ({rec['class']}): from {', '.join(rec['sources'])} via {' > '.join(rec['path'])}")
+    return out
+
+
+def relationship_sheet(r: dict) -> list[dict]:
+    """A1 'Relationships' sheet: every curated entry with its evidence or basis, and the stages at which it reached
+    something (relationships.impact)."""
+    used: dict[str, list[str]] = {}
+    for st, d in (r.get("relationship_impact") or {}).items():
+        for rec in d.get("records", []):
+            for eid in rec["path"]:
+                if st not in used.setdefault(eid, []):
+                    used[eid].append(st)
+    out = []
+    for e in r.get("relationships") or []:
+        if not isinstance(e, dict):
+            continue
+        out.append({"id": e.get("id"), "kind": e.get("kind"), "status": e.get("status"),
+                    "class": relationships.CLASSES.get(e.get("status"), ""),
+                    "from": relationships.ends(e, "from"), "to": relationships.ends(e, "to"),
+                    "evidence": relationships.evidence_text(e), "basis": e.get("basis") or "", "note": e.get("note") or "",
+                    "document": e.get("document") or "", "blocks": e.get("blocks") or "", "issues": e.get("issues") or [],
+                    "origin": e.get("origin") or "", "review": e.get("review") or "proposed",
+                    "reached": [s for s in r["order"] if s in used.get(e.get("id"), [])]})
+    return out
 
 
 # ---------------------------------------------------------------------------------------------- A2
@@ -665,7 +768,7 @@ def a2(r: dict) -> dict:
           + (f"; working state **{r['working'].stage}** is PARTIAL and does not replace it." if r["working"] else "."),
           "Every provision of every addendum is accounted for below: by an op, as content of an op, as no effect "
           "(with the reason), or as UNRESOLVED (a person must decide it).", ""]
-    changes, provs, moved, answers, summary_rows = [], [], [], [], []
+    changes, provs, moved, answers, summary_rows, rel_rows = [], [], [], [], [], []
     for i, s in enumerate(stages[1:], 1):
         prev = stages[i - 1]
         md += [f"## {s.stage} (issued {s.issued}) — {s.status}", "",
@@ -731,6 +834,24 @@ def a2(r: dict) -> dict:
                 md.append(f"| {e['row'].id} | {before} | {after.replace('|', '/')} | {'; '.join(why).replace('|', '/')} |")
                 moved.append({"stage": s.stage, "row": e["row"].id, "before": before, "after": after, "why": why,
                               "chain": b["chain"]})
+        if r.get("relationships"):                  # session 10: indirect effects, kept apart from the rows above
+            recs = ((r.get("relationship_impact") or {}).get(s.stage) or {}).get("records", [])
+            md += ["", "### Reached through relationships (indirect: for review, not direct citations)", "",
+                   "Curated links (relationships file) followed from what this addendum changed. The rows above cite a "
+                   "changed unit; these are reached through another provision. A5 marks the activities that serve them "
+                   "REVIEW with their dates unchanged.", ""]
+            for cls, items in relationships.by_class(recs):
+                md.append(f"**{cls[0].upper() + cls[1:]}** ({len(items)})")
+                md += [f"- {relationships.label(x)}".replace("|", "/") for x in items] or ["- none"]
+                md.append("")
+            gp = relationships.gaps(recs)
+            md.append(f"**Referenced but not supplied: conclusions in play that cannot be established** ({len(gp)})")
+            md += [f"- {relationships.label(x, r['relationships'])}".replace("|", "/") for x in gp] or ["- none"]
+            rel_rows += [{"stage": s.stage, "class": "not supplied" if x["kind"] == "missing_document" else x["class"],
+                          "target": x["target"], "target_type": x.get("target_type", ""),
+                          "target_status": x.get("target_status", ""), "kind": x["kind"], "link_status": x["status"],
+                          "path": x["path"], "sources": x["sources"], "lexical": x["lexical"],
+                          "via_target": x["via_target"], "direct": x.get("direct", False)} for x in recs]
         ans = answers_to_review(r, s)
         md += ["", "### Earlier answers to review (never revoked automatically)", ""]
         md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}. {x['status']}." for x in ans] or ["None found."]
@@ -769,7 +890,7 @@ def a2(r: dict) -> dict:
         if len(ch) > 1:
             md.append(f"- **{e['row'].id}**: " + " ← ".join(reversed(ch)))
     return {"markdown": "\n".join(md) + "\n", "changes": changes, "provisions": provs, "rows_moved": moved, "answers": answers,
-            "summary": summary_rows}
+            "summary": summary_rows, "relationships": rel_rows}
 
 
 # ---------------------------------------------------------------------------------------------- A3
@@ -793,6 +914,17 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     explicit, score, none_stated = [], [], []
     refused, zero, gate = [], [], []          # session 09: document_refusal and criterion_zero; the gate's row ids
     summary_currency_cache = summary_currency(r)
+    rel_recs = ((r.get("relationship_impact") or {}).get(v) or {}).get("records", []) if r.get("relationships") else []
+    rel_flags: dict[str, list[str]] = {}      # session 10: shown on a3_detail.html only (the one page keeps its fit)
+    for x in rel_recs:
+        if x["kind"] != "missing_document":
+            rel_flags.setdefault(x["target"], []).append(f"REVIEW ({x['class']}): reached at {v} from "
+                                                         f"{', '.join(x['sources'])} via {' > '.join(x['path'])}")
+    for e in r.get("relationships") or []:
+        if isinstance(e, dict) and e.get("kind") == "missing_document":
+            for t in relationships.ends(e, "to"):
+                rel_flags.setdefault(t, []).append(f"NOT SUPPLIED: {e.get('document')} ({e.get('id')}, link "
+                                                   f"{e.get('status')}): cannot be established: {e.get('blocks')}")
     for e in r["evals"]:
         row, ev = e["row"], e["stages"][v]
         if not in_force(ev["status"]):
@@ -826,7 +958,8 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         csrc = (ev.get("consequence_source") or {}).get("latest")
         rsrc = ev.get("source") or {}
         base = {"id": row.id, "text": _a3_text(row.requirement, it.quote if it else ""), "confidence": row.confidence,
-                "flags": flags, "row_source": rsrc.get("latest", "")}
+                "flags": flags, "row_source": rsrc.get("latest", ""),
+                **({"rel_flags": rel_flags[row.id]} if row.id in rel_flags else {})}
         if csrc and rsrc.get("latest") and (rsrc.get("from_amendment") or " as amended by " in rsrc["latest"]) \
                 and rsrc["latest"] != csrc:
             csrc = f"{csrc}; the requirement as amended: {rsrc['latest']}"   # e.g. the deadline amendment beside 6.6
@@ -934,6 +1067,15 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                            "theme": dict(ISSUE_THEMES).get(issue_theme(i), ""), "folded_into": folded.get(i["id"], "")}
                           for i in issues],
         "clarifications": clar.get("clarifications", []),
+        **({"relationships": {
+            "stage": v, "from": ((r.get("relationship_impact") or {}).get(v) or {}).get("from"),
+            "note": "Rows, activities and calculations reached through the curated relationships from what the addendum "
+                    "of this stage changed (not direct citations; for review). Documents referenced but not supplied are "
+                    "listed with the conclusions they block.",
+            "items": [{"class": "not supplied" if x["kind"] == "missing_document" else x["class"], "target": x["target"],
+                       "target_type": x.get("target_type", ""), "target_status": x.get("target_status", ""),
+                       "kind": x["kind"], "link_status": x["status"], "sources": x["sources"], "path": x["path"],
+                       "direct": x.get("direct", False)} for x in rel_recs]}} if r.get("relationships") else {}),
     }
 
 
@@ -1000,7 +1142,17 @@ def a3_detail_html(a3d: dict) -> str:
                 q += f"<br><small>proposed translation, not reviewed: ‘{esc(x['gloss'])}’</small>"
             rows.append(f'<tr id="{esc(x["id"])}"><td><b>{esc(x["id"])}</b></td><td>{esc(x["text"])}</td><td>{q}</td>'
                         f'<td>{esc(x["source"])}<br><small>row: {esc(x.get("row_source", ""))}</small></td>'
-                        f'<td>{esc(x["confidence"])}</td><td>{esc("; ".join(x["flags"]))}</td></tr>')
+                        f'<td>{esc(x["confidence"])}</td><td>{esc("; ".join(x["flags"] + x.get("rel_flags", [])))}</td></tr>')
+        rows.append("</table>")
+    rel = a3d.get("relationships")
+    if rel:                                                       # session 10
+        rows.append(f"<h2>Reached through relationships at {esc(rel['stage'])} ({len(rel['items'])})</h2>"
+                    f"<p>{esc(rel['note'])}</p><table><tr><th>Class</th><th>Target</th><th>Status at the stage</th>"
+                    "<th>Reached from</th><th>Via (relationships)</th><th>Kind; link status</th></tr>")
+        rows += [f"<tr><td>{esc(x['class'])}</td><td><b>{esc(x['target'])}</b> <small>{esc(x['target_type'])}</small></td>"
+                 f"<td>{esc(x['target_status'])}</td><td>{esc(', '.join(x['sources']))}</td>"
+                 f"<td>{esc(' > '.join(x['path']))}</td><td>{esc(x['kind'])}; {esc(x['link_status'])}"
+                 + ("; also changed directly" if x["direct"] else "") + "</td></tr>" for x in rel["items"]]
         rows.append("</table>")
     rows.append(f"<h2>Open issues ({len(a3d['issues_detail'])}), by group</h2><table><tr><th>Issue</th><th>Group</th>"
                 "<th>Text</th><th>Owner</th><th>Rows</th></tr>")
@@ -1040,7 +1192,8 @@ def a5_all(r: dict) -> dict:
         anchors_by_stage[s.stage] = {"PDD": pdd}
         progs[s.stage] = plan(s.stage, r["evals"], r["templates"], r["assumptions"], r["register"].cal_by_stage[s.stage], date.fromisoformat(s.issued),
                               anchors_by_stage[s.stage], evidence_items=r["evidence_items"],
-                              anchor_details=r["anchor_details"][s.stage], notified_days=r["non_working_days"].get(s.stage))
+                              anchor_details=r["anchor_details"][s.stage], notified_days=r["non_working_days"].get(s.stage),
+                              reached=((r.get("relationship_impact") or {}).get(s.stage) or {}).get("records"))
     return progs
 
 
@@ -1074,6 +1227,8 @@ def write(r: dict, out: Path) -> dict:
     write_csv_json(tbl(a2d["rows_moved"]), out / "a2", "a2_rows_moved")
     write_csv_json(tbl(a2d["answers"]), out / "a2", "a2_answers_to_review")
     write_csv_json(tbl(a2d["summary"]), out / "a2", "a2_cover_summary_check")
+    if r.get("relationships"):                                    # session 10: indirect effects per addendum
+        write_csv_json(tbl(a2d["relationships"]), out / "a2", "a2_relationship_impact")
     if r.get("clarifications"):
         clarify.write(r["clarifications"], out / "a4")              # the detailed register sits with A4
     if main:
@@ -1158,7 +1313,8 @@ def build(evidence_dir: Path, out: Path, pack_path: Path, root: Path, quiet: boo
                                            ("scenarios", "config/scenarios.yaml"),
                                            ("dispositions_dir", "curation/register/dispositions"),
                                            ("evidence_items_dir", "curation/evidence_items"),
-                                           ("activity_templates", "curation/activity_templates.yaml"))]
+                                           ("activity_templates", "curation/activity_templates.yaml"))] + \
+        [relationships.default_path(cfg, root)]
     check_output_dir(out, root, inputs)
     out = out.resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -1303,9 +1459,10 @@ def deleted_words(r: dict) -> list[dict]:
 def register_findings(r: dict) -> list[dict]:
     """Everything a register drafter must clear, as {kind, where, detail}: register files that do not load,
     unit dispositions and their links to rows, the evidence-item vocabulary, quotes, units, bid-stage rows
-    without a deliverable, unlinked consequence words (C15) and quotes lost to a deletion of words from a unit that
-    stays in force (deleted_words: re-make the reading or mark it `removed`). Used by check-register (exit 1) and by the
-    release gate (each kind other than quotes, which C16 already checks structurally, is a coverage blocker)."""
+    without a deliverable, unlinked consequence words (C15), quotes lost to a deletion of words from a unit that
+    stays in force (deleted_words: re-make the reading or mark it `removed`) and the relationships file (session 10:
+    quotes, targets, statuses). Used by check-register (exit 1) and by the release gate (each kind other than quotes,
+    which C16 already checks structurally, is a coverage blocker)."""
     out = []
     for p in r["load_problems"]:
         out.append({"kind": "load", "where": p.split(":")[0], "detail": p})
@@ -1361,7 +1518,19 @@ def register_findings(r: dict) -> list[dict]:
     for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"]),
                            cutoff=clarify.effective_cutoff(r)):           # the effective cut-off (session 09)
         out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
+    for p in relationship_findings(r):                                    # session 10: every quote, target and status
+        out.append({"kind": "relationship", "where": p.split(":")[0], "detail": p})
     return out
+
+
+def relationship_findings(r: dict) -> list[str]:
+    """relationships.validate over the pack's relationships file, against its units (and the units ops made), rows,
+    activity templates, evidence items and issues."""
+    if not r.get("relationships"):
+        return []
+    return relationships.validate(r["relationships"], r["units"], r["rowfile"].rows, r.get("templates") or {},
+                                  evidence_items=r.get("evidence_items") or {}, issues=set(r["curated_issues"]),
+                                  known_units=set(r["stages"][-1].state))
 
 
 def update_ids(r: dict) -> int:

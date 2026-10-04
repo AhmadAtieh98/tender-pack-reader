@@ -17,9 +17,12 @@ recomputed from the effective text, but its reading needs a person again. Pins a
 An obligation whose words an addendum deletes from a unit that stays in force (ADD-03 4.1 in blind rehearsal 02: the
 model audit opinion struck out of VOL-I 10.3) is not DELETED: its unit is still active. The interpretation made at
 that stage carries `removed: {by: <op id>, note}`; the row is then REMOVED (<op id>) and out of force from that stage
-(A3, A5 and the general gate leave it out; A1 shows it). Its quote is checked against the unit as it stood before the
-op (the words removed, or what remained), not against the effective text, and the op must exist, be applied at or
-before that stage and have changed one of the row's units; anything else is a problem (C16).
+(A3, A5 and the general gate leave it out; A1 shows it). The removal needs evidence that THIS row's words went
+(session 10): the op must exist, be applied at or before that stage and have changed one of the row's units, and the
+row's quote must be in that unit immediately before the op and absent from the same unit immediately after it. A
+quote that survives the op (the rest of VOL-I 10.3: the Financial Model is still to be submitted) is a problem (C16)
+saying that the row's words survive the op, and an unsupported removal never takes a row out of force: the row keeps
+its status, consequence and A5 activities until a person re-makes the reading.
 
 Separate statuses, never merged:
   status            what the documents say at that stage (ACTIVE / AMENDED / REMOVED / DELETED / ...)
@@ -71,7 +74,8 @@ class Consequence(_Strict):
 
 class Removal(_Strict):
     """The obligation's words were deleted from a unit that stays in force (session 09): `by` is the op that deleted
-    them. The row is REMOVED from the stage of the interpretation that carries this, and is no longer in force."""
+    them. The row is REMOVED from the stage of the interpretation that carries this, and is no longer in force, but
+    only while the removal is supported (Register._removal_problems, session 10); otherwise the row stays in force."""
     by: str
     note: str = ""
 
@@ -376,6 +380,14 @@ class Register:
         out = {"stage": s.stage, "stage_status": s.status}
         it = self.interp_at(row, s.stage)            # its `removed` decides the status (session 09)
         removal = it.removed if it is not None else None
+        removal_problems: list[str] = []
+        if removal is not None and prim is not None and eff is not None and eff.status == "active" \
+                and prim.status != "not_issued":
+            # nothing left to quote: the removal itself is checked (session 10: an unsupported removal, e.g. of words
+            # that survive the op, is a problem and leaves the row in force with its status, consequence and A5 work)
+            removal_problems = self._removal_problems(row, it, s)
+            if removal_problems:
+                removal = None
         # --- status
         hist = (prim.history if prim else []) + ([h for h in eff.history if h not in prim.history]
                                                   if eff is not None and prim is not None and eff is not prim else [])
@@ -416,8 +428,8 @@ class Register:
         if it is None:
             if active:
                 problems.append(f"no interpretation made at or before {s.stage}")
-        elif removal is not None and unit_active:     # nothing left to quote: the removal itself is checked
-            problems += self._removal_problems(row, it, s)
+        elif removal is not None and unit_active:     # a supported removal: nothing left to quote (checked above)
+            pass
         elif active:
             if not found(it.quote, eff.text):
                 problems.append(f"quote not found in the effective text at {s.stage}: '{it.quote[:60]}'")
@@ -452,6 +464,7 @@ class Register:
             # (a person re-reads the row). A quote missing from a row that is NOT stale stays a problem (C16).
             stale += [f"{p} (expected: the interpretation predates the change)" for p in problems]
             problems = []
+        problems += removal_problems                  # a claim the curation makes now: never explained away as STALE
         out["stale"] = stale
         # --- transcription status of image readings the row relies on
         rel = [effective(st, u, True) for u in row.units] + \
@@ -536,8 +549,9 @@ class Register:
 
     def _removal_problems(self, row: Row, it: Interp, s: StageResult) -> list[str]:
         """C16 for an interpretation that says the obligation was removed (`removed: {by: op}`): the op exists, is applied
-        at or before this stage and changed one of the row's units, and the quote is in that unit as it stood
-        immediately before the op (the words removed, or what remained of the clause)."""
+        at or before this stage and changed one of the row's units, and the row's quote is in one of those units
+        immediately before the op and absent from the same unit immediately after it (session 10). A quote still there
+        after the op is not removed by it ("the row's words survive the op"): the op deleted other words of the clause."""
         by = it.removed.by
         x = self.op_result.get(by)
         if x is None:
@@ -551,11 +565,39 @@ class Register:
         hit = [u for u in x.changed if u in mine]
         if not hit:
             return [f"removed by {by}: the op changed none of the row's units ({', '.join(row.units)})"]
-        prev = self.stages[self.order.index(self.op_stage[by]) - 1].state
-        before = [x.details["before"]] if x.details.get("before") is not None else [prev[u].text for u in hit if u in prev]
-        if not any(found(it.quote, t or "") for t in before):     # the unit's text immediately before the op
+        around = {u: self._text_around(by, u, row.follows_replacement) for u in hit}
+        had = [u for u in hit if found(it.quote, around[u][0] or "")]
+        if not had:                                      # the unit's text immediately before the op
             return [f"removed by {by}: quote not found in {', '.join(hit)} as it stood before the op: '{it.quote[:60]}'"]
+        if all(found(it.quote, around[u][1] or "") for u in had):
+            return [f"removed by {by}: the row's words survive the op: '{it.quote[:80]}' is still in "
+                    f"{', '.join(had)} immediately after it ({by} changed other words of the unit). The row stays in "
+                    "force with its status, consequence and A5 activities; re-make the reading without `removed`, or "
+                    "quote the words the op deleted if those were the obligation"]
         return []
+
+    def _text_around(self, op_id: str, uid: str, follow: bool) -> tuple[str | None, str | None]:
+        """The text of unit `uid` immediately before and immediately after the op `op_id` (None where the unit did not
+        exist or was not in force). Before: the text the op recorded for its target, else the unit at the end of the
+        previous stage. After: the text the next op on the same unit at the same stage recorded as its 'before', else
+        the unit at the end of the op's stage; a unit replaced by the op is read through its replacement when the row
+        follows replacements (a replacement that drops the words removes them)."""
+        x = self.op_result[op_id]
+        i = self.order.index(self.op_stage[op_id])
+        prev, cur = self.stages[i - 1].state, self.stages[i].state
+        if x.op.target == uid and x.details.get("before") is not None:
+            before = x.details["before"]
+        else:
+            p = prev.get(uid)
+            before = p.text if p is not None and p.status == "active" else None
+        hist = cur[uid].history if uid in cur else []
+        later = [h for h in hist[hist.index(op_id) + 1:] if self.op_stage.get(h) == self.op_stage[op_id]] \
+            if op_id in hist else []
+        nxt = self.op_result.get(later[0]) if later else None
+        if nxt is not None and nxt.op.target == uid and nxt.details.get("before") is not None:
+            return before, nxt.details["before"]
+        u = effective(cur, uid, follow)
+        return before, (u.text if u is not None and u.status == "active" else None)
 
     def source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
         out = self._source_of(uid, quote, s, follow)

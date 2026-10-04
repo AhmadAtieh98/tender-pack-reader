@@ -1,0 +1,55 @@
+# CANDIDATE rows written by AI workflow run ADD-03-run-host-blind04-20261004T152505Z: PROPOSED, not reviewed.
+doc: ADD-03
+prepared_by: AI workflow run ADD-03-run-host-blind04-20261004T152505Z (route host, model claude-code headless (opus));
+  PROPOSED; not reviewed
+method: AI workflow downstream proposals validated by tenderpack.ai.downstream
+rows:
+- id: ADD-03-4.1-01
+  group: VOL-V:18.1
+  scope:
+  - contract
+  - post_award
+  - programme
+  - pcod
+  - liability
+  requirement: If PCOD is not achieved by the Scheduled PCOD, pay the Authority delay liquidated damages of 0.05%
+    of the Estimated Project Cost for each day of delay (as amended by ADD-03 Section 4.1)
+  units:
+  - VOL-V:18.1
+  discipline: Commercial
+  assessment: contractual_post_award
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: the Project Company shall pay to the Authority delay liquidated damages at the rate of one-twentieth
+      of one per cent (0.05%) of the Estimated Project Cost for each day of delay
+    parameters:
+      rate_per_day_fraction_of_estimated_project_cost: 0.0005
+      rate_per_day_percent: 0.05
+    consequence: none_stated
+    note: Introduced by ADD-03/4.1, replacing 'SAR 180,000 for each day of delay'; VOL-V 18.4 is stated to be unchanged.
+      This clause is itself the contractual consequence of row VOL-V-12.1-01. The Estimated Project Cost is the
+      figure stated by the Bidder in Form 4-F (VOL-V 1.3 as amended by ADD-03/2.1), so the daily rate and the 18.4
+      cap both scale with that figure. [AI workflow run ADD-03-run-host-blind04-20261004T152505Z (route host, model
+      claude-code headless (opus)); PROPOSED; not reviewed]
+  date_notes:
+  - text: by the Scheduled PCOD
+    treatment: post_award
+    reason: The Scheduled PCOD is 36 months after the Notice to Proceed (VOL-V 12.1, row VOL-V-12.1-01), which is
+      not a pack event.
+  - text: for each day of delay
+    treatment: duration
+    reason: A per-day rate basis for computing liquidated damages, not a deadline.
+  confidence: high
+  confidence_reason: verbatim amended text; the rate depends on a bidder-stated figure
+  issues:
+  - I-ADD03-EPC-LINKED
+  owner: Commercial lead
+  no_deliverable: A post-award payment liability; there is nothing to submit at bid stage beyond pricing the risk.
+  post_award_evidence:
+    kind: not_applicable
+    text: 'No evidence to produce: this is a payment liability that arises only if PCOD is late.'
+    basis: []
+    reason: The clause sets a liquidated damages rate, not a deliverable.
+    bid_stage_note: Delay liquidated damages of 0.05% of the Estimated Project Cost per day (capped under VOL-V
+      18.4) are a pricing assumption and depend on the Estimated Project Cost stated in Form 4-F.

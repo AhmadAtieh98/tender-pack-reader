@@ -179,7 +179,8 @@
     "EV-FIN-MODEL"
    ],
    "flags": [
-    "INFEASIBLE by 5 WD (total float -5 WD: latest start 2026-10-25 is before the planning date 2026-11-01; not compressed)"
+    "INFEASIBLE by 5 WD (total float -5 WD: latest start 2026-10-25 is before the planning date 2026-11-01; not compressed)",
+    "REVIEW (proposed relationship): VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:29.3, VOL-V:31.4 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
    ],
    "float_wd": -5,
    "gated_by": [],
@@ -193,6 +194,26 @@
    "owner": "Commercial",
    "per": "proposal",
    "predecessors": [],
+   "relationship_review": [
+    {
+     "class": "proposed relationship",
+     "entries": [
+      "REL-MODEL-FORM-4F",
+      "REL-PAY-DEDUCTIONS",
+      "REL-PAY-FINANCIAL-MODEL",
+      "REL-PAY-MECHANISM"
+     ],
+     "sources": [
+      "VOL-V:29.3",
+      "VOL-V:31.4"
+     ],
+     "status": "proposed",
+     "targets": [
+      "VOL-I-10.3-01",
+      "VOL-IV-F4F-02"
+     ]
+    }
+   ],
    "req_ids": [
     "VOL-I-10.1-01",
     "VOL-I-10.3-01",
@@ -339,7 +360,8 @@
     "EV-TECH-PROPOSAL"
    ],
    "flags": [
-    "INFEASIBLE by 4 WD (total float -4 WD: latest start 2026-10-26 is before the planning date 2026-11-01; not compressed)"
+    "INFEASIBLE by 4 WD (total float -4 WD: latest start 2026-10-26 is before the planning date 2026-11-01; not compressed)",
+    "REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation)"
    ],
    "float_wd": -4,
    "gated_by": [],
@@ -353,6 +375,27 @@
    "owner": "Technical",
    "per": "proposal",
    "predecessors": [],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-T24-COMPLIANCE-MONITORING-STREAMS",
+      "REL-T24-PROCESS-DESIGN",
+      "REL-T24-RELIABILITY-RUN"
+     ],
+     "sources": [
+      "VOL-II:T2-4"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "VOL-II-2.4-01",
+      "VOL-II-2.5-01",
+      "VOL-II-3.1-01",
+      "VOL-II-4.3-02",
+      "VOL-II-7.2-01"
+     ]
+    }
+   ],
    "req_ids": [
     "ADD-02-5.2-01",
     "ADD-02-T1-1-N3-01",
@@ -519,7 +562,9 @@
    "evidence_items": [
     "EV-FIN-ASSUMPTIONS"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (possible impact): VOL-I-10.6-01 reached from VOL-V:29.3, VOL-V:31.4 via REL-PAY-DEDUCTIONS, REL-PAY-FINANCING-ASSUMPTIONS, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 0,
    "gated_by": [],
    "id": "lender-terms",
@@ -532,6 +577,24 @@
    "owner": "Commercial",
    "per": "proposal",
    "predecessors": [],
+   "relationship_review": [
+    {
+     "class": "possible impact",
+     "entries": [
+      "REL-PAY-DEDUCTIONS",
+      "REL-PAY-FINANCING-ASSUMPTIONS",
+      "REL-PAY-MECHANISM"
+     ],
+     "sources": [
+      "VOL-V:29.3",
+      "VOL-V:31.4"
+     ],
+     "status": "possible",
+     "targets": [
+      "VOL-I-10.6-01"
+     ]
+    }
+   ],
    "req_ids": [
     "VOL-I-10.6-01"
    ],
@@ -1234,7 +1297,9 @@
    "evidence_items": [
     "EV-FIN-STANDING"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): VOL-I-8.4-01, VOL-I-8.4-02 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-FIN-STANDING; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 8,
    "gated_by": [],
    "id": "fin-statements",
@@ -1247,6 +1312,24 @@
    "owner": "Commercial",
    "per": "member",
    "predecessors": [],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-ADD03-OM-OPERATOR-MEMBER",
+      "REL-MEMBER-FIN-STANDING"
+     ],
+     "sources": [
+      "VOL-I:8.1",
+      "VOL-I:8.8"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "VOL-I-8.4-01",
+      "VOL-I-8.4-02"
+     ]
+    }
+   ],
    "req_ids": [
     "VOL-I-8.4-01",
     "VOL-I-8.4-02"
@@ -1284,7 +1367,8 @@
     "EV-FIN-MODEL"
    ],
    "flags": [
-    "INFEASIBLE by 5 WD (total float -5 WD: earliest start 2026-11-23 (after fin-model-build) is after the latest start 2026-11-15; not compressed)"
+    "INFEASIBLE by 5 WD (total float -5 WD: earliest start 2026-11-23 (after fin-model-build) is after the latest start 2026-11-15; not compressed)",
+    "REVIEW (proposed relationship): VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:29.3, VOL-V:31.4 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
    ],
    "float_wd": -5,
    "gated_by": [],
@@ -1301,6 +1385,26 @@
     "fin-model-build",
     "ground-dd",
     "lender-terms"
+   ],
+   "relationship_review": [
+    {
+     "class": "proposed relationship",
+     "entries": [
+      "REL-MODEL-FORM-4F",
+      "REL-PAY-DEDUCTIONS",
+      "REL-PAY-FINANCIAL-MODEL",
+      "REL-PAY-MECHANISM"
+     ],
+     "sources": [
+      "VOL-V:29.3",
+      "VOL-V:31.4"
+     ],
+     "status": "proposed",
+     "targets": [
+      "VOL-I-10.3-01",
+      "VOL-IV-F4F-02"
+     ]
+    }
    ],
    "req_ids": [
     "VOL-I-10.1-01",
@@ -1392,7 +1496,9 @@
    "evidence_items": [
     "EV-FORM-4C"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): ADD-03-4.4-01, VOL-I-8.10-01, VOL-I-8.2-01, VOL-I-9.4-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-N1 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-DEBARMENT, REL-MEMBER-FORM-4C, REL-MEMBER-MULTIPLE-PARTICIPATION; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 11,
    "gated_by": [],
    "id": "form-4c-prep",
@@ -1405,6 +1511,31 @@
    "owner": "Legal",
    "per": "proposal",
    "predecessors": [],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-ADD03-OM-OPERATOR-MEMBER",
+      "REL-MEMBER-DEBARMENT",
+      "REL-MEMBER-FORM-4C",
+      "REL-MEMBER-MULTIPLE-PARTICIPATION"
+     ],
+     "sources": [
+      "VOL-I:8.1",
+      "VOL-I:8.8"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "ADD-03-4.4-01",
+      "VOL-I-8.10-01",
+      "VOL-I-8.2-01",
+      "VOL-I-9.4-01",
+      "VOL-IV-F4C-02",
+      "VOL-IV-F4C-03",
+      "VOL-IV-F4C-N1"
+     ]
+    }
+   ],
    "req_ids": [
     "ADD-03-4.2-01",
     "ADD-03-4.4-01",
@@ -1449,7 +1580,9 @@
    "evidence_items": [
     "EV-INVESTMENT-LICENCE"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): VOL-I-8.9-01 reached from VOL-I:8.1 via REL-MEMBER-INVESTMENT-LICENCE; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 1,
    "gated_by": [],
    "id": "investment-licence",
@@ -1463,6 +1596,21 @@
    "per": "foreign_member",
    "predecessors": [
     "poa"
+   ],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-MEMBER-INVESTMENT-LICENCE"
+     ],
+     "sources": [
+      "VOL-I:8.1"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "VOL-I-8.9-01"
+     ]
+    }
    ],
    "req_ids": [
     "VOL-I-8.9-01"
@@ -1714,7 +1862,9 @@
    "evidence_items": [
     "EV-FIN-STANDING"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): VOL-I-8.4-01, VOL-I-8.4-02 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-FIN-STANDING; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 8,
    "gated_by": [],
    "id": "fin-standing",
@@ -1728,6 +1878,24 @@
    "per": "proposal",
    "predecessors": [
     "fin-statements"
+   ],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-ADD03-OM-OPERATOR-MEMBER",
+      "REL-MEMBER-FIN-STANDING"
+     ],
+     "sources": [
+      "VOL-I:8.1",
+      "VOL-I:8.8"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "VOL-I-8.4-01",
+      "VOL-I-8.4-02"
+     ]
+    }
    ],
    "req_ids": [
     "VOL-I-8.4-01",
@@ -1765,7 +1933,9 @@
    "evidence_items": [
     "EV-FORM-4C"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): ADD-03-4.4-01, VOL-I-8.10-01, VOL-I-8.2-01, VOL-I-9.4-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-N1 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-DEBARMENT, REL-MEMBER-FORM-4C, REL-MEMBER-MULTIPLE-PARTICIPATION; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 3,
    "gated_by": [],
    "id": "form-4c-sign",
@@ -1780,6 +1950,31 @@
    "predecessors": [
     "form-4c-prep",
     "poa"
+   ],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-ADD03-OM-OPERATOR-MEMBER",
+      "REL-MEMBER-DEBARMENT",
+      "REL-MEMBER-FORM-4C",
+      "REL-MEMBER-MULTIPLE-PARTICIPATION"
+     ],
+     "sources": [
+      "VOL-I:8.1",
+      "VOL-I:8.8"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "ADD-03-4.4-01",
+      "VOL-I-8.10-01",
+      "VOL-I-8.2-01",
+      "VOL-I-9.4-01",
+      "VOL-IV-F4C-02",
+      "VOL-IV-F4C-03",
+      "VOL-IV-F4C-N1"
+     ]
+    }
    ],
    "req_ids": [
     "ADD-03-4.2-01",
@@ -1825,7 +2020,9 @@
    "evidence_items": [
     "EV-FORM-4C-TRANSLATION"
    ],
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): ADD-03-Q15-01 reached from VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER; dates unchanged (a relationship, not a direct citation)"
+   ],
    "float_wd": 11,
    "gated_by": [],
    "id": "form-4c-translation",
@@ -1839,6 +2036,21 @@
    "per": "foreign_member",
    "predecessors": [
     "form-4c-prep"
+   ],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-ADD03-OM-OPERATOR-MEMBER"
+     ],
+     "sources": [
+      "VOL-I:8.8"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "ADD-03-Q15-01"
+     ]
+    }
    ],
    "req_ids": [
     "ADD-03-Q15-01"
@@ -1926,7 +2138,8 @@
     "EV-FIN-ASSUMPTIONS"
    ],
    "flags": [
-    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)"
+    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)",
+    "REVIEW (possible impact): VOL-I-10.6-01 reached from VOL-V:29.3, VOL-V:31.4 via REL-PAY-DEDUCTIONS, REL-PAY-FINANCING-ASSUMPTIONS, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
    ],
    "float_wd": -2,
    "gated_by": [],
@@ -1941,6 +2154,24 @@
    "per": "proposal",
    "predecessors": [
     "fin-model-freeze"
+   ],
+   "relationship_review": [
+    {
+     "class": "possible impact",
+     "entries": [
+      "REL-PAY-DEDUCTIONS",
+      "REL-PAY-FINANCING-ASSUMPTIONS",
+      "REL-PAY-MECHANISM"
+     ],
+     "sources": [
+      "VOL-V:29.3",
+      "VOL-V:31.4"
+     ],
+     "status": "possible",
+     "targets": [
+      "VOL-I-10.6-01"
+     ]
+    }
    ],
    "req_ids": [
     "VOL-I-10.6-01"
@@ -2083,7 +2314,9 @@
     "EV-FORM-4F"
    ],
    "flags": [
-    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)"
+    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)",
+    "REVIEW (confirmed dependency): VOL-I-10.2-01, VOL-IV-F4F-01 reached from VOL-V:29.3 via REL-PAY-FORM-4F, REL-PAY-MECHANISM, REL-PAY-QUOTED-PRICE; dates unchanged (a relationship, not a direct citation)",
+    "REVIEW (proposed relationship): VOL-I-10.2-01, VOL-IV-F4F-01, VOL-IV-F4F-02 reached from VOL-V:29.3, VOL-V:31.4 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS, REL-PAY-FINANCIAL-MODEL, REL-PAY-FORM-4F, REL-PAY-MECHANISM, REL-PAY-QUOTED-PRICE; dates unchanged (a relationship, not a direct citation)"
    ],
    "float_wd": -2,
    "gated_by": [],
@@ -2099,6 +2332,45 @@
    "predecessors": [
     "fin-model-freeze",
     "poa"
+   ],
+   "relationship_review": [
+    {
+     "class": "confirmed dependency",
+     "entries": [
+      "REL-PAY-FORM-4F",
+      "REL-PAY-MECHANISM",
+      "REL-PAY-QUOTED-PRICE"
+     ],
+     "sources": [
+      "VOL-V:29.3"
+     ],
+     "status": "confirmed",
+     "targets": [
+      "VOL-I-10.2-01",
+      "VOL-IV-F4F-01"
+     ]
+    },
+    {
+     "class": "proposed relationship",
+     "entries": [
+      "REL-MODEL-FORM-4F",
+      "REL-PAY-DEDUCTIONS",
+      "REL-PAY-FINANCIAL-MODEL",
+      "REL-PAY-FORM-4F",
+      "REL-PAY-MECHANISM",
+      "REL-PAY-QUOTED-PRICE"
+     ],
+     "sources": [
+      "VOL-V:29.3",
+      "VOL-V:31.4"
+     ],
+     "status": "proposed",
+     "targets": [
+      "VOL-I-10.2-01",
+      "VOL-IV-F4F-01",
+      "VOL-IV-F4F-02"
+     ]
+    }
    ],
    "req_ids": [
     "VOL-I-10.1-01",
@@ -3195,7 +3467,8 @@
    "envelope": "A",
    "evidence": "EV-TECH-PROPOSAL",
    "flags": [
-    "INFEASIBLE by 4 WD (total float -4 WD: latest start 2026-10-26 is before the planning date 2026-11-01; not compressed)"
+    "INFEASIBLE by 4 WD (total float -4 WD: latest start 2026-10-26 is before the planning date 2026-11-01; not compressed)",
+    "REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation)"
    ],
    "issuer": "Bidder",
    "item": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)",
@@ -3417,7 +3690,8 @@
    "envelope": "B",
    "evidence": "EV-FIN-MODEL",
    "flags": [
-    "INFEASIBLE by 5 WD (total float -5 WD: earliest start 2026-11-23 (after fin-model-build) is after the latest start 2026-11-15; not compressed)"
+    "INFEASIBLE by 5 WD (total float -5 WD: earliest start 2026-11-23 (after fin-model-build) is after the latest start 2026-11-15; not compressed)",
+    "REVIEW (proposed relationship): VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:29.3, VOL-V:31.4 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
    ],
    "issuer": "Bidder",
    "item": "Financial Model (unlocked Excel, frozen version)",
@@ -3441,7 +3715,9 @@
    "drop_dead_start": "2026-11-16",
    "envelope": "A",
    "evidence": "EV-INVESTMENT-LICENCE",
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): VOL-I-8.9-01 reached from VOL-I:8.1 via REL-MEMBER-INVESTMENT-LICENCE; dates unchanged (a relationship, not a direct citation)"
+   ],
    "issuer": "Licensing authority / each foreign member",
    "item": "Investment licence evidence or signed undertaking (one per foreign member)",
    "lead_time_assumption": "investment_licence",
@@ -3537,7 +3813,9 @@
    "drop_dead_start": "2026-11-18",
    "envelope": "A",
    "evidence": "EV-FIN-STANDING",
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): VOL-I-8.4-01, VOL-I-8.4-02 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-FIN-STANDING; dates unchanged (a relationship, not a direct citation)"
+   ],
    "issuer": "Bidder",
    "item": "Financial standing evidence (audited accounts of each member and the combined calculation)",
    "lead_time_assumption": "fin_standing_calc",
@@ -3559,7 +3837,9 @@
    "drop_dead_start": "2026-11-18",
    "envelope": "A",
    "evidence": "EV-FORM-4C",
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): ADD-03-4.4-01, VOL-I-8.10-01, VOL-I-8.2-01, VOL-I-9.4-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-N1 reached from VOL-I:8.1, VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER, REL-MEMBER-DEBARMENT, REL-MEMBER-FORM-4C, REL-MEMBER-MULTIPLE-PARTICIPATION; dates unchanged (a relationship, not a direct citation)"
+   ],
    "issuer": "Each member's authorised signatory",
    "item": "Form 4-C (Arabic, one per member)",
    "lead_time_assumption": "form_4c_member_sign",
@@ -3589,7 +3869,9 @@
    "drop_dead_start": "2026-11-18",
    "envelope": "A",
    "evidence": "EV-FORM-4C-TRANSLATION",
-   "flags": [],
+   "flags": [
+    "REVIEW (confirmed dependency): ADD-03-Q15-01 reached from VOL-I:8.8 via REL-ADD03-OM-OPERATOR-MEMBER; dates unchanged (a relationship, not a direct citation)"
+   ],
    "issuer": "Each member incorporated outside the Kingdom (translator)",
    "item": "English translation of Form 4-C (one per member incorporated outside the Kingdom)",
    "lead_time_assumption": "form_4c_translation",
@@ -3611,7 +3893,8 @@
    "envelope": "B",
    "evidence": "EV-FIN-ASSUMPTIONS",
    "flags": [
-    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)"
+    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)",
+    "REVIEW (possible impact): VOL-I-10.6-01 reached from VOL-V:29.3, VOL-V:31.4 via REL-PAY-DEDUCTIONS, REL-PAY-FINANCING-ASSUMPTIONS, REL-PAY-MECHANISM; dates unchanged (a relationship, not a direct citation)"
    ],
    "issuer": "Bidder",
    "item": "Schedule of principal financing assumptions",
@@ -3657,7 +3940,9 @@
    "envelope": "B",
    "evidence": "EV-FORM-4F",
    "flags": [
-    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)"
+    "INFEASIBLE by 2 WD (total float -2 WD: earliest start 2026-11-24 (after fin-model-freeze) is after the latest start 2026-11-19; not compressed)",
+    "REVIEW (confirmed dependency): VOL-I-10.2-01, VOL-IV-F4F-01 reached from VOL-V:29.3 via REL-PAY-FORM-4F, REL-PAY-MECHANISM, REL-PAY-QUOTED-PRICE; dates unchanged (a relationship, not a direct citation)",
+    "REVIEW (proposed relationship): VOL-I-10.2-01, VOL-IV-F4F-01, VOL-IV-F4F-02 reached from VOL-V:29.3, VOL-V:31.4 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS, REL-PAY-FINANCIAL-MODEL, REL-PAY-FORM-4F, REL-PAY-MECHANISM, REL-PAY-QUOTED-PRICE; dates unchanged (a relationship, not a direct citation)"
    ],
    "issuer": "Bidder",
    "item": "Form 4-F Financial Proposal Schedule (signed)",

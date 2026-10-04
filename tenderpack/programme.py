@@ -524,7 +524,8 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
     assumptions give another calendar or counting policy, the register's dates are re-evaluated with it, so a
     declared holiday also moves pack dates counted in Working Days (e.g. the clarification cut-off). A gate that
     names an issue missing from the open-issue register is flagged on its activity (decided and removed, or a typo):
-    the gate stays until a person removes it from the templates."""
+    the gate stays until a person removes it from the templates. Activities a curated relationship reaches at the
+    stage are marked REVIEW (<class>) with their dates unchanged (r["relationship_impact"], session 10)."""
     from .register import Register
     stage = stage or r["validated"].stage
     s = next(x for x in r["stages"] if x.stage == stage)
@@ -544,7 +545,8 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
             evals = cache[(cal, policy)]
         pdd = next((d["anchor_value"] for e in evals for d in e["stages"][stage]["dates"] if d["anchor"] == "PDD"), None)
         prog = plan(stage, evals, r["templates"], a, cal, status_date, {"PDD": pdd}, evidence_items=r["evidence_items"],
-                    anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified)
+                    anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified,
+                    reached=((r.get("relationship_impact") or {}).get(stage) or {}).get("records"))
         for act in prog["activities"]:
             for i in act.get("gated_by") or []:
                 if i not in open_issues:
