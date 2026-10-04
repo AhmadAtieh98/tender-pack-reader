@@ -518,6 +518,7 @@ class Register:
             eff = effective(st, uid, row.follows_replacement)
             for k in [uid] + ([eff.unit_id] if eff is not None and eff.unit_id != uid else []):
                 hist += [h for h in (st[k].history if k in st else []) if h not in hist]
+        hist.sort(key=lambda h: self.order.index(self.op_stage.get(h, BASE)))   # in addendum order (stable within one)
         for h in hist:
             prov = self.op_provision.get(h)
             pu = st.get(prov)

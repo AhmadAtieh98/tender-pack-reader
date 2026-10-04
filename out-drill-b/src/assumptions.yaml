@@ -10,14 +10,22 @@ calendar:
 bidder:
   name: Unnamed consortium (the Bidder)
   members: 3
+  foreign_members: 1
   signatories_per_member: 1
   reference_plants_offered: 2
   epc_contractors: 1
   om_operators: 1
 bidder_basis:
   members:
-    basis: 'PROVISIONAL ASSUMPTION: owner''s email of 1 Oct (unnamed consortium, count
-      configurable); VOL-I Appendix 1 lists one two-member consortium'
+    basis: 'PROVISIONAL ASSUMPTION: owner''s instruction (assumed scenario: an unnamed
+      three-member consortium, editable); VOL-I Appendix 1 lists one two-member consortium'
+    owner: Bid manager
+  foreign_members:
+    basis: 'PROVISIONAL ASSUMPTION: owner''s instruction (one foreign member in the
+      assumed consortium, editable); VOL-I 8.9 is the only clause found that ties
+      a document to foreign members (an investment licence or a signed undertaking
+      for each foreign consortium member); no legalisation or apostille is assumed
+      because no clause requires one'
     owner: Bid manager
   signatories_per_member:
     basis: 'PROVISIONAL ASSUMPTION: one authorised signatory per member (signs Form
@@ -25,7 +33,8 @@ bidder_basis:
     owner: Legal
   reference_plants_offered:
     basis: 'PROVISIONAL ASSUMPTION: the minimum of two reference plants in VOL-I 8.5
-      footnote 12'
+      footnote 12; no actual reference plant of the Bidder is known or assumed to
+      qualify'
     owner: Technical
   epc_contractors:
     basis: 'PROVISIONAL ASSUMPTION: one proposed EPC Contractor'
@@ -46,38 +55,38 @@ submission:
 resources:
   bid_manager:
     capacity: 2
-    basis: 'PROVISIONAL ASSUMPTION: bid manager plus one coordinator, one activity
-      each at a time; not stated in the pack'
+    basis: 'PROVISIONAL ASSUMPTION: bid manager plus one coordinator (2 staff per
+      Working Day); not stated in the pack'
     owner: Bid manager
   document_controller:
     capacity: 2
     basis: 'PROVISIONAL ASSUMPTION: two document controllers for assembly, copies,
-      sealing and delivery; not stated'
+      sealing and delivery (2 staff per Working Day); not stated'
     owner: Bid manager
   legal_counsel:
     capacity: 2
-    basis: 'PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms and guarantees; an
-      activity waiting on a notary or a member counts as one; not stated'
+    basis: 'PROVISIONAL ASSUMPTION: two lawyers on PoAs, forms, guarantees and the
+      licence evidence (2 staff per Working Day); not stated'
     owner: Legal
   commercial_manager:
     capacity: 2
-    basis: 'PROVISIONAL ASSUMPTION: two commercial staff; an activity waiting on a
-      bank, an authority or an auditor counts as one; not stated'
+    basis: 'PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing,
+      lenders, auditor and Form 4-F (2 staff per Working Day); not stated'
     owner: Commercial
   financial_modeller:
     capacity: 1
-    basis: 'PROVISIONAL ASSUMPTION: one financial modeller (build, freeze, auditor
-      queries); not stated'
+    basis: 'PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor
+      queries (1 staff per Working Day); not stated'
     owner: Commercial
   technical_lead:
     capacity: 2
     basis: 'PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates,
-      references and Form 4-G; not stated'
+      references, ground review and Form 4-G (2 staff per Working Day); not stated'
     owner: Technical
   proposal_writers:
-    capacity: 1
-    basis: 'PROVISIONAL ASSUMPTION: one writing team for the Technical Proposal narrative;
-      not stated'
+    capacity: 3
+    basis: 'PROVISIONAL ASSUMPTION: a writing team of three engineers for the Technical
+      Proposal narrative (3 staff per Working Day); not stated'
     owner: Technical
 lead_times:
   poa_board_resolutions:
@@ -85,193 +94,360 @@ lead_times:
     basis: 'PROVISIONAL ASSUMPTION: board resolutions of each member authorising its
       signatories, members in parallel; not stated in the pack'
     owner: Legal
+    effort_wd: 1
+    waiting_on: each member's board
+    effort_basis: 'PROVISIONAL ASSUMPTION: one lawyer-day per member to draft the
+      resolution and chase it; the rest is the board''s own time'
   poa_notarisation:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: typical notarisation of a Power of Attorney, signatories
       in parallel; not stated in the pack'
     owner: Legal
+    effort_wd: 1
+    waiting_on: notary
+    effort_basis: 'PROVISIONAL ASSUMPTION: one lawyer-day per signatory to prepare
+      the PoA and attend the notary; the rest is the notary''s queue'
+  form_4a_preparation:
+    value: 1
+    basis: 'PROVISIONAL ASSUMPTION: prepare the content of Form 4-A as reissued by
+      ADD-01 Appendix A (Bidder and lead member, Addenda acknowledged, single point
+      of contact); not stated'
+    owner: Legal
+    effort_wd: 1
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one lawyer-day of drafting; no external
+      party'
   form_4a_signature:
     value: 1
-    basis: 'PROVISIONAL ASSUMPTION: signature by the PoA holder; not stated'
+    basis: 'PROVISIONAL ASSUMPTION: finalise the printed form and signature by the
+      lead member''s PoA holder; not stated'
     owner: Legal
+    effort_wd: 0.5
+    waiting_on: PoA holder of the lead member (signature)
+    effort_basis: 'PROVISIONAL ASSUMPTION: half a lawyer-day to finalise and witness
+      the signature'
   spoc_confirmation:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: confirm the single point of contact named in Form
       4-A; not stated'
     owner: Bid management
+    effort_wd: 0.5
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: half a day of the bid manager; internal'
   form_4b_preparation:
     value: 3
-    basis: 'PROVISIONAL ASSUMPTION: complete one Form 4-B per reference project from
+    basis: 'PROVISIONAL ASSUMPTION: prepare one Form 4-B per reference project from
       the reference evidence; not stated'
     owner: Technical
+    effort_wd: 1
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one engineer-day per reference form; internal'
+  form_4b_finalise:
+    value: 1
+    basis: 'PROVISIONAL ASSUMPTION: finalise each Form 4-B, including the ''Contract
+      value (SAR equivalent)'' field as the decision on I-VOL-I-ENV-A-PRICES directs;
+      not stated'
+    owner: Technical
+    effort_wd: 0.25
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: a quarter engineer-day per form; internal'
   completion_certificate:
     value: 15
     basis: 'PROVISIONAL ASSUMPTION: obtain a client completion certificate for each
-      reference plant from a third-party client (may already be held); not stated'
+      reference plant from a third-party client; none is assumed to be held already;
+      not stated'
     owner: Technical
+    effort_wd: 1
+    waiting_on: client of each reference plant
+    effort_basis: 'PROVISIONAL ASSUMPTION: one engineer-day per reference to request,
+      chase and check the certificate; the rest is the client''s time'
   form_4c_arabic_prep:
     value: 2
-    basis: 'PROVISIONAL ASSUMPTION: prepare the Arabic form per member; not stated'
+    basis: 'PROVISIONAL ASSUMPTION: prepare the Arabic form text for the members;
+      not stated'
     owner: Legal
+    effort_wd: 2
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: two lawyer-days (Arabic drafting and check);
+      internal'
   form_4c_member_sign:
     value: 3
     basis: 'PROVISIONAL ASSUMPTION: signature and stamp at each member''s office,
       members in parallel; not stated'
     owner: Legal
+    effort_wd: 0.5
+    waiting_on: each member's authorised signatory
+    effort_basis: 'PROVISIONAL ASSUMPTION: half a lawyer-day per member to send, chase
+      and check the signed and stamped form'
   pcg_wording:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: agree the Parent Company Guarantee wording (substantially
       Form 4-D) with the EPC Contractor''s ultimate parent; not stated'
     owner: Legal
+    effort_wd: 4
+    waiting_on: ultimate parent of the EPC Contractor (its lawyers)
+    effort_basis: 'PROVISIONAL ASSUMPTION: four lawyer-days of negotiation; the rest
+      is the parent''s review time'
   pcg_execution:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: parent board approval and execution of the guarantee;
       not stated'
     owner: Legal
+    effort_wd: 1
+    waiting_on: ultimate parent's board
+    effort_basis: 'PROVISIONAL ASSUMPTION: one lawyer-day per guarantee to chase and
+      check the executed original'
   deviations_review:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: review Volume V and list every deviation, qualification
       or reservation; not stated'
     owner: Legal
+    effort_wd: 8
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: eight lawyer-days of review; internal'
   form_4e_finalise:
     value: 2
     basis: 'PROVISIONAL ASSUMPTION: finalise and sign Form 4-E, cross-check that no
       qualification appears elsewhere (VOL-I 9.6); not stated'
     owner: Legal
+    effort_wd: 1.5
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one and a half lawyer-days; internal'
   form_4g_review:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: review the six cybersecurity undertakings with
       the O&M and OT teams; not stated'
     owner: Technical
+    effort_wd: 3
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: three engineer-days; the O&M and OT leads
+      are treated as part of the bid team'
   form_4g_signature:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: signature for the Bidder; not stated'
     owner: Technical
+    effort_wd: 0.25
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: a quarter engineer-day; internal'
   technical_proposal:
     value: 20
     basis: 'PROVISIONAL ASSUMPTION: remaining work on the narrative incl. process
       design to the amended TN limit and standby power; not stated'
     owner: Technical
+    effort_wd: 45
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: about 2.25 writers full time over the 20
+      Working Days; internal'
   investment_licence:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: copy of a current licence or a signed undertaking
-      per foreign member (the undertaking route); not stated'
+      per foreign member (VOL-I 8.9); not stated'
     owner: Legal
+    effort_wd: 1
+    waiting_on: each foreign member (licence copy or signed undertaking)
+    effort_basis: 'PROVISIONAL ASSUMPTION: one lawyer-day per foreign member to request,
+      check and, for the undertaking route, draft the undertaking'
   bid_bond_bank_approval:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: bank credit approval for a SAR 4.5m first-demand
       bond; not stated'
     owner: Commercial
+    effort_wd: 2
+    waiting_on: bank (credit approval)
+    effort_basis: 'PROVISIONAL ASSUMPTION: two commercial staff-days for the application
+      and the bank''s questions; the rest is the bank''s credit process'
   bid_bond_issue:
     value: 3
     basis: 'PROVISIONAL ASSUMPTION: issue of the bond after approval; not stated'
     owner: Commercial
+    effort_wd: 0.5
+    waiting_on: issuing bank
+    effort_basis: 'PROVISIONAL ASSUMPTION: half a staff-day to check the wording against
+      VOL-I 6.3 and 6.4'
   lcc_ratio_calc:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: compute the construction-phase local content ratio;
       not stated'
     owner: Commercial
+    effort_wd: 4
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: four commercial staff-days; internal'
   lcc_certificate:
     value: 30
     basis: 'PROVISIONAL ASSUMPTION: issuing authority not named and no lead time stated;
       the (non-binding) minutes record bidders'' difficulty obtaining it ''within
       the programme''; set deliberately long until the owner confirms'
     owner: Commercial
+    effort_wd: 3
+    waiting_on: competent authority (not named in the pack)
+    effort_basis: 'PROVISIONAL ASSUMPTION: three staff-days to apply and answer queries;
+      the rest is the authority''s processing time'
   iso_certificate_copy:
     value: 2
-    basis: 'PROVISIONAL ASSUMPTION: copy of an existing certificate from the EPC Contractor;
-      not stated'
+    basis: 'PROVISIONAL ASSUMPTION: copy of the EPC Contractor''s certificate, if
+      it holds one; not stated'
     owner: Technical
+    effort_wd: 0.25
+    waiting_on: EPC Contractor
+    effort_basis: 'PROVISIONAL ASSUMPTION: a quarter engineer-day to request and check
+      currency at the PDD'
   reference_evidence:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: commercial-operation evidence for the reference
       plants, plants in parallel; not stated'
     owner: Technical
+    effort_wd: 2
+    waiting_on: reference plant owners
+    effort_basis: 'PROVISIONAL ASSUMPTION: two engineer-days per plant to request
+      and check the evidence'
   fin_statements_collection:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: collect each member''s most recent audited financial
       statements, members in parallel; not stated'
     owner: Commercial
+    effort_wd: 0.5
+    waiting_on: each member (audited accounts)
+    effort_basis: 'PROVISIONAL ASSUMPTION: half a staff-day per member to request
+      and check the accounts'
   fin_standing_calc:
     value: 3
     basis: 'PROVISIONAL ASSUMPTION: combined net worth and turnover weighted by shareholding
       (VOL-I 8.4); not stated'
     owner: Commercial
+    effort_wd: 2
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: two commercial staff-days; internal'
   om_experience_evidence:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: operating-experience evidence from the O&M Operator;
       not stated'
     owner: Technical
+    effort_wd: 1.5
+    waiting_on: O&M Operator
+    effort_basis: 'PROVISIONAL ASSUMPTION: one and a half engineer-days to request
+      and check the evidence'
   fin_model_build:
     value: 15
     basis: 'PROVISIONAL ASSUMPTION: remaining build of a Financial Model already in
       development (unlocked, formula-linked, no macros); not stated'
     owner: Commercial
+    effort_wd: 15
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: the modeller full time over the 15 Working
+      Days; internal'
   fin_model_freeze:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: freeze inputs and version for audit and Form 4-F;
       not stated'
     owner: Commercial
+    effort_wd: 1
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one modeller-day; internal'
   lender_terms:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: indicative financing terms (tenor, margin, gearing)
       from lenders; not stated'
     owner: Commercial
+    effort_wd: 2
+    waiting_on: lenders
+    effort_basis: 'PROVISIONAL ASSUMPTION: two staff-days to brief lenders and collect
+      terms; the rest is the lenders'' time'
   fin_assumptions_schedule:
     value: 2
     basis: 'PROVISIONAL ASSUMPTION: schedule of principal financing assumptions from
       the frozen model (VOL-I 10.6); not stated'
     owner: Commercial
+    effort_wd: 1.5
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one and a half staff-days; internal'
   model_auditor_appointment:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: engage an independent model auditor (opinion addressed
       to the Authority); not stated'
     owner: Commercial
+    effort_wd: 1
+    waiting_on: model auditor (engagement)
+    effort_basis: 'PROVISIONAL ASSUMPTION: one staff-day for the engagement letter;
+      the rest is the auditor''s acceptance'
   model_audit_review:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: rolling review of the draft model by the auditor;
       not stated'
     owner: Commercial
+    effort_wd: 3
+    waiting_on: independent model auditor
+    effort_basis: 'PROVISIONAL ASSUMPTION: three modeller-days answering the auditor''s
+      queries; the rest is the auditor''s review'
   model_audit_opinion:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: final review of the frozen model and issue of
       the opinion; not stated'
     owner: Commercial
+    effort_wd: 1
+    waiting_on: independent model auditor
+    effort_basis: 'PROVISIONAL ASSUMPTION: one staff-day to answer final queries and
+      check the opinion''s addressee'
   form_4f_preparation:
     value: 2
     basis: 'PROVISIONAL ASSUMPTION: complete and sign Form 4-F from the frozen model;
       not stated'
     owner: Commercial
+    effort_wd: 1.5
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one and a half staff-days; internal'
   ground_due_diligence:
     value: 10
     basis: 'PROVISIONAL ASSUMPTION: review of the data-room geotechnical report and
       any own investigation needed to price ground risk; not stated'
     owner: Technical
+    effort_wd: 6
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: six engineer-days of review; no own site
+      investigation assumed'
   clarification_drafting:
     value: 2
-    basis: 'PROVISIONAL ASSUMPTION: draft and submit clarification requests through
-      the Portal; not stated'
+    basis: 'PROVISIONAL ASSUMPTION: draft and submit requests or notices through the
+      Portal; not stated'
     owner: Bid management
+    effort_wd: 1.5
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one and a half bid-manager days; internal'
   envelope_assembly:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: assemble the marked original of one envelope in
       the required order with numbered dividers; not stated'
     owner: Bid management
+    effort_wd: 1
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one document-controller day per envelope;
+      internal'
   copies_and_usb:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: three hard copies of each envelope and the encrypted
       searchable USB copy named per Appendix 2; not stated'
     owner: Bid management
+    effort_wd: 2
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: both document controllers for the day;
+      internal'
   seal_and_mark:
     value: 0
     basis: 'PROVISIONAL ASSUMPTION: a few hours at the end of the day the copies are
       finished (0 = no separate Working Day); not stated'
     owner: Bid management
+    effort_wd: 0.25
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: a quarter document-controller day, on the
+      copies day'
   delivery:
     value: 1
     basis: 'PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before 14:00
       on the PDD; not stated'
     owner: Bid management
+    effort_wd: 1
+    waiting_on: ''
+    effort_basis: 'PROVISIONAL ASSUMPTION: one document controller accompanies the
+      delivery and obtains the receipt; internal'
   good_standing_certificate:
     value: 5
     basis: 'PROVISIONAL ASSUMPTION: a registry certificate within five Working Days;

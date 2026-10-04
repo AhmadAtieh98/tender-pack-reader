@@ -369,8 +369,9 @@ def test_a5_is_generated_from_rows_in_force_with_labelled_assumptions(written, r
         assert set(a["req_ids"]) <= force and a["req_ids"]
         assert a["duration_basis"].startswith("ASSUMPTION")
     acts = {a["id"]: a for a in prog["activities"]}
-    assert acts["lcc-certificate"]["status"] == "INFEASIBLE by 7 WD"
-    assert acts["attendance-notice"]["status"] == "DEADLINE PASSED"
+    assert acts["lcc-certificate"]["status"] == "INFEASIBLE by 12 WD"          # session 08: forward pass, whole LCC chain
+    # session 08: a conditional duty whose window elapsed is not a missed duty
+    assert acts["attendance-notice"]["status"] == "CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known"
     assert acts["deliver"]["latest_finish"] == "2026-11-26"
     a1prog = json.loads((written[0] / "a5/stages/ADD-01.json").read_text(encoding="utf-8"))
     assert "lcc-certificate" not in {a["id"] for a in a1prog["activities"]}     # deleted at ADD-01

@@ -93,7 +93,9 @@
   "Physical count = multiplicity x (1 marked original + 3 hard copies), stated in the pack (VOL-I:6.5; VOL-I:App2/para1; VOL-I:6.2); multiplicities come from the bidder settings (PROVISIONAL ASSUMPTIONS).",
   "Electronic copy: one searchable electronic copy on encrypted USB media, files named per Appendix 2; 1 encrypted USB per envelope is a PROVISIONAL reading (VOL-I 6.5 with 6.2: no commercial information in Envelope A), to confirm by clarification."
  ],
- "notice": "PROPOSAL, not reviewed. Every lead time, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Latest dates come from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; INFEASIBLE is reported, never compressed.",
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-05 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-05). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-17; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_date": "2026-11-05",
  "rows": [
   {
    "activities": [
@@ -328,7 +330,8 @@
   },
   {
    "activities": [
-    "form-4a"
+    "form-4a",
+    "form-4a-prep"
    ],
    "electronic_copy": "yes",
    "envelope": "A",
@@ -355,7 +358,8 @@
   },
   {
    "activities": [
-    "form-4b"
+    "form-4b",
+    "form-4b-prep"
    ],
    "electronic_copy": "yes",
    "envelope": "A",
@@ -518,7 +522,10 @@
     "ADD-02-F4G-01",
     "ADD-02-F4G-02",
     "ADD-02-F4G-03",
-    "ADD-02-F4G-04"
+    "ADD-02-F4G-04",
+    "ADD-02-F4G-05",
+    "ADD-02-F4G-06",
+    "ADD-02-F4G-07"
    ],
    "source": "ADD-02:7.1; ADD-02:7.2",
    "usb": null
@@ -577,15 +584,15 @@
    "envelope": "A",
    "evidence": "EV-INVESTMENT-LICENCE",
    "flags": [],
-   "hard_copies": 9,
+   "hard_copies": 3,
    "issuer": "Licensing authority / each foreign member",
    "kind": "document",
-   "marked_originals": 3,
-   "multiplicity": 3,
-   "multiplicity_basis": "bidder.members = 3 (PROVISIONAL ASSUMPTION; owner members: Bid manager)",
+   "marked_originals": 1,
+   "multiplicity": 1,
+   "multiplicity_basis": "bidder.foreign_members = 1 (PROVISIONAL ASSUMPTION; owner foreign_members: Bid manager)",
    "name": "Investment licence or signed undertaking for each foreign member",
-   "per": "member",
-   "physical_count": 12,
+   "per": "foreign_member",
+   "physical_count": 4,
    "req_ids": [
     "VOL-I-8.9-01"
    ],
@@ -890,15 +897,15 @@
    "envelope": "A",
    "evidence": "TOTAL Envelope A",
    "flags": [],
-   "hard_copies": 90,
+   "hard_copies": 84,
    "issuer": null,
    "kind": "TOTAL",
-   "marked_originals": 30,
-   "multiplicity": 30,
+   "marked_originals": 28,
+   "multiplicity": 28,
    "multiplicity_basis": null,
    "name": null,
    "per": null,
-   "physical_count": 120,
+   "physical_count": 112,
    "req_ids": null,
    "source": null,
    "usb": 1
@@ -935,8 +942,8 @@
  "status_date": "2026-11-05",
  "totals": [
   {
-   "documents": 30,
-   "electronic_files": 30,
+   "documents": 28,
+   "electronic_files": 28,
    "envelope": "A",
    "evidence": [
     "EV-BID-BOND",
@@ -958,10 +965,10 @@
     "EV-TECH-PROPOSAL"
    ],
    "flags": [],
-   "hard_copies": 90,
+   "hard_copies": 84,
    "items": 17,
-   "marked_originals": 30,
-   "physical_count": 120,
+   "marked_originals": 28,
+   "physical_count": 112,
    "usb": 1
   },
   {

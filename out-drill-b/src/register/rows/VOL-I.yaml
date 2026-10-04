@@ -50,7 +50,7 @@ rows:
   - id: VOL-I-3.4-01
     group: "VOL-I:3.4"
     scope: [clarification, completeness, deadline]
-    requirement: "Check the completeness of the RFP Documents downloaded from the Portal; omission claims are not entertained after the Proposal Due Date"
+    requirement: "Check the completeness of the RFP Documents downloaded from the Portal; omission claims are not entertained after the Proposal Due Date and time as amended (a cut-off separate from the VOL-I 5.2 clarification deadline)"
     units: ["VOL-I:3.4"]
     discipline: Bid management
     owner: Bid manager
@@ -63,6 +63,25 @@ rows:
         quote: "Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal."
         consequence: {class: lesser, unit: "VOL-I:3.4", quote: "No claim arising from an alleged omission shall be entertained after the Proposal Due Date."}
         note: "Volume III (Drawings) is listed in VOL-I 3.1 but not supplied; gaps are raised as clarification requests before the VOL-I 5.2 cut-off."
+      - stage: ADD-01
+        quote: Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal.
+        consequence:
+          class: lesser
+          unit: VOL-I:3.4
+          quote: No claim arising from an alleged omission shall be entertained after the Proposal Due Date.
+        parameters:
+          omission_claim_cutoff: 'the amended Proposal Due Date and time: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6;
+            6.1 as amended by ADD-01 2.1)'
+          separate_from: the VOL-I 5.2 clarification-request deadline (ten Working Days before the Proposal Due Date;
+            row VOL-I-5.2-01; 12 November 2026 on the planning reading)
+        note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the cut-off for omission
+          claims follows the amended Proposal Due Date and time; no claim arising from an alleged omission is entertained
+          after 26 November 2026, 14:00 Riyadh time (VOL-I 3.4 with 2.6; ADD-01 2.1). It is a separate cut-off from the
+          earlier clarification-request deadline of VOL-I 5.2 (ten Working Days before the Proposal Due Date, adjusted
+          under ADD-01 2.2; row VOL-I-5.2-01): VOL-I 3.4 does not refer to 5.2 and the two are not merged. Whether to
+          raise a known gap as a clarification request is a separate decision (the clarification register). [Applied from
+          proposal P-S08-VOL-I-3.4-01 by Claude Code (assistant), on Ahmad''s written instruction of 3 Oct 2026 (session
+          08 §3) on 2026-10-03.]'
     confidence: medium
     confidence_reason: "verbatim; the cut-off moves with the PDD but this clause is not named in ADD-01 §2.2 (non-exhaustive list)"
     issues: [I-VOL-III]
@@ -218,7 +237,7 @@ rows:
   - id: VOL-I-6.7-01
     group: "VOL-I:6.7"
     scope: [bid_submission, deadline]
-    requirement: "Withdraw or modify the Proposal only before the Proposal Due Date, by written notice through the Portal"
+    requirement: "A withdrawal or modification of the Proposal may be made by written notice through the Portal at any time before the Proposal Due Date; no modification will be accepted thereafter"
     units: ["VOL-I:6.7"]
     discipline: Bid management
     owner: Bid manager
@@ -230,6 +249,24 @@ rows:
       - stage: BASE
         quote: "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
         consequence: {class: lesser, unit: "VOL-I:6.7", quote: "No modification will be accepted thereafter."}
+      - stage: ADD-01
+        quote: A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice
+          through the Portal.
+        consequence:
+          class: lesser
+          unit: VOL-I:6.7
+          quote: No modification will be accepted thereafter.
+        parameters:
+          cutoff: 'the amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6; 6.1 as amended by ADD-01
+            2.1)'
+          means: written notice through the Portal
+          express_late_prohibition: modifications only ('No modification will be accepted thereafter')
+        note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): a Bidder may withdraw
+          or modify its Proposal by written notice through the Portal at any time before the amended Proposal Due Date,
+          26 November 2026, 14:00 Riyadh time (VOL-I 6.7 with 2.6; ADD-01 2.1). The clause''s express prohibition after
+          that time concerns modifications only (''No modification will be accepted thereafter''); it is not extended
+          to withdrawals, and nothing further is read into it. [Applied from proposal P-S08-VOL-I-6.7-01 by Claude Code
+          (assistant), on Ahmad''s written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]'
     confidence: high
     confidence_reason: "verbatim; the cut-off moves with the PDD although ADD-01 §2.2 does not name this clause"
   # ---------------------------------------------------------------- Section 7: validity extension
@@ -278,7 +315,7 @@ rows:
       - stage: BASE
         quote: "No firm, and no affiliate of a firm, shall participate in more than one Proposal."
         consequence: {class: rejection, unit: "VOL-I:8.2", quote: "Participation in more than one Proposal shall cause every Proposal in which that firm or affiliate participates to be rejected."}
-        note: "Form 4-C declaration 2 (Arabic, image reading pending) declares this; 'affiliate' is not defined in the pack."
+        note: "Form 4-C declaration 2 (Arabic, image reading; transcription confirmed by the owner, 3 Oct 2026) declares this; 'affiliate' is not defined in the pack."
     confidence: high
     confidence_reason: "verbatim; 'affiliate' is not defined"
     issues: [I-BIDDER-FACTS]
@@ -734,6 +771,29 @@ rows:
     discipline: Legal
     owner: Legal counsel
     assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be obtained at PCOD, the Independent Engineer''s certification that
+        fixes PCOD (VOL-V 1.5), from which VOL-I 12.1 runs the 25-year concession period, and to be produced at the
+        end of that period, the record of transfer of the Project to the Authority under Volume V (rows VOL-V-3.2-01
+        and VOL-V-42.1-01).'
+      basis:
+      - unit: VOL-I:12.1
+        page: 6
+        words: The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation
+          Date, following which the Project shall transfer to the Authority in accordance with Volume V.
+      - unit: VOL-I:2.3
+        page: 2
+        words: PCOD means the Project Commercial Operation Date, as defined in Volume V.
+      - unit: VOL-V:1.5
+        page: 2
+        words: PCOD means the date on which the Independent Engineer certifies that the Facility has satisfied the requirements
+          of Volume II Clause 7.2.
+      when: at PCOD (start of the concession period on the VOL-I 12.1 reading) and at transfer at the end of the period
+      bid_stage_note: 'Decide now (I-CONCESSION): VOL-V 3.1 runs the 25 years from the Effective Date instead, and ADD-02
+        Q7 refers Bidders to the order of precedence at VOL-I 3.2 without amending either clause; the term start drives
+        the Financial Model''s operating period and the transfer date, and Legal should decide whether to record the
+        assumed start in Form 4-E, since a deviation not listed there is taken as accepted (VOL-V Note to Bidders).'
     date_rules:
       - {rule_id: CONCESSION-END-PCOD, kind: external, purpose: event, anchor: PCOD, offset: 25, unit: year, direction: after, source_unit: "VOL-I:12.1", text: "twenty-five (25) years commencing on the Project Commercial Operation Date"}
     interpretations:
@@ -756,6 +816,21 @@ rows:
     discipline: Commercial
     owner: Commercial lead
     assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show Commercial Close within 120 days of the Preferred Bidder Notification
+        cannot be specified, because the pack does not define Commercial Close or say what it comprises (VOL-I Section
+        2 and the VOL-V extract give no definition).'
+      basis:
+      - unit: VOL-I:12.2
+        page: 6
+        words: The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days
+      - unit: ADD-02:Q13
+        page: 2
+        words: The periods in Volume I Clause 12.2 are unchanged.
+      missing: A definition of Commercial Close (which agreements or steps it comprises), absent from VOL-I Section
+        2 (Definitions) and from the VOL-V extract; the Preferred Bidder Notification that starts the 120 days is not
+        a pack event, and the pack states no consequence of missing Commercial Close (unlike Financial Close).
     date_rules:
       - {rule_id: PB-COMMERCIAL-CLOSE, kind: external, purpose: deadline, anchor: PBN, offset: 120, unit: calendar_day, direction: after, source_unit: "VOL-I:12.2", text: "Commercial Close within one hundred and twenty (120) days ... of the date of the Preferred Bidder Notification"}
     interpretations:
@@ -776,6 +851,33 @@ rows:
     discipline: Finance
     owner: Financial modeller
     assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show Financial Close within 270 days of the Preferred Bidder Notification
+        cannot be specified, because the pack defines neither Financial Close nor ''the long-stop date'' by which failure
+        entitles the Authority to call the Bid Bond.'
+      basis:
+      - unit: VOL-I:12.2
+        page: 6
+        words: Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification
+      - unit: VOL-I:12.2
+        page: 6
+        words: Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond
+          and to proceed with the next ranked Bidder.
+      - unit: ADD-02:Q13
+        page: 2
+        words: Will the Authority extend the Financial Close long-stop date?
+      - unit: ADD-02:Q13
+        page: 2
+        words: The periods in Volume I Clause 12.2 are unchanged.
+      missing: What event constitutes Financial Close (VOL-V 1.4 defines the Financing Documents but not Financial Close)
+        and what 'the long-stop date' in VOL-I 12.2 is (whether it is the 270-day date or a later one); neither is defined
+        in VOL-I Section 2 or the VOL-V extract, and ADD-02 Q13 did not define it (I-VOL-I-BOND-LONGSTOP).
+      bid_stage_note: 'Bid Bond exposure now: the Bid Bond must remain valid for 180 days from the Proposal Due Date
+        and be extended on demand where the Authority extends Proposal validity (VOL-I 6.3), while VOL-I 12.2 lets the
+        Authority call it if Financial Close is missed by the undefined long-stop date (I-VOL-I-BOND-LONGSTOP); if the
+        VOL-I 8.9 undertaking route is used for a foreign member''s investment licence, the licence is due ''prior to
+        Financial Close'', the same undefined event.'
     date_rules:
       - {rule_id: PB-FINANCIAL-CLOSE, kind: external, purpose: deadline, anchor: PBN, offset: 270, unit: calendar_day, direction: after, source_unit: "VOL-I:12.2", text: "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"}
     interpretations:

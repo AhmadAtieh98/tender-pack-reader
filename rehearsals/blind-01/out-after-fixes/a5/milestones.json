@@ -1,0 +1,513 @@
+{
+ "anchors": {
+  "PDD": "2026-12-10"
+ },
+ "columns": [
+  {
+   "header": "id",
+   "key": "id",
+   "width": 20
+  },
+  {
+   "header": "date",
+   "key": "date",
+   "width": 20
+  },
+  {
+   "header": "time",
+   "key": "time",
+   "width": 20
+  },
+  {
+   "header": "short",
+   "key": "short",
+   "width": 20
+  },
+  {
+   "header": "label",
+   "key": "label",
+   "width": 20
+  },
+  {
+   "header": "kind",
+   "key": "kind",
+   "width": 20
+  },
+  {
+   "header": "purpose",
+   "key": "purpose",
+   "width": 20
+  },
+  {
+   "header": "conditional",
+   "key": "conditional",
+   "width": 20
+  },
+  {
+   "header": "derived",
+   "key": "derived",
+   "width": 20
+  },
+  {
+   "header": "reading",
+   "key": "reading",
+   "width": 20
+  },
+  {
+   "header": "readings_differ",
+   "key": "readings_differ",
+   "width": 20
+  },
+  {
+   "header": "source",
+   "key": "source",
+   "width": 20
+  },
+  {
+   "header": "words",
+   "key": "words",
+   "width": 20
+  },
+  {
+   "header": "rows",
+   "key": "rows",
+   "width": 20
+  },
+  {
+   "header": "activities",
+   "key": "activities",
+   "width": 20
+  }
+ ],
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-05 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-05). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-19; PDD 2026-12-10 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-12-10.",
+ "planning_date": "2026-11-05",
+ "rows": [
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2016-12-11",
+   "derived": false,
+   "id": "REFERENCE-LOOKBACK",
+   "kind": "dated",
+   "label": "within the ten (10) years preceding the Proposal Due Date",
+   "purpose": "window_start",
+   "reading": "boundary_exclusive",
+   "readings_differ": true,
+   "rows": [
+    "VOL-I-8.5-01"
+   ],
+   "short": "REFERENCE-LOOKBACK",
+   "source": "VOL-I:8.5#fn12",
+   "time": "",
+   "words": "within the ten (10) years preceding the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2026-09-14",
+   "derived": false,
+   "id": "BLACKOUT-START",
+   "kind": "dated",
+   "label": "From the date of issue of this Volume",
+   "purpose": "window_start",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-4.2-01"
+   ],
+   "short": "BLACKOUT-START",
+   "source": "VOL-I:4.2",
+   "time": "",
+   "words": "From the date of issue of this Volume"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2026-09-30",
+   "derived": false,
+   "id": "PRE-BID",
+   "kind": "dated",
+   "label": "Wednesday 30 September 2026 at 10:00 Riyadh time",
+   "purpose": "event",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-5.4-01"
+   ],
+   "short": "PRE-BID",
+   "source": "VOL-I:5.4",
+   "time": "",
+   "words": "Wednesday 30 September 2026 at 10:00 Riyadh time"
+  },
+  {
+   "activities": [
+    "attendance-notice"
+   ],
+   "conditional": false,
+   "date": "2026-10-14",
+   "derived": false,
+   "id": "ATTENDANCE-NOTICE",
+   "kind": "dated",
+   "label": "within five (5) Working Days of this Addendum",
+   "purpose": "deadline",
+   "reading": "event_day_counted",
+   "readings_differ": true,
+   "rows": [
+    "ADD-01-3.1-01"
+   ],
+   "short": "ATTENDANCE-NOTICE",
+   "source": "ADD-01:3.1",
+   "time": "",
+   "words": "within five (5) Working Days of this Addendum"
+  },
+  {
+   "activities": [
+    "clarifications"
+   ],
+   "conditional": false,
+   "date": "2026-11-19",
+   "derived": false,
+   "id": "CLARIFICATION-CUTOFF",
+   "kind": "dated",
+   "label": "no later than ten (10) Working Days before the Proposal Due Date",
+   "purpose": "deadline",
+   "reading": "stated_date_excluded",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-5.2-01"
+   ],
+   "short": "CLARIFICATION-CUTOFF",
+   "source": "VOL-I:5.2",
+   "time": "",
+   "words": "no later than ten (10) Working Days before the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2026-12-10",
+   "derived": false,
+   "id": "ISO-CURRENT-AT",
+   "kind": "dated",
+   "label": "current as at the Proposal Due Date",
+   "purpose": "as_at",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-8.3-01"
+   ],
+   "short": "ISO-CURRENT-AT",
+   "source": "VOL-I:8.3",
+   "time": "",
+   "words": "current as at the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2026-12-10",
+   "derived": false,
+   "id": "MODIFY-CUTOFF",
+   "kind": "dated",
+   "label": "at any time before the Proposal Due Date",
+   "purpose": "deadline",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-6.7-01"
+   ],
+   "short": "MODIFY-CUTOFF",
+   "source": "VOL-I:6.7",
+   "time": "",
+   "words": "at any time before the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2026-12-10",
+   "derived": false,
+   "id": "OMISSION-CLAIM-CUTOFF",
+   "kind": "dated",
+   "label": "No claim arising from an alleged omission shall be entertained after the Proposal Due Date.",
+   "purpose": "deadline",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-3.4-01"
+   ],
+   "short": "OMISSION-CLAIM-CUTOFF",
+   "source": "VOL-I:3.4",
+   "time": "",
+   "words": "No claim arising from an alleged omission shall be entertained after the Proposal Due Date."
+  },
+  {
+   "activities": [
+    "deliver"
+   ],
+   "conditional": false,
+   "date": "2026-12-10",
+   "derived": false,
+   "id": "PDD",
+   "kind": "dated",
+   "label": "not later than 14:00 hours Riyadh time on <date>",
+   "purpose": "deadline",
+   "reading": "as_stated",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-6.1-01"
+   ],
+   "short": "PDD",
+   "source": "VOL-I:6.1",
+   "time": "14:00",
+   "words": "not later than 14:00 hours Riyadh time on <date>"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2027-05-09",
+   "derived": false,
+   "id": "PROPOSAL-VALIDITY",
+   "kind": "dated",
+   "label": "one hundred and fifty (150) days from the Proposal Due Date",
+   "purpose": "validity_end",
+   "reading": "day0",
+   "readings_differ": true,
+   "rows": [
+    "VOL-I-7.1-01"
+   ],
+   "short": "PROPOSAL-VALIDITY",
+   "source": "VOL-I:7.1",
+   "time": "",
+   "words": "one hundred and fifty (150) days from the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": "2027-06-08",
+   "derived": false,
+   "id": "BID-BOND-VALIDITY",
+   "kind": "dated",
+   "label": "valid for one hundred and eighty (180) days from the Proposal Due Date",
+   "purpose": "validity_end",
+   "reading": "day0",
+   "readings_differ": true,
+   "rows": [
+    "VOL-I-6.3-01"
+   ],
+   "short": "BID-BOND-VALIDITY",
+   "source": "VOL-I:6.3",
+   "time": "",
+   "words": "valid for one hundred and eighty (180) days from the Proposal Due Date"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "DEBARMENT-LOOKBACK",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "within the preceding five (5) years",
+   "purpose": "window_start",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-8.10-01"
+   ],
+   "short": "DEBARMENT-LOOKBACK",
+   "source": "VOL-I:8.10",
+   "time": "",
+   "words": "within the preceding five (5) years"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "F4C-SIXTH-LOOKBACK",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "within the preceding five (5) years",
+   "purpose": "window_start",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-IV-F4C-06"
+   ],
+   "short": "F4C-SIXTH-LOOKBACK",
+   "source": "VOL-IV:F4-C/image/decl5+ADD-03",
+   "time": "",
+   "words": "within the preceding five (5) years"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "INVESTMENT-LICENCE-BY-FC",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "a signed undertaking to obtain such licence prior to Financial Close",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-8.9-01"
+   ],
+   "short": "INVESTMENT-LICENCE-BY-FC",
+   "source": "VOL-I:8.9",
+   "time": "",
+   "words": "a signed undertaking to obtain such licence prior to Financial Close"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "SPOC-CHANGE-NOTICE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "notify the Authority of any change within two (2) Working Days",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-I-4.3-01"
+   ],
+   "short": "SPOC-CHANGE-NOTICE",
+   "source": "VOL-I:4.3",
+   "time": "",
+   "words": "notify the Authority of any change within two (2) Working Days"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-AS-BUILT-DUE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "not later than sixty (60) days after PCOD",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-7.4-01"
+   ],
+   "short": "VOL-II-AS-BUILT-DUE",
+   "source": "VOL-II:7.4",
+   "time": "",
+   "words": "not later than sixty (60) days after PCOD"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-CMMS-BY-PCOD",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "implemented before PCOD",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-8.2-01"
+   ],
+   "short": "VOL-II-CMMS-BY-PCOD",
+   "source": "VOL-II:8.2",
+   "time": "",
+   "words": "implemented before PCOD"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-ENV-CLEARANCE-DUE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "before commencement of construction",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-9.2-01"
+   ],
+   "short": "VOL-II-ENV-CLEARANCE-DUE",
+   "source": "VOL-II:9.2",
+   "time": "",
+   "words": "before commencement of construction"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-GRIEVANCE-DUE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "established before construction",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-9.3-01"
+   ],
+   "short": "VOL-II-GRIEVANCE-DUE",
+   "source": "VOL-II:9.3",
+   "time": "",
+   "words": "established before construction"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-HANDBACK-REMEDIALS-DUE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "completed before transfer",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-8.5-02"
+   ],
+   "short": "VOL-II-HANDBACK-REMEDIALS-DUE",
+   "source": "VOL-II:8.5",
+   "time": "",
+   "words": "completed before transfer"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-HANDBACK-SURVEY-WINDOW",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "in the final two (2) years of the concession",
+   "purpose": "window_start",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-8.5-01"
+   ],
+   "short": "VOL-II-HANDBACK-SURVEY-WINDOW",
+   "source": "VOL-II:8.5",
+   "time": "",
+   "words": "in the final two (2) years of the concession"
+  },
+  {
+   "activities": [],
+   "conditional": false,
+   "date": null,
+   "derived": false,
+   "id": "VOL-II-SECURITY-ARCHITECTURE-DUE",
+   "kind": "event-dependent (no date: unknown_anchor)",
+   "label": "prior to commissioning",
+   "purpose": "deadline",
+   "reading": "unknown_anchor",
+   "readings_differ": false,
+   "rows": [
+    "VOL-II-6.3-02"
+   ],
+   "short": "VOL-II-SECURITY-ARCHITECTURE-DUE",
+   "source": "VOL-II:6.3",
+   "time": "",
+   "words": "prior to commissioning"
+  }
+ ],
+ "stage": "ADD-03",
+ "status_date": "2026-11-05"
+}

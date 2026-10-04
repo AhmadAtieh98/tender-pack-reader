@@ -19,7 +19,8 @@ class EvidenceItem(BaseModel):
     name: str
     envelope: Literal["A", "B", "A+B", "none"]          # where it is submitted ('none': an action, not a document)
     issuer: str
-    per: Literal["proposal", "member", "signatory", "reference", "lead_member", "epc_contractor", "om_operator"] = "proposal"
+    per: Literal["proposal", "member", "foreign_member", "signatory", "reference", "lead_member", "epc_contractor",
+                 "om_operator"] = "proposal"
     source: str                                        # unit(s) that require it, e.g. "VOL-I:9.1(g); VOL-I:6.3"
     counted: bool = True                               # counted in the copies of VOL-I 6.5 (1 original + 3 copies + USB)
     note: str | None = None

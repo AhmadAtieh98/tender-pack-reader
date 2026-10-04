@@ -1,3 +1,7 @@
+# SUPERSEDED, NEVER APPLIED (3 Oct 2026, session 08). The owner's written direction (worklog/2026-10-03_session-08_
+# prompt.md §3) conflicts with each proposal below in the ways listed under `superseded_because`. The replacements,
+# with their source evidence, are in 2026-10-03_session-08_owner-directed.yaml. These originals are kept unchanged
+# below for the record; `apply-proposal` refuses a superseded proposal.
 # PROPOSED updates for the three register rows that are STALE at ADD-01 and ADD-02. Prepared by the assistant
 # (session 06). NOT applied, NOT pinned, NOT accepted: the owner decides. To use one:
 #   python -m tenderpack apply-proposal P-STALE-VOL-I-8.3-01 --by "Your Name"     (writes it, pins it, row is PROPOSED)
@@ -8,6 +12,12 @@
 # recomputed dates; what is missing is a person's confirmation that each reading still holds.
 proposals:
   - id: P-STALE-VOL-I-8.3-01
+    status: superseded
+    superseded_by: P-S08-VOL-I-8.3-01
+    superseded_because:
+      - "it ends 'No consequence is stated (I-NO-CONSEQUENCE)'; the direction is not to say there is no consequence anywhere, and to cite the VOL-I 11.1(i) mandatory-compliance pass/fail gate, which the proposal does not mention"
+      - "its interpretation keeps only 'current as at the Proposal Due Date'; the direction is to keep the accredited-issuer and Envelope A copy requirements of VOL-I 8.3, which it omits"
+      - "it gives the date (26 November 2026) without the time; VOL-I 2.6 defines the Proposal Due Date as the date and time in Clause 6.1 as amended, and ADD-01 2.1 keeps 14:00 Riyadh time"
     row: VOL-I-8.3-01
     changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
     add_interpretation:
@@ -23,6 +33,11 @@ proposals:
       Confirm that the certificate must be current on 26 November 2026 (the moved Proposal Due Date), and that VOL-I 8.3
       follows the moved date although ADD-01 2.2 does not name it.
   - id: P-STALE-VOL-I-3.4-01
+    status: superseded
+    superseded_by: P-S08-VOL-I-3.4-01
+    superseded_because:
+      - "it gives the cut-off as a date only ('after 26 November 2026'); the direction is that it follows the amended Proposal Due Date and time (VOL-I 2.6; 14:00 Riyadh time kept by ADD-01 2.1)"
+      - "its note says the known gaps 'must be raised as clarification requests before the VOL-I 5.2 cut-off, 12 November 2026', and its decision combines the two; the direction is to keep the omission-claim cut-off separate from the earlier clarification deadline. VOL-I 3.4 itself says nothing about VOL-I 5.2"
     row: VOL-I-3.4-01
     changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
     add_interpretation:
@@ -39,6 +54,11 @@ proposals:
       Confirm the cut-off for omission claims is 26 November 2026; and decide whether to raise the Volume III /
       Drawing 03-C-114 gap as a clarification request before 12 November 2026 (I-VOL-III).
   - id: P-STALE-VOL-I-6.7-01
+    status: superseded
+    superseded_by: P-S08-VOL-I-6.7-01
+    superseded_because:
+      - "its note says 'a withdrawal or modification must be notified ... before then; none is accepted afterwards'; VOL-I 6.7's express prohibition is 'No modification will be accepted thereafter', so 'none' extends it to withdrawals, which the direction says not to do"
+      - "it leaves the row's requirement 'Withdraw or modify the Proposal only before the Proposal Due Date' unchanged; 'only' carries the same extension"
     row: VOL-I-6.7-01
     changed_dependency: "VOL-I:6.1 (Proposal Due Date) amended by ADD-01/2.1: 'Thursday 12 November 2026' -> 'Thursday 26 November 2026'"
     add_interpretation:

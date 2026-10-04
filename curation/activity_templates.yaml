@@ -22,10 +22,9 @@
 
 _exceptions: {}
 
-# Document counts the evidence vocabulary cannot express yet (tenderpack/evidence.py accepts no per 'foreign_member'):
-# the count used for the document, marshalling and copy totals. Remove an entry once the vocabulary can say it.
-_per_overrides:
-  EV-INVESTMENT-LICENCE: {per: foreign_member, source: "VOL-I:8.9", reason: "the clause asks for evidence of a current investment licence 'for each foreign consortium member', or a signed undertaking to obtain such licence; counted once per foreign member (the vocabulary's 'member' would count every member)"}
+# Document counts the evidence vocabulary cannot express (the count used for the document, marshalling and copy
+# totals). None is needed now: since session 08 the vocabulary itself says per foreign_member (EV-INVESTMENT-LICENCE).
+_per_overrides: {}
 
 # Dated pack milestones on the programme and the Gantt. The DATES come from the A1 rows' date rules at each stage
 # (never typed here); this only names them. `derived` milestones have no date rule in the register: their date is

@@ -1,0 +1,184 @@
+{
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "columns": [
+  {
+   "header": "resource",
+   "key": "resource",
+   "width": 20
+  },
+  {
+   "header": "from",
+   "key": "from",
+   "width": 20
+  },
+  {
+   "header": "to",
+   "key": "to",
+   "width": 20
+  },
+  {
+   "header": "days",
+   "key": "days",
+   "width": 20
+  },
+  {
+   "header": "dates",
+   "key": "dates",
+   "width": 20
+  },
+  {
+   "header": "peak_load",
+   "key": "peak_load",
+   "width": 20
+  },
+  {
+   "header": "capacity",
+   "key": "capacity",
+   "width": 20
+  },
+  {
+   "header": "activities",
+   "key": "activities",
+   "width": 20
+  }
+ ],
+ "levelling": "resource levelling is NOT implemented; overloads are reported, not resolved",
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-05 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-05). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-17; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_date": "2026-11-05",
+ "rows": [
+  {
+   "activities": [
+    "bond-issue",
+    "fin-assumptions",
+    "fin-standing",
+    "form-4f",
+    "lcc-certificate",
+    "model-audit-opinion"
+   ],
+   "capacity": 2,
+   "dates": [
+    "2026-11-22",
+    "2026-11-23"
+   ],
+   "days": 2,
+   "from": "2026-11-22",
+   "peak_load": 2.764,
+   "resource": "commercial_manager",
+   "to": "2026-11-23"
+  },
+  {
+   "activities": [
+    "copies",
+    "seal-and-mark"
+   ],
+   "capacity": 2,
+   "dates": [
+    "2026-11-25"
+   ],
+   "days": 1,
+   "from": "2026-11-25",
+   "peak_load": 2.25,
+   "resource": "document_controller",
+   "to": "2026-11-25"
+  },
+  {
+   "activities": [
+    "fin-model-build",
+    "fin-model-freeze",
+    "model-audit-review"
+   ],
+   "capacity": 1,
+   "dates": [
+    "2026-11-05",
+    "2026-11-08",
+    "2026-11-09",
+    "2026-11-10",
+    "2026-11-11",
+    "2026-11-12",
+    "2026-11-15",
+    "2026-11-16"
+   ],
+   "days": 8,
+   "from": "2026-11-05",
+   "peak_load": 2.518,
+   "resource": "financial_modeller",
+   "to": "2026-11-16"
+  },
+  {
+   "activities": [
+    "deviations-review",
+    "pcg-wording",
+    "poa-resolutions"
+   ],
+   "capacity": 2,
+   "dates": [
+    "2026-11-05",
+    "2026-11-08",
+    "2026-11-09"
+   ],
+   "days": 3,
+   "from": "2026-11-05",
+   "peak_load": 3.133,
+   "resource": "legal_counsel",
+   "to": "2026-11-09"
+  },
+  {
+   "activities": [
+    "deviations-review",
+    "form-4a",
+    "form-4a-prep",
+    "form-4c-prep",
+    "form-4c-sign",
+    "form-4e",
+    "good-standing",
+    "investment-licence",
+    "pcg-execution"
+   ],
+   "capacity": 2,
+   "dates": [
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-22",
+    "2026-11-23"
+   ],
+   "days": 5,
+   "from": "2026-11-17",
+   "peak_load": 5.55,
+   "resource": "legal_counsel",
+   "to": "2026-11-23"
+  },
+  {
+   "activities": [
+    "technical-proposal"
+   ],
+   "capacity": 3,
+   "dates": [
+    "2026-11-05",
+    "2026-11-08",
+    "2026-11-09",
+    "2026-11-10",
+    "2026-11-11",
+    "2026-11-12",
+    "2026-11-15",
+    "2026-11-16",
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-22",
+    "2026-11-23"
+   ],
+   "days": 13,
+   "from": "2026-11-05",
+   "peak_load": 3.462,
+   "resource": "proposal_writers",
+   "to": "2026-11-23"
+  }
+ ],
+ "stage": "ADD-03",
+ "status_date": "2026-11-05",
+ "window": "late: each activity's staff effort (effort_wd x multiplicity) is spread evenly over the Working Days of its late window, latest start..latest finish, clipped at the planning date (as late as possible)"
+}

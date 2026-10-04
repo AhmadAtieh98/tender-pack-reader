@@ -37,7 +37,7 @@ rows:
   - id: VOL-IV-F4A-02
     group: "VOL-IV:F4-A"
     scope: [envelope_A, forms, reissued_form]
-    requirement: "Complete and execute Form 4-A (Envelope A, mandatory): fill every field and sign; continues in the form reissued by ADD-01 App A"
+    requirement: "Complete Form 4-A (Envelope A, mandatory) in the form reissued by ADD-01 App A; VOL-I states no consequence for a blank field. Execution and its consequence (unsigned or improperly executed: non-responsive) are row VOL-I-9.3-01"
     units: ["VOL-IV:F4-A/name-of-bidder-lead-member", "VOL-IV:cover/T1/4-A", "VOL-IV:F4-A/tender-reference", "VOL-IV:F4-A/project",
             "VOL-IV:F4-A/proposal-due-date", "VOL-IV:F4-A/commercial-registration-number", "VOL-IV:F4-A/registered-address",
             "VOL-IV:F4-A/single-point-of-contact-name-title", "VOL-IV:F4-A/contact-email-and-telephone", "VOL-IV:F4-A/signature",
@@ -52,12 +52,10 @@ rows:
     interpretations:
       - stage: BASE
         quote: "Name of Bidder / lead member:"
-        consequence: {class: non_responsive, unit: "VOL-I:9.3", quote: "An unsigned or improperly executed Form 4-A shall render the Proposal non-responsive."}
-        note: "VOL-I 9.3 states the consequence for an unsigned or improperly executed Form 4-A; whether a blank field makes it 'improperly executed' is for a person. Who signs (notarised PoA from the lead member) is VOL-I-9.3-01."
+        note: "The form's fields are to be completed (mandatory form, VOL-IV cover table). VOL-I 9.3's consequence is for an 'unsigned or improperly executed' Form 4-A; it is not read as 'every blank field causes rejection' (row VOL-I-9.3-01 carries it). Whether a particular omission would make the form improperly executed is for a person."
       - stage: ADD-01
         quote: "Name of Bidder / lead member:"
-        consequence: {class: non_responsive, unit: "VOL-I:9.3", quote: "An unsigned or improperly executed Form 4-A shall render the Proposal non-responsive."}
-        note: "ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS."
+        note: "No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS."
     confidence: medium
     confidence_reason: "verbatim fields; the reissued form drops fields and still prints the old PDD (a decision for a person)"
     issues: [I-F4A-FIELDS]
@@ -167,7 +165,7 @@ rows:
     confidence: medium
     confidence_reason: "verbatim fields; the contract value field conflicts with VOL-I 6.2 (no commercial information in Envelope A)"
     issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-A-PRICES, I-BIDDER-FACTS]
-  # ---------------------------------------------------------------- Form 4-C declarations (image, Arabic; reading pending)
+  # ---------------------------------------------------------------- Form 4-C declarations (image, Arabic; transcription confirmed 3 Oct 2026)
   - id: VOL-IV-F4C-01
     group: "VOL-IV:F4-C"
     scope: [envelope_A, forms, arabic, declaration, image]
@@ -185,7 +183,7 @@ rows:
         quote: "أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع"
         note: "ADD-02 Q9 (Form 4-C completed in Arabic; English translation for convenience only) reviewed: no change to this declaration."
     confidence: medium
-    confidence_reason: "from an image reading still pending the owner's review; translation proposed"
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); translation proposed"
     issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
   - id: VOL-IV-F4C-02
     group: "VOL-IV:F4-C"
@@ -204,7 +202,7 @@ rows:
         quote: "أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة"
         note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
     confidence: medium
-    confidence_reason: "from an image reading still pending the owner's review; translation proposed"
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); translation proposed"
     issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
   - id: VOL-IV-F4C-03
     group: "VOL-IV:F4-C"
@@ -225,12 +223,12 @@ rows:
         parameters: {lookback_years: 5}
         note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
     confidence: medium
-    confidence_reason: "from an image reading still pending the owner's review; wording differs from VOL-I 8.10"
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); wording differs from VOL-I 8.10"
     issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
   - id: VOL-IV-F4C-05
     group: "VOL-IV:F4-C"
     scope: [envelope_A, forms, arabic, declaration, image, communications]
-    requirement: "Form 4-C declaration 5 (Arabic): undertake to comply with the communication rules of Volume I clause 4-2 (digit uncertain)"
+    requirement: "Form 4-C declaration 5 (Arabic): undertake to comply with the communication rules of Volume I clause 4.2 (blackout)"
     units: ["VOL-IV:F4-C/image/decl5"]
     discipline: Legal
     owner: Legal counsel
@@ -239,14 +237,14 @@ rows:
     interpretations:
       - stage: BASE
         quote: "نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول"
-        parameters: {clause_as_read: "VOL-I 4.2", alternative_reading: "VOL-I 4.3"}
-        note: "Proposed translation: 'we undertake to comply with the communication rules set out in Clause 4-2 of Volume I'. As read, VOL-I 4.2 (blackout; breach leads to disqualification, row VOL-I-4.2-01); if the left digit is ٣, VOL-I 4.3 (single point of contact, VOL-I-4.3-01). No consequence stated in the declaration."
+        parameters: {clause_referenced: "VOL-I 4.2", clause_confirmed_by: "the owner's review of the Form 4-C reading (Ahmad, 3 Oct 2026)"}
+        note: "Proposed translation: 'we undertake to comply with the communication rules set out in Clause 4-2 of Volume I'. The owner's review of the reading (approval of VOL-IV-p6-r1, 3 Oct 2026) settles the clause as VOL-I 4.2 (blackout; a breach of 4.2 leads to disqualification, row VOL-I-4.2-01); the earlier alternative 4.3 is set aside. No consequence is stated in the declaration itself."
       - stage: ADD-02
         quote: "نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول"
-        parameters: {clause_as_read: "VOL-I 4.2", alternative_reading: "VOL-I 4.3"}
+        parameters: {clause_referenced: "VOL-I 4.2", clause_confirmed_by: "the owner's review of the Form 4-C reading (Ahmad, 3 Oct 2026)"}
         note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
-    confidence: low
-    confidence_reason: "image reading pending; which Volume I clause is referenced (4.2 or 4.3) is an open reading decision"
+    confidence: medium
+    confidence_reason: "transcription confirmed by the owner, 3 Oct 2026, including the clause numeral (4.2); the interpretation is proposed"
     issues: [I-READING-F4C, I-NO-CONSEQUENCE]
   # ---------------------------------------------------------------- Form 4-D Parent Company Guarantee
   - id: VOL-IV-F4D-01
