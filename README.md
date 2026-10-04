@@ -82,6 +82,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `docs/session-04_report.md` | Session 04: repair evidence, Stage 2 outputs, decisions needed |
 | `docs/session-05_report.md` | Session 05: review fixes, working outputs, rehearsal results, remaining gaps, prioritised decisions |
 | `docs/session-06_report.md` | Session 06: the four findings, the accept workflow, live commands, the blind rehearsal, the draft archive, decisions needed |
+| `docs/session-08_report.md` | Session 08 before and after: the four findings, your confirmations, A1–A5, the clarification register, blind rehearsal 02, verification results, what remains for you |
 | `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md`, `docs/COST_AND_EFFORT.md` | Operating guide (incl. the live-addendum procedure), offline verification on a Mac, cost and effort |
 | `tenderpack/` | **The program.** Stage 1: extraction, regions, units, readings, review packets, coverage. Stage 2: citations, amend, draft, dates, register, schedule, render, stage2. Stages 3–4: dispositions (and sweeps), evidence (item vocabulary), programme (documents, resources, drivers, scenarios) |
 | `config/` | Pack definition, declared furniture rules, planning assumptions (`assumptions.yaml`: calendar, counting policy, bidder, copies, resources, lead times with basis and owner, all PROVISIONAL), A5 scenarios (`scenarios.yaml`) |
@@ -95,6 +96,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `out-drill/` | The same outputs for the pack plus the synthetic ADD-03 (PARTIAL; validated state stays ADD-02) |
 | `out-drill-b/` | Drill B rehearsal: the drill pack (`src/`), its evidence (`build/`), outputs with ADD-03 drafted (`out-drafted/`, PARTIAL) and curated (`out-curated/`, APPLIED). No review of any kind |
 | `rehearsals/blind-01/` | Blind rehearsal: an independently written Addendum No. 3, its frozen and sealed answer key, the curation, outputs and `COMPARISON.md` (score and timeline) |
+| `rehearsals/blind-02/` | Blind rehearsal 02: a second independently written Addendum No. 3 (time moved on the same date, revocation, re-lettering, notes that amend), curated through the normal pipeline; `COMPARISON.md` scores it against the sealed key |
 | `scripts/` | `make_draft_archive.py` (the A1–A5 draft archive from a clean commit), `compare_outputs.py` (rebuilt outputs vs an archive) |
 | `tests/` | Tests, golden expectations written from the rendered pages, synthetic fixture builder |
 | `worklog/` | Timestamped development log: prompts, actions, errors and corrections |

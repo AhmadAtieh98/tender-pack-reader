@@ -3,7 +3,7 @@
 - **Date:** 3 Oct 2026 from 19:29:58 UTC to 20:27 UTC; paused at a usage limit; resumed 4 Oct 2026 at 05:17:22 UTC.
 - **Who:**
   - **The owner (Ahmad)** gave the instructions, reviewed and confirmed the two image readings, directed three interpretations, and steered the work in a follow-up message.
-  - **The assistant** (Claude Code, in the cloud container) did the work, as orchestrator, with five subagents (§4.8).
+  - **The assistant** (Claude Code, in the cloud container) did the work, as orchestrator, with four subagents (§4.8).
 - **Records of the exchange:** `worklog/2026-10-03_session-08_prompt.md` holds the owner's three messages verbatim (the main message, the follow-up, the resume message), with their received times from the session transcript.
 - **What the owner decided in this session (and only this):** the confirmations of the two readings (§4.2) and the direction of the 8.3, 3.4 and 6.7 interpretations (§4.3). Rows and ops are still PROPOSED: no `accept` or `reject` decision has been recorded (`curation/reviews/decisions.yaml` does not exist).
 - **Nothing was sent** to the hiring team or anyone else. The clarification questions are drafts.
@@ -46,6 +46,15 @@ All times UTC, from the session transcript's timestamps.
 | 4 Oct 05:17:22 | Owner: continue. |
 | 05:17–05:25 | Key test files run (2 failures from the fuller chain and the new headings; updated). **Checkpoint `2d5dda4` pushed.** A5 subagent resumed. |
 | 05:25–05:31 | ADD-02 Q7/Q11 notes and settled-point issues corrected (E97); `tenderpack/clarify.py` and its outputs; `tests/test_session08_outputs.py`; blind-02 setup; plan revision 8 started; attribution note in the session 05 log (§4.10); prompt-file times corrected from the transcript (E101); operating guide. |
+| 05:31–05:49 | The A5 subagent's work in progress committed (`5676441`, `38fe62f`: forward pass, float, effort vs waiting, gates, conditional items, Gantt); evidence rebuilt with the owner's approvals. A transient failure while its scenarios named an assumption not yet added (E103). |
+| 05:49–06:20 | A1 per-stage source columns; tests follow the full chain in addendum order (E102) (`0565b2d`). The A5 subagent finished at 06:10:31; its work reviewed and integrated, outputs regenerated (`2708261`, 06:20). Full suite started on the committed state. |
+| 06:20:31 | **Blind rehearsal 02 starts** (§4.7): set-up, ingest, draft, drafted outputs (06:21:57). |
+| 06:22–06:33 | The assistant's working context was summarised; no work in this interval. |
+| 06:33–06:52 | Curation of ADD-03: 31 ops; four live fixes with regressions; 8 new rows, 42 re-made readings, 6 issues; A5 templates; clarification register; curated outputs published (06:52:41); `diff`. |
+| 06:50 | Full suite on `2708261`: **386 passed** (29 min 37 s). |
+| 06:52:58 | **Key unsealed**; hashes verified. Pre-key state committed and pushed (`ec8085b`, 06:54). |
+| 06:53–07:03 | Comparison written; post-key fixes (marked, not scored) rebuilt into `out-after-fixes/`; pushed (`c6bcbdb`). |
+| 07:03–07:10 | Real outputs rebuilt with the live fixes: byte-identical to `out/`. `outputs --strict`: exit 3 (§6). Final full suite started. A date claim in the comparison corrected on re-check (E111). |
 
 ## 3. The four findings, reproduced before any fix
 
@@ -130,11 +139,51 @@ The three rows are the three STALE rows of session 06, which had prepared propos
 
 ### 4.6 A5 and the Gantt
 
-(Section completed after the A5 work; see below.)
+A subagent did the A5 work from a written brief, working only on its own files: `tenderpack/schedule.py`, `tenderpack/programme.py`, the new `tenderpack/gantt.py`, the A5 templates and assumptions, and `tests/test_session08_a5.py`. The assistant reviewed the diff, ran the tests, integrated it, and checked that the A5 README matches the outputs.
+
+- **Planning basis.**
+  - The planning date is the latest addendum's issue date: 22 Oct 2026 for the real pack.
+  - The consortium is editable in `config/assumptions.yaml`: three members, one of them foreign (scenarios with no foreign member and with two).
+  - Every duration and effort figure is labelled PROVISIONAL ASSUMPTION, with its basis.
+  - Shared data comes from A1: every activity carries the A1 requirement ids it supports.
+- **Scheduling.**
+  - A forward pass (ES/EF) from the planning date and a backward pass (LS/LF) from the pack deadlines, in Working Days.
+  - Total float; negative float is shown as `INFEASIBLE by n WD` and never compressed. `drivers.csv` says what would make it feasible.
+  - Elapsed duration is kept apart from staff effort (`effort_wd`), and `waiting_on` names the external party.
+- **Three separate statuses on every activity.**
+  - timing: OK / INFEASIBLE / DEADLINE PASSED / NO WORKING WINDOW / CONDITIONAL;
+  - decision: READY, or GATED by an open issue, with the date the decision is needed;
+  - resource: OK or OVERLOAD.
+  - Only finalisation is gated; preparation continues.
+  - The real pack has four gates: Form 4-A (I-F4A-FIELDS), Form 4-B (I-VOL-I-ENV-A-PRICES), Envelope B (I-VOL-I-ENV-B), copies (I-VOL-I-COPIES).
+- **Resources and conditions.**
+  - Disciplines and resources are listed; 5 overload runs are reported and not resolved. No levelling is claimed.
+- **Dates and conditions.**
+  - Fixed pack dates are milestones at their legal dates.
+  - Conditional obligations are shown as conditional. The ADD-01 3.1 attendance notice reads "CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known": an elapsed window, not a missed duty.
+- **Marshalling plan.** 26 items: each deliverable with its count, issuer, envelope and A1 ids.
+- **Findings on the real pack.**
+  - 43 activities. The Local Content Certificate chain and the delivery chain are INFEASIBLE by 12 WD on the provisional durations.
+  - That is a finding for the owner, not a plan: the durations are assumptions to replace with real ones.
+- **Gantt.** `a5/gantt.{svg,html,pdf}`, in Working Days, with float, gates, conditional items and milestones.
 
 ### 4.7 Blind rehearsal 02
 
-(Section completed after the rehearsal; see below.)
+Full record: `rehearsals/blind-02/COMPARISON.md`, `README.md` and `clock.txt`.
+
+- **Through the normal pipeline**, as a live session would: `ingest` → `draft` → drafted outputs → curation of the op file, the register, the issues, the A5 templates and the clarification register → `pin` → `check-register` (0 findings) → `outputs` → `diff`. Then the key was unsealed. From receipt to the scored output took 32 minutes, including about 10 minutes when the assistant's context was being summarised.
+- **Result against the sealed key:** 30 provisions, answers and notes; 24 hits, 6 partial, none missed.
+  - Every expected date is reproduced; the look-back start by its alternative reading, one day apart by stated convention.
+  - Every "must not report" trap was avoided: the PDD date is not changed, the revocation gives 72 h, the re-lettered "(i)" means the Powers of Attorney, and Q17/Q19/Q21 have no effect.
+- **What failed.**
+  - The cover-summary check missed both planted cover errors: "The Proposal Due Date is unchanged" was not extracted as a claim, and the Bid Bond validity omission was inverted.
+  - The curator's `lesser` class on the Q15 and Q16 refusals took two existing rows off the A3 gate.
+  - Note (3) was mis-classed.
+  - The model-auditor steps stayed in the pre-submission programme.
+  - `diff` does not flag multi-unit rows whose secondary units changed.
+  - The register has no status for deleted words in a clause that stays in force.
+- **Four live fixes, all general and each with a regression** (`tests/test_blind02_live_fixes.py`): Volume appendix citations; quoted row names; letter ranges in a re-lettering; C47 alignment around punctuation. The fixes leave the real pack's outputs byte-identical.
+- **Post-key fixes** (marked, not scored) are in `out-after-fixes/`. The tool follow-ups go to PLAN §14.
 
 ### 4.8 Subagents
 
@@ -142,10 +191,10 @@ Each started cold from a written brief, worked on its own files or outside the r
 
 | Subagent | Brief | Result |
 |---|---|---|
-| Clarification register | Research the topics the owner listed, apply precedence and existing answers, draft questions per VOL-I 3.3 and 5, verify every quotation, send nothing | 21 questions, 20 closed without a question, 8 unavailable items; 142 quotations verified; adopted after review (§4.5) |
-| Post-award evidence | One entry per blank post-award row: proposed requirement, not applicable or unresolved; never imply evidence is held | 33 entries, 60 basis quotations verified; integrated (§4.4) |
-| Blind addendum author | Write an unseen-style Addendum No. 3 from the PDFs and the brief only; seal the key outside the repository; reply with hashes only | 4-page PDF, issued 3 Nov 2026; hashes frozen before it was opened (§4.7) |
-| A5 and Gantt | Forward/backward pass, float, effort vs waiting, overloads, gates, conditional items, marshalling completeness, Gantt; only its own files | Stopped by the usage limit before writing anything (20:2x); resumed 05:25 (§4.6) |
+| Clarification register | Research the topics the owner listed, apply precedence and existing answers, draft questions per VOL-I 3.3 and 5, verify every quotation, send nothing | 21 questions, 20 closed without a question, 8 unavailable items; 142 quotations verified; adopted after review (§4.5). Reported 276,780 tokens; finished 20:25 |
+| Post-award evidence | One entry per blank post-award row: proposed requirement, not applicable or unresolved; never imply evidence is held | 33 entries, 60 basis quotations verified; integrated (§4.4). Reported 169,540 tokens; finished 20:14 |
+| Blind addendum author | Write an unseen-style Addendum No. 3 from the PDFs and the brief only; seal the key outside the repository; reply with hashes only | 4-page PDF, issued 3 Nov 2026; hashes frozen before it was opened (§4.7). Reported 254,315 tokens; finished 20:20 |
+| A5 and Gantt | Forward/backward pass, float, effort vs waiting, overloads, gates, conditional items, marshalling completeness, Gantt; only its own files | Stopped by the usage limit before writing anything (20:27); resumed 05:25; finished 06:10; reviewed and integrated by 06:20 (§4.6) |
 
 ### 4.9 The plan
 
@@ -179,3 +228,35 @@ Revision 8 (`docs/PLAN.md`): status, a revision row, §4.6 restating that every 
 | E99 | A suite run collided with a model change and produced transient load errors (20:14) | Reading the failures | Re-run after the edit |
 | E100 | The A5 subagent stopped on the usage limit before writing anything | 4 Oct 05:17 | Resumed with its context |
 | E101 | The prompt file gave approximate received times | 05:31, against the transcript | Exact times |
+| E102 | `test_drill` assumed the evidence chain in the order units were cited; the full chain lists ops in addendum order | 06:10, by the test | The chain sorted by stage; the test follows it |
+| E103 | A rebuild failed while the A5 scenarios named `bidder.foreign_members` before the assumption existed | 05:27, by the build (it refused) | Integrated together; rebuilt |
+| E104 | Blind-02 curation: two `annotate` targets that the provisions do not cite (Q16 at the issued item (h), Q21 at VOL-I 6.1) | 06:36, by C22 | Q16 on the cited list VOL-I 9.1 with the mapping in the note; Q21 on ADD-03 2.1 |
+| E105 | Blind-02 curation: the first 7.2 note said Volume IV has no Index of Forms (it is the cover table) | 06:41, on reading the cover units | Corrected before the build |
+| E106 | Blind-02 curation: two issue themes outside the A3 vocabulary | 06:43, on writing them | Mapped to existing themes |
+| E107 | The first C47 fix also stripped punctuation from the words it checks, breaking two true matches | 06:48, by the build (C47 failed on them) | Align without punctuation; check the words as printed; regression |
+| E108 | A post-key edit broke the YAML quoting of a note, and one note replacement silently matched nothing (wrapped text) | 06:58, by check-register and a count | Edited through the YAML structure |
+| E109 | Blind-02 curation: `lesser` for refusals of a submitted document (Q15, Q16) took two rows off the A3 gate; `score_elimination` for a zero on one criterion | After unsealing, by the key | Post-key fix (not scored); curator guidance in PLAN §14 |
+| E110 | Blind-02 curation: the model-auditor appointment and review stayed in the pre-submission programme | After unsealing, by the key | Post-key fix (not scored) |
+| E111 | The comparison first said every expected date was reproduced; the look-back start is the alternative reading (one day apart, by stated convention) | 07:08, on re-checking the dates | `COMPARISON.md` corrected; the `c6bcbdb` commit message keeps the first wording (history not rewritten) |
+
+## 6. Verification results
+
+(Completed after the final runs; see below.)
+
+## 7. What this establishes, and what it does not
+
+**Establishes:**
+
+- **The four findings.** The four reviewed findings are reproduced by tests that failed first, and pass now: a rejection can never flip back into force; a changed member row voids a decision on its table's replacement; an insertion needs its own row; a Working-Day window never falls on a non-working day, and the legal deadline never moves.
+- **The confirmations.** The owner's two confirmations are recorded against the same versions he reviewed. Their limits are kept: Permit location only; diacritics and "exclusion" open; qualifier interaction open.
+- **The three interpretations.** They went through the proposal workflow with verbatim, checked evidence. The originals and the reasons for superseding them are kept, and the rows remain PROPOSED.
+- **The unseen addendum.** It went through the normal pipeline in about 20 minutes of work, with every date and trap right. Its gaps were found by a sealed key, not by the curator.
+
+**Does not establish:**
+
+- **Correctness.** That any row, op, interpretation or clarification question is right. None is accepted; passing tests are not approval.
+- **Releasability.** That the outputs are releasable: strict mode refuses them (205 rows and 37 ops await a person's decision).
+- **The A5 durations.** They are provisional assumptions. The INFEASIBLE chains are findings to check with real lead times.
+- **Other environments.** Only the Linux x86_64 container was checked (Python 3.11.15, PyMuPDF 1.28.2, openpyxl 3.1.5). The Mac, native Excel and native PDF viewers were not.
+- **The cover-summary check.** That it catches misleading cover summaries: rehearsal 02 shows it does not yet.
+- **Blindness.** Full blindness: the curator also wrote the tool and knew the addendum would be "unseen-style".

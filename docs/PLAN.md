@@ -860,3 +860,58 @@ Before/after evidence: work log §2 and §4.
 **Review packets:** `out/review/packets/` carries the full packets of both image readings (native crops beside every band, cell and numeral; Arabic right to left), linked from batch 1 and the index.
 
 **Open:** the owner's review and the decisions in `docs/session-06_report.md` §4. Decision 8 is settled: keep the full history as it is.
+
+## 14. Session 08 status (review fixes, confirmations, interpretations, A1–A5, clarifications, blind rehearsal 02)
+
+Full record: `worklog/2026-10-03_session-08_review-confirmations-a5-clarifications.md`; the owner's messages are kept verbatim in `worklog/2026-10-03_session-08_prompt.md`.
+
+**The four review findings** (reproduced first, by tests that failed before the fixes; `tests/test_session08_audit.py`):
+
+- **Rejections hold across rebuilds.** A decision on an op binds to the op and to the state immediately before it (`Engine.subject`), whether or not the op then applies. Every op whose latest named decision is a rejection is withheld (`review.withdrawn_ops`). The engine runs once.
+- **Member rows count.** A changed member row of a replaced table or form voids a decision on the replacement.
+- **Insertions need their own row (C46).** An inserted item and an inserted group each need a row that holds them; the anchor's rows never count.
+- **Working-Day windows.** A deadline on a non-working day keeps its legal date; the work finishes on the last Working Day before it. NO WORKING WINDOW and DEADLINE ON A NON-WORKING DAY are explicit flags.
+- **Separate states.** An op is valid, withheld or applied, and these are kept apart. Rejected provisions are not merged with unresolved ones.
+- **Named decisions only.** Decisions and approvals in an assistant's or program's name are refused.
+
+**The owner's confirmations** (`curation/approvals.yaml`, with snapshots in `curation/reading-snapshots/`):
+
+- Both image readings are recorded against the reviewed versions, with what was confirmed, what was settled, what stays open, what the approval does not cover, and the confirmation record.
+- **Permit:** only the location of the precedence language (the VOL-II p3 preamble) is confirmed. The Permit's contents and Permit compliance are not.
+- `approve` shows every difference from the approved snapshot before it extends an approval.
+
+**Interpretations** (VOL-I 8.3, 3.4, 6.7):
+
+- They went through evidence-backed proposals (`P-S08-*`), and the superseded originals are kept with their reasons.
+- The rows are PROPOSED.
+
+**A1–A5:**
+
+- **A1:** Form 4-G's undertakings are rows; multi-unit rows are exported in full, with each stage's source; post-award evidence fields are filled (proposed / not applicable / unresolved).
+- **A3:** one page, with the explicit consequences, the VOL-I 11.1(i) gate, and the open matters grouped with their clarification ids.
+- **A5:** forward and backward passes, float, effort vs waiting, three statuses, gates, conditional items and overloads (not levelled). Marshalling plan, Gantt, and an editable consortium (three members, one foreign).
+
+**Clarification register:** `curation/clarifications/register.yaml` and `tenderpack/clarify.py`; outputs under `out/a4/`. 21 draft questions. **Nothing is sent.**
+
+**Blind rehearsal 02** (`rehearsals/blind-02/COMPARISON.md`):
+
+- **Score:** 24 hits and 6 partial out of 30 provisions, answers and notes; dates and traps right.
+- **Live fixes:** four, each with a regression. The real outputs are unchanged.
+- **Follow-ups:**
+  1. **C28 claims.** Extract "X is unchanged" claims and test them against every op on X (the Proposal Due Date is the date and time in 6.1). Match "Proposal validity" to 7.1, not to the Bid Bond's validity. Split a claim that names two changes. Each fix is tested against the real pack, so it does not over-fit the rehearsal.
+  2. **`diff` for multi-unit rows.** Report a row as changed when a unit other than its primary one changes.
+  3. **Deleted words.** A register status for an obligation whose words are deleted from a clause that stays in force.
+  4. **Index rows in prose.** Insert an index row from an entry given in prose, with each cell checked against the provision.
+  5. **Curator guidance (in the operating guide).** A refusal of a submitted document ("will not be accepted", "treated as not submitted") is not a `lesser` consequence: the row stays in the VOL-I 11.1(i) gate with medium confidence. `score_elimination` means the VOL-I 11.3 threshold, not a zero on one criterion.
+
+**Verification** (§6 of the work log):
+
+- The full suite, a fresh build (byte-identical to `out/`), strict mode (exit 3: 205 rows and 37 ops await a person) and the draft archive's offline rebuild.
+- Checked on Linux x86_64 only.
+
+**Model routes (unchanged, §4.6):**
+
+- The Claude Code app, OpenRouter, Ollama and a person all produce PROPOSED records that pass the same checks and need a named person's decision. The reviewed build needs no model.
+- Integrations, model selection, model-cost calculations and the cost-per-bid / eight-concurrent-bids follow-up are deferred until the owner sets up the routes.
+
+**Open for the owner:** the decisions on rows and ops; the 8.3, 3.4 and 6.7 rows; which clarification questions to send; the A5 assumptions; the native Excel/PDF and Mac checks.
