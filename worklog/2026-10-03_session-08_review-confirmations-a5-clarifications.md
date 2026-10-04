@@ -238,7 +238,7 @@ Revision 8 (`docs/PLAN.md`): status, a revision row, §4.6 restating that every 
 | E109 | Blind-02 curation: `lesser` for refusals of a submitted document (Q15, Q16) took two rows off the A3 gate; `score_elimination` for a zero on one criterion | After unsealing, by the key | Post-key fix (not scored); curator guidance in PLAN §14 |
 | E110 | Blind-02 curation: the model-auditor appointment and review stayed in the pre-submission programme | After unsealing, by the key | Post-key fix (not scored) |
 | E111 | The comparison first said every expected date was reproduced; the look-back start is the alternative reading (one day apart, by stated convention) | 07:03, on re-checking the dates | `COMPARISON.md` corrected; the `c6bcbdb` commit message keeps the first wording (history not rewritten) |
-| E112 | The archive check reported 5 of 537 A3 links as broken: their targets contain parentheses (`note(2)`), which PDF escapes, and its regular expression stopped at the escaped `)`. The links were valid (the ids exist; viewers decode the escape) | 07:34, first verification of the `091dbe9` archive | The verifier reads the target as a PDF literal string; test `tests/test_archive_scripts.py`; archive rebuilt and re-verified |
+| E112 | The archive check reported 5 of 537 A3 links as broken: their targets contain parentheses (`note(2)`), which PDF escapes, and its regular expression stopped at the escaped `)`. The links were valid (the ids exist; viewers decode the escape) | 07:33, first verification of the `091dbe9` archive | The verifier reads the target as a PDF literal string; test `tests/test_archive_scripts.py`; archive rebuilt and re-verified |
 
 ## 6. Verification results
 
@@ -253,9 +253,34 @@ All runs on the cloud container: Linux x86_64, CPython 3.11.15, PyMuPDF 1.28.2, 
 | Fresh build of the real pack with today's code | `outputs` into a new folder: exit 0. **Every file byte-identical to `out/`**, the review packets included (07:00) |
 | Strict mode (`outputs --strict`) | **Exit 3: release refused**; the previous outputs kept. Blockers: 205 of 205 rows and 37 of 37 ops without a named decision. No reading blocker (both readings carry the owner's confirmations), no STALE row, no structural failure |
 | Unseen-style rehearsal | `rehearsals/blind-02/COMPARISON.md`: 24 hit, 6 partial, 0 missed, out of 30; C28 missed both planted cover errors; four live fixes; post-key fixes kept apart |
-| Archive | Built from the commit that records these results, then checked in a fresh folder with `scripts/verify_archive.py`. Its result is recorded in the next commit (§6.1): an archive cannot contain its own verification |
+| Archive | `LAMAR-PPP-R2-DRAFT_eb32b13`: every check passes, including the offline rebuild and 391 tests offline (§6.1). This result is recorded after the archive, which cannot contain its own verification |
 
 **Content and rendering are reported apart** (`scripts/compare_outputs.py`). Content identity covers the text deliverables (CSV, JSON, Markdown, HTML, YAML, SVG): byte-identical, or the content differs. For the rendered files (PDF, PNG, XLSX), the bytes are compared first; if they differ, the content is compared: every PDF page's text and link targets, a PNG's size, every cell of every sheet. Bytes that differ with identical content are a platform rendering difference (fonts, image encoding, zip compression), reported but not a failure. Only the Linux container was checked. On a Mac, the PDF and XLSX bytes may differ while their content matches (`docs/VERIFY_ON_MAC.md`).
+
+### 6.1 The archive from `eb32b13`, checked in a fresh folder
+
+The check is `scripts/verify_archive.py` (Linux x86_64, CPython 3.11). It ran from 07:34:05 to 08:15:46, 2,501 s in total. The first archive, from `091dbe9`, stopped at the A3 link check (E112, a verifier bug); the fix is in `eb32b13`, which this archive holds.
+
+| Step | Result |
+|---|---|
+| Extraction | 252 entries |
+| `SHA256SUMS` | 251 files match; no unlisted file |
+| A3 | One page; 537 `/URI` links (111 targets), each to an id in `a3_detail.html` |
+| Review pages | 13 pages, 240 `src`/`href`, all resolved inside the archive |
+| Bundle | Clones to HEAD `eb32b13`, 33 commits, tree clean. The full history is kept, including `6a5d6cb` |
+| Network | None inside `unshare -n` |
+| Offline install | Linux wheelhouse, 12 s |
+| Offline regeneration | `make evidence` 14 s; `outputs` 66 s; `drill` 84 s; `rehearsal` 213 s; blind-01 re-ingest and rebuild 71 s; blind-02 re-ingest and rebuild 149 s |
+| Clean tree | Every regenerated file is byte-identical to the committed one (`build/`, `out/`, both drills, both blind rehearsals' `out-after-fixes`) |
+| Archive comparison | Content identical: 181 files, all byte-identical; no rendering-only differences on this platform |
+| Tests | **391 passed** offline in 31 min 30 s (the 390 plus `test_archive_scripts.py`) |
+
+**The Mac setup files.**
+
+- **Byte-identical to session 07.** The wheels and `requirements.txt` for both architectures are byte-identical to the ones delivered in session 07 (`uv.lock` is unchanged), so they were not sent again.
+- **Parts.** Joined with `cat`, each part set matches its `.sha256` and unzips: arm64 in 5 parts, x86_64 in 4.
+- **Offline resolution.** With uv and no network, every requirement resolves for Python 3.11, 3.12 and 3.13 on Apple silicon, and on Intel with a macOS 14 target. Against macOS 13 on Intel it fails, because numpy needs macOS 14 (documented in `docs/VERIFY_ON_MAC.md`).
+- **Not done:** installing or importing on a Mac.
 
 ## 7. What this establishes, and what it does not
 
