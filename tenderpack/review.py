@@ -15,6 +15,12 @@ Each decision is bound to a FINGERPRINT of what was reviewed:
        then applies (amend.Engine.subject): its provision's text, pages and evidence anchors, the section heading,
        and the pin of every unit it reads or changes, including every member row of a replaced table or form and
        of its replacement. Withholding a rejected op therefore never changes what the rejection is bound to.
+Source binding (session 09): every unit pin in a binding (a row's dependencies, an op's subject) covers the unit's
+SOURCE as well as its content: its document (id and the sha256 the build manifest records for it), pages, each
+anchor's page, box (0.1 pt) and spans, and an image reading's region and review subject (amend.unit_pin with
+evidence). A unit printed elsewhere with the same words, or a re-issued document, therefore voids the decision. The
+interpretation pins that decide STALE (register.pin_value) stay content-only: a moved source needs a person's
+decision again, not a new reading of unchanged words.
 A rejection withholds the op for as long as it is the latest decision on it, even when its subject has changed
 since (shown as CHANGED: review again; the op stays withheld until a person decides again). Pending review
 (proposed), rejection (withheld) and structural failure (invalid op) stay distinct.
@@ -33,8 +39,9 @@ from pathlib import Path
 
 import yaml
 
+from .amend import unit_evidence, unit_pin
 from .readings import is_assistant, valid_reviewer
-from .util import load_yaml, sha256_text
+from .util import load_yaml, sha256_file, sha256_text
 
 DEFAULT_PATH = "curation/reviews/decisions.yaml"
 HEADER = ("# Review decisions on register rows and amendment ops. Written only by `tenderpack accept` / `tenderpack\n"
@@ -59,36 +66,68 @@ def _canon(obj) -> str:
 
 
 def _in_force(status: str) -> bool:
-    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED"))
+    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
+
+
+def documents(r: dict) -> dict[str, str | None]:
+    """{doc id: sha256 of the source document}, as the evidence build's BUILD_MANIFEST.json recorded its input (E01
+    has checked that the file still has it), else hashed from the file; None when neither is available."""
+    root = Path(r.get("root") or ".")
+    absolute = lambda p: str((Path(p) if Path(p).is_absolute() else root / p).resolve())  # noqa: E731
+    man = Path(r["evidence_dir"]) / "BUILD_MANIFEST.json" if r.get("evidence_dir") else None
+    inputs = json.loads(man.read_text(encoding="utf-8")).get("inputs", {}) if man is not None and man.exists() else {}
+    by_path = {absolute(p): sha for p, sha in inputs.items()}
+    out = {}
+    for d in (r.get("cfg") or {}).get("documents") or []:
+        p = absolute(d["path"])
+        out[d["doc_id"]] = by_path.get(p) or (sha256_file(Path(p)) if Path(p).is_file() else None)
+    return out
+
+
+def _evidence(r: dict) -> dict:
+    """{unit id: amend.unit_evidence with its document's sha256}, cached in r (stage2.evaluate drops the cache)."""
+    if "_unit_evidence" not in r:
+        docs = documents(r)
+        r["_unit_evidence"] = {u["unit_id"]: unit_evidence(u, docs.get(u["doc"])) for u in r["units"]}
+    return r["_unit_evidence"]
 
 
 def row_binding(r: dict, e: dict) -> dict:
     """What a decision on a row is bound to."""
     row, reg = e["row"], r["register"]
+    ev = _evidence(r)
     by_stage = {s.stage: s for s in r["stages"]}
     states, last = [], None
     for st in r["order"]:
         it = reg.interp_at(row, st)
         force = _in_force(e["stages"][st]["status"])
-        deps = reg.pins_for(row, it, by_stage[st]) if (it and force) else {}
+        # the row's dependencies (register.pins_for), each pinned with its content AND its source (session 09)
+        deps = ({d: unit_pin(by_stage[st].state, d, ev) for d in reg.pins_for(row, it, by_stage[st])}
+                if (it and force) else {})
         cur = {"in_force": force, "dependencies": deps}
         if cur != last:                                    # stages that change nothing for the row add nothing
             states.append(cur)
             last = cur
-    if "_unit_evidence" not in r:
-        r["_unit_evidence"] = {u["unit_id"]: {"anchors": [{k: a.get(k) for k in ("page", "bbox", "spans") if k in a}
-                                                          for a in u.get("anchors", [])],
-                                              "reading": (u.get("reading") or {}).get("subject_sha256")} for u in r["units"]}
     return {"row": row.model_dump(mode="json", exclude={"review", "reviewer"}),
             "evidence": {k: (r["evidence_items"][k].model_dump(mode="json") if k in r["evidence_items"] else None)
                          for k in row.evidence},
-            "source": {u: r["_unit_evidence"].get(u) for u in row.units},          # where each of its units is printed
+            "source": {u: ev.get(u) for u in row.units},          # where each of its units is printed
             "states": states}
 
 
 def op_binding(r: dict, stage_index: int, x) -> dict:
-    """What a decision on an op is bound to: the op as written and its subject (the state immediately before it)."""
-    return {"op": x.op.model_dump(mode="json", exclude={"review", "reviewer"}, exclude_none=True), **x.subject}
+    """What a decision on an op is bound to: the op as written and its subject (the state immediately before it),
+    with the identity (sha256) of every document whose units the subject pins (session 09)."""
+    ev = _evidence(r)
+    docs = {v["doc"]: v["doc_sha256"] for v in ev.values()}
+    involved = set()
+    for k in [x.subject.get("provision", {}).get("unit"), *x.subject.get("before", {})]:
+        if k:
+            involved.add((ev.get(k) or {}).get("doc") or k.partition(":")[0])
+            if "+" in k:                                   # a unit an op inserted: '<anchor>+<addendum>'
+                involved.add(k.rpartition("+")[2])
+    return {"op": x.op.model_dump(mode="json", exclude={"review", "reviewer"}, exclude_none=True), **x.subject,
+            "documents": {d: docs.get(d) for d in sorted(involved)}}
 
 
 def withdrawn_ops(decisions: list[dict]) -> dict[str, dict]:

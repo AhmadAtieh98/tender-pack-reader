@@ -1,0 +1,373 @@
+# SEALED answer key: blind rehearsal 03, "Addendum No. 3" (unseen-style)
+# Do not show to the tool or the curator before the rehearsal is scored.
+
+meta:
+  rehearsal: blind-03
+  input_pdf: rehearsals/blind-03/input/ADD-03_Addendum_No_3.pdf
+  builder: build_addendum.py (deterministic; same bytes on every run with PyMuPDF 1.28.2 and the pinned FreeSerif.ttf)
+  tender: NUPA/ISTP/2026/014
+  addendum_number: 3
+  printed_issue_date: "Issued 1 November 2026"
+  issue_date: 2026-11-01            # Sunday (a Working Day)
+  pages: 4
+  clarification_requests_answered: [15, 16, 17, 18, 19]
+  pdf_metadata: {title: "(anonymous)", author: "(anonymous)", producer: "", creationDate: "D:20261101070000+00'00'"}
+  fonts:
+    latin_text: [Helvetica, Helvetica-Bold, Times-Roman, Times-Bold]   # Base-14 Type1, WinAnsi, not embedded
+    arabic_text: "XXXXXX+FreeSerif Regular, Type0/Identity-H, embedded subset with a ToUnicode CMap to base Arabic letters"
+  extraction_notes:
+    - Default get_text(), 'dict', 'blocks' and 'words' return the Arabic in logical order with base letters (no presentation forms).
+    - get_text(sort=True) reverses the word order inside the Arabic lines (a MuPDF behaviour for RTL text). A tool that sorts must not lose the Arabic source text.
+  conventions:
+    timezone: Riyadh time (UTC+3)
+    working_day_before_ADD03: Sunday to Thursday, excluding declared public holidays (no public holiday falls in Oct-Nov 2026)
+    working_day_after_ADD03: as before, also excluding Sunday 22 November 2026 (office closure notified by ADD-03 2.2 under VOL-I 2.4 as amended by ADD-03 2.1)
+    backward_count: the stated date is not counted (VOL-I 2.4, second sentence, unchanged)
+    forward_count: the day of the event / issue is not counted (general convention; the pack states only the backward rule). Accept the other convention only if the tool states it.
+    validity: PDD + N calendar days (accept PDD as day 1, one day earlier, if stated)
+  page_map:
+    1: [cover band (ADDENDUM NO. 3 / Issued 1 November 2026 / Tender NUPA/ISTP/2026/014), project line, cover summary (planted errors E1 and E2), precedence paragraph, "1 RECITALS 1.1-1.2", "2 WORKING DAYS AND CLOSURE 2.1-2.2", "3 MEMBERSHIP OF THE O&M OPERATOR 3.1-3.4", "4 AMENDMENT TO FORM 4-C: 4.1 + Arabic text of the fourth declaration as issued"]
+    2: ["4.2 + Arabic substituted fourth declaration", "4.3 + English translation (convenience)", "4.4", "5 TABLE 2-4: 5.1-5.2", "6 VOLUME V: 6.1-6.2", "7 REISSUED FORM 4-G: 7.1-7.2", "8 Q&A grid header + Q15, Q16, Q17"]
+    3: ["Q&A grid continued (header repeated): Q18, Q19"]
+    4: ["APPENDIX A - REISSUED FORM 4-G: items 1-7 (item 7 new), Bidder signature line, O&M Operator countersignature line"]
+
+# ---------------------------------------------------------------------------
+state_before:   # the pack as amended by ADD-01 and ADD-02, for the provisions ADD-03 touches
+  VOL-I_2.4: "Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday in the Kingdom. Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."   # VOL-I p2
+  VOL-I_5.2: "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered."   # VOL-I p3
+  VOL-I_6.1_as_amended: "Proposals shall be received by the Authority not later than 14:00 hours Riyadh time on Thursday 26 November 2026 at the address given in Appendix 3."   # VOL-I p3 + ADD-01 2.1
+  derived_clarification_cutoff_before: 2026-11-12   # Thu
+  VOL-I_8.1: "A Bidder shall be either a single entity or a consortium, in each case prequalified under the RFQ. No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority. An unapproved change shall result in rejection of the Proposal."   # VOL-I p4
+  VOL-I_8.8: "The proposed O&M Operator shall evidence not less than five (5) years of continuous operation of at least one (1) wastewater treatment facility of nominal capacity not less than 50,000 m3/day."   # VOL-I p4
+  VOL-I_9.4: "Form 4-C shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder. A translation may be attached for convenience but the Arabic text shall govern. Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."   # VOL-I p5
+  VOL-IV_Form_4-C:   # VOL-IV p6, IMAGE ONLY (scanned Arabic form); five numbered declarations
+    first: "أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع."
+    second: "ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة."
+    third: "ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر صادرة عن جهة حكومية في المملكة."
+    fourth: "رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض."
+    fourth_translation: "Fourth: that all the information provided in this Proposal is correct and complete, and we understand that any incorrect statement leads to the exclusion of the Proposal."
+    fifth: "خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول."
+  VOL-II_Table_2-4:   # VOL-II p3, IMAGE ONLY, "reproduced from the Environmental Permit"
+    BOD5: {unit: mg/l, limit: "10", basis: 30-day rolling average}
+    COD: {unit: mg/l, limit: "50", basis: 30-day rolling average}
+    TSS: {unit: mg/l, limit: "10", basis: 30-day rolling average}
+    TN: {unit: mg/l, limit: "3", basis: 30-day rolling average, source: "ADD-02 5.1 (was 5)"}
+    TP: {unit: mg/l, limit: "1", basis: 30-day rolling average}
+    Turbidity: {unit: NTU, limit: "2", basis: Maximum instantaneous}
+    Faecal_Coliforms: {unit: MPN/100 ml, limit: "2.2", basis: "Maximum, any single sample"}
+    Residual_Chlorine: {unit: mg/l, limit: "0.5 - 1.0", basis: Continuous at outlet}
+    pH: {unit: "-", limit: "6.0 - 9.0", basis: Continuous at outlet}
+    Oil_and_Grease: {unit: mg/l, limit: "1", basis: "Maximum, any single sample"}
+  VOL-V_29.3: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at ninety per cent (90%) of the full rate, and no availability deduction shall apply to a parameter listed in Table 2-4 as assessed on a rolling average basis."   # VOL-V p3
+  VOL-V_31.4: "Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period, entitles the Authority to require a remediation plan and, on a second occurrence, to terminate under Clause 39.3."   # VOL-V p3
+  VOL-V_39.3: "The Authority may terminate for persistent breach in the circumstances described in Clause 31.4."   # VOL-V p4
+  VOL-II_9.4: "Construction water shall not be abstracted from the local aquifer. The Project Company shall source construction water from tankered supply or treated effluent."   # VOL-II p5
+  ADD-02_7.1: "A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e)."
+  ADD-02_7.2: "Form 4-G shall be completed and submitted with Envelope A. Failure to submit Form 4-G shall render the Proposal non-responsive."
+  ADD-02_Form_4-G: "items 1-6 (segregation per VOL-II 6.2; ISMS before commissioning; named accountable security officer; incident notice within 24 h; annual independent penetration test; MFA + logging for remote access); single line 'Signed for and on behalf of the Bidder: ___ Name: ___ Date: ___'"
+  ADD-02_response_9: "No. Form 4-C shall be completed in Arabic. An English translation may be attached for convenience only."
+  ADD-02_response_10: "No. Volume I Clause 8.7 requires a Parent Company Guarantee from the ultimate parent of the proposed EPC Contractor only."
+
+# ---------------------------------------------------------------------------
+cover_summary:
+  text: >-
+    This Addendum amends the definition of Working Day and notifies a closure of the Authority's offices,
+    requires the proposed O&M Operator to be a member of the Bidder, replaces the fourth declaration in Form 4-C,
+    amends Volume II Table 2-4, deletes Volume V Clause 31.4, reissues Form 4-G, and responds to clarification
+    requests 15 to 19. The closure of the Authority's offices does not affect any deadline under the RFP Documents.
+  planted_errors:
+    E1_misleading_statement:
+      quote: "The closure of the Authority's offices does not affect any deadline under the RFP Documents."
+      truth: >-
+        False. Under VOL-I 2.4 as amended (ADD-03 2.1) Sunday 22 November 2026 is not a Working Day. The VOL-I 5.2
+        clarification cut-off (10 Working Days before Thu 26 Nov 2026, stated date not counted) moves from
+        Thursday 12 November 2026 to Wednesday 11 November 2026. The new ADD-03 3.2 deadline (4 Working Days before
+        the PDD) is Thursday 19 November 2026, not Sunday 22 November 2026. The PDD itself is unaffected.
+      detect_by: recomputing every Working-Day period counted from the PDD with the closure day excluded
+      mechanism_note: different from blind-02 E1 (there a direct time amendment contradicted the cover; here the change is derived through a definition and is stated nowhere)
+    E2_omission:
+      omitted: "ADD-03 6.1: VOL-V 29.3 Ramp-Up payment rate 90% -> 85%"
+      why_it_hides: section 6 is headed 'AMENDMENTS TO VOLUME V' and the cover lists only 'deletes Volume V Clause 31.4', so a reader expects section 6 to be the deletion only
+      impact: commercial (Availability Payment in the first 12 months after PCOD, Financial Model, Form 4-F pricing)
+  secondary_undisclosed_effects:   # not itemised on the cover; scored separately from E1/E2
+    - S1: VOL-I 5.2 cut-off moves Thu 12 Nov 2026 -> Wed 11 Nov 2026 (consequence of 2.1 + 2.2; stated nowhere)
+    - S2: 3.1 also imposes a shareholding lock-in (>= 10% of the Project Company from Financial Close to the second anniversary of PCOD); the cover says only 'member'
+    - S3: new procedural obligations 3.2 (consent application, Thu 19 Nov 2026), 3.3 (notice of intention, Sun 8 Nov 2026), 3.4 (2 Working Days notice if the O&M Operator ceases to be a member)
+    - S4: VOL-V 39.3 deleted consequentially (in 6.2)
+    - S5: Form 4-G item 7 (new undertaking on security screening) appears only in Appendix A; narrative 7.1 mentions only the countersignature
+    - S6: Form 4-G without the O&M Operator countersignature is 'treated as not submitted' -> non-responsive via ADD-02 7.2
+    - S7: ADD-02 response 9 amended by Q15 (mandatory English translation of Form 4-C for members incorporated outside the Kingdom)
+    - S8: the substituted Arabic fourth declaration adds a post-submission notification undertaking (3 Working Days, until the Preferred Bidder Notification) with exclusion for breach
+    - S9: "knock-ons of O&M membership: a Form 4-C (Arabic, substituted fourth declaration) is then required from the O&M Operator (VOL-I 9.4 'each member'); VOL-I 8.2 single participation applies to it as a member; VOL-I 8.4 combined financial standing is weighted by shareholding and now includes it; VOL-I 8.1 consent is needed to admit it"
+    - S10: "TP knock-ons: VOL-II 3.1 process design, VOL-II 7.2/7.3 reliability run (0.5 mg/l must be met; failure restarts the run), VOL-V 31.1(b) Unavailability Event above 0.5 mg/l (30-day rolling average); VOL-V 29.3 second limb (no deduction during the Ramp-Up Period for rolling-average parameters) covers TP"
+
+# ---------------------------------------------------------------------------
+provisions:
+  - id: "1.1"
+    kind: recital
+    effect: none (precedence over ADD-01 and ADD-02 under VOL-I 3.2(a))
+  - id: "1.2"
+    kind: interpretation
+    effect: references are to the documents as amended by ADD-01 and ADD-02
+  - id: "2.1"
+    page: 1
+    kind: amendment of a definition (substitution inside VOL-I 2.4)
+    target: VOL-I 2.4 (Working Day), VOL-I p2
+    old: "other than a day declared a public holiday in the Kingdom"
+    new: "other than a day declared a public holiday in the Kingdom or a day notified by the Authority in an Addendum as a day on which its offices are closed"
+    unchanged: second sentence of 2.4 (backward counting excludes the stated date)
+    final_text: "Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday in the Kingdom or a day notified by the Authority in an Addendum as a day on which its offices are closed. Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."
+    consequences:
+      - every Working-Day period in VOL-I (4.3, 5.2, 12.3, 12.4) and in ADD-03 (3.2, 3.3, 3.4, Form 4-C fourth declaration) skips a notified closure day
+      - "5.2 cut-off: Thu 12 Nov 2026 -> Wed 11 Nov 2026 (see derived_dates)"
+  - id: "2.2"
+    page: 1
+    kind: notice / declared non-working day
+    content: "Authority's offices closed Sunday 22 November 2026; notified for VOL-I 2.4 as amended; Portal remains available"
+    consequences:
+      - Sun 22 Nov 2026 is not a Working Day
+      - no physical delivery or meeting at the Authority on that day; Portal actions remain possible
+      - the PDD (Thu 26 Nov 2026 14:00) is NOT affected
+  - id: "3.1"
+    page: 1
+    kind: amendment (sentence added) - relationship / who must be a member
+    target: VOL-I 8.8, VOL-I p4
+    added: "The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company."
+    final_text: "The proposed O&M Operator shall evidence not less than five (5) years of continuous operation of at least one (1) wastewater treatment facility of nominal capacity not less than 50,000 m3/day. The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company."
+    pass_fail: pass/fail (Section 8 'mandatory requirements'; VOL-I 11.1 stage (i))
+    stated_consequence: none in 8.8
+    inferred_consequence: "fails the mandatory compliance check at VOL-I 11.1 stage (i)  # confidence medium"
+    knock_ons: [VOL-I 8.1 consent to admit, VOL-I 8.2, VOL-I 8.4 weighting, VOL-I 9.4 Form 4-C from the O&M Operator, Form 4-A para 4]
+  - id: "3.2"
+    page: 1
+    kind: new obligation, conditional on a state (O&M Operator not already a member); ADD-03-native (not inserted into a volume)
+    text: "A Bidder whose proposed O&M Operator is not a member of the Bidder shall apply through the Portal for the Authority's consent under Volume I Clause 8.1 to the admission of the O&M Operator as a member, not later than four (4) Working Days before the Proposal Due Date."
+    deadline: 2026-11-19   # Thursday; 25, 24, 23 Nov, (22 closed), 19 Nov
+    wrong_answers: {ignoring_closure: 2026-11-22 (Sunday, the closure day), calendar_days: 2026-11-22}
+    conflict: Q17 states 'not later than Sunday 22 November 2026' -> deliberate ambiguity A1
+    stated_consequence: none for missing the deadline; VOL-I 8.1 makes an unapproved change of composition a ground for rejection
+  - id: "3.3"
+    page: 1
+    kind: new obligation, conditional (intention to apply under 3.2); Friday trap
+    text: "A Bidder that intends to apply under Section 3.2 shall notify the Authority of that intention through the Portal within five (5) Working Days of the date of this Addendum."
+    deadline: 2026-11-08   # Sunday; 2, 3, 4, 5, 8 Nov
+    wrong_answers: {calendar_days: "2026-11-06 (Friday, a non-working day)"}
+    accept_if_stated: "2026-11-05 (Thursday) if the tool counts the issue date as day 1 and says so"
+    stated_consequence: none (do not invent one)
+  - id: "3.4"
+    page: 1
+    kind: new obligation CONDITIONAL ON AN EVENT (O&M Operator ceases to be a member before the PBN)
+    text: "If, at any time before the Preferred Bidder Notification, the proposed O&M Operator ceases to be a member of the Bidder, the Bidder shall notify the Authority through the Portal within two (2) Working Days of that event. Volume I Clause 8.1 applies."
+    deadline: event + 2 Working Days (event day not counted; closure day skipped)
+    stated_consequence: "none for late notice; VOL-I 8.1 applies to the change (unapproved change -> rejection)"
+  - id: "4.1-4.4"
+    pages: [1, 2]
+    kind: Arabic form amendment (one declaration replaced), Arabic source with English translation; also a conditional-on-event obligation
+    target: VOL-IV Form 4-C (image-only, VOL-IV p6), fourth numbered declaration
+    old_arabic: "رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض."
+    new_arabic: "رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، ونتعهد بإخطار الهيئة عبر البوابة خلال ثلاثة أيام عمل من تاريخ علمنا بأي تغيير يطرأ على أي من تلك المعلومات قبل صدور إشعار مقدم العرض المفضل، وندرك أن أي بيان غير صحيح أو أي إخلال بهذا التعهد يؤدي إلى استبعاد العرض."
+    printed_english_translation: "Fourth: that all the information provided in this Proposal is correct and complete; that we undertake to notify the Authority through the Portal within three (3) days of the date on which we become aware of any change to any of that information before the issue of the Preferred Bidder Notification; and that we understand that any incorrect statement, or any breach of this undertaking, will lead to the exclusion of the Proposal."
+    governing_text: Arabic (ADD-03 4.3 and VOL-I 9.4)
+    translation_discrepancy:
+      arabic: "خلال ثلاثة أيام عمل = within three Working Days"
+      english: "within three (3) days"
+      governing_result: three (3) Working Days
+      expected_behaviour: preserve the Arabic verbatim as the source text, record the English as a convenience translation, flag the discrepancy and apply the Arabic
+    other_declarations: first, second, third and fifth unchanged; no sixth declaration
+    4.4_consequence: "a Form 4-C with the fourth declaration as issued is not properly executed -> VOL-I 9.4 -> Proposal non-responsive"   # stated chain, high
+    undertaking_consequence: "incorrect statement or breach of the notification undertaking -> exclusion of the Proposal (stated in the declaration)"   # high
+    applies_to: every member of the Bidder, including an O&M Operator admitted under 3.1/3.2
+  - id: "5.1-5.2"
+    page: 2
+    kind: value change in an IMAGE-ONLY table, stated in words
+    target: VOL-II Table 2-4 (image, VOL-II p3), row Total Phosphorus (TP)
+    old: "1 mg/l (30-day rolling average)"
+    new: "0.5 mg/l (30-day rolling average)"
+    unchanged: unit, basis of assessment, every other row (TN stays 3 mg/l per ADD-02; TSS stays 10 mg/l)
+    final_row: "Total Phosphorus (TP) | mg/l | 0.5 | 30-day rolling average"
+    pass_fail: not a stated disqualifier; design requirement (scored under criterion A of Table 1-1 (revised)); contractual compliance under VOL-V 31.1(b)
+    knock_ons: [VOL-II 3.1, VOL-II 7.2, VOL-II 7.3, VOL-V 31.1(b), VOL-V 29.3 second limb]
+    note: the image itself is not reissued; any tool that re-reads the image still sees 1 mg/l and must overlay ADD-03 5.1
+  - id: "6.1"
+    page: 2
+    kind: quantity change in VOL-V payment mechanism (OMITTED FROM COVER, E2)
+    target: VOL-V 29.3, VOL-V p3
+    old: "ninety per cent (90%)"
+    new: "eighty-five per cent (85%)"
+    unchanged: Ramp-Up Period = first twelve (12) months after PCOD; second limb (no deduction for rolling-average parameters)
+    final_text: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at eighty-five per cent (85%) of the full rate, and no availability deduction shall apply to a parameter listed in Table 2-4 as assessed on a rolling average basis."
+    consequence: commercial only (Financial Model, Availability Payment, Form 4-F); not an A3 item
+  - id: "6.2"
+    page: 2
+    kind: deletion of whole clauses with explicit cross-reference handling
+    deleted: [VOL-V 31.4, VOL-V 39.3]
+    renumbering: none ("The remaining Clauses of Volume V are not renumbered")
+    final_structure: {clause_31: ["31.1", "31.2", "31.3", "31.5"], clause_39: ["39.1", "39.2", "39.4", "39.5"]}
+    cross_references:
+      - "39.3 referred to 31.4 -> deleted expressly"
+      - "31.4 referred to 39.3 -> moot"
+      - "18.2 ('termination rights under Clause 39') still valid"
+      - "Schedule 11 (Project Company Events of Default) is not supplied; whether persistent breach survives there cannot be checked -> flag as a gap, not as a finding"
+    consequence: contract-stage only (no remediation-plan or persistent-breach termination right); not an A3 item
+  - id: "7.1-7.2 + Appendix A"
+    pages: [2, 4]
+    kind: amendment of an ADD-02 provision (Form 4-G replaced) + relationship/authority (countersignature by the O&M Operator) + unmentioned table entry
+    target: ADD-02 Section 7 / Form 4-G
+    narrative_mentions: countersignature by the proposed O&M Operator
+    appendix_changes:
+      - "two signature lines: 'Signed for and on behalf of the Bidder' and 'Countersigned for and on behalf of the proposed O&M Operator'"
+      - "NEW item 7 (NOT mentioned in the narrative): 'Personnel with privileged or remote access to the control system will be subject to security screening approved by the Authority before access is granted.' (Yes / No)"
+    unchanged: items 1-6 verbatim (including 24 h incident notice), Envelope A, ADD-02 7.2 (applies to the reissued Form)
+    7.2_consequence: "Form 4-G not countersigned by the proposed O&M Operator -> treated as not submitted -> ADD-02 7.2 -> Proposal non-responsive"   # high
+    item_7_consequence_of_No: none stated (as for items 1-6)
+
+# ---------------------------------------------------------------------------
+answers:
+  Q15:
+    page: 2
+    kind: amendment of an ADD-02 answer (response 9) + new obligation conditional on a state (member incorporated outside the Kingdom)
+    with_effect: "ADD-02 response 9 now ends: 'A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.' Arabic still governs (VOL-I 9.4)."
+    final_response_9: "No. Form 4-C shall be completed in Arabic. An English translation may be attached for convenience only. A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C."
+    consequence: not stated (VOL-I 9.4 non-responsiveness is about a complete, properly executed Form 4-C; the translation is an attachment) -> unresolved U2
+    if_missed: translation stays optional; a marshalling item is lost and A2 does not show ADD-02 response 9 as amended
+  Q16:
+    page: 2
+    kind: DECOY (restatement of VOL-II 9.4)
+    with_effect: none. VOL-II 9.4 already prohibits any abstraction from the local aquifer; 'whether or not it is treated' adds nothing
+    if_read_as_change: a false 'new obligation from ADD-03' (must-not-report T3)
+  Q17:
+    page: 2
+    kind: conflicting deadline, the designated genuine ambiguity (A1)
+    text: "An application for consent to the admission of the proposed O&M Operator as a member of a Bidder shall be submitted through the Portal not later than Sunday 22 November 2026."
+    conflict_with: "3.2: four (4) Working Days before the PDD = Thursday 19 November 2026"
+    notes:
+      - 22 Nov 2026 is the closure day notified in 2.2 (Portal open); Q17 matches a count that ignores the closure
+      - both statements are in ADD-03; VOL-I 3.2(a) ranks Addenda by date only and says nothing about conflicts inside one Addendum; VOL-I 3.3 says raise it as a clarification and resolve it unilaterally at the Bidder's own risk
+      - the question asks about any additional member; the answer covers only the O&M Operator. No deadline is given for other composition changes
+    expected: escalate to a human; cite both; do not pick one as binding. Planning on 19 Nov 2026 as a labelled conservative assumption is acceptable
+  Q18:
+    page: 3
+    kind: consequential confirmation
+    with_effect: none beyond 6.2 (do not count a second deletion; do not treat as a change to 31.4 text)
+  Q19:
+    page: 3
+    kind: confirmation (restates VOL-I 9.4)
+    with_effect: none. Each member signs its own Form 4-C; the lead member cannot sign for all
+
+# ---------------------------------------------------------------------------
+appendix_notes:
+  appendix_A:
+    title: "APPENDIX A — REISSUED FORM 4-G"
+    style: ADD-01 appendix layout on a new page; ADD-02 Form 4-G title and grid geometry (columns Item / Undertaking / Confirmed)
+    unmentioned_change: item 7 (see provision 7.1-7.2)
+    no_notes_under_table: true
+
+# ---------------------------------------------------------------------------
+derived_dates:   # Riyadh time; Working Days Sun-Thu; Sun 22 Nov 2026 not a Working Day after ADD-03
+  - {item: ADD-03 issue, date: 2026-11-01, weekday: Sunday}
+  - {item: "3.3 notice of intention (5 WD after issue)", date: 2026-11-08, weekday: Sunday, wrong: "2026-11-06 Friday (calendar)", accept_if_stated: "2026-11-05 Thursday (issue counted as day 1)"}
+  - {item: "VOL-I 5.2 clarification cut-off (10 WD before PDD)", date: 2026-11-11, weekday: Wednesday, before_ADD03: "2026-11-12 Thursday", wrong: "2026-11-12 (ignores the closure; trusts E1)"}
+  - {item: "3.2 consent application (4 WD before PDD)", date: 2026-11-19, weekday: Thursday, wrong: "2026-11-22 Sunday (ignores the closure, or calendar days)", conflict: "Q17 states 2026-11-22 -> ambiguity A1"}
+  - {item: "Office closure (not a Working Day)", date: 2026-11-22, weekday: Sunday}
+  - {item: "Proposal Due Date (unchanged)", date: 2026-11-26, time: "14:00", weekday: Thursday, source: "VOL-I 6.1 as amended by ADD-01 2.1"}
+  - {item: "Proposal validity end (VOL-I 7.1, 150 days, unchanged)", date: 2027-04-25, accept_if_stated: 2027-04-24}
+  - {item: "Bid Bond validity end (VOL-I 6.3, 180 days, unchanged)", date: 2027-05-25, accept_if_stated: 2027-05-24}
+  - {item: "Footnote 12 look-back (unchanged)", value: "commercial operation within the ten years preceding 26 Nov 2026"}
+  - {item: "Form 4-C undertaking (Arabic governs)", value: "change awareness + 3 Working Days, until the Preferred Bidder Notification"}
+  - {item: "3.4 notice", value: "event + 2 Working Days, until the Preferred Bidder Notification"}
+  - {item: "VOL-I 4.3 example", value: "a contact change on Thu 19 Nov 2026 is notified by Tue 24 Nov 2026 (closure skipped), not Mon 23 Nov"}
+  - {item: "Ramp-Up Period", value: "first 12 months after PCOD at 85% (was 90%)"}
+
+# ---------------------------------------------------------------------------
+marshalling_effects:   # A5
+  - M1: new activity 'notify intention to apply (Portal)' by Sun 8 Nov 2026, if the O&M Operator is not already a member
+  - M2: last day for clarification requests moves to Wed 11 Nov 2026
+  - M3: new activity 'apply for 8.1 consent to admit the O&M Operator (Portal)' by Thu 19 Nov 2026 (conservative; Q17 says 22 Nov, unresolved); needs updated consortium/shareholding documents (>= 10% from Financial Close to the second anniversary of PCOD)
+  - M4: no physical delivery or meeting at the Authority's offices on Sun 22 Nov 2026; Portal available
+  - M5: Form 4-C per member, including the O&M Operator if admitted, in Arabic with the substituted fourth declaration, signed and stamped by that member's authorised signatory; English translation attached for each member incorporated outside the Kingdom (Q15)
+  - M6: Form 4-G must be the reissued version (7 items) with two signatures, the Bidder and the proposed O&M Operator; Envelope A; the O&M Operator's signatory must be available before sealing
+  - M7: process design and simulation inputs updated for TP 0.5 mg/l (Technical Proposal narrative, criterion A)
+  - M8: "Financial Model and Availability Payment updated for an 85% Ramp-Up payment (Envelope B: Form 4-F + Financial Model)"
+  - M9: Form 4-A paragraph 1 acknowledges Addenda 1 to 3
+  - M10: "post-submission watch items to the PBN: 3 Working-Day notice of any change in Proposal information (Form 4-C fourth declaration); 2 Working-Day notice if the O&M Operator ceases to be a member (3.4)"
+  - M11: "Envelope A order unchanged by ADD-03 (9.1 as amended by ADD-02: Form 4-G after item (e))"
+
+# ---------------------------------------------------------------------------
+a3_delta:
+  added:
+    - id: D1
+      item: Form 4-C from every member with the SUBSTITUTED fourth declaration; old wording is not properly executed
+      consequence: non-responsive (VOL-I 9.4 via ADD-03 4.4)
+      confidence: high
+    - id: D2
+      item: breach of the Form 4-C fourth-declaration undertaking (no notice within 3 Working Days of awareness of a change, before the PBN) or any incorrect statement
+      consequence: exclusion of the Proposal (stated in the Arabic declaration; the 'incorrect statement' limb already existed, the 'breach of the undertaking' limb is new)
+      confidence: high (consequence stated); period = 3 Working Days (Arabic governs; English says 3 days)
+    - id: D3
+      item: reissued Form 4-G not countersigned by the proposed O&M Operator
+      consequence: treated as not submitted -> non-responsive (ADD-03 7.2 + ADD-02 7.2)
+      confidence: high
+    - id: D4
+      item: O&M Operator not a member of the Bidder holding >= 10% from Financial Close to the second anniversary of PCOD (VOL-I 8.8 as amended)
+      consequence: not stated in 8.8; mandatory pass/fail per Section 8 heading and VOL-I 11.1(i)
+      confidence: medium (inferred)
+    - id: D5
+      item: admitting the O&M Operator without the Authority's prior written consent
+      consequence: rejection (VOL-I 8.1, stated); the application deadline is unresolved (A1)
+      confidence: high for the consequence, deadline unresolved
+  changed:
+    - ADD-02 7.2 Form 4-G row now refers to the reissued Form (countersignature, item 7)
+    - VOL-I 9.4 Form 4-C row content changes (fourth declaration); the O&M Operator may be an additional member that must submit one
+  removed: []    # 31.4/39.3 are contract-stage termination rights, not bid disqualifiers
+  must_not_add: [TP limit, VOL-V 29.3, VOL-V 31.4/39.3 deletion, Q16, Q19, 3.3 notice (no stated consequence)]
+  unresolved_additions:
+    - U1: Q17 (Sun 22 Nov 2026) vs 3.2 (Thu 19 Nov 2026) consent-application deadline. Genuine ambiguity, escalate
+    - U2: consequence of not attaching the English translation required by Q15 is not stated
+    - U3: consequence of not giving the 3.3 notice of intention is not stated (does it bar a later 3.2 application?)
+    - U4: 8.8 as amended has no stated consequence (D4 is inferred)
+    - U5: Schedule 11 not supplied; whether persistent breach survives as a Project Company Event of Default cannot be checked (contract stage)
+    - U6: a single-entity Bidder whose O&M Operator is a separate firm would have to become a consortium (8.1 consent); low relevance (all Appendix 1 Bidders are consortia)
+
+# ---------------------------------------------------------------------------
+must_not_report:   # traps: reporting any of these is a false finding
+  - T1: a change to the Proposal Due Date (stays Thu 26 Nov 2026 14:00 Riyadh; ADD-03 does not touch 6.1)
+  - T2: accepting the cover statement that no deadline is affected (E1)
+  - T3: Q16 as a new obligation or as an amendment of VOL-II 9.4
+  - T4: Q19 as a change to VOL-I 9.4 or to the signatory requirement
+  - T5: Q18 as a second deletion, or as an amendment of 31.4 text
+  - T6: any change to Table 2-4 other than TP; TN remains 3 mg/l (ADD-02); TSS remains 10 mg/l; the TP basis stays 30-day rolling average
+  - T7: a change to the Ramp-Up Period length (stays 12 months) or to the second limb of 29.3
+  - T8: renumbering of VOL-V clauses (31.5 stays 31.5; 39.4/39.5 stay)
+  - T9: changes to Form 4-C declarations other than the fourth, or a sixth declaration
+  - T10: the English translation's 'three (3) days' as the governing period
+  - T11: a change to the second sentence of VOL-I 2.4
+  - T12: Sun 22 Nov 2026 described as a public holiday declared in the Kingdom (it is an office-closure day notified under the amended definition; the counting effect is the same)
+  - T13: a Parent Company Guarantee now required from the O&M Operator (ADD-02 response 10 is untouched)
+  - T14: changes to Form 4-G items 1-6 (e.g. the 24 h incident notice is unchanged)
+  - T15: a stated consequence for 3.3 or for Q15 (none is stated)
+  - T16: Q17's 22 Nov date applied to every 8.1 composition change (it is O&M-specific)
+  - T17: "anything about blind-01/blind-02 subjects (Bid Bond amount, hard copies, footnote 12 capacity, 8.6 ratio, 10.3, 12.2, Appendix 3, Table 2-2, Table 2-6, 9.1 re-lettering): ADD-03 here does not touch them"
+
+# ---------------------------------------------------------------------------
+deliberate_ambiguities:
+  - id: A1
+    genuine_no_correct_answer: true
+    item: consent-application deadline, 3.2 (Thu 19 Nov 2026) vs Q17 (Sun 22 Nov 2026, the closure day)
+    expected: surface to a human with both sources and the VOL-I 3.2/3.3 reasoning; no automated resolution; a labelled conservative planning date (19 Nov) is fine
+    wrong: silently choosing either date; 'Q&A prevails'; 'body prevails'; 'later date applies'
+  - id: A2
+    item: forward-count convention for 3.3
+    accept: 2026-11-08 (expected) or 2026-11-05 if the convention is stated
+    reject: 2026-11-06 (Friday)
+  - id: A3
+    item: whether VOL-I 2.4 as amended (and the closure notice) also governs Working-Day periods in VOL-V (29.4, 34.3), which has no own definition
+    accept: either, if flagged; practical impact nil (closure is in Nov 2026)
+  - id: A4
+    item: Arabic vs English period in the Form 4-C undertaking
+    note: resolved by the stated rule (Arabic governs); score the flag and the 3 Working Days, not an escalation
+  - id: A5
+    item: consequence of Q15 omission, 3.3 omission and 8.8 breach (U2-U4)
+    accept: "'not stated', with any inferred consequence clearly labelled as inference"
+  - id: A6
+    item: validity end dates (counting convention), as in earlier rehearsals
+    accept: 25 Apr / 25 May 2027, or 24 Apr / 24 May 2027 if stated

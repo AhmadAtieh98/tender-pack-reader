@@ -1,0 +1,3955 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T102718Z-97c1
+  created: '2026-10-04T10:27:18Z'
+  route: host
+  provider: host
+  model_requested: Opus 5.5 (claude-opus-5-5), Claude Code subagent, host route via CLI
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014-BLIND-03
+    evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+  statements:
+  - id: S-PDD
+    kind: fact
+    text: At the previous stage (ADD-02) the Proposal Due Date in VOL-I 6.1 is Thursday 26 November 2026 (as amended
+      by ADD-01 2.1).
+    evidence:
+    - doc: VOL-I
+      unit_id: VOL-I:6.1
+      page: 3
+      kind: span
+      words: not later than 14:00 hours Riyadh time on Thursday 26 November 2026
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-CLOSURE
+    kind: interpretation
+    text: Read with VOL-I 2.4 as amended by ADD-03 2.1, Sunday 22 November 2026 (notified in ADD-03 2.2) is not
+      a Working Day, so a period in Working Days that runs across that day moves by one Working Day (e.g. VOL-I
+      5.2 clarification cut-off; ADD-03 3.2 consent application). The engine's calendar does not include this closure.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: or a day notified by the Authority in an Addendum as a day on which its offices are closed
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Authority's offices will be closed on Sunday 22 November 2026. That day is notified for the purposes
+        of Volume I Clause 2.4 as amended by Section 2.1.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:5.2
+      page: 3
+      kind: span
+      words: Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal
+        Due Date.
+      cell: null
+      crop_sha256: null
+    note: 'calculate (calendar: holidays from the pack''s assumptions) returns is_working_day 2026-11-22 = true;
+      4 Working Days before 2026-11-26 = 2026-11-22; 1 Working Day before 2026-11-22 = 2026-11-19; 10 Working Days
+      before 2026-11-26 = 2026-11-12'
+  - id: S-COVER-DEADLINE
+    kind: fact
+    text: The cover summary states that the closure does not affect any deadline; the operative provisions (2.1,
+      2.2) make the closure day a non-Working Day.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: The closure of the Authority's offices does not affect any deadline under the RFP Documents.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: That day is notified for the purposes of Volume I Clause 2.4 as amended by Section 2.1.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q17-DATE
+    kind: interpretation
+    text: ADD-03 Q17 fixes the consent-application deadline at Sunday 22 November 2026, which is the notified closure
+      day; ADD-03 3.2 sets it at four (4) Working Days before the Proposal Due Date, which, with 22 November excluded
+      as a Working Day, falls on a different (earlier) day. The two provisions of the same Addendum do not give
+      the same date.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 2
+      kind: span
+      words: shall be submitted through the Portal not later than Sunday 22 November 2026
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: not later than four (4) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Authority's offices will be closed on Sunday 22 November 2026.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-AR-WORKDAYS
+    kind: interpretation
+    text: The substituted Arabic fourth declaration (ADD-03 4.2) sets the notice period as 'خلال ثلاثة أيام عمل'
+      (a period counted in working days); the English convenience translation in ADD-03 4.3 reads 'within three
+      (3) days'. The Arabic text governs (ADD-03 4.3; VOL-I 9.4).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: خلال ثلاثة أيام عمل
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: within three (3) days of the date on which we become aware
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: The Arabic text governs, in accordance with Volume I Clause 9.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.4
+      page: 5
+      kind: span
+      words: A translation may be attached for convenience but the Arabic text shall govern.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F4G-NEW
+    kind: fact
+    text: The reissued Form 4-G (ADD-03 Appendix A) repeats items 1 to 6 of the ADD-02 Form 4-G word for word, adds
+      item 7 (security screening) and adds a countersignature block for the proposed O&M Operator; Section 7.1 mentions
+      only the countersignature.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/7
+      page: 4
+      kind: span
+      words: Personnel with privileged or remote access to the control system will be subject to security screening
+        approved by the Authority before access is granted.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/para1
+      page: 4
+      kind: span
+      words: Countersigned for and on behalf of the proposed O&M Operator
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: which provides for its countersignature by the proposed O&M Operator
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/6
+      page: 3
+      kind: span
+      words: Remote access to the control system will require multi-factor authentication and will be logged.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-FWD-COUNT
+    kind: assumption
+    text: '''within five (5) Working Days of the date of this Addendum'' is counted forward from the issue date
+      (1 November 2026); VOL-I 2.4 states a rule for backward counting only, so whether the issue date counts is
+      not stated (calculate: 5 November 2026 if counted, 8 November 2026 if not).'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: within five (5) Working Days of the date of this Addendum
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 1 November 2026
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:2.4
+      page: 2
+      kind: span
+      words: Where a period expressed in Working Days is to be counted backwards from a stated date, the stated
+        date itself shall not be counted.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/cover/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: disposition
+    provision: ADD-03:cover/para1
+    target: null
+    payload:
+      provision: ADD-03:cover/para1
+      disposition: no_effect
+      reason: the addendum's issue date line (used as the stage date)
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 1 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para1 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:cover/para1 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para1 at ADD-02
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/cover/para2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: disposition
+    provision: ADD-03:cover/para2
+    target: null
+    payload:
+      provision: ADD-03:cover/para2
+      disposition: no_effect
+      reason: tender reference on the cover; changes nothing
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para2
+      page: 1
+      kind: span
+      words: Tender NUPA/ISTP/2026/014
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para2 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:cover/para2 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para2 at ADD-02
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/cover/para3
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:cover/para3
+    target: ADD-03:cover/para3
+    payload:
+      id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      targets:
+      - ADD-03:cover/para3
+      effect: adds_obligation
+      note: Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A. The rest of the paragraph is a summary
+        and is not relied on.
+      issue: 'cover summary vs provisions: (1) it states ''The closure of the Authority''s offices does not affect
+        any deadline'', but 2.1/2.2 make Sunday 22 November 2026 a non-Working Day, which moves Working-Day periods
+        running across it (VOL-I 5.2 clarification cut-off; ADD-03 3.2) and Q17 sets a deadline on that very day;
+        (2) it omits the VOL-V 29.3 Ramp-Up payment change (6.1, 90% to 85%), the deletion of VOL-V 39.3 (6.2),
+        the new Form 4-G item 7 (security screening) and the countersignature consequence (7.2), the 10% shareholding
+        lock-in (3.1), the notice/consent obligations (3.2-3.4) and the amendment of ADD-02 response 9 (Q15)'
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: Bidders shall acknowledge receipt in Form 4-A.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: The closure of the Authority's offices does not affect any deadline under the RFP Documents.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.2
+    - ADD-03:Q17
+    - VOL-I:5.2
+    missing_information: []
+    statements:
+    - S-COVER-DEADLINE
+    - S-CLOSURE
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para3 is a provision of ADD-03 (p1)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-CLOSURE: a person must confirm it'
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:2.1; ADD-03:2.2; ADD-03:3.2; ADD-03:Q17; VOL-I:5.2'
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: conflicting
+    model_rationale: the cover summary is not evidence of any change; only the acknowledgement obligation is recorded
+  - id: ADD-03/1.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: disposition
+    provision: ADD-03:1.1
+    target: null
+    payload:
+      provision: ADD-03:1.1
+      disposition: no_effect
+      reason: 'recital: issued under VOL-I 5.3 and takes precedence over Addenda 1 and 2 under VOL-I 3.2; changes
+        no unit'
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.1
+      page: 1
+      kind: span
+      words: This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in
+        accordance with Volume I Clause 3.2.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.1 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:1.1 p1
+      ok: true
+      detail: verbatim in ADD-03:1.1 at ADD-02
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/1.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: disposition
+    provision: ADD-03:1.2
+    target: null
+    payload:
+      provision: ADD-03:1.2
+      disposition: no_effect
+      reason: rule for reading this Addendum's own references (to Clauses, Tables and Forms as amended by Addenda
+        1 and 2); it changes no unit and is applied in every item (targets read at the ADD-02 state, e.g. Table
+        2-4 TN as amended by ADD-02, Form 4-G as added by ADD-02)
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.2
+      page: 1
+      kind: span
+      words: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended
+        by Addenda Nos. 1 and 2, unless otherwise stated.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.2 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:1.2 p1
+      ok: true
+      detail: verbatim in ADD-03:1.2 at ADD-02
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/2.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:2.1
+    target: VOL-I:2.4
+    payload:
+      id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:2.4
+      old: other than a day declared a public holiday in the Kingdom
+      new: other than a day declared a public holiday in the Kingdom or a day notified by the Authority in an Addendum
+        as a day on which its offices are closed
+      origin: assistant
+      review: proposed
+    previous_value: other than a day declared a public holiday in the Kingdom
+    proposed_value: other than a day declared a public holiday in the Kingdom or a day notified by the Authority
+      in an Addendum as a day on which its offices are closed
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: In Volume I Clause 2.4, ‘other than a day declared a public holiday in the Kingdom’ is deleted
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: other than a day declared a public holiday in the Kingdom or a day notified by the Authority in an
+        Addendum as a day on which its offices are closed
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:2.4
+      page: 2
+      kind: span
+      words: Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday
+        in the Kingdom.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+    - check: previous_value
+      ok: true
+      detail: '''other than a day declared a public holiday in the Kingdom'' matches VOL-I:2.4 at ADD-02'
+    - check: proposed_value
+      ok: true
+      detail: '''other than a day declared a public holiday in the Kingdom or a day notified by the Authority in
+        an Addendum as a day on which its offices are closed'' is what the op writes'
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+    - check: evidence VOL-I:2.4 p2
+      ok: true
+      detail: verbatim in VOL-I:2.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/2.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:2.1
+    target: VOL-I:2.4
+    payload:
+      id: ADD-03/2.1(b)
+      provision: ADD-03:2.1
+      type: annotate
+      targets:
+      - VOL-I:2.4
+      effect: confirms
+      note: the second sentence of VOL-I 2.4 (backward counting excludes the stated date) is unchanged
+      expect:
+      - unit: VOL-I:2.4
+        contains: the stated date itself shall not be counted
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: The second sentence of Clause 2.4 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:2.4
+      page: 2
+      kind: span
+      words: Where a period expressed in Working Days is to be counted backwards from a stated date, the stated
+        date itself shall not be counted.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/2.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+    - check: evidence VOL-I:2.4 p2
+      ok: true
+      detail: verbatim in VOL-I:2.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/2.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:2.2
+    target: VOL-I:2.4
+    payload:
+      why: 'ADD-03 2.2 notifies Sunday 22 November 2026 as a day on which the Authority''s offices are closed, for
+        the purposes of VOL-I 2.4 as amended by 2.1, so that day is not a Working Day. The engine''s date calculator
+        (calculate: ''holidays from the pack''s assumptions'', holidays []) still returns is_working_day(2026-11-22)
+        = true, and every Working-Day period that runs across 22 November is computed one Working Day late: VOL-I
+        5.2 clarification cut-off (calculate: 12 November 2026 without the closure) and ADD-03 3.2 consent application
+        (calculate: 22 November 2026, the closure day itself). The Portal remains available that day. The cover
+        says the closure ''does not affect any deadline'', which the provisions contradict.'
+      what_is_unsupported: no op type adds a notified closure day to the VOL-I 2.4 Working-Day calendar; the calendar
+        is the pack's assumptions (outside the amendment engine), so a person must add 2026-11-22 as a non-Working
+        Day there; an annotation would record the notice but leave every computed deadline unchanged
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Authority's offices will be closed on Sunday 22 November 2026. That day is notified for the purposes
+        of Volume I Clause 2.4 as amended by Section 2.1.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Portal will remain available on that day.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:5.2
+      page: 3
+      kind: span
+      words: no later than ten (10) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/2.1
+    - VOL-I:2.4
+    - VOL-I:5.2
+    - VOL-I:6.1
+    conflicts: []
+    missing_information:
+    - the calendar entry for the notified closure (2026-11-22) in the pack's assumptions
+    statements:
+    - S-CLOSURE
+    - S-PDD
+    - S-COVER-DEADLINE
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.2 is a provision of ADD-03 (p1)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+    - check: evidence VOL-I:5.2 p3
+      ok: true
+      detail: verbatim in VOL-I:5.2 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-CLOSURE: a person must confirm it'
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: the calendar entry for the notified closure (2026-11-22) in the pack''s
+        assumptions'
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/3.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.1
+    target: VOL-I:8.8
+    payload:
+      id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: append_text
+      target: VOL-I:8.8
+      new: The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close until
+        the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company.
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close
+      until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: 'Volume I Clause 8.8 is amended by adding at the end:'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close until
+        the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.8
+      page: 4
+      kind: span
+      words: The proposed O&M Operator shall evidence not less than five (5) years of continuous operation of at
+        least one (1) wastewater treatment facility of nominal capacity not less than 50,000 m³/day.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.1 is a provision of ADD-03 (p1)
+    - check: proposed_value
+      ok: true
+      detail: '''The proposed O&M Operator shall be a member of the Bidder and shall hold, from Financial Close
+        until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company.''
+        is what the op writes'
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+    - check: evidence VOL-I:8.8 p4
+      ok: true
+      detail: verbatim in VOL-I:8.8 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/3.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.2
+    target: VOL-I:8.1
+    payload:
+      id: ADD-03/3.2
+      provision: ADD-03:3.2
+      type: annotate
+      targets:
+      - VOL-I:8.1
+      effect: adds_obligation
+      note: 'CONDITION: only a Bidder whose proposed O&M Operator is not a member of the Bidder. It shall apply
+        through the Portal for the Authority''s consent under VOL-I 8.1 to the admission of the O&M Operator as
+        a member, not later than four (4) Working Days before the Proposal Due Date (Thursday 26 November 2026).
+        Date for the engine: calculate gives Sunday 22 November 2026, but its calendar lacks the 22 November closure
+        (2.2 escalated); with that day excluded the fourth Working Day back is earlier. VOL-I 8.1: an unapproved
+        change results in rejection.'
+      issue: Q17 states a fixed date (Sunday 22 November 2026) for the same application; see the Q17 escalation
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: A Bidder whose proposed O&M Operator is not a member of the Bidder shall apply through the Portal for
+        the Authority's consent under Volume I Clause 8.1 to the admission of the O&M Operator as a member, not
+        later than four (4) Working Days before the Proposal Due Date.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.1
+      page: 4
+      kind: span
+      words: No change to the composition, shareholding or lead member of a prequalified consortium shall be effective
+        without the prior written consent of the Authority.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/3.1
+    - VOL-I:8.1
+    - VOL-I:6.1
+    - ADD-03:2.2
+    conflicts:
+    - ADD-03:Q17
+    missing_information:
+    - the computed deadline once the 22 November 2026 closure is in the calendar
+    statements:
+    - S-PDD
+    - S-CLOSURE
+    - S-Q17-DATE
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.2 is a provision of ADD-03 (p1)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:3.2 p1
+      ok: true
+      detail: verbatim in ADD-03:3.2 at ADD-02
+    - check: evidence VOL-I:8.1 p4
+      ok: true
+      detail: verbatim in VOL-I:8.1 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-CLOSURE: a person must confirm it'
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q17-DATE: a person must confirm it'
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:Q17'
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: the computed deadline once the 22 November 2026 closure is in the
+        calendar'
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: conflicting
+    model_rationale: null
+  - id: ADD-03/3.3
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.3
+    target: ADD-03:3.2
+    payload:
+      id: ADD-03/3.3
+      provision: ADD-03:3.3
+      type: annotate
+      targets:
+      - ADD-03:3.2
+      effect: adds_obligation
+      note: 'CONDITION: only a Bidder that intends to apply under ADD-03 3.2. It shall notify the Authority of that
+        intention through the Portal within five (5) Working Days of the date of this Addendum (issued 1 November
+        2026); calculate gives two readings (5 or 8 November 2026) because VOL-I 2.4 states no rule for forward
+        counting.'
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: A Bidder that intends to apply under Section 3.2 shall notify the Authority of that intention through
+        the Portal within five (5) Working Days of the date of this Addendum.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 1 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:3.2
+    - ADD-03:cover/para1
+    conflicts: []
+    missing_information:
+    - whether the issue date counts in a forward Working-Day period (VOL-I 2.4 covers backward counting only)
+    statements:
+    - S-FWD-COUNT
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.3 is a provision of ADD-03 (p1)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-02
+    - check: evidence ADD-03:cover/para1 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para1 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-FWD-COUNT: a person must confirm it'
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: whether the issue date counts in a forward Working-Day period (VOL-I
+        2.4 covers backward counting only)'
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: insufficient_evidence
+    model_rationale: null
+  - id: ADD-03/3.4
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.4
+    target: VOL-I:8.1
+    payload:
+      id: ADD-03/3.4
+      provision: ADD-03:3.4
+      type: annotate
+      targets:
+      - VOL-I:8.1
+      effect: adds_obligation
+      note: 'CONDITION: if, at any time before the Preferred Bidder Notification, the proposed O&M Operator ceases
+        to be a member of the Bidder. The Bidder shall then notify the Authority through the Portal within two (2)
+        Working Days of that event; VOL-I 8.1 (prior written consent; an unapproved change results in rejection)
+        applies.'
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.4
+      page: 1
+      kind: span
+      words: If, at any time before the Preferred Bidder Notification, the proposed O&M Operator ceases to be a
+        member of the Bidder, the Bidder shall notify the Authority through the Portal within two (2) Working Days
+        of that event. Volume I Clause 8.1 applies.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.1
+      page: 4
+      kind: span
+      words: An unapproved change shall result in rejection of the Proposal.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/3.1
+    - VOL-I:8.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.4 is a provision of ADD-03 (p1)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:3.4 p1
+      ok: true
+      detail: verbatim in ADD-03:3.4 at ADD-02
+    - check: evidence VOL-I:8.1 p4
+      ok: true
+      detail: verbatim in VOL-I:8.1 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03/4.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:4.1
+    target: VOL-IV:F4-C/image/decl4
+    payload:
+      why: 'ADD-03 4.1 deletes the fourth declaration of Form 4-C (an approved Arabic image reading, VOL-IV:F4-C/image/decl4,
+        whose source text 4.1 quotes verbatim) and ADD-03 4.2 substitutes a new Arabic fourth declaration. The change
+        is one substitution split over two provisions. simulate_amendment: a replace_text under 4.1 (old quoted
+        in 4.1, new from 4.2) fails C21 ''not in the provision: [<the 4.2 Arabic text>]''; a replace_text or insert_unit
+        under 4.2 fails C22 ''the provision cites no clause, table, form or section that exists in the pack'' (4.2
+        names no target; the heading ''4. AMENDMENT TO FORM 4-C'' is not used). A set_status deleted under 4.1 alone
+        is valid, but applying it without the substitute would leave Form 4-C without a fourth declaration, so neither
+        half is proposed as an op.'
+      what_is_unsupported: a substitution of an image-read (Arabic) form block whose deleted words and new words
+        are in two different provisions, the second of which cites no target; no op type carries old from one provision
+        and new from another, and the engine does not take the target of 4.2 from its section heading
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: 'In Form 4-C, the fourth numbered declaration, which as issued reads as follows, is deleted:'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: 'رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد
+        العرض.'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-C/image/decl4
+      page: 6
+      kind: reading
+      words: 'رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد
+        العرض.'
+      cell: null
+      crop_sha256: 1fdfa04fb0790ff2c28d1465325a6e2b07edf7c0b62381b1ca0ccc6c0315d550
+    dependencies:
+    - ADD-03:4.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-AR-WORKDAYS
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p1)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:4.1 p1
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+    - check: evidence ADD-03:4.1 p1
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+    - check: evidence VOL-IV:F4-C/image/decl4 p6
+      ok: true
+      detail: verbatim in VOL-IV:F4-C/image/decl4 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-AR-WORKDAYS: a person must confirm it'
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/4.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:4.2
+    target: VOL-IV:F4-C/image/decl4
+    payload:
+      why: 'ADD-03 4.1 deletes the fourth declaration of Form 4-C (an approved Arabic image reading, VOL-IV:F4-C/image/decl4,
+        whose source text 4.1 quotes verbatim) and ADD-03 4.2 substitutes a new Arabic fourth declaration. The change
+        is one substitution split over two provisions. simulate_amendment: a replace_text under 4.1 (old quoted
+        in 4.1, new from 4.2) fails C21 ''not in the provision: [<the 4.2 Arabic text>]''; a replace_text or insert_unit
+        under 4.2 fails C22 ''the provision cites no clause, table, form or section that exists in the pack'' (4.2
+        names no target; the heading ''4. AMENDMENT TO FORM 4-C'' is not used). A set_status deleted under 4.1 alone
+        is valid, but applying it without the substitute would leave Form 4-C without a fourth declaration, so neither
+        half is proposed as an op.'
+      what_is_unsupported: a substitution of an image-read (Arabic) form block whose deleted words and new words
+        are in two different provisions, the second of which cites no target; no op type carries old from one provision
+        and new from another, and the engine does not take the target of 4.2 from its section heading
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: 'The following fourth declaration is substituted:'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: 'رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، ونتعهد بإخطار الهيئة عبر البوابة خلال
+        ثلاثة أيام عمل من تاريخ علمنا بأي تغيير يطرأ على أي من تلك المعلومات قبل صدور إشعار مقدم العرض المفضل، وندرك
+        أن أي بيان غير صحيح أو أي إخلال بهذا التعهد يؤدي إلى استبعاد العرض.'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-C/image/decl4
+      page: 6
+      kind: reading
+      words: 'رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد
+        العرض.'
+      cell: null
+      crop_sha256: 1fdfa04fb0790ff2c28d1465325a6e2b07edf7c0b62381b1ca0ccc6c0315d550
+    dependencies:
+    - ADD-03:4.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-AR-WORKDAYS
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.2 is a provision of ADD-03 (p2)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:4.2 p2
+      ok: true
+      detail: verbatim in ADD-03:4.2 at ADD-02
+    - check: evidence ADD-03:4.2 p2
+      ok: true
+      detail: verbatim in ADD-03:4.2 at ADD-02
+    - check: evidence VOL-IV:F4-C/image/decl4 p6
+      ok: true
+      detail: verbatim in VOL-IV:F4-C/image/decl4 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-AR-WORKDAYS: a person must confirm it'
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/4.3
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:4.3
+    target: VOL-I:9.4
+    payload:
+      id: ADD-03/4.3
+      provision: ADD-03:4.3
+      type: annotate
+      targets:
+      - VOL-I:9.4
+      effect: confirms
+      note: the English translation of the substituted declaration is for convenience only; the Arabic text governs
+        (VOL-I 9.4, confirmed)
+      issue: 'the convenience translation does not match the governing Arabic: the Arabic period is ''خلال ثلاثة
+        أيام عمل'' (working days) while the translation reads ''within three (3) days''; the Arabic governs. The
+        translation''s ''exclusion of the Proposal'' for ''استبعاد العرض'' is also not one of the pack''s English
+        consequence categories'
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: An English translation of the substituted declaration is given below for convenience only. The Arabic
+        text governs, in accordance with Volume I Clause 9.4.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: within three (3) days of the date on which we become aware
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: خلال ثلاثة أيام عمل
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.4
+      page: 5
+      kind: span
+      words: A translation may be attached for convenience but the Arabic text shall govern.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:4.2
+    conflicts:
+    - ADD-03:4.2
+    missing_information: []
+    statements:
+    - S-AR-WORKDAYS
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.3 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:4.3 p2
+      ok: true
+      detail: verbatim in ADD-03:4.3 at ADD-02
+    - check: evidence ADD-03:4.3 p2
+      ok: true
+      detail: verbatim in ADD-03:4.3 at ADD-02
+    - check: evidence ADD-03:4.2 p2
+      ok: true
+      detail: verbatim in ADD-03:4.2 at ADD-02
+    - check: evidence VOL-I:9.4 p5
+      ok: true
+      detail: verbatim in VOL-I:9.4 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-AR-WORKDAYS: a person must confirm it'
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:4.2'
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: conflicting
+    model_rationale: null
+  - id: ADD-03/4.4
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:4.4
+    target: VOL-I:9.4
+    payload:
+      id: ADD-03/4.4
+      provision: ADD-03:4.4
+      type: annotate
+      targets:
+      - VOL-I:9.4
+      - VOL-IV:F4-C
+      effect: adds_obligation
+      note: each member of the Bidder shall give the fourth declaration as substituted by ADD-03 4.2; a Form 4-C
+        containing the fourth declaration as issued is not a properly executed Form 4-C under VOL-I 9.4 (failure
+        to submit a complete and properly executed Form 4-C for each member renders the Proposal non-responsive)
+      issue: depends on the substitution in 4.1/4.2, which is escalated (not representable as an op)
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.4
+      page: 2
+      kind: span
+      words: Each member of the Bidder shall give the fourth declaration as substituted. A Form 4-C that contains
+        the fourth declaration as issued is not a properly executed Form 4-C for the purposes of Volume I Clause
+        9.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.4
+      page: 5
+      kind: span
+      words: Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal
+        non-responsive.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - VOL-I:9.4
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.4 is a provision of ADD-03 (p2)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:4.4 p2
+      ok: true
+      detail: verbatim in ADD-03:4.4 at ADD-02
+    - check: evidence VOL-I:9.4 p5
+      ok: true
+      detail: verbatim in VOL-I:9.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03/5.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-II:T2-4/TP
+    payload:
+      id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: set_value
+      target: VOL-II:T2-4/TP
+      column: Limit
+      new: '0.5'
+      note: Total Phosphorus (TP) limit 1 -> 0.5 mg/l; unit (mg/l) and basis (30-day rolling average) unchanged;
+        Table 2-4 is an image reading
+      issue: VOL-II 2.4 says Table 2-4 is reproduced from the Environmental Permit; the Addendum does not say whether
+        the Permit itself now states 0.5 mg/l
+      origin: assistant
+      review: proposed
+    previous_value: '1'
+    proposed_value: '0.5'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: In Volume II Table 2-4, in the row for Total Phosphorus (TP), the limit is amended from 1 mg/l to 0.5
+        mg/l.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:T2-4/TP
+      page: 3
+      kind: reading
+      words: 'Parameter: Total Phosphorus (TP) | Unit: mg/l | Limit: 1 | Basis of assessment: 30-day rolling average'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+    - check: previous_value
+      ok: true
+      detail: '''1'' matches VOL-II:T2-4/TP at ADD-02'
+    - check: proposed_value
+      ok: true
+      detail: '''0.5'' is what the op writes'
+    - check: evidence ADD-03:5.1 p2
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+    - check: evidence VOL-II:T2-4/TP p3
+      ok: true
+      detail: verbatim in VOL-II:T2-4/TP at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    - check: approvals
+      ok: false
+      detail: changes ['VOL-II:T2-4/TP'], read from image region(s) ['VOL-II-p3-r1'] whose transcription the owner
+        approved (approvals.yaml); a person decides whether the change stands
+    verification_status: conflicting
+    model_rationale: null
+  - id: ADD-03/5.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-II:T2-4
+    payload:
+      id: ADD-03/5.1(b)
+      provision: ADD-03:5.1
+      type: annotate
+      targets:
+      - VOL-II:T2-4
+      effect: confirms
+      note: all other entries of Table 2-4 are unchanged, including the TN limit of 3 mg/l set by ADD-02 5.1
+      expect:
+      - unit: VOL-II:T2-4/TN
+        contains: 'Limit: 3'
+      - unit: VOL-II:T2-4/TP
+        contains: 30-day rolling average
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: All other entries in Table 2-4, including the Total Nitrogen limit as amended by Addendum No. 2, are
+        unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:T2-4/TN
+      page: 3
+      kind: reading
+      words: 'Parameter: Total Nitrogen (TN) | Unit: mg/l | Limit: 3 | Basis of assessment: 30-day rolling average'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/5.1
+    - ADD-02/5.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:5.1 p2
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+    - check: evidence VOL-II:T2-4/TN p3
+      ok: true
+      detail: verbatim in VOL-II:T2-4/TN at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/5.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.2
+    target: VOL-II:S3
+    payload:
+      id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: annotate
+      targets:
+      - VOL-II:S3
+      effect: adds_obligation
+      note: the process design submitted under Volume II Section 3 shall reflect the amended TP limit (0.5 mg/l)
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: Bidders shall reflect the amended limit in the process design submitted under Volume II Section 3.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/5.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.2 is a provision of ADD-03 (p2)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:5.2 p2
+      ok: true
+      detail: verbatim in ADD-03:5.2 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03/6.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:6.1
+    target: VOL-V:29.3
+    payload:
+      id: ADD-03/6.1
+      provision: ADD-03:6.1
+      type: replace_text
+      target: VOL-V:29.3
+      old: ninety per cent (90%)
+      new: eighty-five per cent (85%)
+      origin: assistant
+      review: proposed
+    previous_value: ninety per cent (90%)
+    proposed_value: eighty-five per cent (85%)
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: In Volume V Clause 29.3, ‘ninety per cent (90%)’ is deleted and ‘eighty-five per cent (85%)’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:29.3
+      page: 3
+      kind: span
+      words: the Availability Payment shall be paid at ninety per cent (90%) of the full rate
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:6.1 is a provision of ADD-03 (p2)
+    - check: previous_value
+      ok: true
+      detail: '''ninety per cent (90%)'' matches VOL-V:29.3 at ADD-02'
+    - check: proposed_value
+      ok: true
+      detail: '''eighty-five per cent (85%)'' is what the op writes'
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+    - check: evidence VOL-V:29.3 p3
+      ok: true
+      detail: verbatim in VOL-V:29.3 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/6.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:6.1
+    target: VOL-V:29.3
+    payload:
+      id: ADD-03/6.1(b)
+      provision: ADD-03:6.1
+      type: annotate
+      targets:
+      - VOL-V:29.3
+      effect: confirms
+      note: the Ramp-Up Period stays the first twelve (12) months after PCOD
+      expect:
+      - unit: VOL-V:29.3
+        contains: first twelve (12) months after PCOD
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: The duration of the Ramp-Up Period is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:29.3
+      page: 3
+      kind: span
+      words: During the first twelve (12) months after PCOD (the Ramp-Up Period)
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/6.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:6.1 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+    - check: evidence VOL-V:29.3 p3
+      ok: true
+      detail: verbatim in VOL-V:29.3 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/6.2(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:6.2
+    target: VOL-V:31.4
+    payload:
+      id: ADD-03/6.2(a)
+      provision: ADD-03:6.2
+      type: set_status
+      target: VOL-V:31.4
+      status: deleted
+      note: deleted in its entirety; the remaining Clauses of Volume V are not renumbered
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.2
+      page: 2
+      kind: span
+      words: Volume V Clause 31.4 is deleted in its entirety.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:31.4
+      page: 3
+      kind: span
+      words: Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period,
+        entitles the Authority to require a remediation plan and, on a second occurrence, to terminate under Clause
+        39.3.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:6.2 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:6.2 p2
+      ok: true
+      detail: verbatim in ADD-03:6.2 at ADD-02
+    - check: evidence VOL-V:31.4 p3
+      ok: true
+      detail: verbatim in VOL-V:31.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/6.2(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:6.2
+    target: VOL-V:39.3
+    payload:
+      id: ADD-03/6.2(b)
+      provision: ADD-03:6.2
+      type: set_status
+      target: VOL-V:39.3
+      status: deleted
+      note: the termination right for persistent breach goes with 31.4; 31.4 and 39.3 were the only units citing
+        each other (search_evidence), so no live cross-reference remains; Clauses are not renumbered
+      issue: the cover summary mentions only the deletion of 31.4, not 39.3
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.2
+      page: 2
+      kind: span
+      words: Volume V Clause 39.3, which provides for termination for persistent breach in the circumstances described
+        in Clause 31.4, is also deleted.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:6.2
+      page: 2
+      kind: span
+      words: The remaining Clauses of Volume V are not renumbered.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:39.3
+      page: 4
+      kind: span
+      words: The Authority may terminate for persistent breach in the circumstances described in Clause 31.4.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/6.2(a)
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:6.2 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:6.2 p2
+      ok: true
+      detail: verbatim in ADD-03:6.2 at ADD-02
+    - check: evidence ADD-03:6.2 p2
+      ok: true
+      detail: verbatim in ADD-03:6.2 at ADD-02
+    - check: evidence VOL-V:39.3 p4
+      ok: true
+      detail: verbatim in VOL-V:39.3 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/7.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:7.1
+    target: ADD-02:F4-G
+    payload:
+      why: 'ADD-03 7.1 deletes Form 4-G as added by ADD-02 Section 7 (group ADD-02:F4-G) and replaces it with the
+        reissued form at Appendix A (group ADD-03:F4-G: items 1-7 and a signature block with an O&M Operator countersignature).
+        simulate_amendment: replace_unit target ADD-02:F4-G (also ADD-02:F4-G/T1, ADD-02:H:F4-G) replacement ADD-03:F4-G,
+        and insert_unit new_group ADD-03:F4-G, all fail C22 ''the provision cites no clause, table, form or section
+        that exists in the pack'' (also when the provision is ADD-03:AppA/para1): the citation resolver does not
+        resolve ''Form 4-G, added to Volume IV by Section 7 of Addendum No. 2'' to the ADD-02 group (there is no
+        VOL-IV:F4-G).'
+      what_is_unsupported: 'replacing a form that an earlier addendum added (its units live under ADD-02, not VOL-IV):
+        the engine''s target citation check cannot reach it, so neither replace_unit nor insert_unit validates'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: Form 4-G, added to Volume IV by Section 7 of Addendum No. 2, is deleted and replaced by the reissued
+        Form 4-G at Appendix A to this Addendum, which provides for its countersignature by the proposed O&M Operator.
+        Bidders shall use the reissued Form.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:7.1
+      page: 3
+      kind: span
+      words: A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item
+        (e).
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/para1
+      page: 3
+      kind: span
+      words: 'Signed for and on behalf of the Bidder: _______________________ Name: _______________________ Date:
+        ____________'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-02/7.1
+    - ADD-02:F4-G
+    conflicts: []
+    missing_information:
+    - a target the engine accepts for a form added by an earlier addendum
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:7.1 is a provision of ADD-03 (p2)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:7.1 p2
+      ok: true
+      detail: verbatim in ADD-03:7.1 at ADD-02
+    - check: evidence ADD-02:7.1 p3
+      ok: true
+      detail: verbatim in ADD-02:7.1 at ADD-02
+    - check: evidence ADD-02:F4-G/para1 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/para1 at ADD-02
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: a target the engine accepts for a form added by an earlier addendum'
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/7.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:7.2
+    target: ADD-02:7.2
+    payload:
+      id: ADD-03/7.2
+      provision: ADD-03:7.2
+      type: annotate
+      targets:
+      - ADD-02:7.2
+      effect: adds_obligation
+      note: ADD-02 7.2 (submit with Envelope A; failure renders the Proposal non-responsive) applies to the reissued
+        Form 4-G; a Form 4-G not countersigned by the proposed O&M Operator shall be treated as not submitted, i.e.
+        non-responsive under ADD-02 7.2
+      issue: the reissued Form 4-G itself (7.1, Appendix A) could not be placed by an op and is escalated
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 2
+      kind: span
+      words: Section 7.2 of Addendum No. 2 applies to the reissued Form 4-G. A Form 4-G that is not countersigned
+        by the proposed O&M Operator shall be treated as not submitted.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:7.2
+      page: 3
+      kind: span
+      words: Failure to submit Form 4-G shall render the Proposal non-responsive.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    - ADD-02:7.2
+    - ADD-03/3.1
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:7.2 is a provision of ADD-03 (p2)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:7.2 p2
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+    - check: evidence ADD-02:7.2 p3
+      ok: true
+      detail: verbatim in ADD-02:7.2 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03/AppA/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:AppA/para1
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: the Appendix A lead-in (''Form 4-G is reissued below in accordance
+        with Section 7 of this Addendum. Bidders shall use this version.''). It enters the state only through the
+        7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 4
+      kind: span
+      words: Form 4-G is reissued below in accordance with Section 7 of this Addendum. Bidders shall use this version.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:AppA/para1 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:AppA/para1 p4
+      ok: true
+      detail: verbatim in ADD-03:AppA/para1 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/1
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 1, word for word the same as ADD-02 Form 4-G item 1. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/1
+      page: 4
+      kind: span
+      words: The operational technology environment will be segregated from any business network in accordance with
+        Volume II Clause 6.2.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/1
+      page: 3
+      kind: span
+      words: The operational technology environment will be segregated from any business network in accordance with
+        Volume II Clause 6.2.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/1 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/1 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/1 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/1 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/1 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/2
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 2, word for word the same as ADD-02 Form 4-G item 2. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/2
+      page: 4
+      kind: span
+      words: An information security management system covering the operational technology environment will be implemented
+        before commissioning.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/2
+      page: 3
+      kind: span
+      words: An information security management system covering the operational technology environment will be implemented
+        before commissioning.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/2 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/2 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/2 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/2 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/2 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/3
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/3
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 3, word for word the same as ADD-02 Form 4-G item 3. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/3
+      page: 4
+      kind: span
+      words: A named accountable security officer will be appointed for the concession period.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/3
+      page: 3
+      kind: span
+      words: A named accountable security officer will be appointed for the concession period.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/3 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/3 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/3 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/3 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/3 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/4
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/4
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 4, word for word the same as ADD-02 Form 4-G item 4. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/4
+      page: 4
+      kind: span
+      words: Security incidents affecting the Facility will be notified to the Authority within twenty-four (24)
+        hours of detection.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/4
+      page: 3
+      kind: span
+      words: Security incidents affecting the Facility will be notified to the Authority within twenty-four (24)
+        hours of detection.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/4 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/4 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/4 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/4 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/4 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/5
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/5
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 5, word for word the same as ADD-02 Form 4-G item 5. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/5
+      page: 4
+      kind: span
+      words: An independent penetration test of the operational technology environment will be carried out annually
+        and the report provided to the Authority.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/5
+      page: 3
+      kind: span
+      words: An independent penetration test of the operational technology environment will be carried out annually
+        and the report provided to the Authority.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/5 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/5 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/5 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/5 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/5 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/6
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/6
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: item 6, word for word the same as ADD-02 Form 4-G item 6. It enters
+        the state only through the 7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/6
+      page: 4
+      kind: span
+      words: Remote access to the control system will require multi-factor authentication and will be logged.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:F4-G/T1/6
+      page: 3
+      kind: span
+      words: Remote access to the control system will require multi-factor authentication and will be logged.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/6 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/6 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/6 at ADD-02
+    - check: evidence ADD-02:F4-G/T1/6 p3
+      ok: true
+      detail: verbatim in ADD-02:F4-G/T1/6 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/T1/7
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/T1/7
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: NEW item 7 (security screening approved by the Authority before privileged
+        or remote access), which Section 7.1 and the cover do not mention. It enters the state only through the
+        7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/T1/7
+      page: 4
+      kind: span
+      words: Personnel with privileged or remote access to the control system will be subject to security screening
+        approved by the Authority before access is granted.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/T1/7 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/T1/7 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/T1/7 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/F4-G/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:F4-G/para1
+    target: ADD-02:F4-G
+    payload:
+      why: 'content of the reissued Form 4-G: the signature block, which ADDS ''Countersigned for and on behalf
+        of the proposed O&M Operator'' (ADD-02 form: Bidder signature only). It enters the state only through the
+        7.1 replacement, which fails C22 and is escalated (see ADD-03/7.1).'
+      what_is_unsupported: the replacement that would carry this content (replace_unit of a form added by ADD-02)
+        does not validate
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-G/para1
+      page: 4
+      kind: span
+      words: Countersigned for and on behalf of the proposed O&M Operator
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4G-NEW
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:F4-G/para1 is a provision of ADD-03 (p4)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:F4-G/para1 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-G/para1 at ADD-02
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/Q15
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q15
+    target: ADD-02:Q9
+    payload:
+      id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: append_text
+      target: ADD-02:Q9
+      new: A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.
+      note: the response to clarification request 9 in ADD-02 is amended by adding this sentence at the end
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: 'The response to clarification request 9 in Addendum No. 2 is amended by adding at the end:'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:Q9
+      page: 2
+      kind: cell
+      words: No. Form 4-C shall be completed in Arabic. An English translation may be attached for convenience only.
+      cell:
+        row_key: '9'
+        column: Authority response
+      crop_sha256: null
+    dependencies:
+    - ADD-02:Q9
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q15 is a provision of ADD-03 (p2)
+    - check: proposed_value
+      ok: true
+      detail: '''A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.''
+        is what the op writes'
+    - check: evidence ADD-03:Q15 p2
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+    - check: evidence ADD-03:Q15 p2
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+    - check: evidence ADD-02:Q9 p2
+      ok: true
+      detail: verbatim in ADD-02:Q9 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/Q15(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q15
+    target: VOL-I:9.4
+    payload:
+      id: ADD-03/Q15(b)
+      provision: ADD-03:Q15
+      type: annotate
+      targets:
+      - VOL-I:9.4
+      effect: adds_obligation
+      note: 'CONDITION: a member of the Bidder incorporated outside the Kingdom. Such a member shall attach an English
+        translation to its Form 4-C (for other members it stays optional); the Arabic text of Form 4-C governs (VOL-I
+        9.4)'
+      issue: a clarification answer turns the optional translation of VOL-I 9.4 into a requirement for foreign members;
+        no consequence of omission is stated
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: The Arabic text of Form 4-C governs in accordance with Volume I Clause 9.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.4
+      page: 5
+      kind: span
+      words: A translation may be attached for convenience but the Arabic text shall govern.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/Q15
+    - VOL-I:9.4
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q15 is a provision of ADD-03 (p2)
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+    - check: evidence ADD-03:Q15 p2
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+    - check: evidence ADD-03:Q15 p2
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+    - check: evidence VOL-I:9.4 p5
+      ok: true
+      detail: verbatim in VOL-I:9.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03/Q16
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q16
+    target: VOL-II:9.4
+    payload:
+      id: ADD-03/Q16
+      provision: ADD-03:Q16
+      type: annotate
+      targets:
+      - VOL-II:9.4
+      effect: confirms
+      note: no abstraction from the local aquifer for construction water, whether or not the water is treated before
+        use; VOL-II 9.4 applies
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 2
+      kind: span
+      words: No. Volume II Clause 9.4 applies. Construction water shall be sourced from tankered supply or treated
+        effluent and shall not be abstracted from the local aquifer, whether or not it is treated before use.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:9.4
+      page: 5
+      kind: span
+      words: Construction water shall not be abstracted from the local aquifer.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q16 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:Q16 p2
+      ok: true
+      detail: verbatim in ADD-03:Q16 at ADD-02
+    - check: evidence VOL-II:9.4 p5
+      ok: true
+      detail: verbatim in VOL-II:9.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/Q17
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:Q17
+    target: VOL-I:8.1
+    payload:
+      why: 'Q17 (an answer) fixes the deadline for an application for consent to admit the proposed O&M Operator
+        as a member at ''not later than Sunday 22 November 2026'' and refers Bidders to Section 3. Section 3.2 sets
+        the same deadline as ''four (4) Working Days before the Proposal Due Date'' (Thursday 26 November 2026).
+        Under VOL-I 2.4 as amended by 2.1, 22 November 2026 is the day 2.2 notifies as an office closure, so it
+        is not a Working Day and the fourth Working Day back from 26 November falls earlier (calculate: 1 Working
+        Day before 22 November = Thursday 19 November 2026); calculate gives 22 November only because its calendar
+        lacks the closure. Q17''s date is also the closure day itself (the Portal stays available). The Addendum
+        gives two different deadlines for one act and does not say which prevails.'
+      what_is_unsupported: 'an ambiguity inside the Addendum with no single correct answer (a fixed date in an answer
+        vs a Working-Day rule in the body, read with the closure): a person must decide the deadline, possibly by
+        clarification; recording either date as the obligation would be a guess'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 2
+      kind: span
+      words: Bidders are referred to Section 3 of this Addendum. An application for consent to the admission of
+        the proposed O&M Operator as a member of a Bidder shall be submitted through the Portal not later than Sunday
+        22 November 2026.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: not later than four (4) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Authority's offices will be closed on Sunday 22 November 2026.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.1
+      page: 4
+      kind: span
+      words: No change to the composition, shareholding or lead member of a prequalified consortium shall be effective
+        without the prior written consent of the Authority.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:3.2
+    - ADD-03:2.2
+    - VOL-I:6.1
+    - VOL-I:8.1
+    conflicts:
+    - ADD-03:3.2
+    - ADD-03:2.2
+    missing_information:
+    - 'which deadline governs: Sunday 22 November 2026 (Q17) or four Working Days before the Proposal Due Date with
+      the closure excluded (3.2)'
+    statements:
+    - S-Q17-DATE
+    - S-CLOSURE
+    - S-PDD
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q17 is a provision of ADD-03 (p2)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:Q17 p2
+      ok: true
+      detail: verbatim in ADD-03:Q17 at ADD-02
+    - check: evidence ADD-03:3.2 p1
+      ok: true
+      detail: verbatim in ADD-03:3.2 at ADD-02
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+    - check: evidence VOL-I:8.1 p4
+      ok: true
+      detail: verbatim in VOL-I:8.1 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q17-DATE: a person must confirm it'
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-CLOSURE: a person must confirm it'
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:3.2; ADD-03:2.2'
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: which deadline governs: Sunday 22 November 2026 (Q17) or four Working
+        Days before the Proposal Due Date with the closure excluded (3.2)'
+    verification_status: conflicting
+    model_rationale: null
+  - id: ADD-03/Q18
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q18
+    target: VOL-V:31.4
+    payload:
+      id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      targets:
+      - VOL-V:31.4
+      effect: confirms
+      note: 'the question does not arise: VOL-V 31.4 is deleted by ADD-03 6.2 (the rolling ninety-day period goes
+        with it)'
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 3
+      kind: span
+      words: Volume V Clause 31.4 is deleted by Section 6.2 of this Addendum. The question does not arise.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:31.4
+      page: 3
+      kind: span
+      words: in any rolling ninety (90) day period
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/6.2(a)
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q18 is a provision of ADD-03 (p3)
+    - check: evidence ADD-03:Q18 p3
+      ok: true
+      detail: verbatim in ADD-03:Q18 at ADD-02
+    - check: evidence VOL-V:31.4 p3
+      ok: true
+      detail: verbatim in VOL-V:31.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/Q19
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-03
+      evidence_build_id: 986bd2cc519294acce20e05ec6f8cb384271c685ce67930f2c066ca141966bc3
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q19
+    target: VOL-I:9.4
+    payload:
+      id: ADD-03/Q19
+      provision: ADD-03:Q19
+      type: annotate
+      targets:
+      - VOL-I:9.4
+      effect: confirms
+      note: the lead member may not give the Form 4-C declarations for all members; each member gives its own Form
+        4-C, signed and stamped by its own authorised signatory (VOL-I 9.4)
+      origin: assistant
+      review: proposed
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 3
+      kind: span
+      words: No. Volume I Clause 9.4 requires a complete and properly executed Form 4-C for each member of the Bidder,
+        signed and stamped by an authorised signatory of that member.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.4
+      page: 5
+      kind: span
+      words: signed and stamped by an authorised signatory of each member of the Bidder
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q19 is a provision of ADD-03 (p3)
+    - check: evidence ADD-03:Q19 p3
+      ok: true
+      detail: verbatim in ADD-03:Q19 at ADD-02
+    - check: evidence VOL-I:9.4 p5
+      ok: true
+      detail: verbatim in VOL-I:9.4 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  coverage:
+    provisions_total: 35
+    accounted: 35
+    unaccounted: []
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: complete
+  controller_version: s09-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-PDD:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-I:6.1 p3
+        ok: true
+        detail: verbatim in VOL-I:6.1 at ADD-02
+    S-CLOSURE:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+      - check: evidence VOL-I:5.2 p3
+        ok: true
+        detail: verbatim in VOL-I:5.2 at ADD-02
+    S-COVER-DEADLINE:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+    S-Q17-DATE:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q17 p2
+        ok: true
+        detail: verbatim in ADD-03:Q17 at ADD-02
+      - check: evidence ADD-03:3.2 p1
+        ok: true
+        detail: verbatim in ADD-03:3.2 at ADD-02
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+    S-AR-WORKDAYS:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.2 p2
+        ok: true
+        detail: verbatim in ADD-03:4.2 at ADD-02
+      - check: evidence ADD-03:4.3 p2
+        ok: true
+        detail: verbatim in ADD-03:4.3 at ADD-02
+      - check: evidence ADD-03:4.3 p2
+        ok: true
+        detail: verbatim in ADD-03:4.3 at ADD-02
+      - check: evidence VOL-I:9.4 p5
+        ok: true
+        detail: verbatim in VOL-I:9.4 at ADD-02
+    S-F4G-NEW:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:F4-G/T1/7 p4
+        ok: true
+        detail: verbatim in ADD-03:F4-G/T1/7 at ADD-02
+      - check: evidence ADD-03:F4-G/para1 p4
+        ok: true
+        detail: verbatim in ADD-03:F4-G/para1 at ADD-02
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+      - check: evidence ADD-02:F4-G/T1/6 p3
+        ok: true
+        detail: verbatim in ADD-02:F4-G/T1/6 at ADD-02
+    S-FWD-COUNT:
+      kind: assumption
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.3 p1
+        ok: true
+        detail: verbatim in ADD-03:3.3 at ADD-02
+      - check: evidence ADD-03:cover/para1 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para1 at ADD-02
+      - check: evidence VOL-I:2.4 p2
+        ok: true
+        detail: verbatim in VOL-I:2.4 at ADD-02
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      target: ADD-03:cover/para3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:cover/para3 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:cover/para3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:2.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:2.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:2.4 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:2.4 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''other than a day declared a public holiday in the Kingdom'' occurs 1 time(s) in VOL-I:2.4'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-I:2.4
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-I:2.4
+        - VOL-I:2.4
+        also_in: []
+    - id: ADD-03/2.1(b)
+      provision: ADD-03:2.1
+      type: annotate
+      target: VOL-I:2.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:2.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      - id: C27
+        ok: true
+        detail: VOL-I:2.4 still says 'the stated date itself shall not be counted'
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: append_text
+      target: VOL-I:8.8
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:8.8 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:8.8 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C24
+        ok: true
+        detail: appended text not already present
+      failed: []
+      changed:
+      - VOL-I:8.8
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-I:8.8
+    - id: ADD-03/3.2
+      provision: ADD-03:3.2
+      type: annotate
+      target: VOL-I:8.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:8.1'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/3.3
+      provision: ADD-03:3.3
+      type: annotate
+      target: ADD-03:3.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.3 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:3.2'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/3.4
+      provision: ADD-03:3.4
+      type: annotate
+      target: VOL-I:8.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.4 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:8.1'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/4.3
+      provision: ADD-03:4.3
+      type: annotate
+      target: VOL-I:9.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.3 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/4.4
+      provision: ADD-03:4.4
+      type: annotate
+      target: VOL-I:9.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.4 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.4'', ''VOL-IV:F4-C'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: set_value
+      target: VOL-II:T2-4/TP
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:T2-4/TP is row 'TP' of cited VOL-II:T2-4
+      - id: C22
+        ok: true
+        detail: target VOL-II:T2-4/TP exists
+      - id: C22
+        ok: true
+        detail: target is an active table row with column 'Limit'
+      - id: C21
+        ok: true
+        detail: the provision names the column 'Limit'
+      - id: C21
+        ok: true
+        detail: the provision states the new value '0.5' mg/l
+      failed: []
+      changed:
+      - VOL-II:T2-4/TP
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-II:T2-4
+        old_value: '1'
+    - id: ADD-03/5.1(b)
+      provision: ADD-03:5.1
+      type: annotate
+      target: VOL-II:T2-4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:T2-4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      - id: C27
+        ok: true
+        detail: 'VOL-II:T2-4/TN still says ''Limit: 3'''
+      - id: C27
+        ok: true
+        detail: VOL-II:T2-4/TP still says '30-day rolling average'
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: annotate
+      target: VOL-II:S3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:S3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/6.1
+      provision: ADD-03:6.1
+      type: replace_text
+      target: VOL-V:29.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:6.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:6.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:29.3 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:29.3 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''ninety per cent (90%)'' occurs 1 time(s) in VOL-V:29.3'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:29.3
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-V:29.3
+        also_in: []
+    - id: ADD-03/6.1(b)
+      provision: ADD-03:6.1
+      type: annotate
+      target: VOL-V:29.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:6.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-V:29.3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      - id: C27
+        ok: true
+        detail: VOL-V:29.3 still says 'first twelve (12) months after PCOD'
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/6.2(a)
+      provision: ADD-03:6.2
+      type: set_status
+      target: VOL-V:31.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:6.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:31.4 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:31.4 exists
+      - id: C22
+        ok: true
+        detail: deleted needs the target active; it is active
+      failed: []
+      changed:
+      - VOL-V:31.4
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-V:31.4
+        - VOL-V:39.3
+        - VOL-V:31.4
+    - id: ADD-03/6.2(b)
+      provision: ADD-03:6.2
+      type: set_status
+      target: VOL-V:39.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:6.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:39.3 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:39.3 exists
+      - id: C22
+        ok: true
+        detail: deleted needs the target active; it is active
+      failed: []
+      changed:
+      - VOL-V:39.3
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-V:31.4
+        - VOL-V:39.3
+        - VOL-V:31.4
+    - id: ADD-03/7.2
+      provision: ADD-03:7.2
+      type: annotate
+      target: ADD-02:7.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:7.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-02:7.2'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: append_text
+      target: ADD-02:Q9
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q15 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:Q15
+      - id: C22
+        ok: true
+        detail: declared target ADD-02:Q9 is cited
+      - id: C22
+        ok: true
+        detail: target ADD-02:Q9 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C24
+        ok: true
+        detail: appended text not already present
+      failed: []
+      changed:
+      - ADD-02:Q9
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-IV:F4-C
+        - ADD-02:Q9
+        - VOL-IV:F4-C
+        - VOL-IV:F4-C
+        - VOL-I:9.4
+    - id: ADD-03/Q15(b)
+      provision: ADD-03:Q15
+      type: annotate
+      target: VOL-I:9.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q15 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/Q16
+      provision: ADD-03:Q16
+      type: annotate
+      target: VOL-II:9.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q16 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:9.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      target: VOL-V:31.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q18 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-V:31.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    - id: ADD-03/Q19
+      provision: ADD-03:Q19
+      type: annotate
+      target: VOL-I:9.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q19 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      details: {}
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para3
+      disposition: op
+      accounted_by:
+      - ADD-03/cover/para3
+    - provision: ADD-03:1.1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:1.2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:2.1
+      disposition: op
+      accounted_by:
+      - ADD-03/2.1
+      - ADD-03/2.1(b)
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: op
+      accounted_by:
+      - ADD-03/3.1
+    - provision: ADD-03:3.2
+      disposition: op
+      accounted_by:
+      - ADD-03/3.2
+    - provision: ADD-03:3.3
+      disposition: op
+      accounted_by:
+      - ADD-03/3.3
+    - provision: ADD-03:3.4
+      disposition: op
+      accounted_by:
+      - ADD-03/3.4
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.3
+      disposition: op
+      accounted_by:
+      - ADD-03/4.3
+    - provision: ADD-03:4.4
+      disposition: op
+      accounted_by:
+      - ADD-03/4.4
+    - provision: ADD-03:5.1
+      disposition: op
+      accounted_by:
+      - ADD-03/5.1
+      - ADD-03/5.1(b)
+    - provision: ADD-03:5.2
+      disposition: op
+      accounted_by:
+      - ADD-03/5.2
+    - provision: ADD-03:6.1
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+      - ADD-03/6.1(b)
+    - provision: ADD-03:6.2
+      disposition: op
+      accounted_by:
+      - ADD-03/6.2(a)
+      - ADD-03/6.2(b)
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: op
+      accounted_by:
+      - ADD-03/7.2
+    - provision: ADD-03:Q15
+      disposition: op
+      accounted_by:
+      - ADD-03/Q15
+      - ADD-03/Q15(b)
+    - provision: ADD-03:Q16
+      disposition: op
+      accounted_by:
+      - ADD-03/Q16
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: op
+      accounted_by:
+      - ADD-03/Q18
+    - provision: ADD-03:Q19
+      disposition: op
+      accounted_by:
+      - ADD-03/Q19
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/5
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/6
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/T1/7
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-G/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:2.2
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:7.1
+    - ADD-03:Q17
+    - ADD-03:AppA/para1
+    - ADD-03:F4-G/T1/1
+    - ADD-03:F4-G/T1/2
+    - ADD-03:F4-G/T1/3
+    - ADD-03:F4-G/T1/4
+    - ADD-03:F4-G/T1/5
+    - ADD-03:F4-G/T1/6
+    - ADD-03:F4-G/T1/7
+    - ADD-03:F4-G/para1
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - ADD-02:Q9
+    - VOL-I:2.4
+    - VOL-I:8.8
+    - VOL-II:T2-4/TP
+    - VOL-V:29.3
+    - VOL-V:31.4
+    - VOL-V:39.3
+    c46_needs:
+    - op: ADD-03/cover/para3
+      output: A1
+      rows: []
+      detail: 'ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''This Addendum amends the definition of Working Day and notifies a closure of the Authority''s offices,
+        requires the proposed O&M Operator to be a member of the Bidder, replaces the fourth declarat…'
+    - op: ADD-03/3.3
+      output: A1
+      rows: []
+      detail: 'ADD-03/3.3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: ''A
+        Bidder that intends to apply under Section 3.2 shall notify the Authority of that intention through the
+        Portal within five (5) Working Days of the date of this Addendum.'''
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - ADD-02:Q9
+    - VOL-I:2.4
+    - VOL-I:8.8
+    - VOL-V:29.3
+    - VOL-V:31.4
+    - VOL-V:39.3
+    rows_citing_changed_units:
+    - VOL-I-8.8-01
+    - VOL-V-29.3-01
+    - VOL-V-31.4-01
+    rows_stale_at_addendum:
+    - row: VOL-I-9.4-01
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+      - new dependency ADD-03:Q19
+      - VOL-I:9.4 changed since ADD-02 (by ADD-03/Q19)
+    - row: VOL-IV-F4C-04
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-IV-F4C-N1
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-II-T2-4-TN
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-I-8.8-01
+      why:
+      - VOL-I:8.8 changed since BASE (by ADD-03/3.1)
+    - row: VOL-II-2.5-01
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-BOD5
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-COD
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-TSS
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-TP
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-Turbidity
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-FaecalColiforms
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-ResidualChlorine
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-pH
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-OilGrease
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-T2-4-NOTE1
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency VOL-II:T2-4
+    - row: VOL-II-9.4-01
+      why:
+      - new dependency ADD-03:Q16
+      - VOL-II:9.4 changed since BASE (by ADD-03/Q16)
+    - row: VOL-IV-F4C-01
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-IV-F4C-02
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-IV-F4C-03
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-IV-F4C-05
+      why:
+      - ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)
+    - row: VOL-V-29.3-01
+      why:
+      - new dependency ADD-03:5.1
+      - new dependency ADD-03:6.1
+      - new dependency VOL-II:T2-4
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units:
+    - CQ-F4C-EXCLUSION
+    - CQ-PERSISTENT-BREACH
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: not found
+        claim: 3
+        detail: '''replaces the fourth declaration in Form 4-C'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 6
+        detail: '''reissues Form 4-G'': no provision of ADD-03 does this'
+      - kind: understated
+        claim: 7
+        op: ADD-03/Q15
+        provision: ADD-03:Q15
+        detail: '''responds to clarification requests 15 to 19'', but ADD-03/Q15 adds text to ADD-02:Q9: ''Yes.
+          The response to clarification request 9 in Addendum No. 2 is amended by adding at the end: ‘A member incorporated
+          outside the Kingdom shall attach an English translation to its Form 4-C.’ The Arabic text of Form 4-C
+          governs in accorda…'''
+      - kind: omitted
+        op: ADD-03/6.1
+        provision: ADD-03:6.1
+        detail: 'ADD-03/6.1 amends VOL-V:29.3; the summary does not mention it: ''In Volume V Clause 29.3, ‘ninety
+          per cent (90%)’ is deleted and ‘eighty-five per cent (85%)’ is substituted. The duration of the Ramp-Up
+          Period is unchanged.'''
+      - kind: omitted
+        op: ADD-03/6.2(b)
+        provision: ADD-03:6.2
+        detail: 'ADD-03/6.2(b) deletes VOL-V:39.3; the summary does not mention it: ''Volume V Clause 31.4 is deleted
+          in its entirety. Volume V Clause 39.3, which provides for termination for persistent breach in the circumstances
+          described in Clause 31.4, is also deleted. The remaining Clauses of Volume V are not renumbere…'''
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.2
+        detail: ADD-03:3.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3
+        detail: ADD-03:3.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.4
+        detail: ADD-03:3.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.1
+        detail: ADD-03:4.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.2
+        detail: ADD-03:4.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.3
+        detail: ADD-03:4.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.4
+        detail: ADD-03:4.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/1
+        detail: ADD-03:F4-G/T1/1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/2
+        detail: ADD-03:F4-G/T1/2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/3
+        detail: ADD-03:F4-G/T1/3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/4
+        detail: ADD-03:F4-G/T1/4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/5
+        detail: ADD-03:F4-G/T1/5 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/6
+        detail: ADD-03:F4-G/T1/6 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/T1/7
+        detail: ADD-03:F4-G/T1/7 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-G/para1
+        detail: ADD-03:F4-G/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      requirements:
+        new: []
+        out:
+        - VOL-V-31.4-01
+        changed:
+        - VOL-I-8.8-01
+        - VOL-V-29.3-01
+        secondary: {}
+      stale:
+      - VOL-I-9.4-01
+      - VOL-IV-F4C-04
+      - VOL-IV-F4C-N1
+      - VOL-II-T2-4-TN
+      - VOL-I-8.8-01
+      - VOL-II-2.5-01
+      - VOL-II-T2-4-BOD5
+      - VOL-II-T2-4-COD
+      - VOL-II-T2-4-TSS
+      - VOL-II-T2-4-TP
+      - VOL-II-T2-4-Turbidity
+      - VOL-II-T2-4-FaecalColiforms
+      - VOL-II-T2-4-ResidualChlorine
+      - VOL-II-T2-4-pH
+      - VOL-II-T2-4-OilGrease
+      - VOL-II-T2-4-NOTE1
+      - VOL-II-9.4-01
+      - VOL-IV-F4C-01
+      - VOL-IV-F4C-02
+      - VOL-IV-F4C-03
+      - VOL-IV-F4C-05
+      - VOL-V-29.3-01
+      a3:
+        enters: []
+        leaves: []
+      programme:
+      - activity: form-4c-prep
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.4-01, VOL-IV-F4C-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-04,
+          VOL-IV-F4C-05, VOL-IV-F4C-N1'
+      - activity: form-4c-sign
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.4-01, VOL-IV-F4C-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-04,
+          VOL-IV-F4C-05, VOL-IV-F4C-N1'
+      - activity: om-evidence
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.8-01'
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: VOL-II-2.5-01, VOL-II-9.4-01, VOL-II-T2-4-BOD5, VOL-II-T2-4-COD, VOL-II-T2-4-FaecalColiforms,
+          VOL-II-T2-4-NOTE1, VOL-II-T2-4-OilGrease, VOL-II-T2-4-ResidualChlorine, VOL-II-T2-4-TN, VOL-II-T2-4-TP,
+          VOL-II-T2-4-TSS, VOL-II-T2-4-Turbidity, VOL-II-T2-4-pH'
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-01)\n\n- ops: 12\
+      \ (0 invalid); provisions: 35 (22 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace\
+      \ it until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para3: This Addendum\
+      \ amends the definition of Working Day and notifies a closure of the Authority's offices, requires the proposed\
+      \ O&M Operator to be a member of the B\n- UNRESOLVED ADD-03:2.2: The Authority's offices will be closed on\
+      \ Sunday 22 November 2026. That day is notified for the purposes of Volume I Clause 2.4 as amended by Section\
+      \ 2.1. The P\n- UNRESOLVED ADD-03:3.2: A Bidder whose proposed O&M Operator is not a member of the Bidder\
+      \ shall apply through the Portal for the Authority's consent under Volume I Clause 8.1 to the a\n- UNRESOLVED\
+      \ ADD-03:3.3: A Bidder that intends to apply under Section 3.2 shall notify the Authority of that intention\
+      \ through the Portal within five (5) Working Days of the date of thi\n- UNRESOLVED ADD-03:3.4: If, at any\
+      \ time before the Preferred Bidder Notification, the proposed O&M Operator ceases to be a member of the Bidder,\
+      \ the Bidder shall notify the Authority t\n- UNRESOLVED ADD-03:4.1: In Form 4-C, the fourth numbered declaration,\
+      \ which as issued reads as follows, is deleted: رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة،\
+      \ وندرك أ\n- UNRESOLVED ADD-03:4.2: The following fourth declaration is substituted: رابعاً: أن جميع المعلومات\
+      \ المقدمة في هذا العرض صحيحة وكاملة، ونتعهد بإخطار الهيئة عبر البوابة خلال ثلاثة أيام ع\n- UNRESOLVED ADD-03:4.3:\
+      \ An English translation of the substituted declaration is given below for convenience only. The Arabic text\
+      \ governs, in accordance with Volume I Clause 9.4. ‘Fou\n- UNRESOLVED ADD-03:4.4: Each member of the Bidder\
+      \ shall give the fourth declaration as substituted. A Form 4-C that contains the fourth declaration as issued\
+      \ is not a properly executed\n- UNRESOLVED ADD-03:5.2: Bidders shall reflect the amended limit in the process\
+      \ design submitted under Volume II Section 3.\n- UNRESOLVED ADD-03:7.1: Form 4-G, added to Volume IV by Section\
+      \ 7 of Addendum No. 2, is deleted and replaced by the reissued Form 4-G at Appendix A to this Addendum, which\
+      \ provides for\n- UNRESOLVED ADD-03:7.2: Section 7.2 of Addendum No. 2 applies to the reissued Form 4-G. A\
+      \ Form 4-G that is not countersigned by the proposed O&M Operator shall be treated as not submit\n- UNRESOLVED\
+      \ ADD-03:Q17: No: 17 | Bidder question: Volume I Clause 8.1 requires the Authority's prior written consent\
+      \ to any change in the composition of a prequalified consortium. By w\n- UNRESOLVED ADD-03:AppA/para1: Form\
+      \ 4-G is reissued below in accordance with Section 7 of this Addendum. Bidders shall use this version.\n-\
+      \ UNRESOLVED ADD-03:F4-G/T1/1: Item: 1 | Undertaking: The operational technology environment will be segregated\
+      \ from any business network in accordance with Volume II Clause 6.2. | Confirmed:\n- UNRESOLVED ADD-03:F4-G/T1/2:\
+      \ Item: 2 | Undertaking: An information security management system covering the operational technology environment\
+      \ will be implemented before commissioning. | Con\n- UNRESOLVED ADD-03:F4-G/T1/3: Item: 3 | Undertaking: A\
+      \ named accountable security officer will be appointed for the concession period. | Confirmed: Yes / No\n\
+      - UNRESOLVED ADD-03:F4-G/T1/4: Item: 4 | Undertaking: Security incidents affecting the Facility will be notified\
+      \ to the Authority within twenty-four (24) hours of detection. | Confirmed: Yes \n- UNRESOLVED ADD-03:F4-G/T1/5:\
+      \ Item: 5 | Undertaking: An independent penetration test of the operational technology environment will be\
+      \ carried out annually and the report provided to the Aut\n- UNRESOLVED ADD-03:F4-G/T1/6: Item: 6 | Undertaking:\
+      \ Remote access to the control system will require multi-factor authentication and will be logged. | Confirmed:\
+      \ Yes / No\n- UNRESOLVED ADD-03:F4-G/T1/7: Item: 7 | Undertaking: Personnel with privileged or remote access\
+      \ to the control system will be subject to security screening approved by the Authority before a\n- UNRESOLVED\
+      \ ADD-03:F4-G/para1: Signed for and on behalf of the Bidder: _______________________ Name: _______________________\
+      \ Date: ____________ Countersigned for and on behalf of the proposed\n- cover summary vs provisions (C28,\
+      \ report only): 5 finding(s)\n  - not found: 'replaces the fourth declaration in Form 4-C': no provision of\
+      \ ADD-03 does this\n  - not found: 'reissues Form 4-G': no provision of ADD-03 does this\n  - understated:\
+      \ 'responds to clarification requests 15 to 19', but ADD-03/Q15 adds text to ADD-02:Q9: 'Yes. The response\
+      \ to clarification request 9 in Addendum No. 2 is amended by adding at the end: ‘A member incorporated outside\
+      \ the Kingdom shall attach an English translation to its Form 4-C.’ The Arabic text of Form 4-C governs in\
+      \ accorda…'\n  - omitted: ADD-03/6.1 amends VOL-V:29.3; the summary does not mention it: 'In Volume V Clause\
+      \ 29.3, ‘ninety per cent (90%)’ is deleted and ‘eighty-five per cent (85%)’ is substituted. The duration of\
+      \ the Ramp-Up Period is unchanged.'\n  - omitted: ADD-03/6.2(b) deletes VOL-V:39.3; the summary does not mention\
+      \ it: 'Volume V Clause 31.4 is deleted in its entirety. Volume V Clause 39.3, which provides for termination\
+      \ for persistent breach in the circumstances described in Clause 31.4, is also deleted. The remaining Clauses\
+      \ of Volume V are not renumbere…'\n\n## Requirements\n\n- new: 0; out of force: 1; changed: 2\n\n- OUT VOL-V-31.4-01:\
+      \ DELETED (ADD-03/6.2(a))\n- CHANGED VOL-I-8.8-01: wording (by ADD-03/3.1)\n- CHANGED VOL-V-29.3-01: wording\
+      \ (by ADD-03/6.1)\n\n## Stale readings and decisions\n\n- STALE VOL-I-9.4-01: ADD-02:Q9 changed since ADD-02\
+      \ (by ADD-03/Q15); new dependency ADD-03:Q19; VOL-I:9.4 changed since ADD-02 (by ADD-03/Q19)\n- STALE VOL-IV-F4C-04:\
+      \ ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)\n- STALE VOL-IV-F4C-N1: ADD-02:Q9 changed since ADD-02 (by\
+      \ ADD-03/Q15)\n- STALE VOL-II-T2-4-TN: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-I-8.8-01:\
+      \ VOL-I:8.8 changed since BASE (by ADD-03/3.1)\n- STALE VOL-II-2.5-01: new dependency ADD-03:5.1; new dependency\
+      \ VOL-II:T2-4\n- STALE VOL-II-T2-4-BOD5: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-COD:\
+      \ new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-TSS: new dependency ADD-03:5.1;\
+      \ new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-TP: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n\
+      - STALE VOL-II-T2-4-Turbidity: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-FaecalColiforms:\
+      \ new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-ResidualChlorine: new dependency\
+      \ ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-T2-4-pH: new dependency ADD-03:5.1; new dependency\
+      \ VOL-II:T2-4\n- STALE VOL-II-T2-4-OilGrease: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE\
+      \ VOL-II-T2-4-NOTE1: new dependency ADD-03:5.1; new dependency VOL-II:T2-4\n- STALE VOL-II-9.4-01: new dependency\
+      \ ADD-03:Q16; VOL-II:9.4 changed since BASE (by ADD-03/Q16)\n- STALE VOL-IV-F4C-01: ADD-02:Q9 changed since\
+      \ ADD-02 (by ADD-03/Q15)\n- STALE VOL-IV-F4C-02: ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)\n- STALE VOL-IV-F4C-03:\
+      \ ADD-02:Q9 changed since ADD-02 (by ADD-03/Q15)\n- STALE VOL-IV-F4C-05: ADD-02:Q9 changed since ADD-02 (by\
+      \ ADD-03/Q15)\n- STALE VOL-V-29.3-01: new dependency ADD-03:5.1; new dependency ADD-03:6.1; new dependency\
+      \ VOL-II:T2-4; VOL-V:29.3 changed since ADD-02 (by ADD-03/6.1, ADD-03/6.1(b)); quote not found in the effective\
+      \ text at ADD-03: 'During the first twelve \n\n## Obligations not reaching the outputs (C46)\n\n- none\n\n\
+      ## Disqualifiers (A3)\n\n- no change\n\n## Programme impact (status date 2026-10-22 -> 2026-11-01)\n\n- REWORK\
+      \ form-4c-prep: requirement changed: VOL-I-9.4-01, VOL-IV-F4C-01, VOL-IV-F4C-02, VOL-IV-F4C-03, VOL-IV-F4C-04,\
+      \ VOL-IV-F4C-05, VOL-IV-F4C-N1\n- REWORK form-4c-sign: requirement changed: VOL-I-9.4-01, VOL-IV-F4C-01, VOL-IV-F4C-02,\
+      \ VOL-IV-F4C-03, VOL-IV-F4C-04, VOL-IV-F4C-05, VOL-IV-F4C-N1\n- REWORK om-evidence: requirement changed: VOL-I-8.8-01\n\
+      - REWORK technical-proposal: requirement changed: VOL-II-2.5-01, VOL-II-9.4-01, VOL-II-T2-4-BOD5, VOL-II-T2-4-COD,\
+      \ VOL-II-T2-4-FaecalColiforms, VOL-II-T2-4-NOTE1, VOL-II-T2-4-OilGrease, VOL-II-T2-4-ResidualChlorine, VOL-II-T2-4-TN,\
+      \ VOL-II-T2-4-TP, VOL-II-T2-4-TSS, VOL-II-T2-4-Turbidity, VOL-II-T2-4-pH\n- FEASIBILITY lcc-ratio: INFEASIBLE\
+      \ by 12 WD -> INFEASIBLE by 18 WD\n- FEASIBILITY lcc-certificate: INFEASIBLE by 12 WD -> INFEASIBLE by 18\
+      \ WD\n- FEASIBILITY fin-model-build: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY model-auditor-appoint: OK ->\
+      \ INFEASIBLE by 3 WD\n- FEASIBILITY pcg-wording: OK -> INFEASIBLE by 3 WD\n- FEASIBILITY technical-proposal:\
+      \ OK -> INFEASIBLE by 3 WD\n- FEASIBILITY model-audit-review: OK -> INFEASIBLE by 3 WD\n- FEASIBILITY pcg-execution:\
+      \ OK -> INFEASIBLE by 3 WD\n- FEASIBILITY fin-model-freeze: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY model-audit-opinion:\
+      \ OK -> INFEASIBLE by 4 WD\n- FEASIBILITY fin-assumptions: OK -> INFEASIBLE by 1 WD\n- FEASIBILITY form-4f:\
+      \ OK -> INFEASIBLE by 1 WD\n- FEASIBILITY assemble-envelope-a: INFEASIBLE by 12 WD -> INFEASIBLE by 18 WD\n\
+      - FEASIBILITY assemble-envelope-b: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY copies: INFEASIBLE by 12 WD ->\
+      \ INFEASIBLE by 18 WD\n- FEASIBILITY seal-and-mark: INFEASIBLE by 12 WD -> INFEASIBLE by 18 WD\n- FEASIBILITY\
+      \ deliver: INFEASIBLE by 12 WD -> INFEASIBLE by 18 WD\n"
+  reference: null

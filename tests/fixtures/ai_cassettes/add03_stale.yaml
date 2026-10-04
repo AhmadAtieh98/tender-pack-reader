@@ -1,0 +1,22 @@
+# RECORDED FIXTURE (hand-written; not a live model). A proposal set made against ANOTHER evidence build (the state is
+# hard-coded, not copied from the packet): the controller marks the set `stale` and every item invalid.
+name: add03-stale
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - match: {last_role: user, contains: ["TASK PACKET"]}
+    response:
+      usage: {input_tokens: 14000, output_tokens: 600}
+      text: |
+        {"addendum": "ADD-03",
+         "state": {"pack_id": "NUPA-ISTP-2026-014-BLIND-02", "evidence_build_id": "0000000000000000000000000000000000000000000000000000000000000000",
+                   "validated_stage": "ADD-02", "working_stage": "ADD-03", "decisions_sha256": null},
+         "statements": [],
+         "items": [
+          {"id": "ADD-03/2.1", "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+           "state": {"pack_id": "NUPA-ISTP-2026-014-BLIND-02", "evidence_build_id": "0000000000000000000000000000000000000000000000000000000000000000",
+                     "validated_stage": "ADD-02", "working_stage": "ADD-03", "decisions_sha256": null},
+           "payload": {"id": "ADD-03/2.1", "type": "replace_text", "target": "VOL-I:6.1",
+                       "old": "14:00 hours Riyadh time", "new": "11:00 hours Riyadh time"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                         "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"}]}]}

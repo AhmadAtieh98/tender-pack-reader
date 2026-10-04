@@ -131,7 +131,7 @@ def main(dest: Path, wheels: Path | None) -> int:
         shutil.copy(REPO / "curation/approvals.yaml", rr / "approvals.yaml")
         copytree(REPO / "curation/reading-snapshots", rr / "reading-snapshots")
     copytree(REPO / "curation/register/proposals", rr / "proposals")
-    for name_ in ("blind-01", "blind-02"):
+    for name_ in ("blind-01", "blind-02", "blind-03"):
         src = REPO / "rehearsals" / name_
         if not (src / "COMPARISON.md").exists():
             continue

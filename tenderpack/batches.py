@@ -152,16 +152,21 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         row, ev = e["row"], e["stages"][val]
         it = r["register"].interp_at(row, val)
         c = getattr(it, "consequence", None)
-        if not (isinstance(c, Consequence) and ev["status"] and not ev["status"].startswith(("NOT ISSUED", "DELETED", "REVOKED"))
-                and c.cls in ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination")):
+        if not (isinstance(c, Consequence) and ev["status"]
+                and not ev["status"].startswith(("NOT ISSUED", "DELETED", "REVOKED", "REMOVED"))
+                and c.cls in ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination",
+                              "document_refusal", "criterion_zero")):          # every class A3 lists (session 09)
             continue
         done.add(row.id)
         st = rv[("row", row.id)]
         chain = [r["register"]._op_by_id(h) for h in (ev.get("ops") or [])]
         provs = [x.op.provision for x in chain if x is not None]           # the amending provisions, beside the original
         cs = [x for u in list(dict.fromkeys([*row.units[:3], c.unit, *provs]))[:7] for x in crops(u)]
+        failing = {"document_refusal": "a refusal of the document (what then follows for the Proposal is not stated: "
+                                       "the row stays in the VOL-I 11.1(i) pass or fail check)",
+                   "criterion_zero": "zero marks under one scoring criterion (scored, not a disqualification)"}
         decide = (f"Accept that <b>{_e(row.requirement)}</b> is required as quoted, and that failing it is "
-                  f"<b>{_e(c.cls.replace('_', '-'))}</b> under the words “{_e(c.quote)}” "
+                  f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{_e(c.quote)}” "
                   f"({_e((ev.get('consequence_source') or {}).get('latest', c.unit))}). Otherwise reject it with what is wrong.")
         extra = []
         if ev["stale"]:
@@ -194,6 +199,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
             change = {"replace_text": f"‘{o.old}’ → ‘{o.new}’", "set_value": f"{o.column} → ‘{o.new}’",
                       "set_status": f"{o.status}", "replace_unit": f"replaced by {o.replacement}",
                       "insert_unit": f"insert {o.new_group or ''} {('after ' + o.anchor) if o.anchor else ''}",
+                      "insert_row": f"insert a row {'after ' + o.after if o.after else 'at the end'}: "
+                                    + "; ".join(f"{k}: {v}" for k, v in (o.cells or {}).items()),
                       "append_text": f"append ‘{o.new}’", "annotate": f"{o.effect}: {o.note or ''}"}.get(o.type, o.type)
             cs = crops(o.provision) + [y for t in ([o.target] if o.target else []) for y in crops(t)]
             bad = [f"{c['id']}: {c['detail']}" for c in x.checks if not c["ok"]]

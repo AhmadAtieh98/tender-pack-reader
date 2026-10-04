@@ -31,7 +31,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C40 | pass | every A5 activity cites an A1 row in force |
 | C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
 | C45 | pass | every dependency and lead time is defined |
-| C43 | pass | A3 fits one page; smallest text 7.75 pt (scale 0.911) |
+| C43 | pass | A3 fits one page; smallest text 7.78 pt (scale 0.916) |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 15 ops; invalid: none |
 | C20 ADD-02 | ok | 40 provisions; unresolved or unaccounted: none |
@@ -43,5 +43,5 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C32 | ok | 5 date rule(s) with unstated counting conventions: every reading shown (A1 Dates), planning uses the configured policy |
 | C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2, understated 1; report only, the summary is never applied (A2) |
 | C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
-| C28 ADD-03 | REPORTED | cover summary (7 claims) vs provisions: omitted 9, understated 4; report only, the summary is never applied (A2) |
+| C28 ADD-03 | REPORTED | cover summary (9 claims) vs provisions: contradicted 1, omitted 9, understated 4; report only, the summary is never applied (A2) |
 | C46 | ok | every new or amended obligation reaches A1, A3 where it carries a consequence, and A5 |

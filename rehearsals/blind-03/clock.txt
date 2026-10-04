@@ -1,0 +1,52 @@
+T0 received (setup start) 10:11:24
+T1 ingest start 10:11:24
+exit 0
+T1 ingest end 10:11:39
+T2 draft 10:11:39
+T2 draft written 10:12:17 (6 ops; 29 unresolved)
+T3 drafted outputs start 10:12:17
+exit 0
+T3 drafted outputs end 10:13:31
+T4 AI proposals (host route) start 10:14:41
+T4 AI proposals (host route) end 10:27:20
+T5 live fixes start 10:31:57 (after the host-route run; before curation: a form an addendum inserted is citable; Arabic-normalised matching for replace_text on image readings; a notified non-working day as an op; a one-character cell value as evidence; an amendment to an approved reading is not a conflict)
+T5 live fixes end 10:35:09 (regressions in tests/test_session09_blind03_live_fixes.py: 6 pass; the host-route run ADD-03-host-20261004T102718Z-97c1 stays as made, before these fixes)
+T6 curation start 10:36:03
+T6 ops written 10:43:26 (27 ops, 4 dispositions; engine check: ADD-03 APPLIED; 4.2 cannot be a target of its own (heading not read as a citation): substitution made under 4.1 as insert + delete, content from 4.2)
+T6 rows, issues, A5, clarifications written 10:55:48 (12 new rows, 32 re-made readings, 7 issues, 4 evidence items, 7 new activities, 6 new lead times; CQ cut-off 11 Nov; 2 new draft CQs)
+T6 pin start 10:55:53
+T6 pin end 10:56:01 (44 new pins; 3 earlier-stage readings re-pinned after units were added: ADD-01-AppA-01@ADD-01, @ADD-02, ADD-02-F4G-05@ADD-02)
+T6 pin --rows crashed 10:56:41 (AttributeError: 'NoneType' object has no attribute 'with_days': cli.pin_cmd passes cal=None to Register since the T5 non-working-day fix); code not patched: the same --rows steps run from a scratch script with a Calendar(); pins.yaml diff = the 3 added dependencies only
+T6 check-register start 10:56:49
+T6 check-register end 10:56:57 (0 findings; 12 new row ids recorded)
+T6 curated outputs start 10:56:57
+exit 0
+T6 curated outputs end 10:57:03
+T6 ai-proposals-used.md written; cover op issue added and 5.1(b) expectations made checkable 11:00:00 (op file regenerated; engine and simulate_amendment: ADD-03 APPLIED)
+T6 curated outputs (2) start 11:00:09 (rerun after the op-file edits)
+exit 0
+T6 curated outputs (2) end 11:00:14
+T6 diff start 11:00:18
+T6 diff end 11:00:20 (exit 0)
+T6 countersignature moved to its own evidence item EV-FORM-4G-COUNTERSIGN 11:01:02 (so the activity is needed from ADD-03 only, not in the ADD-02 replay)
+T6 curated outputs (3) start 11:01:21 (after the countersignature evidence item and assumption comments)
+exit 0
+T6 curated outputs (3) end 11:01:26
+T6 diff (2) start 11:01:30
+T6 diff (2) end 11:01:32 (exit 0)
+T6 countersignature item made an action (envelope none, on Form 4-G itself) 11:01:50; curated outputs (4) start 11:01:50
+exit 0
+T6 curated outputs (4) end 11:01:55
+T6 diff (3) start 11:01:55
+T6 diff (3) end 11:01:57 (exit 0)
+T6 note 11:02:40: the 'pin end 10:56:01' line was written in the same command as the first 'pin --rows' attempt, which crashed; the 3 earlier-stage re-pins were made by the workaround logged at 10:56:41
+T6 curation complete 11:02:40 (pre-key; nothing unsealed; final published curated outputs at 11:01:55, first at 10:57:03)
+T7 live fix 6 (pre-key, after the curation; found by the curator at 10:56): pin --rows built the register without a calendar (cli.py) and crashed after live fix 3; it now builds the pack's own calendar; regression test_pin_rows_builds_the_register_with_the_packs_calendar; file: 6 pass; no output changes; 11:04:47
+T8 UNSEAL 11:05:08 (after the final curated outputs 11:01:55, the diff 11:01:57 and live fix 6)
+T9 post-key fixes (NOT scored) 11:08-11:18:03: C28 judges a cover claim that no deadline is affected by the computed date changes (the planted E1, missed by C28 pre-key and found by the curator); an insert_unit + set_status deleted at one anchor is read as a substitution (removes the three C28 artefacts); citations() reads 'FORM 4-C' in a heading whatever its case (a replace_text under 4.2 now validates); regressions tests/test_session09_blind03_postkey_fixes.py: 6 failed before, 6 pass; the curation (work/) is unchanged; out-after-fixes rebuilt next
+T10 out-after-fixes start 11:23:21
+exit 0
+T10 out-after-fixes end 11:23:26
+T10 diff after fixes written 11:23:29 (exit 0)
+T11 post-key follow-on 11:34:22: citations.resolve lists a form named in both a body and its heading once (the case-insensitive pattern had listed it twice in stages.json cited lists); Register defaults to Calendar() when none is given (two session-06 tests built it so); outputs unchanged
+T12 records complete 12:58:06: final full suite 516 passed (12:19-12:57); make verify exit 0; strict exit 3 (decisions only); committed on the owner's authorisation

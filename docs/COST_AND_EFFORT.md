@@ -17,6 +17,7 @@
 | 06 | 3 Oct 00:42–01:54 and from 05:41, with a pause at a usage limit (3 h 47 min) | about 1 h 55 min of work (00:42–01:54 and 05:41–about 06:05) | Four findings; accept workflow; `show`/`diff`; C12/C30/C32/C46/C47; blind rehearsal; archive |
 | 07 | 3 Oct from 08:32 | about 1 h (see the work log) | C28 cover-summary check; drafter cover rule; review packets in the review folder; archive rebuilt and verified; Mac wheels split |
 | 08 | 3 Oct 19:30–20:27 and 4 Oct 05:17–about 08:15, with a pause at a usage limit (8 h 50 min) | about 4 h of work | Four findings; the owner's confirmations recorded; interpretations via proposals; A1–A3; A5 and Gantt; clarification register; blind rehearsal 02; archive |
+| 09 | 4 Oct 08:42–about 13:00, no pause | about 4 h 20 min of work (the coordinator as Fable 5.1; seven Opus 5.5 subagents, five of them in parallel) | Six control findings; the AI layer and four routes; blind rehearsal 03 with the AI layer in the loop; records. Uncommitted at the owner's instruction |
 | **Total so far** | | **about 20 h of assistant wall-clock time** | |
 
 **Subagents** (each started cold from a written brief; the orchestrator checked their output):
@@ -27,6 +28,7 @@
 | 05 | 5: three register agents, A5, a drill-B fixture author |
 | 06 | 1: the blind-addendum author. It reported about 302,000 tokens and 22 minutes |
 | 08 | 4: post-award evidence (reported 169,540 tokens), the blind-02 addendum author (254,315), the clarification register (276,780), A5 and Gantt (stopped by the usage limit and resumed; no total reported) |
+| 09 | 7, all Opus 5.5: W1 PDD flow and Gantt (371,913 tokens), W2 clarify, bindings, diff (327,176), W3 C28, removed, insert_row, classes (541,592), W4 the AI layer (550,206), W5 the blind-03 author (328,534), P the proposer on the host route (214,440; the application paid nothing: no API call), C the curator (496,726); about 2.83 million tokens of subagent work, on the session's own plan, not the application's budget |
 
 Four session 05 agents were stopped by a usage limit and resumed.
 
@@ -50,16 +52,16 @@ These estimates are mine, untested against a real reviewer.
 
 | Item | Size |
 |---|---|
-| Code | 34 modules, about 11,900 lines (`tenderpack/`) |
-| Tests and fixtures | about 6,700 lines; the full suite runs in about 30 minutes on the cloud container (it rebuilds the real pack and the rehearsals several times) |
+| Code | 50 modules, about 16,600 lines (`tenderpack/`, of which the AI layer `tenderpack/ai/` and the MCP server, session 09, about 4,700) |
+| Tests and fixtures | about 9,300 lines (the session 09 files: the six control findings, the AI layer's adversarial cassettes and MCP handshake, the blind-03 live and post-key fixes); the full suite runs in about 35 minutes on the cloud container (it rebuilds the real pack and the rehearsals several times) |
 | Curation | about 9,100 lines of YAML: 205 register rows, the owner's two reading approvals, the clarification register (21 draft questions), dispositions for every unit, op files for ADD-01/ADD-02, evidence items, A5 templates, assumptions, issues. **All of it is a proposal** until you decide on it |
-| Outputs | A1–A5 working drafts, the Gantt, the clarification register, review batches and packets, two drills, two blind rehearsals |
+| Outputs | A1–A5 working drafts, the Gantt, the clarification register, review batches and packets, two drills, three blind rehearsals (the third with the AI layer in the loop, about 10,300 lines of rehearsal curation), two staged AI proposal runs (`staging/ai/`, recorded and host route; nothing applied) |
 
 ## Running cost of the tool itself
 
 - **Compute:** a laptop. Stage 1 takes about 13 s and the outputs about 80 s on the cloud container (the A5 scenarios, the Gantt and the review packets were added since session 06). The full tests take about 30 minutes there.
 - **Network:** none at run time. One download at setup (about 45 MB of wheels per Mac architecture), or none with the wheelhouse.
-- **Model calls:** none (integrations deferred).
+- **Model calls:** none in the reviewed build, which needs no model. Since session 09 the AI layer can call a model to *propose* (Anthropic, OpenRouter or local Ollama; or a coding host's own model at no application cost); every paid run is capped (`config/ai.yaml`, `--max-usd`) and metered in `staging/ai/spend.jsonl`. No live call has been made: there is no key in the cloud environment, so no USD figure exists yet.
 
 ## Where the effort went that was not planned
 

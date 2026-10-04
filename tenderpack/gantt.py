@@ -13,12 +13,26 @@ outline; float as a line from EF to LF; 0-Working-Day steps as diamonds; negativ
 its shortfall; GATED rows with a diamond at the latest start (the date the decision is needed by); OVERLOAD days of
 the row's role as triangles; activities not scheduled (CONDITIONAL with an elapsed window, DEADLINE PASSED, NOT
 NEEDED) without an early bar; non-working days shaded; the planning date as a solid line; the pack's dated
-milestones (PDD 14:00, clarification cut-off, Pre-Bid Conference, site visit, ...) as dashed lines; milestones
-outside the chart are listed under it. Deterministic: no clock, stable ordering, fixed number formatting.
+milestones (the PDD at the time the pack states, clarification cut-off, Pre-Bid Conference, site visit, ...) as
+dashed lines; milestones outside the chart are listed under it. Deterministic: no clock, stable ordering, fixed
+number formatting.
+
+Text other than plain ASCII (session 09). A string that is plain ASCII once typographic punctuation is mapped to
+ASCII (dashes, quotes, ...) takes exactly the earlier path: Base-14 Helvetica in the PDF, the same characters in the
+SVG. Any other string (Arabic, accented Latin, ...) is kept as written: the SVG and HTML carry it XML-escaped, and
+the PDF draws it with page.insert_htmlbox (MuPDF's Story engine: it shapes Arabic and orders mixed Arabic/Latin
+text by the bidi algorithm, using MuPDF's bundled fallback font, Noto Naskh Arabic, for glyphs Helvetica lacks),
+wrapped in /ActualText holding the logical string so text extraction and search return the words as written; its
+fonts are subset. Limits: the Arabic glyphs are the fallback font's (no font is chosen here); the SVG has no
+direction or bidi markup, so the display of mixed-direction text there is the SVG viewer's job; the width of
+non-Latin text is ESTIMATED (a fixed width per character, `_UNI_EM`), so fitting and label staggering are
+approximate for it; only the strings this layout draws are covered (the PDF draws ids, statuses, milestone labels
+and notes, not the activity names, which are in the SVG row titles and the HTML).
 """
 from __future__ import annotations
 
 import html as _html
+import unicodedata
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -44,14 +58,31 @@ _ASCII = {"—": "-", "–": "-", "−": "-", "…": "...", "‘": "'", "’": "
           "≥": ">=", " ": " "}
 
 
+_UNI_EM = 0.5     # ESTIMATED advance (em) of a character Helvetica cannot measure (Arabic in the fallback font: ~0.4)
+
+
 def _t(s) -> str:
-    """Text for both renderers: plain characters only (Base-14 Helvetica), the same in SVG and PDF."""
-    s = "".join(_ASCII.get(c, c) for c in str(s))
-    return "".join(c if 32 <= ord(c) < 127 else "?" for c in s)
+    """Text for both renderers, the same in SVG and PDF. A string that is plain ASCII once typographic punctuation is
+    mapped (`_ASCII`) is returned so (Base-14 Helvetica); any other string is kept as written (Unicode), control
+    characters aside."""
+    s = str(s)
+    a = "".join(_ASCII.get(c, c) for c in s)
+    if a.isascii():
+        return "".join(c if 32 <= ord(c) < 127 else "?" for c in a)
+    return "".join(c if ord(c) >= 32 and ord(c) != 127 else "?" for c in s)
 
 
 def _w(s: str, size: float, bold: bool = False) -> float:
-    return pymupdf.get_text_length(_t(s), fontname="hebo" if bold else "helv", fontsize=size)
+    s, font = _t(s), "hebo" if bold else "helv"
+    if s.isascii():
+        return pymupdf.get_text_length(s, fontname=font, fontsize=size)
+    w = 0.0                      # Latin-1 measured with Helvetica; any other character ESTIMATED (see _UNI_EM)
+    for c in s:
+        if ord(c) < 256:
+            w += pymupdf.get_text_length(c, fontname=font, fontsize=size)
+        elif unicodedata.category(c) not in ("Mn", "Me", "Cf"):             # combining marks, bidi controls: no width
+            w += size * (1.0 if unicodedata.east_asian_width(c) in ("W", "F") else _UNI_EM)
+    return w
 
 
 def _fit(s: str, size: float, width: float, bold: bool = False) -> str:
@@ -61,6 +92,13 @@ def _fit(s: str, size: float, width: float, bold: bool = False) -> str:
     while s and _w(s + "...", size, bold) > width:
         s = s[:-1]
     return s + "..."
+
+
+def _ltr(s: str) -> str:
+    """s, then a LEFT-TO-RIGHT MARK when s holds right-to-left letters, so that what the chart appends (a date) is not
+    pulled into the right-to-left run by the bidi algorithm ('<Arabic> 11:00 26 Nov' would show '26' on the left).
+    Plain Latin text is returned unchanged."""
+    return s + "\u200e" if any(unicodedata.bidirectional(c) in ("R", "AL") for c in str(s)) else s
 
 
 def _n(v: float) -> str:
@@ -248,8 +286,8 @@ def layout(prog: dict) -> list[tuple]:
             mx = x(md) + dw                                          # by the end of that day
         else:
             mx = x(md) + dw / 2
-        labels.append((mx, " / ".join(k["short"] + (" (conditional)" if k.get("conditional") and "conditional" not in
-                                                    k["short"] else "") for k in ms)
+        labels.append((mx, " / ".join(_ltr(k["short"]) + (" (conditional)" if k.get("conditional") and "conditional" not in
+                                                          k["short"] else "") for k in ms)
                        + f" {md.day} {md.strftime('%b')}", False))
     levels: list[float] = []
     for mx, s, bold in sorted(labels, key=lambda t: t[0]):
@@ -396,7 +434,7 @@ def layout(prog: dict) -> list[tuple]:
         L.text(lx + 20, yy + 4.6, label, 6.2, INK2)
         lx += w
     ny = ly + 11 * (row + 1) + 4
-    out_txt = "; ".join(f"{m['short']} {m['date']}" for m in outside)
+    out_txt = "; ".join(f"{_ltr(m['short'])} {m['date']}" for m in outside)
     notes = [f"PROPOSAL, not reviewed. Timing, decision readiness and resource feasibility are separate statuses; "
              f"{NO_LEVELLING}. No bidder references, certificates, attendance or financial standing are assumed to exist.",
              "Each row: activity id, count, then the A1 requirement ids that fit (+n more); ALL ids are in the row's hover "
@@ -448,10 +486,30 @@ def _rgb(h: str | None):
     return tuple(int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
 
 
+def _pdf_unicode_text(doc, page, x: float, y: float, s: str, size: float, colour: str, bold: bool) -> None:
+    """Draw a string that is not plain ASCII with MuPDF's Story engine (shaping, bidi, fallback fonts), its first
+    baseline at y and its text starting at x (the engine sets the baseline 1 pt + 0.9 em below the box top and the
+    text 1 pt inside it), wrapped in /ActualText holding the logical string (extraction and search read the words as
+    written, not the shaped glyphs)."""
+    top = y - 1.0 - 0.9 * size
+    rect = pymupdf.Rect(x - 1.0, top, max(PAGE_W, x + 2 * _w(s, size, bold) + 10), top + 3 * size)
+    css = (f"*{{margin:0;padding:0;font-family:sans-serif;font-size:{_n(size)}px;color:{colour};white-space:nowrap;"
+           f"text-align:left;font-weight:{'bold' if bold else 'normal'}}}")
+    before = set(page.get_contents())
+    spare, _ = page.insert_htmlbox(rect, f"<div>{_html.escape(s, quote=False)}</div>", css=css, scale_low=1)
+    if spare < 0:
+        raise ValueError(f"Gantt PDF: text does not fit its box: {s!r}")
+    actual = f"/Span <</ActualText <FEFF{s.encode('utf-16-be').hex().upper()}>>> BDC\n".encode()
+    for xref in page.get_contents():
+        if xref not in before:
+            doc.update_stream(xref, actual + doc.xref_stream(xref) + b"\nEMC\n")
+
+
 def pdf_bytes(prog: dict) -> bytes:
     doc = pymupdf.open()
     page = doc.new_page(width=PAGE_W, height=PAGE_H)
     shape = page.new_shape()
+    unicode_text = False
     for it in layout(prog):
         k = it[0]
         if k == "rect":
@@ -469,9 +527,17 @@ def pdf_bytes(prog: dict) -> bytes:
             shape.finish(color=_rgb(stroke), fill=_rgb(fill), width=sw if stroke else 0, closePath=True)
         elif k == "text":
             _, x, y, s, size, colour, bold = it
-            shape.insert_text(pymupdf.Point(x, y), s, fontname="hebo" if bold else "helv", fontsize=size,
-                              color=_rgb(colour))
+            if s.isascii():
+                shape.insert_text(pymupdf.Point(x, y), s, fontname="hebo" if bold else "helv", fontsize=size,
+                                  color=_rgb(colour))
+            else:                                   # Unicode: drawn in order (the shape so far is committed first)
+                shape.commit()
+                _pdf_unicode_text(doc, page, x, y, s, size, colour, bold)
+                shape = page.new_shape()
+                unicode_text = True
     shape.commit()
+    if unicode_text:
+        doc.subset_fonts()
     doc.set_metadata({"title": f"A5 bid programme Gantt {prog['stage']}", "author": "", "subject": "", "keywords": "",
                       "creator": PRODUCER, "producer": PRODUCER, "creationDate": PDF_DATE, "modDate": PDF_DATE})
     data = doc.tobytes(garbage=3, deflate=True, no_new_id=True)

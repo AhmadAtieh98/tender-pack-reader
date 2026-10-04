@@ -1,0 +1,7 @@
+# RECORDED FIXTURE (hand-written; not a live model). A provider that declares NO image input: a task packet that
+# includes image crops must be refused before any call (never degraded to text).
+name: vision-needed
+model: recorded-text-only-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - response: {text: "{}", usage: {input_tokens: 1, output_tokens: 1}}

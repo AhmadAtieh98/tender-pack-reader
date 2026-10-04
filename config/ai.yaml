@@ -1,0 +1,98 @@
+# AI routes for tenderpack (tenderpack/ai; docs/AI_ROUTES.md). CONFIGURATION ONLY: model identifiers live here as
+# values, and every choice can be changed without touching code. Nothing in this file is a credential: keys are read
+# from the environment variables named below and never written to a file, a log or Git.
+#
+# Statuses written here are claims about this file, not measurements:
+#   "unverified"              the identifier or capability was not checked against the endpoint from this environment
+#   "candidate, unmeasured"   a local model that has not been benchmarked on the owner's Mac
+# Retention: provider policy; not verified by this tool.
+version: 1
+lock_stale_after_min: 120        # an orchestrator lock older than this (or whose process is dead) is reported as stale
+
+defaults:
+  caps:
+    max_turns: 16                # provider turns per run (tool calls included)
+    max_tokens_per_call: 16000   # output tokens requested per call (non-streaming)
+    call_timeout_s: 300          # one HTTP call
+    retries: 2                   # retries of a retryable failure (timeouts, connection errors, 408/409/429/5xx/529)
+    backoff_s: 2.0               # first backoff; doubles per retry, or the server's retry-after
+    max_tool_result_chars: 20000 # a tool result sent to the model is truncated beyond this (the log keeps 4000)
+    concurrency: 2               # orchestrator runs at once across addenda (one per addendum, always)
+
+routes:
+  recorded:                      # offline replay of a cassette (tests); NOT a live integration
+    paid: false
+    caps: {max_calls: 20, max_input_tokens: 4000000, max_output_tokens: 400000, max_usd: null, timeout_s: 300}
+
+  host:                          # Claude Code or Codex using its OWN model over MCP / the CLI; no application API call
+    paid: false
+    note: the host drives `tenderpack ai serve-mcp` (or `tenderpack ai tool ...`) and submits with `tenderpack ai submit`
+
+  anthropic:                     # the application calls the Messages API directly (paid)
+    paid: true
+    base_url: https://api.anthropic.com
+    api_version: "2023-06-01"
+    api_key_env: ANTHROPIC_API_KEY
+    retention: provider policy; not verified by this tool
+    models:
+      propose:                   # proposing amendments (tool use, long context)
+        id: claude-opus-5-5
+        status: unverified (configured; capabilities are confirmed from GET /v1/models/{id} when a key is set)
+        capabilities: {images: true, tools: true, structured_output: true, context_tokens: 1000000, max_output_tokens: 128000}
+        request_extra: {output_config: {effort: high}}
+      check:                     # cheap checks
+        id: claude-haiku-4-5-20251001
+        status: unverified
+        capabilities: {images: true, tools: true, structured_output: true, context_tokens: 200000, max_output_tokens: 64000}
+    caps:                        # a paid route refuses to start until the owner sets these (no price is configured)
+      max_calls: null
+      max_input_tokens: null
+      max_output_tokens: null
+      max_usd: null
+      timeout_s: 1800
+      concurrency: 1
+
+  openrouter:                    # the application calls OpenRouter (paid); capabilities come from its model listing
+    paid: true
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
+    app_title: tenderpack
+    retention: OpenRouter and upstream provider policy; not verified by this tool
+    models:
+      propose: {id: anthropic/claude-opus-5.5, status: "unverified (slug not checked: openrouter.ai is blocked from this environment)"}
+      check: {id: anthropic/claude-haiku-4.5, status: unverified}
+      open_vision: {id: qwen/qwen3-vl-32b-instruct, status: unverified}
+    caps:
+      max_calls: null
+      max_input_tokens: null
+      max_output_tokens: null
+      max_usd: null
+      timeout_s: 1800
+      concurrency: 1
+
+  ollama:                        # local, on the owner's Mac (M5 Pro, 48 GB); never assumed reachable from the cloud
+    paid: false
+    base_url: http://127.0.0.1:11434
+    base_url_env: TENDERPACK_OLLAMA_URL
+    note: candidates only; capabilities come from /api/show; no performance is claimed until measured on the Mac
+    models:
+      vision:
+        id: qwen3-vl:32b
+        status: candidate, unmeasured
+        approx_size: about 20 GB at 4-bit (from the published model card; not measured here)
+        num_ctx: 32768           # context bound sent as options.num_ctx (never more than /api/show reports)
+      text:
+        id: qwen3:30b-a3b
+        status: candidate, unmeasured
+        num_ctx: 32768
+    caps: {max_calls: 40, max_input_tokens: 2000000, max_output_tokens: 200000, max_usd: null, timeout_s: 3600, concurrency: 1}
+
+# USD per million tokens, {model: {input_per_mtok: N, output_per_mtok: N}}. With a price, cost_usd is computed from
+# the usage the endpoint reports and max_usd can be enforced; without one, cost_usd is null ("no price configured")
+# and a paid route needs max_calls and both token caps before it starts. The values below are the LIST prices of the
+# first-party API as given in the API reference (cached 2026-09-25); confirm them against your console before
+# relying on a USD cap. Cache reads and writes are billed at other rates and are counted here as input tokens.
+prices:
+  claude-opus-5-5: {input_per_mtok: 4.0, output_per_mtok: 20.0}
+  claude-haiku-4-5-20251001: {input_per_mtok: 1.0, output_per_mtok: 5.0}
+  claude-haiku-4-5: {input_per_mtok: 1.0, output_per_mtok: 5.0}

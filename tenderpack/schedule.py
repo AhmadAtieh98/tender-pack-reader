@@ -50,15 +50,28 @@ Both directions are checked (failures are returned in `problems` and are structu
       assumption, every activity names a resource role defined in the assumptions, a known multiplicity and (if
       given) a known discipline, and an activity listed under two evidence items is defined identically; a
       dependency on an activity that exists but is not needed at this stage is shown on the activity ("not
-      required at this stage"), never silently dropped
+      required at this stage"), never silently dropped; a pack fact typed as an assumption
+      (`planning.delivery_cutoff_time`) or a time or date typed into an activity's name or item is refused
+Pack facts in names and labels are never typed (session 09). The Proposal Due Date's date, time of day, timezone
+label and source come from the effective text of the anchor's defining unit at the stage (register.anchor_details,
+computed by stage2.evaluate; plan() reads them from the A1 evaluations when a caller passes none). Template strings
+take placeholders, filled deterministically at plan time (`fill`):
+  activity `name` / `item`   {PDD_TIME} {PDD_TZ} {PDD_DATE} {PDD_SOURCE} (any anchor: {<ANCHOR>_TIME} ...) and
+                             {ROW:<row id>:<parameter>}: the named `parameters` value of that row's interpretation
+                             at the stage (e.g. {ROW:VOL-I-App3-01:marking}, the Appendix 3 envelope marking)
+  `_milestones.labels` of an anchor milestone   {time} {tz} {date} {source} of that anchor (and the above)
+An unknown placeholder, or one the stage does not state (no time in the text, a row not in force, a missing
+parameter), is a C45 problem and is left as written: "None" is never printed.
 Documents, resources, drivers and scenarios are built on this output by tenderpack.programme; the Gantt by
 tenderpack.gantt.
 """
 from __future__ import annotations
 
+import re
 from datetime import date, timedelta
+from types import SimpleNamespace
 
-from .dates import Calendar
+from .dates import _DATE, _TIME, Calendar, parse_date
 
 IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW")
 # flags that set the timing status (the first one found, up to " (", is `status`)
@@ -412,6 +425,12 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
                 problems.append(f"C45: activity {t['id']} ({item}): {e.args[0]}")
             if t["id"] in seen and seen[t["id"]][1] != t:
                 problems.append(f"C45: activity {t['id']} is defined differently under {seen[t['id']][0]} and {item}")
+            for k in ("name", "item"):
+                typed = [m.group(0) for rx in (_TIME, _DATE) for m in rx.finditer(PLACEHOLDER.sub("", str(t.get(k) or "")))]
+                if typed:
+                    problems.append(f"C45: activity {t['id']} ({item}): its {k} types {', '.join(repr(x) for x in typed)}; a "
+                                    "time or date the pack states is filled from the stage ({PDD_TIME}, {PDD_DATE}, "
+                                    "{ROW:<row id>:<parameter>}), never typed")
             seen.setdefault(t["id"], (item, t))
     for ev, o in (templates.get("_per_overrides") or {}).items():
         try:
@@ -429,20 +448,100 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
     if "foreign_members" in bidder and "members" in bidder and int(bidder["foreign_members"]) > int(bidder["members"]):
         problems.append(f"C45: bidder.foreign_members ({bidder['foreign_members']}) is more than bidder.members "
                         f"({bidder['members']})")
+    if "delivery_cutoff_time" in (assumptions.get("planning") or {}):
+        problems.append("C45: planning.delivery_cutoff_time is refused: the Proposal Due Date's time is stated in the pack, "
+                        "and pack-stated facts are derived (from the effective text of the anchor's defining unit at each "
+                        "stage), not assumed. Remove the key from the assumptions")
     return problems
+
+
+# ---------------------------------------------------------------------------------------------- placeholders
+
+PLACEHOLDER = re.compile(r"\{([^{}\s]+)\}")
+
+
+def anchor_fields(details: dict | None) -> dict[str, str | None]:
+    """The placeholder values of every anchor: {PDD_TIME, PDD_TZ, PDD_DATE, PDD_SOURCE} (None where the effective
+    text does not state it). `details`: register.anchor_details at one stage."""
+    out: dict[str, str | None] = {}
+    for name, d in (details or {}).items():
+        key = re.sub(r"[^A-Za-z0-9]+", "_", name).upper()
+        out.update({f"{key}_TIME": d.get("time"), f"{key}_TZ": d.get("tz"),
+                    f"{key}_DATE": d["date"].isoformat() if d.get("date") else None, f"{key}_SOURCE": d.get("source")})
+    return out
+
+
+def fill(text: str, values: dict, where: str, problems: list[str], row_value=None) -> str:
+    """`text` with its placeholders filled: {NAME} from `values`; {ROW:<row id>:<parameter>} from
+    row_value(row id, parameter) -> (value, why not). An unknown placeholder, or a value that is None or empty, is
+    a C45 problem appended to `problems` and the placeholder is kept as written ("None" is never printed). Pure."""
+    def sub(m: re.Match) -> str:
+        key, why = m.group(1), "not stated in the effective text at this stage"
+        if key.startswith("ROW:") and row_value is not None and key.count(":") >= 2:
+            rid, param = key[4:].rsplit(":", 1)
+            v, why = row_value(rid, param)
+        elif key in values:
+            v = values[key]
+        else:
+            problems.append(f"C45: {where}: unknown placeholder {m.group(0)} (known: "
+                            f"{', '.join('{' + k + '}' for k in sorted(values))}"
+                            + (", {ROW:<row id>:<parameter>}" if row_value is not None else "") + ")")
+            return m.group(0)
+        if v is None or isinstance(v, (dict, list)) or str(v).strip() == "":
+            problems.append(f"C45: {where}: {m.group(0)} cannot be filled ({why})")
+            return m.group(0)
+        return str(v)
+    return PLACEHOLDER.sub(sub, str(text))
+
+
+def stated_time(text: str) -> tuple[str | None, str | None] | None:
+    """The time of day ('HH:MM') and the timezone words ('Riyadh time') that a date rule's own quoted words state
+    (e.g. 'Wednesday 30 September 2026 at 10:00 Riyadh time'), read the way register.anchor_details reads an anchor's
+    defining unit; None when the words print no date, (None, tz) when they print no time."""
+    try:
+        p = parse_date(text or "")
+    except ValueError:
+        return None
+    if p is None:
+        return None
+    m = re.search(r"\b([A-Z][a-z]+ time)\b", text)
+    return p[1], (m.group(1) if m else None)
+
+
+def details_from_evals(evals: list[dict], stage: str, anchors: dict) -> dict:
+    """Anchor details for a caller of plan() that passes none: each anchor's defining unit is the source unit of the
+    date rule named after it, and that unit's effective text and amending ops are those the A1 evaluations show at
+    the stage (units_detail); they are read by register.anchor_details, as stage2.evaluate reads the state."""
+    from .register import anchor_details
+    state: dict[str, SimpleNamespace] = {}
+    defined: dict[str, str] = {}
+    for e in evals:
+        ev = e["stages"].get(stage) or {}
+        for d in ev.get("dates") or []:
+            if d.get("anchor") in anchors and d.get("rule_id") == d.get("anchor") and d.get("source_unit"):
+                defined.setdefault(d["anchor"], d["source_unit"])
+        for u in ev.get("units_detail") or []:
+            if u.get("effective_unit") == u.get("unit"):
+                state.setdefault(u["unit"], SimpleNamespace(text=u.get("text") or "", status=u.get("status"),
+                                                            history=list(u.get("ops") or []), number=None))
+    return anchor_details(state, {k: {"defined_in": v} for k, v in sorted(defined.items())}, {})
 
 
 # ---------------------------------------------------------------------------------------------- milestones
 
 def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_rules: dict[str, list[str]],
-               linked_rows: set[str]) -> list[dict]:
+               linked_rows: set[str], anchor_details: dict | None = None, problems: list[str] | None = None) -> list[dict]:
     """Dated pack milestones of the stage: every date rule of a row in force with a planning value (fixed dates,
     the PDD, the clarification cut-off, validity ends...), named by the templates' `_milestones.labels`; the
     `_milestones.derived` ones (e.g. the site visit, 'the day following the Pre-Bid Conference'); and the
-    event-dependent rules (no date) of rows the programme's activities serve."""
+    event-dependent rules (no date) of rows the programme's activities serve. The milestone of an anchor (the PDD)
+    takes its time from `anchor_details` (register.anchor_details at the stage), never from the templates or the
+    assumptions; its labels fill {time} {tz} {date} {source} (`fill`; C45 problems go to `problems`)."""
     cfg = templates.get("_milestones") or {}
     labels = cfg.get("labels") or {}
-    pdd_time = str((assumptions.get("planning") or {}).get("delivery_cutoff_time") or "")
+    details = anchor_details or {}
+    problems = problems if problems is not None else []
+    glob = anchor_fields(details)
     out = []
     for rid in sorted(rules):
         d = rules[rid]
@@ -450,8 +549,27 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
         if not value and not (set(d["rows"]) & linked_rows):
             continue
         lab = labels.get(rid) or {}
-        out.append({"id": rid, "date": value, "time": (pdd_time if rid == "PDD" and pdd_time else str(lab.get("time", ""))),
-                    "short": lab.get("short", rid), "label": lab.get("label") or d.get("text", rid),
+        anc = details.get(rid)
+        stated = None if anc is not None else stated_time(d.get("text") or "")   # a fixed rule's own quoted words
+        if anc is not None and "time" in lab:
+            problems.append(f"C45: _milestones.labels.{rid} types a time ({lab['time']!r}); the time of an anchor is read "
+                            f"from its defining unit ({anc.get('unit')}), never typed")
+        elif stated and stated[0] and "time" in lab:
+            problems.append(f"C45: _milestones.labels.{rid} types a time ({lab['time']!r}); the rule's own words state "
+                            f"it ({d.get('text')!r}), so the label fills {{time}} {{tz}} from them, never typed")
+        if anc is not None:
+            vals = dict(glob, time=anc.get("time"), tz=anc.get("tz"), source=anc.get("source"),
+                        date=anc["date"].isoformat() if anc.get("date") else None)
+            time = str(anc.get("time") or "")
+        elif stated and stated[0]:
+            vals = dict(glob, time=stated[0], tz=stated[1])
+            time = stated[0]
+        else:
+            vals, time = glob, str(lab.get("time", ""))
+        out.append({"id": rid, "date": value, "time": time,
+                    "short": fill(lab.get("short", rid), vals, f"_milestones.labels.{rid}.short", problems),
+                    "label": (fill(lab["label"], vals, f"_milestones.labels.{rid}.label", problems) if lab.get("label")
+                              else d.get("text", rid)),
                     "purpose": d.get("purpose", ""), "words": d.get("text", ""), "source": d.get("source_unit", ""),
                     "reading": d["planning"].get("key", ""), "readings_differ": bool(d.get("readings_differ")),
                     "rows": sorted(d["rows"]), "conditional": bool(lab.get("conditional")), "derived": False,
@@ -463,8 +581,10 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
         if not src or not src["date"]:
             continue
         v = date.fromisoformat(src["date"]) + timedelta(days=int(spec.get("calendar_days_after", 0)))
-        out.append({"id": did, "date": v.isoformat(), "time": str(spec.get("time", "")), "short": spec.get("short", did),
-                    "label": spec.get("label", did), "purpose": "event", "words": spec.get("label", ""),
+        out.append({"id": did, "date": v.isoformat(), "time": str(spec.get("time", "")),
+                    "short": fill(spec.get("short", did), glob, f"_milestones.derived.{did}.short", problems),
+                    "label": fill(spec.get("label", did), glob, f"_milestones.derived.{did}.label", problems),
+                    "purpose": "event", "words": spec.get("label", ""),
                     "source": spec.get("source", ""), "reading": f"derived from {src['id']}", "readings_differ": False,
                     "rows": [], "conditional": bool(spec.get("conditional")), "derived": True, "activities": [],
                     "kind": "dated (derived)"})
@@ -474,10 +594,15 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
 # ---------------------------------------------------------------------------------------------- plan
 
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
-         anchors: dict, evidence_items: dict | None = None) -> dict:
+         anchors: dict, evidence_items: dict | None = None, anchor_details: dict | None = None, notified_days: list[str] | None = None) -> dict:
     """evals: [{"row": Row, "stages": {stage: evaluation}}] from register.Register.all().
     evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope.
-    status_date: the planning date (the stage's addendum issue date)."""
+    status_date: the planning date (the stage's addendum issue date).
+    anchor_details (optional): register.anchor_details at this stage (stage2.evaluate's r["anchor_details"][stage]);
+    without it, the same is read from the evaluations (details_from_evals). It fills the placeholders of activity
+    names and items and the PDD milestone, and gives the PDD time in the planning basis."""
+    if anchor_details is None:
+        anchor_details = details_from_evals(evals, stage, anchors)
     need: dict[str, list[str]] = {}
     row_flags: dict[str, list[str]] = {}
     deadlines: dict[str, tuple[str, str]] = {}            # rule_id -> (date, row id)
@@ -508,6 +633,20 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                         f"activities and no justified exception")
     lead = assumptions.get("lead_times") or {}
     bidder = assumptions.get("bidder") or {}
+    fields = anchor_fields(anchor_details)
+    by_row = {e["row"].id: e["stages"].get(stage) or {} for e in evals}
+    named_rows: dict[str, set[str]] = {}                  # activity -> rows its name or item quotes ({ROW:...})
+
+    def row_value(rid: str, param: str):
+        ev = by_row.get(rid)
+        if not ev:
+            return None, f"no row {rid} in the register"
+        if not in_force(str(ev.get("status") or "")):
+            return None, f"row {rid} is not in force at {stage} ({ev.get('status')})"
+        it = ev.get("interpretation") or {}
+        if param not in (it.get("parameters") or {}):
+            return None, f"the interpretation of row {rid} used at {stage} ({it.get('stage') or 'none'}) has no parameter '{param}'"
+        return it["parameters"][param], ""
     acts: dict[str, dict] = {}
     for item in sorted(need):
         for t in templates.get(item) or []:
@@ -520,8 +659,13 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             lt = lead[t["duration"]]
             eff, waiting, eff_basis = effort_of(lt)
             env = getattr((evidence_items or {}).get(item), "envelope", "") if evidence_items else ""
+            if t["id"] not in acts:
+                named_rows[t["id"]] = {k[4:].rsplit(":", 1)[0] for s in (t["name"], t.get("item", ""))
+                                       for k in PLACEHOLDER.findall(str(s)) if k.startswith("ROW:") and k.count(":") >= 2}
+                name = fill(t["name"], fields, f"activity {t['id']} ({item}) name at {stage}", problems, row_value)
+                item_text = fill(t.get("item", ""), fields, f"activity {t['id']} ({item}) item at {stage}", problems, row_value)
             a = acts.setdefault(t["id"], {
-                "id": t["id"], "name": t["name"], "evidence": item, "evidence_items": [], "envelope": env,
+                "id": t["id"], "name": name, "evidence": item, "evidence_items": [], "envelope": env,
                 "owner": t["owner"],
                 "discipline": t.get("discipline") or (t["owner"] if t["owner"] in DISCIPLINES else "Bid management"),
                 "resource": t.get("resource", ""), "issuer": t["issuer"],
@@ -530,7 +674,7 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                 "multiplicity": multiplicity_label(t.get("per"), bidder), "count_expr": expr,
                 "effort_wd": eff, "effort_total_wd": round(eff * count, 3), "effort_basis": eff_basis,
                 "waiting_on": waiting, "work_type": "external waiting + staff effort" if waiting else "staff effort",
-                "item": t.get("item", ""), "gated_by": list(t.get("gated_by") or []),
+                "item": item_text, "gated_by": list(t.get("gated_by") or []),
                 "condition": str(t.get("condition") or ""),
                 "predecessors": list(t.get("predecessors", [])), "successors": list(t.get("successors", [])),
                 "deadline_rule": (t.get("finish") or {}).get("deadline_of"), "req_ids": []})
@@ -563,6 +707,8 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                             "in the network unchanged so scenarios compare like for like)")
         for r in a["req_ids"]:
             flags += [f"{x} ({r})" for x in row_flags.get(r, [])]
+        for r in sorted(named_rows.get(aid, set()) - set(a["req_ids"])):
+            flags += [f"{x} ({r}, quoted in the activity's text)" for x in row_flags.get(r, [])]
         flags += [f"dependency '{d}' not required at this stage" for d in a.pop("not_required_here")]
         status = timing_status(flags)
         g = a["gated_by"]
@@ -599,21 +745,24 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     basis = (f"Planning date {status_date.isoformat()} = the issue date of {stage}, the latest addendum at this stage "
              f"(owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in "
              f"Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: "
-             f"{', '.join(sorted(h.isoformat() for h in cal.holidays)) or 'none'}) from the first Working Day on or "
+             f"{', '.join(sorted(h.isoformat() for h in cal.holidays)) or 'none'}"
+             + (f"; of these, notified by an addendum under VOL-I 2.4: {', '.join(sorted(notified_days))}" if notified_days else "")
+             + ") from the first Working Day on or "
              f"after the planning date ({day0.isoformat()}). Latest dates: a backward pass from the pack deadlines in "
              f"force at {stage} ("
-             + "; ".join(f"{k} {deadlines[k][0]}" + (f" {(assumptions.get('planning') or {}).get('delivery_cutoff_time', '')}"
-                                                     if k == "PDD" else "") for k in used)
+             + "; ".join(f"{k} {deadlines[k][0]}" + (f" {anchor_details[k]['time']}"
+                                                     if (anchor_details.get(k) or {}).get("time") else "") for k in used)
              + f"). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that "
                f"many Working Days (never compressed). Proposal Due Date at this stage: {pdd}.")
     linked = {x for r in rows for x in r["req_ids"]}
+    ms = milestones(rules, templates, assumptions, act_rules, linked, anchor_details, problems)
     return {"stage": stage, "status_date": status_date.isoformat(), "planning_date": status_date.isoformat(),
             "start_date": day0.isoformat(), "planning_basis": basis, "anchors": anchors, "activities": rows,
             "marshalling": marshalling, "problems": problems,
             "exceptions": {k: v for k, v in exceptions.items() if k in need},
             "evidence_needed": {k: sorted(v) for k, v in sorted(need.items())},
             "deadlines": {k: {"date": v[0], "row": v[1]} for k, v in sorted(deadlines.items())},
-            "milestones": milestones(rules, templates, assumptions, act_rules, linked),
+            "milestones": ms,
             "per_overrides": {k: dict(v) for k, v in sorted((templates.get("_per_overrides") or {}).items()) if k in need},
             "calendar": {"weekend": sorted(cal.weekend), "holidays": sorted(h.isoformat() for h in cal.holidays)},
             "load": {"window": load["window"], "overloads": load["overloads"], "notes": load["notes"]}}

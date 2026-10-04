@@ -19,19 +19,40 @@ reports what a person should look at:
   unchecked                  a provision still unresolved (no op yet), so its effect cannot be compared
   no summary                 the cover has no "This Addendum ..." sentence
 
+"Unchanged" claims (session 09, blind rehearsal 02): any other cover sentence of the form "<X> is unchanged | is not
+changed | is not extended | remains unchanged" is a claim of kind `unchanged` (an answer saying the same is an
+answer, not a cover claim, and is left alone). X resolves through the register's date anchors (the anchor's
+defining clause and, where the volume defines the name, its definition clause and the clauses that definition cites:
+"Proposal Due Date means the date and time stated in Clause 6.1" -> VOL-I 2.6 and 6.1), through clause, table or form
+citations, or through a table row named by its key. The claim is contradicted when an op applied at that stage
+changes one of those units (text, cells or status), and the finding says what changed; supported when none does.
+A subject such as "All other terms of the RFP Documents" names nothing that can change, and is not a claim.
+
+"No date affected" claims (session 09, blind rehearsal 03): a cover sentence of the form "<X> does not affect any
+deadline | the Proposal Due Date | ..." is a claim of kind `no_date_effect`. It is judged by the register's computed
+dates, not by the ops: it is contradicted when a date rule in force at this stage and the one before has a different
+planning date (a change inside the Working Day definition moves the clarification cut-off, which no sentence states),
+and the finding names the rule, its row and the two dates. A scope naming one anchor or one rule is judged by that one.
+An insert_unit at an anchor that a set_status deleted removes at the same stage counts as a substitution ("replaces").
+
 Matching is deterministic. A claim's object is split into the things it names ("the Proposal Due Date, the
 clarification period and the number of copies"); each must be found. Cited targets ("Volume II Clauses 4.4 and Table 2-4", "Form 4-G", footnotes; the names of
 the register's date anchors, e.g. "the Proposal Due Date", resolve to their defining clause) match ops on that target
-or inside it. "Clarification requests a to b" match the answers Qa..Qb. Any other claim is matched by its words
-against each op's provision text, target text and target heading. Only ops of a kind the verb allows are candidates,
-and the best-scoring ones are taken, so one descriptive claim names one subject.
+or inside it. "Clarification requests a to b" match the answers Qa..Qb. A claim whose words name one of the
+register's date rules ("the Proposal validity period" names PROPOSAL-VALIDITY, VOL-I 7.1; it does not name
+BID-BOND-VALIDITY, whose clause also mentions "the period of Proposal validity") matches the ops on that rule's source
+clause first (session 09). Any other claim is matched by its words against each op's provision text, target text and
+target heading. Only ops of a kind the verb allows are candidates, and the best-scoring ones are taken, so one
+descriptive claim names one subject. A deletion of words with nothing put in their place is a deletion
+("removes ..."), not an amendment. Claims are split at every ", <verb>" and " and <verb>" ("removes ..., re-letters
+Volume I Clause 9.1").
 """
 from __future__ import annotations
 
 import math
 import re
 
-from .amend import heading_of
+from .amend import group_members, heading_of
 from .citations import citations
 from .textnorm import normalize_latin
 
@@ -43,8 +64,8 @@ VERBS = {
     "reinstates": "reinstate", "restores": "reinstate",
     "revokes": "revoke", "withdraws": "revoke", "cancels": "revoke",
     "adds": "add", "inserts": "add", "introduces": "add", "creates": "add", "requires": "add",
-    "reissues": "replace", "replaces": "replace", "substitutes": "replace",
-    "renumbers": "renumber",
+    "reissues": "replace", "re-issues": "replace", "replaces": "replace", "substitutes": "replace",
+    "renumbers": "renumber", "re-numbers": "renumber", "re-letters": "renumber", "reletters": "renumber",
     "responds to": "answers", "answers": "answers",
     "publishes": "info", "confirms": "info", "clarifies": "info", "notes": "info", "records": "info", "explains": "info",
 }
@@ -93,6 +114,197 @@ def summary_sentences(units: list[dict], addendum: str) -> list[tuple[str, str]]
             for m in SUMMARY_RE.finditer(normalize_latin(u.get("text") or "")):
                 out.append((u["unit_id"], m.group(0).strip()))
     return out
+
+
+# "<X> is unchanged | is not changed | is not extended | remains unchanged" (session 09)
+UNCHANGED_RE = re.compile(r"^(?P<x>.+?)\s+(?P<verb>(?:is|are)\s+(?:unchanged|not\s+(?:changed|extended|amended|altered))|"
+                          r"remains?\s+unchanged)\s*\.?$", re.I | re.S)
+# a subject that names only what the addendum does not change ("All other terms of the RFP Documents") cannot be
+# contradicted by any op, so it is not a claim
+_TAUTOLOGY = re.compile(r"^(?:(?:all|every|any)\s+other|(?:the\s+)?(?:other|remaining))\b", re.I)
+
+
+def unchanged_claims(text: str) -> list[dict]:
+    """Cover sentences stating that something did not change ('The Proposal Due Date is unchanged.'). A 'This Addendum
+    ...' sentence is the summary, never one of these."""
+    out = []
+    for sent in re.split(r"(?<=[.;])\s+(?=[A-Z(‘'\"])", normalize_latin(text or "")):
+        sent = sent.strip()
+        m = UNCHANGED_RE.match(sent)
+        if not m or re.match(r"This Addendum\b", sent, re.I) or _TAUTOLOGY.match(m.group("x").strip()):
+            continue
+        out.append({"verb": " ".join(m.group("verb").split()).lower(), "kind": "unchanged",
+                    "object": m.group("x").strip(), "text": sent.rstrip(".").strip()})
+    return out
+
+
+# "<X> does not affect any deadline | the Proposal Due Date | ..." (session 09, blind rehearsal 03): a claim that no
+# computed date moves. It is judged by the register's date rules, never by the ops: a change inside a definition
+# ("Working Day") moves a deadline that no sentence of the addendum states
+NO_DATE_EFFECT_RE = re.compile(r"^(?P<x>.+?)\s+(?P<verb>(?:does|do)\s+not\s+affect|affects?\s+no|(?:has|have)\s+no\s+"
+                               r"effect\s+on)\s+(?P<scope>.+?)\s*\.?$", re.I | re.S)
+_DATE_WORDS = re.compile(r"\b(?:deadlines?|dates?|periods?|cut-?offs?|time\s*limits?|timetable|programme)\b", re.I)
+
+
+def no_date_effect_claims(text: str) -> list[dict]:
+    """Cover sentences stating that no date is affected ('The closure of the Authority's offices does not affect any
+    deadline under the RFP Documents.'). The scope must speak of dates, deadlines or periods."""
+    out = []
+    for sent in re.split(r"(?<=[.;])\s+(?=[A-Z(‘'\"])", normalize_latin(text or "")):
+        sent = sent.strip()
+        m = NO_DATE_EFFECT_RE.match(sent)
+        if not m or re.match(r"This Addendum\b", sent, re.I) or not _DATE_WORDS.search(m.group("scope")):
+            continue
+        out.append({"verb": " ".join(m.group("verb").split()).lower(), "kind": "no_date_effect",
+                    "object": m.group("x").strip(), "scope": m.group("scope").strip(), "text": sent.rstrip(".").strip()})
+    return out
+
+
+def date_changes_by_stage(evals: list[dict], order: list[str]) -> dict[str, list[dict]]:
+    """{stage: [{row, rule_id, old, new, anchor, source_unit}]}: every date rule in force at a stage and at the one
+    before whose planning date differs, from the register's evaluations (Register.all()). Event-dependent rules
+    without a date are left out."""
+    out: dict[str, list[dict]] = {}
+    for e in evals:
+        for a, b in zip(order, order[1:]):
+            sa, sb = e["stages"].get(a), e["stages"].get(b)
+            if not (sa and sb and sa.get("active") and sb.get("active")):
+                continue
+            was = {d["rule_id"]: d for d in sa.get("dates", [])}
+            for d in sb.get("dates", []):
+                p = was.get(d["rule_id"])
+                old, new = (p or {}).get("planning", {}).get("value"), d.get("planning", {}).get("value")
+                if p and old and new and old != new:
+                    out.setdefault(b, []).append({"row": e["row"].id, "rule_id": d["rule_id"], "old": old, "new": new,
+                                                  "anchor": d.get("anchor"),
+                                                  "source_unit": d.get("source_unit") or d.get("unit") or ""})
+    return out
+
+
+def _check_no_date_effect(rec: dict, stage: str, cover_units: list[dict], date_changes: dict | None, anchors: dict,
+                          rules: dict | None) -> None:
+    """Add the addendum's '<X> does not affect any deadline' claims to `rec`. A scope that names one anchor ('the
+    Proposal Due Date') is judged by that anchor's own rule; one that names a date rule by that rule; 'any deadline'
+    by every rule whose planning date moved at this stage. Without `date_changes` (an older caller) the claim is
+    reported unchecked."""
+    for u in cover_units:
+        for c in no_date_effect_claims(u.get("text") or ""):
+            c["n"] = len(rec["claims"]) + 1
+            changes = None if date_changes is None else list(date_changes.get(stage, []))
+            named_anchor = [k for k, a in (anchors or {}).items()
+                            if a.get("name") and re.search(r"\b" + re.escape(a["name"]) + r"\b", c["scope"], re.I)]
+            named_rules = [] if named_anchor else _named_rules(set(_words(c["scope"])), rules)
+            if changes is not None and (named_anchor or named_rules):
+                changes = [d for d in changes if d["rule_id"] in (named_anchor or named_rules)]
+            c.update({"targets": named_anchor or named_rules, "matched": [d["rule_id"] for d in changes or []],
+                      "matched_provisions": [],
+                      "status": "not checked" if changes is None else "contradicted" if changes else "supported"})
+            rec["claims"].append(c)
+            rec["sentence"] = (rec["sentence"] + " " + c["text"] + ".").strip()
+            if changes is None:
+                rec["findings"].append({"kind": "unchecked", "claim": c["n"], "detail":
+                                        f"'{c['text']}': the computed dates were not available to compare"})
+            for d in changes or []:
+                rec["findings"].append({"kind": "contradicted", "claim": c["n"], "detail":
+                                        f"'{c['text']}', but {d['rule_id']} (row {d['row']}"
+                                        + (f", {_ref(d['source_unit'])}" if d.get("source_unit") else "")
+                                        + f") moves from {d['old']} to {d['new']}"})
+
+
+def rule_index(rows) -> dict:
+    """The register's date rules as summary_check reads them: {rule_id: {source_unit, text, purpose}}."""
+    return {d.rule_id: {"source_unit": d.source_unit, "text": d.text, "purpose": d.purpose} for r in rows
+            for d in r.date_rules}
+
+
+def _named_rules(words: set[str], rules: dict | None) -> list[str]:
+    """Source units of the date rules a claim names: every word of the rule's id (or of a purpose of two or more words)
+    is among the claim's words ('the Proposal validity period' names PROPOSAL-VALIDITY, not BID-BOND-VALIDITY or
+    PROPOSAL-VALIDITY-F4A). The rules naming the most words win."""
+    best, out = 0, []
+    for rid, r in sorted((rules or {}).items()):
+        for name in (rid, r.get("purpose") or ""):
+            toks = {_stem(t) for t in re.split(r"[-_\s]+", name) if t and t.lower() not in _STOP}
+            if len(toks) < 2 or not toks <= words:
+                continue
+            if len(toks) > best:
+                best, out = len(toks), []
+            if len(toks) == best and r["source_unit"] not in out:
+                out.append(r["source_unit"])
+    return out
+
+
+def _definition(state, doc: str, name: str) -> str | None:
+    """The clause of `doc` that defines `name` ('Proposal Due Date means the date and time stated in Clause 6.1 ...')."""
+    rx = re.compile(r"^\W*" + re.escape(name) + r"\W*\s+(?:means|shall mean|has the meaning)\b", re.I)
+    return next((k for k, u in state.items() if u.doc == doc and u.status == "active" and u.kind != "heading"
+                 and rx.match(normalize_latin(u.text or ""))), None)
+
+
+def _subject_units(obj: str, anchors: dict, state) -> tuple[list[str], list[str]]:
+    """What an 'X is unchanged' claim is about: (units, definition units). X is a cited clause, table or form; the name
+    of a register date anchor (its defining clause, the volume's definition of the name and the clauses that definition
+    cites); or the key of a table row ('BOD5')."""
+    t = _expand(obj)
+    cites = citations(t)
+    units = [c.target for c in cites]
+    rest = t
+    for c in cites:
+        rest = rest.replace(c.text, " ")
+    defs: list[str] = []
+    for a in (anchors or {}).values():
+        name = a.get("name")
+        if not name or not re.search(r"\b" + re.escape(name) + r"\b", rest, re.I):
+            continue
+        units.append(a["defined_in"])
+        doc = a["defined_in"].split(":")[0]
+        d = _definition(state, doc, name)
+        if d:
+            defs.append(d)
+            units += [d] + [f"{doc}:{n}" for n in re.findall(r"\bClause (\d+(?:\.\d+)*)", state[d].text)]
+    if not units:
+        key = re.sub(r"^(?:the|a|an)\s+", "", normalize_latin(obj), flags=re.I).strip().lower()
+        units = [k for k, u in state.items() if key and u.kind == "table_row" and u.status == "active"
+                 and not u.doc.startswith("ADD-") and key in ((u.label or "").lower(),
+                                                              str(next(iter((u.cells or {}).values()), "")).lower())]
+    return list(dict.fromkeys(units)), defs
+
+
+def _ref(uid: str) -> str:
+    doc, _, local = (uid or "").partition(":")
+    return f"{doc} {local}" if local else uid
+
+
+def _change_words(o) -> str:
+    """What an op did to a unit, in the provision's own words where it quotes them."""
+    if o.type == "replace_text" and o.old is not None:
+        return (f"{o.id} replaces '{_short(o.old, 90)}' with '{_short(o.new, 90)}' in {_ref(o.target)}" if o.new else
+                f"{o.id} deletes '{_short(o.old, 120)}' from {_ref(o.target)}")
+    return f"{o.id} {_does(o)}"
+
+
+def _check_unchanged(rec: dict, s, prev, cover_units: list[dict], anchors: dict) -> None:
+    """Add the addendum's 'X is unchanged' claims to `rec`: contradicted when an op applied at this stage changes one
+    of X's units (text, cells or status), supported when none does, not checked when X resolves to nothing."""
+    for u in cover_units:
+        for c in unchanged_claims(u.get("text") or ""):
+            c["n"] = len(rec["claims"]) + 1
+            targets, defs = _subject_units(c["object"], anchors, prev)
+            targets = [t for t in targets if t in prev or group_members(prev, t)]      # only what exists can be checked
+            members = {k for t in targets for k in ([t] if t in prev else []) + group_members(prev, t)}
+            hit = [x for x in s.ops if x.applied and set(x.changed) & members]
+            c.update({"targets": targets, "matched": [x.op.id for x in hit], "matched_provisions": [],
+                      "status": "contradicted" if hit else "supported" if targets else "not checked"})
+            rec["claims"].append(c)
+            rec["sentence"] = (rec["sentence"] + " " + c["text"] + ".").strip()
+            if not targets:
+                rec["findings"].append({"kind": "unchecked", "claim": c["n"], "detail":
+                                        f"'{c['text']}': the subject is not a clause, table, form, row key or date "
+                                        "anchor the program can resolve; a person compares it with the provisions"})
+            defined = "".join(f"; {_ref(d)}: '{_short(prev[d].text, 160)}'" for d in defs)
+            for x in hit:
+                rec["findings"].append({"kind": "contradicted", "claim": c["n"], "op": x.op.id, "provision": x.op.provision,
+                                        "detail": f"'{c['text']}', but {_change_words(x.op)}{defined}"})
 
 
 def _expand(obj: str) -> str:
@@ -179,13 +391,15 @@ def _count(obj: str) -> int | None:
 def _op_class(o) -> str:
     if o.type == "set_status":
         return {"deleted": "delete", "reinstated": "reinstate", "revoked": "revoke"}[o.status]
+    if o.type == "replace_text" and o.old is not None and not (o.new or "").strip():
+        return "delete"                                # words deleted, nothing put in their place ("removes ...")
     if o.type in ("replace_text", "set_value"):
         return "change"
     if o.type == "append_text":
         return "add"
     if o.type == "replace_unit":
         return "replace"
-    if o.type == "insert_unit":
+    if o.type in ("insert_unit", "insert_row"):
         return "add"
     return {"adds_obligation": "obligation", "renumbers": "renumber"}.get(o.effect or "", "interpretation")
 
@@ -219,9 +433,12 @@ def _target_text(state, order, key: str) -> str:
     return f"{u.text[:400]} {head}"
 
 
-def summary_check(stages: list, units: list[dict], anchors: dict | None = None) -> list[dict]:
+def summary_check(stages: list, units: list[dict], anchors: dict | None = None, rules: dict | None = None,
+                  date_changes: dict | None = None) -> list[dict]:
     """One record per addendum: its summary claims, what each matched, and the findings. Reads the engine's result
-    only; changes nothing."""
+    only; changes nothing. `anchors` are the register's date anchors ({PDD: {name, defined_in}}); `rules` its date rules
+    ({rule_id: {source_unit, text, purpose}}, rule_index); `date_changes` the computed dates that moved at each stage
+    (date_changes_by_stage), for the 'does not affect any deadline' claims."""
     order = [u["unit_id"] for u in units]
     by_id = {u["unit_id"]: u for u in units}
     out = []
@@ -229,6 +446,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
         prev = stages[i - 1].state
         add = s.addendum
         sents = summary_sentences(units, add)
+        covers = [u for u in units if u["doc"] == add and ":cover/" in u["unit_id"]]
         rec = {"addendum": add, "stage": s.stage, "cover": sents[0][0] if sents else None,
                "page": (by_id.get(sents[0][0], {}).get("pages") or [None])[0] if sents else None,
                "sentence": " ".join(x[1] for x in sents), "claims": [], "findings": []}
@@ -236,8 +454,21 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
         if not sents:
             rec["findings"].append({"kind": "no summary", "detail": f"{add}'s cover has no 'This Addendum ...' sentence; "
                                     "nothing to compare"})
+            _check_unchanged(rec, s, prev, covers, anchors or {})
+            _check_no_date_effect(rec, s.stage, covers, date_changes, anchors or {}, rules)
             continue
         ops = [x for x in s.ops if ":cover/" not in x.op.provision]
+        # an insert_unit at an anchor that a set_status deleted removes at the same stage is a substitution (the
+        # replacement of the Form 4-C declaration in blind rehearsal 03): both ops are of class "replace"
+        subst = ({x.op.target for x in s.ops if x.op.type == "set_status" and x.op.status == "deleted"}
+                 & {x.op.anchor for x in s.ops if x.op.type == "insert_unit" and x.op.anchor})
+
+        def cls(x) -> str:
+            o = x.op
+            if (o.type == "insert_unit" and o.anchor in subst) or \
+                    (o.type == "set_status" and o.status == "deleted" and o.target in subst):
+                return "replace"
+            return _op_class(o)
         no_effect = [c for c in s.coverage if c["disposition"] == "no_effect" and ":cover/" not in c["provision"]]
         unresolved = [c for c in s.coverage if c["disposition"] in ("unresolved", "UNACCOUNTED")
                       and ":cover/" not in c["provision"]]
@@ -291,12 +522,17 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
                     else:
                         cnt = _count(rest) if cnt is None else cnt
                         words = set(_words(rest))
-                        if words:
-                            need = len(words) if len(words) <= 2 else math.ceil(2 * len(words) / 3)
+                        named = _named_rules(words, rules)        # a date rule the claim names: its clause first
+                        if named:
+                            ih = [x for x in cand if cls(x) in allowed
+                                  and any(_hits(t, k) for t in named for k in keys(x))]
+                            all_targets += named if ih else []
+                        if words and not ih:
+                            need =len(words) if len(words) <= 2 else math.ceil(2 * len(words) / 3)
                             # best subject: most words found (provision, target, target heading); ties go to the
                             # provision whose own text names more of them
                             scored = [((len(words & haystack(x)), len(words & set(_words(ptext_of(x.op))))), x)
-                                      for x in cand if _op_class(x.op) in allowed]
+                                      for x in cand if cls(x) in allowed]
                             best = max((n for n, _ in scored), default=(0, 0))
                             ih = [x for n, x in scored if n[0] >= need and n == best]
                             if "none" in allowed:
@@ -316,7 +552,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
             for item in missing:
                 rec["findings"].append({"kind": "not found", "claim": c["n"], "detail":
                                         f"'{c['text']}': no provision of {add} matches '{item}'"})
-            fit = [x for x in hit if _op_class(x.op) in allowed]
+            fit = [x for x in hit if cls(x) in allowed]
             if not fit and not hit_prov:
                 c["status"] = "contradicted"
                 for x in hit:
@@ -329,7 +565,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
                     # an op on the same target that the verb does not describe (a renumbering under "inserts") is not
                     # covered by this claim, so it can still be reported as omitted. Answers keep every op: one that
                     # changes or adds something is reported as understated below
-                    hit = [x for x in hit if _op_class(x.op) in allowed or _op_class(x.op) == "interpretation"]
+                    hit = [x for x in hit if cls(x) in allowed or cls(x) == "interpretation"]
                     c["matched"] = [x.op.id for x in hit]
             if cnt is not None and c["kind"] in ("delete", "reinstate", "revoke", "add", "replace"):
                 n_ok = len({x.op.provision for x in fit})
@@ -344,18 +580,18 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
             for x in hit:
                 matched_by.setdefault(x.op.id, []).append(c["n"])
                 covered_sections.add(section(x.op.provision))
-                o, cls = x.op, _op_class(x.op)
+                o, kind = x.op, cls(x)
                 if not x.applied:
                     rec["findings"].append({"kind": "claimed, not applied", "claim": c["n"], "op": o.id,
                                             "provision": o.provision, "detail":
                                             f"'{c['text']}' describes {o.id}, which is "
                                             f"{'rejected by a person (withheld)' if x.withdrawn else 'INVALID'} and was "
                                             "not applied" + (f" ({_failed(x)})" if not x.valid else "")})
-                if c["kind"] in ("answers", "info") and cls in CHANGES | {"obligation"}:
+                if c["kind"] in ("answers", "info") and kind in CHANGES | {"obligation"}:
                     rec["findings"].append({"kind": "understated", "claim": c["n"], "op": o.id, "provision": o.provision,
                                             "detail": f"'{c['text']}', but {o.id} {_does(o)}: "
                                                       f"'{_gist(s.state[o.provision].text if o.provision in s.state else '')}'"})
-                if cls == "reinstate" and o.new_text and o.target in stages[0].state:
+                if kind == "reinstate" and o.new_text and o.target in stages[0].state:
                     before = _norm(stages[0].state[o.target].text)
                     if _norm(o.new_text) != before:
                         rec["findings"].append({"kind": "understated", "claim": c["n"], "op": o.id,
@@ -373,10 +609,10 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
                 covered_sections.add(section(p))
             rec["claims"].append(c)
         for x in ops:
-            o, cls = x.op, _op_class(x.op)
+            o, kind = x.op, cls(x)
             if o.id in matched_by:
                 continue
-            if cls in CHANGES or cls == "obligation" or section(o.provision) not in covered_sections:
+            if kind in CHANGES or kind == "obligation" or section(o.provision) not in covered_sections:
                 ptext = ptext_of(o)
                 cons = _consequence(ptext)
                 rec["findings"].append({"kind": "omitted", "op": o.id, "provision": o.provision, "detail":
@@ -391,6 +627,8 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
             rec["findings"].append({"kind": "unchecked", "provision": c["provision"], "detail":
                                     f"{c['provision']} is unresolved (no op yet), so its effect cannot be compared with "
                                     "the summary"})
+        _check_unchanged(rec, s, prev, covers, anchors or {})
+        _check_no_date_effect(rec, s.stage, covers, date_changes, anchors or {}, rules)
     return out
 
 
@@ -401,9 +639,10 @@ def _rangetext(rng: set[int]) -> str:
 
 def _does(o) -> str:
     tgt = o.target or o.new_group or ", ".join(o.targets)
-    return {"replace_text": f"amends {tgt}", "set_value": f"changes a value in {tgt}", "append_text": f"adds text to {tgt}",
+    return {"replace_text": f"amends {tgt}" if o.new or o.old is None else f"deletes words from {tgt}", "set_value": f"changes a value in {tgt}", "append_text": f"adds text to {tgt}",
             "replace_unit": f"replaces {tgt}",
-            "insert_unit": f"inserts {o.new_group or 'new text'}" + (f" after {o.anchor}" if o.anchor else "")}.get(o.type) or (
+            "insert_row": f"adds a row to {tgt}" + (f" after {o.after}" if o.after else ""),
+            "insert_unit":f"inserts {o.new_group or 'new text'}" + (f" after {o.anchor}" if o.anchor else "")}.get(o.type) or (
         f"{ {'deleted': 'deletes', 'reinstated': 'reinstates', 'revoked': 'ends the effect of'}[o.status]} {tgt}"
         if o.type == "set_status" else
         {"adds_obligation": f"adds an obligation ({tgt})", "renumbers": f"renumbers {tgt}"}.get(o.effect or "",

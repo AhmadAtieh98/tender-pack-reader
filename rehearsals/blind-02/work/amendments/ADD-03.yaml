@@ -258,14 +258,21 @@ ops:
   review: proposed
 - id: ADD-03/7.2
   provision: ADD-03:7.2
-  type: annotate
-  targets:
-  - ADD-03:7.2
-  effect: adds_obligation
+  type: insert_row
+  target: VOL-IV:cover/T1
+  after: VOL-IV:cover/T1/4-F
+  cells:
+    Form: 4-G
+    Title: Cybersecurity Compliance Undertaking
+    Envelope: A
+    Status: Mandatory
   note: 'Form 4-G is added to the Index of Forms (the Volume IV cover table, VOL-IV:cover/T1) as ''Cybersecurity Compliance Undertaking'', Envelope A, Mandatory:
-    consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered'
-  issue: the entry is given in prose, so it is recorded as an annotation, not as a new row of the index table; the cover line 'Forms 4-A to 4-F' is not
-    amended
+    consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered. [Session 09 fix, after the key: the op is now an insert_row (the engine
+    inserts the entry the provision describes in prose as row VOL-IV:cover/T1/4-G+ADD-03, each cell checked against the provision); in the scored state
+    it was an annotate (effect adds_obligation, target ADD-03:7.2) with the issue ''the entry is given in prose, so it is recorded as an annotation, not
+    as a new row of the index table''.]'
+  issue: 'the cover line ''Forms 4-A to 4-F'' (VOL-IV:cover/para4) is not amended [Session 09 fix, after the key: the first half of the scored issue (the
+    entry recorded only as an annotation) no longer applies]'
   origin: assistant
   review: proposed
 - id: ADD-03/Q15(a)

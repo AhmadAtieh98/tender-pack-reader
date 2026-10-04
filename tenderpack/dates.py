@@ -80,6 +80,12 @@ class Calendar:
         if bad:
             raise ValueError(f"holidays must be dates (not datetimes or strings), got {bad}")
 
+    def with_days(self, days) -> "Calendar":
+        """This calendar with more non-working days: the days an addendum notifies under VOL-I 2.4 (ISO strings or
+        dates), kept apart from the configured holidays by the caller (session 09)."""
+        extra = {date.fromisoformat(d) if isinstance(d, str) else d for d in (days or [])}
+        return Calendar(weekend=self.weekend, holidays=self.holidays | extra) if extra else self
+
     def is_working_day(self, d: date) -> bool:
         return d.weekday() not in self.weekend and d not in self.holidays
 

@@ -539,11 +539,18 @@ rows:
         note: "Wider than VOL-I 9.3 (the Form 4-A signatory): covers every signatory, e.g. the Form 4-C signatory of each member. Which documents' signatories are meant is not listed."
       - stage: ADD-03
         quote: notarised Powers of Attorney for each signatory
+        consequence:
+          class: document_refusal
+          unit: ADD-03:Q16
+          quote: A Power of Attorney that does not comply will be treated as not submitted.
         note: 'ADD-03 Q16: a Power of Attorney executed outside the Kingdom must also be legalised by an embassy or consulate
           of the Kingdom in the country of execution, or apostilled where that country is party to the Apostille Convention;
           one that does not comply ''will be treated as not submitted''. The item is now (i) (ADD-03 7.1). What a missing
           Power of Attorney means for the Proposal is not stated (VOL-I 11.1(i) check). Q16 cites the list by its new
-          letter (I-ADD03-Q16). [Post-key fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.]'
+          letter (I-ADD03-Q16). [Post-key fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.]
+          [Session 09 fix, after the key: consequence class document_refusal (new) quoting ADD-03 Q16; the row stays in
+          the VOL-I 11.1(i) gate and is also listed under ''Document refused'' on A3, never as a disqualification. The
+          scored state had class ''lesser''; the post-key state had no consequence.]'
     confidence: medium
     confidence_reason: "verbatim list item; 'each signatory' is not defined; no consequence stated"
     issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
@@ -724,12 +731,18 @@ rows:
         quote: "shall be accompanied by an opinion from an independent model auditor addressed to the Authority"
         note: "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated."
       - stage: ADD-03
-        quote: The Financial Model shall be submitted
+        quote: "shall be accompanied by an opinion from an independent model auditor addressed to the Authority"
+        removed:
+          by: ADD-03/4.1
+          note: "[Session 09 fix, after the key: the obligation's words are deleted from VOL-I 10.3, which stays in force;
+            the row is REMOVED (ADD-03/4.1) and out of force from ADD-03 (A3, A5 and the gate leave it out).]"
         note: 'NO LONGER A PROPOSAL REQUIREMENT from ADD-03: 4.1 deletes '', and shall be accompanied by an opinion from
           an independent model auditor addressed to the Authority'' and states ''No model audit opinion is required with
           the Proposal.'' The opinion is now due within 45 days after the Preferred Bidder Notification (new Clause 12.5,
           row ADD-03-12.5-01). The register shows this row as AMENDED, not DELETED, because the clause itself stays in
-          force (rehearsal finding).'
+          force (rehearsal finding). [Session 09 fix, after the key: `removed` added and the quote set to the words
+          ADD-03 4.1 deleted (checked against VOL-I 10.3 as it stood before 4.1); the row now shows REMOVED (ADD-03/4.1).
+          The scored state quoted ''The Financial Model shall be submitted'' and showed AMENDED (ADD-03/4.1).]'
     confidence: medium
     confidence_reason: "verbatim; conflicts with VOL-I 10.1; no consequence stated"
     issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
@@ -1065,11 +1078,12 @@ rows:
     interpretations:
       - stage: BASE
         quote: "Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka."
-        parameters: {marking: "NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE"}
+        parameters: {address: "Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka", marking: "NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE"}
         note: "The address of VOL-I 6.1 (row VOL-I-6.1-01 carries the deadline and the late-receipt rejection)."
       - stage: ADD-03
         quote: Tender Box 2, First Floor, Northern Utilities Procurement Authority, Administrative Building A, Sakaka.
         parameters:
+          address: Tender Box 2, First Floor, Northern Utilities Procurement Authority, Administrative Building A, Sakaka
           marking: NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE
         note: 'ADD-03 2.3 deletes and replaces Appendix 3: Tender Box 4 -> 2, Ground -> First Floor, Building C -> A;
           the marking''s time 14:00 -> 11:00 (consistent with VOL-I 6.1 as amended). New Clause 6.8 refers to Administrative

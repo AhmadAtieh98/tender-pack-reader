@@ -1,0 +1,39 @@
+# RECORDED FIXTURE (hand-written; not a live model). Numerical changes the controller must catch:
+#   ADD-03/3.1      previous_value '120' does not match VOL-I 7.1 at ADD-02 (it says 150)         -> invalid
+#   ADD-03/3.1(x)   a wrong `old` ('180', quoted from the provision) that VOL-I 7.1 does not hold   -> invalid via C23
+#   ADD-03/3.2      correct (180 -> 210 in VOL-I 6.3; previous 180, proposed 210)                    -> evidence_verified
+#   ADD-03/5.1      proposed_value '35' is not what the op writes ('40')                            -> invalid
+name: add03-numeric
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - match: {last_role: user, contains: ["TASK PACKET"]}
+    response:
+      usage: {input_tokens: 14000, output_tokens: 900}
+      text: |
+        {"addendum": "ADD-03", "state": ${state}, "statements": [],
+         "items": [
+          {"id": "ADD-03/3.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.1", "target": "VOL-I:7.1",
+           "payload": {"type": "replace_text", "target": "VOL-I:7.1",
+                       "old": "one hundred and fifty (150) days", "new": "one hundred and eighty (180) days"},
+           "previous_value": "120", "proposed_value": "180",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.1", "page": 1, "kind": "span",
+                         "words": "‘one hundred and fifty (150) days’ is deleted and ‘one hundred and eighty (180) days’ is substituted"}]},
+          {"id": "ADD-03/3.1(x)", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.1", "target": "VOL-I:7.1",
+           "payload": {"type": "replace_text", "target": "VOL-I:7.1",
+                       "old": "one hundred and eighty (180) days", "new": "one hundred and fifty (150) days"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.1", "page": 1, "kind": "span",
+                         "words": "‘one hundred and eighty (180) days’ is substituted"}]},
+          {"id": "ADD-03/3.2", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.2", "target": "VOL-I:6.3",
+           "payload": {"type": "replace_text", "target": "VOL-I:6.3",
+                       "old": "one hundred and eighty (180) days", "new": "two hundred and ten (210) days"},
+           "previous_value": 180, "proposed_value": 210,
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.2", "page": 1, "kind": "span",
+                         "words": "‘one hundred and eighty (180) days’ is deleted and ‘two hundred and ten (210) days’ is substituted"},
+                        {"doc": "VOL-I", "unit_id": "VOL-I:6.3", "page": 3, "kind": "span",
+                         "words": "remain valid for one hundred and eighty (180) days from the Proposal Due Date"}]},
+          {"id": "ADD-03/5.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:5.1", "target": "VOL-II:3.5",
+           "payload": {"type": "replace_text", "target": "VOL-II:3.5", "old": "45 dB(A) by night", "new": "40 dB(A) by night"},
+           "previous_value": "45", "proposed_value": "35",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:5.1", "page": 2, "kind": "span",
+                         "words": "‘45 dB(A) by night’ is deleted and ‘40 dB(A) by night’ is substituted"}]}]}

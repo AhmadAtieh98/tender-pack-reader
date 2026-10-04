@@ -11,10 +11,17 @@ the register. For every valid op that creates or amends an obligation, at the st
   A5  each such row at bid stage names a deliverable (an evidence item that has activity templates or a justified
       exception), or states why it needs none (`no_deliverable`).
 
-Which ops carry obligations: annotate with effect adds_obligation; insert_unit; replace_unit; set_status
+Which ops carry obligations: annotate with effect adds_obligation; insert_unit; insert_row; replace_unit; set_status
 reinstated; replace_text / append_text / set_value when the changed unit is a requirement (its disposition) or
 its new words contain obligation language. Deletions and revocations remove obligations (their rows go out of
 force) and confirmations change nothing; neither is traced.
+
+Session 09: a row inserted in a table (insert_row) needs a row of its own: the rows of the table's other entries do
+not count. A REMOVED row (its words deleted from a unit that stays in force) is out of force like a DELETED one.
+Two consequences the dispositions lexicon does not list are consequence words here: a refused document ("will be
+treated as not submitted", "will not be accepted") and zero marks ("will be awarded no marks"). Like any other, they
+are carried by a row whose consequence is quoted from the op's units, whatever its class (a document refusal is
+`document_refusal`, zero marks under one criterion `criterion_zero`: register.CONSEQUENCE_CLASSES).
 
 Each finding names the op, the stage, the output it fails to reach and the provision's own words, so it can be
 shown on A3 and in A2. Findings block a release (coverage) and fail check-register; a working draft is still
@@ -32,11 +39,19 @@ OBLIGATION_DISPOSITIONS = ("requirement", "consequence", "duplicate")
 
 
 def _in_force(status: str) -> bool:
-    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED"))
+    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
+
+
+# a refused document and zero marks under a criterion (session 09; not in the dispositions lexicon)
+REFUSAL = re.compile(r"\b(?:treated as not (?:having been )?submitted|(?:will|shall) not be accepted|"
+                     r"(?:will|shall) be refused)\b", re.I)
+ZERO_MARKS = re.compile(r"\b(?:awarded|given|receive|score)\s+(?:no|zero|nil)\s+(?:marks?|points?)\b|"
+                        r"\b(?:no|zero) marks\b", re.I)
 
 
 def _consequence_words(text: str) -> set[str]:
-    return {m.group(0).lower() for rx in (CONSEQUENCE_EN, CONSEQUENCE_AR) for m in rx.finditer(text or "")}
+    return {m.group(0).lower() for rx in (CONSEQUENCE_EN, CONSEQUENCE_AR, REFUSAL, ZERO_MARKS)
+            for m in rx.finditer(text or "")}
 
 
 def _cites(row_units: list[str], keys: set[str]) -> bool:
@@ -71,13 +86,16 @@ def obligation_trace(r: dict) -> list[dict]:
                 if op.new_group:
                     needs.append((f"the new {op.new_group}", {k for k in x.changed if k != item} | {op.new_group}))
                 keys = set().union(*(n for _, n in needs)) if needs else {op.provision}
+            elif op.type == "insert_row":                  # the new row, never the table's other rows
+                keys = {x.details.get("inserted"), op.provision} - {None}
+                needs = [(f"the row inserted in {op.target}", keys)]
             else:
                 keys = set(carriers) | {op.provision} | set(x.changed)
                 keys |= {k for k in (op.target, op.replacement, op.new_group) if k}
                 keys |= set(op.targets or [])
                 needs = [("it", keys)]
             # obligation-bearing? and which consequence words the op brings in
-            bearing, brought = op.type in ("annotate", "insert_unit", "replace_unit") or op.status == "reinstated", set()
+            bearing, brought = op.type in ("annotate", "insert_unit", "insert_row", "replace_unit") or op.status == "reinstated", set()
             for k in carriers:
                 new = st[k].text or ""
                 old = prev[k].text if k in prev and prev[k].status == "active" and op.type != "annotate" else ""
@@ -98,7 +116,9 @@ def obligation_trace(r: dict) -> list[dict]:
                 if not [e for e in rows if _cites(e["row"].units, need)]:
                     out.append({**base, "output": "A1", "detail": f"{op.id} ({op.type}) creates or amends an obligation that no "
                                 f"A1 row in force at {s.stage} holds" + (f" ({what}; a row of the anchor {op.anchor} does "
-                                                                         "not count)" if op.type == "insert_unit" else "")
+                                                                         "not count)" if op.type == "insert_unit" else
+                                                                         f" ({what}; the table's other rows do not count)"
+                                                                         if op.type == "insert_row" else "")
                                 + f": {words}"})
             if brought and not noted:
                 carried = []

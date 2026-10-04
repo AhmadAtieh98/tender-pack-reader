@@ -44,6 +44,8 @@ Stage 2 (from a published evidence build; see tenderpack/stage2.py):
   apply-proposal PROPOSAL_ID --by NAME [--proposals PATH]
            write a prepared proposal (e.g. a re-made interpretation for a STALE row) into the register and pin
            that interpretation only; the row is then PROPOSED again and needs `accept`.
+  ai ...   AI proposals (tenderpack/ai/cli.py): propose, task, submit, validate, tool, serve-mcp, capabilities,
+           promote, locks. Proposals go to staging/ai/ only; a person promotes them as PROPOSED drafts.
 
 Output safety: the output directory may not be the repository, a parent of it, the home or root
 directory, a protected repository folder (sources, config, curation, ...), or anything that
@@ -467,8 +469,12 @@ def pin_cmd(evidence: Path, pack_path: Path, refresh: bool, migrate: bool = Fals
     if only:
         wanted = {tuple(x.strip().split("@")) for x in only.split(",") if x.strip()}
         by_stage = {st.stage: st for st in stages}
+        from .dates import calendar_from_config
         from .register import Register
-        reg = Register(rf, stages, None)
+        # the pack's own calendar (the register keeps one per stage, with the days the addenda notify); pins do not
+        # depend on it, but the register is built with it as everywhere else
+        assumptions = load_yaml(ROOT / cfg.get("assumptions", "config/assumptions.yaml"))
+        reg = Register(rf, stages, calendar_from_config(assumptions.get("calendar")))
         n = 0
         for row in rf.rows:
             for it in row.interpretations:
@@ -576,7 +582,12 @@ def main(argv: list[str] | None = None) -> int:
     k.add_argument("--evidence", default=str(ROOT / "build"))
     k.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     k.add_argument("--proposals", default=str(ROOT / "curation/register/proposals"))
+    from .ai.cli import add_parser as add_ai_parser          # session 09: `tenderpack ai ...` (tenderpack/ai/cli.py)
+    add_ai_parser(sub)
     args = ap.parse_args(argv)
+    if args.cmd == "ai":
+        from .ai.cli import run as ai_run
+        return ai_run(args)
     if args.cmd in ("accept", "reject"):
         return decide_cmd(args.items, args.cmd, args.reviewer, args.note, Path(args.evidence), Path(args.pack), args.decisions)
     if args.cmd == "apply-proposal":

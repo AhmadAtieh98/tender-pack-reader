@@ -5,7 +5,9 @@
                 (each op, its provision's words, page and validity); the A5 activities that plan it. Writes
                 <to>/<ROW-ID>/index.html with the crops beside the text (default: show/, outside every build).
   diff          what one addendum changed, from one stage to the next (default: the last two): the addendum's
-                status and unresolved provisions; requirements that are new, gone or changed (and why); rows that
+                status and unresolved provisions; requirements that are new, gone or changed (and why: every unit
+                a row cites is compared, not only its first, so a row whose secondary unit was replaced, amended,
+                deleted, issued or annotated is listed with that unit and the op that changed it); rows that
                 became STALE, review decisions it voided and image-read values it changed; obligations that do
                 not reach the outputs (C46); disqualifiers that enter or leave A3; and the programme impact
                 (new / removed / moved / rework activities, feasibility changes, document counts).
@@ -27,7 +29,8 @@ DPI = 110
 
 
 def _in_force(status: str) -> bool:
-    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED"))
+    from .schedule import in_force          # one rule for every consumer (REMOVED rows are out of force; session 09)
+    return in_force(status)
 
 
 def _docs(r: dict) -> dict[str, Path]:
@@ -132,6 +135,7 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
         what = {"replace_text": lambda: f"'{o.old}' -> '{o.new}'", "set_value": lambda: f"{o.column}: -> {o.new}",
                 "set_status": lambda: o.status, "replace_unit": lambda: f"replaced by {o.replacement}",
                 "insert_unit": lambda: f"inserted {o.new_group or ''} after {o.anchor or ''}".strip(),
+                "insert_row": lambda: f"row {o.cells} inserted in {o.target} after {o.after or 'the last row'}",
                 "append_text": lambda: f"+ '{o.new}'", "annotate": lambda: f"{o.effect}: {o.note or ''}"}[o.type]()
         lines.append(f"    {oid} [{s.stage}] {o.type}: {what}  ({_ref(r, o.provision)}; "
                      f"{('applied' if x.applied else 'WITHHELD (rejected)') if x.valid else 'INVALID'}; "
@@ -165,11 +169,68 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
     return text, dest / "index.html"
 
 
+def _unit_changes(sa: dict, sb: dict, uid: str) -> list[dict]:
+    """How one unit a row cites changed between two stage states, as [{"unit", "change", "ops", "now", "detail"}].
+    Compared: whether it is issued, its status, text and cells, its effective replacement (followed through superseded
+    units, so a replacement amended or replaced again is seen) and the annotations on it and on its replacement."""
+    from .register import effective
+    ua, ub = sa.get(uid), sb.get(uid)
+    if ub is None or ub.status == "not_issued":
+        return [{"unit": uid, "change": "no longer exists", "ops": []}] if ua is not None and ub is None else []
+    new_ops = lambda a, b: [h for h in (b.history if b else []) if h not in (a.history if a else [])]  # noqa: E731
+    if ua is None or ua.status == "not_issued":
+        return [{"unit": uid, "change": "issued", "ops": new_ops(ua, ub)}]
+    out, ops = [], new_ops(ua, ub)
+    if ua.status != ub.status:
+        change = {"superseded": "replaced", "active": "reinstated"}.get(ub.status, ub.status)
+        out.append({"unit": uid, "change": change, "ops": ops,
+                    "now": ub.superseded_by if ub.status == "superseded" else None})
+    elif (ua.text, ua.cells) != (ub.text, ub.cells):
+        cells = [f"{k}: {(ua.cells or {}).get(k)} -> {v}" for k, v in (ub.cells or {}).items() if (ua.cells or {}).get(k) != v]
+        out.append({"unit": uid, "change": "amended", "ops": ops, "detail": "; ".join(cells) or "wording"})
+    ea, eb = effective(sa, uid, True), effective(sb, uid, True)
+    pairs = [(ua, ub)]
+    if ua.status == ub.status == "superseded" and eb is not None and eb.unit_id != uid:
+        if ea is None or ea.unit_id != eb.unit_id:
+            out.append({"unit": uid, "change": f"replaced earlier; now in force as {eb.unit_id} (was "
+                        f"{ea.unit_id if ea is not None else 'none'})", "ops": new_ops(ea, eb)})
+        else:
+            pairs.append((ea, eb))
+            if (ea.status, ea.text, ea.cells) != (eb.status, eb.text, eb.cells):
+                out.append({"unit": uid, "change": f"replaced earlier; its replacement {eb.unit_id} "
+                            + ("amended" if ea.status == eb.status else eb.status), "ops": new_ops(ea, eb)})
+    for a_u, b_u in pairs:
+        notes = [h for h in b_u.annotations if h not in a_u.annotations]
+        if notes:
+            out.append({"unit": uid, "change": "annotated" if b_u is ub else
+                        f"replaced earlier; its replacement {b_u.unit_id} annotated", "ops": notes})
+    return out
+
+
+def _secondary(row, sa: dict, sb: dict) -> tuple[list[str], list[str]]:
+    """Reasons and op ids for the secondary units of a row (every unit it cites after the first), grouped by change and
+    op: 'secondary units VOL-II:T2-2/bod5, VOL-II:T2-2/cod replaced by ADD-03/6.1 (now ADD-03:T2-2-rev/bod5, ...)'."""
+    groups: dict[tuple, list[dict]] = {}
+    for uid in dict.fromkeys(row.units[1:]):
+        for c in _unit_changes(sa, sb, uid):
+            groups.setdefault((c["change"], tuple(c["ops"]), c.get("detail")), []).append(c)
+    reasons, ops = [], []
+    for (change, oids, detail), cs in groups.items():
+        units = [c["unit"] for c in cs]
+        now = list(dict.fromkeys(c["now"] for c in cs if c.get("now")))
+        reasons.append(f"secondary unit{'s' if len(units) > 1 else ''} {', '.join(units)} {change}"
+                       + (f" by {', '.join(oids)}" if oids else "") + (f" (now {', '.join(now)})" if now else "")
+                       + (f" ({detail})" if detail else ""))
+        ops += [o for o in oids if o not in ops]
+    return reasons, ops
+
+
 def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, dict]:
     order = r["order"]
     to = to or order[-1]
     frm = frm or order[order.index(to) - 1]
     sto = next(s for s in r["stages"] if s.stage == to)
+    sfrm = next(s for s in r["stages"] if s.stage == frm)
     md = [f"# What changed from {frm} to {to}", ""]
     data: dict = {"from": frm, "to": to}
     if sto.addendum:
@@ -191,7 +252,7 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
             data["summary_check"] = sc["findings"]
         md.append("")
     # ---- requirements
-    new, gone, changed = [], [], []
+    new, gone, changed, secondary = [], [], [], {}
     for e in r["evals"]:
         a, b = e["stages"][frm], e["stages"][to]
         fa, fb = _in_force(a["status"]), _in_force(b["status"])
@@ -210,13 +271,19 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
             da = {d["rule_id"]: d["planning"]["value"] for d in a["dates"]}
             db = {d["rule_id"]: d["planning"]["value"] for d in b["dates"]}
             what += [f"{k} {da.get(k)} -> {v}" for k, v in db.items() if da.get(k) != v]
+            sec, sec_ops = _secondary(e["row"], sfrm.state, sto.state)     # every other unit the row cites
+            what += sec
+            why += [h for h in sec_ops if h not in why]
+            if sec:
+                secondary[rid] = sec
             if what or why:
                 changed.append((rid, b["status"], why, what))
     md += ["## Requirements", "", f"- new: {len(new)}; out of force: {len(gone)}; changed: {len(changed)}", ""]
     md += [f"- NEW {rid}: {st}" + (f" (by {', '.join(w)})" if w else "") for rid, st, w in new]
     md += [f"- OUT {rid}: {st}" for rid, st, _ in gone]
     md += [f"- CHANGED {rid}: {'; '.join(w) or 'amended'}" + (f" (by {', '.join(o)})" if o else "") for rid, st, o, w in changed]
-    data["requirements"] = {"new": [x[0] for x in new], "out": [x[0] for x in gone], "changed": [x[0] for x in changed]}
+    data["requirements"] = {"new": [x[0] for x in new], "out": [x[0] for x in gone], "changed": [x[0] for x in changed],
+                            "secondary": secondary}
     # ---- stale interpretations, voided decisions, image-read values changed
     stale = [(e["row"].id, e["stages"][to]["stale"]) for e in r["evals"] if e["stages"][to]["stale"]]
     carried = {e["row"].id for e in r["evals"] if e["stages"][frm]["stale"]}

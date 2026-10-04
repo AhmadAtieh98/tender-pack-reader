@@ -52,12 +52,18 @@ def clause(page, y, number, text, size=9.6):
     page.insert_text((88.0, y), text, fontname="tiro", fontsize=size, color=INK)
 
 
-def ruled_table(page, x0, y0, widths, rows, header=None, row_h=17.0):
-    """rows: list of lists of strings. Returns bottom y."""
+def ruled_table(page, x0, y0, widths, rows, header=None, row_h=17.0, gap_before=None):
+    """rows: list of lists of strings. Returns bottom y.
+    gap_before: {index in `rows`: extra points} draws that row (and any after it) lower by that much, with the same
+    text, the cell above it taller (session 09: a source moved without a change of words). None draws as before."""
     x1 = x0 + sum(widths)
     y = y0
     allrows = ([header] if header else []) + rows
+    tops = []
     for ri, r in enumerate(allrows):
+        if gap_before and ri - (1 if header else 0) in gap_before:
+            y += gap_before[ri - (1 if header else 0)]
+        tops.append(y)
         if header and ri == 0:
             page.draw_rect(pymupdf.Rect(x0, y, x1, y + row_h), color=None, fill=(0.23, 0.23, 0.23))
         cx = x0
@@ -68,10 +74,14 @@ def ruled_table(page, x0, y0, widths, rows, header=None, row_h=17.0):
             cx += widths[ci]
         y += row_h
     # rules
-    yy = y0
-    for _ in range(len(allrows) + 1):
-        page.draw_line((x0, yy), (x1, yy), color=(0.72, 0.72, 0.72), width=0.6)
-        yy += row_h
+    if gap_before:                                   # each row's top rule where the row was drawn, and the bottom one
+        for yy in tops + [y]:
+            page.draw_line((x0, yy), (x1, yy), color=(0.72, 0.72, 0.72), width=0.6)
+    else:
+        yy = y0
+        for _ in range(len(allrows) + 1):
+            page.draw_line((x0, yy), (x1, yy), color=(0.72, 0.72, 0.72), width=0.6)
+            yy += row_h
     cx = x0
     for w in widths + [0]:
         page.draw_line((cx, y0), (cx, y), color=(0.72, 0.72, 0.72), width=0.6)
@@ -145,7 +155,9 @@ def sentence_image(text: str) -> pymupdf.Pixmap:
     return pg.get_pixmap(dpi=150)
 
 
-def build(out: Path) -> dict:
+def build(out: Path, row_shift_pt: float = 0.0) -> dict:
+    """row_shift_pt (session 09, source-binding tests): draw the last row of Table 9-1 on page 3 (9-1.5) that many
+    points lower, with identical text. 0 (the default) builds the fixture exactly as before, byte for byte."""
     out.mkdir(parents=True, exist_ok=True)
     doc = pymupdf.open()
     exp: dict = {"pages": 5, "watermark_per_page": 1}
@@ -190,7 +202,9 @@ def build(out: Path) -> dict:
     furniture(p, 3)
     ruled_table(p, 71, 68, [80, 220, 80],
                 [["9-1.3", "Minimum flow", "40"], ["9-1.4", "Storm flow", "300"], ["9-1.5", "Velocity", "1.2"]],
-                header=["Ref", "Criterion", "Value"])
+                header=["Ref", "Criterion", "Value"], gap_before={2: row_shift_pt} if row_shift_pt else None)
+    if row_shift_pt:
+        exp["moved_row"] = {"label": "9-1.5", "page": 3, "shift_pt": row_shift_pt}
     clause(p, 180, "3.1", "Flows shall be measured at the inlet works.")
     # decoy: identical to the watermark in text, font, size and angle; differs ONLY in colour (dark ink).
     # A rule that ignored colour would wrongly exclude it.

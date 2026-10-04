@@ -1,0 +1,1286 @@
+# A1 register rows for VOL-II (Technical Requirements). PROPOSED: drafted by the assistant; no row has been reviewed.
+# Existing rows on VOL-II units stay in curation/register/rows.yaml (VOL-II-4.4-01, VOL-II-T2-4-TN) and are not repeated.
+doc: VOL-II
+prepared_by: "AI-assisted draft (register agent, session 05); not reviewed"
+method: >-
+  One row per independently testable obligation (D3), grouped by source clause. Volume II obligations are design and
+  performance requirements assessed in the technical evaluation (VOL-I Table 1-1 criterion A, 'compliance with
+  Volume II'): assessment scored, evidence the Technical Proposal; they also bind the Project Company after award.
+  Table rows that are obligations (Table 2-4 limits, Table 2-6 criteria) have a row each; a row that refers to every
+  parameter of such a table refers to it by note. Table rows that are design data, not obligations (Table 2-2
+  influent), are listed as secondary units of the rows that use them, and a row that selects particular table rows
+  by a reference (2.5: 'continuous basis'; 5.2: 'peak hourly flow') lists those rows, so that a change to them makes
+  the row stale. Quotes are verbatim from the effective text; interpretations at an addendum stage only where that
+  addendum addresses one of the row's units. Events outside the pack (PCOD, commissioning, construction start, end of
+  the concession) are external date rules.
+rows:
+  # ---------------------------------------------------------------- Section 1: scope of the Works
+  - id: VOL-II-1.1-01
+    group: VOL-II:1.1
+    scope: [scope_of_works, concession]
+    requirement: "Design, finance, construct, commission, own, operate and maintain the Facility; transfer it at concession end in the Volume V condition"
+    units: ["VOL-II:1.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The Project Company shall design, finance, construct, commission, own, operate and maintain the Wadi Sirhan Independent Sewage Treatment Plant"
+        note: "Transfer 'at the end of the concession period in the condition required by Volume V' (VOL-V 3.2 and 42.1). Binds the Project Company after award."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; when the concession period ends depends on the term start (I-CONCESSION)"
+    issues: [I-CONCESSION]
+  - id: VOL-II-1.2-01
+    group: VOL-II:1.2
+    scope: [scope_of_works]
+    requirement: "The Works include every listed element: inlet works to tertiary treatment, disinfection, sludge, odour control, effluent main and reservoir"
+    units: ["VOL-II:1.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The Works comprise: the inlet works and screening; primary, secondary and tertiary treatment; disinfection; sludge thickening, digestion and dewatering; odour control; the treated effluent transmission main; the treated effluent storage reservoir; and all associated electrical, control and civil works."
+        note: "A scope list. The treated effluent storage reservoir is not specified anywhere else in the Volume II extract."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-1.3-01
+    group: VOL-II:1.3
+    scope: [scope_of_works, interfaces]
+    requirement: "Manage all interfaces with the existing collection network at the two designated tie-in points, incl. temporary works to keep flows"
+    units: ["VOL-II:1.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction"
+    confidence: medium
+    confidence_reason: "verbatim; the two designated tie-in points are not identified anywhere in the pack"
+    issues: [I-VOL-II-MISSING]
+  - id: VOL-II-1.4-01
+    group: VOL-II:1.4
+    scope: [scope_of_works, utilities]
+    requirement: "Procure all utilities other than the grid connection point at the site boundary (which the Authority provides)"
+    units: ["VOL-II:1.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "All other utilities shall be procured by the Project Company."
+        note: "First sentence (an Authority duty): the Authority provides the site free of encumbrance and a grid connection point at the site boundary."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Section 2: design basis
+  - id: VOL-II-2.1-01
+    group: VOL-II:2.1
+    scope: [design_basis, capacity]
+    requirement: "Design for a nominal capacity of 120,000 m3/day average daily flow at the inlet works, at the Table 2-2 design-year influent"
+    units: ["VOL-II:2.1", "VOL-II:T2-2/bod5", "VOL-II:T2-2/cod", "VOL-II:T2-2/total-suspended-solids", "VOL-II:T2-2/total-nitrogen", "VOL-II:T2-2/total-phosphorus", "VOL-II:T2-2/temperature"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "designed for a nominal treatment capacity of 120,000 m³/day average daily flow, measured at the inlet works"
+        parameters: {capacity_m3_day: 120000, measured_at: "inlet works"}
+        note: "The Table 2-2 design influent rows (design data, not obligations) are listed as units, so a change to them changes this row."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause and table"
+  - id: VOL-II-2.2-01
+    group: VOL-II:2.2
+    scope: [design_basis, design_life]
+    requirement: "Design life of all civil structures of at least 50 years"
+    units: ["VOL-II:2.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The design life of all civil structures shall be not less than fifty (50) years."
+        parameters: {civil_design_life_years_min: 50}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-2.2-02
+    group: VOL-II:2.2
+    scope: [design_basis, design_life, lifecycle]
+    requirement: "M&E design life of at least 20 years or the manufacturer's rated life, whichever is shorter; lifecycle replacement in the lifecycle plan"
+    units: ["VOL-II:2.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The design life of mechanical and electrical equipment shall be not less than twenty (20) years or the manufacturer's rated life, whichever is the shorter, with lifecycle replacement provided for in the Project Company's lifecycle plan."
+        parameters: {me_design_life_years_min: 20, alternative: "manufacturer's rated life, whichever is the shorter"}
+        note: "'whichever is the shorter' is recorded as written."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-2.3-01
+    group: VOL-II:2.3
+    scope: [design_basis, future_expansion]
+    requirement: "Space for a future 50% expansion of nominal capacity without demolishing permanent structures (space provision only)"
+    units: ["VOL-II:2.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "designed to accommodate a future expansion of 50% of nominal capacity without demolition of permanent structures"
+        parameters: {expansion_pct_of_nominal: 50}
+        note: "Space provision only is required; no expansion works form part of the Works."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-2.4-01
+    group: VOL-II:2.4
+    scope: [technical_design, effluent, permit]
+    requirement: "Treated effluent to comply at all times with the Table 2-4 parameters (reproduced from the Environmental Permit, which prevails)"
+    units: ["VOL-II:2.4", "VOL-II:T2-4-heading/para1"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The treated effluent shall at all times comply with the parameters set out in Table 2-4."
+        note: "The per-parameter limits are rows VOL-II-T2-4-*. VOL-II p3 reproduction preamble: in any discrepancy the Environmental Permit (not in the pack) prevails over the reproduction (the owner confirmed this location on 3 Oct 2026; the Permit's contents and compliance with it are not confirmed or claimed). How 'at all times' combines with the table's assessment bases is for a person. After award a Table 2-4 failure is an Unavailability Event (VOL-V 31.1(b), row VOL-V-31.1-02)."
+    confidence: medium
+    confidence_reason: "verbatim text-layer clause; the table it incorporates is an image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit that prevails is not supplied"
+    issues: [I-PERMIT, I-READING-T24, I-VOL-II-T24-TENSIONS]
+  - id: VOL-II-2.5-01
+    group: VOL-II:2.5
+    scope: [technical_design, monitoring, image]
+    requirement: "Continuous online monitoring of the Table 2-4 parameters assessed on a continuous basis, with real-time signals to the Authority"
+    units: ["VOL-II:2.5", "VOL-II:T2-4/ResidualChlorine", "VOL-II:T2-4/pH"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall install continuous online monitoring for those parameters identified in Table 2-4 as assessed on a continuous basis, with signals available to the Authority in real time"
+        parameters: {continuous_parameters_as_read: ["Residual Chlorine", "pH"]}
+        note: "Which parameters are 'continuous' comes from the Table 2-4 basis column (image reading, transcription confirmed by the owner, 3 Oct 2026): Residual Chlorine and pH read 'Continuous at outlet'. Those two table rows are listed as units."
+      - stage: ADD-03
+        quote: shall install continuous online monitoring for those parameters identified in Table 2-4 as assessed on
+          a continuous basis, with signals available to the Authority in real time
+        parameters:
+          continuous_parameters_as_read:
+          - Residual Chlorine
+          - pH
+        note: Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 changes only the TP limit (a 30-day rolling
+          average parameter); the parameters assessed 'Continuous at outlet' (Residual Chlorine, pH) are unchanged.
+    confidence: medium
+    confidence_reason: "verbatim clause, but the parameters it selects come from an image reading (transcription confirmed by the owner, 3 Oct 2026)"
+    issues: [I-READING-T24]
+  # ---------------------------------------------------------------- Table 2-4 (image reading; transcription confirmed 3 Oct 2026); TN is in rows.yaml
+  - id: VOL-II-T2-4-BOD5
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent Biochemical Oxygen Demand (BOD5): value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/BOD5"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 10"
+        parameters: {value_shown: 10, unit: "mg/l", basis: "30-day rolling average"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026). The table's qualifier 'all values are maxima' is recorded as context."
+      - stage: ADD-03
+        quote: 'Limit: 10'
+        parameters:
+          value_shown: 10
+          unit: mg/l
+          basis: 30-day rolling average
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-COD
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent Chemical Oxygen Demand (COD): value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/COD"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 50"
+        parameters: {value_shown: 50, unit: "mg/l", basis: "30-day rolling average"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: 'Limit: 50'
+        parameters:
+          value_shown: 50
+          unit: mg/l
+          basis: 30-day rolling average
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-TSS
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent Total Suspended Solids (TSS): value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/TSS"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 10"
+        parameters: {value_shown: 10, unit: "mg/l", basis: "30-day rolling average"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: 'Limit: 10'
+        parameters:
+          value_shown: 10
+          unit: mg/l
+          basis: 30-day rolling average
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-TP
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent Total Phosphorus (TP): value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/TP"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 1"
+        parameters: {value_shown: 1, unit: "mg/l", basis: "30-day rolling average"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: 'Limit: 0.5'
+        parameters:
+          value_shown: 0.5
+          unit: mg/l
+          basis: 30-day rolling average
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 (op ADD-03/5.1, set_value on the approved
+          image reading): ''the limit is amended from 1 mg/l to 0.5 mg/l. The unit and the basis of assessment (30-day
+          rolling average) are unchanged.'' The owner''s approval covers the transcription as issued (1 mg/l); 0.5 mg/l
+          is the addendum''s separate amended value. ADD-03 5.2: reflect it in the process design (row ADD-03-5.2-01).
+          The Environmental Permit, which prevails over the reproduction, is not in the pack; whether it states 0.5 mg/l
+          is not said and no Permit compliance is claimed (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-Turbidity
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent turbidity: value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/Turbidity"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 2"
+        parameters: {value_shown: 2, unit: "NTU", basis: "Maximum instantaneous"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: 'Limit: 2'
+        parameters:
+          value_shown: 2
+          unit: NTU
+          basis: Maximum instantaneous
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-FaecalColiforms
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent faecal coliforms: value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/FaecalColiforms"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 2.2"
+        parameters: {value_shown: 2.2, unit: "MPN/100 ml", basis: "Maximum, any single sample"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026, including the limit 2.2)."
+      - stage: ADD-03
+        quote: 'Limit: 2.2'
+        parameters:
+          value_shown: 2.2
+          unit: MPN/100 ml
+          basis: Maximum, any single sample
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-ResidualChlorine
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image, disinfection]
+    requirement: "Treated effluent residual chlorine: range shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/ResidualChlorine"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 0.5 - 1.0"
+        parameters: {range_shown: [0.5, 1.0], unit: "mg/l", basis: "Continuous at outlet"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026). A range although the table says 'all values are maxima'; a continuous chlorine residual sits beside VOL-II 3.3, which permits UV-only disinfection or dechlorination. Not resolved here."
+      - stage: ADD-03
+        quote: 'Limit: 0.5 - 1.0'
+        parameters:
+          range_shown:
+          - 0.5
+          - 1.0
+          unit: mg/l
+          basis: Continuous at outlet
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Permit is not supplied; tension with VOL-II 3.3 recorded as an issue"
+    issues: [I-PERMIT, I-READING-T24, I-VOL-II-T24-TENSIONS]
+  - id: VOL-II-T2-4-pH
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent pH: range shown in Table 2-4 and basis of assessment"
+    units: ["VOL-II:T2-4/pH"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 6.0 - 9.0"
+        parameters: {range_shown: [6.0, 9.0], unit: "-", basis: "Continuous at outlet"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026), including the unit dash. A range although the table says 'all values are maxima'."
+      - stage: ADD-03
+        quote: 'Limit: 6.0 - 9.0'
+        parameters:
+          range_shown:
+          - 6.0
+          - 9.0
+          unit: '-'
+          basis: Continuous at outlet
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24, I-VOL-II-T24-TENSIONS]
+  - id: VOL-II-T2-4-OilGrease
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent oil and grease: value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/OilGrease"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 1"
+        parameters: {value_shown: 1, unit: "mg/l", basis: "Maximum, any single sample"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: 'Limit: 1'
+        parameters:
+          value_shown: 1
+          unit: mg/l
+          basis: Maximum, any single sample
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 amends only the Total Phosphorus limit
+          (1 to 0.5 mg/l) and states ''All other entries in Table 2-4, including the Total Nitrogen limit as amended by
+          Addendum No. 2, are unchanged.'' (confirmed by op ADD-03/5.1(b)): this entry stands. The table''s qualifier
+          and range questions stay open (I-VOL-II-T24-TENSIONS); the Environmental Permit is not supplied (I-PERMIT).'
+    confidence: medium
+    confidence_reason: "value and basis come from an image reading (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit, which prevails, is not supplied"
+    issues: [I-PERMIT, I-READING-T24]
+  - id: VOL-II-T2-4-NOTE1
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image, permit]
+    requirement: "Parameters not listed in Table 2-4: the limits stated in the Environmental Permit apply (the Permit is not in the pack)"
+    units: ["VOL-II:T2-4/note1"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply."
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026)."
+      - stage: ADD-03
+        quote: Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply.
+        note: Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.1 states that all other entries in Table
+          2-4 are unchanged; Note 1 stands and the Permit is still not supplied (I-PERMIT).
+    confidence: low
+    confidence_reason: "image reading (transcription confirmed by the owner, 3 Oct 2026); the Permit and its limits are not supplied, so these limits cannot be identified from the pack"
+    issues: [I-PERMIT, I-READING-T24]
+  # ---------------------------------------------------------------- Section 3: process requirements
+  - id: VOL-II-3.1-01
+    group: VOL-II:3.1
+    scope: [technical_design, process]
+    requirement: "Treatment process able to achieve the Table 2-4 effluent quality under all Table 2-2 design influent conditions"
+    units: ["VOL-II:3.1", "VOL-II:H:S3", "VOL-II:T2-2/bod5", "VOL-II:T2-2/cod", "VOL-II:T2-2/total-suspended-solids", "VOL-II:T2-2/total-nitrogen", "VOL-II:T2-2/total-phosphorus", "VOL-II:T2-2/temperature"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
+        note: "The Authority does not mandate a particular process train (second sentence). Limits: rows VOL-II-T2-4-*. The Section 3 heading is a unit because ADD-02 5.2 attaches to it."
+      - stage: ADD-01
+        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
+        note: "ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable."
+      - stage: ADD-02
+        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
+        note: "ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3."
+      - stage: ADD-03
+        quote: The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design
+          influent conditions in Table 2-2.
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 5.2: Bidders shall reflect the amended TP
+          limit (ADD-03 5.1: 0.5 mg/l, row VOL-II-T2-4-TP) in the process design submitted under Volume II Section 3 (row
+          ADD-03-5.2-01); the TN limit stays 3 mg/l (ADD-02 5.1).'
+    confidence: medium
+    confidence_reason: "verbatim; the effluent quality it refers to is an image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit that prevails is not supplied"
+    issues: [I-READING-T24, I-PERMIT]
+  - id: VOL-II-3.2-01
+    group: VOL-II:3.2
+    scope: [technical_design, process, membrane, lifecycle]
+    requirement: "If a membrane process is proposed: show membrane replacement provisions in the lifecycle plan"
+    units: ["VOL-II:3.2"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions in the lifecycle plan"
+        note: "Applies only where a membrane process is proposed."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-3.2-02
+    group: VOL-II:3.2
+    scope: [technical_design, process, membrane, warranty]
+    requirement: "If a membrane process is proposed: warrant a membrane life of at least 7 years"
+    units: ["VOL-II:3.2"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall warrant a membrane life of not less than seven (7) years"
+        parameters: {membrane_life_years_min: 7}
+        note: "Applies only where a membrane process is proposed."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-3.3-01
+    group: VOL-II:3.3
+    scope: [technical_design, process, disinfection]
+    requirement: "Disinfection by chlorination with dechlorination provision, by UV with a validated dose, or both; ozonation alone not acceptable"
+    units: ["VOL-II:3.3"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Disinfection shall be by chlorination with provision for dechlorination, or by ultraviolet irradiation with a validated dose, or by a combination."
+        note: "'Ozonation alone is not acceptable.' Table 2-4 (image) sets residual chlorine 0.5-1.0 mg/l continuous at outlet; how that sits with UV-only disinfection or dechlorination is for a person."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; the tension with Table 2-4 is recorded as an issue"
+    issues: [I-VOL-II-T24-TENSIONS]
+  - id: VOL-II-3.4-01
+    group: VOL-II:3.4
+    scope: [environmental_performance, odour]
+    requirement: "Odour at the site boundary of no more than 5 OU/m3 as a 98th percentile hourly value"
+    units: ["VOL-II:3.4"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        parameters: {odour_ou_m3_max: 5, statistic: "98th percentile hourly", location: "site boundary"}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-3.5-01
+    group: VOL-II:3.5
+    scope: [environmental_performance, noise]
+    requirement: "Noise at the nearest sensitive receptor of no more than 55 dB(A) by day and 45 dB(A) by night"
+    units: ["VOL-II:3.5"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        parameters: {day_dba_max: 55, night_dba_max: 45}
+        note: "The receptor and the day and night periods are not identified in the extract."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Section 4: hydraulic design and reliability; Table 2-6
+  - id: VOL-II-4.1-01
+    group: VOL-II:4.1
+    scope: [technical_design, hydraulics]
+    requirement: "Hydraulic profile to pass the Table 2-6 flows without surcharging any structure or relying on pumped bypass"
+    units: ["VOL-II:4.1"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The hydraulic profile shall accommodate the flows in Table 2-6 without surcharge of any structure and without reliance on pumped bypass."
+        note: "The flows are rows VOL-II-T2-6-*."
+    confidence: medium
+    confidence_reason: "verbatim; the Table 2-6 peak hourly and storm flows are questioned and ADD-02 Q11 did not resolve them"
+    issues: [I-FLOWS]
+  - id: VOL-II-T2-6-1
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics, design_flow]
+    requirement: "Hydraulic design criterion 2-6.1: average daily flow of 120,000 m3/day"
+    units: ["VOL-II:T2-6/2-6.1"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 120,000"
+        parameters: {value: 120000, unit: "m3/day"}
+        note: "The same figure as the nominal capacity in VOL-II 2.1."
+    confidence: medium
+    confidence_reason: "verbatim table row; the consistency of the Table 2-6 flows is questioned (I-FLOWS)"
+    issues: [I-FLOWS]
+  - id: VOL-II-T2-6-2
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics, design_flow]
+    requirement: "Hydraulic design criterion 2-6.2: peak hourly flow (design) of 7,500 m3/h"
+    units: ["VOL-II:T2-6/2-6.2"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 7,500"
+        parameters: {value: 7500, unit: "m3/h"}
+        note: "Also the design flow of the transmission main (VOL-II 5.2)."
+    confidence: medium
+    confidence_reason: "verbatim table row; questioned in ADD-02 Q11 against the 120,000 m3/day average, and not answered (I-FLOWS)"
+    issues: [I-FLOWS]
+  - id: VOL-II-T2-6-3
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics, design_flow]
+    requirement: "Hydraulic design criterion 2-6.3: minimum night flow of 1,800 m3/h"
+    units: ["VOL-II:T2-6/2-6.3"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 1,800"
+        parameters: {value: 1800, unit: "m3/h"}
+    confidence: high
+    confidence_reason: "verbatim table row"
+  - id: VOL-II-T2-6-4
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics, design_flow, storm]
+    requirement: "Hydraulic design criterion 2-6.4: pass storm flow of 3 x dry weather flow to full treatment"
+    units: ["VOL-II:T2-6/2-6.4"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 3 x dry weather flow"
+        parameters: {multiple_of_dwf: 3}
+        note: "'Dry weather flow' is not defined in the pack."
+    confidence: medium
+    confidence_reason: "verbatim table row; dry weather flow is undefined and 3 x DWF may exceed the 7,500 m3/h design peak (I-FLOWS)"
+    issues: [I-FLOWS]
+  - id: VOL-II-T2-6-5
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics]
+    requirement: "Hydraulic design criterion 2-6.5: inlet works design head of 1.8 m"
+    units: ["VOL-II:T2-6/2-6.5"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 1.8"
+        parameters: {value: 1.8, unit: "m"}
+    confidence: high
+    confidence_reason: "verbatim table row"
+  - id: VOL-II-T2-6-6
+    group: VOL-II:T2-6
+    scope: [technical_design, hydraulics]
+    requirement: "Hydraulic design criterion 2-6.6: maximum velocity in channels of 1.2 m/s"
+    units: ["VOL-II:T2-6/2-6.6"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Value: 1.2"
+        parameters: {value: 1.2, unit: "m/s"}
+    confidence: high
+    confidence_reason: "verbatim table row"
+  - id: VOL-II-4.2-01
+    group: VOL-II:4.2
+    scope: [clarification, hydraulics, design_flow]
+    requirement: "Check the consistency of the Volume II flow figures and raise any inconsistency as a clarification under VOL-I 5.1"
+    units: ["VOL-II:4.2"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: procedural
+    evidence: [EV-CLARIFICATIONS]
+    interpretations:
+      - stage: BASE
+        quote: "shall satisfy itself as to the consistency of the flow figures stated in this Volume and shall raise any inconsistency as a clarification under Volume I Clause 5.1"
+        note: "Worded for the Project Company but acted on at bid stage: clarification requests close ten Working Days before the Proposal Due Date (VOL-I 5.2, row VOL-I-5.2-01)."
+      - stage: ADD-02
+        quote: "shall satisfy itself as to the consistency of the flow figures stated in this Volume and shall raise any inconsistency as a clarification under Volume I Clause 5.1"
+        note: "ADD-02 Q11 (peak hourly flow of 7,500 m3/h against a daily average of 120,000 m3/day) answers: 'Bidders shall design to the figures stated in Volume II. Volume II Clause 4.2 applies.' The inconsistency asked about is not resolved."
+    confidence: medium
+    confidence_reason: "verbatim; the ADD-02 Q11 answer refers back to this clause without resolving the figures"
+    issues: [I-FLOWS]
+  - id: VOL-II-4.3-01
+    group: VOL-II:4.3
+    scope: [technical_design, reliability, redundancy]
+    requirement: "Each treatment stage arranged in at least four parallel streams"
+    units: ["VOL-II:4.3"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Each treatment stage shall be arranged in not fewer than four (4) parallel streams"
+        parameters: {parallel_streams_min: 4}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-4.3-02
+    group: VOL-II:4.3
+    scope: [technical_design, reliability, redundancy, effluent]
+    requirement: "Facility able to meet Table 2-4 with any one stream out of service"
+    units: ["VOL-II:4.3"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "such that the Facility can meet Table 2-4 with any one stream out of service"
+        note: "Table 2-4 limits: rows VOL-II-T2-4-*."
+    confidence: medium
+    confidence_reason: "verbatim; the Table 2-4 limits it refers to are an image reading (transcription confirmed by the owner, 3 Oct 2026)"
+    issues: [I-READING-T24]
+  - id: VOL-II-4.4-02
+    group: VOL-II:4.4
+    scope: [technical_design, reliability, redundancy]
+    requirement: "N+1 standby provision for all rotating equipment"
+    units: ["VOL-II:4.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Standby provision for all rotating equipment shall be N+1."
+        parameters: {standby: "N+1"}
+        note: "The standby power duration in the same clause is row VOL-II-4.4-01."
+      - stage: ADD-02
+        quote: "Standby provision for all rotating equipment shall be N+1."
+        parameters: {standby: "N+1"}
+        note: "ADD-02 4.1 changes the standby power duration in this clause (72 to 96 hours, row VOL-II-4.4-01); the N+1 requirement is unchanged."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-4.5-01
+    group: VOL-II:4.5
+    scope: [technical_design, transmission_main, surge]
+    requirement: "Surge protection on the transmission main for the full range of operating scenarios, including simultaneous pump trip"
+    units: ["VOL-II:4.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The transmission main shall be provided with surge protection designed for the full range of operating scenarios including simultaneous pump trip."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Section 5: transmission main and civil works
+  - id: VOL-II-5.1-01
+    group: VOL-II:5.1
+    scope: [technical_design, transmission_main, route]
+    requirement: "Treated effluent main of about 18 km from the Facility outlet chamber to the delivery point shown on Drawing 03-C-114"
+    units: ["VOL-II:5.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "approximately eighteen (18) kilometres in length between the Facility outlet chamber and the delivery point shown on Drawing 03-C-114"
+        parameters: {length_km_approx: 18}
+        note: "The delivery point is also where VOL-II 5.2 sets the residual head and where VOL-V 31.1(c) measures delivery."
+    confidence: low
+    confidence_reason: "the delivery point is shown only on Drawing 03-C-114 (Volume III), which is not supplied; route and end point cannot be established"
+    issues: [I-VOL-III]
+  - id: VOL-II-5.2-01
+    group: VOL-II:5.2
+    scope: [technical_design, transmission_main, hydraulics]
+    requirement: "Size the main for the Table 2-6 peak hourly flow at a velocity of no more than 2.0 m/s"
+    units: ["VOL-II:5.2", "VOL-II:T2-6/2-6.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s"
+        parameters: {max_velocity_m_s: 2.0, design_flow: "Table 2-6 peak hourly flow (2-6.2)"}
+        note: "Table 2-6 row 2-6.2 is listed as a unit."
+    confidence: medium
+    confidence_reason: "verbatim; the peak hourly flow it is sized for is questioned (I-FLOWS)"
+    issues: [I-FLOWS]
+  - id: VOL-II-5.2-02
+    group: VOL-II:5.2
+    scope: [technical_design, transmission_main, hydraulics]
+    requirement: "Minimum residual head of 15 m at the delivery point"
+    units: ["VOL-II:5.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "a minimum residual head of 15 m at the delivery point"
+        parameters: {residual_head_m_min: 15}
+        note: "After award, failing to deliver at the required residual head is an Unavailability Event (VOL-V 31.1(c), row VOL-V-31.1-03)."
+    confidence: medium
+    confidence_reason: "verbatim; the delivery point is shown only on Drawing 03-C-114, which is not supplied"
+    issues: [I-VOL-III]
+  - id: VOL-II-5.3-01
+    group: VOL-II:5.3
+    scope: [technical_design, transmission_main, materials]
+    requirement: "Main of internally lined, externally protected ductile iron; other materials only with a whole-life cost comparison"
+    units: ["VOL-II:5.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The main shall be of ductile iron to the relevant international standard, internally lined and externally protected"
+        note: "'Alternative materials will be considered only where supported by a whole-life cost comparison.' The 'relevant international standard' is not named."
+      - stage: ADD-01
+        quote: "Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main, subject to the whole-life cost comparison required by this Clause."
+        note: "ADD-01 5.1 appends this sentence: GRP of an equivalent pressure class is acceptable for buried sections, subject to the whole-life cost comparison."
+    confidence: high
+    confidence_reason: "verbatim at each stage; the applicable international standard is not named"
+  - id: VOL-II-5.3-02
+    group: VOL-II:5.3
+    scope: [technical_design, transmission_main]
+    requirement: "Main of minimum nominal diameter DN1200"
+    units: ["VOL-II:5.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "with a minimum nominal diameter of DN1200"
+        parameters: {min_nominal_diameter: "DN1200"}
+      - stage: ADD-01
+        quote: "with a minimum nominal diameter of DN1200"
+        parameters: {min_nominal_diameter: "DN1200"}
+        note: "ADD-01 5.1 appends the GRP sentence to this clause; the minimum diameter is unchanged."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-5.4-01
+    group: VOL-II:5.4
+    scope: [technical_design, transmission_main, crossings]
+    requirement: "Execute the three road crossings and the wadi crossing by trenchless methods"
+    units: ["VOL-II:5.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods."
+        parameters: {road_crossings: 3, wadi_crossings: 1}
+    confidence: high
+    confidence_reason: "verbatim; ground conditions at the wadi crossing are the Bidder's risk (ADD-01 Q4) and the geotechnical report is in the data room, not the pack"
+    issues: [I-VOL-II-MISSING]
+  - id: VOL-II-5.4-02
+    group: VOL-II:5.4
+    scope: [permits, transmission_main, crossings]
+    requirement: "Obtain the crossing permits"
+    units: ["VOL-II:5.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Crossing permits shall be obtained by the Project Company."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-5.5-01
+    group: VOL-II:5.5
+    scope: [technical_design, civil, seismic]
+    requirement: "Design permanent civil structures for a seismic event with a 475-year return period"
+    units: ["VOL-II:5.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "designed for a seismic event with a return period of 475 years"
+        parameters: {seismic_return_period_years: 475}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-5.5-02
+    group: VOL-II:5.5
+    scope: [technical_design, civil, flood]
+    requirement: "Design permanent civil structures for a flood with a 100-year return period"
+    units: ["VOL-II:5.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "for a flood with a return period of 100 years"
+        parameters: {flood_return_period_years: 100}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Section 6: SCADA, control and cyber security
+  - id: VOL-II-6.1-01
+    group: VOL-II:6.1
+    scope: [technical_design, scada]
+    requirement: "SCADA system capable of unattended operation of the whole Facility"
+    units: ["VOL-II:6.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The Facility shall be provided with a SCADA system capable of unattended operation of the whole Facility"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-6.1-02
+    group: VOL-II:6.1
+    scope: [technical_design, scada, staffing]
+    requirement: "A permanently manned central control room"
+    units: ["VOL-II:6.1"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "with a permanently manned central control room"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-6.2-01
+    group: VOL-II:6.2
+    scope: [technical_design, cyber_security]
+    requirement: "Control system segregated from any business network by a DMZ, with one-way data flow to the Authority's monitoring interface"
+    units: ["VOL-II:6.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The industrial control system shall be segregated from any business network by a demilitarised zone with unidirectional data flow to the Authority's monitoring interface."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; Form 4-G undertaking 1 (ADD-02) restates this segregation"
+  - id: VOL-II-6.3-01
+    group: VOL-II:6.3
+    scope: [technical_design, cyber_security]
+    requirement: "Implement and maintain an information security management system covering the operational technology environment"
+    units: ["VOL-II:6.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall implement and maintain an information security management system covering the operational technology environment"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; Form 4-G undertakings 3-6 (ADD-02) add cyber obligations not in this clause (I-F4G-NO)"
+  - id: VOL-II-6.3-02
+    group: VOL-II:6.3
+    scope: [cyber_security, submission_to_authority]
+    requirement: "Submit the security architecture for the Authority's review before commissioning"
+    units: ["VOL-II:6.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-SECURITY-ARCHITECTURE-DUE, kind: external, purpose: deadline, anchor: "Commissioning", direction: before, source_unit: "VOL-II:6.3", text: "prior to commissioning"}
+    interpretations:
+      - stage: BASE
+        quote: "shall submit its security architecture for the Authority's review prior to commissioning"
+        note: "A post-award submission; commissioning is not a pack event."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-6.4-01
+    group: VOL-II:6.4
+    scope: [operations, data_retention]
+    requirement: "Retain all process data for at least seven years"
+    units: ["VOL-II:6.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "All process data shall be retained for not less than seven (7) years"
+        parameters: {retention_years_min: 7}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-6.4-02
+    group: VOL-II:6.4
+    scope: [operations, data_access]
+    requirement: "Make process data available to the Authority on demand in a non-proprietary format"
+    units: ["VOL-II:6.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall be made available to the Authority on demand in a non-proprietary format"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Section 7: testing, commissioning and PCOD
+  - id: VOL-II-7.1-01
+    group: VOL-II:7.1
+    scope: [commissioning, testing]
+    requirement: "Carry out FAT, SAT and integrated process commissioning under a commissioning plan approved by the Authority"
+    units: ["VOL-II:7.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall carry out factory acceptance testing, site acceptance testing, and integrated process commissioning in accordance with a commissioning plan approved by the Authority"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-7.2-01
+    group: VOL-II:7.2
+    scope: [commissioning, pcod, reliability_run, effluent]
+    requirement: "Before PCOD: a 30-day continuous reliability run at 90% or more of nominal capacity meeting every Table 2-4 parameter"
+    units: ["VOL-II:7.2"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "PCOD shall not be certified until the Facility has completed a continuous reliability run of thirty (30) days at not less than 90% of nominal capacity, during which every parameter in Table 2-4 has been met."
+        parameters: {run_days: 30, load_pct_of_nominal_min: 90}
+        consequence: {class: contractual, unit: "VOL-II:7.3", quote: "A failure of any Table 2-4 parameter during the reliability run shall restart the run in full."}
+        note: "PCOD is certified by the Independent Engineer against this clause (VOL-V 1.5). How a 30-day rolling-average limit is 'met' within a 30-day run is not stated. Late PCOD: VOL-V 18.1 and 18.3."
+    confidence: medium
+    confidence_reason: "verbatim; every Table 2-4 parameter is an image reading (transcription confirmed by the owner, 3 Oct 2026), and TN is amended by ADD-02 5.1 (row VOL-II-T2-4-TN)"
+    issues: [I-READING-T24, I-PERMIT]
+  - id: VOL-II-7.4-01
+    group: VOL-II:7.4
+    scope: [commissioning, documentation, post_pcod]
+    requirement: "Provide as-built documents, O&M manuals and an asset register in the Authority's standard format within 60 days after PCOD"
+    units: ["VOL-II:7.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-AS-BUILT-DUE, kind: external, purpose: deadline, anchor: "PCOD", offset: 60, unit: calendar_day, direction: after, source_unit: "VOL-II:7.4", text: "not later than sixty (60) days after PCOD"}
+    interpretations:
+      - stage: BASE
+        quote: "shall provide as-built documentation, operation and maintenance manuals, and an asset register in the Authority's standard format not later than sixty (60) days after PCOD"
+        parameters: {days_after_pcod: 60}
+    confidence: medium
+    confidence_reason: "verbatim; the Authority's standard format is not in the pack; PCOD is not a pack event"
+    issues: [I-VOL-II-MISSING]
+  # ---------------------------------------------------------------- Section 8: operation, maintenance and spares
+  - id: VOL-II-8.1-01
+    group: VOL-II:8.1
+    scope: [operations, maintenance, spares]
+    requirement: "Hold spares for two years of normal operation for all items with a lead time over 12 weeks"
+    units: ["VOL-II:8.1"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall hold a spare parts inventory sufficient for two (2) years of normal operation for all items with a lead time exceeding twelve (12) weeks"
+        parameters: {spares_years: 2, lead_time_weeks_over: 12}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-8.2-01
+    group: VOL-II:8.2
+    scope: [operations, maintenance, cmms]
+    requirement: "Implement a computerised maintenance management system before PCOD and keep it in use for the concession period"
+    units: ["VOL-II:8.2"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-CMMS-BY-PCOD, kind: external, purpose: deadline, anchor: "PCOD", direction: before, source_unit: "VOL-II:8.2", text: "implemented before PCOD"}
+    interpretations:
+      - stage: BASE
+        quote: "A computerised maintenance management system shall be implemented before PCOD and shall remain in use for the concession period."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; PCOD is not a pack event"
+  - id: VOL-II-8.3-01
+    group: VOL-II:8.3
+    scope: [operations, staffing]
+    requirement: "Employ a suitably qualified plant manager"
+    units: ["VOL-II:8.3"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall employ a suitably qualified plant manager"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; 'suitably qualified' is not defined"
+  - id: VOL-II-8.3-02
+    group: VOL-II:8.3
+    scope: [operations, staffing]
+    requirement: "At least two certified operators on shift at all times"
+    units: ["VOL-II:8.3"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall maintain a minimum of two (2) certified operators on shift at all times"
+        parameters: {operators_on_shift_min: 2}
+        note: "The certification scheme is not named."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-8.4-01
+    group: VOL-II:8.4
+    scope: [operations, sludge]
+    requirement: "Dewater sludge to at least 22% dry solids"
+    units: ["VOL-II:8.4"]
+    discipline: Technical
+    owner: Process engineer
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Sludge shall be dewatered to not less than 22% dry solids"
+        parameters: {dry_solids_pct_min: 22}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-8.4-02
+    group: VOL-II:8.4
+    scope: [operations, sludge, environmental_compliance]
+    requirement: "Dispose of or reuse sludge under the applicable regulations; landfill over 500 t/a only with the Authority's prior written consent"
+    units: ["VOL-II:8.4"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall be disposed of or reused in accordance with the applicable regulations"
+        parameters: {landfill_consent_threshold_t_per_year: 500}
+        note: "'Disposal to landfill of sludge exceeding 500 tonnes per annum shall require the Authority's prior written consent.' The applicable regulations are not identified."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-8.5-01
+    group: VOL-II:8.5
+    scope: [handback, survey]
+    requirement: "Carry out a handback condition survey in the final two years of the concession"
+    units: ["VOL-II:8.5"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-HANDBACK-SURVEY-WINDOW, kind: external, purpose: window_start, anchor: "End of the concession period", offset: 2, unit: year, direction: before, source_unit: "VOL-II:8.5", text: "in the final two (2) years of the concession"}
+    interpretations:
+      - stage: BASE
+        quote: "A handback condition survey shall be carried out in the final two (2) years of the concession"
+        note: "Handback condition: VOL-V 42.1 refers to this clause."
+    confidence: medium
+    confidence_reason: "verbatim; when the concession ends depends on whether the term runs from the Effective Date or PCOD"
+    issues: [I-CONCESSION]
+  - id: VOL-II-8.5-02
+    group: VOL-II:8.5
+    scope: [handback, remedial_works]
+    requirement: "Complete the remedial works the handback survey identifies before transfer"
+    units: ["VOL-II:8.5"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-HANDBACK-REMEDIALS-DUE, kind: external, purpose: deadline, anchor: "Transfer of the Facility", direction: before, source_unit: "VOL-II:8.5", text: "completed before transfer"}
+    interpretations:
+      - stage: BASE
+        quote: "any remedial works identified shall be completed before transfer"
+    confidence: medium
+    confidence_reason: "verbatim; the transfer date depends on the concession term start"
+    issues: [I-CONCESSION]
+  # ---------------------------------------------------------------- Section 9: environmental and social
+  - id: VOL-II-9.1-01
+    group: VOL-II:9.1
+    scope: [environmental_social, esia]
+    requirement: "Comply with the Environmental and Social Impact Assessment for the site (in the data room)"
+    units: ["VOL-II:9.1"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall comply with the Environmental and Social Impact Assessment prepared for the site and available in the data room"
+    confidence: medium
+    confidence_reason: "verbatim; the ESIA is in the data room, not in the pack, so what compliance requires cannot be read here"
+    issues: [I-VOL-II-MISSING]
+  - id: VOL-II-9.1-02
+    group: VOL-II:9.1
+    scope: [environmental_social, esmp]
+    requirement: "Prepare an Environmental and Social Management Plan aligned with the IFC Performance Standards"
+    units: ["VOL-II:9.1"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall prepare an Environmental and Social Management Plan aligned with the International Finance Corporation Performance Standards"
+        note: "VOL-I Table 1-1 criterion D (environmental and social management) is also scored."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-9.2-01
+    group: VOL-II:9.2
+    scope: [environmental_social, permits]
+    requirement: "Obtain environmental clearance from the national environmental regulator before construction starts"
+    units: ["VOL-II:9.2"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-ENV-CLEARANCE-DUE, kind: external, purpose: deadline, anchor: "Commencement of construction", direction: before, source_unit: "VOL-II:9.2", text: "before commencement of construction"}
+    interpretations:
+      - stage: BASE
+        quote: "Environmental clearance shall be obtained from the competent national environmental regulator before commencement of construction."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; the regulator is not named"
+  - id: VOL-II-9.3-01
+    group: VOL-II:9.3
+    scope: [environmental_social, grievance]
+    requirement: "Set up a grievance mechanism for the affected community before construction and keep it for the concession period"
+    units: ["VOL-II:9.3"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    date_rules:
+      - {rule_id: VOL-II-GRIEVANCE-DUE, kind: external, purpose: deadline, anchor: "Commencement of construction", direction: before, source_unit: "VOL-II:9.3", text: "established before construction"}
+    interpretations:
+      - stage: BASE
+        quote: "A grievance mechanism accessible to the affected community shall be established before construction and maintained for the concession period."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-9.4-01
+    group: VOL-II:9.4
+    scope: [environmental_social, water]
+    requirement: "Do not abstract construction water from the local aquifer; use tankered supply or treated effluent"
+    units: ["VOL-II:9.4"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Construction water shall not be abstracted from the local aquifer."
+        note: "'The Project Company shall source construction water from tankered supply or treated effluent.'"
+      - stage: ADD-03
+        quote: Construction water shall not be abstracted from the local aquifer.
+        note: 'Re-made at ADD-03 by the curator of blind rehearsal 03. ADD-03 Q16 confirms the clause: construction water
+          ''shall be sourced from tankered supply or treated effluent and shall not be abstracted from the local aquifer,
+          whether or not it is treated before use''. No change to the obligation.'
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-II-9.5-01
+    group: VOL-II:9.5
+    scope: [environmental_social, reporting]
+    requirement: "Report environmental and social performance to the Authority quarterly during construction and annually after"
+    units: ["VOL-II:9.5"]
+    discipline: Environmental
+    owner: Environmental lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "shall report environmental and social performance to the Authority quarterly during construction and annually thereafter"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"

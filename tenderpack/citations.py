@@ -13,6 +13,10 @@ Recognised forms (as written in the pack; extend the patterns, not the outcomes)
   (session 06 blind rehearsal) Appendix A to Addendum No. 1 · clarification request 13 in Addendum No. 2 ·
   "in row 2-6.2" · "the entry against 'Proposal Due Date'" · "the fifth numbered declaration" (-> decl5)
   (session 08 blind rehearsal) Volume I Appendix 3 · "the rows 'Model auditor' and 'Date of model audit opinion'"
+  (session 09) "the Index of Forms in Volume IV" -> "VOL-IV:index" (kind index): the volume's index table, which
+  only the unit metadata can name (is_index_table: its first column is "Form" and it has a "Title" column; the
+  amendment engine resolves it); "the entry for Form 4-F" names the index row keyed "4-F"; after_row() reads the
+  row an insertion follows ("after the entry for Form 4-F" -> "4-F")
 A bare "Clause 4.2" takes its volume from the nearest preceding volume citation in the same text.
 """
 from __future__ import annotations
@@ -62,14 +66,16 @@ def citations(text: str) -> list[Citation]:
         add(m, f"{_addendum(m.group(2))}:{m.group(1)}", "addendum_section")
     for m in re.finditer(r"Addendum No\.? ?(\d+),? Section (\d+)\b(?!\.\d)", t, re.I):
         add(m, f"{_addendum(m.group(1))}:S{m.group(2)}", "addendum_section")
-    for m in re.finditer(r"\bForm (\d-[A-Z])\b", t):
-        add(m, f"VOL-IV:F{m.group(1)}", "form")
+    for m in re.finditer(r"\bForm (\d-[A-Z])\b", t, re.I):             # a heading prints "FORM 4-C" (session 09)
+        add(m, f"VOL-IV:F{m.group(1).upper()}", "form")
     for m in re.finditer(_VOL + r" Appendix (\d+|[A-Z])\b", t):
         add(m, f"{VOLUMES[m.group(1)]}:App{m.group(2)}", "appendix")
     for m in re.finditer(r"\bAppendix ([A-Z])\b,? (?:to|of) Addendum No\.? ?(\d+)", t, re.I):
         add(m, f"{_addendum(m.group(2))}:App{m.group(1).upper()}", "appendix")
     for m in re.finditer(r"\bclarification requests? (\d+) (?:in|of|to) Addendum No\.? ?(\d+)", t, re.I):
         add(m, f"{_addendum(m.group(2))}:Q{m.group(1)}", "answer")
+    for m in re.finditer(r"\bIndex of Forms (?:in|of|to) " + _VOL, t):                 # session 09
+        add(m, f"{VOLUMES[m.group(1)]}:index", "index")
     # bare "Clause N" after a volume citation in the same text
     last_vol = None
     for m in re.finditer(_VOL + r"|\bClause (\d+(?:\.\d+)*)", t):
@@ -105,7 +111,25 @@ def row_names(text: str) -> list[str]:
         names += re.findall(r"['\"]([^'\"]+)['\"]", m.group(1))
     names += [f"decl{_ORDINALS.index(m.group(1).lower()) + 1}"
               for m in re.finditer(r"\b(" + "|".join(_ORDINALS) + r") (?:numbered )?declaration\b", t, re.I)]
+    names += re.findall(r"\b(?:entry|row|line) for Form (\d+-[A-Z]+)\b", t)     # an index row (session 09)
     return names
+
+
+def after_row(text: str) -> str | None:
+    """The row an insertion follows, by the name the provision gives it: 'after the entry for Form 4-F' -> '4-F';
+    "after the row 'TN'" -> 'TN'. None when the provision names no row to follow (session 09)."""
+    t = normalize_latin(text)
+    m = re.search(r"\bafter (?:the )?((?:entry|row|line|field) (?:for|against) (?:Form \d+-[A-Z]+\b|['\"][^'\"]+['\"])"
+                  r"|(?:entry|row|line|field) ['\"][^'\"]+['\"])", t)
+    names = row_names(m.group(1)) if m else []
+    return names[0] if names else None
+
+
+def is_index_table(columns: list[str]) -> bool:
+    """An index of forms: a table whose first column is 'Form' and which has a 'Title' column (the VOL-IV cover table
+    'Form | Title | Envelope | Status')."""
+    cols = [normalize_latin(c).strip().lower() for c in columns or []]
+    return bool(cols) and cols[0] == "form" and "title" in cols
 
 
 _ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"]
@@ -130,7 +154,12 @@ def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
             doc, sec = t.split(":")
             if f"{doc}:H:{sec}" in unit_ids:
                 out.append(t)
-    return out
+        elif c.kind == "form":
+            # a form that an addendum inserted lives under the addendum's id (ADD-02:F4-G), not under Volume IV; every
+            # issue of it is a candidate (the op names which one it targets or replaces) (session 09)
+            local = t.split(":", 1)[1]
+            out += sorted({u.split(":", 1)[0] + ":" + local for u in unit_ids if u.split(":", 1)[1].startswith(local + "/")})
+    return list(dict.fromkeys(out))                 # a target named twice (body and heading) is listed once
 
 
 def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None) -> tuple[bool, str, list[str]]:

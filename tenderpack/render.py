@@ -106,7 +106,7 @@ def write_csv_json(table: dict, out_dir: Path, stem: str) -> list[Path]:
 # ------------------------------------------------------------------ A1: Excel
 
 STATUS_FILLS = (                                   # first match wins
-    (lambda v: v.startswith("DELETED"), "D9D9D9"),
+    (lambda v: v.startswith(("DELETED", "REMOVED")), "D9D9D9"),
     (lambda v: "STALE" in v, "FCE4D6"),
     (lambda v: v.startswith(("NEW", "REINSTATED")), "E2EFDA"),
     (lambda v: v.startswith("AMENDED"), "FFF2CC"),
@@ -324,6 +324,10 @@ def _a3_html(a3: dict) -> str:
                      for i in grp["items"]]
             qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
                   if grp.get("questions") else "")
+            if "count" in grp:                     # condensed to a count (stage2.condense_a3 level 3): ids on a3_detail.html
+                qs = f' <span class="meta">questions drafted: {grp["n_questions"]}</span>' if grp.get("n_questions") else ""
+                out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({grp["count"]})' + qs + "</p>")
+                continue
             out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({len(grp["items"])}): ' + "; ".join(items) + qs + "</p>")
     return "\n".join(out)
 

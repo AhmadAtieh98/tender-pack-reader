@@ -1,0 +1,8 @@
+# RECORDED FIXTURE (hand-written; not a live model). The provider times out on every attempt: the controller retries
+# a bounded number of times, then records `provider_failed` and keeps the partial log.
+name: provider-timeout
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - error: {kind: timeout, message: "recorded: read timed out"}
+    times: 10

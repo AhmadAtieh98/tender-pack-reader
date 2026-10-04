@@ -1,0 +1,80 @@
+# RECORDED FIXTURE (hand-written for offline tests; not a live model's output and not a live integration).
+# Blind rehearsal 02, Addendum No. 3: three provider turns (two with tool calls, then the final proposal set) proposing
+#   ADD-03/2.1   correct (11:00 replaces 14:00 in VOL-I 6.1)                         -> evidence_verified
+#   ADD-03/3.1   correct (180 replaces 150 days in VOL-I 7.1)                        -> evidence_verified
+#   ADD-03/5.1   a valid op whose quotation of the provision is FABRICATED ('35')     -> insufficient_evidence
+#   ADD-03/7.2   an escalation (an Index of Forms row stated only in prose)           -> escalated
+#   cover/para1  a no_effect disposition for the issue-date line                      -> evidence_verified
+# ${state} is replaced with the state identity from the task packet (what a model is asked to copy).
+name: add03-propose
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000,
+               retention: "recorded fixture: nothing leaves the process", source: "cassette (recorded fixture)"}
+turns:
+  - match: {last_role: user, contains: ["TASK PACKET", "ADD-03:2.1", "pattern drafter output, unverified"]}
+    response:
+      text: "I will read the evidence first."
+      tool_calls:
+        - {id: t1, name: search_evidence, arguments: {query: "11:00 hours", docs: ["ADD-03"]}}
+        - {id: t2, name: get_unit, arguments: {unit_id: "VOL-I:6.1", stage: "ADD-02"}}
+      usage: {input_tokens: 14000, output_tokens: 120}
+  - match: {last_role: tool, tool_results: [search_evidence, get_unit], tool_error: false}
+    response:
+      text: "Checking the two ops with the engine."
+      tool_calls:
+        - id: t3
+          name: simulate_amendment
+          arguments:
+            addendum: ADD-03
+            ops:
+              - {id: ADD-03/2.1, provision: "ADD-03:2.1", type: replace_text, target: "VOL-I:6.1",
+                 old: "14:00 hours Riyadh time", new: "11:00 hours Riyadh time"}
+              - {id: ADD-03/3.1, provision: "ADD-03:3.1", type: replace_text, target: "VOL-I:7.1",
+                 old: "one hundred and fifty (150) days", new: "one hundred and eighty (180) days"}
+      usage: {input_tokens: 15500, output_tokens: 260}
+  - match: {last_role: tool, tool_results: [simulate_amendment]}
+    response:
+      usage: {input_tokens: 17000, output_tokens: 1400}
+      text: |
+        {"addendum": "ADD-03", "state": ${state},
+         "statements": [
+          {"id": "S1", "kind": "fact", "text": "ADD-03 2.1 substitutes 11:00 for 14:00 hours in VOL-I 6.1.",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                         "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"}]},
+          {"id": "S2", "kind": "interpretation", "text": "ADD-03 7.2 states a new Index of Forms row in prose; the index table itself is not reissued.",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:7.2", "page": 2, "kind": "span",
+                         "words": "The Index of Forms in Volume IV is amended by adding, after the entry for Form 4-F, an entry for Form 4-G"}]}],
+         "items": [
+          {"id": "ADD-03/2.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:2.1", "target": "VOL-I:6.1",
+           "payload": {"id": "ADD-03/2.1", "provision": "ADD-03:2.1", "type": "replace_text", "target": "VOL-I:6.1",
+                       "old": "14:00 hours Riyadh time", "new": "11:00 hours Riyadh time"},
+           "previous_value": "14:00 hours Riyadh time", "proposed_value": "11:00 hours Riyadh time",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:2.1", "page": 1, "kind": "span",
+                         "words": "‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted"},
+                        {"doc": "VOL-I", "unit_id": "VOL-I:6.1", "page": 3, "kind": "span",
+                         "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"}],
+           "dependencies": ["VOL-I:6.1", "ADD-01/2.1"], "statements": ["S1"],
+           "model_rationale": "the time changes; the date stays 26 November 2026"},
+          {"id": "ADD-03/3.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:3.1", "target": "VOL-I:7.1",
+           "payload": {"id": "ADD-03/3.1", "provision": "ADD-03:3.1", "type": "replace_text", "target": "VOL-I:7.1",
+                       "old": "one hundred and fifty (150) days", "new": "one hundred and eighty (180) days"},
+           "previous_value": "150", "proposed_value": "180",
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:3.1", "page": 1, "kind": "span",
+                         "words": "‘one hundred and fifty (150) days’ is deleted and ‘one hundred and eighty (180) days’ is substituted"},
+                        {"doc": "VOL-I", "unit_id": "VOL-I:7.1", "page": 4, "kind": "span",
+                         "words": "remain open for acceptance for one hundred and fifty (150) days"}]},
+          {"id": "ADD-03/5.1", "state": ${state}, "statement_type": "amendment_op", "provision": "ADD-03:5.1", "target": "VOL-II:3.5",
+           "payload": {"id": "ADD-03/5.1", "provision": "ADD-03:5.1", "type": "replace_text", "target": "VOL-II:3.5",
+                       "old": "45 dB(A) by night", "new": "40 dB(A) by night"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:5.1", "page": 2, "kind": "span",
+                         "words": "‘45 dB(A) by night’ is deleted and ‘35 dB(A) by night’ is substituted"}]},
+          {"id": "ADD-03/7.2", "state": ${state}, "statement_type": "escalation", "provision": "ADD-03:7.2", "target": null,
+           "payload": {"why": "the provision adds an Index of Forms entry stated in prose; no op type inserts a table row from prose",
+                       "what_is_unsupported": "a new row of the Volume IV Index of Forms given only in words"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:7.2", "page": 2, "kind": "span",
+                         "words": "an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’"}],
+           "statements": ["S2"]},
+          {"id": "ADD-03/cover/para1", "state": ${state}, "statement_type": "disposition", "provision": "ADD-03:cover/para1",
+           "payload": {"provision": "ADD-03:cover/para1", "disposition": "no_effect", "reason": "the addendum's issue date line"},
+           "evidence": [{"doc": "ADD-03", "unit_id": "ADD-03:cover/para1", "page": 1, "kind": "span", "words": "Issued 3 November 2026"}]}
+         ]}

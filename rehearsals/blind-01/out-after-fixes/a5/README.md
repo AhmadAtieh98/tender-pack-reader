@@ -10,7 +10,7 @@ Pack milestones are kept at their legal dates (a deadline on a non-working day k
 
 - **2016-12-11** within the ten (10) years preceding the Proposal Due Date (dated; VOL-I:8.5#fn12)
 - **2026-09-14** From the date of issue of this Volume (dated; VOL-I:4.2)
-- **2026-09-30** Wednesday 30 September 2026 at 10:00 Riyadh time (dated; VOL-I:5.4)
+- **2026-09-30 10:00** Wednesday 30 September 2026 at 10:00 Riyadh time (dated; VOL-I:5.4)
 - **2026-10-14** within five (5) Working Days of this Addendum (dated; ADD-01:3.1)
 - **2026-11-19** no later than ten (10) Working Days before the Proposal Due Date (dated; VOL-I:5.2)
 - **2026-12-10** current as at the Proposal Due Date (dated; VOL-I:8.3)
@@ -142,7 +142,7 @@ No bidder references, certificates, attendance or financial standing are assumed
 | envelope_assembly | 1 | = elapsed (default) | - | PROVISIONAL ASSUMPTION: assemble the marked original of one envelope in the required order with numbered dividers; not stated |  | Bid management |
 | copies_and_usb | 1 | = elapsed (default) | - | PROVISIONAL ASSUMPTION: three hard copies of each envelope and the encrypted searchable USB copy named per Appendix 2; not stated |  | Bid management |
 | seal_and_mark | 0 | = elapsed (default) | - | PROVISIONAL ASSUMPTION: a few hours at the end of the day the copies are finished (0 = no separate Working Day); not stated |  | Bid management |
-| delivery | 1 | = elapsed (default) | - | PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before 14:00 on the PDD; not stated |  | Bid management |
+| delivery | 1 | = elapsed (default) | - | PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before the Proposal Due Date time stated in VOL-I 6.1 as amended (the time is derived, not assumed); not stated |  | Bid management |
 
 ## Scenarios (config/scenarios.yaml)
 

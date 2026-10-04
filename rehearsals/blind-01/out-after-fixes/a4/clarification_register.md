@@ -2,7 +2,7 @@
 
 **DRAFT questions, NOT SENT.** Nothing has been sent to the Authority, the hiring team or anyone else. A person decides what to raise through the Portal, citing Volume, Clause and page (VOL-I 5.1). Only Addenda bind the Authority (VOL-I 5.3). Unknown answers stay unknown: the interim handling never assumes a response.
 
-- Cut-off: VOL-I 5.2: **2026-11-12**. Ten Working Days (Sunday to Thursday, VOL-I 2.4; the stated date not counted) before the Proposal Due Date of Thursday 26 November 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1; ADD-01 2.2 moves the cut-off with it) is Thursday 12 November 2026, assuming no public holiday is declared in the window. No time of day is stated, so requests are to be lodged through the Portal, in English, citing Volume, Clause and page (VOL-I 4.1, 5.1), before 14:00 Riyadh time on 12 November and preferably earlier; later requests will not be answered (5.2) and only Addenda bind the Authority (5.3).
+- Cut-off: VOL-I 5.2: **2026-11-19**. Fifteen Working Days (Sunday to Thursday, VOL-I 2.4; the stated date not counted; VOL-I 5.2 as amended by this pack's ADD-03 3.1) before the Proposal Due Date of Thursday 10 December 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1 and ADD-03 2.1) is Thursday 19 November 2026, assuming no public holiday is declared in the window. Requests are lodged through the Portal, in English, citing Volume, Clause and page (VOL-I 4.1, 5.1), before 14:00 Riyadh time on 19 November and preferably earlier; later requests will not be answered (5.2) and only Addenda bind the Authority (5.3).
 - 21 questions drafted; 20 topics checked and closed without a question; 8 referenced items not in the pack.
 
 ## Questions (most important first)
@@ -64,7 +64,7 @@
 - **Proposed question (draft):** Volume IV, Form 4-C, declaration 4, page 6: Declaration 4 states that any incorrect statement 'يؤدي إلى استبعاد العرض' (translated as 'leads to the exclusion of the proposal'). Volume I does not use the term 'exclusion' and does not otherwise address incorrect statements in a Proposal. What is the effect of 'استبعاد العرض' under Volume I, including the stage of the evaluation in Clause 11.1 (page 5) at which it would apply, and does it correspond to any consequence stated in Volume I?
 - **Interim handling:** Sign Form 4-C as issued, in Arabic, without altering the declaration, and record 'exclusion' as its own unresolved consequence category (not mapped to rejection, disqualification or non-responsiveness). Run a documented accuracy check across the whole Proposal before each member signs.
 - **Response status:** draft, not sent
-- **Linked issues:** I-F4C-EXCLUSION, I-READING-F4C
+- **Linked issues:** I-READING-F4C
 - **Sources:** VOL-IV:F4-C/image/decl4 p6: “أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة”; VOL-IV:F4-C/image/decl4 p6: “وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض”; VOL-I:9.4 p5: “A translation may be attached for convenience but the Arabic text shall govern.”; VOL-I:11.1 p5: “(i) a responsiveness and mandatory compliance check on a pass or fail basis”
 
 ### CQ-LCC-ISSUER — Addendum No. 2 Section 9.1 (Volume I Clause 8.6 as reinstated), page 3

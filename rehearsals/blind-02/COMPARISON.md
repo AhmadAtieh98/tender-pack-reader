@@ -141,7 +141,7 @@ marked "Post-key fix" in the row or file it changes. Not scored as hits.
 `out-after-fixes/`: exit 0, STALE none, C46 clean, C47 pass. `scripts/verify_archive.py` rebuilds it. The scored state is
 commit `ec8085b`.
 
-**Tool follow-ups for the plan** (not done here; each needs its own test and a check against the real pack):
+**Tool follow-ups for the plan** (not done in session 08; done in session 09 with regressions on this rehearsal and the real pack — see `worklog/2026-10-04_session-09_ai-integration.md` §4; the scored results above are unchanged):
 
 - **C28 claims.** Extract "X is unchanged" claims and test them against every op on X: the Proposal Due Date is the date
   and time in VOL-I 6.1 (2.6). Match "the Proposal validity period" to 7.1 rather than to the Bid Bond's validity. Split a

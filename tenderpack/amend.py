@@ -13,7 +13,16 @@ Operation types (a small closed set; PLAN §4.4):
   set_status     deleted | reinstated (with the new text quoted from the provision) | revoked (an addendum rule)
   replace_unit   a table or form replaced by one printed in the addendum (rows/fields follow by key)
   insert_unit    a new form (group of addendum units) and, optionally, a new list item after an anchor
-  annotate       a clarification answer or rule linked to units: effect none | confirms | interprets |
+  insert_row     a new row of a table that the provision describes in prose rather than prints as a table (session
+                 09, blind rehearsal 02: "The Index of Forms in Volume IV is amended by adding, after the entry for
+                 Form 4-F, an entry for Form 4-G with the title 'Cybersecurity Compliance Undertaking', Envelope 'A'
+                 and Status 'Mandatory'"): `target` the table, `after` the row it follows (default: the last row),
+                 `cells` {column: value}. The new unit is `<table>/<key>+<addendum>` (key as Stage 1 keys the table's
+                 rows), a table_row of the table with those cells and the siblings' text form ("Form: 4-G | Title:
+                 ... | Envelope: A | Status: Mandatory"), placed after `after` in the unit order
+  annotate      a clarification answer or rule linked to units: effect none | confirms | interprets |
+                 non_working_day (with `date`: a day the addendum notifies under VOL-I 2.4; from that stage the date
+                 rules and the programme count it as non-working; C21: the provision prints the date) |
                  adds_obligation | renumbers (with `renumber: {unit: new number}`, each number printed in the
                  provision; ids keep their issued numbers and outputs cite "10.6 (issued as 10.5)"). Rules may name
                  a `subject`; the units mentioning it are listed
@@ -25,9 +34,14 @@ the unit order, is restored to what it was before the op; ops are applied as tra
   C21 the op's quoted words (old/new/new_text) occur in its provision; a set_value's new value is the figure
       the provision states (with the row's unit where it has one) and its column is named in the provision;
       an inserted list item's WHOLE text is printed by the provision, the new group or a named unit of the
-      same addendum (never a unit of the pack, never a supported quotation with words added around it)
+      same addendum (never a unit of the pack, never a supported quotation with words added around it); every
+      cell of an inserted row is printed by the provision after its column's name, quoted ("Envelope 'A'") or,
+      for the key, as "<column> <value>" ("Form 4-G")
   C22 the target exists and its state allows the operation; the declared target is the one the
-      provision (or its section heading) cites (citations.verify_target); claims such as
+      provision (or its section heading) cites (citations.verify_target; for insert_row also "the Index of Forms in
+      Volume IV", the volume's one table whose first column is "Form" and which has a "Title" column); an
+      inserted row's `after` is a row of that table the provision names ("after the entry for Form 4-F"), every
+      column is in the table's header and no row of the table has the new row's key yet; claims such as
       "deleted by Addendum No. 1 Section 4" agree with the ledger; replacement and inserted content is
       printed in the same addendum, after the provision, and a replacement's title names its target
   C23 replace_text: `old` occurs exactly once in the target
@@ -64,13 +78,14 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .citations import citations, verify_target
+from .citations import after_row, citations, is_index_table, verify_target
 from .dates import parse_date
-from .textnorm import normalize_latin
+from .textnorm import has_arabic, normalize_arabic, normalize_latin, slug
 from .util import load_yaml, sha256_text
 
 BASE = "BASE"
-OP_TYPES = ("replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "annotate")
+OP_TYPES = ("replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "insert_row",
+            "annotate")
 
 
 class _Strict(BaseModel):
@@ -80,7 +95,8 @@ class _Strict(BaseModel):
 class Op(_Strict):
     id: str
     provision: str
-    type: Literal["replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "annotate"]
+    type: Literal["replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "insert_row",
+                  "annotate"]
     target: str | None = None
     targets: list[str] = Field(default_factory=list)          # annotate
     old: str | None = None
@@ -93,7 +109,10 @@ class Op(_Strict):
     replacement: str | None = None                             # replace_unit: group in the addendum
     new_group: str | None = None                               # insert_unit: group in the addendum
     anchor: str | None = None                                  # insert_unit list item: insert after this unit
-    effect: Literal["none", "confirms", "interprets", "adds_obligation", "renumbers"] | None = None
+    after: str | None = None                                   # insert_row: the row the new one follows (default: last)
+    cells: dict[str, str] | None = None                        # insert_row: the new row, {column: value}
+    effect: Literal["none", "confirms", "interprets", "adds_obligation", "renumbers", "non_working_day"] | None = None
+    date: str | None = None                                    # annotate/non_working_day: the notified day (ISO), as printed
     renumber: dict[str, str] = Field(default_factory=dict)     # annotate/renumbers: unit id -> its new printed number
     subject: str | None = None                                 # annotate rule: phrase whose mentions are listed
     covers: list[str] = Field(default_factory=list)            # provisions that are content of this op
@@ -179,10 +198,14 @@ def group_members(state: dict[str, UState], group: str, exclude: set[str] = froz
 
 
 def _contains(text: str, phrase: str) -> int:
+    if has_arabic(phrase):                       # Arabic words: compared without diacritics, with alef forms unified
+        return normalize_arabic(text).count(normalize_arabic(phrase))
     return normalize_latin(text).count(normalize_latin(phrase))
 
 
 def _quoted_in(provision_text: str, phrase: str) -> bool:
+    if has_arabic(phrase):
+        return normalize_arabic(phrase) in normalize_arabic(provision_text)
     return normalize_latin(phrase).replace("'", "") in normalize_latin(provision_text).replace("'", "")
 
 
@@ -203,7 +226,14 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
         p = prev.get(k)
         runs: list[str] = []
         if p is None:
-            runs = [u.text or ""]
+            par = cur.get(u.parent) if u.parent else None
+            header = [c.strip() for c in (par.text or "").split("|")] if par is not None and par.kind == "table" else []
+            if u.cells and header and set(u.cells) <= set(header):
+                # a new row of a table (insert_row, session 09): its column names are the table's own header, so the
+                # added words are its cell values ('Form: 4-G | Title: ...' is not printed as such; '4-G' and the title are)
+                runs = [v for v in u.cells.values() if v]
+            else:
+                runs = [u.text or ""]
         else:
             if (u.text or "") != (p.text or ""):
                 # words compared without the punctuation around them: a deletion moves a full stop or comma onto the
@@ -246,13 +276,33 @@ class OpResult:
                 "checks": self.checks, "changed": self.changed, "details": self.details}
 
 
-def unit_pin(state: dict[str, "UState"], uid: str) -> str:
+def unit_evidence(u: dict, doc_sha256: str | None = None) -> dict:
+    """Where a unit of the evidence build is printed, for binding decisions (session 09): its source document (id and,
+    when the caller knows it, the document's sha256 from the build manifest), its pages, each anchor's page, box
+    (rounded to 0.1 pt, written as text so the value is stable across rebuilds) and spans, and for an image reading
+    its region and the reading's review subject (which covers the native image sha256, page and box)."""
+    return {"doc": u.get("doc"), "doc_sha256": doc_sha256, "pages": sorted(u.get("pages") or []),
+            "anchors": [{"page": a.get("page"), "bbox": [f"{float(v):.1f}" for v in a.get("bbox") or []],
+                         "spans": list(a.get("spans") or [])} for a in u.get("anchors") or []],
+            "region": u.get("region") or (u.get("reading") or {}).get("region"),
+            "reading": (u.get("reading") or {}).get("subject_sha256")}
+
+
+def unit_pin(state: dict[str, "UState"], uid: str, evidence: dict | None = None) -> str:
     """A unit as it stands: status, text and cells, the annotations on it and, for an image reading, the
-    reading's review-subject fingerprint. 'absent' when the unit does not exist."""
+    reading's review-subject fingerprint. 'absent' when the unit does not exist.
+    With `evidence` ({unit id: unit_evidence(...)}), the pin also binds the unit's SOURCE: its document identity,
+    pages, anchor boxes and spans, and its image region (decision bindings: Engine.subject, review.row_binding). A
+    unit created by an op has no printed place of its own; its document, pages and creating op stand in for it.
+    Without `evidence` the pin is the content-only value interpretations are pinned to (register.pin_value)."""
     u = state.get(uid)
     if u is None:
         return "absent"
-    return sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or ""))[:16]
+    content = u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or "")
+    if evidence is None:
+        return sha256_text(content)[:16]
+    src = evidence.get(uid) or {"doc": u.doc, "pages": list(u.pages), "created_by": u.history[:1]}
+    return sha256_text(content + "|" + json.dumps(src, ensure_ascii=False, sort_keys=True))[:16]
 
 
 @dataclass
@@ -268,6 +318,7 @@ class StageResult:
     scope_leak: list[str] = field(default_factory=list)
     opfile: str | None = None
     prepared_by: str | None = None
+    non_working_days: list[str] = field(default_factory=list)   # days notified under VOL-I 2.4 at or before this stage
 
 
 # ---------------------------------------------------------------------------------------------- engine
@@ -300,9 +351,7 @@ class Engine:
         self.opfiles = sorted(opfiles, key=lambda f: int(f.addendum.split("-")[1]))
         self.addenda = [f.addendum for f in self.opfiles]
         self.withdrawn = dict(withdrawn or {})
-        self.evidence = {u["unit_id"]: {"anchors": [{k: a.get(k) for k in ("page", "bbox", "spans") if k in a}
-                                                    for a in u.get("anchors", [])],
-                                        "reading": (u.get("reading") or {}).get("subject_sha256")} for u in units}
+        self.evidence = {u["unit_id"]: unit_evidence(u) for u in units}    # where each unit is printed (unit_pin)
 
     # ------------------------------------------------------------------ run
     def run(self) -> list[StageResult]:
@@ -342,6 +391,8 @@ class Engine:
                 res.ops.append(r)
             self._coverage(res, f)
             self._scope(res, before, f.addendum)
+            res.non_working_days = sorted(set(stages[-1].non_working_days)
+                                          | {x.details["non_working_day"] for x in res.ops if x.applied and x.details.get("non_working_day")})
             if res.problems or res.scope_leak or any(not r.applied for r in res.ops) or \
                     any(c["disposition"] in ("unresolved", "rejected") or not c["accounted_by"] for c in res.coverage):
                 res.status = "PARTIAL"
@@ -349,10 +400,14 @@ class Engine:
         return stages
 
     def subject(self, op: Op, st: dict[str, UState]) -> dict:
-        """What a decision on `op` is bound to, from the state immediately before it (see the module docstring)."""
-        scope = {op.target, op.anchor, op.new_text_from, *op.targets, *op.covers, *(c.get("unit") for c in op.claims)}
+        """What a decision on `op` is bound to, from the state immediately before it (see the module docstring). Each
+        unit's pin covers its content and its source (document, pages, anchor boxes and spans, image region: unit_pin
+        with self.evidence), so a member row printed elsewhere with the same words changes the subject (session 09);
+        review.op_binding adds the sha256 of each document involved."""
+        scope = {op.target, op.anchor, op.new_text_from, getattr(op, "after", None), *op.targets, *op.covers,
+                 *(c.get("unit") for c in op.claims)}
         groups = [g for g in (op.replacement, op.new_group) if g]
-        if op.type == "replace_unit" and op.target:
+        if op.type in ("replace_unit", "insert_row") and op.target:   # insert_row reads the table's header and rows
             groups.append(op.target)
         if op.type == "annotate":
             groups += [t for t in op.targets if t not in st]
@@ -363,7 +418,7 @@ class Engine:
         return {"provision": {"unit": op.provision, "text": prov.text if prov else None,
                               "pages": list(prov.pages) if prov else None, "evidence": self.evidence.get(op.provision)},
                 "heading": heading_of(self.order, st, op.provision) if prov else None,
-                "before": {k: unit_pin(st, k) for k in sorted(scope)}}
+                "before": {k: unit_pin(st, k, self.evidence) for k in sorted(scope)}}   # content AND source of each
 
     def _ordered(self, f: OpFile) -> list[Op]:
         pos = {k: i for i, k in enumerate(self.order)}
@@ -459,6 +514,17 @@ class Engine:
                 for k, v in op.renumber.items():
                     st[k].number = v
                 r.details["renumbered"] = dict(op.renumber)
+            if op.effect == "non_working_day":       # a day notified under VOL-I 2.4: the date the provision prints
+                try:
+                    p = parse_date(ptext)
+                except ValueError:
+                    p = None
+                printed = p[0].isoformat() if p else None
+                if not check("C21", bool(op.date) and printed == op.date,
+                             f"the provision prints the notified day {op.date}" if op.date and printed == op.date
+                             else f"the notified day must be the date the provision prints ({printed}); the op says {op.date!r}"):
+                    return r
+                r.details["non_working_day"] = op.date
             for t in op.targets:
                 for k in ([t] if t in st else group_members(st, t)):
                     st[k].annotations.append(op.id)
@@ -473,6 +539,9 @@ class Engine:
                         return r
             r.valid = True
             return r
+
+        if op.type == "insert_row":
+            return self._insert_row(op, st, addendum, prov, cite_text, r, check)
 
         # every other op has one declared target that must be the cited one
         target = op.target
@@ -630,6 +699,67 @@ class Engine:
         r.valid = True
         return r
 
+    def _insert_row(self, op: Op, st: dict[str, UState], addendum: str, prov: UState, cite_text: str, r: OpResult,
+                    check) -> OpResult:
+        """insert_row (session 09): a row of a table that the provision describes in prose (module docstring)."""
+        ptext = prov.text
+        t = st.get(op.target or "")
+        if not check("C22", t is not None and t.kind == "table" and t.status == "active",
+                     f"target {op.target} is an active table" if t is not None and t.kind == "table" and t.status == "active"
+                     else f"target {op.target} is not an active table"):
+            return r
+        header = lambda u: [c.strip() for c in (u.text or "").split("|") if c.strip()]  # noqa: E731
+        cols = header(t)
+        ok, why, cited = verify_target(op.target, cite_text, set(st), lambda uid: st[uid].label if uid in st else None)
+        if not ok:                                   # "the Index of Forms in Volume IV": the volume's one index table
+            index = [c for c in citations(cite_text) if c.kind == "index" and c.target == f"{t.doc}:index"]
+            tables = [k for k, u in st.items() if u.doc == t.doc and u.kind == "table" and u.status == "active"
+                      and is_index_table(header(u))]
+            if index:
+                ok = tables == [op.target]
+                why = (f"the provision cites '{index[0].text}': {op.target} is the {t.doc} table whose first column is "
+                       "'Form' and which has a 'Title' column" if ok else
+                       f"the provision cites '{index[0].text}', but the index tables of {t.doc} are {tables}")
+        r.details["cited"] = cited
+        if not check("C22", ok, why):
+            return r
+        cells = {k: str(v) for k, v in (op.cells or {}).items()}
+        unknown = [c for c in cells if c not in cols]
+        ok = bool(cells) and not unknown and bool(cols) and cols[0] in cells
+        if not check("C22", ok, f"every column is in the header of {op.target} ({' | '.join(cols)}) and the key column "
+                     f"'{cols[0]}' is given" if ok else f"the new row's columns {sorted(cells)} are not those of {op.target} "
+                     f"({' | '.join(cols)}): unknown {unknown}; the key column '{cols[0] if cols else '?'}' must be given"):
+            return r
+        members = [k for k in self.order if k in st and st[k].parent == op.target and st[k].kind == "table_row"]
+        if op.after is not None:
+            named, a = after_row(ptext), st.get(op.after)
+            ok = a is not None and op.after in members and a.status == "active" and named is not None and \
+                slug(named) in {slug(a.label or ""), slug(op.after.rsplit("/", 1)[-1])}
+            if not check("C22", ok, f"{op.after} is the row the provision inserts after ('{named}')" if ok else
+                         f"{op.after} is not a row of {op.target} that the provision names as the one to follow "
+                         f"(the provision names {named!r})"):
+                return r
+        key = cells[cols[0]] if cols[0] in ("No", "Ref", "Form", "Item") else slug(cells[cols[0]])  # as Stage 1 keys rows
+        new_id = f"{op.target}/{key}+{addendum}"
+        taken = [k for k in members if st[k].status == "active" and slug(st[k].label or "") == slug(key)]
+        if not check("C22", not taken and new_id not in st, f"{op.target} has no row keyed '{key}' yet" if not taken
+                     and new_id not in st else f"{op.target} already has a row keyed '{key}': {taken or [new_id]}"):
+            return r
+        unstated = [f"{c}: {v}" for c, v in cells.items() if v and not _states_cell(ptext, c, v)]
+        if not check("C21", not unstated, "every cell is printed in the provision after its column's name" if not unstated
+                     else f"cells not printed in the provision after their column's name: {unstated}"):
+            return r
+        row = {c: cells[c] for c in cols if c in cells}                    # in the header's order, as the siblings
+        st[new_id] = UState(new_id, t.doc, "table_row", "active", " | ".join(f"{c}: {v}" for c, v in row.items() if v),
+                            row, list(prov.pages), "addendum_op", None, parent=op.target, label=key, history=[op.id],
+                            issued_by=addendum)
+        after = op.after or (members[-1] if members else op.target)
+        self.order.insert(self.order.index(after) + 1, new_id)
+        r.changed = [new_id]
+        r.details.update({"inserted": new_id, "after": after, "cells": row})
+        r.valid = True
+        return r
+
     def _op_provision(self, op_id: str) -> str:
         for f in self.opfiles:
             for o in f.ops:
@@ -640,6 +770,15 @@ class Engine:
 
 def _names_column(provision_text: str, column: str) -> bool:
     return bool(column) and normalize_latin(column).lower() in normalize_latin(provision_text).lower()
+
+
+def _states_cell(provision_text: str, column: str, value: str) -> bool:
+    """A new row's cell printed in the provision right after its column's name: quoted ("Envelope 'A'", "the title
+    'Cybersecurity Compliance Undertaking'") or, unquoted, as "<column> <value>" ("Form 4-G" for the Form cell 4-G)."""
+    t = normalize_latin(provision_text)
+    c, v = re.escape(normalize_latin(column)), re.escape(normalize_latin(value))
+    return bool(re.search(r"\b" + c + r"\s+['\"]" + v + r"['\"]", t, re.I)
+                or re.search(r"\b" + c + r"\s+" + v + r"(?![\w-])", t, re.I))
 
 
 def _states_value(provision_text: str, value: str, unit: str | None) -> bool:
@@ -690,9 +829,30 @@ def _letter_ranges(text: str) -> str:
     return " ".join(out)
 
 
+def _arabic_span(text: str, old: str) -> tuple[int, int] | None:
+    """(start, end) of the first run of `text` whose Arabic-normalised form equals that of `old`: a printed addendum
+    and an image reading may differ in diacritics, tatweel or alef forms while saying the same words (session 09)."""
+    target = normalize_arabic(old)
+    if not target:
+        return None
+    pieces, idx = [], []
+    for i, ch in enumerate(text):
+        n = " " if ch.isspace() else normalize_arabic(ch)
+        if not n or (n == " " and pieces and pieces[-1] == " "):
+            continue
+        for c in n:
+            pieces.append(c)
+            idx.append(i)
+    k = "".join(pieces).find(target)
+    return None if k < 0 else (idx[k], idx[k + len(target) - 1] + 1)
+
+
 def _replace_once(text: str, old: str, new: str) -> str:
     if old in text:
         return text.replace(old, new, 1)
+    if has_arabic(old):
+        span = _arabic_span(text, old)
+        return text if span is None else text[:span[0]] + new + text[span[1]:]
     # tolerate typographic quotes/dashes: locate via the normalised form, character by character
     norm = normalize_latin(text)
     i = norm.find(normalize_latin(old))

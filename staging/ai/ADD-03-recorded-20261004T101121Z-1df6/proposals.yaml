@@ -1,0 +1,1525 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-recorded-20261004T101121Z-1df6
+  created: '2026-10-04T10:11:21Z'
+  route: recorded
+  provider: recorded
+  model_requested: recorded-fixture-model
+  model_reported: recorded-fixture-model
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014-BLIND-02
+    evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+    validated_stage: ADD-03
+    working_stage: null
+    decisions_sha256: null
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 2.1 substitutes 11:00 for 14:00 hours in VOL-I 6.1.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: ‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: interpretation
+    text: ADD-03 7.2 states a new Index of Forms row in prose; the index table itself is not reissued.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 2
+      kind: span
+      words: The Index of Forms in Volume IV is amended by adding, after the entry for Form 4-F, an entry for Form
+        4-G
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/2.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-02
+      evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+      validated_stage: ADD-03
+      working_stage: null
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:2.1
+    target: VOL-I:6.1
+    payload:
+      id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:6.1
+      old: 14:00 hours Riyadh time
+      new: 11:00 hours Riyadh time
+    previous_value: 14:00 hours Riyadh time
+    proposed_value: 11:00 hours Riyadh time
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: ‘14:00 hours Riyadh time’ is deleted and ‘11:00 hours Riyadh time’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:6.1
+      page: 3
+      kind: span
+      words: not later than 14:00 hours Riyadh time on Thursday 26 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:6.1
+    - ADD-01/2.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+    - check: previous_value
+      ok: true
+      detail: '''14:00 hours Riyadh time'' matches VOL-I:6.1 at ADD-02'
+    - check: proposed_value
+      ok: true
+      detail: '''11:00 hours Riyadh time'' is what the op writes'
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+    - check: evidence VOL-I:6.1 p3
+      ok: true
+      detail: verbatim in VOL-I:6.1 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: the time changes; the date stays 26 November 2026
+  - id: ADD-03/3.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-02
+      evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+      validated_stage: ADD-03
+      working_stage: null
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.1
+    target: VOL-I:7.1
+    payload:
+      id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-I:7.1
+      old: one hundred and fifty (150) days
+      new: one hundred and eighty (180) days
+    previous_value: '150'
+    proposed_value: '180'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: ‘one hundred and fifty (150) days’ is deleted and ‘one hundred and eighty (180) days’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:7.1
+      page: 4
+      kind: span
+      words: remain open for acceptance for one hundred and fifty (150) days
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.1 is a provision of ADD-03 (p1)
+    - check: previous_value
+      ok: true
+      detail: '''150'' matches VOL-I:7.1 at ADD-02'
+    - check: proposed_value
+      ok: true
+      detail: '''180'' is what the op writes'
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+    - check: evidence VOL-I:7.1 p4
+      ok: true
+      detail: verbatim in VOL-I:7.1 at ADD-02
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: evidence_verified
+    model_rationale: null
+  - id: ADD-03/5.1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-02
+      evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+      validated_stage: ADD-03
+      working_stage: null
+      decisions_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-II:3.5
+    payload:
+      id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:3.5
+      old: 45 dB(A) by night
+      new: 40 dB(A) by night
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: ‘45 dB(A) by night’ is deleted and ‘35 dB(A) by night’ is substituted
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+    - check: evidence ADD-03:5.1 p2
+      ok: false
+      detail: 'the words are not verbatim in ADD-03:5.1 at ADD-02: ''‘45 dB(A) by night’ is deleted and ‘35 dB(A)
+        by night’ is substituted'''
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+    verification_status: insufficient_evidence
+    model_rationale: null
+  - id: ADD-03/7.2
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-02
+      evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+      validated_stage: ADD-03
+      working_stage: null
+      decisions_sha256: null
+    statement_type: escalation
+    provision: ADD-03:7.2
+    target: null
+    payload:
+      why: the provision adds an Index of Forms entry stated in prose; no op type inserts a table row from prose
+      what_is_unsupported: a new row of the Volume IV Index of Forms given only in words
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 2
+      kind: span
+      words: an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - S2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:7.2 is a provision of ADD-03 (p2)
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+    - check: evidence ADD-03:7.2 p2
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S2: a person must confirm it'
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03/cover/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014-BLIND-02
+      evidence_build_id: 2f9a692b03d6bdc2f52b3637a1c3e8a8cc10b3834c7ddbfc33a78e73e6d1314e
+      validated_stage: ADD-03
+      working_stage: null
+      decisions_sha256: null
+    statement_type: disposition
+    provision: ADD-03:cover/para1
+    target: null
+    payload:
+      provision: ADD-03:cover/para1
+      disposition: no_effect
+      reason: the addendum's issue date line
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 3 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para1 is a provision of ADD-03 (p1)
+    - check: evidence ADD-03:cover/para1 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para1 at ADD-02
+    verification_status: evidence_verified
+    model_rationale: null
+  coverage:
+    provisions_total: 42
+    accounted: 5
+    unaccounted:
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:4.3
+    - ADD-03:5.2
+    - ADD-03:5.3
+    - ADD-03:6.1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:AppA/para1
+    - ADD-03:T2-2-rev/bod5
+    - ADD-03:T2-2-rev/cod
+    - ADD-03:T2-2-rev/total-suspended-solids
+    - ADD-03:T2-2-rev/total-nitrogen
+    - ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n
+    - ADD-03:T2-2-rev/total-phosphorus
+    - ADD-03:T2-2-rev/temperature
+    - ADD-03:T2-2-rev/notes
+    - ADD-03:T2-2-rev/note(1)
+    - ADD-03:T2-2-rev/note(2)
+    - ADD-03:T2-2-rev/note(3)
+    - ADD-03:T2-2-rev/note(4)
+  usage:
+    calls: 3
+    input_tokens: 46500
+    output_tokens: 1780
+    cost_usd: null
+    cost_basis: no price configured
+  status: partial
+  controller_version: s09-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+    S2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:7.2 p2
+        ok: true
+        detail: verbatim in ADD-03:7.2 at ADD-02
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/2.1
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:6.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:2.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:6.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:6.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''14:00 hours Riyadh time'' occurs 1 time(s) in VOL-I:6.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-I:6.1
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-I:6.1
+        also_in: []
+    - id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-I:7.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:7.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:7.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''one hundred and fifty (150) days'' occurs 1 time(s) in VOL-I:7.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-I:7.1
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-I:7.1
+        also_in: []
+    - id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:3.5
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:3.5 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:3.5 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''45 dB(A) by night'' occurs 1 time(s) in VOL-II:3.5'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:3.5
+      content: []
+      c47: []
+      details:
+        cited:
+        - VOL-II:3.5
+        also_in: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: op
+      accounted_by:
+      - ADD-03/2.1
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: op
+      accounted_by:
+      - ADD-03/3.1
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: op
+      accounted_by:
+      - ADD-03/5.1
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/bod5
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/cod
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/total-suspended-solids
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/total-nitrogen
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/total-phosphorus
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/temperature
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T2-2-rev/note(4)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:4.3
+    - ADD-03:5.2
+    - ADD-03:5.3
+    - ADD-03:6.1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:AppA/para1
+    - ADD-03:T2-2-rev/bod5
+    - ADD-03:T2-2-rev/cod
+    - ADD-03:T2-2-rev/total-suspended-solids
+    - ADD-03:T2-2-rev/total-nitrogen
+    - ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n
+    - ADD-03:T2-2-rev/total-phosphorus
+    - ADD-03:T2-2-rev/temperature
+    - ADD-03:T2-2-rev/notes
+    - ADD-03:T2-2-rev/note(1)
+    - ADD-03:T2-2-rev/note(2)
+    - ADD-03:T2-2-rev/note(3)
+    - ADD-03:T2-2-rev/note(4)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-I:6.1
+    - VOL-I:7.1
+    - VOL-II:3.5
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - VOL-I:6.1
+    - VOL-I:7.1
+    rows_citing_changed_units:
+    - VOL-I-6.1-01
+    - VOL-I-7.1-01
+    rows_stale_at_addendum:
+    - row: VOL-I-6.1-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-5.2-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-6.3-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - VOL-I:6.3 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-6.4-01
+      why:
+      - ADD-01:Q3 changed since ADD-03
+      - VOL-I:6.4 changed since ADD-03
+      - dependency ADD-03:Q15 no longer applies
+    - row: VOL-I-6.4-02
+      why:
+      - ADD-01:Q3 changed since ADD-03
+      - VOL-I:6.4 changed since ADD-03
+    - row: VOL-I-7.1-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-8.3-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-8.5-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-IV-F4A-01
+      why:
+      - VOL-IV:F4-A/proposal-due-date changed since ADD-03
+      - dependency ADD-03:3.3 no longer applies
+      - dependency VOL-IV:F4-A/T1 no longer applies
+    - row: ADD-02-7.2-01
+      why:
+      - VOL-I:9.1(e)+ADD-02 changed since ADD-03
+      - dependency ADD-03:7.1 no longer applies
+      - dependency ADD-03:Q16 no longer applies
+    - row: VOL-II-4.4-01
+      why:
+      - VOL-II:4.4 changed since ADD-03
+      - 'quote not found in the effective text at ADD-03: ''for not less than seventy-two (72) hours'' (expected:
+        the interpretation predates the change)'
+    - row: ADD-03-6.2-01
+      why:
+      - ADD-03:6.2 changed since ADD-03
+    - row: ADD-01-AppA-01
+      why:
+      - ADD-03:cover/para3 changed since ADD-03
+    - row: VOL-I-3.4-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-6.5-01
+      why:
+      - VOL-I:6.5 changed since ADD-03
+      - dependency ADD-03:Q20 no longer applies
+    - row: VOL-I-6.5-02
+      why:
+      - VOL-I:6.5 changed since ADD-03
+      - dependency ADD-03:Q20 no longer applies
+    - row: VOL-I-6.7-01
+      why:
+      - VOL-I:6.1 changed since ADD-03
+      - dependency ADD-03:2.1 no longer applies
+    - row: VOL-I-8.7-01
+      why:
+      - VOL-I:8.7 changed since ADD-03
+      - dependency ADD-03:Q16 no longer applies
+      - dependency ADD-03:Q17 no longer applies
+    - row: VOL-I-9.1-01
+      why:
+      - VOL-I:9.1 changed since ADD-03
+      - VOL-I:9.1(f) changed since ADD-03
+      - VOL-I:9.1(g) changed since ADD-03
+    - row: VOL-I-9.1h-01
+      why:
+      - VOL-I:9.1(h) changed since ADD-03
+      - dependency ADD-03:7.1 no longer applies
+      - dependency VOL-I:9.1 no longer applies
+    - row: VOL-I-9.5-01
+      why:
+      - dependency ADD-03:Q16 no longer applies
+      - dependency VOL-I:9.1 no longer applies
+    - row: VOL-I-9.6-01
+      why:
+      - dependency ADD-03:Q16 no longer applies
+      - dependency VOL-I:9.1 no longer applies
+    - row: VOL-I-9.7-01
+      why:
+      - VOL-I:9.1(f) changed since ADD-03
+      - dependency ADD-03:7.1 no longer applies
+      - dependency ADD-03:Q16 no longer applies
+    - row: VOL-I-10.1-01
+      why:
+      - VOL-I:10.1 changed since ADD-03
+      - dependency ADD-03:Q20 no longer applies
+    - row: VOL-I-10.3-01
+      why:
+      - VOL-I:10.3 changed since ADD-03
+    - row: VOL-I-12.1-01
+      why:
+      - VOL-I:12.1 changed since ADD-03
+      - dependency ADD-03:Q19 no longer applies
+    - row: VOL-I-App3-01
+      why:
+      - VOL-I:App3/para1 changed since ADD-03
+      - 'quote not found in the effective text at ADD-03: ''Tender Box 2, First Floor, Northern Utilities Procurement
+        Au'' (expected: the interpretation predates the change)'
+    - row: VOL-II-2.1-01
+      why:
+      - VOL-II:T2-2/bod5 changed since ADD-03
+      - VOL-II:T2-2/cod changed since ADD-03
+      - VOL-II:T2-2/temperature changed since ADD-03
+    - row: VOL-II-2.3-01
+      why:
+      - VOL-II:2.3 changed since ADD-03
+      - 'quote not found in the effective text at ADD-03: ''designed to accommodate a future expansion of 25% of
+        nominal'' (expected: the interpretation predates the change)'
+    - row: VOL-II-3.1-01
+      why:
+      - VOL-II:T2-2/bod5 changed since ADD-03
+      - VOL-II:T2-2/cod changed since ADD-03
+      - VOL-II:T2-2/temperature changed since ADD-03
+    - row: VOL-II-3.5-01
+      why:
+      - VOL-II:3.5 changed since ADD-03
+      - dependency ADD-03:5.1 no longer applies
+      - 'quote not found in the effective text at ADD-03: ''Noise at the nearest sensitive receptor shall not exceed
+        55 '' (expected: the interpretation predates the change)'
+    - row: VOL-II-4.4-02
+      why:
+      - VOL-II:4.4 changed since ADD-03
+    - row: VOL-II-8.4-01
+      why:
+      - VOL-II:8.4 changed since ADD-03
+      - 'quote not found in the effective text at ADD-03: ''Sludge shall be dewatered to not less than 25% dry solids''
+        (expected: the interpretation predates the change)'
+    - row: VOL-II-8.4-02
+      why:
+      - VOL-II:8.4 changed since ADD-03
+    - row: VOL-IV-F4A-02
+      why:
+      - VOL-IV:F4-A/capacity changed since ADD-03
+      - VOL-IV:F4-A/commercial-registration-number changed since ADD-03
+      - VOL-IV:F4-A/company-seal changed since ADD-03
+    - row: VOL-IV-F4F-01
+      why:
+      - VOL-IV:F4-F/date-of-model-audit-opinion changed since ADD-03
+      - VOL-IV:F4-F/model-auditor changed since ADD-03
+    - row: VOL-V-3.1-01
+      why:
+      - VOL-V:3.1 changed since ADD-03
+      - dependency ADD-03:Q19 no longer applies
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units:
+    - CQ-BOND-FC-COVERAGE
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: not found
+        claim: 2
+        detail: '''introduces registration of the persons delivering Proposals'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 4
+        detail: '''removes the model audit opinion from the Proposal'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 5
+        detail: '''re-letters Volume I Clause 9.1'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 6
+        detail: '''amends Volume II Clauses 3.5, 4.4 and 8.4'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 7
+        detail: '''reissues Volume II Table 2-2'': no provision of ADD-03 does this'
+      - kind: unchecked
+        provision: ADD-03:1.1
+        detail: ADD-03:1.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.3
+        detail: ADD-03:2.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.4
+        detail: ADD-03:2.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.2
+        detail: ADD-03:3.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3
+        detail: ADD-03:3.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.1
+        detail: ADD-03:4.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.2
+        detail: ADD-03:4.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.3
+        detail: ADD-03:4.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.1
+        detail: ADD-03:5.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.3
+        detail: ADD-03:5.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:6.1
+        detail: ADD-03:6.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:6.2
+        detail: ADD-03:6.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q21
+        detail: ADD-03:Q21 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/bod5
+        detail: ADD-03:T2-2-rev/bod5 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/cod
+        detail: ADD-03:T2-2-rev/cod is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/total-suspended-solids
+        detail: ADD-03:T2-2-rev/total-suspended-solids is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/total-nitrogen
+        detail: ADD-03:T2-2-rev/total-nitrogen is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n
+        detail: ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/total-phosphorus
+        detail: ADD-03:T2-2-rev/total-phosphorus is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/temperature
+        detail: ADD-03:T2-2-rev/temperature is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/notes
+        detail: ADD-03:T2-2-rev/notes is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/note(1)
+        detail: ADD-03:T2-2-rev/note(1) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/note(2)
+        detail: ADD-03:T2-2-rev/note(2) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/note(3)
+        detail: ADD-03:T2-2-rev/note(3) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T2-2-rev/note(4)
+        detail: ADD-03:T2-2-rev/note(4) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: contradicted
+        claim: 9
+        op: ADD-03/2.1
+        provision: ADD-03:2.1
+        detail: '''The Proposal Due Date is unchanged'', but ADD-03/2.1 replaces ''14:00 hours Riyadh time'' with
+          ''11:00 hours Riyadh time'' in VOL-I 6.1; VOL-I 2.6: ''Proposal Due Date means the date and time stated
+          in Clause 6.1, as the same may be amended by Addendum.'''
+      requirements:
+        new:
+        - ADD-03-6.2-01
+        - ADD-03-T22n3-01
+        - ADD-03-Q20-01
+        - ADD-03-Q20-02
+        - ADD-03-Q16-01
+        out:
+        - VOL-I-10.3-02
+        changed:
+        - VOL-I-6.1-01
+        - VOL-I-6.3-01
+        - VOL-I-7.1-01
+        - VOL-II-4.4-01
+        - ADD-01-AppA-01
+        - VOL-I-6.5-01
+        - VOL-I-App3-01
+        - VOL-II-2.1-01
+        - VOL-II-2.3-01
+        - VOL-II-3.5-01
+        - VOL-II-8.4-01
+        secondary:
+          ADD-01-AppA-01:
+          - secondary unit ADD-03:cover/para3 issued
+          VOL-II-2.1-01:
+          - secondary unit ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n issued
+      stale:
+      - VOL-I-6.1-01
+      - VOL-I-5.2-01
+      - VOL-I-6.3-01
+      - VOL-I-6.4-01
+      - VOL-I-6.4-02
+      - VOL-I-7.1-01
+      - VOL-I-8.3-01
+      - VOL-I-8.5-01
+      - VOL-IV-F4A-01
+      - ADD-02-7.2-01
+      - VOL-II-4.4-01
+      - ADD-03-6.2-01
+      - ADD-01-AppA-01
+      - VOL-I-3.4-01
+      - VOL-I-6.5-01
+      - VOL-I-6.5-02
+      - VOL-I-6.7-01
+      - VOL-I-8.7-01
+      - VOL-I-9.1-01
+      - VOL-I-9.1h-01
+      - VOL-I-9.5-01
+      - VOL-I-9.6-01
+      - VOL-I-9.7-01
+      - VOL-I-10.1-01
+      - VOL-I-10.3-01
+      - VOL-I-12.1-01
+      - VOL-I-App3-01
+      - VOL-II-2.1-01
+      - VOL-II-2.3-01
+      - VOL-II-3.1-01
+      - VOL-II-3.5-01
+      - VOL-II-4.4-02
+      - VOL-II-8.4-01
+      - VOL-II-8.4-02
+      - VOL-IV-F4A-02
+      - VOL-IV-F4F-01
+      - VOL-V-3.1-01
+      a3:
+        enters:
+        - ADD-03-Q20-01
+        leaves: []
+      programme:
+      - activity: assemble-envelope-a
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01'
+      - activity: assemble-envelope-b
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01'
+      - activity: bond-approval
+        change: REWORK
+        detail: 'requirement changed: VOL-I-6.3-01, VOL-I-6.4-01, VOL-I-6.4-02'
+      - activity: bond-issue
+        change: REWORK
+        detail: 'requirement changed: VOL-I-6.3-01, VOL-I-6.4-01, VOL-I-6.4-02'
+      - activity: clarifications
+        change: REWORK
+        detail: 'requirement changed: VOL-I-3.4-01, VOL-I-5.2-01'
+      - activity: completion-certs
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.5-01'
+      - activity: copies
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-01, ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-6.5-01, VOL-I-6.5-02, VOL-I-9.1-01,
+          VOL-I-App3-01'
+      - activity: deliver
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01'
+      - activity: deviations-review
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.6-01'
+      - activity: fin-model-build
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-01, VOL-I-10.1-01, VOL-I-10.3-01'
+      - activity: fin-model-freeze
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-01, VOL-I-10.1-01, VOL-I-10.3-01'
+      - activity: form-4a
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01, VOL-I-7.1-01, VOL-IV-F4A-01, VOL-IV-F4A-02'
+      - activity: form-4a-prep
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01, VOL-I-7.1-01, VOL-IV-F4A-01, VOL-IV-F4A-02'
+      - activity: form-4b
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.5-01'
+      - activity: form-4b-prep
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.5-01'
+      - activity: form-4e
+        change: REWORK
+        detail: 'requirement changed: VOL-I-9.6-01'
+      - activity: form-4f
+        change: REWORK
+        detail: 'requirement changed: VOL-I-10.1-01, VOL-IV-F4F-01'
+      - activity: form-4g-review
+        change: REWORK
+        detail: 'requirement changed: ADD-02-7.2-01'
+      - activity: form-4g-sign
+        change: REWORK
+        detail: 'requirement changed: ADD-02-7.2-01'
+      - activity: iso-copy
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.3-01'
+      - activity: model-audit-opinion
+        change: REMOVED
+        detail: no longer needed by any row in force
+      - activity: model-audit-review
+        change: REMOVED
+        detail: no longer needed by any row in force
+      - activity: model-auditor-appoint
+        change: REMOVED
+        detail: no longer needed by any row in force
+      - activity: pcg-execution
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.7-01'
+      - activity: pcg-wording
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.7-01'
+      - activity: poa
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q16-01, VOL-I-9.1h-01'
+      - activity: poa-legalise
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q16-01, VOL-I-9.1h-01'
+      - activity: poa-resolutions
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q16-01, VOL-I-9.1h-01'
+      - activity: references
+        change: REWORK
+        detail: 'requirement changed: VOL-I-8.5-01'
+      - activity: register-reps
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01'
+      - activity: seal-and-mark
+        change: REWORK
+        detail: 'requirement changed: ADD-03-Q20-02, VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01'
+      - activity: simulation-report
+        change: REWORK
+        detail: 'requirement changed: ADD-03-6.2-01, ADD-03-T22n3-01, VOL-I-9.7-01, VOL-II-2.1-01, VOL-II-2.3-01,
+          VOL-II-3.1-01, VOL-II-3.5-01, VOL-II-4.4-01, VOL-II-4.4-02, VOL-II-8.4-01, VOL-II-8.4-02'
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: ADD-03-6.2-01, ADD-03-T22n3-01, VOL-I-9.7-01, VOL-II-2.1-01, VOL-II-2.3-01,
+          VOL-II-3.1-01, VOL-II-3.5-01, VOL-II-4.4-01, VOL-II-4.4-02, VOL-II-8.4-01, VOL-II-8.4-02'
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-03)\n\n- ops: 2 (0\
+      \ invalid); provisions: 42 (39 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para2: Tender NUPA/ISTP/2026/014\n\
+      - UNRESOLVED ADD-03:cover/para3: This Addendum amends the time for receipt of Proposals and the submission\
+      \ address, introduces registration of the persons delivering Proposals, extends the Prop\n- UNRESOLVED ADD-03:1.1:\
+      \ This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance\
+      \ with Volume I Clause 3.2.\n- UNRESOLVED ADD-03:1.2: Clarification request 18 was withdrawn by the Bidder\
+      \ that submitted it and is not answered.\n- UNRESOLVED ADD-03:2.2: The second sentence of Section 2.1 of Addendum\
+      \ No. 1 (‘The time of 14:00 Riyadh time is unchanged.’) ceases to have effect.\n- UNRESOLVED ADD-03:2.3: Volume\
+      \ I Appendix 3 is deleted and replaced by the following: ‘Tender Box 2, First Floor, Northern Utilities Procurement\
+      \ Authority, Administrative Building A, S\n- UNRESOLVED ADD-03:2.4: The following new Clause 6.8 is inserted\
+      \ in Volume I after Clause 6.7: ‘6.8  Each Bidder shall, not later than five (5) Working Days before the Proposal\
+      \ Due Dat\n- UNRESOLVED ADD-03:3.2: In Volume I Clause 6.3, ‘one hundred and eighty (180) days’ is deleted\
+      \ and ‘two hundred and ten (210) days’ is substituted.\n- UNRESOLVED ADD-03:3.3: Paragraph 2 of Form 4-A shall\
+      \ be read accordingly.\n- UNRESOLVED ADD-03:4.1: In Volume I Clause 10.3, the words ‘, and shall be accompanied\
+      \ by an opinion from an independent model auditor addressed to the Authority’ are deleted. No model\n- UNRESOLVED\
+      \ ADD-03:4.2: The following new Clause 12.5 is inserted in Volume I after Clause 12.4: ‘12.5  The Preferred\
+      \ Bidder shall deliver to the Authority, not later than forty-five (\n- UNRESOLVED ADD-03:4.3: In Form 4-F,\
+      \ the rows ‘Model auditor’ and ‘Date of model audit opinion’ are deleted.\n- UNRESOLVED ADD-03:5.1: In Volume\
+      \ II Clause 3.5, ‘45 dB(A) by night’ is deleted and ‘40 dB(A) by night’ is substituted. The daytime limit\
+      \ is unchanged.\n- UNRESOLVED ADD-03:5.2: Section 4.1 of Addendum No. 2 is revoked. The period in Volume II\
+      \ Clause 4.4 is seventy-two (72) hours, as originally issued.\n- UNRESOLVED ADD-03:5.3: In Volume II Clause\
+      \ 8.4, ‘22% dry solids’ is deleted and ‘25% dry solids’ is substituted, and the second sentence is deleted\
+      \ and replaced by: ‘No sludge shall b\n- UNRESOLVED ADD-03:6.1: Table 2-2 of Volume II is deleted and replaced\
+      \ by Table 2-2 (revised) at Appendix A to this Addendum, including the Notes to that Table. The principal\
+      \ changes a\n- UNRESOLVED ADD-03:6.2: Bidders shall reflect Table 2-2 (revised) in the process design submitted\
+      \ under Volume II Section 3.\n- UNRESOLVED ADD-03:7.1: Following the insertion of Form 4-G by Section 7.1\
+      \ of Addendum No. 2, the items of Volume I Clause 9.1 are re-lettered: Form 4-G is item (f), and former items\
+      \ (\n- UNRESOLVED ADD-03:7.2: The Index of Forms in Volume IV is amended by adding, after the entry for Form\
+      \ 4-F, an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’,\n- UNRESOLVED ADD-03:Q15:\
+      \ No: 15 | Bidder question: Addendum No. 1 response 3 permits a Bid Bond issued by a licensed branch of a\
+      \ foreign bank. Must such a Bid Bond also be confirmed by \n- UNRESOLVED ADD-03:Q16: No: 16 | Bidder question:\
+      \ Must the notarised Powers of Attorney required by Volume I Clause 9.1 be legalised where they are executed\
+      \ outside the Kingdom? | Auth\n- UNRESOLVED ADD-03:Q17: No: 17 | Bidder question: Following response 10 in\
+      \ Addendum No. 2, is any guarantee or other security required in respect of the proposed O&M Operator? | Author\n\
+      - UNRESOLVED ADD-03:Q18: No: 18 | Bidder question: Withdrawn. | Authority response: Not answered. See Section\
+      \ 1.2 of this Addendum.\n- UNRESOLVED ADD-03:Q19: No: 19 | Bidder question: Further to response 7 in Addendum\
+      \ No. 2, will Volume V Clause 3.1 be conformed to Volume I Clause 12.1 so that the twenty-five (25) ye\n-\
+      \ UNRESOLVED ADD-03:Q20: No: 20 | Bidder question: Volume I Clause 6.5 requires one electronic copy of the\
+      \ Proposal, but Volume I Clause 10.1 requires the Financial Model to be placed i\n- UNRESOLVED ADD-03:Q21:\
+      \ No: 21 | Bidder question: In view of the changes made by Addenda Nos. 1 and 2, will the Authority extend\
+      \ the Proposal Due Date? | Authority response: No. The da\n- UNRESOLVED ADD-03:AppA/para1: Table 2-2 of Volume\
+      \ II is reissued below in accordance with Section 6 of this Addendum. Bidders shall use this version.\n- UNRESOLVED\
+      \ ADD-03:T2-2-rev/bod5: Parameter: BOD5 | Unit: mg/l | Average: 320 | Peak (design): 480\n- UNRESOLVED ADD-03:T2-2-rev/cod:\
+      \ Parameter: COD | Unit: mg/l | Average: 640 | Peak (design): 950\n- UNRESOLVED ADD-03:T2-2-rev/total-suspended-solids:\
+      \ Parameter: Total Suspended Solids | Unit: mg/l | Average: 350 | Peak (design): 520\n- UNRESOLVED ADD-03:T2-2-rev/total-nitrogen:\
+      \ Parameter: Total Nitrogen | Unit: mg/l | Average: 60 | Peak (design): 85\n- UNRESOLVED ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n:\
+      \ Parameter: Ammonia nitrogen (NH4-N) | Unit: mg/l | Average: 42 | Peak (design): 62\n- UNRESOLVED ADD-03:T2-2-rev/total-phosphorus:\
+      \ Parameter: Total Phosphorus | Unit: mg/l | Average: 9 | Peak (design): 16\n- UNRESOLVED ADD-03:T2-2-rev/temperature:\
+      \ Parameter: Temperature | Unit: °C | Average: 24 | Peak (design): 34 (max) / 12 (min)\n- UNRESOLVED ADD-03:T2-2-rev/notes:\
+      \ Notes to Table 2-2 (revised):\n- UNRESOLVED ADD-03:T2-2-rev/note(1): (1)  Concentrations are flow-weighted\
+      \ 24-hour composite values measured at the inlet works. Peak (design) values are 95th percentile values.\n\
+      - UNRESOLVED ADD-03:T2-2-rev/note(2): (2)  The minimum temperature of 12 °C shall be used for the design of\
+      \ the nitrification stage.\n- UNRESOLVED ADD-03:T2-2-rev/note(3): (3)  Bidders shall submit, as an appendix\
+      \ to the Technical Proposal, a process simulation report demonstrating that the effluent quality in Table\
+      \ 2-4, as amende\n- UNRESOLVED ADD-03:T2-2-rev/note(4): (4)  In Volume II Clause 2.3, ‘50% of nominal capacity’\
+      \ is deleted and ‘25% of nominal capacity’ is substituted.\n- cover summary vs provisions (C28, report only):\
+      \ 6 finding(s)\n  - not found: 'introduces registration of the persons delivering Proposals': no provision\
+      \ of ADD-03 does this\n  - not found: 'removes the model audit opinion from the Proposal': no provision of\
+      \ ADD-03 does this\n  - not found: 're-letters Volume I Clause 9.1': no provision of ADD-03 does this\n  -\
+      \ not found: 'amends Volume II Clauses 3.5, 4.4 and 8.4': no provision of ADD-03 does this\n  - not found:\
+      \ 'reissues Volume II Table 2-2': no provision of ADD-03 does this\n  - contradicted: 'The Proposal Due Date\
+      \ is unchanged', but ADD-03/2.1 replaces '14:00 hours Riyadh time' with '11:00 hours Riyadh time' in VOL-I\
+      \ 6.1; VOL-I 2.6: 'Proposal Due Date means the date and time stated in Clause 6.1, as the same may be amended\
+      \ by Addendum.'\n\n## Requirements\n\n- new: 5; out of force: 1; changed: 11\n\n- NEW ADD-03-6.2-01: NEW\n\
+      - NEW ADD-03-T22n3-01: NEW\n- NEW ADD-03-Q20-01: NEW\n- NEW ADD-03-Q20-02: NEW\n- NEW ADD-03-Q16-01: NEW\n\
+      - OUT VOL-I-10.3-02: REMOVED (ADD-03/4.1)\n- CHANGED VOL-I-6.1-01: wording; quoted words (by ADD-03/2.1)\n\
+      - CHANGED VOL-I-6.3-01: quoted words\n- CHANGED VOL-I-7.1-01: wording; quoted words; PROPOSAL-VALIDITY 2027-04-25\
+      \ -> 2027-05-25 (by ADD-03/3.1)\n- CHANGED VOL-II-4.4-01: quoted words\n- CHANGED ADD-01-AppA-01: secondary\
+      \ unit ADD-03:cover/para3 issued\n- CHANGED VOL-I-6.5-01: quoted words\n- CHANGED VOL-I-App3-01: quoted words\n\
+      - CHANGED VOL-II-2.1-01: secondary unit ADD-03:T2-2-rev/ammonia-nitrogen-nh4-n issued\n- CHANGED VOL-II-2.3-01:\
+      \ quoted words\n- CHANGED VOL-II-3.5-01: quoted words\n- CHANGED VOL-II-8.4-01: quoted words\n\n## Stale readings\
+      \ and decisions\n\n- STALE VOL-I-6.1-01: VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1 no longer applies\n\
+      - STALE VOL-I-5.2-01: VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1 no longer applies\n- STALE VOL-I-6.3-01:\
+      \ VOL-I:6.1 changed since ADD-03; VOL-I:6.3 changed since ADD-03; dependency ADD-03:2.1 no longer applies;\
+      \ quote not found in the effective text at ADD-03: 'valid for two hundred and ten (210) days from the Proposal\
+      \ D' (ex\n- STALE VOL-I-6.4-01: ADD-01:Q3 changed since ADD-03; VOL-I:6.4 changed since ADD-03; dependency\
+      \ ADD-03:Q15 no longer applies\n- STALE VOL-I-6.4-02: ADD-01:Q3 changed since ADD-03; VOL-I:6.4 changed since\
+      \ ADD-03\n- STALE VOL-I-7.1-01: VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1 no longer applies\n\
+      - STALE VOL-I-8.3-01: VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1 no longer applies\n- STALE VOL-I-8.5-01:\
+      \ VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1 no longer applies\n- STALE VOL-IV-F4A-01: VOL-IV:F4-A/proposal-due-date\
+      \ changed since ADD-03; dependency ADD-03:3.3 no longer applies; dependency VOL-IV:F4-A/T1 no longer applies\n\
+      - STALE ADD-02-7.2-01: VOL-I:9.1(e)+ADD-02 changed since ADD-03; dependency ADD-03:7.1 no longer applies;\
+      \ dependency ADD-03:Q16 no longer applies; dependency VOL-I:9.1 no longer applies\n- STALE VOL-II-4.4-01:\
+      \ VOL-II:4.4 changed since ADD-03; quote not found in the effective text at ADD-03: 'for not less than seventy-two\
+      \ (72) hours' (expected: the interpretation predates the change)\n- STALE ADD-03-6.2-01: ADD-03:6.2 changed\
+      \ since ADD-03\n- STALE ADD-01-AppA-01: ADD-03:cover/para3 changed since ADD-03\n- STALE VOL-I-3.4-01: VOL-I:6.1\
+      \ changed since ADD-03; dependency ADD-03:2.1 no longer applies\n- STALE VOL-I-6.5-01: VOL-I:6.5 changed since\
+      \ ADD-03; dependency ADD-03:Q20 no longer applies\n- STALE VOL-I-6.5-02: VOL-I:6.5 changed since ADD-03; dependency\
+      \ ADD-03:Q20 no longer applies\n- STALE VOL-I-6.7-01: VOL-I:6.1 changed since ADD-03; dependency ADD-03:2.1\
+      \ no longer applies\n- STALE VOL-I-8.7-01: VOL-I:8.7 changed since ADD-03; dependency ADD-03:Q16 no longer\
+      \ applies; dependency ADD-03:Q17 no longer applies; dependency VOL-I:9.1 no longer applies\n- STALE VOL-I-9.1-01:\
+      \ VOL-I:9.1 changed since ADD-03; VOL-I:9.1(f) changed since ADD-03; VOL-I:9.1(g) changed since ADD-03; VOL-I:9.1(h)\
+      \ changed since ADD-03; VOL-I:9.1(i) changed since ADD-03; dependency ADD-03:7.1 no longer applies; depende\n\
+      - STALE VOL-I-9.1h-01: VOL-I:9.1(h) changed since ADD-03; dependency ADD-03:7.1 no longer applies; dependency\
+      \ VOL-I:9.1 no longer applies\n- STALE VOL-I-9.5-01: dependency ADD-03:Q16 no longer applies; dependency VOL-I:9.1\
+      \ no longer applies\n- STALE VOL-I-9.6-01: dependency ADD-03:Q16 no longer applies; dependency VOL-I:9.1 no\
+      \ longer applies\n- STALE VOL-I-9.7-01: VOL-I:9.1(f) changed since ADD-03; dependency ADD-03:7.1 no longer\
+      \ applies; dependency ADD-03:Q16 no longer applies; dependency VOL-I:9.1 no longer applies\n- STALE VOL-I-10.1-01:\
+      \ VOL-I:10.1 changed since ADD-03; dependency ADD-03:Q20 no longer applies\n- STALE VOL-I-10.3-01: VOL-I:10.3\
+      \ changed since ADD-03\n- STALE VOL-I-12.1-01: VOL-I:12.1 changed since ADD-03; dependency ADD-03:Q19 no longer\
+      \ applies\n- STALE VOL-I-App3-01: VOL-I:App3/para1 changed since ADD-03; quote not found in the effective\
+      \ text at ADD-03: 'Tender Box 2, First Floor, Northern Utilities Procurement Au' (expected: the interpretation\
+      \ predates the change)\n- STALE VOL-II-2.1-01: VOL-II:T2-2/bod5 changed since ADD-03; VOL-II:T2-2/cod changed\
+      \ since ADD-03; VOL-II:T2-2/temperature changed since ADD-03; VOL-II:T2-2/total-nitrogen changed since ADD-03;\
+      \ VOL-II:T2-2/total-phosphorus changed since ADD-0\n- STALE VOL-II-2.3-01: VOL-II:2.3 changed since ADD-03;\
+      \ quote not found in the effective text at ADD-03: 'designed to accommodate a future expansion of 25% of nominal'\
+      \ (expected: the interpretation predates the change)\n- STALE VOL-II-3.1-01: VOL-II:T2-2/bod5 changed since\
+      \ ADD-03; VOL-II:T2-2/cod changed since ADD-03; VOL-II:T2-2/temperature changed since ADD-03; VOL-II:T2-2/total-nitrogen\
+      \ changed since ADD-03; VOL-II:T2-2/total-phosphorus changed since ADD-0\n- STALE VOL-II-3.5-01: VOL-II:3.5\
+      \ changed since ADD-03; dependency ADD-03:5.1 no longer applies; quote not found in the effective text at\
+      \ ADD-03: 'Noise at the nearest sensitive receptor shall not exceed 55 ' (expected: the interpretation pred\n\
+      - STALE VOL-II-4.4-02: VOL-II:4.4 changed since ADD-03\n- STALE VOL-II-8.4-01: VOL-II:8.4 changed since ADD-03;\
+      \ quote not found in the effective text at ADD-03: 'Sludge shall be dewatered to not less than 25% dry solids'\
+      \ (expected: the interpretation predates the change)\n- STALE VOL-II-8.4-02: VOL-II:8.4 changed since ADD-03\n\
+      - STALE VOL-IV-F4A-02: VOL-IV:F4-A/capacity changed since ADD-03; VOL-IV:F4-A/commercial-registration-number\
+      \ changed since ADD-03; VOL-IV:F4-A/company-seal changed since ADD-03; VOL-IV:F4-A/contact-email-and-telephone\
+      \ changed since ADD-03; VOL\n- STALE VOL-IV-F4F-01: VOL-IV:F4-F/date-of-model-audit-opinion changed since\
+      \ ADD-03; VOL-IV:F4-F/model-auditor changed since ADD-03\n- STALE VOL-V-3.1-01: VOL-V:3.1 changed since ADD-03;\
+      \ dependency ADD-03:Q19 no longer applies\n\n## Obligations not reaching the outputs (C46)\n\n- none\n\n##\
+      \ Disqualifiers (A3)\n\n- ENTERS ADD-03-Q20-01: non_responsive “The appearance of any price, rate, or other\
+      \ commercial information within Envelope A shall render the Proposal non-responsive.”\n\n## Programme impact\
+      \ (status date 2026-10-22 -> 2026-11-03)\n\n- REWORK assemble-envelope-a: requirement changed: ADD-03-Q20-02,\
+      \ VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01\n- REWORK assemble-envelope-b: requirement changed: ADD-03-Q20-02,\
+      \ VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01\n- REWORK bond-approval: requirement changed: VOL-I-6.3-01, VOL-I-6.4-01,\
+      \ VOL-I-6.4-02\n- REWORK bond-issue: requirement changed: VOL-I-6.3-01, VOL-I-6.4-01, VOL-I-6.4-02\n- REWORK\
+      \ clarifications: requirement changed: VOL-I-3.4-01, VOL-I-5.2-01\n- REWORK completion-certs: requirement\
+      \ changed: VOL-I-9.5-01\n- REWORK copies: requirement changed: ADD-03-Q20-01, ADD-03-Q20-02, VOL-I-6.1-01,\
+      \ VOL-I-6.5-01, VOL-I-6.5-02, VOL-I-9.1-01, VOL-I-App3-01\n- REWORK deliver: requirement changed: ADD-03-Q20-02,\
+      \ VOL-I-6.1-01, VOL-I-9.1-01, VOL-I-App3-01\n- REWORK deviations-review: requirement changed: VOL-I-9.6-01\n\
+      - REWORK fin-model-build: requirement changed: ADD-03-Q20-01, VOL-I-10.1-01, VOL-I-10.3-01\n- REWORK fin-model-freeze:\
+      \ requirement changed: ADD-03-Q20-01, VOL-I-10.1-01, VOL-I-10.3-01\n- REWORK form-4a: requirement changed:\
+      \ ADD-01-AppA-01, VOL-I-7.1-01, VOL-IV-F4A-01, VOL-IV-F4A-02\n- REWORK form-4a-prep: requirement changed:\
+      \ ADD-01-AppA-01, VOL-I-7.1-01, VOL-IV-F4A-01, VOL-IV-F4A-02\n- REWORK form-4b: requirement changed: VOL-I-9.5-01\n\
+      - REWORK form-4b-prep: requirement changed: VOL-I-9.5-01\n- REWORK form-4e: requirement changed: VOL-I-9.6-01\n\
+      - REWORK form-4f: requirement changed: VOL-I-10.1-01, VOL-IV-F4F-01\n- REWORK form-4g-review: requirement\
+      \ changed: ADD-02-7.2-01\n- REWORK form-4g-sign: requirement changed: ADD-02-7.2-01\n- REWORK iso-copy: requirement\
+      \ changed: VOL-I-8.3-01\n- REMOVED model-audit-opinion: no longer needed by any row in force\n- REMOVED model-audit-review:\
+      \ no longer needed by any row in force\n- REMOVED model-auditor-appoint: no longer need"
+  reference:
+    reference: 'blind rehearsal 02 curation (session 08): pattern drafter + assistant as curator; every op PROPOSED'
+    counts:
+      same: 2
+      partly: 2
+      different: 1
+      missed: 25
+      extra: 0
+    provisions:
+    - provision: ADD-03:1.1
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03:1.1
+        sig: no_effect
+    - provision: ADD-03:1.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03:1.2
+        sig: no_effect
+    - provision: ADD-03:2.1
+      verdict: partly
+      proposed:
+      - id: ADD-03/2.1
+        status: evidence_verified
+        sig: ('replace_text', 'VOL-I:6.1', '14:00 hours riyadh time', '11:00 hours riyadh time', None, None, None,
+          (), None, None, None, None)
+      reference:
+      - id: ADD-03/2.1
+        sig: ('replace_text', 'VOL-I:6.1', '14:00 hours riyadh time', '11:00 hours riyadh time', None, None, None,
+          (), None, None, None, None)
+      - id: ADD-03/2.1(date)
+        sig: ('annotate', None, None, None, None, None, 'confirms', ('VOL-I:6.1',), None, None, None, None)
+    - provision: ADD-03:2.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/2.2
+        sig: ('replace_text', 'ADD-01:2.1', 'the time of 14:00 riyadh time is unchanged.', None, None, None, None,
+          (), None, None, None, None)
+    - provision: ADD-03:2.3
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/2.3
+        sig: '(''replace_text'', ''VOL-I:App3/para1'', "tender box 4, ground floor, northern utilities procurement
+          authority, administrative building c, sakaka. marked: ''nupa/istp/2026/014 - not to be opened before 14:'
+    - provision: ADD-03:2.4
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/2.4
+        sig: '(''insert_unit'', None, None, None, None, None, None, (), None, ''VOL-I:6.7'', None, ''each bidder
+          shall, not later than five (5) working days before the proposal due date, register through the portal
+          the '
+    - provision: ADD-03:3.1
+      verdict: same
+      proposed:
+      - id: ADD-03/3.1
+        status: evidence_verified
+        sig: ('replace_text', 'VOL-I:7.1', 'one hundred and fifty (150) days', 'one hundred and eighty (180) days',
+          None, None, None, (), None, None, None, None)
+      reference:
+      - id: ADD-03/3.1
+        sig: ('replace_text', 'VOL-I:7.1', 'one hundred and fifty (150) days', 'one hundred and eighty (180) days',
+          None, None, None, (), None, None, None, None)
+    - provision: ADD-03:3.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/3.2
+        sig: ('replace_text', 'VOL-I:6.3', 'one hundred and eighty (180) days', 'two hundred and ten (210) days',
+          None, None, None, (), None, None, None, None)
+    - provision: ADD-03:3.3
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/3.3
+        sig: ('annotate', None, None, None, None, None, 'interprets', ('VOL-IV:F4-A',), None, None, None, None)
+    - provision: ADD-03:4.1
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/4.1
+        sig: ('replace_text', 'VOL-I:10.3', ', and shall be accompanied by an opinion from an independent model
+          auditor addressed to the authority', None, None, None, None, (), None, None, None, None)
+    - provision: ADD-03:4.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/4.2
+        sig: ('insert_unit', None, None, None, None, None, None, (), None, 'VOL-I:12.4', None, 'the preferred bidder
+          shall deliver to the authority, not later than forty-five (45) days after the preferred bidder n
+    - provision: ADD-03:4.3
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/4.3(a)
+        sig: ('set_status', 'VOL-IV:F4-F/model-auditor', None, None, None, 'deleted', None, (), None, None, None,
+          None)
+      - id: ADD-03/4.3(b)
+        sig: ('set_status', 'VOL-IV:F4-F/date-of-model-audit-opinion', None, None, None, 'deleted', None, (), None,
+          None, None, None)
+    - provision: ADD-03:5.1
+      verdict: partly
+      proposed:
+      - id: ADD-03/5.1
+        status: insufficient_evidence
+        sig: ('replace_text', 'VOL-II:3.5', '45 db(a) by night', '40 db(a) by night', None, None, None, (), None,
+          None, None, None)
+      reference:
+      - id: ADD-03/5.1
+        sig: ('replace_text', 'VOL-II:3.5', '45 db(a) by night', '40 db(a) by night', None, None, None, (), None,
+          None, None, None)
+      - id: ADD-03/5.1(day)
+        sig: ('annotate', None, None, None, None, None, 'confirms', ('VOL-II:3.5',), None, None, None, None)
+    - provision: ADD-03:5.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/5.2(a)
+        sig: ('set_status', 'ADD-02:4.1', None, None, None, 'revoked', None, (), None, None, None, None)
+      - id: ADD-03/5.2(b)
+        sig: ('replace_text', 'VOL-II:4.4', 'ninety-six (96) hours', 'seventy-two (72) hours', None, None, None,
+          (), None, None, None, None)
+    - provision: ADD-03:5.3
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/5.3
+        sig: ('replace_text', 'VOL-II:8.4', '22% dry solids', '25% dry solids', None, None, None, (), None, None,
+          None, None)
+      - id: ADD-03/5.3(b)
+        sig: ('replace_text', 'VOL-II:8.4', "disposal to landfill of sludge exceeding 500 tonnes per annum shall
+          require the authority's prior written consent.", "no sludge shall be disposed of to landfill without
+    - provision: ADD-03:6.1
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/6.1
+        sig: ('replace_unit', 'VOL-II:T2-2', None, None, None, None, None, (), 'ADD-03:T2-2-rev', None, None, None)
+    - provision: ADD-03:6.2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/6.2
+        sig: ('annotate', None, None, None, None, None, 'adds_obligation', ('ADD-03:6.2',), None, None, None, None)
+    - provision: ADD-03:7.1
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/7.1
+        sig: ('annotate', None, None, None, None, None, 'renumbers', ('VOL-I:9.1(e)+ADD-02', 'VOL-I:9.1(f)', 'VOL-I:9.1(g)',
+          'VOL-I:9.1(h)', 'VOL-I:9.1(i)'), None, None, None, None)
+    - provision: ADD-03:7.2
+      verdict: different
+      proposed:
+      - id: ADD-03/7.2
+        status: escalated
+        sig: escalation
+      reference:
+      - id: ADD-03/7.2
+        sig: ('insert_row', 'VOL-IV:cover/T1', None, None, None, None, None, (), None, None, None, None)
+    - provision: ADD-03:Q15
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q15(a)
+        sig: ('set_status', 'ADD-01:Q3', None, None, None, 'revoked', None, (), None, None, None, None)
+      - id: ADD-03/Q15(b)
+        sig: ('annotate', None, None, None, None, None, 'adds_obligation', ('VOL-I:6.4',), None, None, None, None)
+    - provision: ADD-03:Q16
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q16
+        sig: ('annotate', None, None, None, None, None, 'adds_obligation', ('VOL-I:9.1',), None, None, None, None)
+    - provision: ADD-03:Q17
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q17
+        sig: ('annotate', None, None, None, None, None, 'confirms', ('VOL-I:8.7',), None, None, None, None)
+    - provision: ADD-03:Q18
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03:Q18
+        sig: no_effect
+    - provision: ADD-03:Q19
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q19
+        sig: ('annotate', None, None, None, None, None, 'confirms', ('VOL-I:12.1', 'VOL-V:3.1'), None, None, None,
+          None)
+    - provision: ADD-03:Q20
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q20
+        sig: ('annotate', None, None, None, None, None, 'adds_obligation', ('VOL-I:10.1', 'VOL-I:6.5'), None, None,
+          None, None)
+    - provision: ADD-03:Q21
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/Q21
+        sig: ('annotate', None, None, None, None, None, 'confirms', ('ADD-03:2.1',), None, None, None, None)
+    - provision: ADD-03:T2-2-rev/note(4)
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/T2-2-rev/note(4)
+        sig: ('replace_text', 'VOL-II:2.3', '50% of nominal capacity', '25% of nominal capacity', None, None, None,
+          (), None, None, None, None)
+    - provision: ADD-03:cover/para1
+      verdict: same
+      proposed:
+      - id: ADD-03/cover/para1
+        status: evidence_verified
+        sig: no_effect
+      reference:
+      - id: ADD-03:cover/para1
+        sig: no_effect
+    - provision: ADD-03:cover/para2
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03:cover/para2
+        sig: no_effect
+    - provision: ADD-03:cover/para3
+      verdict: missed
+      proposed: []
+      reference:
+      - id: ADD-03/cover/para3
+        sig: ('annotate', None, None, None, None, None, 'adds_obligation', ('ADD-03:cover/para3',), None, None,
+          None, None)
+    note: 'report only: the reference is itself PROPOSED, and agreement is not verification'

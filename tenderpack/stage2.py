@@ -50,7 +50,7 @@ from .render import A3OverflowError, write_a1, write_a3_pdf, write_csv_json
 from . import programme
 from .schedule import deltas, in_force, plan
 from .trace import obligation_trace
-from .summary import summary_check
+from .summary import date_changes_by_stage, rule_index, summary_check
 from .datecover import counting_conventions, date_coverage
 from . import clarify, review
 from .textnorm import normalize_latin
@@ -58,7 +58,10 @@ from .util import dump_json, load_yaml, sha256_file, write_text
 
 CLASS_WORDS = {"rejection": "rejection", "disqualification": "disqualification", "non_responsive": "non-responsive",
                "exclusion": "exclusion", "score_elimination": "Envelope B returned unopened", "lesser": "lesser consequence",
-               "contractual": "contractual remedy (post-award)"}
+               "contractual": "contractual remedy (post-award)",
+               # session 09 (register.CONSEQUENCE_CLASSES): neither is shown as a disqualification
+               "document_refusal": "document refused (the Proposal's fate is not stated: VOL-I 11.1(i) gate)",
+               "criterion_zero": "zero marks under one criterion (scored; not a disqualification)"}
 
 
 def _doc_ref(unit_id: str, pages, number: str | None = None) -> str:
@@ -174,11 +177,17 @@ def evaluate(r: dict) -> dict:
     stages = Engine(units, r["opfiles"], review.withdrawn_ops(r["decisions"])).run()
     val = validated_stage(stages)
     reg = Register(r["rowfile"], stages, r["cal"], r["policy"])
+    r["non_working_days"] = {s.stage: list(s.non_working_days) for s in stages}   # days notified under VOL-I 2.4
     r.update({"stages": stages, "validated": val, "working": stages[-1] if stages[-1].stage != val.stage else None,
               "register": reg, "evals": reg.all(), "order": [s.stage for s in stages]})
+    from .register import anchor_details      # date, time, timezone and source of each anchor, from its effective text
+    r["anchor_details"] = {s.stage: anchor_details(s.state, r["rowfile"].anchors, reg.issued, reg.op_stage,
+                                                   reg.op_provision) for s in stages}
     r["reviews"] = review.compute(r, r["decisions"])
     r["trace"] = obligation_trace(r)
-    r["summary_check"] = summary_check(r["stages"], units, r["rowfile"].anchors)     # C28: report only, never applied
+    r["summary_check"] = summary_check(r["stages"], units, r["rowfile"].anchors,    # C28: report only, never applied
+                                       rule_index(r["rowfile"].rows),
+                                       date_changes=date_changes_by_stage(r["evals"], r["order"]))
     r["date_coverage"] = date_coverage(r)
     r["c32"] = counting_conventions(r)
     ledger_path = root / cfg.get("row_ids", "curation/register/ids.yaml")
@@ -682,6 +691,9 @@ def a2(r: dict) -> dict:
                 ch = f"replaced by {o.replacement} ({len(x.details.get('content', []))} units)"
             elif o.type == "insert_unit":
                 ch = f"inserted {o.new_group or ''} {('after ' + o.anchor) if o.anchor else ''}".strip()
+            elif o.type == "insert_row":                      # session 09: a table row described in prose
+                ch = (f"row {x.details.get('inserted') or '(not inserted)'} after {x.details.get('after') or o.after}: "
+                      + "; ".join(f"{k}: {v}" for k, v in (o.cells or {}).items()))
             else:
                 ch = f"{o.effect}" + (f"; mentions of '{o.subject}': {x.details.get('mentions')}" if o.subject else "") + \
                      (f" — {_short(o.note, 90)}" if o.note else "")
@@ -779,6 +791,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             for rid in a["req_ids"]:
                 infeasible.setdefault(rid, []).append(a["id"])
     explicit, score, none_stated = [], [], []
+    refused, zero, gate = [], [], []          # session 09: document_refusal and criterion_zero; the gate's row ids
     summary_currency_cache = summary_currency(r)
     for e in r["evals"]:
         row, ev = e["row"], e["stages"][v]
@@ -824,8 +837,16 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         elif isinstance(cons, Consequence) and cons.cls == "score_elimination":
             score.append({**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote,
                           "source": csrc or _doc_ref(cons.unit, val.state[cons.unit].pages, val.state[cons.unit].number)})
+        elif isinstance(cons, Consequence) and cons.cls in ("document_refusal", "criterion_zero"):
+            cu = val.state.get(cons.unit)
+            (refused if cons.cls == "document_refusal" else zero).append(
+                {**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote, "gloss": cons.gloss,
+                 "source": csrc or _doc_ref(cons.unit, cu.pages if cu else [], cu.number if cu else None)})
+            if cons.cls == "document_refusal" and row.assessment == "pass_fail":
+                gate.append(row.id)                  # the refusal is stated; the Proposal's fate is the gate's
         elif not isinstance(cons, Consequence) and row.assessment == "pass_fail":
             none_stated.append({**base, "consequence": "", "source": base["row_source"]})
+            gate.append(row.id)
     shown = [i for i in issues if i["show_in_a3"]]
     missing = [i for i in shown if any(w in i["text"].lower() for w in MISSING_DOC_WORDS)]
     unresolved = [i for i in shown if i not in missing]
@@ -852,11 +873,29 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             sections.append({"heading": f"Explicit — {title}: {len(items)}", "note": "", "items": items})
     sections.append({"heading": f"Explicit — Envelope B returned unopened (technical score below the threshold): {len(score)}",
                      "note": "", "items": [compact(x) for x in score]})
-    sections.append({"heading": f"General gate — mandatory compliance, pass or fail (VOL-I 11.1(i)): {len(none_stated)}",
+    # session 09: shown only when the register has such rows (the real pack has none, so its A3 is unchanged)
+    # one short line each (the requirement, flags and confidence are on a3_detail.html): a refused row shows the refusal's
+    # own words and where they are; a zero-marks row its requirement and the words
+    short_src = lambda x: x["source"].split(";")[0]  # noqa: E731
+    if zero:
+        sections.append({"heading": f"Criterion-level zero marks (scored; not a disqualification): {len(zero)}",
+                         "note": "Scored, not a disqualification, and not the VOL-I 11.3 threshold; any threshold risk is "
+                                 "stated in the row.",
+                         "items": [{"id": x["id"], "text": x["text"], "consequence": x["consequence"], "class": "",
+                                    "source": short_src(x)} for x in zero]})
+    if refused:
+        sections.append({"heading": f"Document refused (stated; the Proposal's fate is not stated: VOL-I 11.1(i) gate applies): "
+                                    f"{len(refused)}",
+                         "note": "The refusal is stated; the Proposal's fate is not. Not a disqualification: each pass or fail "
+                                 "row stays in the gate below.",
+                         "items": [{"id": x["id"], "text": f"“{x['consequence']}”", "source": short_src(x)} for x in refused]})
+    sections.append({"heading": f"General gate — mandatory compliance, pass or fail (VOL-I 11.1(i)): {len(gate)}",
                      "note": "These clauses state no consequence of their own. Each is checked pass or fail at stage (i) of the "
                              "evaluation; only Proposals that pass go on to technical evaluation (11.1(ii)). No clause-specific "
-                             "label, curability or incurability is implied (I-NO-CONSEQUENCE).",
-                     "items": [], "ids": [x["id"] for x in none_stated]})
+                             "label, curability or incurability is implied (I-NO-CONSEQUENCE)."
+                             + (" It also holds the rows whose document is refused (above)." if len(gate) > len(none_stated)
+                                else ""),
+                     "items": [], "ids": gate})
     n_rows = len(r["evals"])
     rc = _count(r["reviews"][("row", e["row"].id)]["status"] for e in r["evals"])
     readings = sorted({(u["reading"]["region"], u["reading"]["status"]) for u in r["units"]
@@ -869,7 +908,9 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
               + "Explicit wording only. Quotations, sources and flags for every line: a3_detail.html.")
     return {
         "title": "A3 — What would put this bid out (working draft)",
-        "subtitle": f"Validated state {v} (issued {val.issued}); Proposal Due Date {pdd} 14:00"
+        "subtitle": f"Validated state {v} (issued {val.issued}); Proposal Due Date "      # from the anchor's effective text
+                    + (" ".join(str(x) for x in map((r["anchor_details"][v].get("PDD") or {}).get, ("date", "time", "tz")) if x)
+                       or "not stated in the effective text")
                     + (f". Working state {working.stage} is PARTIAL and NOT used here" if working else "")
                     + f". {n_rows} register rows; {len(explicit)} with an explicit consequence.",
         "banner": banner,
@@ -888,6 +929,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         "explicit": explicit, "score": score, "none_stated": none_stated,
         "none_stated_ids": [x["id"] for x in none_stated],
         "explicit_ids": [x["id"] for x in explicit],
+        **({"refused": refused, "gate_ids": gate} if refused else {}), **({"criterion_zero": zero} if zero else {}),
         "issues_detail": [{"id": i["id"], "text": i["text"], "owner": i["owner"], "rows": i["rows"],
                            "theme": dict(ISSUE_THEMES).get(issue_theme(i), ""), "folded_into": folded.get(i["id"], "")}
                           for i in issues],
@@ -898,7 +940,8 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
 def condense_a3(a3d: dict, level: int) -> dict:
     """What goes on the one page when the full text does not fit at a readable size (C43). The explicit
     consequences are never condensed. Level 1: issue lines become their linked ids and owners. Level 2: the
-    no-consequence list becomes a count. Each step is stated on the page; the full text is on a3_detail.html."""
+    no-consequence list becomes a count. Level 3 (session 09): each group of open issues becomes its count. Each
+    step is stated on the page; the full text is on a3_detail.html."""
     if level == 0:
         return a3d
     page = {**a3d, "sections": [dict(s) for s in a3d["sections"]]}
@@ -914,6 +957,11 @@ def condense_a3(a3d: dict, level: int) -> dict:
         for sec in page["sections"]:
             if sec.get("ids"):
                 sec["note"], sec["ids"] = f"{len(sec['ids'])} rows, listed on a3_detail.html ({note})", []
+    if level >= 3 and a3d.get("groups"):
+        page["groups"] = {**page["groups"], "note": a3d["groups"]["note"] + " Condensed to fit one page: the count of "
+                          "each group is shown; its issue ids, text and owners are on a3_detail.html.",
+                          "groups": [{**g, "items": [], "questions": [], "count": len(g["items"]),
+                                      "n_questions": len(g.get("questions") or [])} for g in a3d["groups"]["groups"]]}
     page["subtitle"] = a3d["subtitle"] + f" Condensed (level {level}) to fit one page."
     return page
 
@@ -937,8 +985,13 @@ def a3_detail_html(a3d: dict) -> str:
         rtl = any("\u0600" <= c <= "\u06ff" for c in t or "")
         return f'<span dir="rtl" lang="ar">{esc(t)}</span>' if rtl else esc(t)
     rows = []
-    for title, items in (("Explicit consequences", a3d["explicit"]), ("Envelope B returned unopened", a3d["score"]),
-                         ("Pass/fail with no stated consequence", a3d["none_stated"])):
+    tables = [("Explicit consequences", a3d["explicit"]), ("Envelope B returned unopened", a3d["score"])]
+    if a3d.get("criterion_zero"):                                     # session 09: only when there are such rows
+        tables.append(("Criterion-level zero marks (scored; not a disqualification)", a3d["criterion_zero"]))
+    if a3d.get("refused"):
+        tables.append(("Document refused (the Proposal's fate is not stated; in the VOL-I 11.1(i) gate)", a3d["refused"]))
+    tables.append(("Pass/fail with no stated consequence", a3d["none_stated"]))
+    for title, items in tables:
         rows.append(f"<h2>{esc(title)} ({len(items)})</h2><table><tr><th>Row</th><th>Requirement</th><th>Consequence "
                     "(quoted)</th><th>Latest source</th><th>Confidence</th><th>Flags</th></tr>")
         for x in items:
@@ -985,8 +1038,9 @@ def a5_all(r: dict) -> dict:
             continue
         pdd = next((d["anchor_value"] for e in r["evals"] for d in e["stages"][s.stage]["dates"] if d["anchor"] == "PDD"), None)
         anchors_by_stage[s.stage] = {"PDD": pdd}
-        progs[s.stage] = plan(s.stage, r["evals"], r["templates"], r["assumptions"], r["cal"], date.fromisoformat(s.issued),
-                              anchors_by_stage[s.stage], evidence_items=r["evidence_items"])
+        progs[s.stage] = plan(s.stage, r["evals"], r["templates"], r["assumptions"], r["register"].cal_by_stage[s.stage], date.fromisoformat(s.issued),
+                              anchors_by_stage[s.stage], evidence_items=r["evidence_items"],
+                              anchor_details=r["anchor_details"][s.stage], notified_days=r["non_working_days"].get(s.stage))
     return progs
 
 
@@ -999,7 +1053,7 @@ def write(r: dict, out: Path) -> dict:
     issues = collect_issues(r, main)
     a3d = a3(r, issues, main)
     a3_fit: dict = {}
-    for level in (0, 1, 2):
+    for level in (0, 1, 2, 3):
         page = condense_a3(a3d, level)
         try:
             fit = write_a3_pdf(page, out / "a3" / "a3.pdf")
@@ -1221,10 +1275,36 @@ def _count(values) -> dict[str, int]:
 BID_STAGE = ("pass_fail", "scored", "procedural")
 
 
+def deleted_words(r: dict) -> list[dict]:
+    """Rows still in force whose quote vanished at a stage because an op of that stage deleted words from one of their
+    units (a replace_text with nothing put in the words' place) while the unit itself stays in force (session 09).
+    The register cannot tell whether the obligation survives in the remaining words (re-make the reading) or went
+    with the deleted ones (mark the interpretation `removed: {by: <op>}`); a person says which."""
+    reg, out = r["register"], []
+    for e in r["evals"]:
+        row = e["row"]
+        for s in r["stages"][1:]:
+            ev, it = e["stages"][s.stage], reg.interp_at(row, s.stage)
+            if not ev["active"] or it is None or found(it.quote, ev["text"]):
+                continue
+            mine = set(row.units) | {ev["effective_unit"]}
+            for x in s.ops:
+                o = x.op
+                if x.applied and o.type == "replace_text" and not (o.new or "").strip() and o.target in mine \
+                        and found(it.quote, x.details.get("before") or "") and s.state[o.target].status == "active":
+                    out.append({"kind": "deleted_words", "where": row.id, "detail": (
+                        f"{s.stage}: the quote '{it.quote[:80]}' is no longer in {o.target}: {o.id} deleted "
+                        f"'{(o.old or '')[:80]}' and {o.target} stays in force. Re-make the reading at {s.stage} if the "
+                        f"obligation survives in the remaining words, or mark the interpretation `removed: {{by: {o.id}}}` "
+                        "if it went with the deleted words")})
+    return out
+
+
 def register_findings(r: dict) -> list[dict]:
     """Everything a register drafter must clear, as {kind, where, detail}: register files that do not load,
     unit dispositions and their links to rows, the evidence-item vocabulary, quotes, units, bid-stage rows
-    without a deliverable, and unlinked consequence words (C15). Used by check-register (exit 1) and by the
+    without a deliverable, unlinked consequence words (C15) and quotes lost to a deletion of words from a unit that
+    stays in force (deleted_words: re-make the reading or mark it `removed`). Used by check-register (exit 1) and by the
     release gate (each kind other than quotes, which C16 already checks structurally, is a coverage blocker)."""
     out = []
     for p in r["load_problems"]:
@@ -1271,13 +1351,15 @@ def register_findings(r: dict) -> list[dict]:
     for x in summary_currency(r):
         out.append({"kind": "summary", "where": x["row"], "detail": f"the requirement summary states '{x['figure']}', which "
                     "the effective text no longer contains: rewrite the summary (or make it stage-neutral)"})
+    out += deleted_words(r)
     for x in r.get("date_coverage", []):
         if x["treatment"] == "UNCOVERED":
             out.append({"kind": "C30", "where": x["unit"], "detail": f"date/period phrase '{x['phrase']}' accounted for by no "
                         f"rule, anchor, quote, date note or disposition: {x['sentence'][:140]}"})
     for i in r.get("ids", {}).get("new", []):
         out.append({"kind": "C12", "where": i, "detail": "row id not yet recorded in the id ledger (check-register --update-ids)"})
-    for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"])):
+    for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"]),
+                           cutoff=clarify.effective_cutoff(r)):           # the effective cut-off (session 09)
         out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
     return out
 

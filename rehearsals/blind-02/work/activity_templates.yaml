@@ -18,7 +18,10 @@
 #
 # Envelope chain (both envelopes): every Envelope A document -> assemble-envelope-a; every Envelope B document
 # -> assemble-envelope-b; both -> copies (3 hard copies + encrypted USB, Appendix 2 naming) -> seal-and-mark
-# (Appendix 3 marking) -> deliver (PDD, 14:00). Signatures follow the Powers of Attorney.
+# (Appendix 3 marking) -> deliver (by the PDD). Signatures follow the Powers of Attorney.
+# Pack facts are never typed in a name or label (session 09): {PDD_TIME} {PDD_TZ} {PDD_DATE} {PDD_SOURCE} and
+# {ROW:<row id>:<parameter>} in an activity name or item, {time} {tz} {date} {source} in an anchor milestone's
+# label, are filled at plan time from the stage (tenderpack.schedule.fill).
 
 _exceptions: {}
 
@@ -31,9 +34,9 @@ _per_overrides: {}
 # computed from a rule as the pack's words say, and labelled as derived.
 _milestones:
   labels:
-    PRE-BID: {short: "Pre-Bid Conference 10:00", time: "10:00", label: "Pre-Bid Conference, 10:00 Riyadh time (VOL-I 5.4: attendance mandatory; whether the Bidder attended is NOT assumed)"}
+    PRE-BID: {short: "Pre-Bid Conference {time}", label: "Pre-Bid Conference, {time} {tz} (VOL-I 5.4: attendance mandatory; whether the Bidder attended is NOT assumed)"}
     CLARIFICATION-CUTOFF: {short: "Clarification cut-off", label: "Clarification cut-off: requests no later than ten Working Days before the PDD (VOL-I 5.2, as adjusted by ADD-01 2.2)"}
-    PDD: {short: "PDD 14:00", time: "14:00", label: "Proposal Due Date, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1; late Proposals rejected unopened, VOL-I 6.6)"}
+    PDD: {short: "PDD {time}", label: "Proposal Due Date, {time} {tz} ({source}; late Proposals rejected unopened, VOL-I 6.6)"}
     ATTENDANCE-NOTICE: {short: "Attendance-notice window ends (conditional)", conditional: true, label: "End of the window to notify an incorrectly recorded attendance (ADD-01 3.1; only if the Bidder considers its attendance incorrectly recorded)"}
     BID-BOND-VALIDITY: {short: "Bid bond validity end", label: "Bid Bond validity end: 180 days from the PDD (VOL-I 6.3; extended on demand if the Authority extends Proposal validity)"}
     PROPOSAL-VALIDITY: {short: "Proposal validity end", label: "Proposal validity end: 150 days from the PDD (VOL-I 7.1)"}
@@ -47,8 +50,8 @@ _milestones:
 
 # ------------------------------------------------------------------ both envelopes / actions
 EV-DELIVERY:
-  - {id: deliver, name: "Deliver both sealed envelopes to Tender Box 2, First Floor, Administrative Building A, Sakaka before 11:00 Riyadh time on the PDD by a representative registered under VOL-I 6.8 (VOL-I 6.1 and Appendix 3 as amended by ADD-03 2.1 and 2.3; late Proposals are rejected unopened, VOL-I 6.6); then submit the password of each USB through the Portal within one hour (ADD-03 Q20)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark, register-reps], item: "Sealed Envelopes A and B delivered to the Appendix 3 address; USB passwords submitted", finish: {deadline_of: PDD}}
-  - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each 'NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 11:00 ON THE PROPOSAL DUE DATE' (VOL-I 6.2, Appendix 3 as replaced by ADD-03 2.3)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
+  - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD by a representative registered under VOL-I 6.8 (VOL-I 6.1 and Appendix 3 as amended by ADD-03 2.1 and 2.3; late Proposals are rejected unopened, VOL-I 6.6); then submit the password of each USB through the Portal within one hour (ADD-03 Q20)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark, register-reps], item: "Sealed Envelopes A and B delivered to the Appendix 3 address; USB passwords submitted", finish: {deadline_of: PDD}}
+  - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3 as replaced by ADD-03 2.3)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
   - &copies {id: copies, name: "Make three hard copies of each envelope and the searchable electronic copy of Envelope A only on encrypted USB (ADD-03 Q20), files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: copies_and_usb, predecessors: [assemble-envelope-a, assemble-envelope-b], item: "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)", gated_by: [I-VOL-I-COPIES]}
   - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order as re-lettered by ADD-03 7.1 ((a) to (j); Form 4-G is (f)), with numbered dividers following the re-lettered list; check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: []}
   - {id: assemble-envelope-b, name: "Assemble the marked original of Envelope B: Form 4-F and the Financial Model on a second, separate encrypted USB (VOL-I 10.1; ADD-03 Q20); no model auditor's opinion (ADD-03 4.1); package the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (it is prepared regardless)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], gated_by: [I-VOL-I-ENV-B]}

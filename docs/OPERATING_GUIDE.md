@@ -38,7 +38,7 @@ make verify      # two clean rebuilds in disposable folders, compared byte for b
 
 ## 3. When a new addendum arrives (the live session)
 
-Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehearsals/blind-02/COMPARISON.md`): 12 and 32 minutes from receipt to replanned outputs, curated by the assistant (rehearsal 02 had 31 ops, 8 new rows and 42 re-made readings; about 10 of its minutes were an interruption). Your own review time comes on top.
+Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehearsals/blind-02/COMPARISON.md`, `rehearsals/blind-03/COMPARISON.md`): 12 and 32 minutes from receipt to replanned outputs, curated by the assistant (rehearsal 02 had 31 ops, 8 new rows and 42 re-made readings; about 10 of its minutes were an interruption), and 50 minutes with the AI layer in the loop (rehearsal 03: 13 of them the model's proposal run, 26 the curation of 27 ops, 12 new rows and 32 re-made readings; §6). Your own review time comes on top (about 2–2½ hours for rehearsal 03's output, estimated).
 
 1. **Add the PDF.** Put it in `sources/candidate_pack/`. Add a `documents:` entry (`doc_id: ADD-03, kind: addendum, number: 3`) to `config/pack.yaml` and its sha256 and page count to `sources/manifest.json`.
 2. **Ingest.** Run `make evidence`; it takes 13 s. A structural failure stops here and says why (layout, furniture, an unread image).
@@ -57,8 +57,8 @@ Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehea
    - re-make the interpretations of rows whose quoted words changed;
    - add issues for what a person must decide;
    - read the C28 findings (A2, `diff`): the cover summary is never applied, and a difference may need a clarification;
-   - do not trust C28 alone: rehearsal 02 showed it can miss an "X is unchanged" sentence that is wrong (the Proposal Due Date's time moved) and can match a claim to the wrong clause. Read the cover against the provisions yourself;
-   - choosing a consequence class: a refusal of a submitted document ("will not be accepted", "treated as not submitted") is not `lesser`. The step to the Proposal's fate is inferred, so leave the row in the VOL-I 11.1(i) gate with a note. `score_elimination` means falling below the VOL-I 11.3 threshold, not a zero on one criterion (use `lesser` and state the threshold risk);
+   - do not trust C28 alone: since session 09 it tests "X is unchanged" sentences against the ops and matches validity claims through the register's date rules (both missed in rehearsal 02), but it is a report, never a gate. Read the cover against the provisions yourself;
+   - choosing a consequence class: a stated refusal of a submitted document ("will not be accepted", "treated as not submitted") whose effect on the Proposal is not stated is `document_refusal`, quoting the refusal. A3 lists it under "Document refused" and the row keeps its place in the VOL-I 11.1(i) gate; it is never shown as a disqualification. Zero marks under one scoring criterion is `criterion_zero`: a scored consequence, listed on A3 apart from the threshold; state any threshold risk in the row's note. `score_elimination` means falling below the VOL-I 11.3 threshold (Envelope B returned unopened), not a zero on one criterion. Neither case is `lesser`;
    - after adding a not-yet-issued unit to an existing row, re-pin that row's earlier readings by name (`pin --rows ROW@STAGE`); otherwise they show STALE at stages where the unit did not exist;
    - update `config/assumptions.yaml` when a pack fact in it changed (e.g. the number of copies).
 5. **Check.** Run each of these; every one must be clean:
@@ -115,6 +115,6 @@ The `review:` fields in the YAML files are drafting flags. They never count.
 | C40 / C44 / C45 | A5 activities and deliverables, both ways; dependencies defined |
 | C46 | Every new or amended obligation reaches A1, A3 and A5; an insertion needs a row of its own (the anchor's rows do not count) |
 
-## 6. Deferred, as directed
+## 6. The AI layer (session 09)
 
-The Claude Code app, OpenRouter and Ollama integrations. The system runs without a model.
+The system still runs without a model: every reviewed output above is produced offline. When a model is used, it proposes and never decides: `docs/AI_ROUTES.md` gives the commands for each route (Claude Code or Codex over MCP/CLI with their own model; the Anthropic API, OpenRouter or local Ollama with the application's capped calls), what is recorded versus live, and the credential rules (environment only). A run ends in `staging/ai/<run_id>/review_request.md`; `tenderpack ai promote RUN_ID --by "Your Name"` copies the verified items into curation as PROPOSED drafts, and the decisions of §4 still follow. Nothing in `staging/` is applied or published.

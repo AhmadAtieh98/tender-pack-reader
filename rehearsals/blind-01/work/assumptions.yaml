@@ -5,7 +5,8 @@
 planning:
   status_date: latest_validated_addendum_issue_date   # = 22 Oct 2026 after ADD-02; the ADD-03 date in a live session
   counting_policy: conservative      # D4: plan on the conservative reading; every reading is still shown (A1 Dates sheet)
-  delivery_cutoff_time: "14:00"      # the PDD time in VOL-I 6.1 (stated in the pack)
+  # (no delivery_cutoff_time: the PDD time is stated in the pack, so it is read from the effective text of VOL-I 6.1
+  # at each stage, never assumed; the key is refused, C45)
 calendar:
   weekend: [Fri, Sat]                # stated in VOL-I 2.4
   holidays: []                       # ASSUMPTION: the pack declares none; add declared public holidays here
@@ -82,4 +83,4 @@ lead_times:                          # Working Days; every value is a PROVISIONA
   envelope_assembly:     {value: 1,  basis: "PROVISIONAL ASSUMPTION: assemble the marked original of one envelope in the required order with numbered dividers; not stated", owner: Bid management}
   copies_and_usb:        {value: 1,  basis: "PROVISIONAL ASSUMPTION: three hard copies of each envelope and the encrypted searchable USB copy named per Appendix 2; not stated", owner: Bid management}
   seal_and_mark:         {value: 0,  basis: "PROVISIONAL ASSUMPTION: a few hours at the end of the day the copies are finished (0 = no separate Working Day); not stated", owner: Bid management}
-  delivery:              {value: 1,  basis: "PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before 14:00 on the PDD; not stated", owner: Bid management}
+  delivery:              {value: 1,  basis: "PROVISIONAL ASSUMPTION: courier to the Appendix 3 address before the Proposal Due Date time stated in VOL-I 6.1 as amended (the time is derived, not assumed); not stated", owner: Bid management}

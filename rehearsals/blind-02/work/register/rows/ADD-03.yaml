@@ -143,13 +143,15 @@ rows:
       pages_max: 25
       page_limit: excluded from the VOL-I 9.2 page limit
     consequence:
-      class: lesser
+      class: criterion_zero
       unit: ADD-03:T2-2-rev/note(3)
       quote: A Technical Proposal that does not include the report will be awarded no marks under criterion A of Table 1-1 (revised).
     note: 'A new appendix ''expressly permitted'' (cf. VOL-I 9.2), set in a note to a table. Missing report: no marks under criterion A of Table 1-1 (revised)
       (ADD-02); the Proposal is not rejected for it. [Post-key fix, blind rehearsal 02: class ''lesser'', not ''score_elimination'' (which the tool labels
       ''Envelope B returned unopened''). Threshold risk: criterion A carries 25 of 100 marks (ADD-02 Table 1-1 (revised)), so without the report the technical
-      score is at most 75 against the 70-mark threshold of VOL-I 11.3: a serious risk, not a stated disqualification.]'
+      score is at most 75 against the 70-mark threshold of VOL-I 11.3: a serious risk, not a stated disqualification.] [Session 09 fix, after the key:
+      class criterion_zero (new: zero marks under one criterion; shown on A3 under ''Criterion-level zero marks'', not under the threshold and not as
+      a disqualification). The scored state had ''score_elimination''; the post-key state had ''lesser''.]'
   confidence: high
   confidence_reason: verbatim note with a stated scoring consequence
   issues:
@@ -163,6 +165,7 @@ rows:
   - new_in_addendum
   requirement: Form 4-G is listed in the Volume IV Index of Forms as 'Cybersecurity Compliance Undertaking', Envelope A, Mandatory
   units:
+  - VOL-IV:cover/T1/4-G+ADD-03
   - ADD-03:7.2
   discipline: Bid management
   owner: Bid manager
@@ -170,12 +173,16 @@ rows:
   no_deliverable: 'an index entry: the deliverable is Form 4-G itself (row ADD-02-7.2-01)'
   interpretations:
   - stage: ADD-03
-    quote: an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’, Envelope ‘A’ and Status ‘Mandatory’
-    note: The Index of Forms is the Volume IV cover table (VOL-IV:cover/T1); the engine records the new entry as an annotation, not as a new table row,
+    quote: 'Form: 4-G | Title: Cybersecurity Compliance Undertaking | Envelope: A | Status: Mandatory'
+    note: 'The Index of Forms is the Volume IV cover table (VOL-IV:cover/T1); the engine records the new entry as an annotation, not as a new table row,
       because the provision gives the entry in prose (rehearsal finding). Consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered by ADD-03
-      7.1. The cover line 'Forms 4-A to 4-F' is not amended.
+      7.1. The cover line ''Forms 4-A to 4-F'' is not amended. [Session 09 fix, after the key: ADD-03/7.2 is now an insert_row op and the entry is the
+      index row VOL-IV:cover/T1/4-G+ADD-03 (after 4-F), which this row cites first and quotes; ADD-03:7.2 stays as the provision. The scored state cited
+      ADD-03:7.2 only and quoted ''an entry for Form 4-G with the title ‘Cybersecurity Compliance Undertaking’, Envelope ‘A’ and Status ‘Mandatory’''.
+      The interpretation needs re-pinning (`pin --rows ADD-03-7.2-01@ADD-03`): until then it shows STALE.]'
   confidence: high
-  confidence_reason: verbatim; the entry is not shown as a row of the index table
+  confidence_reason: 'verbatim; the entry is a row of the index table from ADD-03 [Session 09 fix, after the key: was ''verbatim; the entry is not shown
+    as a row of the index table'']'
 - id: ADD-03-Q20-01
   group: ADD-03:Q20
   scope:
@@ -264,9 +271,15 @@ rows:
   - stage: ADD-03
     quote: A Power of Attorney executed outside the Kingdom shall, in addition to notarisation, be legalised by an embassy or consulate of the Kingdom in
       the country of execution, or apostilled where that country is a party to the Apostille Convention.
+    consequence:
+      class: document_refusal
+      unit: ADD-03:Q16
+      quote: A Power of Attorney that does not comply will be treated as not submitted.
     note: 'Applies to every Power of Attorney executed abroad (for example by the foreign member). ''Treated as not submitted'': what that means for the
       Proposal is not stated (VOL-I 11.1(i) check; row VOL-I-9.1h-01). Legalisation time depends on the country of execution (A5 assumption). [Post-key
-      fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.]'
+      fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.] [Session
+      09 fix, after the key: consequence class document_refusal (new) quoting the refusal; the row stays in the VOL-I 11.1(i) gate and is also listed
+      under ''Document refused'' on A3, never as a disqualification. The scored state had class ''lesser''; the post-key state had no consequence.]'
   confidence: high
   confidence_reason: verbatim answer
   issues:

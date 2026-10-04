@@ -155,11 +155,18 @@ rows:
       - stage: ADD-03
         quote: issued by a bank licensed to operate in the Kingdom holding a long-term credit rating of not lower than
           A-
+        consequence:
+          class: document_refusal
+          unit: ADD-03:Q15
+          quote: A Bid Bond issued by a branch of a foreign bank, whether or not confirmed, will not be accepted.
         note: 'ADD-03 Q15 withdraws ADD-01 Q3: the Bid Bond ''shall be issued by a bank incorporated in the Kingdom that
           meets the rating requirement in Volume I Clause 6.4. A Bid Bond issued by a branch of a foreign bank, whether
           or not confirmed, will not be accepted.'' The bond is refused; what then follows for the Proposal is not stated
           (VOL-I 11.1(i) pass or fail check). The answer narrows the clause (''licensed to operate'' -> ''incorporated''):
-          I-ADD03-Q15. [Post-key fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.]'
+          I-ADD03-Q15. [Post-key fix, blind rehearsal 02: kept in the VOL-I 11.1(i) pass or fail gate with medium confidence; the earlier ''lesser'' class took it off A3.]
+          [Session 09 fix, after the key: consequence class document_refusal (new) quoting the refusal in ADD-03 Q15; the
+          row stays in the VOL-I 11.1(i) gate and is also listed under ''Document refused'' on A3, never as a
+          disqualification. The scored state had class ''lesser''; the post-key state had no consequence.]'
     confidence: high
     confidence_reason: "verbatim; clarified by ADD-01 Q3 (no consequence stated)"
     issues: [I-NO-CONSEQUENCE]

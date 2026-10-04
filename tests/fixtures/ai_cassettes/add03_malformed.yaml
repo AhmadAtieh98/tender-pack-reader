@@ -1,0 +1,14 @@
+# RECORDED FIXTURE (hand-written; not a live model). A malformed final answer, then a malformed retry:
+# the controller quotes the parse error once, then records the set as `malformed`.
+name: add03-malformed
+model: recorded-fixture-model
+capabilities: {images: false, tools: true, structured_output: false, context_tokens: 200000, source: "cassette (recorded fixture)"}
+turns:
+  - match: {last_role: user, contains: ["TASK PACKET"]}
+    response:
+      text: "Here are my proposals: {\"addendum\": \"ADD-03\", \"items\": [ {\"id\": \"ADD-03/2.1\""
+      usage: {input_tokens: 14000, output_tokens: 40}
+  - match: {last_role: user, contains: ["could not be parsed"]}
+    response:
+      text: "```json\n{\"addendum\": \"ADD-03\", \"items\": [}\n```"
+      usage: {input_tokens: 14100, output_tokens: 20}

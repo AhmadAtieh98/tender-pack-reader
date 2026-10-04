@@ -15,9 +15,9 @@ Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 - **Live-addendum tooling:**
   - `show ROW`, `diff`, review batches (`out/review/`);
   - checks C12 (stable ids), C28 (cover summary vs provisions, report only), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
-- **Tested:** two blind rehearsals against independently written Addenda No. 3 (`rehearsals/blind-01/`, `rehearsals/blind-02/`).
 - **Draft archive:** built by `scripts/make_draft_archive.py`. See `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md` and `docs/COST_AND_EFFORT.md`.
-- **Deferred, as directed:** the Claude Code app, OpenRouter and Ollama integrations, model selection and model costs.
+- **Tested:** two blind rehearsals against independently written Addenda No. 3 (`rehearsals/blind-01/`, `rehearsals/blind-02/`), and a third (`rehearsals/blind-03/`) run with the AI layer in the loop (session 09): 31 hits, 3 partial, 0 missed of 34 scored items before the sealed key was opened; every derived date right; the deliberate ambiguity escalated, not resolved.
+- **AI layer (session 09, `tenderpack/ai/`, `docs/AI_ROUTES.md`):** a model proposes through narrow tools; deterministic code validates, assigns every status, simulates the impact and writes to `staging/` only. Four routes: Claude Code and Codex over MCP or the CLI (the host's own model), the Anthropic API, OpenRouter and local Ollama (the application's calls, capped). Offline-tested with recorded responses; **no live model call has been made yet** (no key here), and nothing on the Mac has been measured. Model choices and caps are configuration (`config/ai.yaml`); keys live in the environment only.
 
 ```
 make setup      # once, needs network: creates .venv from uv.lock

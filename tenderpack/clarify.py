@@ -11,20 +11,38 @@ register, and a person decides what to raise through the Portal (VOL-I 5.1) befo
     -> out/a4/clarification_register.{md,csv,json}; the A3 groups list the question ids; A1's Issues sheet links them
 
 Checks (check-register, release gate as coverage): every quotation is verbatim in its unit's text on the stated page;
-every entry has the fields the owner asked for; no status says the question was sent or answered unless an addendum
-unit is named as the answer; linked issues exist.
+every entry has the fields the owner asked for, including a decision owner and at least one verbatim source; the
+response status is exactly one of RESPONSE_STATES (anything else, e.g. "answered", "sent" or "pending", is an unknown
+state); "answered by addendum" needs `answer: {unit, page, words}` quoting a unit of an addendum (ADD-) verbatim on
+that page: an answer is evidence-backed only this way, and unknown answers stay unknown; linked issues exist.
+The cut-off (session 09): `cut_off.date` must be the planning value of the date rule `cut_off.rule_id` (default
+CLARIFICATION-CUTOFF) on the row that defines it at the validated stage, and `cut_off.note` must state the effective
+time of that rule's anchor (the Proposal Due Date) and no other time. stage2 passes this as `cutoff`
+(effective_cutoff), so check-register and the release gate both use the effective values.
 """
 from __future__ import annotations
 
+import re
+from datetime import date
 from pathlib import Path
 
 from .register import found
 from .render import write_csv_json
+from .review import _in_force
 from .util import load_yaml, write_text
 
 DEFAULT_PATH = "curation/clarifications/register.yaml"
 REQUIRED = ("id", "kind", "volume", "clause", "page", "gap", "practical_impact", "proposed_question", "interim_handling",
-            "response_status", "theme")
+            "decision_owner", "response_status", "theme")
+RESPONSE_STATES = ("draft, not sent", "withdrawn (not sent)", "answered by addendum")
+CUTOFF_RULE = "CLARIFICATION-CUTOFF"
+_TIME = re.compile(r"(?<![\d:.])([01]?\d|2[0-3]):([0-5]\d)(?![\d:])")
+_ZONE = re.compile(r"\b[A-Z][a-z]+ time\b")
+
+
+def _hhmm(t) -> str | None:
+    m = _TIME.search(str(t or ""))
+    return f"{int(m.group(1)):02d}:{m.group(2)}" if m else None
 
 
 def load(cfg: dict, root: Path) -> dict:
@@ -33,7 +51,54 @@ def load(cfg: dict, root: Path) -> dict:
     return (load_yaml(p) or {}) if p.exists() else {}
 
 
-def check(reg: dict, units: list[dict], issue_ids: set[str]) -> list[str]:
+def effective_cutoff(r: dict) -> dict | None:
+    """The clarification cut-off as the evaluated register computes it, for clarify.check(cutoff=...):
+    {"rule": "VOL-I 5.2", "rule_id", "row", "stage", "date": "<iso planning value>" | None, "anchor": "PDD",
+     "pdd": {"date", "time", "tz", "unit", "source"}, "conflicts": [...]}.
+    The date is the planning value of the date rule named by the register's `cut_off.rule_id` (default
+    CLARIFICATION-CUTOFF) on the row that defines it, at the validated stage; the anchor's date, time and timezone come
+    from r["anchor_details"] when stage2 computed it, else from the effective text of the anchor's defining unit.
+    None when the register is empty or the evaluation is missing; a rule no row defines gives date None."""
+    reg = r.get("clarifications") or {}
+    if not reg or "evals" not in r or "validated" not in r:
+        return None
+    rule_id = (reg.get("cut_off") or {}).get("rule_id") or CUTOFF_RULE
+    stage = r["validated"].stage
+    hits = []
+    for e in r["evals"]:
+        rd = next((x for x in e["row"].date_rules if x.rule_id == rule_id), None)
+        ev = e["stages"].get(stage) or {}
+        d = next((x for x in ev.get("dates") or [] if x["rule_id"] == rule_id), None)
+        if rd is not None:
+            hits.append((_in_force(str(ev.get("status", ""))), e["row"].id, rd, (d or {}).get("planning", {}).get("value")))
+    out = {"rule_id": rule_id, "stage": stage, "row": None, "rule": None, "date": None, "anchor": None, "pdd": {},
+           "conflicts": []}
+    if not hits:
+        return out
+    hits.sort(key=lambda h: not h[0])                       # rows in force first
+    _, row_id, rd, value = hits[0]
+    doc, _, local = rd.source_unit.partition(":")
+    out.update(row=row_id, rule=f"{doc} {local}", date=value, anchor=rd.anchor)
+    out["conflicts"] = [f"{h[1]} gives {h[3]}" for h in hits[1:] if h[0] and h[3] != value]
+    ad = ((r.get("anchor_details") or {}).get(stage) or {}).get(rd.anchor)
+    if ad is None and rd.anchor in r["rowfile"].anchors:    # derived here when stage2 does not provide it
+        from .dates import parse_date
+        from .register import effective
+        uid = r["rowfile"].anchors[rd.anchor]["defined_in"]
+        u = effective(r["validated"].state, uid, True)
+        text = u.text if u is not None and u.status == "active" else ""
+        p = parse_date(text) if text else None
+        z = _ZONE.search(text[text.find(p[1]):] if p and p[1] and p[1] in text else text)
+        ad = {"date": p[0] if p else None, "time": p[1] if p else None, "tz": z.group(0) if z else None, "unit": uid}
+    if ad:
+        d = ad.get("date")
+        out["pdd"] = {"date": d.isoformat() if isinstance(d, date) else d, "time": _hhmm(ad.get("time")),
+                      "tz": ad.get("tz"), "unit": ad.get("unit"), "source": ad.get("source")}
+    return out
+
+
+def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None = None) -> list[str]:
+    """Findings (strings, 'where: what'). `cutoff` (effective_cutoff) adds the cut-off checks."""
     by_id = {u["unit_id"]: u for u in units}
     out = []
 
@@ -47,6 +112,8 @@ def check(reg: dict, units: list[dict], issue_ids: set[str]) -> list[str]:
             elif q.get("page") not in u.get("pages", []):
                 out.append(f"{where}: {q.get('unit')} is on page(s) {u.get('pages')}, not p{q.get('page')}")
 
+    evidenced = ("an answer is evidence-backed only by `answer: {unit, page, words}` quoting the answering Addendum "
+                 "unit verbatim on that page; unknown answers stay unknown")
     seen = set()
     for c in reg.get("clarifications") or []:
         cid = c.get("id", "?")
@@ -56,9 +123,24 @@ def check(reg: dict, units: list[dict], issue_ids: set[str]) -> list[str]:
         missing = [k for k in REQUIRED if c.get(k) in (None, "")]
         if missing:
             out.append(f"{cid}: missing {missing}")
-        status = str(c.get("response_status", "")).lower()
-        if "sent" in status and "not sent" not in status:
-            out.append(f"{cid}: response_status says it was sent; the program never records a question as sent")
+        if not isinstance(c.get("sources"), list) or not c.get("sources"):
+            out.append(f"{cid}: no sources: every question needs at least one verbatim source (unit, page, words)")
+        status = c.get("response_status")
+        if status not in RESPONSE_STATES:
+            out.append(f"{cid}: unknown response state {status!r}: it must be exactly one of {list(RESPONSE_STATES)}"
+                       + ("; the program never records a question as sent"
+                          if "sent" in str(status).lower() and "not sent" not in str(status).lower() else "")
+                       + ("; " + evidenced if "answer" in str(status).lower() else ""))
+        ans = c.get("answer")
+        if status == "answered by addendum":
+            if not isinstance(ans, dict) or any(ans.get(k) in (None, "") for k in ("unit", "page", "words")):
+                out.append(f"{cid}: response_status 'answered by addendum' without answer evidence: {evidenced}")
+            elif ans.get("unit") in by_id and not str(by_id[ans["unit"]].get("doc", "")).startswith("ADD-"):
+                out.append(f"{cid}: answer unit {ans.get('unit')} is not a unit of an Addendum (ADD-): {evidenced}")
+            else:
+                quotes(f"{cid} answer", [ans])
+        elif ans:
+            out.append(f"{cid}: an answer is recorded but response_status is {status!r}, not 'answered by addendum'")
         bad = [i for i in c.get("linked_issues") or [] if i not in issue_ids]
         if bad:
             out.append(f"{cid}: linked issues that do not exist: {bad}")
@@ -67,6 +149,37 @@ def check(reg: dict, units: list[dict], issue_ids: set[str]) -> list[str]:
         quotes(f"checked_no_question[{c.get('topic', i)}]", c.get("sources"))
     for i, c in enumerate(reg.get("unavailable_material") or []):
         quotes(f"unavailable_material[{c.get('item', i)}]", c.get("referenced_in"))
+    if cutoff is not None and reg:
+        out += _check_cutoff(reg.get("cut_off") or {}, cutoff)
+    return out
+
+
+def _check_cutoff(cut: dict, eff: dict) -> list[str]:
+    """The register's cut-off against the effective one (date, and the anchor's time in the note)."""
+    out = []
+    rid, anchor, pdd = eff.get("rule_id"), eff.get("anchor") or "anchor", eff.get("pdd") or {}
+    basis = (f"{rid} on {eff.get('row')} at {eff.get('stage')}, counted from the {anchor} "
+             + " ".join(str(x) for x in (pdd.get("date"), pdd.get("time"), pdd.get("tz")) if x)
+             + (f" ({pdd['source']})" if pdd.get("source") else f" ({pdd['unit']})" if pdd.get("unit") else ""))
+    if not cut:
+        return [f"cut_off: missing; the effective cut-off is {eff.get('date')} ({basis})"]
+    if eff.get("row") is None:
+        return [f"cut_off: no row defines the date rule {rid}; the register's cut-off {cut.get('date')} cannot be verified"]
+    if eff.get("conflicts"):
+        out.append(f"cut_off: rows define {rid} with different values at {eff.get('stage')}: {eff.get('row')} gives "
+                   f"{eff.get('date')}; " + "; ".join(eff["conflicts"]))
+    if eff.get("date") is None:
+        out.append(f"cut_off: the effective cut-off ({basis}) is not computed; the register's date {cut.get('date')} "
+                   "cannot be verified")
+    elif str(cut.get("date")) != eff["date"]:
+        out.append(f"cut_off: date {cut.get('date')} is not the effective cut-off {eff['date']} ({basis})")
+    t = pdd.get("time")
+    if t:
+        said = {f"{int(h):02d}:{m}" for h, m in _TIME.findall(str(cut.get("note") or ""))}
+        if t not in said:
+            out.append(f"cut_off: the note does not state the effective {anchor} time {t} ({basis})")
+        if said - {t}:
+            out.append(f"cut_off: the note states {sorted(said - {t})}, not the effective {anchor} time {t} ({basis})")
     return out
 
 

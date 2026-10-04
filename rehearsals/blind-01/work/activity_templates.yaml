@@ -12,14 +12,16 @@
 #
 # Envelope chain (both envelopes): every Envelope A document -> assemble-envelope-a; every Envelope B document
 # -> assemble-envelope-b; both -> copies (3 hard copies + encrypted USB, Appendix 2 naming) -> seal-and-mark
-# (Appendix 3 marking) -> deliver (PDD, 14:00). Signatures follow the Powers of Attorney.
+# (Appendix 3 marking) -> deliver (by the PDD). Signatures follow the Powers of Attorney.
+# Pack facts are never typed in a name (session 09): {PDD_TIME} {PDD_TZ} {PDD_DATE} {PDD_SOURCE} and
+# {ROW:<row id>:<parameter>} are filled at plan time from the stage (tenderpack.schedule.fill).
 
 _exceptions: {}
 
 # ------------------------------------------------------------------ both envelopes / actions
 EV-DELIVERY:
-  - {id: deliver, name: "Deliver both sealed envelopes to Tender Box 4, Administrative Building C, Sakaka before 14:00 Riyadh time on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD}}
-  - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each 'NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE' (VOL-I 6.2, Appendix 3)", owner: Bid management, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
+  - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD}}
+  - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3)", owner: Bid management, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
   - &copies {id: copies, name: "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2)", owner: Bid management, resource: document_controller, issuer: Bidder, duration: copies_and_usb, predecessors: [assemble-envelope-a, assemble-envelope-b], item: "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)"}
   - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: []}
   - {id: assemble-envelope-b, name: "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1; placement of the auditor's opinion and the financing assumptions schedule per the clarification answer)", owner: Bid management, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: []}

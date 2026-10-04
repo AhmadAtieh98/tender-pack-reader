@@ -2507,6 +2507,7 @@
     ],
     "details": {
      "cited": [
+      "ADD-02:F4-G",
       "VOL-I:9.1",
       "VOL-I:9.1(e)"
      ],
@@ -4646,7 +4647,9 @@
    },
    {
     "applied": true,
-    "changed": [],
+    "changed": [
+     "VOL-IV:cover/T1/4-G+ADD-03"
+    ],
     "checks": [
      {
       "detail": "provision ADD-03:7.2 belongs to ADD-03",
@@ -4654,34 +4657,72 @@
       "ok": true
      },
      {
-      "detail": "targets exist: ['ADD-03:7.2']",
+      "detail": "target VOL-IV:cover/T1 is an active table",
       "id": "C22",
       "ok": true
      },
      {
-      "detail": "every annotated target is cited by the provision",
+      "detail": "the provision cites 'Index of Forms in Volume IV': VOL-IV:cover/T1 is the VOL-IV table whose first column is 'Form' and which has a 'Title' column",
       "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every column is in the header of VOL-IV:cover/T1 (Form | Title | Envelope | Status) and the key column 'Form' is given",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "VOL-IV:cover/T1/4-F is the row the provision inserts after ('4-F')",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "VOL-IV:cover/T1 has no row keyed '4-G' yet",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every cell is printed in the provision after its column's name",
+      "id": "C21",
       "ok": true
      }
     ],
-    "details": {},
+    "details": {
+     "after": "VOL-IV:cover/T1/4-F",
+     "cells": {
+      "Envelope": "A",
+      "Form": "4-G",
+      "Status": "Mandatory",
+      "Title": "Cybersecurity Compliance Undertaking"
+     },
+     "cited": [
+      "VOL-IV:F4-F",
+      "ADD-02:F4-G"
+     ],
+     "inserted": "VOL-IV:cover/T1/4-G+ADD-03"
+    },
     "op": {
+     "after": "VOL-IV:cover/T1/4-F",
+     "cells": {
+      "Envelope": "A",
+      "Form": "4-G",
+      "Status": "Mandatory",
+      "Title": "Cybersecurity Compliance Undertaking"
+     },
      "claims": [],
      "covers": [],
-     "effect": "adds_obligation",
      "expect": [],
      "id": "ADD-03/7.2",
-     "issue": "the entry is given in prose, so it is recorded as an annotation, not as a new row of the index table; the cover line 'Forms 4-A to 4-F' is not amended",
-     "note": "Form 4-G is added to the Index of Forms (the Volume IV cover table, VOL-IV:cover/T1) as 'Cybersecurity Compliance Undertaking', Envelope A, Mandatory: consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered",
+     "issue": "the cover line 'Forms 4-A to 4-F' (VOL-IV:cover/para4) is not amended [Session 09 fix, after the key: the first half of the scored issue (the entry recorded only as an annotation) no longer applies]",
+     "note": "Form 4-G is added to the Index of Forms (the Volume IV cover table, VOL-IV:cover/T1) as 'Cybersecurity Compliance Undertaking', Envelope A, Mandatory: consistent with ADD-02 7.1/7.2 and VOL-I 9.1 item (f) as re-lettered. [Session 09 fix, after the key: the op is now an insert_row (the engine inserts the entry the provision describes in prose as row VOL-IV:cover/T1/4-G+ADD-03, each cell checked against the provision); in the scored state it was an annotate (effect adds_obligation, target ADD-03:7.2) with the issue 'the entry is given in prose, so it is recorded as an annotation, not as a new row of the index table'.]",
      "old_resolved": "quoted",
      "origin": "assistant",
      "provision": "ADD-03:7.2",
      "renumber": {},
      "review": "proposed",
-     "targets": [
-      "ADD-03:7.2"
-     ],
-     "type": "annotate"
+     "target": "VOL-IV:cover/T1",
+     "targets": [],
+     "type": "insert_row"
     },
     "stage": "ADD-03",
     "valid": true,

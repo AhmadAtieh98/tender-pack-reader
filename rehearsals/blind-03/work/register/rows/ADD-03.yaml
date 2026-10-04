@@ -1,0 +1,468 @@
+# A1 register rows for obligations that ADD-03 of BLIND REHEARSAL 03 creates (a synthetic Addendum No. 3; not tender
+# content). PROPOSED: drafted by the assistant as the live-session curator (session 09), without sight of the sealed
+# answer key; the host-route AI proposal was an input, checked against the evidence. No row has been reviewed or
+# accepted by a person.
+doc: ADD-03
+prepared_by: 'blind rehearsal 03 curation (session 09): the assistant as curator, after reviewing the host-route AI proposals; not reviewed'
+method: every ADD-03 provision whose op adds an obligation or a consequence; quotes copied from the effective text at ADD-03 (tenderpack.amend), Arabic
+  copied from the evidence units; consequences quoted only from the unit that states them
+rows:
+- id: ADD-03-3.1-01
+  group: ADD-03:3.1
+  scope:
+  - qualification
+  - consortium
+  - operations
+  - envelope_A
+  - new_in_addendum
+  requirement: The proposed O&M Operator is a member of the Bidder (VOL-I 8.8 as amended)
+  units:
+  - ADD-03:3.1
+  - VOL-I:8.8
+  discipline: Legal
+  owner: Legal counsel
+  assessment: pass_fail
+  evidence:
+  - EV-OM-MEMBERSHIP
+  interpretations:
+  - stage: ADD-03
+    quote: The proposed O&M Operator shall be a member of the Bidder
+    parameters:
+      om_operator_member_of_bidder: true
+    note: Added at the end of VOL-I 8.8 by ADD-03 3.1 (op ADD-03/3.1). No consequence is stated in 8.8. A Bidder whose proposed O&M Operator is not a member
+      applies for the Authority's consent under VOL-I 8.1 to its admission (ADD-03 3.2, row ADD-03-3.2-01); an unapproved change in composition results
+      in rejection (VOL-I 8.1, row VOL-I-8.1-01). Whether the proposed O&M Operator is already a member is a bidder fact (I-ADD03-OM-MEMBER).
+  confidence: high
+  confidence_reason: verbatim appended sentence; no consequence of its own
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-ADD03-OM-MEMBER
+  - I-BIDDER-FACTS
+- id: ADD-03-3.1-02
+  group: ADD-03:3.1
+  scope:
+  - consortium
+  - shareholding
+  - post_award
+  - operations
+  - new_in_addendum
+  requirement: 'O&M Operator: hold not less than 10% of the shares in the Project Company from Financial Close until the second anniversary of PCOD'
+  units:
+  - ADD-03:3.1
+  - VOL-I:8.8
+  discipline: Legal
+  owner: Legal counsel
+  assessment: contractual_post_award
+  evidence:
+  - EV-OM-MEMBERSHIP
+  date_notes:
+  - text: from Financial Close until the second anniversary of PCOD
+    treatment: post_award
+    reason: a holding period between two post-award events (Financial Close; the second anniversary of PCOD) that the pack does not date
+  interpretations:
+  - stage: ADD-03
+    quote: shall hold, from Financial Close until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company
+    parameters:
+      min_shareholding_pct: 10
+      from: Financial Close
+      until: the second anniversary of PCOD
+    note: Added at the end of VOL-I 8.8 by ADD-03 3.1. A lock-in of the O&M Operator's equity after award; no consequence is stated. The consortium's shareholding
+      is a bidder fact (I-ADD03-OM-MEMBER).
+  post_award_evidence:
+    kind: proposed
+    text: 'Post-award (proposed requirement): the Project Company''s share register, and the shareholders'' agreement, showing the O&M Operator holding
+      at least 10% of the shares in the Project Company from Financial Close until the second anniversary of PCOD (VOL-I 8.8 as amended by ADD-03 3.1).'
+    basis:
+    - unit: ADD-03:3.1
+      page: 1
+      words: shall hold, from Financial Close until the second anniversary of PCOD, not less than ten per cent (10%) of the shares in the Project Company
+    when: from Financial Close until the second anniversary of PCOD
+    bid_stage_note: At bid stage the consortium's proposed Project Company shareholding should give the O&M Operator at least 10% (a commercial decision;
+      any change to a prequalified consortium's shareholding needs the Authority's prior written consent, VOL-I 8.1).
+  confidence: high
+  confidence_reason: verbatim; post-award events not dated in the pack
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-ADD03-OM-MEMBER
+- id: ADD-03-3.2-01
+  group: ADD-03:3.2
+  scope:
+  - qualification
+  - consortium
+  - deadline
+  - conditional
+  - new_in_addendum
+  requirement: 'If the proposed O&M Operator is not a member of the Bidder: apply through the Portal for the Authority''s consent under VOL-I 8.1 to its
+    admission as a member, not later than four Working Days before the Proposal Due Date (ADD-03 Q17 states a fixed date for the same application)'
+  units:
+  - ADD-03:3.2
+  - ADD-03:Q17
+  - VOL-I:8.1
+  discipline: Legal
+  owner: Legal counsel
+  assessment: procedural
+  evidence:
+  - EV-OM-CONSENT
+  date_rules:
+  - rule_id: CONSENT-APPLICATION
+    kind: relative
+    purpose: deadline
+    anchor: PDD
+    offset: 4
+    unit: working_day
+    direction: before
+    source_unit: ADD-03:3.2
+    text: not later than four (4) Working Days before the Proposal Due Date
+  - rule_id: CONSENT-APPLICATION-Q17
+    kind: fixed
+    purpose: deadline
+    fixed: '2026-11-22'
+    source_unit: ADD-03:Q17
+    text: not later than Sunday 22 November 2026
+  interpretations:
+  - stage: ADD-03
+    quote: shall apply through the Portal for the Authority's consent under Volume I Clause 8.1 to the admission of the O&M Operator as a member, not later
+      than four (4) Working Days before the Proposal Due Date
+    parameters:
+      condition: the proposed O&M Operator is not a member of the Bidder
+      where: the Portal
+      deadline_section_3_2: four (4) Working Days before the Proposal Due Date
+      deadline_q17: Sunday 22 November 2026
+    consequence:
+      class: rejection
+      unit: VOL-I:8.1
+      quote: An unapproved change shall result in rejection of the Proposal.
+    note: 'Conditional (ADD-03 3.2). Two deadlines for one application in the same Addendum, neither said to prevail: 3.2 counts four Working Days back
+      from Thursday 26 November 2026 and, with Sunday 22 November 2026 notified as a closure (ADD-03 2.1-2.2, VOL-I 2.4 as amended), gives Thursday 19 November
+      2026; Q17 fixes ''not later than Sunday 22 November 2026'', the closure day itself (the Portal stays available). Not resolved here (I-ADD03-CONSENT-DATE,
+      CQ-ADD03-CONSENT-DATE): both rules are planned and the programme works to the earlier. The consequence is VOL-I 8.1''s for an unapproved change in
+      composition (admitting the O&M Operator without consent); none is stated for a late application as such.'
+  confidence: medium
+  confidence_reason: verbatim; two deadlines in the same Addendum; the rejection is VOL-I 8.1's for an unapproved change
+  issues:
+  - I-ADD03-CONSENT-DATE
+  - I-ADD03-OM-MEMBER
+  - I-BIDDER-FACTS
+- id: ADD-03-3.3-01
+  group: ADD-03:3.3
+  scope:
+  - qualification
+  - consortium
+  - deadline
+  - conditional
+  - new_in_addendum
+  requirement: 'If the Bidder intends to apply under ADD-03 3.2: notify the Authority of that intention through the Portal within five Working Days of the
+    date of Addendum No. 3'
+  units:
+  - ADD-03:3.3
+  discipline: Bid management
+  owner: Bid manager
+  assessment: procedural
+  evidence:
+  - EV-OM-CONSENT
+  date_rules:
+  - rule_id: INTENT-NOTICE
+    kind: relative
+    purpose: deadline
+    anchor: ADD-03-issue
+    offset: 5
+    unit: working_day
+    direction: after
+    source_unit: ADD-03:3.3
+    text: within five (5) Working Days of the date of this Addendum
+  interpretations:
+  - stage: ADD-03
+    quote: shall notify the Authority of that intention through the Portal within five (5) Working Days of the date of this Addendum
+    parameters:
+      condition: the Bidder intends to apply under ADD-03 3.2
+      where: the Portal
+    note: 'Conditional. Counted forward from the Addendum''s date (issued Sunday 1 November 2026); VOL-I 2.4 states a rule for backward counting only, so
+      two readings: Thursday 5 November 2026 (the issue day counted) or Sunday 8 November 2026 (not counted); the programme plans to the earlier (counting_policy
+      conservative). No consequence is stated for a late or missing notice.'
+  confidence: medium
+  confidence_reason: verbatim; forward Working Day counting is not defined (two readings)
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-ADD03-OM-MEMBER
+- id: ADD-03-3.4-01
+  group: ADD-03:3.4
+  scope:
+  - consortium
+  - notification
+  - conditional
+  - new_in_addendum
+  requirement: 'If, before the Preferred Bidder Notification, the proposed O&M Operator ceases to be a member of the Bidder: notify the Authority through
+    the Portal within two Working Days of that event (VOL-I 8.1 applies)'
+  units:
+  - ADD-03:3.4
+  - VOL-I:8.1
+  discipline: Bid management
+  owner: Bid manager
+  assessment: procedural
+  evidence:
+  - EV-OM-MEMBERSHIP
+  date_notes:
+  - text: within two (2) Working Days of that event
+    treatment: duration
+    reason: counted from an event the pack does not date (the O&M Operator ceasing to be a member before the Preferred Bidder Notification); planned as
+      a conditional activity
+  interpretations:
+  - stage: ADD-03
+    quote: the Bidder shall notify the Authority through the Portal within two (2) Working Days of that event
+    parameters:
+      condition: the proposed O&M Operator ceases to be a member of the Bidder before the Preferred Bidder Notification
+      period: two (2) Working Days of that event
+      where: the Portal
+    note: 'Conditional (ADD-03 3.4). ''Volume I Clause 8.1 applies'': the change in composition needs the Authority''s prior written consent and an unapproved
+      change results in rejection of the Proposal (row VOL-I-8.1-01); no consequence is stated for a late notice as such.'
+  confidence: high
+  confidence_reason: verbatim; event-driven period
+  issues:
+  - I-NO-CONSEQUENCE
+- id: ADD-03-4.2-01
+  group: ADD-03:4.2
+  scope:
+  - envelope_A
+  - forms
+  - arabic
+  - declaration
+  - new_in_addendum
+  requirement: 'Form 4-C fourth declaration as substituted (Arabic): all information in the Proposal is true and complete'
+  units:
+  - VOL-IV:F4-C/image/decl4+ADD-03
+  - ADD-03:4.2
+  - ADD-03:4.1
+  discipline: Legal
+  owner: Legal counsel
+  assessment: pass_fail
+  evidence:
+  - EV-FORM-4C
+  interpretations:
+  - stage: ADD-03
+    quote: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة
+    consequence:
+      class: exclusion
+      unit: VOL-IV:F4-C/image/decl4+ADD-03
+      quote: أي بيان غير صحيح أو أي إخلال بهذا التعهد يؤدي إلى استبعاد العرض
+      gloss: any incorrect statement, or any breach of this undertaking, will lead to the exclusion of the Proposal
+    note: The fourth declaration as substituted by ADD-03 4.1-4.2 (op ADD-03/4.1(a); the declaration as issued, row VOL-IV-F4C-04, is DELETED at ADD-03).
+      It keeps 'that all the information provided in this Proposal is correct and complete' and the consequence 'استبعاد العرض', which the Authority's convenience
+      translation (ADD-03 4.3) renders 'will lead to the exclusion of the Proposal' (the gloss is that translation; the Arabic governs). 'Exclusion' stays
+      its own category, not equated with rejection, disqualification or non-responsiveness (I-F4C-EXCLUSION). The text is the addendum's text layer, not
+      a re-reading of the Form 4-C image.
+  confidence: medium
+  confidence_reason: verbatim (ADD-03 4.2 text layer); the category of 'exclusion' is unresolved
+  issues:
+  - I-F4C-EXCLUSION
+- id: ADD-03-4.2-02
+  group: ADD-03:4.2
+  scope:
+  - forms
+  - arabic
+  - declaration
+  - notification
+  - conditional
+  - new_in_addendum
+  requirement: 'Form 4-C fourth declaration as substituted (Arabic): notify the Authority through the Portal within three working days of becoming aware
+    of any change to that information, until the Preferred Bidder Notification'
+  units:
+  - VOL-IV:F4-C/image/decl4+ADD-03
+  - ADD-03:4.2
+  - ADD-03:4.3
+  discipline: Legal
+  owner: Bid manager
+  assessment: procedural
+  evidence:
+  - EV-INFO-CHANGE-NOTICE
+  date_notes:
+  - text: within three (3) days of the date on which we become aware
+    treatment: duration
+    reason: the convenience translation (ADD-03 4.3) of an event-driven period counted from awareness of each change; the governing Arabic says three working
+      days ('خلال ثلاثة أيام عمل')
+  interpretations:
+  - stage: ADD-03
+    quote: ونتعهد بإخطار الهيئة عبر البوابة خلال ثلاثة أيام عمل من تاريخ علمنا بأي تغيير يطرأ على أي من تلك المعلومات قبل صدور إشعار مقدم العرض المفضل
+    parameters:
+      period: 'three working days (Arabic, governing: ''خلال ثلاثة أيام عمل'')'
+      translation_says: within three (3) days (ADD-03 4.3, for convenience only)
+      until: the issue of the Preferred Bidder Notification
+      where: the Portal (البوابة)
+    consequence:
+      class: exclusion
+      unit: VOL-IV:F4-C/image/decl4+ADD-03
+      quote: أي إخلال بهذا التعهد يؤدي إلى استبعاد العرض
+      gloss: any breach of this undertaking will lead to the exclusion of the Proposal
+    note: New undertaking in the substituted fourth declaration (ADD-03 4.2), given by every member (ADD-03 4.4). The governing Arabic period is three working
+      days; the Authority's convenience translation (ADD-03 4.3) says 'within three (3) days'; the Arabic governs (4.3, VOL-I 9.4). Planning works to the
+      shorter reading until a person decides (I-ADD03-F4C-UNDERTAKING). 'Exclusion' is kept as its own category (I-F4C-EXCLUSION).
+  confidence: medium
+  confidence_reason: verbatim (ADD-03 4.2 text layer); the translation differs from the governing Arabic; 'exclusion' category unresolved
+  issues:
+  - I-ADD03-F4C-UNDERTAKING
+  - I-F4C-EXCLUSION
+- id: ADD-03-4.4-01
+  group: ADD-03:4.4
+  scope:
+  - envelope_A
+  - forms
+  - arabic
+  - declaration
+  - new_in_addendum
+  requirement: Each member gives the Form 4-C fourth declaration as substituted by ADD-03 4.2; a Form 4-C with the declaration as issued is not properly
+    executed (VOL-I 9.4)
+  units:
+  - ADD-03:4.4
+  - VOL-I:9.4
+  discipline: Legal
+  owner: Legal counsel
+  assessment: pass_fail
+  evidence:
+  - EV-FORM-4C
+  interpretations:
+  - stage: ADD-03
+    quote: Each member of the Bidder shall give the fourth declaration as substituted.
+    consequence:
+      class: non_responsive
+      unit: VOL-I:9.4
+      quote: Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive.
+    note: 'ADD-03 4.4: ''A Form 4-C that contains the fourth declaration as issued is not a properly executed Form 4-C for the purposes of Volume I Clause
+      9.4.'' VOL-I 9.4 makes failure to submit a complete and properly executed Form 4-C for each member non-responsive. Any Form 4-C already signed on
+      the issued text is signed again on the substituted declaration.'
+  confidence: high
+  confidence_reason: verbatim; consequence stated by reference to VOL-I 9.4
+  issues: []
+- id: ADD-03-5.2-01
+  group: ADD-03:5.2
+  scope:
+  - technical_design
+  - effluent
+  - new_in_addendum
+  requirement: Reflect the amended Total Phosphorus limit (ADD-03 5.1) in the process design submitted under Volume II Section 3
+  units:
+  - ADD-03:5.2
+  - ADD-03:5.1
+  discipline: Technical
+  owner: Technical lead
+  assessment: pass_fail
+  evidence:
+  - EV-TECH-PROPOSAL
+  interpretations:
+  - stage: ADD-03
+    quote: Bidders shall reflect the amended limit in the process design submitted under Volume II Section 3.
+    parameters:
+      tp_limit_mg_l: 0.5
+    note: The amended limit is 'from 1 mg/l to 0.5 mg/l' for Total Phosphorus (TP), unit and basis (30-day rolling average) unchanged (ADD-03 5.1; row VOL-II-T2-4-TP).
+      The Environmental Permit, which prevails over the reproduction, is not in the pack; whether the Permit states 0.5 mg/l is not said and no Permit compliance
+      is claimed (I-PERMIT). No consequence stated.
+  confidence: medium
+  confidence_reason: verbatim; the basis rests on the Table 2-4 image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit is not supplied
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-PERMIT
+  - I-READING-T24
+- id: ADD-03-F4G-01
+  group: ADD-03:F4-G
+  scope:
+  - forms
+  - post_award
+  - cybersecurity
+  - new_in_addendum
+  requirement: 'Reissued Form 4-G undertaking 7: personnel with privileged or remote access to the control system screened under security screening approved
+    by the Authority before access is granted (confirmed Yes or No)'
+  units:
+  - ADD-03:F4-G/T1/7
+  discipline: Technical
+  owner: Technical lead
+  assessment: contractual_post_award
+  evidence:
+  - EV-FORM-4G
+  interpretations:
+  - stage: ADD-03
+    quote: Personnel with privileged or remote access to the control system will be subject to security screening approved by the Authority before access
+      is granted.
+    note: New undertaking 7 of the reissued Form 4-G (ADD-03 Appendix A); neither ADD-03 7.1 nor the cover mentions it (I-ADD03-F4G-ITEM7). A post-award
+      obligation confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO).
+  post_award_evidence:
+    kind: proposed
+    text: 'Post-award (proposed requirement): before privileged or remote access to the control system is granted to a person, a record of that person''s
+      security screening under a screening process approved by the Authority (reissued Form 4-G undertaking 7, ADD-03 Appendix A).'
+    basis:
+    - unit: ADD-03:F4-G/T1/7
+      page: 4
+      words: Personnel with privileged or remote access to the control system will be subject to security screening approved by the Authority before access
+        is granted.
+    when: before each grant of privileged or remote access to the control system
+    bid_stage_note: Confirmed Yes or No on the reissued Form 4-G (row ADD-03-7.2-01); which screening the Authority approves is not stated.
+  confidence: medium
+  confidence_reason: verbatim; the effect of answering 'No' is not stated
+  issues:
+  - I-F4G-NO
+  - I-ADD03-F4G-ITEM7
+- id: ADD-03-7.2-01
+  group: ADD-03:7.2
+  scope:
+  - envelope_A
+  - forms
+  - cybersecurity
+  - reissued_form
+  - new_in_addendum
+  requirement: Submit the reissued Form 4-G (ADD-03 Appendix A), signed for the Bidder and countersigned for the proposed O&M Operator; a form not countersigned
+    is treated as not submitted
+  units:
+  - ADD-03:7.2
+  - ADD-03:F4-G/para1
+  - ADD-03:7.1
+  - ADD-02:7.2
+  discipline: Technical
+  owner: Bid manager
+  assessment: pass_fail
+  evidence:
+  - EV-FORM-4G
+  - EV-FORM-4G-COUNTERSIGN
+  interpretations:
+  - stage: ADD-03
+    quote: A Form 4-G that is not countersigned by the proposed O&M Operator shall be treated as not submitted.
+    consequence:
+      class: non_responsive
+      unit: ADD-02:7.2
+      quote: Failure to submit Form 4-G shall render the Proposal non-responsive.
+    note: 'ADD-03 7.2: ''Section 7.2 of Addendum No. 2 applies to the reissued Form 4-G.'' A Form 4-G not countersigned by the proposed O&M Operator is
+      treated as not submitted, and under ADD-02 7.2 failure to submit Form 4-G renders the Proposal non-responsive, so the class is non_responsive (the
+      effect on the Proposal is stated through ADD-02 7.2), not document_refusal. The reissued signature block (ADD-03:F4-G/para1) adds ''Countersigned
+      for and on behalf of the proposed O&M Operator''; ''Bidders shall use the reissued Form'' (7.1). Who may countersign for the O&M Operator is not stated.'
+  confidence: high
+  confidence_reason: verbatim; consequence stated through ADD-02 7.2, which ADD-03 7.2 applies
+  issues: []
+- id: ADD-03-Q15-01
+  group: ADD-03:Q15
+  scope:
+  - envelope_A
+  - forms
+  - arabic
+  - translation
+  - conditional
+  - new_in_addendum
+  requirement: Each member incorporated outside the Kingdom attaches an English translation to its Form 4-C (the Arabic governs)
+  units:
+  - ADD-03:Q15
+  - ADD-02:Q9
+  - VOL-I:9.4
+  discipline: Legal
+  owner: Legal counsel
+  assessment: pass_fail
+  evidence:
+  - EV-FORM-4C-TRANSLATION
+  interpretations:
+  - stage: ADD-03
+    quote: A member incorporated outside the Kingdom shall attach an English translation to its Form 4-C.
+    parameters:
+      condition: a member of the Bidder incorporated outside the Kingdom
+    note: ADD-03 Q15 adds this sentence at the end of the response to clarification request 9 in ADD-02 (op ADD-03/Q15). For other members the translation
+      stays optional (VOL-I 9.4; ADD-02 Q9). 'The Arabic text of Form 4-C governs.' No consequence is stated for a missing translation; whether a Form 4-C
+      without it is 'complete' under VOL-I 9.4 is for a person (I-ADD03-Q15). Which members are incorporated outside the Kingdom is a bidder fact.
+  confidence: medium
+  confidence_reason: verbatim; set in a clarification answer; no consequence stated
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-ADD03-Q15
+  - I-BIDDER-FACTS

@@ -20,6 +20,8 @@ Phrasings recognised (taken from the pack's addenda; extend with new phrasings, 
   "Table T of Volume X is deleted and replaced by the table below"                          replace_unit
   "Form F is reissued below"                                                                replace_unit
   "A new Form F is added to Volume IV and to the list at <Volume X Clause N>, to be inserted after item (x)"  insert_unit
+  "The Index of Forms in Volume IV is amended by adding, after the entry for Form F, an entry for Form G with the title
+   '<t>', Envelope '<e>' and Status '<s>'"                                                  insert_row (session 09)
   "The <thing> stated in <Volume X Clause N> is amended to <restated words>"                replace_text, old located
         in the target by the restated words' shape (the addendum does not quote the old words: flagged)
   "The <thing> in <Volume X Clause N> is unchanged at <words>"                              annotate confirms
@@ -37,7 +39,7 @@ from __future__ import annotations
 import re
 
 from .amend import PROVISION_KINDS, Disposition, Op, OpFile, UState, base_state, heading_of
-from .citations import citations, row_names
+from .citations import VOLUMES, citations, is_index_table, row_names
 from .summary import SUMMARY_RE
 from .textnorm import normalize_latin
 
@@ -127,6 +129,25 @@ def _matches(t: str, p: str, st: dict[str, UState], order: list[str], provs: lis
         add(m, content, type="insert_unit", new_group=group, anchor=f"{clause}({m.group(3)})",
             new_text_from=f"{addendum}:H:F{m.group(1)}", covers=content,
             issue=f"re-lettering of the items after ({m.group(3)}) is not stated")
+    # session 09: an index entry described in prose (the engine checks each cell against these words, C21)
+    for m in re.finditer(r"(?:^|(?<=\. ))The Index of Forms in Volume (\S+) is amended by adding,? (?:after the entry for "
+                         r"Form (\d+-[A-Z]+),? )?an entry for Form (\d+-[A-Z]+) with (.+?)\.?$", t):
+        doc = VOLUMES.get(m.group(1), "")
+        head = lambda k: [c.strip() for c in (st[k].text or "").split("|") if c.strip()]  # noqa: E731
+        tables = [k for k in order if k in st and st[k].doc == doc and st[k].kind == "table" and is_index_table(head(k))]
+        if len(tables) != 1:
+            continue                                  # no index table, or more than one: left to a person
+        cols = head(tables[0])
+        cells = {cols[0]: m.group(3)}
+        for c in re.finditer(r"(?:^|,\s*|\s+and\s+)(?:the\s+)?([A-Za-z][A-Za-z ]*?)\s+'([^']+)'", m.group(4)):
+            col = next((x for x in cols if x.lower() == c.group(1).strip().lower()), None)
+            if col is None:
+                cells = {}
+                break
+            cells[col] = c.group(2)
+        after = next((k for k in order if k in st and st[k].parent == tables[0] and st[k].label == m.group(2)), None)
+        if cells and (after or not m.group(2)):
+            add(m, type="insert_row", target=tables[0], after=after, cells=cells)
     for m in re.finditer(r"(?:^|(?<=\. ))(The [^.]*?) stated in (Volume \S+ Clause [\d.]+) is amended to (.+?)\.?$", t):
         target = _target(m.group(2))
         if target in st:

@@ -14,8 +14,15 @@ dependency has changed since (or a new one has appeared), the row is STALE: its 
 recomputed from the effective text, but its reading needs a person again. Pins are written by
 `tenderpack pin` when an interpretation is drafted or re-reviewed, never during a build.
 
+An obligation whose words an addendum deletes from a unit that stays in force (ADD-03 4.1 in blind rehearsal 02: the
+model audit opinion struck out of VOL-I 10.3) is not DELETED: its unit is still active. The interpretation made at
+that stage carries `removed: {by: <op id>, note}`; the row is then REMOVED (<op id>) and out of force from that stage
+(A3, A5 and the general gate leave it out; A1 shows it). Its quote is checked against the unit as it stood before the
+op (the words removed, or what remained), not against the effective text, and the op must exist, be applied at or
+before that stage and have changed one of the row's units; anything else is a problem (C16).
+
 Separate statuses, never merged:
-  status            what the documents say at that stage (ACTIVE / AMENDED / DELETED / ...)
+  status            what the documents say at that stage (ACTIVE / AMENDED / REMOVED / DELETED / ...)
   transcription     review status of an image reading the row relies on (pending until approved)
   interpretation    review status of the row itself (proposed until a named person accepts it)
   ops               review status of the amendment ops that changed it (proposed / accepted)
@@ -28,15 +35,25 @@ from datetime import date
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_serializer
 
 from .amend import BASE, StageResult, UState, unit_pin
 from .dates import Calendar, DateRule, Interpretation, interpretations, parse_date, planning_value
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
 
-CONSEQUENCE_CLASSES = ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser",
-                       "contractual")
+# What each class means (session 09 separated three things the vocabulary had conflated):
+#   rejection, disqualification, non_responsive, exclusion   the Proposal is out, as stated (BID_OUT; A3 explicit)
+#   score_elimination   below the VOL-I 11.3 technical threshold: Envelope B returned unopened (not a zero on one criterion)
+#   document_refusal    a stated refusal of a submitted document ("will not be accepted", "treated as not submitted")
+#                       whose effect on the Proposal is NOT stated: the row keeps its place in the VOL-I 11.1(i) pass or
+#                       fail gate and is never shown as a disqualification
+#   criterion_zero      zero marks under one scoring criterion: a scored consequence, neither a disqualification nor the
+#                       score_elimination threshold (any threshold risk is stated in the row, by a person)
+#   lesser              any other stated consequence short of those (pages removed, not scored, ...)
+#   contractual         a post-award remedy (termination, deduction, ...)
+CONSEQUENCE_CLASSES = ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination",
+                       "document_refusal", "criterion_zero", "lesser", "contractual")
 BID_OUT = ("rejection", "disqualification", "non_responsive", "exclusion")
 
 
@@ -45,11 +62,18 @@ class _Strict(BaseModel):
 
 
 class Consequence(_Strict):
-    cls: Literal["rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "lesser",
-                 "contractual"] = Field(alias="class")       # contractual: a post-award remedy (termination, deduction, ...)
+    cls: Literal["rejection", "disqualification", "non_responsive", "exclusion", "score_elimination", "document_refusal",
+                 "criterion_zero", "lesser", "contractual"] = Field(alias="class")    # meanings: CONSEQUENCE_CLASSES
     unit: str
     quote: str
     gloss: str | None = None                     # proposed translation of a non-English quote (never checked as evidence)
+
+
+class Removal(_Strict):
+    """The obligation's words were deleted from a unit that stays in force (session 09): `by` is the op that deleted
+    them. The row is REMOVED from the stage of the interpretation that carries this, and is no longer in force."""
+    by: str
+    note: str = ""
 
 
 class Interp(_Strict):
@@ -58,7 +82,17 @@ class Interp(_Strict):
     parameters: dict = Field(default_factory=dict)
     consequence: Consequence | Literal["none_stated"] = "none_stated"
     note: str | None = None
+    removed: Removal | None = None               # the words were deleted; `quote` is then checked before the op instead
     pins: dict[str, str] = Field(default_factory=dict)
+
+    @model_serializer(mode="wrap")
+    def _without_unset_removal(self, handler):
+        # an interpretation without `removed` dumps exactly as before the field existed, so what a review decision on
+        # a row is bound to (review.row_binding) does not change for rows that do not use it
+        d = handler(self)
+        if self.removed is None:
+            d.pop("removed", None)
+        return d
 
 
 class RuleDef(_Strict):
@@ -235,6 +269,47 @@ def anchor_values(state: dict[str, UState], anchors: dict, stages_issued: dict[s
     return vals
 
 
+def anchor_details(state: dict[str, UState], anchors: dict, stages_issued: dict[str, str | None],
+                   op_stage: dict[str, str] | None = None, op_provision: dict[str, str] | None = None) -> dict:
+    """What the effective text of each anchor's defining unit (rows.yaml `anchors: {PDD: {defined_in: VOL-I:6.1}}`)
+    states at this state: {name: {"date": date | None, "time": "HH:MM" | None, "tz": "Riyadh time" | None,
+    "unit": defined_in, "as_amended_by": [op ids in the unit's history, in order], "source": "VOL-I 6.1 as amended by
+    ADD-01 2.1, ADD-03 2.1" ("VOL-I 6.1" when unamended)}}.
+
+    The date and time are read with dates.parse_date (the date is the value anchor_values gives); the timezone label
+    is the 'Xxx time' words printed right after the time, else anywhere in the text. Anything the text does not
+    state is None, never a default. `source` is written with the references of the A1 source column (Register._ref:
+    '<doc> <clause>', a renumbered unit '<number> (issued as <clause>)') without page numbers, then ' as amended by '
+    and the provision of each op in the unit's history. With `op_stage` (op id -> stage), history entries that are
+    not ops of the amendment path are left out, as A1's units detail does; `op_provision` maps op ids to their
+    provisions (default: the op id with its first '/' read as ':' and any '(...)' suffix dropped). `stages_issued`
+    is accepted for symmetry with anchor_values: issue dates have no defining unit and are not returned here."""
+    near = re.compile(r"(?<![\d:.])(?:[01]\d|2[0-3]):[0-5]\d(?![\d:])(?:\s+hours?)?,?\s+\(?([A-Z][a-z]+ time)\b")
+    anywhere = re.compile(r"\b([A-Z][a-z]+ time)\b")
+    not_a_zone = {"The", "Any", "This", "That", "Each", "Every", "Such", "Same", "No", "At", "Its", "Their", "Which"}
+
+    def ref(uid: str) -> str:
+        u = state.get(uid)
+        doc, _, local = uid.partition(":")
+        return f"{doc} {u.number} (issued as {local})" if u is not None and u.number else f"{doc} {local}"
+
+    def provision(op_id: str) -> str:
+        return (op_provision or {}).get(op_id) or re.sub(r"\(.*\)$", "", op_id).replace("/", ":", 1)
+
+    out = {}
+    for name, a in anchors.items():
+        uid = a["defined_in"]
+        u = state.get(uid)
+        text = u.text if u is not None and u.status == "active" else ""
+        p = parse_date(text) if text else None
+        m = near.search(text) or next((x for x in anywhere.finditer(text) if x.group(1).split()[0] not in not_a_zone), None)
+        ops = [h for h in (u.history if u is not None else []) if op_stage is None or op_stage.get(h)]
+        out[name] = {"date": p[0] if p else None, "time": p[1] if p else None, "tz": m.group(1) if m else None,
+                     "unit": uid, "as_amended_by": ops,
+                     "source": ref(uid) + (f" as amended by {', '.join(ref(provision(h)) for h in ops)}" if ops else "")}
+    return out
+
+
 def dependencies(row: Row, interp: Interp, state: dict[str, UState], anchors: dict, op_provision: dict) -> list[str]:
     deps = []
     for uid in row.units:
@@ -272,12 +347,17 @@ def pin_value(state: dict[str, UState], uid: str) -> str:
 # ---------------------------------------------------------------------------------------------- evaluation
 
 class Register:
-    def __init__(self, rowfile: RowFile, stages: list[StageResult], cal: Calendar, policy: str = "conservative"):
+    def __init__(self, rowfile: RowFile, stages: list[StageResult], cal: Calendar | None = None,
+                 policy: str = "conservative"):
+        cal = cal if cal is not None else Calendar()      # a caller that needs no dates (pins, labels) may omit it
         self.rf, self.stages, self.cal, self.policy = rowfile, stages, cal, policy
+        # the calendar at each stage: the configured one plus the days notified by the addenda applied so far
+        self.cal_by_stage = {s.stage: cal.with_days(getattr(s, "non_working_days", [])) for s in stages}
         self.order = stage_order(stages)
         self.op_provision = {r.op.id: r.op.provision for s in stages for r in s.ops}
         self.op_stage = {r.op.id: s.stage for s in stages for r in s.ops}
         self.op_review = {r.op.id: r.op.review for s in stages for r in s.ops}
+        self.op_result = {r.op.id: r for s in stages for r in s.ops}
         self.issued = {s.stage: s.issued for s in stages}
 
     def interp_at(self, row: Row, stage: str) -> Interp | None:
@@ -294,6 +374,8 @@ class Register:
         prim = st.get(row.units[0])
         eff = effective(st, row.units[0], row.follows_replacement)
         out = {"stage": s.stage, "stage_status": s.status}
+        it = self.interp_at(row, s.stage)            # its `removed` decides the status (session 09)
+        removal = it.removed if it is not None else None
         # --- status
         hist = (prim.history if prim else []) + ([h for h in eff.history if h not in prim.history]
                                                   if eff is not None and prim is not None and eff is not prim else [])
@@ -307,6 +389,8 @@ class Register:
             status = f"REVOKED ({', '.join(here or earlier)})"
         elif eff.status == "superseded":
             status = f"REPLACED (by {eff.superseded_by})"
+        elif removal is not None:                    # the obligation's words were deleted; the unit stays in force
+            status = f"REMOVED ({removal.by})"
         elif prim.issued_by == s.stage or (eff.origin == "addendum_op" and here):
             status = "NEW"
         elif here:
@@ -317,7 +401,8 @@ class Register:
         else:
             status = "ACTIVE"
         out["status"] = status
-        active = prim is not None and eff is not None and eff.status == "active" and prim.status != "not_issued"
+        unit_active = prim is not None and eff is not None and eff.status == "active" and prim.status != "not_issued"
+        active = unit_active and removal is None
         out["active"] = active
         out["text"] = eff.text if eff is not None and eff.status != "not_issued" else ""
         out["cells"] = eff.cells if eff is not None else None
@@ -326,12 +411,13 @@ class Register:
         out["ops"] = hist
         out["ops_review"] = sorted({self.op_review.get(h, "?") for h in hist})
         # --- interpretation, quote, consequence
-        it = self.interp_at(row, s.stage)
         out["interpretation_stage"] = it.stage if it else None
         problems, flags = [], []
         if it is None:
             if active:
                 problems.append(f"no interpretation made at or before {s.stage}")
+        elif removal is not None and unit_active:     # nothing left to quote: the removal itself is checked
+            problems += self._removal_problems(row, it, s)
         elif active:
             if not found(it.quote, eff.text):
                 problems.append(f"quote not found in the effective text at {s.stage}: '{it.quote[:60]}'")
@@ -399,7 +485,7 @@ class Register:
                             unit=rd.unit, direction=rd.direction,
                             fixed=date.fromisoformat(rd.fixed) if rd.fixed else None, source_unit=rd.source_unit,
                             text=rd.text, note=rd.note)
-            ins = interpretations(rule, anchors, self.cal)
+            ins = interpretations(rule, anchors, self.cal_by_stage[s.stage])
             plan = planning_value(rule, ins, self.policy)
             if reread:
                 flags.append(f"{rd.rule_id}: {reread}")
@@ -447,6 +533,29 @@ class Register:
                 if r.op.id == op_id:
                     return r
         return None
+
+    def _removal_problems(self, row: Row, it: Interp, s: StageResult) -> list[str]:
+        """C16 for an interpretation that says the obligation was removed (`removed: {by: op}`): the op exists, is applied
+        at or before this stage and changed one of the row's units, and the quote is in that unit as it stood
+        immediately before the op (the words removed, or what remained of the clause)."""
+        by = it.removed.by
+        x = self.op_result.get(by)
+        if x is None:
+            return [f"removed by {by}: no op of the amendment path has that id"]
+        if not x.applied:
+            return [f"removed by {by}: the op is not applied at {self.op_stage[by]} ("
+                    + ("withheld after a person's rejection)" if x.valid else "invalid)")]
+        if self.order.index(self.op_stage[by]) > self.order.index(s.stage):
+            return [f"removed by {by}: the op applies at {self.op_stage[by]}, after {s.stage}"]
+        mine = set(row.units) | {e.unit_id for u in row.units if (e := effective(s.state, u, row.follows_replacement))}
+        hit = [u for u in x.changed if u in mine]
+        if not hit:
+            return [f"removed by {by}: the op changed none of the row's units ({', '.join(row.units)})"]
+        prev = self.stages[self.order.index(self.op_stage[by]) - 1].state
+        before = [x.details["before"]] if x.details.get("before") is not None else [prev[u].text for u in hit if u in prev]
+        if not any(found(it.quote, t or "") for t in before):     # the unit's text immediately before the op
+            return [f"removed by {by}: quote not found in {', '.join(hit)} as it stood before the op: '{it.quote[:60]}'"]
+        return []
 
     def source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
         out = self._source_of(uid, quote, s, follow)

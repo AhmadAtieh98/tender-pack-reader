@@ -519,7 +519,8 @@ def run_scenarios(make_plan, assumptions: dict, scenarios: dict, evidence_items:
 
 def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
     """make_plan(assumptions) for run_scenarios from a stage2.run result `r`: plans `stage` (default: the validated
-    stage) the way stage2.a5_all does (planning date = the stage's issue date; anchor = its PDD). When the
+    stage) the way stage2.a5_all does (planning date = the stage's issue date; anchor = its PDD, whose time, timezone
+    and source come from r["anchor_details"][stage], the effective text of its defining unit). When the
     assumptions give another calendar or counting policy, the register's dates are re-evaluated with it, so a
     declared holiday also moves pack dates counted in Working Days (e.g. the clarification cut-off). A gate that
     names an issue missing from the open-issue register is flagged on its activity (decided and removed, or a typo):
@@ -532,16 +533,18 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
     open_issues = set(r.get("curated_issues") or {})
 
     def make_plan(a: dict) -> dict:
-        cal = calendar_from_config(a.get("calendar"))
+        notified = (r.get("non_working_days") or {}).get(stage) or []
+        cal = calendar_from_config(a.get("calendar")).with_days(notified)
         policy = (a.get("planning") or {}).get("counting_policy", "conservative")
-        if cal == r["cal"] and policy == r["policy"]:
+        if cal == r["register"].cal_by_stage[stage] and policy == r["policy"]:
             evals = r["evals"]
         else:
             if (cal, policy) not in cache:
                 cache[(cal, policy)] = Register(r["rowfile"], r["stages"], cal, policy).all()
             evals = cache[(cal, policy)]
         pdd = next((d["anchor_value"] for e in evals for d in e["stages"][stage]["dates"] if d["anchor"] == "PDD"), None)
-        prog = plan(stage, evals, r["templates"], a, cal, status_date, {"PDD": pdd}, evidence_items=r["evidence_items"])
+        prog = plan(stage, evals, r["templates"], a, cal, status_date, {"PDD": pdd}, evidence_items=r["evidence_items"],
+                    anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified)
         for act in prog["activities"]:
             for i in act.get("gated_by") or []:
                 if i not in open_issues:
@@ -656,7 +659,9 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     L += ["", "## Timing at the planning date", ""]
     bad = [a for a in acts if a["status"] != "OK"]
     drv = {d["activity"]: d for d in p.get("drivers", [])}
-    L += [f"- `{a['id']}`: {a['status']} (float {a['float_wd']} WD; {', '.join(a['req_ids'][:6])}"
+    L += [f"- `{a['id']}`: {a['status']} ("
+          + (f"float {a['float_wd']} WD" if a["float_wd"] is not None else "no float: no latest start") + "; "
+          + f"{', '.join(a['req_ids'][:6])}"
           + (f" +{len(a['req_ids']) - 6} more" if len(a["req_ids"]) > 6 else "") + ")"
           + (f"; would be feasible with: {drv[a['id']]['would_make_feasible'][0]}" if a["id"] in drv else "")
           for a in bad] or ["- all OK"]
