@@ -53,8 +53,8 @@ All times UTC, from the session transcript's timestamps.
 | 06:33–06:52 | Curation of ADD-03: 31 ops; four live fixes with regressions; 8 new rows, 42 re-made readings, 6 issues; A5 templates; clarification register; curated outputs published (06:52:41); `diff`. |
 | 06:50 | Full suite on `2708261`: **386 passed** (29 min 37 s). |
 | 06:52:58 | **Key unsealed**; hashes verified. Pre-key state committed and pushed (`ec8085b`, 06:54). |
-| 06:53–07:03 | Comparison written; post-key fixes (marked, not scored) rebuilt into `out-after-fixes/`; pushed (`c6bcbdb`). |
-| 07:03–07:10 | Real outputs rebuilt with the live fixes: byte-identical to `out/`. `outputs --strict`: exit 3 (§6). Final full suite started. A date claim in the comparison corrected on re-check (E111). |
+| 06:53–07:03 | Comparison written; post-key fixes (marked, not scored) rebuilt into `out-after-fixes/` (07:00). Real outputs rebuilt with the live fixes: byte-identical to `out/` (07:00). Final full suite started and `outputs --strict` run (exit 3; §6) at 07:01. Pushed (`c6bcbdb`, 07:03). |
+| 07:03–07:30 | A date claim in the comparison corrected on re-check (E111, 07:03). Work log, PLAN §14, operating guide, cost and effort, before/after report (`e63b277`). |
 
 ## 3. The four findings, reproduced before any fix
 
@@ -237,7 +237,7 @@ Revision 8 (`docs/PLAN.md`): status, a revision row, §4.6 restating that every 
 | E108 | A post-key edit broke the YAML quoting of a note, and one note replacement silently matched nothing (wrapped text) | 06:58, by check-register and a count | Edited through the YAML structure |
 | E109 | Blind-02 curation: `lesser` for refusals of a submitted document (Q15, Q16) took two rows off the A3 gate; `score_elimination` for a zero on one criterion | After unsealing, by the key | Post-key fix (not scored); curator guidance in PLAN §14 |
 | E110 | Blind-02 curation: the model-auditor appointment and review stayed in the pre-submission programme | After unsealing, by the key | Post-key fix (not scored) |
-| E111 | The comparison first said every expected date was reproduced; the look-back start is the alternative reading (one day apart, by stated convention) | 07:08, on re-checking the dates | `COMPARISON.md` corrected; the `c6bcbdb` commit message keeps the first wording (history not rewritten) |
+| E111 | The comparison first said every expected date was reproduced; the look-back start is the alternative reading (one day apart, by stated convention) | 07:03, on re-checking the dates | `COMPARISON.md` corrected; the `c6bcbdb` commit message keeps the first wording (history not rewritten) |
 
 ## 6. Verification results
 
