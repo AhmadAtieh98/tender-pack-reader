@@ -149,7 +149,7 @@ rows:
   - id: VOL-I-8.3-01
     group: VOL-I:8.3
     scope: [qualification, envelope_A]
-    requirement: "EPC Contractor ISO 9001:2015 certificate, current as at the Proposal Due Date, copy in Envelope A"
+    requirement: "EPC Contractor ISO 9001:2015 certificate from an accredited certification body, current as at the Proposal Due Date (as amended), copy with Envelope A; checked pass/fail under VOL-I 11.1(i)"
     units: ["VOL-I:8.3"]
     discipline: Technical
     owner: Technical lead
@@ -160,6 +160,25 @@ rows:
     interpretations:
       - stage: BASE
         quote: "current as at the Proposal Due Date"
+      - stage: ADD-01
+        quote: current as at the Proposal Due Date
+        parameters:
+          current_at: 'the latest amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6, 6.1 as amended
+            by ADD-01 2.1; not changed by ADD-02)'
+          issuer: an accredited certification body (VOL-I 8.3)
+          copy: submitted with Envelope A (VOL-I 8.3)
+          gate: 'VOL-I 11.1(i): responsiveness and mandatory compliance check, pass or fail; only Proposals that pass
+            go on to 11.1(ii)'
+        note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the EPC Contractor''s
+          ISO 9001:2015 certificate must be valid (current) at the latest amended Proposal Due Date, 26 November 2026,
+          14:00 Riyadh time (VOL-I 2.6 defines the Proposal Due Date as the date and time in 6.1 as amended; ADD-01 2.1
+          moved the date and kept the time; ADD-02 does not change it). It must also be issued by an accredited certification
+          body, and a copy must be submitted with Envelope A (VOL-I 8.3). VOL-I 8.3 states no consequence of its own;
+          the requirement is checked at the responsiveness and mandatory compliance stage on a pass or fail basis, and
+          only Proposals that pass that stage go on to technical evaluation (VOL-I 11.1(i)-(ii)). The pack gives no ISO-specific
+          rejection label and says nothing on whether a failure can be cured; neither is implied. [Applied from proposal
+          P-S08-VOL-I-8.3-01 by Claude Code (assistant), on Ahmad''s written instruction of 3 Oct 2026 (session 08 §3)
+          on 2026-10-03.]'
     confidence: medium
     confidence_reason: "no consequence stated; this period is not named in ADD-01 §2.2 (whose list is non-exhaustive)"
     issues: [I-NO-CONSEQUENCE]
@@ -249,7 +268,7 @@ rows:
   - id: VOL-I-9.3-01
     group: VOL-I:9.3
     scope: [envelope_A, forms]
-    requirement: "Form 4-A signed by a person holding a notarised Power of Attorney from the lead member"
+    requirement: "Form 4-A (as reissued by ADD-01 App A) signed by a person holding a notarised Power of Attorney from the lead member; an unsigned or improperly executed Form 4-A renders the Proposal non-responsive"
     units: ["VOL-I:9.3"]
     discipline: Legal
     owner: Legal counsel
@@ -299,7 +318,7 @@ rows:
         consequence: {class: non_responsive, unit: "VOL-I:9.4", quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
         note: "ADD-02 Q9 confirms Arabic; an English translation may be attached for convenience only."
     confidence: high
-    confidence_reason: "text-layer clause; the form itself is an image whose reading is pending"
+    confidence_reason: "text-layer clause; the form itself is an image (transcription confirmed by the owner, 3 Oct 2026)"
     issues: [I-BIDDER-FACTS]
   - id: VOL-IV-F4C-04
     group: VOL-IV:F4-C
@@ -314,14 +333,14 @@ rows:
       - stage: BASE
         quote: "أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة"
         consequence: {class: exclusion, unit: "VOL-IV:F4-C/image/decl4", quote: "يؤدي إلى استبعاد العرض", gloss: "leads to the exclusion of the proposal"}
-        note: "Consequence stated only in Arabic (gloss: proposed translation). Which of the pack's categories 'exclusion' falls under is for a person."
+        note: "Consequence stated only in Arabic (gloss: the displayed translation, confirmed by the owner on 3 Oct 2026 as a translation). 'Exclusion' (استبعاد) is kept as its own category: it is not treated as equivalent to the pack's rejection, disqualification or non-responsiveness. Which of them, if any, it corresponds to is for a person (I-F4C-EXCLUSION)."
       - stage: ADD-02
         quote: "أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة"
         consequence: {class: exclusion, unit: "VOL-IV:F4-C/image/decl4", quote: "يؤدي إلى استبعاد العرض", gloss: "leads to the exclusion of the proposal"}
         note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
     confidence: medium
-    confidence_reason: "from an image reading still pending the owner's review; Arabic-only consequence"
-    issues: [I-READING-F4C]
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); Arabic-only consequence whose category is unresolved"
+    issues: [I-READING-F4C, I-F4C-EXCLUSION]
   - id: VOL-IV-F4C-N1
     group: VOL-IV:F4-C
     scope: [forms, arabic]
@@ -340,7 +359,7 @@ rows:
         consequence: {class: non_responsive, unit: "VOL-IV:F4-C/image/note", quote: "عدم تقديمه كاملاً يجعل العرض غير مستجيب", gloss: "failure to submit it complete renders the proposal non-responsive"}
         note: "ADD-02 Q9 confirms the Arabic requirement."
     confidence: medium
-    confidence_reason: "from an image reading still pending the owner's review"
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026)"
     issues: [I-READING-F4C]
   - id: ADD-02-7.2-01
     group: ADD-02:7
@@ -360,18 +379,67 @@ rows:
     issues: [I-F4G-LETTERING]
   - id: ADD-02-F4G-01
     group: ADD-02:F4-G
-    scope: [forms, post_award, new_in_addendum]
-    requirement: "Form 4-G undertakings 1-6, each confirmed Yes or No (3-6 are new obligations not in VOL-II 6)"
-    units: ["ADD-02:F4-G/T1/3", "ADD-02:F4-G/T1/4", "ADD-02:F4-G/T1/5", "ADD-02:F4-G/T1/6"]
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 3: appoint a named accountable security officer for the concession period (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "A named accountable security officer will be appointed for the concession period."
+        note: "Form 4-G undertaking 3. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-05
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 4: notify security incidents affecting the Facility to the Authority within 24 hours of detection (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/4"]
     discipline: Technical
     owner: Technical lead
     assessment: contractual_post_award
     evidence: [EV-FORM-4G]
     date_notes:
-      - {text: "within twenty-four (24) hours of detection", treatment: post_award, reason: "undertaking 4: notify security incidents within 24 hours of detection, after award; an event-driven period, not a bid-stage date"}
+      - {text: "within twenty-four (24) hours of detection", treatment: post_award, reason: "undertaking 4: an event-driven post-award period (from detection of each incident), not a bid-stage date"}
     interpretations:
       - stage: ADD-02
-        quote: "A named accountable security officer will be appointed for the concession period."
+        quote: "Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection."
+        note: "Form 4-G undertaking 4. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-06
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 5: an independent penetration test of the OT environment every year, with the report provided to the Authority (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "An independent penetration test of the operational technology environment will be carried out annually and the report provided to the Authority."
+        note: "Form 4-G undertaking 5. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-07
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 6: remote access to the control system requires multi-factor authentication and is logged (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/6"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "Remote access to the control system will require multi-factor authentication and will be logged."
+        note: "Form 4-G undertaking 6. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
     confidence: medium
     confidence_reason: "verbatim; the effect of answering 'No' is not stated"
     issues: [I-F4G-NO]
@@ -403,6 +471,26 @@ rows:
     discipline: Legal
     owner: Legal counsel
     assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show a VOL-V 31.1(c) event was cured within the 72-hour cure period cannot
+        be specified from the extract, which states the length of the period but not when it starts or what a cure changes,
+        and the deductions are calculated under Schedule 7 (VOL-V 31.2), which is not supplied.'
+      basis:
+      - unit: VOL-V:31.3
+        page: 3
+        words: of seventy-two (72) hours to an event under Clause 31.1(c)
+      - unit: VOL-V:31.2
+        page: 3
+        words: On the occurrence of an Unavailability Event the Authority shall deduct from the Availability Payment
+          the amounts calculated under Schedule 7.
+      missing: 'When the 72-hour cure period starts (occurrence, detection or notice), whether any notice is needed,
+        and whether a cure within it removes or reduces the deduction: VOL-V 31.3 gives only the length, and the deduction
+        calculation is in Schedule 7, referenced in VOL-V 31.2 and not supplied (I-VOL-V-MISSING); once known, a timestamped
+        record of each 31.1(c) event''s start and of the restoration of delivery at the required residual head is the
+        likely evidence.'
+      bid_stage_note: ADD-02 4.1 substitutes ‘ninety-six (96) hours’ for ‘seventy-two (72) hours’ in Volume II Clause
+        4.4 (standby power) only; the 72-hour cure period in VOL-V 31.3 is not amended and is not to be read as 96 hours.
     interpretations:
       - stage: BASE
         quote: "of seventy-two (72) hours to an event under Clause 31.1(c)"
@@ -437,6 +525,22 @@ rows:
     discipline: Commercial
     owner: Commercial lead
     assessment: contractual_post_award
+    post_award_evidence:
+      kind: not_applicable
+      text: 'Not applicable: indexation of the Availability Payment (60% indexed to the published consumer price index,
+        40% fixed) is a payment term applied in accordance with Schedule 9, not an act the Project Company performs
+        and evidences.'
+      basis:
+      - unit: VOL-V:29.2
+        page: 3
+        words: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
+          (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
+      reason: The clause states how the Availability Payment is indexed ('shall be indexed annually in accordance with
+        Schedule 9'); it gives the Project Company nothing to do. Any indexed amount would appear in the monthly invoices
+        proposed under row VOL-V-29.4-01. Schedule 9, under which the indexation is applied, is not supplied (I-VOL-V-MISSING).
+      bid_stage_note: 'Price assumption: Form 4-F states ''Indexation basis assumed: Per Volume V Clause 29.2'', so
+        the Financial Model should apply the 60/40 split, but Schedule 9 is not supplied; VOL-I 10.5 makes a price subject
+        to adjustment other than as provided in Volume V non-responsive.'
     interpretations:
       - stage: BASE
         quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
@@ -522,11 +626,11 @@ rows:
       - stage: BASE
         quote: "Limit: 5"
         parameters: {value_shown: 5, unit: "mg/l", basis: "30-day rolling average"}
-        note: "Read from the image (pending). The table's qualifier 'all values are maxima' is recorded as context; what the value means is left to a person."
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026): TN = 5 mg/l is the original reading. The table's qualifier 'all values are maxima' is recorded as context; what the value means is left to a person."
       - stage: ADD-02
         quote: "Limit: 3"
         parameters: {value_shown: 3, unit: "mg/l", basis: "30-day rolling average"}
-        note: "ADD-02 §5.1 amends 'from the value shown' (which exists only in the image) to 3 mg/l, same basis. The Environmental Permit, which prevails over the reproduction (VOL-II 2.4), is not in the pack."
+        note: "ADD-02 §5.1 amends 'from the value shown' (which exists only in the image) to 3 mg/l, same basis. The Environmental Permit, which prevails over the reproduction (VOL-II p3, reproduction preamble), is not in the pack; no Permit compliance is claimed, including for the amended TN limit."
     confidence: medium
-    confidence_reason: "base value and basis come from an image reading still pending review; the Permit is not supplied"
+    confidence_reason: "base value 5 mg/l and basis come from the image reading (transcription confirmed by the owner, 3 Oct 2026); the separate amended value 3 mg/l comes from ADD-02 5.1 (op proposed); the Permit is not supplied"
     issues: [I-PERMIT, I-READING-T24]

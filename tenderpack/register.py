@@ -30,7 +30,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .amend import BASE, StageResult, UState
+from .amend import BASE, StageResult, UState, unit_pin
 from .dates import Calendar, DateRule, Interpretation, interpretations, parse_date, planning_value
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
@@ -82,6 +82,19 @@ class DateNote(_Strict):
     reason: str
 
 
+class PostAwardEvidence(_Strict):
+    """What would evidence a post-award obligation (session 08). Never a claim that the bidder holds anything:
+    `proposed` is a requirement to produce in future, `not_applicable` says why none applies, `unresolved` names what
+    the pack does not specify. Every `basis` quote must be in the unit's text (check-register)."""
+    kind: Literal["proposed", "not_applicable", "unresolved"]
+    text: str
+    basis: list[dict] = Field(default_factory=list)          # [{unit, page, words}]
+    when: str | None = None
+    reason: str | None = None
+    missing: str | None = None
+    bid_stage_note: str | None = None
+
+
 class Row(_Strict):
     id: str
     group: str
@@ -100,6 +113,7 @@ class Row(_Strict):
     follows_replacement: bool = False            # a replaced table row / form field continues in its replacement
     owner: str | None = None                     # role accountable for the row (defaults to the discipline)
     no_deliverable: str | None = None            # why a bid-stage row needs no deliverable (A5 two-way check)
+    post_award_evidence: PostAwardEvidence | None = None   # post-award rows: proposed evidence / not applicable / unresolved
     review: Literal["proposed", "accepted"] = "proposed"
     reviewer: str | None = None
 
@@ -252,10 +266,7 @@ def pin_value(state: dict[str, UState], uid: str) -> str:
     annotations on it, and, for a unit read from an image, the reading's review-subject fingerprint
     (content, uncertainties and evidence). A changed reading therefore keeps dependent interpretations
     STALE even after its new transcription is approved; the approval status itself is not pinned."""
-    u = state.get(uid)
-    if u is None:
-        return "absent"
-    return sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or ""))[:16]
+    return unit_pin(state, uid)
 
 
 # ---------------------------------------------------------------------------------------------- evaluation
@@ -405,6 +416,21 @@ class Register:
         out["dates"] = dates
         out["problems"], out["flags"] = problems, flags
         out["chain"] = self.chain(row, s)
+        # every unit the row cites, not only the first: its text as issued, its effective text and its reference at
+        # this stage (a multi-unit row, e.g. a clause with the Table 2-2 rows it relies on, keeps every value and citation)
+        details = []
+        for uid in row.units:
+            b = self.stages[0].state.get(uid)
+            e_u = effective(st, uid, row.follows_replacement)
+            details.append({"unit": uid, "ref": self._ref(uid, self.stages[0].state if uid in self.stages[0].state else st),
+                            "original_text": b.text if b is not None and b.status != "not_issued" else "",
+                            "issued_by": b.issued_by if b is not None else None,
+                            "effective_unit": e_u.unit_id if e_u is not None else None,
+                            "effective_ref": self._ref(e_u.unit_id, st) if e_u is not None else "",
+                            "text": e_u.text if e_u is not None and e_u.status not in ("not_issued",) else "",
+                            "status": e_u.status if e_u is not None else "absent",
+                            "ops": [h for h in (e_u.history if e_u is not None else []) if self.op_stage.get(h)]})
+        out["units_detail"] = details
         return out
 
     # ------------------------------------------------------------------ provenance (latest reference)
@@ -479,21 +505,24 @@ class Register:
         return (None, None)
 
     def chain(self, row: Row, s: StageResult) -> list[str]:
-        """Evidence chain: the original unit and page, then each op with its provision and page."""
+        """Evidence chain: every unit the row cites, as issued (document, page, origin), then each op that changed any of
+        them (or its replacement) up to this stage, with the stage, its provision and page."""
         st = s.state
         base = self.stages[0].state
-        out = []
-        u0 = base.get(row.units[0]) or st.get(row.units[0])
-        if u0 is not None:
-            out.append(f"{row.units[0]} ({u0.doc} p{','.join(map(str, u0.pages))}; {u0.origin.replace('_', ' ')})")
-        eff = effective(st, row.units[0], row.follows_replacement)
-        hist = []
-        for uid in [row.units[0]] + ([eff.unit_id] if eff is not None and eff.unit_id != row.units[0] else []):
-            hist += [h for h in (st[uid].history if uid in st else []) if h not in hist]
+        out, hist = [], []
+        for uid in row.units:
+            u0 = base.get(uid) or st.get(uid)
+            if u0 is not None:
+                out.append(f"{uid} ({u0.doc} p{','.join(map(str, u0.pages))}; {u0.origin.replace('_', ' ')}"
+                           + (f"; issued by {u0.issued_by}" if u0.issued_by else "") + ")")
+            eff = effective(st, uid, row.follows_replacement)
+            for k in [uid] + ([eff.unit_id] if eff is not None and eff.unit_id != uid else []):
+                hist += [h for h in (st[k].history if k in st else []) if h not in hist]
         for h in hist:
             prov = self.op_provision.get(h)
             pu = st.get(prov)
-            out.append(f"{h} [{self.op_review.get(h)}] <- {prov} ({pu.doc} p{','.join(map(str, pu.pages))})" if pu else h)
+            out.append(f"{h} [{self.op_stage.get(h)}; {self.op_review.get(h)}] <- {prov} ({pu.doc} p{','.join(map(str, pu.pages))})"
+                       if pu else h)
         return out
 
     def all(self) -> list[dict]:

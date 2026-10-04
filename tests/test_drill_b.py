@@ -19,6 +19,7 @@ from tenderpack.util import ROOT
 
 sys.path.insert(0, str(ROOT / "tests/fixtures/drill_b"))
 import rehearse  # noqa: E402
+from guards import only_owner_approvals
 
 
 @pytest.fixture(scope="module")
@@ -95,7 +96,7 @@ def test_stale_dependencies_and_preserved_approved_state(drill):
     blockers = " ".join(b["detail"] for b in drill["res"]["curated"]["blockers"])
     assert "VOL-I-5.2-01" in blockers and "VOL-IV-p6-r1" in blockers and "VOL-II-p3-r1" not in blockers
     assert "changed 1" in blockers
-    assert not (ROOT / "curation/approvals.yaml").exists() and not (ROOT / "curation/reviews/decisions.yaml").exists()
+    assert only_owner_approvals()
 
 
 def test_every_new_obligation_reaches_the_outputs_after_curation(drill):

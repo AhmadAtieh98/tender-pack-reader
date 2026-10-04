@@ -13,10 +13,14 @@ For one stage of the amendment path:
      successor of 0 Working Days (done at the end of a day, e.g. sealing) does not take a day of its own:
      its predecessor may finish the same day;
      latest start = latest finish - (duration - 1) Working Days (= latest finish for 0 or 1);
+     work happens on Working Days only: when a pack deadline falls on a weekend day or a declared holiday, the
+     latest finish is the last Working Day before it. The legal deadline itself is never moved: it is kept on
+     the activity (`deadline`) and flagged DEADLINE ON A NON-WORKING DAY (session 08);
      `driven_by` records what set the latest finish (a successor, or the activity's own deadline);
-  4. flags: INFEASIBLE by n Working Days when the latest start is before the status date (never
+  4. flags (window_flags): INFEASIBLE by n Working Days when the latest start is before the status date (never
      compressed), DEADLINE PASSED when the activity's own pack deadline is already before the status date
-     (a person records whether it was done), plus the requirement flags
+     (a person records whether it was done), NO WORKING WINDOW when the deadline has not passed but no Working
+     Day is left on or before it (an explicit conflict for a person; nothing is moved), plus the requirement flags
      (STALE interpretation, image reading pending) carried from the rows.
 Deltas between consecutive stages: NEW, REMOVED, MOVED (latest start changed), REWORK (the
 requirement behind an activity changed — its interpretation, dates, wording, cells, or it became STALE:
@@ -35,11 +39,12 @@ Documents, resources, drivers and scenarios are built on this output by tenderpa
 """
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 from .dates import Calendar
 
 IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW")
+BLOCKING_FLAGS = ("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE", "NO WORKING WINDOW")
 
 # evidence-vocabulary `per` -> the bidder settings (config/assumptions.yaml bidder:) whose product it is
 PER = {
@@ -90,10 +95,18 @@ def duration_basis(lt: dict) -> str:
     return f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {b}"
 
 
+def last_working_day(cal: Calendar, d: date) -> date:
+    """d itself when it is a Working Day, otherwise the last Working Day before it."""
+    while not cal.is_working_day(d):
+        d -= timedelta(days=1)
+    return d
+
+
 def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
     """acts: id -> {"duration_wd": int, "predecessors": [ids in acts], "deadline_date": date | None,
-    "deadline_rule": str | None}. Returns id -> {"ls", "lf" (date | None), "driven_by" (successor id,
-    'deadline:<rule>' or None)}. Pure; raises ValueError on a dependency cycle."""
+    "deadline_rule": str | None}. Returns id -> {"ls", "lf" (Working Days or None), "driven_by" (successor id,
+    'deadline:<rule>' or None), "deadline" (the legal deadline, unchanged), "deadline_nonworking"}.
+    Pure; raises ValueError on a dependency cycle."""
     succ: dict[str, list[str]] = {k: [] for k in acts}
     for k, a in acts.items():
         for p in a["predecessors"]:
@@ -109,8 +122,9 @@ def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
         visiting.add(aid)
         a = acts[aid]
         cands = []
-        if a.get("deadline_date") is not None:
-            cands.append((a["deadline_date"], 0, f"deadline:{a.get('deadline_rule')}"))
+        legal = a.get("deadline_date")
+        if legal is not None:
+            cands.append((last_working_day(cal, legal), 0, f"deadline:{a.get('deadline_rule')}"))
         for s in sorted(succ[aid]):
             st = visit(s)["ls"]
             if st is not None:
@@ -119,12 +133,36 @@ def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
         d = int(a["duration_wd"])
         ls = None if lf is None else (cal.add_working_days(lf, -(d - 1)) if d > 1 else lf)
         visiting.discard(aid)
-        res[aid] = {"ls": ls, "lf": lf, "driven_by": drv}
+        res[aid] = {"ls": ls, "lf": lf, "driven_by": drv, "deadline": legal,
+                    "deadline_nonworking": legal is not None and not cal.is_working_day(legal)}
         return res[aid]
 
     for k in sorted(acts):
         visit(k)
     return res
+
+
+def window_flags(t: dict, status_date: date, cal: Calendar) -> list[str]:
+    """Timing flags of one activity from its backward-pass result. The legal deadline is quoted, never moved."""
+    s, f, legal = t["ls"], t["lf"], t.get("deadline")
+    flags = []
+    if f is None:
+        return ["NO DEADLINE REACHED (not linked to a pack date)"]
+    if t.get("deadline_nonworking"):
+        flags.append(f"DEADLINE ON A NON-WORKING DAY (legal deadline {legal.isoformat()} ({legal.strftime('%a')}) "
+                     f"kept; the work must finish by {f.isoformat()}, the last Working Day before it)")
+    if legal is not None and legal < status_date:
+        flags.insert(0, f"DEADLINE PASSED ({t.get('rule') or 'own deadline'} = {legal.isoformat()} is before the status "
+                        f"date {status_date.isoformat()}; record whether it was done)")
+    elif legal is not None and str(t.get("driven_by") or "").startswith("deadline:") and f < status_date:
+        flags.insert(0, f"NO WORKING WINDOW (the deadline {legal.isoformat()} has not passed, but the last Working Day "
+                        f"on or before it, {f.isoformat()}, is before the status date {status_date.isoformat()}; the "
+                        "legal deadline is unchanged; a person decides how to resolve the conflict)")
+    elif s is not None and s < status_date:
+        short = cal.working_days_between(s, status_date)
+        flags.insert(0, f"INFEASIBLE by {short} WD (latest start {s.isoformat()} is before the status date "
+                        f"{status_date.isoformat()}; not compressed)")
+    return flags
 
 
 def check_templates(templates: dict, assumptions: dict) -> list[str]:
@@ -237,17 +275,7 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     for aid in sorted(acts, key=lambda k: (bp[k]["ls"] or date.max, k)):
         a = acts[aid]
         s, f = bp[aid]["ls"], bp[aid]["lf"]
-        flags = []
-        own = deadlines.get(a["deadline_rule"]) if a["deadline_rule"] else None
-        if f is None:
-            flags.append("NO DEADLINE REACHED (not linked to a pack date)")
-        elif own is not None and date.fromisoformat(own[0]) < status_date:
-            flags.append(f"DEADLINE PASSED ({a['deadline_rule']} = {own[0]} is before the status date "
-                         f"{status_date.isoformat()}; record whether it was done)")
-        elif s is not None and s < status_date:
-            short = cal.working_days_between(s, status_date)
-            flags.append(f"INFEASIBLE by {short} WD (latest start {s.isoformat()} is before the status date "
-                         f"{status_date.isoformat()}; not compressed)")
+        flags = window_flags({**bp[aid], "rule": a["deadline_rule"]}, status_date, cal)
         for r in a["req_ids"]:
             flags += [f"{x} ({r})" for x in row_flags.get(r, [])]
         flags += [f"dependency '{d}' not required at this stage" for d in a.pop("not_required_here")]
@@ -255,8 +283,8 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                      "driven_by": bp[aid]["driven_by"],
                      "deadline": (f"{a['deadline_rule']} = {deadlines[a['deadline_rule']][0]} (from {deadlines[a['deadline_rule']][1]})"
                                   if a["deadline_rule"] in deadlines else ""),
-                     "flags": flags, "status": "OK" if not any(x.startswith(("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE"))
-                                                               for x in flags) else flags[0].split(" (")[0]})
+                     "flags": flags, "status": "OK" if not any(x.startswith(BLOCKING_FLAGS) for x in flags)
+                     else next(x for x in flags if x.startswith(BLOCKING_FLAGS)).split(" (")[0]})
     marshalling = [{"item": r["item"], "envelope": r["envelope"], "evidence": r["evidence"], "issuer": r["issuer"],
                     "owner": r["owner"], "resource": r["resource"], "lead_time_wd": r["duration_wd"],
                     "lead_time_assumption": r["duration_assumption"], "multiplicity": r["multiplicity"],

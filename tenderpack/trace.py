@@ -1,7 +1,10 @@
 """C46 obligation trace: an amendment op being accounted for (C20) does not prove that what it requires reached
 the register. For every valid op that creates or amends an obligation, at the stage it applies:
 
-  A1  a register row in force at that stage holds the units the op created or changed (or its provision);
+  A1  a register row in force at that stage holds the units the op created or changed (or its provision). For an
+      insertion, each inserted part needs its own row: the new list item (or the provision that inserts it), and
+      the new group's content. The insertion anchor is never evidence of coverage: its rows predate the insertion
+      and say nothing about what was inserted after it (session 08);
   A3  consequence words the op brings in (new text, inserted or replacement content, an obligation it adds;
       English and Arabic lexicons of dispositions.py) are carried by such a row's consequence, quoted from those
       units, or explained by a unit disposition's `consequence_note`;
@@ -51,7 +54,7 @@ def obligation_trace(r: dict) -> list[dict]:
         st, prev = s.state, r["stages"][i - 1].state
         for x in s.ops:
             op = x.op
-            if not x.valid or (op.type == "annotate" and op.effect != "adds_obligation"):
+            if not x.applied or (op.type == "annotate" and op.effect != "adds_obligation"):
                 continue
             if op.type == "set_status" and op.status != "reinstated":
                 continue
@@ -60,9 +63,19 @@ def obligation_trace(r: dict) -> list[dict]:
                 carriers = [op.provision] + [k for t in op.targets for k in ([t] if t in st else group_members(st, t))]
             else:
                 carriers = [k for k in x.changed if k in st and st[k].status != "superseded"]
-            keys = set(carriers) | {op.provision} | set(x.changed)
-            keys |= {k for k in (op.target, op.replacement, op.new_group, op.anchor) if k}
-            keys |= set(op.targets or [])
+            needs: list[tuple[str, set[str]]] = []               # (what, the units any one of which a row must hold)
+            if op.type == "insert_unit":
+                item = f"{op.anchor}+{s.stage}" if op.anchor else None
+                if item:
+                    needs.append((f"the item inserted after {op.anchor}", {item, op.provision}))
+                if op.new_group:
+                    needs.append((f"the new {op.new_group}", {k for k in x.changed if k != item} | {op.new_group}))
+                keys = set().union(*(n for _, n in needs)) if needs else {op.provision}
+            else:
+                keys = set(carriers) | {op.provision} | set(x.changed)
+                keys |= {k for k in (op.target, op.replacement, op.new_group) if k}
+                keys |= set(op.targets or [])
+                needs = [("it", keys)]
             # obligation-bearing? and which consequence words the op brings in
             bearing, brought = op.type in ("annotate", "insert_unit", "replace_unit") or op.status == "reinstated", set()
             for k in carriers:
@@ -81,9 +94,12 @@ def obligation_trace(r: dict) -> list[dict]:
             words = f"'{(prov.text or '')[:200]}'"
             base = {"stage": s.stage, "op": op.id, "provision": op.provision, "units": sorted(carriers)[:8],
                     "rows": [e["row"].id for e in rows]}
-            if not rows:
-                out.append({**base, "output": "A1", "detail": f"{op.id} ({op.type}) creates or amends an obligation that no "
-                            f"A1 row in force at {s.stage} holds: {words}"})
+            for what, need in needs:
+                if not [e for e in rows if _cites(e["row"].units, need)]:
+                    out.append({**base, "output": "A1", "detail": f"{op.id} ({op.type}) creates or amends an obligation that no "
+                                f"A1 row in force at {s.stage} holds" + (f" ({what}; a row of the anchor {op.anchor} does "
+                                                                         "not count)" if op.type == "insert_unit" else "")
+                                + f": {words}"})
             if brought and not noted:
                 carried = []
                 for e in rows:

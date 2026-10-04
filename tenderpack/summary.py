@@ -345,11 +345,11 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
                 matched_by.setdefault(x.op.id, []).append(c["n"])
                 covered_sections.add(section(x.op.provision))
                 o, cls = x.op, _op_class(x.op)
-                if not x.valid or o.review == "rejected":
+                if not x.applied:
                     rec["findings"].append({"kind": "claimed, not applied", "claim": c["n"], "op": o.id,
                                             "provision": o.provision, "detail":
                                             f"'{c['text']}' describes {o.id}, which is "
-                                            f"{'rejected by a person' if o.review == 'rejected' else 'INVALID'} and was "
+                                            f"{'rejected by a person (withheld)' if x.withdrawn else 'INVALID'} and was "
                                             "not applied" + (f" ({_failed(x)})" if not x.valid else "")})
                 if c["kind"] in ("answers", "info") and cls in CHANGES | {"obligation"}:
                     rec["findings"].append({"kind": "understated", "claim": c["n"], "op": o.id, "provision": o.provision,
@@ -382,7 +382,8 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None) 
                 rec["findings"].append({"kind": "omitted", "op": o.id, "provision": o.provision, "detail":
                                         f"{o.id} {_does(o)}; the summary does not mention it: '{_gist(ptext)}'"
                                         + (f" (it states a consequence: '{cons}')" if cons else "")
-                                        + ("" if x.valid else " [op INVALID: not applied]")})
+                                        + ("" if x.applied else " [op withheld after a rejection: not applied]"
+                                           if x.valid else " [op INVALID: not applied]")})
         with_op = {x.op.provision for x in s.ops}
         for c in unresolved:
             if c["provision"] in with_op:              # it has an op that failed: reported with that op, not here

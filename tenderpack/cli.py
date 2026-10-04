@@ -72,7 +72,7 @@ from .readings import (check_reading, load_approvals, load_readings, reading_uni
                        review_subject, valid_reviewer)
 from .regions import detect_regions
 from .sources import load_documents
-from .util import ROOT, dump_json, load_yaml, sha256_bytes, sha256_file
+from .util import ROOT, dump_json, load_yaml, relpath, sha256_bytes, sha256_file
 
 MARKER = ".tenderpack-build"
 PROTECTED = ("sources", "config", "curation", "tenderpack", "tests", "docs", "worklog", ".git", ".venv")
@@ -325,10 +325,26 @@ def show_cmd(item: str, evidence: Path, pack_path: Path, to: Path) -> int:
 
 
 def approve(region_id: str, reviewer: str, notes: str | None, root: Path = ROOT,
-            pack_path: Path | None = None, approvals_path: Path | None = None) -> int:
-    """Record a person's approval. Only a person runs this; the program never approves anything itself."""
+            pack_path: Path | None = None, approvals_path: Path | None = None, record: str | None = None,
+            resolutions: list[str] | None = None, keeps_open: list[str] | None = None,
+            not_covered: list[str] | None = None, confirm_changes: bool = False) -> int:
+    """Record a person's approval. Only a person runs this (or it is run on that person's written instruction,
+    named in `record`); the program never approves anything itself.
+
+    The entry pins the review subject (the reading and its evidence) and also records: the reading file's sha256 and
+    the last commit that changed it, a snapshot of the file (so a later version can be compared with what was
+    approved), the confirmation record, what the reviewer settled (`resolutions`), what stays open (`keeps_open`)
+    and what the approval does not cover (`not_covered`). The date is the day the command runs: never backdated.
+
+    If the region already has an approval for a DIFFERENT subject, the meaningful differences between the approved
+    snapshot and the current reading are printed and nothing is written unless `confirm_changes` is given (the
+    reviewer has seen the differences)."""
     if not valid_reviewer(reviewer):
         print(f"refused: --reviewer must name the person approving, not a placeholder ({reviewer!r}). Nothing written.")
+        return 2
+    from .readings import is_assistant
+    if is_assistant(reviewer):
+        print(f"refused: an approval is a person's; {reviewer!r} names the assistant or the program. Nothing written.")
         return 2
     pack_path = Path(pack_path or root / "config/pack.yaml").resolve()
     cfg = load_yaml(pack_path)
@@ -358,10 +374,51 @@ def approve(region_id: str, reviewer: str, notes: str | None, root: Path = ROOT,
     subject = review_subject(reading, region, doc.sha256)
     path = Path(approvals_path).resolve() if approvals_path else root / cfg.get("approvals", "curation/approvals.yaml")
     data = (load_yaml(path) or {}) if path.exists() else {}
-    data.setdefault("approvals", []).append({
-        "region_id": region_id, "reviewer": reviewer.strip(), "date": dt.date.today().isoformat(),
-        "subject_sha256": subject["sha256"], "covers": subject["covers"], "evidence": subject["evidence"],
-        "notes": notes})
+    reading_path = readings[region_id][1]
+    snap_dir = path.parent / "reading-snapshots"
+    earlier = [a for a in data.get("approvals", []) if a.get("region_id") == region_id]
+    if earlier and earlier[-1].get("subject_sha256") != subject["sha256"]:
+        prev = earlier[-1]
+        snap = snap_dir / Path(str((prev.get("reading_file") or {}).get("snapshot") or "")).name
+        if not snap.is_file():
+            print(f"refused: {region_id} was approved before for a different subject and its snapshot is missing, so the "
+                  "differences cannot be shown. Nothing written.")
+            return 2
+        from .readings import Reading, reading_diff
+        diffs = reading_diff(Reading.model_validate(load_yaml(snap)).model_dump(mode="json"),
+                             reading.model_dump(mode="json"))
+        print(f"{region_id} changed since it was approved by {prev.get('reviewer')} on {prev.get('date')}: "
+              f"{len(diffs)} difference(s)")
+        for k, a, b in diffs:
+            print(f"  {k}: {a!r} -> {b!r}")
+        if subject["evidence"] != prev.get("evidence"):
+            print(f"  evidence: {prev.get('evidence')} -> {subject['evidence']}")
+        if not confirm_changes:
+            print("Nothing written: approve again with --confirm-changes once the reviewer has seen these differences.")
+            return 3
+    raw = reading_path.read_bytes()
+    file_sha = sha256_bytes(raw)
+    snap_dir.mkdir(parents=True, exist_ok=True)
+    snap = snap_dir / f"{region_id}@{subject['sha256'][:16]}.yaml"
+    if not snap.exists():
+        snap.write_bytes(raw)
+    try:
+        import subprocess
+        commit = subprocess.run(["git", "log", "-1", "--format=%H", "--", str(reading_path)], cwd=root,
+                                capture_output=True, text=True, check=True).stdout.strip() or None
+    except Exception:                                        # noqa: BLE001 (no git: the sha256 still pins the file)
+        commit = None
+    entry = {"region_id": region_id, "reviewer": reviewer.strip(), "date": dt.date.today().isoformat(),
+             "subject_sha256": subject["sha256"], "covers": subject["covers"], "evidence": subject["evidence"],
+             "reading_file": {"path": relpath(reading_path, root), "sha256": file_sha, "last_commit": commit,
+                              "snapshot": relpath(snap, root)},
+             "notes": notes}
+    if record:
+        entry["confirmation_record"] = record
+    for k, v in (("resolutions", resolutions), ("keeps_open", keeps_open), ("does_not_cover", not_covered)):
+        if v:
+            entry[k] = list(v)
+    data.setdefault("approvals", []).append(entry)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("# Human approvals of readings, written only by `tenderpack approve` on a person's instruction.\n"
                     "# Each entry pins the review subject: the reading (content, uncertainties, source claims)\n"
@@ -476,6 +533,12 @@ def main(argv: list[str] | None = None) -> int:
     c.add_argument("--notes")
     c.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     c.add_argument("--approvals", help="approvals file (default: the pack's `approvals` path)")
+    c.add_argument("--record", help="where the reviewer's confirmation is recorded (e.g. the message in the work log)")
+    c.add_argument("--resolution", action="append", default=[], help="an uncertainty the reviewer settled (repeatable)")
+    c.add_argument("--keeps-open", action="append", default=[], help="a point the approval leaves open (repeatable)")
+    c.add_argument("--not-covered", action="append", default=[], help="what the approval does not cover (repeatable)")
+    c.add_argument("--confirm-changes", action="store_true",
+                   help="the reviewer has seen the differences from the previously approved version")
     d = sub.add_parser("outputs")
     d.add_argument("--evidence", default=str(ROOT / "build"))
     d.add_argument("--out", default=str(ROOT / "out"))
@@ -549,7 +612,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.md:
             Path(args.md).write_text(text, encoding="utf-8")
         return 0
-    return approve(args.region_id, args.reviewer, args.notes, ROOT, Path(args.pack), args.approvals)
+    return approve(args.region_id, args.reviewer, args.notes, ROOT, Path(args.pack), args.approvals, args.record,
+                   args.resolution, args.keeps_open, args.not_covered, args.confirm_changes)
 
 
 if __name__ == "__main__":

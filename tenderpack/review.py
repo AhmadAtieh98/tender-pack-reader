@@ -8,11 +8,16 @@ where ITEM is an A1 row id (VOL-I-8.6-01) or an op id (ADD-02/9.1). The program 
 Each decision is bound to a FINGERPRINT of what was reviewed:
   row  the row as written (requirement, units, scope, assessment, owner, evidence, date rules and every
        interpretation with its quote, parameters, consequence, note and pins), the definitions of its evidence
-       items, and the state of each of its dependencies (status, text, cells, annotations, image review
+       items, where each of its units is printed (page, box, spans, image-reading subject), and the state of each of its dependencies (status, text, cells, annotations, image review
        fingerprint) wherever the row applies. Stages that leave all of this unchanged do not change the
        fingerprint, so an addendum that does not touch the row keeps its decision; one that does, voids it.
-  op   the op as written, its provision's text and pages, the state before the op of every unit it targets or
-       anchors on, and the text of the content it brings in.
+  op   the op as written and its SUBJECT, captured by the engine immediately before the op runs, whether or not it
+       then applies (amend.Engine.subject): its provision's text, pages and evidence anchors, the section heading,
+       and the pin of every unit it reads or changes, including every member row of a replaced table or form and
+       of its replacement. Withholding a rejected op therefore never changes what the rejection is bound to.
+A rejection withholds the op for as long as it is the latest decision on it, even when its subject has changed
+since (shown as CHANGED: review again; the op stays withheld until a person decides again). Pending review
+(proposed), rejection (withheld) and structural failure (invalid op) stay distinct.
 A decision counts only while its fingerprint is the item's current one. Any change makes it CHANGED: the record
 is kept and shown ("accepted by X; changed since: review again") but no longer counts. The `review:` and
 `reviewer:` fields in the curated YAML are drafting flags and are never counted as acceptance.
@@ -28,8 +33,7 @@ from pathlib import Path
 
 import yaml
 
-from .readings import valid_reviewer
-from .register import pin_value
+from .readings import is_assistant, valid_reviewer
 from .util import load_yaml, sha256_text
 
 DEFAULT_PATH = "curation/reviews/decisions.yaml"
@@ -71,22 +75,31 @@ def row_binding(r: dict, e: dict) -> dict:
         if cur != last:                                    # stages that change nothing for the row add nothing
             states.append(cur)
             last = cur
+    if "_unit_evidence" not in r:
+        r["_unit_evidence"] = {u["unit_id"]: {"anchors": [{k: a.get(k) for k in ("page", "bbox", "spans") if k in a}
+                                                          for a in u.get("anchors", [])],
+                                              "reading": (u.get("reading") or {}).get("subject_sha256")} for u in r["units"]}
     return {"row": row.model_dump(mode="json", exclude={"review", "reviewer"}),
             "evidence": {k: (r["evidence_items"][k].model_dump(mode="json") if k in r["evidence_items"] else None)
                          for k in row.evidence},
+            "source": {u: r["_unit_evidence"].get(u) for u in row.units},          # where each of its units is printed
             "states": states}
 
 
 def op_binding(r: dict, stage_index: int, x) -> dict:
-    """What a decision on an op is bound to."""
-    op = x.op
-    prev, cur = r["stages"][stage_index - 1].state, r["stages"][stage_index].state
-    prov = cur.get(op.provision)
-    before = {k: pin_value(prev, k) for k in sorted({op.target, op.anchor, op.new_text_from, *(op.targets or [])} - {None})}
-    content = {k: cur[k].text for k in sorted(x.details.get("content") or []) if k in cur}
-    return {"op": op.model_dump(mode="json", exclude={"review", "reviewer"}, exclude_none=True),
-            "provision": {"text": prov.text if prov else None, "pages": list(prov.pages) if prov else None},
-            "before": before, "content": content}
+    """What a decision on an op is bound to: the op as written and its subject (the state immediately before it)."""
+    return {"op": x.op.model_dump(mode="json", exclude={"review", "reviewer"}, exclude_none=True), **x.subject}
+
+
+def withdrawn_ops(decisions: list[dict]) -> dict[str, dict]:
+    """Ops whose latest named decision is a rejection, whatever their fingerprint: {op id: {reviewer, date, note}}.
+    A rejection keeps the op withheld until a person decides again; it never lapses into applying."""
+    out = {}
+    for item in {d.get("item") for d in decisions if d.get("kind") == "op"}:
+        d = _latest(decisions, "op", item)
+        if d and d["decision"] == "reject":
+            out[item] = {"reviewer": d["reviewer"], "date": d.get("date"), "note": d.get("note")}
+    return out
 
 
 def fingerprint(binding: dict) -> str:
@@ -121,8 +134,10 @@ def label(st: dict) -> str:
     if s == "rejected":
         return f"REJECTED by {st['reviewer']} ({st.get('date')}){note}"
     if s == "changed":
-        verb = "accepted" if st["decision"] == "accept" else "rejected"
-        return f"{verb} by {st['reviewer']} ({st.get('date')}) but CHANGED since: review again"
+        if st["decision"] == "reject":
+            return (f"rejected by {st['reviewer']} ({st.get('date')}) but CHANGED since: review again; the op is still "
+                    "withheld until a person decides again")
+        return f"accepted by {st['reviewer']} ({st.get('date')}) but CHANGED since: review again"
     return "proposed (not reviewed)" + (" — file flag 'accepted' has no bound decision: not counted" if st.get("flag_only") else "")
 
 
@@ -157,6 +172,8 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
     msgs: list[str] = []
     if not valid_reviewer(reviewer):
         return 2, [f"refused: --reviewer must name the person deciding, not a placeholder ({reviewer!r}). Nothing written."]
+    if is_assistant(reviewer):
+        return 2, [f"refused: a decision is a person's; {reviewer!r} names the assistant or the program. Nothing written."]
     if decision == "reject" and not (note or "").strip():
         return 2, ["refused: a rejection needs --note saying what is wrong. Nothing written."]
     if r["problems"]:
@@ -186,8 +203,7 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
             continue
         b = cur["binding"]
         summary = ({"evidence": sorted(b["evidence"]), "dependencies": sorted({d for s in b["states"] for d in s["dependencies"]})}
-                   if kind == "row" else {"provision": item.split("/")[0] + ":" + item.split("/", 1)[1].split("(")[0],
-                                          "before": sorted(b["before"]), "content": sorted(b["content"])})
+                   if kind == "row" else {"provision": b["provision"]["unit"], "units_before_op": sorted(b["before"])})
         entries.append({"kind": kind, "item": item, "decision": decision, "reviewer": reviewer.strip(),
                         "date": today or dt.date.today().isoformat(), "note": (note or "").strip() or None,
                         "fingerprint": cur["fingerprint"], "bound_to": summary})

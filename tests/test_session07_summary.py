@@ -200,7 +200,8 @@ def test_review_folder_carries_the_full_reading_packets_with_crops(real, tmp_pat
     write_batches(real, out, ROOT / "build")
     for rg in ("VOL-II-p3-r1", "VOL-IV-p6-r1"):
         page = (out / "packets" / f"{rg}.html").read_text(encoding="utf-8")
-        assert "PENDING" in page and "data:image/png;base64," in page and 'src="http' not in page
+        assert "APPROVED by Ahmad" in page and "Does not cover" in page                 # the owner's confirmations
+        assert "data:image/png;base64," in page and 'src="http' not in page
         assert f'href="packets/{rg}.html"' in (out / "batch-01-image-readings.html").read_text(encoding="utf-8")
         assert f'href="packets/{rg}.html"' in (out / "index.html").read_text(encoding="utf-8")
     assert 'dir="rtl"' in (out / "packets/VOL-IV-p6-r1.html").read_text(encoding="utf-8")

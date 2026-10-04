@@ -3,7 +3,9 @@
 A proposal is prepared by the assistant and applied only when a person runs
     tenderpack apply-proposal PROPOSAL_ID --by NAME
 which inserts the interpretation into the row's YAML (comments and layout kept), pins that interpretation alone,
-and leaves the row PROPOSED: it still needs `tenderpack accept`. Applying changes the row's content, so any
+and leaves the row PROPOSED: it still needs `tenderpack accept`. A proposal may also carry `replace_requirement:
+{old, new}` (a corrected requirement summary, applied only if the row still has the old one). A proposal marked
+`status: superseded` keeps its text and the reason (`superseded_by`, `superseded_because`) and cannot be applied. Applying changes the row's content, so any
 earlier decision on it no longer counts.
 """
 from __future__ import annotations
@@ -76,11 +78,23 @@ def apply_proposal(pid: str, by: str, evidence: Path, pack_path: Path, directory
     if f is None:
         print(f"refused: row {p['row']} not found")
         return 1
+    if p.get("status") == "superseded":
+        print(f"refused: {pid} is superseded ({p.get('superseded_by')}). Nothing written.")
+        return 1
     interp = dict(p["add_interpretation"])
     interp["note"] = (interp.get("note") or "").strip() + f" [Applied from proposal {pid} by {by.strip()} on {dt.date.today().isoformat()}.]"
+    rr = p.get("replace_requirement")
+    if rr:                                                   # a corrected requirement summary, written with the interpretation
+        text = f.read_text(encoding="utf-8")
+        old_line = f'    requirement: "{rr["old"]}"\n'
+        if text.count(old_line) != 1:
+            print(f"refused: the requirement of {p['row']} is not the one the proposal corrects ({rr['old'][:60]}...). Nothing written.")
+            return 1
+        f.write_text(text.replace(old_line, f'    requirement: "{rr["new"]}"\n'), encoding="utf-8")
     insert_interpretation(f, p["row"], interp)
     load_rows(rows_path)                                      # the register must still load
     print(f"wrote the {interp['stage']} interpretation of {p['row']} into {f}")
     code = pin_cmd(evidence, pack_path, refresh=False, only=f"{p['row']}@{interp['stage']}")
-    print(f"next: review it and decide: python -m tenderpack accept {p['row']} --reviewer \"{by.strip()}\"  (or reject with --note)")
+    print(f"next: the row is PROPOSED; its owner decides: python -m tenderpack accept {p['row']} --reviewer \"Your Name\"  "
+          "(or reject with --note)")
     return code

@@ -134,7 +134,8 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
                 "insert_unit": lambda: f"inserted {o.new_group or ''} after {o.anchor or ''}".strip(),
                 "append_text": lambda: f"+ '{o.new}'", "annotate": lambda: f"{o.effect}: {o.note or ''}"}[o.type]()
         lines.append(f"    {oid} [{s.stage}] {o.type}: {what}  ({_ref(r, o.provision)}; "
-                     f"{'valid' if x.valid else 'INVALID'}; {r['reviews'][('op', oid)]['status']})")
+                     f"{('applied' if x.applied else 'WITHHELD (rejected)') if x.valid else 'INVALID'}; "
+                     f"{r['reviews'][('op', oid)]['status']})")
         crops += crop_unit(r, o.provision, dest / "img", build_dir)
     final = r["stages"][-1].state
     notes = list(dict.fromkeys(a for uid in row.units if uid in final for a in final[uid].annotations))
@@ -180,6 +181,7 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
                                                                  "is treated and every op is valid" if sto.status != "APPLIED" else "")]
         md += [f"- UNRESOLVED {c['provision']}: {c.get('text', '')[:200]}" for c in unres]
         md += [f"- INVALID {x.op.id}: " + "; ".join(c["id"] + " " + c["detail"] for c in x.checks if not c["ok"]) for x in inv]
+        md += [f"- WITHHELD {x.op.id}: rejected by a person; not applied" for x in sto.ops if x.valid and x.withdrawn]
         sc = next((x for x in r.get("summary_check", []) if x["stage"] == to), None)
         if sc is not None:                     # C28 (session 07): the cover summary is never applied, only compared
             found = [f for f in sc["findings"] if f["kind"] != "unchecked"]
@@ -225,7 +227,7 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
     md += [f"- DECISION VOID (content changed since review): {', '.join(voided)}"] if voided else []
     img = []
     for x in sto.ops:
-        if x.valid and x.op.type == "set_value" and x.details.get("reading_status"):
+        if x.applied and x.op.type == "set_value" and x.details.get("reading_status"):
             img.append(f"{x.op.target} {x.op.column}: image shows {x.details.get('old_value')}, {to} makes it {x.op.new} "
                        f"(reading {x.details['reading_status']}; the image itself is unchanged)")
     md += [f"- IMAGE-READ VALUE CHANGED: {t}" for t in img]

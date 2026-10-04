@@ -19,6 +19,7 @@ import yaml
 import make_fixture as mf
 from conftest import ROOT
 from tenderpack.cli import ingest
+from guards import only_owner_approvals
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -184,13 +185,18 @@ def test_real_pack_passes_full_evidence_check(pack):
     assert pack["coverage"]["evidence"]["units_checked"] > 400
 
 
-def test_real_pack_exit_codes_separate_structure_from_pending_review(tmp_path):
-    r = subprocess.run([sys.executable, "-m", "tenderpack", "ingest", "--out", str(tmp_path / "b")],
+def test_real_pack_exit_codes_separate_structure_from_pending_review(tmp_path, pending):
+    # without approvals (the disposable no-approval pack): structure OK (0) but the approval gate refuses (3)
+    r = subprocess.run([sys.executable, "-m", "tenderpack", "ingest", "--pack", str(pending["pack"]), "--out", str(tmp_path / "b")],
                        cwd=ROOT, capture_output=True, text=True)
     assert r.returncode == 0 and "PENDING HUMAN REVIEW" in r.stdout, r.stdout + r.stderr
-    r = subprocess.run([sys.executable, "-m", "tenderpack", "ingest", "--out", str(tmp_path / "b"), "--require-approved"],
-                       cwd=ROOT, capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "-m", "tenderpack", "ingest", "--pack", str(pending["pack"]), "--out", str(tmp_path / "b"),
+                        "--require-approved"], cwd=ROOT, capture_output=True, text=True)
     assert r.returncode == 3, r.stdout + r.stderr
+    # the real pack, with the owner's two confirmations (3 Oct 2026): the reading gate opens (rows and ops are separate)
+    r = subprocess.run([sys.executable, "-m", "tenderpack", "ingest", "--out", str(tmp_path / "c"), "--require-approved"],
+                       cwd=ROOT, capture_output=True, text=True)
+    assert r.returncode == 0 and "PENDING HUMAN REVIEW: none" in r.stdout, r.stdout + r.stderr
 
 
 # ============================================================================ 3. approvals
@@ -249,7 +255,7 @@ def test_approve_command_refuses_placeholder_reviewer(tmp_path):
 
 
 def test_nothing_is_approved_on_the_owners_behalf():
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    assert only_owner_approvals()
 
 
 # ============================================================================ 4. table readings

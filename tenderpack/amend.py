@@ -39,7 +39,19 @@ Per addendum:
 An addendum is APPLIED when every op is valid, every provision accounted for and nothing unresolved;
 otherwise PARTIAL. The validated state is the last stage reached through APPLIED addenda only; a
 PARTIAL addendum produces a working state that never replaces the validated one.
-Op review (proposed / accepted) is a separate question from validity and is carried on every result.
+Review, validity and application are three separate things on every result (session 08):
+  valid      the op passes its structural checks (C21-C27) against the state immediately before it
+  withdrawn  a person's latest named decision on the op is a rejection (passed in by the caller from the
+             decisions file; a `review: rejected` flag in the op file also withholds it). A withdrawn op is still
+             checked (on a copy) so its structural validity is reported, but it changes nothing
+  applied    valid and not withdrawn
+A provision whose only ops are withdrawn is `rejected` in the coverage (not `unresolved`, which means its ops
+are invalid); either makes the addendum PARTIAL.
+Each result also carries `subject`: what a review decision on it is bound to, captured immediately BEFORE the
+op runs, whether or not it then applies: the provision's text, pages and evidence anchors, its section heading,
+and the pin of every unit it reads or changes (targets, anchors, every member of a replaced table or form and
+of its replacement, inserted groups, annotated groups, covered provisions, claims). Applying or withholding the
+op therefore never changes its own subject, and a change to any member row voids a decision on it.
 """
 from __future__ import annotations
 
@@ -213,14 +225,30 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
 class OpResult:
     op: Op
     stage: str
-    valid: bool
+    valid: bool                              # structural checks pass (never set by a review decision)
     checks: list[dict]
     changed: list[str] = field(default_factory=list)
     details: dict = field(default_factory=dict)
+    withdrawn: bool = False                  # a person rejected it: checked, but not applied
+    subject: dict = field(default_factory=dict)   # what a decision is bound to (state immediately before the op)
+
+    @property
+    def applied(self) -> bool:
+        return self.valid and not self.withdrawn
 
     def to_dict(self) -> dict:
         return {"op": self.op.model_dump(exclude_none=True), "stage": self.stage, "valid": self.valid,
+                "withdrawn": self.withdrawn, "applied": self.applied,
                 "checks": self.checks, "changed": self.changed, "details": self.details}
+
+
+def unit_pin(state: dict[str, "UState"], uid: str) -> str:
+    """A unit as it stands: status, text and cells, the annotations on it and, for an image reading, the
+    reading's review-subject fingerprint. 'absent' when the unit does not exist."""
+    u = state.get(uid)
+    if u is None:
+        return "absent"
+    return sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or ""))[:16]
 
 
 @dataclass
@@ -261,11 +289,16 @@ def heading_of(units_order: list[str], state: dict[str, UState], unit_id: str) -
 
 
 class Engine:
-    def __init__(self, units: list[dict], opfiles: list[OpFile]):
+    def __init__(self, units: list[dict], opfiles: list[OpFile], withdrawn: dict[str, dict] | None = None):
+        """withdrawn: op id -> the person's rejection ({reviewer, date, note}); those ops are checked, never applied."""
         self.units = units
         self.order = [u["unit_id"] for u in units]
         self.opfiles = sorted(opfiles, key=lambda f: int(f.addendum.split("-")[1]))
         self.addenda = [f.addendum for f in self.opfiles]
+        self.withdrawn = dict(withdrawn or {})
+        self.evidence = {u["unit_id"]: {"anchors": [{k: a.get(k) for k in ("page", "bbox", "spans") if k in a}
+                                                    for a in u.get("anchors", [])],
+                                        "reading": (u.get("reading") or {}).get("subject_sha256")} for u in units}
 
     # ------------------------------------------------------------------ run
     def run(self) -> list[StageResult]:
@@ -288,22 +321,45 @@ class Engine:
                     u.status = "active"
             before = {k: u.sha() for k, u in st.items()}
             for op in self._ordered(f):
+                subject = self.subject(op, st)                       # bound before the op, applied or not
                 snap, order = copy.deepcopy(st), list(self.order)
                 r = self._apply(op, st, f.addendum)
-                if not r.valid:                       # a failed op changes nothing: restore state and unit order
+                rej = self.withdrawn.get(op.id) or ({"reviewer": op.reviewer, "flag": "review: rejected in the op file"}
+                                                    if op.review == "rejected" else None)
+                if not r.valid or rej:                # a failed or withdrawn op changes nothing: restore state and order
                     st.clear()
                     st.update(snap)
                     self.order[:] = order
                     r.changed = []
                     r.details.pop("content", None)
+                if rej:
+                    r.withdrawn, r.details["withdrawn_by"] = True, rej
+                r.subject = subject
                 res.ops.append(r)
             self._coverage(res, f)
             self._scope(res, before, f.addendum)
-            if res.problems or res.scope_leak or any(not r.valid for r in res.ops) or \
-                    any(c["disposition"] == "unresolved" or not c["accounted_by"] for c in res.coverage):
+            if res.problems or res.scope_leak or any(not r.applied for r in res.ops) or \
+                    any(c["disposition"] in ("unresolved", "rejected") or not c["accounted_by"] for c in res.coverage):
                 res.status = "PARTIAL"
             stages.append(res)
         return stages
+
+    def subject(self, op: Op, st: dict[str, UState]) -> dict:
+        """What a decision on `op` is bound to, from the state immediately before it (see the module docstring)."""
+        scope = {op.target, op.anchor, op.new_text_from, *op.targets, *op.covers, *(c.get("unit") for c in op.claims)}
+        groups = [g for g in (op.replacement, op.new_group) if g]
+        if op.type == "replace_unit" and op.target:
+            groups.append(op.target)
+        if op.type == "annotate":
+            groups += [t for t in op.targets if t not in st]
+        for g in groups:
+            scope |= set(group_members(st, g)) | {g}
+        scope.discard(None)
+        prov = st.get(op.provision)
+        return {"provision": {"unit": op.provision, "text": prov.text if prov else None,
+                              "pages": list(prov.pages) if prov else None, "evidence": self.evidence.get(op.provision)},
+                "heading": heading_of(self.order, st, op.provision) if prov else None,
+                "before": {k: unit_pin(st, k) for k in sorted(scope)}}
 
     def _ordered(self, f: OpFile) -> list[Op]:
         pos = {k: i for i, k in enumerate(self.order)}
@@ -314,19 +370,28 @@ class Engine:
         st = res.state
         disp = {d.provision: d for d in f.dispositions}
         by_op: dict[str, list[str]] = {}
-        valid_for: dict[str, bool] = {}
+        applied_for: dict[str, bool] = {}
+        withdrawn_for: dict[str, bool] = {}
         for r in res.ops:
             for p in [r.op.provision] + r.op.covers + r.details.get("content", []):
                 if r.op.id not in by_op.setdefault(p, []):
                     by_op[p].append(r.op.id)
-                valid_for[p] = valid_for.get(p, False) or r.valid
+                applied_for[p] = applied_for.get(p, False) or r.applied
+                withdrawn_for[p] = withdrawn_for.get(p, False) or r.withdrawn
         for p in provisions(st, f.addendum):
             d = disp.get(p)
             if d:
                 kind, reason = d.disposition, d.reason
             elif p in by_op:
-                # a provision whose only ops are invalid is not accounted for: it counts as unresolved (C20)
-                kind, reason = ("op", "") if valid_for[p] else ("unresolved", "every op for this provision is invalid")
+                # a provision none of whose ops applies is not accounted for (C20): `rejected` when a person withdrew
+                # an op for it, `unresolved` when its ops are invalid. Both keep the addendum PARTIAL
+                if applied_for[p]:
+                    kind, reason = "op", ""
+                elif withdrawn_for[p]:
+                    kind, reason = "rejected", ("every op for this provision was rejected by a person and is withheld; "
+                                                "a corrected op or a disposition is needed")
+                else:
+                    kind, reason = "unresolved", "every op for this provision is invalid"
             else:
                 kind, reason = "UNACCOUNTED", ""
             res.coverage.append({"provision": p, "page": st[p].pages[0] if st[p].pages else None,
@@ -357,9 +422,6 @@ class Engine:
             checks.append({"id": cid, "ok": bool(ok), "detail": detail})
             return bool(ok)
 
-        if op.review == "rejected":
-            check("REVIEW", False, f"rejected by {op.reviewer or 'a reviewer'}")
-            return r
         prov = st.get(op.provision)
         if not check("C21", prov is not None and prov.doc == addendum, f"provision {op.provision} belongs to {addendum}"):
             return r

@@ -299,7 +299,8 @@ def _a3_html(a3: dict) -> str:
         out.append(f'<div class="sub">{_rich(a3["subtitle"])}</div>')
     if a3.get("banner"):
         out.append(f'<div class="banner">{_rich(a3["banner"])}</div>')
-    for sec in [*a3["sections"], *([a3["missing"]] if a3.get("missing") else []), a3["unresolved"]]:
+    tail = [] if a3.get("groups") else [*([a3["missing"]] if a3.get("missing") else []), a3["unresolved"]]
+    for sec in [*a3["sections"], *tail]:
         out.append(f"<h2>{_rich(sec['heading'])}</h2>")
         if sec.get("note"):
             out.append(f'<p class="note">{_rich(sec["note"])}</p>')
@@ -312,6 +313,19 @@ def _a3_html(a3: dict) -> str:
         if "ids" in sec and not sec.get("items"):
             continue
         out += [_a3_item(it) for it in sec["items"]] or ['<p class="none">None.</p>']
+    if a3.get("groups"):
+        g = a3["groups"]
+        out.append(f"<h2>{_rich(g['heading'])}</h2>")
+        if g.get("note"):
+            out.append(f'<p class="note">{_rich(g["note"])}</p>')
+        link = lambda i: f'<a href="a3_detail.html#{_esc(i)}"><b>{_esc(i)}</b></a>'  # noqa: E731
+        for grp in g["groups"]:
+            items = [link(i["id"]) + (f" {_rich(i['short'])}" if i.get("short") else "")
+                     + (f' <span class="meta">(+{", ".join(_esc(f) for f in i["folds"])})</span>' if i.get("folds") and i.get("short") else "")
+                     for i in grp["items"]]
+            qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
+                  if grp.get("questions") else "")
+            out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({len(grp["items"])}): ' + "; ".join(items) + qs + "</p>")
     return "\n".join(out)
 
 
@@ -330,7 +344,7 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
     if spare < 0 or scale < A3_SCALE_LOW or round(8.5 * scale, 2) < A3_MIN_TEXT_PT:
         raise A3OverflowError(f"A3 content does not fit on one A4 page at scale >= {A3_SCALE_LOW} "
                               f"({sum(len(s['items']) for s in a3['sections'])} items, "
-                              f"{len(a3['unresolved']['items'])} unresolved); shorten or prioritise it")
+                              f"{len((a3.get('unresolved') or {}).get('items') or [])} unresolved); shorten or prioritise it")
     foot = pymupdf.Rect(A3_MARGIN_X, h - A3_MARGIN_Y - A3_FOOTER_H, w - A3_MARGIN_X, h - A3_MARGIN_Y)
     fspare, _ = page.insert_htmlbox(foot, f'<div class="foot">{_rich(a3.get("footer", ""))}</div>',
                                     css=A3_FOOTER_CSS, scale_low=A3_SCALE_LOW)

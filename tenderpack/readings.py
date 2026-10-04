@@ -176,6 +176,15 @@ def valid_reviewer(name) -> bool:
     return isinstance(name, str) and bool(name.strip()) and not _PLACEHOLDER.match(name)
 
 
+_ASSISTANT = re.compile(r"\b(claude|assistant|ai[- ]assisted|codex|gpt|model|program|tenderpack)\b", re.I)
+
+
+def is_assistant(name) -> bool:
+    """A name that identifies the assistant or the program. Such a name may record work done on a person's instruction
+    (e.g. applying a proposal), but never a decision or an approval: those are a person's."""
+    return isinstance(name, str) and bool(_ASSISTANT.search(name))
+
+
 def review_subject(reading: Reading, region: Region, doc_sha256: str) -> dict:
     """What an approval covers: the whole reading plus the evidence it was read from."""
     evidence = {"doc": region.doc, "doc_sha256": doc_sha256, "page": region.page, "bbox": region.bbox,
@@ -194,13 +203,37 @@ def review_status(reading: Reading, approvals: list[dict], subject: dict) -> dic
     named = [a for a in match if valid_reviewer(a.get("reviewer"))]
     if named:
         a = named[-1]
-        return {"status": "approved", "reviewer": a["reviewer"].strip(), "date": a.get("date"), "subject_sha256": sha}
+        return {"status": "approved", "reviewer": a["reviewer"].strip(), "date": a.get("date"), "subject_sha256": sha,
+                **{k: a[k] for k in ("notes", "confirmation_record", "resolutions", "keeps_open", "does_not_cover",
+                                     "permit", "record_amended", "reading_file") if a.get(k)}}
     if match:
         return {"status": "pending", "reason": "approval entry does not identify a reviewer", "subject_sha256": sha}
     if mine:
         return {"status": "pending", "subject_sha256": sha,
                 "reason": "the reading, its uncertainties or its evidence changed after the last approval"}
     return {"status": "pending", "reason": "not yet reviewed by a person", "subject_sha256": sha}
+
+
+def _flatten(obj, prefix: str = "") -> dict[str, object]:
+    if isinstance(obj, dict):
+        out: dict[str, object] = {}
+        for k, v in obj.items():
+            out.update(_flatten(v, f"{prefix}.{k}" if prefix else str(k)))
+        return out
+    if isinstance(obj, list):
+        out = {}
+        for i, v in enumerate(obj):
+            key = v.get("key") if isinstance(v, dict) and v.get("key") else str(i)
+            out.update(_flatten(v, f"{prefix}[{key}]"))
+        return out
+    return {prefix: obj}
+
+
+def reading_diff(old: dict, new: dict) -> list[tuple[str, object, object]]:
+    """Meaningful differences between two readings (their model dumps): every field whose value differs, keyed by a
+    path that names blocks, rows and lines by their keys. Comments and YAML layout are not differences."""
+    a, b = _flatten(old), _flatten(new)
+    return [(k, a.get(k), b.get(k)) for k in sorted(set(a) | set(b)) if a.get(k) != b.get(k)]
 
 
 # ------------------------------------------------------------------ numbers in cells (no meaning attached)

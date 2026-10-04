@@ -42,3 +42,17 @@ def synthetic(tmp_path_factory):
     res["out"] = out
     res["by_id"] = {u["unit_id"]: u for u in res["units"]}
     return res
+
+
+@pytest.fixture(scope="session")
+def pending(tmp_path_factory):
+    """The real pack built with NO approvals (a disposable, empty approvals file): both image readings pending, as
+    they were until the owner confirmed them on 3 Oct 2026 (session 08). Tests of how a PENDING reading flows through
+    the outputs use this build; the real build carries the owner's confirmations."""
+    d = tmp_path_factory.mktemp("pending")
+    cfg = yaml.safe_load((ROOT / "config/pack.yaml").read_text(encoding="utf-8"))
+    cfg["approvals"] = str(d / "approvals.yaml")
+    (d / "pack.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8")
+    res = ingest(d / "pack.yaml", d / "evidence", ROOT, quiet=True)
+    assert res["exit_code"] == 0
+    return {"evidence": d / "evidence", "pack": d / "pack.yaml", "dir": d}

@@ -13,6 +13,7 @@ import pytest
 from tenderpack import stage2
 from tenderpack.dispositions import effective_disposition
 from tenderpack.util import ROOT
+from guards import only_owner_approvals, pack_without_session08_interpretations
 
 EVIDENCE, PACK = ROOT / "build", ROOT / "config/pack.yaml"
 
@@ -22,7 +23,7 @@ def real():
     return stage2.run(EVIDENCE, PACK, ROOT)
 
 
-def test_strict_release_is_refused_and_keeps_the_previous_outputs(tmp_path):
+def test_strict_release_is_refused_and_keeps_the_previous_outputs(tmp_path, pending):
     out = tmp_path / "out"
     first = stage2.build(EVIDENCE, out, PACK, ROOT, quiet=True)
     assert first["exit_code"] == 0 and first["release"].startswith("WORKING DRAFT")
@@ -31,14 +32,22 @@ def test_strict_release_is_refused_and_keeps_the_previous_outputs(tmp_path):
     assert res["exit_code"] == 3 and res["status"] == "release_refused"
     assert (out / "a1/a1.json").read_bytes() == before                       # previous outputs untouched
     reason = (tmp_path / "out.rejected/RELEASE_REJECTED.md").read_text(encoding="utf-8")
-    assert "stale" in reason and "approval" in reason and "image readings pending" in reason
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    # the real pack (session 08): the readings are confirmed and no row is STALE; rows and ops still await decisions
+    assert "approval" in reason and "not accepted by a person" in reason and "image readings pending" not in reason
+    # before the owner's confirmations and interpretations: STALE rows and pending readings also block the release
+    pk = pack_without_session08_interpretations(tmp_path / "pre", {"approvals": str(pending["dir"] / "approvals.yaml")})
+    res = stage2.build(pending["evidence"], tmp_path / "out2", pk, ROOT, quiet=True, strict=True)
+    reason = (tmp_path / "out2.rejected/RELEASE_REJECTED.md").read_text(encoding="utf-8")
+    assert res["exit_code"] == 3 and "stale" in reason and "approval" in reason and "image readings pending" in reason
+    assert only_owner_approvals()
 
 
-def test_release_blockers_name_each_kind(real):
-    kinds = {b["kind"] for b in stage2.release_blockers(real)}
+def test_release_blockers_name_each_kind(real, tmp_path):
+    assert {b["kind"] for b in stage2.release_blockers(real)} == {"approval"}          # session 08: nothing STALE
+    pre = stage2.run(EVIDENCE, pack_without_session08_interpretations(tmp_path), ROOT)
+    kinds = {b["kind"] for b in stage2.release_blockers(pre)}
     assert {"stale", "approval"} <= kinds
-    details = " ".join(b["detail"] for b in stage2.release_blockers(real))
+    details = " ".join(b["detail"] for b in stage2.release_blockers(pre))
     assert "not accepted by a person" in details and "VOL-I-8.3-01" in details
 
 
@@ -55,11 +64,11 @@ def test_the_gate_opens_only_when_everything_is_reviewed(real):
     decisions = [{"kind": k, "item": i, "decision": "accept", "reviewer": "Fixture Test Reviewer", "fingerprint": v["fingerprint"]}
                  for (k, i), v in r["reviews"].items()]
     r["reviews"] = review.compute(r, decisions)
-    assert {b["kind"] for b in stage2.release_blockers(r)} == {"approval"}       # the readings are still pending
-    for u in r["units"]:
-        if (u.get("reading") or {}).get("status") == "pending":
-            u["reading"]["status"] = "approved"
-    assert stage2.release_blockers(r) == []
+    assert stage2.release_blockers(r) == []                 # the readings carry the owner's confirmations (session 08)
+    for u in r["units"]:                                     # a pending reading alone keeps the gate shut
+        if (u.get("reading") or {}).get("region") == "VOL-IV-p6-r1":
+            u["reading"]["status"] = "pending"
+    assert {b["kind"] for b in stage2.release_blockers(r)} == {"approval"}
 
 
 def test_incomplete_coverage_blocks_a_release(real):

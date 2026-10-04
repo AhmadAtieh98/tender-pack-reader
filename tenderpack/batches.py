@@ -103,6 +103,9 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
             if (build_dir / "review" / rg / "packet.json").exists() else {}
         rus = [u for u in r["units"] if (u.get("reading") or {}).get("region") == rg and u["kind"] != "region"]
         status = rus[0]["reading"]["status"] if rus else "?"
+        appr = packet.get("approval") if status == "approved" else None
+        tr_label = (f"confirmed as displayed by {appr.get('reviewer')}, {appr.get('date')}" if appr
+                    else "proposed, not reviewed")
         rows = []
         for u in rus:
             cs = crops(u["unit_id"])
@@ -112,21 +115,33 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                 cells = {k: cells[k] for k in [*order, *[c for c in cells if c not in order]] if k in cells}
             read = ("<table>" + "".join(f"<tr><th>{_e(k)}</th><td>{_e(v)}</td></tr>" for k, v in cells.items()) + "</table>") \
                 if cells else (f'<p dir="{"rtl" if u.get("lang") == "ar" else "ltr"}">{_e(u.get("text"))}</p>'
-                               + (f"<p><i>translation (proposed, not reviewed):</i> {_e(u['translation'])}</p>" if u.get("translation") else ""))
+                               + (f"<p><i>translation ({tr_label}):</i> {_e(u['translation'])}</p>" if u.get("translation") else ""))
             unc = "".join(f"<li>{_e(x)}</li>" for x in (u.get("uncertain") or []))
             rows.append(f'<div class="item"><b>{_e(u["unit_id"])}</b><div class="grid"><div>'
                         + "".join(_fig(c, f"{u['unit_id']} (page {c['page']})") for c in cs)
                         + f"</div><div>{read}" + (f"<ul>{unc}</ul>" if unc else "") + "</div></div></div>")
         decisions = "".join(f"<li>{_e(d)}</li>" for d in packet.get("decisions") or [])
+        if appr:
+            from .packets import approval_scope_html
+            box = (f'<div class="decide"><b>Approved by {_e(appr.get("reviewer"))} on {_e(appr.get("date"))}</b> for '
+                   f"review subject <code>{_e(packet.get('subject_sha256', '')[:16])}</code> (this reading and its evidence, "
+                   "exactly as shown here). No decision is needed unless the reading changes: any change makes it pending "
+                   "again, and <code>tenderpack approve</code> then shows the differences before an approval can be "
+                   "extended. The approval covers the transcription only." + approval_scope_html({"status": "approved", **appr})
+                   + "<p>Points the reading itself records as uncertain (kept as recorded):</p>"
+                   f"<ul>{decisions}</ul></div>")
+        else:
+            box = (f'<div class="decide"><b>Decision needed:</b> does each crop show exactly what is read beside it '
+                   f"(every word, digit and cell)? Then approve the reading, or correct "
+                   f"<code>curation/readings/{_e(rg)}.yaml</code> and re-run <code>make evidence</code>. Points to check:"
+                   f"<ul>{decisions}</ul><pre>python -m tenderpack approve {_e(rg)} --reviewer \"Your Name\" "
+                   f"[--notes \"...\"]</pre></div>")
         body.append(f"<h2>{_e(rg)}: {_e(packet.get('doc', ''))} page {_e(packet.get('page', ''))} — reading {_e(status)}</h2>"
-                    f'<div class="decide"><b>Decision needed:</b> does each crop show exactly what is read beside it '
-                    f"(every word, digit and cell)? Then approve the reading, or correct "
-                    f"<code>curation/readings/{_e(rg)}.yaml</code> and re-run <code>make evidence</code>. Points to check:"
-                    f"<ul>{decisions}</ul><pre>python -m tenderpack approve {_e(rg)} --reviewer \"Your Name\" "
-                    f"[--notes \"...\"]</pre></div>"
-                    + _packet_link(build_dir, out, rg) + "".join(rows))
+                    + box + _packet_link(build_dir, out, rg) + "".join(rows))
         items.append({"batch": 1, "kind": "reading", "id": rg, "status": status, "fingerprint": packet.get("subject_sha256", ""),
-                      "decision": "approve the reading (or correct it)", "command": f'python -m tenderpack approve {rg} --reviewer "Your Name"'})
+                      "decision": (f"approved by {appr.get('reviewer')} ({appr.get('date')}); none unless it changes" if appr
+                                   else "approve the reading (or correct it)"),
+                      "command": "" if appr else f'python -m tenderpack approve {rg} --reviewer "Your Name"'})
     (out / "batch-01-image-readings.html").write_text(_page(
         "Batch 1 — the two image readings", "Readings are transcriptions only; what a value means is decided in the rows. "
         "An approval pins the reading and its evidence; any later change makes it pending again.", body), encoding="utf-8")
@@ -186,7 +201,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                         + "".join(_fig(c, f"{c['unit']} (page {c['page']})") for c in cs)
                         + f"</div><div><p><b>{_e(o.type)}</b> on {_e(tgt)}: {_e(change)}</p>"
                         + (f"<p>Issue: {_e(o.issue)}</p>" if o.issue else "")
-                        + f"<p>Checks: {'all pass' if x.valid else 'INVALID: ' + _e('; '.join(bad))}</p>"
+                        + f"<p>Checks: {'all pass' if x.valid else 'INVALID: ' + _e('; '.join(bad))}"
+                        + (" — WITHHELD: rejected by a person, not applied" if x.withdrawn else "") + "</p>"
                         f'<div class="decide"><b>Decision needed:</b> accept that {_e(o.provision)} makes exactly this change '
                         f"to {_e(tgt)} (and nothing else), or reject it with what is wrong.</div>"
                         f'<pre>python -m tenderpack accept {_e(o.id)} --reviewer "Your Name"\n'
@@ -208,21 +224,39 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
             continue
         st = rv[("row", p["row"])]
         applied = is_applied(p, rows)
+        superseded = p.get("status") == "superseded"
         ai = p.get("add_interpretation") or {}
         body.append(f'<div class="item" id="{_e(pid)}"><b>{_e(pid)}</b> for {_e(p["row"])} {_status(st)}'
                     f"<p>Why it is STALE: {_e('; '.join(e['stages'][val]['stale']) or 'not stale now')}</p>"
                     f"<p>Changed: {_e(p.get('changed_dependency'))}</p><p>Proposed {_e(ai.get('stage'))} interpretation: "
                     f"“{_e(ai.get('quote'))}”</p><p>{_e(ai.get('note'))}</p><p>Effect: {_e(p.get('effect'))}</p>"
-                    f'<div class="decide"><b>Decision needed:</b> {_e(p.get("decision_needed"))}</div>'
-                    f"<p>{'Applied.' if applied else 'Not applied.'}</p>"
-                    f'<pre>python -m tenderpack apply-proposal {_e(pid)} --by "Your Name"\n'
-                    f'python -m tenderpack accept {_e(p["row"])} --reviewer "Your Name"</pre></div>')
-        items.append({"batch": 4, "kind": "proposal", "id": pid, "status": "applied" if applied else "not applied",
-                      "fingerprint": st["fingerprint"], "decision": p.get("decision_needed", ""),
-                      "command": f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
+                    + (f"<p><b>Owner's direction:</b> {_e(p['direction'])}</p>" if p.get("direction") else "")
+                    + ("<p><b>Source evidence:</b></p><ul>" + "".join(
+                        f"<li>{_e(x.get('unit'))}" + (f" p{x['page']}" if x.get("page") else "") + f": “{_e(x.get('words'))}”</li>"
+                        for x in p["evidence"]) + "</ul>" if p.get("evidence") else "")
+                    + (f"<p><b>Requirement corrected:</b> “{_e(p['replace_requirement']['old'])}” → "
+                       f"“{_e(p['replace_requirement']['new'])}”</p>" if p.get("replace_requirement") else "")
+                    + (f"<p><b>Supersedes</b> {_e(p['supersedes'])}.</p>" if p.get("supersedes") else "")
+                    + ("<p><b>Why it was superseded (exact conflict with the owner's direction):</b></p><ul>"
+                       + "".join(f"<li>{_e(x)}</li>" for x in p["superseded_because"]) + "</ul>"
+                       if p.get("superseded_because") else "")
+                    + (f'<div class="decide"><b>Superseded, never applied:</b> replaced by {_e(p.get("superseded_by"))} '
+                       f'(below). Kept for the record; it cannot be applied.</div></div>'
+                       if superseded else
+                       f'<div class="decide"><b>Decision needed:</b> {_e(p.get("decision_needed"))}</div>'
+                       f"<p>{'Applied.' if applied else 'Not applied.'}</p>"
+                       f'<pre>python -m tenderpack apply-proposal {_e(pid)} --by "Your Name"\n'
+                       f'python -m tenderpack accept {_e(p["row"])} --reviewer "Your Name"</pre></div>'))
+        items.append({"batch": 4, "kind": "proposal", "id": pid,
+                      "status": "superseded" if superseded else "applied" if applied else "not applied",
+                      "fingerprint": st["fingerprint"],
+                      "decision": f"none: superseded by {p.get('superseded_by')}" if superseded
+                      else p.get("decision_needed", ""),
+                      "command": "" if superseded else f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
     (out / "batch-04-stale-proposals.html").write_text(_page(
         "Batch 4 — proposals for the STALE rows", "Prepared, not applied and not accepted. Applying one writes the "
-        "interpretation and pins it; the row is then PROPOSED and needs your decision.", body), encoding="utf-8")
+        "interpretation and pins it; the row is then PROPOSED and needs your decision. A proposal superseded by your own "
+        "interpretation is kept for the record only.", body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batches 5+: the remaining rows
     rest = [e for e in r["evals"] if e["row"].id not in done]

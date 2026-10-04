@@ -88,17 +88,22 @@ def test_form_4c_bands_include_faint_footer(pack, golden):
     assert footer.source == golden["form_4c_image"]["footer_band_text"]
 
 
-def test_both_readings_pass_their_checks_and_stay_pending(pack):
+def test_both_readings_pass_their_checks_and_carry_only_the_owners_approval(pack):
+    """Session 08: the owner (Ahmad) confirmed both readings on 3 Oct 2026; each approval is pinned to the reviewed
+    subject, names its confirmation record and says what it does not cover."""
     for rid in ("VOL-II-p3-r1", "VOL-IV-p6-r1"):
         pk = pack["packets"][rid]
-        assert pk["status"] == "pending"
+        assert pk["status"] == "approved" and pk["approval"]["reviewer"] == "Ahmad" and pk["approval"]["date"] == "2026-10-03"
+        assert pk["approval"]["does_not_cover"] and "session-08_prompt" in pk["approval"]["confirmation_record"]
         failed = [c for c in pk["checks"] if not c["ok"]]
         assert not failed, failed
+    assert any("4.2" in x for x in pack["packets"]["VOL-IV-p6-r1"]["approval"]["resolutions"])
+    assert "not_confirmed" in pack["packets"]["VOL-II-p3-r1"]["approval"]["permit"]
     tn = pack["by_id"]["VOL-II:T2-4/TN"]
-    assert tn["reading"]["status"] == "pending" and tn["origin"] == "image_reading"
+    assert tn["reading"]["status"] == "approved" and tn["origin"] == "image_reading"
     assert tn["cells"]["Limit"] == "5" and tn["numeric"]["Limit"]["values"] == [5.0]
     assert tn["cells"]["Basis of assessment"] == "30-day rolling average"
-    assert pack["by_id"]["VOL-IV:F4-C/image/decl4"]["reading"]["status"] == "pending"
+    assert pack["by_id"]["VOL-IV:F4-C/image/decl4"]["reading"]["status"] == "approved"
 
 
 def test_edge_contact_warning_on_table_2_4(pack):

@@ -15,6 +15,7 @@ import yaml
 from tenderpack import review, stage2
 from tenderpack.proposals import apply_proposal, load_proposals
 from tenderpack.util import ROOT
+from guards import pack_without_session08_interpretations
 
 EVIDENCE, PACK = ROOT / "build", ROOT / "config/pack.yaml"
 WHO = "Fixture Test Reviewer"
@@ -80,7 +81,9 @@ def test_refusals_write_nothing(real, tmp_path):
     path = tmp_path / "decisions.yaml"
     assert review.decide(real, ["VOL-I-9.3-01"], "accept", "<name>", None, path)[0] == 2
     assert review.decide(real, ["VOL-I-9.3-01"], "reject", WHO, None, path)[0] == 2           # a rejection needs a note
-    assert review.decide(real, ["VOL-I-8.3-01"], "accept", WHO, None, path)[0] == 1           # STALE
+    pre = stage2.run(EVIDENCE, pack_without_session08_interpretations(tmp_path), ROOT)
+    assert review.decide(pre, ["VOL-I-8.3-01"], "accept", WHO, None, path)[0] == 1            # STALE (pre-session-08)
+    assert review.decide(real, ["VOL-I-9.3-01"], "accept", "Claude Code (assistant)", None, path)[0] == 2  # not a person
     assert review.decide(real, ["VOL-I-9.3-01", "NO-SUCH-ROW"], "accept", WHO, None, path)[0] == 1
     assert not path.exists()
 
@@ -95,31 +98,33 @@ def test_a_rejected_op_is_withdrawn_and_its_addendum_is_partial(tmp_path):
     r2 = stage2.run(EVIDENCE, tmp_path / "pack.yaml", ROOT)
     s = next(s for s in r2["stages"] if s.stage == "ADD-02")
     x = next(x for x in s.ops if x.op.id == "ADD-02/8.1")
-    assert not x.valid and s.status == "PARTIAL" and r2["validated"].stage == "ADD-01"
+    # session 08: rejection and structural failure are distinct; the op is valid, withheld and not applied
+    assert x.valid and x.withdrawn and not x.applied and s.status == "PARTIAL" and r2["validated"].stage == "ADD-01"
     assert "SAR 5,000,000" in s.state["VOL-V:36.2"].text                                    # not applied
     assert r2["reviews"][("op", "ADD-02/8.1")]["status"] == "rejected"
     assert any("rejected: ADD-02/8.1" in b["detail"] for b in stage2.release_blockers(r2))
 
 
 def test_a_stale_row_proposal_can_be_applied_then_reviewed(tmp_path):
-    """In a disposable copy of the register only: apply the prepared proposal, the row is no longer STALE and is
-    PROPOSED (not accepted); a named decision then accepts it."""
+    """In a disposable copy of the register as it was before session 08 (the row STALE): a superseded proposal is
+    refused; the owner-directed replacement applies, the row is no longer STALE and is PROPOSED (not accepted); a named
+    decision then accepts it. The repository's register is untouched."""
+    pack = pack_without_session08_interpretations(tmp_path, {"decisions": str(tmp_path / "decisions.yaml")})
     reg = tmp_path / "register"
-    shutil.copytree(ROOT / "curation/register", reg)
-    cfg = yaml.safe_load(PACK.read_text())
-    cfg.update({"register": str(reg / "rows.yaml"), "issues": str(reg / "issues.yaml"),
-                "dispositions_dir": str(reg / "dispositions"), "decisions": str(tmp_path / "decisions.yaml")})
-    (tmp_path / "pack.yaml").write_text(yaml.safe_dump(cfg))
-    assert set(load_proposals(ROOT / "curation/register/proposals")) >= {"P-STALE-VOL-I-8.3-01", "P-STALE-VOL-I-3.4-01",
-                                                                         "P-STALE-VOL-I-6.7-01"}
-    assert apply_proposal("P-STALE-VOL-I-8.3-01", WHO, EVIDENCE, tmp_path / "pack.yaml", reg / "proposals", ROOT) == 0
-    r = stage2.run(EVIDENCE, tmp_path / "pack.yaml", ROOT)
+    assert set(load_proposals(ROOT / "curation/register/proposals")) >= {
+        "P-STALE-VOL-I-8.3-01", "P-STALE-VOL-I-3.4-01", "P-STALE-VOL-I-6.7-01",
+        "P-S08-VOL-I-8.3-01", "P-S08-VOL-I-3.4-01", "P-S08-VOL-I-6.7-01"}
+    r = stage2.run(EVIDENCE, pack, ROOT)
+    assert next(e for e in r["evals"] if e["row"].id == "VOL-I-8.3-01")["stages"]["ADD-02"]["stale"]
+    assert apply_proposal("P-STALE-VOL-I-8.3-01", WHO, EVIDENCE, pack, reg / "proposals", ROOT) == 1     # superseded
+    assert apply_proposal("P-S08-VOL-I-8.3-01", WHO, EVIDENCE, pack, reg / "proposals", ROOT) == 0
+    r = stage2.run(EVIDENCE, pack, ROOT)
     ev = next(e for e in r["evals"] if e["row"].id == "VOL-I-8.3-01")
     assert not ev["stages"]["ADD-02"]["stale"] and r["reviews"][("row", "VOL-I-8.3-01")]["status"] == "proposed"
+    assert "11.1(i)" in ev["row"].requirement
     assert review.decide(r, ["VOL-I-8.3-01"], "accept", WHO, None, tmp_path / "decisions.yaml")[0] == 0
     assert _rerun(r, tmp_path / "decisions.yaml")["reviews"][("row", "VOL-I-8.3-01")]["status"] == "accepted"
-    # the repository's own register is untouched
-    assert "P-STALE" not in (ROOT / "curation/register/rows.yaml").read_text()
+    assert not (ROOT / "curation/reviews/decisions.yaml").exists()
 
 
 def test_review_batches_cover_every_item_with_its_crops_and_command(real, tmp_path):
@@ -134,12 +139,18 @@ def test_review_batches_cover_every_item_with_its_crops_and_command(real, tmp_pa
     assert all(("op", x.op.id) in ids for s in real["stages"][1:] for x in s.ops)
     assert {x["id"] for x in items if x["kind"] == "proposal"} >= {"P-STALE-VOL-I-8.3-01", "P-STALE-VOL-I-3.4-01", "P-STALE-VOL-I-6.7-01"}
     b1 = (tmp_path / "review/batch-01-image-readings.html").read_text(encoding="utf-8")
-    assert 'approve VOL-II-p3-r1 --reviewer "Your Name"' in b1 and "decimal point in 2.2" in b1
+    assert "Approved by Ahmad on 2026-10-03" in b1 and "decimal point in 2.2" in b1
     b2 = (tmp_path / "review/batch-02-disqualifiers.html").read_text(encoding="utf-8")
     a3 = stage2.a3(real, stage2.collect_issues(real, None), None)
     for x in a3["explicit"] + a3["score"]:
         assert f'id="{x["id"]}"' in b2 and f'accept {x["id"]} --reviewer' in b2
     for src in _re.findall(r'src="(img/[^"]+)"', b1 + b2):
         assert (tmp_path / "review" / src).exists(), src
-    assert all(x["status"] in ("proposed", "pending", "not applied") for x in items)        # nothing decided for the owner
+    # nothing decided for the owner: rows and ops proposed; the readings carry the owner's own approval (session 08);
+    # the session 06 proposals are superseded and the owner-directed ones applied (the rows stay proposed)
+    assert {x["status"] for x in items if x["kind"] in ("row", "op")} == {"proposed"}
+    assert {x["status"] for x in items if x["kind"] == "reading"} == {"approved"}
+    assert {x["id"]: x["status"] for x in items if x["kind"] == "proposal"} == {
+        "P-STALE-VOL-I-8.3-01": "superseded", "P-STALE-VOL-I-3.4-01": "superseded", "P-STALE-VOL-I-6.7-01": "superseded",
+        "P-S08-VOL-I-8.3-01": "applied", "P-S08-VOL-I-3.4-01": "applied", "P-S08-VOL-I-6.7-01": "applied"}
     assert res["images"] > 50

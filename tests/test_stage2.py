@@ -22,6 +22,7 @@ from tenderpack import stage2
 from tenderpack.amend import load_opfile
 from tenderpack.register import Consequence, printed_date_conflicts
 from tenderpack.util import ROOT
+from guards import only_owner_approvals, pack_without_session08_interpretations
 
 GOLD = yaml.safe_load((ROOT / "tests/golden/stage2_expectations.yaml").read_text(encoding="utf-8"))
 EVIDENCE = ROOT / "build"
@@ -39,6 +40,18 @@ def written(real, tmp_path_factory):
     out = tmp_path_factory.mktemp("s2") / "out"
     res = stage2.write(real, out)
     return out, res
+
+
+@pytest.fixture(scope="module")
+def pending_real(pending):
+    """The real pack with both readings pending (no approvals): how a pending reading flows through."""
+    return stage2.run(pending["evidence"], pending["pack"], ROOT)
+
+
+@pytest.fixture(scope="module")
+def pending_written(pending_real, tmp_path_factory):
+    out = tmp_path_factory.mktemp("s2p") / "out"
+    return out, stage2.write(pending_real, out)
 
 
 def st(r, stage):
@@ -179,7 +192,10 @@ def test_lcc_deletion_reinstatement_and_revocation_chain(real):
     assert real["register"].interp_at(next(x for x in real["evals"] if x["row"].id == "VOL-I-8.6-01")["row"], "BASE").consequence == "none_stated"
     # ADD-01 4.2 (disregard any LCC reference): not issued, in effect, then ceases to have effect
     assert [st(real, s).state["ADD-01:4.2"].status for s in STAGES] == ["not_issued", "active", "revoked"]
-    assert len(a2["chain"]) == 3 and "ADD-01/4.1" in a2["chain"][1] and "ADD-02/9.1" in a2["chain"][2]
+    # the chain lists every unit the row cites (session 08), then the ops in order
+    ops = [c for c in a2["chain"] if " <- " in c]
+    assert a2["chain"][0].startswith("VOL-I:8.6 ") and any(c.startswith("ADD-01:4.2 ") for c in a2["chain"])
+    assert [o.split(" ")[0] for o in ops] == ["ADD-01/4.1", "ADD-02/9.1", "ADD-02/9.2"]   # 9.2 ends ADD-01 4.2
 
 
 @pytest.mark.parametrize("entry", [e["id"] for e in GOLD["repeated_wording"]])
@@ -220,7 +236,8 @@ def test_weighting_change_and_table_1_1(real):
     assert ev(real, "VOL-I-T1-1-D", "ADD-02")["cells"]["Marks"] == "20"
 
 
-def test_image_based_tn_amended_from_a_pending_reading(real):
+def test_image_based_tn_amended_from_a_pending_reading(pending_real):
+    real = pending_real
     g = GOLD["tn"]
     for stage in STAGES:
         u = st(real, stage).state["VOL-II:T2-4/TN"]
@@ -250,7 +267,8 @@ def test_form_4g_inserted_after_item_e_with_its_consequence(real):
     assert ev(real, "ADD-02-7.2-01", "ADD-01")["status"] == "NOT ISSUED"
 
 
-def test_arabic_form_4c_consequences_are_kept_in_arabic_and_pending(real, written):
+def test_arabic_form_4c_consequences_are_kept_in_arabic_and_pending(pending_real, pending_written):
+    real, written = pending_real, pending_written
     g = GOLD["form_4c"]
     rows = {x["row"].id: x for x in real["evals"]}
     c4 = real["register"].interp_at(rows["VOL-IV-F4C-04"]["row"], "ADD-02").consequence
@@ -322,8 +340,8 @@ def test_a1_carries_status_at_each_stage_and_separate_review_statuses(written):
     assert a1["stages"] == list(STAGES)
     rows = {r["id"]: r for r in a1["rows"]}
     assert [rows["VOL-I-8.6-01"][f"status:{s}"].split(" ")[0] for s in STAGES] == ["ACTIVE", "DELETED", "REINSTATED-AMENDED"]
-    assert rows["VOL-II-T2-4-TN"]["transcription"] == "pending"
-    assert all(r["interpretation"] == "proposed (not reviewed)" for r in a1["rows"])
+    assert rows["VOL-II-T2-4-TN"]["transcription"] == "approved"           # the owner's confirmation (session 08)
+    assert all(r["interpretation"] == "proposed (not reviewed)" for r in a1["rows"])    # rows are still proposed
     assert rows["VOL-I-6.1-01"]["transcription"] == "n/a (text layer)"
     assert {"Dates", "Issues", "Stages", "Assumptions"} <= set(a1["sheets"])
 
@@ -341,7 +359,7 @@ def test_a3_lists_explicit_consequences_only_with_quotes(written, real):
     assert "VOL-I-6.3-01" in a3["none_stated_ids"]
     # every explicit consequence is grouped under its class on the page
     on_page = {i["id"]: sec["heading"] for sec in a3["sections"] for i in sec["items"]}
-    assert all(on_page[x["id"]].lower().startswith(x["class"].split(" ")[0].lower()) for x in explicit)
+    assert all(on_page[x["id"]].lower().startswith("explicit — " + x["class"].split(" ")[0].lower()) for x in explicit)
 
 
 def test_a5_is_generated_from_rows_in_force_with_labelled_assumptions(written, real):
@@ -361,8 +379,8 @@ def test_a5_is_generated_from_rows_in_force_with_labelled_assumptions(written, r
     assert {"activity": "lcc-certificate", "change": "NEW"} in [{k: d[k] for k in ("activity", "change")} for d in deltas]
 
 
-def test_pending_image_status_carries_through_a1_a3_a5(written):
-    out = written[0]
+def test_pending_image_status_carries_through_a1_a3_a5(pending_written):
+    out = pending_written[0]
     a1 = {r["id"]: r for r in json.loads((out / "a1/a1.json").read_text(encoding="utf-8"))["rows"]}
     a3 = json.loads((out / "a3/a3.json").read_text(encoding="utf-8"))
     a5 = json.loads((out / "a5/stages/ADD-02.json").read_text(encoding="utf-8"))
@@ -376,7 +394,7 @@ def test_pending_image_status_carries_through_a1_a3_a5(written):
     # TN is scored with no stated consequence: not an A3 line, but its pending reading is an A3 issue
     pending = next(i for i in a3["issues_detail"] if i["id"] == "I-AUTO-PENDING-READINGS")
     assert "VOL-II-T2-4-TN" in pending["rows"]
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    assert only_owner_approvals()
 
 
 def test_two_builds_are_byte_identical(real, tmp_path):
@@ -458,8 +476,11 @@ def test_dependency_staleness_from_a_new_clarification(tmp_path):
     assert {"VOL-I-6.4-01", "VOL-I-6.4-02"} <= set(next(i for i in res["issues"] if i["id"] == "I-AUTO-STALE")["rows"])
 
 
-def test_pdd_change_leaves_unreinterpreted_dependants_stale(real):
-    """VOL-I 8.3 (ISO current at the PDD) has no re-interpretation after ADD-01 moved the PDD."""
+def test_pdd_change_leaves_unreinterpreted_dependants_stale(real, tmp_path):
+    """VOL-I 8.3 (ISO current at the PDD) without a re-interpretation after ADD-01 moved the PDD is STALE (the register
+    as it was before session 08); with the owner-directed ADD-01 interpretation applied, it is not."""
+    assert ev(real, "VOL-I-8.3-01", "ADD-01")["stale"] == [] and ev(real, "VOL-I-8.3-01", "ADD-02")["stale"] == []
+    real = stage2.run(EVIDENCE, pack_without_session08_interpretations(tmp_path), ROOT)
     assert ev(real, "VOL-I-8.3-01", "BASE")["stale"] == []
     stale = ev(real, "VOL-I-8.3-01", "ADD-01")["stale"]
     assert stale == ["VOL-I:6.1 changed since BASE (by ADD-01/2.1)"]
@@ -507,4 +528,4 @@ def test_transcription_approval_stays_separate_from_interpretation(tmp_path):
     assert e["transcription"] == "approved"
     assert next(x for x in r["evals"] if x["row"].id == "VOL-II-T2-4-TN")["row"].review == "proposed"
     assert ev(r, "VOL-IV-F4C-04", "ADD-02")["transcription"] == "pending"
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    assert only_owner_approvals()

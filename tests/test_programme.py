@@ -18,6 +18,7 @@ import yaml
 from tenderpack import programme, schedule, stage2
 from tenderpack.dates import calendar_from_config
 from tenderpack.util import ROOT, load_yaml
+from guards import only_owner_approvals
 
 SCENARIOS = load_yaml(ROOT / "config/scenarios.yaml")
 
@@ -281,4 +282,4 @@ def test_write_is_complete_and_deterministic(base, scen, tmp_path):
     marsh = yaml.safe_load((tmp_path / "a" / "a5/marshalling.json").read_text(encoding="utf-8"))["rows"]
     lcc = next(m for m in marsh if m["activity"] == "lcc-certificate")
     assert lcc["envelope"] == "A" and lcc["physical_count"] == 4 and lcc["status"].startswith("INFEASIBLE")
-    assert not (ROOT / "curation/approvals.yaml").exists()
+    assert only_owner_approvals()

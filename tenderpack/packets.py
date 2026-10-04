@@ -249,6 +249,8 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
     summary.update(status=status["status"], status_reason=status.get("reason"), subject_sha256=subject["sha256"],
                    subject_covers=subject["covers"], subject_evidence=subject["evidence"],
                    checks=checks, numerals=nums, reading=relpath(reading_path, root) if reading_path else None)
+    if status["status"] == "approved":
+        summary["approval"] = {k: v for k, v in status.items() if k not in ("status", "reason", "subject_sha256")}
 
     rows = []
     blocks = reading.all_blocks()
@@ -305,7 +307,10 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
     summary["decisions"] = unc
     lines += [f"# Review packet: {region.region_id} — {reading.title}", "",
               f"**STATUS: {status['status'].upper()}**" + (f" ({status.get('reason')})" if status.get("reason") else "")
-              + ". Units derived from this reading carry `reading.status = " + status["status"] + "`.", "",
+              + (f" by {status['reviewer']} on {status.get('date')}" if status["status"] == "approved" else "")
+              + ". Units derived from this reading carry `reading.status = " + status["status"] + "`.", ""]
+    lines += approval_scope_md(status)
+    lines += [
               "| | |", "|---|---|",
               f"| Source | {region.doc} page {region.page}, bbox {region.bbox} pt (PDF points) |",
               f"| Native image | {region.native['width']}x{region.native['height']} px, sha256 `{region.native['sha256']}` |"
@@ -430,6 +435,42 @@ def _md_inline(t: str) -> str:
     return re.sub(r"\*([^*]+)\*", r"<em>\1</em>", t)
 
 
+_SCOPE = (("confirmation_record", "Confirmation record"), ("notes", "Confirms"), ("resolutions", "Settled by the reviewer"),
+          ("keeps_open", "Left open"), ("does_not_cover", "Does not cover"), ("permit", "Environmental Permit"),
+          ("record_amended", "Record amended"))
+
+
+def _scope_items(v) -> list[str]:
+    if isinstance(v, dict):
+        return [f"{k.replace('_', ' ')}: " + ("; ".join(map(str, x)) if isinstance(x, list) else str(x)) for k, x in v.items()]
+    return [str(x) for x in (v if isinstance(v, list) else [v])]
+
+
+def approval_scope_md(status: dict) -> list[str]:
+    """What an approval records beyond the subject: the record, what it confirms, settles, leaves open, excludes."""
+    if status.get("status") != "approved":
+        return []
+    out = []
+    for k, label in _SCOPE:
+        v = status.get(k)
+        if v:
+            out += [f"**{label}:**", ""] + [f"- {x}" for x in _scope_items(v)] + [""]
+    return out
+
+
+def approval_scope_html(status: dict) -> str:
+    from html import escape as e
+    if status.get("status") != "approved":
+        return ""
+    out = []
+    for k, label in _SCOPE:
+        v = status.get(k)
+        if v:
+            out.append(f"<p><b>{e(label)}:</b></p><ul>" + "".join(f"<li>{e(x)}</li>" for x in _scope_items(v))
+                       + "</ul>")
+    return '<div class="scope">' + "".join(out) + "</div>"
+
+
 def _packet_html(region, reading, status, subject, checks, nums, unc, segs, compare, base, reading_file,
                  approvals_path) -> str:
     """Self-contained review page: every crop embedded beside the reading it supports."""
@@ -458,8 +499,9 @@ td,th{{border:1px solid #ccc;padding:4px 6px;vertical-align:top}}td.v{{min-width
 .ok{{color:#176117}}.bad{{color:#b00020;font-weight:bold}}.w{{color:#9a5b00;font-weight:bold}}
 .status{{padding:8px 12px;background:#fff3cd;border:1px solid #e0c060;font-weight:bold}}img{{max-width:100%}}</style></head><body>
 <h1>Review packet {e(region.region_id)}: {e(reading.title)}</h1>
-<p class="status">STATUS: {e(status['status'].upper())}{(' (' + e(status['reason']) + ')') if status.get('reason') else ''}.
-Nothing here is approved until you approve it.</p>
+<p class="status">STATUS: {e(status['status'].upper())}{(' (' + e(status['reason']) + ')') if status.get('reason') else ''}{(' by ' + e(status['reviewer']) + ' on ' + e(str(status.get('date')))) if status['status'] == 'approved' else ''}.
+{'This approval covers exactly the review subject below; any change makes the reading pending again.' if status['status'] == 'approved' else 'Nothing here is approved until you approve it.'}</p>
+{approval_scope_html(status)}
 <p>Source {e(region.doc)} page {region.page}, bbox {region.bbox} pt. Reading file <code>{e(reading_file)}</code>.
 Prepared by: {e(reading.prepared_by)}. Review subject sha256 <code>{subject['sha256']}</code> (covers {e(subject['covers'])}).</p>
 <h2>What the checks prove, and what they do not</h2>
