@@ -1,6 +1,42 @@
 # Review packet: VOL-II-p3-r1 — Table 2-4 (image): Minimum Effluent Quality Parameters at the Point of Discharge
 
-**STATUS: PENDING** (not yet reviewed by a person). Units derived from this reading carry `reading.status = pending`.
+**STATUS: APPROVED** by Ahmad on 2026-10-03. Units derived from this reading carry `reading.status = approved`.
+
+**Confirmation record:**
+
+- worklog/2026-10-03_session-08_prompt.md, section 2 ('Record my source-reading confirmations'): the owner's written confirmation of 3 Oct 2026, received about 19:30 UTC; recorded by the assistant (Claude Code) on that instruction. The confirmation was made on the reading as shown in the session 07 review packets (reading file unchanged since commit 1997ef8)
+
+**Confirms:**
+
+- Confirms the visible Table 2-4 transcription: rows, headings, units, limits, assessment bases and the visible note (Note 1). TN = 5 mg/l is the original reading; 3 mg/l is the separate amended value (ADD-02 5.1).
+
+**Settled by the reviewer:**
+
+- the printed qualifier is confirmed as read: '(all values are maxima; compliance assessed as a 30-day rolling average unless stated)'
+- the limits are confirmed as read, including Faecal Coliforms 2.2 MPN/100 ml (the decimal-point question in the reading is settled by this confirmation of the visible limits)
+
+**Left open:**
+
+- how the 'all values are maxima' qualifier interacts with the Residual Chlorine (0.5 - 1.0 mg/l) and pH (6.0 - 9.0) ranges is unresolved
+- each parameter keeps its own printed basis of assessment (30-day rolling average, maximum instantaneous, maximum any single sample, continuous at outlet); the qualifier's default applies only 'unless stated'
+- anything outside the visible image stays uncertain (e.g. whether a further note was cut off below Note 1)
+- register, not part of the reading: VOL-V 29.3's first-12-month availability-deduction exception for rolling-average parameters is retained; it is not an exemption from technical compliance or commissioning requirements
+
+**Does not cover:**
+
+- changed or unseen content: any later change to the reading, its uncertainties or its evidence makes it pending again; differences are shown before any approval is extended
+- the register's interpretations of this content (A1 rows stay proposed until decided row by row)
+- amendment operations (e.g. ADD-02/5.1, TN 5 -> 3 mg/l, stays proposed)
+- bidder compliance
+
+**Environmental Permit:**
+
+- confirmed: the location of the precedence language only: it is in the VOL-II p3 reproduction preamble (text layer, unit VOL-II:T2-4-heading/para1, printed above the image, so outside this reading): 'In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail.'
+- not confirmed: the contents of the Environmental Permit, which is not in the pack; compliance with the Environmental Permit, which is not claimed, including after the TN amendment (ADD-02 5.1)
+
+**Record amended:**
+
+- 3 Oct 2026, by the assistant, from the owner's follow-up message (worklog/2026-10-03_session-08_prompt.md, follow-up): the permit wording was split into what the owner's confirmation covers (the location of the precedence language) and what it does not (the Permit's contents, Permit compliance). Reviewer, date and review subject unchanged.
 
 | | |
 |---|---|

@@ -1,16 +1,25 @@
 # A5 planning scenarios. Each one overrides config/assumptions.yaml in a COPY (deep merge: mappings merge,
 # lists and values replace) and the programme is rebuilt and compared with the baseline
-# (tenderpack.programme.run_scenarios). PROPOSED by the assistant (Stage 4); every value here is a
+# (tenderpack.programme.run_scenarios). PROPOSED (Stage 4, extended in session 08); every value here is a
 # PROVISIONAL ASSUMPTION or a HYPOTHETICAL, never a fact from the tender pack. Owner: Bid manager.
+# Baseline (config/assumptions.yaml): an unnamed three-member consortium with one foreign member (owner's instruction).
 scenarios:
   consortium-2:
-    purpose: "Two-member consortium (as in the one consortium of VOL-I Appendix 1): per-member documents and signatories drop."
+    purpose: "Two-member consortium (as in the one consortium of VOL-I Appendix 1), one of them foreign: per-member documents and signatories drop."
     overrides:
       bidder: {members: 2}
   consortium-4:
-    purpose: "Four-member consortium: per-member documents, Powers of Attorney and Form 4-C signatures rise."
+    purpose: "Four-member consortium, one of them foreign: per-member documents, Powers of Attorney and Form 4-C signatures rise."
     overrides:
       bidder: {members: 4}
+  foreign-0:
+    purpose: "No foreign member (all three members domestic): VOL-I 8.9 then asks for no investment licence or undertaking."
+    overrides:
+      bidder: {foreign_members: 0}
+  foreign-2:
+    purpose: "Two of the three members foreign: one investment licence or signed undertaking per foreign member (VOL-I 8.9)."
+    overrides:
+      bidder: {foreign_members: 2}
   lcc-15wd:
     purpose: "Local Content Certificate obtainable in 15 Working Days instead of the deliberately long 30: does the LCC chain become feasible?"
     overrides:

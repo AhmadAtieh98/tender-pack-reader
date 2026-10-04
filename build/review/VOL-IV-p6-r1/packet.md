@@ -1,6 +1,30 @@
 # Review packet: VOL-IV-p6-r1 — Form 4-C (image, Arabic with English labels): Conflict of Interest and Debarment Declaration
 
-**STATUS: PENDING** (not yet reviewed by a person). Units derived from this reading carry `reading.status = pending`.
+**STATUS: APPROVED** by Ahmad on 2026-10-03. Units derived from this reading carry `reading.status = approved`.
+
+**Confirmation record:**
+
+- worklog/2026-10-03_session-08_prompt.md, section 2 ('Record my source-reading confirmations'): the owner's written confirmation of 3 Oct 2026, received about 19:30 UTC; recorded by the assistant (Claude Code) on that instruction. The confirmation was made on the reading as shown in the session 07 review packets (reading file unchanged since commit 1997ef8)
+
+**Confirms:**
+
+- Confirms the visible Arabic text and the displayed translations of the Form 4-C reading, including the headings, declarations, fields and footer.
+
+**Settled by the reviewer:**
+
+- Declaration 5 (خامساً) refers to Volume I clause 4.2 (البند ٤-٢): the reviewer settles the uncertain left glyph of the clause numeral as ٢; the alternative recorded in the reading (٤-٣, VOL-I 4.3) is set aside by the reviewer
+
+**Left open:**
+
+- the exact placement of diacritics (tanween on the ordinal words and كاملاً, hamza forms) stays uncertain, as recorded in the reading
+- 'exclusion of the proposal' (استبعاد العرض, declaration 4) is not automatically equivalent to every other consequence category of the pack (rejection, disqualification, non-responsiveness); how it maps stays for a person to decide
+
+**Does not cover:**
+
+- changed or unseen content: any later change to the reading, its uncertainties or its evidence makes it pending again; differences are shown before any approval is extended
+- the register's interpretations of this content (A1 rows stay proposed until decided row by row)
+- amendment operations
+- bidder compliance
 
 | | |
 |---|---|

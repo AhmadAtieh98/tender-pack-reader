@@ -3,12 +3,17 @@
 For one stage of the amendment path:
   1. every A1 row that is in force at that stage contributes its evidence items (EV-...);
   2. each evidence item expands into activities from curation/activity_templates.yaml; each activity
-     carries the ids of the A1 rows that need it, an owner, a resource role, an issuer, a duration that is a
-     named ASSUMPTION from config/assumptions.yaml (value, basis, owner), a multiplicity (`per`: member,
-     signatory, reference, epc_contractor, om_operator, from the bidder settings) and its dependencies;
-  3. a backward pass in Working Days (tenderpack.dates calendar) from the pack's own dates:
-     the Proposal Due Date as amended at that stage, and any pack deadline an activity must meet
-     (e.g. the clarification cut-off), using the planning interpretation of each date rule (D4);
+     carries the ids of the A1 rows that need it, an owner, a discipline, a resource role, an issuer, a duration
+     that is a named ASSUMPTION from config/assumptions.yaml (elapsed value, staff effort `effort_wd`, the external
+     party it waits on `waiting_on`, basis, owner), a multiplicity (`per`: member, foreign_member, signatory,
+     reference, epc_contractor, om_operator, from the bidder settings) and its dependencies;
+  3. planning basis: the planning (status) date is the stage's addendum issue date (the latest addendum of the
+     stage). A FORWARD pass in Working Days (tenderpack.dates calendar, VOL-I 2.4) from the first Working Day on
+     or after it gives the earliest start and finish of every activity (ES = the Working Day after the latest
+     predecessor finish; an activity of 0 Working Days is done at the end of its predecessor's day);
+     a BACKWARD pass from the pack's own dates gives the latest ones: the Proposal Due Date as amended at that
+     stage, and any pack deadline an activity must meet (e.g. the clarification cut-off), using the planning
+     interpretation of each date rule (D4);
      latest finish = min(own deadline, latest start of each successor - 1 Working Day), except that a
      successor of 0 Working Days (done at the end of a day, e.g. sealing) does not take a day of its own:
      its predecessor may finish the same day;
@@ -16,12 +21,23 @@ For one stage of the amendment path:
      work happens on Working Days only: when a pack deadline falls on a weekend day or a declared holiday, the
      latest finish is the last Working Day before it. The legal deadline itself is never moved: it is kept on
      the activity (`deadline`) and flagged DEADLINE ON A NON-WORKING DAY (session 08);
-     `driven_by` records what set the latest finish (a successor, or the activity's own deadline);
-  4. flags (window_flags): INFEASIBLE by n Working Days when the latest start is before the status date (never
-     compressed), DEADLINE PASSED when the activity's own pack deadline is already before the status date
-     (a person records whether it was done), NO WORKING WINDOW when the deadline has not passed but no Working
-     Day is left on or before it (an explicit conflict for a person; nothing is moved), plus the requirement flags
-     (STALE interpretation, image reading pending) carried from the rows.
+     `driven_by` records what set the latest finish (a successor, or the activity's own deadline), `es_driven_by`
+     what set the earliest start (a predecessor, or the planning date);
+     total float = Working Days from the earliest start to the latest start;
+  4. three SEPARATE statuses per activity:
+     timing_status (= `status`, read by stage2): from window_flags: INFEASIBLE by n WD when the total float is -n
+     (never compressed; the shortfall runs along the whole chain), DEADLINE PASSED when the activity's own pack
+     deadline is already before the planning date (a person records whether it was done), CONDITIONAL — window
+     elapsed ... when that activity is conditional (`condition` in its template: an elapsed window alone does not
+     establish a missed duty), NO WORKING WINDOW when the deadline has not passed but no Working Day is left on or
+     before it (an explicit conflict for a person; nothing is moved), NO DEADLINE REACHED, NOT NEEDED (count 0
+     under the assumed bidder), or OK; plus the requirement flags (STALE interpretation, image reading pending);
+     decision_status: READY, or GATED when the template's `gated_by` names open issues: the finalising step waits
+     for a person's decision, which is needed by the activity's latest start; preparation is never gated;
+     resource_status: OK, OVERLOAD <role> on <dates> (load vs capacity), or NOT LOADED (why). Load per role per
+     Working Day = each activity's staff effort (effort_wd x multiplicity) spread evenly over its LATE window
+     (latest start..latest finish, clipped at the planning date). Resource levelling is NOT implemented:
+     overloads are reported, not resolved.
 Deltas between consecutive stages: NEW, REMOVED, MOVED (latest start changed), REWORK (the
 requirement behind an activity changed — its interpretation, dates, wording, cells, or it became STALE:
 work done against the earlier version may need redoing).
@@ -31,11 +47,12 @@ Both directions are checked (failures are returned in `problems` and are structu
   C44 every evidence item a row in force needs has activities, or a justified exception in the templates
       file (`_exceptions: {EV-ID: reason}`) (a required deliverable needs an activity)
   C45 every dependency names an activity that some template defines, every duration names a lead-time
-      assumption, every activity names a resource role defined in the assumptions and a known multiplicity,
-      and an activity listed under two evidence items is defined identically; a dependency on an activity
-      that exists but is not needed at this stage is shown on the activity ("not required at this stage"),
-      never silently dropped
-Documents, resources, drivers and scenarios are built on this output by tenderpack.programme.
+      assumption, every activity names a resource role defined in the assumptions, a known multiplicity and (if
+      given) a known discipline, and an activity listed under two evidence items is defined identically; a
+      dependency on an activity that exists but is not needed at this stage is shown on the activity ("not
+      required at this stage"), never silently dropped
+Documents, resources, drivers and scenarios are built on this output by tenderpack.programme; the Gantt by
+tenderpack.gantt.
 """
 from __future__ import annotations
 
@@ -44,12 +61,19 @@ from datetime import date, timedelta
 from .dates import Calendar
 
 IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW")
-BLOCKING_FLAGS = ("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE", "NO WORKING WINDOW")
+# flags that set the timing status (the first one found, up to " (", is `status`)
+BLOCKING_FLAGS = ("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE", "NO WORKING WINDOW", "CONDITIONAL —", "NOT NEEDED")
+NOT_SCHEDULED = ("DEADLINE PASSED", "CONDITIONAL", "NOT NEEDED")      # timing statuses whose work is not loaded
+DISCIPLINES = ("Legal", "Commercial", "Technical", "Bid management", "Document control")
+NO_LEVELLING = "resource levelling is NOT implemented; overloads are reported, not resolved"
+LOAD_WINDOW = ("late: each activity's staff effort (effort_wd x multiplicity) is spread evenly over the Working Days of "
+               "its late window, latest start..latest finish, clipped at the planning date (as late as possible)")
 
 # evidence-vocabulary `per` -> the bidder settings (config/assumptions.yaml bidder:) whose product it is
 PER = {
     "proposal": (), "lead_member": (),
     "member": ("members",),
+    "foreign_member": ("foreign_members",),
     "signatory": ("members", "signatories_per_member"),
     "reference": ("reference_plants_offered",),
     "epc_contractor": ("epc_contractors",),
@@ -86,13 +110,32 @@ def multiplicity_label(per: str | None, bidder: dict) -> str:
     return f"x{n} (per {per}: {expr}; PROVISIONAL ASSUMPTION)" if expr else ""
 
 
-def duration_basis(lt: dict) -> str:
-    """'ASSUMPTION (PROVISIONAL; owner Commercial): <basis>' for a lead-time entry."""
-    b = str(lt.get("basis", "")).strip()
+def _strip(b: str) -> str:
+    b = str(b or "").strip()
     for p in ("PROVISIONAL ASSUMPTION:", "ASSUMPTION:"):
         if b.startswith(p):
             b = b[len(p):].strip()
-    return f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {b}"
+    return b
+
+
+def duration_basis(lt: dict) -> str:
+    """'ASSUMPTION (PROVISIONAL; owner Commercial): <basis>' for a lead-time entry."""
+    return f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {_strip(lt.get('basis', ''))}"
+
+
+def effort_of(lt: dict) -> tuple[float, str, str]:
+    """(staff effort per unit in Working Days, external party waited on or "", labelled basis) of a lead-time entry.
+    Without `effort_wd` the whole elapsed duration counts as staff effort (the conservative default)."""
+    waiting = str(lt.get("waiting_on") or "").strip()
+    if "effort_wd" in lt and lt["effort_wd"] is not None:
+        eff = float(lt["effort_wd"])
+        eff = int(eff) if eff == int(eff) else eff
+        b = _strip(lt.get("effort_basis", "")) or "no basis given"
+    else:
+        eff = int(lt.get("value", 0))
+        b = "no effort_wd configured: the whole elapsed duration is counted as staff effort (conservative default)"
+    return eff, waiting, (f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {b}; "
+                          f"waits on: {waiting or 'no external party'}")
 
 
 def last_working_day(cal: Calendar, d: date) -> date:
@@ -100,6 +143,17 @@ def last_working_day(cal: Calendar, d: date) -> date:
     while not cal.is_working_day(d):
         d -= timedelta(days=1)
     return d
+
+
+def first_working_day(cal: Calendar, d: date) -> date:
+    """d itself when it is a Working Day, otherwise the first Working Day after it."""
+    while not cal.is_working_day(d):
+        d += timedelta(days=1)
+    return d
+
+
+def _working_days(cal: Calendar, a: date, b: date) -> list[date]:
+    return [a + timedelta(days=i) for i in range((b - a).days + 1) if cal.is_working_day(a + timedelta(days=i))]
 
 
 def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
@@ -142,15 +196,66 @@ def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
     return res
 
 
+def forward_pass(acts: dict[str, dict], cal: Calendar, start: date) -> dict[str, dict]:
+    """acts as for backward_pass. Earliest dates from the first Working Day on or after `start` (the planning date):
+    ES = max(that day, the Working Day after each predecessor's earliest finish; for an activity of 0 Working Days,
+    the predecessor's finish day itself); EF = ES + (duration - 1) Working Days (= ES for 0 or 1).
+    Returns id -> {"es", "ef", "es_driven_by" (predecessor id or 'planning date')}. Pure; ValueError on a cycle."""
+    day0 = first_working_day(cal, start)
+    res: dict[str, dict] = {}
+    visiting: set[str] = set()
+
+    def visit(aid: str) -> dict:
+        if aid in res:
+            return res[aid]
+        if aid in visiting:
+            raise ValueError(f"dependency cycle at {aid}")
+        visiting.add(aid)
+        d = int(acts[aid]["duration_wd"])
+        cands = [(day0, 0, "planning date")]
+        for p in sorted(acts[aid]["predecessors"]):
+            pf = visit(p)["ef"]
+            cands.append((pf if d == 0 else cal.add_working_days(pf, 1), 1, p))
+        es, _, drv = max(cands)
+        visiting.discard(aid)
+        res[aid] = {"es": es, "ef": cal.add_working_days(es, d - 1) if d > 1 else es, "es_driven_by": drv}
+        return res[aid]
+
+    for k in sorted(acts):
+        visit(k)
+    return res
+
+
+def network(acts: dict[str, dict], cal: Calendar, start: date) -> dict[str, dict]:
+    """Forward and backward pass together: id -> {es, ef, es_driven_by, ls, lf, driven_by, deadline,
+    deadline_nonworking, float_wd} where float_wd = Working Days from ES to LS (None without a latest start)."""
+    fw, bw = forward_pass(acts, cal, start), backward_pass(acts, cal)
+    out = {}
+    for k in sorted(acts):
+        b, f = bw[k], fw[k]
+        out[k] = {**b, **f, "float_wd": None if b["ls"] is None else cal.working_days_between(f["es"], b["ls"])}
+    return out
+
+
 def window_flags(t: dict, status_date: date, cal: Calendar) -> list[str]:
-    """Timing flags of one activity from its backward-pass result. The legal deadline is quoted, never moved."""
+    """Timing flags of one activity from its pass results. The legal deadline is quoted, never moved. With a
+    forward pass (`float_wd`), INFEASIBLE means negative total float; without one, a latest start before the
+    status date. A `condition` turns an elapsed window into CONDITIONAL, never a missed duty."""
     s, f, legal = t["ls"], t["lf"], t.get("deadline")
+    cond = str(t.get("condition") or "").strip()
     flags = []
     if f is None:
         return ["NO DEADLINE REACHED (not linked to a pack date)"]
     if t.get("deadline_nonworking"):
         flags.append(f"DEADLINE ON A NON-WORKING DAY (legal deadline {legal.isoformat()} ({legal.strftime('%a')}) "
                      f"kept; the work must finish by {f.isoformat()}, the last Working Day before it)")
+    fl = t.get("float_wd")
+    if legal is not None and legal < status_date and cond:
+        flags.insert(0, f"CONDITIONAL — window elapsed {legal.isoformat()}; whether the condition arose is not known "
+                        f"({t.get('rule') or 'own deadline'} = {legal.isoformat()} is before the planning date "
+                        f"{status_date.isoformat()}; needed only if {cond}; an elapsed window alone does not establish "
+                        "a missed duty: a person records whether the condition arose and, if it did, what was done)")
+        return flags
     if legal is not None and legal < status_date:
         flags.insert(0, f"DEADLINE PASSED ({t.get('rule') or 'own deadline'} = {legal.isoformat()} is before the status "
                         f"date {status_date.isoformat()}; record whether it was done)")
@@ -158,12 +263,120 @@ def window_flags(t: dict, status_date: date, cal: Calendar) -> list[str]:
         flags.insert(0, f"NO WORKING WINDOW (the deadline {legal.isoformat()} has not passed, but the last Working Day "
                         f"on or before it, {f.isoformat()}, is before the status date {status_date.isoformat()}; the "
                         "legal deadline is unchanged; a person decides how to resolve the conflict)")
-    elif s is not None and s < status_date:
+    elif fl is not None and fl < 0:
+        why = (f"latest start {s.isoformat()} is before the planning date {status_date.isoformat()}" if s < status_date
+               else f"earliest start {t['es'].isoformat()} (after {t.get('es_driven_by')}) is after the latest start "
+                    f"{s.isoformat()}")
+        flags.insert(0, f"INFEASIBLE by {-fl} WD (total float {fl} WD: {why}; not compressed)")
+    elif fl is None and s is not None and s < status_date:
         short = cal.working_days_between(s, status_date)
         flags.insert(0, f"INFEASIBLE by {short} WD (latest start {s.isoformat()} is before the status date "
                         f"{status_date.isoformat()}; not compressed)")
+    if cond:
+        flags.append(f"CONDITIONAL (only if {cond})")
     return flags
 
+
+def timing_status(flags: list[str]) -> str:
+    return next((x for x in flags if x.startswith(BLOCKING_FLAGS)), "OK").split(" (")[0]
+
+
+# ---------------------------------------------------------------------------------------------- resources
+
+def resource_load(rows: list[dict], roles: dict, cal: Calendar, status_date: date) -> dict:
+    """Staff load per role per Working Day. rows: activities with id, resource, effort_total_wd, latest_start,
+    latest_finish (ISO), status. Each activity's effort is spread evenly over the Working Days of its late window
+    clipped at the planning date. Not loaded: no role, no effort, no latest dates, a window wholly before the
+    planning date, or a timing status that schedules no work (DEADLINE PASSED, CONDITIONAL, NOT NEEDED).
+    Returns {"daily": {role: {iso: {load, capacity, over, activities: [[id, share]]}}}, "overloads": [runs of
+    consecutive overloaded Working Days], "loaded": {id: {...}}, "notes", "window"}. Nothing is levelled."""
+    day0 = first_working_day(cal, status_date)
+    daily: dict[str, dict[date, list[tuple[str, float]]]] = {}
+    loaded: dict[str, dict] = {}
+    notes: list[str] = []
+    for a in sorted(rows, key=lambda x: x["id"]):
+        r, eff, st = a.get("resource"), float(a.get("effort_total_wd") or 0), str(a.get("status") or "OK")
+        ls = date.fromisoformat(a["latest_start"]) if a.get("latest_start") else None
+        lf = date.fromisoformat(a["latest_finish"]) if a.get("latest_finish") else None
+        reason = None
+        if not r:
+            reason = "no resource role"
+        elif st.startswith(NOT_SCHEDULED):
+            reason = f"timing status {st.split(' —')[0]}: no work is scheduled"
+        elif eff <= 0:
+            reason = "no staff effort (effort 0 or count 0)"
+        elif ls is None or lf is None:
+            reason = "no latest dates (not linked to a pack date)"
+        elif lf < day0:
+            reason = f"late window {ls.isoformat()}..{lf.isoformat()} ends before the planning date (INFEASIBLE; see drivers)"
+        if reason:
+            loaded[a["id"]] = {"loaded": False, "reason": reason}
+            notes.append(f"{a['id']}: not loaded ({reason})")
+            continue
+        days = _working_days(cal, max(ls, day0), lf) or [lf]
+        share = eff / len(days)
+        if ls < day0:
+            notes.append(f"{a['id']}: late window {ls.isoformat()}..{lf.isoformat()} clipped at the planning date "
+                         f"{day0.isoformat()}: {eff:g} staff WD in {len(days)} WD")
+        for d in days:
+            daily.setdefault(r, {}).setdefault(d, []).append((a["id"], share))
+        loaded[a["id"]] = {"loaded": True, "resource": r, "days": [d.isoformat() for d in days],
+                           "per_day": round(share, 3)}
+    out_daily: dict[str, dict[str, dict]] = {}
+    overloads: list[dict] = []
+    for r in sorted(daily):
+        cap = (roles.get(r) or {}).get("capacity")
+        out_daily[r] = {}
+        over: list[date] = []
+        for d in sorted(daily[r]):
+            load = round(sum(s for _, s in daily[r][d]), 3)
+            is_over = cap is not None and load > cap
+            out_daily[r][d.isoformat()] = {"load": load, "capacity": cap, "over": is_over,
+                                           "activities": [[i, round(s, 3)] for i, s in daily[r][d]]}
+            if is_over:
+                over.append(d)
+        runs: list[list[date]] = []
+        for d in over:
+            if runs and cal.add_working_days(runs[-1][-1], 1) == d:
+                runs[-1].append(d)
+            else:
+                runs.append([d])
+        for run in runs:
+            ds = [d.isoformat() for d in run]
+            overloads.append({"resource": r, "from": ds[0], "to": ds[-1], "dates": ds, "days": len(ds),
+                              "peak_load": max(out_daily[r][x]["load"] for x in ds), "capacity": cap,
+                              "activities": sorted({i for x in ds for i, _ in out_daily[r][x]["activities"]})})
+    return {"daily": out_daily, "overloads": overloads, "loaded": loaded, "window": LOAD_WINDOW,
+            "notes": [f"Load window: {LOAD_WINDOW}. Capacities are staff per Working Day (PROVISIONAL ASSUMPTIONS); "
+                      f"{NO_LEVELLING}."] + notes}
+
+
+def date_span(a: str, b: str) -> str:
+    return a if a == b else f"{a}..{b}"
+
+
+def resource_statuses(rows: list[dict], load: dict) -> dict[str, str]:
+    """id -> OK / OVERLOAD <role> on <dates> (peak <load> vs capacity <c> staff) / NOT LOADED (<why>)."""
+    out = {}
+    for a in rows:
+        x = load["loaded"].get(a["id"]) or {"loaded": False, "reason": "not assessed"}
+        if not x["loaded"]:
+            out[a["id"]] = f"NOT LOADED ({x['reason']})"
+            continue
+        days = set(x["days"])
+        hits = [o for o in load["overloads"] if o["resource"] == x["resource"] and days & set(o["dates"])]
+        cap = (load["daily"].get(x["resource"]) or {}).get(x["days"][0], {}).get("capacity")
+        if cap is None:
+            out[a["id"]] = f"NO CAPACITY CONFIGURED for {x['resource']}"
+        elif hits:
+            out[a["id"]] = "; ".join(f"OVERLOAD {o['resource']} on {date_span(o['from'], o['to'])} (peak {o['peak_load']:g} "
+                                     f"vs capacity {o['capacity']} staff)" for o in hits)
+        else:
+            out[a["id"]] = "OK"
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- checks
 
 def check_templates(templates: dict, assumptions: dict) -> list[str]:
     """C45 problems of the templates file against the assumptions (independent of any stage)."""
@@ -187,6 +400,12 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
             elif roles is not None and t["resource"] not in roles:
                 problems.append(f"C45: activity {t['id']} ({item}) names resource '{t['resource']}', which is not a role "
                                 f"in the assumptions (resources:)")
+            if t.get("discipline") and t["discipline"] not in DISCIPLINES:
+                problems.append(f"C45: activity {t['id']} ({item}) names discipline '{t['discipline']}' (known: "
+                                f"{', '.join(DISCIPLINES)})")
+            g = t.get("gated_by")
+            if g is not None and (not isinstance(g, list) or not all(isinstance(i, str) and i.startswith("I-") for i in g)):
+                problems.append(f"C45: activity {t['id']} ({item}): gated_by must list issue ids (I-...)")
             try:
                 multiplicity(t.get("per"), bidder)
             except KeyError as e:
@@ -194,22 +413,75 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
             if t["id"] in seen and seen[t["id"]][1] != t:
                 problems.append(f"C45: activity {t['id']} is defined differently under {seen[t['id']][0]} and {item}")
             seen.setdefault(t["id"], (item, t))
+    for ev, o in (templates.get("_per_overrides") or {}).items():
+        try:
+            multiplicity((o or {}).get("per"), bidder)
+        except KeyError as e:
+            problems.append(f"C45: _per_overrides {ev}: {e.args[0]}")
     for k, v in lead.items():
         try:
             if int(v["value"]) < 0 or int(v["value"]) != v["value"]:
                 raise ValueError
         except (KeyError, TypeError, ValueError):
             problems.append(f"C45: lead-time assumption '{k}' has no whole, non-negative number of Working Days")
+        if "effort_wd" in v and not (isinstance(v["effort_wd"], (int, float)) and v["effort_wd"] >= 0):
+            problems.append(f"C45: lead-time assumption '{k}' has an effort_wd that is not a non-negative number")
+    if "foreign_members" in bidder and "members" in bidder and int(bidder["foreign_members"]) > int(bidder["members"]):
+        problems.append(f"C45: bidder.foreign_members ({bidder['foreign_members']}) is more than bidder.members "
+                        f"({bidder['members']})")
     return problems
 
+
+# ---------------------------------------------------------------------------------------------- milestones
+
+def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_rules: dict[str, list[str]],
+               linked_rows: set[str]) -> list[dict]:
+    """Dated pack milestones of the stage: every date rule of a row in force with a planning value (fixed dates,
+    the PDD, the clarification cut-off, validity ends...), named by the templates' `_milestones.labels`; the
+    `_milestones.derived` ones (e.g. the site visit, 'the day following the Pre-Bid Conference'); and the
+    event-dependent rules (no date) of rows the programme's activities serve."""
+    cfg = templates.get("_milestones") or {}
+    labels = cfg.get("labels") or {}
+    pdd_time = str((assumptions.get("planning") or {}).get("delivery_cutoff_time") or "")
+    out = []
+    for rid in sorted(rules):
+        d = rules[rid]
+        value = d["planning"]["value"]
+        if not value and not (set(d["rows"]) & linked_rows):
+            continue
+        lab = labels.get(rid) or {}
+        out.append({"id": rid, "date": value, "time": (pdd_time if rid == "PDD" and pdd_time else str(lab.get("time", ""))),
+                    "short": lab.get("short", rid), "label": lab.get("label") or d.get("text", rid),
+                    "purpose": d.get("purpose", ""), "words": d.get("text", ""), "source": d.get("source_unit", ""),
+                    "reading": d["planning"].get("key", ""), "readings_differ": bool(d.get("readings_differ")),
+                    "rows": sorted(d["rows"]), "conditional": bool(lab.get("conditional")), "derived": False,
+                    "activities": sorted(act_rules.get(rid, [])),
+                    "kind": ("dated" if value else "event-dependent (no date: " + str(d["planning"].get("key")) + ")")})
+    by_id = {m["id"]: m for m in out}
+    for did, spec in sorted((cfg.get("derived") or {}).items()):
+        src = by_id.get(spec.get("from"))
+        if not src or not src["date"]:
+            continue
+        v = date.fromisoformat(src["date"]) + timedelta(days=int(spec.get("calendar_days_after", 0)))
+        out.append({"id": did, "date": v.isoformat(), "time": str(spec.get("time", "")), "short": spec.get("short", did),
+                    "label": spec.get("label", did), "purpose": "event", "words": spec.get("label", ""),
+                    "source": spec.get("source", ""), "reading": f"derived from {src['id']}", "readings_differ": False,
+                    "rows": [], "conditional": bool(spec.get("conditional")), "derived": True, "activities": [],
+                    "kind": "dated (derived)"})
+    return sorted(out, key=lambda m: (m["date"] or "9999", m["id"]))
+
+
+# ---------------------------------------------------------------------------------------------- plan
 
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
          anchors: dict, evidence_items: dict | None = None) -> dict:
     """evals: [{"row": Row, "stages": {stage: evaluation}}] from register.Register.all().
-    evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope."""
+    evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope.
+    status_date: the planning date (the stage's addendum issue date)."""
     need: dict[str, list[str]] = {}
     row_flags: dict[str, list[str]] = {}
     deadlines: dict[str, tuple[str, str]] = {}            # rule_id -> (date, row id)
+    rules: dict[str, dict] = {}                           # rule_id -> date entry + rows (for milestones)
     for e in evals:
         row, ev = e["row"], e["stages"][stage]
         if not in_force(ev["status"]):
@@ -225,6 +497,8 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         for d in ev["dates"]:
             if d["planning"]["value"]:
                 deadlines[d["rule_id"]] = (d["planning"]["value"], row.id)
+            x = rules.setdefault(d["rule_id"], {**{k: v for k, v in d.items() if k != "interpretations"}, "rows": set()})
+            x["rows"].add(row.id)
     exceptions = templates.get("_exceptions") or {}
     defined = {t["id"] for item, ts in templates.items() if not item.startswith("_") for t in (ts or [])}
     problems = check_templates(templates, assumptions)
@@ -240,17 +514,24 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             if t.get("duration") not in lead:
                 continue
             try:
-                count, _ = multiplicity(t.get("per"), bidder)
+                count, expr = multiplicity(t.get("per"), bidder)
             except KeyError:
                 continue                                     # reported by check_templates (C45)
             lt = lead[t["duration"]]
+            eff, waiting, eff_basis = effort_of(lt)
             env = getattr((evidence_items or {}).get(item), "envelope", "") if evidence_items else ""
             a = acts.setdefault(t["id"], {
                 "id": t["id"], "name": t["name"], "evidence": item, "evidence_items": [], "envelope": env,
-                "owner": t["owner"], "resource": t.get("resource", ""), "issuer": t["issuer"],
+                "owner": t["owner"],
+                "discipline": t.get("discipline") or (t["owner"] if t["owner"] in DISCIPLINES else "Bid management"),
+                "resource": t.get("resource", ""), "issuer": t["issuer"],
                 "duration_wd": int(lt["value"]), "duration_assumption": t["duration"],
                 "duration_basis": duration_basis(lt), "per": t.get("per") or "proposal", "count": count,
-                "multiplicity": multiplicity_label(t.get("per"), bidder), "item": t.get("item", ""),
+                "multiplicity": multiplicity_label(t.get("per"), bidder), "count_expr": expr,
+                "effort_wd": eff, "effort_total_wd": round(eff * count, 3), "effort_basis": eff_basis,
+                "waiting_on": waiting, "work_type": "external waiting + staff effort" if waiting else "staff effort",
+                "item": t.get("item", ""), "gated_by": list(t.get("gated_by") or []),
+                "condition": str(t.get("condition") or ""),
                 "predecessors": list(t.get("predecessors", [])), "successors": list(t.get("successors", [])),
                 "deadline_rule": (t.get("finish") or {}).get("deadline_of"), "req_ids": []})
             a["req_ids"] = sorted(set(a["req_ids"]) | set(need[item]))
@@ -267,35 +548,75 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         a["predecessors"] = sorted(a["predecessors"])
         rule = a["deadline_rule"]
         a["deadline_date"] = deadlines[rule][0] if rule in deadlines else None
-    bp = backward_pass({k: {"duration_wd": a["duration_wd"], "predecessors": a["predecessors"],
-                            "deadline_rule": a["deadline_rule"],
-                            "deadline_date": date.fromisoformat(a["deadline_date"]) if a["deadline_date"] else None}
-                        for k, a in acts.items()}, cal)
+    net = network({k: {"duration_wd": a["duration_wd"], "predecessors": a["predecessors"],
+                       "deadline_rule": a["deadline_rule"],
+                       "deadline_date": date.fromisoformat(a["deadline_date"]) if a["deadline_date"] else None}
+                   for k, a in acts.items()}, cal, status_date)
+    iso = lambda d: d.isoformat() if d else None                                    # noqa: E731
     rows = []
-    for aid in sorted(acts, key=lambda k: (bp[k]["ls"] or date.max, k)):
+    for aid in sorted(acts, key=lambda k: (net[k]["ls"] or date.max, k)):
         a = acts[aid]
-        s, f = bp[aid]["ls"], bp[aid]["lf"]
-        flags = window_flags({**bp[aid], "rule": a["deadline_rule"]}, status_date, cal)
+        t = net[aid]
+        flags = window_flags({**t, "rule": a["deadline_rule"], "condition": a["condition"]}, status_date, cal)
+        if a["count"] == 0:
+            flags.insert(0, f"NOT NEEDED (count 0 under the assumed bidder: {a['count_expr']}; nothing to produce; kept "
+                            "in the network unchanged so scenarios compare like for like)")
         for r in a["req_ids"]:
             flags += [f"{x} ({r})" for x in row_flags.get(r, [])]
         flags += [f"dependency '{d}' not required at this stage" for d in a.pop("not_required_here")]
-        rows.append({**a, "latest_start": s.isoformat() if s else None, "latest_finish": f.isoformat() if f else None,
-                     "driven_by": bp[aid]["driven_by"],
+        status = timing_status(flags)
+        g = a["gated_by"]
+        ls = t["ls"]
+        decision = "READY" if not g else (
+            f"GATED: finalisation waits on {', '.join(g)}; decision needed by "
+            + (ls.isoformat() + (" (already before the planning date; see timing)" if ls < status_date else "")
+               if ls else "no latest start (not linked to a pack date)"))
+        rows.append({**a, "earliest_start": iso(t["es"]), "earliest_finish": iso(t["ef"]), "es_driven_by": t["es_driven_by"],
+                     "latest_start": iso(ls), "latest_finish": iso(t["lf"]), "float_wd": t["float_wd"],
+                     "driven_by": t["driven_by"],
                      "deadline": (f"{a['deadline_rule']} = {deadlines[a['deadline_rule']][0]} (from {deadlines[a['deadline_rule']][1]})"
                                   if a["deadline_rule"] in deadlines else ""),
-                     "flags": flags, "status": "OK" if not any(x.startswith(BLOCKING_FLAGS) for x in flags)
-                     else next(x for x in flags if x.startswith(BLOCKING_FLAGS)).split(" (")[0]})
+                     "flags": flags, "status": status, "timing_status": status, "decision_status": decision,
+                     "decision_needed_by": iso(ls) if g else None})
+    load = resource_load(rows, assumptions.get("resources") or {}, cal, status_date)
+    rst = resource_statuses(rows, load)
+    for row in rows:
+        row["resource_status"] = rst[row["id"]]
     marshalling = [{"item": r["item"], "envelope": r["envelope"], "evidence": r["evidence"], "issuer": r["issuer"],
                     "owner": r["owner"], "resource": r["resource"], "lead_time_wd": r["duration_wd"],
                     "lead_time_assumption": r["duration_assumption"], "multiplicity": r["multiplicity"],
                     "count": r["count"], "drop_dead_start": r["latest_start"], "needed_by": r["latest_finish"],
-                    "activity": r["id"], "status": r["status"], "req_ids": r["req_ids"], "flags": r["flags"]}
+                    "activity": r["id"], "status": r["status"], "decision_status": r["decision_status"],
+                    "req_ids": r["req_ids"], "flags": r["flags"]}
                    for r in rows if r["item"]]
-    return {"stage": stage, "status_date": status_date.isoformat(), "anchors": anchors, "activities": rows,
+    day0 = first_working_day(cal, status_date)
+    act_rules: dict[str, list[str]] = {}
+    for r in rows:
+        if r["deadline_rule"]:
+            act_rules.setdefault(r["deadline_rule"], []).append(r["id"])
+    used = sorted({r["deadline_rule"] for r in rows if r["deadline_rule"] in deadlines})
+    pdd = deadlines.get("PDD", (anchors.get("PDD"), ""))[0]
+    basis = (f"Planning date {status_date.isoformat()} = the issue date of {stage}, the latest addendum at this stage "
+             f"(owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in "
+             f"Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: "
+             f"{', '.join(sorted(h.isoformat() for h in cal.holidays)) or 'none'}) from the first Working Day on or "
+             f"after the planning date ({day0.isoformat()}). Latest dates: a backward pass from the pack deadlines in "
+             f"force at {stage} ("
+             + "; ".join(f"{k} {deadlines[k][0]}" + (f" {(assumptions.get('planning') or {}).get('delivery_cutoff_time', '')}"
+                                                     if k == "PDD" else "") for k in used)
+             + f"). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that "
+               f"many Working Days (never compressed). Proposal Due Date at this stage: {pdd}.")
+    linked = {x for r in rows for x in r["req_ids"]}
+    return {"stage": stage, "status_date": status_date.isoformat(), "planning_date": status_date.isoformat(),
+            "start_date": day0.isoformat(), "planning_basis": basis, "anchors": anchors, "activities": rows,
             "marshalling": marshalling, "problems": problems,
             "exceptions": {k: v for k, v in exceptions.items() if k in need},
             "evidence_needed": {k: sorted(v) for k, v in sorted(need.items())},
-            "deadlines": {k: {"date": v[0], "row": v[1]} for k, v in sorted(deadlines.items())}}
+            "deadlines": {k: {"date": v[0], "row": v[1]} for k, v in sorted(deadlines.items())},
+            "milestones": milestones(rules, templates, assumptions, act_rules, linked),
+            "per_overrides": {k: dict(v) for k, v in sorted((templates.get("_per_overrides") or {}).items()) if k in need},
+            "calendar": {"weekend": sorted(cal.weekend), "holidays": sorted(h.isoformat() for h in cal.holidays)},
+            "load": {"window": load["window"], "overloads": load["overloads"], "notes": load["notes"]}}
 
 
 def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dict]:

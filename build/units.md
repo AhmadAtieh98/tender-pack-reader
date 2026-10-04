@@ -164,18 +164,18 @@ One line per unit, in reading order. `text` is as printed (superscripts shown as
 | `VOL-II:H:T2-4-heading` | heading | 3 |  | TABLE 2-4 — EFFLUENT QUALITY (REPRODUCED FROM THE ENVIRONMENTAL PERMIT) |
 | `VOL-II:T2-4-heading/para1` | paragraph | 3 |  | The following page is reproduced as issued by the permitting authority. In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental Permit shall prevail. |
 | `VOL-II:region:VOL-II-p3-r1` | region | 3 |  |  |
-| `VOL-II:T2-4` | table | 3 | image reading: **PENDING** | Table 2-4   Minimum Effluent Quality Parameters at the Point of Discharge (all values are maxima; compliance assessed as a 30-day rolling average unless stated) |
-| `VOL-II:T2-4/BOD5` | table_row | 3 | image reading: **PENDING** | Parameter: Biochemical Oxygen Demand (BOD5) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average |
-| `VOL-II:T2-4/COD` | table_row | 3 | image reading: **PENDING** | Parameter: Chemical Oxygen Demand (COD) / Unit: mg/l / Limit: 50 / Basis of assessment: 30-day rolling average |
-| `VOL-II:T2-4/TSS` | table_row | 3 | image reading: **PENDING** | Parameter: Total Suspended Solids (TSS) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average |
-| `VOL-II:T2-4/TN` | table_row | 3 | image reading: **PENDING** | Parameter: Total Nitrogen (TN) / Unit: mg/l / Limit: 5 / Basis of assessment: 30-day rolling average |
-| `VOL-II:T2-4/TP` | table_row | 3 | image reading: **PENDING** | Parameter: Total Phosphorus (TP) / Unit: mg/l / Limit: 1 / Basis of assessment: 30-day rolling average |
-| `VOL-II:T2-4/Turbidity` | table_row | 3 | image reading: **PENDING** | Parameter: Turbidity / Unit: NTU / Limit: 2 / Basis of assessment: Maximum instantaneous |
-| `VOL-II:T2-4/FaecalColiforms` | table_row | 3 | image reading: **PENDING**; 1 uncertainty(ies) | Parameter: Faecal Coliforms / Unit: MPN/100 ml / Limit: 2.2 / Basis of assessment: Maximum, any single sample |
-| `VOL-II:T2-4/ResidualChlorine` | table_row | 3 | image reading: **PENDING**; 1 uncertainty(ies) | Parameter: Residual Chlorine / Unit: mg/l / Limit: 0.5 - 1.0 / Basis of assessment: Continuous at outlet |
-| `VOL-II:T2-4/pH` | table_row | 3 | image reading: **PENDING**; 2 uncertainty(ies) | Parameter: pH / Unit: - / Limit: 6.0 - 9.0 / Basis of assessment: Continuous at outlet |
-| `VOL-II:T2-4/OilGrease` | table_row | 3 | image reading: **PENDING** | Parameter: Oil and Grease / Unit: mg/l / Limit: 1 / Basis of assessment: Maximum, any single sample |
-| `VOL-II:T2-4/note1` | reading_block | 3 | image reading: **PENDING**; 1 uncertainty(ies) | Note 1:  Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply. |
+| `VOL-II:T2-4` | table | 3 | image reading: **APPROVED** | Table 2-4   Minimum Effluent Quality Parameters at the Point of Discharge (all values are maxima; compliance assessed as a 30-day rolling average unless stated) |
+| `VOL-II:T2-4/BOD5` | table_row | 3 | image reading: **APPROVED** | Parameter: Biochemical Oxygen Demand (BOD5) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average |
+| `VOL-II:T2-4/COD` | table_row | 3 | image reading: **APPROVED** | Parameter: Chemical Oxygen Demand (COD) / Unit: mg/l / Limit: 50 / Basis of assessment: 30-day rolling average |
+| `VOL-II:T2-4/TSS` | table_row | 3 | image reading: **APPROVED** | Parameter: Total Suspended Solids (TSS) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average |
+| `VOL-II:T2-4/TN` | table_row | 3 | image reading: **APPROVED** | Parameter: Total Nitrogen (TN) / Unit: mg/l / Limit: 5 / Basis of assessment: 30-day rolling average |
+| `VOL-II:T2-4/TP` | table_row | 3 | image reading: **APPROVED** | Parameter: Total Phosphorus (TP) / Unit: mg/l / Limit: 1 / Basis of assessment: 30-day rolling average |
+| `VOL-II:T2-4/Turbidity` | table_row | 3 | image reading: **APPROVED** | Parameter: Turbidity / Unit: NTU / Limit: 2 / Basis of assessment: Maximum instantaneous |
+| `VOL-II:T2-4/FaecalColiforms` | table_row | 3 | image reading: **APPROVED**; 1 uncertainty(ies) | Parameter: Faecal Coliforms / Unit: MPN/100 ml / Limit: 2.2 / Basis of assessment: Maximum, any single sample |
+| `VOL-II:T2-4/ResidualChlorine` | table_row | 3 | image reading: **APPROVED**; 1 uncertainty(ies) | Parameter: Residual Chlorine / Unit: mg/l / Limit: 0.5 - 1.0 / Basis of assessment: Continuous at outlet |
+| `VOL-II:T2-4/pH` | table_row | 3 | image reading: **APPROVED**; 2 uncertainty(ies) | Parameter: pH / Unit: - / Limit: 6.0 - 9.0 / Basis of assessment: Continuous at outlet |
+| `VOL-II:T2-4/OilGrease` | table_row | 3 | image reading: **APPROVED** | Parameter: Oil and Grease / Unit: mg/l / Limit: 1 / Basis of assessment: Maximum, any single sample |
+| `VOL-II:T2-4/note1` | reading_block | 3 | image reading: **APPROVED**; 1 uncertainty(ies) | Note 1:  Where a parameter is not listed above, the limit stated in the Environmental Permit shall apply. |
 | `VOL-II:T2-4-heading/para2` | paragraph | 3 |  | End of reproduction. |
 | `VOL-II:H:S3` | heading | 3 |  | SECTION 3 — PROCESS REQUIREMENTS |
 | `VOL-II:3.1` | clause | 3 |  | The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2. The Authority does not mandate a particular process train. |
@@ -289,34 +289,34 @@ One line per unit, in reading order. `text` is as printed (superscripts shown as
 | `VOL-IV:H:F4-C` | heading | 5 |  | FORM 4-C — CONFLICT OF INTEREST AND DEBARMENT DECLARATION |
 | `VOL-IV:F4-C/para1` | paragraph | 5 |  | The Form is reproduced on the following page as issued. It shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder, in accordance with Volume I Clause 9.4. Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive. |
 | `VOL-IV:region:VOL-IV-p6-r1` | region | 6 |  |  |
-| `VOL-IV:F4-C/image` | image_text | 6 | image reading: **PENDING** | Form 4-C (image, Arabic with English labels): Conflict of Interest and Debarment Declaration |
-| `VOL-IV:F4-C/image/hdr-en` | reading_block | 6 | image reading: **PENDING** | NORTHERN UTILITIES PROCUREMENT AUTHORITY |
-| `VOL-IV:F4-C/image/hdr-ar` | reading_block | 6 | image reading: **PENDING** | الهيئة الشمالية للمشتريات المرفقية — *translation:* Northern Utilities Procurement Authority |
-| `VOL-IV:F4-C/image/ref-en` | reading_block | 6 | image reading: **PENDING** | Tender Ref: NUPA/ISTP/2026/014 |
-| `VOL-IV:F4-C/image/ref-ar` | reading_block | 6 | image reading: **PENDING** | مناقصة رقم: NUPA/ISTP/2026/014 — *translation:* Tender number: NUPA/ISTP/2026/014 |
-| `VOL-IV:F4-C/image/form-en` | reading_block | 6 | image reading: **PENDING** | FORM 4-C |
-| `VOL-IV:F4-C/image/form-ar` | reading_block | 6 | image reading: **PENDING** | النموذج ٤-ج — *translation:* Form 4-C |
-| `VOL-IV:F4-C/image/title` | reading_block | 6 | image reading: **PENDING** | إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر — *translation:* Declaration of no conflict of interest and of non-inclusion in debarment lists |
-| `VOL-IV:F4-C/image/intro` | reading_block | 6 | image reading: **PENDING** | نحن الموقعون أدناه، وبصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي: — *translation:* We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
-| `VOL-IV:F4-C/image/decl1` | reading_block | 6 | image reading: **PENDING** | أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع. — *translation:* First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
-| `VOL-IV:F4-C/image/decl2` | reading_block | 6 | image reading: **PENDING** | ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة. — *translation:* Second: that the company has not participated, directly or indirectly, in more than one proposal for this tender. |
-| `VOL-IV:F4-C/image/decl3` | reading_block | 6 | image reading: **PENDING** | ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر صادرة عن جهة حكومية في المملكة. — *translation:* Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
-| `VOL-IV:F4-C/image/decl4` | reading_block | 6 | image reading: **PENDING**; 1 uncertainty(ies) | رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض. — *translation:* Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
-| `VOL-IV:F4-C/image/decl5` | reading_block | 6 | image reading: **PENDING**; 1 uncertainty(ies) | خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول. — *translation:* Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I. |
-| `VOL-IV:F4-C/image/field-member-en` | reading_block | 6 | image reading: **PENDING** | Name of consortium member |
-| `VOL-IV:F4-C/image/field-member-ar` | reading_block | 6 | image reading: **PENDING** | اسم العضو في الائتلاف : — *translation:* Name of the member of the consortium: |
-| `VOL-IV:F4-C/image/field-cr-en` | reading_block | 6 | image reading: **PENDING** | Commercial registration number |
-| `VOL-IV:F4-C/image/field-cr-ar` | reading_block | 6 | image reading: **PENDING** | رقم السجل التجاري : — *translation:* Commercial registration number: |
-| `VOL-IV:F4-C/image/field-signatory-en` | reading_block | 6 | image reading: **PENDING** | Name of authorised signatory |
-| `VOL-IV:F4-C/image/field-signatory-ar` | reading_block | 6 | image reading: **PENDING** | اسم المفوض بالتوقيع : — *translation:* Name of the person authorised to sign: |
-| `VOL-IV:F4-C/image/field-capacity-en` | reading_block | 6 | image reading: **PENDING** | Capacity |
-| `VOL-IV:F4-C/image/field-capacity-ar` | reading_block | 6 | image reading: **PENDING** | الصفة : — *translation:* Capacity: |
-| `VOL-IV:F4-C/image/field-date-en` | reading_block | 6 | image reading: **PENDING** | Date |
-| `VOL-IV:F4-C/image/field-date-ar` | reading_block | 6 | image reading: **PENDING** | التاريخ : — *translation:* Date: |
-| `VOL-IV:F4-C/image/field-signature-en` | reading_block | 6 | image reading: **PENDING** | Signature and company seal |
-| `VOL-IV:F4-C/image/field-signature-ar` | reading_block | 6 | image reading: **PENDING** | التوقيع والختم : — *translation:* Signature and seal: |
-| `VOL-IV:F4-C/image/note` | reading_block | 6 | image reading: **PENDING** | ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف. عدم تقديمه كاملاً يجعل العرض غير مستجيب. — *translation:* Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
-| `VOL-IV:F4-C/image/image-footer` | reading_block | 6 | image reading: **PENDING** | FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. |
+| `VOL-IV:F4-C/image` | image_text | 6 | image reading: **APPROVED** | Form 4-C (image, Arabic with English labels): Conflict of Interest and Debarment Declaration |
+| `VOL-IV:F4-C/image/hdr-en` | reading_block | 6 | image reading: **APPROVED** | NORTHERN UTILITIES PROCUREMENT AUTHORITY |
+| `VOL-IV:F4-C/image/hdr-ar` | reading_block | 6 | image reading: **APPROVED** | الهيئة الشمالية للمشتريات المرفقية — *translation:* Northern Utilities Procurement Authority |
+| `VOL-IV:F4-C/image/ref-en` | reading_block | 6 | image reading: **APPROVED** | Tender Ref: NUPA/ISTP/2026/014 |
+| `VOL-IV:F4-C/image/ref-ar` | reading_block | 6 | image reading: **APPROVED** | مناقصة رقم: NUPA/ISTP/2026/014 — *translation:* Tender number: NUPA/ISTP/2026/014 |
+| `VOL-IV:F4-C/image/form-en` | reading_block | 6 | image reading: **APPROVED** | FORM 4-C |
+| `VOL-IV:F4-C/image/form-ar` | reading_block | 6 | image reading: **APPROVED** | النموذج ٤-ج — *translation:* Form 4-C |
+| `VOL-IV:F4-C/image/title` | reading_block | 6 | image reading: **APPROVED** | إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر — *translation:* Declaration of no conflict of interest and of non-inclusion in debarment lists |
+| `VOL-IV:F4-C/image/intro` | reading_block | 6 | image reading: **APPROVED** | نحن الموقعون أدناه، وبصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي: — *translation:* We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following: |
+| `VOL-IV:F4-C/image/decl1` | reading_block | 6 | image reading: **APPROVED** | أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع. — *translation:* First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project. |
+| `VOL-IV:F4-C/image/decl2` | reading_block | 6 | image reading: **APPROVED** | ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة. — *translation:* Second: that the company has not participated, directly or indirectly, in more than one proposal for this tender. |
+| `VOL-IV:F4-C/image/decl3` | reading_block | 6 | image reading: **APPROVED** | ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر صادرة عن جهة حكومية في المملكة. — *translation:* Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom. |
+| `VOL-IV:F4-C/image/decl4` | reading_block | 6 | image reading: **APPROVED**; 1 uncertainty(ies) | رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح يؤدي إلى استبعاد العرض. — *translation:* Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal. |
+| `VOL-IV:F4-C/image/decl5` | reading_block | 6 | image reading: **APPROVED**; 1 uncertainty(ies) | خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول. — *translation:* Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I. |
+| `VOL-IV:F4-C/image/field-member-en` | reading_block | 6 | image reading: **APPROVED** | Name of consortium member |
+| `VOL-IV:F4-C/image/field-member-ar` | reading_block | 6 | image reading: **APPROVED** | اسم العضو في الائتلاف : — *translation:* Name of the member of the consortium: |
+| `VOL-IV:F4-C/image/field-cr-en` | reading_block | 6 | image reading: **APPROVED** | Commercial registration number |
+| `VOL-IV:F4-C/image/field-cr-ar` | reading_block | 6 | image reading: **APPROVED** | رقم السجل التجاري : — *translation:* Commercial registration number: |
+| `VOL-IV:F4-C/image/field-signatory-en` | reading_block | 6 | image reading: **APPROVED** | Name of authorised signatory |
+| `VOL-IV:F4-C/image/field-signatory-ar` | reading_block | 6 | image reading: **APPROVED** | اسم المفوض بالتوقيع : — *translation:* Name of the person authorised to sign: |
+| `VOL-IV:F4-C/image/field-capacity-en` | reading_block | 6 | image reading: **APPROVED** | Capacity |
+| `VOL-IV:F4-C/image/field-capacity-ar` | reading_block | 6 | image reading: **APPROVED** | الصفة : — *translation:* Capacity: |
+| `VOL-IV:F4-C/image/field-date-en` | reading_block | 6 | image reading: **APPROVED** | Date |
+| `VOL-IV:F4-C/image/field-date-ar` | reading_block | 6 | image reading: **APPROVED** | التاريخ : — *translation:* Date: |
+| `VOL-IV:F4-C/image/field-signature-en` | reading_block | 6 | image reading: **APPROVED** | Signature and company seal |
+| `VOL-IV:F4-C/image/field-signature-ar` | reading_block | 6 | image reading: **APPROVED** | التوقيع والختم : — *translation:* Signature and seal: |
+| `VOL-IV:F4-C/image/note` | reading_block | 6 | image reading: **APPROVED** | ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف. عدم تقديمه كاملاً يجعل العرض غير مستجيب. — *translation:* Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive. |
+| `VOL-IV:F4-C/image/image-footer` | reading_block | 6 | image reading: **APPROVED** | FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. |
 | `VOL-IV:H:F4-D` | heading | 7 |  | FORM 4-D — PARENT COMPANY GUARANTEE (PRO FORMA) |
 | `VOL-IV:F4-D/para1` | paragraph | 7 |  | To be executed by the ultimate parent company of the proposed EPC Contractor and submitted with Envelope A in accordance with Volume I Clause 8.7. |
 | `VOL-IV:F4-D/T1` | table | 7 |  |  |
