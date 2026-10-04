@@ -238,6 +238,7 @@ Revision 8 (`docs/PLAN.md`): status, a revision row, §4.6 restating that every 
 | E109 | Blind-02 curation: `lesser` for refusals of a submitted document (Q15, Q16) took two rows off the A3 gate; `score_elimination` for a zero on one criterion | After unsealing, by the key | Post-key fix (not scored); curator guidance in PLAN §14 |
 | E110 | Blind-02 curation: the model-auditor appointment and review stayed in the pre-submission programme | After unsealing, by the key | Post-key fix (not scored) |
 | E111 | The comparison first said every expected date was reproduced; the look-back start is the alternative reading (one day apart, by stated convention) | 07:03, on re-checking the dates | `COMPARISON.md` corrected; the `c6bcbdb` commit message keeps the first wording (history not rewritten) |
+| E112 | The archive check reported 5 of 537 A3 links as broken: their targets contain parentheses (`note(2)`), which PDF escapes, and its regular expression stopped at the escaped `)`. The links were valid (the ids exist; viewers decode the escape) | 07:34, first verification of the `091dbe9` archive | The verifier reads the target as a PDF literal string; test `tests/test_archive_scripts.py`; archive rebuilt and re-verified |
 
 ## 6. Verification results
 

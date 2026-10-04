@@ -58,6 +58,16 @@ def parse(p: Path) -> Refs:
     return r
 
 
+def uri_of(obj: str) -> str | None:
+    """The target of a link's /URI action, decoded as a PDF literal string: an id such as 'note(2)' is written
+    'note\\(2\\)', so the string ends at the first unescaped ')' (session 08: a non-greedy match stopped at the
+    escaped one and reported valid links as broken)."""
+    m = re.search(r"/S /URI\s+/URI \(((?:\\.|[^\\)])*)\)", obj, re.S)
+    if not m:
+        return None
+    return re.sub(r"\\(.)", lambda e: {"n": "\n", "r": "\r", "t": "\t"}.get(e.group(1), e.group(1)), m.group(1))
+
+
 def check_ref(page: Path, ref: str, root: Path, cache: dict) -> str | None:
     u = urlparse(ref)
     if u.scheme == "data":
@@ -120,8 +130,8 @@ def main(zpath: Path, work: Path, wheels: Path | None, python: str, tests: bool)
     links = []
     for ln in doc[0].get_links():
         obj = doc.xref_object(ln["xref"])
-        m = re.search(r"/S /URI\s+/URI \((.*?)\)", obj)
-        links.append(m.group(1) if m else f"not a /URI action: {obj[:80]}")
+        u = uri_of(obj)
+        links.append(u if u is not None else f"not a /URI action: {obj[:80]}")
     detail_ids = parse(a3 / "a3_detail.html").ids
     broken = [u for u in links if not (u.startswith("a3_detail.html#") and unquote(u.split("#", 1)[1]) in detail_ids)]
     say(bool(links) and not broken, f"A3: {len(links)} /URI links ({len(set(links))} targets), each to an id in "
