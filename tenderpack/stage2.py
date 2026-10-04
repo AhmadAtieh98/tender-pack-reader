@@ -52,7 +52,7 @@ from .schedule import deltas, in_force, plan
 from .trace import obligation_trace
 from .summary import summary_check
 from .datecover import counting_conventions, date_coverage
-from . import review
+from . import clarify, review
 from .textnorm import normalize_latin
 from .util import dump_json, load_yaml, sha256_file, write_text
 
@@ -160,7 +160,7 @@ def run(evidence_dir: Path, pack_path: Path, root: Path, lenient: bool = False) 
          "disposition_problems": dproblems + check_dispositions(units, dispositions, rowfile.rows),
          "evidence_items": evidence_items, "evidence_problems": eproblems, "load_problems": load_problems + issue_problems,
          "sweeps": check_sweeps(units, dispositions, rowfile.rows), "decisions_file": decisions_file, "decisions": decisions,
-         "evidence_dir": Path(evidence_dir)}
+         "evidence_dir": Path(evidence_dir), "clarifications": clarify.load(cfg, root)}
     return evaluate(r)
 
 
@@ -406,6 +406,15 @@ def issue_theme(i: dict) -> str:
 def issue_short(i: dict) -> str:
     if i.get("short"):
         return i["short"]
+    iid = i["id"]
+    if iid.startswith("I-AUTO-SUMMARY-"):
+        return f"{iid.rsplit('-', 2)[-2]}-{iid.rsplit('-', 1)[-1]} cover summary vs provisions: findings in A2 (C28)"
+    if iid == "I-AUTO-COUNTING":
+        return "counting conventions not stated for some date rules: every reading in A1 Dates"
+    if iid == "I-AUTO-STALE":
+        return "rows STALE: their reading needs a person (A1)"
+    if iid.startswith("I-PARTIAL-"):
+        return f"{iid[len('I-PARTIAL-'):]} PARTIAL: provisions not yet applied (A2)"
     t = (i.get("a3") or i["text"]).split(". ")[0]
     if i["id"].startswith("I-OP-") and ": " in t:                       # 'ADD-02/Q7: ...' -> the text after the op id
         t = t.split(": ", 1)[1]
@@ -564,8 +573,11 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         "sheets": {
             "Dates": sheet(dates_rows, [("row", 16), ("stage", 9), ("rule", 22), ("text", 40), ("anchor", 22),
                                         ("readings", 60), ("planning", 34), ("readings_differ", 10)]),
-            "Issues": sheet([{k: i[k] for k in ("id", "text", "owner", "source", "rows")} for i in issues],
-                            [("id", 26), ("text", 90), ("owner", 16), ("source", 22), ("rows", 30)]),
+            "Issues": sheet([{**{k: i[k] for k in ("id", "text", "owner", "source", "rows")},
+                              "clarification": [q["id"] for q in (r.get("clarifications") or {}).get("clarifications", [])
+                                                if i["id"] in (q.get("linked_issues") or [])]} for i in issues],
+                            [("id", 26), ("text", 90), ("owner", 16), ("source", 22), ("rows", 30),
+                             ("clarification", 24)]),
             "Stages": sheet(stages_rows, [("stage", 9), ("addendum", 9), ("issued", 11), ("status", 10), ("ops", 6),
                                           ("invalid_ops", 9), ("ops_review", 24), ("provisions", 10),
                                           ("unresolved", 10), ("validated", 9)]),
@@ -1009,6 +1021,8 @@ def write(r: dict, out: Path) -> dict:
     write_csv_json(tbl(a2d["rows_moved"]), out / "a2", "a2_rows_moved")
     write_csv_json(tbl(a2d["answers"]), out / "a2", "a2_answers_to_review")
     write_csv_json(tbl(a2d["summary"]), out / "a2", "a2_cover_summary_check")
+    if r.get("clarifications"):
+        clarify.write(r["clarifications"], out / "a4")              # the detailed register sits with A4
     if main:
         # A5 at the validated stage: programme, marshalling with document counts, resources, infeasibility drivers,
         # and the scenarios (consortium size, lead times, working calendar) run through the same planner
@@ -1060,7 +1074,8 @@ def write(r: dict, out: Path) -> dict:
               "| A1 compliance register (every row), status at each stage, review decisions | a1/a1.xlsx, a1/a1.csv, a1/a1.json |",
               "| A2 reconciliation: changes, rows that move, answers to review, provision coverage, evidence chains | a2/a2.md, a2/*.csv, a2/*.json |",
               "| A3 one-page disqualification sheet, with linked detail | a3/a3.pdf, a3/a3_detail.html, a3/a3.json |",
-              "| A5 programme, marshalling plan, documents, resources, infeasibility drivers, scenarios, replan deltas | a5/*.csv, a5/*.json, a5/scenarios/, a5/stages/ |",
+              "| A5 programme, marshalling plan, documents, resources, infeasibility drivers, scenarios, replan deltas, Gantt | a5/*.csv, a5/*.json, a5/gantt.*, a5/scenarios/, a5/stages/ |",
+              "| A4 supporting record: tender clarification register (DRAFT questions, NOT SENT) | a4/clarification_register.md, .csv, .json |",
               "| Engine results per stage | stages.json |", "| Checks | checks.json |", "",
               "## Checks", "", "| Check | Result | Detail |", "|---|---|---|"]
     readme += [f"| {c['id']} | {'pass' if c['ok'] else 'FAIL'} | {c['detail'].replace('|', '/')} |" for c in checks]
@@ -1263,6 +1278,8 @@ def register_findings(r: dict) -> list[dict]:
                         f"rule, anchor, quote, date note or disposition: {x['sentence'][:140]}"})
     for i in r.get("ids", {}).get("new", []):
         out.append({"kind": "C12", "where": i, "detail": "row id not yet recorded in the id ledger (check-register --update-ids)"})
+    for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"])):
+        out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
     return out
 
 

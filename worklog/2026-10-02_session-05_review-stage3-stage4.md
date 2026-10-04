@@ -49,6 +49,8 @@ return the completed working outputs, remaining gaps, rehearsal results and a sh
 Use subagents smartly for this task with one master orchestrator [model name omitted in the repository] agent driving all processess
 ~~~~
 
+*Note added in session 08 (4 Oct 2026), for accuracy: the bracketed words replace the owner's own words, which named a model. They were removed from this file in commit `33f1f81` because no model identifier may be written into the repository's files; nothing else in the message was changed. The message as first recorded, with those words, is unchanged in commit `6a5d6cb` (the history is kept as the owner asked).*
+
 **Later owner message:** "I hit my usage limit while you were working, but it has reset now. Please continue from where you left off."
 
 ## 2. Reproduction on commit 160242f (before any fix)

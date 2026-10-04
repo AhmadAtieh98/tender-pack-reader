@@ -172,15 +172,17 @@ def main(zpath: Path, work: Path, wheels: Path | None, python: str, tests: bool)
         t = time.time()
         rc = run(["make", target, f"PY={py}"], clone, log, offline=True)
         say(rc == 0, f"offline: make {target} in the clone ({time.time() - t:.0f} s)")
-    b = "rehearsals/blind-01"
-    t = time.time()
-    rc = run([py, "-m", "tenderpack", "ingest", "--pack", f"{b}/work/pack.yaml", "--out", f"{b}/build"], clone, log, offline=True)
-    rc = rc or run([py, "-m", "tenderpack", "outputs", "--evidence", f"{b}/build", "--pack", f"{b}/work/pack.yaml",
-                    "--out", f"{b}/out-after-fixes"], clone, log, offline=True)
-    say(rc == 0, f"offline: blind rehearsal pack re-ingested and out-after-fixes rebuilt ({time.time() - t:.0f} s)")
+    for b, target in (("rehearsals/blind-01", "out-after-fixes"), ("rehearsals/blind-02", "out-curated")):
+        if not (clone / b / "work/pack.yaml").exists():
+            continue
+        t = time.time()
+        rc = run([py, "-m", "tenderpack", "ingest", "--pack", f"{b}/work/pack.yaml", "--out", f"{b}/build"], clone, log, offline=True)
+        rc = rc or run([py, "-m", "tenderpack", "outputs", "--evidence", f"{b}/build", "--pack", f"{b}/work/pack.yaml",
+                        "--out", f"{b}/{target}"], clone, log, offline=True)
+        say(rc == 0, f"offline: {b} pack re-ingested and {target} rebuilt ({time.time() - t:.0f} s)")
     dirty = subprocess.run(["git", "status", "--porcelain"], cwd=clone, capture_output=True, text=True).stdout.strip()
     say(not dirty, "every regenerated file equals the committed one (build/, out/, out-drill/, out-drill-b/, "
-        f"blind out-after-fixes; git status clean){': ' + dirty[:400] if dirty else ''}")
+        f"blind-01 out-after-fixes, blind-02 out-curated; git status clean){': ' + dirty[:400] if dirty else ''}")
     r = subprocess.run([py, "scripts/compare_outputs.py", "out", str(root)], cwd=clone, capture_output=True, text=True)
     say(r.returncode == 0, f"rebuilt outputs vs the archive: {r.stdout.strip().splitlines()[-1] if r.stdout.strip() else r.stderr[-300:]}")
     if tests:

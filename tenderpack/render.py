@@ -321,7 +321,6 @@ def _a3_html(a3: dict) -> str:
         link = lambda i: f'<a href="a3_detail.html#{_esc(i)}"><b>{_esc(i)}</b></a>'  # noqa: E731
         for grp in g["groups"]:
             items = [link(i["id"]) + (f" {_rich(i['short'])}" if i.get("short") else "")
-                     + (f' <span class="meta">(+{", ".join(_esc(f) for f in i["folds"])})</span>' if i.get("folds") and i.get("short") else "")
                      for i in grp["items"]]
             qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
                   if grp.get("questions") else "")

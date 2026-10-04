@@ -2,22 +2,22 @@
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 
-**Status (session 07, `docs/PLAN.md` revision 7): DRAFT handover.**
+**Status (session 08, `docs/PLAN.md` revision 8): DRAFT handover, stopped for the owner's review before final submission.**
 
-- **Stages 1–4** (evidence, the amendment path, the full register, A5) are the working basis. The owner's four session 06 code-review findings are fixed, each with failing-first tests.
-- **Review is the owner's, and none has been given:**
-  - both image readings are **pending**;
-  - every row (202) and op (37) is **proposed**;
-  - three rows are STALE, with prepared proposals that have **not** been applied.
+- **Stages 1–4** (evidence, the amendment path, the full register, A5) are the working basis. The owner's session 08 code-review findings are fixed, each with failing-first tests: a rejected op is never re-applied by a rebuild; decisions bind to the state immediately before each op, including every member row of a replaced table; an inserted obligation needs its own A1 row; a Friday or holiday deadline keeps its legal date and gets a Working-Day window or an explicit conflict.
+- **Review:**
+  - both image readings carry the **owner's confirmations** (Ahmad, 3 Oct 2026, `curation/approvals.yaml`): transcriptions only, with what stays open and what is not covered (interpretations, amendment ops, bidder compliance, the Environmental Permit's contents and compliance);
+  - every row (205) and op (37) is still **proposed**; the owner-directed interpretations of VOL-I 8.3, 3.4 and 6.7 were applied from evidence-backed proposals and await the owner's decision.
 
-  Decisions are recorded only with `tenderpack accept|reject`, bound to the item's current content. A YAML flag is never an approval.
+  Decisions are recorded only with `tenderpack accept|reject`, bound to the item's current content, under a person's name (the assistant's is refused). A YAML flag is never an approval.
 - **A strict release** (`outputs --strict`) is refused in this state.
+- **Clarifications:** `curation/clarifications/register.yaml` holds draft questions (never sent); `out/a4/clarification_register.md`.
 - **Live-addendum tooling:**
   - `show ROW`, `diff`, review batches (`out/review/`);
   - checks C12 (stable ids), C28 (cover summary vs provisions, report only), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
-- **Tested:** one blind rehearsal against an independently written Addendum No. 3 (`rehearsals/blind-01/`).
+- **Tested:** two blind rehearsals against independently written Addenda No. 3 (`rehearsals/blind-01/`, `rehearsals/blind-02/`).
 - **Draft archive:** built by `scripts/make_draft_archive.py`. See `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md` and `docs/COST_AND_EFFORT.md`.
-- **Deferred, as directed:** the Claude Code app, OpenRouter and Ollama integrations.
+- **Deferred, as directed:** the Claude Code app, OpenRouter and Ollama integrations, model selection and model costs.
 
 ```
 make setup      # once, needs network: creates .venv from uv.lock

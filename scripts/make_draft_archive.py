@@ -9,10 +9,12 @@ Usage: python scripts/make_draft_archive.py DEST_DIR [--wheels WHEELHOUSE]
     A2_addendum_reconciliation/       a2.md and its tables
     A3_disqualification_sheet/        a3.pdf (one page) with a3_detail.html (each id on the page links to it), a3.json
     A4_work_log/                      the work log (every session, verbatim exchanges, errors), the plan, session reports,
-                                      repository.bundle (the git repository with its real history), HISTORY.md
+                                      repository.bundle (the git repository with its real history), HISTORY.md,
+                                      clarification_register/ (draft questions, NOT SENT), review_records/ (the owner's
+                                      reading approvals and their snapshots)
     A5_programme/                     programme, marshalling, documents, resources, drivers, scenarios, replan deltas
     REVIEW/                           the review batches (crops beside readings, exact decisions, commands)
-    REHEARSALS/blind-01/              the blind addendum rehearsal: comparison, timeline, frozen key, diff, A3
+    REHEARSALS/blind-0N/              the blind addendum rehearsals: comparison, timeline, frozen key, diff, A3
     OPERATING_GUIDE.md, COST_AND_EFFORT.md, VERIFY_ON_MAC.md
     SHA256SUMS
   and, with --wheels, the offline Python setup for a Mac, one zip per architecture, each also split into 15 MB parts
@@ -60,16 +62,17 @@ def readme(sha: str, date: str, checks: dict, items: dict, sessions: str) -> str
     lines = [
         f"# LAMAR PPP AI Partner, Round 2: DRAFT handover ({sha}, {date})", "",
         "**Status: WORKING DRAFT, not a submission.** Everything in it is the assistant's proposal: the register rows, "
-        "amendment ops, dispositions, lead times and capacities. **Pending your review:** the two image readings, and "
-        "every row and op. The program never approves or accepts anything. A strict release (`outputs --strict`) "
-        "refuses these outputs until you have decided.", "",
+        "amendment ops, dispositions, lead times, capacities and the draft clarification questions (none sent). "
+        "Recorded decisions are only the owner's own (see `REVIEW/items.csv` below); the program never approves or "
+        "accepts anything. A strict release (`outputs --strict`) refuses these outputs until every row and op is decided.", "",
         "## Deliverables", "",
         "| | Folder | Open first |", "|---|---|---|",
         "| A1 | `A1_compliance_register/` | `a1.xlsx` (Excel; also CSV, JSON) |",
         "| A2 | `A2_addendum_reconciliation/` | `a2.md` |",
         "| A3 | `A3_disqualification_sheet/` | `a3.pdf` (one page); each id links to `a3_detail.html` |",
-        f"| A4 | `A4_work_log/` | `worklog/` (sessions {sessions}), `repository.bundle` (`git clone A4_work_log/repository.bundle`) |",
-        "| A5 | `A5_programme/` | `programme.csv`, `marshalling.csv`, `drivers.csv`, `scenario_comparison.csv` |",
+        f"| A4 | `A4_work_log/` | `worklog/` (sessions {sessions}), `repository.bundle` (`git clone A4_work_log/repository.bundle`), "
+        "`clarification_register/clarification_register.md` (draft questions, not sent) |",
+        "| A5 | `A5_programme/` | `gantt.pdf` / `gantt.html`, `programme.csv`, `marshalling.csv`, `resources.csv`, `README.md` |",
         "", "## What blocks a release now", ""]
     lines += [f"- **{b['kind']}**: {b['detail']}" for b in blockers]
     lines += ["", "## Your review", "",
@@ -80,8 +83,8 @@ def readme(sha: str, date: str, checks: dict, items: dict, sessions: str) -> str
               "report only; the summary is never applied). The status of every item is in `REVIEW/items.csv`:", ""]
     lines += [f"- {k}: {v}" for k, v in sorted(pend.items())]
     lines += ["", "## Also here", "",
-              "- `REHEARSALS/blind-01/COMPARISON.md`: an independently written Addendum No. 3, processed blind and scored "
-              "against a key frozen before the start.",
+              "- `REHEARSALS/blind-0N/COMPARISON.md`: independently written Addenda No. 3, each processed blind through "
+              "the normal pipeline and scored against a key frozen before the start.",
               "- `OPERATING_GUIDE.md`: setup, the live-addendum procedure, review commands, what each check means.",
               "- `COST_AND_EFFORT.md`: time, agents, what is not known.",
               "- `VERIFY_ON_MAC.md`: exact commands to check the archive and rebuild offline on a Mac.",
@@ -113,19 +116,35 @@ def main(dest: Path, wheels: Path | None) -> int:
     a4 = stage / "A4_work_log"
     copytree(REPO / "worklog", a4 / "worklog")
     (a4 / "docs").mkdir()
-    for f in ("PLAN.md", "session-03_before-after.md", "session-04_report.md", "session-05_report.md", "session-06_report.md"):
+    for f in ("PLAN.md", "session-03_before-after.md", "session-04_report.md", "session-05_report.md", "session-06_report.md",
+              "session-08_report.md"):
         if (REPO / "docs" / f).exists():
             shutil.copy(REPO / "docs" / f, a4 / "docs" / f)
     subprocess.run(["git", "bundle", "create", str(a4 / "repository.bundle"), "--all"], cwd=REPO, check=True, capture_output=True)
     (a4 / "HISTORY.md").write_text("# Repository history (git log)\n\n```\n" + git("log", "--format=%h %ad %s", "--date=iso-strict")
                                    + "\n```\n", encoding="utf-8")
-    rb = stage / "REHEARSALS" / "blind-01"
-    rb.mkdir(parents=True)
-    for f in ("README.md", "FROZEN.md", "COMPARISON.md", "clock.txt", "diff-ADD-02-to-ADD-03.md"):
-        shutil.copy(REPO / "rehearsals/blind-01" / f, rb / f)
-    copytree(REPO / "rehearsals/blind-01/SEALED", rb / "SEALED")
-    copytree(REPO / "rehearsals/blind-01/input", rb / "input")
-    copytree(REPO / "rehearsals/blind-01/out-curated/a3", rb / "out-curated-a3")
+    if (out / "a4").is_dir():
+        copytree(out / "a4", a4 / "clarification_register")
+    rr = a4 / "review_records"
+    rr.mkdir()
+    if (REPO / "curation/approvals.yaml").exists():
+        shutil.copy(REPO / "curation/approvals.yaml", rr / "approvals.yaml")
+        copytree(REPO / "curation/reading-snapshots", rr / "reading-snapshots")
+    copytree(REPO / "curation/register/proposals", rr / "proposals")
+    for name_ in ("blind-01", "blind-02"):
+        src = REPO / "rehearsals" / name_
+        if not (src / "COMPARISON.md").exists():
+            continue
+        rb = stage / "REHEARSALS" / name_
+        rb.mkdir(parents=True)
+        for f in ("README.md", "FROZEN.md", "COMPARISON.md", "clock.txt", "diff-ADD-02-to-ADD-03.md"):
+            if (src / f).exists():
+                shutil.copy(src / f, rb / f)
+        for d_ in ("SEALED", "input"):
+            if (src / d_).is_dir():
+                copytree(src / d_, rb / d_)
+        if (src / "out-curated/a3").is_dir():
+            copytree(src / "out-curated/a3", rb / "out-curated-a3")
     for f in ("OPERATING_GUIDE.md", "COST_AND_EFFORT.md", "VERIFY_ON_MAC.md"):
         shutil.copy(REPO / "docs" / f, stage / f)
     checks = json.loads((out / "checks.json").read_text(encoding="utf-8"))

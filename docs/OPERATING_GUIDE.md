@@ -76,18 +76,23 @@ Times are from the blind rehearsal (`rehearsals/blind-01/COMPARISON.md`). Total:
 Open `out/review/index.html` and work through the batches in order:
 
 1. **Image readings.** Batch 1 shows each unit's crop beside its reading. `out/review/packets/` has the full packets: every band, cell and numeral at native resolution, with the Arabic right to left. Approve a reading only after comparing every crop with what is read beside it:
-   `python -m tenderpack approve VOL-II-p3-r1 --reviewer "Your Name"`.
+   `python -m tenderpack approve VOL-II-p3-r1 --reviewer "Your Name" --record "where your confirmation is written" [--resolution "..."] [--keeps-open "..."] [--not-covered "..."]`.
    Or correct `curation/readings/<region>.yaml` and run `make evidence`.
+   - The approval is dated the day the command runs (never backdated). It pins the review subject (reading + evidence) and records the reading file's sha256, its last commit and a snapshot (`curation/reading-snapshots/`).
+   - If a reading changes after an approval, it is pending again. `approve` then prints every meaningful difference from the approved snapshot and writes nothing until it is run again with `--confirm-changes`.
+   - **Status (3 Oct 2026):** both readings carry the owner's confirmations (`curation/approvals.yaml`): they cover the transcriptions only, not the register's interpretations, the amendment ops or bidder compliance; the Table 2-4 entry records that the Permit confirmation covers only where the precedence language is, not the Permit's contents or compliance.
 2. **Disqualifiers (A3 rows), amendment ops, remaining rows.** Decide each one:
    ```
    python -m tenderpack accept VOL-I-8.6-01 ADD-02/9.1 --reviewer "Your Name" [--note "..."]
    python -m tenderpack reject ADD-02/8.1 --reviewer "Your Name" --note "what is wrong"
    ```
-   - A decision binds to the fingerprint of the item, its evidence items and its dependencies.
-   - If any of these changes later (e.g. a new addendum), the decision is shown as CHANGED and no longer counts.
-   - A rejected op is withdrawn and its addendum becomes PARTIAL.
-3. **STALE rows.** The prepared proposals are in `curation/register/proposals/`:
-   `python -m tenderpack apply-proposal P-STALE-VOL-I-8.3-01 --by "Your Name"`, then accept or reject the row.
+   - A decision on a row binds to the row, its evidence items, where its units are printed and its dependencies. A decision on an op binds to the op and its *subject*: its provision's text, pages and evidence, and every unit it reads or changes (every member row of a replaced table or form, and of the replacement) as they stand immediately before the op, whether or not it then applies.
+   - If any of these changes later (e.g. a new addendum), the decision is shown as CHANGED and no longer counts as an acceptance.
+   - A rejected op is **withheld** for as long as your latest decision on it is a rejection, even after a rebuild or a change (shown "CHANGED: review again; still withheld"). Its provision shows as `rejected` and the addendum stays PARTIAL. Withheld (your rejection), invalid (a failed structural check) and proposed (pending your review) are three separate states.
+   - A name that identifies the assistant or the program is refused for any decision or approval.
+3. **STALE rows and proposals.** Prepared proposals are in `curation/register/proposals/`:
+   `python -m tenderpack apply-proposal P-... --by "Your Name"`, then accept or reject the row. A proposal marked `superseded` keeps its text and the reason (`superseded_because`) and cannot be applied. On 3 Oct 2026 the three session 06 proposals (VOL-I 8.3, 3.4, 6.7) were superseded by `P-S08-*` proposals written from the owner's direction with their source evidence; those were applied on the owner's written instruction, and the three rows are PROPOSED until you decide them.
+4. **Clarification questions.** `curation/clarifications/register.yaml` holds DRAFT questions (never sent by the program) for discrepancies, ambiguities and missing information in the volumes and addenda; `out/a4/clarification_register.md` lists them with sources, impact and interim handling, and the questions closed without one. A3 lists their ids by group. `check-register` verifies every quotation. Raise what you decide through the Portal before the VOL-I 5.2 cut-off.
 
 The `review:` fields in the YAML files are drafting flags. They never count.
 
@@ -105,7 +110,7 @@ The `review:` fields in the YAML files are drafting flags. They never count.
 | C28 | Each addendum's cover summary is compared with its provisions (tables, notes, appendices, answers): omissions, understatements, unmentioned consequences, contradictions. Report only (A2, A1 Issues, `diff`): the summary is never applied |
 | C30 | Every date or period phrase is planned, or explicitly not computed |
 | C40 / C44 / C45 | A5 activities and deliverables, both ways; dependencies defined |
-| C46 | Every new or amended obligation reaches A1, A3 and A5 |
+| C46 | Every new or amended obligation reaches A1, A3 and A5; an insertion needs a row of its own (the anchor's rows do not count) |
 
 ## 6. Deferred, as directed
 

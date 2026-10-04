@@ -1,7 +1,7 @@
 # Session 08: the owner's message (verbatim, as received)
 
-Received 3 Oct 2026, shortly before 19:31 UTC (the session's first tool call after it is at 19:31 UTC). Preserved here
-before any work started, so that nothing in it depends on a later summary.
+Received 3 Oct 2026 at 19:29:58 UTC (from the session transcript's timestamps; the first tool call followed at 19:30:04).
+Preserved here at 19:31 UTC, before any change was made, so that nothing in it depends on a later summary.
 
 ~~~~text
 I’ve reviewed and checked the source readings, please update the plan, make the repairs below and rebuild the deliverables.
@@ -70,7 +70,7 @@ Return A1 and A5 as CSV/JSON, A1 also as Excel, A2 as Markdown with supporting C
 Finish with a compact before/after report, actual verification results and a short grouped list of remaining human checks. I’ll do the native Excel/PDF checks, remaining visual review and personal rehearsal later. Complete everything that can proceed now, keep outstanding review visible, then stop for my review before final submission
 ~~~~
 
-## Follow-up message (verbatim, as received during the session, about 20:00 UTC)
+## Follow-up message (verbatim; received at 19:58:25 UTC and again, identical, at 19:59:17 UTC)
 
 It interrupted the work after the assistant had written the 8.3, 3.4 and 6.7 interpretations straight into the rows
 (that direct write was reverted and redone through the proposal workflow; see the session 08 work log).
@@ -80,4 +80,13 @@ Continue with the work. For 8.3, 3.4 and 6.7, show the existing proposal, its ex
 Also, my permit-related confirmation covers the location of the precedence language in the p3 preamble. It does not confirm the missing permit’s contents or permit compliance. Keep that distinction clear in the records.
 
 and use subagents effectively to complete the work
+~~~~
+
+## Resume message (verbatim; received 4 Oct 2026 at 05:17:22 UTC, after a usage-limit pause from 20:27 UTC)
+
+~~~~text
+Continue from where you left off.
+Continue from where you left off.
+Continue from where you left off.
+I hit my usage limit while you were working, but it has reset now. Please continue from where you left off.
 ~~~~

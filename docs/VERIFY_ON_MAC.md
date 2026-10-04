@@ -9,7 +9,8 @@
 | Review pages: every image and link resolves | yes | open `REVIEW/index.html` |
 | `a1.xlsx` opens | written and re-read by openpyxl; **not opened in Excel** | yes: open it in Excel |
 | Repository bundle clones with full history | yes | step 2 |
-| Offline install, rebuild, outputs identical, tests pass | yes, with no network at all (`unshare -n`) | step 3 (Wi-Fi off) |
+| Offline install, rebuild, outputs identical, tests pass | yes, with no network at all (`unshare -n`), on Linux x86_64 only | step 3 (Wi-Fi off) |
+| Same content on another platform | not checkable here: only one platform was available | step 3: `compare_outputs.py` separates **content** (CSV, JSON, Markdown, HTML must be byte-identical) from **rendering** (PDF, PNG, XLSX: if the bytes differ, the text, links and cell values are compared; a difference there only is reported as platform-dependent rendering) |
 | macOS wheel files | parts joined and checksum OK; every requirement resolves **offline** for Apple silicon (macOS 11+) and Intel (macOS 14+) with Python 3.11, 3.12 and 3.13 (uv resolver, no network). **Not installed or imported on a Mac** | step 3 |
 
 ## 1. Unpack and check
@@ -41,13 +42,13 @@ python3 -m venv .venv                              # Python 3.11, 3.12 or 3.13
 # turn Wi-Fi off now
 make evidence outputs drill rehearsal PY=.venv/bin/python
 git status --short                                 # expected: nothing printed (every rebuilt file identical)
-.venv/bin/python scripts/compare_outputs.py out .. # expected: "outputs identical to the archive"
+.venv/bin/python scripts/compare_outputs.py out .. # expected: "outputs identical to the archive in content (...)"
 make test PY=.venv/bin/python                      # about 6 minutes; expected: all passed
 ```
 
 **If you have network instead:** `brew install uv && uv sync --extra dev` replaces the wheel steps.
 
-**If something differs:** `compare_outputs.py` names the files. A difference only in `a1.xlsx` or `a3.pdf` would point to a library build difference on macOS. Compare `a1.csv` and `a3.json`, which are plain text.
+**If something differs:** `compare_outputs.py` names each file and says whether its **content** differs (a real difference: report it) or only its **rendering** (bytes of a PDF, PNG or XLSX differ but the text, links and cells are the same: a library or font difference on macOS, not a content change). `git status` in step 3 may then also list those rendered files; the CSV, JSON and Markdown files must still be unchanged.
 
 ## 4. Optional: a live command
 
