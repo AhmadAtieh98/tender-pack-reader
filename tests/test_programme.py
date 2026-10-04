@@ -211,7 +211,10 @@ def test_a_shorter_lcc_lead_time_makes_it_feasible_or_reduces_the_shortfall(r, b
     short = lambda st: int(re.search(r"by (\d+) WD", st).group(1)) if st.startswith("INFEASIBLE") else 0  # noqa: E731
     assert short(a["status"]) < short(b["status"])
     assert a["duration_wd"] == 15 and a["duration_basis"].startswith("ASSUMPTION") and "SCENARIO lcc-15wd" in a["duration_basis"]
-    assert "lcc-certificate: INFEASIBLE by 7 WD -> OK" in s["changes"]["status_changes"]
+    # session 08 (owner: forward pass and float): the shortfall is the negative total float of the whole LCC chain
+    # (ratio + certificate from the planning date), 12 WD, and it runs on to the delivery; 15 WD clears all of it
+    assert "lcc-certificate: INFEASIBLE by 12 WD -> OK" in s["changes"]["status_changes"]
+    assert "deliver: INFEASIBLE by 12 WD -> OK" in s["changes"]["status_changes"]
 
 
 def test_a_declared_holiday_moves_latest_starts_earlier(r, mk, base):
@@ -236,17 +239,20 @@ def test_hypothetical_holiday_scenario_is_labelled_and_lengthens_shortfalls(scen
     assert row["infeasible"] >= row["infeasible_base"] and row["activities_moved"] > 0
 
 
-def test_resources_compare_concurrency_with_provisional_capacity(r, base):
+def test_resources_compare_staff_load_with_provisional_capacity(r, base):
+    # session 08 (owner: effort vs waiting, show overloads): one row per role per Working Day; the load is staff
+    # effort (person-days) spread over the late window, compared with the capacity in staff per Working Day
     rows = base["resources"]["rows"]
     assert rows and {x["resource"] for x in rows} <= set(r["assumptions"]["resources"])
     for x in rows:
-        assert x["status"] == ("OVERLOAD (provisional)" if x["peak_concurrent"] > x["capacity"] else "OK")
+        assert x["status"] == ("OVERLOAD" if x["load_wd"] > x["capacity"] else "OK")
         assert re.fullmatch(r"\d{4}-W\d{2}", x["iso_week"]) and x["capacity_basis"].startswith("PROVISIONAL")
-    # halving every capacity can only add overloads
+        assert r["cal"].is_working_day(date.fromisoformat(x["date"]))
+    # cutting every capacity to one can only add overloaded days
     tight = copy.deepcopy(r["assumptions"])
     for v in tight["resources"].values():
         v["capacity"] = 1
-    over = lambda p: {(x["resource"], x["iso_week"]) for x in p["resources"]["rows"] if x["status"].startswith("OVERLOAD")}  # noqa: E731
+    over = lambda p: {(x["resource"], x["date"]) for x in p["resources"]["rows"] if x["status"].startswith("OVERLOAD")}  # noqa: E731
     assert over(base) <= over(programme.extend(base, r["evidence_items"], tight, r["cal"]))
 
 
@@ -272,8 +278,11 @@ def test_write_is_complete_and_deterministic(base, scen, tmp_path):
         hashes.append({p.relative_to(tmp_path / name).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                        for p in sorted((tmp_path / name).rglob("*")) if p.is_file()})
     assert hashes[0] == hashes[1]
-    for stem in ("programme", "marshalling", "documents", "resources", "drivers", "scenario_comparison"):
+    for stem in ("programme", "marshalling", "documents", "resources", "overloads", "disciplines", "milestones", "drivers",
+                 "scenario_comparison"):
         assert f"a5/{stem}.csv" in hashes[0] and f"a5/{stem}.json" in hashes[0], stem
+    for f in ("a5/gantt.svg", "a5/gantt.html", "a5/gantt.pdf", "a5/README.md"):
+        assert f in hashes[0], f
     for s in SCENARIOS["scenarios"]:
         assert f"a5/scenarios/{s}.csv" in hashes[0]
     doc = yaml.safe_load((tmp_path / "a" / "a5/documents.json").read_text(encoding="utf-8"))
