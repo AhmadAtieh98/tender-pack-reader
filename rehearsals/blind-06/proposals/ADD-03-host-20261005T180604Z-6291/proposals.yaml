@@ -1,0 +1,1621 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T180604Z-6291
+  created: '2026-10-05T18:06:04Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+  statements:
+  - id: F1
+    kind: fact
+    text: ADD-03 2.2 states that Table 1-3 is issued in Arabic, that the Arabic text governs and that the English
+      translation at Appendix B is for convenience only.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix
+        B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F2
+    kind: fact
+    text: ADD-03 2.1 amends Volume II Clause 1.3 so that Table 1-3, reproduced at Appendix A, is incorporated into
+      Volume II by reference.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services
+        Company (the Network Operator) and is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F3
+    kind: fact
+    text: For TP-2 the Arabic Table 1-3 prints a maximum shutdown duration of ٤ (4) hours. The English translation
+      prints 6 hours.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-duration
+      page: 4
+      kind: reading
+      words: ٤
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Maximum shutdown duration (hours): 6'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F4
+    kind: fact
+    text: Arabic note 1 prohibits shutdowns during Ramadan and also during the Eid al-Fitr and Eid al-Adha holidays.
+      English note (1) mentions only Ramadan.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note1
+      page: 4
+      kind: reading
+      words: ١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.
+      cell: null
+      crop_sha256: ff5df8e5aeb475fe54ac7cdf6b1f5d9bc9450710a428775ecc28d1409898c32d
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(1)
+      page: 5
+      kind: span
+      words: (1) No shutdown is permitted during the holy month of Ramadan.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F5
+    kind: assumption
+    text: 'At ADD-02 the Arabic reading units and the English T1-3 units all have status not_issued. Because of
+      that, an annotate/precedence op targeting ADD-03:T1-3/tp-2 or ADD-03:T1-3/note(1) cannot be applied: the simulate_amendment
+      dry run reports C22 ''targets exist: []''.'
+    evidence: []
+    note: This comes from get_unit and the simulate_amendment output, not from document words.
+  - id: F6
+    kind: fact
+    text: The Arabic cells for the TP-2 window and notice, the notes heading, and notes 2, 3 and 4 have the same
+      content as their English renderings in Appendix B.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Permitted shutdown window: 01:00 to 05:00'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Advance notice: 10 Working Days'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(2)
+      page: 5
+      kind: span
+      words: (2) Only one shutdown is permitted at each tie-in point during the construction period.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(3)
+      page: 5
+      kind: span
+      words: (3) Shutdown requests shall be submitted through the Network Operator's electronic portal, accompanied
+        by the proposed shutdown programme and a contingency plan.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(4)
+      page: 5
+      kind: span
+      words: (4) All times are Riyadh time.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: A1
+    kind: assumption
+    text: The pending image readings (status 'pending') correctly transcribe the page-4 image. I compared each one
+      against its crop and the region image, and they agree.
+    evidence: []
+    note: null
+  - id: I1
+    kind: interpretation
+    text: The Appendix A cells and notes are content that ADD-03 itself issues. They amend no unit standing at ADD-02.
+      Their substance enters Volume II through ADD-03 2.1 (another batch), so as provisions they have no separate
+      effect.
+    evidence: []
+    note: null
+  - id: I2
+    kind: interpretation
+    text: Under ADD-03 2.2 the Arabic governs. The binding TP-2 maximum shutdown duration is therefore 4 hours,
+      not 6, and the shutdown prohibition also covers the Eid al-Fitr and Eid al-Adha holidays. The English translation
+      is wrong on both points.
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/p4-image/tp2-window
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp2-window
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp2-window
+      disposition: no_effect
+      reason: 'This is a cell of the Network Operator''s Table 1-3 reproduced at Appendix A, and ADD-03 issues it.
+        It prints no change to any unit standing at ADD-02. The table enters Volume II through ADD-03 2.1: ''is
+        incorporated into this Volume by reference''. The Appendix B rendering agrees: ''Permitted shutdown window:
+        01:00 to 05:00''.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-window
+      page: 4
+      kind: reading
+      words: من ٠١:٠٠ إلى ٠٥:٠٠
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Permitted shutdown window: 01:00 to 05:00'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:T1-3/tp-2
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    - F6
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-window is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-window p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-window at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/tp-2 p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop b09-right (sha 18a85c…) shows the TP-2 row: ''TP-2'', MH-07 on the southern gravity line,
+      ٨٠٠ mm, and the window cell ''من ٠١:٠٠ إلى ٠٥:٠٠'' in Arabic-Indic digits (from 01:00 to 05:00). This matches
+      the reading and the English translation, so nothing conflicts and no op is needed.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The no_effect disposition rests on 2.1 incorporating the table and on I1/A1, which a person must confirm.
+          The Arabic window text matches the English '01:00 to 05:00'.
+        evidence_checked:
+        - ADD-03:p4-image/tp2-window
+        - ADD-03:T1-3/tp-2
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp2-duration
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: escalation
+    provision: ADD-03:p4-image/tp2-duration
+    target: ADD-03:T1-3/tp-2
+    payload:
+      why: 'The two renderings conflict. The governing Arabic Table 1-3 prints ''٤'' (4 hours) as the TP-2 maximum
+        shutdown duration, while the convenience English translation (ADD-03:T1-3/tp-2) prints ''Maximum shutdown
+        duration (hours): 6''. ADD-03 2.2 says ''The Arabic text governs.'' This is consequential: ADD-03 2.7 rejects
+        a Proposal that interrupts flow for longer than the Table 1-3 maximum, so 4 h is binding for TP-2, not 6
+        h. I tried an annotate op with precedence {governs: tp2-duration, over: T1-3/tp-2}, but the dry run fails
+        C22 because both units are issued by ADD-03 itself and have status not_issued at ADD-02.'
+      what_is_unsupported: 'Recording the precedence of one rendering over another when both are issued in the same
+        addendum: no op type can target a unit that does not exist at the previous stage. A person must record that
+        the Arabic value (4 h) governs for TP-2 and flag the English 6 h as an erroneous translation. A clarification
+        to the Authority may be warranted.'
+    previous_value: null
+    proposed_value: '4'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-duration
+      page: 4
+      kind: reading
+      words: ٤
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Maximum shutdown duration (hours): 6'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.7
+      page: 1
+      kind: span
+      words: A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum
+        shutdown duration stated for that tie-in point in Table 1-3 shall be rejected.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.2
+    - ADD-03:2.7
+    - ADD-03:T1-3/tp-2
+    conflicts:
+    - ADD-03:T1-3/tp-2
+    missing_information:
+    - an op type able to record precedence between two renderings issued in the same addendum
+    statements:
+    - F1
+    - F3
+    - F5
+    - A1
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-duration is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-duration p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-duration at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/tp-2 p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.7 p1
+      ok: true
+      detail: verbatim in ADD-03:2.7 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption F5: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:T1-3/tp-2'
+      aspect: decision
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: an op type able to record precedence between two renderings issued
+        in the same addendum'
+      aspect: evidence
+    verification_status: conflicting
+    model_rationale: 'The unit crop named for this reading (b09-right, sha 18a85c…) does not show the duration cell:
+      it covers only the TP-2 point, location, diameter and window cells. The duration cell is visible in the b09-left
+      crop (sha 438a55…, notice crop) and in the region crop (sha f827ab…). There the TP-2 row shows a single Arabic-Indic
+      digit ''٤'' (4) in the duration column, and the TP-1 row shows ''٦'' (6). The English translation repeats
+      6 for TP-2. A person should also check whether the crop assignment of this reading is right.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The conflict is real on the readings shown: Arabic ''٤'' (4) against English ''Maximum shutdown duration
+          (hours): 6''. 2.2 gives the Arabic precedence and 2.7 makes the Table 1-3 maximum a ground for rejection.'
+        - The proposer's own rationale says the crop named for this reading (18a85c…) does not show the duration
+          cell. The '٤' reading is therefore not confirmed from its cited crop, and a person should check it against
+          the page image before relying on 4 h.
+        - The statements cite the Arabic as governing, but they do not quote the Arabic cell itself beyond the reading.
+          I could not verify the image.
+        evidence_checked:
+        - ADD-03:p4-image/tp2-duration
+        - ADD-03:T1-3/tp-2
+        - ADD-03:2.2
+        - ADD-03:2.7
+        selected_because:
+        - conflicting
+        - uncertain_target
+        - 'uncertain_target: target is not among the units the provision cites'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp2-notice
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp2-notice
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp2-notice
+      disposition: no_effect
+      reason: 'This is a cell of Table 1-3 at Appendix A, and ADD-03 issues it. It prints no change to any unit
+        standing at ADD-02. Its content enters Volume II through ADD-03 2.1: ''is incorporated into this Volume
+        by reference''. The Appendix B rendering agrees: ''Advance notice: 10 Working Days''.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-notice
+      page: 4
+      kind: reading
+      words: ١٠ أيام عمل
+      cell: null
+      crop_sha256: 438a55d245ab52bd57350049b000e14778c0d194a4818816dd0650a6e207d554
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Advance notice: 10 Working Days'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:T1-3/tp-2
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    - F6
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-notice is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-notice p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-notice at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/tp-2 p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b09-left (sha 438a55…) shows the TP-2 notice cell '١٠ أيام عمل' (10 working days) in Arabic
+      script with Arabic-Indic digits, next to the duration cell '٤'. The notice value agrees with the English translation.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - '''١٠ أيام عمل'' means 10 working days, which matches the English ''Advance notice: 10 Working Days''.
+          The no_effect disposition rests on I1/A1, which a person must confirm.'
+        evidence_checked:
+        - ADD-03:p4-image/tp2-notice
+        - ADD-03:T1-3/tp-2
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/notes-heading
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/notes-heading
+    target: null
+    payload:
+      provision: ADD-03:p4-image/notes-heading
+      disposition: no_effect
+      reason: This is only the heading 'ملاحظات:' (Notes:) over the notes to Table 1-3. It carries no requirement
+        and prints no change to any unit standing at ADD-02.
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/notes-heading
+      page: 4
+      kind: reading
+      words: 'ملاحظات:'
+      cell: null
+      crop_sha256: 3ab68345df3e744cdffb3e797bf221a37dbf41bad5e673f9a04e3bcd64c4b91f
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/notes-heading is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/notes-heading p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/notes-heading at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b10-full (sha 3ab683…) shows only the bold Arabic word 'ملاحظات:' (Notes:), right-aligned
+      below the table.
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - ADD-03:p4-image/notes-heading
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/note1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: escalation
+    provision: ADD-03:p4-image/note1
+    target: ADD-03:T1-3/note(1)
+    payload:
+      why: The two renderings conflict. Governing Arabic note 1 prohibits any shutdown during Ramadan and also during
+        the Eid al-Fitr and Eid al-Adha holidays ('أو خلال إجازتَي عيد الفطر وعيد الأضحى'). English note (1) reads
+        only '(1) No shutdown is permitted during the holy month of Ramadan.' ADD-03 2.2 says 'The Arabic text governs.'
+        The prohibited periods are therefore wider than the English shows, which affects shutdown scheduling. An
+        annotate/precedence op on ADD-03:T1-3/note(1) fails C22 because the unit is not issued at ADD-02.
+      what_is_unsupported: 'Recording the precedence of one rendering over another when both are issued in the same
+        addendum: no op type can target a unit that does not exist at the previous stage. A person must record that
+        the Arabic note governs and that the Eid holidays are also excluded periods. Turning those holidays into
+        dates is outside this reading; the assumptions calendar would need the Eid holiday dates.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note1
+      page: 4
+      kind: reading
+      words: ١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.
+      cell: null
+      crop_sha256: ff5df8e5aeb475fe54ac7cdf6b1f5d9bc9450710a428775ecc28d1409898c32d
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(1)
+      page: 5
+      kind: span
+      words: (1) No shutdown is permitted during the holy month of Ramadan.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.2
+    - ADD-03:T1-3/note(1)
+    conflicts:
+    - ADD-03:T1-3/note(1)
+    missing_information:
+    - an op type able to record precedence between two renderings issued in the same addendum
+    - Eid al-Fitr and Eid al-Adha holiday dates for the construction period
+    statements:
+    - F1
+    - F4
+    - F5
+    - A1
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/note1 is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:p4-image/note1 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/note(1) p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/note(1) at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption F5: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:T1-3/note(1)'
+      aspect: decision
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: an op type able to record precedence between two renderings issued
+        in the same addendum; Eid al-Fitr and Eid al-Adha holiday dates for the construction period'
+      aspect: evidence
+    verification_status: conflicting
+    model_rationale: 'Crop b11-full (sha ff5df8…) shows note 1 in Arabic script on a single line: ''١. لا يُسمح
+      بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.'' The clause after ''أو'' (or), naming
+      both Eid holidays, is clearly printed and is missing from the English.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The conflict is real. The Arabic adds 'أو خلال إجازتَي عيد الفطر وعيد الأضحى' (or during the Eid al-Fitr
+          and Eid al-Adha holidays), and English note (1) mentions only Ramadan. 2.2 says the Arabic governs.
+        - The Eid holiday dates are not in the evidence, so the prohibited periods cannot be turned into dates here.
+        evidence_checked:
+        - ADD-03:p4-image/note1
+        - ADD-03:T1-3/note(1)
+        - ADD-03:2.2
+        selected_because:
+        - conflicting
+        - uncertain_target
+        - 'uncertain_target: target is not among the units the provision cites'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/note2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/note2
+    target: null
+    payload:
+      provision: ADD-03:p4-image/note2
+      disposition: no_effect
+      reason: 'The note does restrict (''يُسمح بإيقافٍ واحدٍ فقط'' = only one shutdown is permitted). It is part
+        of Table 1-3, which ADD-03 itself issues, and it prints no change to any unit standing at ADD-02. The restriction
+        enters Volume II through ADD-03 2.1: ''is incorporated into this Volume by reference''. The Appendix B rendering
+        agrees: ''(2) Only one shutdown is permitted at each tie-in point during the construction period.'' A person
+        should confirm.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note2
+      page: 4
+      kind: reading
+      words: ٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.
+      cell: null
+      crop_sha256: df7e16c06f69f975e44245ca61a9cc69656fcacbb798dadb0bfbf04d7151018a
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(2)
+      page: 5
+      kind: span
+      words: (2) Only one shutdown is permitted at each tie-in point during the construction period.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:T1-3/note(2)
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    - F6
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/note2 is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/note2 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/note(2) p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/note(2) at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b12-full (sha df7e16…) shows Arabic note 2 '٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال
+      مدّة الإنشاء.' (one shutdown only per tie-in point for the construction period). This agrees with the English
+      note (2).
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic matches the English note (2). The note does restrict, so the no_effect wording means only that
+          it amends no ADD-02 unit. Its substance still takes effect through 2.1, and a person should confirm that
+          reading.
+        evidence_checked:
+        - ADD-03:p4-image/note2
+        - ADD-03:T1-3/note(2)
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/note3
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/note3
+    target: null
+    payload:
+      provision: ADD-03:p4-image/note3
+      disposition: no_effect
+      reason: 'The note does oblige (''تُقدَّم طلبات الإيقاف'' = shutdown requests shall be submitted). It is part
+        of Table 1-3, which ADD-03 itself issues, and it prints no change to any unit standing at ADD-02. The obligation
+        enters Volume II through ADD-03 2.1: ''is incorporated into this Volume by reference''. The Appendix B rendering
+        agrees: ''(3) Shutdown requests shall be submitted through the Network Operator''s electronic portal, accompanied
+        by the proposed shutdown programme and a contingency plan.'' A person should confirm.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note3
+      page: 4
+      kind: reading
+      words: ٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.
+      cell: null
+      crop_sha256: 34f7946940f306c87107d6626b51bc2f11eb7d7848884f73ff9c95bf9606abde
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(3)
+      page: 5
+      kind: span
+      words: (3) Shutdown requests shall be submitted through the Network Operator's electronic portal, accompanied
+        by the proposed shutdown programme and a contingency plan.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:T1-3/note(3)
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    - F6
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/note3 is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/note3 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/note(3) p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/note(3) at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop b13-full (sha 34f794…) shows Arabic note 3: requests via the company''s electronic portal,
+      with the proposed shutdown programme and an emergency/contingency plan (''خطة الطوارئ''). This agrees with
+      the English note (3).'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic matches the English note (3). 'خطة الطوارئ' is rendered 'contingency plan' and 'للشركة' as
+          'the Network Operator's', which are acceptable. The no_effect disposition means only that no ADD-02 unit
+          is amended. The obligation still enters through 2.1.
+        evidence_checked:
+        - ADD-03:p4-image/note3
+        - ADD-03:T1-3/note(3)
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/note4
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/note4
+    target: null
+    payload:
+      provision: ADD-03:p4-image/note4
+      disposition: no_effect
+      reason: 'This is a note to Table 1-3 at Appendix A, and ADD-03 issues it. It states the time reference (''جميع
+        الأوقات المذكورة بتوقيت الرياض'' = all times are Riyadh time) and prints no change to any unit standing
+        at ADD-02. It enters Volume II through ADD-03 2.1: ''is incorporated into this Volume by reference''. The
+        Appendix B rendering agrees: ''(4) All times are Riyadh time.'''
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note4
+      page: 4
+      kind: reading
+      words: ٤. جميع الأوقات المذكورة بتوقيت الرياض.
+      cell: null
+      crop_sha256: 977b6efd1e5357f37c1b23fed7d0fd8f529e99221a826a9271e937cc534db972
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/note(4)
+      page: 5
+      kind: span
+      words: (4) All times are Riyadh time.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:T1-3/note(4)
+    conflicts: []
+    missing_information: []
+    statements:
+    - F2
+    - F6
+    - A1
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/note4 is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/note4 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note4 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-3/note(4) p5
+      ok: true
+      detail: verbatim in ADD-03:T1-3/note(4) at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption A1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b14-full (sha 977b6e…) shows Arabic note 4 '٤. جميع الأوقات المذكورة بتوقيت الرياض.' (all
+      times are Riyadh time). This agrees with the English note (4).
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic matches the English '(4) All times are Riyadh time.'. The no_effect disposition rests on I1/A1,
+          which a person must confirm.
+        evidence_checked:
+        - ADD-03:p4-image/note4
+        - ADD-03:T1-3/note(4)
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+        created: '2026-10-05T18:06:27Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 70
+    accounted: 8
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp1-location
+    - ADD-03:p4-image/tp1-diameter
+    - ADD-03:p4-image/tp1-window
+    - ADD-03:p4-image/tp1-duration
+    - ADD-03:p4-image/tp1-notice
+    - ADD-03:p4-image/tp2-point
+    - ADD-03:p4-image/tp2-location
+    - ADD-03:p4-image/tp2-diameter
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+  resolution:
+    provisions_total: 70
+    accounted: 8
+    resolved: 0
+    pending: 8
+    invalid: 0
+    unaccounted: 62
+    pending_provisions:
+    - ADD-03:p4-image/tp2-window
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/tp2-notice
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/note4
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+        aspect: null
+    F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+        aspect: null
+    F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/tp2-duration p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/tp2-duration at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/tp-2 p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+        aspect: null
+    F4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/note1 p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/note1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/note(1) p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/note(1) at ADD-02
+        aspect: null
+    F5:
+      kind: assumption
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    F6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T1-3/tp-2 p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/tp-2 p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/note(2) p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/note(2) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/note(3) p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/note(3) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/note(4) p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/note(4) at ADD-02
+        aspect: null
+    A1:
+      kind: assumption
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.5
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.6
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.7
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-rule
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-window
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp2-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-notice
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/notes-heading
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/note3
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/note4
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(4)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp1-location
+    - ADD-03:p4-image/tp1-diameter
+    - ADD-03:p4-image/tp1-window
+    - ADD-03:p4-image/tp1-duration
+    - ADD-03:p4-image/tp1-notice
+    - ADD-03:p4-image/tp2-point
+    - ADD-03:p4-image/tp2-location
+    - ADD-03:p4-image/tp2-diameter
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 4f498859e614962258ad7a854ccf9e7e3ecd6888da420ed8e25962b5a6246a75
+    computed_under:
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-008-critic
+    route: host
+    items:
+    - item: ADD-03/p4-image/tp2-window
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/tp2-duration
+      agrees: true
+      concerns: 3
+    - item: ADD-03/p4-image/tp2-notice
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/notes-heading
+      agrees: true
+      concerns: 0
+    - item: ADD-03/p4-image/note1
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/note2
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/note3
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/note4
+      agrees: true
+      concerns: 1
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

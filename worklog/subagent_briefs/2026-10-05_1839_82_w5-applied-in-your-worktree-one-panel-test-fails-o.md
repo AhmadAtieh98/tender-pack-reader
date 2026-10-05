@@ -1,0 +1,8 @@
+# Follow-up message 82: W5 applied in your worktree; one panel test fails on merged tree
+
+Sent 2026-10-05 18:39:26 UTC to agent `a426d7ce2df238df8` (a resume or an added instruction to an agent launched earlier; the agent's brief is the launch file it belongs to).
+The text below is the message exactly as sent (exported from the session transcript on 5 Oct 2026, session 12).
+
+---
+
+Two additions to the usability follow-up. (1) I applied W5's consecutive-addenda patch into your worktree at 18:39 (`tenderpack/ai/{candidate,cli,contract,tools,workflow}.py`, `docs/AI_ROUTES.md`, `docs/OPERATING_GUIDE.md` §3b, the two consecutive-addenda test files), so your worktree now equals the merged main tree plus your panel work; `ai run --help` now has `--base-run`. The owner has dropped Addendum No. 4, so keep the base-run field out of the way (hidden or disabled by default is fine; do not spend time on it). (2) On the merged main tree your file gives 10 passed, 1 failed: `test_the_candidate_review_is_labelled_and_never_writes_out` fails at its last assertion, `f"run:{run_id}:ADD-03" in t` on the sources page (the candidate pack's `ADD-01_Addendum_No_1.pdf` link is also expected there). Everything before it passes. It passed in your worktree before W5, so the likely cause is W5's change to the candidate's `pack.yaml`/`PACK_PATHS` layout in `tenderpack/ai/candidate.py` (it now records `base_run` and copies a base's paths): make the sources page read the candidate's pack record the way the engine does, failing test first, and rerun the whole file in your worktree with W5 in it. Report both in your follow-up report.

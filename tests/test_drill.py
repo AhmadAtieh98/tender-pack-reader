@@ -119,7 +119,7 @@ def test_outputs_keep_the_validated_state_and_label_the_working_one(drill):
     a1 = json.loads((out / "a1/a1.json").read_text(encoding="utf-8"))
     assert a1["validated_stage"] == "ADD-02" and a1["working_stage"] == "ADD-03"
     a3 = json.loads((out / "a3/a3.json").read_text(encoding="utf-8"))
-    assert "Proposal Due Date 2026-11-26" in a3["subtitle"] and "ADD-03 is PARTIAL" in a3["subtitle"]
+    assert "Proposal Due Date (PDD) 2026-11-26" in a3["subtitle"] and "ADD-03 is PARTIAL" in a3["subtitle"]  # session 12 (audit A3-3): PDD defined at first use
     assert "I-PARTIAL-ADD-03" in {i["id"] for i in a3["unresolved"]["items"]}
     main = json.loads((out / "a5/programme.json").read_text(encoding="utf-8"))["rows"]
     assert next(a for a in main if a["id"] == "deliver")["latest_finish"] == "2026-11-26"

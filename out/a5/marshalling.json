@@ -134,6 +134,16 @@
    "width": 20
   },
   {
+   "header": "clarification_questions",
+   "key": "clarification_questions",
+   "width": 20
+  },
+  {
+   "header": "ask_by",
+   "key": "ask_by",
+   "width": 20
+  },
+  {
    "header": "resource_status",
    "key": "resource_status",
    "width": 20
@@ -174,6 +184,10 @@
     "lcc-certificate"
    ],
    "activity": "lcc-certificate",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-LCC-ISSUER"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -183,14 +197,16 @@
    "envelope": "A",
    "evidence": "EV-LCC",
    "flags": [
-    "lcc-ratio: INFEASIBLE by 12 WD"
+    "lcc-ratio: INFEASIBLE by 12 WD",
+    "lcc-ratio: CLARIFICATION QUESTION DRAFTED, not sent (CQ-LCC-ISSUER on I-LCC-ISSUER, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "lcc-certificate: CLARIFICATION QUESTION DRAFTED, not sent (CQ-LCC-ISSUER on I-LCC-ISSUER, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
    ],
    "float_wd": -12,
    "hard_copies": 3,
    "issuer": "Competent authority (not named in the pack)",
    "item": "Local Content Certificate",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): lcc_ratio_calc = 5 WD elapsed (lcc-ratio; staff effort 4 WD); lcc_certificate = 30 WD elapsed (lcc-certificate; staff effort 3 WD; waits on competent authority (not named in the pack))",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): lcc_ratio_calc = 5 WD elapsed (lcc-ratio; staff effort 4 WD); lcc_certificate = 30 WD elapsed (lcc-certificate; staff effort 3 WD; waits on competent authority (not named in the pack))",
    "lead_time_chain": [
     "lcc-ratio",
     "lcc-certificate"
@@ -220,6 +236,8 @@
     "attendance-notice"
    ],
    "activity": "attendance-notice",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -234,7 +252,7 @@
    "issuer": "Bidder",
    "item": "Pre-Bid Conference attendance; notice if the attendance record is wrong",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): clarification_drafting = 2 WD elapsed (attendance-notice; staff effort 1.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): clarification_drafting = 2 WD elapsed (attendance-notice; staff effort 1.5 WD)",
    "lead_time_chain": [
     "attendance-notice"
    ],
@@ -264,6 +282,11 @@
     "fin-model-freeze"
    ],
    "activity": "fin-model-freeze",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS",
+    "CQ-FILENAMES"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -272,13 +295,18 @@
    "electronic_copy": "yes",
    "envelope": "B",
    "evidence": "EV-FIN-MODEL",
-   "flags": [],
+   "flags": [
+    "fin-model-build: REVIEW (possible impact): VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:36.2 via REL-CHANGE-IN-LAW-FINANCIAL-MODEL, REL-MODEL-FORM-4F; dates unchanged (a relationship, not a direct citation)",
+    "fin-model-build: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B; CQ-FILENAMES on I-VOL-I-FILE-NAMES, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "fin-model-freeze: REVIEW (possible impact): VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:36.2 via REL-CHANGE-IN-LAW-FINANCIAL-MODEL, REL-MODEL-FORM-4F; dates unchanged (a relationship, not a direct citation)",
+    "fin-model-freeze: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B; CQ-FILENAMES on I-VOL-I-FILE-NAMES, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 0,
    "hard_copies": 3,
    "issuer": "Bidder",
    "item": "Financial Model (unlocked Excel, frozen version)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): fin_model_build = 15 WD elapsed (fin-model-build; staff effort 15 WD); fin_model_freeze = 1 WD elapsed (fin-model-freeze; staff effort 1 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): fin_model_build = 15 WD elapsed (fin-model-build; staff effort 15 WD); fin_model_freeze = 1 WD elapsed (fin-model-freeze; staff effort 1 WD)",
    "lead_time_chain": [
     "fin-model-build",
     "fin-model-freeze"
@@ -312,6 +340,10 @@
     "model-audit-opinion"
    ],
    "activity": "model-audit-opinion",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -321,14 +353,17 @@
    "envelope": "B",
    "evidence": "EV-MODEL-AUDIT",
    "flags": [
-    "OPEN ISSUE: VOL-I:10.1 says Envelope B contains only the documents it lists; this item is required by VOL-I:10.3, so where it goes needs a clarification"
+    "OPEN ISSUE: VOL-I:10.1 says Envelope B contains only the documents it lists; this item is required by VOL-I:10.3, so where it goes needs a clarification",
+    "model-auditor-appoint: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "model-audit-review: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "model-audit-opinion: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
    ],
    "float_wd": 0,
    "hard_copies": 3,
    "issuer": "Independent model auditor",
    "item": "Independent model auditor's opinion (original)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): model_auditor_appointment = 5 WD elapsed (model-auditor-appoint; staff effort 1 WD; waits on model auditor (engagement)); model_audit_review = 10 WD elapsed (model-audit-review; staff effort 3 WD; waits on independent model auditor); model_audit_opinion = 5 WD elapsed (model-audit-opinion; staff effort 1 WD; waits on independent model auditor)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): model_auditor_appointment = 5 WD elapsed (model-auditor-appoint; staff effort 1 WD; waits on model auditor (engagement)); model_audit_review = 10 WD elapsed (model-audit-review; staff effort 3 WD; waits on independent model auditor); model_audit_opinion = 5 WD elapsed (model-audit-opinion; staff effort 1 WD; waits on independent model auditor)",
    "lead_time_chain": [
     "model-auditor-appoint",
     "model-audit-review",
@@ -357,79 +392,36 @@
   },
   {
    "activities": [
-    "pcg-wording",
-    "pcg-execution"
-   ],
-   "activity": "pcg-execution",
-   "count": 1,
-   "count_basis": "bidder.epc_contractors = 1 (PROVISIONAL ASSUMPTION; owner epc_contractors: Bid manager)",
-   "decision_status": "READY",
-   "drop_dead_start": "2026-10-27",
-   "earliest_finish": "2026-11-18",
-   "electronic_copy": "yes",
-   "envelope": "A",
-   "evidence": "EV-FORM-4D",
-   "flags": [],
-   "float_wd": 3,
-   "hard_copies": 3,
-   "issuer": "Ultimate parent of the EPC Contractor",
-   "item": "Form 4-D Parent Company Guarantee (executed original)",
-   "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): pcg_wording = 10 WD elapsed (pcg-wording; staff effort 4 WD; waits on ultimate parent of the EPC Contractor (its lawyers)); pcg_execution = 10 WD elapsed (pcg-execution; staff effort 1 WD; waits on ultimate parent's board)",
-   "lead_time_chain": [
-    "pcg-wording",
-    "pcg-execution"
-   ],
-   "lead_time_keys": [
-    "pcg_wording",
-    "pcg_execution"
-   ],
-   "lead_time_wd": 20,
-   "marked_originals": 1,
-   "name": "Form 4-D Parent Company Guarantee (executed)",
-   "needed_by": "2026-11-23",
-   "owner": "Legal",
-   "per": "epc_contractor",
-   "physical_count": 4,
-   "req_ids": [
-    "VOL-I-8.7-01",
-    "VOL-IV-F4D-01",
-    "VOL-IV-F4D-02",
-    "VOL-IV-F4D-03",
-    "VOL-IV-F4D-04",
-    "VOL-IV-F4D-05",
-    "VOL-IV-F4D-06",
-    "VOL-IV-F4D-07",
-    "VOL-IV-F4D-08"
-   ],
-   "resource": "legal_counsel",
-   "resource_status": "pcg-execution: OVERLOAD legal_counsel on 2026-11-17..2026-11-18 (peak 2.1 vs capacity 2 staff); OVERLOAD legal_counsel on 2026-11-22..2026-11-23 (peak 2.55 vs capacity 2 staff)",
-   "status": "OK",
-   "timing_status": "OK",
-   "waiting_on": "ultimate parent of the EPC Contractor (its lawyers); ultimate parent's board"
-  },
-  {
-   "activities": [
     "technical-proposal"
    ],
    "activity": "technical-proposal",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-DWF-STORM-FLOW",
+    "CQ-ENV-PERMIT",
+    "CQ-PAGE-LIMIT-APPENDICES",
+    "CQ-SCORING-METHOD",
+    "CQ-T24-RANGES",
+    "CQ-VOL-III-DRAWINGS"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
-   "drop_dead_start": "2026-10-27",
+   "drop_dead_start": "2026-10-25",
    "earliest_finish": "2026-11-18",
    "electronic_copy": "yes",
    "envelope": "A",
    "evidence": "EV-TECH-PROPOSAL",
    "flags": [
-    "technical-proposal: REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation); BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed)"
+    "technical-proposal: REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation); BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed)",
+    "technical-proposal: CLARIFICATION QUESTION DRAFTED, not sent (CQ-DWF-STORM-FLOW on I-FLOWS; CQ-ENV-PERMIT on I-PERMIT; CQ-ENV-PERMIT on I-READING-T24; CQ-PAGE-LIMIT-APPENDICES on I-VOL-I-APPENDICES; CQ-VOL-III-DRAWINGS on I-VOL-II-MISSING; CQ-T24-RANGES on I-VOL-II-T24-TENSIONS; CQ-VOL-III-DRAWINGS on I-VOL-III; CQ-SCORING-METHOD on I-VOL-IV-SCALE, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
    ],
-   "float_wd": 3,
+   "float_wd": 1,
    "hard_copies": 3,
    "issuer": "Bidder",
    "item": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): technical_proposal = 20 WD elapsed (technical-proposal; staff effort 45 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): technical_proposal = 20 WD elapsed (technical-proposal; staff effort 45 WD)",
    "lead_time_chain": [
     "technical-proposal"
    ],
@@ -439,7 +431,7 @@
    "lead_time_wd": 20,
    "marked_originals": 1,
    "name": "Technical Proposal narrative (page limit per VOL-I 9.2)",
-   "needed_by": "2026-11-23",
+   "needed_by": "2026-11-19",
    "owner": "Technical",
    "per": "proposal",
    "physical_count": 4,
@@ -536,10 +528,69 @@
   },
   {
    "activities": [
+    "pcg-wording",
+    "pcg-execution"
+   ],
+   "activity": "pcg-execution",
+   "ask_by": null,
+   "clarification_questions": [],
+   "count": 1,
+   "count_basis": "bidder.epc_contractors = 1 (PROVISIONAL ASSUMPTION; owner epc_contractors: Bid manager)",
+   "decision_status": "READY",
+   "drop_dead_start": "2026-10-27",
+   "earliest_finish": "2026-11-18",
+   "electronic_copy": "yes",
+   "envelope": "A",
+   "evidence": "EV-FORM-4D",
+   "flags": [],
+   "float_wd": 3,
+   "hard_copies": 3,
+   "issuer": "Ultimate parent of the EPC Contractor",
+   "item": "Form 4-D Parent Company Guarantee (executed original)",
+   "kind": "document",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): pcg_wording = 10 WD elapsed (pcg-wording; staff effort 4 WD; waits on ultimate parent of the EPC Contractor (its lawyers)); pcg_execution = 10 WD elapsed (pcg-execution; staff effort 1 WD; waits on ultimate parent's board)",
+   "lead_time_chain": [
+    "pcg-wording",
+    "pcg-execution"
+   ],
+   "lead_time_keys": [
+    "pcg_wording",
+    "pcg_execution"
+   ],
+   "lead_time_wd": 20,
+   "marked_originals": 1,
+   "name": "Form 4-D Parent Company Guarantee (executed)",
+   "needed_by": "2026-11-23",
+   "owner": "Legal",
+   "per": "epc_contractor",
+   "physical_count": 4,
+   "req_ids": [
+    "VOL-I-8.7-01",
+    "VOL-IV-F4D-01",
+    "VOL-IV-F4D-02",
+    "VOL-IV-F4D-03",
+    "VOL-IV-F4D-04",
+    "VOL-IV-F4D-05",
+    "VOL-IV-F4D-06",
+    "VOL-IV-F4D-07",
+    "VOL-IV-F4D-08"
+   ],
+   "resource": "legal_counsel",
+   "resource_status": "pcg-execution: OVERLOAD legal_counsel on 2026-11-17..2026-11-18 (peak 2.1 vs capacity 2 staff); OVERLOAD legal_counsel on 2026-11-22..2026-11-23 (peak 2.55 vs capacity 2 staff)",
+   "status": "OK",
+   "timing_status": "OK",
+   "waiting_on": "ultimate parent of the EPC Contractor (its lawyers); ultimate parent's board"
+  },
+  {
+   "activities": [
     "lender-terms",
     "fin-assumptions"
    ],
    "activity": "fin-assumptions",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -549,14 +600,16 @@
    "envelope": "B",
    "evidence": "EV-FIN-ASSUMPTIONS",
    "flags": [
-    "OPEN ISSUE: VOL-I:10.1 says Envelope B contains only the documents it lists; this item is required by VOL-I:10.6, so where it goes needs a clarification"
+    "OPEN ISSUE: VOL-I:10.1 says Envelope B contains only the documents it lists; this item is required by VOL-I:10.6, so where it goes needs a clarification",
+    "lender-terms: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "fin-assumptions: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
    ],
    "float_wd": 5,
    "hard_copies": 3,
    "issuer": "Bidder",
    "item": "Schedule of principal financing assumptions",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): lender_terms = 10 WD elapsed (lender-terms; staff effort 2 WD; waits on lenders); fin_assumptions_schedule = 2 WD elapsed (fin-assumptions; staff effort 1.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): lender_terms = 10 WD elapsed (lender-terms; staff effort 2 WD; waits on lenders); fin_assumptions_schedule = 2 WD elapsed (fin-assumptions; staff effort 1.5 WD)",
    "lead_time_chain": [
     "lender-terms"
    ],
@@ -585,6 +638,8 @@
     "ground-dd"
    ],
    "activity": "ground-dd",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -599,7 +654,7 @@
    "issuer": "Bidder",
    "item": "Ground-condition due diligence (Bidders satisfy themselves; the data-room geotechnical report is for information)",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): ground_due_diligence = 10 WD elapsed (ground-dd; staff effort 6 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): ground_due_diligence = 10 WD elapsed (ground-dd; staff effort 6 WD)",
    "lead_time_chain": [
     "ground-dd"
    ],
@@ -627,6 +682,8 @@
     "completion-certs"
    ],
    "activity": "completion-certs",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 2,
    "count_basis": "bidder.reference_plants_offered = 2 (PROVISIONAL ASSUMPTION; owner reference_plants_offered: Technical)",
    "decision_status": "READY",
@@ -641,7 +698,7 @@
    "issuer": "Client of each reference plant",
    "item": "Client completion certificate (one per reference project)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): completion_certificate = 15 WD elapsed (completion-certs; staff effort 2 WD; waits on client of each reference plant)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): completion_certificate = 15 WD elapsed (completion-certs; staff effort 2 WD; waits on client of each reference plant)",
    "lead_time_chain": [
     "completion-certs"
    ],
@@ -670,6 +727,8 @@
     "poa"
    ],
    "activity": "poa",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 3,
    "count_basis": "bidder.members = 3 x bidder.signatories_per_member = 1 (PROVISIONAL ASSUMPTION; owner members: Bid manager, signatories_per_member: Legal)",
    "decision_status": "READY",
@@ -684,7 +743,7 @@
    "issuer": "Notary",
    "item": "Notarised Power of Attorney (one per signatory)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): poa_board_resolutions = 5 WD elapsed (poa-resolutions; staff effort 3 WD; waits on each member's board); poa_notarisation = 5 WD elapsed (poa; staff effort 3 WD; waits on notary)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): poa_board_resolutions = 5 WD elapsed (poa-resolutions; staff effort 3 WD; waits on each member's board); poa_notarisation = 5 WD elapsed (poa; staff effort 3 WD; waits on notary)",
    "lead_time_chain": [
     "poa-resolutions",
     "poa"
@@ -715,6 +774,8 @@
     "references"
    ],
    "activity": "references",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 2,
    "count_basis": "bidder.reference_plants_offered = 2 (PROVISIONAL ASSUMPTION; owner reference_plants_offered: Technical)",
    "decision_status": "READY",
@@ -729,7 +790,7 @@
    "issuer": "Reference plant owners",
    "item": "Evidence of commercial operation (one per reference plant)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): reference_evidence = 10 WD elapsed (references; staff effort 4 WD; waits on reference plant owners)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): reference_evidence = 10 WD elapsed (references; staff effort 4 WD; waits on reference plant owners)",
    "lead_time_chain": [
     "references"
    ],
@@ -758,6 +819,8 @@
     "bond-issue"
    ],
    "activity": "bond-issue",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -772,7 +835,7 @@
    "issuer": "Bank licensed in the Kingdom meeting the VOL-I 6.4 rating",
    "item": "Bid Bond (original)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): bid_bond_bank_approval = 10 WD elapsed (bond-approval; staff effort 2 WD; waits on bank (credit approval)); bid_bond_issue = 3 WD elapsed (bond-issue; staff effort 0.5 WD; waits on issuing bank)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): bid_bond_bank_approval = 10 WD elapsed (bond-approval; staff effort 2 WD; waits on bank (credit approval)); bid_bond_issue = 3 WD elapsed (bond-issue; staff effort 0.5 WD; waits on issuing bank)",
    "lead_time_chain": [
     "bond-approval",
     "bond-issue"
@@ -805,21 +868,33 @@
     "form-4e"
    ],
    "activity": "form-4e",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-CONCESSION-TERM",
+    "CQ-PERSISTENT-BREACH",
+    "CQ-VOL-III-DRAWINGS",
+    "CQ-VOL-V-SCHEDULES"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
    "drop_dead_start": "2026-11-08",
-   "earliest_finish": "2026-11-08",
+   "earliest_finish": "2026-11-22",
    "electronic_copy": "yes",
    "envelope": "A",
    "evidence": "EV-FORM-4E",
-   "flags": [],
-   "float_wd": 11,
+   "flags": [
+    "deviations-review: REVIEW (confirmed dependency): VOL-IV-F4E-01, VOL-V-29.3-01, VOL-V-31.1-02 reached from VOL-II:T2-4, VOL-V:3.1, VOL-V:36.2 via REL-T24-RAMP-UP-DEDUCTIONS, REL-T24-UNAVAILABILITY, REL-VOL-V-FORM-4E; dates unchanged (a relationship, not a direct citation); BLOCKED: cannot be established: Volume V Schedule 7 (deductions) not supplied (the amount of the deduction for each Unavailability Event under 31.1(a), (b) and (c), so the price risk of each); BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed)",
+    "deviations-review: CLARIFICATION QUESTION DRAFTED, not sent (CQ-CONCESSION-TERM on I-CONCESSION; CQ-VOL-III-DRAWINGS on I-VOL-III; CQ-VOL-V-SCHEDULES on I-VOL-V-MISSING; CQ-PERSISTENT-BREACH on I-VOL-V-PERSISTENT-BREACH, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "form-4e: REVIEW (confirmed dependency): VOL-IV-F4E-01, VOL-V-29.3-01, VOL-V-31.1-02 reached from VOL-II:T2-4, VOL-V:3.1, VOL-V:36.2 via REL-T24-RAMP-UP-DEDUCTIONS, REL-T24-UNAVAILABILITY, REL-VOL-V-FORM-4E; dates unchanged (a relationship, not a direct citation); BLOCKED: cannot be established: Volume V Schedule 7 (deductions) not supplied (the amount of the deduction for each Unavailability Event under 31.1(a), (b) and (c), so the price risk of each); BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed)",
+    "form-4e: CLARIFICATION QUESTION DRAFTED, not sent (CQ-CONCESSION-TERM on I-CONCESSION; CQ-VOL-III-DRAWINGS on I-VOL-III; CQ-VOL-V-SCHEDULES on I-VOL-V-MISSING; CQ-PERSISTENT-BREACH on I-VOL-V-PERSISTENT-BREACH, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
+   "float_wd": 1,
    "hard_copies": 3,
    "issuer": "Bidder",
    "item": "Form 4-E Schedule of Deviations (signed)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): deviations_review = 10 WD elapsed (deviations-review; staff effort 8 WD); form_4e_finalise = 2 WD elapsed (form-4e; staff effort 1.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): deviations_review = 10 WD elapsed (deviations-review; staff effort 8 WD); form_4e_finalise = 2 WD elapsed (form-4e; staff effort 1.5 WD)",
    "lead_time_chain": [
     "deviations-review",
     "form-4e"
@@ -851,6 +926,8 @@
     "om-evidence"
    ],
    "activity": "om-evidence",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "bidder.om_operators = 1 (PROVISIONAL ASSUMPTION; owner om_operators: Bid manager)",
    "decision_status": "READY",
@@ -865,7 +942,7 @@
    "issuer": "O&M Operator",
    "item": "O&M Operator experience evidence",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): om_experience_evidence = 10 WD elapsed (om-evidence; staff effort 1.5 WD; waits on O&M Operator)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): om_experience_evidence = 10 WD elapsed (om-evidence; staff effort 1.5 WD; waits on O&M Operator)",
    "lead_time_chain": [
     "om-evidence"
    ],
@@ -893,6 +970,30 @@
     "clarifications"
    ],
    "activity": "clarifications",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-BOND-FC-COVERAGE",
+    "CQ-CONCESSION-TERM",
+    "CQ-DWF-STORM-FLOW",
+    "CQ-ENV-B-CONTENTS",
+    "CQ-ENV-PERMIT",
+    "CQ-F4A-REISSUE",
+    "CQ-F4B-CONTRACT-VALUE",
+    "CQ-F4C-EXCLUSION",
+    "CQ-F4D-GUARANTEE-SCOPE",
+    "CQ-FILENAMES",
+    "CQ-HANDBACK-CONDITION",
+    "CQ-LCC-ISSUER",
+    "CQ-PAGE-LIMIT-APPENDICES",
+    "CQ-PCOD-RELIABILITY-RUN",
+    "CQ-PERSISTENT-BREACH",
+    "CQ-RESERVOIR",
+    "CQ-SCORING-METHOD",
+    "CQ-T24-RANGES",
+    "CQ-USB-PACKAGING",
+    "CQ-VOL-III-DRAWINGS",
+    "CQ-VOL-V-SCHEDULES"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -901,13 +1002,15 @@
    "electronic_copy": "no",
    "envelope": "none",
    "evidence": "EV-CLARIFICATIONS",
-   "flags": [],
+   "flags": [
+    "clarifications: CLARIFICATION QUESTION DRAFTED, not sent (CQ-CONCESSION-TERM on I-CONCESSION; CQ-F4A-REISSUE on I-F4A-FIELDS; CQ-F4C-EXCLUSION on I-F4C-EXCLUSION; CQ-DWF-STORM-FLOW on I-FLOWS; CQ-LCC-ISSUER on I-LCC-ISSUER; CQ-ENV-PERMIT on I-PERMIT; CQ-F4C-EXCLUSION on I-READING-F4C; CQ-ENV-PERMIT on I-READING-T24; CQ-PAGE-LIMIT-APPENDICES on I-VOL-I-APPENDICES; CQ-BOND-FC-COVERAGE on I-VOL-I-BOND-LONGSTOP; CQ-USB-PACKAGING on I-VOL-I-COPIES; CQ-F4B-CONTRACT-VALUE on I-VOL-I-ENV-A-PRICES; CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B; CQ-FILENAMES on I-VOL-I-FILE-NAMES; CQ-VOL-III-DRAWINGS on I-VOL-II-MISSING; CQ-T24-RANGES on I-VOL-II-T24-TENSIONS; CQ-VOL-III-DRAWINGS on I-VOL-III; CQ-SCORING-METHOD on I-VOL-IV-SCALE; CQ-VOL-V-SCHEDULES on I-VOL-V-MISSING; CQ-PERSISTENT-BREACH on I-VOL-V-PERSISTENT-BREACH; CQ-F4D-GUARANTEE-SCOPE, CQ-HANDBACK-CONDITION, CQ-PCOD-RELIABILITY-RUN, CQ-RESERVOIR on no linked issue, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 13,
    "hard_copies": 0,
    "issuer": "Bidder",
    "item": "Clarification requests through the Portal (each citing Volume, Clause and page)",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): clarification_drafting = 2 WD elapsed (clarifications; staff effort 1.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): clarification_drafting = 2 WD elapsed (clarifications; staff effort 1.5 WD)",
    "lead_time_chain": [
     "clarifications"
    ],
@@ -940,6 +1043,8 @@
     "fin-standing"
    ],
    "activity": "fin-standing",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 3,
    "count_basis": "bidder.members = 3 (PROVISIONAL ASSUMPTION; owner members: Bid manager)",
    "decision_status": "READY",
@@ -954,7 +1059,7 @@
    "issuer": "Each member (audited accounts)",
    "item": "Financial standing evidence (audited accounts of each member and the combined calculation)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): fin_statements_collection = 5 WD elapsed (fin-statements; staff effort 1.5 WD; waits on each member (audited accounts)); fin_standing_calc = 3 WD elapsed (fin-standing; staff effort 2 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): fin_statements_collection = 5 WD elapsed (fin-statements; staff effort 1.5 WD; waits on each member (audited accounts)); fin_standing_calc = 3 WD elapsed (fin-standing; staff effort 2 WD)",
    "lead_time_chain": [
     "fin-statements",
     "fin-standing"
@@ -986,6 +1091,8 @@
     "form-4g-sign"
    ],
    "activity": "form-4g-sign",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -1000,7 +1107,7 @@
    "issuer": "Bidder",
    "item": "Form 4-G (signed)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): form_4g_review = 5 WD elapsed (form-4g-review; staff effort 3 WD); form_4g_signature = 1 WD elapsed (form-4g-sign; staff effort 0.25 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): form_4g_review = 5 WD elapsed (form-4g-review; staff effort 3 WD); form_4g_signature = 1 WD elapsed (form-4g-sign; staff effort 0.25 WD)",
    "lead_time_chain": [
     "form-4g-review",
     "form-4g-sign"
@@ -1038,6 +1145,10 @@
     "form-4c-sign"
    ],
    "activity": "form-4c-sign",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-F4C-EXCLUSION"
+   ],
    "count": 3,
    "count_basis": "bidder.members = 3 (PROVISIONAL ASSUMPTION; owner members: Bid manager)",
    "decision_status": "READY",
@@ -1046,13 +1157,16 @@
    "electronic_copy": "yes",
    "envelope": "A",
    "evidence": "EV-FORM-4C",
-   "flags": [],
+   "flags": [
+    "form-4c-prep: CLARIFICATION QUESTION DRAFTED, not sent (CQ-F4C-EXCLUSION on I-F4C-EXCLUSION; CQ-F4C-EXCLUSION on I-READING-F4C, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)",
+    "form-4c-sign: CLARIFICATION QUESTION DRAFTED, not sent (CQ-F4C-EXCLUSION on I-F4C-EXCLUSION; CQ-F4C-EXCLUSION on I-READING-F4C, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 10,
    "hard_copies": 9,
    "issuer": "Authorised signatory of each member",
    "item": "Form 4-C (Arabic, one per member)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): form_4c_arabic_prep = 2 WD elapsed (form-4c-prep; staff effort 2 WD); form_4c_member_sign = 3 WD elapsed (form-4c-sign; staff effort 1.5 WD; waits on each member's authorised signatory)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): form_4c_arabic_prep = 2 WD elapsed (form-4c-prep; staff effort 2 WD); form_4c_member_sign = 3 WD elapsed (form-4c-sign; staff effort 1.5 WD; waits on each member's authorised signatory)",
    "lead_time_chain": [
     "form-4c-prep",
     "form-4c-sign"
@@ -1090,6 +1204,8 @@
     "investment-licence"
    ],
    "activity": "investment-licence",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "bidder.foreign_members = 1 (PROVISIONAL ASSUMPTION; owner foreign_members: Bid manager)",
    "decision_status": "READY",
@@ -1104,7 +1220,7 @@
    "issuer": "Licensing authority / each foreign member",
    "item": "Investment licence evidence or signed undertaking (one per foreign member)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): investment_licence = 5 WD elapsed (investment-licence; staff effort 1 WD; waits on each foreign member (licence copy or signed undertaking))",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): investment_licence = 5 WD elapsed (investment-licence; staff effort 1 WD; waits on each foreign member (licence copy or signed undertaking))",
    "lead_time_chain": [
     "investment-licence"
    ],
@@ -1133,6 +1249,10 @@
     "form-4b"
    ],
    "activity": "form-4b",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-F4B-CONTRACT-VALUE"
+   ],
    "count": 2,
    "count_basis": "bidder.reference_plants_offered = 2 (PROVISIONAL ASSUMPTION; owner reference_plants_offered: Technical)",
    "decision_status": "form-4b: GATED: finalisation waits on I-VOL-I-ENV-A-PRICES; clarification question drafted (CQ-F4B-CONTRACT-VALUE): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-23",
@@ -1141,13 +1261,15 @@
    "electronic_copy": "yes",
    "envelope": "A",
    "evidence": "EV-FORM-4B",
-   "flags": [],
+   "flags": [
+    "form-4b-prep: CLARIFICATION QUESTION DRAFTED, not sent (CQ-F4B-CONTRACT-VALUE on I-VOL-I-ENV-A-PRICES, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 7,
    "hard_copies": 6,
    "issuer": "Bidder",
    "item": "Form 4-B (one per reference project)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): form_4b_preparation = 3 WD elapsed (form-4b-prep; staff effort 2 WD); form_4b_finalise = 1 WD elapsed (form-4b; staff effort 0.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): form_4b_preparation = 3 WD elapsed (form-4b-prep; staff effort 2 WD); form_4b_finalise = 1 WD elapsed (form-4b; staff effort 0.5 WD)",
    "lead_time_chain": [
     "form-4b-prep",
     "form-4b"
@@ -1179,6 +1301,10 @@
     "form-4a"
    ],
    "activity": "form-4a",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-F4A-REISSUE"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "form-4a: GATED: finalisation waits on I-F4A-FIELDS; clarification question drafted (CQ-F4A-REISSUE): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-23",
@@ -1187,13 +1313,15 @@
    "electronic_copy": "yes",
    "envelope": "A",
    "evidence": "EV-FORM-4A",
-   "flags": [],
+   "flags": [
+    "form-4a-prep: CLARIFICATION QUESTION DRAFTED, not sent (CQ-F4A-REISSUE on I-F4A-FIELDS, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 12,
    "hard_copies": 3,
    "issuer": "PoA holder of the lead member",
    "item": "Form 4-A (signed)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): form_4a_preparation = 1 WD elapsed (form-4a-prep; staff effort 1 WD); form_4a_signature = 1 WD elapsed (form-4a; staff effort 0.5 WD; waits on PoA holder of the lead member (signature))",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): form_4a_preparation = 1 WD elapsed (form-4a-prep; staff effort 1 WD); form_4a_signature = 1 WD elapsed (form-4a; staff effort 0.5 WD; waits on PoA holder of the lead member (signature))",
    "lead_time_chain": [
     "form-4a-prep",
     "form-4a"
@@ -1227,6 +1355,10 @@
     "form-4f"
    ],
    "activity": "form-4f",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -1235,13 +1367,16 @@
    "electronic_copy": "yes",
    "envelope": "B",
    "evidence": "EV-FORM-4F",
-   "flags": [],
+   "flags": [
+    "form-4f: REVIEW (possible impact): VOL-IV-F4F-02 reached from VOL-V:36.2 via REL-CHANGE-IN-LAW-FINANCIAL-MODEL, REL-MODEL-FORM-4F; dates unchanged (a relationship, not a direct citation)",
+    "form-4f: CLARIFICATION QUESTION DRAFTED, not sent (CQ-ENV-B-CONTENTS on I-VOL-I-ENV-B, an issue of the rows it carries): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12)"
+   ],
    "float_wd": 0,
    "hard_copies": 3,
    "issuer": "Bidder",
    "item": "Form 4-F Financial Proposal Schedule (signed)",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): form_4f_preparation = 2 WD elapsed (form-4f; staff effort 1.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): form_4f_preparation = 2 WD elapsed (form-4f; staff effort 1.5 WD)",
    "lead_time_chain": [
     "form-4f"
    ],
@@ -1274,6 +1409,8 @@
     "iso-copy"
    ],
    "activity": "iso-copy",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "bidder.epc_contractors = 1 (PROVISIONAL ASSUMPTION; owner epc_contractors: Bid manager)",
    "decision_status": "READY",
@@ -1288,7 +1425,7 @@
    "issuer": "Accredited certification body",
    "item": "ISO 9001:2015 certificate copy",
    "kind": "document",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): iso_certificate_copy = 2 WD elapsed (iso-copy; staff effort 0.25 WD; waits on EPC Contractor)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): iso_certificate_copy = 2 WD elapsed (iso-copy; staff effort 0.25 WD; waits on EPC Contractor)",
    "lead_time_chain": [
     "iso-copy"
    ],
@@ -1316,6 +1453,8 @@
     "spoc"
    ],
    "activity": "spoc",
+   "ask_by": null,
+   "clarification_questions": [],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "READY",
@@ -1330,7 +1469,7 @@
    "issuer": "Bidder",
    "item": "Single point of contact nominated, changes notified within 2 Working Days",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): spoc_confirmation = 1 WD elapsed (spoc; staff effort 0.5 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): spoc_confirmation = 1 WD elapsed (spoc; staff effort 0.5 WD)",
    "lead_time_chain": [
     "spoc"
    ],
@@ -1362,6 +1501,12 @@
     "deliver"
    ],
    "activity": "deliver",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS",
+    "CQ-FILENAMES",
+    "CQ-USB-PACKAGING"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "assemble-envelope-b: GATED: finalisation waits on I-VOL-I-ENV-B; clarification question drafted (CQ-ENV-B-CONTENTS): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-24; copies: GATED: finalisation waits on I-VOL-I-COPIES; clarification question drafted (CQ-USB-PACKAGING): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-25",
@@ -1380,7 +1525,7 @@
    "issuer": "Bidder (courier)",
    "item": "Sealed Envelopes A and B delivered to the Appendix 3 address",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): envelope_assembly = 1 WD elapsed (assemble-envelope-a; staff effort 1 WD); envelope_assembly = 1 WD elapsed (assemble-envelope-b; staff effort 1 WD); copies_and_usb = 1 WD elapsed (copies; staff effort 2 WD); seal_and_mark = 0 WD elapsed (seal-and-mark; staff effort 0.25 WD); delivery = 1 WD elapsed (deliver; staff effort 1 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): envelope_assembly = 1 WD elapsed (assemble-envelope-a; staff effort 1 WD); envelope_assembly = 1 WD elapsed (assemble-envelope-b; staff effort 1 WD); copies_and_usb = 1 WD elapsed (copies; staff effort 2 WD); seal_and_mark = 0 WD elapsed (seal-and-mark; staff effort 0.25 WD); delivery = 1 WD elapsed (deliver; staff effort 1 WD)",
    "lead_time_chain": [
     "assemble-envelope-b",
     "copies",
@@ -1417,6 +1562,11 @@
     "copies"
    ],
    "activity": "copies",
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-FILENAMES",
+    "CQ-USB-PACKAGING"
+   ],
    "count": 1,
    "count_basis": "one per proposal",
    "decision_status": "copies: GATED: finalisation waits on I-VOL-I-COPIES; clarification question drafted (CQ-USB-PACKAGING): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-25",
@@ -1431,7 +1581,7 @@
    "issuer": "Bidder",
    "item": "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)",
    "kind": "action",
-   "lead_time_basis": "ASSUMPTION (PROVISIONAL, config/assumptions.yaml lead_times): copies_and_usb = 1 WD elapsed (copies; staff effort 2 WD)",
+   "lead_time_basis": "PROVISIONAL ASSUMPTION (config/assumptions.yaml lead_times): copies_and_usb = 1 WD elapsed (copies; staff effort 2 WD)",
    "lead_time_chain": [
     "copies"
    ],

@@ -21,6 +21,16 @@ curation/, config/, build/ or out/: they are read (and hashed) only.
                     C47); a failure refuses the build before it is attempted
     mark()          stamps every candidate output with the BANNER and adds A1's candidate status column (proposed by
                     the AI workflow / unresolved / decided)
+
+Consecutive addenda (session 12): `create(..., base=base_run(...))` starts the candidate from ANOTHER run's candidate
+(`tenderpack ai run ADD-04 --pdf ... --base-run RUN_ID`) instead of the real curation: the base candidate's pack is the
+preceding state, so everything PACK_PATHS names is copied from the base candidate (its op files, rows, readings,
+issues, clarifications, relationships, pins, triggers, ...), laid out as the base candidate lays them out, and the
+base's own addendum PDFs are copied into this candidate's input/ (documents and manifest entries rewritten to the
+copies, same sha256). The base run is read, never written. base_run() refuses a base that has not reached promotion
+or whose run lock is live; base_fingerprint() is the base candidate as it is NOW (its pack, every file it names, its
+evidence build's manifest), which the state identity carries (contract.StateIdentity.base_candidate_sha256), so a
+changed base makes this run's sets STALE.
 """
 from __future__ import annotations
 
@@ -101,8 +111,15 @@ def paths(run_dir: Path) -> dict[str, Path]:
             "pre_promotion": c / ".pre-promotion", "before": c / "before"}
 
 
-def _mirror(cand: Path, real: Path, key: str) -> Path:
+def _mirror(cand: Path, real: Path, key: str, inside: Path | None = None) -> Path:
+    """Where the copy of `real` goes: at its path relative to `inside` (session 12: the base run's candidate, so the
+    copy keeps the base candidate's layout), else relative to the repository, else under ext/<key>/."""
     real = real.absolute()
+    if inside is not None:
+        try:
+            return cand / real.resolve().relative_to(Path(inside).resolve())
+        except ValueError:
+            pass
     try:
         return cand / real.resolve().relative_to(ROOT.resolve())
     except ValueError:
@@ -147,6 +164,82 @@ def fingerprint(pack: Path) -> dict[str, str]:
     return dict(sorted(out.items()))
 
 
+# ---------------------------------------------------------------------------------------------- base run (session 12)
+
+def base_files(base_pack: Path, base_build: Path) -> list[Path]:
+    """Every file of a base run's candidate that the state starting from it depends on: its pack, every curated file
+    or folder the pack names (real_sources) and its evidence build's BUILD_MANIFEST.json."""
+    out: list[Path] = []
+    for p in real_sources(Path(base_pack)) + [Path(base_build) / "BUILD_MANIFEST.json"]:
+        p = Path(p)
+        if p.is_dir():
+            out += sorted(f for f in p.rglob("*") if f.is_file())
+        else:
+            out.append(p)
+    return list(dict.fromkeys(out))
+
+
+def base_fingerprint(base_pack: Path, base_build: Path) -> str:
+    """One sha256 over the base candidate as it is now (base_files, by path relative to the base candidate folder and
+    content; an absent file counts as absent)."""
+    root = Path(base_pack).resolve().parent
+    h = hashlib.sha256()
+    for f in base_files(base_pack, base_build):
+        f = Path(f).resolve()
+        try:
+            rel = f.relative_to(root).as_posix()
+        except ValueError:
+            rel = f.as_posix()
+        h.update(f"{rel}\0{sha256_file(f) if f.is_file() else 'absent'}\n".encode("utf-8"))
+    return h.hexdigest()
+
+
+def lock_live(run_dir: Path) -> dict | None:
+    """The run lock of a run folder when it is held by a live process (same host: the pid runs; another host: assumed
+    live), else None. Read only: a stale lock is left where it is."""
+    import socket
+    from .checkpoint import _pid_alive
+    p = Path(run_dir) / "run.lock"
+    if not p.is_file():
+        return None
+    try:
+        cur = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if cur.get("host") == socket.gethostname() and cur.get("pid") and not _pid_alive(int(cur["pid"])):
+        return None
+    return cur
+
+
+def base_run(runs: Path, run_id: str) -> dict:
+    """The base run of a consecutive-addendum run (`--base-run RUN_ID`), checked: it exists under the same staging, it
+    reached promotion (its candidate holds its addendum's promoted proposals; pin, check-register and the outputs may
+    follow) and nobody is driving it now. Raises CandidateError with the reason. Read only."""
+    d = Path(runs) / run_id
+    cpf = d / "checkpoint.json"
+    if not cpf.is_file():
+        raise CandidateError(f"--base-run {run_id}: no run {run_id} under {runs}")
+    cp = json.loads(cpf.read_text(encoding="utf-8"))
+    prom = ((cp.get("steps") or {}).get("promotion") or {})
+    if prom.get("status") != "done":
+        raise CandidateError(f"--base-run {run_id}: the base run has not reached promotion (its promotion step is "
+                             f"{prom.get('status') or 'pending'}; run status {cp.get('status')}"
+                             + (f": {cp.get('status_reason')}" if cp.get("status_reason") else "")
+                             + f"); finish it first (`tenderpack ai resume {run_id}`)")
+    live = lock_live(d)
+    if live:
+        raise CandidateError(f"--base-run {run_id}: the base run is being driven now (process {live.get('pid')} on "
+                             f"{live.get('host')}, since {live.get('created')}); wait for it to end")
+    cand = cp.get("candidate") or {}
+    pack, build = Path(cand.get("pack") or d / "candidate/pack.yaml"), Path(cand.get("build") or d / "candidate/build")
+    if not pack.is_file() or not (build / "BUILD_MANIFEST.json").is_file():
+        raise CandidateError(f"--base-run {run_id}: its candidate pack or evidence build is missing ({pack}, {build})")
+    chain = list(((cp.get("settings") or {}).get("base_run") or {}).get("chain") or []) + [cp.get("addendum")]
+    return {"run_id": run_id, "dir": str(d), "addendum": cp.get("addendum"), "pack": str(pack), "build": str(build),
+            "candidate": str(pack.parent), "status": cp.get("status"), "chain": chain,
+            "fingerprint": base_fingerprint(pack, build)}
+
+
 # ---------------------------------------------------------------------------------------------- create
 
 def check(pack: Path, addendum: str, pdf: Path) -> tuple[int, dict]:
@@ -177,9 +270,13 @@ def check(pack: Path, addendum: str, pdf: Path) -> tuple[int, dict]:
     return pages, meta
 
 
-def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str) -> dict:
-    """Build the candidate workspace (see the module docstring). Returns what the checkpoint records."""
+def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str, base: dict | None = None) -> dict:
+    """Build the candidate workspace (see the module docstring). Returns what the checkpoint records. `base` (session
+    12, base_run()): `pack` is the base run's candidate pack; its copies keep the base candidate's layout and its
+    documents held in the base run's folder are copied into this candidate's input/."""
     pages, meta = check(pack, addendum, pdf)
+    brun = base                                  # (`base` below names the two copies' folders)
+    inside = Path(brun["candidate"]) if brun else None
     m = ADDENDUM.match(addendum)
     pdf = Path(pdf).resolve()
     pack = Path(pack).resolve()
@@ -199,7 +296,7 @@ def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str) -> 
         # two copies: the candidate (promotion writes into it) and the pre-addendum state (out-before is built from
         # it, so it never sees a promoted item)
         for base, conf in ((cand, cfg), (P["before"], before)):
-            dest = _mirror(base, real, key)
+            dest = _mirror(base, real, key, inside)
             if real.exists():
                 _copy(real, dest)
                 copied[key] = rel_or_abs(real)
@@ -211,6 +308,28 @@ def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str) -> 
             if key == "approvals" and (real.parent / "reading-snapshots").is_dir():
                 _copy(real.parent / "reading-snapshots", dest.parent / "reading-snapshots")
     P["input"].mkdir(parents=True, exist_ok=True)
+    if brun:                                     # the base's own addendum PDFs: copied, never read in place later
+        moved = {}
+        for d in docs:
+            src = resolve(d.get("path", ""))
+            if src.is_file() and src.resolve().is_relative_to(Path(brun["dir"]).resolve()):
+                dst = P["input"] / src.name
+                shutil.copyfile(src, dst)
+                moved[d["path"]] = rel_or_abs(dst)
+        docs = [dict(d, path=moved.get(d.get("path"), d.get("path"))) for d in docs]
+        before["documents"] = list(docs)
+        for conf in (before, cfg):
+            mp = resolve(conf["manifest"])
+            if moved and mp.is_file():
+                m_ = json.loads(mp.read_text(encoding="utf-8"))
+                m_["files"] = [dict(f, path=moved.get(f.get("path"), f.get("path"))) for f in m_.get("files", [])]
+                mp.write_text(json.dumps(m_, indent=1, ensure_ascii=False), encoding="utf-8")
+        rec = {"run_id": brun["run_id"], "addendum": brun["addendum"], "candidate": rel_or_abs(Path(brun["candidate"])),
+               "pack": rel_or_abs(Path(brun["pack"])), "build": rel_or_abs(Path(brun["build"])),
+               "chain": list(brun.get("chain") or []), "documents_copied": moved,
+               "note": "this state starts from the base run's candidate (read only); its fingerprint is in the state "
+                       "identity (base_candidate_sha256), so a changed base makes this run's sets STALE"}
+        cfg["base_run"] = before["base_run"] = rec
     pdf_copy = P["input"] / pdf.name
     shutil.copyfile(pdf, pdf_copy)
     new_doc = {"doc_id": addendum, "kind": "addendum", "number": int(m.group(1)), "path": rel_or_abs(pdf_copy)}
@@ -225,7 +344,9 @@ def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str) -> 
     man_path.write_text(json.dumps(man, indent=1, ensure_ascii=False), encoding="utf-8")
     orig_id = str(cfg.get("pack_id") or pack.stem)
     cfg["pack_id"] = f"{orig_id}+{addendum}-CANDIDATE"
-    head = (f"# CANDIDATE pack of AI workflow run {run_id}: the preceding state ({rel_or_abs(pack)}) with {addendum} added.\n"
+    head = (f"# CANDIDATE pack of AI workflow run {run_id}: the preceding state ({rel_or_abs(pack)}"
+            + (f", the candidate of base run {brun['run_id']}, {' -> '.join(brun.get('chain') or [])}" if brun else "")
+            + f") with {addendum} added.\n"
             "# Disposable: every curated file named here is a COPY under this run's folder; nothing is accepted.\n")
     P["pack"].write_text(head + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False), encoding="utf-8")
     P["pack_before"].write_text(
@@ -234,7 +355,8 @@ def create(run_dir: Path, pack: Path, addendum: str, pdf: Path, run_id: str) -> 
     return {"dir": str(cand), "pack": str(P["pack"]), "pack_before": str(P["pack_before"]), "build": str(P["build"]),
             "out": str(P["out"]), "out_before": str(P["out_before"]), "pdf_copy": str(pdf_copy),
             "pdf": {"path": str(pdf), "sha256": entry["sha256"], "pages": pages, "bytes": entry["bytes"]},
-            "copied": copied, "real_hashes": real_hashes, "preceding_pack_id": orig_id}
+            "copied": copied, "real_hashes": real_hashes, "preceding_pack_id": orig_id,
+            **({"base_run": cfg["base_run"]} if brun else {})}
 
 
 @contextlib.contextmanager
@@ -290,6 +412,11 @@ def before_key(run_dir: Path, evidence: Path) -> str:
     h.update(sha256_file(Path(evidence) / "BUILD_MANIFEST.json").encode())
     h.update(json.dumps(cfg.get("documents"), sort_keys=True).encode())
     h.update(str(cfg.get("pack_id")).encode())
+    if cfg.get("base_run"):                      # session 12: out-before is the base run's candidate state
+        b = cfg["base_run"]
+        h.update(json.dumps({"base_run": b.get("run_id"), "chain": b.get("chain"),
+                             "fingerprint": base_fingerprint(resolve(b["pack"]), resolve(b["build"]))},
+                            sort_keys=True).encode())
     for f in sorted(p for p in cand.rglob("*") if p.is_file()):
         rel = f.relative_to(cand).as_posix()
         h.update(rel.encode())

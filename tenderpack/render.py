@@ -405,7 +405,10 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
     page = doc.new_page(width=w, height=h)
     body = pymupdf.Rect(A3_MARGIN_X, A3_MARGIN_Y, w - A3_MARGIN_X, h - A3_MARGIN_Y - A3_FOOTER_H - 4)
     # insert_htmlbox places everything or nothing: (-1, scale) when even scale_low does not fit
-    spare, scale = page.insert_htmlbox(body, _a3_html(a3), css=A3_CSS, scale_low=A3_SCALE_LOW)
+    try:
+        spare, scale = page.insert_htmlbox(body, _a3_html(a3), css=A3_CSS, scale_low=A3_SCALE_LOW)
+    except AssertionError:          # session 12 (F5): PyMuPDF asserts 'scale >= scale_low' when the content overflows
+        spare, scale = -1, 0.0      # by a rounding hair (scale 0.8999...) instead of returning -1: the same overflow
     if spare < 0 or scale < A3_SCALE_LOW or round(8.5 * scale, 2) < A3_MIN_TEXT_PT:
         raise A3OverflowError(f"A3 content does not fit on one A4 page at scale >= {A3_SCALE_LOW} "
                               f"({sum(len(s['items']) for s in a3['sections'])} items, "

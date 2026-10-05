@@ -624,7 +624,12 @@ def main(argv: list[str] | None = None) -> int:
     rd.add_argument("--include-addenda", action="store_true", help="also read the addenda's own units")
     from .ai.cli import add_parser as add_ai_parser          # session 09: `tenderpack ai ...` (tenderpack/ai/cli.py)
     add_ai_parser(sub)
+    from .panel.server import add_parser as add_panel_parser  # session 12: `tenderpack panel` (tenderpack/panel/)
+    add_panel_parser(sub)
     args = ap.parse_args(argv)
+    if args.cmd == "panel":
+        from .panel.server import main as panel_main
+        return panel_main(args)
     if args.cmd == "ai":
         from .ai.cli import run as ai_run
         return ai_run(args)

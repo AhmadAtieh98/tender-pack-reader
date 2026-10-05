@@ -93,6 +93,22 @@ later ones without asking any done batch again (proposals made against another s
 promotion). The clock of a rehearsal records every interruption (`rehearsals/blind-04/clock-s11.txt` is an example
 with a restart and a rate limit).
 
+### 3b. Two addenda in a row (session 12)
+
+When Addendum No. 4 arrives before Addendum No. 3 is accepted into `curation/`, run No. 3 first and start No. 4 on its
+candidate: `python -m tenderpack ai run ADD-04 --pdf PATH --base-run <the ADD-03 run>`. The ADD-04 candidate then starts
+from the ADD-03 candidate (its op file, rows, readings, issues, clarifications, relationships, pins, its pack with
+ADD-03's PDF and its evidence build), so ADD-03 is ADD-04's previous stage, ADD-04's references to clauses ADD-03
+inserted resolve, A2 shows the chain ADD-03 → ADD-04, and the review compares with the ADD-03 candidate state, not
+the real `out/`. The ADD-03 run must have reached promotion and must not be running; it is only read (its folder is
+unchanged), and `--pack`/`--evidence` are not given with `--base-run`. Remember that the base is itself unreviewed:
+everything ADD-04 builds on is still PROPOSED. If the ADD-03 candidate changes afterwards (a person edits it, or it
+is rerun), the ADD-04 sets become STALE and promotion refuses: start a new ADD-04 run. `run-status`, the review
+packet and the candidate README name the base; `resume <run> --base-run <base>` checks you are resuming on the base
+the run was started with. Without `--base-run`, ADD-04 runs on the real curation: the run warns "ADD-03 is not in
+this state; run it first or pass --base-run", and every provision that cites ADD-03 and cannot be answered is left
+unresolved with that reason.
+
 ## 4. Reviewing: the owner's decisions
 
 Open `out/review/index.html` and work through the batches in order:
@@ -169,3 +185,35 @@ What to expect from an offline run:
 A row cites the units its own words are in, so `diff` used to report only rows that cite a changed unit. Effects that run through another provision (who is a member reaching every per-member form and the weighted financial standing; an effluent limit reaching the reliability run and the contract's Unavailability Event; the payment mechanism reaching the quoted price, Form 4-F and the Financial Model; a schedule the pack does not supply) are curated once in `curation/relationships.yaml` (a rehearsal pack keeps its own copy in its `work/` folder). `diff`, A2, A3 (the "Referenced but not supplied" group and `a3_detail.html`), A1 (a Relationships column and sheet) and A5 follow them, in three classes that are never merged with the direct changes: **confirmed dependency**, **proposed relationship**, **possible impact**. Reached A5 activities are flagged `REVIEW (<class>)`; their dates do not move.
 
 To add one, append an entry: `id`, `from` (a row or unit id; a table id also stands for its rows; `calc:<name>`; or `words:<phrase>`), `to` (a row, unit, activity, evidence item, date rule or `calc:<name>`), `kind` (`cites`, `depends_on`, `feeds_calculation`, `member_scope`, `limit_applies`, `missing_document`), `status`, `origin`, `review: proposed`. **Confirmed** means the documents themselves state the link: the entry quotes the cross-reference verbatim in `evidence: [{unit, page, words}]`, and check-register checks it. Anything inferred, by you or a model, is **proposed** (or **possible**) with a `basis` saying why. A `missing_document` entry also names the `document`, a short `document_id` and the conclusion it `blocks`. A model's proposals are landed by `tenderpack.relationships.append_proposed` as proposed; the program never promotes a link to confirmed, and a model's link marked confirmed needs your name in `confirmed_by`. Run `check-register` after any change.
+
+## 8. Handing over: the release archive and the working-tree snapshot (session 12)
+
+Two packages, two purposes:
+
+- `python scripts/make_draft_archive.py DEST [--wheels WHEELHOUSE]` builds the DRAFT handover archive from a clean
+  commit and refuses a dirty tree, so that the archive equals a commit (`LAMAR-PPP-R2-DRAFT_<sha>.zip`). It takes
+  every blind rehearsal that has a `COMPARISON.md` (session 12: no more hardcoded list) and every session report.
+- `python scripts/make_snapshot.py DEST [--label TEXT] [--exclude PREFIX ...]` builds a labelled WORKING-TREE
+  SNAPSHOT of the tree as it is, uncommitted changes included: `LAMAR-PPP-R2-SNAPSHOT_<base-sha>+wt_<UTC stamp>/`
+  with `SNAPSHOT.md` (the base revision and branch, the `git status` disclosure of every changed and untracked path,
+  the diff statistics, the dependency pins of the packaged `pyproject.toml`), `uncommitted.patch`, `MANIFEST.sha256`
+  and the files a commit would capture. It is for reviewing work the owner has deliberately left uncommitted; it is
+  not a release and says so on its first line. Verify with `shasum -a 256 -c MANIFEST.sha256`.
+
+Both exclude the ignored rebuildable parts of staged runs (`.gitignore`). The snapshot excludes
+`staging/ai/runs/_cache/` by default.
+
+## 9. The local operating panel (session 12)
+
+`python -m tenderpack panel --open` (or item 7 of `scripts/mac/launch.command`) starts a plain page on this machine
+only: it listens on 127.0.0.1, on a free port unless `--port N` is given, and prints its address once,
+`http://127.0.0.1:<port>/t/<token>/`, with a new token at every start (keep it to yourself; without it every request
+is refused). It is an operating panel, not a replacement for the deliverables: A1–A5 stay in `out/`. Every button runs
+the same command you would type (shown on each job's page, to repeat in a terminal) as a job with its log under
+`staging/panel/jobs/`: ingest, outputs, the strict check, check-register, `diff` between stages (BASE, ADD-01, ADD-02
+and any candidate run), `ai run` from an uploaded PDF (stored as `staging/panel/uploads/<sha256>.pdf`), `ai resume`.
+The run pages keep execution, completeness, structural validation and human approval apart; a candidate's outputs are
+opened in place under a CANDIDATE banner and never copied into `out/`. The Decisions page lists every pending item with
+its exact `accept`/`reject`/`approve` command; the panel runs one only after you choose the decision, type your name
+and a reason, and tick the confirmation. Ctrl-C stops the panel; a job it started keeps running (resume a run later
+from the Runs page). Details, the safety rules and what is still to be checked on the Mac: `docs/PANEL.md`.

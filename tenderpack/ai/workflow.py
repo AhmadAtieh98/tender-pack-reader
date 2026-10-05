@@ -74,6 +74,16 @@ Session 12:
     shared rate-limit gate (requests.RateGate); everything else (packets, validation, checkpoints, the critic) stays in
     the run's thread, in plan order, so the result is the sequential result.
   * the shared part of every packet is sent smaller (requests.compact_shared).
+  * consecutive addenda (`run ADD-04 --pdf ... --base-run RUN_ID`, and `resume RUN_ID --base-run RUN_ID`): the
+    candidate starts from the BASE RUN's candidate (candidate.base_run / create(base=...)): its curation as promoted
+    (op files, rows, readings, issues, clarifications, relationships, pins, triggers), its pack with the base
+    addendum's PDF and its evidence build, so the base addendum is the previous stage. The base must have reached
+    promotion and must not be running (its run lock); it is read, never written. The state identity carries the base
+    run id and the base candidate's fingerprint (a changed base makes this run's sets STALE). out-before, the diff
+    and the review compare with the base candidate's state; run-status, the settings, the review packet and the
+    candidate README name the base. A run whose addendum skips addenda the state does not hold (ADD-04 on a state
+    ending at ADD-02) records them (`missing_addenda`), and a provision citing one of them that is not answered is
+    unresolved with the reason "ADD-03 is not in this state; run it first or pass --base-run".
 """
 from __future__ import annotations
 
@@ -423,9 +433,13 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
           model: str | None = None, cassette=None, caps: dict | None = None, host_model: str | None = None,
           host_mode: str = "auto", host_session_model: str | None = None,
           allow_unverified_capabilities: bool = False, stop_after: str | None = None, background_before: bool = True,
-          cache: bool = True, echo=print, sleep=time.sleep, offline: bool = False) -> dict:
+          cache: bool = True, echo=print, sleep=time.sleep, offline: bool = False, base_run: str | None = None) -> dict:
     """Start a run (see the module docstring). Refuses (budget.Refused / candidate.CandidateError) before creating
     anything when the inputs cannot work.
+
+    Session 12: `base_run` (consecutive addenda) starts the candidate from that run's candidate: the pack and the
+    evidence build are the base run's (so `pack` and `evidence` must not be given too); the base must have reached
+    promotion and must not be running (candidate.base_run refuses with the reason).
 
     Session 12: `offline` (or config `offline: true`, or TENDERPACK_OFFLINE=1) is offline mode (tenderpack/ai/offline.py):
     the route must be ollama (a hosted route raises OfflineError, a ConfigError, before anything is created), and on the
@@ -453,13 +467,25 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
     except C.ConfigError as e:
         raise B.Refused(f"config/ai.yaml failures: {e}") from None
     n_par = parallel_sessions(cfg0, route)
-    pack = Path(pack or ROOT / "config/pack.yaml").absolute()
-    evidence = Path(evidence or ROOT / "build").absolute()
     staging = Path(staging or ROOT / "staging/ai").absolute()
     worklog = Path(worklog or ROOT / "worklog/model_calls").absolute()
+    base = None
+    if base_run:                                   # session 12: consecutive addenda
+        if pack is not None or evidence is not None:
+            raise B.Refused("--base-run takes the preceding state (the pack and the evidence build) from the base run's "
+                            "candidate: do not pass --pack or --evidence with it")
+        base = CAND.base_run(runs_dir(staging), B.check_run_id(base_run))
+        pack, evidence = Path(base["pack"]), Path(base["build"])
+    pack = Path(pack or ROOT / "config/pack.yaml").absolute()
+    evidence = Path(evidence or ROOT / "build").absolute()
     CAND.check(pack, addendum, Path(pdf))
-    rd = B.safe_staging(runs_dir(staging), ROOT, evidence)
+    missing = missing_addenda(pack, addendum)
+    # with a base run the evidence build is the base candidate's, inside the runs folder: THIS run's folder must not
+    # overlap it (it is read, never written)
+    rd = B.safe_staging(runs_dir(staging), ROOT, None if base else evidence)
     run_id = B.check_run_id(run_id or new_run_id(addendum, route))
+    if base:
+        B.safe_staging(rd / run_id, ROOT, evidence)
     if (rd / run_id).exists():
         raise B.Refused(f"run {run_id} exists ({rd / run_id}): resume it with `tenderpack ai resume {run_id}`")
     preflight = None
@@ -479,11 +505,58 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
                 "host_mode": host_mode, "host_session_model": host_session_model,
                 "allow_unverified_capabilities": bool(allow_unverified_capabilities),
                 "background_before": bool(background_before), "cache": bool(cache), "offline": off_src,
-                "ollama_preflight": preflight, "max_parallel_sessions": n_par}
+                "ollama_preflight": preflight, "max_parallel_sessions": n_par,
+                "base_run": base, "missing_addenda": missing}
     cp = Checkpoint.new(rd / run_id / "checkpoint.json", run_id=run_id, addendum=addendum, settings=settings,
                         inputs={"pack": str(pack), "evidence": str(evidence)}, candidate={})
-    cp.event("started", by_pid=os.getpid(), **({"offline": off_src} if off_src else {}))
+    cp.event("started", by_pid=os.getpid(), **({"offline": off_src} if off_src else {}),
+             **({"base_run": base["run_id"], "base_fingerprint": base["fingerprint"]} if base else {}))
+    if base:
+        echo(f"[{run_id}] base run {base['run_id']}: the candidate starts from its candidate "
+             f"({' -> '.join(base['chain'])}); {addendum} follows {base['addendum']}")
+    if missing:
+        echo(f"[{run_id}] WARNING: {missing_reason(missing)} ({addendum} follows "
+             f"{_last_addendum(pack) or 'BASE'} in this state)")
     return _drive(cp, stop_after, echo, sleep)
+
+
+def _last_addendum(pack: Path) -> str | None:
+    nums = [int(CAND.ADDENDUM.match(str(d.get("doc_id"))).group(1)) for d in (load_yaml(pack) or {}).get("documents") or []
+            if CAND.ADDENDUM.match(str(d.get("doc_id")))]
+    return f"ADD-{max(nums):02d}" if nums else None
+
+
+def missing_addenda(pack: Path, addendum: str) -> list[str]:
+    """Session 12: the addenda between the state's last addendum and `addendum` that the state does not hold (ADD-04
+    on a state ending at ADD-02: ["ADD-03"])."""
+    m = CAND.ADDENDUM.match(addendum or "")
+    last = _last_addendum(pack)
+    if not m:
+        return []
+    lo = int(last.split("-")[1]) if last else 0
+    return [f"ADD-{k:02d}" for k in range(lo + 1, int(m.group(1)))]
+
+
+def missing_reason(missing: list[str]) -> str:
+    return "; ".join(f"{a} is not in this state; run it first or pass --base-run" for a in missing)
+
+
+_ADD_NO = re.compile(r"\bAddendum No\.? ?(\d+)\b", re.I)
+
+
+def cites_missing(ctx: "Ctx", p: str, items: list) -> list[str]:
+    """Session 12: the missing addenda (settings missing_addenda) a provision cites: by its own words ("Addendum No. 3")
+    or by a unit id one of its items names (a target, an anchor, an evidence unit: "VOL-I:6.7+ADD-03", "ADD-03:2.1")."""
+    missing = list(ctx.s.get("missing_addenda") or [])
+    if not missing:
+        return []
+    text = ((ctx.ws.units_by_id.get(p) or {}).get("text") or "")
+    named = {f"ADD-{int(n):02d}" for n in _ADD_NO.findall(text)}
+    for it in items:
+        blob = json.dumps({"target": getattr(it, "target", None), "payload": it.payload,
+                           "evidence": [e.unit_id for e in it.evidence]}, ensure_ascii=False, default=str)
+        named |= {a for a in missing if re.search(rf"(?:\+|\b){a}(?::|\b)", blob)}
+    return [a for a in missing if a in named]
 
 
 def parallel_sessions(cfg: dict, route: str) -> int:
@@ -545,20 +618,25 @@ def load(run_id: str, staging=None) -> Checkpoint:
 
 
 def resume(run_id: str, staging=None, stop_after: str | None = None, retry_failed: bool = True, echo=print,
-           sleep=time.sleep, from_step: str | None = None, offline: bool = False) -> dict:
+           sleep=time.sleep, from_step: str | None = None, offline: bool = False, base_run: str | None = None) -> dict:
     """Continue a stopped, interrupted, failed or waiting run from its checkpoint. Done steps and batches are skipped;
     a batch that failed is asked again (`retry_failed`), and the steps after it are recomputed from the candidate as it
     was before any promotion.
 
     `from_step` (session 11): rerun that step and every later one even when they are done, e.g. after a code change
     (the blind-04 run whose outputs build was refused). Batches that succeeded are NEVER asked again: a batch step named
-    here only recomputes from its done batches (its failed, interrupted or deferred ones are asked again as usual)."""
+    here only recomputes from its done batches (its failed, interrupted or deferred ones are asked again as usual).
+
+    `base_run` (session 12): the run's base run, as recorded when it started (the base of a run is fixed then; another
+    one is refused). A run with a base is resumed only while the base is still promoted and not being driven; a base
+    changed since the start is recorded, and the run's sets are then STALE (the state identity carries it)."""
     if stop_after and stop_after not in STEPS:
         raise B.Refused(f"--stop-after must be one of {', '.join(STEPS)}")
     if from_step and from_step not in STEPS:
         raise B.Refused(f"--from must be one of {', '.join(STEPS)}")
     cp = load(run_id, staging)
     s_ = cp.data["settings"]
+    _check_base_on_resume(cp, base_run, echo)
     cfg_off = C.load(Path(s_["ai_config"]) if s_.get("ai_config") else None)
     off_src = s_.get("offline") or OFF.requested(cfg_off, offline)
     if off_src:                                                 # session 12: before anything is asked
@@ -592,6 +670,28 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
             cp.step(s)["status"] = "pending"
         cp.save()
     return _drive(cp, stop_after, echo, sleep)
+
+
+def _check_base_on_resume(cp: Checkpoint, base_run: str | None, echo) -> None:
+    """Session 12: `resume --base-run` names the run's recorded base or is refused; a run with a base needs it still
+    promoted and not running (candidate.base_run); a base whose fingerprint changed since the start is recorded."""
+    rec = cp.data["settings"].get("base_run") or None
+    if base_run and (not rec or rec.get("run_id") != base_run):
+        raise B.Refused(f"run {cp.data['run_id']} was started " + (f"on base run {rec['run_id']}" if rec else
+                                                                   "without a base run")
+                        + f", not on {base_run}: the base of a run is fixed when it starts (start a new run with "
+                          f"--base-run {base_run})")
+    if not rec:
+        return
+    try:
+        now = CAND.base_run(Path(rec["dir"]).parent, rec["run_id"])
+    except CAND.CandidateError as e:
+        raise B.Refused(f"run {cp.data['run_id']}: {e}") from None
+    changed = now["fingerprint"] != rec.get("fingerprint")
+    cp.event("base_checked", base_run=rec["run_id"], fingerprint=now["fingerprint"], changed_since_start=changed)
+    if changed:
+        echo(f"[{cp.data['run_id']}] note: base run {rec['run_id']}'s candidate changed since this run started: sets "
+             "made against it are STALE (validated again before promotion, which then refuses)")
 
 
 def reclassify_errored_batches(batches: dict) -> list[str]:
@@ -857,7 +957,12 @@ def summary(cp: Checkpoint) -> dict:
             "waiting": [k for k, b in d["batches"].items() if b["status"] == "waiting_for_host"],
             # session 11: execution, completeness and approval are three separate records
             "completeness": {k: (d.get("completeness") or {}).get(k) for k in ("status", "reasons")},
-            "approval": (d.get("approval") or {}).get("status", "none")}
+            "approval": (d.get("approval") or {}).get("status", "none"),
+            # session 12: consecutive addenda (the run this one starts from, the addenda the state lacks)
+            **({"base_run": {k: (d["settings"]["base_run"] or {}).get(k) for k in ("run_id", "addendum", "chain", "dir")}}
+               if (d.get("settings") or {}).get("base_run") else {}),
+            **({"missing_addenda": d["settings"]["missing_addenda"]}
+               if (d.get("settings") or {}).get("missing_addenda") else {})}
 
 
 def timing_lines(cp: Checkpoint) -> list[str]:
@@ -871,10 +976,11 @@ def step_ingest(ctx: Ctx, st: dict) -> None:
     if not ctx.P["pack"].exists():
         if ctx.P["dir"].exists():
             shutil.rmtree(ctx.P["dir"])                         # an interrupted creation: made again from the copies
-        info = CAND.create(ctx.dir, Path(s["pack"]), ctx.addendum, Path(s["pdf"]), ctx.run_id)
+        info = CAND.create(ctx.dir, Path(s["pack"]), ctx.addendum, Path(s["pdf"]), ctx.run_id, base=s.get("base_run"))
         cp.data["candidate"] = {k: info[k] for k in ("dir", "pack", "pack_before", "build", "out", "out_before", "pdf_copy")}
         cp.data["inputs"].update(pdf=info["pdf"], copied=info["copied"], real_hashes=info["real_hashes"],
-                                 preceding_pack_id=info["preceding_pack_id"])
+                                 preceding_pack_id=info["preceding_pack_id"],
+                                 **({"base_run": info["base_run"]} if info.get("base_run") else {}))
         cp.save()
     res = CAND.ingest(ctx.dir)
     st.update(exit_code=res["exit_code"], units=res.get("units"), pending_review=res.get("pending_review"),
@@ -2111,9 +2217,13 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict) -> dict[str, dict]:
             why = f"not analysed: batch {v.get('batch')} {b.get('status')}" + (f" ({b.get('error')})" if b.get("error") else "")
         else:
             why = "no item proposed for it" + (f" ({v.get('reason')})" if v.get("reason") else "")
+        gap = cites_missing(ctx, p, mine)               # session 12: it cites an addendum this state does not hold
+        if gap:
+            why = f"{missing_reason(gap)} (the provision cites {', '.join(gap)}); {why}"
         out[p] = {"answered": False, "why": why,
-                  "needs_person": bool(esc) or any(it.verification_status in ("conflicting", "insufficient_evidence")
-                                                   for it in mine)}
+                  "needs_person": bool(esc) or bool(gap) or any(it.verification_status in ("conflicting",
+                                                                                          "insufficient_evidence")
+                                                                for it in mine)}
     return out
 
 
@@ -2829,7 +2939,36 @@ def step_outputs(ctx: Ctx, st: dict) -> None:
               row_statuses=dict(Counter(statuses.get(e["row"].id, default).split(":")[0]
                                         for e in res["run"]["evals"])))
     _review_not_run_note(ctx, out)
+    _base_note(ctx, out)
     ctx.say(f"  candidate outputs published to {out} (exit 0; {len(marked)} file(s) carry the banner)")
+
+
+def base_lines(ctx: "Ctx") -> list[str]:
+    """Session 12: what the run starts from, for the candidate README and the review packet."""
+    b = ctx.s.get("base_run") or None
+    gap = ctx.s.get("missing_addenda") or []
+    out = []
+    if b:
+        out.append(f"- **Base run** `{b['run_id']}`: this candidate starts from that run's candidate "
+                   f"(`{b.get('candidate')}`; the chain {' -> '.join(list(b.get('chain') or []) + [ctx.addendum])}); "
+                   f"{b['addendum']} is the previous stage of {ctx.addendum}. Its proposals are PROPOSED, not accepted: "
+                   "this run is built on unreviewed proposals. The base run was read, never written (fingerprint at "
+                   f"start {str(b.get('fingerprint'))[:16]}…).")
+    if gap:
+        out.append(f"- **Missing addenda**: {missing_reason(gap)}.")
+    return out
+
+
+def _base_note(ctx: "Ctx", out: Path) -> None:
+    """The candidate README (and CANDIDATE.md) name the base run (session 12)."""
+    lines = base_lines(ctx)
+    if not lines:
+        return
+    for name in ("README.md", "CANDIDATE.md"):
+        f = Path(out) / name
+        if f.exists():
+            f.write_text(f.read_text(encoding="utf-8").rstrip("\n") + "\n\n## Preceding state of this candidate\n\n"
+                         + "\n".join(lines) + "\n", encoding="utf-8")
 
 
 def skipped_reviews(cp: Checkpoint) -> list[tuple[str, str]]:
@@ -2923,6 +3062,9 @@ def step_diff(ctx: Ctx, st: dict) -> None:
     cmp_ = _compare_outputs(ctx.P["out_before"], ctx.P["out"], ctx.addendum)
     (rd / "outputs-before-after.json").write_text(json.dumps(cmp_, ensure_ascii=False, indent=1), encoding="utf-8")
     req = data.get("requirements") or {}
+    if ctx.s.get("base_run"):                      # session 12: out-before is the base run's candidate state
+        st["base_run"] = ctx.s["base_run"]["run_id"]
+        st["chain"] = list(ctx.s["base_run"].get("chain") or []) + [ctx.addendum]
     st.update(stage=f"{prev} -> {ctx.addendum}", new=len(req.get("new") or []), out=len(req.get("out") or []),
               changed=len(req.get("changed") or []), stale=len(data.get("stale") or []),
               a3=data.get("a3"), programme=len(data.get("programme") or []), outputs=cmp_.get("summary"))
@@ -3013,7 +3155,8 @@ def review_markdown(ctx: Ctx) -> str:
             if any((b.get("host_session") or {}).get("model_reported") for b in d["batches"].values()) else ""),
          "- status **{}**".format(*(_final_status(cp)[:1])) + (": " + _final_status(cp)[1] if _final_status(cp)[1] else ""),
          f"- usage: {d['usage']['calls']} call(s), {d['usage']['input_tokens']} input / {d['usage']['output_tokens']} output "
-         f"tokens; cost {d['usage']['cost_usd'] if d['usage']['cost_usd'] is not None else 'not computed'}", ""]
+         f"tokens; cost {d['usage']['cost_usd'] if d['usage']['cost_usd'] is not None else 'not computed'}"]
+    L += base_lines(ctx) + [""]                     # session 12: the base run, the missing addenda
     # ---- session 11: three separate records (checkpoint keys execution, completeness, approval)
     ex, comp, ap = execution(cp), completeness(cp), approval(cp)
     L += ["## Execution, completeness and approval (three separate things)", "",
@@ -3033,7 +3176,11 @@ def review_markdown(ctx: Ctx) -> str:
           f"- **Candidate** (proposed by this run, nothing accepted): `{_rel(ctx.P['dir'], rd)}/` — a copy of the curation and "
           f"configuration with {add} added, its evidence build, its op file, rows, issues, templates and outputs.",
           "- **Last validated state**: " + (f"`{_rel(ctx.P['out_before'], rd)}/` (the pre-addendum outputs built from the "
-                                             f"copied curation and the previous evidence build; {ob.get('status')}"
+                                             + (f"base run {ctx.s['base_run']['run_id']}'s candidate state "
+                                                f"({ctx.s['base_run']['addendum']}, PROPOSED, not accepted): its copied "
+                                                "curation and its evidence build; " if ctx.s.get("base_run") else
+                                                "copied curation and the previous evidence build; ")
+                                             + f"{ob.get('status')}"
                                              + (", from the cache" if (ob.get('result') or {}).get('from_cache') else "")
                                              + ")" if ob.get("status") == "done" else
                                              f"the real `out/` ({ob.get('reason') or ob.get('status')})"),

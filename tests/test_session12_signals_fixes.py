@@ -170,7 +170,8 @@ def _listed(a3):
 def test_a3_2_every_unresolved_line_carries_its_reason(page):
     listed = _listed(page["cond"])
     expect = {"I-READING-T24": ["cut off"], "I-VOL-II-T24-TENSIONS": ["UV", "VOL-II 3.3"],
-              "I-AUTO-COUNTING": ["ATTENDANCE-NOTICE", "conservative"],
+              # session 12, F5 (A3 recheck, deliberate): the clauses the rules come from, not the internal rule ids
+              "I-AUTO-COUNTING": ["ADD-01 3.1", "conservative"],
               "I-A5-attendance-notice": ["incorrectly recorded", "ADD-01 3.1"],
               "I-VOL-I-FILE-NAMES": [".pdf"]}
     for iid, words in expect.items():
@@ -185,14 +186,16 @@ def test_a3_2_every_unresolved_line_carries_its_reason(page):
 def test_a3_2_the_page_stays_one_page_at_no_smaller_font(page):
     fit = page["fit"]
     assert fit and fit["pages"] == 1
-    assert fit["min_text_pt"] >= 7.72, fit                 # the reviewer measured 7.72 pt; never smaller
+    # merged session-12 content (F1's HUMAN DECISION PENDING labels and shorts, F4's banner) made the page longer; the
+    # coordinator's requirement since the merge: every reason kept (level <= 2) at a scale >= 0.9 (test_session12_a3_fit)
+    assert page["level"] <= 2 and fit["scale"] >= 0.9 and fit["min_text_pt"] >= 7.5, fit
 
 
 def test_a3_3_abbreviations_are_written_out_and_no_pipeline_terms(page):
     t = page["text"]
     for k, v in (("WD", "Working Day"), ("PDD", "Proposal Due Date"), ("PBN", "Preferred Bidder Notification"),
                  ("LCC", "Local Content Certificate")):
-        assert f"{k} = {v}" in t, k
+        assert f"{k}: {v}" in t or f"{v} ({k})" in t, k   # glossary, or written out at its first use
     assert "Validated state" not in t and "level 2" not in t and "(level" not in t
     assert "State after ADD-02" in t
 

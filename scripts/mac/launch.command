@@ -34,7 +34,8 @@ while true; do
     6) read -r -p "addendum id (e.g. ADD-03): " ADD
        read -r -p "path to its PDF: " PDFP
        [ -f "$PDFP" ] && "$PY" -m tenderpack ai run "$ADD" --pdf "$PDFP" --offline || echo "no such file: $PDFP" ;;
-    7) if has_panel; then "$PY" -m tenderpack panel; else echo "tenderpack panel is not in this version yet."; fi ;;
+    7) if has_panel; then echo "the panel prints its address (127.0.0.1, a new token each start); Ctrl-C stops it"
+         "$PY" -m tenderpack panel --open; else echo "tenderpack panel is not in this version yet."; fi ;;
     8) bash scripts/mac/checks.sh ;;
     q|Q) exit 0 ;;
     *) echo "choose 1-8 or q" ;;

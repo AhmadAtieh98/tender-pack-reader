@@ -21,7 +21,11 @@ deltas (validated and candidate), the diff and the AI review packet agree:
                   a new dependency, register.py) is not a change either: it stays STALE in A1 until a person re-reads it,
                   and the detail says so. The detail cites the confirming op and its provision.
       NOT SETTLED nothing differs, but an unresolved provision of the stage cites the row (or it is STALE there and its
-                  reading was not re-made): never called CONFIRMED (partial.unresolved_rows gives the reasons).
+                  reading was not re-made): never called CONFIRMED (partial.unresolved_rows gives the reasons). Session
+                  12 (F5; audit A2-1, A5 N1): nor is a row that would be CONFIRMED while an issue linked to it is a
+                  person's decision not yet recorded (human_owned.pending_reasons: the evaluation's `pending`, put by
+                  attach_pending, or a confirming op whose own issue or note names such an issue or carries the HUMAN
+                  DECISION PENDING marker: the cause's `pending`): "open: I-CONCESSION, human decision pending".
       neither     no difference and no confirming cause: the row is not listed.
   A confirming label never hides words of change: an answer the deterministic reader classifies as `changes` (words
   such as 'is amended', 'instead of', or a figure the targets do not print) is not a confirmation, whatever its label.
@@ -41,6 +45,11 @@ stage the anchor moved, NOT SETTLED (with the conflict) at a later stage that ch
 obligation to the row's units is not by itself a change of the row (blind-05 false signal 2: ADD-03/Q20 on VOL-I 6.2):
 it stays listed beside the confirmation for a person to check, as before.
 
+One label (session 12, F5; audit R-f): row_label(a, b, causes, unsettled, acknowledge) gives CHANGED / CONFIRMED
+(unchanged) / NOT SETTLED / None for a row between two stages, for A2's rows-moved table and A5's replan deltas alike
+(REWORK in A5 is CHANGED here). `acknowledge` (stage, earlier stage) marks a row whose output names the Addenda issued
+(the templates' `_addenda_checks`, Form 4-A): CHANGED at every later stage, with the rule's words (acknowledgement).
+
 Issue references (session 12, blind-05 false signal 6): an issue id written in a note, in a row's `issues`, in an
 activity's `gated_by` / `linked_issues` or in a clarification's `linked_issues` must exist among the promoted issues
 (the curated register's issues and the candidate's new ones). Ids the build generates (I-AUTO-..., I-A5-..., I-OP-...,
@@ -56,7 +65,10 @@ CONFIRMING_EFFECTS = ("confirms", "interprets")
 CONFIRMED = "CONFIRMED (unchanged)"
 # relationship kinds that say the target's content depends on the source (missing_document is a blocker, not content)
 DEPENDENCY_KINDS = ("cites", "depends_on", "feeds_calculation", "limit_applies", "member_scope")
-DEPENDENCY_STATUSES = ("confirmed", "proposed")    # a `possible` link (a words: trigger at most) is not a dependency
+DEPENDENCY_STATUSES = ("confirmed",)    # session 12 (the coordinator, 19:10 UTC): only a relationship the documents
+# state (status confirmed) makes a row depend on another unit; a `proposed` link (inferred, not confirmed by a person)
+# and a `possible` link (a words trigger at most) stay in the diff's review classes and never label a row CHANGED
+# (session 10's rule, test_blind03_diff_keeps_the_three_classes_apart_from_the_direct_changes; W3b had included proposed)
 _READING_META = ("stage", "note", "pins")
 _SUBSTANCE = ("quote", "parameters", "consequence")
 
@@ -188,6 +200,12 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
                 "detail": "NOT SETTLED: " + _short("; ".join(list(unsettled or []) + conflicts), 300)}
     if not (conf or reread or recorded):
         return {"changed": False, "confirmed": False, "unsettled": False, "what": [], "causes": [], "detail": ""}
+    # session 12 (F5; audit A2-1, A5 N1): a row under an issue a person has not decided is never confirmed
+    pend = list(dict.fromkeys(list(b.get("pending") or []) + [p for c in conf for p in c.get("pending") or []]))
+    if pend:
+        return {"changed": False, "confirmed": False, "unsettled": True, "what": [], "causes": [], "pending": pend,
+                "detail": "NOT SETTLED: " + _short("; ".join(pend), 300) + (
+                    f" (the confirming op(s) {', '.join(cause_label(c) for c in conf)} do not settle it)" if conf else "")}
     parts = []
     if conf:
         parts.append("confirmed by " + "; ".join(cause_label(c) for c in conf))
@@ -200,6 +218,81 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
         parts.append("other ops on its units (the re-made reading records no change from them; a person checks): "
                      + "; ".join(cause_label(c) for c in other))
     return {"changed": False, "confirmed": True, "unsettled": False, "what": [], "causes": [], "detail": "; ".join(parts)}
+
+
+def acknowledgement_detail(ev: dict, stage: str, prev_stage: str) -> str:
+    """'Addenda to acknowledge: ADD-02 issued since ADD-01; ADD-02:cover/para3: '<the rule's words>'' for a row whose
+    output names the Addenda issued (the templates' `_addenda_checks`): the addendum's own units the row cites and the
+    quoted rule."""
+    it = (ev or {}).get("interpretation") or {}
+    units = [u.get("unit") for u in (ev or {}).get("units_detail") or [] if str(u.get("unit") or "").startswith(f"{stage}:")]
+    return (f"Addenda to acknowledge: {stage} issued since {prev_stage}" + (f"; {', '.join(units)}" if units else "")
+            + (f": '{it['quote']}'" if it.get("quote") else ""))
+
+
+LABELS = ("CHANGED", CONFIRMED, "NOT SETTLED")
+
+
+def row_label(a: dict, b: dict, causes: list[dict] | None = None, unsettled: list[str] | None = None,
+              acknowledge: tuple[str, str] | None = None) -> dict:
+    """The ONE label of a row between two stages (session 12, F5; audit R-f), for A2's rows-moved table and A5's
+    replan deltas: requirement_delta's result plus `label`: CHANGED, CONFIRMED (unchanged), NOT SETTLED or None (not
+    listed). `acknowledge` = (stage, earlier stage) for a row whose output names the Addenda issued: CHANGED, with
+    acknowledgement_detail as its cause."""
+    if acknowledge:
+        t = acknowledgement_detail(b, *acknowledge)
+        return {"changed": True, "confirmed": False, "unsettled": False, "what": ["addenda to acknowledge"],
+                "causes": [{"kind": "addenda to acknowledge", "text": t}], "detail": t, "label": "CHANGED"}
+    d = requirement_delta(a, b, causes, unsettled)
+    return dict(d, label="CHANGED" if d["changed"] else "NOT SETTLED" if d["unsettled"] else
+                CONFIRMED if d["confirmed"] else None)
+
+
+def acknowledgement_rows(templates: dict | None) -> set[str]:
+    """The rows the templates' `_addenda_checks` name (a row whose output names the Addenda issued)."""
+    return {k for spec in ((templates or {}).get("_addenda_checks") or {}).values() if isinstance(spec, dict)
+            for k in spec.get("rows") or []}
+
+
+def pending_issues(r: dict) -> dict[str, list[str]]:
+    """Issue id -> why it is a person's decision not yet recorded (human_owned.pending_reasons), for every issue of the
+    run (the curated register's and a candidate's promoted ones), with the clarification register's pending links."""
+    from . import human_owned as HO
+    links = HO.pending_links(r.get("clarifications"))
+    out = {}
+    for iid, it in (r.get("curated_issues") or {}).items():
+        why = HO.pending_reasons(iid, it, r.get("decisions"), links.get(iid))
+        if why:
+            out[iid] = why
+    return out
+
+
+def pending_note(iid: str) -> str:
+    return f"open: {iid}, human decision pending"
+
+
+def attach_pending(r: dict) -> None:
+    """Session 12 (F5; audit A2-1, A5 N1): put on every row evaluation at every stage a `pending` list ("open: <issue>,
+    human decision pending") for each issue linked to the row (its `issues`) that is a person's decision not yet
+    recorded (pending_issues). requirement_delta never calls such a row CONFIRMED. Pure data."""
+    pend = pending_issues(r)
+    r["pending_issues"] = pend
+    for e in r.get("evals") or []:
+        mine = [pending_note(i) for i in dict.fromkeys(e["row"].issues) if i in pend]
+        for ev in e["stages"].values():
+            if isinstance(ev, dict):
+                ev["pending"] = list(mine)
+
+
+def op_pending(op, pend: dict) -> list[str]:
+    """For a confirming op's cause: the pending issues its own issue or note names, and the op itself when its words
+    carry the HUMAN DECISION PENDING marker."""
+    from .human_owned import HUMAN_DECISION_PENDING
+    text = f"{getattr(op, 'issue', '') or ''} {getattr(op, 'note', '') or ''}"
+    out = [pending_note(i) for i in issue_refs(text) if i in (pend or {})]
+    if HUMAN_DECISION_PENDING in text:
+        out.append(pending_note(getattr(op, "id", "?")))
+    return out
 
 
 # ---------------------------------------------------------------------------------------------- dependencies (F2)
@@ -233,7 +326,28 @@ def _how(x: dict, y: dict) -> str:
                          if cx.get(k) != cy.get(k)) + (f" {unit}" if unit else "")
     if x.get("status") != y.get("status"):
         return f"{x.get('status')} -> {y.get('status')}"
-    return f"'{_short(x.get('text'), 70)}' -> '{_short(y.get('text'), 70)}'"
+    # session 12 (F5; audit A2-8): the words replaced, as the A2 change table prints them (two cuts of a long text can
+    # read the same: 'SAR 5,000,000' -> 'SAR 2,500,000' was hidden behind the clause's first words)
+    return word_diff(x.get("text"), y.get("text")) or f"'{_short(x.get('text'), 70)}' -> '{_short(y.get('text'), 70)}'"
+
+
+def word_diff(old: str, new: str) -> str:
+    """The words that differ between two texts: 'a' -> 'b'; + 'added'; - 'removed' (stage2's A2 change table too)."""
+    import difflib
+    a, b = (old or "").split(), (new or "").split()
+    groups: list[list[int]] = []                  # [i1, i2, j1, j2]: changes up to two equal words apart are one phrase
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
+        if tag == "equal":
+            continue
+        if groups and i1 - groups[-1][1] <= 2 and j1 - groups[-1][3] <= 2:
+            groups[-1][1], groups[-1][3] = i2, j2
+        else:
+            groups.append([i1, i2, j1, j2])
+    out = []
+    for i1, i2, j1, j2 in groups:
+        o, n = " ".join(a[i1:i2]), " ".join(b[j1:j2])
+        out.append(f"'{o}' -> '{n}'" if o and n else f"+ '{n}'" if n else f"- '{o}'")
+    return "; ".join(out)
 
 
 def dependency_changes(a: dict, b: dict) -> list[dict]:

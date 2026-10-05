@@ -1,0 +1,2306 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T173632Z-8291",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:2.1",
+  "ADD-03:2.2",
+  "ADD-03:2.3",
+  "ADD-03:2.4",
+  "ADD-03:2.5",
+  "ADD-03:2.6",
+  "ADD-03:2.7"
+ ],
+ "started": "2026-10-05T17:36:32.899528+00:00",
+ "elapsed_s": 491.5,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01TfJLM9hTr7p5Sj99YQLJGD",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:1.3",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EzBwD73Q5T5u843CCrG9HK",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Table 1-3 tie-in points TP-1 TP-2 shutdown window maximum transfer flow"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01DT69n1H26gSQ9ifq28QLax",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:2.2"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01W46STAoDZYq4ne5M7smkhY",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:T1-3"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01KZ6PRfVqc81BNufiTMUkUS",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Kt458JakhkfWUh6svfQAnC",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:cover/para3"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01UQaTdFyzujb6R8CkhzT2yS",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:AppB/para1"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01AiRxtrc4uRAV6u8rcEYc7A",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:Q20"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01CX28DgbksnSHHuPHrde6Po",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image"
+   },
+   "ok": true,
+   "images": 2
+  },
+  {
+   "id": "toolu_01LTtKu4AnwiHmFP6n39wWzY",
+   "name": "get_region",
+   "arguments": {
+    "region_id": "ADD-03-p4-r1"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01H9EwGzWWYeZsGfCrAFamMX",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Proposal Due Date Envelope A contents Technical Proposal construction methodology",
+    "limit": 10
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Rf4jjWtPJie4qpkBHzcbPv",
+   "name": "compare_state",
+   "arguments": {
+    "from_stage": "ADD-02",
+    "to_stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01MzjRUafobfKLorK9cJYFnP",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Proposal Due Date shall be",
+    "limit": 6,
+    "docs": [
+     "VOL-I",
+     "ADD-01",
+     "ADD-02",
+     "ADD-03"
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01NFveDEYzSNNdUWVZ2M5jr4",
+   "name": "simulate_programme",
+   "arguments": {
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01BRHm5nxeKPd6TjSShFSix9",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 8,
+     "unit": "working_day",
+     "direction": "before",
+     "purpose": "ADD-03:2.5 Shutdown Acceptance Letter application deadline: not later than eight (8) Working Days before the Proposal Due Date (PDD at ADD-02 = 2026-11-26)"
+    }
+   },
+   "ok": false,
+   "images": 0
+  },
+  {
+   "id": "toolu_01E49GbhP1FXirsi6HtxpYzR",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Addendum No. 3 date of issue",
+    "docs": [
+     "ADD-03"
+    ],
+    "limit": 5
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_011L8JFKojv89Y58qxsZhFe3",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 8,
+     "unit": "working_day",
+     "direction": "before",
+     "purpose": "deadline"
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_016haCFQGYcmrGktFPwWANyL",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:AppA/para1"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01HNk5qhFStpbqXs3MSjzv6h",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.1",
+      "provision": "ADD-03:2.1",
+      "type": "append_text",
+      "target": "VOL-II:1.3",
+      "old_resolved": "quoted",
+      "new": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference."
+     },
+     {
+      "id": "ADD-03/2.2",
+      "provision": "ADD-03:2.2",
+      "type": "annotate",
+      "target": "ADD-03:T1-3",
+      "effect": "interprets",
+      "precedence": {
+       "governs": "ADD-03:p4-image",
+       "over": [
+        "ADD-03:T1-3"
+       ],
+       "words": "The Arabic text governs."
+      },
+      "note": "Table 1-3 is issued in Arabic (Appendix A, image ADD-03:p4-image); the English at Appendix B (ADD-03:T1-3) is for convenience only."
+     },
+     {
+      "id": "ADD-03/2.3",
+      "provision": "ADD-03:2.3",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "effect": "adds_obligation",
+      "note": "Bidder shall elect, per tie-in point, method (a) temporary over-pumping or (b) interruption within the permitted shutdown window in Table 1-3, and state the election in the construction methodology section of the Technical Proposal."
+     },
+     {
+      "id": "ADD-03/2.5",
+      "provision": "ADD-03:2.5",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "effect": "adds_obligation",
+      "note": "If method (b) is elected: Shutdown Acceptance Letter from the Network Operator with Envelope A; application not later than eight (8) Working Days before the Proposal Due Date."
+     },
+     {
+      "id": "ADD-03/2.6",
+      "provision": "ADD-03:2.6",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "effect": "interprets",
+      "note": "Method (b) without a Shutdown Acceptance Letter in Envelope A is deemed an election of method (a) for that tie-in point."
+     },
+     {
+      "id": "ADD-03/2.7",
+      "provision": "ADD-03:2.7",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "effect": "adds_obligation",
+      "note": "A Proposal providing for an interruption of flow longer than the maximum shutdown duration in Table 1-3 for that tie-in point shall be rejected."
+     }
+    ],
+    "dispositions": []
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_019ns8AoNWRuz7Pj9cRnTJec",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp2-duration"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01JT2d5wf5fucf8AbfQTue9E",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/note1"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Ry2yuniooLBzbXEpsWS756",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/th-duration"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01PPkqicH9tYdRZbb19s2kHo",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-duration"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01TzJVykC1FbSDKHpkwAa4Qg",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.2",
+      "provision": "ADD-03:2.2",
+      "type": "annotate",
+      "target": "ADD-03:T1-3",
+      "targets": [
+       "ADD-03:T1-3",
+       "ADD-03:p4-image"
+      ],
+      "effect": "interprets",
+      "precedence": {
+       "governs": "ADD-03:p4-image",
+       "over": [
+        "ADD-03:T1-3"
+       ],
+       "words": "The Arabic text governs."
+      },
+      "note": "Table 1-3 is issued in Arabic (Appendix A, image ADD-03:p4-image); the English at Appendix B (ADD-03:T1-3) is for convenience only."
+     },
+     {
+      "id": "ADD-03/2.3",
+      "provision": "ADD-03:2.3",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "targets": [
+       "VOL-II:1.3"
+      ],
+      "effect": "adds_obligation",
+      "note": "x"
+     },
+     {
+      "id": "ADD-03/2.7",
+      "provision": "ADD-03:2.7",
+      "type": "annotate",
+      "target": "VOL-II:1.3",
+      "targets": [
+       "VOL-II:1.3"
+      ],
+      "effect": "adds_obligation",
+      "note": "x"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01KwuXfwFvRVUhBgNrw4z73X",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.3",
+      "provision": "ADD-03:2.3",
+      "type": "annotate",
+      "target": "ADD-03:p4-image",
+      "targets": [
+       "ADD-03:p4-image",
+       "ADD-03:T1-3"
+      ],
+      "effect": "adds_obligation",
+      "note": "x"
+     },
+     {
+      "id": "ADD-03/2.7",
+      "provision": "ADD-03:2.7",
+      "type": "annotate",
+      "target": "ADD-03:p4-image",
+      "targets": [
+       "ADD-03:p4-image",
+       "ADD-03:T1-3"
+      ],
+      "effect": "adds_obligation",
+      "note": "x"
+     },
+     {
+      "id": "ADD-03/2.5",
+      "provision": "ADD-03:2.5",
+      "type": "annotate",
+      "target": "ADD-03:T1-3",
+      "targets": [
+       "ADD-03:T1-3"
+      ],
+      "effect": "adds_obligation",
+      "note": "x"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01A7WTkFC1ge2JRCtHZMFgch",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-window"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_017Y34nxGxEH5E3X5dAWtL6E",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp2-window"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01ApZiQeKqY1QvJLCxNFKdE8",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/note3"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EYFg8CEz7g4KSB5M43eJzC",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "F1",
+       "kind": "fact",
+       "text": "ADD-03:2.2 states that Table 1-3 is issued in Arabic, the Arabic text governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "F2",
+       "kind": "fact",
+       "text": "For TP-2 the maximum shutdown duration differs between versions: the Arabic Appendix A cell (pending reading) prints ٤ (4); the English Appendix B row prints 6. For TP-1 both print 6 (Arabic ٦).",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦"
+        }
+       ]
+      },
+      {
+       "id": "F3",
+       "kind": "fact",
+       "text": "Arabic note 1 of Table 1-3 also excludes shutdowns during the Eid al-Fitr and Eid al-Adha holidays; English note (1) mentions Ramadan only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/note1",
+         "page": 4,
+         "kind": "reading",
+         "words": "١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/note(1)",
+         "page": 5,
+         "kind": "span",
+         "words": "No shutdown is permitted during the holy month of Ramadan."
+        }
+       ]
+      },
+      {
+       "id": "F4",
+       "kind": "fact",
+       "text": "Table 1-3 (English Appendix B, and the Arabic image which has the same six columns) has columns Tie-in point, Location, Existing sewer diameter, Permitted shutdown window, Maximum shutdown duration and Advance notice; no column or note states a maximum transfer flow.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3",
+         "page": 5,
+         "kind": "span",
+         "words": "Tie-in point | Location | Existing sewer diameter (mm) | Permitted shutdown window | Maximum shutdown duration (hours) | Advance notice"
+        }
+       ]
+      },
+      {
+       "id": "F5",
+       "kind": "fact",
+       "text": "The cover paragraph describes the acceptance as the Authority's and the application period as within eight Working Days of the date of the Addendum; Clause 2.5 says a letter from the Network Operator, applied for not later than eight Working Days before the Proposal Due Date.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "to obtain the Authority's acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date."
+        }
+       ]
+      },
+      {
+       "id": "F6",
+       "kind": "fact",
+       "text": "calculate(relative_date, anchor 2026-11-26 = PDD at ADD-02, 8 working days before, purpose deadline) returned 2026-11-16 (stated_date_excluded; readings_differ false).",
+       "evidence": []
+      },
+      {
+       "id": "A1",
+       "kind": "assumption",
+       "text": "The Appendix A reading blocks are status 'pending'; I viewed the crop (sha256 f827ab1b...) and it matches them (TP-2 duration cell ٤, windows من ٢٣:٠٠ إلى ٠٥:٠٠ and من ٠١:٠٠ إلى ٠٥:٠٠). This holds only until a person approves the reading."
+      },
+      {
+       "id": "I1",
+       "kind": "interpretation",
+       "text": "Under ADD-03:2.2 the governing maximum shutdown duration for TP-2, which ADD-03:2.7 uses as the threshold for rejection, is 4 hours (Arabic), not the 6 hours in the English convenience translation. This is consistent with the TP-2 window 01:00 to 05:00 (4 hours)."
+      },
+      {
+       "id": "I2",
+       "kind": "interpretation",
+       "text": "ADD-03:2.3 and 2.7 do not change the text of VOL-II:1.3. They add bid-stage obligations or rejection rules that operate on Table 1-3, so they are annotations on Table 1-3 (both versions) and need A1/A3 register rows (C46)."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/2.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-II:1.3",
+       "payload": {
+        "id": "ADD-03/2.1",
+        "provision": "ADD-03:2.1",
+        "type": "append_text",
+        "target": "VOL-II:1.3",
+        "old_resolved": "quoted",
+        "new": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference.",
+        "origin": "assistant"
+       },
+       "previous_value": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume II Clause 1.3 is amended by adding at the end:"
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:1.3"
+       ],
+       "statements": [],
+       "model_rationale": "The provision prints the append, and simulate_amendment reports it valid (C21, C22, C24). The incorporated Table 1-3 is the Arabic image at Appendix A. I viewed the crop: a Network Operator letter No. ٣١٢/٢٠٢٦ with a 6-column table, rows TP-1 and TP-2."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_011QFHcFW115cY8bDSp6oUUE",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "F1",
+       "kind": "fact",
+       "text": "ADD-03:2.2 states that Table 1-3 is issued in Arabic, the Arabic text governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "F2",
+       "kind": "fact",
+       "text": "For TP-2 the maximum shutdown duration differs between versions: the Arabic Appendix A cell (pending reading) prints ٤ (4); the English Appendix B row prints 6. For TP-1 both print 6 (Arabic ٦).",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦"
+        }
+       ]
+      },
+      {
+       "id": "F3",
+       "kind": "fact",
+       "text": "Arabic note 1 of Table 1-3 also excludes shutdowns during the Eid al-Fitr and Eid al-Adha holidays; English note (1) mentions Ramadan only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/note1",
+         "page": 4,
+         "kind": "reading",
+         "words": "١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/note(1)",
+         "page": 5,
+         "kind": "span",
+         "words": "No shutdown is permitted during the holy month of Ramadan."
+        }
+       ]
+      },
+      {
+       "id": "F4",
+       "kind": "fact",
+       "text": "Table 1-3 (English Appendix B, and the Arabic image which has the same six columns) has columns Tie-in point, Location, Existing sewer diameter, Permitted shutdown window, Maximum shutdown duration and Advance notice; no column or note states a maximum transfer flow.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3",
+         "page": 5,
+         "kind": "span",
+         "words": "Tie-in point | Location | Existing sewer diameter (mm) | Permitted shutdown window | Maximum shutdown duration (hours) | Advance notice"
+        }
+       ]
+      },
+      {
+       "id": "F5",
+       "kind": "fact",
+       "text": "The cover paragraph describes the acceptance as the Authority's and the application period as within eight Working Days of the date of the Addendum; Clause 2.5 says a letter from the Network Operator, applied for not later than eight Working Days before the Proposal Due Date.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "to obtain the Authority's acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date."
+        }
+       ]
+      },
+      {
+       "id": "F6",
+       "kind": "fact",
+       "text": "calculate(relative_date, anchor 2026-11-26 = PDD at ADD-02, 8 working days before, purpose deadline) returned 2026-11-16 (stated_date_excluded; readings_differ false).",
+       "evidence": []
+      },
+      {
+       "id": "A1",
+       "kind": "assumption",
+       "text": "The Appendix A reading blocks are status 'pending'; I viewed the crop (sha256 f827ab1b...) and it matches them (TP-2 duration cell ٤, windows من ٢٣:٠٠ إلى ٠٥:٠٠ and من ٠١:٠٠ إلى ٠٥:٠٠). This holds only until a person approves the reading."
+      },
+      {
+       "id": "I1",
+       "kind": "interpretation",
+       "text": "Under ADD-03:2.2 the governing maximum shutdown duration for TP-2, which ADD-03:2.7 uses as the threshold for rejection, is 4 hours (Arabic), not the 6 hours in the English convenience translation. This is consistent with the TP-2 window 01:00 to 05:00 (4 hours)."
+      },
+      {
+       "id": "I2",
+       "kind": "interpretation",
+       "text": "ADD-03:2.3 and 2.7 do not change the text of VOL-II:1.3. They add bid-stage obligations or rejection rules that operate on Table 1-3, so they are annotations on Table 1-3 (both versions) and need A1/A3 register rows (C46)."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/2.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-II:1.3",
+       "payload": {
+        "id": "ADD-03/2.1",
+        "provision": "ADD-03:2.1",
+        "type": "append_text",
+        "target": "VOL-II:1.3",
+        "old_resolved": "quoted",
+        "new": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference.",
+        "origin": "assistant"
+       },
+       "previous_value": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume II Clause 1.3 is amended by adding at the end:"
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:1.3"
+       ],
+       "statements": [],
+       "model_rationale": "The provision prints the append, and simulate_amendment reports it valid (C21, C22, C24). The incorporated Table 1-3 is the Arabic image at Appendix A. I viewed the crop: a Network Operator letter No. ٣١٢/٢٠٢٦ with a 6-column table, rows TP-1 and TP-2."
+      },
+      {
+       "id": "ADD-03/2.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.2",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "id": "ADD-03/2.2",
+        "provision": "ADD-03:2.2",
+        "type": "annotate",
+        "target": "ADD-03:T1-3",
+        "targets": [
+         "ADD-03:T1-3",
+         "ADD-03:p4-image"
+        ],
+        "effect": "interprets",
+        "precedence": {
+         "governs": "ADD-03:p4-image",
+         "over": [
+          "ADD-03:T1-3"
+         ],
+         "words": "The Arabic text governs."
+        },
+        "note": "Table 1-3 is issued in Arabic (Appendix A, image ADD-03:p4-image), which governs; the English translation at Appendix B (ADD-03:T1-3) is for convenience only. The versions differ: TP-2 maximum shutdown duration (Arabic ٤ vs English 6), and Arabic note 1 also excludes the Eid al-Fitr and Eid al-Adha holidays.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image",
+         "page": 4,
+         "kind": "reading",
+         "words": "Table 1-3 (image, Arabic with English labels): Tie-in Points and Flow Shutdown Conditions, Network Operator letter No. 312/2026",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:AppB/para1",
+         "page": 5,
+         "kind": "span",
+         "words": "This translation is provided for convenience only. The Arabic text of Table 1-3 at Appendix A governs."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:p4-image",
+        "ADD-03:T1-3",
+        "ADD-03:p4-image/tp2-duration",
+        "ADD-03:p4-image/note1"
+       ],
+       "conflicts": [
+        "ADD-03:T1-3/tp-2",
+        "ADD-03:T1-3/note(1)"
+       ],
+       "statements": [
+        "F1",
+        "F2",
+        "F3",
+        "A1"
+       ],
+       "model_rationale": "The precedence annotate is valid in the dry run (C22: the Arabic text named is ADD-03:p4-image). I looked at the Appendix A crop. It is in Arabic script with an English letterhead line, and the table title is جدول ١-٣. The TP-2 row's maximum shutdown duration cell (أقصى مدّة للإيقاف (ساعة)) shows ٤, where English Appendix B shows 6. Arabic note ١ adds the two Eid holidays, which English note (1) omits. The precedence matters for both differences."
+      },
+      {
+       "id": "ADD-03/2.3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.3",
+       "target": "ADD-03:p4-image",
+       "payload": {
+        "id": "ADD-03/2.3",
+        "provision": "ADD-03:2.3",
+        "type": "annotate",
+        "target": "ADD-03:p4-image",
+        "targets": [
+         "ADD-03:p4-image",
+         "ADD-03:T1-3"
+        ],
+        "effect": "adds_obligation",
+        "note": "For each tie-in point the Bidder shall elect (a) temporary over-pumping without interruption of flow, or (b) interruption of flow within the permitted shutdown window in Table 1-3 (Arabic governs: TP-1 من ٢٣:٠٠ إلى ٠٥:٠٠; TP-2 من ٠١:٠٠ إلى ٠٥:٠٠), and state the election in the construction methodology section of the Technical Proposal. Needs an A1 row (C46).",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.3",
+         "page": 1,
+         "kind": "span",
+         "words": "The Bidder shall elect, for each tie-in point, one of the following methods of maintaining flows during the connection works, and shall state its election in the construction methodology section of the Technical Proposal"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.3",
+         "page": 1,
+         "kind": "span",
+         "words": "(b) interruption of flow within the permitted shutdown window stated for that tie-in point in Table 1-3."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٢٣:٠٠ إلى ٠٥:٠٠"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٠١:٠٠ إلى ٠٥:٠٠"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:p4-image/tp1-window",
+        "ADD-03:p4-image/tp2-window",
+        "ADD-03/2.2"
+       ],
+       "statements": [
+        "F1",
+        "A1",
+        "I2"
+       ],
+       "missing_information": [
+        "An A1 register row for this obligation (C46 need reported by simulate_amendment)."
+       ],
+       "model_rationale": "I viewed the crop. The permitted shutdown window column (فترة الإيقاف المسموح بها) shows من ٢٣:٠٠ إلى ٠٥:٠٠ for TP-1 and من ٠١:٠٠ إلى ٠٥:٠٠ for TP-2. Both agree with English Appendix B. The op adds an obligation and does not change VOL-II:1.3's text. The annotate is valid in the dry run."
+      },
+      {
+       "id": "ADD-03/2.4",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.4",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "why": "Insufficient evidence. ADD-03:2.4 (and Q20) require the method (a) temporary works to pass 'the maximum transfer flow stated for that tie-in point in Table 1-3'. Table 1-3 states no maximum transfer flow in either the governing Arabic version (Appendix A image) or the English translation. Its six columns are tie-in point, location, existing sewer diameter, permitted shutdown window, maximum shutdown duration and advance notice, and the notes cover Ramadan/Eid, one shutdown, portal submission and Riyadh time. The design value the obligation depends on cannot be established from the pack.",
+        "what_is_unsupported": "An obligation whose governing quantity is cross-referenced to a table that does not contain it. No op can record a value that is not printed, and an annotate would hide the gap. The Authority must state the maximum transfer flow per tie-in point (clarification proposed)."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.4",
+         "page": 1,
+         "kind": "span",
+         "words": "The temporary works for method (a) shall be capable of passing, at each tie-in point, the maximum transfer flow stated for that tie-in point in Table 1-3."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3",
+         "page": 5,
+         "kind": "span",
+         "words": "Tie-in point | Location | Existing sewer diameter (mm) | Permitted shutdown window | Maximum shutdown duration (hours) | Advance notice"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/th-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "أقصى مدّة للإيقاف (ساعة)"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:Q20",
+         "page": 3,
+         "kind": "span",
+         "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:T1-3",
+        "ADD-03:p4-image",
+        "ADD-03:Q20"
+       ],
+       "missing_information": [
+        "The maximum transfer flow for TP-1 and for TP-2 (with units)."
+       ],
+       "statements": [
+        "F4",
+        "A1"
+       ],
+       "model_rationale": "I viewed the Appendix A crop. Its six column headers are نقطة الربط, الموقع, قطر الخط القائم (مم), فترة الإيقاف المسموح بها, أقصى مدّة للإيقاف (ساعة) and مهلة الإشعار المسبق. None is a flow (no m3/h, m3/s or l/s), and the four notes state none. The pipe diameter (١٠٠٠ / ٨٠٠ mm) is not a flow, and I will not derive one."
+      },
+      {
+       "id": "ADD-03/2.4-clarification",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "clarification",
+       "provision": "ADD-03:2.4",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "gap": "ADD-03:2.4 and the response to Q20 refer to the maximum transfer flow stated for each tie-in point in Table 1-3, but Table 1-3 (Arabic Appendix A and English Appendix B) states no transfer flow.",
+        "proposed_question": "Addendum No. 3 Section 2.4 and the response to clarification 20 require the method (a) temporary works to pass the 'maximum transfer flow stated for that tie-in point in Table 1-3'. Table 1-3 (Appendix A and Appendix B) does not state a transfer flow. Please state the maximum transfer flow, with units, for TP-1 and for TP-2.",
+        "practical_impact": "The over-pumping design and its cost cannot be fixed for method (a). Method (a) is also the default under 2.6 when no Shutdown Acceptance Letter is submitted.",
+        "interim_handling": "Carry the over-pumping capacity as an open item; do not derive a flow from pipe diameter.",
+        "decision_owner": "Bid manager"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.4",
+         "page": 1,
+         "kind": "span",
+         "words": "the maximum transfer flow stated for that tie-in point in Table 1-3"
+        }
+       ],
+       "statements": [
+        "F4"
+       ]
+      },
+      {
+       "id": "ADD-03/2.5",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.5",
+       "payload": {
+        "why": "ADD-03:2.5 adds a conditional Envelope A submission: a Shutdown Acceptance Letter from the Network Operator where method (b) is elected, applied for not later than eight (8) Working Days before the Proposal Due Date. calculate gives 2026-11-16 against the PDD in force at ADD-02 (2026-11-26). The addendum's own cover paragraph describes the same requirement differently: 'the Authority's acceptance', with applications 'within eight (8) Working Days of the date of this Addendum'. Who accepts and which deadline applies cannot be settled from the evidence. Separately, 2.5 cites no existing unit (it does not name Table 1-3 or any Volume clause), so no annotate target is printed and I will not invent one.",
+        "what_is_unsupported": "A new conditional bid-stage obligation and deadline with no cited target unit, plus an internal conflict between the operative clause and the cover summary on the accepting body and the deadline anchor. This needs a person's decision and an A1 row with a deadline rule (PDD minus 8 WD), not a guessed op."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Where the Bidder elects method (b) for a tie-in point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter)."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date. The Network Operator has undertaken to respond within five (5) Working Days of receipt of a complete application."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "requires a Bidder that elects to interrupt flows at a tie-in point to obtain the Authority's acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/note3",
+         "page": 4,
+         "kind": "reading",
+         "words": "٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:cover/para3",
+        "VOL-I:6.1"
+       ],
+       "conflicts": [
+        "ADD-03:cover/para3"
+       ],
+       "missing_information": [
+        "Which body accepts the shutdown programme (Network Operator per 2.5, or Authority per cover).",
+        "Which deadline anchor applies (8 WD before PDD per 2.5, or within 8 WD of the Addendum date per cover). The ADD-03 issue date was not found in the units read."
+       ],
+       "statements": [
+        "F5",
+        "F6",
+        "A1"
+       ],
+       "model_rationale": "I viewed the crop. Arabic note ٣ says shutdown requests go through the Network Operator's electronic portal with the proposed shutdown programme and a contingency plan, which bears on how the application is made. Pattern drafter said 'unresolved'. I escalate rather than annotate Table 1-3 because 2.5 does not cite the Table. The dry run accepted that target, but the words do not print it."
+      },
+      {
+       "id": "ADD-03/2.6",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.6",
+       "payload": {
+        "why": "ADD-03:2.6 is a deeming rule: method (b) without a Shutdown Acceptance Letter in Envelope A is deemed an election of method (a). It changes the consequence of the obligations in 2.3 and 2.5, both of which are new in this Addendum, and cites no existing unit. Its practical effect also depends on 2.4, whose design flow is not stated (see ADD-03/2.4), and on the 2.5 conflict. No op type expresses a deemed election between two new provisions without inventing a target.",
+        "what_is_unsupported": "A deeming consequence linking two new addendum obligations, with no printed target unit. It needs register treatment (A1/A3 consequence on the 2.3 and 2.5 rows) by a person."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.6",
+         "page": 1,
+         "kind": "span",
+         "words": "A Bidder that elects method (b) for a tie-in point but does not submit a Shutdown Acceptance Letter for that tie-in point with Envelope A shall be deemed to have elected method (a) for that tie-in point."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.3",
+        "ADD-03:2.4",
+        "ADD-03:2.5"
+       ],
+       "statements": [
+        "F4",
+        "F5"
+       ],
+       "model_rationale": "Not no_effect: 'shall be deemed' changes the consequence. Escalated rather than guessed."
+      },
+      {
+       "id": "ADD-03/2.7",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.7",
+       "target": "ADD-03:p4-image",
+       "payload": {
+        "id": "ADD-03/2.7",
+        "provision": "ADD-03:2.7",
+        "type": "annotate",
+        "target": "ADD-03:p4-image",
+        "targets": [
+         "ADD-03:p4-image",
+         "ADD-03:T1-3"
+        ],
+        "effect": "adds_obligation",
+        "note": "Rejection: a Proposal providing for an interruption of flow at a tie-in point longer than the maximum shutdown duration in Table 1-3 shall be rejected. Under 2.2 the governing Arabic values are TP-1 ٦ (6 h) and TP-2 ٤ (4 h); the English translation shows 6 h for TP-2. Needs A1 and A3 rows (C46).",
+        "origin": "assistant"
+       },
+       "previous_value": "6",
+       "proposed_value": "4",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.7",
+         "page": 1,
+         "kind": "span",
+         "words": "A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ],
+       "dependencies": [
+        "ADD-03/2.2",
+        "ADD-03:p4-image/tp2-duration",
+        "ADD-03:p4-image/tp1-duration"
+       ],
+       "conflicts": [
+        "ADD-03:T1-3/tp-2"
+       ],
+       "statements": [
+        "F1",
+        "F2",
+        "A1",
+        "I1",
+        "I2"
+       ],
+       "missing_information": [
+        "A1/A3 register rows for the rejection consequence (C46).",
+        "Approval of the pending Appendix A reading."
+       ],
+       "model_rationale": "I viewed the crop. In the Arabic table, the TP-2 row's cell under أقصى مدّة للإيقاف (ساعة) is the Arabic-Indic digit ٤ (4), while TP-1 is ٦ (6). English Appendix B prints 6 for both. Because the Arabic governs (2.2), a TP-2 shutdown of more than 4 h leads to rejection, and a bid relying on the English 6 h would be rejected. previous_value/proposed_value show English vs governing Arabic for TP-2. This depends on interpretation I1 and stays pending until a person confirms."
+      },
+      {
+       "id": "ADD-03/2.7-issue",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "issue",
+       "provision": "ADD-03:2.7",
+       "target": "ADD-03:T1-3/tp-2",
+       "payload": {
+        "text": "The governing Arabic Table 1-3 gives TP-2 a maximum shutdown duration of ٤ (4) hours; the English convenience translation says 6. Under ADD-03:2.7 a Proposal exceeding the governing value is rejected. Arabic note 1 also excludes the Eid al-Fitr and Eid al-Adha holidays, which English note (1) omits. Shutdown programmes must follow the Arabic.",
+        "owner": "Bid manager",
+        "short": "TP-2 shutdown 4 h (Arabic) vs 6 h (English)",
+        "theme": "tie-ins"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ],
+       "statements": [
+        "F2",
+        "F3",
+        "I1"
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01VMQEujtKTucLK2G3LeeKKc",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (opus)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "F1",
+       "kind": "fact",
+       "text": "ADD-03:2.2 states that Table 1-3 is issued in Arabic, the Arabic text governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "F2",
+       "kind": "fact",
+       "text": "For TP-2 the maximum shutdown duration differs between versions: the Arabic Appendix A cell (pending reading) prints ٤ (4); the English Appendix B row prints 6. For TP-1 both print 6 (Arabic ٦).",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦"
+        }
+       ]
+      },
+      {
+       "id": "F3",
+       "kind": "fact",
+       "text": "Arabic note 1 of Table 1-3 also excludes shutdowns during the Eid al-Fitr and Eid al-Adha holidays; English note (1) mentions Ramadan only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/note1",
+         "page": 4,
+         "kind": "reading",
+         "words": "١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/note(1)",
+         "page": 5,
+         "kind": "span",
+         "words": "No shutdown is permitted during the holy month of Ramadan."
+        }
+       ]
+      },
+      {
+       "id": "F4",
+       "kind": "fact",
+       "text": "Table 1-3 (English Appendix B, and the Arabic image which has the same six columns) has columns Tie-in point, Location, Existing sewer diameter, Permitted shutdown window, Maximum shutdown duration and Advance notice; no column or note states a maximum transfer flow.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3",
+         "page": 5,
+         "kind": "span",
+         "words": "Tie-in point | Location | Existing sewer diameter (mm) | Permitted shutdown window | Maximum shutdown duration (hours) | Advance notice"
+        }
+       ]
+      },
+      {
+       "id": "F5",
+       "kind": "fact",
+       "text": "The cover paragraph describes the acceptance as the Authority's and the application period as within eight Working Days of the date of the Addendum; Clause 2.5 says a letter from the Network Operator, applied for not later than eight Working Days before the Proposal Due Date.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "to obtain the Authority's acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date."
+        }
+       ]
+      },
+      {
+       "id": "A2",
+       "kind": "assumption",
+       "text": "Assuming the PDD stays 2026-11-26 (the PDD in force at ADD-02 per simulate_programme), calculate(relative_date, 8 working days before, purpose deadline) gives an application deadline of 2026-11-16 (reading stated_date_excluded; readings_differ false)."
+      },
+      {
+       "id": "A1",
+       "kind": "assumption",
+       "text": "The Appendix A reading blocks are status 'pending'; I viewed the crop (sha256 f827ab1b...) and it matches them (TP-2 duration cell ٤, windows من ٢٣:٠٠ إلى ٠٥:٠٠ and من ٠١:٠٠ إلى ٠٥:٠٠). This holds only until a person approves the reading."
+      },
+      {
+       "id": "I1",
+       "kind": "interpretation",
+       "text": "Under ADD-03:2.2 the governing maximum shutdown duration for TP-2, which ADD-03:2.7 uses as the threshold for rejection, is 4 hours (Arabic), not the 6 hours in the English convenience translation. This is consistent with the TP-2 window 01:00 to 05:00 (4 hours)."
+      },
+      {
+       "id": "I2",
+       "kind": "interpretation",
+       "text": "ADD-03:2.3 and 2.7 do not change the text of VOL-II:1.3. They add bid-stage obligations or rejection rules that operate on Table 1-3, so they are annotations on Table 1-3 (both versions) and need A1/A3 register rows (C46)."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/2.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-II:1.3",
+       "payload": {
+        "id": "ADD-03/2.1",
+        "provision": "ADD-03:2.1",
+        "type": "append_text",
+        "target": "VOL-II:1.3",
+        "old_resolved": "quoted",
+        "new": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference.",
+        "origin": "assistant"
+       },
+       "previous_value": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume II Clause 1.3 is amended by adding at the end:"
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:1.3"
+       ],
+       "statements": [],
+       "model_rationale": "The provision prints the append, and simulate_amendment reports it valid (C21, C22, C24). The incorporated Table 1-3 is the Arabic image at Appendix A. I viewed the crop: a Network Operator letter No. ٣١٢/٢٠٢٦ with a 6-column table, rows TP-1 and TP-2."
+      },
+      {
+       "id": "ADD-03/2.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.2",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "id": "ADD-03/2.2",
+        "provision": "ADD-03:2.2",
+        "type": "annotate",
+        "target": "ADD-03:T1-3",
+        "targets": [
+         "ADD-03:T1-3",
+         "ADD-03:p4-image"
+        ],
+        "effect": "interprets",
+        "precedence": {
+         "governs": "ADD-03:p4-image",
+         "over": [
+          "ADD-03:T1-3"
+         ],
+         "words": "The Arabic text governs."
+        },
+        "note": "Table 1-3 is issued in Arabic (Appendix A, image ADD-03:p4-image), which governs; the English translation at Appendix B (ADD-03:T1-3) is for convenience only. The versions differ: TP-2 maximum shutdown duration (Arabic ٤ vs English 6), and Arabic note 1 also excludes the Eid al-Fitr and Eid al-Adha holidays.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image",
+         "page": 4,
+         "kind": "reading",
+         "words": "Table 1-3 (image, Arabic with English labels): Tie-in Points and Flow Shutdown Conditions, Network Operator letter No. 312/2026",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:AppB/para1",
+         "page": 5,
+         "kind": "span",
+         "words": "This translation is provided for convenience only. The Arabic text of Table 1-3 at Appendix A governs."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:p4-image",
+        "ADD-03:T1-3",
+        "ADD-03:p4-image/tp2-duration",
+        "ADD-03:p4-image/note1"
+       ],
+       "conflicts": [
+        "ADD-03:T1-3/tp-2",
+        "ADD-03:T1-3/note(1)"
+       ],
+       "statements": [
+        "F1",
+        "F2",
+        "F3",
+        "A1"
+       ],
+       "model_rationale": "The precedence annotate is valid in the dry run (C22: the Arabic text named is ADD-03:p4-image). I looked at the Appendix A crop. It is in Arabic script with an English letterhead line, and the table title is جدول ١-٣. The TP-2 row's maximum shutdown duration cell (أقصى مدّة للإيقاف (ساعة)) shows ٤, where English Appendix B shows 6. Arabic note ١ adds the two Eid holidays, which English note (1) omits. The precedence matters for both differences."
+      },
+      {
+       "id": "ADD-03/2.3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.3",
+       "target": "ADD-03:p4-image",
+       "payload": {
+        "id": "ADD-03/2.3",
+        "provision": "ADD-03:2.3",
+        "type": "annotate",
+        "target": "ADD-03:p4-image",
+        "targets": [
+         "ADD-03:p4-image",
+         "ADD-03:T1-3"
+        ],
+        "effect": "adds_obligation",
+        "note": "For each tie-in point the Bidder shall elect (a) temporary over-pumping without interruption of flow, or (b) interruption of flow within the permitted shutdown window in Table 1-3 (Arabic governs: TP-1 من ٢٣:٠٠ إلى ٠٥:٠٠; TP-2 من ٠١:٠٠ إلى ٠٥:٠٠), and state the election in the construction methodology section of the Technical Proposal. Needs an A1 row (C46).",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.3",
+         "page": 1,
+         "kind": "span",
+         "words": "The Bidder shall elect, for each tie-in point, one of the following methods of maintaining flows during the connection works, and shall state its election in the construction methodology section of the Technical Proposal"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.3",
+         "page": 1,
+         "kind": "span",
+         "words": "(b) interruption of flow within the permitted shutdown window stated for that tie-in point in Table 1-3."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٢٣:٠٠ إلى ٠٥:٠٠"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٠١:٠٠ إلى ٠٥:٠٠"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:p4-image/tp1-window",
+        "ADD-03:p4-image/tp2-window",
+        "ADD-03/2.2"
+       ],
+       "statements": [
+        "F1",
+        "A1",
+        "I2"
+       ],
+       "missing_information": [
+        "An A1 register row for this obligation (C46 need reported by simulate_amendment)."
+       ],
+       "model_rationale": "I viewed the crop. The permitted shutdown window column (فترة الإيقاف المسموح بها) shows من ٢٣:٠٠ إلى ٠٥:٠٠ for TP-1 and من ٠١:٠٠ إلى ٠٥:٠٠ for TP-2. Both agree with English Appendix B. The op adds an obligation and does not change VOL-II:1.3's text. The annotate is valid in the dry run."
+      },
+      {
+       "id": "ADD-03/2.4",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.4",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "why": "Insufficient evidence. ADD-03:2.4 (and Q20) require the method (a) temporary works to pass 'the maximum transfer flow stated for that tie-in point in Table 1-3'. Table 1-3 states no maximum transfer flow in either the governing Arabic version (Appendix A image) or the English translation. Its six columns are tie-in point, location, existing sewer diameter, permitted shutdown window, maximum shutdown duration and advance notice, and the notes cover Ramadan/Eid, one shutdown, portal submission and Riyadh time. The design value the obligation depends on cannot be established from the pack.",
+        "what_is_unsupported": "An obligation whose governing quantity is cross-referenced to a table that does not contain it. No op can record a value that is not printed, and an annotate would hide the gap. The Authority must state the maximum transfer flow per tie-in point (clarification proposed)."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.4",
+         "page": 1,
+         "kind": "span",
+         "words": "The temporary works for method (a) shall be capable of passing, at each tie-in point, the maximum transfer flow stated for that tie-in point in Table 1-3."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3",
+         "page": 5,
+         "kind": "span",
+         "words": "Tie-in point | Location | Existing sewer diameter (mm) | Permitted shutdown window | Maximum shutdown duration (hours) | Advance notice"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/th-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "أقصى مدّة للإيقاف (ساعة)"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:Q20",
+         "page": 3,
+         "kind": "span",
+         "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:T1-3",
+        "ADD-03:p4-image",
+        "ADD-03:Q20"
+       ],
+       "missing_information": [
+        "The maximum transfer flow for TP-1 and for TP-2 (with units)."
+       ],
+       "statements": [
+        "F4",
+        "A1"
+       ],
+       "model_rationale": "I viewed the Appendix A crop. Its six column headers are نقطة الربط, الموقع, قطر الخط القائم (مم), فترة الإيقاف المسموح بها, أقصى مدّة للإيقاف (ساعة) and مهلة الإشعار المسبق. None is a flow (no m3/h, m3/s or l/s), and the four notes state none. The pipe diameter (١٠٠٠ / ٨٠٠ mm) is not a flow, and I will not derive one."
+      },
+      {
+       "id": "ADD-03/2.4-clarification",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "clarification",
+       "provision": "ADD-03:2.4",
+       "target": "ADD-03:T1-3",
+       "payload": {
+        "gap": "ADD-03:2.4 and the response to Q20 refer to the maximum transfer flow stated for each tie-in point in Table 1-3, but Table 1-3 (Arabic Appendix A and English Appendix B) states no transfer flow.",
+        "proposed_question": "Addendum No. 3 Section 2.4 and the response to clarification 20 require the method (a) temporary works to pass the 'maximum transfer flow stated for that tie-in point in Table 1-3'. Table 1-3 (Appendix A and Appendix B) does not state a transfer flow. Please state the maximum transfer flow, with units, for TP-1 and for TP-2.",
+        "practical_impact": "The over-pumping design and its cost cannot be fixed for method (a). Method (a) is also the default under 2.6 when no Shutdown Acceptance Letter is submitted.",
+        "interim_handling": "Carry the over-pumping capacity as an open item; do not derive a flow from pipe diameter.",
+        "decision_owner": "Bid manager"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.4",
+         "page": 1,
+         "kind": "span",
+         "words": "the maximum transfer flow stated for that tie-in point in Table 1-3"
+        }
+       ],
+       "statements": [
+        "F4"
+       ]
+      },
+      {
+       "id": "ADD-03/2.5",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.5",
+       "payload": {
+        "why": "ADD-03:2.5 adds a conditional Envelope A submission: a Shutdown Acceptance Letter from the Network Operator where method (b) is elected, applied for not later than eight (8) Working Days before the Proposal Due Date. calculate gives 2026-11-16 against the PDD in force at ADD-02 (2026-11-26). 2.5 cites no existing unit (it does not name Table 1-3 or any Volume clause), so no annotate target is printed and I will not invent one. It needs an A1 row with a deadline rule (PDD minus 8 WD) and a planning milestone. Also, the addendum's cover summary describes the requirement differently ('the Authority's acceptance', applications 'within eight (8) Working Days of the date of this Addendum'). The cover is not operative, but a bidder should confirm.",
+        "what_is_unsupported": "A new conditional bid-stage obligation and deadline with no cited target unit. This needs register and programme treatment (A1 row, A5 milestone), plus confirmation of the cover-summary discrepancy, not a guessed op."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Where the Bidder elects method (b) for a tie-in point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter)."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date. The Network Operator has undertaken to respond within five (5) Working Days of receipt of a complete application."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "requires a Bidder that elects to interrupt flows at a tie-in point to obtain the Authority's acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/note3",
+         "page": 4,
+         "kind": "reading",
+         "words": "٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:cover/para3",
+        "VOL-I:6.1"
+       ],
+       "conflicts": [
+        "ADD-03:cover/para3"
+       ],
+       "missing_information": [
+        "Confirmation that the operative 2.5 (Network Operator; 8 WD before PDD) prevails over the cover summary (Authority; within 8 WD of the Addendum date). The ADD-03 issue date was not found in the units read."
+       ],
+       "statements": [
+        "F5",
+        "A2",
+        "A1"
+       ],
+       "model_rationale": "I viewed the crop. Arabic note ٣ says shutdown requests go through the Network Operator's electronic portal with the proposed shutdown programme and a contingency plan, which bears on how the application is made. Pattern drafter said 'unresolved'. I escalate rather than annotate Table 1-3 because 2.5 does not cite the Table. The dry run accepted that target, but the words do not print it."
+      },
+      {
+       "id": "ADD-03/2.6",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.6",
+       "payload": {
+        "why": "ADD-03:2.6 is a deeming rule: method (b) without a Shutdown Acceptance Letter in Envelope A is deemed an election of method (a). It changes the consequence of the obligations in 2.3 and 2.5, both of which are new in this Addendum, and cites no existing unit. Its practical effect also depends on 2.4, whose design flow is not stated (see ADD-03/2.4). No op type expresses a deemed election between two new provisions without inventing a target.",
+        "what_is_unsupported": "A deeming consequence linking two new addendum obligations, with no printed target unit. It needs register treatment (A1/A3 consequence on the 2.3 and 2.5 rows) by a person."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.6",
+         "page": 1,
+         "kind": "span",
+         "words": "A Bidder that elects method (b) for a tie-in point but does not submit a Shutdown Acceptance Letter for that tie-in point with Envelope A shall be deemed to have elected method (a) for that tie-in point."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.3",
+        "ADD-03:2.4",
+        "ADD-03:2.5"
+       ],
+       "statements": [
+        "F4"
+       ],
+       "model_rationale": "Not no_effect: 'shall be deemed' changes the consequence. Escalated rather than guessed."
+      },
+      {
+       "id": "ADD-03/2.7",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.7",
+       "target": "ADD-03:p4-image",
+       "payload": {
+        "id": "ADD-03/2.7",
+        "provision": "ADD-03:2.7",
+        "type": "annotate",
+        "target": "ADD-03:p4-image",
+        "targets": [
+         "ADD-03:p4-image",
+         "ADD-03:T1-3"
+        ],
+        "effect": "adds_obligation",
+        "note": "Rejection: a Proposal providing for an interruption of flow at a tie-in point longer than the maximum shutdown duration in Table 1-3 shall be rejected. Under 2.2 the governing Arabic values are TP-1 ٦ (6 h) and TP-2 ٤ (4 h); the English translation shows 6 h for TP-2. Needs A1 and A3 rows (C46).",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.7",
+         "page": 1,
+         "kind": "span",
+         "words": "A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ],
+       "dependencies": [
+        "ADD-03/2.2",
+        "ADD-03:p4-image/tp2-duration",
+        "ADD-03:p4-image/tp1-duration"
+       ],
+       "conflicts": [
+        "ADD-03:T1-3/tp-2"
+       ],
+       "statements": [
+        "F1",
+        "F2",
+        "A1",
+        "I1",
+        "I2"
+       ],
+       "missing_information": [
+        "A1/A3 register rows for the rejection consequence (C46).",
+        "Approval of the pending Appendix A reading."
+       ],
+       "model_rationale": "I viewed the crop. In the Arabic table, the TP-2 row's cell under أقصى مدّة للإيقاف (ساعة) is the Arabic-Indic digit ٤ (4), while TP-1 is ٦ (6). English Appendix B prints 6 for both. Because the Arabic governs (2.2), a TP-2 shutdown of more than 4 h leads to rejection, and a bid relying on the English 6 h would be rejected. This depends on interpretation I1 and stays pending until a person confirms."
+      },
+      {
+       "id": "ADD-03/2.7-issue",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "issue",
+       "provision": "ADD-03:2.7",
+       "target": "ADD-03:T1-3/tp-2",
+       "payload": {
+        "text": "The governing Arabic Table 1-3 gives TP-2 a maximum shutdown duration of ٤ (4) hours; the English convenience translation says 6. Under ADD-03:2.7 a Proposal exceeding the governing value is rejected. Arabic note 1 also excludes the Eid al-Fitr and Eid al-Adha holidays, which English note (1) omits. Shutdown programmes must follow the Arabic.",
+        "owner": "Bid manager",
+        "short": "TP-2 shutdown 4 h (Arabic) vs 6 h (English)",
+        "theme": "tie-ins"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.7",
+         "page": 1,
+         "kind": "span",
+         "words": "for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ],
+       "statements": [
+        "F2",
+        "F3",
+        "I1"
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [
+  "ADD-03:p4-image"
+ ],
+ "images_received": [
+  {
+   "unit_id": "ADD-03:p4-image",
+   "sent": [
+    {
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "unit",
+     "bytes": 412738,
+     "attached": true
+    },
+    {
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 341111,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 412738,
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 341111,
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985"
+    }
+   ]
+  }
+ ],
+ "submission": {
+  "run_id": "ADD-03-host-20261005T174435Z-1292",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/ai/ADD-03-host-20261005T174435Z-1292",
+  "coverage": {
+   "provisions_total": 70,
+   "accounted": 7,
+   "unaccounted": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:AppA/para1",
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/intro",
+    "ADD-03:p4-image/th-point",
+    "ADD-03:p4-image/th-location",
+    "ADD-03:p4-image/th-diameter",
+    "ADD-03:p4-image/th-window",
+    "ADD-03:p4-image/th-duration",
+    "ADD-03:p4-image/th-notice",
+    "ADD-03:p4-image/table-rule",
+    "ADD-03:p4-image/tp1-point",
+    "ADD-03:p4-image/tp1-location",
+    "ADD-03:p4-image/tp1-diameter",
+    "ADD-03:p4-image/tp1-window",
+    "ADD-03:p4-image/tp1-duration",
+    "ADD-03:p4-image/tp1-notice",
+    "ADD-03:p4-image/tp2-point",
+    "ADD-03:p4-image/tp2-location",
+    "ADD-03:p4-image/tp2-diameter",
+    "ADD-03:p4-image/tp2-window",
+    "ADD-03:p4-image/tp2-duration",
+    "ADD-03:p4-image/tp2-notice",
+    "ADD-03:p4-image/notes-heading",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3",
+    "ADD-03:p4-image/note4",
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:p4-image/image-footer",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1",
+    "ADD-03:T1-3/tp-1",
+    "ADD-03:T1-3/tp-2",
+    "ADD-03:T1-3/notes",
+    "ADD-03:T1-3/note(1)",
+    "ADD-03:T1-3/note(2)",
+    "ADD-03:T1-3/note(3)",
+    "ADD-03:T1-3/note(4)",
+    "ADD-03:AppB/para2"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 70,
+   "accounted": 7,
+   "resolved": 1,
+   "pending": 6,
+   "invalid": 0,
+   "unaccounted": 63,
+   "pending_provisions": [
+    "ADD-03:2.2",
+    "ADD-03:2.3",
+    "ADD-03:2.4",
+    "ADD-03:2.5",
+    "ADD-03:2.6",
+    "ADD-03:2.7"
+   ],
+   "invalid_provisions": [],
+   "no_change_on_amendment_language": [],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/2.1",
+    "status": "evidence_verified"
+   },
+   {
+    "id": "ADD-03/2.2",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/2.3",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/2.4",
+    "status": "escalated"
+   },
+   {
+    "id": "ADD-03/2.4-clarification",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/2.5",
+    "status": "escalated"
+   },
+   {
+    "id": "ADD-03/2.6",
+    "status": "escalated"
+   },
+   {
+    "id": "ADD-03/2.7",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/2.7-issue",
+    "status": "interpretation_pending"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/2.1": "evidence_verified",
+  "ADD-03/2.2": "conflicting",
+  "ADD-03/2.3": "insufficient_evidence",
+  "ADD-03/2.4": "escalated",
+  "ADD-03/2.4-clarification": "interpretation_pending",
+  "ADD-03/2.5": "escalated",
+  "ADD-03/2.6": "escalated",
+  "ADD-03/2.7": "conflicting",
+  "ADD-03/2.7-issue": "interpretation_pending"
+ },
+ "num_turns": 32,
+ "usage": {
+  "input_tokens": 32,
+  "cache_creation_input_tokens": 123766,
+  "cache_read_input_tokens": 820130,
+  "output_tokens": 44883,
+  "output_tokens_details": {
+   "thinking_tokens": 5061
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 123766,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 331,
+    "cache_read_input_tokens": 105803,
+    "cache_creation_input_tokens": 17963,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 17963
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 2.0519420000000004,
+ "final_text": "Submitted run **ADD-03-host-20261005T174435Z-1292**, status **partial**: all 7 provisions are answered, with 1 verified, 6 waiting on a person and none invalid. The remaining 63 provisions belong to other batches. The one crop I read was ADD-03:p4-image (the Arabic Table 1-3 at Appendix A, crop f827ab1b…, native 78db0287…). In it the Arabic version gives TP-2 a 4-hour maximum shutdown (٤), but the English translation says 6. Under 2.7 any Proposal that shuts TP-2 down for longer than 4 hours would be rejected. The Arabic note 1 also bans shutdowns during both Eid holidays, which the English leaves out. The Arabic reading is still pending approval. I didn't open compare_state's oversized output, which was saved to a file.",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/ai/ADD-03-hostsession-20261005T173632Z-8291",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

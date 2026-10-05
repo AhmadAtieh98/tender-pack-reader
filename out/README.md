@@ -31,7 +31,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C40 | pass | every A5 activity cites an A1 row in force |
 | C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
 | C45 | pass | every dependency and lead time is defined |
-| C43 | pass | A3 fits one page; smallest text 7.72 pt (scale 0.908) |
+| C43 | pass | A3 fits one page; smallest text 7.7 pt (scale 0.906) |
 | C52 | pass | 2 confirmed translation(s) of approved readings; none called 'not reviewed' in the outputs |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 15 ops; invalid: none |
@@ -43,4 +43,4 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2; report only, the summary is never applied (A2) |
 | C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
 | C46 | ok | every new or amended obligation reaches A1, A3 where it carries a consequence, and A5 |
-| C48 | ok | 17 A3 (bid-out) rows in force: 15 carried by the A5 programme, 2 excepted with a reason; not carried: none |
+| C48 | ok | 200 A1 rows in force at ADD-02: 160 discharged by an activity, 30 reviewed for deviations (the VOL-V volume check), 10 excepted with a reason (listed in a5/requirements_not_carried.csv); not carried: none. Of these, 17 A3 (bid-out) rows: 15 carried, 2 excepted with a reason |

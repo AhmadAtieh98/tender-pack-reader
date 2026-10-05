@@ -70,8 +70,8 @@
    ]
   },
   {
-   "after": "ACTIVE [BID-BOND-VALIDITY 2027-05-25]",
-   "before": "ACTIVE [BID-BOND-VALIDITY 2027-05-11]",
+   "after": "ACTIVE [BID-BOND-VALIDITY 2027-05-25 (2027-05-24 if the PDD counts as day 1)]",
+   "before": "ACTIVE [BID-BOND-VALIDITY 2027-05-11 (2027-05-10 if the PDD counts as day 1)]",
    "chain": [
     "VOL-I:6.3 (VOL-I p3; text layer)",
     "ADD-01/2.2 [ADD-01; proposed; annotates VOL-I:6.3 (interprets)] <- ADD-01:2.2 (ADD-01 p1)",
@@ -114,8 +114,8 @@
    ]
   },
   {
-   "after": "ACTIVE [PROPOSAL-VALIDITY 2027-04-25]",
-   "before": "ACTIVE [PROPOSAL-VALIDITY 2027-04-11]",
+   "after": "ACTIVE [PROPOSAL-VALIDITY 2027-04-25 (2027-04-24 if the PDD counts as day 1)]",
+   "before": "ACTIVE [PROPOSAL-VALIDITY 2027-04-11 (2027-04-10 if the PDD counts as day 1)]",
    "chain": [
     "VOL-I:7.1 (VOL-I p4; text layer)",
     "ADD-01/2.2 [ADD-01; proposed; annotates VOL-I:7.1 (interprets)] <- ADD-01:2.2 (ADD-01 p1)",
@@ -145,8 +145,8 @@
    ]
   },
   {
-   "after": "ACTIVE [REFERENCE-LOOKBACK 2016-11-27]",
-   "before": "ACTIVE [REFERENCE-LOOKBACK 2016-11-13]",
+   "after": "ACTIVE [REFERENCE-LOOKBACK 2016-11-27 (2016-11-26 if the boundary day counts)]",
+   "before": "ACTIVE [REFERENCE-LOOKBACK 2016-11-13 (2016-11-12 if the boundary day counts)]",
    "chain": [
     "VOL-I:8.5#fn12 (VOL-I p4; text layer)",
     "VOL-I:8.5 (VOL-I p4; text layer)",
@@ -178,7 +178,7 @@
    ]
   },
   {
-   "after": "NEW [ATTENDANCE-NOTICE 2026-10-14]",
+   "after": "NEW [ATTENDANCE-NOTICE 2026-10-14 (2026-10-15 if the ADD-01 issue day is excluded)]",
    "before": "NOT ISSUED",
    "chain": [
     "ADD-01:3.1 (ADD-01 p1; text layer; issued by ADD-01)",
@@ -199,11 +199,13 @@
     "VOL-IV:F4-A/proposal-due-date (VOL-IV p3; text layer)",
     "ADD-01/AppA/para1 [ADD-01; proposed] <- ADD-01:AppA/para1 (ADD-01 p3)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "CHANGED",
    "row": "VOL-IV-F4A-01",
    "stage": "ADD-01",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-01 with the same words, values, parameters, dates and consequence (note: 'The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person.')"
+    "status",
+    "interpretation re-made at ADD-01 (The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person.)",
+    "changed through: PDD moved 2026-11-12 -> 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)"
    ]
   },
   {
@@ -312,11 +314,12 @@
     "VOL-II:T2-2/temperature (VOL-II p2; text layer)",
     "ADD-01/Q1 [ADD-01; proposed; annotates VOL-II:3.1 (interprets)] <- ADD-01:Q1 (ADD-01 p1)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-II-3.1-01",
    "stage": "ADD-01",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-01/Q1 (interprets; ADD-01:Q1); reading re-made at ADD-01 with the same words, values, parameters, dates and consequence (note: 'ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable of meeting Table 2-4 under the Table 2-2 influent conditio…')"
+    "interpretation re-made at ADD-01 (ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable.)",
+    "NOT SETTLED: open: I-PERMIT, human decision pending (the confirming op(s) ADD-01/Q1 (interprets; ADD-01:Q1) do not settle it)"
    ]
   },
   {
@@ -378,7 +381,8 @@
    "stage": "ADD-01",
    "why": [
     "status",
-    "interpretation re-made at ADD-01 (No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS.)"
+    "interpretation re-made at ADD-01 (No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS.)",
+    "changed through: cited unit VOL-IV F4-A/commercial-registration-number: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/registered-address: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/single-point-of-contact-name-title: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/contact-email-and-telephone: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/signature: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/name-of-signatory: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/capacity: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/power-of-attorney-reference-and-date: active -> superseded by ADD-01/AppA/para1; cited unit VOL-IV F4-A/company-seal: active -> superseded by ADD-01/AppA/para1; PDD moved 2026-11-12 -> 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)"
    ]
   },
   {
@@ -397,7 +401,7 @@
   },
   {
    "after": "REPLACED (by ADD-01:AppA)",
-   "before": "ACTIVE [PROPOSAL-VALIDITY-F4A 2027-04-11]",
+   "before": "ACTIVE [PROPOSAL-VALIDITY-F4A 2027-04-11 (2027-04-10 if the PDD counts as day 1)]",
    "chain": [
     "VOL-IV:F4-A/item2 (VOL-IV p3; text layer)",
     "ADD-01/AppA/para1 [ADD-01; proposed] <- ADD-01:AppA/para1 (ADD-01 p3)",
@@ -534,6 +538,20 @@
    ]
   },
   {
+   "after": "ACTIVE (reissued by ADD-01/AppA/para1, unchanged)",
+   "before": "ACTIVE (reissued by ADD-01/AppA/para1, unchanged)",
+   "chain": [
+    "VOL-IV:F4-A/proposal-due-date (VOL-IV p3; text layer)",
+    "ADD-01/AppA/para1 [ADD-01; proposed] <- ADD-01:AppA/para1 (ADD-01 p3)"
+   ],
+   "change": "NOT SETTLED",
+   "row": "VOL-IV-F4A-01",
+   "stage": "ADD-02",
+   "why": [
+    "NOT SETTLED: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides)"
+   ]
+  },
+  {
    "after": "ACTIVE",
    "before": "ACTIVE",
    "chain": [
@@ -555,11 +573,12 @@
     "VOL-IV:F4-C/image/decl4 (VOL-IV p6; image reading)",
     "ADD-02/Q9 [ADD-02; proposed; annotates VOL-IV:F4-C/image (confirms)] <- ADD-02:Q9 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-IV-F4C-04",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-02/Q9 (confirms; ADD-02:Q9; answer reads 'interprets' (summary.classify_answer)); reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration.')"
+    "interpretation re-made at ADD-02 (ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration.)",
+    "NOT SETTLED: open: I-F4C-EXCLUSION, human decision pending (the confirming op(s) ADD-02/Q9 (confirms; ADD-02:Q9; answer reads 'interprets' (summary.classify_answer)) do not settle it)"
    ]
   },
   {
@@ -589,7 +608,7 @@
    "stage": "ADD-02",
    "why": [
     "status",
-    "interpretation re-made at ADD-02"
+    "interpretation re-made at ADD-02 (ADD-02 7.1 adds Form 4-G 'to Volume IV and to the list at Volume I Clause 9.1'; it prints no entry for the Index of Forms (VOL-IV p2, which lists Forms 4-A to 4-F), so no index row is inserted, and where the form sits in Volume IV is not stated.)"
    ]
   },
   {
@@ -759,11 +778,12 @@
     "ADD-01/cover/para3 [ADD-01; proposed; annotates ADD-01:cover/para3 (adds_obligation)] <- ADD-01:cover/para3 (ADD-01 p1)",
     "ADD-02/cover/para3 [ADD-02; proposed; annotates ADD-02:cover/para3 (adds_obligation)] <- ADD-02:cover/para3 (ADD-02 p1)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "CHANGED",
    "row": "ADD-01-AppA-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02's cover repeats 'Bidders shall acknowledge receipt in Form 4-A.' and does not reissue the form; the ADD-01 App A version remains the one to use.'); other ops on its units (the re-made reading records no change from them; a person checks): ADD-02/cover/para3 (adds_obligation; ADD-02:cover/para3)"
+    "interpretation re-made at ADD-02 (ADD-02's cover repeats 'Bidders shall acknowledge receipt in Form 4-A.' and does not reissue the form; the ADD-01 App A version remains the one to use.)",
+    "changed through: Addenda to acknowledge: ADD-02 issued since ADD-01; ADD-02:cover/para3: 'Bidders shall acknowledge receipt in Form 4-A.'"
    ]
   },
   {
@@ -883,7 +903,7 @@
    "stage": "ADD-02",
    "why": [
     "status",
-    "interpretation re-made at ADD-02 (ADD-02 §7.1 inserts Form 4-G after item (e) (row ADD-02-7.2-01); the re-lettering of the later items is not stated.)"
+    "interpretation re-made at ADD-02 (ADD-02 §7.1 inserts Form 4-G after item (e) (row ADD-02-7.2-01); the re-lettering of the later items is not stated. Item (i), 'the certificates and evidence required under Section 8', again includes the Local Content Certificate: ADD-01 4.1 deleted VOL-I 8.6 (the certificate left this list at ADD-01) and ADD-02 9.1 reinstates it at 35% (row VOL-I-8.6-01).)"
    ]
   },
   {
@@ -899,7 +919,7 @@
    "stage": "ADD-02",
    "why": [
     "status",
-    "interpretation re-made at ADD-02 (ADD-02 §2.1 raises the limit from 120 to 150 pages. ADD-01 Q2's '120-page limit' wording is now stale; its substance (forms excluded) still holds.)"
+    "interpretation re-made at ADD-02 (ADD-02 §2.1 raises the limit from 120 to 150 pages; the clause as amended still prints 'excluding the Form Sheets and the appendices expressly permitted by Volume II'. ADD-01 Q2 answered about the '120-page limit': whether that answer still holds after ADD-02 2.1 is listed for review in A2 (a decision for a person; none recorded).)"
    ]
   },
   {
@@ -995,13 +1015,14 @@
    "before": "ACTIVE [CONCESSION-END-PCOD None]",
    "chain": [
     "VOL-I:12.1 (VOL-I p6; text layer)",
-    "ADD-02/Q7 [ADD-02; proposed; annotates VOL-I:12.1 (confirms)] <- ADD-02:Q7 (ADD-02 p2)"
+    "ADD-02/Q7 [ADD-02; proposed; annotates VOL-I:12.1 (interprets)] <- ADD-02:Q7 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-I-12.1-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-02/Q7 (confirms; ADD-02:Q7); reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' VOL-I 3.2 …')"
+    "interpretation re-made at ADD-02 (ADD-02 Q7 (p2) was asked 'Which applies?' and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither. Two readings: this clause, 'twenty-five (25) years commencing on the Project Commercial Operation Date'; VOL-V 3.1 (p2), 'twenty-five (25) years from the Effective Date' (row VOL-V-3.1-01). VOL-I 3.2 (p2) orders the RFP Documents '(a) the Addenda, a later Addendum prevailing over an earlier one;' '(b) Volume I (Instructions to Bidders);' '(c) Volume V (Draft Project Agreement);' 'the first named prevailing'; VOL-I 3.3 (p2): 'A Bidder that resolves such a conflict unilaterally does so at its own risk'. Which clause governs the term, what to record in Form 4-E and which term start the Financial Model assumes are a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded.)",
+    "NOT SETTLED: open: I-CONCESSION, human decision pending (the confirming op(s) ADD-02/Q7 (interprets; ADD-02:Q7) do not settle it)"
    ]
   },
   {
@@ -1025,11 +1046,41 @@
     "VOL-I:12.2 (VOL-I p6; text layer)",
     "ADD-02/Q13 [ADD-02; proposed; annotates VOL-I:12.2 (confirms)] <- ADD-02:Q13 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-I-12.2-02",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-02/Q13 (confirms; ADD-02:Q13); reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q13: the Authority will not extend; the periods in VOL-I 12.2 are unchanged.')"
+    "interpretation re-made at ADD-02 (ADD-02 Q13 (p2), asked whether the Authority will extend the Financial Close long-stop date, answers: 'The periods in Volume I Clause 12.2 are unchanged.')",
+    "NOT SETTLED: open: I-VOL-I-BOND-LONGSTOP, human decision pending (the confirming op(s) ADD-02/Q13 (confirms; ADD-02:Q13) do not settle it)"
+   ]
+  },
+  {
+   "after": "ACTIVE",
+   "before": "ACTIVE",
+   "chain": [
+    "VOL-II:2.4 (VOL-II p2; text layer)",
+    "VOL-II:T2-4-heading/para1 (VOL-II p3; text layer)"
+   ],
+   "change": "CHANGED",
+   "row": "VOL-II-2.4-01",
+   "stage": "ADD-02",
+   "why": [
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-COMPLIANCE-MONITORING-STREAMS (limit_applies, confirmed))"
+   ]
+  },
+  {
+   "after": "ACTIVE",
+   "before": "ACTIVE",
+   "chain": [
+    "VOL-II:2.5 (VOL-II p2; text layer)",
+    "VOL-II:T2-4/ResidualChlorine (VOL-II p3; image reading)",
+    "VOL-II:T2-4/pH (VOL-II p3; image reading)"
+   ],
+   "change": "CHANGED",
+   "row": "VOL-II-2.5-01",
+   "stage": "ADD-02",
+   "why": [
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-COMPLIANCE-MONITORING-STREAMS (limit_applies, confirmed))"
    ]
   },
   {
@@ -1047,11 +1098,12 @@
     "ADD-01/Q1 [ADD-01; proposed; annotates VOL-II:3.1 (interprets)] <- ADD-01:Q1 (ADD-01 p1)",
     "ADD-02/5.2 [ADD-02; proposed; annotates VOL-II:H:S3 (adds_obligation)] <- ADD-02:5.2 (ADD-02 p1)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "CHANGED",
    "row": "VOL-II-3.1-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3.'); other ops on its units (the re-made reading records no change from them; a person checks): ADD-02/5.2 (adds_obligation; ADD-02:5.2)"
+    "interpretation re-made at ADD-02 (ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3.)",
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-PROCESS-DESIGN (limit_applies, confirmed))"
    ]
   },
   {
@@ -1061,11 +1113,25 @@
     "VOL-II:4.2 (VOL-II p4; text layer)",
     "ADD-02/Q11 [ADD-02; proposed; annotates VOL-II:4.2 (confirms)] <- ADD-02:Q11 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-II-4.2-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-02/Q11 (confirms; ADD-02:Q11); reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q11 (peak hourly flow of 7,500 m3/h against a daily average of 120,000 m3/day) answers: 'Bidders shall design to the figures stated in Volume II. Volume…')"
+    "interpretation re-made at ADD-02 (ADD-02 Q11 (p2), asked about a peak hourly flow of 7,500 m3/h against a daily average of 120,000 m3/day, answers: 'Bidders shall design to the figures stated in Volume II. Volume II Clause 4.2 applies.' It settles the question asked (design to the Volume II figures; this clause applies) and does not comment on their consistency, which this clause leaves to the Bidder, or define 'dry weather flow' (CQ-DWF-STORM-FLOW). Engineering reading, for the process engineer to confirm (not the Authority's words): 120,000 m3/day is 5,000 m3/h on average and 7,500 m3/h a peaking factor of 1.5, so the two figures are not contradictory (I-FLOWS).)",
+    "NOT SETTLED: open: I-FLOWS, human decision pending (the confirming op(s) ADD-02/Q11 (confirms; ADD-02:Q11) do not settle it)"
+   ]
+  },
+  {
+   "after": "ACTIVE",
+   "before": "ACTIVE",
+   "chain": [
+    "VOL-II:4.3 (VOL-II p4; text layer)"
+   ],
+   "change": "CHANGED",
+   "row": "VOL-II-4.3-02",
+   "stage": "ADD-02",
+   "why": [
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-COMPLIANCE-MONITORING-STREAMS (limit_applies, confirmed))"
    ]
   },
   {
@@ -1081,6 +1147,50 @@
    "why": [
     "status",
     "interpretation re-made at ADD-02 (ADD-02 4.1 changes the standby power duration in this clause (72 to 96 hours, row VOL-II-4.4-01); the N+1 requirement is unchanged.)"
+   ]
+  },
+  {
+   "after": "ACTIVE",
+   "before": "ACTIVE",
+   "chain": [
+    "VOL-II:7.2 (VOL-II p4; text layer)"
+   ],
+   "change": "CHANGED",
+   "row": "VOL-II-7.2-01",
+   "stage": "ADD-02",
+   "why": [
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-RELIABILITY-RUN (limit_applies, confirmed))"
+   ]
+  },
+  {
+   "after": "ACTIVE (as amended by ADD-01/AppA/para1)",
+   "before": "AMENDED (ADD-01/AppA/para1)",
+   "chain": [
+    "VOL-IV:F4-A/name-of-bidder-lead-member (VOL-IV p3; text layer)",
+    "VOL-IV:cover/T1/4-A (VOL-IV p2; text layer)",
+    "VOL-IV:F4-A/tender-reference (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/project (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/proposal-due-date (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/commercial-registration-number (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/registered-address (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/single-point-of-contact-name-title (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/contact-email-and-telephone (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/signature (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/name-of-signatory (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/capacity (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/power-of-attorney-reference-and-date (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/date (VOL-IV p3; text layer)",
+    "VOL-IV:F4-A/company-seal (VOL-IV p3; text layer)",
+    "ADD-01:AppA/para1 (ADD-01 p3; text layer; issued by ADD-01)",
+    "ADD-01:AppA/single-point-of-contact (ADD-01 p3; text layer; issued by ADD-01)",
+    "ADD-01:AppA/signature-name-capacity (ADD-01 p3; text layer; issued by ADD-01)",
+    "ADD-01/AppA/para1 [ADD-01; proposed] <- ADD-01:AppA/para1 (ADD-01 p3)"
+   ],
+   "change": "NOT SETTLED",
+   "row": "VOL-IV-F4A-02",
+   "stage": "ADD-02",
+   "why": [
+    "NOT SETTLED: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides)"
    ]
   },
   {
@@ -1140,17 +1250,40 @@
    ]
   },
   {
+   "after": "ACTIVE",
+   "before": "ACTIVE",
+   "chain": [
+    "VOL-IV:cover/T1/4-E (VOL-IV p2; text layer)",
+    "VOL-IV:F4-E/T1/1 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/T1/2 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/T1/3 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/T1/4 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/T1/5 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/T1/6 (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/total-number-of-deviations-declared (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/signature-of-authorised-signatory (VOL-IV p8; text layer)",
+    "VOL-IV:F4-E/date (VOL-IV p8; text layer)"
+   ],
+   "change": "CHANGED",
+   "row": "VOL-IV-F4E-01",
+   "stage": "ADD-02",
+   "why": [
+    "changed through: VOL-V 36.2: '5,000,000' -> '2,500,000' by ADD-02/8.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed))"
+   ]
+  },
+  {
    "after": "ACTIVE [VOL-V-TERM-END None]",
    "before": "ACTIVE [VOL-V-TERM-END None]",
    "chain": [
     "VOL-V:3.1 (VOL-V p2; text layer)",
-    "ADD-02/Q7 [ADD-02; proposed; annotates VOL-V:3.1 (confirms)] <- ADD-02:Q7 (ADD-02 p2)"
+    "ADD-02/Q7 [ADD-02; proposed; annotates VOL-V:3.1 (interprets)] <- ADD-02:Q7 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-V-3.1-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): confirmed by ADD-02/Q7 (confirms; ADD-02:Q7); reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' Under VOL-…')"
+    "interpretation re-made at ADD-02 (ADD-02 Q7 (p2) was asked 'Which applies?' and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither. Two readings: this clause, 'twenty-five (25) years from the Effective Date'; VOL-I 12.1 (p6), 'twenty-five (25) years commencing on the Project Commercial Operation Date' (row VOL-I-12.1-01). VOL-I 3.2 (p2) orders the RFP Documents '(a) the Addenda, a later Addendum prevailing over an earlier one;' '(b) Volume I (Instructions to Bidders);' '(c) Volume V (Draft Project Agreement);' 'the first named prevailing'; VOL-I 3.3 (p2): 'A Bidder that resolves such a conflict unilaterally does so at its own risk'; and 'A deviation not listed in Form 4-E will be taken as accepted.' (VOL-V Note to Bidders, p2). Which clause governs the term, what to record in Form 4-E and which term start the Financial Model assumes are a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded.)",
+    "NOT SETTLED: open: I-CONCESSION, human decision pending (the confirming op(s) ADD-02/Q7 (interprets; ADD-02:Q7) do not settle it)"
    ]
   },
   {
@@ -1170,7 +1303,8 @@
    "row": "VOL-V-29.3-01",
    "stage": "ADD-02",
    "why": [
-    "interpretation re-made at ADD-02 (ADD-02 5.1 amends the TN limit to 3 mg/l 'assessed on the same basis' (30-day rolling average as read); the payment terms of this clause are unchanged.)"
+    "interpretation re-made at ADD-02 (ADD-02 5.1 amends the TN limit to 3 mg/l 'assessed on the same basis' (30-day rolling average as read); the payment terms of this clause are unchanged.)",
+    "changed through: cited unit VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1"
    ]
   },
   {
@@ -1180,11 +1314,12 @@
     "VOL-V:31.1 (VOL-V p3; text layer)",
     "ADD-02/Q12 [ADD-02; proposed; annotates VOL-V:31.2 (confirms)] <- ADD-02:Q12 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-V-31.1-01",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q12 (are the deductions capped?) refers Bidders to the wording of 31.2: deductions are not subject to any cap.')"
+    "interpretation re-made at ADD-02 (ADD-02 Q12 (are the deductions capped?) refers Bidders to the wording of 31.2: deductions are not subject to any cap.)",
+    "NOT SETTLED: open: I-VOL-V-MISSING, human decision pending; open: I-FLOWS, human decision pending"
    ]
   },
   {
@@ -1194,11 +1329,12 @@
     "VOL-V:31.1 (VOL-V p3; text layer)",
     "ADD-02/Q12 [ADD-02; proposed; annotates VOL-V:31.2 (confirms)] <- ADD-02:Q12 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "CHANGED",
    "row": "VOL-V-31.1-02",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap. ADD-02 5.1 tightens the TN limit to 3 mg/l (row VOL-II-T2-4-TN), which…')"
+    "interpretation re-made at ADD-02 (ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap. ADD-02 5.1 tightens the TN limit to 3 mg/l (row VOL-II-T2-4-TN), which this event applies to.)",
+    "changed through: VOL-II T2-4/TN: Limit 5 -> 3 mg/l by ADD-02/5.1 (depends on it: REL-T24-UNAVAILABILITY (limit_applies, confirmed))"
    ]
   },
   {
@@ -1208,11 +1344,12 @@
     "VOL-V:31.1 (VOL-V p3; text layer)",
     "ADD-02/Q12 [ADD-02; proposed; annotates VOL-V:31.2 (confirms)] <- ADD-02:Q12 (ADD-02 p2)"
    ],
-   "change": "CONFIRMED (unchanged)",
+   "change": "NOT SETTLED",
    "row": "VOL-V-31.1-03",
    "stage": "ADD-02",
    "why": [
-    "CONFIRMED (unchanged): reading re-made at ADD-02 with the same words, values, parameters, dates and consequence (note: 'ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap.')"
+    "interpretation re-made at ADD-02 (ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap.)",
+    "NOT SETTLED: open: I-VOL-V-MISSING, human decision pending"
    ]
   },
   {
@@ -1228,6 +1365,21 @@
    "why": [
     "status",
     "interpretation re-made at ADD-02 (ADD-02 8.1 deletes 'SAR 5,000,000' and substitutes 'SAR 2,500,000'.)"
+   ]
+  },
+  {
+   "after": "ACTIVE [VOL-V-HANDBACK-RESERVE-START None]",
+   "before": "ACTIVE [VOL-V-HANDBACK-RESERVE-START None]",
+   "chain": [
+    "VOL-V:42.2 (VOL-V p4; text layer)",
+    "ADD-02/Q7 [ADD-02; proposed; cited by the reading made at ADD-02 (interprets)] <- ADD-02:Q7 (ADD-02 p2)"
+   ],
+   "change": "NOT SETTLED",
+   "row": "VOL-V-42.2-01",
+   "stage": "ADD-02",
+   "why": [
+    "interpretation re-made at ADD-02 (ADD-02 Q7 (p2) was asked 'Which applies?' (VOL-I 12.1: from PCOD; VOL-V 3.1: from the Effective Date) and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither, so when year 20 of the term starts is not settled: a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded. The date rule records the start of year 20 as 19 years after the term starts.)",
+    "NOT SETTLED: open: I-CONCESSION, human decision pending"
    ]
   }
  ]

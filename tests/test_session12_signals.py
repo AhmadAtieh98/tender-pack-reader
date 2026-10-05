@@ -44,6 +44,14 @@ def cand(r):
     return partial.compute(r)
 
 
+def _pending_rows(r) -> dict[str, list[str]]:
+    """Session 12, F5 (audit A2-1, A5 N1): rows under an issue a person has not decided (signals.attach_pending) are
+    NOT SETTLED where they would otherwise be CONFIRMED; row -> its pending issues."""
+    pend = r.get("pending_issues") or {}
+    return {e["row"].id: [i for i in e["row"].issues if i in pend] for e in r["evals"]
+            if any(i in pend for i in e["row"].issues)}
+
+
 def _deltas(r, frm, to, answers=True):
     progs = {s: programme.stage_planner(r, s)(r["assumptions"]) for s in (frm, to)}
     ea = {e["row"].id: e["stages"][frm] for e in r["evals"]}
@@ -94,14 +102,23 @@ def test_confirmations_make_no_rework_in_the_programme_deltas(r):
         assert "VOL-I-6.2-01" not in rework.get(aid, ""), (aid, rework.get(aid))
     assert "VOL-II-6.4-0" not in rework.get("technical-proposal", "")     # Q15, the decoy
     conf = {d["activity"]: d["detail"] for d in dl if d["change"] == CONFIRMED}
-    assert "VOL-I-9.6-01" in conf["form-4e"] and "ADD-03/Q16" in conf["form-4e"] and "ADD-03:Q16" in conf["form-4e"]
-    assert "VOL-II-6.4-01" in conf["technical-proposal"] and "ADD-03/Q15" in conf["technical-proposal"]
+    # session 12, F5 (deliberate): a row under an undecided human-owned issue is NOT SETTLED, never CONFIRMED; it is
+    # still no REWORK (asserted above), and the line names the issue and the confirming op
+    unset = {d["activity"]: d["detail"] for d in dl if d["change"] == "NOT SETTLED"}
+    pend = _pending_rows(r)
+    for aid, rid, op in (("form-4e", "VOL-I-9.6-01", "ADD-03/Q16"), ("technical-proposal", "VOL-II-6.4-01", "ADD-03/Q15")):
+        if rid in pend:
+            assert rid in unset[aid] and op in unset[aid] and f"open: {pend[rid][0]}" in unset[aid], unset.get(aid)
+        else:
+            assert rid in conf[aid] and op in conf[aid], conf.get(aid)
+    if "VOL-I-9.6-01" not in pend:
+        assert "ADD-03:Q16" in conf["form-4e"]
     # the real changes stay changes
     assert "VOL-II-3.1-01" in rework["technical-proposal"] and "VOL-I-9.7-01" in rework["technical-proposal"]
     assert "VOL-I-8.3-01" in rework["iso-copy"] and "VOL-IV-F4F-01" in rework["form-4f"]
 
 
-def test_the_candidate_replan_and_its_readme_agree(cand):
+def test_the_candidate_replan_and_its_readme_agree(cand, r):
     a5 = cand["a5"]
     s = a5["summary"]
     assert "form-4e" not in s["rework"] and "deviations-review" not in s["rework"], s["rework"]
@@ -115,7 +132,11 @@ def test_the_candidate_replan_and_its_readme_agree(cand):
     for rid in ("VOL-I-9.6-01", "VOL-IV-F4E-01", "VOL-I-6.2-01", "VOL-II-6.4-01"):
         assert rid not in sec, rid
     conf = readme.split("## Confirmed, unchanged")[1].split("\n## ")[0]
-    assert "VOL-I-9.6-01" in conf and "ADD-03/Q16" in conf and "ADD-03:Q16" in conf
+    # session 12, F5 (deliberate): a row under an undecided human-owned issue is not listed as confirmed
+    if "VOL-I-9.6-01" in _pending_rows(r):
+        assert "VOL-I-9.6-01" not in conf
+    else:
+        assert "VOL-I-9.6-01" in conf and "ADD-03/Q16" in conf and "ADD-03:Q16" in conf
 
 
 def test_the_diff_and_the_review_packet_list_confirmations_apart(r):
@@ -133,16 +154,24 @@ def test_the_diff_and_the_review_packet_list_confirmations_apart(r):
 def test_a2_shows_confirmations_as_confirmed_not_moved(r):
     a2 = stage2.a2(r)
     moved = {(m["stage"], m["row"]): m for m in a2["rows_moved"] if m["stage"] == "ADD-03"}
+    pend = _pending_rows(r)
     for rid in ("VOL-I-9.6-01", "VOL-IV-F4E-01", "VOL-II-6.4-01", "VOL-II-6.4-02", "VOL-I-6.2-01"):
-        assert moved[("ADD-03", rid)]["change"] == CONFIRMED, (rid, moved[("ADD-03", rid)])
+        # session 12, F5 (deliberate): NOT SETTLED (naming the issue) for a row under an undecided human-owned issue
+        want = "NOT SETTLED" if rid in pend else CONFIRMED
+        assert moved[("ADD-03", rid)]["change"] == want, (rid, moved[("ADD-03", rid)])
+        if rid in pend:
+            assert f"open: {pend[rid][0]}, human decision pending" in "; ".join(moved[("ADD-03", rid)]["why"])
     assert "ADD-03/Q16" in "; ".join(moved[("ADD-03", "VOL-I-9.6-01")]["why"])
     for rid in ("VOL-I-8.3-01", "VOL-II-3.1-01", "VOL-IV-F4F-01"):
         assert moved[("ADD-03", rid)]["change"] == "CHANGED", rid
     sec = a2["markdown"].split("## ADD-03")[1]
     table = sec.split("### Register rows that move")[1].split("###")[0]
     assert "| VOL-I-9.6-01 |" not in table and "| VOL-I-8.3-01 |" in table
-    conf = sec.split(f"### Rows confirmed or re-read, unchanged ({CONFIRMED})")[1].split("###")[0]
-    assert "| VOL-I-9.6-01 |" in conf and "ADD-03/Q16" in conf
+    if "VOL-I-9.6-01" not in pend:
+        conf = sec.split(f"### Rows confirmed or re-read, unchanged ({CONFIRMED})")[1].split("###")[0]
+        assert "| VOL-I-9.6-01 |" in conf and "ADD-03/Q16" in conf
+    else:
+        assert "| VOL-I-9.6-01 |" in sec.split("### Rows not settled at this stage (NOT SETTLED)")[1].split("###")[0]
 
 
 def test_real_pack_confirmations_are_confirmed_and_changes_stay(real):
@@ -247,4 +276,6 @@ def test_a_row_the_stage_does_not_settle_is_never_called_confirmed(r):
     assert "VOL-V-29.2-01" in data["requirements"]["not_settled"]
     assert any(x.startswith("- NOT SETTLED VOL-V-29.2-01:") and "ADD-03:3.3" in x for x in md.splitlines())
     m = next(x for x in stage2.a2(r)["rows_moved"] if x["stage"] == "ADD-03" and x["row"] == "VOL-V-29.2-01")
-    assert m["change"] == "CHANGED" and any(w.startswith("NOT SETTLED") for w in m["why"]), m
+    # session 12, F5 (audit R-f, deliberate): A2's label is the one A5 gives the row (signals.row_label): NOT SETTLED
+    # (was CHANGED with a NOT SETTLED reason)
+    assert m["change"] == "NOT SETTLED" and any(w.startswith("NOT SETTLED") for w in m["why"]), m

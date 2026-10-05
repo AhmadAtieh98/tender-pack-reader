@@ -56,7 +56,7 @@ it: right-click it, choose Open, then confirm. The launcher activates `.venv`, s
 | 4 | Check the register | `tenderpack check-register` |
 | 5 | AI routes and local model capabilities | `tenderpack ai routes --offline` |
 | 6 | Run an addendum offline | `tenderpack ai run ADD-NN --pdf PATH --offline` (a candidate under `staging/ai/runs/`; nothing accepted) |
-| 7 | Start the local panel | `tenderpack panel`, **only when this version has it** (the launcher checks; another agent builds it) |
+| 7 | Start the local panel | `tenderpack panel --open` (127.0.0.1 only, a new token each start; `docs/PANEL.md`; the launcher sets `TENDERPACK_OFFLINE=1`, so runs started from the panel are offline) |
 | 8 | Run the offline checks | `bash scripts/mac/checks.sh` |
 
 PENDING ON THE MAC: the double-click (Gatekeeper prompt) and each menu item on your machine.
@@ -82,7 +82,7 @@ not touched.
 | 5 | The HTML opens | every `.html` parses; then open one in a browser yourself (Arabic, links) | Parsing passed in the cloud (14 files); the browser view is **PENDING ON THE MAC** |
 | 6 | `ai routes --offline` | Ollama reachable and every configured model checked: installed, vision, tools, context, estimated memory | Tested with a fake local server only. **PENDING ON THE MAC** |
 | 7 | One-batch offline run | `ai run --offline --stop-after ingest` on blind-02's synthetic Addendum No. 3, then one `ai propose --route ollama --offline` request for one provision against the installed model, answered and validated (the time is printed) | **PENDING ON THE MAC** (no Ollama in the cloud) |
-| 8 | The panel | `tenderpack panel --help` works | Not in this version yet (PENDING) |
+| 8 | The panel | `tenderpack panel --help` works; the pages open in the browser at the printed address | `--help` and every page tested in the container by HTTP (`tests/test_session12_panel.py`, 11 tests); the browser, `--open` and launcher item 7 **PENDING ON THE MAC** (`docs/PANEL.md`) |
 
 ## 4. Local models: what tenderpack checks and what it never assumes
 

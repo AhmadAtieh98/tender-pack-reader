@@ -1,0 +1,1521 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T184804Z-0589
+  created: '2026-10-05T18:48:04Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    base_run: null
+    base_candidate_sha256: null
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 Clause 5.1 deletes 'not more than 5 OU/m³ at the site boundary' in Volume II Clause 3.4 and substitutes
+      a reference to the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the ESIA,
+      at that receptor; the 98th percentile hourly basis is unchanged.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than
+        the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and
+        Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.4
+      page: 3
+      kind: span
+      words: Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile
+        hourly value.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: ADD-03 Clause 5.2 requires Bidders to demonstrate compliance with Volume II Clause 3.4, as amended, in
+      the Technical Proposal.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: fact
+    text: 'Figure 7-2 of the ESIA is not in the evidence build; ADD-03 Q18 says it is available in the data room.
+      The numeric odour concentration now applicable cannot be read from the pack: insufficient evidence.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 2
+      kind: cell
+      words: are shown in Figure 7-2 of the Environmental and Social Impact Assessment, which is available to Bidders
+        in the data room. No other modelling inputs will be provided.
+      cell:
+        row_key: '18'
+        column: Authority response
+      crop_sha256: null
+    note: null
+  - id: S4
+    kind: fact
+    text: The ADD-03 cover paragraph describes the odour change as being to 'Volume II Clause 3.5', whereas Clause
+      5.1 names Clause 3.4; VOL-II:3.5 is the noise clause.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact
+        Assessment
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.5
+      page: 3
+      kind: span
+      words: Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S6
+    kind: interpretation
+    text: Clause 5.2 adds a submission obligation (demonstrating compliance in the Technical Proposal) attached
+      to VOL-II:3.4 without changing its text; it is recorded as an annotation with effect adds_obligation.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/5.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-II:3.4
+    payload:
+      id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:3.4
+      old: not more than 5 OU/m³ at the site boundary
+      old_resolved: quoted
+      new: not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental
+        and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor
+      origin: assistant
+    previous_value: not more than 5 OU/m³ at the site boundary
+    proposed_value: not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2
+      of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than
+        the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and
+        Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.4
+      page: 3
+      kind: span
+      words: Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile
+        hourly value.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:3.4
+    - VOL-II:9.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''not more than 5 OU/m³ at the site boundary'' matches VOL-II:3.4 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of
+        the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor'' is
+        what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:5.1 p2
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:3.4 p3
+      ok: true
+      detail: verbatim in VOL-II:3.4 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Printed deleted/substituted pair; text-layer units, no crops involved. The pattern drafter's
+      'OU/m3' was corrected to 'OU/m³' as printed in both the provision and the target (simulate C23 found it once).
+      The 98th percentile basis stays untouched in the target, as 5.1 says. The substitution is textual and fully
+      evidenced; the unknown numeric value in ESIA Figure 7-2 and the cover's 'Clause 3.5' slip are carried by the
+      separate clarification item ADD-03/5.1-clar.
+    review: null
+  - id: ADD-03/5.1-clar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: clarification
+    provision: ADD-03:5.1
+    target: VOL-II:3.4
+    payload:
+      gap: The amended odour criterion in VOL-II:3.4 is defined by reference to Figure 7-2 of the ESIA, which is
+        not in the evidence build; the numeric limit and the receptor cannot be established from the pack (insufficient
+        evidence). The cover summary also cites Clause 3.5 rather than 3.4.
+      proposed_question: Please confirm that Section 5 of Addendum 03 amends Volume II Clause 3.4 (not 3.5 as stated
+        in the cover summary), and confirm the odour concentration (OU/m³, 98th percentile hourly) and the nearest
+        sensitive receptor shown in Figure 7-2 of the ESIA that apply under amended Clause 3.4.
+      practical_impact: Odour control sizing and the compliance demonstration required by ADD-03 Clause 5.2 depend
+        on this value.
+      interim_handling: Retrieve ESIA Figure 7-2 from the data room and record the value as evidence; do not assume
+        5 OU/m³ still applies.
+      decision_owner: null
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the
+        Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact
+        Assessment
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/5.1
+    - ADD-03:Q18
+    conflicts: []
+    missing_information:
+    - ESIA Figure 7-2
+    statements:
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed clarification payload
+      aspect: structure
+    - check: evidence ADD-03:5.1 p2
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: ESIA Figure 7-2'
+      aspect: evidence
+    - check: human-owned
+      ok: true
+      detail: 'evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): a clarification is a
+        matter kept open for people'
+      aspect: decision
+    verification_status: insufficient_evidence
+    model_rationale: Raised alongside the op so the unknown numeric limit is not guessed.
+    review: null
+  - id: ADD-03/5.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:5.2
+    target: VOL-II:3.4
+    payload:
+      id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: annotate
+      targets:
+      - VOL-II:3.4
+      effect: adds_obligation
+      note: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.4
+      page: 3
+      kind: span
+      words: Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile
+        hourly value.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:3.4
+    - ADD-03/5.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S2
+    - S6
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:5.2 p2
+      ok: true
+      detail: verbatim in ADD-03:5.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:3.4 p3
+      ok: true
+      detail: verbatim in VOL-II:3.4 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S6: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: '''shall demonstrate compliance ... in the Technical Proposal'' is a new bidder submission
+      obligation, not a no_effect; it does not alter 3.4''s text, so annotate/adds_obligation (simulate: valid).
+      Depends on interpretation S6, so stays pending for a person. Text-layer units; no crops.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The clause says "as amended", which points to some amendment of VOL-II 3.4, probably ADD-03/5.1 (listed
+          as a dependency). The evidence shown does not include 5.1, so I could not check that annotating 3.4 without
+          changing its text is right. If 5.1 amends 3.4, a person should check that this annotation points at the
+          amended version.
+        - ADD-03:5.2 has status not_issued in the units. The evidence does not say what that means for whether the
+          obligation takes effect. A person should confirm it.
+        evidence_checked:
+        - ADD-03:5.2 p2
+        - VOL-II:3.4 p3
+        - controller_validation checks
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-003-critic
+        created: '2026-10-05T18:48:21Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 57
+    accounted: 2
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+  resolution:
+    provisions_total: 57
+    accounted: 2
+    resolved: 1
+    pending: 1
+    invalid: 0
+    unaccounted: 55
+    pending_provisions:
+    - ADD-03:5.2
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.1 p2
+        ok: true
+        detail: verbatim in ADD-03:5.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:3.4 p3
+        ok: true
+        detail: verbatim in VOL-II:3.4 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.2 p2
+        ok: true
+        detail: verbatim in ADD-03:5.2 at ADD-02
+        aspect: null
+    S3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q18 p2
+        ok: true
+        detail: verbatim in ADD-03:Q18 at ADD-02
+        aspect: null
+    S4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:3.5 p3
+        ok: true
+        detail: verbatim in VOL-II:3.5 at ADD-02
+        aspect: null
+    S6:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.2 p2
+        ok: true
+        detail: verbatim in ADD-03:5.2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:3.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:3.4 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:3.4 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''not more than 5 OU/m³ at the site boundary'' occurs 1 time(s) in VOL-II:3.4'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:3.4
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:3.4
+        - VOL-II:9.1
+        also_in: []
+    - id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: annotate
+      target: VOL-II:3.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:3.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3(b)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: op
+      accounted_by:
+      - ADD-03/5.1
+    - provision: ADD-03:5.2
+      disposition: op
+      accounted_by:
+      - ADD-03/5.2
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-head
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-II:3.4
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: de023fdefe9fcdea6b3e5378f3e4b1ef33542b150a439840d04d190625277b93
+    computed_under:
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - VOL-II:3.4
+    rows_citing_changed_units:
+    - VOL-II-3.4-01
+    rows_stale_at_addendum:
+    - row: VOL-II-3.4-01
+      why:
+      - VOL-II:3.4 changed since BASE (by ADD-03/5.1)
+      - 'quote not found in the effective text at ADD-03: ''Odour control shall achieve not more than 5 OU/m³ at
+        the sit'' (expected: the interpretation predates the change)'
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units: []
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: unknown verb
+        claim: 1
+        detail: '''consolidates Volume I Clauses 6.6 and 6.7 without change of substance'': C28 does not know the
+          verb ''consolidates'', so what it claims is compared by its targets only; a person reads it against the
+          provisions'
+      - kind: not found
+        claim: 1
+        detail: '''consolidates Volume I Clauses 6.6 and 6.7 without change of substance'': no provision of ADD-03
+          does this'
+      - kind: not found
+        claim: 2
+        detail: '''amends the definition of Availability Payment and the indexation of the Availability Payment
+          under Volume V Clause 29.2'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 3
+        detail: '''adds a membrane filtration requirement to Volume II Clause 3.1'': no provision of ADD-03 does
+          this'
+      - kind: not found
+        claim: 4
+        detail: '''replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social
+          Impact Assessment'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 5
+        detail: '''inserts a new Volume II Clause 5.6 limiting the height of permanent structures at the site in
+          accordance with Table 5-1'': no provision of ADD-03 does this'
+      - kind: omitted
+        op: ADD-03/5.1
+        provision: ADD-03:5.1
+        detail: 'ADD-03/5.1 amends VOL-II:3.4; the summary does not mention it: ''In Volume II Clause 3.4, ‘not
+          more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for
+          the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred
+          t…'''
+      - kind: unchecked
+        provision: ADD-03:1.1
+        detail: ADD-03:1.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.3
+        detail: ADD-03:1.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.1
+        detail: ADD-03:2.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.1
+        detail: ADD-03:3.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.2
+        detail: ADD-03:3.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3
+        detail: ADD-03:3.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3(b)
+        detail: ADD-03:3.3(b) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.4
+        detail: ADD-03:3.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.1
+        detail: ADD-03:4.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.2
+        detail: ADD-03:4.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q21
+        detail: ADD-03:Q21 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.3
+        detail: ADD-03:7.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.4
+        detail: ADD-03:7.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-en
+        detail: ADD-03:p4-image/hdr-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-ar
+        detail: ADD-03:p4-image/hdr-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/date
+        detail: ADD-03:p4-image/date is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/ref
+        detail: ADD-03:p4-image/ref is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/subject
+        detail: ADD-03:p4-image/subject is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tender-ref
+        detail: ADD-03:p4-image/tender-ref is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-title
+        detail: ADD-03:p4-image/table-title is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-intro
+        detail: ADD-03:p4-image/table-intro is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-left
+        detail: ADD-03:p4-image/th-left is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-right
+        detail: ADD-03:p4-image/th-right is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-a-left
+        detail: ADD-03:p4-image/row-a-left is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-a-right
+        detail: ADD-03:p4-image/row-a-right is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-b-left
+        detail: ADD-03:p4-image/row-b-left is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-b-right
+        detail: ADD-03:p4-image/row-b-right is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/notes-head
+        detail: ADD-03:p4-image/notes-head is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note1
+        detail: ADD-03:p4-image/note1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note2
+        detail: ADD-03:p4-image/note2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note3
+        detail: ADD-03:p4-image/note3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/signatory
+        detail: ADD-03:p4-image/signatory is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/stamp
+        detail: ADD-03:p4-image/stamp is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para2
+        detail: ADD-03:AppA/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para1
+        detail: ADD-03:AppB/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/a
+        detail: ADD-03:T5-1/a is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/b
+        detail: ADD-03:T5-1/b is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/notes
+        detail: ADD-03:T5-1/notes is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(1)
+        detail: ADD-03:T5-1/note(1) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(2)
+        detail: ADD-03:T5-1/note(2) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(3)
+        detail: ADD-03:T5-1/note(3) is unresolved (no op yet), so its effect cannot be compared with the summary
+      candidate:
+        validated_stage: ADD-02
+        stage: ADD-03
+        paragraph: 'ADD-03 is PARTIAL: 56 of 57 provisions unresolved, so A3 and A5 stay validated at ADD-02. If
+          the 1 op(s) that are valid there stood (each still a proposal: review proposed 1), A3 would gain 0 row(s)
+          (none), lose 0 (none) and change 0 (none); A5, replanned at ADD-03''s issue date (2026-11-15), would move
+          the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 0 REVIEW through
+          relationships. Not settled: 19 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint,
+          technical-proposal, model-audit-review and 15 more), 1 STALE row(s), 0 obligation(s) reaching no output
+          (C46), 0 relationship chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental
+          Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule
+          7 (deductions), I-PERMIT and 5 more. Clarification route: the clarification window closed on 2026-11-12
+          (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person.
+          Nothing here is validated, accepted or applied to the real state.'
+        a3:
+          enters: []
+          leaves: []
+          changes: []
+        blocked_activities:
+        - fin-model-build
+        - model-auditor-appoint
+        - technical-proposal
+        - model-audit-review
+        - deviations-review
+        - clarifications
+        - fin-model-freeze
+        - model-audit-opinion
+        - form-4a-prep
+        - form-4e
+        - form-4f
+        - iso-copy
+        - form-4a
+        - form-4b
+        - assemble-envelope-a
+        - assemble-envelope-b
+        - copies
+        - seal-and-mark
+        - deliver
+        scenarios: []
+      clarification_window:
+        stage: ADD-03
+        issued: '2026-11-15'
+        date: '2026-11-12'
+        rule: VOL-I 5.2
+        row: VOL-I-5.2-01
+        closed: true
+        note: 'the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a
+          clarification; it is a bid-decision for a person'
+      requirements:
+        new: []
+        out: []
+        changed:
+        - VOL-II-3.4-01
+        secondary: {}
+        confirmed: []
+        not_settled: []
+      stale:
+      - VOL-II-3.4-01
+      relationships:
+        confirmed dependency: []
+        proposed relationship: []
+        possible impact: []
+        not supplied: []
+      a3:
+        enters: []
+        leaves: []
+      answers_to_reread:
+      - answer: ADD-03:Q18
+        issued_by: ADD-03
+        text: 'No: 18 | Bidder question: Will the Authority provide dispersion modelling inputs for the design of
+          the odour control system? | Authority response: The nearest sensitive receptor, and the odour concentration
+          applicable a…'
+        why: cites VOL-II:3.4, changed by ADD-03/5.1
+        status: REVIEW (not automatically revoked)
+        reread: to be re-read against the new text of VOL-II:3.4 (ADD-03/5.1); a person decides whether the answer
+          still holds
+        stage: ADD-03
+      programme:
+      - activity: assemble-envelope-a
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: assemble-envelope-b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: attendance-notice
+        change: STATUS
+        detail: timing CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known -> CONDITIONAL
+          — window elapsed 2026-10-14; whether the condition arose is not known; total float -7 -> -23 WD; the planning
+          date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: bond-approval
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: bond-issue
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: clarifications
+        change: STATUS
+        detail: timing OK -> DEADLINE PASSED; total float +13 -> -3 WD; the planning date moved 2026-10-22 -> 2026-11-15,
+          which by itself shifts every float by the Working Days between them
+      - activity: completion-certs
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 9 WD; total float +7 -> -9 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: consortium-check
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +13 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: copies
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: deliver
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: deviations-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 5 WD; total float +11 -> -5 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-assumptions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-build
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-freeze
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-standing
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +15 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-statements
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +15 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4a
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +12 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4a-prep
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a-prep
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +20 -> +4 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 9 WD; total float +7 -> -9 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4b-prep
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 7 WD; total float +9 -> -7 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4c-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +18 -> +2 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4c-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4e
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4f
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4g-review
+        change: STATUS
+        detail: timing OK -> OK; total float +17 -> +1 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4g-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +12 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: ground-dd
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: investment-licence
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: iso-copy
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +5 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: lcc-certificate
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: lcc-ratio
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: lender-terms
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-opinion
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-auditor-appoint
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: om-evidence
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +13 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: pcg-execution
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float +3 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: pcg-wording
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float +3 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: poa
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: poa-resolutions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: references
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 7 WD; total float +9 -> -7 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: seal-and-mark
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: spoc
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +5 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: VOL-II-3.4-01 (text, status, stale)'
+        rows:
+        - VOL-II-3.4-01
+      - activity: technical-proposal
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-15)\n\n- ops: 1 (0\
+      \ invalid); provisions: 57 (56 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para1: Issued 15 November\
+      \ 2026\n- UNRESOLVED ADD-03:cover/para2: Tender NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:cover/para3: This\
+      \ Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of\
+      \ Availability Payment and the indexation of the Ava\n- UNRESOLVED ADD-03:1.1: This Addendum is issued under\
+      \ Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.\n\
+      - UNRESOLVED ADD-03:1.2: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table\
+      \ or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.\n- UNRESOLVED ADD-03:1.3: Requests\
+      \ for clarification received after the time stated in Volume I Clause 5.2 have not been answered.\n- UNRESOLVED\
+      \ ADD-03:2.1: Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6\
+      \  A Bidder may withdraw its Proposal at any time before the Propos\n- UNRESOLVED ADD-03:2.2: The number 6.7\
+      \ is not reused. The Clauses of Volume I are not renumbered.\n- UNRESOLVED ADD-03:3.1: In Volume V Clause\
+      \ 1.1, ‘the annual payment calculated under Clause 29’ is deleted and ‘the annual payment, expressed at Base\
+      \ Date prices, calculated under Clau\n- UNRESOLVED ADD-03:3.2: The following new Clause 1.1A is inserted in\
+      \ Volume V after Clause 1.1: ‘1.1A  Base Date means the date falling twenty-eight (28) days before the Proposal\
+      \ Due D\n- UNRESOLVED ADD-03:3.3: Volume V Clause 29.2 is deleted and replaced by the following: ‘29.2  The\
+      \ Availability Payment shall be indexed annually from the Base Date in accordance with S\n- UNRESOLVED ADD-03:3.3(b):\
+      \ (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of\
+      \ the payment shall remain fixed.’\n- UNRESOLVED ADD-03:3.4: Bidders shall reflect this Section 3 in the Financial\
+      \ Model submitted under Volume I Clause 10.3.\n- UNRESOLVED ADD-03:4.1: In Volume II Clause 3.1, ‘The Authority\
+      \ does not mandate a particular process train.’ is deleted and ‘The treatment process shall include a membrane\
+      \ filtration \n- UNRESOLVED ADD-03:4.2: Bidders shall reflect this Section 4 in the process design submitted\
+      \ under Volume II Section 3.\n- UNRESOLVED ADD-03:5.2: Bidders shall demonstrate compliance with Volume II\
+      \ Clause 3.4, as amended, in the Technical Proposal.\n- UNRESOLVED ADD-03:Q15: No: 15 | Bidder question: Volume\
+      \ II Clause 6.4 requires process data to be retained for not less than seven (7) years. Would a retention\
+      \ period of ten (10) year\n- UNRESOLVED ADD-03:Q16: No: 16 | Bidder question: May a Bidder state ‘no deviations’\
+      \ in Form 4-E and set out its assumptions on Volume V in the Technical Proposal? | Authority response\n- UNRESOLVED\
+      \ ADD-03:Q17: No: 17 | Bidder question: Where the proposed EPC Contractor is an unincorporated joint venture,\
+      \ which entity must hold the ISO 9001:2015 certificate required by\n- UNRESOLVED ADD-03:Q18: No: 18 | Bidder\
+      \ question: Will the Authority provide dispersion modelling inputs for the design of the odour control system?\
+      \ | Authority response: The nearest s\n- UNRESOLVED ADD-03:Q19: No: 19 | Bidder question: Form 4-F requests\
+      \ the Availability Payment for year 1 of operations. Is that figure to be stated in the prices of year 1 of\
+      \ operations\n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder question: Form 4-F states ‘Per Volume V Clause 29.2’\
+      \ against ‘Indexation basis assumed’. Is any figure to be stated in that row? | Authority res\n- UNRESOLVED\
+      \ ADD-03:Q21: No: 21 | Bidder question: Does the Technical Proposal need to address construction plant in\
+      \ addition to the matters listed in Volume I Clause 9.7? | Authority r\n- UNRESOLVED ADD-03:7.1: The following\
+      \ new Clause 5.6 is inserted in Volume II after Clause 5.5: ‘5.6  The Project Company shall comply with the\
+      \ height limits in Table 5-1, which is rep\n- UNRESOLVED ADD-03:7.2: Table 5-1 is issued in the Arabic language.\
+      \ The Arabic text governs. The English translation at Appendix B is provided for convenience only.\n- UNRESOLVED\
+      \ ADD-03:7.3: A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding\
+      \ thirty (30) metres in height shall notify the Authority through the\n- UNRESOLVED ADD-03:7.4: Bidders shall\
+      \ reflect Table 5-1 in the Technical Proposal.\n- UNRESOLVED ADD-03:AppA/para1: Table 5-1 is reproduced below\
+      \ as issued by the Northern Region Airspace Safeguarding Office. The Arabic text governs in accordance with\
+      \ Section 7 of this Addend\n- UNRESOLVED ADD-03:p4-image/hdr-en: Northern Region Airspace Safeguarding Office\n\
+      - UNRESOLVED ADD-03:p4-image/hdr-ar: مكتب حماية المجال الجوي بالمنطقة الشمالية\n- UNRESOLVED ADD-03:p4-image/date:\
+      \ التاريخ: ١٠ نوفمبر ٢٠٢٦م\n- UNRESOLVED ADD-03:p4-image/ref: الرقم: ٤٧١/٢٠٢٦\n- UNRESOLVED ADD-03:p4-image/subject:\
+      \ الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان\n- UNRESOLVED ADD-03:p4-image/tender-ref:\
+      \ مناقصة رقم: NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:p4-image/table-title: جدول ٥-١: الحدّ الأقصى لارتفاع\
+      \ المنشآت والمعدّات في الموقع\n- UNRESOLVED ADD-03:p4-image/table-intro: يُحدِّد الحدّ الأقصى المسموح به للارتفاع\
+      \ في كل منطقة من مناطق الموقع على النحو الآتي:\n- UNRESOLVED ADD-03:p4-image/th-left: الإنارة التحذيرية الحدّ\
+      \ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)\n- UNRESOLVED ADD-03:p4-image/th-right: الوصف المنطقة\n-\
+      \ UNRESOLVED ADD-03:p4-image/row-a-left: مطلوبة\n- UNRESOLVED ADD-03:p4-image/row-a-right: ٢٥ الجزء من الموقع\
+      \ الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع أ\n- UNRESOLVED ADD-03:p4-image/row-b-left: مطلوبة لأي\
+      \ جزء يزيد ارتفاعه على ٣٠ متراً ٤٠\n- UNRESOLVED ADD-03:p4-image/row-b-right: باقي مساحة الموقع ب\n- UNRESOLVED\
+      \ ADD-03:p4-image/notes-head: ملاحظات:\n- UNRESOLVED ADD-03:p4-image/note1: ١. تسري هذه الحدود على جميع المنشآت\
+      \ الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.\n- UNRESOLVED ADD-03:p4-image/note2: ٢.\
+      \ يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.\n- UNRESOLVED ADD-03:p4-image/note3: ٣.\
+      \ يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.\n- UNRESOLVED ADD-03:p4-image/signatory:\
+      \ مدير المكتب\n- UNRESOLVED ADD-03:p4-image/stamp: \n- UNRESOLVED ADD-03:AppA/para2: End of reproduction.\n\
+      - UNRESOLVED ADD-03:AppB/para1: This translation is provided for convenience only. The Arabic text of Table\
+      \ 5-1 at Appendix A governs.\n- UNRESOLVED ADD-03:T5-1/a: Zone: A | Description: The part of the site within\
+      \ 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting\n\
+      - UNRESOLVED ADD-03:T5-1/b: Zone: B | Description: The remainder of the site | Maximum height (m above finished\
+      \ ground level): 40 | Obstacle lighting: Required for any part exceeding 30 m\n- UNRESOLVED ADD-03:T5-1/notes:\
+      \ Notes to Table 5-1:\n- UNRESOLVED ADD-03:T5-1/note(1): (1)  These limits apply to all permanent structures,\
+      \ including stacks.\n- UNRESOLVED ADD-03:T5-1/note(2): (2)  Height is measured from finished ground level\
+      \ after grading and filling.\n- UNRESOLVED ADD-03:T5-1/note(3): (3)  The Office shall be notified at least\
+      \ thirty (30) days before any crane is erected at the site.\n- cover summary vs provisions (C28, report only):\
+      \ 7 finding(s)\n  - unknown verb: 'consolidates Volume I Clauses 6.6 and 6.7 without change of substance':\
+      \ C28 does not know the verb 'consolidates', so what it claims is compared by its targets only; a person reads\
+      \ it against the provisions\n  - not found: 'consolidates Volume I Clauses 6.6 and 6.7 without change of substance':\
+      \ no provision of ADD-03 does this\n  - not found: 'amends the definition of Availability Payment and the\
+      \ indexation of the Availability Payment under Volume V Clause 29.2': no provision of ADD-03 does this\n \
+      \ - not found: 'adds a membrane filtration requirement to Volume II Clause 3.1': no provision of ADD-03 does\
+      \ this\n  - not found: 'replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental\
+      \ and Social Impact Assessment': no provision of ADD-03 does this\n  - not found: 'inserts a new Volume II\
+      \ Clause 5.6 limiting the height of permanent structures at the site in accordance with Table 5-1': no provision\
+      \ of ADD-03 does this\n  - omitted: ADD-03/5.1 amends VOL-II:3.4; the summary does not mention it: 'In Volume\
+      \ II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration\
+      \ shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment\
+      \ referred t…'\n\n### Validated vs candidate (partial should not mean useless)\n\n- validated (unchanged,\
+      \ ADD-02): `<outputs>/a3/a3.pdf` (one page), `<outputs>/a5/`\n- candidate (CANDIDATE — NOT VALIDATED, ADD-03\
+      \ as proposed): `<outputs>/a3/a3_candidate.pdf` / `.md`, `<outputs>/a5/candidate/`\n\n**What may be changing.**\
+      \ ADD-03 is PARTIAL: 56 of 57 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 1 op(s)\
+      \ that are valid there stood (each still a proposal: review proposed 1), A3 would gain 0 row(s) (none), lose\
+      \ 0 (none) and change 0 (none); A5, replanned at ADD-03's issue date (2026-11-15), would move the latest dates\
+      \ of 0 activities (none), add 0 (none) and remove 0 (none), and marks 0 REVIEW through relationships. Not\
+      \ settled: 19 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint, technical-proposal,\
+      \ model-audit-review and 15 more), 1 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship\
+      \ chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued for\
+      \ the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT\
+      \ and 5 more. Clarification route: the clarification window closed on 2026-11-12 (VOL-I 5.2): this question\
+      \ cannot be submitted as a clarification; it is a bid-decision for a person. Nothing here is validated, accepted\
+      \ or applied to the real state.\n\n- **Clarification route:** the clarification window closed on 2026-11-12\
+      \ (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person (ADD-03\
+      \ issued 2026-11-15; the cut-off is computed from VOL-I-5.2-01 at that stage). No question about it is suggested\
+      \ as sendable; a proposed entry stays a DRAFT, not sent.\n\n## Requirements\n\n- new: 0; out of force: 0;\
+      \ changed: 1\n\n- CHANGED VOL-II-3.4-01: wording (by ADD-03/5.1)\n\n## Stale readings and decisions\n\n- STALE\
+      \ VOL-II-3.4-01: VOL-II:3.4 changed since BASE (by ADD-03/5.1); quote not found in the effective text at ADD-03:\
+      \ 'Odour control shall achieve not more than 5 OU/m³ at the sit' (expected: the interpretation predates the\
+      \ change)\n\n## Obligations not reaching the outputs (C46)\n\n- none\n\n## Reached through relationships (indirect:\
+      \ for review, not direct citations)\n\nCurated links (relationships file) followed from what changed. The\
+      \ requirements above cite a changed unit; these are reached through another provision, in three classes that\
+      \ are never merged. A5 marks the activities that serve them REVIEW with their dates unchanged.\n\nRelationship\
+      \ status: confirmed = stated in the documents (the entry quotes the cross-reference), not confirmed by a person;\
+      \ proposed = inferred by a curator or a model, a person decides; possible = a weaker inference.\n\n### Confirmed\
+      \ dependency (0)\n- none\n\n### Proposed relationship (0)\n- none\n\n### Possible impact (0)\n- none\n\n###\
+      \ Referenced but not supplied: conclusions in play that cannot be established (0)\n- none\n\n## Disqualifiers\
+      \ (A3)\n\n- no change\n\n## Earlier answers to re-read against the new text (never revoked; a person decides)\n\
+      \n- `ADD-03:Q18` (ADD-03): cites VOL-II:3.4, changed by ADD-03/5.1; to be re-read against the new text of\
+      \ VOL-II:3.4 (ADD-03/5.1); a person decides whether the answer still holds\n\n## Programme impact (status\
+      \ date 2026-10-22 -> 2026-11-15)\n\n- STATUS assemble-envelope-a: timing INFEASIBLE by 12 WD -> INFEASIBLE\
+      \ by 28 WD; total float -12 -> -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts\
+      \ every float by the Working Days between them\n- STATUS assemble-envelope-b: timing OK -> INFEASIBLE by 16\
+      \ WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every\
+      \ float by the Working Days between them\n- STATUS attendance-notice: timing CONDITIONAL — window elapsed\
+      \ 2026-10-14; whether the condition arose is not known -> CONDITIONAL — window elapsed 2026-10-14; whether\
+      \ the condition arose is not known; total float -7 -> -23 WD; the planning date moved 2026-10-22 -> 2026-11-15,\
+      \ which by itself shifts every float by the Working Days between them\n- STATUS bond-approval: timing OK ->\
+      \ INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by\
+      \ itself shifts every float by the Working Days between them\n- STATUS bond-issue: timing OK -> INFEASIBLE\
+      \ by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts\
+      \ every float by the Working Days between them\n- STATUS clarifications: timing OK -> DEADLINE PASSED; total\
+      \ float +13 -> -3 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float\
+      \ by the Working Days between them\n- STATUS completion-certs: timing OK -> INFEASIBLE by 9 WD; total float\
+      \ +7 -> -9 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the\
+      \ Working Days between them\n- STATUS consortium-check: timing OK -> INFEASIBLE by 3 WD; total float +13 ->\
+      \ -3 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- STATUS copies: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 ->\
+      \ -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- STATUS deliver: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12\
+      \ -> -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- STATUS deviations-review: timing OK -> INFEASIBLE by 5 WD; total float +11 -> -5 WD;\
+      \ the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days\
+      \ between them\n- STATUS fin-assumptions: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the\
+      \ planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between\
+      \ them\n- STATUS fin-model-build: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning\
+      \ date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them\n\
+      - STATUS fin-model-freeze: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved\
+      \ 2026-10-22 -> 2026-11-15, which by itself shifts every floa"
+    findings: []
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-003-critic
+    route: host
+    items:
+    - item: ADD-03/5.2
+      agrees: true
+      concerns: 2
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

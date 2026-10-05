@@ -172,7 +172,9 @@ def test_c_an_issue_with_a_status_or_resolution_shows_pending_until_a_person_dec
     dec = [{"kind": "issue", "item": "I-X", "decision": "accept", "reviewer": "Ahmad", "date": "2026-10-05",
             "fingerprint": H.entry_fingerprint("issue", iss)}]
     assert H.issue_label("I-X", iss, dec).startswith("RESOLVED (decision recorded: Ahmad")
-    assert H.issue_label("I-X", {"text": "x", "owner": "Legal"}, []) is None        # an open curated issue: unchanged
+    # an open curated issue: unchanged. Session 12, F5 (audit A3-5, deliberate): an issue owned by Legal or Commercial is
+    # a person's judgment by its owner, so the open-issue case uses another owner
+    assert H.issue_label("I-X", {"text": "x", "owner": "Bid manager"}, []) is None
 
 
 def test_c_accept_records_a_persons_decision_on_a_clarification_entry(tmp_path):

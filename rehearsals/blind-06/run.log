@@ -1,0 +1,107 @@
+[ADD-03-run-host-blind06-20261005T173226Z] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p4-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-blind06-20261005T173226Z] readings ...
+  reading-ADD-03-p4-r1: done (interpretation_pending; /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/candidate/curation/readings/ADD-03-p4-r1.yaml)
+  ingest with the proposed readings: ok (608 units; readings PENDING HUMAN REVIEW: ['ADD-03-p4-r1'])
+  candidate built: 70 provisions of ADD-03 (+14 structural units listed)
+[ADD-03-run-host-blind06-20261005T173226Z] analysis ...
+  70 provisions in 10 batch(es) of at most 8
+  analysis-001: done (7 item(s); run ADD-03-host-20261005T173952Z-d69e)
+  analysis-001 critic: done (4 reviewed, 1 disagree)
+  analysis-002: done (9 item(s); run ADD-03-host-20261005T174435Z-1292)
+  analysis-002 critic: done (7 reviewed, 0 disagree)
+  analysis-003: done (9 item(s); run ADD-03-host-20261005T174557Z-4db2)
+  analysis-003 critic: done (5 reviewed, 0 disagree)
+  analysis-004: done (10 item(s); run ADD-03-host-20261005T175300Z-7198)
+  analysis-004 critic: done (5 reviewed, 3 disagree)
+  analysis-005: done (8 item(s); run ADD-03-host-20261005T174913Z-53a2)
+  analysis-005 critic: done (8 reviewed, 0 disagree)
+  analysis-006: done (9 item(s); run ADD-03-host-20261005T175926Z-56be)
+  analysis-006 critic: done (9 reviewed, 0 disagree)
+  analysis-007: done (8 item(s); run ADD-03-host-20261005T175850Z-70a4)
+  analysis-007 critic: done (8 reviewed, 1 disagree)
+  analysis-008: done (8 item(s); run ADD-03-host-20261005T180604Z-6291)
+  analysis-008 critic: done (8 reviewed, 0 disagree)
+  analysis-009: done (5 item(s); run ADD-03-host-20261005T180305Z-2baa)
+  analysis-009 critic: done (1 reviewed, 0 disagree)
+  analysis-010: done (10 item(s); run ADD-03-host-20261005T181210Z-b2b4)
+  analysis-010 critic: done (10 reviewed, 1 disagree)
+[ADD-03-run-host-blind06-20261005T173226Z] validation ...
+  combined set: 83 item(s); 70/70 provisions accounted for; {'interpretation_pending': 45, 'evidence_verified': 15, 'conflicting': 7, 'insufficient_evidence': 11, 'escalated': 5}
+[ADD-03-run-host-blind06-20261005T173226Z] downstream ...
+  downstream-001: done (13 item(s))
+  downstream-002: done (16 item(s))
+  downstream-003: done (14 item(s))
+  downstream-004: done (21 item(s))
+  downstream: 48 task(s) {'row_reading': 17, 'row_new': 1, 'clarification_item': 3, 'activity': 1, 'escalation': 22, 'reading_rows': 1, 'computed_date': 1, 'derived_consequence': 2}
+[ADD-03-run-host-blind06-20261005T173226Z] downstream_validation ...
+  downstream items: {'insufficient_evidence': 9, 'interpretation_pending': 19, 'escalated': 22, 'conflicting': 3, 'evidence_verified': 1, 'invalid': 10}; held back 1
+[ADD-03-run-host-blind06-20261005T173226Z] critic ...
+  downstream-001 critic: done (2 reviewed, 1 disagree)
+  downstream-002 critic: done (5 reviewed, 0 disagree)
+  downstream-003 critic: done (2 reviewed, 1 disagree)
+[ADD-03-run-host-blind06-20261005T173226Z] promotion ...
+  promoted into the candidate: 11 op(s), 39 disposition(s), 22 unresolved, 2 new row(s), 11 reading(s), 4 issue(s), 1 activit(y/ies), 2 clarification(s), 1 relationship(s)
+[ADD-03-run-host-blind06-20261005T173226Z] pin ...
+[ADD-03-run-host-blind06-20261005T173226Z] check_register ...
+  check-register: exit 1, 1 finding(s) {'C46': 1}
+[ADD-03-run-host-blind06-20261005T173226Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/candidate/out (exit 0; 103 file(s) carry the banner)
+[ADD-03-run-host-blind06-20261005T173226Z] diff ...
+[ADD-03-run-host-blind06-20261005T173226Z] review ...
+timings (wall clock per step):
+  ingest                     29.7 s  done
+  readings                  211.4 s  done
+  analysis                 2170.6 s  done
+  validation                  6.0 s  done
+  downstream                838.9 s  done
+  downstream_validation       0.7 s  done
+  critic                     47.2 s  done
+  promotion                  17.2 s  done
+  pin                         1.2 s  done
+  check_register              4.0 s  done
+  outputs                    12.4 s  done
+  diff                        3.1 s  done
+  review                      3.2 s  done
+  total (steps)            3345.6 s  (55.8 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind06-20261005T173226Z: partial (22 provision(s) unresolved in the candidate (listed first in the review packet); 30 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-7.2-01, row:VOL-II-8.1-01, row:VOL-II-8.2-01, row:VOL-II-8.3-01, row:VOL-V-31.3-03, clar:CQ-VOL-III-DRAWINGS, clar:CQ-PERSISTENT-BREACH, clar:CQ-PCOD-RELIABILITY-RUN …; check-register on the candidate: exit 1, 1 finding(s) {'C46': 1}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['deduction'] that no row's consequence carries at ADD-03: 'This Addendum incorpo…)
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind06-20261005T173226Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "22 provision(s) unresolved in the candidate (listed first in the review packet); 30 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-7.2-01, row:VOL-II-8.1-01, row:VOL-II-8.2-01, row:VOL-II-8.3-01, row:VOL-V-31.3-03, clar:CQ-VOL-III-DRAWINGS, clar:CQ-PERSISTENT-BREACH, clar:CQ-PCOD-RELIABILITY-RUN …; check-register on the candidate: exit 1, 1 finding(s) {'C46': 1}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['deduction'] that no row's consequence carries at ADD-03: 'This Addendum incorpo…",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z",
+ "provisions": {
+  "validated": 70
+ },
+ "timings": {
+  "ingest": 29.7,
+  "readings": 211.4,
+  "analysis": 2170.6,
+  "validation": 6.0,
+  "downstream": 838.9,
+  "downstream_validation": 0.7,
+  "critic": 47.2,
+  "promotion": 17.2,
+  "pin": 1.2,
+  "check_register": 4.0,
+  "outputs": 12.4,
+  "diff": 3.1,
+  "review": 3.2
+ },
+ "total_seconds": 3345.6,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "22 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "30 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-7.2-01, row:VOL-II-8.1-01, row:VOL-II-8.2-01, row:VOL-II-8.3-01, row:VOL-V-31.3-03, clar:CQ-VOL-III-DRAWINGS, clar:CQ-PERSISTENT-BREACH, clar:CQ-PCOD-RELIABILITY-RUN …",
+   "check-register on the candidate: exit 1, 1 finding(s) {'C46': 1}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['deduction'] that no row's consequence carries at ADD-03: 'This Addendum incorpo…"
+  ]
+ },
+ "approval": "none"
+}
+exit 0 (ADD-03-run-host-blind06-20261005T173226Z)

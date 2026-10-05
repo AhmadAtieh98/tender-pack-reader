@@ -49,7 +49,7 @@ from .schedule import NO_LEVELLING
 
 PAGE_W, PAGE_H = 1190.0, 842.0                    # A3 landscape, points
 MARGIN = 22.0
-LABEL_W, STATUS_W = 292.0, 200.0
+LABEL_W, STATUS_W = 292.0, 230.0   # session 12 (F5; audit R-d): 200 -> 230 so the full status prints in its two lines
 # session 12 (audit A5-10): gantt.html shows the chart at a width at which its smallest text is at least this many CSS
 # pixels (it scrolls horizontally inside its frame); the SVG and the PDF are unchanged
 HTML_MIN_FONT_PX = 9.0
@@ -227,6 +227,15 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
             out += [(f"BLOCKED: {b.split(' (')[0]}", CRIT, "square") for b in re.findall(r"; BLOCKED: ([^;]+)", f)]
         elif f.startswith(("BLOCKED", "REQUIREMENT STALE", "IMAGE READING PENDING", "GATE ISSUE NOT IN THE REGISTER")):
             out.append((f.split(" (")[0], CRIT if f.startswith(("BLOCKED", "REQUIREMENT STALE")) else MUTED, "square"))
+    # session 12 (F5; audit R-d): the BLOCKED tags as one ('BLOCKED, not supplied: A; B'), each document once, so the
+    # status prints in full in its two lines (the cell cut 'BLOCKED...' when each document repeated the words)
+    blocked = [t for t in out if t[0].startswith("BLOCKED")]
+    if len(blocked) > 1:
+        docs = list(dict.fromkeys(re.sub(r"\s+not supplied$", "", re.sub(r"^BLOCKED:\s*(?:cannot be established:\s*)?",
+                                                                          "", t[0])).strip() for t in blocked))
+        i = out.index(blocked[0])
+        out = [t for t in out if t not in blocked]
+        out.insert(i, ("BLOCKED, not supplied: " + "; ".join(docs), CRIT, "square"))
     return out
 
 
@@ -527,6 +536,9 @@ def layout(prog: dict) -> list[tuple]:
              "Each row: activity id, count, then the A1 requirement ids that fit (+n more); ALL ids are in the row's hover "
              "title, gantt.html and programme.csv. Load window: late (LS..LF, clipped at the planning date).",
              f"Milestones outside the chart: {out_txt or 'none'}."]
+    if any(str(f).startswith("REVIEW (") for a in prog.get("activities") or [] for f in a.get("flags") or []):
+        from .relationships import STATUS_LEGEND        # session 12 (F5; audit R-e): what 'REVIEW (confirmed ...)' means
+        notes.append(f"REVIEW (<status> ...) tags: {STATUS_LEGEND}")
     for s in notes:                                   # wrapped, never cut (session 11)
         line = ""
         for wd in s.split(" "):
@@ -679,6 +691,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
               "questions column lists every activity's).",
               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
+              "REVIEW (<status> ...): " + __import__("tenderpack.relationships", fromlist=["STATUS_LEGEND"]).STATUS_LEGEND,
               "Orange triangles: OVERLOAD days of the row's role (load above capacity). Not levelled.",
               "Dotted outline only: CONDITIONAL (window elapsed; whether the condition arose is not known), DEADLINE "
               "PASSED or NOT NEEDED: no work scheduled.",

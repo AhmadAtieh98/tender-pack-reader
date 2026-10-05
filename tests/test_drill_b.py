@@ -45,7 +45,7 @@ def test_drafted_run_is_a_labelled_working_draft_that_keeps_the_validated_state(
     unresolved = {c["provision"] for c in st(r, "ADD-03").coverage if c["disposition"] == "unresolved"}
     assert {"ADD-03:3.1", "ADD-03:Q15", "ADD-03:Q16"} <= unresolved                  # a person decides
     a3 = drill["load"]("out-drafted/a3/a3.json")
-    assert "Proposal Due Date 2026-11-26" in a3["subtitle"] and "ADD-03 is PARTIAL" in a3["subtitle"]
+    assert "Proposal Due Date (PDD) 2026-11-26" in a3["subtitle"] and "ADD-03 is PARTIAL" in a3["subtitle"]  # session 12 (audit A3-3): PDD defined at first use
 
 
 def test_curated_run_applies_and_shows_new_rows(drill):

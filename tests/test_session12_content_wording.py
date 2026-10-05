@@ -92,7 +92,10 @@ def test_issue_label_marks_a_curated_issue_that_asserts_a_judgment():
     assert H.issue_label("I-Y", {"text": "the preamble prints 'the Environmental Permit shall prevail'", "owner": "T"},
                          []) is None
     assert H.issue_label("I-Z", {"text": "how its means of decryption is given", "owner": "Bid manager"}, []) is None
-    assert H.issue_label("I-W", {"text": "x", "owner": "Legal"}, []) is None          # an open curated issue: unchanged
+    # an open curated issue: unchanged. Session 12, F5 (audit A3-5): owner 'Legal' was the example here; an issue owned
+    # by Legal or Commercial is now a person's judgment by its owner (human_owned.owner_judgment), so the open-issue case
+    # uses an owner who is neither (behaviour changed deliberately; tested in test_session12_recheck_fixes.py)
+    assert H.issue_label("I-W", {"text": "x", "owner": "Bid manager"}, []) is None
     # only a person's decision bound to the issue as it reads lifts the label
     dec = [{"kind": "issue", "item": "I-X", "decision": "accept", "reviewer": "Ahmad", "date": "2026-10-05",
             "fingerprint": H.entry_fingerprint("issue", judged)}]

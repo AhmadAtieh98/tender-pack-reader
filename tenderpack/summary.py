@@ -476,6 +476,15 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
     order = [u["unit_id"] for u in units]
     by_id = {u["unit_id"]: u for u in units}
     out = []
+    # session 12 (F5; W5's finding): a unit an earlier addendum inserted is cited by the number it was inserted as
+    # ('Clause 6.8 as inserted by Addendum No. 3' for VOL-I:6.7+ADD-03), as the amendment engine resolves it
+    # (amend.Engine.inserted_as): an op on the inserted unit is also an op on that number for the cover's claims
+    inserted_as: dict[str, str] = {}
+    for st in stages[1:]:
+        for x in st.ops:
+            num = (getattr(x, "details", None) or {}).get("inserted_as")
+            if num and x.op.type == "insert_unit" and x.op.anchor:
+                inserted_as[f"{x.op.anchor}+{st.addendum}"] = f"{x.op.anchor.split(':')[0]}:{num}"
     for i, s in enumerate(stages[1:], 1):
         prev = stages[i - 1].state
         add = s.addendum
@@ -519,7 +528,8 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
             return s.state[o.provision].text if o.provision in s.state else ""
 
         def keys(x) -> list[str]:
-            return _op_keys(x.op, ptext_of(x.op))
+            ks = _op_keys(x.op, ptext_of(x.op))
+            return ks + [inserted_as[k] for k in ks if k in inserted_as and inserted_as[k] not in ks]
 
         def haystack(x) -> set[str]:
             o = x.op
@@ -945,7 +955,11 @@ def critic_direction_items(records: list[dict]) -> list[dict]:
 #   none        no content: it notes the question, says nothing is amended, or only says that clauses apply
 #   confirms    every sentence restates words the targets (or the context) already print, or refers to them
 #   interprets  it says how or where an existing requirement applies, with words the targets do not print, and no
-#               word of obligation or change ('applies to the whole length ..., including the crossings')
+#               word of obligation or change ('applies to the whole length ..., including the crossings'); or (session
+#               12, F5; audit A2-1/A5 N1) it points to a rule that decides between provisions (an order of precedence,
+#               which document prevails) without saying which provision it selects: 'The order of precedence at Volume I
+#               Clause 3.2 applies.' answers 'Which applies?' with a rule, not a choice, so it confirms neither clause
+#               (whatever words the targets print); which one governs stays a person's reading
 #   adds        a sentence of obligation (shall, must, required, ...) with words the targets do not print
 #   changes     words of change ('is amended', 'instead of', 'no longer', 'with effect from' ...), or a figure the targets
 #               do not print where they print another of the same kind
@@ -960,6 +974,9 @@ _ANS_EXCEPT = re.compile(r"\b(?:only if|unless|except|provided that|subject to|o
 _ANS_NULL = re.compile(r"\b(?:notes the (?:question|request|comment)|does not consider (?:any |further )?amendment|no "
                        r"(?:further )?amendment is (?:required|necessary|made)|has nothing (?:further )?to add|refers? "
                        r"(?:the )?bidders? to|is not able to (?:answer|comment))\b", re.I)
+# a sentence that invokes a rule deciding between provisions (precedence, which prevails) without naming the choice
+_ANS_RULE = re.compile(r"\b(?:order of (?:precedence|priority)|precedence|prevail(?:s|ing)?|tak(?:e|es) (?:priority|"
+                       r"precedence)|in the event of (?:any )?(?:conflict|inconsistency|discrepancy))\b", re.I)
 _REF_ID = r"(?:\d[\w.\-()]*|[A-Z]\b|\([a-z0-9]{1,4}\))"
 _REFS = re.compile(r"\b(?:Volume (?:I{1,3}|IV|V)\s+)?(?i:clauses?|sections?|tables?|forms?|appendix|appendices|"
                    r"schedules?|items?|paragraphs?|notes?|clarification requests?)\s+" + _REF_ID
@@ -1023,6 +1040,8 @@ def classify_answer(answer: str, targets, context=()) -> dict:
             kind = "changes"
         elif new_f and target_f:
             kind = "changes"                       # a figure the targets do not print, where they print figures
+        elif _ANS_RULE.search(s):
+            kind = "interprets"                    # a rule of precedence, not a choice: never a confirmation (F5)
         elif _ANS_REF.search(plain.strip(" .")) and len(new_w) <= 1 and not new_f:
             kind = "confirms"                      # 'Volume I Clause 8.7 and Form 4-D apply.'
         elif len(new_w) <= 1 and not new_f:
@@ -1044,7 +1063,8 @@ def classify_answer(answer: str, targets, context=()) -> dict:
                    "that clauses apply)",
            "confirms": "every sentence restates words the annotated units already print, or refers to them",
            "interprets": "it says how or where an existing requirement applies, with words the annotated units do not "
-                         "print, and no word of obligation or change",
+                         "print, and no word of obligation or change; or it points to a rule of precedence without "
+                         "saying which provision it selects",
            "adds": "a sentence of obligation carries words the annotated units do not print",
            "changes": "it carries words of change, or a figure the annotated units do not print"}[top]
     return {"class": top, "evidence": ev, "why": why, "sentences": out}

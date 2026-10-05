@@ -1196,6 +1196,17 @@ class Register:
                         out[h] = f"; annotates {k}" + (f" ({x.op.effect})" if x is not None and x.op.effect else "")
             for h, w in moved:
                 out.setdefault(h, w)
+            # session 12 (F5; audit A1 recheck A1-1 remainder): a reading made at this stage that cites an answer of the
+            # stage by its printed reference ('ADD-02 Q7') rests on it: the answer's op is in the chain
+            for it in row.interpretations:
+                if it.stage != cur.stage:
+                    continue
+                for doc, q in re.findall(r"\b(ADD-\d+)[ /](Q\d+)\b", str(it.note or "")):
+                    h = f"{doc}/{q}"
+                    if self.op_stage.get(h) == cur.stage and h not in out:
+                        x = self.op_result.get(h)
+                        out[h] = f"; cited by the reading made at {cur.stage}" + (
+                            f" ({x.op.effect})" if x is not None and x.op.effect else "")
         return out
 
     def all(self) -> list[dict]:

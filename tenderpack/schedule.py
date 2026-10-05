@@ -745,14 +745,18 @@ def uncarried_reason(row, row_exceptions: dict) -> tuple[str, str]:
 
 
 def row_coverage(evals: list[dict], stage: str, activities: list[dict], row_exceptions: dict,
-                 a3_rows: dict | None = None) -> dict:
+                 a3_rows: dict | None = None, checked_by: dict[str, set[str]] | None = None) -> dict:
     """Every A1 row in force at `stage` (session 12, audit A5-4): `carried` {row: activities}, `excepted` {row: {reason,
-    source, status, assessment, discipline, a3}} (uncarried_reason), `uncarried` [rows with no activity and no reason]."""
+    source, status, assessment, discipline, a3}} (uncarried_reason), `uncarried` [rows with no activity and no reason].
+    Session 12 (F5; audit A5 N3): `carried` splits into `discharged` (an activity produces or checks what the row
+    requires) and `reviewed` (every activity carrying it does so only as a check of its volume, `_volume_checks`:
+    reviewed for deviations, not discharged); `volumes` names the volumes checked."""
     carriers: dict[str, list[str]] = {}
     for a in activities:
         for k in a["req_ids"]:
             carriers.setdefault(k, []).append(a["id"])
-    out = {"rows": [], "carried": {}, "excepted": {}, "uncarried": []}
+    out = {"rows": [], "carried": {}, "discharged": {}, "reviewed": {}, "excepted": {}, "uncarried": [],
+           "volumes": sorted({v for a in activities for v in a.get("volume_checks") or []})}
     for e in sorted(evals, key=lambda e: e["row"].id):
         ev = e["stages"].get(stage) or {}
         if not in_force(str(ev.get("status") or "")):
@@ -761,6 +765,8 @@ def row_coverage(evals: list[dict], stage: str, activities: list[dict], row_exce
         out["rows"].append(k)
         if carriers.get(k):
             out["carried"][k] = sorted(carriers[k])
+            only_check = set(carriers[k]) <= set((checked_by or {}).get(k) or ())
+            out["reviewed" if only_check else "discharged"][k] = sorted(carriers[k])
             continue
         why, src = uncarried_reason(e["row"], row_exceptions or {})
         if why:
@@ -775,9 +781,51 @@ def row_coverage(evals: list[dict], stage: str, activities: list[dict], row_exce
 
 # ---------------------------------------------------------------------------------------------- plan
 
+def _meets(u: str, v: str) -> bool:
+    """Whether two unit ids name the same provision or one contains the other ('VOL-I:9.1' and 'VOL-I:9.1(i)')."""
+    return u == v or u.startswith((v + "/", v + "(", v + "#")) or v.startswith((u + "/", u + "(", u + "#"))
+
+
+def question_reach(question_units: dict[str, list[str]], questions: dict[str, list[str]], acts: dict, row_obj: dict,
+                   by_row: dict, checked_by: dict[str, set[str]]) -> dict[str, set[str]]:
+    """Question id -> the activities its answer would change (session 12, F5; audit A5 N2: a question travelling
+    through generic rows reached 29 activities). The question's rows: the rows carrying one of its linked issues whose
+    units (or effective units) meet the question's own units; when none does, every row carrying a linked issue. Its
+    deliverables: the evidence items shared by the activities that carry each of those rows (the intersection over the
+    rows; the union when they share none), so a generic row (Volume IV's cover note on every form, VOL-I 9.3 on the
+    Power of Attorney too) does not spread it. An activity is reached when it carries one of the question's rows, not
+    only as a check of its volume unless the row's units meet the question's, and produces one of its deliverables."""
+    issue_q: dict[str, set[str]] = {}
+    for i, qs in (questions or {}).items():
+        for q in qs:
+            issue_q.setdefault(q, set()).add(i)
+    carriers: dict[str, set[str]] = {}
+    for aid, a in acts.items():
+        for rid in a["req_ids"]:
+            carriers.setdefault(rid, set()).add(aid)
+    ev_of = lambda aid: set(acts[aid].get("evidence_items") or [acts[aid].get("evidence")]) - {None, ""}  # noqa: E731
+
+    def units_of(rid: str) -> list[str]:
+        ev = by_row.get(rid) or {}
+        return list(getattr(row_obj.get(rid), "units", None) or []) + [
+            d.get("effective_unit") for d in ev.get("units_detail") or [] if d.get("effective_unit")]
+    out: dict[str, set[str]] = {}
+    for q, iss in issue_q.items():
+        mine = [k for k, row in row_obj.items() if set(getattr(row, "issues", None) or []) & iss and k in carriers]
+        meet = [k for k in mine if any(_meets(u, v) for u in units_of(k) for v in question_units.get(q) or [])]
+        rows = meet or mine
+        sets = [set().union(*(ev_of(x) for x in carriers[k])) for k in rows]
+        deliv = set.intersection(*sets) if sets else set()
+        deliv = deliv or (set().union(*sets) if sets else set())
+        out[q] = {aid for k in rows for aid in carriers[k] if ev_of(aid) & deliv
+                  and (aid not in checked_by.get(k, set()) or k in meet)}
+    return out
+
+
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
          anchors: dict, evidence_items: dict | None = None, anchor_details: dict | None = None, notified_days: list[str] | None = None,
-         reached: list[dict] | None = None, questions: dict[str, list[str]] | None = None) -> dict:
+         reached: list[dict] | None = None, questions: dict[str, list[str]] | None = None,
+         question_units: dict[str, list[str]] | None = None) -> dict:
     """evals: [{"row": Row, "stages": {stage: evaluation}}] from register.Register.all().
     evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope.
     status_date: the planning date (the stage's addendum issue date).
@@ -788,7 +836,11 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     rows, evidence items or own id a relationship reaches carries `relationship_review` and a flag "REVIEW (<class>):
     ..." per class; its dates and timing status are unchanged (a relationship marks work for review, never moves it).
     questions (optional, session 11): open issue -> the ids of the clarification questions drafted on it (the
-    clarification register); a gate on such an issue gets `ask_by` beside `finalise_by` (see the module docstring)."""
+    clarification register); a gate on such an issue gets `ask_by` beside `finalise_by` (see the module docstring).
+    question_units (optional, session 12, F5; audit A5 N2): question id -> its own units (the register's `units`).
+    With it, a question reaches an activity through its rows only where its answer would change the activity's
+    deliverable (question_reach); the clarification route activity lists every open question once. Without it, as
+    before (every question on an issue of a row the activity carries)."""
     from .register import BID_OUT
     if anchor_details is None:
         anchor_details = details_from_evals(evals, stage, anchors)
@@ -942,6 +994,8 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     route_ids = sorted((k for k, a in acts.items() if a["deadline_rule"] == CLARIFICATION_RULE and net[k]["ls"]),
                        key=lambda k: (net[k]["ls"], k))
     route = acts[route_ids[0]] if route_ids else None
+    reach = question_reach(question_units or {}, questions or {}, acts, row_obj, by_row, checked_by) \
+        if question_units is not None else {}
     gate_route = None
     if route is not None:
         rd = rules.get(CLARIFICATION_RULE) or {}
@@ -994,6 +1048,15 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         # gated or not (the clarification register's linked_issues; a question a person closed no longer counts)
         row_issues = sorted({i for rid in a["req_ids"] for i in getattr(row_obj.get(rid), "issues", None) or []})
         rq = {i: sorted((questions or {})[i]) for i in row_issues if (questions or {}).get(i)}
+        if question_units is not None:     # session 12 (F5; audit A5 N2): only where the answer changes this deliverable
+            if route is not None and aid == route["id"]:
+                rq = {i: sorted(v) for i, v in (questions or {}).items() if v}     # the full list, once, on the route
+                free = sorted(set(question_units) - {q for v in rq.values() for q in v})
+                if free:
+                    rq["no linked issue"] = free
+            else:
+                rq = {i: [q for q in v if aid in reach.get(q, set())] for i, v in rq.items()}
+                rq = {i: v for i, v in rq.items() if v}
         qs = sorted(set(gq) | {q for v in rq.values() for q in v})
         ask = net[route["id"]]["ls"] if (qs and route is not None) else None
         fin = (ls.isoformat() + (" (already before the planning date; see timing)" if ls < status_date else "")
@@ -1101,7 +1164,7 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                         "but no activity carries it and no reason is given (curation/activity_templates.yaml: "
                         "_row_checks for the step that checks it, or _row_exceptions with the reason)")
     # session 12 (audit A5-4): every A1 row in force is carried, or excepted with the reason A1 holds, or NOT CARRIED
-    row_cov = row_coverage(evals, stage, rows, rexc, a3_rows)
+    row_cov = row_coverage(evals, stage, rows, rexc, a3_rows, checked_by)
     for k in row_cov["uncarried"]:
         if k not in a3_rows:
             problems.append(f"C48: {k} is an A1 row in force at {stage}, but no activity carries it and no reason is given "
@@ -1187,14 +1250,11 @@ def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict, answers: di
             continue
         changed_rows, noted_rows, rw, cf, open_rows, ns = [], [], [], [], [], []
         ack = [r for r in c[k].get("addenda_rows") or [] if new_stage and r in c[k]["req_ids"]]
-        for r in ack:
-            ev = cur_evals.get(r) or {}
-            it = ev.get("interpretation") or {}
-            units = [u.get("unit") for u in ev.get("units_detail") or []
-                     if str(u.get("unit") or "").startswith(f"{cur.get('stage')}:")]
-            changed_rows.append(f"{r} (Addenda to acknowledge: {cur.get('stage')} issued since {prev.get('stage')}"
-                                + (f"; {', '.join(units)}" if units else "")
-                                + (f": '{it['quote']}'" if it.get("quote") else "") + ")")
+        for r in ack:                   # session 12 (F5, audit R-f): the one label A2 gives the row too
+            from .signals import row_label
+            lab = row_label(prev_evals.get(r) or {}, cur_evals.get(r) or {},
+                            acknowledge=(str(cur.get("stage")), str(prev.get("stage"))))
+            changed_rows.append(f"{r} ({lab['detail']})")
             rw.append(r)
         for r in c[k]["req_ids"]:
             if r in ack:

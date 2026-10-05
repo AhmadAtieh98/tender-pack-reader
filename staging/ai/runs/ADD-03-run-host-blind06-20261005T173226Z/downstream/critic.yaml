@@ -1,0 +1,276 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 2
+    selected_items:
+      DS-ADD03-VOL-II-7.2-01: &id001
+      - consequential_interpretation
+      DS-ADD03-VOL-V-31.1-01: &id002
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-001-critic
+    route: host
+    reviewed: 2
+    agrees: 1
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    selected: 5
+    selected_items:
+      DS-01: &id003
+      - consequential_interpretation
+      DS-02: &id004
+      - consequential_interpretation
+      DS-07: &id005
+      - consequential_interpretation
+      DS-13: &id006
+      - conflicting
+      DS-14: &id007
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+    route: host
+    reviewed: 5
+    agrees: 5
+    disagrees: 0
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-003:
+    selected: 2
+    selected_items:
+      ADD-03-DS-ESC-2.7: &id008
+      - conflicting
+      ADD-03-DS-ESC-Q19: &id009
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-003-critic
+    route: host
+    reviewed: 2
+    agrees: 1
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-004:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+items:
+  DS-ADD03-VOL-II-7.2-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The controller''s replace_requirement check failed: the old value is not the row''s requirement, or the
+          new value is empty. The payload shows no ''old'' field, so the proposed requirement replacement is not
+          validated.'
+        - The controller status is insufficient_evidence. The row's text before the addendum is not shown, so I
+          cannot confirm the replace_requirement target.
+        - The 85%-110% band wording matches ADD-03:3.1, and the 7.3 restart wording is quoted verbatim. Nothing
+          shown says what happens if a day falls outside the band. The item itself leaves that open for a person.
+        - The note about the 30-day rolling-average limit, VOL-V 1.5, and VOL-V 18.1/18.3 cites provisions that
+          are not in the evidence shown, so I could not check them.
+        evidence_checked:
+        - ADD-03:3.1
+        - VOL-II:7.2 span
+        - VOL-II:7.3 span
+        - controller_validation
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  DS-ADD03-VOL-V-31.1-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The row reads limb (a), which ADD-03 leaves unchanged. The addendum adds limb (d), and the item correctly
+          flags that (d) is not read in this row. A person should decide whether (d) needs its own row.
+        - The statement S-311-D says (d) creates an 'Unavailability Event'. The lead-in text of 31.1 is not shown,
+          so that label is not verifiable from the evidence shown.
+        - The note that deductions have no cap and that Schedule 7 is not supplied is not supported by the evidence
+          shown. Only the quote from 31.2 is shown.
+        - The ADD-03:5.1 evidence span is only 'In Volume V Clause 31.1'. The substance of the change is supported
+          by the (d) wording in the unit text.
+        evidence_checked:
+        - ADD-03:5.1 text
+        - VOL-V:31.1 span (a)
+        - VOL-V:31.2 span
+        - VOL-V:31.1 (d) span in statement S-311-D
+        - controller_validation
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  DS-01:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Limb (b) is re-stated with identical words in the 5.1 substitution, and 31.2 supplies the Schedule 7 deduction
+          and no-cap wording. This follows from the text.
+        - The note's statements that 31.3 as amended by ADD-03 5.2 gives no cure period for (b), and that the TN
+          limit is 3 mg/l (ADD-02 5.1), are not backed by the ADD-03 5.1 text printed here. They rest on S-F2 and
+          other units that are not shown. I could not verify the TN figure.
+        - Pending a person's decision on the interpretation.
+        evidence_checked:
+        - ADD-03:5.1
+        - VOL-V:31.1
+        - VOL-V:31.2
+        - downstream-002/S-F1
+        - downstream-002/S-F2
+        - downstream-002/S-F3
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  DS-02:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Limb (c) is kept verbatim. The substitution only changes the closing punctuation to ', or (d)', as the
+          note says.
+        - The 72-hour cure period for (c) comes from 31.3, which is not printed here. It is cited only in S-F2,
+          which this item does not list among its statements.
+        - The claim that the delivery point appears only on Drawing 03-C-114, and that this drawing was not supplied,
+          is not in the evidence shown. I could not verify it.
+        evidence_checked:
+        - ADD-03:5.1
+        - VOL-V:31.1
+        - VOL-V:31.2
+        - downstream-002/S-F1
+        - downstream-002/S-F3
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  DS-07:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The three differences are supported by the quoted text. The cover says the Authority accepts the programme,
+          but 2.5 requires a Network Operator letter. The cover sets the deadline at 8 Working Days from the Addendum
+          date, but 2.5 sets it at 8 Working Days before the Proposal Due Date. The cover says no deduction applies
+          in the Ramp-Up Period, but 29.3 covers only rolling-average Table 2-4 parameters.
+        - Whether ADD-03 5.1 or 5.2 says anything about Ramp-Up for limb (d) is not shown in full. S-F6 asserts
+          that neither does.
+        - The interim advice to plan to 'the earlier of the two deadlines' cannot be checked, because the Addendum
+          date and Proposal Due Date are not in the evidence. The advice to price (d) deductions as applying in
+          Ramp-Up is a conservative planning assumption, not a ruling. The person deciding should treat both as
+          suggestions only.
+        evidence_checked:
+        - ADD-03:cover/para3
+        - ADD-03:2.5
+        - VOL-V:29.3
+        - downstream-002/S-F4
+        - downstream-002/S-F5
+        - downstream-002/S-F6
+        - downstream-002/S-I1
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  DS-13:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 2.2 says the Arabic text governs, and the Arabic reading (٤, i.e. 4) differs from the English 6. The Arabic
+          note 1 also adds the Eid holidays to the Ramadan exclusion. The conflict is real on the evidence shown.
+        - The Arabic reading is still pending approval, so the TP-2 duration and the excluded periods cannot yet
+          be fixed.
+        - The item says only that the Arabic value 'differs'. It does not state it. The evidence shows ٤ at ADD-03:p4-image/tp2-duration.
+        - The reliance of 2.3(b) and 2.7 on these figures is not shown in the printed evidence.
+        evidence_checked:
+        - ADD-03:2.2
+        - ADD-03:T1-3/tp-2
+        - ADD-03:p4-image/tp2-duration
+        - ADD-03:T1-3/note(1)
+        - ADD-03:p4-image/note1
+        - downstream-002/S-F10
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  DS-14:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - This is the same Arabic/English discrepancy as DS-13, framed as an issue for Legal. It is supported by
+          2.2 and by the pending Arabic reading.
+        - The feed into 2.3 and 2.7 is not shown in the printed evidence.
+        - Both the TP-2 duration and the excluded periods rest on an unapproved Arabic reading.
+        - The issue leaves the conclusion to a person, which is appropriate.
+        evidence_checked:
+        - ADD-03:2.2
+        - ADD-03:T1-3/tp-2
+        - ADD-03:p4-image/tp2-duration
+        - ADD-03:T1-3/note(1)
+        - ADD-03:p4-image/note1
+        - downstream-002/S-F10
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-DS-ESC-2.7:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - ADD-03:2.7 does say a Proposal is rejected if an interruption exceeds the maximum shutdown duration stated
+          for that tie-in point in Table 1-3.
+        - 'The conflict rests on the TP-2 figures: a 01:00–05:00 window (4 hours) against a 6-hour maximum. The
+          Table 1-3 row (ADD-03:T1-3/tp-2) is not printed in the units or evidence, so I cannot check those figures.'
+        - The cited span for the statement is only clause 2.7. It does not contain the TP-2 values.
+        - Clause 2.7 refers only to the 'maximum shutdown duration'. Whether the permitted window also acts as a
+          limit depends on Table 1-3 text I cannot see.
+        - I cannot confirm a real conflict from the evidence shown.
+        evidence_checked:
+        - ADD-03:2.7
+        selected_because: *id008
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-003-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-DS-ESC-Q19:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The timing conflict is supported by the text. Q19 requires submission before the start of the reliability
+          run under Vol II 7.2. VOL-II:7.4 says not later than 60 days after PCOD. The evidence does not show how
+          the reliability run is sequenced against PCOD, but the two deadlines differ either way.
+        - The claim that ADD-03/4.1(b) deletes Vol II Clause 8.2 is not supported by anything printed. Neither the
+          4.1(b) text nor Clause 8.2 is shown. The VOL-II:8.2 conflict and the 'is a CMMS still required' question
+          therefore depend on unverified evidence.
+        - The response also says the standard format will be issued only to the Preferred Bidder. That does not
+          conflict with 7.4 as shown.
+        evidence_checked:
+        - ADD-03:Q19
+        - VOL-II:7.4 (quoted in the item's evidence)
+        selected_because: *id009
+        route: host
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-downstream-003-critic
+        model_reported: claude-sonnet-5-5

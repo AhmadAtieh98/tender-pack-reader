@@ -171,7 +171,17 @@ class Workspace:
         except (OSError, ValueError):
             outputs = {}
         files += [self.evidence / p for p in sorted(outputs)]
+        files += [p for p in self._base_files(cfg) if p not in files]     # session 12: the base run's candidate
         return files
+
+    def _base_files(self, cfg: dict) -> list[Path]:
+        """Session 12 (consecutive addenda): the files of the base run's candidate a state started with `--base-run`
+        depends on (candidate.base_files); none without a base run."""
+        b = cfg.get("base_run") or {}
+        if not b.get("pack"):
+            return []
+        from .candidate import base_files
+        return base_files(self._p(b["pack"]), self._p(b["build"]))
 
     def _inputs_key(self) -> tuple:
         out = []
@@ -227,8 +237,17 @@ class Workspace:
                               activity_templates_sha256=_sha_or_none(c["activity_templates"]),
                               readings_sha256=_files_sha(readings), amendments_sha256=_files_sha(amendments),
                               unrecorded_crops_sha256=_files_sha([], unrecorded) if unrecorded else None,
-                              **self._curation_shas(cfg))
+                              **self._curation_shas(cfg), **self._base_shas(cfg))
         return ident, recorded, unrecorded
+
+    def _base_shas(self, cfg: dict) -> dict:
+        """Session 12: base_run and base_candidate_sha256 (the base run's candidate as it is now); null without one."""
+        b = cfg.get("base_run") or {}
+        if not b.get("pack"):
+            return {}
+        from .candidate import base_fingerprint
+        return {"base_run": str(b.get("run_id")),
+                "base_candidate_sha256": base_fingerprint(self._p(b["pack"]), self._p(b["build"]))}
 
     def _curation_shas(self, cfg: dict) -> dict:
         """Session 11 (D1): register_sha256, relationships_sha256 and curation_sha256 from the bytes of the files now

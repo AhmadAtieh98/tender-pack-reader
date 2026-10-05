@@ -83,6 +83,14 @@ class StateIdentity(_Strict):
                                                           "the evidence items, the clarification register, the row-id "
                                                           "ledger, the scenarios, the recorded trigger facts and the "
                                                           "approved-formula registry")
+    # session 12 (consecutive addenda): a run started on another run's candidate (`--base-run`) depends on that
+    # candidate too; a change there makes the run's sets STALE as any other input would (null without a base run)
+    base_run: str | None = Field(None, description="the run whose candidate this state starts from (`--base-run`); "
+                                                   "null when it starts from the real curation")
+    base_candidate_sha256: str | None = Field(None, description="one sha256 over the base run's candidate as it is now "
+                                                                "(its pack, every curated file it names and its "
+                                                                "evidence build's BUILD_MANIFEST.json); null without a "
+                                                                "base run")
 
     def fingerprint(self) -> str:
         """sha256 of the whole identity: what a calculation or a simulation states it was computed under."""

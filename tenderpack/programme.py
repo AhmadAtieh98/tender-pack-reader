@@ -567,7 +567,7 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
         prog = plan(stage, evals, r["templates"], a, cal, status_date, {"PDD": pdd}, evidence_items=r["evidence_items"],
                     anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified,
                     reached=((r.get("relationship_impact") or {}).get(stage) or {}).get("records"),
-                    questions=gate_questions(r))
+                    questions=gate_questions(r), question_units=question_units(r))
         for act in prog["activities"]:
             for i in act.get("gated_by") or []:
                 if i not in open_issues:
@@ -576,6 +576,15 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
         return extend(prog, r["evidence_items"], a, cal) if extended else prog
 
     return make_plan
+
+
+def question_units(r: dict) -> dict[str, list[str]]:
+    """Question id -> its own units (the clarification register's `units`, else the units its sources quote), for the
+    open questions (session 12, F5; audit A5 N2: schedule.question_reach)."""
+    from .human_owned import clarification_closed
+    return {str(c.get("id")): list(c.get("units") or [x.get("unit") for x in c.get("sources") or [] if x.get("unit")])
+            for c in (r.get("clarifications") or {}).get("clarifications") or []
+            if not clarification_closed(c, r.get("decisions"))}
 
 
 def gate_questions(r: dict) -> dict[str, list[str]]:
@@ -600,6 +609,7 @@ def answers_by_row(r: dict, stage: str) -> dict[str, list[dict]]:
     with answer False (its effect as class). For schedule.deltas(answers=...): a confirming answer never makes a
     requirement change (session 11, audit A5-4)."""
     import re
+    from .signals import op_pending
     from .summary import answer_targets, classify_answer
     order = list(r["order"])
     if stage not in order or order.index(stage) == 0:
@@ -626,7 +636,9 @@ def answers_by_row(r: dict, stage: str) -> dict[str, list[dict]]:
                             texts.get(getattr(op, "provision", ""), ""))
                     # session 12: every record says what the op is (type, effect, provision) for signals.confirming
                     kind = {"type": getattr(op, "type", None), "effect": getattr(op, "effect", None),
-                            "provision": getattr(op, "provision", None)}
+                            "provision": getattr(op, "provision", None),
+                            # session 12 (F5): the undecided human-owned issues the op's own words name
+                            "pending": op_pending(op, r.get("pending_issues") or {}) if op is not None else []}
                     if op is not None and (re.search(r":Q\d+$", op.provision) or "Authority response:" in text):
                         c = classify_answer(text, answer_targets(prev, [t for t in op.targets if t != op.provision]))
                         cache[oid] = {"op": oid, "answer": True, "class": c["class"], "why": c["why"], **kind}
@@ -683,6 +695,39 @@ def discipline_map(templates: dict) -> dict[str, list[str]]:
     return {k: list(v) for k, v in (templates.get("_discipline_map") or {}).items()}
 
 
+def carried_words(cov: dict) -> str:
+    """'160 discharged by an activity, 30 reviewed for deviations (the VOL-V volume check)' (session 12, F5; audit A5
+    N3: 'carried' mixed rows discharged with rows only reviewed under a volume check); the older form without the
+    split."""
+    if "discharged" not in cov:
+        return f"{len(cov.get('carried') or {})} carried by the A5 programme"
+    vols = ", ".join(cov.get("volumes") or [])
+    how = f"(the {vols} volume check)" if vols else "(no volume check applies at this stage)"   # session 12: never "the a volume check"
+    return (f"{len(cov.get('discharged') or {})} discharged by an activity, {len(cov.get('reviewed') or {})} reviewed "
+            f"for deviations {how}")
+
+
+COVERAGE_COLS = ("row", "carried_how", "activities", "reason")
+
+
+def coverage_rows(p: dict) -> list[dict]:
+    """One line per A1 row in force (requirements_coverage.csv): how it is carried: discharged, reviewed for deviations
+    (a volume check only), excepted (with the reason) or NOT CARRIED."""
+    cov = p.get("row_coverage") or {}
+    out = []
+    for k in cov.get("rows") or []:
+        if k in (cov.get("discharged") or {}):
+            out.append({"row": k, "carried_how": "discharged", "activities": cov["discharged"][k], "reason": ""})
+        elif k in (cov.get("reviewed") or {}):
+            out.append({"row": k, "carried_how": "reviewed for deviations", "activities": cov["reviewed"][k],
+                        "reason": f"only checked under the {', '.join(cov.get('volumes') or [])} volume check"})
+        elif k in (cov.get("excepted") or {}):
+            out.append({"row": k, "carried_how": "excepted", "activities": [], "reason": cov["excepted"][k]["reason"]})
+        else:
+            out.append({"row": k, "carried_how": "NOT CARRIED", "activities": [], "reason": "no reason given (C48)"})
+    return out
+
+
 def not_carried(p: dict) -> list[dict]:
     """The rows of `row_coverage` that no activity carries: excepted (with the reason) or NOT CARRIED (no reason)."""
     cov = p.get("row_coverage") or {}
@@ -697,8 +742,8 @@ def coverage_check(p: dict) -> dict:
     cov, a3 = p.get("row_coverage") or {}, p.get("a3_coverage") or {}
     unc = list(cov.get("uncarried") or []) + [k for k in a3.get("uncarried") or [] if k not in (cov.get("uncarried") or [])]
     return {"id": "C48", "ok": not unc,
-            "detail": f"{len(cov.get('rows') or [])} A1 rows in force at {p.get('stage')}: {len(cov.get('carried') or {})} "
-                      f"carried by the A5 programme, {len(cov.get('excepted') or {})} excepted with a reason (listed in "
+            "detail": f"{len(cov.get('rows') or [])} A1 rows in force at {p.get('stage')}: {carried_words(cov)}, "
+                      f"{len(cov.get('excepted') or {})} excepted with a reason (listed in "
                       f"a5/requirements_not_carried.csv); not carried: {', '.join(unc) or 'none'}. Of these, "
                       f"{len(a3.get('rows') or [])} A3 (bid-out) rows: {len(a3.get('carried') or {})} carried, "
                       f"{len(a3.get('excepted') or {})} excepted with a reason"}
@@ -794,10 +839,11 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     if rc is not None:                      # session 12 (audit A5-4): every A1 row in force, not only A3's
         nc = not_carried(p)
         L += ["", "## Requirements not carried by an activity (with the reason)", "",
-              f"{len(rc['rows'])} A1 rows in force at {p['stage']}: {len(rc['carried'])} carried by an activity, "
+              f"{len(rc['rows'])} A1 rows in force at {p['stage']}: {carried_words(rc)}, "
               f"{len(rc['excepted'])} excepted with a reason, {len(rc['uncarried'])} not carried (no reason: C48). The "
               "reason is the one A1 holds (the row's no_deliverable, or its post-award assessment) or the templates' "
-              "`_row_exceptions`. Also in requirements_not_carried.csv.", "",
+              "`_row_exceptions`. Also in requirements_not_carried.csv; how every row in force is carried "
+              "(discharged, reviewed for deviations, excepted) is in requirements_coverage.csv.", "",
               "| Row | Status | Pass/fail or scored | Discipline (A1) | A3 | Reason | Where stated |", "|---|---|---|---|---|---|---|"]
         L += [f"| `{x['row']}` | {_md(x.get('status'))} | {_md(x.get('assessment'))} | {_md(x.get('discipline'))} | "
               f"{'yes' if x.get('a3') else ''} | {_md(x['reason'])} | {_md(x.get('source'))} |" for x in nc] or ["| none | | | | | | |"]
@@ -819,6 +865,9 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     fl = [(a, f) for a, f in fl if f]
     L += ["", f"## Flags on activities ({len(fl)}; review, blocked, stale, clarification questions drafted; the dates are "
               "unchanged)", ""]
+    if any(str(x).startswith("REVIEW (") for _, f in fl for x in f):     # session 12 (F5; audit R-e)
+        from .relationships import STATUS_LEGEND
+        L += [f"REVIEW (<status> ...): {STATUS_LEGEND}", ""]
     L += [f"- `{a['id']}`: " + " | ".join(_md(x) for x in f) for a, f in fl] or ["- none"]
     L += ["", "## Conditional obligations", ""]
     cond = [a for a in acts if a.get("condition")]
@@ -884,6 +933,8 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
           "| disciplines.csv/json | totals per discipline |", "| milestones.csv/json | dated pack milestones |",
           "| drivers.csv/json | what drives each infeasible activity and what would make it feasible |",
           "| requirements_not_carried.csv/json | every A1 row in force no activity carries, with the reason |",
+          "| requirements_coverage.csv/json | every A1 row in force and how it is carried (`carried_how`: discharged, "
+          "reviewed for deviations under a volume check, excepted) |",
           "| scenario_comparison.csv/json, scenarios/ | the scenarios against the baseline |",
           "| gantt.svg, gantt.html, gantt.pdf | the Gantt, drawn from the same programme data |", "",
           NOTICE, ""]
@@ -917,6 +968,9 @@ def write(prog_ext: dict, scenarios_result: dict | None, out_dir: Path) -> list[
     if prog_ext.get("row_coverage") is not None:     # session 12 (audit A5-4)
         paths += write_csv_json(_table(NOT_CARRIED_COLS, not_carried(prog_ext), **meta,
                                        check=coverage_check(prog_ext)["detail"]), a5, "requirements_not_carried")
+        if "discharged" in (prog_ext.get("row_coverage") or {}):       # session 12 (F5; audit A5 N3)
+            paths += write_csv_json(_table(COVERAGE_COLS, coverage_rows(prog_ext), **meta,
+                                           check=coverage_check(prog_ext)["detail"]), a5, "requirements_coverage")
     if scenarios_result:
         for name, s in scenarios_result["scenarios"].items():
             c = s["changes"]

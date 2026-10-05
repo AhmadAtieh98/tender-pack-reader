@@ -51,4 +51,4 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
 | C28 ADD-03 | REPORTED | cover summary (3 claims) vs provisions: claimed, not applied 1, unchecked 3; report only, the summary is never applied (A2) |
 | C46 | REPORTED | 1 gap(s): ADD-03/cover/para3 [A1] |
-| C48 | ok | 17 A3 (bid-out) rows in force: 15 carried by the A5 programme, 2 excepted with a reason; not carried: none |
+| C48 | ok | 200 A1 rows in force at ADD-02: 160 discharged by an activity, 30 reviewed for deviations (the VOL-V volume check), 10 excepted with a reason (listed in a5/requirements_not_carried.csv); not carried: none. Of these, 17 A3 (bid-out) rows: 15 carried, 2 excepted with a reason |

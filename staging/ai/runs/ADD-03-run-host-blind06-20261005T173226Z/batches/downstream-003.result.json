@@ -1,0 +1,997 @@
+{
+ "run_id": "ADD-03-run-host-blind06-20261005T173226Z-downstream-003",
+ "created": "2026-10-05T18:17:25Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (opus)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+  "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+  "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+  "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+ },
+ "statements": [
+  {
+   "id": "S-F-24-FLOW",
+   "kind": "fact",
+   "text": "ADD-03:2.4 requires the temporary works for method (a) to pass, at each tie-in point, the maximum transfer flow stated for that tie-in point in Table 1-3. Table 1-3 (ADD-03 page 5) has these columns only: Tie-in point, Location, Existing sewer diameter (mm), Permitted shutdown window, Maximum shutdown duration (hours) and Advance notice. It has no transfer-flow column.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "the maximum transfer flow stated for that tie-in point in Table 1-3",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-Q20-FLOW",
+   "kind": "fact",
+   "text": "The response to Q20 sets the design flow for the temporary works by the same reference to Table 1-3 and applies Section 2.4.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q20",
+     "page": 3,
+     "kind": "cell",
+     "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum. Section 2.4 of this Addendum applies.",
+     "cell": {
+      "row_key": "20",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-25-SAL",
+   "kind": "fact",
+   "text": "ADD-03:2.5 requires a Shutdown Acceptance Letter in Envelope A where method (b) is elected. Applications must be made not later than eight (8) Working Days before the Proposal Due Date. The Network Operator has undertaken to respond within five (5) Working Days. Counting 8 Working Days back from the PDD in VOL-I 6.1 as amended (Thursday 26 November 2026), with the PDD itself not counted, gives Monday 16 November 2026 (VOL-I 2.4 calendar, conservative reading).",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-25-CONSEQ",
+   "kind": "interpretation",
+   "text": "ADD-03:2.5 states no consequence of its own for a missing Shutdown Acceptance Letter. ADD-03:2.6 deems an election of method (a) instead. Whether the Envelope A non-responsiveness rules (VOL-I 6.2, ADD-02 7.2) have any bearing is a human decision; no consequence is proposed.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.6",
+     "page": 1,
+     "kind": "span",
+     "words": "shall be deemed to have elected method (a) for that tie-in point",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-27-TP2",
+   "kind": "fact",
+   "text": "ADD-03:2.7 rejects a Proposal whose interruption of flow is longer than the maximum shutdown duration in Table 1-3. For TP-2, Table 1-3 states a permitted window of 01:00 to 05:00 (4 hours) and a maximum shutdown duration of 6 hours, so the two figures differ.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.7",
+     "page": 1,
+     "kind": "span",
+     "words": "for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-Q17",
+   "kind": "fact",
+   "text": "The response to Q17 says Clause 12.3 is 'amended accordingly' but prints no replacement wording. VOL-V:12.3 at ADD-03 still reads that the Independent Engineer's costs are borne equally.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "cell",
+     "words": "No. The reasonable costs of the Independent Engineer attributable to any reliability run after the first shall be borne by the Project Company. Volume V Clause 12.3 is amended accordingly.",
+     "cell": {
+      "row_key": "17",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:12.3",
+     "page": 2,
+     "kind": "span",
+     "words": "whose reasonable costs shall be borne equally by the parties",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-Q18",
+   "kind": "fact",
+   "text": "The response to Q18 refers to Volume V Clause 34. The Relief Event list in VOL-V 34.2 does not name a shortfall in network inflow, and VOL-V 34.1 gives an extension of time but not compensation.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q18",
+     "page": 2,
+     "kind": "cell",
+     "words": "The Authority notes the question. Volume V Clause 34 applies. The Authority does not consider further amendment necessary at this stage.",
+     "cell": {
+      "row_key": "18",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:34.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Relief Events comprise: fire, explosion, flood or other physical damage not caused by the Project Company; failure of a utility not caused by the Project Company; blockade or embargo; and official strike other than one confined to the Project Company or its subcontractors.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-Q19",
+   "kind": "fact",
+   "text": "The response to Q19 requires the asset register to be submitted before the start of the reliability run. VOL-II 7.4 says not later than sixty (60) days after PCOD. Q19 also refers to the CMMS 'required by Volume II Clause 8.2', and ADD-03/4.1(b) deletes Clause 8.2.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q19",
+     "page": 3,
+     "kind": "cell",
+     "words": "The asset register shall be maintained in the computerised maintenance management system required by Volume II Clause 8.2 and shall be submitted to the Authority before the start of the reliability run under Volume II Clause 7.2.",
+     "cell": {
+      "row_key": "19",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:7.4",
+     "page": 5,
+     "kind": "span",
+     "words": "not later than sixty (60) days after PCOD",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-P4-PENDING",
+   "kind": "fact",
+   "text": "The ADD-03 page 4 image values for TP-1 (location, diameter, shutdown window, duration) come from reading ADD-03-p4-r1. No person has approved that reading yet. The text-layer Table 1-3 on page 5 gives TP-1 as 'Manhole MH-41 on the northern rising main', 1,000 mm, 23:00 to 05:00, and 6 hours.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p4-image/tp1-location",
+     "page": 4,
+     "kind": "reading",
+     "words": "غرفة التفتيش MH-41 على خط الطرد الشمالي",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "ADD-03-DS-ESC-2.4",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.4",
+   "provision": "ADD-03:2.4",
+   "target": null,
+   "payload": {
+    "why": "Insufficient evidence. ADD-03:2.4 refers to a 'maximum transfer flow' in Table 1-3. Table 1-3 as printed has no flow column, so no design flow can be stated for TP-1 or TP-2.",
+    "what_is_unsupported": "The maximum transfer flow for each tie-in point, which the pack does not state. A row would have no parameter to carry."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "The temporary works for method (a) shall be capable of passing, at each tie-in point, the maximum transfer flow stated for that tie-in point in Table 1-3.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "maximum transfer flow per tie-in point (absent from Table 1-3)"
+   ],
+   "statements": [
+    "S-F-24-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ISSUE-2.4",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:2.4",
+   "provision": "ADD-03:2.4",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-TRANSFER-FLOW",
+    "text": "ADD-03:2.4 and the response to Q20 size the method (a) temporary works on 'the maximum transfer flow stated ... in Table 1-3'. Table 1-3 (ADD-03 Appendix A, page 5) states no transfer flow for either tie-in point. Insufficient evidence for the design flow. A person decides whether to raise a clarification.",
+    "owner": "technical_lead",
+    "theme": "tie-in points",
+    "short": "Table 1-3 has no maximum transfer flow",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "the maximum transfer flow stated for that tie-in point in Table 1-3",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-24-FLOW",
+    "S-F-Q20-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-CQ-2.4",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "clarification_item",
+   "task": "esc:ADD-03:Q20",
+   "provision": "ADD-03:Q20",
+   "target": null,
+   "payload": {
+    "entry": {
+     "id": "CQ-ADD03-TRANSFER-FLOW",
+     "kind": "missing_information",
+     "volume": "ADD-03",
+     "clause": "2.4",
+     "page": 1,
+     "units": [
+      "ADD-03:2.4",
+      "ADD-03:Q20",
+      "ADD-03:T1-3"
+     ],
+     "sources": [
+      {
+       "unit": "ADD-03:2.4",
+       "page": 1,
+       "words": "the maximum transfer flow stated for that tie-in point in Table 1-3"
+      },
+      {
+       "unit": "ADD-03:Q20",
+       "page": 3,
+       "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum."
+      }
+     ],
+     "gap": "Table 1-3 at Appendix A has no maximum transfer flow column or value for TP-1 or TP-2.",
+     "already_settled": "insufficient evidence",
+     "practical_impact": "The method (a) temporary over-pumping cannot be sized or priced.",
+     "proposed_question": "Addendum No. 3 Clause 2.4 and the response to Q20 refer to the maximum transfer flow stated for each tie-in point in Table 1-3. Table 1-3 at Appendix A does not state a transfer flow. Please state the maximum transfer flow (with units) for TP-1 and TP-2.",
+     "interim_handling": "Record as an open assumption. No figure is assumed.",
+     "decision_owner": "bid_manager",
+     "response_status": "draft, not sent",
+     "linked_issues": [
+      "I-ADD03-TRANSFER-FLOW"
+     ],
+     "theme": "tie-in points"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q20",
+     "page": 3,
+     "kind": "cell",
+     "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum. Section 2.4 of this Addendum applies.",
+     "cell": {
+      "row_key": "20",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-24-FLOW",
+    "S-F-Q20-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-Q20",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:Q20",
+   "provision": "ADD-03:Q20",
+   "target": null,
+   "payload": {
+    "why": "Insufficient evidence. The response to Q20 gives the design flow only by reference to a transfer flow that Table 1-3 does not state. VOL-II-1.3-01 and the technical-proposal activity cannot take a design flow from the pack.",
+    "what_is_unsupported": "The design flow for the temporary works at TP-1 and TP-2. A draft question, CQ-ADD03-TRANSFER-FLOW, is proposed and not sent."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q20",
+     "page": 3,
+     "kind": "cell",
+     "words": "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum. Section 2.4 of this Addendum applies.",
+     "cell": {
+      "row_key": "20",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:1.3",
+     "page": 2,
+     "kind": "span",
+     "words": "including any temporary works required to maintain flows during construction",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "maximum transfer flow per tie-in point"
+   ],
+   "statements": [
+    "S-F-Q20-FLOW",
+    "S-F-24-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-2.5",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.5",
+   "provision": "ADD-03:2.5",
+   "target": null,
+   "payload": {
+    "why": "ADD-03:2.5 adds a conditional Envelope A submission (a Shutdown Acceptance Letter where method (b) is elected) with an application deadline of 8 Working Days before the PDD. On the conservative count this is Monday 16 November 2026, a computed value, not a printed one. The provision states no bid-out consequence; ADD-03:2.6 deems method (a) instead. Whether the Envelope A rules VOL-I-6.2-02 or ADD-02-7.2-01 apply is a person's decision. No consequence is proposed.",
+    "what_is_unsupported": "The consequence class of a missing letter. Whether the bidder will elect method (b) at all (a bid strategy decision). Any lead time for the Network Operator's process beyond the 5 Working Days it undertakes."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "Where the Bidder elects method (b) for a tie-in point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter).",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "The Network Operator has undertaken to respond within five (5) Working Days of receipt of a complete application.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-25-SAL",
+    "S-I-25-CONSEQ"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-2.6",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.6",
+   "provision": "ADD-03:2.6",
+   "target": null,
+   "payload": {
+    "why": "ADD-03:2.6 is a deeming rule that changes the effect of failing 2.3 and 2.5. Whether it displaces any Envelope A non-responsiveness rule (VOL-I-6.2-02, ADD-02-7.2-01) is a legal question for a person. It also ties back to 2.4, whose design flow is not stated (insufficient evidence).",
+    "what_is_unsupported": "Which rule governs a method (b) election made without a letter. The method (a) design flow the deemed election would bring in."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.6",
+     "page": 1,
+     "kind": "span",
+     "words": "A Bidder that elects method (b) for a tie-in point but does not submit a Shutdown Acceptance Letter for that tie-in point with Envelope A shall be deemed to have elected method (a) for that tie-in point.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-I-25-CONSEQ",
+    "S-F-24-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-2.7",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.7",
+   "provision": "ADD-03:2.7",
+   "target": null,
+   "payload": {
+    "why": "ADD-03:2.7 sets a rejection limit by reference to the maximum shutdown duration in Table 1-3. For TP-2 the permitted window (01:00 to 05:00, 4 hours) is shorter than the stated maximum duration (6 hours). Which limit binds is a question for a person.",
+    "what_is_unsupported": "Which TP-2 figure governs the interruption limit. The issue stays interpretation_pending."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.7",
+     "page": 1,
+     "kind": "span",
+     "words": "A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [
+    "ADD-03:T1-3/tp-2"
+   ],
+   "missing_information": [],
+   "statements": [
+    "S-F-27-TP2"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-Q17",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:Q17",
+   "provision": "ADD-03:Q17",
+   "target": null,
+   "payload": {
+    "why": "Insufficient evidence. The response to Q17 says Clause 12.3 'is amended accordingly' but prints no amended wording. VOL-V:12.3 at ADD-03 still says the costs are borne equally, so row VOL-V-12.3-01 cannot be re-read with new words. Whether the response amends the contract is a person's decision.",
+    "what_is_unsupported": "The wording of Clause 12.3 as amended."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "cell",
+     "words": "No. The reasonable costs of the Independent Engineer attributable to any reliability run after the first shall be borne by the Project Company. Volume V Clause 12.3 is amended accordingly.",
+     "cell": {
+      "row_key": "17",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:12.3",
+     "page": 2,
+     "kind": "span",
+     "words": "The Authority shall appoint an Independent Engineer whose reasonable costs shall be borne equally by the parties.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "amended text of VOL-V Clause 12.3"
+   ],
+   "statements": [
+    "S-F-Q17"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-Q18",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:Q18",
+   "provision": "ADD-03:Q18",
+   "target": null,
+   "payload": {
+    "why": "Insufficient evidence. The response to Q18 says Clause 34 applies, but the Relief Event list in 34.2 does not name a shortfall in network inflow. Whether that shortfall is a Relief Event (for example, 'failure of a utility') is a legal question. The response is recorded against CQ-PCOD-RELIABILITY-RUN as an answer, not applied; whether it resolves that question is a person's decision.",
+    "what_is_unsupported": "Whether an inflow shortfall during the reliability run in VOL-II 7.2 (now 85% to 110% of nominal capacity) entitles the Project Company to relief."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q18",
+     "page": 2,
+     "kind": "cell",
+     "words": "The Authority notes the question. Volume V Clause 34 applies. The Authority does not consider further amendment necessary at this stage.",
+     "cell": {
+      "row_key": "18",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:34.1",
+     "page": 3,
+     "kind": "span",
+     "words": "A Relief Event entitles the Project Company to an extension of time but not to compensation.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "whether network inflow shortfall falls within VOL-V 34.2"
+   ],
+   "statements": [
+    "S-F-Q18"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-Q19",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:Q19",
+   "provision": "ADD-03:Q19",
+   "target": null,
+   "payload": {
+    "why": "The response to Q19 conflicts with VOL-II 7.4 on when the asset register is due (before the start of the reliability run, against not later than sixty (60) days after PCOD). It also relies on a CMMS 'required by Volume II Clause 8.2', which ADD-03/4.1(b) deletes. Which text prevails is a person's decision.",
+    "what_is_unsupported": "The governing timing of the asset register. Whether a CMMS is still required now that Clause 8.2 is deleted."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q19",
+     "page": 3,
+     "kind": "cell",
+     "words": "No. The format will be issued to the Preferred Bidder. The asset register shall be maintained in the computerised maintenance management system required by Volume II Clause 8.2 and shall be submitted to the Authority before the start of the reliability run under Volume II Clause 7.2.",
+     "cell": {
+      "row_key": "19",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:7.4",
+     "page": 5,
+     "kind": "span",
+     "words": "The Project Company shall provide as-built documentation, operation and maintenance manuals, and an asset register in the Authority's standard format not later than sixty (60) days after PCOD.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [
+    "VOL-II:7.4",
+    "VOL-II:8.2"
+   ],
+   "missing_information": [],
+   "statements": [
+    "S-F-Q19"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-P4-LOC",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:p4-image/tp1-location",
+   "provision": "ADD-03:p4-image/tp1-location",
+   "target": null,
+   "payload": {
+    "why": "Reading ADD-03-p4-r1 is pending approval. A person needs to confirm the term خط الطرد ('rising main') against the text-layer Table 1-3 TP-1 location. Nothing is proposed until the reading is approved.",
+    "what_is_unsupported": "An approved reading of the TP-1 location on page 4."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p4-image/tp1-location",
+     "page": 4,
+     "kind": "reading",
+     "words": "غرفة التفتيش MH-41 على خط الطرد الشمالي",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "approval of reading ADD-03-p4-r1"
+   ],
+   "statements": [
+    "S-F-P4-PENDING"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-P4-DIA",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:p4-image/tp1-diameter",
+   "provision": "ADD-03:p4-image/tp1-diameter",
+   "target": null,
+   "payload": {
+    "why": "Reading ADD-03-p4-r1 is pending approval, so the TP-1 diameter value on page 4 is not established. Nothing is proposed until a person approves the reading.",
+    "what_is_unsupported": "An approved reading of the TP-1 diameter on page 4."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p4-image/tp1-diameter",
+     "page": 4,
+     "kind": "reading",
+     "words": "١٠٠٠",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "approval of reading ADD-03-p4-r1"
+   ],
+   "statements": [
+    "S-F-P4-PENDING"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-P4-WIN",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:p4-image/tp1-window",
+   "provision": "ADD-03:p4-image/tp1-window",
+   "target": null,
+   "payload": {
+    "why": "Reading ADD-03-p4-r1 is pending approval, so the TP-1 shutdown window on page 4 is not established. Nothing is proposed until a person approves the reading.",
+    "what_is_unsupported": "An approved reading of the TP-1 shutdown window on page 4."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p4-image/tp1-window",
+     "page": 4,
+     "kind": "reading",
+     "words": "من ٢٣:٠٠ إلى ٠٥:٠٠",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "approval of reading ADD-03-p4-r1"
+   ],
+   "statements": [
+    "S-F-P4-PENDING"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "ADD-03-DS-ESC-P4-DUR",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:p4-image/tp1-duration",
+   "provision": "ADD-03:p4-image/tp1-duration",
+   "target": null,
+   "payload": {
+    "why": "Reading ADD-03-p4-r1 is pending approval, so the TP-1 maximum shutdown duration on page 4 is not established. Nothing is proposed until a person approves the reading.",
+    "what_is_unsupported": "An approved reading of the TP-1 maximum shutdown duration on page 4."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p4-image/tp1-duration",
+     "page": 4,
+     "kind": "reading",
+     "words": "٦",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [
+    "approval of reading ADD-03-p4-r1"
+   ],
+   "statements": [
+    "S-F-P4-PENDING"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

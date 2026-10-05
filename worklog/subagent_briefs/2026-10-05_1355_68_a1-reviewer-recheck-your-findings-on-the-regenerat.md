@@ -1,0 +1,8 @@
+# Follow-up message 68: A1 reviewer: recheck your findings on the regenerated outputs
+
+Sent 2026-10-05 13:55:47 UTC to agent `a4606a26a66390047` (a resume or an added instruction to an agent launched earlier; the agent's brief is the launch file it belongs to).
+The text below is the message exactly as sent (exported from the session transcript on 5 Oct 2026, session 12).
+
+---
+
+Reviewer A1: the fixes for your findings are merged and `out/` is regenerated (13:55 UTC). Please RECHECK against the current `out/a1/*` and `curation/` (same rules as COMMON.md: nothing modified, synthetic material out of scope): for each of your findings A1-1 … A1-6 say fixed / partly fixed / not fixed with the evidence you looked at (file, row, quote); check that the concession-term rows VOL-I-12.1-01, VOL-V-3.1-01, VOL-V-42.2-01 now present both readings, Q7's words, VOL-I 3.2 and "a decision for a person; no decision recorded" with equal confidence and that the Issues sheet labels I-CONCESSION, I-PERMIT and I-VOL-II-T24-TENSIONS as pending; check the four quote cells are now verbatim on their cited page, the "Text as issued" rule, the internal ids gone, ADD-02-5.2-01's class and reason; re-run your scripted checks (205 rows verbatim; xlsx = csv = json; the status at each stage) and say whether anything regressed; update your matrix rows (A1-1 … A1-11, G-3 … G-6) with the result after the fixes and the evidence. Write the recheck to `<scratch>/audit/reports/A1_recheck.md` (`<scratch>` = `/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s12`). Budget about 20 minutes; state your model and time.

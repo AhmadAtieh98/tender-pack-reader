@@ -137,8 +137,10 @@ def test_a5_4_a_note_added_is_not_a_requirement_change(replan, kind):
         assert row not in rework.get(aid, ""), (aid, rework.get(aid))
         # session 12 (W3a, deliberate): one label for a confirmation or a reading re-made with the same substance,
         # CONFIRMED (unchanged) (was 'REVIEW (clarification noted, no change)'); the detail cites the confirming op
-        assert any(d["activity"] == aid and d["change"] == "CONFIRMED (unchanged)" and row in d["detail"]
-                   for d in dl), aid
+        # session 12, F5 (audit A2-1/A5 N1, deliberate): a row under an issue a person has not decided is NOT SETTLED,
+        # never CONFIRMED (VOL-II-4.2-01: I-FLOWS, linked from a pending decision of the clarification register)
+        want = "NOT SETTLED" if row == "VOL-II-4.2-01" else "CONFIRMED (unchanged)"
+        assert any(d["activity"] == aid and d["change"] == want and row in d["detail"] for d in dl), aid
     assert "VOL-I-9.1-01" in rework["assemble-envelope-a"]          # Form 4-G inserted: the reading did change
 
 

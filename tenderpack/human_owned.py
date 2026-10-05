@@ -30,7 +30,12 @@ a person's decision (`tenderpack accept CQ-... | I-...`, tenderpack.review) is b
 reads; otherwise every output shows HUMAN_DECISION_PENDING and the question stays open (A5's gates included). A curated
 issue whose own words (quotations aside: own_words) assert a judgment, i.e. use a topic word of TRIGGERS (which document
 prevails, which clause governs, what a term means), is labelled HUMAN_DECISION_PENDING the same way until a person's
-decision is bound to it (session 12, F1; audit A1-1/A2-1/A3-1: the concession term). An answer
+decision is bound to it (session 12, F1; audit A1-1/A2-1/A3-1: the concession term). Session 12
+(F5; audit A3-5, R-a, R1-1): so is a curated issue that a pending decision of the clarification register links
+(pending_links: the register says such a point is shown as HUMAN DECISION PENDING), and one whose decision owner (else
+owner) is Legal or Commercial (owner_judgment). pending_reasons is the one rule: A1's Issues sheet, the A3 page (⚑)
+and a3_detail.html, A4's pending section, and A2/A5's NOT SETTLED for the rows such an issue is linked to
+(signals.attach_pending) all read it. An answer
 the AI workflow recorded from an addendum (`recorded_answer`) is shown as "answer recorded ... whether it resolves the
 question is a human decision". The workflow never records a decision; only a person running `accept` does."""
 from __future__ import annotations
@@ -242,13 +247,60 @@ def asserted_judgment(issue: dict) -> list[str]:
     return list(dict.fromkeys(x for k in ISSUE_TEXT_KEYS for x in triggers(own_words(issue.get(k)), ("topic",))))
 
 
-def issue_label(iid: str, issue: dict, decisions: list[dict] | None) -> str | None:
+# session 12 (F5; audit A3-5, R-a, R1-1): an issue whose owner is Legal or Commercial (the lead, counsel) is a legal or
+# commercial judgment by its owner; the issue file's `decision_owner` (when given) counts before `owner`
+JUDGMENT_OWNERS = re.compile(r"^\s*(?:legal|commercial)\b", re.I)
+
+
+def owner_judgment(issue: dict) -> str | None:
+    """'a legal or commercial judgment by its owner (Legal)' when the issue's decision owner (else owner) is Legal or
+    Commercial (lead, counsel); else None."""
+    o = str((issue or {}).get("decision_owner") or (issue or {}).get("owner") or "")
+    return f"a legal or commercial judgment by its owner ({o})" if JUDGMENT_OWNERS.match(o) else None
+
+
+def pending_links(register: dict | None) -> dict[str, list[str]]:
+    """Issue id -> the topics of the clarification register's `pending_decision` entries that link it (an issue linked
+    from a pending decision is pending: the register says such a point is shown as HUMAN DECISION PENDING)."""
+    out: dict[str, list[str]] = {}
+    for c in (register or {}).get("pending_decision") or []:
+        for i in c.get("linked_issues") or []:
+            out.setdefault(str(i), []).append(str(c.get("topic") or ""))
+    return out
+
+
+def pending_reasons(iid: str, issue: dict, decisions: list[dict] | None, linked: list[str] | None = None) -> list[str]:
+    """Why an open issue is a person's decision not yet recorded ([] when it is not, or when a person's decision is bound
+    to it as it now reads). The ONE rule every output uses (A1's Issues sheet, the A3 page's marker and a3_detail.html,
+    A4's pending section, and A2/A5's NOT SETTLED for the rows it is linked to: signals.attach_pending): proposed by the
+    AI workflow (MARKER); a proposed status or resolution; its own words assert a judgment (asserted_judgment); a
+    pending decision of the clarification register links it (`linked`, pending_links); its owner is Legal or Commercial
+    (owner_judgment). Session 12, F5 (audit A3-5, R-a, R1-1)."""
+    issue = issue or {}
+    if decision(decisions, "issue", iid, issue) is not None:
+        return []
+    out = []
+    if issue.get(MARKER):
+        out.append("proposed by the AI workflow")
+    if issue.get("status") not in (None, "", "open") or issue.get("resolution"):
+        out.append(f"a proposed {'resolution' if issue.get('resolution') else 'status'}")
+    out += [f"its own words {x}" for x in asserted_judgment(issue)]
+    if linked:
+        out.append("a pending decision of the clarification register names it (" + "; ".join(linked) + ")")
+    ow = owner_judgment(issue)
+    if ow:
+        out.append(ow)
+    return out
+
+
+def issue_label(iid: str, issue: dict, decisions: list[dict] | None, linked: list[str] | None = None) -> str | None:
     """The prefix an output puts before an issue's text: None for an open issue as curated (it is open by
     construction), HUMAN_DECISION_PENDING for one the AI workflow proposed (MARKER), one that carries a status or a
-    resolution, or (session 12, F1) a curated issue whose own words assert a judgment (asserted_judgment), without a
-    person's decision bound to it; and the decision when one is."""
+    resolution, or (session 12, F1) a curated issue whose own words assert a judgment (asserted_judgment), or (F5) one
+    a pending decision of the clarification register links (`linked`) or whose owner is Legal or Commercial
+    (owner_judgment), without a person's decision bound to it; and the decision when one is."""
     closing = issue.get("status") not in (None, "", "open") or bool(issue.get("resolution"))
-    judged = bool(asserted_judgment(issue))
+    judged = bool(asserted_judgment(issue)) or bool(linked) or bool(owner_judgment(issue))
     d = decision(decisions, "issue", iid, issue) if (closing or issue.get(MARKER) or judged) else None
     if closing and d is not None:
         return f"{str(issue.get('status') or 'resolved').upper()} (decision recorded: {d.get('reviewer')}, {d.get('date')})"

@@ -299,10 +299,14 @@ def _src(items) -> str:
     return "; ".join(f"{q.get('unit')} p{q.get('page')}: “{q.get('words')}”" for q in items or [])
 
 
-def write(reg: dict, out_dir: Path, decisions: list[dict] | None = None) -> list[Path]:
+def write(reg: dict, out_dir: Path, decisions: list[dict] | None = None,
+          pending_issues: list[dict] | None = None) -> list[Path]:
     """a4/clarification_register.{md,csv,json}: the questions, the topics closed without one, and the unavailable
     material. Deterministic. The response status is shown through human_owned.clarification_status (session 12): never
-    answered or withdrawn without a person's decision bound to the entry (`decisions`, the pack's decisions file)."""
+    answered or withdrawn without a person's decision bound to the entry (`decisions`, the pack's decisions file).
+    `pending_issues` (session 12, F5; audit R-a): the open issues that are a person's decision not yet recorded
+    (human_owned.pending_reasons), each {id, owner, text, reasons}; those no pending decision links are listed under the
+    pending readings, so A4 names the same pending set as A1, A3 and a3_detail.html."""
     out_dir = Path(out_dir)
     qs = [dict(c, response_status=human_owned.clarification_status(c, decisions)) for c in reg.get("clarifications") or []]
     cut = reg.get("cut_off") or {}
@@ -320,6 +324,7 @@ def write(reg: dict, out_dir: Path, decisions: list[dict] | None = None) -> list
              "columns": [{"key": k, "header": h, "width": w} for k, h, w in cols], "rows": rows,
              "checked_no_question": reg.get("checked_no_question") or [],
              "pending_decision": [dict(c, status=PENDING_LABEL) for c in reg.get("pending_decision") or []],
+             "pending_issues": _pending_issues(reg, pending_issues),
              "unavailable_material": reg.get("unavailable_material") or []}
     if any(c.get("clarification_window") for c in qs):        # session 12: only when an entry carries it
         table["columns"].insert(-1, {"key": "clarification_window", "header": "Clarification route", "width": 50})
@@ -327,8 +332,14 @@ def write(reg: dict, out_dir: Path, decisions: list[dict] | None = None) -> list
             row["clarification_window"] = c.get("clarification_window") or ""
     paths = write_csv_json(table, out_dir, "clarification_register")
     path = out_dir / "clarification_register.md"
-    write_text(path, markdown({**reg, "clarifications": qs}))   # the markdown shows the same presented status (merge fix)
+    write_text(path, markdown({**reg, "clarifications": qs, "pending_issues": _pending_issues(reg, pending_issues)}))
     return paths + [path]
+
+
+def _pending_issues(reg: dict, pending: list[dict] | None) -> list[dict]:
+    """The pending issues no pending decision of the register links (those are listed with their topic)."""
+    linked = {i for c in reg.get("pending_decision") or [] for i in c.get("linked_issues") or []}
+    return [dict(x, status=PENDING_LABEL) for x in pending or [] if x.get("id") not in linked]
 
 
 def markdown(reg: dict) -> str:
@@ -370,6 +381,11 @@ def markdown(reg: dict) -> str:
     md += [f"- **{c.get('topic')}** ({human_owned.HUMAN_DECISION_PENDING}; decides: {c.get('decision_owner')}"
            + (f"; {', '.join(c.get('linked_issues') or [])}" if c.get("linked_issues") else "") + f"): {c.get('finding')} "
            f"Sources: {_src(c.get('sources'))}" for c in table["pending_decision"]] or ["None."]
+    if reg.get("pending_issues"):                  # session 12 (F5; audit R-a): the same pending set as A1 and A3
+        md += ["", f"Also {human_owned.HUMAN_DECISION_PENDING} (open issues a person decides; no decision recorded; the "
+                   "same set A1's Issues sheet labels and the A3 page marks ⚑):", ""]
+        md += [f"- **{x['id']}** (decides: {x.get('owner')}; {'; '.join(x.get('reasons') or [])}): {x.get('text')}"
+               for x in reg["pending_issues"]]
     md += ["", "## Referenced but not in the pack (impact; not a prerequisite for completing the bid)", ""]
     md += [f"- **{c.get('item')}:** {c.get('impact')} Handling: {c.get('handling')}" for c in table["unavailable_material"]]
     return "\n".join(md) + "\n"

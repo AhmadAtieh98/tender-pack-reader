@@ -1,0 +1,535 @@
+# Blind rehearsal 06 - answer key (SEALED). Author: independent, working cold (claude-opus-5-5).
+# Inputs: rehearsals/blind-06/input/ADD-03_Addendum_No_3.pdf (5 pages) and, for the
+# consecutive-addenda check only, rehearsals/blind-06/input/ADD-04_Addendum_No_4.pdf (2 pages).
+# ADD-03 stands on the base pack as amended by ADD-01 and ADD-02 only. ADD-04 stands on ADD-03.
+# Quotations under state_before / old are verbatim from the pack (whitespace-normalised) and are
+# re-verified by the author's check script; new / answer texts are verbatim from the ADD-03/ADD-04
+# text layer. Arabic strings are verbatim from the builder's source dictionary.
+
+meta:
+  rehearsal: blind-06
+  tender: NUPA/ISTP/2026/014
+  addendum: 3
+  file: rehearsals/blind-06/input/ADD-03_Addendum_No_3.pdf
+  pages: 5
+  printed_issue_date: 10 November 2026            # Tuesday; a Working Day
+  stands_on: [VOL-I, VOL-II, VOL-IV, VOL-V, ADD-01, ADD-02]
+  proposal_due_date: Thursday 26 November 2026, 14:00 Riyadh time (ADD-01 2.1; unchanged by ADD-03 and ADD-04)
+  clarification_cutoff_vol1_5_2: Thursday 12 November 2026   # 10 WD before the PDD, counted backwards (VOL-I 2.4)
+  issued_relative_to_cutoff: before (2 Working Days before; requests on ADD-03 could still be made on 10, 11 and 12 November)
+  cutoff_consequence: DA1 and II1 could still be raised by Bidders; ADD-04 (after the cut-off) answers request 21 received on 11 November and resolves II1 but not DA1
+  planning_date_after_add03: 2026-11-10            # correspondence: planning date = latest addendum date
+  working_days_issue_to_pdd: 12                    # 10 Nov (incl.) to 26 Nov (excl.)
+  sections: [1 Recitals, 2 Tie-in points and maintenance of flows, 3 Reliability run, 4 Operation maintenance and spares,
+             5 Unavailability events, 6 Responses to clarification requests 15 to 20, Appendix A (image-only Arabic Table 1-3),
+             Appendix B (English convenience translation)]
+  clarification_numbering: 15 to 20 (continues ADD-02's 7 to 14)
+  image_only_elements:
+    - page: 4
+      what: Table 1-3 reproduced as a scanned raster (1750 x 1550 px, RGB equal channels, FlateDecode), Arabic only, no text layer
+      issuer: Northern Region Water Services Company (the Network Operator), letter No. 312/2026 dated Thursday 5 November 2026
+  text_layer_fonts: [Helvetica, Helvetica-Bold, Times-Roman, Times-Bold]
+  arabic_in_text_layer: none
+
+change_types:
+  # categories an amendment engine built around replace / delete / insert / renumber / reissue / annotate may lack
+  - {id: CT1, where: "3.1 (VOL-II 7.2)", type: tolerance band replacing a single minimum (90% -> 85%-110%)}
+  - {id: CT2, where: "3.2", type: free-standing counting rule living only in the Addendum, interacting with an unchanged clause (7.3)}
+  - {id: CT3, where: "4.1-4.2 (VOL-II 8.1 to 8.3)", type: range replacement whose replacement text omits the middle clause (8.2 silently deleted; no renumbering)}
+  - {id: CT4, where: "5.1 (VOL-V 31.1)", type: replacement whose quoted old words span lettered items (b) and (c) and a line break; adds item (d) and moves the 'or'}
+  - {id: CT5, where: "2.3-2.6", type: Bidder election per tie-in point with a deeming fallback instead of a sanction}
+  - {id: CT6, where: "2.1-2.2, 2.7, Appendix A", type: incorporation by reference of a third-party Arabic image table whose values set a rejection threshold}
+  - {id: CT7, where: "responses 17 and 19", type: amendment carried by a clarification answer (VOL-V 12.3 carve-out; VOL-II 7.4 timing)}
+  - {id: CT8, where: "5.2 relies on 5.1; response 20 relies on 2.4; response 17 relies on 3.1", type: new provision relied on by a later provision of the same Addendum}
+  - {id: CT9, where: "5.1 via VOL-V 1.6; 3.1 via VOL-V 1.5", type: defined term whose meaning changes without any change to its definition text}
+  - {id: CT10, where: "ADD-04 2.1-2.2", type: amendment of an earlier Addendum's own text (two substitutions in one sentence sharing the phrase 'five (5) Working Days')}
+  - {id: CT11, where: "ADD-04 3.1", type: reinstatement of a deleted clause in amended form}
+
+state_before:
+  # verbatim text in force before ADD-03 (base pack as amended by ADD-01/ADD-02); doc, clause, page
+  - {id: SB01, doc: VOL-II, clause: "1.3", page: 2, text: "The Project Company shall be responsible for all interfaces with the existing collection network at the two designated tie-in points, including any temporary works required to maintain flows during construction."}
+  - {id: SB02, doc: VOL-II, clause: "7.2", page: 4, text: "PCOD shall not be certified until the Facility has completed a continuous reliability run of thirty (30) days at not less than 90% of nominal capacity, during which every parameter in Table 2-4 has been met."}
+  - {id: SB03, doc: VOL-II, clause: "7.3", page: 4, text: "A failure of any Table 2-4 parameter during the reliability run shall restart the run in full."}
+  - {id: SB04, doc: VOL-II, clause: "7.4", page: 5, text: "The Project Company shall provide as-built documentation, operation and maintenance manuals, and an asset register in the Authority's standard format not later than sixty (60) days after PCOD."}
+  - {id: SB05, doc: VOL-II, clause: "8.1", page: 5, text: "The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal operation for all items with a lead time exceeding twelve (12) weeks."}
+  - {id: SB06, doc: VOL-II, clause: "8.2", page: 5, text: "A computerised maintenance management system shall be implemented before PCOD and shall remain in use for the concession period."}
+  - {id: SB07, doc: VOL-II, clause: "8.3", page: 5, text: "The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum of two (2) certified operators on shift at all times."}
+  - {id: SB08, doc: VOL-II, clause: "3.3", page: 3, text: "Disinfection shall be by chlorination with provision for dechlorination, or by ultraviolet irradiation with a validated dose, or by a combination. Ozonation alone is not acceptable."}
+  - {id: SB09, doc: VOL-II, clause: "2.1", page: 2, text: "The Facility shall be designed for a nominal treatment capacity of 120,000 m3/day average daily flow, measured at the inlet works"}
+  - {id: SB10, doc: VOL-II, clause: "4.1", page: 3, text: "The hydraulic profile shall accommodate the flows in Table 2-6 without surcharge of any structure and without reliance on pumped bypass."}
+  - {id: SB11, doc: VOL-II, clause: "4.3", page: 4, text: "Each treatment stage shall be arranged in not fewer than four (4) parallel streams, such that the Facility can meet Table 2-4 with any one stream out of service."}
+  - {id: SB12, doc: VOL-V, clause: "31.1", page: 3, text: "An Unavailability Event occurs where (a) the Facility is unable to treat the flow delivered to it, (b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails to deliver treated effluent to the delivery point at the required residual head."}
+  - {id: SB13, doc: VOL-V, clause: "31.3", page: 3, text: "A cure period of twenty-four (24) hours applies to an Unavailability Event under Clause 31.1(a) and of seventy-two (72) hours to an event under Clause 31.1(c). No cure period applies to an event under Clause 31.1(b)."}
+  - {id: SB14, doc: VOL-V, clause: "1.6", page: 2, text: "Unavailability Event has the meaning given in Clause 31.1."}
+  - {id: SB15, doc: VOL-V, clause: "1.5", page: 2, text: "PCOD means the date on which the Independent Engineer certifies that the Facility has satisfied the requirements of Volume II Clause 7.2."}
+  - {id: SB16, doc: VOL-V, clause: "12.3", page: 2, text: "The Authority shall appoint an Independent Engineer whose reasonable costs shall be borne equally by the parties."}
+  - {id: SB17, doc: VOL-V, clause: "29.3", page: 3, text: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at ninety per cent (90%) of the full rate, and no availability deduction shall apply to a parameter listed in Table 2-4 as assessed on a rolling average basis."}
+  - {id: SB18, doc: VOL-V, clause: "24.3", page: 3, text: "The Project Company shall not make a distribution to its shareholders unless the conditions to distribution in the Financing Documents are satisfied and no Unavailability Event is continuing."}
+  - {id: SB19, doc: VOL-V, clause: "31.4", page: 3, text: "Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period, entitles the Authority to require a remediation plan and, on a second occurrence, to terminate under Clause 39.3."}
+  - {id: SB20, doc: VOL-V, clause: "34.1", page: 3, text: "A Relief Event entitles the Project Company to an extension of time but not to compensation."}
+  - {id: SB21, doc: VOL-V, clause: "34.2", page: 3, text: "Relief Events comprise: fire, explosion, flood or other physical damage not caused by the Project Company; failure of a utility not caused by the Project Company; blockade or embargo; and official strike other than one confined to the Project Company or its subcontractors."}
+  - {id: SB22, doc: VOL-V, clause: "34.3", page: 3, text: "The Project Company shall notify a Relief Event within five (5) Working Days of becoming aware of it, failing which no relief shall be granted."}
+  - {id: SB23, doc: VOL-V, clause: "12.1", page: 2, text: "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)."}
+  - {id: SB24, doc: VOL-V, clause: "18.1", page: 2, text: "If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay."}
+  - {id: SB25, doc: VOL-V, clause: "29.1", page: 3, text: "From PCOD the Authority shall pay the Project Company the Availability Payment in equal monthly instalments in arrears, subject to the deductions in Clause 31."}
+  - {id: SB26, doc: VOL-I, clause: "2.4", page: 2, text: "Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday in the Kingdom. Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."}
+  - {id: SB27, doc: VOL-I, clause: "5.2", page: 3, text: "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered."}
+  - {id: SB28, doc: VOL-I, clause: "9.7", page: 5, text: "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel."}
+  - {id: SB29, doc: VOL-I, clause: "9.2 (as amended by ADD-02 2.1)", page: 5, text: "excluding the Form Sheets and the appendices expressly permitted by Volume II."}
+  - {id: SB30, doc: ADD-02, clause: "2.1", page: 1, text: "In Volume I Clause 9.2, ‘one hundred and twenty (120) pages’ is deleted and ‘one hundred and fifty (150) pages’ is substituted."}
+  - {id: SB31, doc: ADD-01, clause: "response 6", page: 2, text: "No. The payment mechanism at Volume V Clause 29 is availability based and does not depend on volume delivered."}
+  - {id: SB32, doc: ADD-01, clause: "response 2", page: 1, text: "No. The limit applies to the Technical Proposal narrative only. Form Sheets and the appendices permitted by Volume II are excluded."}
+  - {id: SB33, doc: ADD-02, clause: "response 12", page: 2, text: "The Authority refers Bidders to the wording of Clause 31.2."}
+  - {id: SB34, doc: VOL-I, clause: "9.1 (lead-in)", page: 4, text: "Envelope A shall contain, in the following order and separated by numbered dividers:"}
+  - {id: SB35, doc: VOL-I, clause: "Table 1-1 B (as reissued by ADD-02, 15 marks)", page: 6, text: "Construction methodology, programme and interface management"}
+  - {id: SB36, doc: VOL-I, clause: "Appendix 2", page: 7, text: "File names shall not exceed 120 characters."}
+  - {id: SB37, doc: VOL-I, clause: "12.1", page: 6, text: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date"}
+
+cover:
+  text: >-
+    This Addendum incorporates the Network Operator's Table 1-3 describing the two tie-in points referred to in Volume II
+    Clause 1.3, requires a Bidder that elects to interrupt flows at a tie-in point to obtain the Authority's acceptance of
+    its shutdown programme, applications for which shall be made within eight (8) Working Days of the date of this
+    Addendum, introduces a flow range for the reliability run in Volume II Clause 7.2, replaces Volume II Clauses 8.1 to
+    8.3, adds to Volume V Clause 31.1 a new Unavailability Event for loss of treated effluent volume, with no cure period
+    and with no deduction during the Ramp-Up Period, and responds to clarification requests 15 to 20.
+  governing_rule: The operative Sections govern; each planted error is a cover discrepancy to report, never a change to register. Where the cover is wrong but the operative provision is clear, the change is resolved (not unresolved) and the discrepancy is listed separately.
+  planted_errors:
+    - id: E1
+      mechanism: phantom provision (the cover announces an operative effect that no Section makes)
+      cover_says: "with no deduction during the Ramp-Up Period"
+      operative_truth: No Section of ADD-03 amends VOL-V 29.3 or mentions the Ramp-Up Period. VOL-V 29.3 relieves only "a parameter listed in Table 2-4 as assessed on a rolling average basis"; the new 31.1(d) is not a Table 2-4 parameter, so deductions for 31.1(d) apply from PCOD, including during the Ramp-Up Period.
+      detect_by: Search ADD-03 Sections 1-6 for 29.3 / Ramp-Up (none); read SB17; note that 5.1-5.2 touch only 31.1 and 31.3.
+      consequence_if_missed: Financial Model and risk register understate deduction exposure in the first 12 months after PCOD.
+    - id: E2
+      mechanism: wrong temporal anchor (period counted from the Addendum's date instead of from the Proposal Due Date)
+      cover_says: "applications for which shall be made within eight (8) Working Days of the date of this Addendum"
+      operative_truth: "Section 2.5: 'not later than eight (8) Working Days before the Proposal Due Date' = Monday 16 November 2026 (VOL-I 2.4 backward counting)."
+      cover_date_if_believed: Sunday 22 November 2026 (8 WD after Tue 10 Nov, issue day not counted; Thursday 19 November if the issue day is counted)
+      detect_by: Compare cover with Section 2.5; compute both dates.
+      consequence_if_missed: A5 marshalling drop-dead for the Shutdown Acceptance Letter placed 3-4 Working Days too late; a Bidder relying on it loses method (b) by deeming (2.6).
+    - id: E3
+      mechanism: actor substitution (wrong issuer of a required document)
+      cover_says: "to obtain the Authority's acceptance of its shutdown programme"
+      operative_truth: Section 2.5 requires a Shutdown Acceptance Letter from the Network Operator (Northern Region Water Services Company), applied for to the Network Operator. The Authority does not accept or issue anything.
+      detect_by: Read Section 2.5 ("a letter from the Network Operator"; "Applications ... shall be made to the Network Operator").
+      consequence_if_missed: A5 marshalling row names the wrong issuer and the wrong application route.
+  accurate_parts_not_errors:
+    - 'incorporates the Network Operator''s Table 1-3 ... Volume II Clause 1.3 - accurate'
+    - 'introduces a flow range for the reliability run in Volume II Clause 7.2 - accurate; the cover does not say the lower bound is relaxed from 90% to 85% (an undisclosed effect, not a planted error)'
+    - 'replaces Volume II Clauses 8.1 to 8.3 - accurate; the silent deletion of 8.2 is a secondary undisclosed effect'
+    - 'with no cure period - accurate (Section 5.2)'
+    - 'responds to clarification requests 15 to 20 - accurate; answers 17 and 19 change requirements, and Q&A changes are not itemised on the ADD-01/ADD-02 covers either'
+
+secondary_undisclosed_effects:
+  - {id: U1, what: "VOL-II 8.2 (CMMS) is deleted by the range replacement in Section 4.1 (8.1 to 8.3 replaced by new 8.1 and 8.3 only; 4.2 'not renumbered')", source: "ADD-03 4.1, 4.2"}
+  - {id: U2, what: "Reliability-run lower bound relaxed from 90% to 85% of nominal capacity, and an upper bound of 110% added", source: "ADD-03 3.1"}
+  - {id: U3, what: "Spare parts inventory reduced from two (2) years to eighteen (18) months of normal operation; inventory to be recorded in the 7.4 asset register", source: "ADD-03 4.1 (new 8.1)"}
+  - {id: U4, what: "Plant manager to be named in the Technical Proposal with a CV appendix; degree + 10 years' experience", source: "ADD-03 4.1 (new 8.3)"}
+  - {id: U5, what: "VOL-V 12.3 amended: IE costs of any reliability run after the first borne by the Project Company", source: "ADD-03 response 17"}
+  - {id: U6, what: "Asset register to be submitted before the start of the reliability run (earlier than VOL-II 7.4's 60 days after PCOD)", source: "ADD-03 response 19"}
+  - {id: U7, what: "Definition of Unavailability Event (VOL-V 1.6, by reference to 31.1) widened to include volumetric delivery (31.1(d))", source: "ADD-03 5.1"}
+  - {id: U8, what: "ADD-01 response 6 ('does not depend on volume delivered') becomes wrong", source: "ADD-03 5.1"}
+  - {id: U9, what: "New conditional rejection ground for over-long interruptions of flow (2.7), governed by the Arabic Table 1-3", source: "ADD-03 2.7, 2.2"}
+  - {id: U10, what: "Free-standing Addendum requirements (2.3-2.7, 3.2) that are not inserted into any Volume; register rows must cite ADD-03 itself", source: "ADD-03 2.3-2.7, 3.2"}
+
+provisions:
+  - id: P2.1
+    section: "2.1"
+    target: VOL-II 1.3
+    change_type: append (incorporation by reference of a third-party Arabic table)
+    old_anchor: "including any temporary works required to maintain flows during construction."
+    added: "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference."
+    expected_result: VOL-II 1.3 = SB01 + the added sentence. Table 1-3 becomes part of Volume II (precedence (d) under VOL-I 3.2, but issued by an Addendum - precedence (a) for ADD-03 itself).
+    consequences: [new register rows for TP-1/TP-2 conditions (window, maximum duration, notice, one shutdown per point, Ramadan/Eid exclusion), Network Operator defined as a new term]
+  - id: P2.2
+    section: "2.2"
+    change_type: governing-language rule
+    text: "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+    expected_result: Values are taken from the image (Appendix A); Appendix B discrepancies AR1 and AR2 are reported and resolved in favour of the Arabic.
+  - id: P2.3
+    section: "2.3"
+    change_type: Bidder election per tie-in point (free-standing requirement)
+    text: "The Bidder shall elect, for each tie-in point, one of the following methods of maintaining flows during the connection works, and shall state its election in the construction methodology section of the Technical Proposal: (a) temporary over-pumping, without interruption of flow in the existing collection network; or (b) interruption of flow within the permitted shutdown window stated for that tie-in point in Table 1-3."
+    expected_result: Register a Technical Proposal content requirement (scored under Table 1-1 criterion B, construction methodology - 15 marks per ADD-02); requirements downstream are conditional on the election and may differ between TP-1 and TP-2.
+    consequences: [no stated consequence for failing to state an election (not an A3 item)]
+  - id: P2.4
+    section: "2.4"
+    change_type: requirement by reference to a value that is not supplied
+    text: "The temporary works for method (a) shall be capable of passing, at each tie-in point, the maximum transfer flow stated for that tie-in point in Table 1-3."
+    expected_result: Register the requirement with value UNKNOWN - Table 1-3 (Arabic and English) has no maximum transfer flow entry. See missing_evidence ME1.
+  - id: P2.5
+    section: "2.5"
+    change_type: conditional new Envelope A document from a third party with a derived application deadline
+    text: "Where the Bidder elects method (b) for a tie-in point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter). Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date. The Network Operator has undertaken to respond within five (5) Working Days of receipt of a complete application."
+    expected_result: "Conditional Envelope A item (one letter per tie-in point for which (b) is elected). Application deadline Monday 16 November 2026. Response within 5 WD of a complete application (latest Monday 23 November 2026 if applied on 16 November). Issuer: Network Operator."
+    consequences: [A5 marshalling row M1, position of the letter in the VOL-I 9.1 order is not stated (flag; 9.1(i) covers only Section 8 evidence)]
+  - id: P2.6
+    section: "2.6"
+    change_type: deeming provision (fallback election, not a sanction)
+    text: "A Bidder that elects method (b) for a tie-in point but does not submit a Shutdown Acceptance Letter for that tie-in point with Envelope A shall be deemed to have elected method (a) for that tie-in point."
+    expected_result: Missing letter = deemed method (a) for that point; the Proposal is NOT non-responsive on that ground. Method (a) then binds, including P2.4 (whose value is missing).
+  - id: P2.7
+    section: "2.7"
+    change_type: new conditional rejection ground whose threshold lives only in the Arabic image
+    text: "A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum shutdown duration stated for that tie-in point in Table 1-3 shall be rejected."
+    expected_result: "A3 item: rejected if the Proposal's programme interrupts flow for more than 6 hours at TP-1 or more than 4 hours at TP-2 (Arabic governs; the English '6' for TP-2 is wrong)."
+  - id: P3.1
+    section: "3.1"
+    target: VOL-II 7.2
+    change_type: tolerance band replacing a single minimum
+    old: "at not less than 90% of nominal capacity"
+    new: "at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity"
+    expected_result: "VOL-II 7.2 = 'PCOD shall not be certified until the Facility has completed a continuous reliability run of thirty (30) days at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity, during which every parameter in Table 2-4 has been met.' Band = 102,000 to 132,000 m3/day (nominal 120,000 m3/day, VOL-II 2.1); previously >= 108,000 m3/day."
+    consequences: [VOL-V 1.5 PCOD definition now depends on the band (IE1), see deliberate ambiguity DA1 for day counting]
+  - id: P3.2
+    section: "3.2"
+    change_type: free-standing counting rule (Addendum-only text)
+    text: "A day on which the daily average flow is outside that range shall not count towards the thirty (30) days. Volume II Clause 7.3 is unchanged."
+    expected_result: Register as an ADD-03 requirement; VOL-II 7.3 unchanged (restart only on a Table 2-4 failure). The interaction with 'continuous' is DA1 - escalate, do not resolve.
+  - id: P4.1
+    section: "4.1"
+    target: VOL-II 8.1 to 8.3 (range)
+    change_type: range replacement whose replacement omits the middle clause
+    new_8_1: "The Project Company shall hold a spare parts inventory sufficient for eighteen (18) months of normal operation for all items with a lead time exceeding twelve (12) weeks, and shall record that inventory in the asset register required by Clause 7.4."
+    new_8_3: "The Project Company shall employ a plant manager holding a degree in chemical, civil, environmental or mechanical engineering and having not less than ten (10) years' experience in the operation of wastewater treatment facilities, and shall maintain a minimum of two (2) certified operators on shift at all times. The plant manager proposed for the first two (2) years of operation shall be named in the Technical Proposal, and his or her curriculum vitae shall be included as an appendix to it."
+    expected_result: "8.1 replaced (2 years -> 18 months; record in asset register); 8.2 DELETED (not reproduced; 4.2 says not renumbered, so 8.2 is a gap); 8.3 replaced (qualifications; plant manager named with CV appendix in the Technical Proposal). 8.4 and 8.5 unchanged."
+    consequences: [VOL-II 8.2 register row status = deleted by ADD-03 4.1 (later reinstated in amended form by ADD-04 3.1), internal inconsistency II1 with response 19, CV appendix is a Technical Proposal deliverable excluded from the 150-page limit (appendix expressly required by Volume II; VOL-I 9.2 as amended by ADD-02; ADD-01 response 2 still correct)]
+  - id: P4.2
+    section: "4.2"
+    text: "The Clauses of Volume II are not renumbered. Volume II Clauses 8.4 and 8.5 are unchanged."
+    expected_result: Confirms the gap at 8.2 and that 8.4/8.5 rows do not move.
+  - id: P5.1
+    section: "5.1"
+    target: VOL-V 31.1
+    change_type: replacement whose quoted old words span lettered list items (b) and (c), adding item (d)
+    old: "(b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails to deliver treated effluent to the delivery point at the required residual head."
+    new: "(b) the treated effluent fails any parameter in Volume II Table 2-4, (c) the Facility fails to deliver treated effluent to the delivery point at the required residual head, or (d) the volume of treated effluent delivered to the delivery point on any day is less than ninety per cent (90%) of the volume of sewage received at the inlet works on that day."
+    expected_result: "VOL-V 31.1 = 'An Unavailability Event occurs where (a) the Facility is unable to treat the flow delivered to it, (b) ... Table 2-4, (c) ... residual head, or (d) the volume of treated effluent delivered ... on that day.' Items (a)-(c) keep their letters; cross-references to 31.1(a)/(b)/(c) in 31.3 remain valid."
+    note: The old words span a PDF line break ("(b) the treated / effluent fails"); match whitespace-normalised.
+  - id: P5.2
+    section: "5.2"
+    target: VOL-V 31.3
+    old: "No cure period applies to an event under Clause 31.1(b)."
+    new: "No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d)."
+    expected_result: Second sentence of 31.3 replaced; first sentence (24 h for (a), 72 h for (c)) unchanged.
+
+answers:
+  - number: 15
+    classification: decoy
+    question: "Is the Network Operator owned or controlled by the Authority?"
+    response: "No. The Network Operator is a separate company. Its ownership has no bearing on any requirement of the RFP Documents."
+    expected: No register change.
+  - number: 16
+    classification: confirming
+    question: "May ozonation be used as the disinfection process?"
+    response: "Ozonation shall not be used as the sole means of disinfection. Disinfection shall be by chlorination with provision for dechlorination, or by ultraviolet irradiation with a validated dose, or by a combination. Volume II Clause 3.3 applies."
+    expected: Confirms VOL-II 3.3 (SB08) in imperative words; no change. Must not create a new requirement or mark 3.3 as amended.
+  - number: 17
+    classification: changing
+    question: "Volume V Clause 12.3 provides that the reasonable costs of the Independent Engineer are borne equally by the parties. Does this apply to the Independent Engineer's attendance at a repeated reliability run?"
+    response: "No. The reasonable costs of the Independent Engineer attributable to any reliability run after the first shall be borne by the Project Company. Volume V Clause 12.3 is amended accordingly."
+    expected: VOL-V 12.3 amended by carve-out (costs of runs after the first -> Project Company). Linked to DA1 (whether an out-of-range day produces a 'run after the first').
+  - number: 18
+    classification: human-judgment
+    question: "If the flow delivered to the Facility by the existing collection network during the reliability run under Volume II Clause 7.2 is lower than the flow required by that Clause, for reasons outside the Project Company's control, will the Project Company be entitled to relief?"
+    response: "The Authority notes the question. Volume V Clause 34 applies. The Authority does not consider further amendment necessary at this stage."
+    expected: >-
+      Escalate. Whether insufficient influent from the collection network is a 'failure of a utility not caused by the Project
+      Company' (VOL-V 34.2) is a legal characterisation; even if it is, 34.1 gives time only (no compensation, no deemed PCOD);
+      whether to qualify via Form 4-E (a deviation) is a commercial decision for a person. The tool must not answer yes or no.
+  - number: 19
+    classification: changing (and internally inconsistent)
+    question: "Volume II Clause 7.4 requires an asset register in the Authority's standard format. Will the format be issued before the Proposal Due Date?"
+    response: "No. The format will be issued to the Preferred Bidder. The asset register shall be maintained in the computerised maintenance management system required by Volume II Clause 8.2 and shall be submitted to the Authority before the start of the reliability run under Volume II Clause 7.2."
+    expected: >-
+      Changes VOL-II 7.4 for the asset register only: submission before the start of the reliability run (as-built documents
+      and O&M manuals stay at 60 days after PCOD). The standard format remains unavailable to Bidders (base-pack gap, now
+      confirmed). The reference to 'Volume II Clause 8.2' presupposes a clause that Section 4.1 of the same Addendum deleted:
+      internal inconsistency II1 - flag and escalate; do not silently reinstate 8.2 and do not silently drop the CMMS reference.
+  - number: 20
+    classification: confirming (of ADD-03 Section 2.4) - missing-evidence pointer
+    question: "What design flow should be used for the temporary works needed to maintain flows at the tie-in points referred to in Volume II Clause 1.3?"
+    response: "The temporary works shall be capable of passing the maximum transfer flow stated for each tie-in point in Table 1-3 at Appendix A to this Addendum. Section 2.4 of this Addendum applies."
+    expected: Points to a value Table 1-3 does not contain (ME1). Report missing; never substitute a figure.
+
+derived_dates:
+  rule: VOL-I 2.4 - Working Days Sunday-Thursday, no public holiday in the Kingdom in Oct-Dec 2026; counting backwards the stated date is not counted. Forward counts ("within N Working Days of receipt") are not defined by 2.4; the author mirrors the rule (start day not counted) and the tool should state its assumption.
+  items:
+    - {id: D1, what: Clarification cut-off (VOL-I 5.2, unchanged), date: Thursday 12 November 2026, note: ADD-03 issued 2 WD earlier}
+    - {id: D2, what: Shutdown Acceptance Letter application deadline (ADD-03 2.5, 8 WD before PDD), date: Monday 16 November 2026}
+    - {id: D3, what: Latest Network Operator response if applied on D2 (5 WD forward), date: Monday 23 November 2026, note: assumption on forward counting}
+    - {id: D4, what: Date the cover (E2) implies, date: Sunday 22 November 2026, note: "wrong anchor; Thursday 19 November if the issue day is counted"}
+    - {id: D5, what: Planning date for A5 after ADD-03, date: Tuesday 10 November 2026}
+    - {id: D6, what: Working Days from issue (incl.) to PDD (excl.), value: 12}
+    - {id: D7, what: Network Operator letter date (Table 1-3), date: Thursday 5 November 2026}
+    - {id: D8, what: Proposal Due Date (unchanged), date: Thursday 26 November 2026 14:00 Riyadh time}
+  figures:
+    - {what: reliability-run band, value: "102,000 to 132,000 m3/day (85%-110% of 120,000)", before: ">= 108,000 m3/day (90%)"}
+    - {what: 31.1(d) threshold at nominal inflow, value: ">= 108,000 m3/day delivered to the delivery point when 120,000 m3/day is received (loss <= 12,000 m3/day); the 90% applies to whatever volume is received each day"}
+    - {what: maximum interruption (Arabic governs), value: "TP-1 6 hours (window 23:00-05:00); TP-2 4 hours (window 01:00-05:00)"}
+
+marshalling_effects:
+  items:
+    - id: M1
+      item: Shutdown Acceptance Letter (one per tie-in point for which method (b) is elected)
+      issuer: Network Operator (Northern Region Water Services Company) - NOT the Authority (cover E3)
+      envelope: A
+      lead_time: up to 5 Working Days from a complete application
+      drop_dead_to_start: Monday 16 November 2026 (application to the Network Operator)
+      condition: only if method (b) is elected; absence -> deemed method (a) (2.6), not rejection
+      upstream_activities: [prepare shutdown programme within the Table 1-3 window and maximum duration (Arabic values), prepare the application (contents of a 'complete application' not specified - ME2)]
+    - id: M2
+      item: Plant manager CV appendix and named plant manager in the Technical Proposal (new VOL-II 8.3)
+      issuer: Bidder / O&M Operator (internal)
+      envelope: A (Technical Proposal appendix; outside the 150-page limit)
+    - id: M3
+      item: Technical Proposal construction methodology - election per tie-in point (2.3) and, for method (a), over-pumping design (2.4; design flow missing)
+      issuer: Bidder (internal)
+      envelope: A
+    - id: M4
+      item: Form 4-A - acknowledge Addendum No. 3 (and No. 4 for the consecutive check)
+      issuer: Bidder
+      envelope: A
+    - id: M5
+      item: Planning date moves to 10 November 2026; 12 Working Days remain to the PDD
+  unchanged: [Bid Bond, copies and media, Form 4-C, Form 4-G, Envelope B contents, PDD, clarification cut-off]
+
+a3_delta:
+  added:
+    - id: A3-1
+      requirement: Interruption of flow at a tie-in point longer than the maximum shutdown duration in Table 1-3 -> Proposal rejected
+      source: ADD-03 2.7 with Appendix A (Arabic governs per 2.2)
+      values: TP-1 6 hours; TP-2 4 hours (English translation's 6 hours for TP-2 is wrong)
+      condition: applies only where the Proposal provides for an interruption (method (b))
+      confidence: high
+  not_added_traps:
+    - Missing Shutdown Acceptance Letter - deemed election of method (a) (2.6), not disqualification
+    - Failure to state an election (2.3) - no stated consequence
+    - Plant manager CV missing - no stated consequence (scored under criterion E)
+    - Reliability-run band, 31.1(d), 12.3 carve-out, asset register timing - contractual/performance, not bid-stage disqualifiers
+  unresolved_for_a3_page:
+    - DA1 reliability-run counting (no correct answer)
+    - II1 CMMS - 8.2 deleted vs response 19 (resolved only by ADD-04)
+    - ME1 maximum transfer flow missing
+    - HJ1 response 18 (relief for low network flow)
+    - cover discrepancies E1-E3
+
+missing_evidence:
+  - id: ME1
+    what: The 'maximum transfer flow' for each tie-in point
+    referred_by: [ADD-03 2.4, ADD-03 response 20]
+    supplied: false
+    detect_by: Read the Arabic image (Appendix A) - columns are tie-in point, location, existing pipe diameter, shutdown window, maximum shutdown duration, advance notice; notes 1-4. No flow column or note. Appendix B likewise.
+    handling: Report as missing; raise a clarification; do not use Table 2-6 (7,500 m3/h peak hourly, 1,800 m3/h minimum night flow) or pipe-diameter estimates as a substitute. Not supplied by ADD-04 either.
+  - id: ME2
+    what: Contents of a 'complete application' for a Shutdown Acceptance Letter and the channel for making it before the PDD
+    referred_by: [ADD-03 2.5]
+    supplied: false
+    note: Table 1-3 note 3 concerns shutdown requests during construction (portal, programme, contingency plan); it may be used as a pointer but does not define a bid-stage application.
+  - id: ME3
+    what: The Authority's standard format for the asset register
+    referred_by: [VOL-II 7.4 (base pack), ADD-03 response 19]
+    supplied: false
+    note: Base-pack gap, confirmed by response 19 (format to the Preferred Bidder only). Not a new omission but it is now confirmed.
+
+arabic:
+  governing: Arabic (ADD-03 2.2; Appendix A intro; Appendix B heading)
+  strings:
+    issuer: "شركة خدمات المياه بالمنطقة الشمالية"
+    ref: "الرقم: ٣١٢/٢٠٢٦"
+    date: "التاريخ: ٥ نوفمبر ٢٠٢٦م"
+    subject: "الموضوع: نقاط الربط بشبكة التجميع القائمة لمحطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان"
+    tender: "مناقصة رقم: NUPA/ISTP/2026/014"
+    title: "جدول ١-٣: نقاط الربط وشروط إيقاف التدفق"
+    intro: "تُحدَّد نقاط الربط بشبكة التجميع القائمة وشروط إيقاف التدفق فيها على النحو الآتي:"
+    h_tp: "نقطة الربط"
+    h_loc: "الموقع"
+    h_dia: "قطر الخط القائم (مم)"
+    h_win: "فترة الإيقاف المسموح بها"
+    h_max: "أقصى مدّة للإيقاف (ساعة)"
+    h_ntc: "مهلة الإشعار المسبق"
+    tp1: "TP-1"
+    loc1: "غرفة التفتيش MH-41 على خط الطرد الشمالي"
+    dia1: "١٠٠٠"
+    win1: "من ٢٣:٠٠ إلى ٠٥:٠٠"
+    max1: "٦"
+    ntc1: "١٠ أيام عمل"
+    tp2: "TP-2"
+    loc2: "غرفة التفتيش MH-07 على خط الانحدار الجنوبي"
+    dia2: "٨٠٠"
+    win2: "من ٠١:٠٠ إلى ٠٥:٠٠"
+    max2: "٤"
+    ntc2: "١٠ أيام عمل"
+    notes: "ملاحظات:"
+    n1: "١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى."
+    n2: "٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء."
+    n3: "٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ."
+    n4: "٤. جميع الأوقات المذكورة بتوقيت الرياض."
+    sign: "مدير إدارة تشغيل الشبكات"
+  discrepancies:
+    - id: AR1
+      cell: TP-2, maximum shutdown duration (hours)
+      arabic: "٤ (4)"
+      english: "6"
+      governing_value: 4 hours
+      clue: The English TP-2 window '01:00 to 05:00' is itself only 4 hours long.
+      consequence: A3-1 threshold for TP-2 is 4 hours; a programme of 4-6 hours at TP-2 is rejected although the English allows it.
+    - id: AR2
+      cell: Note 1
+      arabic: "١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى."
+      english: "No shutdown is permitted during the holy month of Ramadan."
+      governing_value: No shutdown during Ramadan OR during the Eid al-Fitr and Eid al-Adha holidays
+      consequence: Construction-programme constraint (tie-in shutdown windows); omitted from the English.
+  consistent_cells: [TP-1 and TP-2 locations, diameters 1,000 / 800 mm, windows 23:00-05:00 / 01:00-05:00, TP-1 6 hours, notice 10 Working Days for both, notes 2-4]
+
+must_not_report:
+  - The Proposal Due Date or its time changed (unchanged by ADD-03 and ADD-04)
+  - The clarification cut-off (VOL-I 5.2) changed - it is still Thursday 12 November 2026
+  - VOL-V 29.3 amended, or no deduction for 31.1(d) during the Ramp-Up Period (cover E1 - phantom)
+  - Shutdown Acceptance Letter application deadline of 22 (or 19) November under ADD-03, or counted from the Addendum's date (cover E2)
+  - The Authority issues or accepts the shutdown programme (cover E3)
+  - TP-2 maximum shutdown duration of 6 hours, or the English translation governing (AR1)
+  - A missing Shutdown Acceptance Letter renders the Proposal non-responsive (it triggers deemed method (a), 2.6)
+  - Method (a) over-pumping conflicts with VOL-II 4.1 'without reliance on pumped bypass' (4.1 governs the permanent hydraulic profile, not temporary tie-in works)
+  - Any numeric maximum transfer flow (ME1 is missing; Table 2-6 figures are not substitutes)
+  - VOL-II 7.3 amended (3.2 says it is unchanged)
+  - A definite rule for out-of-range days (pause, restart or extend) - DA1 has no correct answer
+  - Nominal capacity changed (the band is relative to the unchanged 120,000 m3/day)
+  - VOL-II 8.2 retained or unchanged after ADD-03 (it is deleted by the range; response 19 is an inconsistency, not a reinstatement)
+  - VOL-II 8.4 or 8.5 amended, or Volume II renumbered
+  - Response 16 changes VOL-II 3.3 or newly prohibits ozonation (confirming)
+  - Response 15 has any effect (decoy)
+  - A yes/no answer to response 18 (human judgment)
+  - VOL-V 12.3 deleted or the IE cost split changed for the first run (only runs after the first)
+  - VOL-V 31.3 cure periods for (a) or (c) changed; items (a)-(c) re-lettered
+  - ADD-02 response 12 (no cap, Clause 31.2) made wrong - 31.2 is untouched
+  - ADD-01 response 2 (page-limit exclusions) made wrong - the CV appendix is an appendix expressly required by Volume II and is excluded
+  - Any Form (4-A to 4-G) reissued or amended by ADD-03
+  - Bid Bond, copies, Envelope B, Form 4-C or local content changed
+
+deliberate_ambiguities:
+  - id: DA1
+    where: ADD-03 3.1 + 3.2 with VOL-II 7.2 ('continuous reliability run of thirty (30) days') and 7.3 (restart only on a Table 2-4 failure, 'unchanged')
+    question: What happens to the run on a day whose daily average flow is outside 85%-110% of nominal capacity?
+    readings:
+      - Pause/exclude - the day is ignored and the run continues; 30 qualifying days are needed, so the run is no longer 'continuous' in calendar terms.
+      - Restart - 'continuous' means 30 consecutive qualifying days; an excluded day breaks continuity, so the count starts again (yet 3.2 says 'shall not count', not 'restart', and 7.3 restarts only for Table 2-4 failures).
+      - Extend - the run continues and is extended by the number of excluded days (equivalent to pause in day count, different in what 'continuous' covers).
+    correct_answer: none
+    expected_handling: Escalate to a person / raise a clarification (still possible until Thursday 12 November 2026). Do not pick a reading. Note the knock-on to response 17 (who pays the IE for a 'run after the first') and to PCOD/LD exposure.
+    resolved_by_add04: false
+
+internal_inconsistencies:
+  - id: II1
+    where: ADD-03 4.1/4.2 (8.1 to 8.3 replaced by 8.1 and 8.3 only; not renumbered) vs response 19 ('the computerised maintenance management system required by Volume II Clause 8.2')
+    expected_handling: Register 8.2 as deleted by 4.1; flag that response 19 relies on a deleted clause; escalate whether a CMMS is still required. Do not resolve silently either way.
+    resolved_by_add04: true (ADD-04 3.1 reinstates 8.2 in amended form; response 21)
+
+human_judgment:
+  - id: HJ1
+    item: Response 18 - relief for insufficient network flow during the reliability run
+    why_a_person: Legal characterisation under VOL-V 34.2 ('failure of a utility not caused by the Project Company') and a commercial choice whether to table a Form 4-E deviation; relief is time-only (34.1) and conditional on 5 WD notice (34.3).
+  - id: HJ2
+    item: Whether to rely on method (b) at all given the 16 November application deadline and the missing transfer flow for the method (a) fallback
+    why_a_person: Bid strategy / risk acceptance.
+
+indirect_effects:
+  - id: IE1
+    trigger: P3.1 (VOL-II 7.2 band)
+    chain: VOL-II 7.2 -> VOL-V 1.5 (PCOD = IE certifies 7.2 satisfied; text unchanged, meaning changed) -> VOL-V 12.1 Scheduled PCOD / 18.1 delay LDs SAR 180,000 per day / 18.3 and 39.2 termination -> VOL-V 29.1 payments and 29.3 Ramp-Up start at PCOD -> VOL-I 12.1 concession from PCOD
+    reader_must: Mark the PCOD-dependent rows as affected although none of them cites 7.2 except VOL-V 1.5; carry DA1 into the risk notes.
+  - id: IE2
+    trigger: P5.1 (31.1(d))
+    chain: VOL-V 31.1 -> VOL-V 1.6 (definition of Unavailability Event) -> 31.2 deductions (uncapped, ADD-02 response 12 still accurate) -> 24.3 distribution lock-up while an event continues -> 31.4 persistent breach (3 events in 90 days) -> 39.3 termination; 29.3 Ramp-Up relief does not cover (d)
+    earlier_answer_made_wrong: "ADD-01 response 6 ('availability based and does not depend on volume delivered') - payment now depends on daily delivered volume relative to received volume"
+    reader_must: Flag ADD-01 response 6 as wrong/incomplete; flag the Financial Model and the process water balance (sludge dewatering losses under VOL-II 8.4, reservoir evaporation, process water use) as needing review.
+  - id: IE3
+    trigger: P4.1 (range 8.1-8.3)
+    chain: 8.2 deleted -> response 19 relies on 8.2 (II1) -> Table 1-1 criterion C narrative (O&M philosophy and lifecycle) -> after ADD-04, 8.2 reinstated with an earlier trigger (before the reliability run)
+    reader_must: Not treat 'replaces 8.1 to 8.3' as touching only 8.1 and 8.3.
+  - id: IE4
+    trigger: P4.1 (new 8.3)
+    chain: named plant manager + CV appendix -> Technical Proposal deliverable (A5 activity with recruitment lead time) -> VOL-I 9.2 (150 pages, ADD-02) exclusion of 'appendices expressly permitted by Volume II' applies -> ADD-01 response 2 remains correct -> Table 1-1 criterion E (key personnel) scored
+  - id: IE5
+    trigger: response 19 + new 8.1
+    chain: asset register due before the reliability run -> new 8.1 requires the spares inventory to be recorded in that register -> spares inventory and its record needed before the run, not 60 days after PCOD; as-built documents and O&M manuals stay at 60 days after PCOD
+  - id: IE6
+    trigger: P2.5-P2.7 with Appendix A
+    chain: election (b) -> Shutdown Acceptance Letter (Network Operator, apply by Mon 16 Nov, Envelope A) -> programme must respect the Arabic maximum durations (TP-2 4 h) or the Proposal is rejected (2.7) -> letter missing => deemed (a) => P2.4 binds with a missing value (ME1)
+  - id: IE7
+    trigger: response 17
+    chain: IE costs for runs after the first -> depends on DA1 (whether out-of-range days restart the run) -> Financial Model commissioning cost
+  - id: IE8
+    trigger: P3.1 with VOL-II 4.3 (engineering check only)
+    chain: Table 2-4 must be met during the run at up to 132,000 m3/day; if a stream is out of service during the run, three of four streams carry up to 44,000 m3/day each (vs 40,000 at nominal)
+    certainty: flag_only - not a new requirement; must not be reported as an amendment of 4.3
+
+addendum_4:
+  meta:
+    file: rehearsals/blind-06/input/ADD-04_Addendum_No_4.pdf
+    pages: 2
+    printed_issue_date: 16 November 2026          # Monday; after the 5.2 cut-off (12 Nov); before the PDD
+    stands_on: [base pack, ADD-01, ADD-02, ADD-03]
+    planning_date_after_add04: 2026-11-16
+    working_days_issue_to_pdd: 8
+    clarification_numbering: 21 (received Wednesday 11 November 2026, before the cut-off)
+    cover_text: "This Addendum amends Section 2.5 of Addendum No. 3, reinstates Volume II Clause 8.2 in amended form, amends the electronic file naming convention at Volume I Appendix 2, and responds to clarification request 21."
+    cover_errors: none
+  depends_on_add03: true   # Sections 2 and 3 amend text that exists only in ADD-03; response 21 cites ADD-03 4.1 and response 19
+  provisions:
+    - id: A4-2.1
+      target: ADD-03 Section 2.5 (introduced by No. 3)
+      old: "not later than eight (8) Working Days before the Proposal Due Date"
+      new: "not later than five (5) Working Days before the Proposal Due Date"
+      expected_result: Application deadline moves from Monday 16 November 2026 to Thursday 19 November 2026.
+    - id: A4-2.2
+      target: ADD-03 Section 2.5 (introduced by No. 3)
+      old: "within five (5) Working Days of receipt of a complete application"
+      new: "within three (3) Working Days of receipt of a complete application"
+      expected_result: Network Operator response within 3 WD; latest Tuesday 24 November 2026 if applied on 19 November.
+      trap: After 2.1, ADD-03 2.5 contains 'five (5) Working Days' twice for an instant; a substitution keyed only on 'five (5) Working Days' would hit the new application deadline. Match the full quoted phrase.
+    - id: A4-2.3
+      text: "A Shutdown Acceptance Letter issued in response to an application made before the date of this Addendum remains valid."
+      expected_result: Transitional; no new requirement.
+    - id: A4-3.1
+      target: VOL-II 8.2 (deleted by ADD-03 4.1) - reverses part of an ADD-03 change
+      change_type: reinstatement in amended form
+      original_8_2: "A computerised maintenance management system shall be implemented before PCOD and shall remain in use for the concession period."
+      reinstated_8_2: "A computerised maintenance management system shall be implemented before the start of the reliability run under Clause 7.2 and shall remain in use for the concession period."
+      expected_result: 8.2 back in force with an earlier implementation trigger (before the reliability run, not before PCOD). II1 resolved.
+    - id: A4-3.2
+      text: "The response to clarification request 19 in Addendum No. 3 shall be read with Section 3.1 of this Addendum."
+      expected_result: Response 19's CMMS reference is now valid; its other changes (asset register before the run) stand.
+    - id: A4-4.1
+      target: VOL-I Appendix 2 (base-pack clause not touched by ADD-03)
+      old: "File names shall not exceed 120 characters."
+      new: "File names shall not exceed eighty (80) characters, including the extension."
+      expected_result: Electronic-copy naming limit 80 characters including '.pdf'; the convention pattern, folder depth (three levels) and the 'corrected by the Authority at the Bidder's risk' consequence are unchanged (not an A3 item).
+  answers:
+    - number: 21
+      classification: confirming (points to Section 3)
+      response: "Yes. See Section 3 of this Addendum."
+  appendix_trap:
+    id: A4-T1
+    what: Appendix A (consolidated text 'for convenience only'; operative provisions prevail) reproduces 8.2 as 'implemented before PCOD' - the stale original - while Section 3.1 says 'before the start of the reliability run under Clause 7.2'.
+    expected_handling: Section 3.1 governs; report the consolidated-text discrepancy; must not register 'before PCOD'.
+    consistent_parts: Appendix A's 2.5 (five/three Working Days), 8.1 and 8.3 match the operative texts.
+  derived_dates:
+    - {what: SAL application deadline, date: Thursday 19 November 2026, was: Monday 16 November 2026}
+    - {what: latest Network Operator response if applied on the deadline (3 WD forward), date: Tuesday 24 November 2026, was: Monday 23 November 2026}
+    - {what: planning date, date: Monday 16 November 2026}
+    - {what: ADD-04 issued on the day ADD-03's original deadline fell, note: applications already made remain valid (2.3)}
+  a3_delta: none (A3-1 from ADD-03 unchanged; Appendix 2 consequence is correction at the Bidder's risk, not rejection)
+  marshalling_effects:
+    - M1 drop-dead moves to Thursday 19 November 2026; lead time up to 3 WD; issuer unchanged (Network Operator)
+    - Electronic copy file names <= 80 characters including the extension (VOL-I 6.5 via Appendix 2)
+  still_open_after_add04: [DA1 reliability-run counting, ME1 maximum transfer flow, ME2 application contents, HJ1 response 18, cover discrepancies E1-E3 of ADD-03 (not corrected by ADD-04), AR1/AR2 (Arabic still governs)]
+  must_not_report:
+    - ADD-04 resolves DA1 or supplies the maximum transfer flow
+    - 8.2 reinstated in its original form ('before PCOD') - Appendix A is stale (A4-T1)
+    - New 8.1 or 8.3 changed by ADD-04
+    - ADD-04 invalid because issued after the clarification cut-off (VOL-I 5.2 limits requests, not Addenda; request 21 was received before the cut-off)
+    - The PDD or the cut-off changed
+    - Appendix 2 non-conforming names now cause rejection
+    - Both 'five (5) Working Days' phrases in ADD-03 2.5 replaced by 'three (3)'

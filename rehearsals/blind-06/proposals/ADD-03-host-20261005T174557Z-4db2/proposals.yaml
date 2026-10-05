@@ -1,0 +1,2739 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T174557Z-4db2
+  created: '2026-10-05T17:45:57Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+  statements:
+  - id: S-F1
+    kind: fact
+    text: ADD-03:3.1 deletes 'at not less than 90% of nominal capacity' from Volume II Clause 7.2 and substitutes
+      a daily-average-flow range of 85% to 110% of nominal capacity measured at the inlet works.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 7.2, ‘at not less than 90% of nominal capacity’ is deleted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:7.2
+      page: 4
+      kind: span
+      words: a continuous reliability run of thirty (30) days at not less than 90% of nominal capacity
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F2
+    kind: fact
+    text: ADD-03:3.2 provides that a day with daily average flow outside 'that range' does not count towards 'the
+      thirty (30) days', and states that Volume II Clause 7.3 is unchanged. It does not cite Clause 7.2 by number.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 2
+      kind: span
+      words: A day on which the daily average flow is outside that range shall not count towards the thirty (30)
+        days. Volume II Clause 7.3 is unchanged.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I1
+    kind: interpretation
+    text: 'In ADD-03:3.2, ''that range'' means the 85%-110% range that ADD-03:3.1 substitutes into Clause 7.2, and
+      ''the thirty (30) days'' means the 30-day reliability run in Clause 7.2. So 3.2 adds a counting rule to Clause
+      7.2. It is not clear how this fits the word ''continuous'' in 7.2: an out-of-range day might pause the run
+      or might break its continuity.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 2
+      kind: span
+      words: outside that range shall not count towards the thirty (30) days
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:7.2
+      page: 4
+      kind: span
+      words: a continuous reliability run of thirty (30) days
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F3
+    kind: fact
+    text: ADD-03:4.1 deletes Volume II Clauses 8.1 to 8.3 and prints replacement text for 8.1 and 8.3 only. No replacement
+      text is printed for 8.2.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: 'Volume II Clauses 8.1 to 8.3 are deleted and replaced by the following:'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F4
+    kind: fact
+    text: ADD-03:4.2 states that the Clauses of Volume II are not renumbered and that Clauses 8.4 and 8.5 are unchanged.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: The Clauses of Volume II are not renumbered. Volume II Clauses 8.4 and 8.5 are unchanged.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I2
+    kind: interpretation
+    text: Clause 8.2 falls inside the deleted range '8.1 to 8.3' and is given no replacement, and 4.2 says the clauses
+      are not renumbered. So Clause 8.2 (the CMMS requirement) is deleted outright, and the 8.2 number stays vacant.
+      This may not have been intended by the Authority.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: Volume II Clauses 8.1 to 8.3 are deleted and replaced by the following
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.2
+      page: 5
+      kind: span
+      words: A computerised maintenance management system shall be implemented before PCOD and shall remain in use
+        for the concession period.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F5
+    kind: fact
+    text: ADD-03:5.1 replaces the quoted limbs (b)-(c) of Volume V Clause 31.1 with limbs (b)-(d), adding (d), a
+      daily delivered-volume shortfall below 90% of sewage received. ADD-03:5.2 extends the no-cure-period sentence
+      of Clause 31.3 to Clause 31.1(d).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: or (d) the volume of treated effluent delivered to the delivery point on any day is less than ninety
+        per cent (90%) of the volume of sewage received at the inlet works on that day.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F6
+    kind: fact
+    text: Volume II Table 2-4 (image region VOL-II-p3-r1) is cited in the retained limb (b) of Clause 31.1. ADD-03
+      does not change it. The image shows the table title and ten parameter rows (BOD5 to Oil and Grease) with columns
+      Unit / Limit / Basis of assessment.
+    evidence:
+    - doc: VOL-II
+      unit_id: VOL-II:T2-4
+      page: 3
+      kind: crop
+      words: Table 2-4 Minimum Effluent Quality Parameters at the Point of Discharge
+      cell: null
+      crop_sha256: ef270c2506ac5f6c58912ab201de592974a22ab82b29ce14cbac8b33029d70dc
+    note: null
+  items:
+  - id: ADD-03/3.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:3.1
+    target: VOL-II:7.2
+    payload:
+      id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-II:7.2
+      old: at not less than 90% of nominal capacity
+      old_resolved: quoted
+      new: at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of
+        nominal capacity
+      origin: assistant
+    previous_value: at not less than 90% of nominal capacity
+    proposed_value: at a daily average flow, measured at the inlet works, of not less than 85% and not more than
+      110% of nominal capacity
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 7.2, ‘at not less than 90% of nominal capacity’ is deleted and ‘at a daily average
+        flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:7.2
+      page: 4
+      kind: span
+      words: at not less than 90% of nominal capacity
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:7.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''at not less than 90% of nominal capacity'' matches VOL-II:7.2 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110%
+        of nominal capacity'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:3.1 p2
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:7.2 p4
+      ok: true
+      detail: verbatim in VOL-II:7.2 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: A printed deleted/substituted pair. The old words occur once in 7.2 at ADD-02, and the simulation
+      passed (C21-C24).
+    review: null
+  - id: ADD-03/3.2(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: escalation
+    provision: ADD-03:3.2
+    target: VOL-II:7.2
+    payload:
+      why: 'The first sentence of ADD-03:3.2 adds a counting rule to the 30-day reliability run, but it does not
+        cite Volume II Clause 7.2 by number. It relies on ''that range'' (from 3.1) and ''the thirty (30) days''.
+        An annotate op on VOL-II:7.2 fails C22 (''not cited: [VOL-II:7.2]''). No text is printed for insertion into
+        7.2, so append_text or replace_text would mean inventing wording. Separately, 7.2 calls the run ''continuous'',
+        and it is unclear whether an out-of-range day pauses the count or breaks continuity: insufficient evidence
+        to settle this.'
+      what_is_unsupported: Linking a rule that changes an uncited clause by cross-reference (3.2 -> 3.1 -> VOL-II:7.2)
+        is not supported. A person needs to record the effect on VOL-II:7.2 (adds_obligation or interprets) and
+        decide how 'shall not count' interacts with 'continuous'.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 2
+      kind: span
+      words: A day on which the daily average flow is outside that range shall not count towards the thirty (30)
+        days.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:7.2
+      page: 4
+      kind: span
+      words: a continuous reliability run of thirty (30) days
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:7.2
+    - ADD-03:3.1
+    - ADD-03/3.1
+    conflicts: []
+    missing_information:
+    - whether an out-of-range day suspends or breaks the 'continuous' 30-day run
+    statements:
+    - S-F2
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:3.2 p2
+      ok: true
+      detail: verbatim in ADD-03:3.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:7.2 p4
+      ok: true
+      detail: verbatim in VOL-II:7.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: whether an out-of-range day suspends or breaks the ''continuous''
+        30-day run'
+      aspect: evidence
+    verification_status: escalated
+    model_rationale: 'I tried annotate on VOL-II:7.2. The engine rejected it because 3.2 does not cite 7.2. Related
+      context from another batch: Q18 (ADD-03 p2) asks about low flow during the run, and the Authority answers
+      ''Volume V Clause 34 applies''.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'Escalation is reasonable: 3.2 does not cite 7.2 by number; ''that range'' and ''the thirty (30) days''
+          refer back to 3.1, whose text is not shown here, so the link to 7.2 is an inference (S-I1).'
+        - Interaction of 'shall not count' with 'continuous' in 7.2 is genuinely unresolved on the evidence; 3.2
+          itself says only 7.3 is unchanged and is silent on 7.2's continuity wording.
+        - The mention of Q18/Volume V Clause 34 is not in the printed evidence; I did not rely on it.
+        evidence_checked:
+        - ADD-03:3.2
+        - VOL-II:7.2
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: target is not among the units the provision cites'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+        created: '2026-10-05T17:46:16Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/3.2(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:3.2
+    target: VOL-II:7.3
+    payload:
+      id: ADD-03/3.2(b)
+      provision: ADD-03:3.2
+      type: annotate
+      targets:
+      - VOL-II:7.3
+      effect: confirms
+      note: 'ADD-03:3.2: ''Volume II Clause 7.3 is unchanged.'''
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 2
+      kind: span
+      words: Volume II Clause 7.3 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:7.3
+      page: 4
+      kind: span
+      words: A failure of any Table 2-4 parameter during the reliability run shall restart the run in full.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:7.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:3.2 p2
+      ok: true
+      detail: verbatim in ADD-03:3.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:7.3 p4
+      ok: true
+      detail: verbatim in VOL-II:7.3 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: The provision confirms 7.3 without changing its text. The annotate op passed simulation.
+    review: null
+  - id: ADD-03/4.1(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-II:8.1
+    payload:
+      id: ADD-03/4.1(a)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:8.1
+      old: The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal operation
+        for all items with a lead time exceeding twelve (12) weeks.
+      old_resolved: matched_in_target
+      new: The Project Company shall hold a spare parts inventory sufficient for eighteen (18) months of normal
+        operation for all items with a lead time exceeding twelve (12) weeks, and shall record that inventory in
+        the asset register required by Clause 7.4.
+      origin: assistant
+    previous_value: The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal
+      operation for all items with a lead time exceeding twelve (12) weeks.
+    proposed_value: The Project Company shall hold a spare parts inventory sufficient for eighteen (18) months of
+      normal operation for all items with a lead time exceeding twelve (12) weeks, and shall record that inventory
+      in the asset register required by Clause 7.4.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: ‘8.1  The Project Company shall hold a spare parts inventory sufficient for eighteen (18) months of
+        normal operation for all items with a lead time exceeding twelve (12) weeks, and shall record that inventory
+        in the asset register required by Clause 7.4.’
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.1
+      page: 5
+      kind: span
+      words: The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal operation
+        for all items with a lead time exceeding twelve (12) weeks.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:8.1
+    - VOL-II:7.4
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'the old words are located in the target, not quoted by the provision: a person checks them'
+      aspect: semantic
+    - check: previous_value
+      ok: true
+      detail: '''The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal operation
+        for all items with a lead time exceeding twelve (12) weeks.'' matches VOL-II:8.1 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''The Project Company shall hold a spare parts inventory sufficient for eighteen (18) months of normal
+        operation for all items with a lead time exceeding twelve (12) weeks, and shall record that inventory in
+        the asset register required by Clause 7.4.'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:4.1 p2
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:8.1 p5
+      ok: true
+      detail: verbatim in VOL-II:8.1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: The whole of 8.1 is replaced with the printed text, without the '8.1' label. The ADD-03 text
+      has no separate content unit, so replace_unit is not possible (the engine reported 'replacement ... is not
+      content of ADD-03'). Instead, replace_text swaps the full effective text (C23 occurs once). The new text adds
+      a link to the asset register in 7.4, which is due 60 days after PCOD.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The new 8.1 text matches the quoted replacement minus the '8.1' label; the old text matches VOL-II:8.1
+          exactly.
+        - The new text adds a reference to Clause 7.4's asset register. Clause 7.4 is not shown in the evidence,
+          so the claim that it is due 60 days after PCOD cannot be verified here.
+        - The change goes beyond a quantity change (2 years to 18 months), since it also adds a recording obligation.
+          A person should note that.
+        evidence_checked:
+        - ADD-03:4.1
+        - VOL-II:8.1
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: old words located in the target'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+        created: '2026-10-05T17:46:16Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/4.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-II:8.2
+    payload:
+      id: ADD-03/4.1(b)
+      provision: ADD-03:4.1
+      type: set_status
+      target: VOL-II:8.2
+      status: deleted
+      origin: assistant
+    previous_value: A computerised maintenance management system shall be implemented before PCOD and shall remain
+      in use for the concession period.
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: 'Volume II Clauses 8.1 to 8.3 are deleted and replaced by the following:'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.2
+      page: 5
+      kind: span
+      words: A computerised maintenance management system shall be implemented before PCOD and shall remain in use
+        for the concession period.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:8.2
+    - ADD-03:4.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F3
+    - S-F4
+    - S-I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''A computerised maintenance management system shall be implemented before PCOD and shall remain
+        in use for the concession period.'' matches VOL-II:8.2 at ADD-02'
+      aspect: engine
+    - check: evidence ADD-03:4.1 p2
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:8.2 p5
+      ok: true
+      detail: verbatim in VOL-II:8.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I2: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 8.2 is inside the deleted range, but the replacement text covers only 8.1 and 8.3, and 4.2
+      says the clauses are not renumbered. My reading is that the CMMS obligation is removed. This depends on interpretation
+      S-I2, so a person must confirm it and may want to ask the Authority whether the omission was intended.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The reading is plausible: 8.2 lies in the range ''8.1 to 8.3'' that is deleted. Replacement text is printed
+          only for 8.1 and 8.3, and 4.2 says there is no renumbering.'
+        - It is still an inference that the Authority meant to drop the CMMS obligation. The clause could be an
+          omission, so a clarification question is warranted; the item itself flags this.
+        - 4.2 does not list 8.2 as unchanged, which is consistent with deletion.
+        evidence_checked:
+        - ADD-03:4.1
+        - ADD-03:4.2
+        - VOL-II:8.2
+        selected_because:
+        - removal
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+        created: '2026-10-05T17:46:16Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/4.1(c)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-II:8.3
+    payload:
+      id: ADD-03/4.1(c)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:8.3
+      old: The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum of two
+        (2) certified operators on shift at all times.
+      old_resolved: matched_in_target
+      new: The Project Company shall employ a plant manager holding a degree in chemical, civil, environmental or
+        mechanical engineering and having not less than ten (10) years' experience in the operation of wastewater
+        treatment facilities, and shall maintain a minimum of two (2) certified operators on shift at all times.
+        The plant manager proposed for the first two (2) years of operation shall be named in the Technical Proposal,
+        and his or her curriculum vitae shall be included as an appendix to it.
+      origin: assistant
+    previous_value: The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum
+      of two (2) certified operators on shift at all times.
+    proposed_value: The Project Company shall employ a plant manager holding a degree in chemical, civil, environmental
+      or mechanical engineering and having not less than ten (10) years' experience in the operation of wastewater
+      treatment facilities, and shall maintain a minimum of two (2) certified operators on shift at all times. The
+      plant manager proposed for the first two (2) years of operation shall be named in the Technical Proposal,
+      and his or her curriculum vitae shall be included as an appendix to it.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: The plant manager proposed for the first two (2) years of operation shall be named in the Technical
+        Proposal, and his or her curriculum vitae shall be included as an appendix to it.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.3
+      page: 5
+      kind: span
+      words: The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum of
+        two (2) certified operators on shift at all times.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:8.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'the old words are located in the target, not quoted by the provision: a person checks them'
+      aspect: semantic
+    - check: previous_value
+      ok: true
+      detail: '''The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum
+        of two (2) certified operators on shift at all times.'' matches VOL-II:8.3 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '"The Project Company shall employ a plant manager holding a degree in chemical, civil, environmental
+        or mechanical engineering and having not less than ten (10) years'' experience in the operation of wastewater
+        treatment facilities, and shall maintain a minimum of two (2) certified operators on shift at all times.
+        The plant manager proposed for the first two (2) years of operation shall be named in the Technical Proposal,
+        and his or her curriculum vitae shall be included as an appendix to it." is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:4.1 p2
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:8.3 p5
+      ok: true
+      detail: verbatim in VOL-II:8.3 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 'The whole of 8.3 is replaced with the printed text. The new text adds a bid-submission requirement:
+      name the plant manager in the Technical Proposal and include the CV as an appendix.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The old text matches VOL-II:8.3 and the new text matches the quoted replacement for 8.3.
+        - 'The change adds substantive requirements: a degree, ten years'' experience, and naming the manager in
+          the Technical Proposal with a CV appendix. The two-operator requirement is retained unchanged.'
+        evidence_checked:
+        - ADD-03:4.1
+        - VOL-II:8.3
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: old words located in the target'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+        created: '2026-10-05T17:46:16Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/4.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:4.2
+    target: VOL-II:8.4
+    payload:
+      id: ADD-03/4.2
+      provision: ADD-03:4.2
+      type: annotate
+      targets:
+      - VOL-II:8.4
+      - VOL-II:8.5
+      effect: confirms
+      note: 'ADD-03:4.2: ''The Clauses of Volume II are not renumbered. Volume II Clauses 8.4 and 8.5 are unchanged.'''
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: The Clauses of Volume II are not renumbered. Volume II Clauses 8.4 and 8.5 are unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.4
+      page: 5
+      kind: span
+      words: Sludge shall be dewatered to not less than 22% dry solids
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:8.4
+    - VOL-II:8.5
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:4.2 p2
+      ok: true
+      detail: verbatim in ADD-03:4.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:8.4 p5
+      ok: true
+      detail: verbatim in VOL-II:8.4 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: A confirmation with no text change. 'Not renumbered' supports leaving the 8.2 number vacant
+      (see 4.1(b)).
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The target field names only 8.4, but the payload annotates 8.4 and 8.5. VOL-II:8.5 is not shown in the
+          evidence, so I could not check it directly. 4.2 does state that 8.5 is unchanged.
+        - The 'not renumbered' sentence is not annotated on any unit. It is only referenced in the note.
+        evidence_checked:
+        - ADD-03:4.2
+        - VOL-II:8.4
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+        created: '2026-10-05T17:46:16Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/5.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-V:31.1
+    payload:
+      id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-V:31.1
+      old: (b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails to deliver
+        treated effluent to the delivery point at the required residual head.
+      old_resolved: quoted
+      new: (b) the treated effluent fails any parameter in Volume II Table 2-4, (c) the Facility fails to deliver
+        treated effluent to the delivery point at the required residual head, or (d) the volume of treated effluent
+        delivered to the delivery point on any day is less than ninety per cent (90%) of the volume of sewage received
+        at the inlet works on that day.
+      origin: assistant
+    previous_value: (b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails
+      to deliver treated effluent to the delivery point at the required residual head.
+    proposed_value: (b) the treated effluent fails any parameter in Volume II Table 2-4, (c) the Facility fails
+      to deliver treated effluent to the delivery point at the required residual head, or (d) the volume of treated
+      effluent delivered to the delivery point on any day is less than ninety per cent (90%) of the volume of sewage
+      received at the inlet works on that day.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: In Volume V Clause 31.1, ‘(b) the treated effluent fails any parameter in Volume II Table 2-4, or (c)
+        the Facility fails to deliver treated effluent to the delivery point at the required residual head.’ is
+        deleted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:31.1
+      page: 3
+      kind: span
+      words: (b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails to deliver
+        treated effluent to the delivery point at the required residual head.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:T2-4
+      page: 3
+      kind: crop
+      words: Table 2-4 Minimum Effluent Quality Parameters at the Point of Discharge
+      cell: null
+      crop_sha256: ef270c2506ac5f6c58912ab201de592974a22ab82b29ce14cbac8b33029d70dc
+    dependencies:
+    - VOL-V:31.1
+    - VOL-II:T2-4
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F5
+    - S-F6
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''(b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails
+        to deliver treated effluent to the delivery point at the required residual head.'' matches VOL-V:31.1 at
+        ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''(b) the treated effluent fails any parameter in Volume II Table 2-4, (c) the Facility fails to
+        deliver treated effluent to the delivery point at the required residual head, or (d) the volume of treated
+        effluent delivered to the delivery point on any day is less than ninety per cent (90%) of the volume of
+        sewage received at the inlet works on that day.'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:5.1 p2
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:31.1 p3
+      ok: true
+      detail: verbatim in VOL-V:31.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:T2-4 p3
+      ok: true
+      detail: verbatim in VOL-II:T2-4 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: 'A printed deleted/substituted pair. Limb (b) still refers to Volume II Table 2-4 and is unchanged.
+      I looked at the crop of T2-4 (VOL-II p3, region VOL-II-p3-r1, English only): title ''Table 2-4 Minimum Effluent
+      Quality Parameters at the Point of Discharge'', ten rows from BOD5 (10 mg/l, 30-day rolling average) to Oil
+      and Grease (1 mg/l, maximum any single sample), and Note 1. Nothing in 5.1 changes the table. The new limb
+      (d) is a daily volume ratio and does not depend on the table.'
+    review: null
+  - id: ADD-03/5.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: amendment_op
+    provision: ADD-03:5.2
+    target: VOL-V:31.3
+    payload:
+      id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: replace_text
+      target: VOL-V:31.3
+      old: No cure period applies to an event under Clause 31.1(b).
+      old_resolved: quoted
+      new: No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).
+      origin: assistant
+    previous_value: No cure period applies to an event under Clause 31.1(b).
+    proposed_value: No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 2
+      kind: span
+      words: In Volume V Clause 31.3, ‘No cure period applies to an event under Clause 31.1(b).’ is deleted and
+        ‘No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:31.3
+      page: 3
+      kind: span
+      words: No cure period applies to an event under Clause 31.1(b).
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:31.3
+    - ADD-03/5.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F5
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''No cure period applies to an event under Clause 31.1(b).'' matches VOL-V:31.3 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''No cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:5.2 p2
+      ok: true
+      detail: verbatim in ADD-03:5.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:31.3 p3
+      ok: true
+      detail: verbatim in VOL-V:31.3 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: A printed deleted/substituted pair. It depends on 5.1 creating limb (d).
+    review: null
+  coverage:
+    provisions_total: 70
+    accounted: 6
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp1-location
+    - ADD-03:p4-image/tp1-diameter
+    - ADD-03:p4-image/tp1-window
+    - ADD-03:p4-image/tp1-duration
+    - ADD-03:p4-image/tp1-notice
+    - ADD-03:p4-image/tp2-point
+    - ADD-03:p4-image/tp2-location
+    - ADD-03:p4-image/tp2-diameter
+    - ADD-03:p4-image/tp2-window
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/tp2-notice
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/note4
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+  resolution:
+    provisions_total: 70
+    accounted: 6
+    resolved: 4
+    pending: 2
+    invalid: 0
+    unaccounted: 64
+    pending_provisions:
+    - ADD-03:3.2
+    - ADD-03:4.1
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.1 p2
+        ok: true
+        detail: verbatim in ADD-03:3.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:7.2 p4
+        ok: true
+        detail: verbatim in VOL-II:7.2 at ADD-02
+        aspect: null
+    S-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.2 p2
+        ok: true
+        detail: verbatim in ADD-03:3.2 at ADD-02
+        aspect: null
+    S-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.2 p2
+        ok: true
+        detail: verbatim in ADD-03:3.2 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:7.2 p4
+        ok: true
+        detail: verbatim in VOL-II:7.2 at ADD-02
+        aspect: null
+    S-F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.1 p2
+        ok: true
+        detail: verbatim in ADD-03:4.1 at ADD-02
+        aspect: null
+    S-F4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.2 p2
+        ok: true
+        detail: verbatim in ADD-03:4.2 at ADD-02
+        aspect: null
+    S-I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.1 p2
+        ok: true
+        detail: verbatim in ADD-03:4.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:8.2 p5
+        ok: true
+        detail: verbatim in VOL-II:8.2 at ADD-02
+        aspect: null
+    S-F5:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.1 p2
+        ok: true
+        detail: verbatim in ADD-03:5.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:5.2 p2
+        ok: true
+        detail: verbatim in ADD-03:5.2 at ADD-02
+        aspect: null
+    S-F6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-II:T2-4 p3
+        ok: true
+        detail: verbatim in VOL-II:T2-4 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-II:7.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:7.2 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:7.2 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''at not less than 90% of nominal capacity'' occurs 1 time(s) in VOL-II:7.2'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:7.2
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:7.2
+        also_in: []
+    - id: ADD-03/3.2(b)
+      provision: ADD-03:3.2
+      type: annotate
+      target: VOL-II:7.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:7.3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/4.1(a)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:8.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:4.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:8.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:8.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''The Project Company shall hold a spare parts inventory sufficient for two (2) years of normal
+          operation for all items with a lead time exceeding twelve (12) weeks.'' occurs 1 time(s) in VOL-II:8.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:8.1
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:8.1
+        - VOL-II:8.2
+        - VOL-II:8.3
+        - VOL-II:7.4
+        also_in: []
+    - id: ADD-03/4.1(b)
+      provision: ADD-03:4.1
+      type: set_status
+      target: VOL-II:8.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:8.2 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:8.2 exists
+      - id: C22
+        ok: true
+        detail: deleted needs the target active; it is active
+      failed: []
+      changed:
+      - VOL-II:8.2
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:8.1
+        - VOL-II:8.2
+        - VOL-II:8.3
+        - VOL-II:7.4
+    - id: ADD-03/4.1(c)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:8.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:4.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:8.3 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:8.3 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''The Project Company shall employ a suitably qualified plant manager and shall maintain a minimum
+          of two (2) certified operators on shift at all times.'' occurs 1 time(s) in VOL-II:8.3'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:8.3
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:8.1
+        - VOL-II:8.2
+        - VOL-II:8.3
+        - VOL-II:7.4
+        also_in: []
+    - id: ADD-03/4.2
+      provision: ADD-03:4.2
+      type: annotate
+      target: VOL-II:8.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:8.4'', ''VOL-II:8.5'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-V:31.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:31.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:31.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''(b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails
+          to deliver treated effluent to the delivery point at the required residual head.'' occurs 1 time(s) in
+          VOL-V:31.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:31.1
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-V:31.1
+        - VOL-II:T2-4
+        also_in: []
+    - id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: replace_text
+      target: VOL-V:31.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.2 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.2
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:31.3 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:31.3 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''No cure period applies to an event under Clause 31.1(b).'' occurs 1 time(s) in VOL-V:31.3'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:31.3
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-V:31.3
+        - VOL-V:31.1
+        also_in: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.5
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.6
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.7
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: op
+      accounted_by:
+      - ADD-03/3.1
+    - provision: ADD-03:3.2
+      disposition: op
+      accounted_by:
+      - ADD-03/3.2(b)
+    - provision: ADD-03:4.1
+      disposition: op
+      accounted_by:
+      - ADD-03/4.1(a)
+      - ADD-03/4.1(b)
+      - ADD-03/4.1(c)
+    - provision: ADD-03:4.2
+      disposition: op
+      accounted_by:
+      - ADD-03/4.2
+    - provision: ADD-03:5.1
+      disposition: op
+      accounted_by:
+      - ADD-03/5.1
+    - provision: ADD-03:5.2
+      disposition: op
+      accounted_by:
+      - ADD-03/5.2
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-rule
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-heading
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(4)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp1-location
+    - ADD-03:p4-image/tp1-diameter
+    - ADD-03:p4-image/tp1-window
+    - ADD-03:p4-image/tp1-duration
+    - ADD-03:p4-image/tp1-notice
+    - ADD-03:p4-image/tp2-point
+    - ADD-03:p4-image/tp2-location
+    - ADD-03:p4-image/tp2-diameter
+    - ADD-03:p4-image/tp2-window
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/tp2-notice
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/note4
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-II:7.2
+    - VOL-II:8.1
+    - VOL-II:8.2
+    - VOL-II:8.3
+    - VOL-V:31.1
+    - VOL-V:31.3
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 4f498859e614962258ad7a854ccf9e7e3ecd6888da420ed8e25962b5a6246a75
+    computed_under:
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - VOL-II:7.2
+    - VOL-V:31.1
+    - VOL-V:31.3
+    rows_citing_changed_units:
+    - VOL-II-7.2-01
+    - VOL-V-31.1-01
+    - VOL-V-31.1-02
+    - VOL-V-31.1-03
+    - VOL-V-31.3-01
+    - VOL-V-31.3-02
+    - VOL-V-31.3-03
+    rows_stale_at_addendum:
+    - row: VOL-V-31.3-01
+      why:
+      - VOL-V:31.3 changed since BASE (by ADD-03/5.2)
+    - row: VOL-II-7.2-01
+      why:
+      - new dependency ADD-03:3.2
+      - VOL-II:7.2 changed since BASE (by ADD-03/3.1)
+      - VOL-II:7.3 changed since BASE (by ADD-03/3.2(b))
+    - row: VOL-II-8.4-01
+      why:
+      - new dependency ADD-03:4.2
+      - VOL-II:8.4 changed since BASE (by ADD-03/4.2)
+    - row: VOL-II-8.4-02
+      why:
+      - new dependency ADD-03:4.2
+      - VOL-II:8.4 changed since BASE (by ADD-03/4.2)
+    - row: VOL-II-8.5-01
+      why:
+      - new dependency ADD-03:4.2
+      - VOL-II:8.5 changed since BASE (by ADD-03/4.2)
+    - row: VOL-II-8.5-02
+      why:
+      - new dependency ADD-03:4.2
+      - VOL-II:8.5 changed since BASE (by ADD-03/4.2)
+    - row: VOL-V-31.1-01
+      why:
+      - VOL-V:31.1 changed since ADD-02 (by ADD-03/5.1)
+    - row: VOL-V-31.1-02
+      why:
+      - VOL-V:31.1 changed since ADD-02 (by ADD-03/5.1)
+    - row: VOL-V-31.1-03
+      why:
+      - VOL-V:31.1 changed since ADD-02 (by ADD-03/5.1)
+    - row: VOL-V-31.3-02
+      why:
+      - VOL-V:31.3 changed since BASE (by ADD-03/5.2)
+    - row: VOL-V-31.3-03
+      why:
+      - VOL-V:31.3 changed since BASE (by ADD-03/5.2)
+      - 'quote not found in the effective text at ADD-03: ''No cure period applies to an event under Clause 31.1(b).''
+        (expected: the interpretation predates the change)'
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units:
+    - CQ-VOL-III-DRAWINGS
+    - CQ-PERSISTENT-BREACH
+    - CQ-PCOD-RELIABILITY-RUN
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: unknown verb
+        claim: 1
+        detail: '''incorporates the Network Operator''s Table 1-3 describing the two tie-in points referred to in
+          Volume II Clause 1.3'': C28 does not know the verb ''incorporates'', so what it claims is compared by
+          its targets only; a person reads it against the provisions'
+      - kind: not found
+        claim: 1
+        detail: '''incorporates the Network Operator''s Table 1-3 describing the two tie-in points referred to in
+          Volume II Clause 1.3'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 2
+        detail: '''requires a Bidder that elects to interrupt flows at a tie-in point to obtain the Authority''s
+          acceptance of its shutdown programme, applications for which shall be made within eight (8) Working Days
+          of the date of this Addendum'': no provision of ADD-03 does this'
+      - kind: contradicted
+        claim: 3
+        op: ADD-03/3.1
+        provision: ADD-03:3.1
+        detail: '''introduces a flow range for the reliability run in Volume II Clause 7.2'', but ADD-03/3.1 amends
+          VOL-II:7.2'
+      - kind: not found
+        claim: 4
+        detail: '''replaces Volume II Clauses 8.1 to 8.3'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 5
+        detail: '''adds to Volume V Clause 31.1 a new Unavailability Event for loss of treated effluent volume,
+          with no cure period and with no deduction during the Ramp-Up Period'': no provision of ADD-03 matches
+          ''with no cure period and with no deduction during the Ramp-Up Period'''
+      - kind: contradicted
+        claim: 5
+        op: ADD-03/5.1
+        provision: ADD-03:5.1
+        detail: '''adds to Volume V Clause 31.1 a new Unavailability Event for loss of treated effluent volume,
+          with no cure period and with no deduction during the Ramp-Up Period'', but ADD-03/5.1 amends VOL-V:31.1'
+      - kind: omitted
+        op: ADD-03/4.2
+        provision: ADD-03:4.2
+        detail: 'ADD-03/4.2 confirms VOL-II:8.4, VOL-II:8.5; the summary does not mention it: ''The Clauses of Volume
+          II are not renumbered. Volume II Clauses 8.4 and 8.5 are unchanged.'''
+      - kind: omitted
+        op: ADD-03/5.2
+        provision: ADD-03:5.2
+        detail: 'ADD-03/5.2 amends VOL-V:31.3; the summary does not mention it: ''In Volume V Clause 31.3, ‘No cure
+          period applies to an event under Clause 31.1(b).’ is deleted and ‘No cure period applies to an event under
+          Clause 31.1(b) or Clause 31.1(d).’ is substituted.'''
+      - kind: unchecked
+        provision: ADD-03:1.1
+        detail: ADD-03:1.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.1
+        detail: ADD-03:2.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.3
+        detail: ADD-03:2.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.4
+        detail: ADD-03:2.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.5
+        detail: ADD-03:2.5 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.6
+        detail: ADD-03:2.6 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.7
+        detail: ADD-03:2.7 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.1
+        detail: ADD-03:4.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-en
+        detail: ADD-03:p4-image/hdr-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-ar
+        detail: ADD-03:p4-image/hdr-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/ref
+        detail: ADD-03:p4-image/ref is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/date
+        detail: ADD-03:p4-image/date is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/subject
+        detail: ADD-03:p4-image/subject is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tender-ref
+        detail: ADD-03:p4-image/tender-ref is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-title
+        detail: ADD-03:p4-image/table-title is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/intro
+        detail: ADD-03:p4-image/intro is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-point
+        detail: ADD-03:p4-image/th-point is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-location
+        detail: ADD-03:p4-image/th-location is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-diameter
+        detail: ADD-03:p4-image/th-diameter is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-window
+        detail: ADD-03:p4-image/th-window is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-duration
+        detail: ADD-03:p4-image/th-duration is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-notice
+        detail: ADD-03:p4-image/th-notice is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-rule
+        detail: ADD-03:p4-image/table-rule is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-point
+        detail: ADD-03:p4-image/tp1-point is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-location
+        detail: ADD-03:p4-image/tp1-location is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-diameter
+        detail: ADD-03:p4-image/tp1-diameter is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-window
+        detail: ADD-03:p4-image/tp1-window is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-duration
+        detail: ADD-03:p4-image/tp1-duration is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp1-notice
+        detail: ADD-03:p4-image/tp1-notice is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-point
+        detail: ADD-03:p4-image/tp2-point is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-location
+        detail: ADD-03:p4-image/tp2-location is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-diameter
+        detail: ADD-03:p4-image/tp2-diameter is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-window
+        detail: ADD-03:p4-image/tp2-window is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-duration
+        detail: ADD-03:p4-image/tp2-duration is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tp2-notice
+        detail: ADD-03:p4-image/tp2-notice is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/notes-heading
+        detail: ADD-03:p4-image/notes-heading is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note1
+        detail: ADD-03:p4-image/note1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note2
+        detail: ADD-03:p4-image/note2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note3
+        detail: ADD-03:p4-image/note3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note4
+        detail: ADD-03:p4-image/note4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/signatory
+        detail: ADD-03:p4-image/signatory is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/stamp
+        detail: ADD-03:p4-image/stamp is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/image-footer
+        detail: ADD-03:p4-image/image-footer is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para2
+        detail: ADD-03:AppA/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para1
+        detail: ADD-03:AppB/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/tp-1
+        detail: ADD-03:T1-3/tp-1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/tp-2
+        detail: ADD-03:T1-3/tp-2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/notes
+        detail: ADD-03:T1-3/notes is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/note(1)
+        detail: ADD-03:T1-3/note(1) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/note(2)
+        detail: ADD-03:T1-3/note(2) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/note(3)
+        detail: ADD-03:T1-3/note(3) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T1-3/note(4)
+        detail: ADD-03:T1-3/note(4) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para2
+        detail: ADD-03:AppB/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      candidate:
+        validated_stage: ADD-02
+        stage: ADD-03
+        paragraph: 'ADD-03 is PARTIAL: 65 of 70 provisions unresolved, so A3 and A5 stay validated at ADD-02. If
+          the 5 op(s) that are valid there stood (each still a proposal: review proposed 5), A3 would gain 0 row(s)
+          (none), lose 0 (none) and change 0 (none); A5, replanned at ADD-03''s issue date (2026-11-10), would move
+          the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 7 REVIEW through
+          relationships. Not settled: 5 activities blocked by an unresolved row (technical-proposal, deviations-review,
+          form-4a-prep, form-4e and 1 more), 11 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship
+          chain(s) blocked or incomplete, 3 conflict(s); documents not supplied: the Environmental Permit issued
+          for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions),
+          I-PERMIT and 5 more. Nothing here is validated, accepted or applied to the real state.'
+        a3:
+          enters: []
+          leaves: []
+          changes: []
+        blocked_activities:
+        - technical-proposal
+        - deviations-review
+        - form-4a-prep
+        - form-4e
+        - form-4a
+        scenarios: []
+      clarification_window:
+        stage: ADD-03
+        issued: '2026-11-10'
+        date: '2026-11-12'
+        rule: VOL-I 5.2
+        row: VOL-I-5.2-01
+        closed: false
+        note: ''
+      requirements:
+        new: []
+        out: []
+        changed:
+        - VOL-V-31.3-01
+        - VOL-I-10.2-01
+        - VOL-I-10.3-01
+        - VOL-II-7.2-01
+        - VOL-IV-F4E-01
+        - VOL-IV-F4F-01
+        - VOL-V-31.1-01
+        - VOL-V-31.1-02
+        - VOL-V-31.1-03
+        - VOL-V-31.3-02
+        - VOL-V-31.3-03
+        secondary: {}
+        confirmed: []
+        not_settled:
+        - VOL-II-8.4-01
+        - VOL-II-8.4-02
+        - VOL-II-8.5-01
+        - VOL-II-8.5-02
+      stale:
+      - VOL-V-31.3-01
+      - VOL-II-7.2-01
+      - VOL-II-8.4-01
+      - VOL-II-8.4-02
+      - VOL-II-8.5-01
+      - VOL-II-8.5-02
+      - VOL-V-31.1-01
+      - VOL-V-31.1-02
+      - VOL-V-31.1-03
+      - VOL-V-31.3-02
+      - VOL-V-31.3-03
+      relationships:
+        confirmed dependency:
+        - VOL-IV-F4E-01
+        proposed relationship:
+        - VOL-I-10.2-01
+        - VOL-I-10.3-01
+        - VOL-IV-F4F-01
+        - VOL-IV-F4F-02
+        - calc:availability-payment
+        possible impact:
+        - VOL-I-10.6-01
+        not supplied:
+        - VOL-V-31.1-01
+        - VOL-V-31.1-02
+        - VOL-V-31.1-03
+      a3:
+        enters: []
+        leaves: []
+      answers_to_reread:
+      - answer: ADD-03:Q18
+        issued_by: ADD-03
+        text: 'No: 18 | Bidder question: If the flow delivered to the Facility by the existing collection network
+          during the reliability run under Volume II Clause 7.2 is lower than the flow required by that Clause,
+          for reasons outsid…'
+        why: cites VOL-II:7.2, changed by ADD-03/3.1
+        status: REVIEW (not automatically revoked)
+        reread: to be re-read against the new text of VOL-II:7.2 (ADD-03/3.1); a person decides whether the answer
+          still holds
+        stage: ADD-03
+      - answer: ADD-03:Q19
+        issued_by: ADD-03
+        text: 'No: 19 | Bidder question: Volume II Clause 7.4 requires an asset register in the Authority''s standard
+          format. Will the format be issued before the Proposal Due Date? | Authority response: No. The format will
+          be issued t…'
+        why: cites VOL-II:7.2, changed by ADD-03/3.1
+        status: REVIEW (not automatically revoked)
+        reread: to be re-read against the new text of VOL-II:7.2 (ADD-03/3.1); a person decides whether the answer
+          still holds
+        stage: ADD-03
+      programme:
+      - activity: assemble-envelope-a
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: assemble-envelope-b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float 0 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: attendance-notice
+        change: STATUS
+        detail: timing CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known -> CONDITIONAL
+          — window elapsed 2026-10-14; whether the condition arose is not known; total float -7 -> -20 WD; the planning
+          date moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: bond-approval
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +10 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: bond-issue
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +10 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: clarifications
+        change: STATUS
+        detail: timing OK -> OK; total float +13 -> 0 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: completion-certs
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +7 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: consortium-check
+        change: STATUS
+        detail: timing OK -> OK; total float +13 -> 0 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: copies
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: deliver
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: deviations-review
+        change: REWORK
+        detail: 'requirement changed: VOL-IV-F4E-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where
+          (a) the Facility is unable to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' by ADD-03/5.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed)); VOL-V 31.3: ''A cure
+          period of twenty-four (24) hours applies to an Unavailability …'' -> ''A cure period of twenty-four (24)
+          hours applies to an Unavailability …'' by ADD-03/5.2 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed))),
+          VOL-V-31.1-01 (text, status, stale), VOL-V-31.1-02 (text, status, stale), VOL-V-31.1-03 (text, status,
+          stale), VOL-V-31.3-01 (text, status, stale), VOL-V-31.3-02 (text, status, stale), VOL-V-31.3-03 (text,
+          status, stale)'
+        rows:
+        - VOL-IV-F4E-01
+        - VOL-V-31.1-01
+        - VOL-V-31.1-02
+        - VOL-V-31.1-03
+        - VOL-V-31.3-01
+        - VOL-V-31.3-02
+        - VOL-V-31.3-03
+      - activity: deviations-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 2 WD; total float +11 -> -2 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: fin-assumptions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +5 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-build
+        change: REWORK
+        detail: 'requirement changed: VOL-I-10.3-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where
+          (a) the Facility is unable to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' by ADD-03/5.1 (depends on it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS
+          (depends_on, proposed)); VOL-V 31.3: ''A cure period of twenty-four (24) hours applies to an Unavailability
+          …'' -> ''A cure period of twenty-four (24) hours applies to an Unavailability …'' by ADD-03/5.2 (depends
+          on it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS (depends_on, proposed)))'
+        rows:
+        - VOL-I-10.3-01
+      - activity: fin-model-build
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float 0 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-freeze
+        change: REWORK
+        detail: 'requirement changed: VOL-I-10.3-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where
+          (a) the Facility is unable to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' by ADD-03/5.1 (depends on it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS
+          (depends_on, proposed)); VOL-V 31.3: ''A cure period of twenty-four (24) hours applies to an Unavailability
+          …'' -> ''A cure period of twenty-four (24) hours applies to an Unavailability …'' by ADD-03/5.2 (depends
+          on it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS (depends_on, proposed)))'
+        rows:
+        - VOL-I-10.3-01
+      - activity: fin-model-freeze
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float 0 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: fin-standing
+        change: STATUS
+        detail: timing OK -> OK; total float +15 -> +2 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: fin-statements
+        change: STATUS
+        detail: timing OK -> OK; total float +15 -> +2 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4a
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +12 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4a-prep
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a-prep
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +20 -> +7 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +7 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4b-prep
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +9 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4c-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +18 -> +5 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4c-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +10 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4e
+        change: REWORK
+        detail: 'requirement changed: VOL-IV-F4E-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where
+          (a) the Facility is unable to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' by ADD-03/5.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed)); VOL-V 31.3: ''A cure
+          period of twenty-four (24) hours applies to an Unavailability …'' -> ''A cure period of twenty-four (24)
+          hours applies to an Unavailability …'' by ADD-03/5.2 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed))),
+          VOL-V-31.1-01 (text, status, stale), VOL-V-31.1-02 (text, status, stale), VOL-V-31.1-03 (text, status,
+          stale), VOL-V-31.3-01 (text, status, stale), VOL-V-31.3-02 (text, status, stale), VOL-V-31.3-03 (text,
+          status, stale)'
+        rows:
+        - VOL-IV-F4E-01
+        - VOL-V-31.1-01
+        - VOL-V-31.1-02
+        - VOL-V-31.1-03
+        - VOL-V-31.3-01
+        - VOL-V-31.3-02
+        - VOL-V-31.3-03
+      - activity: form-4e
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 12 WD; total float +1 -> -12 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4f
+        change: REWORK
+        detail: 'requirement changed: VOL-I-10.2-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where
+          (a) the Facility is unable to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' by ADD-03/5.1 (depends on it: REL-PAY-QUOTED-PRICE (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS
+          (depends_on, proposed)); VOL-V 31.3: ''A cure period of twenty-four (24) hours applies to an Unavailability
+          …'' -> ''A cure period of twenty-four (24) hours applies to an Unavailability …'' by ADD-03/5.2 (depends
+          on it: REL-PAY-QUOTED-PRICE (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed))),
+          VOL-IV-F4F-01 (dependency: VOL-V 31.1: ''An Unavailability Event occurs where (a) the Facility is unable
+          to tr…'' -> ''An Unavailability Event occurs where (a) the Facility is unable to tr…'' by ADD-03/5.1 (depends
+          on it: REL-PAY-FORM-4F (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed)); VOL-V
+          31.3: ''A cure period of twenty-four (24) hours applies to an Unavailability …'' -> ''A cure period of
+          twenty-four (24) hours applies to an Unavailability …'' by ADD-03/5.2 (depends on it: REL-PAY-FORM-4F
+          (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed)))'
+        rows:
+        - VOL-I-10.2-01
+        - VOL-IV-F4F-01
+      - activity: form-4f
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float 0 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: form-4g-review
+        change: STATUS
+        detail: timing OK -> OK; total float +17 -> +4 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4g-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +12 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: ground-dd
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +5 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: investment-licence
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 5 WD; total float +8 -> -5 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: iso-copy
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +8 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: lcc-certificate
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: lcc-ratio
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: lender-terms
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +5 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-opinion
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float 0 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 12 WD; total float +1 -> -12 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: model-auditor-appoint
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 12 WD; total float +1 -> -12 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: om-evidence
+        change: STATUS
+        detail: timing OK -> OK; total float +13 -> 0 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: pcg-execution
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 10 WD; total float +3 -> -10 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: pcg-wording
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 10 WD; total float +3 -> -10 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: poa
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 5 WD; total float +8 -> -5 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: poa-resolutions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 5 WD; total float +8 -> -5 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: references
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +9 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: seal-and-mark
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 25 WD; total float -12 -> -25 WD; the planning date
+          moved 2026-10-22 -> 2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: spoc
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +8 WD; the planning date moved 2026-10-22 -> 2026-11-10, which
+          by itself shifts every float by the Working Days between them
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: VOL-II-7.2-01 (text, status, stale)'
+        rows:
+        - VOL-II-7.2-01
+      - activity: technical-proposal
+        change: CONFIRMED (unchanged)
+        rows:
+        - VOL-II-8.4-01
+        - VOL-II-8.4-02
+        - VOL-II-8.5-01
+        - VOL-II-8.5-02
+        detail: 'VOL-II-8.4-01: confirmed by ADD-03/4.2 (confirms; ADD-03:4.2); STALE until a person re-reads it
+          (A1): new dependency ADD-03:4.2; VOL-II:8.4 changed since BASE (by ADD-03/4.2); VOL-II-8.4-02: confirmed
+          by ADD-03/4.2 (confirms; ADD-03:4.2); STALE until a person re-reads it (A1): new dependency ADD-03:4.2;
+          VOL-II:8.4 changed since BASE (by ADD-03/4.2); VOL-II-8.5-01: confirmed by ADD-03/4.2 (confirms; ADD-03:4.2);
+          STALE until a person re-reads it (A1): new dependency ADD-03:4.2; VOL-II:8.5 changed since BASE (by ADD-03/4.2);
+          VOL-II-8.5-02: confirmed by ADD-03/4.2 (confirms; ADD-03:4.2); STALE until a person re-reads it (A1):
+          new dependency ADD-03:4.2; VOL-II:8.5 changed since BASE (by ADD-03/4.2); text, cells, dates, status and
+          consequence unchanged: work done stands'
+      - activity: technical-proposal
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 12 WD; total float +1 -> -12 WD; the planning date moved 2026-10-22 ->
+          2026-11-10, which by itself shifts every float by the Working Days between them
+      - activity: deviations-review
+        change: REVIEW (confirmed dependency)
+        detail: VOL-IV-F4E-01 reached from VOL-V:31.1, VOL-V:31.3 via REL-VOL-V-FORM-4E; dates unchanged
+      - activity: fin-assumptions
+        change: REVIEW (possible impact)
+        detail: VOL-I-10.6-01 reached from VOL-V:31.1, VOL-V:31.3 via REL-PAY-DEDUCTIONS, REL-PAY-FINANCING-ASSUMPTIONS;
+          dates unchanged
+      - activity: fin-model-build
+        change: REVIEW (proposed relationship)
+        detail: VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:31.1, VOL-V:31.3 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS,
+          REL-PAY-FINANCIAL-MODEL; dates unchanged
+      - activity: fin-model-freeze
+        change: REVIEW (proposed relationship)
+        detail: VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:31.1, VOL-V:31.3 via REL-MODEL-FORM-4F, REL-PAY-DEDUCTIONS,
+          REL-PAY-FINANCIAL-MODEL; dates unchanged
+      - activity: form-4e
+        change: REVIEW (confirmed dependency)
+        detail: VOL-IV-F4E-01 reached from VOL-V:31.1, VOL-V:31.3 via REL-VOL-V-FORM-4E; dates unchanged
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-10)\n\n- ops: 5 (0\
+      \ invalid); provisions: 70 (65 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para1: Issued 10 November\
+      \ 2026\n- UNRESOLVED ADD-03:cover/para2: Tender NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:cover/para3: This\
+      \ Addendum incorporates the Network Operator's Table 1-3 describing the two tie-in points referred to in Volume\
+      \ II Clause 1.3, requires a Bidder that elects \n- UNRESOLVED ADD-03:1.1: This Addendum is issued under Volume\
+      \ I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.\n- UNRESOLVED\
+      \ ADD-03:1.2: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as\
+      \ amended by Addenda Nos. 1 and 2, unless otherwise stated.\n- UNRESOLVED ADD-03:2.1: Volume II Clause 1.3\
+      \ is amended by adding at the end: ‘The two designated tie-in points are TP-1 and TP-2, described in Table\
+      \ 1-3, which is reproduced at Append\n- UNRESOLVED ADD-03:2.2: Table 1-3 is issued in the Arabic language.\
+      \ The Arabic text governs. The English translation at Appendix B is provided for convenience only.\n- UNRESOLVED\
+      \ ADD-03:2.3: The Bidder shall elect, for each tie-in point, one of the following methods of maintaining flows\
+      \ during the connection works, and shall state its election in th\n- UNRESOLVED ADD-03:2.4: The temporary\
+      \ works for method (a) shall be capable of passing, at each tie-in point, the maximum transfer flow stated\
+      \ for that tie-in point in Table 1-3.\n- UNRESOLVED ADD-03:2.5: Where the Bidder elects method (b) for a tie-in\
+      \ point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed\
+      \ shutdo\n- UNRESOLVED ADD-03:2.6: A Bidder that elects method (b) for a tie-in point but does not submit\
+      \ a Shutdown Acceptance Letter for that tie-in point with Envelope A shall be deemed to hav\n- UNRESOLVED\
+      \ ADD-03:2.7: A Proposal that provides for an interruption of flow at a tie-in point for longer than the maximum\
+      \ shutdown duration stated for that tie-in point in Table 1-3 s\n- UNRESOLVED ADD-03:4.1: Volume II Clauses\
+      \ 8.1 to 8.3 are deleted and replaced by the following: ‘8.1  The Project Company shall hold a spare parts\
+      \ inventory sufficient for eighteen (18\n- UNRESOLVED ADD-03:Q15: No: 15 | Bidder question: Is the Network\
+      \ Operator owned or controlled by the Authority? | Authority response: No. The Network Operator is a separate\
+      \ company. It\n- UNRESOLVED ADD-03:Q16: No: 16 | Bidder question: May ozonation be used as the disinfection\
+      \ process? | Authority response: Ozonation shall not be used as the sole means of disinfection\n- UNRESOLVED\
+      \ ADD-03:Q17: No: 17 | Bidder question: Volume V Clause 12.3 provides that the reasonable costs of the Independent\
+      \ Engineer are borne equally by the parties. Does this apply \n- UNRESOLVED ADD-03:Q18: No: 18 | Bidder question:\
+      \ If the flow delivered to the Facility by the existing collection network during the reliability run under\
+      \ Volume II Clause 7.2 is lowe\n- UNRESOLVED ADD-03:Q19: No: 19 | Bidder question: Volume II Clause 7.4 requires\
+      \ an asset register in the Authority's standard format. Will the format be issued before the Proposal Due\
+      \ \n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder question: What design flow should be used for the temporary works\
+      \ needed to maintain flows at the tie-in points referred to in Volume II Clause \n- UNRESOLVED ADD-03:AppA/para1:\
+      \ The following table is reproduced as issued by the Network Operator under cover of its letter No. 312/2026\
+      \ dated 5 November 2026. The Arabic text governs in acc\n- UNRESOLVED ADD-03:p4-image/hdr-en: Northern Region\
+      \ Water Services Company\n- UNRESOLVED ADD-03:p4-image/hdr-ar: شركة خدمات المياه بالمنطقة الشمالية\n- UNRESOLVED\
+      \ ADD-03:p4-image/ref: الرقم: ٣١٢/٢٠٢٦\n- UNRESOLVED ADD-03:p4-image/date: التاريخ: ٥ نوفمبر ٢٠٢٦م\n- UNRESOLVED\
+      \ ADD-03:p4-image/subject: الموضوع: نقاط الربط بشبكة التجميع القائمة لمحطة معالجة مياه الصرف الصحي المستقلة\
+      \ بوادي السرحان\n- UNRESOLVED ADD-03:p4-image/tender-ref: مناقصة رقم: NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:p4-image/table-title:\
+      \ جدول ١-٣: نقاط الربط وشروط إيقاف التدفق\n- UNRESOLVED ADD-03:p4-image/intro: تُحدِّد نقاط الربط بشبكة التجميع\
+      \ القائمة وشروط إيقاف التدفق فيها على النحو الآتي:\n- UNRESOLVED ADD-03:p4-image/th-point: نقطة الربط\n- UNRESOLVED\
+      \ ADD-03:p4-image/th-location: الموقع\n- UNRESOLVED ADD-03:p4-image/th-diameter: قطر الخط القائم (مم)\n- UNRESOLVED\
+      \ ADD-03:p4-image/th-window: فترة الإيقاف المسموح بها\n- UNRESOLVED ADD-03:p4-image/th-duration: أقصى مدّة\
+      \ للإيقاف (ساعة)\n- UNRESOLVED ADD-03:p4-image/th-notice: مهلة الإشعار المسبق\n- UNRESOLVED ADD-03:p4-image/table-rule:\
+      \  \n- UNRESOLVED ADD-03:p4-image/tp1-point: TP-1\n- UNRESOLVED ADD-03:p4-image/tp1-location: غرفة التفتيش\
+      \ MH-41 على خط الطرد الشمالي\n- UNRESOLVED ADD-03:p4-image/tp1-diameter: ١٠٠٠\n- UNRESOLVED ADD-03:p4-image/tp1-window:\
+      \ من ٢٣:٠٠ إلى ٠٥:٠٠\n- UNRESOLVED ADD-03:p4-image/tp1-duration: ٦\n- UNRESOLVED ADD-03:p4-image/tp1-notice:\
+      \ ١٠ أيام عمل\n- UNRESOLVED ADD-03:p4-image/tp2-point: TP-2\n- UNRESOLVED ADD-03:p4-image/tp2-location: غرفة\
+      \ التفتيش MH-07 على خط الانحدار الجنوبي\n- UNRESOLVED ADD-03:p4-image/tp2-diameter: ٨٠٠\n- UNRESOLVED ADD-03:p4-image/tp2-window:\
+      \ من ٠١:٠٠ إلى ٠٥:٠٠\n- UNRESOLVED ADD-03:p4-image/tp2-duration: ٤\n- UNRESOLVED ADD-03:p4-image/tp2-notice:\
+      \ ١٠ أيام عمل\n- UNRESOLVED ADD-03:p4-image/notes-heading: ملاحظات:\n- UNRESOLVED ADD-03:p4-image/note1: ١.\
+      \ لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\n- UNRESOLVED ADD-03:p4-image/note2:\
+      \ ٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.\n- UNRESOLVED ADD-03:p4-image/note3: ٣. تُقدَّم\
+      \ طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.\n- UNRESOLVED\
+      \ ADD-03:p4-image/note4: ٤. جميع الأوقات المذكورة بتوقيت الرياض.\n- UNRESOLVED ADD-03:p4-image/signatory:\
+      \ مدير إدارة تشغيل الشبكات\n- UNRESOLVED ADD-03:p4-image/stamp: \n- UNRESOLVED ADD-03:p4-image/image-footer:\
+      \ FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.\n- UNRESOLVED ADD-03:AppA/para2:\
+      \ End of reproduction.\n- UNRESOLVED ADD-03:AppB/para1: This translation is provided for convenience only.\
+      \ The Arabic text of Table 1-3 at Appendix A governs. Network Operator's letter No. 312/2026 dated 5 November\
+      \ 2\n- UNRESOLVED ADD-03:T1-3/tp-1: Tie-in point: TP-1 | Location: Manhole MH-41 on the northern rising main\
+      \ | Existing sewer diameter (mm): 1,000 | Permitted shutdown window: 23:00 to 05:00 | Max\n- UNRESOLVED ADD-03:T1-3/tp-2:\
+      \ Tie-in point: TP-2 | Location: Manhole MH-07 on the southern gravity sewer | Existing sewer diameter (mm):\
+      \ 800 | Permitted shutdown window: 01:00 to 05:00 | Max\n- UNRESOLVED ADD-03:T1-3/notes: Notes to Table 1-3:\n\
+      - UNRESOLVED ADD-03:T1-3/note(1): (1)  No shutdown is permitted during the holy month of Ramadan.\n- UNRESOLVED\
+      \ ADD-03:T1-3/note(2): (2)  Only one shutdown is permitted at each tie-in point during the construction period.\n\
+      - UNRESOLVED ADD-03:T1-3/note(3): (3)  Shutdown requests shall be submitted through the Network Operator's\
+      \ electronic portal, accompanied by the proposed shutdown programme and a contingency pla\n- UNRESOLVED ADD-03:T1-3/note(4):\
+      \ (4)  All times are Riyadh time.\n- UNRESOLVED ADD-03:AppB/para2: Signed: Director, Network Operations, Northern\
+      \ Region Water Services Company (signature and company stamp).\n- cover summary vs provisions (C28, report\
+      \ only): 9 finding(s)\n  - unknown verb: 'incorporates the Network Operator's Table 1-3 describing the two\
+      \ tie-in points referred to in Volume II Clause 1.3': C28 does not know the verb 'incorporates', so what it\
+      \ claims is compared by its targets only; a person reads it against the provisions\n  - not found: 'incorporates\
+      \ the Network Operator's Table 1-3 describing the two tie-in points referred to in Volume II Clause 1.3':\
+      \ no provision of ADD-03 does this\n  - not found: 'requires a Bidder that elects to interrupt flows at a\
+      \ tie-in point to obtain the Authority's acceptance of its shutdown programme, applications for which shall\
+      \ be made within eight (8) Working Days of the date of this Addendum': no provision of ADD-03 does this\n\
+      \  - contradicted: 'introduces a flow range for the reliability run in Volume II Clause 7.2', but ADD-03/3.1\
+      \ amends VOL-II:7.2\n  - not found: 'replaces Volume II Clauses 8.1 to 8.3': no provision of ADD-03 does this\n\
+      \  - not found: 'adds to Volume V Clause 31.1 a new Unavailability Event for loss of treated effluent volume,\
+      \ with no cure period and with no deduction during the Ramp-Up Period': no provision of ADD-03 matches 'with\
+      \ no cure period and with no deduction during the Ramp-Up Period'\n  - contradicted: 'adds to Volume V Clause\
+      \ 31.1 a new Unavailability Event for loss of treated effluent volume, with no cure period and with no deduction\
+      \ during the Ramp-Up Period', but ADD-03/5.1 amends VOL-V:31.1\n  - omitted: ADD-03/4.2 confirms VOL-II:8.4,\
+      \ VOL-II:8.5; the summary does not mention it: 'The Clauses of Volume II are not renumbered. Volume II Clauses\
+      \ 8.4 and 8.5 are unchanged.'\n  - omitted: ADD-03/5.2 amends VOL-V:31.3; the summary does not mention it:\
+      \ 'In Volume V Clause 31.3, ‘No cure period applies to an event under Clause 31.1(b).’ is deleted and ‘No\
+      \ cure period applies to an event under Clause 31.1(b) or Clause 31.1(d).’ is substituted.'\n\n### Validated\
+      \ vs candidate (partial should not mean useless)\n\n- validated (unchanged, ADD-02): `<outputs>/a3/a3.pdf`\
+      \ (one page), `<outputs>/a5/`\n- candidate (CANDIDATE — NOT VALIDATED, ADD-03 as proposed): `<outputs>/a3/a3_candidate.pdf`\
+      \ / `.md`, `<outputs>/a5/candidate/`\n\n**What may be changing.** ADD-03 is PARTIAL: 65 of 70 provisions unresolved,\
+      \ so A3 and A5 stay validated at ADD-02. If the 5 op(s) that are valid there stood (each still a proposal:\
+      \ review proposed 5), A3 would gain 0 row(s) (none), lose 0 (none) and change 0 (none); A5, replanned at ADD-03's\
+      \ issue date (2026-11-10), would move the latest dates of 0 activities (none), add 0 (none) and remove 0 (none),\
+      \ and marks 7 REVIEW through relationships. Not settled: 5 activities blocked by an unresolved row (technical-proposal,\
+      \ deviations-review, form-4a-prep, form-4e and 1 more), 11 STALE row(s), 0 obligation(s) reaching no output\
+      \ (C46), 0 relationship chain(s) blocked or incomplete, 3 conflict(s); documents not supplied: the Environmental\
+      \ Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule\
+      \ 7 (deductions), I-PERMIT and 5 more. Nothing here is validated, accepted or applied to the real state.\n\
+      \n## Requirements\n\n- new: 0; out of force: 0; changed: 11\n\n- CHANGED VOL-V-31.3-01: wording (by ADD-03/5.2)\n\
+      - CHANGED VOL-I-10.2-01: VOL-V 31.1: 'An Unavailability Event occurs where (a) the Facility is unable to tr…'\
+      \ -> 'An Unavailability Event occurs where (a) the Facility is unable to tr…' by ADD-03/5.1 (depends on it:\
+      \ REL-PAY-QUOTED-PRICE (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed)); VOL-V\
+      \ 31.3: 'A cure period of twenty-four (24) hours applies to an Unavailability …' -> 'A cure period of twenty-four\
+      \ (24) hours applies to an Unavailability …' by ADD-03/5.2 (depends on it: REL-PAY-QUOTED-PRICE (feeds_calculation,\
+      \ confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed))\n- CHANGED VOL-I-10.3-01: VOL-V 31.1: 'An Unavailability\
+      \ Event occurs where (a) the Facility is unable to tr…' -> 'An Unavailability Event occurs where (a) the Facility\
+      \ is unable to tr…' by ADD-03/5.1 (depends on it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS\
+      \ (depends_on, proposed)); VOL-V 31.3: 'A cure period of twenty-four (24) hours applies to an Unavailability\
+      \ …' -> 'A cure period of twenty-four (24) hours applies to an Unavailability …' by ADD-03/5.2 (depends on\
+      \ it: REL-PAY-FINANCIAL-MODEL (depends_on, proposed) < REL-PAY-DEDUCTIONS (depends_on, proposed))\n- CHANGED\
+      \ VOL-II-7.2-01: wording (by ADD-03/3.1)\n- CHANGED VOL-IV-F4E-01: VOL-V 31.1: 'An Unavailability Event occurs\
+      \ where (a) the Facility is unable to tr…' -> 'An Unavailability Event occurs where (a) the Facility is unable\
+      \ to tr…' by ADD-03/5.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed)); VOL-V 31.3: 'A cure period\
+      \ of twenty-four (24) hours applies to an Unavailability …' -> 'A cure period of twenty-four (24) hours applies\
+      \ to an Unavailability …' by ADD-03/5.2 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed))\n- CHANGED\
+      \ VOL-IV-F4F-01: VOL-V 31.1: 'An Unavailability Event occurs where (a) the Facility is unable to tr…' -> 'An\
+      \ Unavailability Event occurs where (a) the Facility is unable to tr…' by ADD-03/5.1 (depends on it: REL-PAY-FORM-4F\
+      \ (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS (depends_on, proposed)); VOL-V 31.3: 'A cure period\
+      \ of twenty-four (24) hours applies to an Unavailability …' -> 'A cure period of twenty-four (24) hours applies\
+      \ to an Unavailability …' by ADD-03/5.2 (depends on it: REL-PAY-FORM-4F (feeds_calculation, confirmed) < REL-PAY-DEDUCTIONS\
+      \ (depends_on, proposed))\n- CHANGED VOL-V-31.1-01: wording (by ADD-03/5.1)\n- CHANGED VOL-V-31.1-02: wording\
+      \ (by ADD-03/5.1)\n- CHANGED VOL-V-31.1-03: wording (by ADD-03/5.1)\n- CHANGED VOL-V-31.3-02: wording (by\
+      \ ADD-03/5.2)\n- CHANGED VOL-V-31.3-03: wording (by ADD-03/5.2)\n- NOT SETTLED VOL-II-8.4-01: unchanged by\
+      \ the applied ops; not confirmed while: STALE at ADD-03: its reading was not re-made (new dependency ADD-03:4.2;\
+      \ VOL-II:8.4 changed since BASE (by ADD-03/4.2))\n- NOT SETTLED VOL-II-8.4-02: unchanged by the applied ops;\
+      \ not confirmed while: STALE at ADD-03: its reading was not re-made (new dependency ADD-03:4.2; VOL-II:8.4\
+      \ changed since BASE (by ADD-03/4.2))\n- NOT SETTLED VOL-II-8.5-01: unchanged by the applied ops; not confirmed\
+      \ while: STALE at ADD-03: its reading was not re-made (new dependency ADD-03:4.2; VOL-II:8.5 changed since\
+      \ BASE (by ADD-03/4.2))\n- NOT SETTLED VOL-II-8.5-02: unchanged by the applied ops; not confirmed while: STALE\
+      \ at ADD-03: its reading was not re-made (new dependency ADD-03:4.2; VOL-II:8.5 changed since BASE (by ADD-03/4.2))\n\
+      \n## Stale readings and decisions\n\n- STALE VOL-V-31.3-01: VOL-V:31.3 changed since BASE (by ADD-03/5.2)\n\
+      - STALE VOL-II-7.2-01: new dependency ADD-03:3.2; VOL-II:7.2 changed since BASE (by ADD-03/3.1); VOL-II:7.3\
+      \ changed since BASE (by ADD-03/3.2(b)); quote not found in the effective text at ADD-03: 'PCOD shall not\
+      \ be certified until the Facility\n- STALE VOL-II-8.4-01: new dependency ADD-03:4.2; VOL-II:8.4 changed since\
+      \ BASE (by ADD-03/4.2)\n- STALE VOL-II-8.4-02: new dependency ADD-03:4.2; VOL-II:8.4 changed since BASE (by\
+      \ ADD-03/4.2)\n- STALE VOL-II-8.5-01: new dependency ADD-03:4.2; VOL-II:8.5 changed since BASE (by ADD-03/4.2)\n\
+      - STALE VOL-II-8.5-02: new dependency ADD-03:4.2; VOL-II:8.5 changed since BASE (by ADD-03/4.2)\n- STALE VOL-V-31.1-01:\
+      \ VOL-V:31.1 changed since ADD-02 (by ADD-03/5.1)\n- STALE VOL-V-31.1-02: VOL-V:31.1 changed since ADD-02\
+      \ (by ADD-03/5.1)\n- STALE VOL-V-31.1-03: VOL-V:31.1 changed since ADD-02 (by ADD-03/5.1)\n- "
+    findings: []
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-003-critic
+    route: host
+    items:
+    - item: ADD-03/3.2(a)
+      agrees: true
+      concerns: 3
+    - item: ADD-03/4.1(a)
+      agrees: true
+      concerns: 3
+    - item: ADD-03/4.1(b)
+      agrees: true
+      concerns: 3
+    - item: ADD-03/4.1(c)
+      agrees: true
+      concerns: 2
+    - item: ADD-03/4.2
+      agrees: true
+      concerns: 2
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

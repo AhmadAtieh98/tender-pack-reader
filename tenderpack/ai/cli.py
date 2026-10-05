@@ -26,9 +26,13 @@ candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging
           4 when it waits for a host submission, 5 when a batch was deferred for a rate limit, 6 (session 12) when
           it stopped because it cannot go on until a person acts (no usable reading of an image region, readings
           escalated to a person, inputs changed before promotion); the reason says what to do, then `resume`.
-  resume RUN_ID [--stop-after STEP] [--no-retry] [--from STEP]
+  resume RUN_ID [--stop-after STEP] [--no-retry] [--from STEP] [--base-run RUN_ID]
                                  continue from the checkpoint (a failed batch is asked again; --from reruns a
                                  done step and the later ones after a code change; done batches are never asked again)
+  (session 12) run ADD-04 --pdf PATH --base-run RUN_ID: consecutive addenda; the candidate starts from that run's
+          candidate (its curation as promoted, its pack with its addendum and its evidence build); the base must have
+          reached promotion and must not be running; --pack and --evidence are then the base's. resume --base-run
+          names the run's recorded base (another one is refused). run-status names the base.
   submit-batch RUN_ID FILE --by NAME [--host-model M] [--batch ID] [--no-continue]
           the manual host path: the set answering a waiting batch's packet (batches/<id>.packet.json); recorded
           (who, when, the file's sha256) and validated as an API run's; the run then continues
@@ -153,6 +157,8 @@ def _add_workflow(s, common) -> None:
     r.add_argument("--stop-after", choices=list(STEPS))
     r.add_argument("--no-background", action="store_true", help="build the pre-addendum outputs at the outputs step")
     r.add_argument("--no-cache", action="store_true", help="do not reuse cached pre-addendum outputs")
+    r.add_argument("--base-run", help="consecutive addenda (session 12): start from this run's candidate (its "
+                                      "addendum is then the previous stage); it must have reached promotion")
     for cap, t in (("max-usd", float), ("max-calls", int), ("max-input-tokens", int), ("max-output-tokens", int),
                    ("timeout-s", float), ("max-turns", int)):
         r.add_argument(f"--{cap}", type=t)
@@ -162,6 +168,7 @@ def _add_workflow(s, common) -> None:
     rs.add_argument("--stop-after", choices=list(STEPS))
     rs.add_argument("--no-retry", action="store_true", help="do not ask failed batches again")
     rs.add_argument("--offline", action="store_true", help="offline mode for this run from now on (ollama runs only)")
+    rs.add_argument("--base-run", help="the run's base run, as recorded when it started (checked; another is refused)")
     rs.add_argument("--from", dest="from_step", choices=list(STEPS),
                     help="rerun this step and the later ones even when done (after a code change); "
                          "batches that succeeded are never asked again")
@@ -188,16 +195,19 @@ def _run_workflow(a) -> int:
             a.route = "ollama" if requested(C.load(Path(a.config)), a.offline) else "host"
         caps = {"max_usd": a.max_usd, "max_calls": a.max_calls, "max_input_tokens": a.max_input_tokens,
                 "max_output_tokens": a.max_output_tokens, "timeout_s": a.timeout_s, "max_turns": a.max_turns}
-        res = W.start(a.addendum, Path(a.pdf), route=a.route, pack=Path(a.pack), evidence=Path(a.evidence),
+        dflt = {"pack": str(ROOT / "config/pack.yaml"), "evidence": str(ROOT / "build")}
+        own = {k: (None if a.base_run and getattr(a, k) == v else Path(getattr(a, k))) for k, v in dflt.items()}
+        res = W.start(a.addendum, Path(a.pdf), route=a.route, pack=own["pack"], evidence=own["evidence"],
                       staging=Path(a.out), worklog=Path(a.worklog), ai_config=Path(a.config), run_id=a.run_id,
                       batch_size=a.batch_size, downstream_batch_size=a.downstream_batch_size, model=a.model,
                       cassette=Path(a.cassette) if a.cassette else None, caps=caps, host_model=a.host_model,
                       host_mode="manual" if a.host_manual else "auto", host_session_model=a.host_model_alias,
                       allow_unverified_capabilities=a.allow_unverified_capabilities, stop_after=a.stop_after,
-                      background_before=not a.no_background, cache=not a.no_cache, offline=a.offline)
+                      background_before=not a.no_background, cache=not a.no_cache, offline=a.offline,
+                      base_run=a.base_run)
     elif a.ai_cmd == "resume":
         res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry,
-                       from_step=a.from_step, offline=a.offline)
+                       from_step=a.from_step, offline=a.offline, base_run=a.base_run)
     elif a.ai_cmd == "submit-batch":
         res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue)
     else:

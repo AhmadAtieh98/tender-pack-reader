@@ -79,6 +79,12 @@ def _packet_link(build_dir: Path, out: Path, rg: str) -> str:
             "visible.</p>")
 
 
+def _confidence_reason(r: dict, row) -> str:
+    """The confidence reason as A1 prints it (one wording for one approval; stage2.confidence_reason)."""
+    from .stage2 import confidence_reason
+    return confidence_reason(r, row)
+
+
 def batch4_intro(statuses: list[str], accepted: int) -> str:
     """The batch-04 header, counted from the proposals' states (session 12, audit R-3: a fixed "Prepared, not applied
     and not accepted" stood above cards that said "Applied."). `statuses`: one per proposal ("applied", "superseded",
@@ -197,7 +203,7 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                     f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”"            # gloss label: the approval state
                     + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
-                    f"{_e(row.confidence_reason)}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
+                    f"{_e(_confidence_reason(r, row))}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
                     + f'<div class="decide"><b>Decision needed:</b> {decide}</div>{_cmd_row(row.id)}</div></div></div>')
         items.append({"batch": 2, "kind": "row", "id": row.id, "status": st["status"], "fingerprint": st["fingerprint"],
                       "decision": f"accept {row.id} as quoted with consequence {c.cls}, or reject",
@@ -243,10 +249,14 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
     body = []
     rows = {x.id: x for x in r["rowfile"].rows}
     props = load_proposals(r["root"] / "curation/register/proposals")
+    shown = [k for k, v in props.items() if any(x["row"].id == v["row"] for x in r["evals"])]
     for pid, p in props.items():
         e = next((x for x in r["evals"] if x["row"].id == p["row"]), None)
         if e is None:
             continue
+        # session 12 (F5; audit R-c): where the replacement stands on this page, from the order the cards are printed in
+        rep = p.get("superseded_by")
+        where = (" (above)" if shown.index(rep) < shown.index(pid) else " (below)") if rep in shown else ""
         st = rv[("row", p["row"])]
         applied = is_applied(p, rows)
         superseded = p.get("status") == "superseded"
@@ -265,19 +275,20 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                     + ("<p><b>Why it was superseded (exact conflict with the owner's direction):</b></p><ul>"
                        + "".join(f"<li>{_e(x)}</li>" for x in p["superseded_because"]) + "</ul>"
                        if p.get("superseded_because") else "")
-                    + (f'<div class="decide"><b>Superseded, never applied:</b> replaced by {_e(p.get("superseded_by"))} '
-                       f'(below). Kept for the record; it cannot be applied.</div></div>'
+                    + (f'<div class="decide"><b>Superseded, never applied:</b> replaced by {_e(rep)}{where}. '
+                       f'Kept for the record; it cannot be applied.</div></div>'
                        if superseded else
                        f'<div class="decide"><b>Decision needed:</b> {_e(p.get("decision_needed"))}</div>'
                        f"<p>{'Applied.' if applied else 'Not applied.'}</p>"
-                       f'<pre>python -m tenderpack apply-proposal {_e(pid)} --by "Your Name"\n'
-                       f'python -m tenderpack accept {_e(p["row"])} --reviewer "Your Name"</pre></div>'))
+                       # an applied proposal needs no apply command (it is done); the row's accept stays a person's
+                       + ("<pre>" if applied else f'<pre>python -m tenderpack apply-proposal {_e(pid)} --by "Your Name"\n')
+                       + f'python -m tenderpack accept {_e(p["row"])} --reviewer "Your Name"</pre></div>'))
         items.append({"batch": 4, "kind": "proposal", "id": pid,
                       "status": "superseded" if superseded else "applied" if applied else "not applied",
                       "fingerprint": st["fingerprint"],
                       "decision": f"none: superseded by {p.get('superseded_by')}" if superseded
                       else p.get("decision_needed", ""),
-                      "command": "" if superseded else f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
+                      "command": "" if superseded or applied else f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
     b4 = [x for x in items if x["batch"] == 4]
     accepted = sum(1 for p in props.values() if p.get("row") in rows and rv.get(("row", p["row"]), {}).get("status") == "accepted")
     (out / "batch-04-stale-proposals.html").write_text(_page(

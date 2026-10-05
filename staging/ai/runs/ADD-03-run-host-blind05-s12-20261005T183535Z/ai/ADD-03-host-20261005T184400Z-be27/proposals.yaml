@@ -1,0 +1,2221 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T184400Z-be27
+  created: '2026-10-05T18:44:00Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    base_run: null
+    base_candidate_sha256: null
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03:3.1 prints a quoted deletion/substitution pair for Volume V Clause 1.1; the deleted words occur
+      once in VOL-V:1.1 at ADD-02.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: ‘the annual payment calculated under Clause 29’ is deleted and ‘the annual payment, expressed at Base
+        Date prices, calculated under Clause 29’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.1
+      page: 2
+      kind: span
+      words: Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause
+        31.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: ADD-03:3.2 inserts a new Clause 1.1A (definition of Base Date) in Volume V after Clause 1.1, with its
+      full text quoted.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: The following new Clause 1.1A is inserted in Volume V after Clause 1.1
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: fact
+    text: ADD-03:3.3 deletes Volume V Clause 29.2 and replaces it; the quoted replacement opens in ADD-03:3.3 and
+      closes at the end of list item ADD-03:3.3(b).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: Volume V Clause 29.2 is deleted and replaced by the following
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3(b)
+      page: 1
+      kind: span
+      words: (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance
+        of the payment shall remain fixed.’
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:29.2
+      page: 3
+      kind: span
+      words: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
+        (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S4
+    kind: fact
+    text: Form 4-F at ADD-02 contains an 'Indexation basis assumed' field pre-filled 'Per Volume V Clause 29.2'
+      and no field in which a Bidder states an Indexed Proportion percentage.
+    evidence:
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/indexation-basis-assumed
+      page: 9
+      kind: span
+      words: 'Indexation basis assumed: Per Volume V Clause 29.2'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: the percentage stated by the Bidder in Form 4-F
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S5
+    kind: fact
+    text: ADD-03:4.1 prints a quoted deletion/substitution pair for Volume II Clause 3.1; the substituted text prints
+      the micro sign 'µm'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: with a nominal pore size not exceeding 0.1 µm
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.1
+      page: 3
+      kind: span
+      words: The Authority does not mandate a particular process train.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S6
+    kind: interpretation
+    text: ADD-03:3.4 and ADD-03:4.2 change no text; they add a submission obligation (reflect Section 3 in the Financial
+      Model under VOL-I 10.3; reflect Section 4 in the process design under VOL-II Section 3), recorded as adds_obligation
+      annotations on the cited targets.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.4
+      page: 1
+      kind: span
+      words: Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause 10.3.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: Bidders shall reflect this Section 4 in the process design submitted under Volume II Section 3.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/3.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.1
+    target: VOL-V:1.1
+    payload:
+      id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-V:1.1
+      old: the annual payment calculated under Clause 29
+      old_resolved: quoted
+      new: the annual payment, expressed at Base Date prices, calculated under Clause 29
+      origin: assistant
+    previous_value: the annual payment calculated under Clause 29
+    proposed_value: the annual payment, expressed at Base Date prices, calculated under Clause 29
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: In Volume V Clause 1.1, ‘the annual payment calculated under Clause 29’ is deleted and ‘the annual
+        payment, expressed at Base Date prices, calculated under Clause 29’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.1
+      page: 2
+      kind: span
+      words: Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause
+        31.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:1.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''the annual payment calculated under Clause 29'' matches VOL-V:1.1 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''the annual payment, expressed at Base Date prices, calculated under Clause 29'' is what the op
+        writes'
+      aspect: engine
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:1.1 p2
+      ok: true
+      detail: verbatim in VOL-V:1.1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Printed old/new pair; old occurs once in VOL-V:1.1 at ADD-02 (simulate C23/C24 ok). Matches
+      the pattern drafter reference.
+    review: null
+  - id: ADD-03/3.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.2
+    target: VOL-V:1.1
+    payload:
+      id: ADD-03/3.2
+      provision: ADD-03:3.2
+      type: insert_unit
+      anchor: VOL-V:1.1
+      after: VOL-V:1.1
+      new_text: Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.
+      origin: assistant
+    previous_value: null
+    proposed_value: 1.1A Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.2
+      page: 1
+      kind: span
+      words: 'The following new Clause 1.1A is inserted in Volume V after Clause 1.1: ‘1.1A  Base Date means the
+        date falling twenty-eight (28) days before the Proposal Due Date.’'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:1.1
+      page: 2
+      kind: span
+      words: Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause
+        31.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:1.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:3.2 p1
+      ok: true
+      detail: verbatim in ADD-03:3.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:1.1 p2
+      ok: true
+      detail: verbatim in VOL-V:1.1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: 'insert_unit anchored after VOL-V:1.1 (engine assigns id VOL-V:1.1+ADD-03; printed label 1.1A).
+      The reference left this unresolved; the insertion is printed in full. Engine flags C46: no A1 row yet holds
+      the Base Date definition; the date itself depends on the Proposal Due Date and is not computed here. Definition
+      only (no date computed).'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'Minor: the new definition is inserted after VOL-V:1.1, which is the Availability Payment definition.
+          This matches the provision''s ''after Clause 1.1''.'
+        - The Base Date is not computed, which is correct, since the Proposal Due Date is not in the evidence.
+        evidence_checked:
+        - ADD-03:3.2
+        - VOL-V:1.1
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+        created: '2026-10-05T18:46:08Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/3.3
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.3
+    target: VOL-V:29.2
+    payload:
+      id: ADD-03/3.3
+      provision: ADD-03:3.3
+      type: replace_text
+      target: VOL-V:29.2
+      covers:
+      - ADD-03:3.3(b)
+      old: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
+        (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
+      old_resolved: matched_in_target
+      new: 'The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9.
+        The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall
+        be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder in Form
+        4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%); and (b)
+        from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the
+        payment shall remain fixed.'
+      origin: assistant
+    previous_value: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty
+      per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining
+      fixed.
+    proposed_value: 'The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule
+      9. The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall
+      be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder in Form
+      4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%); and (b) from
+      the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment
+      shall remain fixed.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: 'Volume V Clause 29.2 is deleted and replaced by the following: ‘29.2  The Availability Payment shall
+        be indexed annually from the Base Date in accordance with Schedule 9.'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3(b)
+      page: 1
+      kind: span
+      words: (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance
+        of the payment shall remain fixed.’
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:29.2
+      page: 3
+      kind: span
+      words: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
+        (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:29.2
+    - ADD-03:3.3(b)
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.3 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'the old words are located in the target, not quoted by the provision: a person checks them'
+      aspect: semantic
+    - check: previous_value
+      ok: true
+      detail: '''The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per
+        cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining
+        fixed.'' matches VOL-V:29.2 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule
+        9. The proportion of the payment indexed to the published consumer price index (the Indexed Proportion)
+        shall be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder
+        in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%);
+        and (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance
+        of the payment shall remain fixed.'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:3.3(b) p1
+      ok: true
+      detail: verbatim in ADD-03:3.3(b) at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:29.2 p3
+      ok: true
+      detail: verbatim in VOL-V:29.2 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 'Whole-clause replacement written as replace_text of the entire current text (old matched_in_target)
+      because replace_unit expects a replacement group. The quotation spans 3.3 and its list item 3.3(b); one op
+      covers both (engine: ''one quotation''). Reference left this unresolved.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The printed 3.3 text ends at '(a)...; and'. Part (b) and the closing 'balance remain fixed' come from
+          ADD-03:3.3(b), which is not in the units list. The controller verified it as verbatim, so the full replacement
+          is supported.
+        - The 60/40 split is removed and replaced by a Bidder-stated 50–70% for years 1–10 and 75% from year 11.
+          'Deleted and replaced' supports replacing the whole of 29.2, so the old text matches the whole target.
+        - A person should confirm the old words match the target, as the controller flags.
+        evidence_checked:
+        - ADD-03:3.3
+        - ADD-03:3.3(b) (quoted in evidence)
+        - VOL-V:29.2
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: old words located in the target'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+        created: '2026-10-05T18:46:08Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/3.3-form
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: clarification
+    provision: ADD-03:3.3
+    target: VOL-IV:F4-F
+    payload:
+      gap: 'Replacement Clause 29.2 requires the Indexed Proportion for years 1-10 to be ''the percentage stated
+        by the Bidder in Form 4-F'', but Form 4-F (as at ADD-02) has no field for that percentage; its only indexation
+        field reads ''Indexation basis assumed: Per Volume V Clause 29.2''. ADD-03 Section 3 does not amend Form
+        4-F.'
+      proposed_question: Please confirm where in Form 4-F Bidders should state the Indexed Proportion (50%-70%)
+        required by Volume V Clause 29.2(a) as replaced by Addendum 3, and whether a revised Form 4-F will be issued.
+      practical_impact: Risk of a non-compliant or ambiguous Envelope B if the percentage cannot be stated in the
+        prescribed form.
+      interim_handling: State the percentage against the 'Indexation basis assumed' field and in the Financial Model
+        pending the Authority's response.
+      decision_owner: Commercial lead
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%)
+        and not more than seventy per cent (70%)
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/indexation-basis-assumed
+      page: 9
+      kind: span
+      words: 'Indexation basis assumed: Per Volume V Clause 29.2'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03/3.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.3 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed clarification payload
+      aspect: structure
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-F/indexation-basis-assumed p9
+      ok: true
+      detail: verbatim in VOL-IV:F4-F/indexation-basis-assumed at ADD-02
+      aspect: evidence
+    - check: human-owned
+      ok: true
+      detail: 'evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): a clarification is a
+        matter kept open for people'
+      aspect: decision
+    verification_status: interpretation_pending
+    model_rationale: 'Gap found reading the Form 4-F group at ADD-02: 20 members, none for a percentage.'
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The claim that Form 4-F has no field for the percentage is not verifiable from the evidence shown. Only
+          one member field is quoted (''Indexation basis assumed: Per Volume V Clause 29.2''). The VOL-IV:F4-F group
+          and its ''20 members'' are not printed.'
+        - The claim that ADD-03 Section 3 does not amend Form 4-F is not shown either. Only 3.2, 3.3 and 3.4 are
+          printed, and no unit says Form 4-F is untouched.
+        - The quoted evidence does show that the replacement 29.2 refers to a percentage 'stated by the Bidder in
+          Form 4-F'. It also shows an indexation field that merely points to Clause 29.2. The ambiguity is plausible
+          but not proven.
+        - The interim handling (state the percentage against the 'Indexation basis assumed' field) is a suggestion,
+          not something the text supports.
+        evidence_checked:
+        - ADD-03:3.3
+        - VOL-IV:F4-F/indexation-basis-assumed (quoted)
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: target is a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+        created: '2026-10-05T18:46:08Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/3.4
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:3.4
+    target: VOL-I:10.3
+    payload:
+      id: ADD-03/3.4
+      provision: ADD-03:3.4
+      type: annotate
+      targets:
+      - VOL-I:10.3
+      effect: adds_obligation
+      note: Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause 10.3.
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.4
+      page: 1
+      kind: span
+      words: Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause 10.3.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:10.3
+      page: 5
+      kind: span
+      words: The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:10.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S6
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:3.4 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:3.4 p1
+      ok: true
+      detail: verbatim in ADD-03:3.4 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:10.3 p5
+      ok: true
+      detail: verbatim in VOL-I:10.3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S6: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 'Obligation words (''shall reflect'') with no printed text change: annotate adds_obligation
+      rather than no_effect. Depends on interpretation S6, so pending a person.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - '''Shall reflect'' is obligation wording with no text change, so an annotate with adds_obligation fits.'
+        - The obligation applies to 'this Section 3', which includes the Base Date and Indexed Proportion changes.
+          Its scope depends on the S6 interpretation, which a person must confirm.
+        evidence_checked:
+        - ADD-03:3.4
+        - VOL-I:10.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+        created: '2026-10-05T18:46:08Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/4.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-II:3.1
+    payload:
+      id: ADD-03/4.1
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:3.1
+      old: The Authority does not mandate a particular process train.
+      old_resolved: quoted
+      new: The treatment process shall include a membrane filtration step, either in the tertiary treatment stage
+        or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding
+        sentence, the Authority does not mandate a particular process train.
+      origin: assistant
+    previous_value: The Authority does not mandate a particular process train.
+    proposed_value: The treatment process shall include a membrane filtration step, either in the tertiary treatment
+      stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding
+      sentence, the Authority does not mandate a particular process train.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 3.1, ‘The Authority does not mandate a particular process train.’ is deleted and
+        ‘The treatment process shall include a membrane filtration step, either in the tertiary treatment stage
+        or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding
+        sentence, the Authority does not mandate a particular process train.’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.1
+      page: 3
+      kind: span
+      words: The Authority does not mandate a particular process train.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:3.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S5
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''The Authority does not mandate a particular process train.'' matches VOL-II:3.1 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''The treatment process shall include a membrane filtration step, either in the tertiary treatment
+        stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the
+        preceding sentence, the Authority does not mandate a particular process train.'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:4.1 p2
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:3.1 p3
+      ok: true
+      detail: verbatim in VOL-II:3.1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Printed old/new pair. Corrected the reference, which wrote Greek mu (U+03BC) where the addendum
+      prints the micro sign (U+00B5) 'µm'.
+    review: null
+  - id: ADD-03/4.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:4.2
+    target: VOL-II:S3
+    payload:
+      id: ADD-03/4.2
+      provision: ADD-03:4.2
+      type: annotate
+      targets:
+      - VOL-II:S3
+      effect: adds_obligation
+      note: Bidders shall reflect this Section 4 in the process design submitted under Volume II Section 3.
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.2
+      page: 2
+      kind: span
+      words: Bidders shall reflect this Section 4 in the process design submitted under Volume II Section 3.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:H:S3
+      page: 3
+      kind: span
+      words: SECTION 3 — PROCESS REQUIREMENTS
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:S3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S6
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.2 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:4.2 p2
+      ok: true
+      detail: verbatim in ADD-03:4.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:H:S3 p3
+      ok: true
+      detail: verbatim in VOL-II:H:S3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S6: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 'Obligation words with no printed text change: annotate adds_obligation on the cited group
+      VOL-II:S3 (engine rejected VOL-II:3.1 as not cited). Depends on interpretation S6.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The target is the group VOL-II:S3, evidenced only by its heading 'SECTION 3 — PROCESS REQUIREMENTS'. This
+          matches the cited 'Volume II Section 3'.
+        - The content of ADD-03 Section 4 is not shown, so what the obligation covers cannot be checked.
+        - The adds_obligation effect depends on the S6 interpretation, which a person must confirm.
+        evidence_checked:
+        - ADD-03:4.2
+        - VOL-II:H:S3
+        selected_because:
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: target is a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+        created: '2026-10-05T18:46:08Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 57
+    accounted: 7
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+  resolution:
+    provisions_total: 57
+    accounted: 7
+    resolved: 3
+    pending: 4
+    invalid: 0
+    unaccounted: 50
+    pending_provisions:
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.2
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.1 p1
+        ok: true
+        detail: verbatim in ADD-03:3.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-V:1.1 p2
+        ok: true
+        detail: verbatim in VOL-V:1.1 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.2 p1
+        ok: true
+        detail: verbatim in ADD-03:3.2 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:3.2 p1
+        ok: true
+        detail: verbatim in ADD-03:3.2 at ADD-02
+        aspect: null
+    S3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.3 p1
+        ok: true
+        detail: verbatim in ADD-03:3.3 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:3.3(b) p1
+        ok: true
+        detail: verbatim in ADD-03:3.3(b) at ADD-02
+        aspect: null
+      - check: evidence VOL-V:29.2 p3
+        ok: true
+        detail: verbatim in VOL-V:29.2 at ADD-02
+        aspect: null
+    S4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-IV:F4-F/indexation-basis-assumed p9
+        ok: true
+        detail: verbatim in VOL-IV:F4-F/indexation-basis-assumed at ADD-02
+        aspect: null
+      - check: evidence ADD-03:3.3 p1
+        ok: true
+        detail: verbatim in ADD-03:3.3 at ADD-02
+        aspect: null
+    S5:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.1 p2
+        ok: true
+        detail: verbatim in ADD-03:4.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:3.1 p3
+        ok: true
+        detail: verbatim in VOL-II:3.1 at ADD-02
+        aspect: null
+    S6:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.4 p1
+        ok: true
+        detail: verbatim in ADD-03:3.4 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:4.2 p2
+        ok: true
+        detail: verbatim in ADD-03:4.2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/3.1
+      provision: ADD-03:3.1
+      type: replace_text
+      target: VOL-V:1.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:1.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:1.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''the annual payment calculated under Clause 29'' occurs 1 time(s) in VOL-V:1.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:1.1
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-V:1.1
+        - VOL-V:29.1
+        - VOL-V:29.2
+        - VOL-V:29.3
+        - VOL-V:29.4
+        - VOL-V:29.5
+        also_in: []
+    - id: ADD-03/3.2
+      provision: ADD-03:3.2
+      type: insert_unit
+      target: VOL-V:1.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:1.1 is cited
+      - id: C22
+        ok: true
+        detail: anchor VOL-V:1.1 exists and is active
+      - id: C22
+        ok: true
+        detail: the inserted item has text (quoted or taken from a named unit)
+      - id: C21
+        ok: true
+        detail: the whole inserted text is printed in ADD-03:3.2
+      - id: C22
+        ok: true
+        detail: VOL-V:1.1+ADD-03 is a new id
+      failed: []
+      changed:
+      - VOL-V:1.1+ADD-03
+      content:
+      - VOL-V:1.1+ADD-03
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-V:1.1
+        evidence: ADD-03:3.2
+    - id: ADD-03/3.3
+      provision: ADD-03:3.3
+      type: replace_text
+      target: VOL-V:29.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.3 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:3.3 and its list items ADD-03:3.3(b) (one quotation)
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:29.2 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:29.2 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty
+          per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining
+          fixed.'' occurs 1 time(s) in VOL-V:29.2'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:29.2
+      content:
+      - ADD-03:3.3(b)
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        quoted_across:
+        - ADD-03:3.3
+        - ADD-03:3.3(b)
+        cited:
+        - VOL-V:29.2
+        - VOL-IV:F4-F
+        also_in: []
+    - id: ADD-03/3.4
+      provision: ADD-03:3.4
+      type: annotate
+      target: VOL-I:10.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:3.4 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:10.3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/4.1
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-II:3.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:4.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:3.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:3.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''The Authority does not mandate a particular process train.'' occurs 1 time(s) in VOL-II:3.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:3.1
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:3.1
+        also_in: []
+    - id: ADD-03/4.2
+      provision: ADD-03:4.2
+      type: annotate
+      target: VOL-II:S3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.2 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:S3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: op
+      accounted_by:
+      - ADD-03/3.1
+    - provision: ADD-03:3.2
+      disposition: op
+      accounted_by:
+      - ADD-03/3.2
+    - provision: ADD-03:3.3
+      disposition: op
+      accounted_by:
+      - ADD-03/3.3
+    - provision: ADD-03:3.3(b)
+      disposition: op
+      accounted_by:
+      - ADD-03/3.3
+    - provision: ADD-03:3.4
+      disposition: op
+      accounted_by:
+      - ADD-03/3.4
+    - provision: ADD-03:4.1
+      disposition: op
+      accounted_by:
+      - ADD-03/4.1
+    - provision: ADD-03:4.2
+      disposition: op
+      accounted_by:
+      - ADD-03/4.2
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-head
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-II:3.1
+    - VOL-V:1.1
+    - VOL-V:1.1+ADD-03
+    - VOL-V:29.2
+    c46_needs:
+    - op: ADD-03/3.2
+      output: A1
+      rows: []
+      detail: 'ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds
+        (the item inserted after VOL-V:1.1; a row of the anchor VOL-V:1.1 does not count): ''The following new Clause
+        1.1A is inserted in Volume V after Clause 1.1: ‘1.1A Base Date means the date falling twenty-…'
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: de023fdefe9fcdea6b3e5378f3e4b1ef33542b150a439840d04d190625277b93
+    computed_under:
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - VOL-II:3.1
+    - VOL-V:1.1
+    - VOL-V:1.1+ADD-03
+    rows_citing_changed_units:
+    - VOL-II-3.1-01
+    rows_stale_at_addendum:
+    - row: VOL-II-3.1-01
+      why:
+      - VOL-II:3.1 changed since ADD-02 (by ADD-03/4.1)
+    decisions_voided: []
+    c46_needs:
+    - op: ADD-03/3.2
+      output: A1
+      rows: []
+      detail: 'ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds
+        (the item inserted after VOL-V:1.1; a row of the anchor VOL-V:1.1 does not count): ''The following new Clause
+        1.1A is inserted in Volume V after Clause 1.1: ‘1.1A Base Date means the date falling twenty-…'
+    clarifications_citing_changed_units: []
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: unknown verb
+        claim: 1
+        detail: '''consolidates Volume I Clauses 6.6 and 6.7 without change of substance'': C28 does not know the
+          verb ''consolidates'', so what it claims is compared by its targets only; a person reads it against the
+          provisions'
+      - kind: not found
+        claim: 1
+        detail: '''consolidates Volume I Clauses 6.6 and 6.7 without change of substance'': no provision of ADD-03
+          does this'
+      - kind: not found
+        claim: 2
+        detail: '''amends the definition of Availability Payment and the indexation of the Availability Payment
+          under Volume V Clause 29.2'': no provision of ADD-03 matches ''the indexation of the Availability Payment
+          under Volume V Clause 29.2'''
+      - kind: contradicted
+        claim: 3
+        op: ADD-03/4.1
+        provision: ADD-03:4.1
+        detail: '''adds a membrane filtration requirement to Volume II Clause 3.1'', but ADD-03/4.1 amends VOL-II:3.1'
+      - kind: not found
+        claim: 4
+        detail: '''replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social
+          Impact Assessment'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 5
+        detail: '''inserts a new Volume II Clause 5.6 limiting the height of permanent structures at the site in
+          accordance with Table 5-1'': no provision of ADD-03 does this'
+      - kind: omitted
+        op: ADD-03/3.2
+        provision: ADD-03:3.2
+        detail: 'ADD-03/3.2 inserts new text after VOL-V:1.1; the summary does not mention it: ''The following new
+          Clause 1.1A is inserted in Volume V after Clause 1.1: ‘1.1A Base Date means the date falling twenty-eight
+          (28) days before the Proposal Due Date.’'''
+      - kind: unchecked
+        provision: ADD-03:1.1
+        detail: ADD-03:1.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.3
+        detail: ADD-03:1.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.1
+        detail: ADD-03:2.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3
+        detail: ADD-03:3.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.3(b)
+        detail: ADD-03:3.3(b) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.4
+        detail: ADD-03:3.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:4.2
+        detail: ADD-03:4.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.1
+        detail: ADD-03:5.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q21
+        detail: ADD-03:Q21 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.3
+        detail: ADD-03:7.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.4
+        detail: ADD-03:7.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-en
+        detail: ADD-03:p4-image/hdr-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/hdr-ar
+        detail: ADD-03:p4-image/hdr-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/date
+        detail: ADD-03:p4-image/date is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/ref
+        detail: ADD-03:p4-image/ref is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/subject
+        detail: ADD-03:p4-image/subject is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/tender-ref
+        detail: ADD-03:p4-image/tender-ref is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-title
+        detail: ADD-03:p4-image/table-title is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/table-intro
+        detail: ADD-03:p4-image/table-intro is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-left
+        detail: ADD-03:p4-image/th-left is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/th-right
+        detail: ADD-03:p4-image/th-right is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-a-left
+        detail: ADD-03:p4-image/row-a-left is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-a-right
+        detail: ADD-03:p4-image/row-a-right is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-b-left
+        detail: ADD-03:p4-image/row-b-left is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/row-b-right
+        detail: ADD-03:p4-image/row-b-right is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/notes-head
+        detail: ADD-03:p4-image/notes-head is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note1
+        detail: ADD-03:p4-image/note1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note2
+        detail: ADD-03:p4-image/note2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/note3
+        detail: ADD-03:p4-image/note3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/signatory
+        detail: ADD-03:p4-image/signatory is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:p4-image/stamp
+        detail: ADD-03:p4-image/stamp is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para2
+        detail: ADD-03:AppA/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para1
+        detail: ADD-03:AppB/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/a
+        detail: ADD-03:T5-1/a is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/b
+        detail: ADD-03:T5-1/b is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/notes
+        detail: ADD-03:T5-1/notes is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(1)
+        detail: ADD-03:T5-1/note(1) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(2)
+        detail: ADD-03:T5-1/note(2) is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:T5-1/note(3)
+        detail: ADD-03:T5-1/note(3) is unresolved (no op yet), so its effect cannot be compared with the summary
+      candidate:
+        validated_stage: ADD-02
+        stage: ADD-03
+        paragraph: 'ADD-03 is PARTIAL: 54 of 57 provisions unresolved, so A3 and A5 stay validated at ADD-02. If
+          the 3 op(s) that are valid there stood (each still a proposal: review proposed 3), A3 would gain 0 row(s)
+          (none), lose 0 (none) and change 0 (none); A5, replanned at ADD-03''s issue date (2026-11-15), would move
+          the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 2 REVIEW through
+          relationships. Not settled: 19 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint,
+          technical-proposal, model-audit-review and 15 more), 1 STALE row(s), 1 obligation(s) reaching no output
+          (C46), 0 relationship chain(s) blocked or incomplete, 2 conflict(s); documents not supplied: the Environmental
+          Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule
+          7 (deductions), I-PERMIT and 5 more. Clarification route: the clarification window closed on 2026-11-12
+          (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person.
+          Nothing here is validated, accepted or applied to the real state.'
+        a3:
+          enters: []
+          leaves: []
+          changes: []
+        blocked_activities:
+        - fin-model-build
+        - model-auditor-appoint
+        - technical-proposal
+        - model-audit-review
+        - deviations-review
+        - clarifications
+        - fin-model-freeze
+        - model-audit-opinion
+        - form-4a-prep
+        - form-4e
+        - form-4f
+        - iso-copy
+        - form-4a
+        - form-4b
+        - assemble-envelope-a
+        - assemble-envelope-b
+        - copies
+        - seal-and-mark
+        - deliver
+        scenarios: []
+      clarification_window:
+        stage: ADD-03
+        issued: '2026-11-15'
+        date: '2026-11-12'
+        rule: VOL-I 5.2
+        row: VOL-I-5.2-01
+        closed: true
+        note: 'the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a
+          clarification; it is a bid-decision for a person'
+      requirements:
+        new: []
+        out: []
+        changed:
+        - VOL-II-3.1-01
+        - VOL-IV-F4E-01
+        secondary: {}
+        confirmed: []
+        not_settled: []
+      stale:
+      - VOL-II-3.1-01
+      relationships:
+        confirmed dependency:
+        - VOL-IV-F4E-01
+        proposed relationship: []
+        possible impact: []
+        not supplied: []
+      a3:
+        enters: []
+        leaves: []
+      answers_to_reread:
+      - answer: ADD-01:Q1
+        issued_by: ADD-01
+        text: 'No: 1 | Bidder question: Is a membrane bioreactor process mandatory? | Authority response: No. Volume
+          II Clause 3.1 does not mandate a process train. Any process capable of meeting Table 2-4 under the Table
+          2-2 influent…'
+        why: cites VOL-II:3.1, changed by ADD-03/4.1
+        status: REVIEW (not automatically revoked)
+        reread: to be re-read against the new text of VOL-II:3.1 (ADD-03/4.1); a person decides whether the answer
+          still holds
+        stage: ADD-03
+      programme:
+      - activity: assemble-envelope-a
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: assemble-envelope-b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: attendance-notice
+        change: STATUS
+        detail: timing CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known -> CONDITIONAL
+          — window elapsed 2026-10-14; whether the condition arose is not known; total float -7 -> -23 WD; the planning
+          date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: bond-approval
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: bond-issue
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: clarifications
+        change: STATUS
+        detail: timing OK -> DEADLINE PASSED; total float +13 -> -3 WD; the planning date moved 2026-10-22 -> 2026-11-15,
+          which by itself shifts every float by the Working Days between them
+      - activity: completion-certs
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 9 WD; total float +7 -> -9 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: consortium-check
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +13 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: copies
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: deliver
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: deviations-review
+        change: REWORK
+        detail: 'requirement changed: VOL-IV-F4E-01 (dependency: VOL-V 1.1: ''Availability Payment means the annual
+          payment calculated under Clause…'' -> ''Availability Payment means the annual payment, expressed at Base
+          Date…'' by ADD-03/3.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed)))'
+        rows:
+        - VOL-IV-F4E-01
+      - activity: deviations-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 5 WD; total float +11 -> -5 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-assumptions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-build
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-model-freeze
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-standing
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +15 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: fin-statements
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 1 WD; total float +15 -> -1 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4a
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +12 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4a-prep
+        change: REWORK
+        detail: 'requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: ''Bidders
+          shall acknowledge receipt in Form 4-A.'')'
+        rows:
+        - ADD-01-AppA-01
+      - activity: form-4a-prep
+        change: NOT SETTLED
+        rows:
+        - VOL-IV-F4A-01
+        - VOL-IV-F4A-02
+        detail: 'VOL-IV-F4A-01: CONFLICT: ADD-01 AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26
+          (VOL-I 6.1 as amended by ADD-01 2.1): not corrected (a person decides); VOL-IV-F4A-02: CONFLICT: ADD-01
+          AppA/proposal-due-date prints 2026-11-12; the PDD is 2026-11-26 (VOL-I 6.1 as amended by ADD-01 2.1):
+          not corrected (a person decides); unchanged at this stage but not confirmed: a person decides'
+      - activity: form-4a-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +20 -> +4 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4b
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 9 WD; total float +7 -> -9 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4b-prep
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 7 WD; total float +9 -> -7 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4c-prep
+        change: STATUS
+        detail: timing OK -> OK; total float +18 -> +2 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4c-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4e
+        change: REWORK
+        detail: 'requirement changed: VOL-IV-F4E-01 (dependency: VOL-V 1.1: ''Availability Payment means the annual
+          payment calculated under Clause…'' -> ''Availability Payment means the annual payment, expressed at Base
+          Date…'' by ADD-03/3.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed)))'
+        rows:
+        - VOL-IV-F4E-01
+      - activity: form-4e
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4f
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: form-4g-review
+        change: STATUS
+        detail: timing OK -> OK; total float +17 -> +1 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: form-4g-sign
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 4 WD; total float +12 -> -4 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: ground-dd
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: investment-licence
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: iso-copy
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +5 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: lcc-certificate
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: lcc-ratio
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: lender-terms
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-opinion
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-audit-review
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: model-auditor-appoint
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: om-evidence
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 3 WD; total float +13 -> -3 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: pcg-execution
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float +3 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: pcg-wording
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 13 WD; total float +3 -> -13 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: poa
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: poa-resolutions
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 8 WD; total float +8 -> -8 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: references
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 7 WD; total float +9 -> -7 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: seal-and-mark
+        change: STATUS
+        detail: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date
+          moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: spoc
+        change: STATUS
+        detail: timing OK -> OK; total float +21 -> +5 WD; the planning date moved 2026-10-22 -> 2026-11-15, which
+          by itself shifts every float by the Working Days between them
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: VOL-II-3.1-01 (text, status, stale)'
+        rows:
+        - VOL-II-3.1-01
+      - activity: technical-proposal
+        change: STATUS
+        detail: timing OK -> INFEASIBLE by 15 WD; total float +1 -> -15 WD; the planning date moved 2026-10-22 ->
+          2026-11-15, which by itself shifts every float by the Working Days between them
+      - activity: deviations-review
+        change: REVIEW (confirmed dependency)
+        detail: VOL-IV-F4E-01 reached from VOL-V:1.1 via REL-VOL-V-FORM-4E; dates unchanged
+      - activity: form-4e
+        change: REVIEW (confirmed dependency)
+        detail: VOL-IV-F4E-01 reached from VOL-V:1.1 via REL-VOL-V-FORM-4E; dates unchanged
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-15)\n\n- ops: 3 (0\
+      \ invalid); provisions: 57 (54 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para1: Issued 15 November\
+      \ 2026\n- UNRESOLVED ADD-03:cover/para2: Tender NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:cover/para3: This\
+      \ Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of\
+      \ Availability Payment and the indexation of the Ava\n- UNRESOLVED ADD-03:1.1: This Addendum is issued under\
+      \ Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.\n\
+      - UNRESOLVED ADD-03:1.2: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table\
+      \ or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.\n- UNRESOLVED ADD-03:1.3: Requests\
+      \ for clarification received after the time stated in Volume I Clause 5.2 have not been answered.\n- UNRESOLVED\
+      \ ADD-03:2.1: Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6\
+      \  A Bidder may withdraw its Proposal at any time before the Propos\n- UNRESOLVED ADD-03:2.2: The number 6.7\
+      \ is not reused. The Clauses of Volume I are not renumbered.\n- UNRESOLVED ADD-03:3.3: Volume V Clause 29.2\
+      \ is deleted and replaced by the following: ‘29.2  The Availability Payment shall be indexed annually from\
+      \ the Base Date in accordance with S\n- UNRESOLVED ADD-03:3.3(b): (b) from the start of the eleventh (11th)\
+      \ year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed.’\n- UNRESOLVED\
+      \ ADD-03:3.4: Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause\
+      \ 10.3.\n- UNRESOLVED ADD-03:4.2: Bidders shall reflect this Section 4 in the process design submitted under\
+      \ Volume II Section 3.\n- UNRESOLVED ADD-03:5.1: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site\
+      \ boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive rece\n-\
+      \ UNRESOLVED ADD-03:5.2: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the\
+      \ Technical Proposal.\n- UNRESOLVED ADD-03:Q15: No: 15 | Bidder question: Volume II Clause 6.4 requires process\
+      \ data to be retained for not less than seven (7) years. Would a retention period of ten (10) year\n- UNRESOLVED\
+      \ ADD-03:Q16: No: 16 | Bidder question: May a Bidder state ‘no deviations’ in Form 4-E and set out its assumptions\
+      \ on Volume V in the Technical Proposal? | Authority response\n- UNRESOLVED ADD-03:Q17: No: 17 | Bidder question:\
+      \ Where the proposed EPC Contractor is an unincorporated joint venture, which entity must hold the ISO 9001:2015\
+      \ certificate required by\n- UNRESOLVED ADD-03:Q18: No: 18 | Bidder question: Will the Authority provide dispersion\
+      \ modelling inputs for the design of the odour control system? | Authority response: The nearest s\n- UNRESOLVED\
+      \ ADD-03:Q19: No: 19 | Bidder question: Form 4-F requests the Availability Payment for year 1 of operations.\
+      \ Is that figure to be stated in the prices of year 1 of operations\n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder\
+      \ question: Form 4-F states ‘Per Volume V Clause 29.2’ against ‘Indexation basis assumed’. Is any figure to\
+      \ be stated in that row? | Authority res\n- UNRESOLVED ADD-03:Q21: No: 21 | Bidder question: Does the Technical\
+      \ Proposal need to address construction plant in addition to the matters listed in Volume I Clause 9.7? |\
+      \ Authority r\n- UNRESOLVED ADD-03:7.1: The following new Clause 5.6 is inserted in Volume II after Clause\
+      \ 5.5: ‘5.6  The Project Company shall comply with the height limits in Table 5-1, which is rep\n- UNRESOLVED\
+      \ ADD-03:7.2: Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation\
+      \ at Appendix B is provided for convenience only.\n- UNRESOLVED ADD-03:7.3: A Bidder whose Proposal provides\
+      \ for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the\
+      \ Authority through the\n- UNRESOLVED ADD-03:7.4: Bidders shall reflect Table 5-1 in the Technical Proposal.\n\
+      - UNRESOLVED ADD-03:AppA/para1: Table 5-1 is reproduced below as issued by the Northern Region Airspace Safeguarding\
+      \ Office. The Arabic text governs in accordance with Section 7 of this Addend\n- UNRESOLVED ADD-03:p4-image/hdr-en:\
+      \ Northern Region Airspace Safeguarding Office\n- UNRESOLVED ADD-03:p4-image/hdr-ar: مكتب حماية المجال الجوي\
+      \ بالمنطقة الشمالية\n- UNRESOLVED ADD-03:p4-image/date: التاريخ: ١٠ نوفمبر ٢٠٢٦م\n- UNRESOLVED ADD-03:p4-image/ref:\
+      \ الرقم: ٤٧١/٢٠٢٦\n- UNRESOLVED ADD-03:p4-image/subject: الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه\
+      \ الصرف الصحي المستقلة بوادي السرحان\n- UNRESOLVED ADD-03:p4-image/tender-ref: مناقصة رقم: NUPA/ISTP/2026/014\n\
+      - UNRESOLVED ADD-03:p4-image/table-title: جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع\n- UNRESOLVED\
+      \ ADD-03:p4-image/table-intro: يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو\
+      \ الآتي:\n- UNRESOLVED ADD-03:p4-image/th-left: الإنارة التحذيرية الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض\
+      \ الطبيعية)\n- UNRESOLVED ADD-03:p4-image/th-right: الوصف المنطقة\n- UNRESOLVED ADD-03:p4-image/row-a-left:\
+      \ مطلوبة\n- UNRESOLVED ADD-03:p4-image/row-a-right: ٢٥ الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ\
+      \ الشرقي للموقع أ\n- UNRESOLVED ADD-03:p4-image/row-b-left: مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً ٤٠\n\
+      - UNRESOLVED ADD-03:p4-image/row-b-right: باقي مساحة الموقع ب\n- UNRESOLVED ADD-03:p4-image/notes-head: ملاحظات:\n\
+      - UNRESOLVED ADD-03:p4-image/note1: ١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن\
+      \ والرافعات ومعدّات الإنشاء.\n- UNRESOLVED ADD-03:p4-image/note2: ٢. يُقاس الارتفاع من منسوب الأرض الطبيعية\
+      \ قبل أعمال التسوية والردم.\n- UNRESOLVED ADD-03:p4-image/note3: ٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً\
+      \ على الأقل من تركيب أي رافعة في الموقع.\n- UNRESOLVED ADD-03:p4-image/signatory: مدير المكتب\n- UNRESOLVED\
+      \ ADD-03:p4-image/stamp: \n- UNRESOLVED ADD-03:AppA/para2: End of reproduction.\n- UNRESOLVED ADD-03:AppB/para1:\
+      \ This translation is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.\n\
+      - UNRESOLVED ADD-03:T5-1/a: Zone: A | Description: The part of the site within 1,500 m of the eastern site\
+      \ boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting\n- UNRESOLVED ADD-03:T5-1/b:\
+      \ Zone: B | Description: The remainder of the site | Maximum height (m above finished ground level): 40 |\
+      \ Obstacle lighting: Required for any part exceeding 30 m\n- UNRESOLVED ADD-03:T5-1/notes: Notes to Table\
+      \ 5-1:\n- UNRESOLVED ADD-03:T5-1/note(1): (1)  These limits apply to all permanent structures, including stacks.\n\
+      - UNRESOLVED ADD-03:T5-1/note(2): (2)  Height is measured from finished ground level after grading and filling.\n\
+      - UNRESOLVED ADD-03:T5-1/note(3): (3)  The Office shall be notified at least thirty (30) days before any crane\
+      \ is erected at the site.\n- cover summary vs provisions (C28, report only): 7 finding(s)\n  - unknown verb:\
+      \ 'consolidates Volume I Clauses 6.6 and 6.7 without change of substance': C28 does not know the verb 'consolidates',\
+      \ so what it claims is compared by its targets only; a person reads it against the provisions\n  - not found:\
+      \ 'consolidates Volume I Clauses 6.6 and 6.7 without change of substance': no provision of ADD-03 does this\n\
+      \  - not found: 'amends the definition of Availability Payment and the indexation of the Availability Payment\
+      \ under Volume V Clause 29.2': no provision of ADD-03 matches 'the indexation of the Availability Payment\
+      \ under Volume V Clause 29.2'\n  - contradicted: 'adds a membrane filtration requirement to Volume II Clause\
+      \ 3.1', but ADD-03/4.1 amends VOL-II:3.1\n  - not found: 'replaces the odour criterion in Volume II Clause\
+      \ 3.5 by reference to the Environmental and Social Impact Assessment': no provision of ADD-03 does this\n\
+      \  - not found: 'inserts a new Volume II Clause 5.6 limiting the height of permanent structures at the site\
+      \ in accordance with Table 5-1': no provision of ADD-03 does this\n  - omitted: ADD-03/3.2 inserts new text\
+      \ after VOL-V:1.1; the summary does not mention it: 'The following new Clause 1.1A is inserted in Volume V\
+      \ after Clause 1.1: ‘1.1A Base Date means the date falling twenty-eight (28) days before the Proposal Due\
+      \ Date.’'\n\n### Validated vs candidate (partial should not mean useless)\n\n- validated (unchanged, ADD-02):\
+      \ `<outputs>/a3/a3.pdf` (one page), `<outputs>/a5/`\n- candidate (CANDIDATE — NOT VALIDATED, ADD-03 as proposed):\
+      \ `<outputs>/a3/a3_candidate.pdf` / `.md`, `<outputs>/a5/candidate/`\n\n**What may be changing.** ADD-03 is\
+      \ PARTIAL: 54 of 57 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 3 op(s) that are\
+      \ valid there stood (each still a proposal: review proposed 3), A3 would gain 0 row(s) (none), lose 0 (none)\
+      \ and change 0 (none); A5, replanned at ADD-03's issue date (2026-11-15), would move the latest dates of 0\
+      \ activities (none), add 0 (none) and remove 0 (none), and marks 2 REVIEW through relationships. Not settled:\
+      \ 19 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint, technical-proposal,\
+      \ model-audit-review and 15 more), 1 STALE row(s), 1 obligation(s) reaching no output (C46), 0 relationship\
+      \ chain(s) blocked or incomplete, 2 conflict(s); documents not supplied: the Environmental Permit issued for\
+      \ the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT\
+      \ and 5 more. Clarification route: the clarification window closed on 2026-11-12 (VOL-I 5.2): this question\
+      \ cannot be submitted as a clarification; it is a bid-decision for a person. Nothing here is validated, accepted\
+      \ or applied to the real state.\n\n- **Clarification route:** the clarification window closed on 2026-11-12\
+      \ (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person (ADD-03\
+      \ issued 2026-11-15; the cut-off is computed from VOL-I-5.2-01 at that stage). No question about it is suggested\
+      \ as sendable; a proposed entry stays a DRAFT, not sent.\n\n## Requirements\n\n- new: 0; out of force: 0;\
+      \ changed: 2\n\n- CHANGED VOL-II-3.1-01: wording (by ADD-03/4.1)\n- CHANGED VOL-IV-F4E-01: VOL-V 1.1: 'Availability\
+      \ Payment means the annual payment calculated under Clause…' -> 'Availability Payment means the annual payment,\
+      \ expressed at Base Date…' by ADD-03/3.1 (depends on it: REL-VOL-V-FORM-4E (depends_on, confirmed))\n\n##\
+      \ Stale readings and decisions\n\n- STALE VOL-II-3.1-01: VOL-II:3.1 changed since ADD-02 (by ADD-03/4.1)\n\
+      \n## Obligations not reaching the outputs (C46)\n\n- ADD-03/3.2 [A1]: ADD-03/3.2 (insert_unit) creates or\
+      \ amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:1.1; a row of\
+      \ the anchor VOL-V:1.1 does not count): 'The following new Clause 1.1A is inserted in Volume V after\n\n##\
+      \ Reached through relationships (indirect: for review, not direct citations)\n\nCurated links (relationships\
+      \ file) followed from what changed. The requirements above cite a changed unit; these are reached through\
+      \ another provision, in three classes that are never merged. A5 marks the activities that serve them REVIEW\
+      \ with their dates unchanged.\n\nRelationship status: confirmed = stated in the documents (the entry quotes\
+      \ the cross-reference), not confirmed by a person; proposed = inferred by a curator or a model, a person decides;\
+      \ possible = a weaker inference.\n\n### Confirmed dependency (1)\n- VOL-IV-F4E-01 (row; ACTIVE) <- VOL-V:1.1\
+      \ via REL-VOL-V-FORM-4E [depends_on; link confirmed]\n\n### Proposed relationship (0)\n- none\n\n### Possible\
+      \ impact (0)\n- none\n\n### Referenced but not supplied: conclusions in play that cannot be established (0)\n\
+      - none\n\n## Disqualifiers (A3)\n\n- no change\n\n## Earlier answers to re-read against the new text (never\
+      \ revoked; a person decides)\n\n- `ADD-01:Q1` (ADD-01): cites VOL-II:3.1, changed by ADD-03/4.1; to be re-read\
+      \ against the new text of VOL-II:3.1 (ADD-03/4.1); a person decides whether the answer still holds\n\n## Programme\
+      \ impact (status date 2026-10-22 -> 2026-11-15)\n\n- STATUS assemble-envelope-a: timing INFEASIBLE by 12 WD\
+      \ -> INFEASIBLE by 28 WD; total float -12 -> -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which\
+      \ by itself shifts every float by the Working Days between them\n- STATUS assemble-envelope-b: timing OK ->\
+      \ INFEASIBLE by 16 WD; total float 0 -> -16 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by\
+      \ itself shifts every float by the Working Days between them\n- STATUS attendance-notice: timing CONDITIONAL\
+      \ — window elapsed 2026-10-14; whether the condition arose is not known -> CONDITIONAL — window elapsed 2026-10-14;\
+      \ whether the condition arose is not known; total float -7 -> -23 WD; the planning date moved 2026-10-22 ->\
+      \ 2026-11-15, which by itself shifts every float by the Working Days between them\n- STATUS bond-approval:\
+      \ timing OK -> INFEASIBLE by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 -> 2026-11-15,\
+      \ which by itself shifts every float by the Working Days between them\n- STATUS bond-issue: timing OK -> INFEASIBLE\
+      \ by 6 WD; total float +10 -> -6 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts\
+      \ every float by the Working Days between them\n- STATUS clarifications: timing OK -> DEADLINE PASSED; total\
+      \ float +13 -> -3 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float\
+      \ by the Working Days between them\n- STATUS completion-certs: timing OK -> INFEASIBLE by 9 WD; total float\
+      \ +7 -> -9 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the\
+      \ Working Days between them\n- STATUS consortium-check: timing OK -> INFEASIBLE by 3 WD; total float +13 ->\
+      \ -3 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- STATUS copies: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12 ->\
+      \ -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- STATUS deliver: timing INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD; total float -12\
+      \ -> -28 WD; the planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working\
+      \ Days between them\n- REWORK deviations-review: requirement changed: VOL-IV-F4E-01 (dependency: VOL-V 1.1:\
+      \ 'Availability Payment means the annual payment calculated under Clause…' -> 'Availability Payment means\
+      \ the annual payment, expressed at Base Date…' by ADD-03/3.1 (depends on it: REL-VOL-V-FORM-4E (depends_on,\
+      \ confirmed)))\n- STATUS deviations-review: timing OK -> INFEASIBLE by 5 WD; total float +11 -> -5 WD; the\
+      \ planning date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days between\
+      \ them\n- STATUS fin-assumptions: timing OK -> INFEASIBLE by 11 WD; total float +5 -> -11 WD; the planning\
+      \ date moved 2026-10-22 -> 2026-11-15, which by itself shifts every float by the Working Days "
+    findings: []
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-analysis-002-critic
+    route: host
+    items:
+    - item: ADD-03/3.2
+      agrees: true
+      concerns: 2
+    - item: ADD-03/3.3
+      agrees: true
+      concerns: 3
+    - item: ADD-03/3.3-form
+      agrees: false
+      concerns: 4
+    - item: ADD-03/3.4
+      agrees: true
+      concerns: 2
+    - item: ADD-03/4.2
+      agrees: true
+      concerns: 3
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

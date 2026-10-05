@@ -1,0 +1,1711 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T175345Z-da16",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:p4-image/tp1-location",
+  "ADD-03:p4-image/tp1-diameter",
+  "ADD-03:p4-image/tp1-window",
+  "ADD-03:p4-image/tp1-duration",
+  "ADD-03:p4-image/tp1-notice",
+  "ADD-03:p4-image/tp2-point",
+  "ADD-03:p4-image/tp2-location",
+  "ADD-03:p4-image/tp2-diameter"
+ ],
+ "started": "2026-10-05T17:53:45.727016+00:00",
+ "elapsed_s": 312.2,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01X8Fc8CDootcMsb5NGifFph",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-location",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_0119D9F7uFPvfnc5YA772gR3",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-location"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01Spm8kUPKAAxvor4ZNa8JTe",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-notice"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_018J2Q6ihvnNucih7DCFuknF",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp2-point"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01BmLfegMdyL2nQQNaM8Qyou",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Table 1-3 tie-in points shutdown window notice Appendix A Arabic",
+    "limit": 15
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01RfoyprsZr5FemHYnxRimiw",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01SqKbbMwx6UoARj2GupQeSh",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:2.1",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01MzmZTbfNgkhdQRrsG86ZQL",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:2.2",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Up8eYyPpabdhwZLoxP3D2a",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:T1-3",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01QY4e3jvAntNoLQrVxU8aRm",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:p4-image",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01WzDAgc2LzXunJ15n9jchpX",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "tie-in point existing collection network manhole MH-41 MH-07 rising main gravity sewer diameter",
+    "limit": 10
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Ch53VxRGAzgkNeUjCdVJvo",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-diameter",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_017zvSDye35PdKCd4QyXc7wv",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp1-window",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EMmqYnLjddXxrTnnsYNyZ6",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/tp2-location",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Hn7Jfpgei2RBB5uZDj6BAB",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "dispositions": [
+     {
+      "provision": "ADD-03:p4-image/tp1-location",
+      "disposition": "no_effect",
+      "reason": "Cell of the Arabic Table 1-3 issued at Appendix A to ADD-03 (TP-1 row, location column: 'غرفة التفتيش MH-41 على خط الطرد الشمالي'). It prints no change (no old/new pair, no deletion or substitution) to any unit as it stood at ADD-02; it is content of a table newly issued by ADD-03, incorporated into Volume II by ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch."
+     },
+     {
+      "provision": "ADD-03:p4-image/tp1-diameter",
+      "disposition": "no_effect",
+      "reason": "Cell '١٠٠٠' of the Arabic Table 1-3 at Appendix A (TP-1 row, column 'قطر الخط القائم (مم)'). It prints no change to any unit as it stood at ADD-02; content of the table incorporated by ADD-03:2.1."
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_011J4CAD9rBXuECKf3Dgaa9G",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.1 adds to Volume II Clause 1.3 a sentence stating that the tie-in points TP-1 and TP-2 are described in Table 1-3, reproduced at Appendix A and incorporated by reference.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.2 states that Table 1-3 is issued in Arabic and the Arabic text governs over the English translation at Appendix B.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "Before ADD-03 (at ADD-02), Volume II Clause 1.3 refers to 'the two designated tie-in points' but no unit found by search gives tie-in point locations, diameters, shutdown windows, durations or notice periods. The cells of Table 1-3 are first issued in ADD-03.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "the two designated tie-in points"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "Each Appendix A cell reading in this batch is content of the table that ADD-03 issues. None prints an old/new pair, a deletion or a substitution against any unit as it stood at ADD-02. The table enters Volume II through the op for ADD-03:2.1 (another batch), so each of these cells is a no_effect provision in its own right."
+      },
+      {
+       "id": "S-F4",
+       "kind": "fact",
+       "text": "Outside this batch, the Arabic TP-2 maximum shutdown duration cell reads '٤' (4), while the English convenience translation (ADD-03:T1-3/tp-2) gives 'Maximum shutdown duration (hours): 6'. Under Clause 2.2 the Arabic governs. This is flagged for the batch that handles ADD-03:p4-image/tp2-duration and ADD-03:T1-3/tp-2.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ]
+      }
+     ],
+     "items": []
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01QqkUvZzC2ek6tYH66DhBid",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.1 adds to Volume II Clause 1.3 a sentence stating that the tie-in points TP-1 and TP-2 are described in Table 1-3, reproduced at Appendix A and incorporated by reference.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.2 states that Table 1-3 is issued in Arabic and the Arabic text governs over the English translation at Appendix B.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "Before ADD-03 (at ADD-02), Volume II Clause 1.3 refers to 'the two designated tie-in points' but no unit found by search gives tie-in point locations, diameters, shutdown windows, durations or notice periods. The cells of Table 1-3 are first issued in ADD-03.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "the two designated tie-in points"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "Each Appendix A cell reading in this batch is content of the table that ADD-03 issues. None prints an old/new pair, a deletion or a substitution against any unit as it stood at ADD-02. The table enters Volume II through the op for ADD-03:2.1 (another batch), so each of these cells is a no_effect provision in its own right."
+      },
+      {
+       "id": "S-F4",
+       "kind": "fact",
+       "text": "Outside this batch, the Arabic TP-2 maximum shutdown duration cell reads '٤' (4), while the English convenience translation (ADD-03:T1-3/tp-2) gives 'Maximum shutdown duration (hours): 6'. Under Clause 2.2 the Arabic governs. This is flagged for the batch that handles ADD-03:p4-image/tp2-duration and ADD-03:T1-3/tp-2.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/p4-image/tp1-location",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-location",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-location",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 location cell of the Arabic Table 1-3 at Appendix A ('غرفة التفتيش MH-41 على خط الطرد الشمالي'). It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-location",
+         "page": 4,
+         "kind": "reading",
+         "words": "غرفة التفتيش MH-41 على خط الطرد الشمالي",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الطرد ('rising main')."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 row. Its location cell prints, in Arabic script on two lines, 'غرفة التفتيش MH-41' over 'على خط الطرد الشمالي', and this matches the reading. The cell is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-diameter",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-diameter",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-diameter",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 existing-sewer-diameter cell ('١٠٠٠', mm) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-diameter",
+         "page": 4,
+         "kind": "reading",
+         "words": "١٠٠٠",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 row. The diameter cell (column قطر الخط القائم (مم)) prints Arabic-Indic '١٠٠٠', which is 1000 and agrees with the English Appendix B value 1,000. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-window",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-window",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-window",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 permitted-shutdown-window cell ('من ٢٣:٠٠ إلى ٠٥:٠٠') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٢٣:٠٠ إلى ٠٥:٠٠",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 window cell printing 'من ٢٣:٠٠ إلى ٠٥:٠٠' (from 23:00 to 05:00, Arabic-Indic digits), which agrees with Appendix B. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-duration",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-duration",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-duration",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 maximum-shutdown-duration cell ('٦', hours) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "The TP-1 duration cell is not visible in band crop b08-right. I read it in the left band crop b08-left (which shows '٦' beside '١٠ أيام عمل') and in the full region image: TP-1 under أقصى مدّة للإيقاف (ساعة) prints Arabic-Indic '٦' (6), which agrees with Appendix B. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-notice",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-notice",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-notice",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 advance-notice cell ('١٠ أيام عمل') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-notice",
+         "page": 4,
+         "kind": "reading",
+         "words": "١٠ أيام عمل",
+         "crop_sha256": "1a61481bd6919b78be829fb8356db5022a0ae20e93e3efbaa9d9aaf311153a55"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-left shows the TP-1 notice cell printing '١٠ أيام عمل' (10 working days), with '٦' in the adjacent duration cell. This agrees with Appendix B ('10 Working Days'). It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-point",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-point",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-point",
+        "disposition": "no_effect",
+        "reason": "This is the tie-in-point identifier cell ('TP-2') of the second row of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-point",
+         "page": 4,
+         "kind": "reading",
+         "words": "TP-2",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1",
+        "S-F4"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b09-right shows the second row headed 'TP-2' in Latin script, and the reading matches. Outside this batch, the full region image shows the TP-2 maximum duration as '٤' (4 hours) while the English Appendix B gives 6. The Arabic governs under 2.2, and this discrepancy is flagged in S-F4 for the batch that owns tp2-duration and T1-3/tp-2."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-location",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-location",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-location",
+        "disposition": "no_effect",
+        "reason": "This is the TP-2 location cell ('غرفة التفتيش MH-07 على خط الانحدار الجنوبي') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-location",
+         "page": 4,
+         "kind": "reading",
+         "words": "غرفة التفتيش MH-07 على خط الانحدار الجنوبي",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الانحدار ('gravity line/sewer')."
+       ],
+       "model_rationale": "Crop b09-right shows the TP-2 location cell printing, in Arabic script on two lines, 'غرفة التفتيش MH-07' over 'على خط الانحدار الجنوبي', and this matches the reading. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-diameter",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-diameter",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-diameter",
+        "disposition": "no_effect",
+        "reason": "This is the TP-2 existing-sewer-diameter cell ('٨٠٠', mm) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-diameter",
+         "page": 4,
+         "kind": "reading",
+         "words": "٨٠٠",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b09-right shows the TP-2 diameter cell printing Arabic-Indic '٨٠٠' (800), which agrees with Appendix B ('800'). It is new table content and amends nothing on its own."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01AsqvUBdj8f6FCF7SjYuqdW",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (opus)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.1 adds to Volume II Clause 1.3 a sentence stating that the tie-in points TP-1 and TP-2 are described in Table 1-3, reproduced at Appendix A and incorporated by reference.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator) and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "ADD-03 Clause 2.2 states that Table 1-3 is issued in Arabic and the Arabic text governs over the English translation at Appendix B.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "Before ADD-03 (at ADD-02), Volume II Clause 1.3 refers to 'the two designated tie-in points' but no unit found by search gives tie-in point locations, diameters, shutdown windows, durations or notice periods. The cells of Table 1-3 are first issued in ADD-03.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:1.3",
+         "page": 2,
+         "kind": "span",
+         "words": "the two designated tie-in points"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "Each Appendix A cell reading in this batch is content of the table that ADD-03 issues. None prints an old/new pair, a deletion or a substitution against any unit as it stood at ADD-02. The table enters Volume II through the op for ADD-03:2.1 (another batch), so each of these cells is a no_effect provision in its own right."
+      },
+      {
+       "id": "S-F4",
+       "kind": "fact",
+       "text": "Outside this batch, the Arabic TP-2 maximum shutdown duration cell reads '٤' (4), while the English convenience translation (ADD-03:T1-3/tp-2) gives 'Maximum shutdown duration (hours): 6'. Under Clause 2.2 the Arabic governs. This is flagged for the batch that handles ADD-03:p4-image/tp2-duration and ADD-03:T1-3/tp-2.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٤",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T1-3/tp-2",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum shutdown duration (hours): 6"
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/p4-image/tp1-location",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-location",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-location",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 location cell of the Arabic Table 1-3 at Appendix A ('غرفة التفتيش MH-41 على خط الطرد الشمالي'). It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-location",
+         "page": 4,
+         "kind": "reading",
+         "words": "غرفة التفتيش MH-41 على خط الطرد الشمالي",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الطرد ('rising main')."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 row. Its location cell prints, in Arabic script on two lines, 'غرفة التفتيش MH-41' over 'على خط الطرد الشمالي', and this matches the reading. The cell is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-diameter",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-diameter",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-diameter",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 existing-sewer-diameter cell ('١٠٠٠', mm) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-diameter",
+         "page": 4,
+         "kind": "reading",
+         "words": "١٠٠٠",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 row. The diameter cell (column قطر الخط القائم (مم)) prints Arabic-Indic '١٠٠٠', which is 1000 and agrees with the English Appendix B value 1,000. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-window",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-window",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-window",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 permitted-shutdown-window cell ('من ٢٣:٠٠ إلى ٠٥:٠٠') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٢٣:٠٠ إلى ٠٥:٠٠",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-right shows the TP-1 window cell printing 'من ٢٣:٠٠ إلى ٠٥:٠٠' (from 23:00 to 05:00, Arabic-Indic digits), which agrees with Appendix B. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-duration",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-duration",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-duration",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 maximum-shutdown-duration cell ('٦', hours) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-duration",
+         "page": 4,
+         "kind": "reading",
+         "words": "٦",
+         "crop_sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "The TP-1 duration cell is not visible in band crop b08-right. I read it in the left band crop b08-left (which shows '٦' beside '١٠ أيام عمل') and in the full region image: TP-1 under أقصى مدّة للإيقاف (ساعة) prints Arabic-Indic '٦' (6), which agrees with Appendix B. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp1-notice",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp1-notice",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp1-notice",
+        "disposition": "no_effect",
+        "reason": "This is the TP-1 advance-notice cell ('١٠ أيام عمل') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-notice",
+         "page": 4,
+         "kind": "reading",
+         "words": "١٠ أيام عمل",
+         "crop_sha256": "1a61481bd6919b78be829fb8356db5022a0ae20e93e3efbaa9d9aaf311153a55"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b08-left shows the TP-1 notice cell printing '١٠ أيام عمل' (10 working days), with '٦' in the adjacent duration cell. This agrees with Appendix B ('10 Working Days'). It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-point",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-point",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-point",
+        "disposition": "no_effect",
+        "reason": "This is the tie-in-point identifier cell ('TP-2') of the second row of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-point",
+         "page": 4,
+         "kind": "reading",
+         "words": "TP-2",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1",
+        "S-F4"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b09-right shows the second row headed 'TP-2' in Latin script, and the reading matches. Outside this batch, the full region image shows the TP-2 maximum duration as '٤' (4 hours) while the English Appendix B gives 6. The Arabic governs under 2.2, and this discrepancy is flagged in S-F4 for the batch that owns tp2-duration and T1-3/tp-2."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-location",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-location",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-location",
+        "disposition": "no_effect",
+        "reason": "This is the TP-2 location cell ('غرفة التفتيش MH-07 على خط الانحدار الجنوبي') of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-location",
+         "page": 4,
+         "kind": "reading",
+         "words": "غرفة التفتيش MH-07 على خط الانحدار الجنوبي",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الانحدار ('gravity line/sewer')."
+       ],
+       "model_rationale": "Crop b09-right shows the TP-2 location cell printing, in Arabic script on two lines, 'غرفة التفتيش MH-07' over 'على خط الانحدار الجنوبي', and this matches the reading. It is new table content and amends nothing on its own."
+      },
+      {
+       "id": "ADD-03/p4-image/tp2-diameter",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/tp2-diameter",
+       "payload": {
+        "provision": "ADD-03:p4-image/tp2-diameter",
+        "disposition": "no_effect",
+        "reason": "This is the TP-2 existing-sewer-diameter cell ('٨٠٠', mm) of the Arabic Table 1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 ('is incorporated into this Volume by reference'), whose op belongs to another batch. A person to confirm.",
+        "candidates": []
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp2-diameter",
+         "page": 4,
+         "kind": "reading",
+         "words": "٨٠٠",
+         "crop_sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "ADD-03:2.2"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1"
+       ],
+       "missing_information": [
+        "The reading of ADD-03-p4-r1 is still pending approval."
+       ],
+       "model_rationale": "Crop b09-right shows the TP-2 diameter cell printing Arabic-Indic '٨٠٠' (800), which agrees with Appendix B ('800'). It is new table content and amends nothing on its own."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [
+  "ADD-03:p4-image/tp1-location",
+  "ADD-03:p4-image/tp1-notice",
+  "ADD-03:p4-image/tp2-point"
+ ],
+ "images_received": [
+  {
+   "unit_id": "ADD-03:p4-image/tp1-location",
+   "sent": [
+    {
+     "sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b08-right.png",
+     "kind": "unit",
+     "bytes": 20046,
+     "attached": true
+    },
+    {
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 412738,
+     "attached": true
+    },
+    {
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 341111,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 20046,
+     "sha256": "7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 412738,
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 341111,
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/tp1-notice",
+   "sent": [
+    {
+     "sha256": "1a61481bd6919b78be829fb8356db5022a0ae20e93e3efbaa9d9aaf311153a55",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b08-left.png",
+     "kind": "unit",
+     "bytes": 5397,
+     "attached": true
+    },
+    {
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 412738,
+     "attached": true
+    },
+    {
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 341111,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 5397,
+     "sha256": "1a61481bd6919b78be829fb8356db5022a0ae20e93e3efbaa9d9aaf311153a55"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 412738,
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 341111,
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/tp2-point",
+   "sent": [
+    {
+     "sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b09-right.png",
+     "kind": "unit",
+     "bytes": 21163,
+     "attached": true
+    },
+    {
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 412738,
+     "attached": true
+    },
+    {
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 341111,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 21163,
+     "sha256": "18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 412738,
+     "sha256": "f827ab1b7a2b66d7e828424d4e16d30f60b2dcf84fd71023310ff01f77f03e18"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 341111,
+     "sha256": "78db02876f3a88d8bcbf718e2f72872c5b67b818c8b7f5d93276d484bcaea985"
+    }
+   ]
+  }
+ ],
+ "submission": {
+  "run_id": "ADD-03-host-20261005T175850Z-70a4",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/ai/ADD-03-host-20261005T175850Z-70a4",
+  "coverage": {
+   "provisions_total": 70,
+   "accounted": 8,
+   "unaccounted": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:2.3",
+    "ADD-03:2.4",
+    "ADD-03:2.5",
+    "ADD-03:2.6",
+    "ADD-03:2.7",
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:AppA/para1",
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/intro",
+    "ADD-03:p4-image/th-point",
+    "ADD-03:p4-image/th-location",
+    "ADD-03:p4-image/th-diameter",
+    "ADD-03:p4-image/th-window",
+    "ADD-03:p4-image/th-duration",
+    "ADD-03:p4-image/th-notice",
+    "ADD-03:p4-image/table-rule",
+    "ADD-03:p4-image/tp1-point",
+    "ADD-03:p4-image/tp2-window",
+    "ADD-03:p4-image/tp2-duration",
+    "ADD-03:p4-image/tp2-notice",
+    "ADD-03:p4-image/notes-heading",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3",
+    "ADD-03:p4-image/note4",
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:p4-image/image-footer",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1",
+    "ADD-03:T1-3/tp-1",
+    "ADD-03:T1-3/tp-2",
+    "ADD-03:T1-3/notes",
+    "ADD-03:T1-3/note(1)",
+    "ADD-03:T1-3/note(2)",
+    "ADD-03:T1-3/note(3)",
+    "ADD-03:T1-3/note(4)",
+    "ADD-03:AppB/para2"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 70,
+   "accounted": 8,
+   "resolved": 0,
+   "pending": 8,
+   "invalid": 0,
+   "unaccounted": 62,
+   "pending_provisions": [
+    "ADD-03:p4-image/tp1-location",
+    "ADD-03:p4-image/tp1-diameter",
+    "ADD-03:p4-image/tp1-window",
+    "ADD-03:p4-image/tp1-duration",
+    "ADD-03:p4-image/tp1-notice",
+    "ADD-03:p4-image/tp2-point",
+    "ADD-03:p4-image/tp2-location",
+    "ADD-03:p4-image/tp2-diameter"
+   ],
+   "invalid_provisions": [],
+   "no_change_on_amendment_language": [],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/p4-image/tp1-location",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp1-diameter",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp1-window",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp1-duration",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp1-notice",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp2-point",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp2-location",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/p4-image/tp2-diameter",
+    "status": "insufficient_evidence"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/p4-image/tp1-location": "insufficient_evidence",
+  "ADD-03/p4-image/tp1-diameter": "insufficient_evidence",
+  "ADD-03/p4-image/tp1-window": "insufficient_evidence",
+  "ADD-03/p4-image/tp1-duration": "insufficient_evidence",
+  "ADD-03/p4-image/tp1-notice": "insufficient_evidence",
+  "ADD-03/p4-image/tp2-point": "insufficient_evidence",
+  "ADD-03/p4-image/tp2-location": "insufficient_evidence",
+  "ADD-03/p4-image/tp2-diameter": "insufficient_evidence"
+ },
+ "num_turns": 19,
+ "usage": {
+  "input_tokens": 18,
+  "cache_creation_input_tokens": 86048,
+  "cache_read_input_tokens": 381597,
+  "output_tokens": 29653,
+  "output_tokens_details": {
+   "thinking_tokens": 1423
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 86048,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 319,
+    "cache_read_input_tokens": 76176,
+    "cache_creation_input_tokens": 13987,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 13987
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 1.3578354000000001,
+ "final_text": "Run **ADD-03-host-20261005T175850Z-70a4**, status **partial**: my 8 provisions are accounted for, 62 are left to other batches, and all 8 items are `insufficient_evidence` because the ADD-03-p4-r1 reading is still pending approval. I proposed `no_effect` for each, since every one is a cell of the new Arabic Table 1-3, which enters Volume II through Clause 2.1. Crops read: b08-right, b08-left, b09-right, plus the full region image. Separately, outside this batch, the Arabic TP-2 maximum shutdown is ٤ (4 h) but the English Appendix B says 6. Clause 2.2 says the Arabic governs; I flagged this in statement S-F4.",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/ai/ADD-03-hostsession-20261005T175345Z-da16",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

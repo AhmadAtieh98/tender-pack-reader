@@ -1,0 +1,140 @@
+{
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "check": "200 A1 rows in force at ADD-02: 160 discharged by an activity, 30 reviewed for deviations (the VOL-V volume check), 10 excepted with a reason (listed in a5/requirements_not_carried.csv); not carried: none. Of these, 17 A3 (bid-out) rows: 15 carried, 2 excepted with a reason",
+ "columns": [
+  {
+   "header": "row",
+   "key": "row",
+   "width": 20
+  },
+  {
+   "header": "status",
+   "key": "status",
+   "width": 20
+  },
+  {
+   "header": "assessment",
+   "key": "assessment",
+   "width": 20
+  },
+  {
+   "header": "discipline",
+   "key": "discipline",
+   "width": 20
+  },
+  {
+   "header": "a3",
+   "key": "a3",
+   "width": 20
+  },
+  {
+   "header": "reason",
+   "key": "reason",
+   "width": 20
+  },
+  {
+   "header": "source",
+   "key": "source",
+   "width": 20
+  }
+ ],
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
+ "planning_date": "2026-10-22",
+ "rows": [
+  {
+   "a3": false,
+   "assessment": "pass_fail",
+   "discipline": "Technical",
+   "reason": "applies only if the Bidder offers an alternative technical solution; nothing to submit otherwise",
+   "row": "VOL-I-10.5-02",
+   "source": "no_deliverable (A1 Evidence needed: none)",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "scored",
+   "discipline": "Bid management",
+   "reason": "an evaluation rule the Authority applies; what it weighs are the Technical Proposal and the commercial proposal, required by their own rows",
+   "row": "VOL-I-11.2-01",
+   "source": "no_deliverable (A1 Evidence needed: none)",
+   "status": "AMENDED (ADD-02/T1-1-rev/note(2))"
+  },
+  {
+   "a3": true,
+   "assessment": "pass_fail",
+   "discipline": "Commercial",
+   "reason": "Arises only after submission: VOL-I 11.5 'any response that does so shall render the Proposal non-responsive' applies to a response to an Authority clarification request, which can come only after the Proposal Due Date (no_deliverable); outside this bid programme",
+   "row": "VOL-I-11.5-01",
+   "source": "_row_exceptions (curation/activity_templates.yaml)",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "contractual_post_award",
+   "discipline": "Legal",
+   "reason": "an obligation under the Project Agreement after award; not assessed at bid stage; Post-award (proposed requirement): to be obtained at PCOD, the Independent Engineer's certification that fixes PCOD (VOL-V 1.5), from which VOL-I 12.1 runs the 25-year concession period, and to be produced at the end of that period, the record of transfer of the Project to the Authority under Volume V (rows VOL-V-3.2-01 and VOL-V-42.1-01).",
+   "row": "VOL-I-12.1-01",
+   "source": "assessment contractual_post_award (A1), post_award_evidence proposed",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "contractual_post_award",
+   "discipline": "Commercial",
+   "reason": "an obligation under the Project Agreement after award; not assessed at bid stage; Unresolved: the record that would show Commercial Close within 120 days of the Preferred Bidder Notification cannot be specified, because the pack does not define Commercial Close or say what it comprises (VOL-I Section 2 and the VOL-V extract give no definition).",
+   "row": "VOL-I-12.2-01",
+   "source": "assessment contractual_post_award (A1), post_award_evidence unresolved",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "contractual_post_award",
+   "discipline": "Finance",
+   "reason": "an obligation under the Project Agreement after award; not assessed at bid stage; Unresolved: the record that would show Financial Close within 270 days of the Preferred Bidder Notification cannot be specified, because the pack defines neither Financial Close nor 'the long-stop date' by which failure entitles the Authority to call the Bid Bond.",
+   "row": "VOL-I-12.2-02",
+   "source": "assessment contractual_post_award (A1), post_award_evidence unresolved",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "procedural",
+   "discipline": "Legal",
+   "reason": "a conduct rule on handling the RFP Documents; nothing to submit",
+   "row": "VOL-I-13.2-01",
+   "source": "no_deliverable (A1 Evidence needed: none)",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": true,
+   "assessment": "pass_fail",
+   "discipline": "Bid management",
+   "reason": "A conduct rule, not a step: VOL-I 4.2 'Breach of this Clause shall result in the disqualification of the Bidder.' binds the Bidder and anyone acting for it from the date of issue of Volume I until the Preferred Bidder Notification (no_deliverable: 'nothing to submit'); no bid-programme activity discharges it",
+   "row": "VOL-I-4.2-01",
+   "source": "_row_exceptions (curation/activity_templates.yaml)",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "procedural",
+   "discipline": "Bid management",
+   "reason": "an option: arises only if the Bidder withdraws or modifies its Proposal",
+   "row": "VOL-I-6.7-01",
+   "source": "no_deliverable (A1 Evidence needed: none)",
+   "status": "ACTIVE"
+  },
+  {
+   "a3": false,
+   "assessment": "procedural",
+   "discipline": "Commercial",
+   "reason": "conditional: arises only if the Authority requests an extension and the Bidder agrees (refusal is allowed)",
+   "row": "VOL-I-7.2-01",
+   "source": "no_deliverable (A1 Evidence needed: none)",
+   "status": "ACTIVE"
+  }
+ ],
+ "stage": "ADD-02",
+ "status_date": "2026-10-22"
+}

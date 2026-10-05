@@ -99,7 +99,7 @@ def test_blind02_a5_milestone_readme_and_a3_read_11(blind02):
     line = _readme_pdd_line(out)
     assert line.startswith("- **2026-11-26 11:00**") and "11:00 Riyadh time" in line and "ADD-03 2.1" in line, line
     sub = json.loads((out / "a3/a3.json").read_text(encoding="utf-8"))["subtitle"]
-    assert "Proposal Due Date 2026-11-26 11:00 Riyadh time" in sub and "14:00" not in sub, sub
+    assert "Proposal Due Date (PDD) 2026-11-26 11:00 Riyadh time" in sub and "14:00" not in sub, sub  # session 12 (audit A3-3): PDD defined at first use
     basis = json.loads((out / "a5/programme.json").read_text(encoding="utf-8"))["planning_basis"]
     assert "PDD 2026-11-26 11:00" in basis and "PDD 2026-11-26 14:00" not in basis
     _no_none_or_placeholder(out)
@@ -135,7 +135,7 @@ def test_real_pack_reads_exactly_as_before(real):
     acts = _acts(out)
     assert acts["deliver"]["name"] == LEGACY_DELIVER and acts["seal-and-mark"]["name"] == LEGACY_SEAL
     sub = json.loads((out / "a3/a3.json").read_text(encoding="utf-8"))["subtitle"]
-    assert "Proposal Due Date 2026-11-26 14:00 Riyadh time" in sub, sub
+    assert "Proposal Due Date (PDD) 2026-11-26 14:00 Riyadh time" in sub, sub  # session 12 (audit A3-3): PDD defined at first use
     assert "PDD 2026-11-26 14:00" in json.loads((out / "a5/programme.json").read_text(encoding="utf-8"))["planning_basis"]
     assert "PDD 14:00" in (out / "a5/gantt.svg").read_text(encoding="utf-8")
     _no_none_or_placeholder(out)
@@ -192,7 +192,7 @@ def test_placeholders_that_cannot_be_filled_are_c45_and_never_print_none(real):
     # the A3 subtitle omits what the text does not state
     r2 = dict(r, anchor_details={**r["anchor_details"], st: det})
     sub = stage2.a3(r2, [], None)["subtitle"]
-    assert "Proposal Due Date 2026-11-26 Riyadh time" in sub and "None" not in sub
+    assert "Proposal Due Date (PDD) 2026-11-26 Riyadh time" in sub and "None" not in sub  # session 12 (audit A3-3): PDD defined at first use
 
 
 def test_fill_is_pure_and_reports_every_gap():

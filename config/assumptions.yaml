@@ -28,6 +28,7 @@ bidder_basis:                        # basis and owner of each bidder figure abo
   epc_contractors: {basis: "PROVISIONAL ASSUMPTION: one proposed EPC Contractor", owner: Bid manager}
   om_operators: {basis: "PROVISIONAL ASSUMPTION: one proposed O&M Operator", owner: Bid manager}
 submission:                          # STATED IN THE PACK (not assumptions): what one Proposal is made of
+  # provenance (not a basis; session 12, F5): delivery_buffer_wd was made an explicit PROVISIONAL ASSUMPTION in session 11 (audit A5-7)
   marked_originals: 1                # VOL-I 6.5
   hard_copies: 3                     # VOL-I 6.5
   electronic_copy: "one searchable electronic copy on encrypted USB media, files named per Appendix 2"   # VOL-I 6.5, App 2
@@ -36,7 +37,7 @@ submission:                          # STATED IN THE PACK (not assumptions): wha
                                      # and VOL-I 6.2 forbids commercial information in Envelope A, so one USB per envelope
                                      # is assumed; owner Bid manager; to confirm by clarification (I-VOL-I-COPIES)
   exclusive_list: {envelope: B, source_unit: "VOL-I:10.1"}   # VOL-I 10.1: Envelope B contains ONLY Form 4-F and the Financial Model
-  delivery_buffer_wd: 0              # PROVISIONAL ASSUMPTION: Working Days between delivery and the Proposal Due Date; 0 = delivered on the PDD itself, before the time VOL-I 6.1 (as amended) states; late Proposals are rejected unopened (VOL-I 6.6); not stated in the pack (session 11, audit A5-7); owner Bid manager
+  delivery_buffer_wd: 0              # PROVISIONAL ASSUMPTION: Working Days between delivery and the Proposal Due Date; 0 = delivered on the PDD itself, before the time VOL-I 6.1 (as amended) states; late Proposals are rejected unopened (VOL-I 6.6); not stated in the pack; owner Bid manager
   delivery_buffer_basis: {basis: "PROVISIONAL ASSUMPTION: Working Days between delivery and the Proposal Due Date (applied by the scheduler to the activities whose template says finish: {buffer: submission.delivery_buffer_wd}). 0 = delivered on the PDD itself, before the time VOL-I 6.1 (as amended) states; a late Proposal is rejected unopened (VOL-I 6.6), so a person decides whether to deliver a day or more early; not stated in the pack", owner: Bid manager}
 # Roles: capacity = staff (person-days) available per Working Day for bid work in that role. Load per Working Day =
 # the staff effort of each activity (effort_wd below x its multiplicity) spread evenly over its late window. All PROVISIONAL.

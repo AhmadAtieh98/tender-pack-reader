@@ -1,0 +1,445 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T181929Z-cf0a",
+ "addendum": "ADD-03",
+ "provisions": [],
+ "started": "2026-10-05T18:19:29.481005+00:00",
+ "elapsed_s": 435.5,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_0115NHLUxqKX6eBzabMbcD8c",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Shutdown Acceptance Letter tie-in point method (b) Envelope A",
+    "limit": 8
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01QYFbfK3w2R7fHANAdFZrmd",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:7.2",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01R2MwSJRYkj8nsHBDnSCtpr",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+     },
+     "statements": [
+      {
+       "id": "S-SAL-DEADLINE",
+       "kind": "fact",
+       "text": "ADD-03 2.5 requires applications for a Shutdown Acceptance Letter not later than eight Working Days before the Proposal Due Date, where method (b) is elected.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date."
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "D-T",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "row_new",
+       "task": "reading:ADD-03-p4-r1",
+       "provision": "ADD-03:p4-image",
+       "payload": {
+        "row": {
+         "id": "ADD-03-p4-image-01",
+         "group": "Tie-in points (Table 1-3)",
+         "scope": [
+          "proposal"
+         ],
+         "requirement": "TP-1 tie-in point shutdown conditions as printed in the Network Operator's Arabic Table 1-3: location, existing line diameter, permitted shutdown window, maximum shutdown duration and advance notice.",
+         "units": [
+          "ADD-03:p4-image/tp1-point",
+          "ADD-03:p4-image/tp1-location",
+          "ADD-03:p4-image/tp1-diameter",
+          "ADD-03:p4-image/tp1-window",
+          "ADD-03:p4-image/tp1-duration",
+          "ADD-03:p4-image/tp1-notice"
+         ],
+         "discipline": "Technical",
+         "assessment": "contractual_post_award",
+         "evidence": [],
+         "no_deliverable": "The reading states construction-period shutdown conditions; it names no bid-stage document.",
+         "post_award_evidence": {
+          "kind": "unresolved",
+          "text": "Compliance with the TP-1 shutdown window, maximum duration and advance notice during construction.",
+          "missing": "The reading does not state what record evidences compliance."
+         },
+         "interpretations": [
+          {
+           "stage": "ADD-03",
+           "quote": "من ٢٣:٠٠ إلى ٠٥:٠٠",
+           "parameters": {
+            "tie_in_point": "TP-1",
+            "location_source": "غرفة التفتيش MH-41 على خط الطرد الشمالي",
+            "existing_line_diameter_mm": 1000,
+            "permitted_shutdown_window": "23:00 to 05:00",
+            "max_shutdown_duration_hours": 6,
+            "advance_notice": {
+             "count": 10,
+             "unit": "working_day"
+            }
+           },
+           "consequence": "none_stated",
+           "note": "Read from the pending reading ADD-03-p4-r1; not in force until the reading is approved."
+          }
+         ],
+         "introduced": {
+          "stage": "ADD-03",
+          "by": "ADD-03:p4-image",
+          "evidence": {
+           "unit": "ADD-03:p4-image/table-title",
+           "page": 4,
+           "words": "جدول ١-٣: نقاط الربط وشروط إيقاف التدفق"
+          }
+         },
+         "conditional_on": {
+          "reading": "ADD-03-p4-r1",
+          "until": "approval"
+         },
+         "confidence": "medium",
+         "confidence_reason": "Image reading pending approval."
+        }
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/tp1-window",
+         "page": 4,
+         "kind": "reading",
+         "words": "من ٢٣:٠٠ إلى ٠٥:٠٠"
+        }
+       ],
+       "statements": [
+        "S-SAL-DEADLINE"
+       ]
+      },
+      {
+       "id": "D-D",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "row_new",
+       "task": "date:ADD-03:2.5",
+       "provision": "ADD-03:2.5",
+       "payload": {
+        "row": {
+         "id": "ADD-03-2.5-01",
+         "group": "Tie-in points (method (b))",
+         "scope": [
+          "proposal"
+         ],
+         "requirement": "Where method (b) is elected for a tie-in point, apply to the Network Operator for a Shutdown Acceptance Letter not later than eight Working Days before the Proposal Due Date, and submit the Letter with Envelope A.",
+         "units": [
+          "ADD-03:2.5"
+         ],
+         "discipline": "Technical",
+         "assessment": "procedural",
+         "evidence": [
+          "EV-SHUTDOWN-ACCEPTANCE"
+         ],
+         "interpretations": [
+          {
+           "stage": "ADD-03",
+           "quote": "Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date.",
+           "parameters": {
+            "condition": "method (b) elected for the tie-in point",
+            "deadline": {
+             "count": 8,
+             "unit": "working_day",
+             "direction": "before",
+             "anchor": "PDD"
+            },
+            "operator_response": {
+             "count": 5,
+             "unit": "working_day"
+            }
+           },
+           "consequence": "none_stated"
+          }
+         ],
+         "date_rules": [
+          {
+           "rule_id": "ADD-03-2.5-sal-application",
+           "kind": "deadline",
+           "purpose": "Latest application to the Network Operator for a Shutdown Acceptance Letter",
+           "anchor": "PDD",
+           "offset": 8,
+           "unit": "working_day",
+           "direction": "before",
+           "source_unit": "ADD-03:2.5",
+           "text": "eight (8) Working Days before the Proposal Due Date"
+          }
+         ],
+         "date_notes": [
+          {
+           "text": "within five (5) Working Days of receipt of a complete application",
+           "treatment": "duration",
+           "reason": "The Network Operator's undertaken response period, counted from receipt of an application; a duration, not a fixed date."
+          }
+         ],
+         "introduced": {
+          "stage": "ADD-03",
+          "by": "ADD-03:2.5",
+          "evidence": {
+           "unit": "ADD-03:2.5",
+           "page": 1,
+           "words": "it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter)"
+          }
+         },
+         "confidence": "high",
+         "confidence_reason": "Printed deadline words."
+        }
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "eight (8) Working Days before the Proposal Due Date"
+        }
+       ],
+       "statements": [
+        "S-SAL-DEADLINE"
+       ]
+      },
+      {
+       "id": "D-EV",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "evidence_item",
+       "task": "date:ADD-03:2.5",
+       "provision": "ADD-03:2.5",
+       "payload": {
+        "id": "EV-SHUTDOWN-ACCEPTANCE",
+        "item": {
+         "name": "Shutdown Acceptance Letter from the Network Operator (per tie-in point where method (b) is elected)",
+         "envelope": "A",
+         "issuer": "Network Operator",
+         "per": "proposal",
+         "source": "ADD-03:2.5",
+         "counted": true,
+         "note": "Only where method (b) is elected for a tie-in point."
+        }
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter)"
+        }
+       ],
+       "statements": [
+        "S-SAL-DEADLINE"
+       ]
+      },
+      {
+       "id": "D-ACT",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6"
+       },
+       "statement_type": "activity",
+       "task": "date:ADD-03:2.5",
+       "provision": "ADD-03:2.5",
+       "payload": {
+        "evidence_item": "EV-SHUTDOWN-ACCEPTANCE",
+        "activity": {
+         "id": "shutdown-acceptance-application",
+         "name": "Apply to the Network Operator for a Shutdown Acceptance Letter (latest application milestone)",
+         "owner": "technical_lead",
+         "discipline": "Technical",
+         "resource": "technical_lead",
+         "issuer": "Network Operator",
+         "duration": "shutdown_acceptance_application",
+         "per": "proposal",
+         "predecessors": [],
+         "successors": [
+          "assemble-envelope-a"
+         ],
+         "item": "EV-SHUTDOWN-ACCEPTANCE",
+         "condition": "only where the Bidder elects method (b) for a tie-in point",
+         "computed_from": {
+          "method": "deadline",
+          "inputs": {
+           "offset": {
+            "count": 8,
+            "unit": "working_day",
+            "words": "eight (8) Working Days before the Proposal Due Date"
+           },
+           "anchor": {
+            "name": "PDD",
+            "date": "2026-11-26",
+            "source": "VOL-I:6.1"
+           },
+           "direction": "before"
+          }
+         }
+        },
+        "rows": [
+         "ADD-03-2.5-01"
+        ],
+        "duration_assumption": {
+         "key": "shutdown_acceptance_application",
+         "value": 5,
+         "basis": "PROVISIONAL ASSUMPTION: time to prepare the proposed shutdown programme and a complete application; the pack states no preparation duration.",
+         "owner": "technical_lead"
+        }
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.5",
+         "page": 1,
+         "kind": "span",
+         "words": "eight (8) Working Days before the Proposal Due Date"
+        }
+       ],
+       "statements": [
+        "S-SAL-DEADLINE"
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [],
+ "images_received": [],
+ "submission": null,
+ "statuses": {},
+ "num_turns": 4,
+ "usage": {
+  "input_tokens": 6,
+  "cache_creation_input_tokens": 42157,
+  "cache_read_input_tokens": 74350,
+  "output_tokens": 37212,
+  "output_tokens_details": {
+   "thinking_tokens": 4485
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 42157,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 27514,
+    "cache_read_input_tokens": 36302,
+    "cache_creation_input_tokens": 10038,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 10038
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 1.09639,
+ "final_text": "{\"addendum\":\"ADD-03\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statements\":[{\"id\":\"S-READING-PENDING\",\"kind\":\"fact\",\"text\":\"Table 1-3 on ADD-03 page 4 is an image (Network Operator letter No. 312/2026). No one has approved its reading ADD-03-p4-r1 yet. Rows read from it are conditional on that approval.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image\",\"page\":4,\"kind\":\"span\",\"words\":\"Table 1-3 (image, Arabic with English labels): Tie-in Points and Flow Shutdown Conditions, Network Operator letter No. 312/2026\"}]},{\"id\":\"S-TP2-AR\",\"kind\":\"fact\",\"text\":\"The pending reading of the Arabic Table 1-3 prints ٤ in the TP-2 maximum shutdown duration (hours) cell.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/th-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"أقصى مدّة للإيقاف (ساعة)\"}]},{\"id\":\"S-TP2-EN\",\"kind\":\"fact\",\"text\":\"The English Table 1-3 on page 5 prints 6 as the TP-2 maximum shutdown duration (hours).\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"cell\",\"words\":\"6\",\"cell\":{\"row_key\":\"TP-2\",\"column\":\"Maximum shutdown duration (hours)\"}},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"}]},{\"id\":\"S-NOTE1-AR\",\"kind\":\"fact\",\"text\":\"The pending reading of Arabic note 1 bans shutdowns during Ramadan. It also bans them during the Eid al-Fitr and Eid al-Adha holidays.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note1\",\"page\":4,\"kind\":\"reading\",\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"}]},{\"id\":\"S-NOTE1-EN\",\"kind\":\"fact\",\"text\":\"English note (1) on page 5 bans shutdowns only during Ramadan. It does not mention the Eid holidays.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"kind\":\"span\",\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"}]},{\"id\":\"S-TP2-LOC\",\"kind\":\"fact\",\"text\":\"The Arabic TP-2 location cell and the English TP-2 location both name MH-07. The reading's uncertainty note asks a person to confirm the Arabic term خط الانحدار.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-location\",\"page\":4,\"kind\":\"reading\",\"words\":\"غرفة التفتيش MH-07 على خط الانحدار الجنوبي\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"cell\",\"words\":\"Manhole MH-07 on the southern gravity sewer\",\"cell\":{\"row_key\":\"TP-2\",\"column\":\"Location\"}}]},{\"id\":\"S-SAL-DEADLINE\",\"kind\":\"fact\",\"text\":\"Under ADD-03 2.5, a Bidder that elects method (b) for a tie-in point submits a Shutdown Acceptance Letter with Envelope A. It must apply for the Letter not later than eight Working Days before the Proposal Due Date. The Network Operator has undertaken to respond within five Working Days of receiving a complete application.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date.\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"The Network Operator has undertaken to respond within five (5) Working Days of receipt of a complete application.\"}]},{\"id\":\"S-SAL-PREP\",\"kind\":\"assumption\",\"text\":\"PROVISIONAL ASSUMPTION: preparing a complete application, including the proposed shutdown programme, takes 5 Working Days. The pack states no preparation duration.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point\"}]},{\"id\":\"S-72-BAND\",\"kind\":\"fact\",\"text\":\"Amended VOL-II 7.2 sets a reliability-run flow band of not less than 85% and not more than 110% of nominal capacity. The packet names no existing rule that states a bid-out consequence for a value outside this band.\",\"evidence\":[{\"doc\":\"VOL-II\",\"unit_id\":\"VOL-II:7.2\",\"page\":4,\"kind\":\"span\",\"words\":\"not less than 85% and not more than 110% of nominal capacity\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:3.1\",\"page\":2,\"kind\":\"span\",\"words\":\"‘at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity’ is substituted\"}]},{\"id\":\"S-NOTES-CONSTRUCTION\",\"kind\":\"interpretation\",\"text\":\"Notes 2 and 3 and the advance-notice cells of Table 1-3 appear to apply during construction (post-award), not at bid stage. A person should confirm this.\",\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note2\",\"page\":4,\"kind\":\"reading\",\"words\":\"٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.\"}]}],\"items\":[{\"id\":\"D-01\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/tp1-notice\",\"provision\":\"ADD-03:p4-image/tp1-notice\",\"payload\":{\"why\":\"The TP-1 advance-notice cell comes from the image reading ADD-03-p4-r1, which is still pending approval. It cannot be promoted until a person approves the reading. It is carried meanwhile in conditional row ADD-03-p4-image-01.\",\"what_is_unsupported\":\"The approved reading of the TP-1 advance notice cell (١٠ أيام عمل); insufficient evidence until the reading is approved.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp1-notice\",\"page\":4,\"kind\":\"reading\",\"words\":\"١٠ أيام عمل\"}],\"statements\":[\"S-READING-PENDING\"]},{\"id\":\"D-02\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/tp2-point\",\"provision\":\"ADD-03:p4-image/tp2-point\",\"payload\":{\"why\":\"The TP-2 tie-in point cell comes from the image reading ADD-03-p4-r1, which is still pending approval. It is carried meanwhile in conditional row ADD-03-p4-image-02.\",\"what_is_unsupported\":\"The approved reading of the TP-2 point cell; insufficient evidence until the reading is approved.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-point\",\"page\":4,\"kind\":\"reading\",\"words\":\"TP-2\"}],\"statements\":[\"S-READING-PENDING\"]},{\"id\":\"D-03\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/tp2-location\",\"provision\":\"ADD-03:p4-image/tp2-location\",\"payload\":{\"why\":\"The TP-2 location cell comes from the pending reading ADD-03-p4-r1. The term خط الانحدار has a proposed translation that a person must confirm. The English page-5 table describes the location as 'Manhole MH-07 on the southern gravity sewer'. Both name MH-07, but no person has compared the two renderings.\",\"what_is_unsupported\":\"The approved reading of the TP-2 location and a person's confirmation of the term خط الانحدار; insufficient evidence.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-location\",\"page\":4,\"kind\":\"reading\",\"words\":\"غرفة التفتيش MH-07 على خط الانحدار الجنوبي\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Location: Manhole MH-07 on the southern gravity sewer\"}],\"statements\":[\"S-READING-PENDING\",\"S-TP2-LOC\"]},{\"id\":\"D-04\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/tp2-diameter\",\"provision\":\"ADD-03:p4-image/tp2-diameter\",\"payload\":{\"why\":\"The TP-2 diameter cell comes from the pending reading ADD-03-p4-r1. The English table cell also prints 800, but the Arabic reading is not approved.\",\"what_is_unsupported\":\"The approved reading of the TP-2 existing line diameter; insufficient evidence until the reading is approved.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-diameter\",\"page\":4,\"kind\":\"reading\",\"words\":\"٨٠٠\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Existing sewer diameter (mm): 800\"}],\"statements\":[\"S-READING-PENDING\"]},{\"id\":\"D-05\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/tp2-duration\",\"provision\":\"ADD-03:p4-image/tp2-duration\",\"payload\":{\"why\":\"The pending reading of the Arabic Table 1-3 gives the TP-2 maximum shutdown duration as ٤ (4 hours). The English Table 1-3 gives 6. No choice is made between them. Which rendering governs, and which figure applies, is a person's decision. Draft question CQ-ADD03-T13-01 and issue I-ADD03-T13-RENDERINGS record it.\",\"what_is_unsupported\":\"Which TP-2 maximum shutdown duration applies (4 or 6 hours); a human decision, and the Arabic reading is not yet approved.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"}],\"statements\":[\"S-READING-PENDING\",\"S-TP2-AR\",\"S-TP2-EN\"]},{\"id\":\"D-06\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:p4-image/note1\",\"provision\":\"ADD-03:p4-image/note1\",\"payload\":{\"why\":\"The pending reading of Arabic note 1 bans shutdowns during Ramadan and the two Eid holidays. English note (1) names only Ramadan. No choice is made between the renderings. Which one governs is a person's decision.\",\"what_is_unsupported\":\"Whether the Eid al-Fitr and Eid al-Adha holidays are excluded shutdown periods; a human decision, and the reading is pending approval.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note1\",\"page\":4,\"kind\":\"reading\",\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"kind\":\"span\",\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"}],\"statements\":[\"S-READING-PENDING\",\"S-NOTE1-AR\",\"S-NOTE1-EN\"]},{\"id\":\"D-07\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:T1-3/tp-2\",\"provision\":\"ADD-03:T1-3/tp-2\",\"payload\":{\"why\":\"The English TP-2 row gives a maximum shutdown duration of 6 hours. The pending Arabic reading gives ٤ (4). Which rendering governs is a legal question for a person. No row adopts either figure as in force.\",\"what_is_unsupported\":\"The applicable TP-2 maximum shutdown duration; a human decision.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"}],\"statements\":[\"S-TP2-AR\",\"S-TP2-EN\"]},{\"id\":\"D-08\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"esc:ADD-03:T1-3/note(1)\",\"provision\":\"ADD-03:T1-3/note(1)\",\"payload\":{\"why\":\"English note (1) bans shutdowns only during Ramadan. The pending Arabic note 1 also bans them during the Eid al-Fitr and Eid al-Adha holidays. Which rendering governs is a person's decision.\",\"what_is_unsupported\":\"Whether the Eid holiday ban applies; a human decision.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"kind\":\"span\",\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note1\",\"page\":4,\"kind\":\"reading\",\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"}],\"statements\":[\"S-NOTE1-AR\",\"S-NOTE1-EN\"]},{\"id\":\"D-09\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-01\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"TP-1 tie-in point shutdown conditions as read from the Network Operator's Arabic Table 1-3: location, existing line diameter, permitted shutdown window, maximum shutdown duration and advance notice.\",\"units\":[\"ADD-03:p4-image/tp1-window\",\"ADD-03:p4-image/tp1-point\",\"ADD-03:p4-image/tp1-location\",\"ADD-03:p4-image/tp1-diameter\",\"ADD-03:p4-image/tp1-duration\",\"ADD-03:p4-image/tp1-notice\"],\"discipline\":\"Technical\",\"assessment\":\"contractual_post_award\",\"evidence\":[],\"no_deliverable\":\"The reading states the conditions for construction-period shutdowns; it names no bid-stage document.\",\"post_award_evidence\":{\"kind\":\"unresolved\",\"text\":\"Compliance with the TP-1 shutdown window, maximum duration and advance notice when a shutdown is carried out.\",\"missing\":\"The reading does not state what record evidences compliance.\"},\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"من ٢٣:٠٠ إلى ٠٥:٠٠\",\"parameters\":{\"tie_in_point\":\"TP-1\",\"location_source\":\"غرفة التفتيش MH-41 على خط الطرد الشمالي\",\"existing_line_diameter_mm\":1000,\"permitted_shutdown_window\":\"23:00 to 05:00 (as read)\",\"max_shutdown_duration_hours\":6,\"advance_notice\":{\"count\":10,\"unit\":\"working_day\",\"source\":\"١٠ أيام عمل\"}},\"consequence\":\"none_stated\",\"note\":\"Read from the pending image reading ADD-03-p4-r1 (Arabic as printed). This row is not in force until a person approves the reading.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/table-title\",\"page\":4,\"words\":\"جدول ١-٣: نقاط الربط وشروط إيقاف التدفق\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"confidence\":\"medium\",\"confidence_reason\":\"Values are read from an image reading that is still pending approval. The reading flags the term خط الطرد for a person to confirm.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp1-window\",\"page\":4,\"kind\":\"reading\",\"words\":\"من ٢٣:٠٠ إلى ٠٥:٠٠\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp1-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٦\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp1-notice\",\"page\":4,\"kind\":\"reading\",\"words\":\"١٠ أيام عمل\"}],\"statements\":[\"S-READING-PENDING\",\"S-NOTES-CONSTRUCTION\"],\"model_rationale\":\"ADD-03 2.7 (not in units_after) appears to tie a rejection consequence to the Table 1-3 maximum duration. It is not quoted here because quotations are limited to units_after, so the consequence is left as none_stated for a person to review.\"},{\"id\":\"D-10\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-02\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"TP-2 tie-in point shutdown conditions as read from the Network Operator's Arabic Table 1-3: location, existing line diameter, permitted shutdown window, maximum shutdown duration and advance notice. The duration differs from the English rendering (see I-ADD03-T13-RENDERINGS).\",\"units\":[\"ADD-03:p4-image/tp2-window\",\"ADD-03:p4-image/tp2-point\",\"ADD-03:p4-image/tp2-location\",\"ADD-03:p4-image/tp2-diameter\",\"ADD-03:p4-image/tp2-duration\",\"ADD-03:p4-image/tp2-notice\"],\"discipline\":\"Technical\",\"assessment\":\"contractual_post_award\",\"evidence\":[],\"no_deliverable\":\"The reading states the conditions for construction-period shutdowns; it names no bid-stage document.\",\"post_award_evidence\":{\"kind\":\"unresolved\",\"text\":\"Compliance with the TP-2 shutdown window, maximum duration and advance notice when a shutdown is carried out.\",\"missing\":\"The reading does not state what record evidences compliance. Which maximum duration applies (Arabic ٤ against English 6) is undecided.\"},\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"من ٠١:٠٠ إلى ٠٥:٠٠\",\"parameters\":{\"tie_in_point\":\"TP-2\",\"location_source\":\"غرفة التفتيش MH-07 على خط الانحدار الجنوبي\",\"existing_line_diameter_mm\":800,\"permitted_shutdown_window\":\"01:00 to 05:00 (as read)\",\"max_shutdown_duration_hours_arabic_reading\":4,\"max_shutdown_duration_hours_english_table\":6,\"max_shutdown_duration_applicable\":\"HUMAN DECISION PENDING\",\"advance_notice\":{\"count\":10,\"unit\":\"working_day\",\"source\":\"١٠ أيام عمل\"}},\"consequence\":\"none_stated\",\"note\":\"Read from the pending image reading ADD-03-p4-r1. The Arabic duration cell reads ٤ and the English Table 1-3 prints 6. No choice is made between them; a person decides which applies.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/table-title\",\"page\":4,\"words\":\"جدول ١-٣: نقاط الربط وشروط إيقاف التدفق\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"issues\":[\"I-ADD03-T13-RENDERINGS\"],\"confidence\":\"low\",\"confidence_reason\":\"The reading is pending approval, the Arabic and English maximum durations conflict, and the term خط الانحدار is flagged for a person to confirm.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-window\",\"page\":4,\"kind\":\"reading\",\"words\":\"من ٠١:٠٠ إلى ٠٥:٠٠\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"}],\"conflicts\":[\"ADD-03:T1-3/tp-2\"],\"statements\":[\"S-READING-PENDING\",\"S-TP2-AR\",\"S-TP2-EN\",\"S-TP2-LOC\"]},{\"id\":\"D-11\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-03\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"No shutdown at any tie-in point during Ramadan or, as read from the Arabic note 1, during the Eid al-Fitr and Eid al-Adha holidays. This differs from English note (1) (see I-ADD03-T13-RENDERINGS).\",\"units\":[\"ADD-03:p4-image/note1\"],\"discipline\":\"Technical\",\"assessment\":\"contractual_post_award\",\"evidence\":[],\"no_deliverable\":\"A restriction on when construction-period shutdowns may take place; no bid-stage document.\",\"post_award_evidence\":{\"kind\":\"unresolved\",\"text\":\"Shutdown programme avoiding the excluded periods.\",\"missing\":\"Which excluded periods apply (Arabic note 1 against English note (1)) is a human decision.\"},\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\",\"parameters\":{\"excluded_periods_arabic_reading\":[\"Ramadan\",\"Eid al-Fitr holiday\",\"Eid al-Adha holiday\"],\"excluded_periods_english_note\":[\"Ramadan\"],\"applicable\":\"HUMAN DECISION PENDING\"},\"consequence\":\"none_stated\",\"note\":\"Read from the pending reading ADD-03-p4-r1. No choice is made between the Arabic and English renderings.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/note1\",\"page\":4,\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"issues\":[\"I-ADD03-T13-RENDERINGS\"],\"confidence\":\"low\",\"confidence_reason\":\"The reading is pending approval and the English rendering differs.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note1\",\"page\":4,\"kind\":\"reading\",\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"kind\":\"span\",\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"}],\"conflicts\":[\"ADD-03:T1-3/note(1)\"],\"statements\":[\"S-READING-PENDING\",\"S-NOTE1-AR\",\"S-NOTE1-EN\"]},{\"id\":\"D-12\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-04\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"Only one shutdown is permitted for each tie-in point throughout the construction period (as read from Arabic note 2).\",\"units\":[\"ADD-03:p4-image/note2\"],\"discipline\":\"Technical\",\"assessment\":\"contractual_post_award\",\"evidence\":[],\"no_deliverable\":\"A construction-period limit; no bid-stage document.\",\"post_award_evidence\":{\"kind\":\"unresolved\",\"text\":\"A shutdown programme with a single shutdown per tie-in point.\",\"missing\":\"The reading does not state what record evidences compliance.\"},\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.\",\"parameters\":{\"max_shutdowns_per_tie_in_point\":1,\"period\":\"construction period (مدّة الإنشاء)\"},\"consequence\":\"none_stated\",\"note\":\"Read from the pending reading ADD-03-p4-r1.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/note2\",\"page\":4,\"words\":\"٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"confidence\":\"medium\",\"confidence_reason\":\"Image reading pending approval.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note2\",\"page\":4,\"kind\":\"reading\",\"words\":\"٢. يُسمح بإيقافٍ واحدٍ فقط لكل نقطة ربط طوال مدّة الإنشاء.\"}],\"statements\":[\"S-READING-PENDING\",\"S-NOTES-CONSTRUCTION\"]},{\"id\":\"D-13\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-05\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"Shutdown requests are submitted through the Network Operator's electronic portal with the proposed shutdown programme and the emergency plan (as read from Arabic note 3).\",\"units\":[\"ADD-03:p4-image/note3\"],\"discipline\":\"Technical\",\"assessment\":\"contractual_post_award\",\"evidence\":[],\"no_deliverable\":\"Construction-period shutdown requests; no bid-stage document is named by the note.\",\"post_award_evidence\":{\"kind\":\"proposed\",\"text\":\"Each shutdown request is submitted via the portal with the proposed shutdown programme and the emergency plan.\",\"basis\":[{\"unit\":\"ADD-03:p4-image/note3\",\"page\":4,\"words\":\"٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.\"}],\"when\":\"before each shutdown, within the advance notice period read in Table 1-3\"},\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.\",\"parameters\":{\"channel\":\"Company electronic portal\",\"attachments\":[\"proposed shutdown programme\",\"emergency plan\"]},\"consequence\":\"none_stated\",\"note\":\"Read from the pending reading ADD-03-p4-r1. Whether this channel also applies to bid-stage Shutdown Acceptance Letter applications under ADD-03 2.5 is not stated (insufficient evidence).\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/note3\",\"page\":4,\"words\":\"٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"confidence\":\"medium\",\"confidence_reason\":\"Image reading pending approval.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note3\",\"page\":4,\"kind\":\"reading\",\"words\":\"٣. تُقدَّم طلبات الإيقاف عبر البوابة الإلكترونية للشركة، مرفقاً بها برنامج الإيقاف المقترح وخطة الطوارئ.\"}],\"statements\":[\"S-READING-PENDING\",\"S-NOTES-CONSTRUCTION\"]},{\"id\":\"D-14\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"row\":{\"id\":\"ADD-03-p4-image-06\",\"group\":\"Tie-in points (Table 1-3, Arabic)\",\"scope\":[\"proposal\"],\"requirement\":\"All times stated in Table 1-3 are Riyadh time (as read from Arabic note 4).\",\"units\":[\"ADD-03:p4-image/note4\"],\"discipline\":\"Technical\",\"assessment\":\"informational\",\"evidence\":[],\"no_deliverable\":\"A time-zone basis for the shutdown windows; nothing is to be produced.\",\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"٤. جميع الأوقات المذكورة بتوقيت الرياض.\",\"parameters\":{\"time_basis\":\"Riyadh time\"},\"consequence\":\"none_stated\",\"note\":\"Read from the pending reading ADD-03-p4-r1.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:p4-image\",\"evidence\":{\"unit\":\"ADD-03:p4-image/note4\",\"page\":4,\"words\":\"٤. جميع الأوقات المذكورة بتوقيت الرياض.\"}},\"conditional_on\":{\"reading\":\"ADD-03-p4-r1\",\"until\":\"approval\"},\"confidence\":\"medium\",\"confidence_reason\":\"Image reading pending approval.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note4\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤. جميع الأوقات المذكورة بتوقيت الرياض.\"}],\"statements\":[\"S-READING-PENDING\"]},{\"id\":\"D-15\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"issue\",\"task\":\"reading:ADD-03-p4-r1\",\"provision\":\"ADD-03:p4-image\",\"payload\":{\"id\":\"I-ADD03-T13-RENDERINGS\",\"text\":\"ADD-03 has two renderings of Table 1-3 that differ. (1) For TP-2, the Arabic image table (pending reading ADD-03-p4-r1) prints a maximum shutdown duration of ٤ hours, while the English table prints 6. (2) Arabic note 1 bans shutdowns during Ramadan and the Eid al-Fitr and Eid al-Adha holidays, while English note (1) names only Ramadan. Which rendering governs, and which values apply, is for a person to decide. No choice is made here. Draft question CQ-ADD03-T13-01 is proposed.\",\"owner\":\"legal_counsel\",\"theme\":\"Tie-in points / Table 1-3\",\"short\":\"Table 1-3: Arabic and English differ (TP-2 duration; Eid ban)\",\"a3\":\"Table 1-3 (ADD-03): the Arabic and English renderings differ on the TP-2 maximum shutdown duration (4 against 6 hours) and on the Eid holiday shutdown ban. HUMAN DECISION PENDING.\",\"show_in_a3\":true},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/note1\",\"page\":4,\"kind\":\"reading\",\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"kind\":\"span\",\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"}],\"statements\":[\"S-READING-PENDING\",\"S-TP2-AR\",\"S-TP2-EN\",\"S-NOTE1-AR\",\"S-NOTE1-EN\"]},{\"id\":\"D-16\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"clarification_item\",\"task\":\"esc:ADD-03:T1-3/tp-2\",\"provision\":\"ADD-03:T1-3/tp-2\",\"payload\":{\"entry\":{\"id\":\"CQ-ADD03-T13-01\",\"kind\":\"conflict\",\"volume\":\"ADD-03\",\"clause\":\"Appendix A, Table 1-3 (TP-2; note 1)\",\"page\":5,\"units\":[\"ADD-03:T1-3/tp-2\",\"ADD-03:p4-image/tp2-duration\",\"ADD-03:T1-3/note(1)\",\"ADD-03:p4-image/note1\"],\"sources\":[{\"unit\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"words\":\"Maximum shutdown duration (hours): 6\"},{\"unit\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"words\":\"٤\"},{\"unit\":\"ADD-03:T1-3/note(1)\",\"page\":5,\"words\":\"(1) No shutdown is permitted during the holy month of Ramadan.\"},{\"unit\":\"ADD-03:p4-image/note1\",\"page\":4,\"words\":\"١. لا يُسمح بأي إيقاف خلال شهر رمضان المبارك أو خلال إجازتَي عيد الفطر وعيد الأضحى.\"}],\"gap\":\"The Arabic and English renderings of Table 1-3 give different TP-2 maximum shutdown durations (٤ against 6 hours) and different excluded periods (Eid holidays in the Arabic only).\",\"already_settled\":\"Nothing in the pack decides between the two renderings.\",\"practical_impact\":\"Affects whether a method (b) shutdown programme for TP-2 can use 4 or 6 hours, and when shutdowns can be planned.\",\"proposed_question\":\"Please confirm the maximum shutdown duration that applies at tie-in point TP-2 (the Arabic Table 1-3 in Appendix A shows 4 hours; the English Table 1-3 shows 6 hours). Please also confirm whether shutdowns are prohibited during the Eid al-Fitr and Eid al-Adha holidays as well as during Ramadan.\",\"interim_handling\":\"Plan on the more restrictive values (4 hours at TP-2; no shutdowns in Ramadan or either Eid holiday) pending the answer. This is a planning assumption only; it decides nothing.\",\"decision_owner\":\"bid_manager\",\"response_status\":\"draft, not sent\",\"linked_issues\":[\"I-ADD03-T13-RENDERINGS\"],\"theme\":\"Tie-in points / Table 1-3\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:T1-3/tp-2\",\"page\":5,\"kind\":\"span\",\"words\":\"Maximum shutdown duration (hours): 6\"},{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:p4-image/tp2-duration\",\"page\":4,\"kind\":\"reading\",\"words\":\"٤\"}],\"statements\":[\"S-TP2-AR\",\"S-TP2-EN\",\"S-NOTE1-AR\",\"S-NOTE1-EN\"]},{\"id\":\"D-17\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"row_new\",\"task\":\"date:ADD-03:2.5\",\"provision\":\"ADD-03:2.5\",\"payload\":{\"row\":{\"id\":\"ADD-03-2.5-01\",\"group\":\"Tie-in points (method (b))\",\"scope\":[\"proposal\"],\"requirement\":\"Where the Bidder elects method (b) for a tie-in point, it applies to the Network Operator for a Shutdown Acceptance Letter not later than eight Working Days before the Proposal Due Date, and submits the Letter with Envelope A.\",\"units\":[\"ADD-03:2.5\"],\"discipline\":\"Technical\",\"assessment\":\"procedural\",\"evidence\":[\"EV-SHUTDOWN-ACCEPTANCE\"],\"interpretations\":[{\"stage\":\"ADD-03\",\"quote\":\"Applications for a Shutdown Acceptance Letter shall be made to the Network Operator not later than eight (8) Working Days before the Proposal Due Date.\",\"parameters\":{\"condition\":\"method (b) elected for the tie-in point\",\"deadline\":{\"count\":8,\"unit\":\"working_day\",\"direction\":\"before\",\"anchor\":\"PDD\"},\"operator_response\":{\"count\":5,\"unit\":\"working_day\",\"from\":\"receipt of a complete application\"},\"submit_with\":\"Envelope A\"},\"consequence\":\"none_stated\",\"note\":\"units_after does not state a consequence for missing the application deadline.\"}],\"date_rules\":[{\"rule_id\":\"ADD-03-2.5-sal-application\",\"kind\":\"deadline\",\"purpose\":\"Latest application to the Network Operator for a Shutdown Acceptance Letter\",\"anchor\":\"PDD\",\"offset\":8,\"unit\":\"working_day\",\"direction\":\"before\",\"source_unit\":\"ADD-03:2.5\",\"text\":\"eight (8) Working Days before the Proposal Due Date\"}],\"date_notes\":[{\"text\":\"within five (5) Working Days of receipt of a complete application\",\"treatment\":\"duration\",\"reason\":\"The Network Operator's undertaken response period, counted from receipt of an application; a duration, not a fixed date.\"}],\"introduced\":{\"stage\":\"ADD-03\",\"by\":\"ADD-03:2.5\",\"evidence\":{\"unit\":\"ADD-03:2.5\",\"page\":1,\"words\":\"Where the Bidder elects method (b) for a tie-in point, it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter).\"}},\"confidence\":\"high\",\"confidence_reason\":\"The deadline words are printed in ADD-03 2.5; the program recomputes the date.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"eight (8) Working Days before the Proposal Due Date\"}],\"statements\":[\"S-SAL-DEADLINE\"],\"model_rationale\":\"The ADD-03 cover paragraph 3 (outside units_after) appears to describe the application period as 'within eight (8) Working Days of the date of this Addendum', which differs from 2.5. It is not quoted here; a person may wish to compare the two.\"},{\"id\":\"D-18\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"evidence_item\",\"task\":\"date:ADD-03:2.5\",\"provision\":\"ADD-03:2.5\",\"payload\":{\"id\":\"EV-SHUTDOWN-ACCEPTANCE\",\"item\":{\"name\":\"Shutdown Acceptance Letter from the Network Operator (for each tie-in point where method (b) is elected)\",\"envelope\":\"A\",\"issuer\":\"Network Operator\",\"per\":\"proposal\",\"source\":\"ADD-03:2.5\",\"counted\":true,\"note\":\"Required only where the Bidder elects method (b) for a tie-in point; one letter per such tie-in point.\"}},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"it shall submit with Envelope A a letter from the Network Operator accepting the Bidder's proposed shutdown programme for that tie-in point (a Shutdown Acceptance Letter)\"}],\"statements\":[\"S-SAL-DEADLINE\"]},{\"id\":\"D-19\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"activity\",\"task\":\"date:ADD-03:2.5\",\"provision\":\"ADD-03:2.5\",\"payload\":{\"evidence_item\":\"EV-SHUTDOWN-ACCEPTANCE\",\"activity\":{\"id\":\"shutdown-acceptance-application\",\"name\":\"Apply to the Network Operator for a Shutdown Acceptance Letter (latest application milestone)\",\"owner\":\"technical_lead\",\"discipline\":\"Technical\",\"resource\":\"technical_lead\",\"issuer\":\"Network Operator\",\"duration\":\"shutdown_acceptance_application\",\"per\":\"proposal\",\"predecessors\":[],\"successors\":[\"assemble-envelope-a\"],\"item\":\"EV-SHUTDOWN-ACCEPTANCE\",\"condition\":\"only where the Bidder elects method (b) for a tie-in point\",\"finish\":\"deadline\",\"computed_from\":{\"method\":\"deadline\",\"inputs\":{\"offset\":{\"count\":8,\"unit\":\"working_day\",\"words\":\"eight (8) Working Days before the Proposal Due Date\"},\"anchor\":{\"name\":\"PDD\",\"date\":\"2026-11-26\",\"source\":\"VOL-I:6.1\"},\"direction\":\"before\"}}},\"rows\":[\"ADD-03-2.5-01\"],\"duration_assumption\":{\"key\":\"shutdown_acceptance_application\",\"value\":5,\"basis\":\"PROVISIONAL ASSUMPTION: 5 Working Days to prepare the proposed shutdown programme and a complete application to the Network Operator; the pack states no preparation duration.\",\"owner\":\"technical_lead\"},\"duration_label\":\"PROVISIONAL ASSUMPTION\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:2.5\",\"page\":1,\"kind\":\"span\",\"words\":\"eight (8) Working Days before the Proposal Due Date\"}],\"dependencies\":[\"ADD-03-2.5-01\",\"EV-SHUTDOWN-ACCEPTANCE\"],\"statements\":[\"S-SAL-DEADLINE\",\"S-SAL-PREP\"]},{\"id\":\"D-20\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"cons:VOL-II:7.2\",\"provision\":\"ADD-03:3.1\",\"target\":\"VOL-II:7.2\",\"payload\":{\"why\":\"No bid-out consequence stated. Amended VOL-II 7.2 sets a reliability-run flow band of 85% to 110% of nominal capacity. The task lists no existing rule whose words cover a value outside the band, and VOL-II 7.2 itself states only that PCOD is not certified until the run is completed. No consequence is invented.\",\"what_is_unsupported\":\"Any bid-out consequence for a proposal or value outside the 85%-110% band; insufficient evidence.\"},\"evidence\":[{\"doc\":\"VOL-II\",\"unit_id\":\"VOL-II:7.2\",\"page\":4,\"kind\":\"span\",\"words\":\"PCOD shall not be certified until the Facility has completed a continuous reliability run of thirty (30) days at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity\"}],\"statements\":[\"S-72-BAND\"]},{\"id\":\"D-21\",\"state\":{\"pack_id\":\"NUPA-ISTP-2026-014+ADD-03-CANDIDATE\",\"evidence_build_id\":\"f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848\",\"validated_stage\":\"ADD-02\",\"working_stage\":\"ADD-03\",\"decisions_sha256\":null,\"assumptions_sha256\":\"be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0\",\"activity_templates_sha256\":\"8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005\",\"readings_sha256\":\"16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf\",\"amendments_sha256\":\"cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca\",\"unrecorded_crops_sha256\":null,\"register_sha256\":\"8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5\",\"relationships_sha256\":\"1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052\",\"curation_sha256\":\"2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6\"},\"statement_type\":\"escalation\",\"task\":\"cons:ADD-03:3.1\",\"provision\":\"ADD-03:3.1\",\"target\":\"VOL-II:7.2\",\"payload\":{\"why\":\"No bid-out consequence stated. ADD-03 3.1 substitutes the 85%-110% flow band into VOL-II 7.2. The task lists no existing rule, and ADD-03 3.1 states no consequence for a value outside the band. No consequence is invented.\",\"what_is_unsupported\":\"Any bid-out consequence for a value outside the substituted band; insufficient evidence.\"},\"evidence\":[{\"doc\":\"ADD-03\",\"unit_id\":\"ADD-03:3.1\",\"page\":2,\"kind\":\"span\",\"words\":\"In Volume II Clause 7.2, ‘at not less than 90% of nominal capacity’ is deleted and ‘at a daily average flow, measured at the inlet works, of not less than 85% and not more than 110% of nominal capacity’ is substituted.\"}],\"statements\":[\"S-72-BAND\"]}]}",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind06-20261005T173226Z/ai/ADD-03-hostsession-20261005T181929Z-cf0a",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

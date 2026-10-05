@@ -1,6 +1,6 @@
 # Subagent briefs (A4): every prompt the coordinator gave a subagent, verbatim
 
-Exported from the session transcript in session 11 (4 Oct 2026). The model column is the option requested at launch; each agent's own report of the model it ran as is recorded in the session logs (the launching session cannot verify it: session-10 log, E127).
+Exported from the session transcript in session 11 (4 Oct 2026) and, from brief 45 on, in session 12 (5 Oct 2026; follow-up messages to running agents included). The model column is the option requested at launch; each agent's own report of the model it ran as is recorded in the session logs (the launching session cannot verify it: session-10 log, E127).
 
 | # | Launched (UTC) | Brief | File | Model option |
 |---|---|---|---|---|
@@ -48,3 +48,42 @@ Exported from the session transcript in session 11 (4 Oct 2026). The model colum
 | 42 | 2026-10-04 23:09 | Fixer F1: A1 and A2 findings | `2026-10-04_2309_42_fixer-f1-a1-and-a2-findings.md` | `opus` |
 | 43 | 2026-10-04 23:10 | Fixer F2: A3 and rendering findings | `2026-10-04_2310_43_fixer-f2-a3-and-rendering-findings.md` | `opus` |
 | 44 | 2026-10-04 23:10 | Fixer F3: A5 findings | `2026-10-04_2310_44_fixer-f3-a5-findings.md` | `opus` |
+| 45 | 2026-10-05 09:21 | W1 human-owned judgments fixes | `2026-10-05_0921_45_w1-human-owned-judgments-fixes.md` | `opus` |
+| 46 | 2026-10-05 09:21 | W2 citations, splits, cover authority | `2026-10-05_0921_46_w2-citations-splits-cover-authority.md` | `opus` |
+| 47 | 2026-10-05 09:22 | W3a signals, issue refs, closed window | `2026-10-05_0922_47_w3a-signals-issue-refs-closed-window.md` | `opus` |
+| 48 | 2026-10-05 09:23 | W4 offline mode, concurrency, Mac setup | `2026-10-05_0923_48_w4-offline-mode-concurrency-mac-setup.md` | `opus` |
+| 49 | 2026-10-05 09:23 | A6 author sealed blind-06 addendum | `2026-10-05_0923_49_a6-author-sealed-blind-06-addendum.md` | `opus` |
+| 50 | 2026-10-05 10:20 | W3b image tables, dates, indirect effects | `2026-10-05_1020_50_w3b-image-tables-dates-indirect-effects.md` | `opus` |
+| 51 | 2026-10-05 11:49 | W4: fix the run-scoped lock refusing the readings step | `2026-10-05_1149_51_w4-fix-the-run-scoped-lock-refusing-the-readings-s.md` | `follow-up` |
+| 52 | 2026-10-05 11:49 | Audit reviewer A1 register | `2026-10-05_1149_52_audit-reviewer-a1-register.md` | `opus` |
+| 53 | 2026-10-05 12:30 | W4: resume the run-scoped lock fix after the limit reset | `2026-10-05_1230_53_w4-resume-the-run-scoped-lock-fix-after-the-limit-.md` | `follow-up` |
+| 54 | 2026-10-05 12:31 | Audit reviewer A1 register | `2026-10-05_1231_54_audit-reviewer-a1-register.md` | `opus` |
+| 55 | 2026-10-05 12:31 | Audit reviewer A2 reconciliation | `2026-10-05_1231_55_audit-reviewer-a2-reconciliation.md` | `opus` |
+| 56 | 2026-10-05 12:31 | Audit reviewer A3 disqualifiers | `2026-10-05_1231_56_audit-reviewer-a3-disqualifiers.md` | `opus` |
+| 57 | 2026-10-05 12:31 | Audit reviewer A4 work log | `2026-10-05_1231_57_audit-reviewer-a4-work-log.md` | `opus` |
+| 58 | 2026-10-05 12:31 | Audit reviewer A5 programme | `2026-10-05_1231_58_audit-reviewer-a5-programme.md` | `opus` |
+| 59 | 2026-10-05 12:32 | Audit reviewer R rendering | `2026-10-05_1232_59_audit-reviewer-r-rendering.md` | `opus` |
+| 60 | 2026-10-05 12:45 | Fixer F1 content and wording | `2026-10-05_1245_60_fixer-f1-content-and-wording.md` | `opus` |
+| 61 | 2026-10-05 12:45 | Fixer F2 CONFIRMED predicate and A3 page | `2026-10-05_1245_61_fixer-f2-confirmed-predicate-and-a3-page.md` | `opus` |
+| 62 | 2026-10-05 12:47 | Fixer F3 A5 findings | `2026-10-05_1247_62_fixer-f3-a5-findings.md` | `opus` |
+| 63 | 2026-10-05 12:49 | F1: add the R-1 and A4-2 register entries to your scope | `2026-10-05_1249_63_f1-add-the-r-1-and-a4-2-register-entries-to-your-s.md` | `follow-up` |
+| 64 | 2026-10-05 12:50 | Fixer F4 records and rendering notes | `2026-10-05_1250_64_fixer-f4-records-and-rendering-notes.md` | `opus` |
+| 65 | 2026-10-05 13:35 | W5 consecutive addenda via base run | `2026-10-05_1335_65_w5-consecutive-addenda-via-base-run.md` | `opus` |
+| 66 | 2026-10-05 13:39 | F2: the merged A3 page falls to level 3; make level 2 fit | `2026-10-05_1339_66_f2-the-merged-a3-page-falls-to-level-3-make-level-.md` | `follow-up` |
+| 67 | 2026-10-05 13:40 | F2: four existing tests fail on the merged tree for the same fit cause | `2026-10-05_1340_67_f2-four-existing-tests-fail-on-the-merged-tree-for.md` | `follow-up` |
+| 68 | 2026-10-05 13:55 | A1 reviewer: recheck your findings on the regenerated outputs | `2026-10-05_1355_68_a1-reviewer-recheck-your-findings-on-the-regenerat.md` | `follow-up` |
+| 69 | 2026-10-05 13:55 | A2 reviewer: recheck your findings on the regenerated outputs | `2026-10-05_1355_69_a2-reviewer-recheck-your-findings-on-the-regenerat.md` | `follow-up` |
+| 70 | 2026-10-05 17:33 | W5: resume the base-run work after the limit reset | `2026-10-05_1733_70_w5-resume-the-base-run-work-after-the-limit-reset.md` | `follow-up` |
+| 71 | 2026-10-05 17:33 | A1 reviewer: resume the recheck after the limit reset | `2026-10-05_1733_71_a1-reviewer-resume-the-recheck-after-the-limit-res.md` | `follow-up` |
+| 72 | 2026-10-05 17:33 | A2 reviewer: resume the recheck after the limit reset | `2026-10-05_1733_72_a2-reviewer-resume-the-recheck-after-the-limit-res.md` | `follow-up` |
+| 73 | 2026-10-05 17:33 | A3 reviewer: recheck the page after the fixes | `2026-10-05_1733_73_a3-reviewer-recheck-the-page-after-the-fixes.md` | `follow-up` |
+| 74 | 2026-10-05 17:33 | A4 reviewer: recheck the records after the fixes | `2026-10-05_1733_74_a4-reviewer-recheck-the-records-after-the-fixes.md` | `follow-up` |
+| 75 | 2026-10-05 17:34 | A5 reviewer: recheck the programme after the fixes | `2026-10-05_1734_75_a5-reviewer-recheck-the-programme-after-the-fixes.md` | `follow-up` |
+| 76 | 2026-10-05 17:34 | R reviewer: recheck the rendered views after the fixes | `2026-10-05_1734_76_r-reviewer-recheck-the-rendered-views-after-the-fi.md` | `follow-up` |
+| 77 | 2026-10-05 17:42 | P local control panel | `2026-10-05_1742_77_p-local-control-panel.md` | `opus` |
+| 78 | 2026-10-05 18:09 | F5 recheck leftovers fixer | `2026-10-05_1809_78_f5-recheck-leftovers-fixer.md` | `opus` |
+| 79 | 2026-10-05 18:31 | S blind-06 scorer | `2026-10-05_1831_79_s-blind-06-scorer.md` | `opus` |
+| 80 | 2026-10-05 18:36 | ADD-04 dropped; score ADD-03 only | `2026-10-05_1836_80_add-04-dropped-score-add-03-only.md` | `follow-up` |
+| 81 | 2026-10-05 18:37 | Panel usability pass: outputs in one place, easy new addendum | `2026-10-05_1837_81_panel-usability-pass-outputs-in-one-place-easy-new.md` | `follow-up` |
+| 82 | 2026-10-05 18:39 | W5 applied in your worktree; one panel test fails on merged tree | `2026-10-05_1839_82_w5-applied-in-your-worktree-one-panel-test-fails-o.md` | `follow-up` |
+| 83 | 2026-10-05 18:49 | F6 blind-06 workflow defects fixer | `2026-10-05_1849_83_f6-blind-06-workflow-defects-fixer.md` | `opus` |

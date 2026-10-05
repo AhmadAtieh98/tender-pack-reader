@@ -1,0 +1,1421 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T175850Z-70a4
+  created: '2026-10-05T17:58:50Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+  statements:
+  - id: S-F1
+    kind: fact
+    text: ADD-03 Clause 2.1 adds to Volume II Clause 1.3 a sentence stating that the tie-in points TP-1 and TP-2
+      are described in Table 1-3, reproduced at Appendix A and incorporated by reference.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: The two designated tie-in points are TP-1 and TP-2, described in Table 1-3, which is reproduced at
+        Appendix A to this Addendum as issued by the Northern Region Water Services Company (the Network Operator)
+        and is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F2
+    kind: fact
+    text: ADD-03 Clause 2.2 states that Table 1-3 is issued in Arabic and the Arabic text governs over the English
+      translation at Appendix B.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: Table 1-3 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix
+        B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F3
+    kind: fact
+    text: Before ADD-03 (at ADD-02), Volume II Clause 1.3 refers to 'the two designated tie-in points' but no unit
+      found by search gives tie-in point locations, diameters, shutdown windows, durations or notice periods. The
+      cells of Table 1-3 are first issued in ADD-03.
+    evidence:
+    - doc: VOL-II
+      unit_id: VOL-II:1.3
+      page: 2
+      kind: span
+      words: the two designated tie-in points
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I1
+    kind: interpretation
+    text: Each Appendix A cell reading in this batch is content of the table that ADD-03 issues. None prints an
+      old/new pair, a deletion or a substitution against any unit as it stood at ADD-02. The table enters Volume
+      II through the op for ADD-03:2.1 (another batch), so each of these cells is a no_effect provision in its own
+      right.
+    evidence: []
+    note: null
+  - id: S-F4
+    kind: fact
+    text: 'Outside this batch, the Arabic TP-2 maximum shutdown duration cell reads ''٤'' (4), while the English
+      convenience translation (ADD-03:T1-3/tp-2) gives ''Maximum shutdown duration (hours): 6''. Under Clause 2.2
+      the Arabic governs. This is flagged for the batch that handles ADD-03:p4-image/tp2-duration and ADD-03:T1-3/tp-2.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-duration
+      page: 4
+      kind: reading
+      words: ٤
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:T1-3/tp-2
+      page: 5
+      kind: span
+      words: 'Maximum shutdown duration (hours): 6'
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/p4-image/tp1-location
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp1-location
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp1-location
+      disposition: no_effect
+      reason: 'This is the TP-1 location cell of the Arabic Table 1-3 at Appendix A (''غرفة التفتيش MH-41 على خط
+        الطرد الشمالي''). It is table content, not an amending instruction: it prints no old/new pair, deletion
+        or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated
+        into this Volume by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp1-location
+      page: 4
+      kind: reading
+      words: غرفة التفتيش MH-41 على خط الطرد الشمالي
+      cell: null
+      crop_sha256: 7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الطرد ('rising
+      main').
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp1-location is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp1-location p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp1-location at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval; a person should
+        confirm the term خط الطرد (''rising main'').'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b08-right shows the TP-1 row. Its location cell prints, in Arabic script on two lines,
+      'غرفة التفتيش MH-41' over 'على خط الطرد الشمالي', and this matches the reading. The cell is new table content
+      and amends nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading ADD-03-p4-r1 is still pending approval, and the term خط الطرد ('rising main') needs a person
+          to confirm it.
+        - No_effect applies to the cell as an amending instruction only. The cell's content takes effect through
+          the ADD-03:2.1 op, which is outside this batch.
+        evidence_checked:
+        - ADD-03:p4-image/tp1-location
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp1-diameter
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp1-diameter
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp1-diameter
+      disposition: no_effect
+      reason: 'This is the TP-1 existing-sewer-diameter cell (''١٠٠٠'', mm) of the Arabic Table 1-3 at Appendix
+        A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution
+        against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated into this Volume
+        by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp1-diameter
+      page: 4
+      kind: reading
+      words: ١٠٠٠
+      cell: null
+      crop_sha256: 7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp1-diameter is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp1-diameter p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp1-diameter at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b08-right shows the TP-1 row. The diameter cell (column قطر الخط القائم (مم)) prints Arabic-Indic
+      '١٠٠٠', which is 1000 and agrees with the English Appendix B value 1,000. It is new table content and amends
+      nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval.
+        - No_effect covers only the absence of an old/new pair. The value is operative through the 2.1 incorporation.
+        evidence_checked:
+        - ADD-03:p4-image/tp1-diameter
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp1-window
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp1-window
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp1-window
+      disposition: no_effect
+      reason: 'This is the TP-1 permitted-shutdown-window cell (''من ٢٣:٠٠ إلى ٠٥:٠٠'') of the Arabic Table 1-3
+        at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or
+        substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated
+        into this Volume by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp1-window
+      page: 4
+      kind: reading
+      words: من ٢٣:٠٠ إلى ٠٥:٠٠
+      cell: null
+      crop_sha256: 7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp1-window is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp1-window p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp1-window at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b08-right shows the TP-1 window cell printing 'من ٢٣:٠٠ إلى ٠٥:٠٠' (from 23:00 to 05:00,
+      Arabic-Indic digits), which agrees with Appendix B. It is new table content and amends nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval.
+        - No_effect covers only the absence of an old/new pair. The value is operative through the 2.1 incorporation.
+        evidence_checked:
+        - ADD-03:p4-image/tp1-window
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp1-duration
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp1-duration
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp1-duration
+      disposition: no_effect
+      reason: 'This is the TP-1 maximum-shutdown-duration cell (''٦'', hours) of the Arabic Table 1-3 at Appendix
+        A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution
+        against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated into this Volume
+        by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp1-duration
+      page: 4
+      kind: reading
+      words: ٦
+      cell: null
+      crop_sha256: 7058ab6013a3607a393bcb95a87fc93a5130e66515b97649b7321c2cf3cbb2dd
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp1-duration is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp1-duration p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp1-duration at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: 'The TP-1 duration cell is not visible in band crop b08-right. I read it in the left band crop
+      b08-left (which shows ''٦'' beside ''١٠ أيام عمل'') and in the full region image: TP-1 under أقصى مدّة للإيقاف
+      (ساعة) prints Arabic-Indic ''٦'' (6), which agrees with Appendix B. It is new table content and amends nothing
+      on its own.'
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The rationale says the cell is not visible in crop b08-right. It says the reading came from b08-left and
+          the full region image.
+        - The evidence cites crop_sha256 7058ab6d…, the same hash as tp1-location, tp1-diameter and tp1-window.
+          The tp1-notice item, which the rationale places in b08-left, cites a different hash. So the cited crop
+          may not show the cell, and the evidence shown cannot confirm the '٦' reading against it.
+        - The reading is pending approval.
+        - The no_effect disposition itself is consistent with the text, but the reading's provenance needs a person
+          to check it.
+        evidence_checked:
+        - ADD-03:p4-image/tp1-duration
+        - ADD-03:p4-image/tp1-notice
+        - ADD-03:2.1
+        - ADD-03:2.2
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp1-notice
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp1-notice
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp1-notice
+      disposition: no_effect
+      reason: 'This is the TP-1 advance-notice cell (''١٠ أيام عمل'') of the Arabic Table 1-3 at Appendix A. It
+        is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against
+        any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated into this Volume by
+        reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp1-notice
+      page: 4
+      kind: reading
+      words: ١٠ أيام عمل
+      cell: null
+      crop_sha256: 1a61481bd6919b78be829fb8356db5022a0ae20e93e3efbaa9d9aaf311153a55
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp1-notice is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp1-notice p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp1-notice at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b08-left shows the TP-1 notice cell printing '١٠ أيام عمل' (10 working days), with '٦'
+      in the adjacent duration cell. This agrees with Appendix B ('10 Working Days'). It is new table content and
+      amends nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval.
+        - No_effect covers only the absence of an old/new pair. The value is operative through the 2.1 incorporation.
+        evidence_checked:
+        - ADD-03:p4-image/tp1-notice
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp2-point
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp2-point
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp2-point
+      disposition: no_effect
+      reason: 'This is the tie-in-point identifier cell (''TP-2'') of the second row of the Arabic Table 1-3 at
+        Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution
+        against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated into this Volume
+        by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-point
+      page: 4
+      kind: reading
+      words: TP-2
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    - S-F4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-point is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-point p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-point at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b09-right shows the second row headed 'TP-2' in Latin script, and the reading matches.
+      Outside this batch, the full region image shows the TP-2 maximum duration as '٤' (4 hours) while the English
+      Appendix B gives 6. The Arabic governs under 2.2, and this discrepancy is flagged in S-F4 for the batch that
+      owns tp2-duration and T1-3/tp-2.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval.
+        - S-F4 flags an Arabic/English mismatch for the TP-2 duration (٤ in the Arabic, 6 in the English). That
+          conflict belongs to the tp2-duration and T1-3/tp-2 items, not to this identifier cell. It should not be
+          dropped when those items are reviewed.
+        evidence_checked:
+        - ADD-03:p4-image/tp2-point
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - ADD-03:p4-image/tp2-duration (S-F4)
+        - ADD-03:T1-3/tp-2 (S-F4)
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp2-location
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp2-location
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp2-location
+      disposition: no_effect
+      reason: 'This is the TP-2 location cell (''غرفة التفتيش MH-07 على خط الانحدار الجنوبي'') of the Arabic Table
+        1-3 at Appendix A. It is table content, not an amending instruction: it prints no old/new pair, deletion
+        or substitution against any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated
+        into this Volume by reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-location
+      page: 4
+      kind: reading
+      words: غرفة التفتيش MH-07 على خط الانحدار الجنوبي
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval; a person should confirm the term خط الانحدار ('gravity
+      line/sewer').
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-location is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-location p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-location at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval; a person should
+        confirm the term خط الانحدار (''gravity line/sewer'').'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b09-right shows the TP-2 location cell printing, in Arabic script on two lines, 'غرفة
+      التفتيش MH-07' over 'على خط الانحدار الجنوبي', and this matches the reading. It is new table content and amends
+      nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval, and the term خط الانحدار ('gravity line/sewer') needs a person to confirm
+          it.
+        - No_effect covers only the absence of an old/new pair. The cell's content takes effect through the 2.1
+          incorporation.
+        evidence_checked:
+        - ADD-03:p4-image/tp2-location
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tp2-diameter
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 16b1b63f693c0dbd0db29c29700dae71525df534d9f300373aa0fd3b5d292bbf
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    statement_type: disposition
+    provision: ADD-03:p4-image/tp2-diameter
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tp2-diameter
+      disposition: no_effect
+      reason: 'This is the TP-2 existing-sewer-diameter cell (''٨٠٠'', mm) of the Arabic Table 1-3 at Appendix A.
+        It is table content, not an amending instruction: it prints no old/new pair, deletion or substitution against
+        any unit at ADD-02. The table enters Volume II through ADD-03:2.1 (''is incorporated into this Volume by
+        reference''), whose op belongs to another batch. A person to confirm.'
+      candidates: []
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tp2-diameter
+      page: 4
+      kind: reading
+      words: ٨٠٠
+      cell: null
+      crop_sha256: 18a85ccaa8e66fafa00a3f64174d07730af07f24d83121ed6cf789445336e907
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - ADD-03:2.2
+    conflicts: []
+    missing_information:
+    - The reading of ADD-03-p4-r1 is still pending approval.
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tp2-diameter is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tp2-diameter p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tp2-diameter at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: Crop b09-right shows the TP-2 diameter cell printing Arabic-Indic '٨٠٠' (800), which agrees
+      with Appendix B ('800'). It is new table content and amends nothing on its own.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading is pending approval.
+        - No_effect covers only the absence of an old/new pair. The value is operative through the 2.1 incorporation.
+        evidence_checked:
+        - ADD-03:p4-image/tp2-diameter
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-II:1.3
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+        created: '2026-10-05T18:00:05Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 70
+    accounted: 8
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp2-window
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/tp2-notice
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/note4
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+  resolution:
+    provisions_total: 70
+    accounted: 8
+    resolved: 0
+    pending: 8
+    invalid: 0
+    unaccounted: 62
+    pending_provisions:
+    - ADD-03:p4-image/tp1-location
+    - ADD-03:p4-image/tp1-diameter
+    - ADD-03:p4-image/tp1-window
+    - ADD-03:p4-image/tp1-duration
+    - ADD-03:p4-image/tp1-notice
+    - ADD-03:p4-image/tp2-point
+    - ADD-03:p4-image/tp2-location
+    - ADD-03:p4-image/tp2-diameter
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+        aspect: null
+    S-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.2 p1
+        ok: true
+        detail: verbatim in ADD-03:2.2 at ADD-02
+        aspect: null
+    S-F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-II:1.3 p2
+        ok: true
+        detail: verbatim in VOL-II:1.3 at ADD-02
+        aspect: null
+    S-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-F4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/tp2-duration p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/tp2-duration at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-3/tp-2 p5
+        ok: true
+        detail: verbatim in ADD-03:T1-3/tp-2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.5
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.6
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.7
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-location
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-diameter
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-rule
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-point
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp1-location
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp1-diameter
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp1-window
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp1-duration
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp1-notice
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp2-point
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp2-location
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp2-diameter
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tp2-window
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-duration
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tp2-notice
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-heading
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/tp-2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-3/note(4)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:2.3
+    - ADD-03:2.4
+    - ADD-03:2.5
+    - ADD-03:2.6
+    - ADD-03:2.7
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/intro
+    - ADD-03:p4-image/th-point
+    - ADD-03:p4-image/th-location
+    - ADD-03:p4-image/th-diameter
+    - ADD-03:p4-image/th-window
+    - ADD-03:p4-image/th-duration
+    - ADD-03:p4-image/th-notice
+    - ADD-03:p4-image/table-rule
+    - ADD-03:p4-image/tp1-point
+    - ADD-03:p4-image/tp2-window
+    - ADD-03:p4-image/tp2-duration
+    - ADD-03:p4-image/tp2-notice
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/note4
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:p4-image/image-footer
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T1-3/tp-1
+    - ADD-03:T1-3/tp-2
+    - ADD-03:T1-3/notes
+    - ADD-03:T1-3/note(1)
+    - ADD-03:T1-3/note(2)
+    - ADD-03:T1-3/note(3)
+    - ADD-03:T1-3/note(4)
+    - ADD-03:AppB/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 4f498859e614962258ad7a854ccf9e7e3ecd6888da420ed8e25962b5a6246a75
+    computed_under:
+      evidence_build_id: f826cdeb7fbc262e1674323070670587be772af004e2a8855ab00b9209fb5848
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind06-20261005T173226Z-analysis-007-critic
+    route: host
+    items:
+    - item: ADD-03/p4-image/tp1-location
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp1-diameter
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp1-window
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp1-duration
+      agrees: false
+      concerns: 4
+    - item: ADD-03/p4-image/tp1-notice
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp2-point
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp2-location
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/tp2-diameter
+      agrees: true
+      concerns: 2
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

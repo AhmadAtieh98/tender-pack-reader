@@ -1,0 +1,917 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T184551Z-7dee",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:5.1",
+  "ADD-03:5.2"
+ ],
+ "started": "2026-10-05T18:45:51.403029+00:00",
+ "elapsed_s": 143.6,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01EmEPto8gqjyyyFq1Vhq4r1",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:3.4",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_011XXs6hegbzSXbM8WYziwBx",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:5.1"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01UVo8YVNac6rDkCE5U7EEtL",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:5.2"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01PXxPJZmLJVwGz6XP8mw6Z4",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:9.1",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_013pU569inwGLg8utQ9Q2ieU",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Figure 7-2 odour concentration nearest sensitive receptor Environmental and Social Impact Assessment",
+    "limit": 10
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01RXMg6Q39XmW2dVRwCXwiJz",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "demonstrate compliance Technical Proposal odour",
+    "limit": 10
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_012z7WpdzpMYU15h57BRYfiJ",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:Q18"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01WfM7T8JmB2TbAojGQo3JxD",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:cover/para3"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_017rAGHcZdDWvKNwM8AQaCgz",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/5.1",
+      "provision": "ADD-03:5.1",
+      "type": "replace_text",
+      "target": "VOL-II:3.4",
+      "old": "not more than 5 OU/m³ at the site boundary",
+      "old_resolved": "quoted",
+      "new": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+      "origin": "assistant"
+     },
+     {
+      "id": "ADD-03/5.2",
+      "provision": "ADD-03:5.2",
+      "type": "annotate",
+      "target": "VOL-II:3.4",
+      "effect": "adds_obligation",
+      "note": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01NconcYWx6eGpvvY8tJok5f",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/5.1",
+      "provision": "ADD-03:5.1",
+      "type": "replace_text",
+      "target": "VOL-II:3.4",
+      "old": "not more than 5 OU/m³ at the site boundary",
+      "old_resolved": "quoted",
+      "new": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+      "origin": "assistant"
+     },
+     {
+      "id": "ADD-03/5.2",
+      "provision": "ADD-03:5.2",
+      "type": "annotate",
+      "targets": [
+       "VOL-II:3.4"
+      ],
+      "effect": "adds_obligation",
+      "note": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01MqYUUY6TooJkuiYaMQQbFN",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+      "base_run": null,
+      "base_candidate_sha256": null
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "ADD-03 Clause 5.1 deletes 'not more than 5 OU/m³ at the site boundary' in Volume II Clause 3.4 and substitutes a reference to the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the ESIA, at that receptor; the 98th percentile hourly basis is unchanged.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "ADD-03 Clause 5.2 requires Bidders to demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "fact",
+       "text": "Figure 7-2 of the ESIA is not in the evidence build; ADD-03 Q18 says it is available in the data room. The numeric odour concentration now applicable cannot be read from the pack: insufficient evidence.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:Q18",
+         "page": 2,
+         "kind": "cell",
+         "words": "are shown in Figure 7-2 of the Environmental and Social Impact Assessment, which is available to Bidders in the data room. No other modelling inputs will be provided.",
+         "cell": {
+          "row_key": "18",
+          "column": "Authority response"
+         }
+        }
+       ]
+      },
+      {
+       "id": "S4",
+       "kind": "fact",
+       "text": "The ADD-03 cover paragraph describes the odour change as being to 'Volume II Clause 3.5', whereas Clause 5.1 names Clause 3.4; VOL-II:3.5 is the noise clause.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact Assessment"
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.5",
+         "page": 3,
+         "kind": "span",
+         "words": "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        }
+       ]
+      },
+      {
+       "id": "S5",
+       "kind": "interpretation",
+       "text": "The operative provision 5.1 governs the target: the cover summary's 'Clause 3.5' is a slip for 3.4, since 3.4 is the odour clause and contains the quoted words verbatim while 3.5 is about noise.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary"
+        }
+       ]
+      },
+      {
+       "id": "S6",
+       "kind": "interpretation",
+       "text": "Clause 5.2 adds a submission obligation (demonstrating compliance in the Technical Proposal) attached to VOL-II:3.4 without changing its text; it is recorded as an annotation with effect adds_obligation.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/5.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:5.1",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "id": "ADD-03/5.1",
+        "provision": "ADD-03:5.1",
+        "type": "replace_text",
+        "target": "VOL-II:3.4",
+        "old": "not more than 5 OU/m³ at the site boundary",
+        "old_resolved": "quoted",
+        "new": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+        "origin": "assistant"
+       },
+       "previous_value": "not more than 5 OU/m³ at the site boundary",
+       "proposed_value": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:3.4",
+        "VOL-II:9.1"
+       ],
+       "conflicts": [
+        "ADD-03:cover/para3"
+       ],
+       "missing_information": [
+        "Figure 7-2 of the ESIA (data room, not in the evidence build): the numeric odour concentration at the nearest sensitive receptor and the receptor's identity."
+       ],
+       "statements": [
+        "S1",
+        "S3",
+        "S4",
+        "S5"
+       ],
+       "model_rationale": "Printed deleted/substituted pair; text-layer units, no crops involved. The pattern drafter's 'OU/m3' was corrected to 'OU/m³' as printed in both the provision and the target (simulate C23 found it once). The 98th percentile basis stays untouched in the target, as 5.1 says. Cover para3 cites Clause 3.5 (noise) for this change; flagged as a conflict, 5.1's explicit reference to 3.4 taken as operative (S5). The new criterion's numeric value is not in the pack."
+      },
+      {
+       "id": "ADD-03/5.1-clar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "clarification",
+       "provision": "ADD-03:5.1",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "gap": "The amended odour criterion in VOL-II:3.4 is defined by reference to Figure 7-2 of the ESIA, which is not in the evidence build; the numeric limit and the receptor cannot be established from the pack (insufficient evidence). The cover summary also cites Clause 3.5 rather than 3.4.",
+        "proposed_question": "Please confirm that Section 5 of Addendum 03 amends Volume II Clause 3.4 (not 3.5 as stated in the cover summary), and confirm the odour concentration (OU/m³, 98th percentile hourly) and the nearest sensitive receptor shown in Figure 7-2 of the ESIA that apply under amended Clause 3.4.",
+        "practical_impact": "Odour control sizing and the compliance demonstration required by ADD-03 Clause 5.2 depend on this value.",
+        "interim_handling": "Retrieve ESIA Figure 7-2 from the data room and record the value as evidence; do not assume 5 OU/m³ still applies.",
+        "decision_owner": null
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact Assessment"
+        }
+       ],
+       "dependencies": [
+        "ADD-03/5.1",
+        "ADD-03:Q18"
+       ],
+       "missing_information": [
+        "ESIA Figure 7-2"
+       ],
+       "statements": [
+        "S3",
+        "S4"
+       ],
+       "model_rationale": "Raised alongside the op so the unknown numeric limit is not guessed."
+      },
+      {
+       "id": "ADD-03/5.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:5.2",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "id": "ADD-03/5.2",
+        "provision": "ADD-03:5.2",
+        "type": "annotate",
+        "targets": [
+         "VOL-II:3.4"
+        ],
+        "effect": "adds_obligation",
+        "note": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:3.4",
+        "ADD-03/5.1"
+       ],
+       "statements": [
+        "S2",
+        "S6"
+       ],
+       "model_rationale": "'shall demonstrate compliance ... in the Technical Proposal' is a new bidder submission obligation, not a no_effect; it does not alter 3.4's text, so annotate/adds_obligation (simulate: valid). Depends on interpretation S6, so stays pending for a person. Text-layer units; no crops."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01LxRW9uSN3ZnPEGWUAzsfBm",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (opus)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+      "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+      "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+      "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+      "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+      "base_run": null,
+      "base_candidate_sha256": null
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "ADD-03 Clause 5.1 deletes 'not more than 5 OU/m³ at the site boundary' in Volume II Clause 3.4 and substitutes a reference to the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the ESIA, at that receptor; the 98th percentile hourly basis is unchanged.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "ADD-03 Clause 5.2 requires Bidders to demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "fact",
+       "text": "Figure 7-2 of the ESIA is not in the evidence build; ADD-03 Q18 says it is available in the data room. The numeric odour concentration now applicable cannot be read from the pack: insufficient evidence.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:Q18",
+         "page": 2,
+         "kind": "cell",
+         "words": "are shown in Figure 7-2 of the Environmental and Social Impact Assessment, which is available to Bidders in the data room. No other modelling inputs will be provided.",
+         "cell": {
+          "row_key": "18",
+          "column": "Authority response"
+         }
+        }
+       ]
+      },
+      {
+       "id": "S4",
+       "kind": "fact",
+       "text": "The ADD-03 cover paragraph describes the odour change as being to 'Volume II Clause 3.5', whereas Clause 5.1 names Clause 3.4; VOL-II:3.5 is the noise clause.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact Assessment"
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.5",
+         "page": 3,
+         "kind": "span",
+         "words": "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        }
+       ]
+      },
+      {
+       "id": "S6",
+       "kind": "interpretation",
+       "text": "Clause 5.2 adds a submission obligation (demonstrating compliance in the Technical Proposal) attached to VOL-II:3.4 without changing its text; it is recorded as an annotation with effect adds_obligation.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/5.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:5.1",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "id": "ADD-03/5.1",
+        "provision": "ADD-03:5.1",
+        "type": "replace_text",
+        "target": "VOL-II:3.4",
+        "old": "not more than 5 OU/m³ at the site boundary",
+        "old_resolved": "quoted",
+        "new": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+        "origin": "assistant"
+       },
+       "previous_value": "not more than 5 OU/m³ at the site boundary",
+       "proposed_value": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:3.4",
+        "VOL-II:9.1"
+       ],
+       "statements": [
+        "S1"
+       ],
+       "model_rationale": "Printed deleted/substituted pair; text-layer units, no crops involved. The pattern drafter's 'OU/m3' was corrected to 'OU/m³' as printed in both the provision and the target (simulate C23 found it once). The 98th percentile basis stays untouched in the target, as 5.1 says. The substitution is textual and fully evidenced; the unknown numeric value in ESIA Figure 7-2 and the cover's 'Clause 3.5' slip are carried by the separate clarification item ADD-03/5.1-clar."
+      },
+      {
+       "id": "ADD-03/5.1-clar",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "clarification",
+       "provision": "ADD-03:5.1",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "gap": "The amended odour criterion in VOL-II:3.4 is defined by reference to Figure 7-2 of the ESIA, which is not in the evidence build; the numeric limit and the receptor cannot be established from the pack (insufficient evidence). The cover summary also cites Clause 3.5 rather than 3.4.",
+        "proposed_question": "Please confirm that Section 5 of Addendum 03 amends Volume II Clause 3.4 (not 3.5 as stated in the cover summary), and confirm the odour concentration (OU/m³, 98th percentile hourly) and the nearest sensitive receptor shown in Figure 7-2 of the ESIA that apply under amended Clause 3.4.",
+        "practical_impact": "Odour control sizing and the compliance demonstration required by ADD-03 Clause 5.2 depend on this value.",
+        "interim_handling": "Retrieve ESIA Figure 7-2 from the data room and record the value as evidence; do not assume 5 OU/m³ still applies.",
+        "decision_owner": null
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.1",
+         "page": 2,
+         "kind": "span",
+         "words": "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact Assessment"
+        }
+       ],
+       "dependencies": [
+        "ADD-03/5.1",
+        "ADD-03:Q18"
+       ],
+       "missing_information": [
+        "ESIA Figure 7-2"
+       ],
+       "statements": [
+        "S3",
+        "S4"
+       ],
+       "model_rationale": "Raised alongside the op so the unknown numeric limit is not guessed."
+      },
+      {
+       "id": "ADD-03/5.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+        "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+        "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+        "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+        "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+        "base_run": null,
+        "base_candidate_sha256": null
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:5.2",
+       "target": "VOL-II:3.4",
+       "payload": {
+        "id": "ADD-03/5.2",
+        "provision": "ADD-03:5.2",
+        "type": "annotate",
+        "targets": [
+         "VOL-II:3.4"
+        ],
+        "effect": "adds_obligation",
+        "note": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:5.2",
+         "page": 2,
+         "kind": "span",
+         "words": "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+        },
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.4",
+         "page": 3,
+         "kind": "span",
+         "words": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value."
+        }
+       ],
+       "dependencies": [
+        "VOL-II:3.4",
+        "ADD-03/5.1"
+       ],
+       "statements": [
+        "S2",
+        "S6"
+       ],
+       "model_rationale": "'shall demonstrate compliance ... in the Technical Proposal' is a new bidder submission obligation, not a no_effect; it does not alter 3.4's text, so annotate/adds_obligation (simulate: valid). Depends on interpretation S6, so stays pending for a person. Text-layer units; no crops."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [],
+ "images_received": [],
+ "submission": {
+  "run_id": "ADD-03-host-20261005T184804Z-0589",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z/ai/ADD-03-host-20261005T184804Z-0589",
+  "coverage": {
+   "provisions_total": 57,
+   "accounted": 2,
+   "unaccounted": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:1.3",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.3(b)",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:Q21",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:7.3",
+    "ADD-03:7.4",
+    "ADD-03:AppA/para1",
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/table-intro",
+    "ADD-03:p4-image/th-left",
+    "ADD-03:p4-image/th-right",
+    "ADD-03:p4-image/row-a-left",
+    "ADD-03:p4-image/row-a-right",
+    "ADD-03:p4-image/row-b-left",
+    "ADD-03:p4-image/row-b-right",
+    "ADD-03:p4-image/notes-head",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3",
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1",
+    "ADD-03:T5-1/a",
+    "ADD-03:T5-1/b",
+    "ADD-03:T5-1/notes",
+    "ADD-03:T5-1/note(1)",
+    "ADD-03:T5-1/note(2)",
+    "ADD-03:T5-1/note(3)"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 57,
+   "accounted": 2,
+   "resolved": 1,
+   "pending": 1,
+   "invalid": 0,
+   "unaccounted": 55,
+   "pending_provisions": [
+    "ADD-03:5.2"
+   ],
+   "invalid_provisions": [],
+   "no_change_on_amendment_language": [],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/5.1",
+    "status": "evidence_verified"
+   },
+   {
+    "id": "ADD-03/5.1-clar",
+    "status": "insufficient_evidence"
+   },
+   {
+    "id": "ADD-03/5.2",
+    "status": "interpretation_pending"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/5.1": "evidence_verified",
+  "ADD-03/5.1-clar": "insufficient_evidence",
+  "ADD-03/5.2": "interpretation_pending"
+ },
+ "num_turns": 13,
+ "usage": {
+  "input_tokens": 16,
+  "cache_creation_input_tokens": 41605,
+  "cache_read_input_tokens": 165632,
+  "output_tokens": 13949,
+  "output_tokens_details": {
+   "thinking_tokens": 647
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 41605,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 372,
+    "cache_read_input_tokens": 38640,
+    "cache_creation_input_tokens": 7080,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 7080
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 0.6450104,
+ "final_text": "I submitted run ADD-03-host-20261005T184804Z-0589 with status \"partial\". I read no crops, since this batch has no image units. Both of my provisions are covered; \"partial\" refers to the 55 other ADD-03 provisions, which belong to other batches.\n\n- **5.1** (evidence verified): replaces \"not more than 5 OU/m³ at the site boundary\" in Volume II Clause 3.4 with the reference to Figure 7-2 of the environmental impact assessment. I fixed the reference draft, which wrote \"m3\" where the documents print \"m³\".\n- **5.1 clarification** (insufficient evidence): Figure 7-2 is not in the pack, so the new odour limit can't be read from it. The question also notes that the addendum's cover page names Clause 3.5, which is the noise clause, instead of 3.4.\n- **5.2** (interpretation pending): records the requirement to show compliance with amended Clause 3.4 in the Technical Proposal as a new obligation. A person needs to confirm this reading.",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z/ai/ADD-03-hostsession-20261005T184551Z-7dee",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

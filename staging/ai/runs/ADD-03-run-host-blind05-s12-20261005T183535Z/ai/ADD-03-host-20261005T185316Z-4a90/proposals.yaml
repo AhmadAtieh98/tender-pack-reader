@@ -1,0 +1,1840 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T185316Z-4a90
+  created: '2026-10-05T18:53:16Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+    amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+    unrecorded_crops_sha256: null
+    register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+    relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+    curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+    base_run: null
+    base_candidate_sha256: null
+  statements:
+  - id: S-Q15-F
+    kind: fact
+    text: The Q15 response states that Volume II Clause 6.4 sets a minimum period and that a longer period is optional.
+      Clause 6.4 as at ADD-02 already reads 'not less than seven (7) years'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: Volume II Clause 6.4 states a minimum period. A Bidder may propose a longer period but is not required
+        to do so.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:6.4
+      page: 4
+      kind: span
+      words: All process data shall be retained for not less than seven (7) years
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q15-I
+    kind: interpretation
+    text: Q15 explains VOL-II:6.4 (the seven years is a floor; a longer period is optional) without changing its
+      text (annotate, effect interprets).
+    evidence: []
+    note: null
+  - id: S-Q16-F
+    kind: fact
+    text: The Q16 response states that an assumption that limits or qualifies a Volume V obligation is a qualification
+      and must be listed in Form 4-E, and that Volume I Clause 9.6 applies.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 2
+      kind: span
+      words: An assumption that limits or qualifies an obligation in Volume V is a qualification and shall be listed
+        in Form 4-E. Volume I Clause 9.6 applies.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q16-I
+    kind: interpretation
+    text: 'Q16 interprets VOL-I:9.6 and Form 4-E: ''assumptions'' in the Technical Proposal that limit Volume V
+      count as qualifications. The text of neither changes (annotate, effect interprets).'
+    evidence: []
+    note: null
+  - id: S-Q17-F
+    kind: fact
+    text: The Q17 response requires each member of an unincorporated JV EPC Contractor to hold a certificate meeting
+      VOL-I:8.3, with a copy of each submitted with Envelope A. VOL-I:8.3 as at ADD-02 refers only to 'The proposed
+      EPC Contractor'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 2
+      kind: span
+      words: Each member of the joint venture shall hold a certificate that meets Volume I Clause 8.3, and a copy
+        of each certificate shall be submitted with Envelope A.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.3
+      page: 4
+      kind: span
+      words: The proposed EPC Contractor shall hold a valid ISO 9001:2015 quality management certificate
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q17-I
+    kind: interpretation
+    text: Q17 adds an obligation (a per-member certificate) to VOL-I:8.3 for unincorporated JVs. It is recorded
+      as an annotation with effect adds_obligation, not as a text change, because the response does not reword the
+      clause.
+    evidence: []
+    note: null
+  - id: S-Q18-F
+    kind: fact
+    text: The Q18 response points to ESIA Figure 7-2 for the receptor and the odour concentration under VOL-II:3.4
+      as amended by Section 5 of ADD-03. ADD-03:5.1 substitutes the 3.4 criterion. VOL-II:3.4 as at ADD-02 still
+      reads '5 OU/m³ at the site boundary'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 2
+      kind: span
+      words: are shown in Figure 7-2 of the Environmental and Social Impact Assessment, which is available to Bidders
+        in the data room. No other modelling inputs will be provided.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 2
+      kind: span
+      words: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.4
+      page: 3
+      kind: span
+      words: Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile
+        hourly value.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q18-I
+    kind: interpretation
+    text: Q18 is informational about VOL-II:3.4 and adds no requirement of its own (annotate, effect interprets).
+      It presupposes the ADD-03:5.1 substitution, which is handled in another batch.
+    evidence: []
+    note: null
+  - id: S-Q19-F1
+    kind: fact
+    text: Q19 states that the Form 4-F Availability Payment is in the prices of year 1 of operations, and that indexation
+      under 29.2 applies from the first anniversary of PCOD.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 2
+      kind: span
+      words: The Availability Payment stated in Form 4-F is the amount payable for year 1 of operations, in the
+        prices of that year. Indexation under Volume V Clause 29.2 applies from the first anniversary of PCOD.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q19-F2
+    kind: fact
+    text: The same addendum redefines the Availability Payment at Base Date prices (ADD-03:3.1) and replaces 29.2
+      with indexation from the Base Date (ADD-03:3.3).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: ‘the annual payment, expressed at Base Date prices, calculated under Clause 29’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q19-I
+    kind: interpretation
+    text: Q19 (year-1 prices; indexation from the first anniversary of PCOD) appears to conflict with ADD-03:3.1
+      and 3.3 (Base Date prices; indexation from the Base Date). The addendum states no precedence between Section
+      3 and the Section 6 responses.
+    evidence: []
+    note: null
+  - id: S-Q20-F
+    kind: fact
+    text: The Q20 response requires the Bidder to state the Indexed Proportion as a percentage after 'Per Volume
+      V Clause 29.2' in Form 4-F, and not anywhere in Envelope A. The Indexed Proportion is defined in replacement
+      29.2 (ADD-03:3.3).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q20
+      page: 2
+      kind: span
+      words: The Bidder shall complete that row by stating, after the words ‘Per Volume V Clause 29.2’, the Indexed
+        Proportion as a percentage. The Indexed Proportion shall not be stated anywhere in Envelope A. Volume I
+        Clause 6.2 applies.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/indexation-basis-assumed
+      page: 9
+      kind: span
+      words: 'Indexation basis assumed: Per Volume V Clause 29.2'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: '(the Indexed Proportion) shall be: (a) until the end of the tenth (10th) year of operations, the percentage
+        stated by the Bidder in Form 4-F'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q20-I
+    kind: interpretation
+    text: Q20 adds a completion obligation to the Form 4-F row 'Indexation basis assumed' (adds_obligation). It
+      applies VOL-I:6.2 to the Indexed Proportion (interprets). It depends on ADD-03:3.3 replacing 29.2, which is
+      handled in another batch.
+    evidence: []
+    note: null
+  - id: S-Q21-F
+    kind: fact
+    text: The Q21 response requires the construction methodology in the Technical Proposal to include a crane and
+      lifting plan demonstrating compliance with Table 5-1 (new VOL-II:5.6, inserted by ADD-03:7.1). VOL-I:9.7 as
+      at ADD-02 lists the construction methodology but no crane plan.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q21
+      page: 2
+      kind: span
+      words: The construction methodology in the Technical Proposal shall include a crane and lifting plan that
+        demonstrates compliance with Table 5-1 (Volume II Clause 5.6, inserted by Section 7 of this Addendum).
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.7
+      page: 5
+      kind: span
+      words: The Technical Proposal shall address, as a minimum, the process design, the construction methodology
+        and programme
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: The following new Clause 5.6 is inserted in Volume II after Clause 5.5
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q21-I
+    kind: interpretation
+    text: Q21 adds a Technical Proposal content obligation to VOL-I:9.7 (adds_obligation). It depends on ADD-03:7.1
+      inserting VOL-II:5.6 (another batch).
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/Q15
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q15
+    target: VOL-II:6.4
+    payload:
+      id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: annotate
+      targets:
+      - VOL-II:6.4
+      effect: interprets
+      note: Authority states the seven-year retention in Clause 6.4 is a minimum; a Bidder may propose a longer
+        period but is not required to.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 2
+      kind: span
+      words: Volume II Clause 6.4 states a minimum period. A Bidder may propose a longer period but is not required
+        to do so.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:6.4
+      page: 4
+      kind: span
+      words: All process data shall be retained for not less than seven (7) years
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:6.4
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q15-F
+    - S-Q15-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q15 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q15 p2
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:6.4 p4
+      ok: true
+      detail: verbatim in VOL-II:6.4 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q15-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: The clarification explains that 'not less than' is a floor and adds a permissive statement
+      on longer periods. The text is unchanged, so this is an interprets annotation (changed from confirms after
+      the controller flagged the added permissive words). No image is involved.
+    review: null
+  - id: ADD-03/Q16(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q16
+    target: VOL-I:9.6
+    payload:
+      id: ADD-03/Q16(a)
+      provision: ADD-03:Q16
+      type: annotate
+      targets:
+      - VOL-I:9.6
+      effect: interprets
+      note: An assumption that limits or qualifies a Volume V obligation is a qualification and must be listed in
+        Form 4-E. A Bidder stating 'no deviations' shall not include any qualification of Volume V elsewhere in
+        its Proposal.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 2
+      kind: span
+      words: An assumption that limits or qualifies an obligation in Volume V is a qualification and shall be listed
+        in Form 4-E. Volume I Clause 9.6 applies.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.6
+      page: 5
+      kind: span
+      words: Form 4-E shall list every deviation, qualification or reservation to Volume V.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:9.6
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q16-F
+    - S-Q16-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q16 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q16 p2
+      ok: true
+      detail: verbatim in ADD-03:Q16 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:9.6 p5
+      ok: true
+      detail: verbatim in VOL-I:9.6 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q16-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: The response explains what counts as a 'qualification' under 9.6 and does not reword it, so
+      it is recorded as an interprets annotation. No image is involved.
+    review: null
+  - id: ADD-03/Q16(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q16
+    target: VOL-IV:F4-E
+    payload:
+      id: ADD-03/Q16(b)
+      provision: ADD-03:Q16
+      type: annotate
+      targets:
+      - VOL-IV:F4-E
+      effect: interprets
+      note: 'Form 4-E: assumptions that limit or qualify Volume V obligations are qualifications and must be listed
+        here; ''no deviations'' excludes any qualification of Volume V elsewhere in the Proposal.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 2
+      kind: span
+      words: A Bidder that states ‘no deviations’ in Form 4-E shall not include any qualification of Volume V elsewhere
+        in its Proposal.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-E/para1
+      page: 8
+      kind: span
+      words: List every deviation, qualification or reservation to Volume V. A Proposal that states ‘no deviations’
+        while containing a qualification elsewhere shall be treated as non-responsive.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-IV:F4-E
+    - VOL-IV:F4-E/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q16-F
+    - S-Q16-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q16 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q16 p2
+      ok: true
+      detail: verbatim in ADD-03:Q16 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-E/para1 p8
+      ok: true
+      detail: verbatim in VOL-IV:F4-E/para1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q16-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: Same interpretation, recorded on the Form 4-E group cited by the response. The engine rejected
+      annotating the member para1 directly because it is not cited, so the annotation targets the group. No image
+      is involved.
+    review: null
+  - id: ADD-03/Q17
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q17
+    target: VOL-I:8.3
+    payload:
+      id: ADD-03/Q17
+      provision: ADD-03:Q17
+      type: annotate
+      targets:
+      - VOL-I:8.3
+      effect: adds_obligation
+      note: Where the proposed EPC Contractor is an unincorporated joint venture, each member shall hold a certificate
+        meeting Clause 8.3, and a copy of each certificate shall be submitted with Envelope A.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 2
+      kind: span
+      words: Each member of the joint venture shall hold a certificate that meets Volume I Clause 8.3, and a copy
+        of each certificate shall be submitted with Envelope A.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.3
+      page: 4
+      kind: span
+      words: The proposed EPC Contractor shall hold a valid ISO 9001:2015 quality management certificate, current
+        as at the Proposal Due Date, issued by an accredited certification body. A copy of the certificate shall
+        be submitted with Envelope A.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:8.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q17-F
+    - S-Q17-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q17 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q17 p2
+      ok: true
+      detail: verbatim in ADD-03:Q17 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:8.3 p4
+      ok: true
+      detail: verbatim in VOL-I:8.3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q17-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: The response uses 'shall' and extends the certificate requirement to every JV member, beyond
+      the clause text. It is recorded as adds_obligation because there is no printed old/new wording to substitute.
+      A person should confirm whether this should instead become a text change to 8.3. No image is involved.
+    review: null
+  - id: ADD-03/Q18
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q18
+    target: VOL-II:3.4
+    payload:
+      id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      targets:
+      - VOL-II:3.4
+      effect: interprets
+      note: The nearest sensitive receptor and the odour concentration applicable to Clause 3.4 (as amended by ADD-03
+        Section 5) are shown in ESIA Figure 7-2 in the data room. No other modelling inputs will be provided.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 2
+      kind: span
+      words: The nearest sensitive receptor, and the odour concentration applicable at it for the purposes of Volume
+        II Clause 3.4 as amended by Section 5 of this Addendum, are shown in Figure 7-2 of the Environmental and
+        Social Impact Assessment
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:3.4
+      page: 3
+      kind: span
+      words: Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile
+        hourly value.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:3.4
+    - ADD-03:5.1
+    conflicts: []
+    missing_information:
+    - ESIA Figure 7-2 (data room) is not in the evidence build; the receptor and concentration values cannot be
+      read here.
+    statements:
+    - S-Q18-F
+    - S-Q18-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q18 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q18 p2
+      ok: true
+      detail: verbatim in ADD-03:Q18 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:3.4 p3
+      ok: true
+      detail: verbatim in VOL-II:3.4 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q18-I: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: ESIA Figure 7-2 (data room) is not in the evidence build; the receptor
+        and concentration values cannot be read here.'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: insufficient_evidence
+    model_rationale: 'The response is informational and relies on the ADD-03:5.1 substitution (another batch). Note:
+      the ADD-03 cover paragraph says the odour criterion is replaced in ''Volume II Clause 3.5'', while 5.1 and
+      Q18 say 3.4. That inconsistency belongs to the cover/5.1 batch. No image is involved.'
+    review: null
+  - id: ADD-03/Q19
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    provision: ADD-03:Q19
+    target: VOL-IV:F4-F
+    payload:
+      why: Insufficient evidence to choose a reading. Q19 says the Form 4-F Availability Payment is in year-1-of-operations
+        prices and that 29.2 indexation applies from the first anniversary of PCOD. In the same addendum, Section
+        3 defines the Availability Payment 'expressed at Base Date prices' (3.1) and replaces 29.2 with indexation
+        'annually from the Base Date' (3.3). ADD-03 states no precedence between Section 3 and the Section 6 responses.
+        Annotating F4-F or 29.2 with Q19's meaning would pick one side of a conflict.
+      what_is_unsupported: Two provisions of the same addendum conflict and no precedence is printed. The price
+        basis of the Form 4-F figure and the start of indexation need an Authority clarification or a person's decision
+        before any annotate op on VOL-IV:F4-F or VOL-V:29.2.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 2
+      kind: span
+      words: The Availability Payment stated in Form 4-F is the amount payable for year 1 of operations, in the
+        prices of that year. Indexation under Volume V Clause 29.2 applies from the first anniversary of PCOD.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: ‘the annual payment, expressed at Base Date prices, calculated under Clause 29’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations
+      page: 9
+      kind: span
+      words: 'Availability Payment (SAR per annum, year 1 of operations):'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:29.2
+      page: 3
+      kind: span
+      words: The Availability Payment shall be indexed annually in accordance with Schedule 9
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:3.1
+    - ADD-03:3.3
+    - VOL-IV:F4-F
+    - VOL-V:29.2
+    conflicts:
+    - ADD-03:3.1
+    - ADD-03:3.3
+    missing_information:
+    - Which governs, Section 3 (Base Date prices; indexation from Base Date) or the Q19 response (year-1 prices;
+      indexation from the first anniversary of PCOD)?
+    statements:
+    - S-Q19-F1
+    - S-Q19-F2
+    - S-Q19-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q19 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:Q19 p2
+      ok: true
+      detail: verbatim in ADD-03:Q19 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations p9
+      ok: true
+      detail: verbatim in VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:29.2 p3
+      ok: true
+      detail: verbatim in VOL-V:29.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q19-I: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:3.1; ADD-03:3.3'
+      aspect: decision
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: Which governs, Section 3 (Base Date prices; indexation from Base Date)
+        or the Q19 response (year-1 prices; indexation from the first anniversary of PCOD)?'
+      aspect: evidence
+    verification_status: conflicting
+    model_rationale: 'Escalated, not annotated: the clarification response contradicts the operative amendment in
+      Section 3 of the same addendum. No image is involved.'
+    review: null
+  - id: ADD-03/Q19-clar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: clarification
+    provision: ADD-03:Q19
+    target: VOL-IV:F4-F
+    payload:
+      gap: ADD-03 Q19 says the Form 4-F Availability Payment is stated in year-1-of-operations prices with indexation
+        from the first anniversary of PCOD. ADD-03 Clauses 3.1 and 3.3 define the Availability Payment at Base Date
+        prices, indexed annually from the Base Date.
+      proposed_question: Please confirm whether the Availability Payment stated in Form 4-F is to be expressed at
+        Base Date prices (Volume V Clause 1.1 as amended by Addendum 3, Clause 3.1) and indexed from the Base Date
+        (Volume V Clause 29.2 as replaced by Clause 3.3), or in the prices of year 1 of operations and indexed from
+        the first anniversary of PCOD as stated in the response to clarification request 19. Which governs?
+      practical_impact: It determines the price basis of the bid Availability Payment and the indexation start in
+        the Financial Model, so it directly affects the evaluated price.
+      interim_handling: Model both bases. Do not state the Form 4-F figure until the Authority responds.
+      decision_owner: Commercial lead
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 2
+      kind: span
+      words: Indexation under Volume V Clause 29.2 applies from the first anniversary of PCOD.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:3.1
+    - ADD-03:3.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q19-F1
+    - S-Q19-F2
+    - S-Q19-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q19 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed clarification payload
+      aspect: structure
+    - check: evidence ADD-03:Q19 p2
+      ok: true
+      detail: verbatim in ADD-03:Q19 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q19-I: a person must confirm it'
+      aspect: evidence
+    - check: human-owned
+      ok: true
+      detail: 'evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): a clarification is a
+        matter kept open for people; its own words decides which clause governs (''governs'')'
+      aspect: decision
+    verification_status: interpretation_pending
+    model_rationale: Proposed clarification to resolve the conflict escalated in ADD-03/Q19.
+    review: null
+  - id: ADD-03/Q20(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q20
+    target: VOL-IV:F4-F
+    payload:
+      id: ADD-03/Q20(a)
+      provision: ADD-03:Q20
+      type: annotate
+      targets:
+      - VOL-IV:F4-F
+      effect: adds_obligation
+      note: In the Form 4-F row 'Indexation basis assumed', the Bidder shall state the Indexed Proportion as a percentage
+        after the words 'Per Volume V Clause 29.2'.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q20
+      page: 2
+      kind: span
+      words: The Bidder shall complete that row by stating, after the words ‘Per Volume V Clause 29.2’, the Indexed
+        Proportion as a percentage.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/indexation-basis-assumed
+      page: 9
+      kind: span
+      words: 'Indexation basis assumed: Per Volume V Clause 29.2'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-IV:F4-F
+    - VOL-IV:F4-F/indexation-basis-assumed
+    - ADD-03:3.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q20-F
+    - S-Q20-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q20 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q20 p2
+      ok: true
+      detail: verbatim in ADD-03:Q20 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-F/indexation-basis-assumed p9
+      ok: true
+      detail: verbatim in VOL-IV:F4-F/indexation-basis-assumed at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q20-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: A 'shall' obligation to complete a form row. The engine rejects the member unit as not cited,
+      so the op targets the cited group VOL-IV:F4-F. It relies on the Indexed Proportion defined by ADD-03:3.3 (another
+      batch). No image is involved.
+    review: null
+  - id: ADD-03/Q20(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q20
+    target: VOL-I:6.2
+    payload:
+      id: ADD-03/Q20(b)
+      provision: ADD-03:Q20
+      type: annotate
+      targets:
+      - VOL-I:6.2
+      effect: interprets
+      note: The Indexed Proportion is commercial information that shall not be stated anywhere in Envelope A; Volume
+        I Clause 6.2 applies.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q20
+      page: 2
+      kind: span
+      words: The Indexed Proportion shall not be stated anywhere in Envelope A. Volume I Clause 6.2 applies.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:6.2
+      page: 3
+      kind: span
+      words: The appearance of any price, rate, or other commercial information within Envelope A shall render the
+        Proposal non-responsive.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:6.2
+    - ADD-03:3.3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q20-F
+    - S-Q20-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q20 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q20 p2
+      ok: true
+      detail: verbatim in ADD-03:Q20 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:6.2 p3
+      ok: true
+      detail: verbatim in VOL-I:6.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q20-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 6.2 already bars commercial information from Envelope A. The response applies it to the Indexed
+      Proportion, which is recorded as an interprets annotation (changed from confirms after the controller flagged
+      terms 6.2 does not print). No image is involved.
+    review: null
+  - id: ADD-03/Q21
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      unrecorded_crops_sha256: null
+      register_sha256: 8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5
+      relationships_sha256: 1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052
+      curation_sha256: 2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: amendment_op
+    provision: ADD-03:Q21
+    target: VOL-I:9.7
+    payload:
+      id: ADD-03/Q21
+      provision: ADD-03:Q21
+      type: annotate
+      targets:
+      - VOL-I:9.7
+      effect: adds_obligation
+      note: The construction methodology in the Technical Proposal shall include a crane and lifting plan demonstrating
+        compliance with Table 5-1 (Volume II Clause 5.6 inserted by ADD-03 Section 7).
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q21
+      page: 2
+      kind: span
+      words: The construction methodology in the Technical Proposal shall include a crane and lifting plan that
+        demonstrates compliance with Table 5-1 (Volume II Clause 5.6, inserted by Section 7 of this Addendum).
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:9.7
+      page: 5
+      kind: span
+      words: The Technical Proposal shall address, as a minimum, the process design, the construction methodology
+        and programme, the operations and maintenance philosophy, the health and safety plan, the environmental
+        and social management approach, and the organisation and key personnel.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:9.7
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q21-F
+    - S-Q21-I
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q21 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q21 p2
+      ok: true
+      detail: verbatim in ADD-03:Q21 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:9.7 p5
+      ok: true
+      detail: verbatim in VOL-I:9.7 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q21-I: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: A 'shall' obligation added to the 9.7 content list. It relies on ADD-03:7.1 and Table 5-1 (an
+      Arabic image table in Appendix A, handled in another batch). The packet lists no crops or image targets for
+      this batch, so no crop was read; the height limits themselves are not relied on here.
+    review: null
+  coverage:
+    provisions_total: 57
+    accounted: 7
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+  resolution:
+    provisions_total: 57
+    accounted: 7
+    resolved: 0
+    pending: 7
+    invalid: 0
+    unaccounted: 50
+    pending_provisions:
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-Q15-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q15 p2
+        ok: true
+        detail: verbatim in ADD-03:Q15 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:6.4 p4
+        ok: true
+        detail: verbatim in VOL-II:6.4 at ADD-02
+        aspect: null
+    S-Q15-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q16-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q16 p2
+        ok: true
+        detail: verbatim in ADD-03:Q16 at ADD-02
+        aspect: null
+    S-Q16-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q17-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q17 p2
+        ok: true
+        detail: verbatim in ADD-03:Q17 at ADD-02
+        aspect: null
+      - check: evidence VOL-I:8.3 p4
+        ok: true
+        detail: verbatim in VOL-I:8.3 at ADD-02
+        aspect: null
+    S-Q17-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q18-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q18 p2
+        ok: true
+        detail: verbatim in ADD-03:Q18 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:5.1 p2
+        ok: true
+        detail: verbatim in ADD-03:5.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:3.4 p3
+        ok: true
+        detail: verbatim in VOL-II:3.4 at ADD-02
+        aspect: null
+    S-Q18-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q19-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q19 p2
+        ok: true
+        detail: verbatim in ADD-03:Q19 at ADD-02
+        aspect: null
+    S-Q19-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:3.1 p1
+        ok: true
+        detail: verbatim in ADD-03:3.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:3.3 p1
+        ok: true
+        detail: verbatim in ADD-03:3.3 at ADD-02
+        aspect: null
+    S-Q19-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q20-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q20 p2
+        ok: true
+        detail: verbatim in ADD-03:Q20 at ADD-02
+        aspect: null
+      - check: evidence VOL-IV:F4-F/indexation-basis-assumed p9
+        ok: true
+        detail: verbatim in VOL-IV:F4-F/indexation-basis-assumed at ADD-02
+        aspect: null
+      - check: evidence ADD-03:3.3 p1
+        ok: true
+        detail: verbatim in ADD-03:3.3 at ADD-02
+        aspect: null
+    S-Q20-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q21-F:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q21 p2
+        ok: true
+        detail: verbatim in ADD-03:Q21 at ADD-02
+        aspect: null
+      - check: evidence VOL-I:9.7 p5
+        ok: true
+        detail: verbatim in VOL-I:9.7 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+        aspect: null
+    S-Q21-I:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: annotate
+      target: VOL-II:6.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q15 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:6.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q16(a)
+      provision: ADD-03:Q16
+      type: annotate
+      target: VOL-I:9.6
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q16 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.6'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q16(b)
+      provision: ADD-03:Q16
+      type: annotate
+      target: VOL-IV:F4-E
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q16 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-IV:F4-E'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q17
+      provision: ADD-03:Q17
+      type: annotate
+      target: VOL-I:8.3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q17 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:8.3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      target: VOL-II:3.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q18 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:3.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q20(a)
+      provision: ADD-03:Q20
+      type: annotate
+      target: VOL-IV:F4-F
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q20 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-IV:F4-F'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q20(b)
+      provision: ADD-03:Q20
+      type: annotate
+      target: VOL-I:6.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q20 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:6.2'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q21
+      provision: ADD-03:Q21
+      type: annotate
+      target: VOL-I:9.7
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q21 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:9.7'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3(b)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: op
+      accounted_by:
+      - ADD-03/Q15
+    - provision: ADD-03:Q16
+      disposition: op
+      accounted_by:
+      - ADD-03/Q16(a)
+      - ADD-03/Q16(b)
+    - provision: ADD-03:Q17
+      disposition: op
+      accounted_by:
+      - ADD-03/Q17
+    - provision: ADD-03:Q18
+      disposition: op
+      accounted_by:
+      - ADD-03/Q18
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: op
+      accounted_by:
+      - ADD-03/Q20(a)
+      - ADD-03/Q20(b)
+    - provision: ADD-03:Q21
+      disposition: op
+      accounted_by:
+      - ADD-03/Q21
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/th-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-left
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b-right
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-head
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q19
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/th-left
+    - ADD-03:p4-image/th-right
+    - ADD-03:p4-image/row-a-left
+    - ADD-03:p4-image/row-a-right
+    - ADD-03:p4-image/row-b-left
+    - ADD-03:p4-image/row-b-right
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: de023fdefe9fcdea6b3e5378f3e4b1ef33542b150a439840d04d190625277b93
+    computed_under:
+      evidence_build_id: 42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []

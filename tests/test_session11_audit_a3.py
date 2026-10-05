@@ -59,7 +59,10 @@ def test_a3_1_every_listed_issue_shows_its_reason_and_owner_on_the_one_page(buil
     assert listed and all(i["short"] for i in listed)
     for i in listed:                                  # id, its reason and its owner, on the page
         assert i["id"] in text, i["id"]
-        assert " ".join(i["short"].split())[:40] in text, (i["id"], i["short"])
+        # session 12 (F2 follow-up): at condensation level 2 a leading HUMAN DECISION PENDING label is the marker the
+        # page's legend defines (stage2.pending_mark); the full label stays on a3_detail.html and in A1
+        short = stage2.pending_mark(i["short"]) if built["level"] >= 2 else i["short"]
+        assert " ".join(short.split())[:40] in text, (i["id"], short)
         assert f"({i['owner']})" in text, i["id"]
     # the gate's 36 ids became a count before any issue text was removed (session 12, F1, audit A1-4: changed
     # deliberately from 37: ADD-02-5.2-01 states no consequence and is now classed scored, not a pass/fail gate)
