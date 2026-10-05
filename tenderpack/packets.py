@@ -341,7 +341,7 @@ def write_packet(pdf: pymupdf.Document, region: Region, reading: Reading | None,
               "Passing checks never approve a reading.", "",
               "## Points recorded for your decision", "",
               "From the reading's recorded uncertainties; each is a question for you, not something the program decided.", ""]
-    lines += [f"{i}. {u}" for i, u in enumerate(unc, 1)]
+    lines += [f"{i}. {_tagged(u, status)}" for i, u in enumerate(unc, 1)]           # session 11 (R-8)
     lines += [f"{len(unc) + 1}. Read every segment below against its crop and either approve the reading as a whole "
               "or correct the reading file (see the end of this packet)."]
     if nums:
@@ -435,6 +435,29 @@ def _md_inline(t: str) -> str:
     return re.sub(r"\*([^*]+)\*", r"<em>\1</em>", t)
 
 
+_COMPOUND_NUMERAL = re.compile("[0-9\u0660-\u0669]+(?:[.\\-][0-9\u0660-\u0669]+)+")
+
+
+def settled_by(text: str, status: dict | None) -> str | None:
+    """The approval resolution that settles a recorded uncertainty (session 11, audit R-8), as 'settled by <reviewer>
+    <date>: <resolution>', or None. A resolution settles an uncertainty when both name the same compound numeral (a value
+    with a decimal point or a hyphen: 2.2, ٤-٢). `status` is a review status (status 'approved') or an approval record.
+    Only the rendering is tagged: the reading's own words stay as recorded (they are pinned by the approval)."""
+    st = status or {}
+    if st.get("status", "approved") != "approved" or not st.get("reviewer"):
+        return None
+    nums = set(_COMPOUND_NUMERAL.findall(text or ""))
+    for res in st.get("resolutions") or []:
+        if nums & set(_COMPOUND_NUMERAL.findall(str(res))):
+            return f"settled by {st['reviewer']} {st.get('date')}: {res}"
+    return None
+
+
+def _tagged(text: str, status: dict | None) -> str:
+    s = settled_by(text, status)
+    return f"{text} — {s}" if s else text
+
+
 _SCOPE = (("confirmation_record", "Confirmation record"), ("notes", "Confirms"), ("resolutions", "Settled by the reviewer"),
           ("keeps_open", "Left open"), ("does_not_cover", "Does not cover"), ("permit", "Environmental Permit"),
           ("record_amended", "Record amended"))
@@ -479,7 +502,7 @@ def _packet_html(region, reading, status, subject, checks, nums, unc, segs, comp
     for label, crop, text, lang, note in segs:
         d = "rtl" if lang in ("ar", "mixed") else "ltr"
         rows.append(f"<tr><td>{_md_inline(label)}</td><td>{_img(base, crop, 900)}</td>"
-                    f'<td dir="{d}" class="v">{_md_inline(text)}</td><td>{_md_inline(note)}</td></tr>')
+                    f'<td dir="{d}" class="v">{_md_inline(text)}</td><td>{_md_inline(_tagged(note, status) if note else note)}</td></tr>')
     label = lambda c: ("WARNING" if c.get("severity") == "warning" else "PARTIAL" if c.get("result") == "partial"  # noqa: E731
                        else "pass" if c["ok"] else "FAIL")
     chk = "".join(f"<tr><td>{c['check']}</td><td class=\"{'ok' if label(c) == 'pass' else 'w' if label(c) in ('WARNING', 'PARTIAL') else 'bad'}\">"
@@ -490,7 +513,7 @@ def _packet_html(region, reading, status, subject, checks, nums, unc, segs, comp
                   f"render check <b>{e(n['render_check'].get('result', 'pass').upper())}</b>"
                   + (f"; <b class=\"bad\">uncertain</b>, alternatives: {e('; '.join(n['alternatives']))}" if n["uncertain"] else "")
                   + (f"<br>{_img(base, n['image'], 900)}" if n.get("image") else "") + "</li>" for n in nums)
-    dec = "".join(f"<li>{_md_inline(u)}</li>" for u in unc)
+    dec = "".join(f"<li>{_md_inline(_tagged(u, status))}</li>" for u in unc)    # session 11 (R-8): settled points tagged
     failing = ", ".join(sorted({c["check"] for c in checks if not c["ok"]}))
     warns = "; ".join(e(c["detail"]) for c in checks if c.get("severity") in ("warning", "partial"))
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Review {e(region.region_id)}</title>

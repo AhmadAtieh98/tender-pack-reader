@@ -1,7 +1,7 @@
 # A1-A5 outputs (WORKING DRAFT)
 
 Structural checks: **ok**. Release: **WORKING DRAFT (not releasable)**. Validated state: **ADD-02**; working state **ADD-03** (PARTIAL).
-Structurally checked does not mean reviewed or approved by a person. Interpretations and ops are PROPOSED; image readings are PENDING the owner's review.
+Structurally checked does not mean reviewed or approved by a person. Interpretations and ops are PROPOSED; image readings PENDING HUMAN REVIEW: VOL-II-p3-r1, VOL-IV-p6-r1.
 
 ## What blocks a release (`outputs --strict`)
 
@@ -21,6 +21,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | A4 supporting record: tender clarification register (DRAFT questions, NOT SENT) | a4/clarification_register.md, .csv, .json |
 | Engine results per stage | stages.json |
 | Checks | checks.json |
+| A3 and A5 CANDIDATE: ADD-03 as proposed, NOT VALIDATED (the rows and dates it would move, blockers, conditional scenarios; the validated A3 and A5 above are unchanged) | a3/a3_candidate.pdf, .md, .html, .json; a5/candidate/ |
 
 ## Checks
 
@@ -35,7 +36,8 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C40 | pass | every A5 activity cites an A1 row in force |
 | C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
 | C45 | pass | every dependency and lead time is defined |
-| C43 | pass | A3 fits one page; smallest text 8.05 pt (scale 0.947) |
+| C43 | pass | A3 fits one page; smallest text 8.5 pt (scale 1.0) |
+| C52 | pass | 0 confirmed translation(s) of approved readings; none called 'not reviewed' in the outputs |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 15 ops; invalid: none |
 | C20 ADD-02 | ok | 40 provisions; unresolved or unaccounted: none |
@@ -45,7 +47,8 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C11 | REPORTED | STALE rows: ['VOL-I-6.1-01@ADD-03', 'VOL-I-5.2-01@ADD-03', 'VOL-I-6.3-01@ADD-03', 'VOL-I-7.1-01@ADD-03', 'VOL-I-8.3-01@ADD-03', 'VOL-I-8.5-01@ADD-03', 'VOL-V-31.3-01@ADD-03', 'VOL-I-3.4-01@ADD-03', 'VOL-I-6.7-01@ADD-03', 'VOL-II-T2-4-TP@ADD-03', 'VOL-V-29.3-01@ADD-03', 'VOL-V-31.3-02@ADD-03', 'VOL-V-31.3-03@ADD-03'] |
 | C30 | ok | 46 date/period phrases in force; uncovered: none; explicitly not computed: none |
 | C32 | ok | 5 date rule(s) with unstated counting conventions: every reading shown (A1 Dates), planning uses the configured policy |
-| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2, understated 1; report only, the summary is never applied (A2) |
+| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2; report only, the summary is never applied (A2) |
 | C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
 | C28 ADD-03 | REPORTED | cover summary (3 claims) vs provisions: claimed, not applied 1, unchecked 3; report only, the summary is never applied (A2) |
 | C46 | REPORTED | 1 gap(s): ADD-03/cover/para3 [A1] |
+| C48 | ok | 17 A3 (bid-out) rows in force: 15 carried by the A5 programme, 2 excepted with a reason; not carried: none |

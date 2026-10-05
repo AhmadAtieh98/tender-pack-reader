@@ -265,6 +265,27 @@ def packet(build: Path, pack: Path, region_id: str, readings_dir: Path, run_id: 
             "unit_id_example": f"{info['doc']}:{region_id.split('-')[-2]}-image" if region_id.count("-") >= 2 else None}
 
 
+def answer_schema() -> dict:
+    """Session 11 (the request layer): the JSON schema of the reading phase's answer, {region_id, reading,
+    model_rationale}, with `reading` the tenderpack.readings.Reading schema itself (not a free-form object), so a route
+    with native structured outputs can constrain the whole answer; the strict local parse (parse, then validate) still
+    decides. Free-form parts the provider's limits forbid travel as JSON strings and are decoded before the parse
+    (providers/structured.decode_free_form)."""
+    import copy
+    fill = reading_fill_schema()
+    prop = copy.deepcopy(fill["proposal"])
+    rs = copy.deepcopy(fill["reading_schema"])
+    defs = {**(prop.pop("$defs", None) or {}), **(rs.pop("$defs", None) or {})}
+    rs.pop("title", None)
+    defs["Reading"] = rs
+    prop["properties"]["reading"] = {"$ref": "#/$defs/Reading",
+                                     "description": "a tenderpack.readings.Reading; `source` is the packet's `state`"}
+    prop["$defs"] = defs
+    prop["description"] = ("Return exactly one JSON object of this shape; `reading` is a Reading in the shape of the "
+                           "packet's examples. prepared_by is written by the controller.")
+    return prop
+
+
 def parse(data, fields: dict, overwrites: list) -> RegionReadingProposal:
     if not isinstance(data, dict):
         raise RegionError("the answer must be a JSON object")

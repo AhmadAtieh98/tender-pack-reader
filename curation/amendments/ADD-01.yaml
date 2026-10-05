@@ -137,7 +137,11 @@ ops:
   type: annotate
   targets:
   - ADD-01:Q4
-  effect: adds_obligation
+  effect: interprets   # session 11 recheck (A2-6, PROPOSED): was adds_obligation; the answer restates VOL-I 5.5 and adds a no-reliance statement about the geotechnical report, not a new obligation
+  # session 11 audit (A2-6, PROPOSED): 'Bidders shall satisfy themselves as to ground conditions.' restates VOL-I 5.5 (p3)
+  # 'does not relieve a Bidder of its obligation to satisfy itself as to site conditions'; checked by the engine
+  restates:
+  - VOL-I:5.5
   note: Bidders bear the ground-condition risk at the wadi crossing and must satisfy themselves; the geotechnical
     report (data room, not in the pack) is for information only.
   issue: the geotechnical report and the wadi-crossing drawing (Volume III) are referenced but not supplied

@@ -1,0 +1,21 @@
+# RECORDED CRITIC (hand-written for offline tests; NOT a live model's output and not a live integration).
+# Session 11 (D2): the selective critic inside the workflow, ONE request per batch for the batch's selected items, added
+# to the recorded workflow of tests/fixtures/ai_cassettes/workflow_add03.yaml by tests/test_session11_requests.py.
+#   analysis-002   ADD-03/2.4 (insert_unit: uncertain target, resolved through a group): the critic agrees, with a concern
+#   downstream-001 D3 (a new row whose interpretation states a consequence): the critic does NOT agree
+# Agreement or disagreement changes no status; agreement is not approval.
+sessions:
+  - phase: critic
+    when: {items_include: ["ADD-03/2.4"]}
+    turns:
+      - match: {last_role: user, contains: ["CRITIC REQUEST", "ADD-03/2.4", "uncertain_target"]}
+        response:
+          usage: {input_tokens: 3000, output_tokens: 160}
+          text: '{"reviews": [{"item": "ADD-03/2.4", "agrees": true, "concerns": ["the new clause is anchored after VOL-I 6.7 as the provision says; its number 6.8 is not in the inserted text, so a person checks the numbering"], "evidence_checked": ["ADD-03:2.4", "VOL-I:6.7"]}]}'
+  - phase: critic
+    when: {items_include: ["D3"]}
+    turns:
+      - match: {last_role: user, contains: ["CRITIC REQUEST", "D3", "consequential_interpretation"]}
+        response:
+          usage: {input_tokens: 4200, output_tokens: 180}
+          text: '{"reviews": [{"item": "D3", "agrees": false, "concerns": ["the consequence is stated only by reference (a late Proposal under Clause 6.6); the class rejection is the reading of 6.6, which a person confirms"], "evidence_checked": ["VOL-I:6.7+ADD-03"]}]}'

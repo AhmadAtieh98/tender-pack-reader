@@ -8,8 +8,9 @@ Usage: python scripts/make_draft_archive.py DEST_DIR [--wheels WHEELHOUSE]
     A1_compliance_register/           a1.xlsx (Excel), a1.csv, a1.json
     A2_addendum_reconciliation/       a2.md and its tables
     A3_disqualification_sheet/        a3.pdf (one page) with a3_detail.html (each id on the page links to it), a3.json
-    A4_work_log/                      the work log (every session, verbatim exchanges, errors), the plan, session reports,
-                                      repository.bundle (the git repository with its real history), HISTORY.md,
+    A4_work_log/                      the work log (worklog/README.md is the A4 index: every session, verbatim prompts,
+                                      the subagent briefs, the error index, the model-call logs), the plan, session reports,
+                                      repository.bundle (the git repository and its history; worklog/README.md says how to read it), HISTORY.md,
                                       clarification_register/ (draft questions, NOT SENT), review_records/ (the owner's
                                       reading approvals and their snapshots)
     A5_programme/                     programme, marshalling, documents, resources, drivers, scenarios, replan deltas
@@ -117,7 +118,8 @@ def main(dest: Path, wheels: Path | None) -> int:
     copytree(REPO / "worklog", a4 / "worklog")
     (a4 / "docs").mkdir()
     for f in ("PLAN.md", "session-03_before-after.md", "session-04_report.md", "session-05_report.md", "session-06_report.md",
-              "session-08_report.md"):
+              "session-08_report.md", "session-09_report.md", "session-10_report.md", "session-11_report.md",
+              "AI_ROUTES.md", "COST_AND_EFFORT.md", "OPERATING_GUIDE.md"):
         if (REPO / "docs" / f).exists():
             shutil.copy(REPO / "docs" / f, a4 / "docs" / f)
     subprocess.run(["git", "bundle", "create", str(a4 / "repository.bundle"), "--all"], cwd=REPO, check=True, capture_output=True)

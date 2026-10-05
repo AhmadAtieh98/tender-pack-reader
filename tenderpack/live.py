@@ -13,7 +13,9 @@
                 confirmed dependency / proposed relationship / possible impact, and documents not supplied whose
                 blocked conclusions are in play; never merged with the direct changes); disqualifiers that enter or
                 leave A3; and the programme impact (new / removed / moved / rework activities, REVIEW through a
-                relationship, feasibility changes, document counts).
+                relationship, feasibility changes, document counts). When the addendum is PARTIAL (session 11), it
+                also points to the validated and the candidate A3/A5 and says in one paragraph what may be changing
+                (partial.diff_lines).
 Both read a published evidence build and the curated inputs; neither writes into a build, the outputs or curation.
 """
 from __future__ import annotations
@@ -137,6 +139,11 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
     chain = list(dict.fromkeys(last.get("ops") or []))
     if not chain:
         lines.append("    none (as issued)")
+    def _held(x):                                        # session 11: conditional (held), or withheld by a rejection
+        if getattr(x, "conditional_pending", False):
+            from .partial import conditional_label
+            return conditional_label(r, x)
+        return "WITHHELD (rejected)"
     for oid in chain:
         s, x = ops[oid]
         o = x.op
@@ -146,7 +153,7 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
                 "insert_row": lambda: f"row {o.cells} inserted in {o.target} after {o.after or 'the last row'}",
                 "append_text": lambda: f"+ '{o.new}'", "annotate": lambda: f"{o.effect}: {o.note or ''}"}[o.type]()
         lines.append(f"    {oid} [{s.stage}] {o.type}: {what}  ({_ref(r, o.provision)}; "
-                     f"{('applied' if x.applied else 'WITHHELD (rejected)') if x.valid else 'INVALID'}; "
+                     f"{('applied' if x.applied else _held(x)) if x.valid else 'INVALID'}; "
                      f"{r['reviews'][('op', oid)]['status']})")
         crops += crop_unit(r, o.provision, dest / "img", build_dir)
     final = r["stages"][-1].state
@@ -251,6 +258,9 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
         md += [f"- UNRESOLVED {c['provision']}: {c.get('text', '')[:200]}" for c in unres]
         md += [f"- INVALID {x.op.id}: " + "; ".join(c["id"] + " " + c["detail"] for c in x.checks if not c["ok"]) for x in inv]
         md += [f"- WITHHELD {x.op.id}: rejected by a person; not applied" for x in sto.ops if x.valid and x.withdrawn]
+        from .partial import conditional_label           # session 11: a held conditional op is not a rejected one
+        md += [f"- CONDITIONAL {x.op.id}: {conditional_label(r, x)}" for x in sto.ops
+               if getattr(x, "conditional_pending", False)]
         sc = next((x for x in r.get("summary_check", []) if x["stage"] == to), None)
         if sc is not None:                     # C28 (session 07): the cover summary is never applied, only compared
             found = [f for f in sc["findings"] if f["kind"] != "unchecked"]
@@ -259,6 +269,11 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
             md += [f"  - {f['kind']}: {f['detail']}" for f in found]
             data["summary_check"] = sc["findings"]
         md.append("")
+        from .partial import diff_lines                  # session 11: a PARTIAL `to`: validated vs candidate, and why
+        cand_md, cand = diff_lines(r, to)
+        md += cand_md
+        if cand:
+            data["candidate"] = cand
     # ---- requirements
     new, gone, changed, secondary = [], [], [], {}
     for e in r["evals"]:

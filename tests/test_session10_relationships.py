@@ -250,7 +250,8 @@ def test_blind03_schedule_11_is_shown_against_31_4_and_39_3_with_the_conclusion_
     assert "cannot be established" in sch["text"] and "persistent breach" in sch["text"]
     a3 = stage2.a3(r, list(issues.values()), b3["a5"]["ADD-03"])
     group = next(g for g in a3["groups"]["groups"] if g["key"] == "missing")
-    assert "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11" in [i["id"] for i in group["items"]]
+    listed = [i["id"] for i in group["items"]] + [f for i in group["items"] for f in i["folds"]]   # session 11: folded
+    assert "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11" in listed
     text, data = b3["diff"]
     assert {"VOL-V-31.4-01", "VOL-V:39.3"} <= set(data["relationships"]["not supplied"])
     line = next(x for x in text.splitlines() if x.startswith("- VOL-V-31.4-01"))

@@ -18,6 +18,10 @@ Read-only (they compute from the published evidence build and the curated inputs
   calculate(kind, args)                       approved date calculations only (dates.py): relative periods with every
                                               counting reading, working days between, adding working days, a working
                                               day test, and the date printed in a named unit; no arithmetic on free text.
+                                              Session 11: derived quantities through tenderpack.calc (percentage_of,
+                                              threshold_of_total, ratio, cap, unit_conversion, approved_formula by its
+                                              config/formulas.yaml id), each operand's quote checked against the pack
+                                              (_source_resolver); unresolved with the reason, never guessed.
                                               Each result carries `inputs_fingerprint` (StateIdentity.fingerprint(): the
                                               assumptions, amendment files, evidence build, ... it was computed under)
   simulate_amendment(addendum, ops, dispositions)   engine dry run (amend.Engine through stage2.evaluate on a copy;
@@ -107,7 +111,42 @@ class Workspace:
             ("clarifications", "curation/clarifications/register.yaml"), ("assumptions", "config/assumptions.yaml"),
             ("activity_templates", "curation/activity_templates.yaml"), ("amendments_dir", "curation/amendments"),
             ("dispositions_dir", "curation/register/dispositions"), ("evidence_items_dir", "curation/evidence_items"),
-            ("readings_dir", "curation/readings"), ("register", "curation/register/rows.yaml"))}
+            ("readings_dir", "curation/readings"), ("register", "curation/register/rows.yaml"),
+            # session 11 (D1): the other curated inputs the register and the outputs read
+            ("issues", "curation/register/issues.yaml"), ("row_ids", "curation/register/ids.yaml"),
+            ("scenarios", "config/scenarios.yaml"))}
+
+    def _curation_groups(self, cfg: dict) -> dict[str, list[tuple[str, Path]]]:
+        """Session 11 (D1): the curated inputs of the state identity's register_sha256, relationships_sha256 and
+        curation_sha256, as (label, path) pairs whose labels are relative to the file's own folder (a disposable copy
+        of the same files has the same identity). The register's row files are those register.load_rows reads:
+        rows.yaml, every file its `include` globs name, and pins.yaml beside it."""
+        c = self._curated(cfg)
+        reg = c["register"]
+        try:
+            include = list((load_yaml(reg) or {}).get("include") or []) if reg.is_file() else []
+        except Exception:                                        # noqa: BLE001 (an unloadable file is still hashed)
+            include = []
+        rows = [(reg.name, reg)] + [(f.relative_to(reg.parent).as_posix(), f) for pat in include
+                                    for f in sorted(reg.parent.glob(pat)) if f.is_file()]
+        rows.append(("pins.yaml", reg.parent / "pins.yaml"))
+        tree = lambda d: [(f.relative_to(d).as_posix(), f) for f in sorted(d.glob("**/*.yaml"))] if d.is_dir() else []  # noqa: E731
+        from ..amend import triggers_path                  # session 11: recorded trigger facts (conditional ops)
+        trig, formulas = Path(triggers_path(cfg, self.root)), self.root / "config/formulas.yaml"
+        curation = ([("triggers:" + trig.name, trig), ("formulas:" + formulas.name, formulas),
+                     ("issues:" + c["issues"].name, c["issues"])]
+                    + [("issues:issues/" + a, f) for a, f in tree(c["issues"].parent / "issues")]
+                    + [("dispositions:" + a, f) for a, f in tree(c["dispositions_dir"])]
+                    + [("evidence_items:" + a, f) for a, f in tree(c["evidence_items_dir"])]
+                    + [("clarifications:" + c["clarifications"].name, c["clarifications"]),
+                       ("row_ids:" + c["row_ids"].name, c["row_ids"]), ("scenarios:" + c["scenarios"].name, c["scenarios"])])
+        try:
+            from .. import relationships
+            rel = Path(relationships.default_path(cfg, self.root))
+        except (ImportError, AttributeError):
+            rel = None
+        return {"register": list(dict.fromkeys(rows)), "relationships": [(rel.name, rel)] if rel else [],
+                "curation": curation}
 
     def _input_files(self) -> list[Path]:
         cfg = load_yaml(self.pack) or {}
@@ -119,6 +158,9 @@ class Workspace:
             files += sorted(c[k].glob("**/*.yaml")) if c[k].is_dir() else []
         reg = c["register"].parent
         files += sorted(reg.glob("**/*.yaml")) if reg.is_dir() else []
+        # session 11 (D1): every file of the identity's curated groups (issues, the id ledger or scenarios kept outside
+        # the register's folder, row files an `include` reaches elsewhere)
+        files += [p for g in self._curation_groups(cfg).values() for _, p in g if p not in files]
         try:                                       # session 10: the curated relationships stage2.run reads, if any
             from .. import relationships
             files.append(relationships.default_path(cfg, self.root))
@@ -184,21 +226,39 @@ class Workspace:
                               assumptions_sha256=_sha_or_none(c["assumptions"]),
                               activity_templates_sha256=_sha_or_none(c["activity_templates"]),
                               readings_sha256=_files_sha(readings), amendments_sha256=_files_sha(amendments),
-                              unrecorded_crops_sha256=_files_sha([], unrecorded) if unrecorded else None)
+                              unrecorded_crops_sha256=_files_sha([], unrecorded) if unrecorded else None,
+                              **self._curation_shas(cfg))
         return ident, recorded, unrecorded
 
-    def check_fresh(self) -> None:
+    def _curation_shas(self, cfg: dict) -> dict:
+        """Session 11 (D1): register_sha256, relationships_sha256 and curation_sha256 from the bytes of the files now
+        (_curation_groups); an absent file counts as absent, so adding one changes the identity too."""
+        g = self._curation_groups(cfg)
+        rel = g["relationships"]
+        return {"register_sha256": _labelled_sha(g["register"]),
+                "relationships_sha256": _sha_or_none(rel[0][1]) if rel else None,
+                "curation_sha256": _labelled_sha(g["curation"])}
+
+    def check_fresh(self, deep: bool = False) -> None:
         """Refuse ("workspace stale: reload") when any input changed since the workspace was loaded: nothing is served
-        from a version whose inputs changed (refresh() reloads; a tool call does that first)."""
+        from a version whose inputs changed (refresh() reloads; a tool call does that first). The quick check compares
+        each input's size, inode and modification time; `deep` (session 11, before anything is promoted) also re-reads
+        the curated inputs' bytes and compares them with the state identity they were loaded with, so an edit that kept
+        the modification time is not missed either."""
         if self._r is None:
             return
         key = self._inputs_key()
-        if key == self._key:
-            return
-        old, new = {k[0]: k[1:] for k in self._key}, {k[0]: k[1:] for k in key}
-        changed = [self._rel(f) for f in sorted(set(old) | set(new)) if old.get(f) != new.get(f)]
-        raise ToolError(f"workspace stale: reload (changed since it was loaded: {', '.join(changed[:4])}"
-                        f"{f' and {len(changed) - 4} more' if len(changed) > 4 else ''})")
+        if key != self._key:
+            old, new = {k[0]: k[1:] for k in self._key}, {k[0]: k[1:] for k in key}
+            changed = [self._rel(f) for f in sorted(set(old) | set(new)) if old.get(f) != new.get(f)]
+            raise ToolError(f"workspace stale: reload (changed since it was loaded: {', '.join(changed[:4])}"
+                            f"{f' and {len(changed) - 4} more' if len(changed) > 4 else ''})")
+        if deep:
+            now, _, _ = self._identity_of(self._r)
+            diff = [k for k in type(now).model_fields if getattr(now, k) != getattr(self._identity, k)]
+            if diff:
+                raise ToolError(f"workspace stale: reload (the bytes of its inputs changed since it was loaded: "
+                                f"{', '.join(diff)})")
 
     def verified(self) -> dict:
         """The loaded run, for an evidence read: the inputs are those loaded (check_fresh) and the evidence build
@@ -310,6 +370,12 @@ def _files_sha(paths: list[Path], named: dict[str, str] | None = None) -> str:
     for name, sha in sorted(pairs) + sorted((named or {}).items()):
         h.update(f"{name}\0{sha}\n".encode("utf-8"))
     return h.hexdigest()
+
+
+def _labelled_sha(pairs: list[tuple[str, Path]]) -> str:
+    """One sha256 over (label, file) pairs, by label and content (session 11: labels relative to each file's folder, so
+    files of the same name in different folders stay apart); an absent file counts as absent."""
+    return _files_sha([], {label: (sha256_file(p) if Path(p).is_file() else "absent") for label, p in pairs})
 
 
 def _crop_paths(u: dict) -> list[tuple[str, str, str | None]]:
@@ -541,7 +607,41 @@ def compare_state(ws: Workspace, from_stage: str, to_stage: str) -> dict:
 
 # ---------------------------------------------------------------------------------------------- calculations
 
-CALC_KINDS = ("relative_date", "working_days_between", "add_working_days", "is_working_day", "printed_date")
+DATE_KINDS = ("relative_date", "working_days_between", "add_working_days", "is_working_day", "printed_date")
+# session 11: derived quantities (tenderpack.calc): fixed methods, literal operands or quotes from the pack, an approved
+# formula by its registry id only (config/formulas.yaml); nothing a caller passes is evaluated
+QUANTITY_KINDS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula")
+CALC_KINDS = DATE_KINDS + QUANTITY_KINDS
+
+
+def _source_resolver(ws: "Workspace", r: dict, default_stage: str | None):
+    """Check an operand's quote against the pack: the words must be in the unit's effective text at the stage (the
+    `source.stage`, else the call's `stage`, else the validated stage) or in its text as issued; the page is the unit's
+    (a page the unit is not on is refused). Returns {verified, why, unit, page, words, stage}."""
+    from ..register import found
+
+    def resolve(src: dict) -> dict:
+        uid = src.get("unit")
+        if not uid:
+            return {"verified": False, "why": "a quote needs the unit it is in"}
+        try:
+            st = ws.stage(src.get("stage") or default_stage)
+        except ToolError as e:
+            return {"verified": False, "why": str(e)}
+        u0 = ws.units_by_id.get(uid)
+        u = st.state.get(uid)
+        if u is None and u0 is None:
+            return {"verified": False, "why": f"no unit {uid!r}"}
+        texts = [x for x in ((u.text if u is not None else None), (u0 or {}).get("text")) if x]
+        if not any(found(str(src["words"]), t) for t in texts):
+            return {"verified": False, "why": f"the quote is not in {uid} at {st.stage}: '{str(src['words'])[:80]}'"}
+        pages = list((u.pages if u is not None else None) or (u0 or {}).get("pages") or [])
+        page = src.get("page")
+        if page is not None and pages and page not in pages:
+            return {"verified": False, "why": f"{uid} is on page(s) {pages}, not p{page}"}
+        return {"verified": True, "unit": uid, "page": page if page is not None else (pages[0] if pages else None),
+                "words": src["words"], "stage": st.stage}
+    return resolve
 
 
 def _iso(v, what: str) -> date:
@@ -576,6 +676,14 @@ def _calculate(ws: Workspace, r: dict, kind: str, args: dict) -> dict:
     allowed = {"relative_date": {"anchor_date", "offset", "unit", "direction", "purpose"},
                "working_days_between": {"from", "to"}, "add_working_days": {"date", "n"},
                "is_working_day": {"date"}, "printed_date": {"unit_id", "stage"}}
+    if kind in QUANTITY_KINDS:                    # session 11: tenderpack.calc; unresolved (with the reason), never guessed
+        from .. import calc
+        args = dict(args)
+        stage = args.pop("stage", None)
+        res = calc.compute(kind, args, resolve_source=_source_resolver(ws, r, stage), calendar=cal,
+                           registry=calc.load_registry(ws.root / "config/formulas.yaml"))
+        return {"kind": kind, "inputs": {**args, **({"stage": stage} if stage else {})}, **res,
+                **({"calendar": calinfo} if kind == "unit_conversion" else {})}
     if kind not in allowed:
         raise ToolError(f"calculate kind must be one of {CALC_KINDS}; free-text arithmetic is not offered")
     extra = set(args) - allowed[kind]
@@ -685,8 +793,13 @@ def simulate(ws: Workspace, addendum: str, ops: list[dict], dispositions: list[d
                         "failed": [c for c in x.checks if not c["ok"]], "changed": list(x.changed),
                         "content": list(x.details.get("content") or []),
                         "c47": [f for k in x.changed for f in by_unit.get(k, [])],
+                        # session 11: a held conditional op is `pending` (never applied without a recorded trigger)
+                        "pending": bool(getattr(x, "pending", False)),
+                        "conditional_pending": bool(getattr(x, "conditional_pending", False)),
                         "details": {k: v for k, v in x.details.items() if k in ("old_value", "cell", "also_in", "cited",
-                                                                              "renumbered", "evidence", "mentions")}})
+                                                                              "renumbered", "evidence", "mentions",
+                                                                              "flowed", "flow", "effective_from",
+                                                                              "effective", "conditional")}})
     changed = sorted({k for x in s.ops if x.applied for k in x.changed})
     cov = [{"provision": c["provision"], "disposition": c["disposition"], "accounted_by": c["accounted_by"]}
            for c in s.coverage]
@@ -802,9 +915,16 @@ TOOLS: dict[str, Tool] = {t.name: t for t in [
     Tool("compare_state", "What changed between two stages: requirements, stale rows, A3, programme, and every unit "
          "whose status, text, cells or annotations differ.", _obj({"from_stage": S, "to_stage": S},
                                                                   ["from_stage", "to_stage"]), compare_state),
-    Tool("calculate", "Approved date calculations only (VOL-I 2.4 calendar): kind relative_date {anchor_date, offset, "
-         "unit, direction, purpose} gives every counting reading; working_days_between {from, to}; add_working_days "
-         "{date, n}; is_working_day {date}; printed_date {unit_id, stage}.",
+    Tool("calculate", "Approved calculations only; nothing you pass is evaluated. Dates (VOL-I 2.4 calendar): kind "
+         "relative_date {anchor_date, offset, unit, direction, purpose} gives every counting reading; "
+         "working_days_between {from, to}; add_working_days {date, n}; is_working_day {date}; printed_date {unit_id, "
+         "stage}. Derived quantities (session 11): percentage_of {percent, of}; threshold_of_total {percent, total, "
+         "rounding none|up|down|nearest}; ratio {numerator, denominator}; cap {cap, rate} (rate unit '<cap unit> per "
+         "day'); unit_conversion {value, to_unit, anchor_date, direction} (m3/h<->m3/s, mm<->m, %<->fraction, "
+         "days<->Working Days only); approved_formula {formula: a registry id of config/formulas.yaml, operands: "
+         "{variable: operand}}. An operand is {name, value (a literal number), unit, source {unit, words, page, stage}}: "
+         "quote the pack's words and the figure is read from them and checked. Each quantity may also take `stage`. A "
+         "missing operand, a unit mismatch or an unknown formula returns status 'unresolved' with the reason.",
          _obj({"kind": {"type": "string", "enum": list(CALC_KINDS)}, "args": {"type": "object"}}, ["kind", "args"]),
          calculate),
     Tool("simulate_amendment", "Dry-run proposed ops (amend.Op objects) and dispositions for an addendum through the "

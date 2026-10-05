@@ -319,6 +319,9 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
   - when a person passes `--allow-unverified-capabilities` (`propose(..., allow_unverified_capabilities=True)`).
 - **What the flag leaves behind.** The run log's `capabilities` event says `UNVERIFIED (...; --allow-unverified-capabilities)` and `details.unverified: true`. A `route_notices` event is logged, `proposals.yaml` gets `controller.route_notices`, and the review request has a "Route notices" section reading "capabilities unverified".
 - **Tool use on the Messages API.** It is taken as a feature of every model the endpoint lists. The documented models response has no tool-use leaf. A model that rejected `tools` would fail its first call visibly.
+- **Per phase, before any call (session 11).** Every request of every phase (the analysis, the reading of an image region, the downstream phase, the critic) goes through one capability check (`tenderpack/ai/requests.py`, `require`): tool use where tools are offered; image input where images are attached, and ALWAYS for the reading phase. A reading asked of a model that does not report image input is refused before any call, never degraded to text (session 10's downstream/reading loop checked tool use only).
+- **Visible on every phase.** Capabilities used under `--allow-unverified-capabilities` carry their notice into the batch's run log, the checkpoint (`batches.<id>.notices` and the run's `notices`) and the review packet's "Requests" section, whatever the phase.
+- **The host route's capabilities are declared** in `config/ai.yaml` `host_session.capabilities` (image input and tool use as observed in the real host sessions of 4 Oct 2026; a context window and output cap the accounting is held to). A host's model cannot be queried by this tool, so every host request carries the route notice "capabilities declared, not verified".
 
 ## 13. Structured outputs, beside the local validation (session 10)
 
@@ -345,6 +348,9 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
   - the attempt is retried without the field and counted as a call;
   - a route notice reaches the run log, `proposals.yaml` and the review request. Nothing is silent.
 - **Not used natively.** When native output is not used (the capability is not reported, the mode is `off`, or the schema cannot be fitted), a route notice says so.
+- **Every phase carries its own schema (session 11).** The request layer sends, on every request: the proposal set (analysis); the reading answer (`regionread.answer_schema()`: `{region_id, reading, model_rationale}`, `reading` being the `readings.Reading` schema itself); the downstream set (`contract.downstream_fill_schema()`); the critic's batch of reviews (`critic.CRITIC_BATCH_SCHEMA`). Free-form objects the limits forbid (an item's payload, a table row's cells) travel as JSON strings and are decoded before the strict local parse (`structured.decode_free_form`, which follows the original schema). Session 10's downstream and reading requests carried no schema.
+- **The host route** carries the schema in the packet and validates locally; the critic's and the repair's plain host sessions pass the critic's schema with `--json-schema`.
+- **Ollama on tool turns.** With `with_tools: false` the schema is withheld on a turn that offers tools, and a route notice now says so (`structured_output_withheld`).
 
 ## 14. Bounded batches (session 10)
 
@@ -357,6 +363,9 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 - **Nothing is dropped.** Every provision is in exactly one batch, in addendum order (`assignment`). A provision that cannot fit even alone is its own batch with `fits: false` and the note "too large: needs a person to split", with its size. The note also says when the overhead alone leaves no room.
 - **Sizes are estimates.** They use 3.5 characters per token, 4,800 tokens per image crop and 700 output tokens per provision (from the blind-03 host run: 68,854 characters for 35 provisions). `--count-tokens` (Anthropic, with a key) measures the packet with `POST /v1/messages/count_tokens` and records the source on every batch.
 - **Settings.** In `config/ai.yaml` `batching:`. A route may override them; Ollama sets `prior_turns_tokens: 8000` for its 32,768 bound.
+- **Every request of every phase (session 11).** The same rule is applied to each request before it is sent (`batching.request_size`, through `requests.size`): system + tool definitions + the packet as sent + the images attached + the later-turn allowance (tool phases only) + the phase's expected output (`batching.expected_output`: analysis 1,500 + 700 per provision; downstream 1,500 + 900 per task; a reading 8,000; the critic 300 + 350 per item; `batching.expected_output` in the configuration), against the context window (verified; a cassette's; the host's declared one) less the margin, and the output cap. A route's own `batching` (Ollama's `prior_turns_tokens: 8000`) applies to the requests too. During the turns the conversation itself is held to the same bound; one that outgrows it fails its batch with the sizes (class `too_large`).
+- **Split, or escalated: never truncated.** The analysis is planned by provision and the downstream phase by task with these sizes (each downstream group's real packet is sized), on every route. A request that still does not fit is split in two, in order (batch status `split`, parts `<id>.1`, `<id>.2`); a single provision, task or image region that does not fit alone is `escalated` with its size, for a person. The downstream packet carries every unit of `units_after` in full: `downstream.packet` shortened a unit over 4,000 characters, and the workflow restores the full text and lists the units it restored (`units_after_note`).
+- **Shared context once per session.** The analysis packet moves the candidate targets' texts into one `targets` map (a target cited by several provisions is sent once; each provision lists target ids) and keeps only the batch's own provisions in the pattern drafter's reference (`requests.compact_analysis`); the critic prints the units its items cite once per request.
 
 ## 15. The independent critic (session 10)
 
@@ -388,6 +397,13 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 - **No status changes.** A guard refuses to write if any status differs. Agreement between models is not approval.
 - **Model-supplied reviews are dropped.** A `review` supplied by a proposer is dropped when the set is parsed, and recorded as an overwrite.
 
+**Inside the workflow (session 11).** The critic runs after each analysis batch is validated, and in the workflow's `critic` step after the downstream items are validated, on that batch's selected items only, in ONE request per batch (`critic.review_batch`; not one per item): the shared context (the addendum, the stage, the units the items cite) once, the answer `{reviews: [{item, agrees, concerns, evidence_checked}]}`. It goes through the request layer like every phase (capabilities, size, the failure classes, one bounded repair), on `critic.route` (host by default; a recorded run replays the cassette's `phase: critic` sessions, and a batch without one is `skipped` with the reason).
+
+- **Selection, extended.** `conflicting` also selects items whose evidence contradicts another item of the set (`critic.contradictions`: the same target or row with different new words, values or parameters). Downstream items are selected by `critic.select_downstream`: removals; consequential interpretations (a row whose interpretation states a consequence; an issue for the A3 sheet); conflicts; uncertain targets (a reading of a row other than its task's row; a task the run does not have).
+- **Findings.** Analysis items: `review.critic` in the batch's staged set (and the combined set), and its review request. Downstream items: `downstream/critic.yaml` (`items.<id>.review.critic`; the downstream contract has no review field) and the checkpoint's downstream items. The review packet shows each finding under its item and in a "Critic" section that says agreement is not approval.
+- **Bounded and resumable.** `critic.max_items` per batch; the critic's state is on its batch (`batches.<id>.critic`: pending, done, deferred, failed, not_needed, skipped). A rate-limited critic is deferred like a batch; a resume asks only the critics not done, never a batch again for its critic, and the reviews already written stay (they are in the staged sets).
+- `tenderpack ai critic RUN_ID` (outside the workflow) is unchanged: one request per item.
+
 ## 16. The run command (session 10)
 
 One runnable, resumable workflow from a new addendum PDF and the preceding tender state to candidate A1–A5 outputs and a review packet (`tenderpack/ai/workflow.py`, with `candidate.py`, `checkpoint.py` and `downstream.py`). Nothing it does touches the real `curation/`, `config/` or `out/`, and nothing is approved, accepted, sent or published.
@@ -399,7 +415,7 @@ One runnable, resumable workflow from a new addendum PDF and the preceding tende
     [--pack config/pack.yaml] [--evidence build] [--run-id ID] [--batch-size 8] [--downstream-batch-size 12] \
     [--model M] [--cassette P] [--host-model NAME] [--host-model-alias M] [--host-manual] \
     [--stop-after STEP] [--no-background] [--no-cache] [caps as for propose] [--allow-unverified-capabilities]
-.venv/bin/python -m tenderpack ai resume RUN_ID [--stop-after STEP] [--no-retry]
+.venv/bin/python -m tenderpack ai resume RUN_ID [--stop-after STEP] [--no-retry] [--from STEP]
 .venv/bin/python -m tenderpack ai submit-batch RUN_ID FILE --by "Name or host session" [--host-model NAME] [--batch ID]
 .venv/bin/python -m tenderpack ai run-status RUN_ID
 ```
@@ -409,7 +425,8 @@ One runnable, resumable workflow from a new addendum PDF and the preceding tende
   - 0: the run finished (complete or partial) or stopped where `--stop-after` asked;
   - 1: a step failed, or the candidate outputs build was refused;
   - 2: refused before anything ran, or ingest found a structural failure;
-  - 4: the run waits for a host submission.
+  - 4: the run waits for a host submission;
+  - 5 (session 11): a batch was deferred for a rate limit and the run stopped cleanly (`status: deferred`); resume later.
 - **The caps** bound the whole run, not each batch: every batch gets what is left.
 
 ### The steps
@@ -434,7 +451,7 @@ Each step is checkpointed.
    - **Review.** The review packet lists each reading with its status and checks, and links the build's own packet (`candidate/build/review/<region>/packet.html`), which shows the reading beside its crops, marked pending.
 2. **analysis.** The provisions are split into bounded batches, in document order, keeping a section together and at most `--batch-size` per batch.
    - **What is covered.** Every provision: cover lines, notes, table rows, form rows and image readings. The addendum's other units (headings, table containers) are listed as structure.
-   - **API routes.** A batch is also split when the verified context or output cap cannot take it (`batching.plan_batches`). Each batch is one `controller.propose` run.
+   - **API and recorded routes.** A batch is also split when the context or output cap cannot take it (session 11: on every route, with the request layer's complete accounting). Each batch is one request through the request layer (`requests.converse`); the controller then validates and stages it exactly as `propose` does (`validate_set`, the freshness re-check, `write_staging` with the route notices).
    - **Host route.** A headless host session per batch (`hostsession.HostSession.run_batch`) when the host CLI is installed, unless `--host-manual`. Otherwise the run writes `batches/<id>.packet.json` and waits for `submit-batch`.
    - **Recorded route.** One cassette session per batch (`sessions:`, each matched on the batch's provisions).
 3. **validation.** The items of every batch are validated as one set by `controller.validate_set`, with the controller's statuses, coverage and resolution (`ai/<run_id>-combined/`). An op whose change type the engine does not have becomes an escalation, keeping its evidence. It is never forced into a known type.
@@ -445,20 +462,24 @@ Each step is checkpointed.
    - the A5 activities needing those rows;
    - every escalated or contested provision, with its affected scope (units, rows, activities, clarification entries).
 
-   The proposals for these tasks come in bounded batches as a `DownstreamSet` (`contract.py`): `row_reading`, `row_new`, `issue`, `clarification_item`, `evidence_item`, `activity` (its duration a PROVISIONAL ASSUMPTION) and `dependency` (a relationships-file entry).
+   The proposals for these tasks come in bounded batches as a `DownstreamSet` (`contract.py`): `row_reading`, `row_new`, `issue`, `clarification_item`, `evidence_item`, `activity` (its duration a PROVISIONAL ASSUMPTION), `dependency` (a relationships-file entry) and, since session 11, `no_change` (`{why}` with a verbatim quotation: the task needs nothing; never for a row task, whose STALE reading is re-made, nor for an obligation without a row). A task with no item at all is **unanswered**.
+
+   **A new row says where it comes into force** (session 11). `row_new` carries `introduced: {stage: <the addendum>, by: <the op id, or the provision unit>, evidence: {unit, page, words}}` (`register.Introduction`). Before that stage the row is NOT IN FORCE; at it, NEW (introduced by …). A row without the field is in force from the stage its first unit is issued in, so a new row that cites a volume unit (blind rehearsal 04: `VOL-V:18.1`, issued in BASE, read at ADD-03 only) is in force from BASE and refused below with the reason. Putting the addendum's provision first in `units` is a convention, not the evidence. The packet's `row_new` tasks carry an `introduce` hint (the stage and the op).
 5. **downstream_validation** (`downstream.validate`), in the candidate, against the state the promotable ops produce:
-   - the register's own checks: quotes verbatim in the effective text at the stage, the consequence class with its quote, date rules that parse and whose words are in their unit, ids new and absent from the ledger;
+   - the register's own checks at **every stage** of the candidate, not only at the addendum (session 11): quotes verbatim in the effective text of each stage where the row is in force, the consequence class with its quote, the `introduced` claim (the op applied at that stage or the provision that addendum's; the words printed there, new at that stage, in the introducing provision, a unit its op changed or names, or a unit of the row; no reading made earlier), date rules that parse and whose words are in their unit, ids new and absent from the ledger. A problem the proposals add at any stage holds the item back (`insufficient_evidence`), and the item's `stages` record lists its status at each stage;
    - `clarify.check` on the candidate register;
-   - the schedule checks (C40, C44, C45) with the proposals;
+   - the schedule checks (C40, C44, C45) with the proposals, at the addendum and at every earlier stage where a proposed row is in force;
    - `relationships.validate`.
 
-   **Interactions.** A reading of a row an op makes REMOVED or DELETED is invalid. A new row whose units are not in the effective text is invalid. An activity needing a row that is neither existing nor proposed is invalid. An item depending on one that cannot be promoted is held back.
+   **Interactions.** A reading of a row an op makes REMOVED or DELETED is invalid. A new row whose units are not in the effective text is invalid. An activity needing a row that is neither existing nor proposed is invalid. An item depending on one that cannot be promoted is held back. A `no_change` on a row task or a C46 task is invalid.
 
-   **Statuses.** Rows, readings, activities and relationships are never above `interpretation_pending`. A question is forced to `draft, not sent`, and a relationship to `proposed`, with the overwrite recorded.
+   **Statuses.** Rows, readings, activities, relationships and `no_change` answers are never above `interpretation_pending`. A question is forced to `draft, not sent`, and a relationship to `proposed`, with the overwrite recorded.
+5a. **critic** (session 11): the selective critic over each downstream batch's selected items (one request per batch), and any analysis batch whose critic is still pending or was deferred (§15). It changes no status.
 6. **promotion**, into the candidate only:
+   - **validated again first** (session 11): the candidate is reloaded and its inputs' bytes compared with the state identity (`Workspace.check_fresh(deep=True)`); the COMBINED set, the ops and dispositions (`controller.validate_set`) and the downstream items (`downstream.validate`), is validated again against it. A set made against another state (an input edited after validation: the register, a reading, the relationships, ...) is STALE: nothing is promoted and the run stops with the differences (`steps.promotion.refused`, `stale`). A status that differs from the recorded one is listed (`steps.promotion.revalidated`) and the staged files are rewritten, so what is promoted is what was validated now;
    - the op file: the promoted items PROPOSED, origin `assistant`; every other provision `unresolved` with its reason;
-   - new rows (`register/rows/<ADD>-ai.yaml`) and re-made readings, inserted into the rows' own files;
-   - issues, evidence items, templates and lead times;
+   - new rows (`register/rows/<ADD>-ai.yaml`) and re-made readings, by row id through the YAML structure (session 11): a row is found by loading every file `register.load_rows` reads, never by matching text or indentation, and updated in place of its own node (the file's other rows and comments kept; the result reloaded and compared). A row id that another file holds is never written again; a `replace_requirement` is applied only when the row's requirement is the `old` given;
+   - issues, evidence items, templates and lead times (the files' own leading comments kept);
    - clarification entries;
    - relationships, through `relationships.append_proposed`.
 
@@ -473,6 +494,23 @@ Each step is checkpointed.
 
 When the addendum is PARTIAL in the candidate (any provision unresolved), A3 and the A5 programme show the validated (previous) state. The addendum as proposed is in A1's column for it, in A2, in `a5/working/<ADD>.json` and in the diff.
 
+### Execution, completeness and approval: three separate records (session 11)
+
+The run's status is `complete` only when its **completeness** is complete (`workflow.completeness`):
+
+1. every provision is answered by a promoted op or disposition (none `unresolved` in the candidate op file);
+2. every downstream task is answered by a promotable item, and every downstream batch ran (`done`): a task with no item is listed as unanswered, one whose items are all escalated, insufficient, invalid, conflicting or held back as answered only by items that cannot be promoted, a failed or deferred batch with its error and its tasks;
+3. check-register on the candidate is clean (exit 0, no finding; the C46 findings are listed);
+4. the candidate outputs were published (built, exit 0, not refused).
+
+Otherwise the run is `partial`, and every reason is given (the status line, the checkpoint, the review packet). The checkpoint keeps three records apart, rewritten at the end of every drive:
+
+- `execution`: what ran: each step's status and the batches of each phase by status;
+- `completeness`: `{status, reasons, provisions, downstream {tasks, answered, unanswered, unresolved, batches_not_done, no_change}, check_register {exit_code, findings, by_kind, c46}, outputs {published, refused, reason, exit_code}}`;
+- `approval`: always `none` from the run (it approves, accepts and sends nothing), with the decisions a named person has recorded in the candidate's decisions file listed by name, if any.
+
+The review packet opens with the same three, and `ai run` / `ai resume` print `completeness` and `approval` in their summary. A complete run is still unreviewed: completeness is not approval.
+
 ### The checkpoint (`runs/<run_id>/checkpoint.json`, format `tenderpack-ai-run/1`)
 
 It is rewritten atomically after every change. It holds:
@@ -484,7 +522,10 @@ It is rewritten atomically after every change. It holds:
 - `provisions`: per provision, `pending` → `proposed` → `validated` (or `unaccounted` when its batch answered nothing for it), with the history, items and statuses, and `accounted_by` for content of another item's op;
 - `structure`: the units that are not provisions;
 - `downstream`: per task and per item (`proposed` → `validated`);
-- `interventions`, `usage`, `events` (started, resumed, a stale lock taken over).
+- `interventions`, `usage`, `events` (started, resumed, a stale lock taken over);
+- `execution`, `completeness`, `approval` (session 11): the three separate records above.
+
+**The state identity** (`contract.StateIdentity`) a proposal, a calculation and every staged set are bound to covers, besides the pack id, the evidence build, the stages, the decisions, the assumptions, the activity templates, the readings and approvals, the earlier amendment files and unrecorded crops (session 10), the curated inputs the register reads (session 11): `register_sha256` (rows.yaml, every row file its `include` names, pins.yaml), `relationships_sha256` and `curation_sha256` (the issues and per-document issue files, the dispositions, the evidence items, the clarification register, the row-id ledger, the scenarios). A set made before any of them changed is STALE.
 
 ### Resumption
 
@@ -492,7 +533,9 @@ It is rewritten atomically after every change. It holds:
 
 - a provision that is not `pending` is not asked again;
 - a batch whose result was received is not re-run;
-- a batch that failed or was interrupted is asked again, and the steps after it are recomputed from the candidate as it was before promotion. `--no-retry` keeps failures as they are.
+- a batch that failed or was interrupted is asked again, and the steps after it are recomputed from the candidate as it was before promotion. `--no-retry` keeps failures as they are;
+- a batch `deferred` for a rate limit (session 11) is always asked again, even with `--no-retry`; a critic deferred or failed is asked again alone, its batch is not.
+- `--from STEP` (session 11) reruns that step and every later one even when they are done, for a run made before a code change (the pre-promotion candidate is restored when the step is at or before promotion); batches that succeeded are never asked again, and `--from` does not by itself ask a failed batch again (that is `--no-retry`'s decision). The resumed event records `from_step`. A set made against another state identity is still refused at promotion (STALE): `--from` cannot promote proposals the current bindings do not cover.
 
 The run lock (`run.lock`) lets one process drive a run. A lock whose process is dead is taken over by `resume`, and the takeover is recorded in `events`.
 
@@ -514,5 +557,30 @@ The set is validated exactly as an API run's. The submission (who, when, the bat
 | Last validated state | `candidate/out-before/` (else the real `out/`) | the pre-addendum outputs, never modified by the run |
 | Real | `curation/`, `config/`, `out/`, `build/` | only read; their sha256 at the start is in the checkpoint |
 | Logs | `runs/<run_id>/log.jsonl`, `logs/`, `ai/<batch run>/`, `worklog/model_calls/` | every batch's prompt, tool calls, responses, validation |
+
+### The request layer and the three failure classes (session 11)
+
+Every model request, whatever the entry point (the workflow; the standalone `tenderpack ai propose`, whose set is `deferred` after a rate limit outlasts the backoff, exit 1 as before; `tenderpack ai host-session`, which reports `failure_class` and `deferred`), the phase (readings, analysis, downstream, critic) and the route (recorded, anthropic, openrouter, ollama, the headless host, the manual host path), goes through `tenderpack/ai/requests.py`: the phase's schema (§13), the capability check (§12), the complete size (§14), then the failure policy (`config/ai.yaml` `failures`). Three failures, handled differently:
+
+| Class | What it is | What happens |
+|---|---|---|
+| `rate_limit` | HTTP 429; a provider's rate-limit error; the host CLI's plan limit (`api_error_status` 429; blind-04: "You've hit your session limit · resets 4:30pm (UTC)") | bounded exponential backoff with jitter (30, 60, 120, 240 s, ±20 %; `max_tries` 4); a reset the provider names is waited for when within `honour_reset_up_to_s` (300 s), else the batch is deferred at once. Then the batch is **`deferred`**, never failed: the run stops cleanly, exit 5, everything done so far checkpointed (`on_deferred: stop`), or goes on (`continue`: later requests in the same drive get one try each, no backoff). `resume` asks the deferred batches again |
+| `provider` | 5xx, 529, timeouts, connection errors; a host CLI that cannot start, times out or ends without a result | bounded retries (API routes: the run's `retries`/`backoff_s`; the host: one retry), then the batch **fails** (resume asks it again) |
+| `malformed` | an answer that does not parse, fails its schema, or breaks a reference (an item's `statements` must be ids of the set's statements, never free text; a downstream item answers a task of its packet; a review names a requested item) | ONE re-ask carrying the validation errors: the same conversation on a provider route, a plain no-tool session given the answer on the host route, the submitter on the manual path (the submission is not taken; the batch keeps waiting). An item that still fails its schema after it is set aside **item by item** (`malformed_items`; the batch keeps its good items); an item whose only problem is a reference is kept and rated by the controller's own checks (an unknown statement is `insufficient_evidence`, with the reason), so nothing a person could read is dropped; an answer that is not a set at all fails the batch. A host session that ended with no answer at all is not "repaired" from nothing: the batch fails and resume asks it again |
+
+**Batch states** (checkpoint): besides `pending`, `running`, `waiting_for_host`, `done`, `failed`, `skipped`, `interrupted`: `deferred` (with `deferrals`: when, the message, the reset named), `split` (with its `parts`), `escalated` (with its `size`). Each batch records its `failure_class`, every failed call (`failures`: class, kind, status, wait), and `request` (the size, the repair, the malformed items, the usage, the route notices). The review packet lists them under "Requests: failures, deferrals, repairs and route notices".
+
+**Fewer and smaller sessions.** Batches run one at a time (`concurrency.batches: 1`; another value is refused: concurrent sessions do not lift a plan's rate limit, they reach it sooner). After one deferral in a drive, later requests are tried once and deferred without backoff. The shared context is sent once per session (§14), the critic makes one request per batch (§15), and a batch that succeeded is never asked again.
+
+**What is tested, and how** (`tests/test_session11_requests.py`; every exchange recorded or mocked):
+
+| Route | Through the request layer | Evidence |
+|---|---|---|
+| recorded | analysis, reading, downstream, critic; 429 → backoff → deferred → resume asks only the deferred batch, the critic's findings survive | workflow cassettes (`workflow_add03.yaml` + `s11_workflow_critic.yaml`); hand-written, not a model |
+| anthropic | downstream with native `output_config.format` (the downstream schema, payload as a string, decoded); `--allow-unverified-capabilities` notice in the log, checkpoint and packet | HTTP cassettes replayed through the real adapter; **no live call** (no key) |
+| openrouter | downstream with `response_format` json_schema | HTTP cassette; **unverified live** (openrouter.ai blocked here) |
+| ollama | downstream, `format` withheld on a tool turn with a notice, the route's 8,000-token later-turn allowance | HTTP cassette; **unverified live** (the Mac) |
+| host (headless `claude -p`) | analysis over MCP; answer sessions; the plain repair session; the batched critic; the plan's 429 result → backoff / deferral; the reading phase refused when the declared capabilities have no image input | a recorded stand-in for the CLI (`tests/fixtures/ai_cassettes/fake_claude_s11.py`, not a model); a real headless session is recorded in the session 11 work log |
+| manual host (`submit-batch`) | the answer's checks before anything is taken | session-10 workflow test |
 
 **Taking anything over.** Nothing is applied to the real curation. A person adds the PDF to the pack (OPERATING_GUIDE §3 steps 1–2), reviews and copies the files `promotion.json` lists, then runs `pin`, `check-register` and `outputs`, and decides with `accept` / `reject`.

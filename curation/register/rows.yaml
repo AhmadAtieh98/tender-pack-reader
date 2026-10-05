@@ -185,7 +185,12 @@ rows:
   - id: VOL-I-8.5-01
     group: VOL-I:8.5
     scope: [qualification, references]
-    requirement: "Evidence two reference sewage treatment plants of at least 80,000 m3/day, each in commercial operation within the ten years before the Proposal Due Date"
+    # session 11 (audit A3-7), proposed: the requirement and quote follow footnote 12's own words, VOL-I 8.5#fn12 p4:
+    # "each of nominal capacity not less than 80,000 m³/day and each having achieved commercial operation within the ten
+    # (10) years preceding the Proposal Due Date"; ADD-01 Q5: "requires commercial operation to have been achieved".
+    # 'in commercial operation within' (the earlier wording) would admit a plant commissioned before the window. The
+    # window start is computed by the REFERENCE-LOOKBACK rule (shown on A3), never typed.
+    requirement: "Evidence at least two (2) reference sewage treatment plants of at least 80,000 m3/day, each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date"
     units: ["VOL-I:8.5#fn12", "VOL-I:8.5"]
     discipline: Technical
     owner: Technical lead
@@ -195,12 +200,12 @@ rows:
       - {rule_id: REFERENCE-LOOKBACK, kind: relative, purpose: window_start, anchor: PDD, offset: 10, unit: year, direction: before, source_unit: "VOL-I:8.5#fn12", text: "within the ten (10) years preceding the Proposal Due Date"}
     interpretations:
       - stage: BASE
-        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000"
+        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000 m³/day and each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date"
         parameters: {plants_min: 2, capacity_min_m3_day: 80000, lookback_years: 10}
         consequence: {class: rejection, unit: "VOL-I:8.5#fn12", quote: "shall be rejected without further evaluation"}
         note: "The rejection rule is in footnote 12, not in the body of 8.5."
       - stage: ADD-01
-        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000"
+        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000 m³/day and each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date"
         parameters: {plants_min: 2, capacity_min_m3_day: 80000, lookback_years: 10}
         consequence: {class: rejection, unit: "VOL-I:8.5#fn12", quote: "shall be rejected without further evaluation"}
         note: "ADD-01 §2.2 names footnote 12; ADD-01 Q5: a plant under construction does not count."
@@ -361,6 +366,17 @@ rows:
     confidence: medium
     confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026)"
     issues: [I-READING-F4C]
+    # session 11 (audit A3-6), proposed: the note's consequence restates VOL-I 9.4's ("Failure to submit a complete and
+    # properly executed Form 4-C for each member shall render the Proposal non-responsive", VOL-I 9.4 p5; the same words
+    # on VOL-IV p5). A3 lists the trigger once, on VOL-I-9.4-01, with this row and VOL-IV p5 as corroborating sources.
+    corroborates:
+      row: VOL-I-9.4-01
+      also:
+        - {unit: "VOL-IV:F4-C/para1", page: 5, words: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+      adds: "ADD-02 Q9: English with an Arabic translation is not acceptable"
+      adds_evidence:
+        - {unit: "ADD-02:Q9", page: 2, words: "May Form 4-C be submitted in English with an Arabic translation?"}
+        - {unit: "ADD-02:Q9", page: 2, words: "No. Form 4-C shall be completed in Arabic."}
   - id: ADD-02-7.2-01
     group: ADD-02:7
     scope: [envelope_A, forms, new_in_addendum]

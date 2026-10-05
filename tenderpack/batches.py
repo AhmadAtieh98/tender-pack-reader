@@ -26,7 +26,8 @@ from pathlib import Path
 from . import review
 from .live import crop_unit
 from .proposals import is_applied, load_proposals
-from .register import Consequence
+from .packets import _tagged
+from .register import Consequence, consequence_gloss
 
 CSS = ("body{font-family:system-ui,sans-serif;margin:16px;max-width:1200px;color:#111;background:#fff}"
        "h1{font-size:22px}h2{font-size:17px;margin-top:26px;border-bottom:1px solid #ccc}"
@@ -116,11 +117,11 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
             read = ("<table>" + "".join(f"<tr><th>{_e(k)}</th><td>{_e(v)}</td></tr>" for k, v in cells.items()) + "</table>") \
                 if cells else (f'<p dir="{"rtl" if u.get("lang") == "ar" else "ltr"}">{_e(u.get("text"))}</p>'
                                + (f"<p><i>translation ({tr_label}):</i> {_e(u['translation'])}</p>" if u.get("translation") else ""))
-            unc = "".join(f"<li>{_e(x)}</li>" for x in (u.get("uncertain") or []))
+            unc = "".join(f"<li>{_e(_tagged(x, appr))}</li>" for x in (u.get("uncertain") or []))   # R-8: settled points
             rows.append(f'<div class="item"><b>{_e(u["unit_id"])}</b><div class="grid"><div>'
                         + "".join(_fig(c, f"{u['unit_id']} (page {c['page']})") for c in cs)
                         + f"</div><div>{read}" + (f"<ul>{unc}</ul>" if unc else "") + "</div></div></div>")
-        decisions = "".join(f"<li>{_e(d)}</li>" for d in packet.get("decisions") or [])
+        decisions = "".join(f"<li>{_e(_tagged(d, appr))}</li>" for d in packet.get("decisions") or [])
         if appr:
             from .packets import approval_scope_html
             box = (f'<div class="decide"><b>Approved by {_e(appr.get("reviewer"))} on {_e(appr.get("date"))}</b> for '
@@ -147,17 +148,18 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         "An approval pins the reading and its evidence; any later change makes it pending again.", body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batch 2: disqualifiers (A3 rows)
-    body, done = [], set()
+    body, done, classes = [], set(), {}
     for e in r["evals"]:
         row, ev = e["row"], e["stages"][val]
         it = r["register"].interp_at(row, val)
         c = getattr(it, "consequence", None)
         if not (isinstance(c, Consequence) and ev["status"]
-                and not ev["status"].startswith(("NOT ISSUED", "DELETED", "REVOKED", "REMOVED"))
+                and not ev["status"].startswith(("NOT ISSUED", "NOT IN FORCE", "DELETED", "REVOKED", "REMOVED"))
                 and c.cls in ("rejection", "disqualification", "non_responsive", "exclusion", "score_elimination",
                               "document_refusal", "criterion_zero")):          # every class A3 lists (session 09)
             continue
         done.add(row.id)
+        classes[c.cls] = classes.get(c.cls, 0) + 1
         st = rv[("row", row.id)]
         chain = [r["register"]._op_by_id(h) for h in (ev.get("ops") or [])]
         provs = [x.op.provision for x in chain if x is not None]           # the amending provisions, beside the original
@@ -178,7 +180,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)}<div class="grid"><div>'
                     + "".join(_fig(x, f"{x['unit']} (page {x['page']})") for x in cs)
                     + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{_e(it.quote if it else '')}”</p>"
-                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”" + (f" (proposed translation: ‘{_e(c.gloss)}’)" if c.gloss else "")
+                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”"            # gloss label: the approval state
+                    + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
                     f"{_e(row.confidence_reason)}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
                     + f'<div class="decide"><b>Decision needed:</b> {decide}</div>{_cmd_row(row.id)}</div></div></div>')
@@ -186,7 +189,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                       "decision": f"accept {row.id} as quoted with consequence {c.cls}, or reject",
                       "command": f'python -m tenderpack accept {row.id} --reviewer "Your Name"'})
     (out / "batch-02-disqualifiers.html").write_text(_page(
-        "Batch 2 — what puts the bid out (A3 rows)", f"{len(done)} rows with an explicit consequence at {val}. "
+        "Batch 2 — what puts the bid out (A3 rows)", f"{len(done)} rows with an explicit consequence at {val} ("
+        + ", ".join(f"{n} {k.replace('_', '-')}" for k, n in sorted(classes.items())) + "). "
         "A decision binds to the row, its evidence items and its dependencies; any later change voids it.", body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batch 3: amendment ops

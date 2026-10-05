@@ -29,6 +29,19 @@ statuses, which crops were read, and the elapsed time. The orchestrator lock on 
 The model is the host's: requested with --model when configured, and recorded as the CLI reports it (system init and
 modelUsage); the host also declares it in submit_proposals. The controller validates the submitted set exactly as an
 API run's (controller.submit); nothing is approved or accepted.
+
+Session 11 (the request layer, tenderpack/ai/requests.py; every phase on the host route goes through it):
+  * failure classes: every session's result is classified (`classify`): `rate_limit` when the CLI reports
+    api_error_status 429 or a rate/session/usage-limit message (blind-04: "You've hit your session limit · resets
+    4:30pm (UTC)", is_error true, terminal_reason api_error), with the reset time it names when it names one;
+    `provider` when the CLI cannot start, times out, exits without a result, or reports another API error; None when
+    the session ended normally (its answer is then parsed and validated; a malformed one is repaired once).
+  * declared capabilities (`HostSession.capabilities`): the host's model, context and modalities cannot be verified by
+    this tool; config/ai.yaml `host_session.capabilities` states them with their basis, and every use carries a route
+    notice saying they are declared, not verified (run log, checkpoint, review packet).
+  * AnswerSession: a tool session whose FINAL MESSAGE is the answer (the readings and downstream phases; it submits
+    nothing). PlainSession: a session with no tools at all (`--tools ""`, `--output-format json`, optionally
+    `--json-schema`): the critic and the bounded repair of a malformed answer.
 """
 from __future__ import annotations
 
@@ -37,6 +50,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -86,9 +100,64 @@ class SessionResult:
     host_plan_cost_usd: float | None = None
     final_text: str = ""
     run_dir: str = ""
+    api_error_status: int | None = None         # the CLI's result message (e.g. 429 on a plan's session limit)
+    terminal_reason: str | None = None
+    failure_class: str | None = None            # refused | rate_limit | provider | None (ended normally; see classify)
+    reset_in_s: float | None = None             # seconds until the reset time a rate-limit message names, if any
+    structured_output: object = None            # PlainSession with --json-schema: the CLI's structured_output
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+RATE_LIMIT_RE = re.compile(r"\b429\b|rate[ _-]?limit|too many requests|session limit|usage limit|hit your (?:\w+ )?limit",
+                           re.I)
+_RESET_RE = re.compile(r"resets?\s+(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*\(?(UTC|GMT)\)?", re.I)
+_RETRY_IN_RE = re.compile(r"(?:try again|retry)\s+(?:in|after)\s+(\d+(?:\.\d+)?)\s*(s|sec|seconds?|m|min|minutes?)\b",
+                          re.I)
+
+
+def reset_seconds(text: str, now: dt.datetime | None = None) -> float | None:
+    """Seconds until the reset a rate-limit message names ('resets 4:30pm (UTC)', 'try again in 20 s'); None when it
+    names none (or names a time zone other than UTC, which this tool does not guess)."""
+    now = now or _now()
+    m = _RETRY_IN_RE.search(text or "")
+    if m:
+        v = float(m.group(1))
+        return v * 60 if m.group(2).lower().startswith("m") else v
+    m = _RESET_RE.search(text or "")
+    if not m:
+        return None
+    h, mi, ap = int(m.group(1)), int(m.group(2) or 0), (m.group(3) or "").lower()
+    if ap == "pm" and h < 12:
+        h += 12
+    elif ap == "am" and h == 12:
+        h = 0
+    if h > 23 or mi > 59:
+        return None
+    t = now.replace(hour=h, minute=mi, second=0, microsecond=0)
+    if t <= now:
+        t += dt.timedelta(days=1)
+    return round((t - now).total_seconds(), 1)
+
+
+def classify(res: SessionResult, stderr: str = "") -> str | None:
+    """The failure class of a finished session (see the module docstring); sets res.failure_class and res.reset_in_s."""
+    text = " ".join(x for x in (res.final_text, res.error or "", stderr[-2000:]) if x)
+    cls = None
+    if (res.error or "").startswith("refused:"):
+        cls = "refused"                                   # session 11 (E135): a local refusal (a lock), never an answer
+    elif res.api_error_status == 429 or (res.error and RATE_LIMIT_RE.search(text)):
+        cls = "rate_limit"
+    elif res.timed_out or res.exit_code is None and res.error or (res.error or "").startswith("the host CLI could not"):
+        cls = "provider"
+    elif res.api_error_status is not None or res.terminal_reason == "api_error":
+        cls = "provider"
+    elif res.exit_code not in (0, None) and not res.final_text and not res.submission:
+        cls = "provider"
+    res.failure_class = cls
+    res.reset_in_s = reset_seconds(text) if cls == "rate_limit" else None
+    return cls
 
 
 def _now() -> dt.datetime:
@@ -152,6 +221,12 @@ class HostSession:
         return (f"claude-code headless ({self.model})" if self.model else
                 "claude-code headless (the CLI's default model; recorded from the CLI output)")
 
+    def capabilities(self):
+        """The host's capabilities as DECLARED in config/ai.yaml host_session.capabilities (this tool cannot verify a
+        host's model): image input and tool use as observed in real host sessions, the context window and output cap
+        the request accounting is held to. The source says so; the request layer adds a route notice."""
+        return declared_capabilities(self.cfg)
+
     def prompt(self, packet: dict) -> str:
         from .providers.recorded import PACKET_MARK
         pub = dict(packet)
@@ -194,7 +269,8 @@ class HostSession:
                              self.cfg.get("lock_stale_after_min", 120))
         except B.Refused as e:
             res.error = f"refused: {e}"
-            log.event("refused", reason=str(e))
+            classify(res)                                 # session 11 (E135): failure_class "refused", never an answer
+            log.event("refused", reason=str(e), failure_class=res.failure_class)
             return self._finish(log, packet, res, None)
         mcp_logs_before = set(Path(ws.worklog).glob("mcp-*.jsonl")) if Path(ws.worklog).is_dir() else set()
         t0 = time.monotonic()
@@ -216,6 +292,12 @@ class HostSession:
             if lock is not None:
                 lock.release()          # no-op when the submission already released it (route host)
         self._parse(stdout, res, log, run_dir)
+        err_path = run_dir / "stderr.txt"
+        classify(res, err_path.read_text(encoding="utf-8") if err_path.exists() else "")
+        if res.failure_class:
+            log.event("failure_class", failure_class=res.failure_class, api_error_status=res.api_error_status,
+                      terminal_reason=res.terminal_reason, reset_in_s=res.reset_in_s, error=res.error,
+                      result=truncate(res.final_text, 500))
         new_logs = sorted(set(Path(ws.worklog).glob("mcp-*.jsonl")) - mcp_logs_before) if Path(ws.worklog).is_dir() else []
         if new_logs:
             log.event("mcp_server_log", files=[str(x) for x in new_logs])
@@ -259,6 +341,10 @@ class HostSession:
                 res.usage = m.get("usage")
                 res.host_plan_cost_usd = m.get("total_cost_usd")
                 res.final_text = str(m.get("result") or "")
+                res.api_error_status = m.get("api_error_status") if isinstance(m.get("api_error_status"), int) else None
+                res.terminal_reason = m.get("terminal_reason")
+                if m.get("structured_output") is not None:
+                    res.structured_output = m.get("structured_output")
                 for k in (m.get("modelUsage") or {}):
                     if k not in res.model_reported:
                         res.model_reported.append(k)
@@ -376,3 +462,134 @@ def host_packet(ws, addendum: str, provisions: list[str] | None = None) -> dict:
     pk = task_packet(ws, addendum, provisions)
     pk["image_targets"] = image_targets(ws, pk)
     return pk
+
+
+# ---------------------------------------------------------------------------------------------- session 11
+
+DECLARED_SOURCE = ("config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model "
+                   "cannot be queried; image input and tool use as observed in real host sessions)")
+
+
+def declared_capabilities(cfg: dict):
+    """The host route's capabilities as declared in config/ai.yaml `host_session.capabilities` (see HostSession)."""
+    from .providers.base import Capabilities
+    d = dict((cfg.get("host_session") or {}).get("capabilities") or {})
+    return Capabilities(images=d.get("images"), tools=d.get("tools", True), structured_output=False,
+                        context_tokens=d.get("context_tokens"), max_output_tokens=d.get("max_output_tokens"),
+                        retention="the coding host's own policy; not verified by this tool",
+                        source=DECLARED_SOURCE + (f"; basis: {d['basis']}" if d.get("basis") else ""),
+                        details={"declared": True, "unverified": True})
+
+
+class AnswerSession(HostSession):
+    """A tool session whose FINAL MESSAGE is the answer (readings, downstream): it submits nothing. `tools` names the
+    MCP tools it may use (default: every tenderpack tool but get_task_packet, request_review and submit_proposals);
+    `rules` is appended to `system` as the host-session rules."""
+
+    def __init__(self, ws, cfg: dict | None = None, *, system: str, rules: str = "", tools: list[str] | None = None,
+                 **kw):
+        super().__init__(ws, cfg, **kw)
+        self._system, self._rules, self._tools = system, rules, tools
+
+    def system_prompt(self) -> str:
+        return self._system + ("\n" + self._rules if self._rules else "")
+
+    def command(self, mcp_path: Path) -> list[str]:
+        cmd = super().command(mcp_path)
+        if self._tools and "--allowedTools" in cmd:
+            cmd[cmd.index("--allowedTools") + 1] = ",".join(TOOL_PREFIX + x for x in self._tools)
+        if "--disallowedTools" in cmd:
+            i = cmd.index("--disallowedTools")
+            cmd[i + 1] += "," + TOOL_PREFIX + "submit_proposals"
+        return cmd
+
+    def prompt(self, packet: dict) -> str:
+        from .providers.recorded import PACKET_MARK
+        pub = {k: v for k, v in packet.items() if k != "system"}
+        if "crops" in pub:
+            pub["crops"] = [{k: v for k, v in c.items() if not k.startswith("_")} for c in pub.get("crops") or []]
+        return PACKET_MARK + json.dumps(pub, ensure_ascii=False, default=str)
+
+    def _finish(self, log, packet, res, stdout):               # no proposal set: the final message is the answer
+        log.event("end", **{k: v for k, v in res.to_dict().items() if k != "final_text"},
+                  note="an answer session submits nothing: its final message is the answer")
+        (Path(res.run_dir) / "session.json").write_text(json.dumps(res.to_dict(), indent=1, ensure_ascii=False,
+                                                                   default=str), encoding="utf-8")
+        return {}
+
+
+class PlainSession:
+    """A headless call with NO tools (`claude -p --tools "" --strict-mcp-config --output-format json`), optionally
+    constrained by `--json-schema`: the critic and the bounded repair of a malformed answer. Classified like a tool
+    session (rate_limit / provider / None). Logged to `log` when given."""
+
+    def __init__(self, cfg: dict, system: str, *, schema: dict | None = None, model: str | None = None,
+                 timeout_s: float | None = None, max_turns: int | None = None, claude_bin: str | None = None,
+                 runner=subprocess.run, label: str = "plain"):
+        s = settings(cfg)
+        self.cfg, self.system, self.schema = cfg, system, schema
+        self.model = model if model is not None else s["model"]
+        self.timeout_s = float(timeout_s or s.get("plain_timeout_s") or 300)
+        self.max_turns = int(max_turns or 3)
+        self.claude_bin = claude_bin or s["claude_bin"]
+        self.runner, self.label = runner, label
+        self.last: SessionResult | None = None
+
+    def command(self) -> list[str]:
+        cmd = [self.claude_bin, "-p", "--tools", "", "--strict-mcp-config", "--no-session-persistence",
+               "--permission-prompts", "none", "--output-format", "json", "--max-turns", str(self.max_turns),
+               "--system-prompt", self.system]
+        if self.schema is not None:
+            cmd += ["--json-schema", json.dumps(self.schema)]
+        if self.model:
+            cmd += ["--model", str(self.model)]
+        return cmd
+
+    def host_model_label(self) -> str:
+        return (f"claude-code headless ({self.model})" if self.model else
+                "claude-code headless (the CLI's default model; recorded from the CLI output)")
+
+    def run(self, prompt: str, cwd: Path, log=None) -> SessionResult:
+        res = SessionResult(run_id=f"{self.label}-{_now():%Y%m%dT%H%M%SZ}", addendum="", provisions=[],
+                            started=_now().isoformat(), model_requested=self.model, run_dir=str(cwd))
+        self.last = res
+        t0 = time.monotonic()
+        stdout = stderr = ""
+        try:
+            if not shutil.which(self.claude_bin) and not Path(self.claude_bin).exists():
+                raise FileNotFoundError(f"{self.claude_bin} not found")
+            p = self.runner(self.command(), input=prompt, capture_output=True, text=True, timeout=self.timeout_s,
+                            cwd=str(cwd))
+            res.exit_code, stdout, stderr = p.returncode, p.stdout or "", p.stderr or ""
+        except subprocess.TimeoutExpired:
+            res.timed_out, res.error = True, f"timed out after {self.timeout_s:g} s"
+        except (OSError, FileNotFoundError) as e:
+            res.error = f"the host CLI could not be started: {e}"
+        res.elapsed_s = round(time.monotonic() - t0, 1)
+        out = None
+        for line in (stdout or "").splitlines()[::-1]:
+            try:
+                out = json.loads(line)
+                break
+            except ValueError:
+                continue
+        if isinstance(out, dict):
+            res.final_text = str(out.get("result") or "")
+            res.structured_output = out.get("structured_output")
+            res.num_turns, res.usage = out.get("num_turns"), out.get("usage")
+            res.host_plan_cost_usd = out.get("total_cost_usd")
+            res.model_reported = list(out.get("modelUsage") or {})
+            res.api_error_status = out.get("api_error_status") if isinstance(out.get("api_error_status"), int) else None
+            res.terminal_reason = out.get("terminal_reason")
+            if out.get("is_error") and not res.error:
+                res.error = f"the host ended with an error ({out.get('subtype')}: {out.get('api_error_status')})"
+        elif not res.error:
+            res.error = f"the host CLI printed no JSON (exit {res.exit_code}): {(stdout or stderr)[:300]}"
+        classify(res, stderr)
+        if log is not None:
+            log.event("plain_session", label=self.label, elapsed_s=res.elapsed_s, exit_code=res.exit_code,
+                      error=res.error, failure_class=res.failure_class, api_error_status=res.api_error_status,
+                      reset_in_s=res.reset_in_s, model_reported=res.model_reported, usage=res.usage,
+                      host_plan_cost_usd=res.host_plan_cost_usd, result=truncate(res.final_text, 4000),
+                      note="the host plan's figures; never the application's spend")
+        return res

@@ -38,11 +38,36 @@ strong as its weakest link) and reports three labelled classes, never merged wit
 of its targets changes (the blocked conclusion is in play again). Reached A5 activities are marked
 "REVIEW (<class>)" with their dates unchanged.
 
+Completeness and blockers (session 11). Session 10's traversal stopped after four links without saying so, so an
+indirect chain could look complete when it was not; and a missing-document gap was reported only when its own `from`
+or its blocked target changed directly, so a blocked target reached indirectly lost its blocker. Now:
+  * the traversal is cycle-safe (a visited set per path: a link back to a node already on the path is recorded once,
+    as `cyclic`, and never followed again) and bounded only by a configured bound (MAX_DEPTH links per path; the pack
+    config's `relationships_max_depth` overrides it in impact) and a record budget (MAX_RECORDS). Every record says
+    whether its chain is `complete`, `truncated` by a bound (the links not followed are named: reported, never silent)
+    or `cyclic`; completeness(records) sums it up and label() prints "CHAIN INCOMPLETE" where it is;
+  * every node of a path (the changed source included) that a missing_document entry blocks puts that entry on the
+    record's `blockers` ("cannot be established: <document> not supplied (<conclusion>)"), so the blocker travels with
+    the chain into impact, `diff`, A2 and the A5 review flags (label(), review_flag()).
+Record fields for renderers (trace / impact_between records): target, entry_id, kind, status, class, path [entry ids],
+nodes [source, each target in order], source, sources, lexical, via_target, completeness (complete | truncated |
+cyclic), chain_complete (False only when truncated), unfollowed [entry ids not followed past the target], truncated_by
+(depth | records | ''), bound (the depth bound used), cycle [nodes of the loop, first repeated], blockers [{entry_id,
+document_id, document, blocks, node, status, text}], blocked (bool).
+
+Discovery (session 11): discover(units, rows=None, existing=()) proposes `proposed` entries from the documents' own
+cross-references ("as defined in Clause X", "calculated in accordance with", "in the form set out in", "the figure
+stated in", "listed in Table", "subject to Clause", "referred to in" and a defined term used in another clause), each
+with the verbatim words; it never writes `confirmed` and never writes the curated file (`tenderpack relationships
+discover --to <file>` writes a separate file for a person).
+
 API for other tools and agents:
   load(path) -> [entry]                                       entries as written ([] when the file does not exist)
   validate(entries, units, rows, activities, ...) -> [finding] 'REL-ID: what is wrong' (check-register, release gate)
   reach(entries, changed_rows_or_units, words=()) -> {target: [(entry, status)]}
-  trace(entries, changed, words=()) -> [record]               the same with paths and sources
+  trace(entries, changed, words=(), max_depth=MAX_DEPTH) -> [record]   the same with paths, sources, completeness, blockers
+  completeness(records) -> {complete, truncated, cyclic, bound} blocked(records) -> records carrying a blocker
+  discover(units, rows=None, existing=()) -> {entries, unresolved, skipped_terms}   proposed links for a person
   append_proposed(path, entries, origin) -> {appended, skipped}   lands a model's dependency proposals as PROPOSED
 """
 from __future__ import annotations
@@ -71,7 +96,9 @@ FIELDS = ("id", "from", "to", "kind", "status", "evidence", "basis", "origin", "
           "document_id", "blocks", "confirmed_by", "review", "reviewer")
 REQUIRED = ("id", "from", "to", "kind", "status", "origin")
 WORDS, CALC = "words:", "calc:"
-MAX_DEPTH = 4
+MAX_DEPTH = 12            # links per path; a path cut here is `truncated` and says which links it did not follow
+MAX_RECORDS = 20000       # records per trace; reaching it truncates the paths still to follow (reported, never silent)
+COMPLETENESS = ("complete", "truncated", "cyclic")
 DEFAULT_NAME = "relationships.yaml"
 HEADER = ("# Relationships between rows, units, calculations, evidence and A5 activities (tenderpack.relationships).\n"
           "# confirmed = the documents state the link (verbatim evidence, checked by check-register); proposed = inferred,\n"
@@ -243,13 +270,51 @@ def _weakest(a: str, b: str) -> str:
     return a if _RANK.get(a, 2) >= _RANK.get(b, 2) else b
 
 
-def trace(entries: list, changed, words=(), max_depth: int = MAX_DEPTH) -> list[dict]:
+def _gap_index(good: list[dict]) -> dict[str, list[dict]]:
+    """{node: [missing_document entries whose `to` names it]}: the nodes whose conclusion a document not supplied
+    blocks."""
+    out: dict[str, list[dict]] = {}
+    for e in good:
+        if e["kind"] == "missing_document":
+            for t in ends(e, "to"):
+                out.setdefault(t, []).append(e)
+    return out
+
+
+def blocker_text(e: dict) -> str:
+    """'cannot be established: <document> not supplied (<the conclusion it blocks>)'."""
+    blocks = str(e.get("blocks") or "").strip()
+    return f"cannot be established: {e.get('document') or e.get('document_id')} not supplied" + (
+        f" ({blocks})" if blocks else "")
+
+
+def _blockers(nodes: list[str], gap_by_node: dict[str, list[dict]], skip: str | None = None) -> list[dict]:
+    out, seen = [], set()
+    for n in nodes:
+        for g in gap_by_node.get(n, []):
+            if g["id"] == skip or (g["id"], n) in seen:
+                continue
+            seen.add((g["id"], n))
+            out.append({"entry_id": g["id"], "document_id": g.get("document_id"), "document": g.get("document"),
+                        "blocks": g.get("blocks"), "node": n, "status": g.get("status"), "text": blocker_text(g)})
+    return out
+
+
+def trace(entries: list, changed, words=(), max_depth: int | None = MAX_DEPTH,
+          max_records: int = MAX_RECORDS, inherit: dict | None = None) -> list[dict]:
     """Every target reached from `changed` (row and unit ids, calc: names), as records sorted by status, target and
     path: {target, entry_id (the last entry of the path), kind, status (the path's weakest link), class, path: [entry
-    ids], source (the first changed id or `words:` phrase that started it), sources (all of them), lexical (started by a
-    words: trigger), via_target (a missing_document entry whose blocked target changed)}. `words`: the words the
-    stage's ops added or removed (a `words:` trigger matches a phrase inside them; such a path is at most a possible
-    impact). Entries of unknown kind or status are skipped (validate reports them)."""
+    ids], nodes (the source, then each target along the path), source (the first changed id or `words:` phrase that
+    started it), sources (all of them), lexical (started by a words: trigger), via_target (a missing_document entry
+    whose blocked target changed), completeness / chain_complete / unfollowed / truncated_by / bound / cycle, blockers /
+    blocked} (the module docstring says what each means). `words`: the words the stage's ops added or removed (a
+    `words:` trigger matches a phrase inside them; such a path is at most a possible impact). Entries of unknown kind or
+    status are skipped (validate reports them).
+
+    Cycle-safe: a path never visits a node twice; a link back to a node already on it is recorded once as `cyclic`
+    and not followed. Bounded only by `max_depth` links per path (None: no depth bound) and `max_records`; a path cut
+    by either is `truncated` and names the links it did not follow. Missing-document entries are reported (gaps) and
+    never followed; every node on a path that one blocks puts it on the record's `blockers`."""
     changed = set(changed or ())
     texts = [_norm(w) for w in words or () if w]
     good = [e for e in entries or [] if isinstance(e, dict) and e.get("kind") in KINDS and e.get("status") in STATUSES
@@ -259,20 +324,51 @@ def trace(entries: list, changed, words=(), max_depth: int = MAX_DEPTH) -> list[
         for f in ends(e, "from"):
             if not f.startswith(WORDS):
                 by_from.setdefault(f, []).append(e)
+    gap_by_node = _gap_index(good)
+    by_id = {e["id"]: e for e in good}
+    inherit = inherit or {}
+    bound = max_depth if max_depth and max_depth > 0 else None
+
+    def inherited(path: list[str], nodes: list[str]) -> list[dict]:
+        # session 11 audit (A2-5): a limit a blocked source sets is blocked where it is applied: a limit_applies link
+        # from a node whose rows a document not supplied blocks (`inherit`, impact_between) carries that blocker on
+        out = []
+        for k, eid in enumerate(path):
+            e = by_id.get(eid)
+            if e is not None and e["kind"] == "limit_applies" and k < len(nodes):
+                out += _blockers([nodes[k]], inherit)
+        return out
     best: dict[tuple, dict] = {}
 
+    def onward(node: str, path: list[str]) -> list[str]:
+        return sorted({e["id"] for e in by_from.get(node, []) if e["kind"] != "missing_document" and e["id"] not in path})
+
     def add(target: str, e: dict, status: str, path: list[str], sources: list[str], lexical: bool,
-            via_target: bool) -> bool:
-        """Record one path to a target (its sources are those of the path's first entry); True when it is new."""
+            via_target: bool, nodes: list[str], cyclic: bool = False) -> dict | None:
+        """Record one path to a target (its sources are those of the path's first entry); the record when new."""
         key = (target, tuple(path), lexical, via_target)
         if key in best:
-            return False
-        best[key] = {"target": target, "entry_id": e["id"], "kind": e["kind"], "status": status, "class": CLASSES[status],
-                     "path": list(path), "source": sources[0], "sources": list(sources), "lexical": lexical,
-                     "via_target": via_target}
-        return True
+            return None
+        gap = e["kind"] == "missing_document"
+        bl = [] if gap else _blockers(list(dict.fromkeys(sources + nodes[1:])), gap_by_node)
+        if not gap:
+            bl += [b for b in inherited(path, nodes) if b["entry_id"] not in {x["entry_id"] for x in bl}]
+        rec = {"target": target, "entry_id": e["id"], "kind": e["kind"], "status": status, "class": CLASSES[status],
+               "path": list(path), "nodes": list(nodes), "source": sources[0], "sources": list(sources),
+               "lexical": lexical, "via_target": via_target, "completeness": "complete", "chain_complete": True,
+               "unfollowed": [], "truncated_by": "", "bound": bound, "cycle": [], "blockers": bl, "blocked": bool(bl)}
+        if cyclic:
+            first = nodes.index(target) if target in nodes[:-1] else 0
+            rec.update({"completeness": "cyclic", "cycle": nodes[first:]})
+        best[key] = rec
+        return rec
 
-    frontier = []                                       # (node, status, path, sources, lexical) to follow further
+    def cut(rec: dict, path: list[str], why: str) -> None:
+        rest = onward(rec["target"], path)
+        if rest:
+            rec.update({"completeness": "truncated", "chain_complete": False, "unfollowed": rest, "truncated_by": why})
+
+    frontier = []                                       # (record, node, status, path, nodes, sources, lexical)
     for e in good:
         gap = e["kind"] == "missing_document"           # a blocked conclusion is reported, never followed further
         exact = sorted(f for f in ends(e, "from") if not f.startswith(WORDS) and f in changed)
@@ -282,24 +378,53 @@ def trace(entries: list, changed, words=(), max_depth: int = MAX_DEPTH) -> list[
             if not srcs or (lex and exact):             # a lexical match adds nothing when the unit itself changed
                 continue
             st = _weakest(e["status"], "possible") if lex else e["status"]
-            frontier += [(t, st, [e["id"]], srcs, lex) for t in ends(e, "to")
-                         if add(t, e, st, [e["id"]], srcs, lex, False) and not gap]
+            for t in ends(e, "to"):
+                loop = not gap and t in srcs
+                rec = add(t, e, st, [e["id"]], srcs, lex, False, [srcs[0], t], cyclic=loop)
+                if rec is not None and not gap and not loop:
+                    frontier.append((rec, t, st, [e["id"]], [srcs[0], t], srcs, lex))
         if gap and not exact:
             for t in ends(e, "to"):
                 if t in changed:
-                    add(t, e, e["status"], [e["id"]], [t], False, True)
+                    add(t, e, e["status"], [e["id"]], [t], False, True, [t, t])
     depth = 1
-    while frontier and depth < max_depth:
+    while frontier:
         nxt = []
-        for node, status, path, sources, lexical in frontier:
+        for rec, node, status, path, nodes, sources, lexical in frontier:
+            if bound is not None and depth >= bound:
+                cut(rec, path, "depth")                 # the configured bound: reported on the record, never silent
+                continue
+            if len(best) >= max_records:
+                cut(rec, path, "records")
+                continue
+            seen = set(sources) | set(nodes)
             for e in by_from.get(node, []):
                 if e["id"] in path or e["kind"] == "missing_document":
                     continue
                 st = _weakest(status, e["status"])
                 p = path + [e["id"]]
-                nxt += [(t, st, p, sources, lexical) for t in ends(e, "to") if add(t, e, st, p, sources, lexical, False)]
+                for t in ends(e, "to"):
+                    loop = t in seen
+                    new = add(t, e, st, p, sources, lexical, False, nodes + [t], cyclic=loop)
+                    if new is not None and not loop:
+                        nxt.append((new, t, st, p, nodes + [t], sources, lexical))
         frontier, depth = nxt, depth + 1
     return sorted(best.values(), key=lambda r: (_RANK[r["status"]], r["target"], r["path"], r["source"]))
+
+
+def completeness(records: list[dict]) -> dict:
+    """{complete: no record truncated, truncated: [targets], cyclic: [targets], bound, records: n}: whether every chain
+    of a trace was followed to its end."""
+    recs = list(records or [])
+    tr = sorted({r["target"] for r in recs if r.get("completeness") == "truncated"})
+    cy = sorted({r["target"] for r in recs if r.get("completeness") == "cyclic"})
+    return {"complete": not tr, "truncated": tr, "cyclic": cy, "bound": recs[0].get("bound") if recs else None,
+            "records": len(recs)}
+
+
+def blocked(records: list[dict]) -> list[dict]:
+    """The reached records (not the gap records themselves) whose chain passes a node a document not supplied blocks."""
+    return [r for r in records or [] if r.get("blockers") and r["kind"] != "missing_document"]
 
 
 def reach(entries: list, changed_rows_or_units, words=()) -> dict[str, list[tuple[dict, str]]]:
@@ -376,7 +501,22 @@ def impact_between(r: dict, frm: str, to: str) -> dict:
                 b.get("interpretation_stage") in between and a.get("interpretation") != b.get("interpretation")):
             direct.add(rid)
     words = [w for st in stages if st.stage in between for w in changed_words(st)]
-    recs = trace(entries, raw | parents | direct, words) if entries else []
+    bound = (r.get("cfg") or {}).get("relationships_max_depth", MAX_DEPTH)     # the configured bound (pack config)
+    # session 11 audit (A2-5): a document not supplied that blocks rows blocks the units they cite and those units'
+    # tables or forms, for limit_applies links from them (trace `inherit`): the Environmental Permit blocks every Table
+    # 2-4 row, so every row applying a Table 2-4 limit inherits the block
+    inherit: dict[str, list[dict]] = {}
+    for g in entries:
+        if not isinstance(g, dict) or g.get("kind") != "missing_document" or not g.get("id"):
+            continue
+        for t in ends(g, "to"):
+            for u in (rows[t]["row"].units if t in rows else []):
+                n = u
+                while n:
+                    if g not in inherit.setdefault(n, []):
+                        inherit[n].append(g)
+                    n = getattr(s.state.get(n) or sp.state.get(n), "parent", None)
+    recs = trace(entries, raw | parents | direct, words, max_depth=bound, inherit=inherit) if entries else []
     for rec in recs:
         t = rec["target"]
         rec["target_type"] = ("row" if t in rows else "calculation" if t.startswith(CALC) else
@@ -385,14 +525,16 @@ def impact_between(r: dict, frm: str, to: str) -> dict:
         rec["target_status"] = rows[t]["stages"][to]["status"] if t in rows else (
             s.state[t].status.upper() if t in s.state else "")
         rec["direct"] = t in direct or t in raw
-    return {"from": frm, "changed_units": sorted(raw), "direct_rows": sorted(direct), "records": recs}
+    return {"from": frm, "changed_units": sorted(raw), "direct_rows": sorted(direct), "records": recs,
+            "completeness": completeness(recs), "blocked": sorted({x["target"] for x in blocked(recs)})}
 
 
 def impact(r: dict) -> dict[str, dict]:
     """impact_between for each addendum stage of a stage2 run and the stage before it: {stage: {...}} (the first stage,
     BASE, reaches nothing)."""
     order = [s.stage for s in r["stages"]]
-    out = {st: {"from": None, "changed_units": [], "direct_rows": [], "records": []} for st in order[:1]}
+    out = {st: {"from": None, "changed_units": [], "direct_rows": [], "records": [], "completeness": completeness([]),
+                "blocked": []} for st in order[:1]}
     for prev, st in zip(order, order[1:]):
         out[st] = impact_between(r, prev, st)
     return out
@@ -409,6 +551,15 @@ def label(rec: dict, entries: list | None = None) -> str:
     trig = "target changed" if rec.get("via_target") else ", ".join(rec.get("sources") or [rec["source"]])
     line = (f"{head} <- {trig} via {' > '.join(rec['path'])} [{rec['kind']}; link {rec['status']}]"
             + ("; also changed directly" if rec.get("direct") else ""))
+    if rec.get("completeness") == "truncated":                  # session 11: never silent
+        line += (f"; CHAIN INCOMPLETE: stopped at the bound ({rec.get('truncated_by') or 'depth'}"
+                 + (f", {rec['bound']} links" if rec.get("truncated_by") == "depth" and rec.get("bound") else "")
+                 + f"); not followed: {', '.join(rec.get('unfollowed') or [])}")
+    elif rec.get("completeness") == "cyclic":
+        line += f"; cycle: {' > '.join(rec.get('cycle') or [])} (not followed again)"
+    for b in rec.get("blockers") or []:                         # session 11: the blocker travels with the chain
+        line += f"; BLOCKED: {b['text']}" + (f" [at {b['node']}, {b['entry_id']}]" if b["node"] != rec["target"]
+                                             else f" [{b['entry_id']}]")
     e = next((x for x in entries or [] if isinstance(x, dict) and x.get("id") == rec["entry_id"]), None)
     if e is not None and rec["kind"] == "missing_document":
         line += f". NOT SUPPLIED: {e.get('document')}; cannot be established: {e.get('blocks')}"
@@ -429,23 +580,34 @@ def gaps(records: list[dict]) -> list[dict]:
 def activity_review(records: list[dict], activity: dict) -> list[dict]:
     """The relationship reviews an A5 activity carries at a stage: one per class, for records whose target is the
     activity, one of the rows it serves (req_ids) or one of its evidence items. Missing-document records are gaps,
-    not work to redo, and are left out. [{class, status, targets, entries, sources}] strongest first."""
+    not work to redo, and are left out. [{class, status, targets, entries, sources}] strongest first; session 11 adds
+    `blockers` (the texts of the documents not supplied that block a reached chain) and `incomplete` (a chain cut by
+    the bound) only where there are some."""
     rows, evs = set(activity.get("req_ids") or []), set(activity.get("evidence_items") or [activity.get("evidence")])
     out = []
     for status in STATUSES:
         hit = [r for r in records or [] if r["status"] == status and r["kind"] != "missing_document"
                and (r["target"] == activity.get("id") or r["target"] in rows or r["target"] in evs)]
         if hit:
-            out.append({"class": CLASSES[status], "status": status,
-                        "targets": sorted({r["target"] for r in hit}),
-                        "entries": sorted({e for r in hit for e in r["path"]}),
-                        "sources": sorted({s for r in hit for s in r.get("sources") or [r["source"]]})})
+            rv = {"class": CLASSES[status], "status": status,
+                  "targets": sorted({r["target"] for r in hit}),
+                  "entries": sorted({e for r in hit for e in r["path"]}),
+                  "sources": sorted({s for r in hit for s in r.get("sources") or [r["source"]]})}
+            bl = sorted({b["text"] for r in hit for b in r.get("blockers") or []})
+            if bl:
+                rv["blockers"] = bl
+            cut = sorted({r["target"] for r in hit if r.get("completeness") == "truncated"})
+            if cut:
+                rv["incomplete"] = cut
+            out.append(rv)
     return out
 
 
 def review_flag(rv: dict) -> str:
     return (f"REVIEW ({rv['class']}): {', '.join(rv['targets'])} reached from {', '.join(rv['sources'])} via "
-            f"{', '.join(rv['entries'])}; dates unchanged (a relationship, not a direct citation)")
+            f"{', '.join(rv['entries'])}; dates unchanged (a relationship, not a direct citation)"
+            + "".join(f"; BLOCKED: {b}" for b in rv.get("blockers") or [])
+            + (f"; CHAIN INCOMPLETE at {', '.join(rv['incomplete'])}" if rv.get("incomplete") else ""))
 
 
 def links_of(entries: list, target: str) -> list[dict]:
@@ -468,6 +630,213 @@ def missing_documents(entries: list) -> dict[str, dict]:
 
 def evidence_text(e: dict) -> str:
     return "; ".join(f"{q.get('unit')} p{q.get('page')}: “{q.get('words')}”" for q in e.get("evidence") or [])
+
+
+# ---------------------------------------------------------------------------------------------- discovery (session 11)
+# The documents' own cross-references, proposed for a person (never confirmed, never written into the curated file).
+# Each phrase is followed by the clause, table, form or appendix it names (citations.citations; a bare "Clause N" or
+# "Table N-N" takes the unit's own volume); the link runs FROM the unit named TO the unit whose words name it (a change
+# to the named unit may change what the naming unit requires). Order matters: the first phrase that matches a span wins.
+DISCOVERY_PHRASES = (
+    (r"as defined in", "depends_on", "a definition the words rely on"),
+    (r"has the meaning given in", "depends_on", "a definition given elsewhere"),
+    (r"calculated (?:in accordance with|under)", "feeds_calculation", "a calculation the words rely on"),
+    (r"(?:figure|amount|value|rate|sum|cost)s? (?:as )?(?:stated|specified|shown) (?:by the Bidder )?in",
+     "feeds_calculation", "a figure stated elsewhere"),
+    (r"in the form set out in", "cites", "a form the words require"),
+    (r"(?:listed|set out|specified|identified) in", "cites", "a list, table or schedule the words rely on"),
+    (r"subject to", "depends_on", "a provision the words are subject to"),
+    (r"referred to in", "cites", "a provision the words refer to"),
+    (r"required by", "depends_on", "a requirement stated elsewhere"),
+    (r"in accordance with", "depends_on", "a provision the words follow"),
+)
+_DEF = re.compile(r"^\W*[\"“‘']?(?P<term>[A-Z][A-Za-z0-9\-]*(?:\s+(?:of\s+|the\s+)?[A-Z][A-Za-z0-9\-]*){0,5})[\"”’']?"
+                  r"\s+(?:means|shall mean|has the meaning)\b")
+_DOC_REF = re.compile(r"\b(?:Schedule|Appendix|Annex|Attachment|Exhibit)\s+[A-Z0-9][\w.-]*")
+_ROMAN = {"VOL-I": "I", "VOL-II": "II", "VOL-III": "III", "VOL-IV": "IV", "VOL-V": "V"}
+DISCOVER_ORIGIN = "discover"
+MAX_TERM_USES = 10            # a defined term used in more units than this is reported, not proposed unit by unit
+
+
+def _context(t: str, start: int, end: int, before: int = 6, after: int = 6) -> str:
+    """The words around a span of `t` (a few words either side), sliced from `t` as printed, within the sentence."""
+    s = start
+    for _ in range(before):
+        m = re.search(r"(\S+)\s*$", t[:s])
+        if not m or re.search(r"[.;:]$", m.group(1)):          # never across a sentence end
+            break
+        s = m.start(1)
+    e = end
+    for _ in range(after):
+        if re.match(r"[.;:]", t[e:e + 1]):
+            break
+        m = re.match(r"\s*(\S+)", t[e:])
+        if not m:
+            break
+        e += m.end(1)
+        if re.search(r"[.;:]$", m.group(1)):
+            break
+    return t[s:e].strip(" ,;:.")
+
+
+def discover(units: list[dict], rows=None, existing=(), *, include_addenda: bool = False,
+             max_term_uses: int = MAX_TERM_USES) -> dict:
+    """Proposed relationships read from the documents' own words (session 11), for a person to review:
+    {"entries": [entry (status proposed, origin discover, review proposed, basis, verbatim evidence)],
+     "unresolved": [{unit, page, words, reference}] (a reference to a document the evidence does not contain: a
+     candidate missing_document for a person), "skipped_terms": {term: number of units using it} (defined terms used
+     in more than `max_term_uses` units: listed, not proposed one by one), "already_curated": [entries found that an
+     existing entry already links]}.
+    `units`: the evidence build's units as issued (the quotes are checked against them, as check-register does);
+    `rows`: Row objects (or {id, units}) so each entry also reaches the rows citing the naming unit; `existing`: the
+    curated entries (an entry linking the same from and to is not proposed again). Addendum units are left out unless
+    `include_addenda` (an addendum's references are amendment targets, which the engine handles). Nothing is
+    written; nothing is confirmed."""
+    from .citations import citations, resolve
+    from .textnorm import normalize_latin
+    ids = {u["unit_id"] for u in units}
+    by_id = {u["unit_id"]: u for u in units}
+    cites_unit: dict[str, list[str]] = {}
+    for row in rows or []:
+        rid, runits = (row.get("id"), row.get("units")) if isinstance(row, dict) else (row.id, row.units)
+        for uid in runits or []:
+            cites_unit.setdefault(uid, []).append(rid)
+    pool = [u for u in units if (include_addenda or not u["doc"].startswith("ADD-")) and u.get("kind") != "heading"
+            and ":cover/" not in u["unit_id"] and (u.get("text") or "").strip()]
+    found_links: dict[tuple, dict] = {}
+    unresolved: list[dict] = []
+
+    def page(u: dict) -> int | None:
+        return (u.get("pages") or [None])[0]
+
+    def targets_of(window: str, doc: str) -> tuple[list[str], str]:
+        """The units the first reference in `window` names, and that reference's words as printed ('' when none). A
+        bare 'Clause N' or 'Table N-N' (no volume before it, no 'of Volume' after it) takes the unit's own volume."""
+        roman = _ROMAN.get(doc)
+
+        def own(m):
+            if re.search(r"Volume (?:I{1,3}|IV|V)\s*$", window[:m.start()]) or \
+                    re.match(r"\s+of Volume", window[m.end():]):
+                return m.group(0)
+            return f"Volume {roman} {m.group(0)}"
+        local = re.sub(r"\b(?:Clause \d+(?:\.\d+)*|Table \d+-\d+)", own, window) if roman else window
+        cs = citations(local)
+        first = min(cs, key=lambda c: local.find(c.text)) if cs else None
+        if first is None or local.find(first.text) > 60:
+            return [], ""
+        words = first.text
+        if words not in window and roman and words.startswith(f"Volume {roman} "):
+            words = words[len(f"Volume {roman} "):]
+        got = []
+        for g in resolve([first], ids):
+            if g in ids:
+                got.append(g)
+                continue
+            # a form or table group with no unit of its own (VOL-IV:F4-D): its top-level members stand for it (a
+            # table among them stands for its rows through their `parent`, as impact_between reads changes)
+            members = [k for k in ids if k.startswith(g + "/")]
+            got += sorted(k for k in members if by_id[k].get("parent") not in members)
+        return got, words
+
+    for u in pool:
+        t = normalize_latin(u["text"])
+        taken: list[tuple[int, int]] = []
+        for rx, kind, why in DISCOVERY_PHRASES:
+            for m in re.finditer(r"\b" + rx + r"\b", t, re.I):
+                if any(a <= m.start() < b for a, b in taken):
+                    continue
+                rest = t[m.end():]
+                stop = re.search(r"[.;](?:\s|$)", rest)
+                window = rest[: stop.start() if stop else 200][:200]
+                if re.match(r"\s*this (?:Clause|Agreement|Volume|Form|Section)\b", window):
+                    continue                                    # a reference to itself
+                got, cite_words = targets_of(window, u["doc"])
+                got = [g for g in got if g != u["unit_id"] and not u["unit_id"].startswith(g + "/")
+                       and g != (u.get("parent") or "") and not g.startswith(u["unit_id"] + "/")]
+                if not got:
+                    d = _DOC_REF.match(window.strip())
+                    if d and not cite_words:
+                        end = m.end() + window.find(d.group(0)) + len(d.group(0))
+                        unresolved.append({"unit": u["unit_id"], "page": page(u), "words": t[m.start():end],
+                                           "reference": d.group(0)})
+                        taken.append((m.start(), end))
+                    continue
+                k = window.find(cite_words)
+                end = m.end() + (k + len(cite_words) if k >= 0 else 0)
+                words = t[m.start():end].strip()
+                if not found(words, u["text"]):
+                    words = m.group(0)
+                taken.append((m.start(), end))
+                frm = tuple(got)
+                key = (frm, u["unit_id"])
+                e = found_links.setdefault(key, {"from": list(frm), "to": [u["unit_id"]] + sorted(cites_unit.get(u["unit_id"], [])),
+                                                 "kind": kind, "status": "proposed", "evidence": [],
+                                                 "basis": "", "_why": why})
+                q = {"unit": u["unit_id"], "page": page(u), "words": words}
+                if q not in e["evidence"]:
+                    e["evidence"].append(q)
+    # definitions: the term defined in one clause and used by its name in others
+    defs: dict[str, list[dict]] = {}
+    for u in pool:
+        m = _DEF.match(normalize_latin(u["text"]))
+        if m and u.get("kind") in ("clause", "paragraph", "list_item", "numbered_paragraph"):
+            defs.setdefault(m.group("term").strip(), []).append(u)
+    skipped: dict[str, int] = {}
+    for term, dus in sorted(defs.items()):
+        rx = re.compile(r"(?<![A-Za-z])" + re.escape(term) + r"(?![A-Za-z])")
+        uses = [u for u in pool if u["unit_id"] not in {d["unit_id"] for d in dus} and rx.search(normalize_latin(u["text"]))]
+        if len(uses) > max_term_uses:
+            skipped[term] = len(uses)
+            continue
+        for use in uses:
+            same = [d for d in dus if d["doc"] == use["doc"]] or dus        # a volume's own definition first
+            frm = tuple(sorted(d["unit_id"] for d in same))
+            t = normalize_latin(use["text"])
+            hit = rx.search(t)
+            key = (frm, use["unit_id"])
+            if key in found_links:
+                continue
+            found_links[key] = {"from": list(frm), "to": [use["unit_id"]] + sorted(cites_unit.get(use["unit_id"], [])),
+                                "kind": "depends_on", "status": "proposed", "_why": f"the defined term '{term}'",
+                                "evidence": [{"unit": use["unit_id"], "page": page(use),
+                                              "words": _context(t, hit.start(), hit.end())}]
+                                + [{"unit": d["unit_id"], "page": page(d), "words": f"{term} " + re.search(
+                                    r"(means|shall mean|has the meaning)", normalize_latin(d["text"])).group(1)} for d in same]}
+    have = [(set(ends(e, "from")), set(ends(e, "to"))) for e in existing or [] if isinstance(e, dict)]
+    out, dup = [], []
+    for (frm, to), e in sorted(found_links.items(), key=lambda kv: (kv[0][0], kv[0][1])):
+        e["evidence"] = [q for q in e["evidence"] if q["words"] and found(q["words"], by_id[q["unit"]]["text"])]
+        if not e["evidence"]:
+            continue
+        why = e.pop("_why")
+        e["basis"] = (f"{to} names {', '.join(frm)} ({why}): '{e['evidence'][0]['words']}'. A change to "
+                      f"{', '.join(frm)} may change what {to} requires. Found by tenderpack.relationships.discover in "
+                      "the documents' own words; not checked by a person")
+        e.update({"origin": DISCOVER_ORIGIN, "review": "proposed"})
+        if any(set(e["from"]) & f and set(e["to"]) & t2 for f, t2 in have):
+            dup.append(e)
+            continue
+        out.append(e)
+    for i, e in enumerate(out, 1):
+        out[i - 1] = {"id": f"REL-DISC-{i:03d}", **e}
+    return {"entries": out, "unresolved": unresolved, "skipped_terms": skipped, "already_curated": dup}
+
+
+def write_discovered(path, result: dict, source: str) -> Path:
+    """Write discover()'s result to a NEW file for a person (never over an existing file; never the curated file):
+    a relationships file whose every entry is `proposed`, plus the unresolved references and skipped terms as data."""
+    p = Path(path)
+    if p.exists():
+        raise FileExistsError(f"{p} exists: discovery writes a new file for a person and never overwrites one")
+    head = (HEADER + "# PROPOSED by `tenderpack relationships discover` from the documents' own cross-references "
+            f"({source}).\n# Nothing here is confirmed or reviewed; a person copies what holds into the curated file.\n")
+    body = {"prepared_by": "tenderpack relationships discover (program; not reviewed)", "method": source,
+            "relationships": result["entries"], "unresolved_references": result["unresolved"],
+            "skipped_terms": result["skipped_terms"],
+            "already_curated": [{"from": e["from"], "to": e["to"], "kind": e["kind"]} for e in result["already_curated"]]}
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(head + yaml.safe_dump(body, allow_unicode=True, sort_keys=False, width=110), encoding="utf-8")
+    return p
 
 
 # ---------------------------------------------------------------------------------------------- landing proposals

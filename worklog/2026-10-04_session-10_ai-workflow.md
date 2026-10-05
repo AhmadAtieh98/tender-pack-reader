@@ -6,7 +6,7 @@
   - **The coordinator:** the assistant in the cloud container, running as Fable 5.1 (as in session 09). It read the state, wrote the sequence, briefed the subagents, integrated their work, ran the suite and wrote the records.
   - **The implementation, review and authoring subagents:** launched with the `opus` model option (Opus 5.5 when probed in session 09; each reports its own model in its final message, recorded below).
 - **What this environment can and cannot do (checked at 13:33):** no `ANTHROPIC_API_KEY`, no `OPENROUTER_API_KEY` (no live API execution possible); `openrouter.ai` blocked; no Ollama; `codex` not installed; the `claude` CLI (2.1.289) is installed and a headless session runs (`claude -p … --output-format json` answered at 13:34, on the host's own plan), so an actual host/MCP session can be exercised here.
-- **Nothing is committed in this session.** The owner asked that no commit, push, amend or history rewrite happen until authorised. Every change is uncommitted in the working tree on `claude/hopeful-curie-7oki9q`.
+- **Committed as `a57f118` at 17:58:44 UTC on the owner's authorisation** ("commit the session 10 work", received 17:57:53 UTC; recorded here in session 11, A4-4 of the audit). Until then nothing was committed: the owner had asked that no commit, push, amend or history rewrite happen until authorised. Every change is uncommitted in the working tree on `claude/hopeful-curie-7oki9q`.
 - **Nothing is sent, approved, accepted or rejected** by the program or the assistant. The owner's confirmed readings, decisions, labelled assumptions and unresolved questions are preserved.
 
 ## 1. The exchange

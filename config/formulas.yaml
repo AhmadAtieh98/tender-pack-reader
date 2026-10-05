@@ -1,0 +1,35 @@
+# Approved formulas for tenderpack.calc (`calculate` kind approved_formula; session 11).
+# A caller names a formula id and gives literal operands (or quotes from the pack); it never passes an expression.
+# Each expression is evaluated by calc's safe evaluator over this file only: numbers, the declared variables, pi,
+# + - * / **, unary minus, sqrt, ceil, floor, abs, min, max. A formula needs its variables' units, its result unit and
+# its source; an operand in another unit is converted only through calc's fixed table (m3/h <-> m3/s, mm <-> m,
+# per cent <-> fraction), anything else is left unresolved.
+# These are engineering identities, not provisions of the pack. A size list is a PROVISIONAL ASSUMPTION, labelled as
+# such on every result; the size to adopt is a person's decision.
+formulas:
+  pipe-bore-from-flow-velocity:
+    name: Minimum internal bore of a full-bore circular pipe carrying a flow at a maximum velocity
+    expression: "sqrt(4 * Q / (pi * v))"
+    variables:
+      Q: {unit: m3/s, description: "volumetric flow (e.g. the peak hourly flow of VOL-II Table 2-6, row 2-6.2)"}
+      v: {unit: m/s, description: "the maximum velocity allowed (e.g. VOL-II Clause 5.2)"}
+    result: {symbol: d, unit: m, decimals: 3}
+    source: "continuity of flow: Q = v x A with A = pi x d^2 / 4 for a full circular bore (engineering identity)"
+    assumptions:
+      - "full-bore flow in a circular pipe at the stated flow"
+      - "d is the internal (lined) bore; the pack states nominal sizes (DN), so the size to adopt is a person's decision"
+    standard_sizes:
+      basis: "PROVISIONAL ASSUMPTION, not from the pack: common nominal sizes of large ductile-iron pipe, with the lined bore taken equal to the nominal size"
+      unit: m
+      values: [0.8, 0.9, 1.0, 1.1, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0]
+      labels: [DN800, DN900, DN1000, DN1100, DN1200, DN1400, DN1500, DN1600, DN1800, DN2000]
+  velocity-from-flow-and-bore:
+    name: Mean velocity of a flow in a full-bore circular pipe of a given internal bore
+    expression: "4 * Q / (pi * d ** 2)"
+    variables:
+      Q: {unit: m3/s, description: "volumetric flow"}
+      d: {unit: m, description: "internal bore (a nominal size taken as the bore is an assumption)"}
+    result: {symbol: v, unit: m/s, decimals: 3}
+    source: "continuity of flow: v = Q / A with A = pi x d^2 / 4 for a full circular bore (engineering identity)"
+    assumptions:
+      - "full-bore flow in a circular pipe at the stated flow"

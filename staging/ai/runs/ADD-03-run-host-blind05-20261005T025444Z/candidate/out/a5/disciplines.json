@@ -1,0 +1,253 @@
+{
+ "_candidate": "CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted",
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "columns": [
+  {
+   "header": "discipline",
+   "key": "discipline",
+   "width": 20
+  },
+  {
+   "header": "activities",
+   "key": "activities",
+   "width": 20
+  },
+  {
+   "header": "staff_effort_wd",
+   "key": "staff_effort_wd",
+   "width": 20
+  },
+  {
+   "header": "elapsed_wd",
+   "key": "elapsed_wd",
+   "width": 20
+  },
+  {
+   "header": "waiting_activities",
+   "key": "waiting_activities",
+   "width": 20
+  },
+  {
+   "header": "external_parties",
+   "key": "external_parties",
+   "width": 20
+  },
+  {
+   "header": "roles",
+   "key": "roles",
+   "width": 20
+  },
+  {
+   "header": "gated",
+   "key": "gated",
+   "width": 20
+  },
+  {
+   "header": "infeasible",
+   "key": "infeasible",
+   "width": 20
+  },
+  {
+   "header": "overloaded",
+   "key": "overloaded",
+   "width": 20
+  },
+  {
+   "header": "activity_ids",
+   "key": "activity_ids",
+   "width": 20
+  }
+ ],
+ "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_date": "2026-10-22",
+ "rows": [
+  {
+   "activities": 11,
+   "activity_ids": [
+    "deviations-review",
+    "form-4a",
+    "form-4a-prep",
+    "form-4c-prep",
+    "form-4c-sign",
+    "form-4e",
+    "investment-licence",
+    "pcg-execution",
+    "pcg-wording",
+    "poa",
+    "poa-resolutions"
+   ],
+   "discipline": "Legal",
+   "elapsed_wd": 54,
+   "external_parties": [
+    "PoA holder of the lead member (signature)",
+    "each foreign member (licence copy or signed undertaking)",
+    "each member's authorised signatory",
+    "each member's board",
+    "notary",
+    "ultimate parent of the EPC Contractor (its lawyers)",
+    "ultimate parent's board"
+   ],
+   "gated": [
+    "form-4a"
+   ],
+   "infeasible": [],
+   "overloaded": [
+    "deviations-review",
+    "form-4a",
+    "form-4a-prep",
+    "form-4c-prep",
+    "form-4c-sign",
+    "form-4e",
+    "investment-licence",
+    "pcg-execution"
+   ],
+   "roles": [
+    "legal_counsel"
+   ],
+   "staff_effort_wd": 26.5,
+   "waiting_activities": 7
+  },
+  {
+   "activities": 14,
+   "activity_ids": [
+    "bond-approval",
+    "bond-issue",
+    "fin-assumptions",
+    "fin-model-build",
+    "fin-model-freeze",
+    "fin-standing",
+    "fin-statements",
+    "form-4f",
+    "lcc-certificate",
+    "lcc-ratio",
+    "lender-terms",
+    "model-audit-opinion",
+    "model-audit-review",
+    "model-auditor-appoint"
+   ],
+   "discipline": "Commercial",
+   "elapsed_wd": 106,
+   "external_parties": [
+    "bank (credit approval)",
+    "competent authority (not named in the pack)",
+    "each member (audited accounts)",
+    "independent model auditor",
+    "issuing bank",
+    "lenders",
+    "model auditor (engagement)"
+   ],
+   "gated": [],
+   "infeasible": [
+    "lcc-certificate",
+    "lcc-ratio"
+   ],
+   "overloaded": [
+    "bond-issue",
+    "fin-assumptions",
+    "fin-model-build",
+    "fin-model-freeze",
+    "fin-standing",
+    "form-4f",
+    "lcc-certificate",
+    "model-audit-opinion",
+    "model-audit-review"
+   ],
+   "roles": [
+    "commercial_manager",
+    "financial_modeller"
+   ],
+   "staff_effort_wd": 39.0,
+   "waiting_activities": 8
+  },
+  {
+   "activities": 10,
+   "activity_ids": [
+    "completion-certs",
+    "form-4b",
+    "form-4b-prep",
+    "form-4g-review",
+    "form-4g-sign",
+    "ground-dd",
+    "iso-copy",
+    "om-evidence",
+    "references",
+    "technical-proposal"
+   ],
+   "discipline": "Technical",
+   "elapsed_wd": 77,
+   "external_parties": [
+    "EPC Contractor",
+    "O&M Operator",
+    "client of each reference plant",
+    "reference plant owners"
+   ],
+   "gated": [
+    "form-4b"
+   ],
+   "infeasible": [],
+   "overloaded": [],
+   "roles": [
+    "proposal_writers",
+    "technical_lead"
+   ],
+   "staff_effort_wd": 64.5,
+   "waiting_activities": 4
+  },
+  {
+   "activities": 3,
+   "activity_ids": [
+    "attendance-notice",
+    "clarifications",
+    "spoc"
+   ],
+   "discipline": "Bid management",
+   "elapsed_wd": 5,
+   "external_parties": [],
+   "gated": [],
+   "infeasible": [],
+   "overloaded": [],
+   "roles": [
+    "bid_manager"
+   ],
+   "staff_effort_wd": 3.5,
+   "waiting_activities": 0
+  },
+  {
+   "activities": 5,
+   "activity_ids": [
+    "assemble-envelope-a",
+    "assemble-envelope-b",
+    "copies",
+    "deliver",
+    "seal-and-mark"
+   ],
+   "discipline": "Document control",
+   "elapsed_wd": 4,
+   "external_parties": [],
+   "gated": [
+    "assemble-envelope-b",
+    "copies"
+   ],
+   "infeasible": [
+    "assemble-envelope-a",
+    "copies",
+    "deliver",
+    "seal-and-mark"
+   ],
+   "overloaded": [
+    "copies",
+    "seal-and-mark"
+   ],
+   "roles": [
+    "document_controller"
+   ],
+   "staff_effort_wd": 5.25,
+   "waiting_activities": 0
+  }
+ ],
+ "stage": "ADD-02",
+ "status_date": "2026-10-22"
+}

@@ -60,6 +60,7 @@ PACK_PATHS = {
     "assumptions": ("file", "config/assumptions.yaml"),
     "scenarios": ("file", "config/scenarios.yaml"),
     "relationships": ("file", "curation/relationships.yaml"),
+    "triggers": ("file", "curation/triggers.yaml"),              # session 11: a person's recorded trigger facts
 }
 ADDENDUM = re.compile(r"^ADD-(\d+)$")
 

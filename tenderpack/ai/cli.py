@@ -24,7 +24,9 @@ candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging
           Exit 0 when the run finished (complete or partial) or stopped where asked, 1 when a step failed or the
           candidate outputs build was refused, 2 when refused before anything ran (or ingest failed structurally),
           4 when it waits for a host submission.
-  resume RUN_ID [--stop-after STEP] [--no-retry]    continue from the checkpoint (a failed batch is asked again)
+  resume RUN_ID [--stop-after STEP] [--no-retry] [--from STEP]
+                                 continue from the checkpoint (a failed batch is asked again; --from reruns a
+                                 done step and the later ones after a code change; done batches are never asked again)
   submit-batch RUN_ID FILE --by NAME [--host-model M] [--batch ID] [--no-continue]
           the manual host path: the set answering a waiting batch's packet (batches/<id>.packet.json); recorded
           (who, when, the file's sha256) and validated as an API run's; the run then continues
@@ -148,6 +150,9 @@ def _add_workflow(s, common) -> None:
     rs.add_argument("run_id")
     rs.add_argument("--stop-after", choices=list(STEPS))
     rs.add_argument("--no-retry", action="store_true", help="do not ask failed batches again")
+    rs.add_argument("--from", dest="from_step", choices=list(STEPS),
+                    help="rerun this step and the later ones even when done (after a code change); "
+                         "batches that succeeded are never asked again")
     common(rs)
     sb = s.add_parser("submit-batch", help="the manual host path: submit the set answering a waiting batch")
     sb.add_argument("run_id")
@@ -175,7 +180,8 @@ def _run_workflow(a) -> int:
                       allow_unverified_capabilities=a.allow_unverified_capabilities, stop_after=a.stop_after,
                       background_before=not a.no_background, cache=not a.no_cache)
     elif a.ai_cmd == "resume":
-        res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry)
+        res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry,
+                       from_step=a.from_step)
     elif a.ai_cmd == "submit-batch":
         res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue)
     else:

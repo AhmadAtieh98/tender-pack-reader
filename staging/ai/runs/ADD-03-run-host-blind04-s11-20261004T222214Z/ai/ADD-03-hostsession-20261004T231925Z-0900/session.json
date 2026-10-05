@@ -1,0 +1,308 @@
+{
+ "run_id": "ADD-03-hostsession-20261004T231925Z-0900",
+ "addendum": "ADD-03",
+ "provisions": [],
+ "started": "2026-10-04T23:19:25.456338+00:00",
+ "elapsed_s": 169.6,
+ "exit_code": 1,
+ "timed_out": false,
+ "error": "the host ended with an error (success: 429)",
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01NrovzZ7wYkVqTdMix26qkz",
+   "name": "calculate",
+   "arguments": {
+    "kind": "cap",
+    "args": {
+     "cap": {
+      "name": "LD cap",
+      "value": 10,
+      "unit": "% of Estimated Project Cost",
+      "source": {
+       "unit": "VOL-V:18.4",
+       "words": "10%",
+       "page": 2,
+       "stage": "ADD-03"
+      }
+     },
+     "rate": {
+      "name": "delay LD rate",
+      "value": 0.05,
+      "unit": "% of Estimated Project Cost per day",
+      "source": {
+       "unit": "VOL-V:18.1",
+       "words": "one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay",
+       "page": 2,
+       "stage": "ADD-03"
+      }
+     }
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01GHtBjszJ8ekPAUfeUqTdUc",
+   "name": "calculate",
+   "arguments": {
+    "kind": "threshold_of_total",
+    "args": {
+     "percent": {
+      "name": "technical threshold",
+      "value": 70,
+      "unit": "%",
+      "source": {
+       "unit": "ADD-03:6.2",
+       "words": "seventy per cent (70%) of the total marks available in Table 1-1",
+       "page": 2,
+       "stage": "ADD-03"
+      }
+     },
+     "total": {
+      "name": "total marks",
+      "value": 120,
+      "unit": "marks",
+      "source": {
+       "unit": "ADD-03:T1-1/total",
+       "words": "120",
+       "page": 2,
+       "stage": "ADD-03"
+      }
+     },
+     "rounding": "none"
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_016JTCWHduxmaVkBZErV7wNw",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:8.3",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_013DD7KiUJyQytYUqh2JTzuU",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "acknowledge receipt addendum Form 4-A",
+    "limit": 6
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_017p2at94njTjCFFYcGn9pnp",
+   "name": "simulate_programme",
+   "arguments": {
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_018dANSdKPeFwjrdiMZiKwnk",
+   "name": "calculate",
+   "arguments": {
+    "kind": "printed_date",
+    "args": {
+     "unit_id": "VOL-I:6.1",
+     "stage": "ADD-03"
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EjNJqw59c8VAkDuSrPKZda",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 30,
+     "unit": "calendar_day",
+     "direction": "before",
+     "purpose": "earliest issue date of the certified register copy"
+    }
+   },
+   "ok": false,
+   "images": 0
+  },
+  {
+   "id": "toolu_01TNRUBdo1gUHezdEqTeAhPd",
+   "name": "calculate",
+   "arguments": {
+    "kind": "add_working_days",
+    "args": {
+     "date": "2026-11-26",
+     "n": 5
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01HKVHvdytTeECSFx3BKLjdh",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 30,
+     "unit": "calendar_day",
+     "direction": "before",
+     "purpose": "window_start"
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_019VyzgzxTh6y4mW3vkzMryy",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "VOL-V 18.1 at ADD-03: delay LDs at 0.05% of the Estimated Project Cost per day",
+       "evidence": [
+        {
+         "doc": "VOL-V",
+         "unit_id": "VOL-V:18.1",
+         "page": 2,
+         "kind": "span",
+         "words": "one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay"
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "DS-12.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "row_reading",
+       "task": "row:VOL-V-12.1-01",
+       "payload": {
+        "row": "VOL-V-12.1-01",
+        "interpretation": {
+         "stage": "ADD-03",
+         "quote": "shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)",
+         "parameters": {
+          "months_from_notice_to_proceed": 36
+         },
+         "consequence": {
+          "class": "contractual",
+          "unit": "VOL-V:18.1",
+          "quote": "the Project Company shall pay to the Authority delay liquidated damages at the rate of one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay"
+         }
+        }
+       },
+       "evidence": [
+        {
+         "doc": "VOL-V",
+         "unit_id": "VOL-V:12.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)."
+        }
+       ],
+       "statements": [
+        "S-F1"
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [],
+ "images_received": [],
+ "submission": null,
+ "statuses": {},
+ "num_turns": 11,
+ "usage": {
+  "input_tokens": 10,
+  "cache_creation_input_tokens": 20974,
+  "cache_read_input_tokens": 265222,
+  "output_tokens": 18513,
+  "output_tokens_details": {
+   "thinking_tokens": 15637
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 20974,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 8032,
+    "cache_read_input_tokens": 62366,
+    "cache_creation_input_tokens": 788,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 788
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 0.5911364,
+ "final_text": "You've hit your session limit · resets 2:30am (UTC)",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/ai/ADD-03-hostsession-20261004T231925Z-0900",
+ "api_error_status": 429,
+ "terminal_reason": "api_error",
+ "failure_class": "rate_limit",
+ "reset_in_s": 11264.9,
+ "structured_output": null
+}

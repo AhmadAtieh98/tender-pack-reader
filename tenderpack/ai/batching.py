@@ -213,3 +213,120 @@ def summary(batches: list[Batch]) -> dict:
             "too_large": [{"provision": u, "batch": b.index, "note": b.note} for b in batches if not b.fits
                           for u in b.provisions],
             "provisions": sum(len(b.provisions) for b in batches)}
+
+
+# ---------------------------------------------------------------------------------------------- session 11: one request
+# The request layer (tenderpack/ai/requests.py) checks EVERY request of every phase before it is sent, with the same
+# rule as the planner: input = system + tool definitions + the packet (its JSON as sent) + the images attached + the
+# allowance for later turns (tool phases only); output = what the phase is expected to write (`expected_output`);
+# fits when output <= the output cap and input + output <= context x (1 - margin). A request that does not fit is
+# never truncated: the workflow splits its batch by provision or task, and a single provision or task that does not
+# fit alone is escalated with its size.
+
+EXPECTED_OUTPUT = {                         # per phase: (fixed, per unit); config/ai.yaml batching.expected_output
+    "analysis": (OUTPUT_TOKENS_FIXED, OUTPUT_TOKENS_PER_PROVISION),
+    "downstream": (1500, 900),              # per task: a re-made reading, a row or an escalation with its quotations
+    "reading": (8000, 0),                   # one Reading of an image region (a form or a table, every line)
+    "critic": (300, 350),                   # per item reviewed
+    "repair": (1500, 700),
+}
+
+
+@dataclass
+class RequestSize:
+    phase: str
+    system_tokens: int
+    tools_tokens: int
+    packet_tokens: int
+    image_tokens: int
+    prior_turns_tokens: int
+    output_tokens: int
+    context_tokens: int | None
+    usable_tokens: int | None
+    output_cap: int | None
+    fits: bool
+    why: str = ""
+    size_source: str = ""
+    capability_source: str = ""
+    units: int = 0
+
+    @property
+    def input_tokens(self) -> int:
+        return (self.system_tokens + self.tools_tokens + self.packet_tokens + self.image_tokens
+                + self.prior_turns_tokens)
+
+    def to_dict(self) -> dict:
+        return {**asdict(self), "input_tokens": self.input_tokens}
+
+    def line(self) -> str:
+        return (f"about {self.input_tokens} input tokens (system {self.system_tokens}, tools {self.tools_tokens}, packet "
+                f"{self.packet_tokens}, images {self.image_tokens}, later turns {self.prior_turns_tokens}) + "
+                f"{self.output_tokens} output tokens against a usable context of {self.usable_tokens} (context "
+                f"{self.context_tokens}) and an output cap of {self.output_cap}")
+
+
+def expected_output(phase: str, units: int, settings: dict | None = None) -> int:
+    st = ((settings or {}).get("expected_output") or {}).get(phase)
+    fixed, per = (st if isinstance(st, (list, tuple)) and len(st) == 2 else EXPECTED_OUTPUT.get(phase, (1500, 700)))
+    if phase == "analysis" and settings:
+        fixed = int(settings.get("output_tokens_fixed", fixed))
+        per = int(settings.get("output_tokens_per_provision", per))
+    return int(fixed) + int(per) * max(0, int(units))
+
+
+def request_size(phase: str, capabilities, *, system: str = "", tools: list | None = None, packet_text: str = "",
+                 images: int = 0, prior_turns: bool = True, units: int = 0, max_output_tokens: int | None = None,
+                 settings: dict | None = None, output_tokens: int | None = None,
+                 packet_tokens: int | None = None) -> RequestSize:
+    """The complete size of one request (see the comment above). `capabilities` must carry a context window (verified
+    by the endpoint, a cassette's, or the host's declared one); without one the size is computed and `fits` is False
+    with the reason (capabilities unverified)."""
+    st = settings or {}
+    cpt = float(st.get("chars_per_token", CHARS_PER_TOKEN))
+    ov = Overhead(chars_per_token=cpt)
+    c = capabilities.to_dict() if hasattr(capabilities, "to_dict") else dict(capabilities or {})
+    ctx = c.get("context_tokens") if isinstance(c.get("context_tokens"), int) and c.get("context_tokens") > 0 else None
+    caps_out = [x for x in (c.get("max_output_tokens"), max_output_tokens) if isinstance(x, int) and x > 0]
+    out_cap = min(caps_out) if caps_out else None
+    margin = float(st.get("context_margin", MARGIN))
+    usable = int(ctx * (1 - margin)) if ctx else None
+    out = int(output_tokens if output_tokens is not None else expected_output(phase, units, st))
+    size = RequestSize(phase=phase, system_tokens=tokens_of(system or "", ov),
+                       tools_tokens=tokens_of(json.dumps(tools or [], ensure_ascii=False), ov) if tools else 0,
+                       packet_tokens=int(packet_tokens) if packet_tokens is not None else tokens_of(packet_text or "", ov),
+                       image_tokens=int(st.get("image_tokens", IMAGE_TOKENS)) * int(images or 0),
+                       prior_turns_tokens=int(st.get("prior_turns_tokens", PRIOR_TURNS_TOKENS)) if prior_turns else 0,
+                       output_tokens=out, context_tokens=ctx, usable_tokens=usable, output_cap=out_cap, fits=True,
+                       size_source=f"estimate: {cpt:g} characters per token (not a tokenizer count)",
+                       capability_source=str(c.get("source") or ""), units=int(units or 0))
+    why = []
+    if ctx is None:
+        why.append(f"no context window is known for this route (source: {c.get('source')}): the request cannot be "
+                   "accounted (capabilities unverified)")
+    elif size.input_tokens + out > usable:
+        why.append(f"{size.input_tokens} input + {out} output tokens exceed the usable context of {usable}")
+    if out_cap is not None and out > out_cap:
+        why.append(f"the expected output of {out} tokens exceeds the output cap of {out_cap}")
+    if why:
+        size.fits, size.why = False, "; ".join(why)
+    return size
+
+
+def plan_units(units: list[dict], fits) -> list[list[dict]]:
+    """Split `units` (provisions or tasks, in order) into consecutive groups that each `fits(group) -> bool`, greedily;
+    a unit that does not fit alone is its own group (the caller escalates it with its size). Nothing is dropped or
+    reordered."""
+    groups: list[list[dict]] = []
+    cur: list[dict] = []
+    for u in units:
+        if cur and fits(cur + [u]):
+            cur.append(u)
+            continue
+        if cur:
+            groups.append(cur)
+        cur = [u]
+    if cur:
+        groups.append(cur)
+    if [id(u) for g in groups for u in g] != [id(u) for u in units]:
+        raise BatchPlanError("the plan lost or reordered a unit")
+    return groups

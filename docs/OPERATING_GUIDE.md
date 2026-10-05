@@ -51,6 +51,7 @@ Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehea
    - `draft` proposes ops. Anything it cannot type is listed as **unresolved**.
    - `outputs` publishes a working draft. The addendum is PARTIAL and the validated state stays on the previous addendum.
    - `diff` says what changed: requirements, STALE rows, image-read values, disqualifiers, programme.
+   - While the addendum is PARTIAL, `outputs` also writes the **candidate** A3 and A5 beside the validated ones (session 11): `out/a3/a3_candidate.pdf` (with `.md`, `.html` and `.json`) and `out/a5/candidate/`. They show what the addendum would do if every valid op stood: the rows that would enter, leave or change on A3, each with its op and status; the A5 dates that would move and the rows and ops that move them; the activities marked REVIEW through relationships; the activities BLOCKED because a row they serve is unresolved; the blockers (unresolved provisions with their reasons, STALE rows, C46 gaps, documents not supplied such as the Environmental Permit, conflicts); conditional scenarios with a decision milestone at the trigger deadline; and the image-read units the addendum touches, beside their review packets. Every page says CANDIDATE — NOT VALIDATED, and the candidate A3 may run to several pages (the one-page rule applies to the validated A3 only). Nothing validated changes: `a3/a3.pdf` and `a5/` stay on the previous addendum, byte for byte. `diff` and the AI workflow's review packet point to both and say in one paragraph what may be changing.
 4. **Curate.** Copy the draft to `curation/amendments/ADD-03.yaml`, then treat every unresolved provision:
    - write an op, or a `no_effect` with a reason;
    - add rows for new obligations (C46 lists any that are missing);
@@ -61,6 +62,7 @@ Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehea
    - choosing a consequence class: a stated refusal of a submitted document ("will not be accepted", "treated as not submitted") whose effect on the Proposal is not stated is `document_refusal`, quoting the refusal. A3 lists it under "Document refused" and the row keeps its place in the VOL-I 11.1(i) gate; it is never shown as a disqualification. Zero marks under one scoring criterion is `criterion_zero`: a scored consequence, listed on A3 apart from the threshold; state any threshold risk in the row's note. `score_elimination` means falling below the VOL-I 11.3 threshold (Envelope B returned unopened), not a zero on one criterion. Neither case is `lesser`;
    - after adding a not-yet-issued unit to an existing row, re-pin that row's earlier readings by name (`pin --rows ROW@STAGE`); otherwise they show STALE at stages where the unit did not exist;
    - a row marked `removed: {by: <op>}` must quote words that op deleted: if the quoted words are still in the unit after the op, check-register reports "the row's words survive the op" and the row stays in force (session 10);
+   - a new row for an obligation the addendum creates in a unit that existed before (an answer, or new words in a volume clause) says where it comes into force (session 11): `introduced: {stage: ADD-03, by: <the op id, or the provision unit>, evidence: {unit: <the provision, or a unit its op changed>, page: N, words: "<verbatim, new at that stage>"}}`. Before that stage the row is NOT IN FORCE (no reading needed, never STALE, off A3 and A5); at it, NEW (introduced by …). The claim is checked: the op is applied at that stage (or the provision is that addendum's), the words are printed there and were not there before, and no reading is made earlier; a claim that fails is a C16 finding and the row is then read without it. A row without the field is in force from the stage its first unit is issued in, as before (check-register reports how many rows are explicit and how many derived). Putting the addendum's provision first in `units` remains a convention; it is not the evidence;
    - read the "Reached through relationships" part of `diff` (and A2): rows, activities and calculations reached through another provision (§7);
    - update `config/assumptions.yaml` when a pack fact in it changed (e.g. the number of copies).
 5. **Check.** Run each of these; every one must be clean:
@@ -75,6 +77,19 @@ Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehea
    - coverage is complete;
    - no row is STALE;
    - every reading, row and op carries your decision.
+
+### 3a. If a run is interrupted, rate-limited or the machine restarts (session 11)
+
+Nothing is lost: every step and batch is checkpointed under `staging/ai/runs/<run>/checkpoint.json`. Run
+`python -m tenderpack ai resume <run>`; batches that succeeded are never asked again, a batch the plan's rate limit
+deferred (exit 5, "DEFERRED") is asked again, and the steps after the last done batch are recomputed. A run killed
+mid-batch (a crash, a container restart) leaves its locks behind; `resume` takes over the run lock and the
+addendum's staging lock when their process is no longer running on this machine and records the takeover; a lock
+held by a live process is still refused, and an old lock without a dead process needs a person
+(`--break-lock --by "Your Name"`). After a code change, `ai resume <run> --from <step>` reruns that step and the
+later ones without asking any done batch again (proposals made against another state identity are still refused at
+promotion). The clock of a rehearsal records every interruption (`rehearsals/blind-04/clock-s11.txt` is an example
+with a restart and a rate limit).
 
 ## 4. Reviewing: the owner's decisions
 

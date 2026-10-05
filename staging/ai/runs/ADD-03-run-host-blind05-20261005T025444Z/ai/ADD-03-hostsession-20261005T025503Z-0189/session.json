@@ -1,0 +1,1387 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T025503Z-0189",
+ "addendum": "ADD-03",
+ "provisions": [],
+ "started": "2026-10-05T02:55:03.584076+00:00",
+ "elapsed_s": 196.0,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01N328gdw8WsCnKddSxfscmS",
+   "name": "get_region",
+   "arguments": {
+    "region_id": "ADD-03-p4-r1"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_0197Mgry5PjyeXLCAkU8J5zx",
+   "name": "get_region",
+   "arguments": {
+    "region_id": "ADD-03-p4-r1",
+    "bands": [
+     0,
+     1,
+     2
+    ]
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01PGW2ZsfT5uTzuY4ww2NPRY",
+   "name": "get_region",
+   "arguments": {
+    "region_id": "ADD-03-p4-r1",
+    "bands": [
+     6,
+     7,
+     8
+    ]
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01SWE4m3QwjpMGeDCQxxdhUz",
+   "name": "get_region",
+   "arguments": {
+    "region_id": "ADD-03-p4-r1",
+    "bands": [
+     10,
+     12,
+     13
+    ]
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01EUHxQ4qyPVxpPnqHb5Tx7h",
+   "name": "validate_reading",
+   "arguments": {
+    "reading": {
+     "region_id": "ADD-03-p4-r1",
+     "unit_id": "ADD-03:p4-image",
+     "title": "Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site",
+     "source": {
+      "doc": "ADD-03",
+      "page": 4,
+      "bbox_pt": [
+       56.7,
+       127.2,
+       538.6,
+       540.2
+      ],
+      "native_sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+     },
+     "content_type": "form",
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "method": "Visual reading of the embedded image at native resolution (1750x1500 px) and of the enlarged band crops. No OCR. Text bands and left/right splits measured from pixels by tenderpack.regions.text_bands; no ruled grid was detected, so the table rows are read as band lines.",
+     "blocks": [
+      {
+       "key": "hdr-en",
+       "lang": "en",
+       "role": "header",
+       "lines": [
+        {
+         "band": 0,
+         "side": "left",
+         "source": "Northern Region Airspace Safeguarding Office"
+        }
+       ]
+      },
+      {
+       "key": "hdr-ar",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Northern Region Airspace Safeguarding Office",
+       "lines": [
+        {
+         "band": 0,
+         "side": "right",
+         "source": "مكتب حماية المجال الجوي بالمنطقة الشمالية"
+        }
+       ]
+      },
+      {
+       "key": "date",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Date: 10 November 2026 AD",
+       "lines": [
+        {
+         "band": 1,
+         "side": "left",
+         "source": "التاريخ: ١٠ نوفمبر ٢٠٢٦م",
+         "numerals": [
+          {
+           "text": "٢٠٢٦",
+           "visual_ltr_expected": "٢٠٢٦",
+           "meaning": "year 2026 (followed by م, Gregorian era)"
+          },
+          {
+           "text": "١٠",
+           "visual_ltr_expected": "١٠",
+           "meaning": "day 10 of November"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "ref",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Reference number: 471/2026",
+       "lines": [
+        {
+         "band": 1,
+         "side": "right",
+         "source": "الرقم: ٤٧١/٢٠٢٦",
+         "numerals": [
+          {
+           "text": "٤٧١/٢٠٢٦",
+           "visual_ltr_expected": "٤٧١/٢٠٢٦",
+           "meaning": "letter reference number 471/2026"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "subject",
+       "lang": "ar",
+       "role": "subject",
+       "translation": "Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant",
+       "lines": [
+        {
+         "band": 2,
+         "source": "الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان"
+        }
+       ]
+      },
+      {
+       "key": "tender-ref",
+       "lang": "mixed",
+       "role": "header",
+       "translation": "Tender number: NUPA/ISTP/2026/014",
+       "lines": [
+        {
+         "band": 3,
+         "source": "مناقصة رقم: NUPA/ISTP/2026/014",
+         "numerals": [
+          {
+           "text": "2026/014",
+           "visual_ltr_expected": "2026/014",
+           "meaning": "digits of the tender reference (Latin script run inside Arabic text)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-title",
+       "lang": "ar",
+       "role": "table-title",
+       "translation": "Table 5-1: Maximum height of structures and equipment on the site",
+       "lines": [
+        {
+         "band": 4,
+         "source": "جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع",
+         "numerals": [
+          {
+           "text": "٥-١",
+           "visual_ltr_expected": "١-٥",
+           "meaning": "Table 5-1 (matches the page heading 'APPENDIX A — TABLE 5-1 (ARABIC)' in the text layer)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-intro",
+       "lang": "ar",
+       "role": "table-qualifier",
+       "translation": "The maximum permitted height in each zone of the site is set as follows:",
+       "lines": [
+        {
+         "band": 5,
+         "source": "يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:"
+        }
+       ]
+      },
+      {
+       "key": "table-header",
+       "lang": "ar",
+       "role": "table-header",
+       "translation": "Column headings, right to left: Zone | Description | Maximum height (metres above natural ground level) | Warning lighting",
+       "lines": [
+        {
+         "band": 6,
+         "side": "right",
+         "source": "المنطقة | الوصف"
+        },
+        {
+         "band": 6,
+         "side": "left",
+         "source": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية"
+        }
+       ],
+       "uncertain": [
+        "no ruled grid was detected although the image shows a ruled table; columns are separated here with ' | ' in reading (right-to-left) order, which is a reading convention, not printed text"
+       ]
+      },
+      {
+       "key": "row-a",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone A | The part of the site lying within a distance of 1,500 m of the eastern boundary of the site | 25 | Required",
+       "lines": [
+        {
+         "band": 7,
+         "side": "right",
+         "source": "أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥",
+         "numerals": [
+          {
+           "text": "٢٥",
+           "visual_ltr_expected": "٢٥",
+           "meaning": "maximum height 25 m above natural ground level, zone A"
+          },
+          {
+           "text": "١٬٥٠٠",
+           "visual_ltr_expected": "١٬٥٠٠",
+           "meaning": "distance 1,500 m from the eastern site boundary"
+          }
+         ]
+        },
+        {
+         "band": 7,
+         "side": "left",
+         "source": "مطلوبة"
+        }
+       ],
+       "uncertain": [
+        "the thousands separator in ١٬٥٠٠ is read as the Arabic thousands separator (U+066C); it could be printed as an apostrophe-like mark; reviewer to confirm it is not a decimal mark (1.5)"
+       ]
+      },
+      {
+       "key": "row-b",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone B | Remainder of the site area | 40 | Required for any part whose height exceeds 30 metres",
+       "lines": [
+        {
+         "band": 8,
+         "side": "right",
+         "source": "ب | باقي مساحة الموقع"
+        },
+        {
+         "band": 8,
+         "side": "left",
+         "source": "٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 metres: height above which warning lighting is required in zone B"
+          },
+          {
+           "text": "٤٠",
+           "visual_ltr_expected": "٤٠",
+           "meaning": "maximum height 40 m above natural ground level, zone B"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "notes-head",
+       "lang": "ar",
+       "role": "notes-heading",
+       "translation": "Notes:",
+       "lines": [
+        {
+         "band": 9,
+         "source": "ملاحظات:"
+        }
+       ]
+      },
+      {
+       "key": "note1",
+       "lang": "ar",
+       "role": "note",
+       "translation": "1. These limits apply to all permanent and temporary structures, including stacks, cranes and construction equipment.",
+       "lines": [
+        {
+         "band": 10,
+         "source": "١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.",
+         "numerals": [
+          {
+           "text": "١",
+           "visual_ltr_expected": "١",
+           "meaning": "note number 1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note2",
+       "lang": "ar",
+       "role": "note",
+       "translation": "2. Height is measured from natural ground level before grading and filling works.",
+       "lines": [
+        {
+         "band": 11,
+         "source": "٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.",
+         "numerals": [
+          {
+           "text": "٢",
+           "visual_ltr_expected": "٢",
+           "meaning": "note number 2"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note3",
+       "lang": "ar",
+       "role": "note",
+       "translation": "3. The Office must be notified at least thirty (30) days before any crane is erected on the site.",
+       "lines": [
+        {
+         "band": 12,
+         "source": "٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 days notice before crane erection"
+          },
+          {
+           "text": "٣",
+           "visual_ltr_expected": "٣",
+           "meaning": "note number 3"
+          }
+         ]
+        }
+       ],
+       "uncertain": [
+        "'days' is not qualified as calendar or working days in the image; how it maps to the pack's day conventions is for a person to decide"
+       ]
+      },
+      {
+       "key": "signatory",
+       "lang": "ar",
+       "role": "signature",
+       "translation": "Office Director (above a handwritten-style signature stroke)",
+       "lines": [
+        {
+         "band": 13,
+         "side": "left",
+         "source": "مدير المكتب"
+        }
+       ]
+      },
+      {
+       "key": "stamp",
+       "lang": "ar",
+       "role": "stamp",
+       "translation": "(empty oval stamp outline, no legible text)",
+       "lines": [
+        {
+         "band": 13,
+         "side": "right",
+         "source": ""
+        }
+       ],
+       "uncertain": [
+        "the right half of band 13 holds only an empty oval (stamp outline); no text is visible in it"
+       ]
+      }
+     ],
+     "uncertainties": [
+      "The table is ruled in the image but no grid was detected from pixels; rows are therefore read as band lines with ' | ' between cells in right-to-left reading order.",
+      "Band 5 is measured from x=34 although the printed text starts near x=625; the extra extent is taken to be speckle, not text.",
+      "The signature in band 13 left is a drawn stroke, not text; it is not transcribed.",
+      "Diacritics (shadda on الحدّ, المعدّات; damma/kasra on يُحدِّد, يُقاس; tanween on يوماً, متراً) were read on the enlarged crops."
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_0141E18h1adQTzs1HrWAc61R",
+   "name": "validate_reading",
+   "arguments": {
+    "reading": {
+     "region_id": "ADD-03-p4-r1",
+     "unit_id": "ADD-03:p4-image",
+     "title": "Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site",
+     "source": {
+      "doc": "ADD-03",
+      "page": 4,
+      "bbox_pt": [
+       56.7,
+       127.2,
+       538.6,
+       540.2
+      ],
+      "native_sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+     },
+     "content_type": "form",
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "prepared_by": "",
+     "method": "Visual reading of the embedded image at native resolution (1750x1500 px) and of the enlarged band crops. No OCR. Text bands and left/right splits measured from pixels by tenderpack.regions.text_bands; no ruled grid was detected, so the table rows are read as band lines.",
+     "blocks": [
+      {
+       "key": "hdr-en",
+       "lang": "en",
+       "role": "header",
+       "lines": [
+        {
+         "band": 0,
+         "side": "left",
+         "source": "Northern Region Airspace Safeguarding Office"
+        }
+       ]
+      },
+      {
+       "key": "hdr-ar",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Northern Region Airspace Safeguarding Office",
+       "lines": [
+        {
+         "band": 0,
+         "side": "right",
+         "source": "مكتب حماية المجال الجوي بالمنطقة الشمالية"
+        }
+       ]
+      },
+      {
+       "key": "date",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Date: 10 November 2026 AD",
+       "lines": [
+        {
+         "band": 1,
+         "side": "left",
+         "source": "التاريخ: ١٠ نوفمبر ٢٠٢٦م",
+         "numerals": [
+          {
+           "text": "٢٠٢٦",
+           "visual_ltr_expected": "٢٠٢٦",
+           "meaning": "year 2026 (followed by م, Gregorian era)"
+          },
+          {
+           "text": "١٠",
+           "visual_ltr_expected": "١٠",
+           "meaning": "day 10 of November"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "ref",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Reference number: 471/2026",
+       "lines": [
+        {
+         "band": 1,
+         "side": "right",
+         "source": "الرقم: ٤٧١/٢٠٢٦",
+         "numerals": [
+          {
+           "text": "٤٧١/٢٠٢٦",
+           "visual_ltr_expected": "٤٧١/٢٠٢٦",
+           "meaning": "letter reference number 471/2026"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "subject",
+       "lang": "ar",
+       "role": "subject",
+       "translation": "Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant",
+       "lines": [
+        {
+         "band": 2,
+         "source": "الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان"
+        }
+       ]
+      },
+      {
+       "key": "tender-ref",
+       "lang": "mixed",
+       "role": "header",
+       "translation": "Tender number: NUPA/ISTP/2026/014",
+       "lines": [
+        {
+         "band": 3,
+         "source": "مناقصة رقم: NUPA/ISTP/2026/014",
+         "numerals": [
+          {
+           "text": "2026/014",
+           "visual_ltr_expected": "2026/014",
+           "meaning": "digits of the tender reference (Latin script run inside Arabic text)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-title",
+       "lang": "ar",
+       "role": "table-title",
+       "translation": "Table 5-1: Maximum height of structures and equipment on the site",
+       "lines": [
+        {
+         "band": 4,
+         "source": "جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع",
+         "numerals": [
+          {
+           "text": "٥-١",
+           "visual_ltr_expected": "١-٥",
+           "meaning": "Table 5-1 (matches the page heading 'APPENDIX A — TABLE 5-1 (ARABIC)' in the text layer)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-intro",
+       "lang": "ar",
+       "role": "table-qualifier",
+       "translation": "The maximum permitted height in each zone of the site is set as follows:",
+       "lines": [
+        {
+         "band": 5,
+         "source": "يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:"
+        }
+       ]
+      },
+      {
+       "key": "table-header",
+       "lang": "ar",
+       "role": "table-header",
+       "translation": "Column headings, right to left: Zone | Description | Maximum height (metres above natural ground level) | Warning lighting",
+       "lines": [
+        {
+         "band": 6,
+         "side": "right",
+         "source": "المنطقة | الوصف"
+        },
+        {
+         "band": 6,
+         "side": "left",
+         "source": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية"
+        }
+       ],
+       "uncertain": [
+        "no ruled grid was detected although the image shows a ruled table; columns are separated here with ' | ' in reading (right-to-left) order, which is a reading convention, not printed text"
+       ]
+      },
+      {
+       "key": "row-a",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone A | The part of the site lying within a distance of 1,500 m of the eastern boundary of the site | 25 | Required",
+       "lines": [
+        {
+         "band": 7,
+         "side": "right",
+         "source": "أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥",
+         "numerals": [
+          {
+           "text": "٢٥",
+           "visual_ltr_expected": "٢٥",
+           "meaning": "maximum height 25 m above natural ground level, zone A"
+          },
+          {
+           "text": "١٬٥٠٠",
+           "visual_ltr_expected": "١٬٥٠٠",
+           "meaning": "distance 1,500 m from the eastern site boundary"
+          }
+         ]
+        },
+        {
+         "band": 7,
+         "side": "left",
+         "source": "مطلوبة"
+        }
+       ],
+       "uncertain": [
+        "the thousands separator in ١٬٥٠٠ is read as the Arabic thousands separator (U+066C); it could be printed as an apostrophe-like mark; reviewer to confirm it is not a decimal mark (1.5)"
+       ]
+      },
+      {
+       "key": "row-b",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone B | Remainder of the site area | 40 | Required for any part whose height exceeds 30 metres",
+       "lines": [
+        {
+         "band": 8,
+         "side": "right",
+         "source": "ب | باقي مساحة الموقع"
+        },
+        {
+         "band": 8,
+         "side": "left",
+         "source": "٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 metres: height above which warning lighting is required in zone B"
+          },
+          {
+           "text": "٤٠",
+           "visual_ltr_expected": "٤٠",
+           "meaning": "maximum height 40 m above natural ground level, zone B"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "notes-head",
+       "lang": "ar",
+       "role": "notes-heading",
+       "translation": "Notes:",
+       "lines": [
+        {
+         "band": 9,
+         "source": "ملاحظات:"
+        }
+       ]
+      },
+      {
+       "key": "note1",
+       "lang": "ar",
+       "role": "note",
+       "translation": "1. These limits apply to all permanent and temporary structures, including stacks, cranes and construction equipment.",
+       "lines": [
+        {
+         "band": 10,
+         "source": "١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.",
+         "numerals": [
+          {
+           "text": "١",
+           "visual_ltr_expected": "١",
+           "meaning": "note number 1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note2",
+       "lang": "ar",
+       "role": "note",
+       "translation": "2. Height is measured from natural ground level before grading and filling works.",
+       "lines": [
+        {
+         "band": 11,
+         "source": "٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.",
+         "numerals": [
+          {
+           "text": "٢",
+           "visual_ltr_expected": "٢",
+           "meaning": "note number 2"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note3",
+       "lang": "ar",
+       "role": "note",
+       "translation": "3. The Office must be notified at least thirty (30) days before any crane is erected on the site.",
+       "lines": [
+        {
+         "band": 12,
+         "source": "٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 days notice before crane erection"
+          },
+          {
+           "text": "٣",
+           "visual_ltr_expected": "٣",
+           "meaning": "note number 3"
+          }
+         ]
+        }
+       ],
+       "uncertain": [
+        "'days' is not qualified as calendar or working days in the image; how it maps to the pack's day conventions is for a person to decide"
+       ]
+      },
+      {
+       "key": "signatory",
+       "lang": "ar",
+       "role": "signature",
+       "translation": "Office Director (above a handwritten-style signature stroke)",
+       "lines": [
+        {
+         "band": 13,
+         "side": "left",
+         "source": "مدير المكتب"
+        }
+       ]
+      },
+      {
+       "key": "stamp",
+       "lang": "ar",
+       "role": "stamp",
+       "translation": "(empty oval stamp outline, no legible text)",
+       "lines": [
+        {
+         "band": 13,
+         "side": "right",
+         "source": ""
+        }
+       ],
+       "uncertain": [
+        "the right half of band 13 holds only an empty oval (stamp outline); no text is visible in it"
+       ]
+      }
+     ],
+     "uncertainties": [
+      "The table is ruled in the image but no grid was detected from pixels; rows are therefore read as band lines with ' | ' between cells in right-to-left reading order.",
+      "Band 5 is measured from x=34 although the printed text starts near x=625; the extra extent is taken to be speckle, not text.",
+      "The signature in band 13 left is a drawn stroke, not text; it is not transcribed.",
+      "Diacritics (shadda on الحدّ, المعدّات; damma/kasra on يُحدِّد, يُقاس; tanween on يوماً, متراً) were read on the enlarged crops."
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01VoPjiHEqCrHVnbraPWjLmk",
+   "name": "validate_reading",
+   "arguments": {
+    "reading": {
+     "region_id": "ADD-03-p4-r1",
+     "unit_id": "ADD-03:p4-image",
+     "title": "Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site",
+     "source": {
+      "doc": "ADD-03",
+      "page": 4,
+      "bbox_pt": [
+       56.7,
+       127.2,
+       538.6,
+       540.2
+      ],
+      "native_sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+     },
+     "content_type": "form",
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "prepared_by": "",
+     "method": "m",
+     "blocks": [
+      {
+       "key": "hdr-en",
+       "lang": "en",
+       "role": "header",
+       "lines": [
+        {
+         "band": 0,
+         "side": "left",
+         "source": "Northern Region Airspace Safeguarding Office"
+        }
+       ]
+      },
+      {
+       "key": "hdr-ar",
+       "lang": "ar",
+       "role": "header",
+       "translation": "x",
+       "lines": [
+        {
+         "band": 0,
+         "side": "right",
+         "source": "مكتب"
+        }
+       ]
+      },
+      {
+       "key": "a",
+       "lang": "ar",
+       "translation": "x",
+       "lines": [
+        {
+         "band": 1,
+         "side": "left",
+         "source": "مكتب"
+        },
+        {
+         "band": 1,
+         "side": "right",
+         "source": "مكتب"
+        },
+        {
+         "band": 2,
+         "source": "مكتب"
+        },
+        {
+         "band": 3,
+         "source": "مكتب"
+        },
+        {
+         "band": 4,
+         "source": "مكتب"
+        },
+        {
+         "band": 5,
+         "source": "مكتب"
+        },
+        {
+         "band": 6,
+         "side": "left",
+         "source": "مكتب"
+        },
+        {
+         "band": 6,
+         "side": "right",
+         "source": "مكتب"
+        },
+        {
+         "band": 7,
+         "side": "left",
+         "source": "مكتب"
+        },
+        {
+         "band": 7,
+         "side": "right",
+         "source": "مكتب"
+        },
+        {
+         "band": 8,
+         "side": "left",
+         "source": "مكتب"
+        },
+        {
+         "band": 8,
+         "side": "right",
+         "source": "مكتب"
+        },
+        {
+         "band": 9,
+         "source": "مكتب"
+        },
+        {
+         "band": 10,
+         "source": "مكتب"
+        },
+        {
+         "band": 11,
+         "source": "مكتب"
+        },
+        {
+         "band": 12,
+         "source": "مكتب"
+        },
+        {
+         "band": 13,
+         "side": "left",
+         "source": "مكتب"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01ARxuJKRMkN9f3QJRjpr83d",
+   "name": "validate_reading",
+   "arguments": {
+    "reading": {
+     "region_id": "ADD-03-p4-r1",
+     "unit_id": "ADD-03:p4-image",
+     "title": "t",
+     "source": {
+      "doc": "ADD-03",
+      "page": 4,
+      "bbox_pt": [
+       56.7,
+       127.2,
+       538.6,
+       540.2
+      ],
+      "native_sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+     },
+     "content_type": "form",
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "prepared_by": "",
+     "method": "m",
+     "blocks": [
+      {
+       "key": "stamp",
+       "lang": "en",
+       "role": "stamp",
+       "lines": [
+        {
+         "band": 13,
+         "side": "right",
+         "source": ""
+        }
+       ],
+       "uncertain": [
+        "empty oval"
+       ]
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Fe8DkQnpGUEQujubYqkmRD",
+   "name": "validate_reading",
+   "arguments": {
+    "reading": {
+     "region_id": "ADD-03-p4-r1",
+     "unit_id": "ADD-03:p4-image",
+     "title": "Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site",
+     "source": {
+      "doc": "ADD-03",
+      "page": 4,
+      "bbox_pt": [
+       56.7,
+       127.2,
+       538.6,
+       540.2
+      ],
+      "native_sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+     },
+     "content_type": "form",
+     "languages": [
+      "ar",
+      "en"
+     ],
+     "prepared_by": "",
+     "method": "Visual reading of the embedded image at native resolution (1750x1500 px) and of the enlarged band crops. No OCR. Text bands and left/right splits measured from pixels by tenderpack.regions.text_bands; no ruled grid was detected, so the table rows are read as band lines.",
+     "blocks": [
+      {
+       "key": "hdr-en",
+       "lang": "en",
+       "role": "header",
+       "lines": [
+        {
+         "band": 0,
+         "side": "left",
+         "source": "Northern Region Airspace Safeguarding Office"
+        }
+       ]
+      },
+      {
+       "key": "hdr-ar",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Northern Region Airspace Safeguarding Office",
+       "lines": [
+        {
+         "band": 0,
+         "side": "right",
+         "source": "مكتب حماية المجال الجوي بالمنطقة الشمالية"
+        }
+       ]
+      },
+      {
+       "key": "date",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Date: 10 November 2026 AD",
+       "lines": [
+        {
+         "band": 1,
+         "side": "left",
+         "source": "التاريخ: ١٠ نوفمبر ٢٠٢٦م",
+         "numerals": [
+          {
+           "text": "٢٠٢٦",
+           "visual_ltr_expected": "٢٠٢٦",
+           "meaning": "year 2026 (followed by م, Gregorian era)"
+          },
+          {
+           "text": "١٠",
+           "visual_ltr_expected": "١٠",
+           "meaning": "day 10 of November"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "ref",
+       "lang": "ar",
+       "role": "header",
+       "translation": "Reference number: 471/2026",
+       "lines": [
+        {
+         "band": 1,
+         "side": "right",
+         "source": "الرقم: ٤٧١/٢٠٢٦",
+         "numerals": [
+          {
+           "text": "٤٧١/٢٠٢٦",
+           "visual_ltr_expected": "٤٧١/٢٠٢٦",
+           "meaning": "letter reference number 471/2026"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "subject",
+       "lang": "ar",
+       "role": "subject",
+       "translation": "Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant",
+       "lines": [
+        {
+         "band": 2,
+         "source": "الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان"
+        }
+       ]
+      },
+      {
+       "key": "tender-ref",
+       "lang": "mixed",
+       "role": "header",
+       "translation": "Tender number: NUPA/ISTP/2026/014",
+       "lines": [
+        {
+         "band": 3,
+         "source": "مناقصة رقم: NUPA/ISTP/2026/014",
+         "numerals": [
+          {
+           "text": "2026/014",
+           "visual_ltr_expected": "2026/014",
+           "meaning": "digits of the tender reference (Latin script run inside Arabic text)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-title",
+       "lang": "ar",
+       "role": "table-title",
+       "translation": "Table 5-1: Maximum height of structures and equipment on the site",
+       "lines": [
+        {
+         "band": 4,
+         "source": "جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع",
+         "numerals": [
+          {
+           "text": "٥-١",
+           "visual_ltr_expected": "١-٥",
+           "meaning": "Table 5-1 (matches the page heading 'APPENDIX A — TABLE 5-1 (ARABIC)' in the text layer)"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "table-intro",
+       "lang": "ar",
+       "role": "table-qualifier",
+       "translation": "The maximum permitted height in each zone of the site is set as follows:",
+       "lines": [
+        {
+         "band": 5,
+         "source": "يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:"
+        }
+       ]
+      },
+      {
+       "key": "table-header",
+       "lang": "ar",
+       "role": "table-header",
+       "translation": "Column headings, right to left: Zone | Description | Maximum height (metres above natural ground level) | Warning lighting",
+       "lines": [
+        {
+         "band": 6,
+         "side": "right",
+         "source": "المنطقة | الوصف"
+        },
+        {
+         "band": 6,
+         "side": "left",
+         "source": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية"
+        }
+       ],
+       "uncertain": [
+        "no ruled grid was detected although the image shows a ruled table; columns are separated here with ' | ' in reading (right-to-left) order, which is a reading convention, not printed text"
+       ]
+      },
+      {
+       "key": "row-a",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone A | The part of the site lying within a distance of 1,500 m of the eastern boundary of the site | 25 | Required",
+       "lines": [
+        {
+         "band": 7,
+         "side": "right",
+         "source": "أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥",
+         "numerals": [
+          {
+           "text": "٢٥",
+           "visual_ltr_expected": "٢٥",
+           "meaning": "maximum height 25 m above natural ground level, zone A"
+          },
+          {
+           "text": "١٬٥٠٠",
+           "visual_ltr_expected": "١٬٥٠٠",
+           "meaning": "distance 1,500 m from the eastern site boundary"
+          }
+         ]
+        },
+        {
+         "band": 7,
+         "side": "left",
+         "source": "مطلوبة"
+        }
+       ],
+       "uncertain": [
+        "the thousands separator in ١٬٥٠٠ is read as the Arabic thousands separator (U+066C); it could be printed as an apostrophe-like mark; reviewer to confirm it is not a decimal mark (1.5)",
+        "the description cell is printed on two lines within band 7 ('...ضمن مسافة' / '١٬٥٠٠ متر ...'); it is stored as one line"
+       ]
+      },
+      {
+       "key": "row-b",
+       "lang": "ar",
+       "role": "table-row",
+       "translation": "Zone B | Remainder of the site area | 40 | Required for any part whose height exceeds 30 metres",
+       "lines": [
+        {
+         "band": 8,
+         "side": "right",
+         "source": "ب | باقي مساحة الموقع"
+        },
+        {
+         "band": 8,
+         "side": "left",
+         "source": "٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 metres: height above which warning lighting is required in zone B"
+          },
+          {
+           "text": "٤٠",
+           "visual_ltr_expected": "٤٠",
+           "meaning": "maximum height 40 m above natural ground level, zone B"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "notes-head",
+       "lang": "ar",
+       "role": "notes-heading",
+       "translation": "Notes:",
+       "lines": [
+        {
+         "band": 9,
+         "source": "ملاحظات:"
+        }
+       ]
+      },
+      {
+       "key": "note1",
+       "lang": "ar",
+       "role": "note",
+       "translation": "1. These limits apply to all permanent and temporary structures, including stacks, cranes and construction equipment.",
+       "lines": [
+        {
+         "band": 10,
+         "source": "١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.",
+         "numerals": [
+          {
+           "text": "١",
+           "visual_ltr_expected": "١",
+           "meaning": "note number 1"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note2",
+       "lang": "ar",
+       "role": "note",
+       "translation": "2. Height is measured from natural ground level before grading and filling works.",
+       "lines": [
+        {
+         "band": 11,
+         "source": "٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.",
+         "numerals": [
+          {
+           "text": "٢",
+           "visual_ltr_expected": "٢",
+           "meaning": "note number 2"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "key": "note3",
+       "lang": "ar",
+       "role": "note",
+       "translation": "3. The Office must be notified at least thirty (30) days before any crane is erected on the site.",
+       "lines": [
+        {
+         "band": 12,
+         "source": "٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.",
+         "numerals": [
+          {
+           "text": "٣٠",
+           "visual_ltr_expected": "٣٠",
+           "meaning": "30 days notice before crane erection"
+          },
+          {
+           "text": "٣",
+           "visual_ltr_expected": "٣",
+           "meaning": "note number 3"
+          }
+         ]
+        }
+       ],
+       "uncertain": [
+        "'days' is not qualified as calendar or working days in the image; how it maps to the pack's day conventions is for a person to decide"
+       ]
+      },
+      {
+       "key": "signatory",
+       "lang": "ar",
+       "role": "signature",
+       "translation": "Office Director (above a drawn signature stroke)",
+       "lines": [
+        {
+         "band": 13,
+         "side": "left",
+         "source": "مدير المكتب"
+        }
+       ]
+      },
+      {
+       "key": "stamp",
+       "lang": "en",
+       "role": "stamp",
+       "lines": [
+        {
+         "band": 13,
+         "side": "right",
+         "source": ""
+        }
+       ],
+       "uncertain": [
+        "the right half of band 13 holds only an empty oval (stamp outline); no text is visible in it, so the line is stored as empty"
+       ]
+      }
+     ],
+     "uncertainties": [
+      "The table is ruled in the image but no grid was detected from pixels; rows are therefore read as band lines with ' | ' between cells in right-to-left reading order.",
+      "Band 5 is measured from x=34 although the printed text starts near x=625; the extra extent is taken to be speckle, not text.",
+      "The signature in band 13 left is a drawn stroke, not text; it is not transcribed.",
+      "Diacritics (shadda on الحدّ, المعدّات; damma/kasra on يُحدِّد, يُقاس; tanween on يوماً, متراً) were read on the enlarged crops.",
+      "prepared_by is left empty for the controller to write."
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [],
+ "images_received": [],
+ "submission": null,
+ "statuses": {},
+ "num_turns": 10,
+ "usage": {
+  "input_tokens": 16,
+  "cache_creation_input_tokens": 74656,
+  "cache_read_input_tokens": 325276,
+  "output_tokens": 24891,
+  "output_tokens_details": {
+   "thinking_tokens": 3567
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 74656,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 4015,
+    "cache_read_input_tokens": 65732,
+    "cache_creation_input_tokens": 11826,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 11826
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 1.1601872,
+ "final_text": "{\"region_id\": \"ADD-03-p4-r1\", \"reading\": {\"region_id\": \"ADD-03-p4-r1\", \"unit_id\": \"ADD-03:p4-image\", \"title\": \"Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site\", \"source\": {\"doc\": \"ADD-03\", \"page\": 4, \"bbox_pt\": [56.7, 127.2, 538.6, 540.2], \"native_sha256\": \"ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7\"}, \"content_type\": \"form\", \"languages\": [\"ar\", \"en\"], \"prepared_by\": \"\", \"method\": \"Visual reading of the embedded image at native resolution (1750x1500 px) and of the enlarged band crops. No OCR. Text bands and left/right splits measured from pixels by tenderpack.regions.text_bands; no ruled grid was detected, so the table rows are read as band lines.\", \"blocks\": [{\"key\": \"hdr-en\", \"lang\": \"en\", \"role\": \"header\", \"lines\": [{\"band\": 0, \"side\": \"left\", \"source\": \"Northern Region Airspace Safeguarding Office\"}]}, {\"key\": \"hdr-ar\", \"lang\": \"ar\", \"role\": \"header\", \"translation\": \"Northern Region Airspace Safeguarding Office\", \"lines\": [{\"band\": 0, \"side\": \"right\", \"source\": \"مكتب حماية المجال الجوي بالمنطقة الشمالية\"}]}, {\"key\": \"date\", \"lang\": \"ar\", \"role\": \"header\", \"translation\": \"Date: 10 November 2026 AD\", \"lines\": [{\"band\": 1, \"side\": \"left\", \"source\": \"التاريخ: ١٠ نوفمبر ٢٠٢٦م\", \"numerals\": [{\"text\": \"٢٠٢٦\", \"visual_ltr_expected\": \"٢٠٢٦\", \"meaning\": \"year 2026 (followed by م, Gregorian era)\"}, {\"text\": \"١٠\", \"visual_ltr_expected\": \"١٠\", \"meaning\": \"day 10 of November\"}]}]}, {\"key\": \"ref\", \"lang\": \"ar\", \"role\": \"header\", \"translation\": \"Reference number: 471/2026\", \"lines\": [{\"band\": 1, \"side\": \"right\", \"source\": \"الرقم: ٤٧١/٢٠٢٦\", \"numerals\": [{\"text\": \"٤٧١/٢٠٢٦\", \"visual_ltr_expected\": \"٤٧١/٢٠٢٦\", \"meaning\": \"letter reference number 471/2026\"}]}]}, {\"key\": \"subject\", \"lang\": \"ar\", \"role\": \"subject\", \"translation\": \"Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant\", \"lines\": [{\"band\": 2, \"source\": \"الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان\"}]}, {\"key\": \"tender-ref\", \"lang\": \"mixed\", \"role\": \"header\", \"translation\": \"Tender number: NUPA/ISTP/2026/014\", \"lines\": [{\"band\": 3, \"source\": \"مناقصة رقم: NUPA/ISTP/2026/014\", \"numerals\": [{\"text\": \"2026/014\", \"visual_ltr_expected\": \"2026/014\", \"meaning\": \"digits of the tender reference (Latin script run inside Arabic text)\"}]}]}, {\"key\": \"table-title\", \"lang\": \"ar\", \"role\": \"table-title\", \"translation\": \"Table 5-1: Maximum height of structures and equipment on the site\", \"lines\": [{\"band\": 4, \"source\": \"جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع\", \"numerals\": [{\"text\": \"٥-١\", \"visual_ltr_expected\": \"١-٥\", \"meaning\": \"Table 5-1 (matches the page heading 'APPENDIX A — TABLE 5-1 (ARABIC)' in the text layer)\"}]}]}, {\"key\": \"table-intro\", \"lang\": \"ar\", \"role\": \"table-qualifier\", \"translation\": \"The maximum permitted height in each zone of the site is set as follows:\", \"lines\": [{\"band\": 5, \"source\": \"يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:\"}]}, {\"key\": \"table-header\", \"lang\": \"ar\", \"role\": \"table-header\", \"translation\": \"Column headings, right to left: Zone | Description | Maximum height (metres above natural ground level) | Warning lighting\", \"lines\": [{\"band\": 6, \"side\": \"right\", \"source\": \"المنطقة | الوصف\"}, {\"band\": 6, \"side\": \"left\", \"source\": \"الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية\"}], \"uncertain\": [\"no ruled grid was detected although the image shows a ruled table; columns are separated here with ' | ' in reading (right-to-left) order, which is a reading convention, not printed text\"]}, {\"key\": \"row-a\", \"lang\": \"ar\", \"role\": \"table-row\", \"translation\": \"Zone A | The part of the site lying within a distance of 1,500 m of the eastern boundary of the site | 25 | Required\", \"lines\": [{\"band\": 7, \"side\": \"right\", \"source\": \"أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥\", \"numerals\": [{\"text\": \"٢٥\", \"visual_ltr_expected\": \"٢٥\", \"meaning\": \"maximum height 25 m above natural ground level, zone A\"}, {\"text\": \"١٬٥٠٠\", \"visual_ltr_expected\": \"١٬٥٠٠\", \"meaning\": \"distance 1,500 m from the eastern site boundary\"}]}, {\"band\": 7, \"side\": \"left\", \"source\": \"مطلوبة\"}], \"uncertain\": [\"the thousands separator in ١٬٥٠٠ is read as the Arabic thousands separator (U+066C); it could be printed as an apostrophe-like mark; reviewer to confirm it is not a decimal mark (1.5)\", \"the description cell is printed on two lines within band 7 ('...ضمن مسافة' / '١٬٥٠٠ متر ...'); it is stored as one line\"]}, {\"key\": \"row-b\", \"lang\": \"ar\", \"role\": \"table-row\", \"translation\": \"Zone B | Remainder of the site area | 40 | Required for any part whose height exceeds 30 metres\", \"lines\": [{\"band\": 8, \"side\": \"right\", \"source\": \"ب | باقي مساحة الموقع\"}, {\"band\": 8, \"side\": \"left\", \"source\": \"٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً\", \"numerals\": [{\"text\": \"٣٠\", \"visual_ltr_expected\": \"٣٠\", \"meaning\": \"30 metres: height above which warning lighting is required in zone B\"}, {\"text\": \"٤٠\", \"visual_ltr_expected\": \"٤٠\", \"meaning\": \"maximum height 40 m above natural ground level, zone B\"}]}]}, {\"key\": \"notes-head\", \"lang\": \"ar\", \"role\": \"notes-heading\", \"translation\": \"Notes:\", \"lines\": [{\"band\": 9, \"source\": \"ملاحظات:\"}]}, {\"key\": \"note1\", \"lang\": \"ar\", \"role\": \"note\", \"translation\": \"1. These limits apply to all permanent and temporary structures, including stacks, cranes and construction equipment.\", \"lines\": [{\"band\": 10, \"source\": \"١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.\", \"numerals\": [{\"text\": \"١\", \"visual_ltr_expected\": \"١\", \"meaning\": \"note number 1\"}]}]}, {\"key\": \"note2\", \"lang\": \"ar\", \"role\": \"note\", \"translation\": \"2. Height is measured from natural ground level before grading and filling works.\", \"lines\": [{\"band\": 11, \"source\": \"٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.\", \"numerals\": [{\"text\": \"٢\", \"visual_ltr_expected\": \"٢\", \"meaning\": \"note number 2\"}]}]}, {\"key\": \"note3\", \"lang\": \"ar\", \"role\": \"note\", \"translation\": \"3. The Office must be notified at least thirty (30) days before any crane is erected on the site.\", \"lines\": [{\"band\": 12, \"source\": \"٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.\", \"numerals\": [{\"text\": \"٣٠\", \"visual_ltr_expected\": \"٣٠\", \"meaning\": \"30 days notice before crane erection\"}, {\"text\": \"٣\", \"visual_ltr_expected\": \"٣\", \"meaning\": \"note number 3\"}]}], \"uncertain\": [\"'days' is not qualified as calendar or working days in the image; how it maps to the pack's day conventions is for a person to decide\"]}, {\"key\": \"signatory\", \"lang\": \"ar\", \"role\": \"signature\", \"translation\": \"Office Director (above a drawn signature stroke)\", \"lines\": [{\"band\": 13, \"side\": \"left\", \"source\": \"مدير المكتب\"}]}, {\"key\": \"stamp\", \"lang\": \"en\", \"role\": \"stamp\", \"lines\": [{\"band\": 13, \"side\": \"right\", \"source\": \"\"}], \"uncertain\": [\"the right half of band 13 holds only an empty oval (stamp outline); no text is visible in it, so the line is stored as empty\"]}], \"uncertainties\": [\"The table is ruled in the image but no grid was detected from pixels; rows are therefore read as band lines with ' | ' between cells in right-to-left reading order.\", \"Band 5 is measured from x=34 although the printed text starts near x=625; the extra extent is taken to be speckle, not text.\", \"The signature in band 13 left is a drawn stroke, not text; it is not transcribed.\", \"Diacritics (shadda on الحدّ, المعدّات; damma/kasra on يُحدِّد, يُقاس; tanween on يوماً, متراً) were read on the enlarged crops.\", \"prepared_by is left empty for the controller to write.\"]}, \"model_rationale\": \"Read from the native 1750x1500 image and enlarged crops of bands 0-2, 6-8, 10, 12 and 13; bands 3-5, 9 and 11 were read from the native image only. The image is an Arabic letter from the Northern Region Airspace Safeguarding Office. Its only English text is the office name. It contains Table 5-1 with two zones: zone A, within 1,500 m of the eastern boundary, has a 25 m maximum height and warning lighting is required; zone B has a 40 m maximum and warning lighting is required for any part over 30 m. Three notes follow, and the letter closes with the signatory's title and an empty stamp oval. No grid was detected from pixels, so each table row is stored as band lines split left and right, with ' | ' between cells. That separator is my convention and is not printed in the image. The schema requires prepared_by, but writing it is not my job, so I left it as an empty string. The empty stamp oval in the right half of band 13 is stored as an empty English line, because an empty Arabic line failed check RD5. validate_reading reports ok with no errors. The readings a reviewer should check are listed in the uncertain fields: the thousands separator in ١٬٥٠٠, and whether the 30 'days' in note 3 are calendar or working days.\"}",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/ai/ADD-03-hostsession-20261005T025503Z-0189",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

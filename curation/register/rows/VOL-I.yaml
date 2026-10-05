@@ -107,7 +107,9 @@ rows:
     units: ["VOL-I:4.2"]
     discipline: Bid management
     owner: Bid manager
-    assessment: procedural
+    # session 11 audit (A1-10, PROPOSED): a breach disqualifies (VOL-I 4.2 p3: "Breach of this Clause shall result in the
+    # disqualification of the Bidder."), so the row is a pass/fail gate, not procedural
+    assessment: pass_fail
     no_deliverable: "a conduct rule binding the Bidder and anyone acting for it; nothing to submit"
     date_rules:
       - {rule_id: BLACKOUT-START, kind: fixed, purpose: window_start, fixed: "2026-09-14", source_unit: "VOL-I:4.2", text: "From the date of issue of this Volume"}
@@ -674,7 +676,9 @@ rows:
     units: ["VOL-I:11.5"]
     discipline: Commercial
     owner: Commercial lead
-    assessment: procedural
+    # session 11 audit (A1-10, PROPOSED): VOL-I 11.5 p5 "any response that does so shall render the Proposal
+    # non-responsive", so the row is a pass/fail gate, not procedural
+    assessment: pass_fail
     no_deliverable: "arises only after submission, if the Authority seeks a written clarification"
     interpretations:
       - stage: BASE
@@ -804,9 +808,9 @@ rows:
       - stage: ADD-02
         quote: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date, following which the Project shall transfer to the Authority in accordance with Volume V."
         parameters: {term_years: 25, start: "Project Commercial Operation Date"}
-        note: "ADD-02 Q7 notes the VOL-V 3.1 conflict, refers to the order of precedence at VOL-I 3.2 and makes no amendment. Which start date governs is for a person."
-    confidence: low
-    confidence_reason: "verbatim, but conflicts with VOL-V 3.1 and the Authority declined to resolve it (ADD-02 Q7)"
+        note: "ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' VOL-I 3.2 (p2) ranks '(b) Volume I (Instructions to Bidders)' above '(c) Volume V (Draft Project Agreement)', so this clause prevails over VOL-V 3.1 for the RFP Documents: the concession runs 25 years from PCOD. VOL-V 3.1 is left unamended; what to record in Form 4-E and which term start the Financial Model assumes stay for Legal (I-CONCESSION, CQ-CONCESSION-TERM). Confidence medium, not lower than VOL-V-3.1-01: this is the clause that prevails (session 11 audit A1-3, PROPOSED)."
+    confidence: medium
+    confidence_reason: "verbatim; prevails over VOL-V 3.1 under VOL-I 3.2 as ADD-02 Q7 directs; VOL-V 3.1 left unamended, so what to record in Form 4-E and the Financial Model is open for Legal (I-CONCESSION)"
     issues: [I-CONCESSION]
   - id: VOL-I-12.2-01
     group: "VOL-I:12.2"

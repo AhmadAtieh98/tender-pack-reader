@@ -1,0 +1,1376 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T034247Z-e6fd
+  created: '2026-10-05T03:42:47Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+    register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+  statements:
+  - id: F1
+    kind: fact
+    text: Clause 7.2 states that Table 5-1 is issued in Arabic, the Arabic text governs and the English translation
+      at Appendix B is for convenience only.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix
+        B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F2
+    kind: fact
+    text: Appendix B opens by saying the translation is for convenience only and the Arabic text at Appendix A governs.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppB/para1
+      page: 5
+      kind: span
+      words: This translation is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F3
+    kind: fact
+    text: Clause 7.1 inserts new Volume II Clause 5.6, which incorporates Table 5-1 as reproduced at Appendix A
+      (the Arabic) by reference.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: The following new Clause 5.6 is inserted in Volume II after Clause 5.5
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding
+        Office and is incorporated into this Volume by reference.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F4
+    kind: fact
+    text: 'The Arabic rows (readings pending) print zone A: within 1,500 m of the eastern boundary, 25, lighting
+      required; zone B: remainder, 40, lighting required for any part exceeding 30 m.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/row-a
+      page: 4
+      kind: reading
+      words: أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/row-b
+      page: 4
+      kind: reading
+      words: ب | باقي مساحة الموقع ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F5
+    kind: fact
+    text: Arabic note 1 (reading pending) applies the limits to permanent and temporary structures including stacks,
+      cranes and construction equipment.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note1
+      page: 4
+      kind: reading
+      words: ١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F6
+    kind: fact
+    text: Arabic note 2 and the Arabic height column heading (readings pending) use natural ground level (منسوب
+      الأرض الطبيعية), measured before grading and filling works.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note2
+      page: 4
+      kind: reading
+      words: ٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/table-header
+      page: 4
+      kind: reading
+      words: الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F7
+    kind: fact
+    text: Arabic note 3 (reading pending) requires notifying the Office at least thirty (30) days before installing
+      any crane on the site; 'days' is not qualified.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note3
+      page: 4
+      kind: reading
+      words: ٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: F8
+    kind: fact
+    text: English note (1) limits to permanent structures including stacks; English note (2) measures from finished
+      ground level after grading and filling; the English height column reads 'm above finished ground level'.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/note(1)
+      page: 5
+      kind: span
+      words: These limits apply to all permanent structures, including stacks.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/note(2)
+      page: 5
+      kind: span
+      words: Height is measured from finished ground level after grading and filling.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/a
+      page: 5
+      kind: span
+      words: 'Maximum height (m above finished ground level): 25'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: I1
+    kind: interpretation
+    text: 'The Appendix B translation rows and notes do not themselves change any unit of the pack: the change (new
+      Volume II Clause 5.6 incorporating Table 5-1) is made by Clause 7.1, in another batch, and the governing text
+      is the Arabic at Appendix A.'
+    evidence: []
+    note: null
+  - id: I2
+    kind: interpretation
+    text: 'English note (1) is narrower than the governing Arabic note 1: it leaves out temporary structures, cranes
+      and construction equipment.'
+    evidence: []
+    note: null
+  - id: I3
+    kind: interpretation
+    text: English note (2) and the English height column heading state the opposite datum to the governing Arabic
+      (finished ground level after grading and filling, against natural ground level before grading and filling
+      works). Where the site is filled, the Arabic allows less height above finished ground.
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/T5-1/a
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:T5-1/a
+    target: null
+    payload:
+      provision: ADD-03:T5-1/a
+      disposition: no_effect
+      reason: 'This row (''Maximum height (m above finished ground level): 25 | Obstacle lighting: Required'') is
+        part of the English convenience translation. Clause 7.2: ''The Arabic text governs. The English translation
+        at Appendix B is provided for convenience only.'' The change (Table 5-1 incorporated into Volume II) is
+        made by Clause 7.1, not by this row. The figures agree with the Arabic row, but the datum in the English
+        heading (''finished ground level'') does not match the Arabic heading; see the escalation on note(2). A
+        person confirms.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/a
+      page: 5
+      kind: span
+      words: 'Maximum height (m above finished ground level): 25 | Obstacle lighting: Required'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/row-a
+      page: 4
+      kind: reading
+      words: أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:p4-image/row-a
+    - ADD-03:p4-image/table-header
+    conflicts:
+    - English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية'
+      (natural ground level)
+    missing_information: []
+    statements:
+    - F1
+    - F2
+    - F3
+    - F4
+    - F6
+    - F8
+    - I1
+    - I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/a is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: evidence ADD-03:T5-1/a p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/a at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/row-a p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/row-a at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I3: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: English column heading ''m above finished ground level'' against the Arabic
+        heading ''متر فوق منسوب الأرض الطبيعية'' (natural ground level)'
+      aspect: decision
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''Required'')'
+      aspect: semantic
+    verification_status: conflicting
+    model_rationale: 'Crop of ADD-03-p4-r1 (sha256 dadbcea9…) read: in the Arabic row أ the cells print ١٬٥٠٠ متر,
+      ٢٥ and مطلوبة, which match the English row. But the Arabic height column heading reads متر فوق منسوب الأرض
+      الطبيعية (natural ground), not finished ground level. The row itself changes nothing; the datum conflict is
+      escalated under note(2).'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic reading (p4 image) is pending approval, so the claim that the figures match rests on an unapproved
+          reading.
+        - no_effect applies only to the English row as a translation. The row carries 'Required' and a datum that
+          conflicts with the Arabic heading, so a person must confirm it, as the item says. Clause 7.1 is cited
+          from the statements, not printed as a unit.
+        evidence_checked:
+        - ADD-03:T5-1/a
+        - ADD-03:7.2
+        - ADD-03:p4-image/row-a
+        - ADD-03:p4-image/table-header
+        selected_because:
+        - conflicting
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/T5-1/b
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:T5-1/b
+    target: null
+    payload:
+      provision: ADD-03:T5-1/b
+      disposition: no_effect
+      reason: 'This row (''Maximum height (m above finished ground level): 40 | Obstacle lighting: Required for
+        any part exceeding 30 m'') is part of the English convenience translation. Clause 7.2: ''The Arabic text
+        governs. The English translation at Appendix B is provided for convenience only.'' The change is made by
+        Clause 7.1, not by this row. The figures agree with the Arabic row ب; the heading datum conflict is escalated
+        under note(2). A person confirms.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/b
+      page: 5
+      kind: span
+      words: 'Maximum height (m above finished ground level): 40 | Obstacle lighting: Required for any part exceeding
+        30 m'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/row-b
+      page: 4
+      kind: reading
+      words: ب | باقي مساحة الموقع ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:p4-image/row-b
+    - ADD-03:p4-image/table-header
+    conflicts:
+    - English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية'
+      (natural ground level)
+    missing_information: []
+    statements:
+    - F1
+    - F2
+    - F3
+    - F4
+    - F6
+    - I1
+    - I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/b is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: evidence ADD-03:T5-1/b p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/b at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/row-b p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/row-b at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I3: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: English column heading ''m above finished ground level'' against the Arabic
+        heading ''متر فوق منسوب الأرض الطبيعية'' (natural ground level)'
+      aspect: decision
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''Required'')'
+      aspect: semantic
+    verification_status: conflicting
+    model_rationale: 'Crop read: the Arabic row ب prints باقي مساحة الموقع, ٤٠, and lighting مطلوبة لأي جزء يزيد
+      ارتفاعه على ٣٠ متراً. These match the English row. The heading datum differs (natural ground).'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic reading is pending approval.
+        - no_effect covers only the translation row. The datum conflict is real and is escalated under note(2).
+          The row's 'Required for any part exceeding 30 m' matches the Arabic reading.
+        evidence_checked:
+        - ADD-03:T5-1/b
+        - ADD-03:7.2
+        - ADD-03:p4-image/row-b
+        - ADD-03:p4-image/table-header
+        selected_because:
+        - conflicting
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/T5-1/notes
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:T5-1/notes
+    target: null
+    payload:
+      provision: ADD-03:T5-1/notes
+      disposition: no_effect
+      reason: '''Notes to Table 5-1:'' is only the introductory heading of the notes in the English convenience
+        translation. It prints no change and no obligation. Clause 7.2: ''The English translation at Appendix B
+        is provided for convenience only.'''
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/notes
+      page: 5
+      kind: span
+      words: 'Notes to Table 5-1:'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - F1
+    - F2
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/notes is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: evidence ADD-03:T5-1/notes p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/notes at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop read: the Arabic prints the matching heading ملاحظات: above notes ١-٣.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The claim that the Arabic prints a matching 'ملاحظات' heading is in the model rationale only. No quotation
+          of it is shown.
+        evidence_checked:
+        - ADD-03:T5-1/notes
+        - ADD-03:7.2
+        - ADD-03:AppB/para1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/T5-1/note(1)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: escalation
+    provision: ADD-03:T5-1/note(1)
+    target: null
+    payload:
+      why: The English note (1), 'These limits apply to all permanent structures, including stacks.', does not match
+        the governing Arabic note 1 (reading pending). The Arabic applies the limits to permanent AND temporary
+        structures, including stacks, cranes and construction equipment ('المنشآت الدائمة والمؤقتة، بما في ذلك المداخن
+        والرافعات ومعدّات الإنشاء'). Clause 7.2 says the Arabic governs, so the translation itself changes nothing.
+        But the scope of the height limits (cranes and temporary works) differs materially between the two texts,
+        and a bidder reading only the English would understate it. This cannot be closed as no_effect without a
+        person's confirmation, and it may warrant a clarification or an issue.
+      what_is_unsupported: No op type records a conflict between a non-governing translation and its governing image-read
+        source; deciding which scope applies, and whether to raise a clarification, is for a person.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/note(1)
+      page: 5
+      kind: span
+      words: These limits apply to all permanent structures, including stacks.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note1
+      page: 4
+      kind: reading
+      words: ١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:p4-image/note1
+    - ADD-03:7.2
+    - ADD-03:7.1
+    conflicts:
+    - ADD-03:T5-1/note(1) against ADD-03:p4-image/note1
+    missing_information:
+    - approval of the pending reading of ADD-03:p4-image/note1
+    statements:
+    - F1
+    - F2
+    - F5
+    - F8
+    - I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/note(1) is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:T5-1/note(1) p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/note(1) at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/note1 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I2: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:T5-1/note(1) against ADD-03:p4-image/note1'
+      aspect: decision
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: approval of the pending reading of ADD-03:p4-image/note1'
+      aspect: evidence
+    verification_status: conflicting
+    model_rationale: 'Crop read: Arabic note ١ printed in Arabic script reads المنشآت الدائمة والمؤقتة (permanent
+      and temporary) and lists المداخن والرافعات ومعدّات الإنشاء (stacks, cranes, construction equipment). The English
+      omits temporary structures, cranes and construction equipment. It also bears on ADD-03:Q21 (crane and lifting
+      plan) and on cover/para3 (''permanent structures'').'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The conflict depends on the pending reading of Arabic note 1. If that reading is approved, English note
+          (1) is narrower: it omits temporary structures, cranes and construction equipment.'
+        - The link to Q21 and cover/para3 is asserted but no evidence for it is shown.
+        evidence_checked:
+        - ADD-03:T5-1/note(1)
+        - ADD-03:p4-image/note1
+        - ADD-03:7.2
+        selected_because:
+        - conflicting
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/T5-1/note(2)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: escalation
+    provision: ADD-03:T5-1/note(2)
+    target: null
+    payload:
+      why: The English note (2), 'Height is measured from finished ground level after grading and filling.', and
+        the English column heading 'm above finished ground level' give the opposite datum to the governing Arabic
+        (readings pending). Arabic note 2 reads 'يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم'
+        (natural ground level before grading and filling works), and the Arabic heading reads 'متر فوق منسوب الأرض
+        الطبيعية'. Clause 7.2 says the Arabic governs, so the translation changes nothing itself. But the datum
+        for the 25 m and 40 m limits differs materially; on filled ground the Arabic allows less height. A person
+        must confirm, and this may warrant a clarification.
+      what_is_unsupported: No op type records a conflict between a non-governing translation and its governing image-read
+        source; which datum is applied, and whether to clarify, is for a person.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/note(2)
+      page: 5
+      kind: span
+      words: Height is measured from finished ground level after grading and filling.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note2
+      page: 4
+      kind: reading
+      words: ٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/table-header
+      page: 4
+      kind: reading
+      words: الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/table-header
+    - ADD-03:7.2
+    - ADD-03:7.1
+    conflicts:
+    - ADD-03:T5-1/note(2) against ADD-03:p4-image/note2
+    - ADD-03:T5-1/a and /b column heading against ADD-03:p4-image/table-header
+    missing_information:
+    - approval of the pending readings of ADD-03:p4-image/note2 and ADD-03:p4-image/table-header
+    statements:
+    - F1
+    - F2
+    - F6
+    - F8
+    - I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/note(2) is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:T5-1/note(2) p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/note(2) at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/note2 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/table-header p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/table-header at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I3: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: ADD-03:T5-1/note(2) against ADD-03:p4-image/note2; ADD-03:T5-1/a and /b column
+        heading against ADD-03:p4-image/table-header'
+      aspect: decision
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: approval of the pending readings of ADD-03:p4-image/note2 and ADD-03:p4-image/table-header'
+      aspect: evidence
+    verification_status: conflicting
+    model_rationale: 'Crop read: Arabic note ٢ says منسوب الأرض الطبيعية قبل أعمال التسوية والردم (natural ground,
+      before grading/filling). The second line of the Arabic column heading reads (متر فوق منسوب الأرض الطبيعية).
+      The English says finished ground level after grading and filling, which is the opposite datum.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Both Arabic readings (note 2 and the heading) are pending approval.
+        - 'The opposite datum is real on the quoted words: finished ground after grading and filling in English,
+          against natural ground before grading and filling in Arabic. The consequence for filled ground follows.'
+        evidence_checked:
+        - ADD-03:T5-1/note(2)
+        - ADD-03:p4-image/note2
+        - ADD-03:p4-image/table-header
+        - ADD-03:7.2
+        selected_because:
+        - conflicting
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/T5-1/note(3)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:T5-1/note(3)
+    target: null
+    payload:
+      provision: ADD-03:T5-1/note(3)
+      disposition: no_effect
+      reason: '''The Office shall be notified at least thirty (30) days before any crane is erected at the site.''
+        is the English convenience translation of Arabic note 3. Clause 7.2: ''The Arabic text governs. The English
+        translation at Appendix B is provided for convenience only.'' The obligation comes into Volume II through
+        Clause 7.1, which incorporates the Arabic Table 5-1. This note adds nothing beyond it, and the Arabic prints
+        the same thirty (30) days. Whether those are calendar or working days is not stated in either text. A person
+        confirms.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T5-1/note(3)
+      page: 5
+      kind: span
+      words: The Office shall be notified at least thirty (30) days before any crane is erected at the site.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 3
+      kind: span
+      words: The Arabic text governs. The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/note3
+      page: 4
+      kind: reading
+      words: ٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:p4-image/note3
+    conflicts: []
+    missing_information:
+    - whether 'days' are calendar or working days (unqualified in the Arabic)
+    statements:
+    - F1
+    - F2
+    - F3
+    - F7
+    - I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T5-1/note(3) is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: evidence ADD-03:T5-1/note(3) p5
+      ok: true
+      detail: verbatim in ADD-03:T5-1/note(3) at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p3
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:p4-image/note3 p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/note3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation I1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: whether ''days'' are calendar or working days (unqualified in the
+        Arabic)'
+      aspect: evidence
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''be notified'', ''shall'')'
+      aspect: semantic
+    verification_status: insufficient_evidence
+    model_rationale: 'Crop read: Arabic note ٣ prints ثلاثين (٣٠) يوماً على الأقل before installing any crane (تركيب
+      أي رافعة). This matches the English. The obligation is carried by the Arabic incorporated by 7.1.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic note 3 reading is pending approval.
+        - no_effect applies only to the translation. The 30-day notification duty is real and arrives through the
+          Arabic table incorporated by 7.1. The controller flags the 'shall' wording for human confirmation.
+        - Neither text says whether the 30 days are calendar or working days. The item states this.
+        evidence_checked:
+        - ADD-03:T5-1/note(3)
+        - ADD-03:p4-image/note3
+        - ADD-03:7.2
+        - ADD-03:7.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+        created: '2026-10-05T03:43:07Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 54
+    accounted: 6
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/row-a
+    - ADD-03:p4-image/row-b
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+  resolution:
+    provisions_total: 54
+    accounted: 6
+    resolved: 0
+    pending: 6
+    invalid: 0
+    unaccounted: 48
+    pending_provisions:
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    invalid_provisions: []
+    no_change_on_amendment_language:
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/note(3)
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:7.2 p3
+        ok: true
+        detail: verbatim in ADD-03:7.2 at ADD-02
+        aspect: null
+    F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppB/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:AppB/para1 at ADD-02
+        aspect: null
+    F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+        aspect: null
+    F4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/row-a p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/row-a at ADD-02
+        aspect: null
+      - check: evidence ADD-03:p4-image/row-b p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/row-b at ADD-02
+        aspect: null
+    F5:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/note1 p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/note1 at ADD-02
+        aspect: null
+    F6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/note2 p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/note2 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:p4-image/table-header p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/table-header at ADD-02
+        aspect: null
+    F7:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:p4-image/note3 p4
+        ok: true
+        detail: verbatim in ADD-03:p4-image/note3 at ADD-02
+        aspect: null
+    F8:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T5-1/note(1) p5
+        ok: true
+        detail: verbatim in ADD-03:T5-1/note(1) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T5-1/note(2) p5
+        ok: true
+        detail: verbatim in ADD-03:T5-1/note(2) at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T5-1/a p5
+        ok: true
+        detail: verbatim in ADD-03:T5-1/a at ADD-02
+        aspect: null
+    I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    I3:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3(b)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-head
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T5-1/b
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T5-1/notes
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/row-a
+    - ADD-03:p4-image/row-b
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 03cff2dd9a352e85c84337fd4dbf651e245680a64a7077c95965f411c1bb436c
+    computed_under:
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings:
+    - '3 provisions with amendment language carry no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 3 need a person): ADD-03:T5-1/a, ADD-03:T5-1/b, ADD-03:T5-1/note(3)'
+    clean: false
+  impact: null
+  reference: null
+  findings:
+  - '3 provisions with amendment language carry no change (0 contradict a change the pattern drafter drafts from
+    their words: invalid; 3 need a person): ADD-03:T5-1/a, ADD-03:T5-1/b, ADD-03:T5-1/note(3)'
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-009-critic
+    route: host
+    items:
+    - item: ADD-03/T5-1/a
+      agrees: true
+      concerns: 2
+    - item: ADD-03/T5-1/b
+      agrees: true
+      concerns: 2
+    - item: ADD-03/T5-1/notes
+      agrees: true
+      concerns: 1
+    - item: ADD-03/T5-1/note(1)
+      agrees: true
+      concerns: 2
+    - item: ADD-03/T5-1/note(2)
+      agrees: true
+      concerns: 2
+    - item: ADD-03/T5-1/note(3)
+      agrees: true
+      concerns: 3
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

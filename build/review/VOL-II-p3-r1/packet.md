@@ -74,7 +74,7 @@ From the reading's recorded uncertainties; each is a question for you, not somet
 1. The table is a scan with speckle and a measured skew of about -0.34 degrees; values were read at native resolution.
 2. Table 2-4 is stated to be reproduced from an Environmental Permit that is not in the pack; this reading says what the image shows, nothing about the Permit.
 3. `note1`: Note 1 is the last line of the image and touches its bottom edge; the image may be cropped. The page continues with 'End of reproduction.' in the text layer, but whether a further note was cut off cannot be established from the pack.
-4. row `FaecalColiforms`: decimal point in 2.2: clear at native resolution, but a speckled scan can imitate a point; reviewer to confirm
+4. row `FaecalColiforms`: decimal point in 2.2: clear at native resolution, but a speckled scan can imitate a point; reviewer to confirm — settled by Ahmad 2026-10-03: the limits are confirmed as read, including Faecal Coliforms 2.2 MPN/100 ml (the decimal-point question in the reading is settled by this confirmation of the visible limits)
 5. row `ResidualChlorine`: printed as a range although the qualifier says 'all values are maxima'; whether 0.5 is a binding minimum is an interpretation for a person, not a reading question
 6. row `pH`: unit cell shows a dash, read as 'no unit'
 7. row `pH`: range printed under a 'maxima' qualifier (see Residual Chlorine)

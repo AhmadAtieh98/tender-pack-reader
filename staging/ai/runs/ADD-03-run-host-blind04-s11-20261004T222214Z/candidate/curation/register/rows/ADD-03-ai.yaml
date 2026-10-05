@@ -1,0 +1,153 @@
+# CANDIDATE rows written by AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z: PROPOSED, not reviewed.
+doc: ADD-03
+prepared_by: AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z (route host, model claude-code headless
+  (opus)); PROPOSED; not reviewed
+method: AI workflow downstream proposals validated by tenderpack.ai.downstream
+rows:
+- id: ADD-03-cover-01
+  group: ADD-03:cover
+  scope:
+  - envelope_A
+  - forms
+  - acknowledgement
+  requirement: Acknowledge receipt of Addendum No. 3 in Form 4-A
+  units:
+  - ADD-03:cover/para3
+  discipline: Bid management
+  assessment: pass_fail
+  evidence:
+  - EV-FORM-4A
+  interpretations:
+  - stage: ADD-03
+    quote: Bidders shall acknowledge receipt in Form 4-A.
+    parameters: {}
+    consequence: none_stated
+    note: No consequence is stated for failing to acknowledge receipt. The same paragraph also summarises ADD-03,
+      including the change to delay liquidated damages in VOL-V 18.1 (see VOL-V-12.1-01 and ADD-03-4.1-01) and a
+      Portal route for Form 4-H that conflicts with ADD-03 8.3 (see I-ADD03-F4H-PORTAL). [AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z
+      (route host, model claude-code headless (opus)); PROPOSED; not reviewed]
+  date_notes:
+  - text: within five Working Days after the Proposal Due Date
+    treatment: unresolved
+    reason: A summary in the cover paragraph that conflicts with ADD-03 8.3. The Portal route is open only to members
+      incorporated outside the Kingdom (issue I-ADD03-F4H-PORTAL). It is not planned as a deadline here.
+  confidence: high
+  confidence_reason: verbatim instruction in the addendum
+  issues:
+  - I-NO-CONSEQUENCE
+  - I-ADD03-F4H-PORTAL
+  owner: Bid manager
+  introduced:
+    stage: ADD-03
+    by: ADD-03/cover/para3
+    evidence:
+      unit: ADD-03:cover/para3
+      page: 1
+      words: Bidders shall acknowledge receipt in Form 4-A.
+    note: ''
+- id: ADD-03-4.1-01
+  group: VOL-V:18.1
+  scope:
+  - contract
+  - post_award
+  - pcod
+  - liquidated_damages
+  - commercial
+  requirement: If PCOD is late against the Scheduled PCOD, pay the Authority delay liquidated damages of 0.05% of
+    the Estimated Project Cost for each day of delay (capped under VOL-V 18.4)
+  units:
+  - VOL-V:18.1
+  - ADD-03:4.1
+  discipline: Commercial
+  assessment: contractual_post_award
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: the Project Company shall pay to the Authority delay liquidated damages at the rate of one-twentieth
+      of one per cent (0.05%) of the Estimated Project Cost for each day of delay
+    parameters:
+      rate_percent_of_estimated_project_cost_per_day: 0.05
+      cap_reached_after_days: 200
+    consequence:
+      class: contractual
+      unit: VOL-V:18.1
+      quote: If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay
+        liquidated damages
+    note: 'Replaces SAR 180,000 per day. The rate now scales with the Estimated Project Cost the Bidder states in
+      Form 4-F (ADD-03 2.1). VOL-V 18.4 is unchanged, so the 10% cap is reached after 200 days of delay (calculate:
+      cap). Bid-stage use: a pricing and risk assumption in the Financial Model. [AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z
+      (route host, model claude-code headless (opus)); PROPOSED; not reviewed]'
+  date_notes:
+  - text: by the Scheduled PCOD
+    treatment: post_award
+    reason: The Scheduled PCOD is 36 months after the Notice to Proceed, which is not a pack event (row VOL-V-12.1-01).
+  - text: for each day of delay
+    treatment: duration
+    reason: The period over which damages accrue after the Scheduled PCOD, not a bid-stage date.
+  confidence: high
+  confidence_reason: verbatim amended clause; the 200-day cap figure depends on VOL-V 18.4, which is stated unchanged
+  owner: Commercial lead
+  no_deliverable: A post-award liability to pay. There is no bid-stage document, only a pricing assumption.
+  post_award_evidence:
+    kind: not_applicable
+    text: A payment liability that arises only if PCOD is late. There is nothing to evidence unless delay occurs.
+    basis: []
+    reason: liability, not a deliverable
+    bid_stage_note: Price the exposure as 0.05% of the stated Estimated Project Cost per day, up to the 10% cap
+      (200 days).
+  introduced:
+    stage: ADD-03
+    by: ADD-03/4.1(a)
+    evidence:
+      unit: VOL-V:18.1
+      page: 2
+      words: delay liquidated damages at the rate of one-twentieth of one per cent (0.05%) of the Estimated Project
+        Cost for each day of delay
+    note: ''
+- id: ADD-03-6.2-01
+  group: VOL-I:11.3
+  scope:
+  - envelope_B
+  - evaluation
+  - procedural
+  requirement: 'VOL-I 11.3A: if a Proposal does not proceed to commercial evaluation (technical score below 70%
+    of the Table 1-1 total), the Authority keeps its Envelope B unopened and returns it after the Preferred Bidder
+    Notification'
+  units:
+  - VOL-I:11.3+ADD-03
+  - ADD-03:6.2
+  discipline: Bid management
+  assessment: informational
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: The Envelope B of a Proposal that does not proceed to commercial evaluation shall be retained unopened
+      by the Authority and returned to the Bidder after the Preferred Bidder Notification.
+    parameters:
+      threshold_percent: 70
+    consequence:
+      class: score_elimination
+      unit: ADD-03:6.2
+      quote: A Proposal whose technical score is less than seventy per cent (70%) of the total marks available in
+        Table 1-1 shall not proceed to commercial evaluation
+    note: Before ADD-03, Envelope B was returned unopened. It is now kept until the Preferred Bidder Notification
+      and then returned. If the Estimated Project Cost in an unopened Envelope B is never seen, this interacts with
+      I-ADD03-EPC-ENVELOPE. [AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z (route host, model claude-code
+      headless (opus)); PROPOSED; not reviewed]
+  date_notes:
+  - text: after the Preferred Bidder Notification
+    treatment: not_a_date
+    reason: An Authority action with no Bidder deadline. The pack does not date the Preferred Bidder Notification.
+  confidence: high
+  confidence_reason: verbatim inserted clause
+  owner: Bid manager
+  no_deliverable: How the Authority handles Envelope B; the Bidder has nothing to deliver.
+  introduced:
+    stage: ADD-03
+    by: ADD-03/6.2(b)
+    evidence:
+      unit: VOL-I:11.3+ADD-03
+      page: 2
+      words: The Envelope B of a Proposal that does not proceed to commercial evaluation shall be retained unopened
+        by the Authority and returned to the Bidder after the Preferred Bidder Notification.
+    note: ''

@@ -57,7 +57,7 @@
   "lcc-ratio: not loaded (late window 2026-10-06..2026-10-12 ends before the planning date (INFEASIBLE; see drivers))"
  ],
  "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
- "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
  "planning_date": "2026-10-22",
  "roles": {
   "bid_manager": {
@@ -151,27 +151,29 @@
   },
   {
    "activities": [
-    "lcc-certificate (0.13)"
+    "lcc-certificate (0.13)",
+    "model-auditor-appoint (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-10-25",
    "iso_week": "2026-W43",
-   "load_wd": 0.13,
+   "load_wd": 0.33,
    "resource": "commercial_manager",
    "status": "OK"
   },
   {
    "activities": [
-    "lcc-certificate (0.13)"
+    "lcc-certificate (0.13)",
+    "model-auditor-appoint (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-10-26",
    "iso_week": "2026-W44",
-   "load_wd": 0.13,
+   "load_wd": 0.33,
    "resource": "commercial_manager",
    "status": "OK"
   },
@@ -206,6 +208,7 @@
   {
    "activities": [
     "lcc-certificate (0.13)",
+    "lender-terms (0.2)",
     "model-auditor-appoint (0.2)"
    ],
    "capacity": 2,
@@ -213,14 +216,14 @@
    "capacity_owner": "Commercial",
    "date": "2026-10-29",
    "iso_week": "2026-W44",
-   "load_wd": 0.33,
+   "load_wd": 0.53,
    "resource": "commercial_manager",
    "status": "OK"
   },
   {
    "activities": [
     "lcc-certificate (0.13)",
-    "model-auditor-appoint (0.2)"
+    "lender-terms (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
@@ -234,15 +237,14 @@
   {
    "activities": [
     "lcc-certificate (0.13)",
-    "lender-terms (0.2)",
-    "model-auditor-appoint (0.2)"
+    "lender-terms (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-02",
    "iso_week": "2026-W45",
-   "load_wd": 0.53,
+   "load_wd": 0.33,
    "resource": "commercial_manager",
    "status": "OK"
   },
@@ -353,15 +355,14 @@
    "activities": [
     "bond-approval (0.2)",
     "fin-statements (0.3)",
-    "lcc-certificate (0.13)",
-    "lender-terms (0.2)"
+    "lcc-certificate (0.13)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-12",
    "iso_week": "2026-W46",
-   "load_wd": 0.83,
+   "load_wd": 0.63,
    "resource": "commercial_manager",
    "status": "OK"
   },
@@ -370,7 +371,7 @@
     "bond-approval (0.2)",
     "fin-statements (0.3)",
     "lcc-certificate (0.13)",
-    "lender-terms (0.2)"
+    "model-audit-opinion (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
@@ -385,14 +386,15 @@
    "activities": [
     "bond-approval (0.2)",
     "fin-statements (0.3)",
-    "lcc-certificate (0.13)"
+    "lcc-certificate (0.13)",
+    "model-audit-opinion (0.2)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-16",
    "iso_week": "2026-W47",
-   "load_wd": 0.63,
+   "load_wd": 0.83,
    "resource": "commercial_manager",
    "status": "OK"
   },
@@ -450,15 +452,14 @@
     "fin-assumptions (0.75)",
     "fin-standing (0.667)",
     "form-4f (0.75)",
-    "lcc-certificate (0.13)",
-    "model-audit-opinion (0.2)"
+    "lcc-certificate (0.13)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-22",
    "iso_week": "2026-W47",
-   "load_wd": 2.664,
+   "load_wd": 2.464,
    "resource": "commercial_manager",
    "status": "OVERLOAD"
   },
@@ -468,15 +469,14 @@
     "fin-assumptions (0.75)",
     "fin-standing (0.667)",
     "form-4f (0.75)",
-    "lcc-certificate (0.13)",
-    "model-audit-opinion (0.2)"
+    "lcc-certificate (0.13)"
    ],
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: two commercial staff on the bond, financial standing, lenders, auditor and Form 4-F (2 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-23",
    "iso_week": "2026-W48",
-   "load_wd": 2.664,
+   "load_wd": 2.464,
    "resource": "commercial_manager",
    "status": "OVERLOAD"
   },
@@ -519,6 +519,32 @@
    "iso_week": "2026-W48",
    "load_wd": 1.0,
    "resource": "document_controller",
+   "status": "OK"
+  },
+  {
+   "activities": [
+    "fin-model-build (1)"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
+   "capacity_owner": "Commercial",
+   "date": "2026-10-22",
+   "iso_week": "2026-W43",
+   "load_wd": 1.0,
+   "resource": "financial_modeller",
+   "status": "OK"
+  },
+  {
+   "activities": [
+    "fin-model-build (1)"
+   ],
+   "capacity": 1,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
+   "capacity_owner": "Commercial",
+   "date": "2026-10-25",
+   "iso_week": "2026-W43",
+   "load_wd": 1.0,
+   "resource": "financial_modeller",
    "status": "OK"
   },
   {
@@ -575,29 +601,31 @@
   },
   {
    "activities": [
-    "fin-model-build (1)"
+    "fin-model-build (1)",
+    "model-audit-review (0.3)"
    ],
    "capacity": 1,
    "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-01",
    "iso_week": "2026-W44",
-   "load_wd": 1.0,
+   "load_wd": 1.3,
    "resource": "financial_modeller",
-   "status": "OK"
+   "status": "OVERLOAD"
   },
   {
    "activities": [
-    "fin-model-build (1)"
+    "fin-model-build (1)",
+    "model-audit-review (0.3)"
    ],
    "capacity": 1,
    "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
    "capacity_owner": "Commercial",
    "date": "2026-11-02",
    "iso_week": "2026-W45",
-   "load_wd": 1.0,
+   "load_wd": 1.3,
    "resource": "financial_modeller",
-   "status": "OK"
+   "status": "OVERLOAD"
   },
   {
    "activities": [
@@ -699,7 +727,7 @@
   },
   {
    "activities": [
-    "fin-model-build (1)",
+    "fin-model-freeze (1)",
     "model-audit-review (0.3)"
    ],
    "capacity": 1,
@@ -707,34 +735,6 @@
    "capacity_owner": "Commercial",
    "date": "2026-11-12",
    "iso_week": "2026-W46",
-   "load_wd": 1.3,
-   "resource": "financial_modeller",
-   "status": "OVERLOAD"
-  },
-  {
-   "activities": [
-    "fin-model-build (1)",
-    "model-audit-review (0.3)"
-   ],
-   "capacity": 1,
-   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
-   "capacity_owner": "Commercial",
-   "date": "2026-11-15",
-   "iso_week": "2026-W46",
-   "load_wd": 1.3,
-   "resource": "financial_modeller",
-   "status": "OVERLOAD"
-  },
-  {
-   "activities": [
-    "fin-model-freeze (1)",
-    "model-audit-review (0.3)"
-   ],
-   "capacity": 1,
-   "capacity_basis": "PROVISIONAL ASSUMPTION: one financial modeller for build, freeze and auditor queries (1 staff per Working Day); not stated",
-   "capacity_owner": "Commercial",
-   "date": "2026-11-16",
-   "iso_week": "2026-W47",
    "load_wd": 1.3,
    "resource": "financial_modeller",
    "status": "OVERLOAD"
@@ -878,6 +878,7 @@
   },
   {
    "activities": [
+    "consortium-check (0.5)",
     "deviations-review (0.8)",
     "pcg-execution (0.1)",
     "poa (0.6)"
@@ -887,7 +888,7 @@
    "capacity_owner": "Legal",
    "date": "2026-11-10",
    "iso_week": "2026-W46",
-   "load_wd": 1.5,
+   "load_wd": 2.0,
    "resource": "legal_counsel",
    "status": "OK"
   },
@@ -1300,9 +1301,36 @@
    "capacity": 2,
    "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references, ground review and Form 4-G (2 staff per Working Day); not stated",
    "capacity_owner": "Technical",
+   "date": "2026-10-29",
+   "iso_week": "2026-W44",
+   "load_wd": 0.6,
+   "resource": "technical_lead",
+   "status": "OK"
+  },
+  {
+   "activities": [
+    "ground-dd (0.6)"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references, ground review and Form 4-G (2 staff per Working Day); not stated",
+   "capacity_owner": "Technical",
+   "date": "2026-11-01",
+   "iso_week": "2026-W44",
+   "load_wd": 0.6,
+   "resource": "technical_lead",
+   "status": "OK"
+  },
+  {
+   "activities": [
+    "completion-certs (0.133)",
+    "ground-dd (0.6)"
+   ],
+   "capacity": 2,
+   "capacity_basis": "PROVISIONAL ASSUMPTION: technical lead plus one engineer for certificates, references, ground review and Form 4-G (2 staff per Working Day); not stated",
+   "capacity_owner": "Technical",
    "date": "2026-11-02",
    "iso_week": "2026-W45",
-   "load_wd": 0.6,
+   "load_wd": 0.733,
    "resource": "technical_lead",
    "status": "OK"
   },
@@ -1415,7 +1443,6 @@
   {
    "activities": [
     "completion-certs (0.133)",
-    "ground-dd (0.6)",
     "om-evidence (0.15)",
     "references (0.4)"
    ],
@@ -1424,14 +1451,13 @@
    "capacity_owner": "Technical",
    "date": "2026-11-12",
    "iso_week": "2026-W46",
-   "load_wd": 1.283,
+   "load_wd": 0.683,
    "resource": "technical_lead",
    "status": "OK"
   },
   {
    "activities": [
     "completion-certs (0.133)",
-    "ground-dd (0.6)",
     "om-evidence (0.15)",
     "references (0.4)"
    ],
@@ -1440,7 +1466,7 @@
    "capacity_owner": "Technical",
    "date": "2026-11-15",
    "iso_week": "2026-W46",
-   "load_wd": 1.283,
+   "load_wd": 0.683,
    "resource": "technical_lead",
    "status": "OK"
   },
@@ -1527,7 +1553,6 @@
   },
   {
    "activities": [
-    "completion-certs (0.133)",
     "form-4b (0.5)",
     "form-4g-sign (0.25)",
     "iso-copy (0.125)",
@@ -1538,7 +1563,7 @@
    "capacity_owner": "Technical",
    "date": "2026-11-23",
    "iso_week": "2026-W48",
-   "load_wd": 1.158,
+   "load_wd": 1.025,
    "resource": "technical_lead",
    "status": "OK"
   }

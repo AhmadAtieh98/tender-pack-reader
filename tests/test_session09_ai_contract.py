@@ -138,8 +138,13 @@ def test_a_lock_is_released_and_a_dead_process_lock_is_stale(tmp_path):
                                                        "host": __import__("socket").gethostname(), "created_epoch": 0}))
     stale, why = B.lock_state(B.read_lock(tmp_path / ".lock-ADD-04"), 120)
     assert stale and ("no longer running" in why or "min old" in why)
-    with pytest.raises(B.Refused, match="STALE lock"):
-        B.acquire(tmp_path, "ADD-04", {"route": "anthropic", "run_id": "r3"})
+    # session 11 (E135): a lock whose process on this host is dead is TAKEN OVER, not refused (the blind-04 run killed by
+    # a container restart could not continue otherwise); the takeover is recorded in the new lock. An age-stale lock with
+    # a live holder is still refused (tests/test_session11_locks.py).
+    lk3 = B.acquire(tmp_path, "ADD-04", {"route": "anthropic", "run_id": "r3"})
+    assert lk3.info.get("taken_over_from", {}).get("pid") == 2 ** 22 + 7
+    assert B.read_lock(tmp_path / ".lock-ADD-04")["run_id"] == "r3"
+    lk3.release()
 
 
 # ---------------------------------------------------------------------------------------------- adapters (MOCKED HTTP)

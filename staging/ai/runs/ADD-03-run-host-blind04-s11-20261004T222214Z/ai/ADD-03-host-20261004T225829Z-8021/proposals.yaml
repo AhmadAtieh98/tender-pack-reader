@@ -1,0 +1,638 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T225829Z-8021
+  created: '2026-10-04T22:58:29Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+    register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 Appendix B paragraph 1 states that the English translation is for convenience only and that the
+      Arabic text of Form 4-H at Appendix A governs.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppB/para1
+      page: 5
+      kind: span
+      words: This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A governs.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: ADD-03 clause 8.2 already prints the same precedence rule for Form 4-H.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: The Arabic text governs. The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: interpretation
+    text: AppB/para1 prints no change to any unit as it stands at ADD-02 (no quoted old/new, deletion, substitution
+      or reissue); it restates the precedence rule of ADD-03:8.2, which (with 8.1) is the provision that introduces
+      Form 4-H and its language rule. It therefore has no amending effect of its own.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppB/para1
+      page: 5
+      kind: span
+      words: The Arabic text of Form 4-H at Appendix A governs.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/AppB-para1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:AppB/para1
+    target: ADD-03:F4-H
+    payload:
+      provision: ADD-03:AppB/para1
+      disposition: no_effect
+      reason: 'Appendix B paragraph is a precedence note on the English translation of the new Form 4-H; it prints
+        no change (no quoted old/new, no deletion, substitution or reissue) to any unit as it stands at ADD-02.
+        Its words "This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A
+        governs." restate the rule already printed in ADD-03:8.2: "The Arabic text governs. The English translation
+        at Appendix B is provided for convenience only." Form 4-H itself is introduced by ADD-03:8.1/8.2, not by
+        this paragraph. A person confirms.'
+      candidates:
+      - ADD-03:F4-H
+      - ADD-03:8.2
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppB/para1
+      page: 5
+      kind: span
+      words: This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A governs.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: The Arabic text governs. The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:8.2
+    - ADD-03:F4-H
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - S3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:AppB/para1 is a provision of ADD-03 (p5)
+      aspect: structure
+    - check: evidence ADD-03:AppB/para1 p5
+      ok: true
+      detail: verbatim in ADD-03:AppB/para1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.2 p2
+      ok: true
+      detail: verbatim in ADD-03:8.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''provided'' (cites ADD-03:F4-H))'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: The paragraph is a governing-language note, not an amendment. Reference drafter's candidate
+      VOL-IV:F4-H does not exist at ADD-02; Form 4-H is new in ADD-03 (8.1). The 'governs' wording is a precedence
+      rule already carried by 8.2, so no_effect is proposed and depends on interpretation S3, pending a person's
+      confirmation. No image unit was relied on, so no crop was read.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The words of AppB/para1 are a precedence/convenience note. They quote no old/new text and contain no deletion,
+          substitution or reissue. 'provided' only appears in 'provided for convenience only', so the controller's
+          semantic flag is a keyword match, not amending language.
+        - ADD-03:8.2 is printed only in the evidence quotation. Its full text is not in the units, and the 8.1 text
+          is not shown. The claim that 8.1/8.2 introduce Form 4-H cannot be checked here, and 8.2 is only partly
+          shown.
+        - The named target ADD-03:F4-H is not printed in the units, and the candidates list includes 8.2, so the
+          target is a group or uncertain. no_effect is acceptable because no unit as it stood at ADD-02 is changed.
+          A person should confirm that F4-H is the right target label.
+        - 'The restatement is close but not word-for-word: AppB names Form 4-H and Appendix A, while 8.2 says only
+          ''The Arabic text governs''. The AppB paragraph also adds the Appendix A reference, which is a slight
+          extension. It still does not change a unit.'
+        - This depends on interpretation S3, which a person must confirm.
+        evidence_checked:
+        - ADD-03:AppB/para1
+        - ADD-03:8.2 (quoted in evidence)
+        - controller_validation
+        - S1-S3
+        selected_because:
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: target is a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-009-critic
+        created: '2026-10-04T22:58:44Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 70
+    accounted: 1
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 1
+    resolved: 0
+    pending: 1
+    invalid: 0
+    unaccounted: 69
+    pending_provisions:
+    - ADD-03:AppB/para1
+    invalid_provisions: []
+    no_change_on_amendment_language:
+    - ADD-03:AppB/para1
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppB/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:AppB/para1 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:8.2 p2
+        ok: true
+        detail: verbatim in ADD-03:8.2 at ADD-02
+        aspect: null
+    S3:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppB/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:AppB/para1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:8.2 p2
+        ok: true
+        detail: verbatim in ADD-03:8.2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/A
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/B
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/C
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/D
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/E
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/F
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/G
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/total
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4-cells
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 174ed4b875b0faad07e1727e7e67fbd5e7277d3e880f15e3ee7f1859090ba427
+    computed_under:
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings:
+    - '1 provision with amendment language carries no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 1 need a person): ADD-03:AppB/para1'
+    clean: false
+  impact: null
+  reference: null
+  findings:
+  - '1 provision with amendment language carries no change (0 contradict a change the pattern drafter drafts from
+    their words: invalid; 1 need a person): ADD-03:AppB/para1'
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-009-critic
+    route: host
+    items:
+    - item: ADD-03/AppB-para1
+      agrees: true
+      concerns: 5
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

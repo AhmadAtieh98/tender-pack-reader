@@ -1,0 +1,1927 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T225700Z-ac91
+  created: '2026-10-04T22:57:00Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+    register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+  statements:
+  - id: S-Q15-F1
+    kind: fact
+    text: 'ADD-03 Q15 response: the PCG shall be unlimited as to the guaranteed obligations and not conditional
+      on prior demand on the EPC Contractor; Clause 8.7 and Form 4-D apply.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 3
+      kind: span
+      words: No. The Parent Company Guarantee shall be unlimited as to the guaranteed obligations and shall not
+        be conditional on any demand first being made of the EPC Contractor. Volume I Clause 8.7 and Form 4-D apply.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q15-F2
+    kind: fact
+    text: Form 4-D at ADD-02 already prints an unlimited liability and no prior-demand condition.
+    evidence:
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-D/limit-of-liability
+      page: 7
+      kind: span
+      words: Unlimited as to the guaranteed obligations
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-D/item3
+      page: 7
+      kind: span
+      words: 3. This guarantee is not conditional on any demand first being made of the EPC Contractor.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.7
+      page: 4
+      kind: span
+      words: substantially in the form set out in Form 4-D, unconditional as to the EPC Contractor's obligations
+        during the construction period
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q15-I1
+    kind: interpretation
+    text: Q15 confirms the existing terms of VOL-I 8.7 and Form 4-D (no cap on liability accepted) and changes no
+      text; it is an annotation with effect 'confirms'.
+    evidence: []
+    note: null
+  - id: S-Q16-F1
+    kind: fact
+    text: ADD-03 Q16 response makes inclusion of grid connection cost in the Estimated Project Cost depend on Section
+      7 having effect.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 3
+      kind: span
+      words: Only if Section 7 of this Addendum has effect. Otherwise the grid connection point is provided by the
+        Authority in accordance with Volume II Clause 1.4.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q16-F2
+    kind: fact
+    text: ADD-03 Section 7 is conditional on an Authority notice and, where it has effect, places grid connection
+      works in the Estimated Project Cost; VOL-II 1.4 at ADD-02 provides the grid connection point; Form 4-F has
+      an Estimated Project Cost field.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: This Section 7 has effect only if the Authority notifies Bidders through the Portal, not later than
+        ten (10) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 2
+      kind: span
+      words: (c) the cost of the grid connection works forms part of the Estimated Project Cost.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:1.4
+      page: 2
+      kind: span
+      words: The Authority will provide the site free of encumbrance, together with a grid connection point at the
+        site boundary.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/estimated-project-cost-sar
+      page: 9
+      kind: span
+      words: 'Estimated Project Cost (SAR):'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q16-I1
+    kind: interpretation
+    text: 'Q16 interprets the Estimated Project Cost in Form 4-F and VOL-II 1.4 without changing text: grid connection
+      cost is excluded unless the Section 7 trigger occurs. The conditional amendment itself is made by Section
+      7 (another batch).'
+    evidence: []
+    note: null
+  - id: S-Q17-F1
+    kind: fact
+    text: Q17 says the reference specific energy consumption is stated in Appendix C to ADD-03.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 3
+      kind: span
+      words: The reference specific energy consumption, in kWh per cubic metre of treated effluent, is stated in
+        Appendix C to this Addendum together with the format of the Energy Performance Statement.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q17-A1
+    kind: assumption
+    text: 'The evidence build of ADD-03 contains no Appendix C: a heading search of ADD-03 for ''APPENDIX C'' returned
+      only ''APPENDIX A — FORM 4-H (ARABIC)'' and ''APPENDIX B — ENGLISH TRANSLATION OF FORM 4-H''. Absence cannot
+      be quoted; a person should confirm against the issued addendum.'
+    evidence: []
+    note: null
+  - id: S-Q18-F1
+    kind: fact
+    text: Q18 states VOL-II 5.2 (as amended by ADD-03 5.1) applies to the whole transmission main including the
+      5.4 crossings.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 3
+      kind: span
+      words: Yes. Volume II Clause 5.2, as amended by Section 5.1 of this Addendum, applies to the whole length
+        of the transmission main, including the crossings required by Volume II Clause 5.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.2
+      page: 4
+      kind: span
+      words: The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.4
+      page: 4
+      kind: span
+      words: Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q18-I1
+    kind: interpretation
+    text: Q18 interprets the scope of VOL-II 5.2 (it extends to the trenchless crossings under 5.4) without changing
+      text; annotation with effect 'interprets'. The velocity value itself is changed by ADD-03 5.1 (another batch).
+    evidence: []
+    note: null
+  - id: S-Q19-F1
+    kind: fact
+    text: Q19 response declines further amendment and cites existing clauses only.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 3
+      kind: span
+      words: The Authority notes the question. Volume I Clauses 6.2 and 11.1 apply. The Authority does not consider
+        further amendment necessary at this stage.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q19-I1
+    kind: interpretation
+    text: Q19 changes no unit; the bidder's question on how to demonstrate VOL-I 8.4(a), as amended, in Envelope
+      A when the Estimated Project Cost is stated only in Form 4-F remains unanswered in substance.
+    evidence: []
+    note: null
+  - id: S-Q20-F1
+    kind: fact
+    text: Q20 states legalisation of the register copy attached to Form 4-H is not required; Form 4-H (Arabic, governing)
+      requires a certified copy of the register and is silent on legalisation.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q20
+      page: 3
+      kind: span
+      words: No. Legalisation is not required for the purposes of Form 4-H.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/decl3
+      page: 4
+      kind: reading
+      words: 'ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين في العضو، صادرة خلال الثلاثين
+        (٣٠) يوماً السابقة لتاريخ تقديم العروض.'
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/para1
+      page: 5
+      kind: span
+      words: 'Third: that we have attached to this declaration a certified copy of the register of partners or shareholders
+        of the member, issued within the thirty (30) days preceding the date for submission of Proposals.'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-Q20-I1
+    kind: interpretation
+    text: 'Q20 interprets the certification requirement in Form 4-H paragraph Third: a certified copy suffices and
+      legalisation is not required, including for members incorporated outside the Kingdom. No text change.'
+    evidence: []
+    note: null
+  - id: S-AppA-F1
+    kind: fact
+    text: Appendix A para 1 requires Form 4-H to be completed in Arabic per Section 8; Section 8.2 and the Arabic
+      note on the form say the same.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 3
+      kind: span
+      words: It shall be completed in the Arabic language in accordance with Section 8 of this Addendum.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: Form 4-H shall be completed in the Arabic language, signed and stamped by an authorised signatory of
+        each member of the Bidder. The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/note
+      page: 4
+      kind: reading
+      words: 'ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد.
+        عدم تقديمه كاملاً يجعل العرض غير مستجيب.'
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    note: null
+  - id: S-AppA-I1
+    kind: interpretation
+    text: Appendix A para 1 restates the obligation in ADD-03 8.2 and adds none; annotation with effect 'confirms'
+      on the Arabic note of Form 4-H.
+    evidence: []
+    note: null
+  - id: S-F4H-F1
+    kind: fact
+    text: The Arabic Form 4-H defines a beneficial owner at ten per cent (10%); the English translation (Form 4-H
+      page 5) says twenty-five per cent (25%). ADD-03 8.2 says the Arabic text governs.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/decl1
+      page: 4
+      kind: reading
+      words: ما نسبته عشرة في المائة (١٠٪) أو أكثر من رأس مال العضو أو من حقوق التصويت فيه
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/para1
+      page: 5
+      kind: span
+      words: twenty-five per cent (25%) or more of the capital of the member or of the voting rights in it
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: The Arabic text governs. The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/Q15
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:Q15
+    target: VOL-I:8.7
+    payload:
+      id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: annotate
+      targets:
+      - VOL-I:8.7
+      - VOL-IV:F4-D
+      effect: confirms
+      note: 'Confirms: the PCG is unlimited as to the guaranteed obligations and not conditional on prior demand
+        on the EPC Contractor; a fixed-amount cap is not accepted. Form 4-D already prints both terms.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q15
+      page: 3
+      kind: span
+      words: No. The Parent Company Guarantee shall be unlimited as to the guaranteed obligations and shall not
+        be conditional on any demand first being made of the EPC Contractor. Volume I Clause 8.7 and Form 4-D apply.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:8.7
+      page: 4
+      kind: span
+      words: substantially in the form set out in Form 4-D, unconditional as to the EPC Contractor's obligations
+        during the construction period
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-D/limit-of-liability
+      page: 7
+      kind: span
+      words: Unlimited as to the guaranteed obligations
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-D/item3
+      page: 7
+      kind: span
+      words: 3. This guarantee is not conditional on any demand first being made of the EPC Contractor.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:8.7
+    - VOL-IV:F4-D/limit-of-liability
+    - VOL-IV:F4-D/item3
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q15-F1
+    - S-Q15-F2
+    - S-Q15-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q15 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: evidence ADD-03:Q15 p3
+      ok: true
+      detail: verbatim in ADD-03:Q15 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:8.7 p4
+      ok: true
+      detail: verbatim in VOL-I:8.7 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-D/limit-of-liability p7
+      ok: true
+      detail: verbatim in VOL-IV:F4-D/limit-of-liability at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-D/item3 p7
+      ok: true
+      detail: verbatim in VOL-IV:F4-D/item3 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q15-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'a confirming answer: every sentence restates words the annotated units already print, or refers to
+        them'
+      aspect: semantic
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: Response restates terms Form 4-D already prints (limit-of-liability row and item 3), so no
+      text change; annotate both cited units as confirms.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The words "unlimited as to the guaranteed obligations" appear in Form 4-D, not in the text of Clause 8.7.
+          Clause 8.7 says only "unconditional as to the EPC Contractor's obligations during the construction period".
+          Annotating both units with effect 'confirms' is still reasonable, because Q15 itself cites Form 4-D and
+          the Form 4-D evidence matches Q15's two terms.
+        evidence_checked:
+        - ADD-03:Q15
+        - VOL-I:8.7
+        - VOL-IV:F4-D/limit-of-liability (quoted)
+        - VOL-IV:F4-D/item3 (quoted)
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+        created: '2026-10-04T22:57:33Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/Q16
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:Q16
+    target: VOL-IV:F4-F
+    payload:
+      id: ADD-03/Q16
+      provision: ADD-03:Q16
+      type: annotate
+      targets:
+      - VOL-IV:F4-F
+      - VOL-II:1.4
+      effect: interprets
+      note: Grid connection cost is part of the Estimated Project Cost in Form 4-F only if ADD-03 Section 7 has
+        effect (7.1 trigger; 7.2(c)); otherwise the Authority provides the grid connection point under VOL-II 1.4.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q16
+      page: 3
+      kind: span
+      words: Only if Section 7 of this Addendum has effect. Otherwise the grid connection point is provided by the
+        Authority in accordance with Volume II Clause 1.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-IV
+      unit_id: VOL-IV:F4-F/estimated-project-cost-sar
+      page: 9
+      kind: span
+      words: 'Estimated Project Cost (SAR):'
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:1.4
+      page: 2
+      kind: span
+      words: The Authority will provide the site free of encumbrance, together with a grid connection point at the
+        site boundary.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:7.2
+      page: 2
+      kind: span
+      words: (c) the cost of the grid connection works forms part of the Estimated Project Cost.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-IV:F4-F/estimated-project-cost-sar
+    - VOL-II:1.4
+    - ADD-03:7.1
+    - ADD-03:7.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q16-F1
+    - S-Q16-F2
+    - S-Q16-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q16 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q16 p3
+      ok: true
+      detail: verbatim in ADD-03:Q16 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-IV:F4-F/estimated-project-cost-sar p9
+      ok: true
+      detail: verbatim in VOL-IV:F4-F/estimated-project-cost-sar at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:1.4 p2
+      ok: true
+      detail: verbatim in VOL-II:1.4 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.2 p2
+      ok: true
+      detail: verbatim in ADD-03:7.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q16-I1: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: The answer changes no words; it explains what the Form 4-F figure covers depending on whether
+      Section 7 is triggered. The conditional deletion in VOL-II 1.4 is Section 7's op, not this one.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The evidence shows only the Section 7.1 trigger and 7.2(c). It does not show the rest of Section 7, so
+          "excluded unless Section 7 has effect" rests on Q16's own wording, which does support it.
+        - The item states that Section 7's own operation is made elsewhere, which is correct. The annotation sets
+          no value.
+        evidence_checked:
+        - ADD-03:Q16
+        - ADD-03:7.1 (quoted)
+        - ADD-03:7.2(c) (quoted)
+        - VOL-II:1.4
+        - VOL-IV:F4-F/estimated-project-cost-sar (quoted)
+        selected_because:
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        - 'uncertain_target: target is a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+        created: '2026-10-04T22:57:33Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/Q17
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: escalation
+    provision: ADD-03:Q17
+    target: null
+    payload:
+      why: Insufficient evidence. Q17 says the reference specific energy consumption 'is stated in Appendix C to
+        this Addendum', but the evidence build of ADD-03 contains no Appendix C (only Appendix A, Form 4-H Arabic,
+        and Appendix B, English translation). The value and the Energy Performance Statement format cannot be found,
+        so no target or value can be proposed.
+      what_is_unsupported: 'A reference to an appendix that is not in the evidence build: no unit to annotate or
+        to take a value from. A person should check whether Appendix C was issued and, if not, raise a clarification
+        with the Authority.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q17
+      page: 3
+      kind: span
+      words: The reference specific energy consumption, in kWh per cubic metre of treated effluent, is stated in
+        Appendix C to this Addendum together with the format of the Energy Performance Statement.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:S6/para1
+    - ADD-03:T1-1/G
+    conflicts: []
+    missing_information:
+    - ADD-03 Appendix C (reference specific energy consumption in kWh/m3 and Energy Performance Statement format)
+    statements:
+    - S-Q17-F1
+    - S-Q17-A1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q17 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:Q17 p3
+      ok: true
+      detail: verbatim in ADD-03:Q17 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-Q17-A1: a person must confirm it'
+      aspect: evidence
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: ADD-03 Appendix C (reference specific energy consumption in kWh/m3
+        and Energy Performance Statement format)'
+      aspect: evidence
+    verification_status: escalated
+    model_rationale: Searched ADD-03 headings for Appendix C; only Appendix A and B exist. I will not guess a value.
+    review: null
+  - id: ADD-03/Q18
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:Q18
+    target: VOL-II:5.2
+    payload:
+      id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      targets:
+      - VOL-II:5.2
+      - VOL-II:5.4
+      effect: interprets
+      note: The maximum velocity in VOL-II 5.2 (as amended by ADD-03 Section 5.1) applies to the whole transmission
+        main, including the trenchless crossings required by VOL-II 5.4.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 3
+      kind: span
+      words: Yes. Volume II Clause 5.2, as amended by Section 5.1 of this Addendum, applies to the whole length
+        of the transmission main, including the crossings required by Volume II Clause 5.4.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.2
+      page: 4
+      kind: span
+      words: The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.4
+      page: 4
+      kind: span
+      words: Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:5.2
+    - VOL-II:5.4
+    - ADD-03:5.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q18-F1
+    - S-Q18-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q18 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q18 p3
+      ok: true
+      detail: verbatim in ADD-03:Q18 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:5.2 p4
+      ok: true
+      detail: verbatim in VOL-II:5.2 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:5.4 p4
+      ok: true
+      detail: verbatim in VOL-II:5.4 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q18-I1: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: Scope interpretation only; the new velocity figure comes from ADD-03 5.1 (other batch), so
+      this op does not set a value.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The new velocity value comes from ADD-03 5.1, which is not shown here. The item correctly sets no value
+          and treats this only as a scope interpretation.
+        evidence_checked:
+        - ADD-03:Q18
+        - VOL-II:5.2
+        - VOL-II:5.4 (quoted)
+        selected_because:
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+        created: '2026-10-04T22:57:33Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/Q19
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:Q19
+    target: null
+    payload:
+      provision: ADD-03:Q19
+      disposition: no_effect
+      reason: 'The response amends nothing: ''The Authority does not consider further amendment necessary at this
+        stage.'' It only points to existing clauses (''Volume I Clauses 6.2 and 11.1 apply.''). No text of VOL-I
+        8.4 or Form 4-F changes. A person must confirm.'
+      candidates:
+      - VOL-I:8.4
+      - VOL-IV:F4-F
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 3
+      kind: span
+      words: The Authority notes the question. Volume I Clauses 6.2 and 11.1 apply. The Authority does not consider
+        further amendment necessary at this stage.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:8.4
+    - VOL-IV:F4-F
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q19-F1
+    - S-Q19-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q19 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: evidence ADD-03:Q19 p3
+      ok: true
+      detail: verbatim in ADD-03:Q19 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q19-I1: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Changes nothing, but the bidder's practical question is left open; a clarification item follows.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The response only points to Clauses 6.2 and 11.1 and declines further amendment, so no_effect is consistent
+          with its words. The text of Clauses 6.2 and 11.1 is not shown, so I cannot check whether they actually
+          answer the bidder's question. The item rightly flags that the question stays unanswered in substance.
+        evidence_checked:
+        - ADD-03:Q19
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+        created: '2026-10-04T22:57:33Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/Q19-clarification
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: clarification
+    provision: ADD-03:Q19
+    target: VOL-I:8.4
+    payload:
+      gap: Q19 asked how compliance with VOL-I 8.4(a), as amended, is shown in Envelope A when the Estimated Project
+        Cost is stated only in Form 4-F; the Authority only replied that Clauses 6.2 and 11.1 apply and declined
+        further amendment.
+      proposed_question: Please confirm how the Bidder should show compliance with Volume I Clause 8.4(a), as amended
+        by Addendum No. 3, in Envelope A without disclosing the Estimated Project Cost stated in Form 4-F (Envelope
+        B).
+      practical_impact: There is a risk of non-compliance in Envelope A, or of disclosing Envelope B content early.
+      interim_handling: Check the effect of VOL-I 6.2 and 11.1 and the ADD-03 amendment to 8.4 (other batch) before
+        deciding the approach.
+      decision_owner: Bid manager
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q19
+      page: 3
+      kind: span
+      words: How is compliance with Volume I Clause 8.4(a), as amended, to be demonstrated in Envelope A, given
+        that the Estimated Project Cost is stated only in Form 4-F?
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:8.4
+    - VOL-IV:F4-F
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q19-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q19 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed clarification payload
+      aspect: structure
+    - check: evidence ADD-03:Q19 p3
+      ok: true
+      detail: verbatim in ADD-03:Q19 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q19-I1: a person must confirm it'
+      aspect: evidence
+    verification_status: interpretation_pending
+    model_rationale: This is a gap for the bid team, not a change to the documents.
+    review: null
+  - id: ADD-03/Q20
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:Q20
+    target: ADD-03:F4-H/image/decl3
+    payload:
+      id: ADD-03/Q20
+      provision: ADD-03:Q20
+      type: annotate
+      targets:
+      - ADD-03:F4-H/image/decl3
+      - ADD-03:F4-H/para1
+      effect: interprets
+      note: The certified copy of the register of partners/shareholders attached to Form 4-H need not be legalised,
+        including where the member is incorporated outside the Kingdom.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q20
+      page: 3
+      kind: span
+      words: No. Legalisation is not required for the purposes of Form 4-H.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/decl3
+      page: 4
+      kind: reading
+      words: 'ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين في العضو، صادرة خلال الثلاثين
+        (٣٠) يوماً السابقة لتاريخ تقديم العروض.'
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/para1
+      page: 5
+      kind: span
+      words: 'Third: that we have attached to this declaration a certified copy of the register of partners or shareholders
+        of the member, issued within the thirty (30) days preceding the date for submission of Proposals.'
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/para1
+    - ADD-03:8.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-Q20-F1
+    - S-Q20-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:Q20 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that interprets is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:Q20 p3
+      ok: true
+      detail: verbatim in ADD-03:Q20 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:F4-H/image/decl3 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-H/image/decl3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:F4-H/para1 p5
+      ok: true
+      detail: verbatim in ADD-03:F4-H/para1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-Q20-I1: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: Crop ADD-03-p4-r1 (Form 4-H, Arabic, RTL) shows paragraph ثالثاً (Third) requiring a نسخة مصدقة
+      (certified copy) of the register issued within (٣٠) days, with no mention of legalisation; Q20 interprets
+      that requirement.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - S-Q20-F1 calls the Arabic text "governing". Nothing in the evidence shown establishes which language governs.
+        - The target is a unit inside ADD-03 itself, namely the Form 4-H text the addendum introduces. That is plausible,
+          but the person deciding should confirm it is the right unit to annotate.
+        - The Arabic reading and the English paragraph both require a "certified copy" and say nothing on legalisation,
+          so the interpretation follows.
+        evidence_checked:
+        - ADD-03:Q20
+        - ADD-03:F4-H/image/decl3 (Arabic reading)
+        - ADD-03:F4-H/para1 (English)
+        selected_because:
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+        created: '2026-10-04T22:57:33Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/AppA/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:AppA/para1
+    target: ADD-03:F4-H/image/note
+    payload:
+      id: ADD-03/AppA/para1
+      provision: ADD-03:AppA/para1
+      type: annotate
+      targets:
+      - ADD-03:F4-H/image/note
+      effect: confirms
+      note: 'Restates ADD-03 8.2: Form 4-H is reproduced as issued and is to be completed in Arabic.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 3
+      kind: span
+      words: Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language
+        in accordance with Section 8 of this Addendum.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/note
+      page: 4
+      kind: reading
+      words: 'ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد.
+        عدم تقديمه كاملاً يجعل العرض غير مستجيب.'
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: Form 4-H shall be completed in the Arabic language, signed and stamped by an authorised signatory of
+        each member of the Bidder. The Arabic text governs.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:8.2
+    - ADD-03:F4-H/image/note
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-AppA-F1
+    - S-AppA-I1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:AppA/para1 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: evidence ADD-03:AppA/para1 p3
+      ok: true
+      detail: verbatim in ADD-03:AppA/para1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:F4-H/image/note p4
+      ok: true
+      detail: verbatim in ADD-03:F4-H/image/note at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.2 p2
+      ok: true
+      detail: verbatim in ADD-03:8.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-AppA-I1: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: 'Crop ADD-03-p4-r1 shows the Arabic ملاحظة (note) at the foot of Form 4-H: submit in Arabic
+      for each member, Arabic text governs, incomplete submission makes the Proposal non-responsive. The paragraph
+      repeats 8.2, so it is annotated as confirms.'
+    review: null
+  - id: ADD-03/AppA/para1-issue
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: issue
+    provision: ADD-03:AppA/para1
+    target: ADD-03:F4-H/image/decl1
+    payload:
+      text: The Arabic Form 4-H (governing, per ADD-03 8.2) sets the beneficial-owner threshold at ten per cent
+        (10%), but the English translation in Appendix B says twenty-five per cent (25%). Declarations must use
+        the 10% threshold. Consider asking the Authority to correct the translation.
+      owner: Bid manager / legal
+      short: 'Form 4-H beneficial-owner threshold: Arabic 10% vs English 25%'
+      theme: Forms / beneficial ownership
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 3
+      kind: span
+      words: Form 4-H is reproduced on the following page as issued. It shall be completed in the Arabic language
+        in accordance with Section 8 of this Addendum.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/image/decl1
+      page: 4
+      kind: reading
+      words: ما نسبته عشرة في المائة (١٠٪) أو أكثر من رأس مال العضو أو من حقوق التصويت فيه
+      cell: null
+      crop_sha256: 0600c42c92034a8737a191c54fe7524232777e1e510535a03e69eacc680bb734
+    - doc: ADD-03
+      unit_id: ADD-03:F4-H/para1
+      page: 5
+      kind: span
+      words: twenty-five per cent (25%) or more of the capital of the member or of the voting rights in it
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:8.2
+      page: 2
+      kind: span
+      words: The Arabic text governs. The English translation at Appendix B is provided for convenience only.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/para1
+    - ADD-03:8.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F4H-F1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:AppA/para1 is a provision of ADD-03 (p3)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed issue payload
+      aspect: structure
+    - check: evidence ADD-03:AppA/para1 p3
+      ok: true
+      detail: verbatim in ADD-03:AppA/para1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:F4-H/image/decl1 p4
+      ok: true
+      detail: verbatim in ADD-03:F4-H/image/decl1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:F4-H/para1 p5
+      ok: true
+      detail: verbatim in ADD-03:F4-H/para1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:8.2 p2
+      ok: true
+      detail: verbatim in ADD-03:8.2 at ADD-02
+      aspect: evidence
+    verification_status: evidence_verified
+    model_rationale: 'Crop ADD-03-p4-r1, paragraph أولاً (First): it reads ''عشرة في المائة (١٠٪)'' (ten per cent,
+      Arabic-Indic numerals). The English page 5 says 25%. Found while reading the form that Appendix A para 1 reproduces.'
+    review: null
+  coverage:
+    provisions_total: 70
+    accounted: 7
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 7
+    resolved: 0
+    pending: 7
+    invalid: 0
+    unaccounted: 63
+    pending_provisions:
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-Q15-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q15 p3
+        ok: true
+        detail: verbatim in ADD-03:Q15 at ADD-02
+        aspect: null
+    S-Q15-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-IV:F4-D/limit-of-liability p7
+        ok: true
+        detail: verbatim in VOL-IV:F4-D/limit-of-liability at ADD-02
+        aspect: null
+      - check: evidence VOL-IV:F4-D/item3 p7
+        ok: true
+        detail: verbatim in VOL-IV:F4-D/item3 at ADD-02
+        aspect: null
+      - check: evidence VOL-I:8.7 p4
+        ok: true
+        detail: verbatim in VOL-I:8.7 at ADD-02
+        aspect: null
+    S-Q15-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q16-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q16 p3
+        ok: true
+        detail: verbatim in ADD-03:Q16 at ADD-02
+        aspect: null
+    S-Q16-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:7.2 p2
+        ok: true
+        detail: verbatim in ADD-03:7.2 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:1.4 p2
+        ok: true
+        detail: verbatim in VOL-II:1.4 at ADD-02
+        aspect: null
+      - check: evidence VOL-IV:F4-F/estimated-project-cost-sar p9
+        ok: true
+        detail: verbatim in VOL-IV:F4-F/estimated-project-cost-sar at ADD-02
+        aspect: null
+    S-Q16-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q17-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q17 p3
+        ok: true
+        detail: verbatim in ADD-03:Q17 at ADD-02
+        aspect: null
+    S-Q17-A1:
+      kind: assumption
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q18-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q18 p3
+        ok: true
+        detail: verbatim in ADD-03:Q18 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:5.2 p4
+        ok: true
+        detail: verbatim in VOL-II:5.2 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:5.4 p4
+        ok: true
+        detail: verbatim in VOL-II:5.4 at ADD-02
+        aspect: null
+    S-Q18-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q19-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q19 p3
+        ok: true
+        detail: verbatim in ADD-03:Q19 at ADD-02
+        aspect: null
+    S-Q19-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-Q20-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:Q20 p3
+        ok: true
+        detail: verbatim in ADD-03:Q20 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:F4-H/image/decl3 p4
+        ok: true
+        detail: verbatim in ADD-03:F4-H/image/decl3 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:F4-H/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:F4-H/para1 at ADD-02
+        aspect: null
+    S-Q20-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-AppA-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppA/para1 p3
+        ok: true
+        detail: verbatim in ADD-03:AppA/para1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:8.2 p2
+        ok: true
+        detail: verbatim in ADD-03:8.2 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:F4-H/image/note p4
+        ok: true
+        detail: verbatim in ADD-03:F4-H/image/note at ADD-02
+        aspect: null
+    S-AppA-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-F4H-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:F4-H/image/decl1 p4
+        ok: true
+        detail: verbatim in ADD-03:F4-H/image/decl1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:F4-H/para1 p5
+        ok: true
+        detail: verbatim in ADD-03:F4-H/para1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:8.2 p2
+        ok: true
+        detail: verbatim in ADD-03:8.2 at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/Q15
+      provision: ADD-03:Q15
+      type: annotate
+      target: VOL-I:8.7
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q15 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-I:8.7'', ''VOL-IV:F4-D'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q16
+      provision: ADD-03:Q16
+      type: annotate
+      target: VOL-IV:F4-F
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q16 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-IV:F4-F'', ''VOL-II:1.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q18
+      provision: ADD-03:Q18
+      type: annotate
+      target: VOL-II:5.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q18 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-II:5.2'', ''VOL-II:5.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/Q20
+      provision: ADD-03:Q20
+      type: annotate
+      target: ADD-03:F4-H/image/decl3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:Q20 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:F4-H/image/decl3'', ''ADD-03:F4-H/para1'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/AppA/para1
+      provision: ADD-03:AppA/para1
+      type: annotate
+      target: ADD-03:F4-H/image/note
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:AppA/para1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:F4-H/image/note'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/A
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/B
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/C
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/D
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/E
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/F
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/G
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T1-1/total
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: op
+      accounted_by:
+      - ADD-03/Q15
+    - provision: ADD-03:Q16
+      disposition: op
+      accounted_by:
+      - ADD-03/Q16
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: op
+      accounted_by:
+      - ADD-03/Q18
+    - provision: ADD-03:Q19
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:Q20
+      disposition: op
+      accounted_by:
+      - ADD-03/Q20
+    - provision: ADD-03:AppA/para1
+      disposition: op
+      accounted_by:
+      - ADD-03/AppA/para1
+    - provision: ADD-03:F4-H/image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4-cells
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:4.1
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:6.1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q17
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 174ed4b875b0faad07e1727e7e67fbd5e7277d3e880f15e3ee7f1859090ba427
+    computed_under:
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-005-critic
+    route: host
+    items:
+    - item: ADD-03/Q15
+      agrees: true
+      concerns: 1
+    - item: ADD-03/Q16
+      agrees: true
+      concerns: 2
+    - item: ADD-03/Q18
+      agrees: true
+      concerns: 1
+    - item: ADD-03/Q19
+      agrees: true
+      concerns: 1
+    - item: ADD-03/Q20
+      agrees: true
+      concerns: 3
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

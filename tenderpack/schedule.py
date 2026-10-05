@@ -39,8 +39,26 @@ For one stage of the amendment path:
      (latest start..latest finish, clipped at the planning date). Resource levelling is NOT implemented:
      overloads are reported, not resolved.
 Deltas between consecutive stages: NEW, REMOVED, MOVED (latest start changed), REWORK (the
-requirement behind an activity changed — its interpretation, dates, wording, cells, or it became STALE:
-work done against the earlier version may need redoing).
+requirement behind an activity changed — its wording, cells, planning dates, status, STALE flag or the substance of its
+reading (quote, parameters, consequence): work done against the earlier version may need redoing), REVIEW (clarification
+noted, no change) (session 11, audit A5-4: the reading was re-made only to note a clarification; nothing the row
+requires changed; a clarification answer is classified by summary.classify_answer when the caller passes `answers`, and
+an answer that confirms never makes a requirement change), STATUS (audit A5-5: the timing status or the total float
+changed between the stages).
+Session 11 (audit A5-1, A5-2, A5-7, A5-8):
+  gates and the clarification route: a gated activity whose open issue has a drafted clarification question (`questions`,
+    issue -> question ids, from the clarification register) carries two dates: `ask_by` (decide whether to ask the
+    Authority: the latest start of the activity that must finish by the clarification cut-off, CLARIFICATION_RULE) and
+    `finalise_by` (its own latest start); `decision_needed_by` is the earlier. The basis (the rows of that activity that
+    say a conflict is raised by clarification, and the cut-off's words) is `gate_route`;
+  A3 coverage: every A3 row in force (a stated consequence of class register.BID_OUT) is carried by an activity (through
+    its evidence items, or `_row_checks` in the templates for a row whose compliance is a check, not a deliverable) or
+    named with a reason in `_row_exceptions`; otherwise a C48 problem (REPORTED, not structural: a pack whose templates
+    predate `_row_checks`, e.g. a rehearsal's, still builds). Reported as `a3_coverage`;
+  deadlines print the time and timezone their pack date states (an anchor's from anchor_details, else the rule's own
+    words); `latest_finish_time` is that time when the latest finish is the deadline's own day; `finish.buffer` names an
+    assumption (e.g. submission.delivery_buffer_wd) of Working Days to finish before the pack date (legal date kept);
+  milestones whose readings differ carry `other_readings` (each other reading's date and what it assumes).
 
 Both directions are checked (failures are returned in `problems` and are structural in the build):
   C40 every activity cites at least one row in force (an activity needs a requirement)
@@ -73,7 +91,8 @@ from types import SimpleNamespace
 
 from .dates import _DATE, _TIME, Calendar, parse_date
 
-IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW")
+# a CONDITIONAL row (session 11: a conditional amendment of it is pending) is in force in its current state
+IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW", "CONDITIONAL")
 # flags that set the timing status (the first one found, up to " (", is `status`)
 BLOCKING_FLAGS = ("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE", "NO WORKING WINDOW", "CONDITIONAL —", "NOT NEEDED")
 NOT_SCHEDULED = ("DEADLINE PASSED", "CONDITIONAL", "NOT NEEDED")      # timing statuses whose work is not loaded
@@ -191,7 +210,8 @@ def backward_pass(acts: dict[str, dict], cal: Calendar) -> dict[str, dict]:
         cands = []
         legal = a.get("deadline_date")
         if legal is not None:
-            cands.append((last_working_day(cal, legal), 0, f"deadline:{a.get('deadline_rule')}"))
+            lw, buf = last_working_day(cal, legal), int(a.get("buffer_wd") or 0)
+            cands.append((cal.add_working_days(lw, -buf) if buf > 0 else lw, 0, f"deadline:{a.get('deadline_rule')}"))
         for s in sorted(succ[aid]):
             st = visit(s)["ls"]
             if st is not None:
@@ -397,12 +417,15 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
     lead = assumptions.get("lead_times") or {}
     roles = assumptions.get("resources")
     bidder = assumptions.get("bidder") or {}
-    defined = {t["id"] for item, ts in templates.items() if not item.startswith("_") for t in (ts or [])}
+    defined = {t["id"] for item, ts in template_groups(templates) for t in ts}
     seen: dict[str, tuple[str, dict]] = {}
-    for item, ts in templates.items():
-        if item.startswith("_"):
-            continue
-        for t in ts or []:
+    for item, ts in template_groups(templates):
+        for t in ts:
+            buf = (t.get("finish") or {}).get("buffer")
+            if buf is not None:
+                v, why = assumption_value(assumptions, buf)
+                if why:
+                    problems.append(f"C45: activity {t['id']} ({item}): finish.buffer '{buf}' {why}")
             for dep in list(t.get("predecessors", [])) + list(t.get("successors", [])):
                 if dep not in defined:
                     problems.append(f"C45: activity {t['id']} ({item}) depends on unknown activity '{dep}'")
@@ -432,6 +455,13 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
                                     "time or date the pack states is filled from the stage ({PDD_TIME}, {PDD_DATE}, "
                                     "{ROW:<row id>:<parameter>}), never typed")
             seen.setdefault(t["id"], (item, t))
+    for rid, spec in (templates.get("_row_checks") or {}).items():
+        spec = spec if isinstance(spec, dict) else {}
+        bad = [x for x in spec.get("activities") or [] if x not in defined]
+        if not spec.get("activities") or bad:
+            problems.append(f"C45: _row_checks.{rid} names no activity or an unknown one ({', '.join(bad) or 'none'})")
+        if not str(spec.get("basis") or "").strip():
+            problems.append(f"C45: _row_checks.{rid} gives no basis (the source words saying why the activity checks it)")
     for ev, o in (templates.get("_per_overrides") or {}).items():
         try:
             multiplicity((o or {}).get("per"), bidder)
@@ -453,6 +483,53 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
                         "and pack-stated facts are derived (from the effective text of the anchor's defining unit at each "
                         "stage), not assumed. Remove the key from the assumptions")
     return problems
+
+
+def template_groups(templates: dict) -> list[tuple[str, list[dict]]]:
+    """(evidence item, activity templates) for every evidence item, then ('_row_check_activities', [...]): the
+    activities that exist only to carry a row through `_row_checks` (session 11)."""
+    out = [(item, list(ts or [])) for item, ts in templates.items() if not str(item).startswith("_")]
+    return out + [("_row_check_activities", list(templates.get("_row_check_activities") or []))]
+
+
+def assumption_value(assumptions: dict, path: str) -> tuple[int, str]:
+    """(whole non-negative number, '') at a dotted path of the assumptions, or (0, why not)."""
+    v: object = assumptions
+    for k in str(path).split("."):
+        if not isinstance(v, dict) or k not in v:
+            return 0, "names nothing in the assumptions"
+        v = v[k]
+    if isinstance(v, bool) or not isinstance(v, int) or v < 0:
+        return 0, f"is not a whole, non-negative number of Working Days ({v!r})"
+    return v, ""
+
+
+def assumption_basis(assumptions: dict, path: str) -> dict:
+    """The {basis, owner} of the assumption at `path` (its sibling '<key minus _wd>_basis'), or {}."""
+    *head, key = str(path).split(".")
+    v: object = assumptions
+    for k in head:
+        v = v.get(k) if isinstance(v, dict) else None
+    return dict((v or {}).get(re.sub(r"_wd$", "", key) + "_basis") or {}) if isinstance(v, dict) else {}
+
+
+# the date rule of the clarification cut-off (VOL-I 5.2): the activity that must finish by it is the clarification route
+CLARIFICATION_RULE = "CLARIFICATION-CUTOFF"
+_READING_WORDS = {"event_day_excluded": "if the {a} day is excluded", "event_day_counted": "if the {a} day is counted",
+                  "boundary_inclusive": "if the boundary day counts", "boundary_exclusive": "if the boundary day is excluded",
+                  "day0": "if the {a} is day 0", "day1": "if the {a} counts as day 1",
+                  "stated_date_excluded": "not counting the {a} itself"}
+
+
+def other_readings(entry: dict) -> list[dict]:
+    """The readings of a date rule other than the planning one, each {value, key, words} ('if the ADD-01 issue day is
+    excluded'), when the readings differ; [] otherwise."""
+    plan_v = (entry.get("planning") or {}).get("value")
+    a = re.sub(r"-issue$", " issue", str(entry.get("anchor") or "anchor"))
+    return [{"value": i["value"], "key": i["key"],
+             "words": _READING_WORDS.get(i["key"], "on the {k} reading").format(a=a, k=i["key"])}
+            for i in entry.get("readings") or [] if i.get("value") and i["value"] != plan_v] \
+        if entry.get("readings_differ") else []
 
 
 # ---------------------------------------------------------------------------------------------- placeholders
@@ -566,15 +643,25 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
             time = stated[0]
         else:
             vals, time = glob, str(lab.get("time", ""))
+        cond = d.get("conditional")                   # session 11: a conditional amendment's trigger deadline
+        alt = other_readings(d)                       # session 11 (audit A5-8): every reading, not only the planning one
         out.append({"id": rid, "date": value, "time": time,
-                    "short": fill(lab.get("short", rid), vals, f"_milestones.labels.{rid}.short", problems),
+                    "reading_policy": (d["planning"].get("policy") or "") if alt else "",
+                    "alternatives": alt, "other_readings": "; ".join(f"{x['value']} {x['words']}" for x in alt),
+                    "short": fill(lab.get("short", rid), vals, f"_milestones.labels.{rid}.short", problems)
+                    if lab.get("short") or not cond else f"Decision: {cond['condition']} trigger deadline",
                     "label": (fill(lab["label"], vals, f"_milestones.labels.{rid}.label", problems) if lab.get("label")
-                              else d.get("text", rid)),
+                              else (f"Decision milestone: whether the trigger of the conditional amendment "
+                                    f"{cond['condition']} ({cond['trigger_unit']}) occurs: {cond['trigger']}. Not in effect "
+                                    f"unless it does; plan both states until then" if cond else d.get("text", rid))),
                     "purpose": d.get("purpose", ""), "words": d.get("text", ""), "source": d.get("source_unit", ""),
                     "reading": d["planning"].get("key", ""), "readings_differ": bool(d.get("readings_differ")),
-                    "rows": sorted(d["rows"]), "conditional": bool(lab.get("conditional")), "derived": False,
+                    "rows": sorted(d["rows"]), "conditional": bool(lab.get("conditional")) or bool(cond), "derived": False,
                     "activities": sorted(act_rules.get(rid, [])),
-                    "kind": ("dated" if value else "event-dependent (no date: " + str(d["planning"].get("key")) + ")")})
+                    "kind": ("decision (conditional amendment)" if cond and value else
+                             "dated" if value else "event-dependent (no date: " + str(d["planning"].get("key")) + ")"),
+                    **({"decision": {"condition": cond["condition"], "op": cond["op"], "trigger": cond["trigger"],
+                                     "trigger_unit": cond["trigger_unit"], "state": cond.get("state")}} if cond else {})})
     by_id = {m["id"]: m for m in out}
     for did, spec in sorted((cfg.get("derived") or {}).items()):
         src = by_id.get(spec.get("from"))
@@ -586,6 +673,7 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
                     "label": fill(spec.get("label", did), glob, f"_milestones.derived.{did}.label", problems),
                     "purpose": "event", "words": spec.get("label", ""),
                     "source": spec.get("source", ""), "reading": f"derived from {src['id']}", "readings_differ": False,
+                    "reading_policy": "", "alternatives": [], "other_readings": "",
                     "rows": [], "conditional": bool(spec.get("conditional")), "derived": True, "activities": [],
                     "kind": "dated (derived)"})
     return sorted(out, key=lambda m: (m["date"] or "9999", m["id"]))
@@ -595,7 +683,7 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
 
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
          anchors: dict, evidence_items: dict | None = None, anchor_details: dict | None = None, notified_days: list[str] | None = None,
-         reached: list[dict] | None = None) -> dict:
+         reached: list[dict] | None = None, questions: dict[str, list[str]] | None = None) -> dict:
     """evals: [{"row": Row, "stages": {stage: evaluation}}] from register.Register.all().
     evidence_items (optional): the evidence vocabulary (evidence.load_evidence_items), for each activity's envelope.
     status_date: the planning date (the stage's addendum issue date).
@@ -604,7 +692,10 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     names and items and the PDD milestone, and gives the PDD time in the planning basis.
     reached (optional, session 10): the relationship records of this stage (relationships.impact). An activity whose
     rows, evidence items or own id a relationship reaches carries `relationship_review` and a flag "REVIEW (<class>):
-    ..." per class; its dates and timing status are unchanged (a relationship marks work for review, never moves it)."""
+    ..." per class; its dates and timing status are unchanged (a relationship marks work for review, never moves it).
+    questions (optional, session 11): open issue -> the ids of the clarification questions drafted on it (the
+    clarification register); a gate on such an issue gets `ask_by` beside `finalise_by` (see the module docstring)."""
+    from .register import BID_OUT
     if anchor_details is None:
         anchor_details = details_from_evals(evals, stage, anchors)
     need: dict[str, list[str]] = {}
@@ -626,10 +717,12 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         for d in ev["dates"]:
             if d["planning"]["value"]:
                 deadlines[d["rule_id"]] = (d["planning"]["value"], row.id)
-            x = rules.setdefault(d["rule_id"], {**{k: v for k, v in d.items() if k != "interpretations"}, "rows": set()})
+            x = rules.setdefault(d["rule_id"], {**{k: v for k, v in d.items() if k != "interpretations"}, "rows": set(),
+                                                "readings": [{"key": i.get("key"), "value": i.get("value")}
+                                                             for i in d.get("interpretations") or []]})
             x["rows"].add(row.id)
     exceptions = templates.get("_exceptions") or {}
-    defined = {t["id"] for item, ts in templates.items() if not item.startswith("_") for t in (ts or [])}
+    defined = {t["id"] for item, ts in template_groups(templates) for t in ts}
     problems = check_templates(templates, assumptions)
     missing = [i for i in sorted(need) if not templates.get(i) and not (exceptions.get(i) or "").strip()]
     for item in missing:
@@ -652,38 +745,60 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             return None, f"the interpretation of row {rid} used at {stage} ({it.get('stage') or 'none'}) has no parameter '{param}'"
         return it["parameters"][param], ""
     acts: dict[str, dict] = {}
-    for item in sorted(need):
-        for t in templates.get(item) or []:
-            if t.get("duration") not in lead:
-                continue
-            try:
-                count, expr = multiplicity(t.get("per"), bidder)
-            except KeyError:
-                continue                                     # reported by check_templates (C45)
-            lt = lead[t["duration"]]
-            eff, waiting, eff_basis = effort_of(lt)
-            env = getattr((evidence_items or {}).get(item), "envelope", "") if evidence_items else ""
-            if t["id"] not in acts:
-                named_rows[t["id"]] = {k[4:].rsplit(":", 1)[0] for s in (t["name"], t.get("item", ""))
-                                       for k in PLACEHOLDER.findall(str(s)) if k.startswith("ROW:") and k.count(":") >= 2}
-                name = fill(t["name"], fields, f"activity {t['id']} ({item}) name at {stage}", problems, row_value)
-                item_text = fill(t.get("item", ""), fields, f"activity {t['id']} ({item}) item at {stage}", problems, row_value)
-            a = acts.setdefault(t["id"], {
-                "id": t["id"], "name": name, "evidence": item, "evidence_items": [], "envelope": env,
-                "owner": t["owner"],
-                "discipline": t.get("discipline") or (t["owner"] if t["owner"] in DISCIPLINES else "Bid management"),
-                "resource": t.get("resource", ""), "issuer": t["issuer"],
-                "duration_wd": int(lt["value"]), "duration_assumption": t["duration"],
-                "duration_basis": duration_basis(lt), "per": t.get("per") or "proposal", "count": count,
-                "multiplicity": multiplicity_label(t.get("per"), bidder), "count_expr": expr,
-                "effort_wd": eff, "effort_total_wd": round(eff * count, 3), "effort_basis": eff_basis,
-                "waiting_on": waiting, "work_type": "external waiting + staff effort" if waiting else "staff effort",
-                "item": item_text, "gated_by": list(t.get("gated_by") or []),
-                "condition": str(t.get("condition") or ""),
-                "predecessors": list(t.get("predecessors", [])), "successors": list(t.get("successors", [])),
-                "deadline_rule": (t.get("finish") or {}).get("deadline_of"), "req_ids": []})
+
+    def make(t: dict, item: str | None) -> dict | None:
+        """The activity of template `t` (created once), needed by evidence item `item` (None: carries a row only
+        through `_row_checks`). None when its duration or multiplicity is unknown (C45, check_templates)."""
+        if t.get("duration") not in lead:
+            return None
+        try:
+            count, expr = multiplicity(t.get("per"), bidder)
+        except KeyError:
+            return None                                      # reported by check_templates (C45)
+        lt = lead[t["duration"]]
+        eff, waiting, eff_basis = effort_of(lt)
+        env = getattr((evidence_items or {}).get(item), "envelope", "") if evidence_items and item else ""
+        name = item_text = ""
+        if t["id"] not in acts:
+            named_rows[t["id"]] = {k[4:].rsplit(":", 1)[0] for s in (t["name"], t.get("item", ""))
+                                   for k in PLACEHOLDER.findall(str(s)) if k.startswith("ROW:") and k.count(":") >= 2}
+            name = fill(t["name"], fields, f"activity {t['id']} ({item}) name at {stage}", problems, row_value)
+            item_text = fill(t.get("item", ""), fields, f"activity {t['id']} ({item}) item at {stage}", problems, row_value)
+        a = acts.setdefault(t["id"], {
+            "id": t["id"], "name": name, "evidence": None, "evidence_items": [], "envelope": env,
+            "owner": t["owner"],
+            "discipline": t.get("discipline") or (t["owner"] if t["owner"] in DISCIPLINES else "Bid management"),
+            "resource": t.get("resource", ""), "issuer": t["issuer"],
+            "duration_wd": int(lt["value"]), "duration_assumption": t["duration"],
+            "duration_basis": duration_basis(lt), "per": t.get("per") or "proposal", "count": count,
+            "multiplicity": multiplicity_label(t.get("per"), bidder), "count_expr": expr,
+            "effort_wd": eff, "effort_total_wd": round(eff * count, 3), "effort_basis": eff_basis,
+            "waiting_on": waiting, "work_type": "external waiting + staff effort" if waiting else "staff effort",
+            "item": item_text, "gated_by": list(t.get("gated_by") or []),
+            "condition": str(t.get("condition") or ""),
+            "predecessors": list(t.get("predecessors", [])), "successors": list(t.get("successors", [])),
+            "deadline_rule": (t.get("finish") or {}).get("deadline_of"),
+            "deadline_buffer": (t.get("finish") or {}).get("buffer"), "req_ids": []})
+        if item is None:
+            a["evidence"] = a["evidence"] or ""
+        else:
             a["req_ids"] = sorted(set(a["req_ids"]) | set(need[item]))
             a["evidence_items"] = sorted(set(a["evidence_items"]) | {item})
+            a["evidence"] = a["evidence"] or item
+        return a
+
+    for item in sorted(need):
+        for t in templates.get(item) or []:
+            make(t, item)
+    # session 11 (audit A5-2): rows whose compliance is a check carried by a step (`_row_checks`), while in force
+    rc_defs = {t["id"]: t for t in templates.get("_row_check_activities") or []}
+    for rid, spec in sorted((templates.get("_row_checks") or {}).items()):
+        if not in_force(str((by_row.get(rid) or {}).get("status") or "")):
+            continue
+        for aid in (spec.get("activities") or []) if isinstance(spec, dict) else []:
+            a = acts.get(aid) or (make(rc_defs[aid], None) if aid in rc_defs else None)
+            if a is not None:                    # an activity the programme does not have at this stage carries nothing
+                a["req_ids"] = sorted(set(a["req_ids"]) | {rid})
     # links: predecessors declared on the successor, successors declared on the predecessor
     for a in acts.values():
         a["not_required_here"] = sorted({p for p in a["predecessors"] + a["successors"] if p not in acts and p in defined})
@@ -696,11 +811,41 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         a["predecessors"] = sorted(a["predecessors"])
         rule = a["deadline_rule"]
         a["deadline_date"] = deadlines[rule][0] if rule in deadlines else None
+        a["deadline_buffer_wd"] = assumption_value(assumptions, a["deadline_buffer"])[0] if a.get("deadline_buffer") else 0
     net = network({k: {"duration_wd": a["duration_wd"], "predecessors": a["predecessors"],
-                       "deadline_rule": a["deadline_rule"],
+                       "deadline_rule": a["deadline_rule"], "buffer_wd": a["deadline_buffer_wd"],
                        "deadline_date": date.fromisoformat(a["deadline_date"]) if a["deadline_date"] else None}
                    for k, a in acts.items()}, cal, status_date)
     iso = lambda d: d.isoformat() if d else None                                    # noqa: E731
+    # session 11 (audit A5-1): the clarification route (the activity that must finish by the clarification cut-off)
+    route_ids = sorted((k for k, a in acts.items() if a["deadline_rule"] == CLARIFICATION_RULE and net[k]["ls"]),
+                       key=lambda k: (net[k]["ls"], k))
+    route = acts[route_ids[0]] if route_ids else None
+    gate_route = None
+    if route is not None:
+        rd = rules.get(CLARIFICATION_RULE) or {}
+        basis = []
+        for rid in route["req_ids"]:
+            it = (by_row.get(rid) or {}).get("interpretation") or {}
+            c = it.get("consequence")
+            if isinstance(c, dict) and "clarification" in str(it.get("quote") or "").lower():
+                basis.append({"row": rid, "unit": c.get("unit"), "quote": it.get("quote"), "consequence": c.get("quote")})
+        gate_route = {"activity": route["id"], "ask_by": iso(net[route["id"]]["ls"]), "rule": CLARIFICATION_RULE,
+                      "cutoff": route["deadline_date"], "source": rd.get("source_unit", ""), "words": rd.get("text", ""),
+                      "basis": basis}
+    cites = ", ".join(dict.fromkeys(str(u).replace(":", " ").split("#")[0] for u in
+                                    [b["unit"] for b in (gate_route or {}).get("basis", [])]
+                                    + [(gate_route or {}).get("source")] if u))
+
+    def deadline_time(rule: str | None) -> tuple[str, str, str]:
+        """(time, timezone words, source) the pack states for a deadline rule at this stage ('' where none)."""
+        if not rule:
+            return "", "", ""
+        anc = anchor_details.get(rule)
+        if anc is not None:
+            return str(anc.get("time") or ""), str(anc.get("tz") or ""), str(anc.get("source") or "")
+        st = stated_time((rules.get(rule) or {}).get("text") or "")
+        return (st[0] or "", st[1] or "", "") if st else ("", "", "")
     rows = []
     for aid in sorted(acts, key=lambda k: (net[k]["ls"] or date.max, k)):
         a = acts[aid]
@@ -723,17 +868,46 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                 flags += [review_flag(x) for x in rv]
         g = a["gated_by"]
         ls = t["ls"]
-        decision = "READY" if not g else (
-            f"GATED: finalisation waits on {', '.join(g)}; decision needed by "
-            + (ls.isoformat() + (" (already before the planning date; see timing)" if ls < status_date else "")
-               if ls else "no latest start (not linked to a pack date)"))
+        qs = sorted({q for i in g for q in (questions or {}).get(i) or []})
+        ask = net[route["id"]]["ls"] if (g and qs and route is not None) else None
+        fin = (ls.isoformat() + (" (already before the planning date; see timing)" if ls < status_date else "")
+               if ls else "no latest start (not linked to a pack date)")
+        if not g:
+            decision = "READY"
+        elif ask is not None:
+            decision = (f"GATED: finalisation waits on {', '.join(g)}; clarification question drafted ({', '.join(qs)}): "
+                        f"decide whether to ask the Authority by {ask.isoformat()}"
+                        + (" (already before the planning date: the clarification route has closed)" if ask < status_date
+                           else "")
+                        + f" (latest start of {route['id']}, which must finish by the {CLARIFICATION_RULE} "
+                          f"{route['deadline_date']}; {cites}); finalise by {fin}")
+        else:
+            decision = (f"GATED: finalisation waits on {', '.join(g)}; "
+                        + (f"clarification question drafted ({', '.join(qs)}), but no activity must finish by the "
+                           f"{CLARIFICATION_RULE} at this stage, so no date to ask by; " if qs else "")
+                        + f"decision needed by {fin}")
+        dl = ""
+        tm = ""
+        if a["deadline_rule"] in deadlines:
+            tm, tz, src = deadline_time(a["deadline_rule"])
+            dl = (f"{a['deadline_rule']} = {deadlines[a['deadline_rule']][0]}" + (f" {tm}" if tm else "")
+                  + (f" {tz}" if tm and tz else "") + f" (from {deadlines[a['deadline_rule']][1]}"
+                  + (f"; {src}" if src else "") + ")")
+            if a.get("deadline_buffer"):
+                ab = assumption_basis(assumptions, a["deadline_buffer"])
+                dl += (f"; {re.sub(r'_wd$', '', a['deadline_buffer'].split('.')[-1]).replace('_', ' ')} "
+                       f"{a['deadline_buffer_wd']} WD ({a['deadline_buffer']}: PROVISIONAL ASSUMPTION, owner "
+                       f"{ab.get('owner', '?')}): " + (f"finish by {iso(t['lf'])}, {a['deadline_buffer_wd']} Working Day(s) "
+                                                       "before the pack date" if a["deadline_buffer_wd"] else
+                                                       "finish on the pack date itself" + (f", before {tm}" if tm else "")))
+        lf_time = tm if (tm and t["lf"] is not None and a["deadline_date"] == iso(t["lf"])
+                         and str(t["driven_by"] or "") == f"deadline:{a['deadline_rule']}") else ""
         rows.append({**a, "earliest_start": iso(t["es"]), "earliest_finish": iso(t["ef"]), "es_driven_by": t["es_driven_by"],
-                     "latest_start": iso(ls), "latest_finish": iso(t["lf"]), "float_wd": t["float_wd"],
-                     "driven_by": t["driven_by"],
-                     "deadline": (f"{a['deadline_rule']} = {deadlines[a['deadline_rule']][0]} (from {deadlines[a['deadline_rule']][1]})"
-                                  if a["deadline_rule"] in deadlines else ""),
+                     "latest_start": iso(ls), "latest_finish": iso(t["lf"]), "latest_finish_time": lf_time,
+                     "float_wd": t["float_wd"], "driven_by": t["driven_by"], "deadline": dl,
                      "flags": flags, "status": status, "timing_status": status, "decision_status": decision,
-                     "decision_needed_by": iso(ls) if g else None})
+                     "clarification_questions": qs if g else [], "ask_by": iso(ask), "finalise_by": iso(ls) if g else None,
+                     "decision_needed_by": (iso(min(ask, ls)) if ask is not None and ls else iso(ls)) if g else None})
     load = resource_load(rows, assumptions.get("resources") or {}, cal, status_date)
     rst = resource_statuses(rows, load)
     for row in rows:
@@ -741,7 +915,9 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     marshalling = [{"item": r["item"], "envelope": r["envelope"], "evidence": r["evidence"], "issuer": r["issuer"],
                     "owner": r["owner"], "resource": r["resource"], "lead_time_wd": r["duration_wd"],
                     "lead_time_assumption": r["duration_assumption"], "multiplicity": r["multiplicity"],
-                    "count": r["count"], "drop_dead_start": r["latest_start"], "needed_by": r["latest_finish"],
+                    "count": r["count"], "drop_dead_start": r["latest_start"],
+                    "needed_by": (f"{r['latest_finish']} {r['latest_finish_time']}" if r.get("latest_finish_time")
+                                  else r["latest_finish"]),
                     "activity": r["id"], "status": r["status"], "decision_status": r["decision_status"],
                     "req_ids": r["req_ids"], "flags": r["flags"]}
                    for r in rows if r["item"]]
@@ -764,6 +940,28 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                                                      if (anchor_details.get(k) or {}).get("time") else "") for k in used)
              + f"). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that "
                f"many Working Days (never compressed). Proposal Due Date at this stage: {pdd}.")
+    # session 11 (audit A5-2): every A3 row in force is carried by an activity or excepted with a reason
+    a3_rows = {}
+    for e in evals:
+        ev = e["stages"].get(stage) or {}
+        c = (ev.get("interpretation") or {}).get("consequence")
+        if in_force(str(ev.get("status") or "")) and isinstance(c, dict) and c.get("class") in BID_OUT:
+            a3_rows[e["row"].id] = c
+    rexc = templates.get("_row_exceptions") or {}
+    carriers = {k: sorted(r["id"] for r in rows if k in r["req_ids"]) for k in sorted(a3_rows)}
+    a3_cov = {"rows": sorted(a3_rows), "carried": {k: v for k, v in carriers.items() if v},
+              "excepted": {k: str(rexc[k]).strip() for k, v in carriers.items() if not v and str(rexc.get(k) or "").strip()},
+              "uncarried": [k for k, v in carriers.items() if not v and not str(rexc.get(k) or "").strip()],
+              "row_checks": {k: list((s or {}).get("activities") or []) for k, s in
+                             sorted((templates.get("_row_checks") or {}).items()) if k in a3_rows}}
+    for k in a3_cov["uncarried"]:
+        problems.append(f"C48: {k} is an A3 row ({a3_rows[k].get('class')}, {a3_rows[k].get('unit')}) in force at {stage}, "
+                        "but no activity carries it and no reason is given (curation/activity_templates.yaml: "
+                        "_row_checks for the step that checks it, or _row_exceptions with the reason)")
+    bufs = sorted({(r["deadline_buffer"], r["deadline_buffer_wd"]) for r in rows if r.get("deadline_buffer")})
+    if bufs:
+        basis += " " + "; ".join(f"Buffer before the pack date: {k} = {v} WD (PROVISIONAL ASSUMPTION, owner "
+                                 f"{assumption_basis(assumptions, k).get('owner', '?')})" for k, v in bufs) + "."
     linked = {x for r in rows for x in r["req_ids"]}
     ms = milestones(rules, templates, assumptions, act_rules, linked, anchor_details, problems)
     return {"stage": stage, "status_date": status_date.isoformat(), "planning_date": status_date.isoformat(),
@@ -772,15 +970,66 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             "exceptions": {k: v for k, v in exceptions.items() if k in need},
             "evidence_needed": {k: sorted(v) for k, v in sorted(need.items())},
             "deadlines": {k: {"date": v[0], "row": v[1]} for k, v in sorted(deadlines.items())},
-            "milestones": ms,
+            "milestones": ms, "gate_route": gate_route, "a3_coverage": a3_cov,
             "per_overrides": {k: dict(v) for k, v in sorted((templates.get("_per_overrides") or {}).items()) if k in need},
             "calendar": {"weekend": sorted(cal.weekend), "holidays": sorted(h.isoformat() for h in cal.holidays)},
             "load": {"window": load["window"], "overloads": load["overloads"], "notes": load["notes"]}}
 
 
-def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dict]:
-    """NEW / REMOVED / MOVED / REWORK between the programme of two stages, then REVIEW (<class>) for each activity of
-    `cur` that a relationship reaches at its stage (plan(reached=...)): never merged with REWORK, which is direct."""
+_READING_META = ("stage", "note", "pins")
+NOTED = "REVIEW (clarification noted, no change)"
+
+
+def _fl(v) -> str:
+    return "none" if v is None else f"+{v}" if v > 0 else str(v)
+
+
+def status_changed(a: dict, b: dict) -> bool:
+    """Whether a row's status changed between two stage evaluations: it came into or went out of force, or an op of the
+    later stage amended, reinstated, deleted, superseded or removed it. The wording of a status is stage-relative
+    ('AMENDED (ADD-01/2.1)' at ADD-01 reads 'ACTIVE (as amended by ADD-01/2.1)' at ADD-02; 'NEW' then 'ACTIVE'; a unit
+    'reissued ..., unchanged'), so the words alone are not compared; a pending conditional amendment is not a change."""
+    sa, sb, stg = str(a.get("status") or ""), str(b.get("status") or ""), str(b.get("stage") or "")
+    if in_force(sa) != in_force(sb):
+        return True
+    return bool(stg) and sb.startswith(("AMENDED", "REINSTATED", "DELETED", "SUPERSEDED", "REMOVED")) \
+        and f"{stg}/" in sb and "unchanged" not in sb
+
+
+def requirement_change(a: dict, b: dict, answers: list[dict] | None = None) -> tuple[list[str], str]:
+    """How one row's evaluation changed between two stages: (what changed in the requirement: 'text', 'cells',
+    'dates', 'status', 'stale', 'reading'), and '' or why it is only NOTED: the reading was re-made at the later stage
+    with nothing but its note (and stage) different, or (with `answers`, programme.answers_by_row) its substance changed
+    while text, cells, dates and status did not and every op on the row at the stage is a clarification answer that
+    summary.classify_answer reads as none/confirms: a confirming answer never makes a requirement change."""
+    what = [w for w, x, y in (("text", a.get("text"), b.get("text")), ("cells", a.get("cells"), b.get("cells")),
+                              ("dates", [d["planning"] for d in a.get("dates") or []],
+                               [d["planning"] for d in b.get("dates") or []]),
+                              ("status", False, status_changed(a, b)),
+                              ("stale", bool(a.get("stale")), bool(b.get("stale")))) if x != y]
+    ia, ib = a.get("interpretation"), b.get("interpretation")
+    sub = lambda i: {k: v for k, v in (i or {}).items() if k not in _READING_META}      # noqa: E731
+    ans = list(answers or [])
+    confirming = bool(ans) and all(x.get("answer") and x.get("class") in ("none", "confirms") for x in ans)
+    noted = ""
+    if ia != ib and sub(ia) == sub(ib):
+        noted = f"reading re-made at {(ib or {}).get('stage')} to note: '{str((ib or {}).get('note') or '')[:160]}'"
+    elif ia != ib and not what and confirming:
+        noted = f"reading re-made at {(ib or {}).get('stage')} after an answer that confirms"
+    elif ia != ib:
+        what.append("reading")
+    if noted and ans:
+        noted += "; " + "; ".join(f"{x['op']} " + (x["class"] if x.get("answer") else
+                                                   f"(not a clarification answer; {x.get('class') or 'op'})")
+                                  + (f" (summary.classify_answer: {x['why']})" if x.get("answer") else "") for x in ans)
+    return what, ("" if what else noted)
+
+
+def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict, answers: dict[str, list[dict]] | None = None) -> list[dict]:
+    """NEW / REMOVED / MOVED / REWORK / REVIEW (clarification noted, no change) / STATUS between the programme of two
+    stages, then REVIEW (<class>) for each activity of `cur` that a relationship reaches at its stage
+    (plan(reached=...)): never merged with REWORK, which is direct. `answers` (optional): row -> the ops applied to
+    its units at the later stage, each {op, answer, class, why} (programme.answers_by_row)."""
     p = {a["id"]: a for a in prev["activities"]}
     c = {a["id"]: a for a in cur["activities"]}
     out = []
@@ -791,16 +1040,29 @@ def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict) -> list[dic
         if k not in c:
             out.append({"activity": k, "change": "REMOVED", "detail": f"no longer needed by any row in force"})
             continue
-        changed_rows = [r for r in c[k]["req_ids"] if r in prev_evals and r in cur_evals and
-                        (prev_evals[r]["interpretation"] != cur_evals[r]["interpretation"] or
-                         [d["planning"] for d in prev_evals[r]["dates"]] != [d["planning"] for d in cur_evals[r]["dates"]] or
-                         prev_evals[r].get("text") != cur_evals[r].get("text") or
-                         prev_evals[r].get("cells") != cur_evals[r].get("cells") or
-                         bool(prev_evals[r].get("stale")) != bool(cur_evals[r].get("stale")))]
+        changed_rows, noted_rows = [], []
+        for r in c[k]["req_ids"]:
+            if r in prev_evals and r in cur_evals:
+                what, why = requirement_change(prev_evals[r], cur_evals[r], (answers or {}).get(r))
+                if what:
+                    changed_rows.append(f"{r} ({', '.join(what)})")
+                elif why:
+                    noted_rows.append(f"{r}: {why}")
         if changed_rows:
             out.append({"activity": k, "change": "REWORK", "detail": f"requirement changed: {', '.join(changed_rows)}"})
+        if noted_rows:
+            out.append({"activity": k, "change": NOTED,
+                        "detail": "; ".join(noted_rows) + "; text, cells, dates and status unchanged: work done stands"})
         if p[k]["latest_start"] != c[k]["latest_start"]:
             out.append({"activity": k, "change": "MOVED", "detail": f"latest start {p[k]['latest_start']} -> {c[k]['latest_start']}"})
+        if p[k].get("status") != c[k].get("status") or p[k].get("float_wd") != c[k].get("float_wd"):
+            shift = ""                            # session 11 recheck (A5-5): the planning date itself moves every float
+            if prev.get("status_date") and cur.get("status_date") and prev["status_date"] != cur["status_date"]:
+                shift = (f"; the planning date moved {prev['status_date']} -> {cur['status_date']}, which by itself "
+                         f"shifts every float by the Working Days between them")
+            out.append({"activity": k, "change": "STATUS",
+                        "detail": f"timing {p[k].get('status')} -> {c[k].get('status')}; total float "
+                                  f"{_fl(p[k].get('float_wd'))} -> {_fl(c[k].get('float_wd'))} WD" + shift})
     for k in sorted(c):                       # session 10: reached through a relationship (kept apart from REWORK)
         for rv in c[k].get("relationship_review") or []:
             out.append({"activity": k, "change": f"REVIEW ({rv['class']})",

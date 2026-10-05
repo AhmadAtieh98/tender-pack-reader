@@ -114,3 +114,5 @@ At the end return the runnable workflow, candidate outputs and review packets, a
 Keep the work log accurate . Do not invent answers, approve anything on my behalf
 
 Most importantly: leave all new changes uncommitted. Do not create another commit, push, amend or rewrite history until I authorize it.
+
+(Typographic note, added in session 11 after the audit's finding A4-11: curly apostrophes in the owner's message were straightened when the text was pasted; the words are otherwise unchanged.)

@@ -1,6 +1,6 @@
 # Session 09: implementation report (AI integration)
 
-For the owner. The full record is `worklog/2026-10-04_session-09_ai-integration.md`; your message is kept verbatim in `worklog/2026-10-04_session-09_prompt.md`. **Nothing is committed** (you asked for that; the next commit title starts with `AI IMPLEMENTATION START` when you authorise it). **Nothing was sent to anyone, no clarification question was sent, and no row, op, reading or proposal was accepted, approved or rejected** by the program or the assistant.
+For the owner. The full record is `worklog/2026-10-04_session-09_ai-integration.md`; your message is kept verbatim in `worklog/2026-10-04_session-09_prompt.md`. **Committed as `a41e104` on the owner's authorisation ("is it stuck ? … if all good please commit", session-09 log); nothing was committed before that** (you asked for that; the next commit title starts with `AI IMPLEMENTATION START` when you authorise it). **Nothing was sent to anyone, no clarification question was sent, and no row, op, reading or proposal was accepted, approved or rejected** by the program or the assistant.
 
 **What ran.** The coordinator ran as Fable 5.1 (your switch). The implementation, review, authoring, proposing and curating subagents ran as Opus 5.5 (probed). No application API call was made: there is no key in this environment. Every live-looking result below is **recorded** (hand-written cassettes) or **host** (the coding assistant's own model through the tools); nothing is live or local.
 
@@ -55,7 +55,7 @@ A form inserted by an addendum is citable (`ADD-02:F4-G`); Arabic words match wi
 - **`make verify`:** passes (two clean rebuilds in disposable folders, byte-identical to each other).
 - **The rehearsal folders:** blind-01 and blind-02 regenerated (only the engine's `cited` lists changed); blind-03's scored build untouched, its after-fixes build rebuilt.
 - **Logs:** every run log, staging log and cassette scanned for key-like strings: none. No key was ever present in this environment.
-- **Not done:** the offline archive was not rebuilt (it is built from a commit, and nothing is committed); the Mac, native viewers and every live route are unchecked.
+- **Not done:** the offline archive was not rebuilt (it is built from a commit, which came at the session's end); the Mac, native viewers and every live route are unchecked.
 
 ## 4. Runnable commands per route
 
@@ -104,7 +104,7 @@ ollama pull qwen3-vl:32b && ollama serve
 
 ## 5. Remaining defects and limits
 
-1. **No live call has been made.** The Anthropic adapter is written against the API reference and tested with cassettes only; OpenRouter's listing is blocked from this environment; Ollama is unreachable from the cloud and its candidates are unmeasured; a Claude Code session registered with `claude mcp add` (or a Codex session) has not been run: the host route was exercised through the CLI tools by a subagent, and the MCP server by hand over stdio.
+1. **No API-key call has been made (the host route ran for real on the host's own plan: §8 of AI_ROUTES, blind rehearsal 03); otherwise no live call has been made.** The Anthropic adapter is written against the API reference and tested with cassettes only; OpenRouter's listing is blocked from this environment; Ollama is unreachable from the cloud and its candidates are unmeasured; a Claude Code session registered with `claude mcp add` (or a Codex session) has not been run: the host route was exercised through the CLI tools by a subagent, and the MCP server by hand over stdio.
 2. **A host's model is declared, not verified**, and its usage is invisible to the tool. The USD cap works only on the application routes, from the usage the endpoint reports, against list prices you still have to confirm.
 3. **The model's contract carries ops, dispositions and statements, not register rows.** Rows, readings, issues, activities and clarification entries are still written by a person (or the assistant as curator).
 4. **A5 does not rework activities for contract-stage rows** (the 85 % Ramp-Up change reached A1 but no activity depends on the VOL-V 29.3 row), and **knock-on rows are not linked** (membership → 8.2, 8.4, the new member's Form 4-C; an effluent limit → the reliability run, VOL-V 31.1(b)): `diff` reports only rows that cite the changed unit.

@@ -128,14 +128,45 @@ def _critic(a) -> int:
 
 
 def _host_session(a) -> int:
+    """One headless host session on the common request path (session 11; tenderpack/ai/requests.py): the host's
+    declared capabilities checked (image input when the packet names image targets) and the complete size of the
+    prompt (the context bound enforced; the output estimate a notice) before the session starts; the failure classes
+    applied to the session (a rate limit backs off and is then reported `deferred`; a CLI failure is retried once). Exit
+    codes as before: 0 a submission, 1 none, 2 refused."""
+    import time
+    from . import requests as R
     from .hostsession import HostSession, host_packet
-    ws = _ws(a)
+    from .providers.base import collect_notices
+    ws, cfg = _ws(a), _cfg(a)
     provs = [x.strip() for x in a.provisions.split(",")] if a.provisions else None
-    pk = host_packet(ws, a.addendum, provs)
-    hs = HostSession(ws, _cfg(a), model=a.model, max_turns=a.max_turns, timeout_s=a.timeout_s, claude_bin=a.claude_bin)
-    ps = hs.run_batch(pk)
+    pk = R.compact_analysis(host_packet(ws, a.addendum, provs))
+    hs = HostSession(ws, cfg, model=a.model, max_turns=a.max_turns, timeout_s=a.timeout_s, claude_bin=a.claude_bin)
+    sp = R.spec("analysis", system=hs.system_prompt())
+    box, attempts, deferred, failure = {}, [], False, None
+    with collect_notices() as notes:
+        caps = hs.capabilities()
+        n_img = R.packet_images(pk)
+        R.require(sp, caps, n_img, "host", hs.host_model_label())
+        from .tools import TOOLS
+        sz = R.size(sp, caps, hs.prompt(pk), system=hs.system_prompt(), tools_spec=[TOOLS[n].spec() for n in sp.tools],
+                    images=n_img, units=len(pk.get("provisions") or []), settings=R.settings_for(cfg, "host"))
+        if not R.context_fits(sz):
+            R.check_size(sp, sz)                         # the output estimate alone is reported (request_size.why)
+
+        def run():
+            box["ps"] = hs.run_batch(pk)
+            return hs.last
+        try:
+            R.call_host(run, R.FailurePolicy.from_cfg(cfg), sleep=time.sleep, record=attempts.append)
+        except R.RateLimited as e:
+            deferred, failure = True, e.message
+        except R.ProviderFailed as e:
+            failure = e.message
+    ps = box.get("ps") or {}
     r = hs.last
     _print({"session_run": r.run_id, "elapsed_s": r.elapsed_s, "exit_code": r.exit_code, "error": r.error,
+            "failure_class": r.failure_class, "deferred": deferred, "failure": failure, "failures": attempts,
+            "request_size": sz.to_dict(), "route_notices": list(notes),
             "model_requested": r.model_requested or "the CLI's default", "model_reported": r.model_reported,
             "num_turns": r.num_turns, "tool_calls": len(r.tool_calls),
             "tool_call_names": [c["name"] for c in r.tool_calls], "crops_read": r.crops_read,

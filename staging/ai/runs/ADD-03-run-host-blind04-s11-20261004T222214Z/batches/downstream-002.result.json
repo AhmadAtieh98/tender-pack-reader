@@ -1,0 +1,1073 @@
+{
+ "run_id": "ADD-03-run-host-blind04-s11-20261004T222214Z-downstream-002",
+ "created": "2026-10-04T23:03:15Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (opus)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+  "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+  "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+  "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+  "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+  "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+ },
+ "statements": [
+  {
+   "id": "S-F-14-TEXT",
+   "kind": "fact",
+   "text": "At ADD-03, the effective text of VOL-II 1.4 still says that the Authority provides a grid connection point at the site boundary and that the Project Company procures all other utilities. The conditional deletion in ADD-03 7.2(a) is not shown as applied.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:1.4",
+     "page": 2,
+     "kind": "span",
+     "words": "The Authority will provide the site free of encumbrance, together with a grid connection point at the site boundary. All other utilities shall be procured by the Project Company.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-14-COND",
+   "kind": "interpretation",
+   "text": "If ADD-03 Section 7 takes effect, the words about the Authority's grid connection point are deleted. The grid connection would then fall under 'All other utilities' and the Project Company would have to procure it. Until the trigger is decided, the row stays conditional.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:1.4",
+     "page": 2,
+     "kind": "span",
+     "words": "All other utilities shall be procured by the Project Company.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-52-VEL",
+   "kind": "fact",
+   "text": "ADD-03 5.1 replaces 2.0 m/s with 1.5 m/s in VOL-II 5.2. The 15 m residual head does not change.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted. The minimum residual head of 15 m at the delivery point is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.2",
+     "page": 4,
+     "kind": "span",
+     "words": "with a maximum velocity of 1.5 m/s and a minimum residual head of 15 m at the delivery point",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-Q18",
+   "kind": "fact",
+   "text": "ADD-03 Q18 says the maximum velocity in VOL-II 5.2, as amended, applies to the whole length of the transmission main, including the trenchless crossings.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q18",
+     "page": 3,
+     "kind": "cell",
+     "words": "Yes. Volume II Clause 5.2, as amended by Section 5.1 of this Addendum, applies to the whole length of the transmission main, including the crossings required by Volume II Clause 5.4.",
+     "cell": {
+      "row_key": "18",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-FLOW",
+   "kind": "fact",
+   "text": "Table 2-6 row 2-6.2 gives the peak hourly flow as 7,500 m³/h. The approved unit_conversion converts this to 2.083333 m3/s.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.2",
+     "page": 3,
+     "kind": "cell",
+     "words": "7,500",
+     "cell": {
+      "row_key": "2-6.2",
+      "column": "Value"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-DN-VEL",
+   "kind": "interpretation",
+   "text": "Rough check: 2.083 m3/s through a 1.2 m bore is about 1.84 m/s, which is above the new 1.5 m/s limit. At 1.5 m/s the bore needed is about 1.33 m. So DN1200, the stated minimum, may not be enough for the whole main, including the trenchless crossings. This is not an approved calculation: the internal diameter after lining is not stated in the pack, so the figures are indicative only. Insufficient evidence to fix the required diameter.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "with a minimum nominal diameter of DN1200",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.2",
+     "page": 4,
+     "kind": "span",
+     "words": "with a maximum velocity of 1.5 m/s",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-53-DI",
+   "kind": "fact",
+   "text": "ADD-03 5.2 takes effect from 8 October 2026. It amends ADD-01 5.1 so that glass reinforced plastic (GRP) is acceptable for buried sections except at the trenchless crossings in VOL-II 5.4, where only ductile iron may be used.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used, subject to the whole-life cost comparison required by this Clause.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.2",
+     "page": 1,
+     "kind": "span",
+     "words": "With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-54-TEXT",
+   "kind": "fact",
+   "text": "The text of VOL-II 5.4 does not change at ADD-03. Its new dependencies come from Q18 (velocity at the crossings) and from the amended 5.3 (only ductile iron at the crossings).",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.4",
+     "page": 4,
+     "kind": "span",
+     "words": "Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods. Crossing permits shall be obtained by the Project Company.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-F4D-Q15",
+   "kind": "fact",
+   "text": "ADD-03 Q15 confirms that the Parent Company Guarantee is unlimited as to the guaranteed obligations and is not conditional on a prior demand on the EPC Contractor. It also says that VOL-I 8.7 and Form 4-D apply. The printed text of Form 4-D does not change at ADD-03.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q15",
+     "page": 3,
+     "kind": "cell",
+     "words": "No. The Parent Company Guarantee shall be unlimited as to the guaranteed obligations and shall not be conditional on any demand first being made of the EPC Contractor. Volume I Clause 8.7 and Form 4-D apply.",
+     "cell": {
+      "row_key": "15",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/limit-of-liability",
+     "page": 7,
+     "kind": "cell",
+     "words": "Unlimited as to the guaranteed obligations",
+     "cell": {
+      "row_key": "Limit of liability",
+      "column": "col2"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-ADD03-R-14-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-1.4-01",
+   "provision": "ADD-03:Q16",
+   "target": "VOL-II-1.4-01",
+   "payload": {
+    "row": "VOL-II-1.4-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "All other utilities shall be procured by the Project Company.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03. The text is unchanged: the Authority still provides the grid connection point at the site boundary. ADD-03 Q16 says grid connection cost belongs in the Estimated Project Cost (Form 4-F) only if ADD-03 Section 7 takes effect. Under the conditional ops ADD-03/7.2(a) and (b), if the Authority gives the 7.1 Portal notice no later than ten Working Days before the Proposal Due Date, the grid connection becomes a utility the Project Company must procure. If no notice is given, Section 7 lapses."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:1.4",
+     "page": 2,
+     "kind": "span",
+     "words": "All other utilities shall be procured by the Project Company.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:1.4",
+     "page": 2,
+     "kind": "span",
+     "words": "together with a grid connection point at the site boundary",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-14-TEXT",
+    "S-I-14-COND"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-52-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.2-01",
+   "provision": "ADD-03:5.1",
+   "target": "VOL-II-5.2-01",
+   "payload": {
+    "row": "VOL-II-5.2-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 1.5 m/s",
+     "parameters": {
+      "max_velocity_m_s": 1.5,
+      "design_flow": "Table 2-6 peak hourly flow (2-6.2)",
+      "applies_to": "whole transmission main incl. VOL-II 5.4 trenchless crossings (ADD-03 Q18)"
+     },
+     "consequence": "none_stated",
+     "note": "ADD-03 5.1 replaces 2.0 m/s with 1.5 m/s. Q18 says the limit applies to the whole main, including the trenchless crossings. The design flow is unchanged (row 2-6.2, 7,500 m³/h). DN1200 may now be too small (see I-ADD03-DN-VELOCITY)."
+    },
+    "replace_requirement": {
+     "requirement": "Size the main for the Table 2-6 peak hourly flow at a velocity of no more than 1.5 m/s over its whole length, including the trenchless crossings"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.2",
+     "page": 4,
+     "kind": "span",
+     "words": "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 1.5 m/s",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-DN-VELOCITY"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-52-VEL",
+    "S-F-Q18",
+    "S-F-FLOW"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-ISSUE-DN-VEL",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "issue",
+   "task": "row:VOL-II-5.2-01",
+   "provision": "ADD-03:5.1",
+   "target": "VOL-II-5.2-01",
+   "payload": {
+    "id": "I-ADD03-DN-VELOCITY",
+    "text": "ADD-03 5.1 lowers the maximum velocity in VOL-II 5.2 to 1.5 m/s, and Q18 applies it to the whole main, including the trenchless crossings. The design flow in Table 2-6 is 7,500 m³/h (2.083 m3/s). Through a 1.2 m bore this gives about 1.84 m/s, so a main at the DN1200 minimum (VOL-II 5.3) may break the new limit. This is indicative only: the internal bore after lining is not stated, and this is not an approved calculation. The hydraulic sizing, pipe diameter, crossing (ductile iron only) design and cost need re-checking. The flow figures are also already questioned under I-FLOWS.",
+    "owner": "Technical lead",
+    "theme": "technical_design",
+    "short": "1.5 m/s velocity cap vs DN1200 minimum diameter",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.2",
+     "page": 4,
+     "kind": "span",
+     "words": "with a maximum velocity of 1.5 m/s",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "with a minimum nominal diameter of DN1200",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.2",
+     "page": 3,
+     "kind": "cell",
+     "words": "7,500",
+     "cell": {
+      "row_key": "2-6.2",
+      "column": "Value"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-5.2-01",
+    "VOL-II-5.3-02"
+   ],
+   "conflicts": [],
+   "missing_information": [
+    "Internal bore of the lined pipe for the selected pressure class"
+   ],
+   "statements": [
+    "S-F-FLOW",
+    "S-I-DN-VEL",
+    "S-F-Q18"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-52-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.2-02",
+   "provision": "ADD-03:5.1",
+   "target": "VOL-II-5.2-02",
+   "payload": {
+    "row": "VOL-II-5.2-02",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "a minimum residual head of 15 m at the delivery point",
+     "parameters": {
+      "residual_head_m_min": 15
+     },
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03. ADD-03 5.1 states that the 15 m residual head is unchanged. After award, failing to deliver at the required residual head is an Unavailability Event (VOL-V 31.1(c), row VOL-V-31.1-03). The delivery point is still shown only on Drawing 03-C-114, which is not supplied (I-VOL-III)."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.2",
+     "page": 4,
+     "kind": "span",
+     "words": "a minimum residual head of 15 m at the delivery point",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The minimum residual head of 15 m at the delivery point is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-52-VEL"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-53-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.3-01",
+   "provision": "ADD-03:5.2",
+   "target": "VOL-II-5.3-01",
+   "payload": {
+    "row": "VOL-II-5.3-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used, subject to the whole-life cost comparison required by this Clause.",
+     "parameters": {
+      "crossing_material": "ductile iron only"
+     },
+     "consequence": "none_stated",
+     "note": "ADD-03 5.2 amends ADD-01 5.1 with effect from 8 October 2026. GRP is still acceptable for buried sections, subject to the whole-life cost comparison, but not at the trenchless crossings in VOL-II 5.4, where only ductile iron may be used. Ductile iron is still the default material, and the applicable international standard is still not named."
+    },
+    "replace_requirement": {
+     "requirement": "Main of internally lined, externally protected ductile iron; other materials only with a whole-life cost comparison; GRP acceptable for buried sections except the VOL-II 5.4 trenchless crossings, which shall be ductile iron only"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "other than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.2",
+     "page": 1,
+     "kind": "span",
+     "words": "With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-53-DI"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-DEP-53-54",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "dependency",
+   "task": "row:VOL-II-5.3-01",
+   "provision": "ADD-03:5.2",
+   "target": "VOL-II-5.3-01",
+   "payload": {
+    "from": "VOL-II-5.3-01",
+    "to": "VOL-II-5.4-01",
+    "kind": "cites",
+    "basis": "The amended VOL-II 5.3 requires ductile iron only at 'the trenchless crossings required by Volume II Clause 5.4', so the material rule depends on the crossings defined in row VOL-II-5.4-01.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-5.3-01",
+    "VOL-II-5.4-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-53-DI"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-53-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.3-02",
+   "provision": "ADD-03:5.2",
+   "target": "VOL-II-5.3-02",
+   "payload": {
+    "row": "VOL-II-5.3-02",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "with a minimum nominal diameter of DN1200",
+     "parameters": {
+      "min_nominal_diameter": "DN1200"
+     },
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03. ADD-03 5.2 changes only the GRP sentence (only ductile iron at the trenchless crossings), and the DN1200 minimum is unchanged. Whether DN1200 is enough under the new 1.5 m/s cap is questioned in I-ADD03-DN-VELOCITY."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.3",
+     "page": 4,
+     "kind": "span",
+     "words": "with a minimum nominal diameter of DN1200",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-DN-VELOCITY"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-53-DI",
+    "S-I-DN-VEL"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-54-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.4-01",
+   "provision": "ADD-03:Q18",
+   "target": "VOL-II-5.4-01",
+   "payload": {
+    "row": "VOL-II-5.4-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.",
+     "parameters": {
+      "road_crossings": 3,
+      "wadi_crossings": 1
+     },
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the text is unchanged. ADD-03 Q18 applies the 1.5 m/s maximum velocity (VOL-II 5.2 as amended) to these crossings. The amended VOL-II 5.3 (ADD-03 5.2) requires them to be ductile iron only. Ground conditions at the wadi are the Bidder's risk (ADD-01 Q4)."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.4",
+     "page": 4,
+     "kind": "span",
+     "words": "Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-54-TEXT",
+    "S-F-Q18",
+    "S-F-53-DI"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-54-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-5.4-02",
+   "provision": "ADD-03:Q18",
+   "target": "VOL-II-5.4-02",
+   "payload": {
+    "row": "VOL-II-5.4-02",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Crossing permits shall be obtained by the Project Company.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the text is unchanged. Q18 deals only with velocity at the crossings and does not affect who obtains the permits."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:5.4",
+     "page": 4,
+     "kind": "span",
+     "words": "Crossing permits shall be obtained by the Project Company.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-54-TEXT"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-F4D-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-IV-F4D-01",
+   "provision": "ADD-03:Q15",
+   "target": "VOL-IV-F4D-01",
+   "payload": {
+    "row": "VOL-IV-F4D-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Envelope: A | Status: Mandatory (EPC parent)",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the text of Form 4-D is unchanged. ADD-03 Q15 confirms that VOL-I 8.7 and Form 4-D apply, and that a guarantee capped at a fixed amount is not accepted. Form 4-D is still executed by the ultimate parent of the EPC Contractor (ADD-02 Q10). Still no consequence is stated (I-NO-CONSEQUENCE)."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:cover/T1/4-D",
+     "page": 2,
+     "kind": "span",
+     "words": "Envelope: A | Status: Mandatory (EPC parent)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/epc-contractor-guaranteed",
+     "page": 7,
+     "kind": "span",
+     "words": "EPC Contractor guaranteed:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4D-Q15"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-F4D-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-IV-F4D-02",
+   "provision": "ADD-03:Q15",
+   "target": "VOL-IV-F4D-02",
+   "payload": {
+    "row": "VOL-IV-F4D-02",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "All obligations of the EPC Contractor under the EPC Contract during the construction period, including the payment of liquidated damages.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the term is unchanged. ADD-03 Q15 confirms the guarantee is not conditional on any demand first being made of the EPC Contractor. This is a pre-printed term, and it binds the guarantor after award."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/guaranteed-obligations",
+     "page": 7,
+     "kind": "cell",
+     "words": "All obligations of the EPC Contractor under the EPC Contract during the construction period, including the payment of liquidated damages.",
+     "cell": {
+      "row_key": "Guaranteed obligations",
+      "column": "col2"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4D-Q15"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-F4D-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-IV-F4D-03",
+   "provision": "ADD-03:Q15",
+   "target": "VOL-IV-F4D-03",
+   "payload": {
+    "row": "VOL-IV-F4D-03",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Limit of liability: Unlimited as to the guaranteed obligations",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03. ADD-03 Q15 confirms that the guarantee is unlimited as to the guaranteed obligations, and that a fixed-amount cap is not accepted."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/limit-of-liability",
+     "page": 7,
+     "kind": "span",
+     "words": "Limit of liability: Unlimited as to the guaranteed obligations",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4D-Q15"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-F4D-04",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-IV-F4D-04",
+   "provision": "ADD-03:Q15",
+   "target": "VOL-IV-F4D-04",
+   "payload": {
+    "row": "VOL-IV-F4D-04",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "The later of the issue of the final completion certificate under the EPC Contract and the expiry of the defects notification period",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the term is unchanged, and Q15 does not address expiry. Both events fall under the EPC Contract, which is not in the pack, so no date can be computed."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/expiry",
+     "page": 7,
+     "kind": "cell",
+     "words": "The later of the issue of the final completion certificate under the EPC Contract and the expiry of the defects notification period",
+     "cell": {
+      "row_key": "Expiry",
+      "column": "col2"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4D-Q15"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-R-F4D-05",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+    "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+    "readings_sha256": "6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b",
+    "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+    "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+    "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-IV-F4D-05",
+   "provision": "ADD-03:Q15",
+   "target": "VOL-IV-F4D-05",
+   "payload": {
+    "row": "VOL-IV-F4D-05",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Governing law: Laws of the Kingdom",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Re-made at ADD-03; the term is unchanged, and Q15 does not address governing law."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-D/governing-law",
+     "page": 7,
+     "kind": "span",
+     "words": "Governing law: Laws of the Kingdom",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4D-Q15"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

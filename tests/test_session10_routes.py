@@ -274,7 +274,10 @@ def test_openrouter_and_ollama_structured_request_shapes(ws):
         cas2 = HttpCassette(CASSETTES / "s10_ollama_format.yaml")
         olp = OllamaProvider("qwen3-vl:32b", rcfg, rcfg["models"]["vision"], env={}, fetch=cas2)
         mp.setattr(O, "http_json", cas2)
-        ps2 = controller.propose(ws, "ADD-03", "ollama", cfg, provider=olp, sleep=lambda s: None)
+        # session 11: one provision. The whole addendum (with the system prompt, the tools, the later-turn allowance and
+        # 16,000 output tokens) does not fit the 32,768-token bound, which the complete accounting now refuses
+        ps2 = controller.propose(ws, "ADD-03", "ollama", cfg, provider=olp, sleep=lambda s: None,
+                                 provisions=["ADD-03:cover/para1"])
         assert cas2.pos == len(cas2.exchanges) and _status(ps2) == {"ADD-03/cover/para1": "evidence_verified"}
         assert cas2.requests[1]["body"]["format"]["properties"]["items"]
     finally:

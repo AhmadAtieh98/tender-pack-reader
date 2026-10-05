@@ -29,6 +29,17 @@ Routes (config `critic.route`, or --route):
              route's caps, with capabilities verified as for propose (base.unverified)
 Every call is logged to the run's log files (worklog/model_calls/<run_id>.jsonl and staging/ai/<run_id>/log.jsonl,
 redacted) as `critic_*` events.
+
+Session 11, inside the workflow (tenderpack/ai/workflow.py): after each analysis batch is validated, and after the
+downstream items are validated, the critic reviews the SELECTED items of that batch in ONE request (review_batch: the
+shared context, i.e. the addendum, the stage and the units the items cite, is sent once; the answer is
+{reviews: [{item, agrees, concerns, evidence_checked}]}), through the request layer (tenderpack/ai/requests.py: the
+same capability check, size, failure classes and one bounded repair as every phase). Selection adds `conflicting`
+for items whose evidence contradicts another item of the set (`contradictions`: the same target or row with different
+new words, values or parameters), and `select_downstream` for downstream items (removals; consequential
+interpretations, a row whose interpretation states a consequence or an issue for the A3 sheet; uncertain targets, a
+reading of a row that is not its task's row; conflicts). `run()` (the `tenderpack ai critic` command) is unchanged: one
+request per item.
 """
 from __future__ import annotations
 
@@ -176,12 +187,90 @@ def select(ps, ws=None, cfg_select=None) -> list[tuple[object, list[str]]]:
     want = set(cfg_select or REASONS)
     statements = {s.id: s for s in ps.statements}
     cands = _candidates(ws, ps) if ws is not None else None
+    clash = contradictions(ps.items)
     out = []
     for it in ps.items:
         r = [x for x in reasons_for(it, statements, ws, cands) if x in want]
+        if it.id in clash and "conflicting" in want and it.verification_status != "invalid":
+            if "conflicting" not in r:
+                r.append("conflicting")
+            r.append(f"conflicting: its evidence contradicts {', '.join(clash[it.id])}")
         if r:
             detail = _uncertain_target(it, ws, cands) if "uncertain_target" in r else []
             out.append((it, r + [f"uncertain_target: {d}" for d in detail]))
+    return out
+
+
+def _target_of(it) -> list[str]:
+    p = _payload(it)
+    if it.statement_type in ("row_reading",):
+        return [p.get("row")] if p.get("row") else []
+    if it.statement_type == "row_new":
+        return [(p.get("row") or {}).get("id")] if (p.get("row") or {}).get("id") else []
+    t = [it.target or p.get("target")] + list(p.get("targets") or [])
+    return [x for x in dict.fromkeys(t) if x]
+
+
+def contradictions(items) -> dict[str, list[str]]:
+    """Items whose evidence contradicts another item of the same set (conservative): two ops on the same target that
+    replace the same old words (or the same previous value) with different new words (values); two interpretations of
+    the same row giving one parameter different values; two new rows with the same id. {item id: [the other ids]}."""
+    out: dict[str, list[str]] = {}
+    xs = [it for it in items if getattr(it, "verification_status", "") != "invalid"]
+
+    def clash(a, b):
+        out.setdefault(a.id, []).append(b.id)
+        out.setdefault(b.id, []).append(a.id)
+    for i, a in enumerate(xs):
+        for b in xs[i + 1:]:
+            if not set(_target_of(a)) & set(_target_of(b)):
+                continue
+            pa, pb = _payload(a), _payload(b)
+            if a.statement_type == b.statement_type == "amendment_op":
+                if pa.get("old") and pa.get("old") == pb.get("old") and pa.get("new") != pb.get("new"):
+                    clash(a, b)
+                elif a.previous_value is not None and a.previous_value == b.previous_value \
+                        and a.proposed_value is not None and b.proposed_value is not None \
+                        and str(a.proposed_value) != str(b.proposed_value):
+                    clash(a, b)
+            elif a.statement_type == b.statement_type == "row_reading":
+                ka = (pa.get("interpretation") or {}).get("parameters") or {}
+                kb = (pb.get("interpretation") or {}).get("parameters") or {}
+                if any(k in kb and str(ka[k]) != str(kb[k]) for k in ka):
+                    clash(a, b)
+            elif a.statement_type == b.statement_type == "row_new":
+                clash(a, b)
+    return {k: sorted(set(v)) for k, v in out.items()}
+
+
+def select_downstream(ds, tasks: dict | None = None, cfg_select=None) -> list[tuple[object, list[str]]]:
+    """The downstream items sent to the critic (see the module docstring); invalid items are left out."""
+    want = set(cfg_select or REASONS)
+    clash = contradictions(ds.items)
+    out = []
+    for it in ds.items:
+        if it.verification_status == "invalid":
+            continue
+        p, r = _payload(it), []
+        if any(i.get("removed") for i in _interps(it)):
+            r.append("removal")
+        if it.verification_status == "conflicting" or it.conflicts or it.id in clash:
+            r.append("conflicting")
+            if it.id in clash:
+                r.append(f"conflicting: its evidence contradicts {', '.join(clash[it.id])}")
+        if any(i.get("consequence") not in (None, "none_stated", {}) for i in _interps(it)) \
+                or (it.statement_type == "issue" and (p.get("show_in_a3") or p.get("a3"))):
+            r.append("consequential_interpretation")
+        t = (tasks or {}).get(it.task) or {}
+        if it.statement_type == "row_reading" and t.get("kind") == "row_reading" and p.get("row") != t.get("row"):
+            r.append("uncertain_target")
+            r.append(f"uncertain_target: reads row {p.get('row')} for the task of row {t.get('row')}")
+        elif tasks is not None and it.task not in tasks:
+            r.append("uncertain_target")
+            r.append(f"uncertain_target: answers {it.task!r}, which is not a task of the run")
+        keep = [x for x in r if x.split(":")[0] in want]
+        if keep:
+            out.append((it, keep))
     return out
 
 
@@ -433,3 +522,152 @@ def _with_section(md: str, section: str) -> str:
         md = md[:i] + (md[j + 1:] if j >= 0 else "")
     k = md.find("\n## Next")
     return (md[:k + 1] + section + "\n" + md[k + 1:]) if k >= 0 else (md.rstrip("\n") + "\n\n" + section)
+
+
+# ---------------------------------------------------------------------------------------------- session 11: batched
+
+CRITIC_TASK = "critic_review"
+CRITIC_BATCH_SYSTEM = CRITIC_SYSTEM.rsplit("\n\nReply with ONLY", 1)[0] + """
+
+The request lists SEVERAL items, each with its own key; the units they cite are printed once under `units`. Review \
+each item on its own evidence. Reply with ONLY a JSON object: {"reviews": [{"item": "<the item's key>", "agrees": \
+true|false, "concerns": ["..."], "evidence_checked": ["unit ids or the quotations you checked"]}]}, one review per \
+item listed. `agrees` true means the item follows from the evidence shown; it is not an approval."""
+
+_REVIEW = {"type": "object", "additionalProperties": False, "required": ["item", "agrees", "concerns", "evidence_checked"],
+           "properties": {"item": {"type": "string"}, "agrees": {"type": "boolean"},
+                          "concerns": {"type": "array", "items": {"type": "string"}},
+                          "evidence_checked": {"type": "array", "items": {"type": "string"}}}}
+CRITIC_BATCH_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["reviews"],
+                       "properties": {"reviews": {"type": "array", "items": _REVIEW}}}
+
+
+class ReviewEntry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    item: str
+    agrees: bool
+    concerns: list[str]
+    evidence_checked: list[str]
+
+
+class CriticBatch(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    reviews: list[ReviewEntry]
+
+
+def parse_batch(data, fields: dict | None = None, overwrites: list | None = None) -> CriticBatch:
+    if not isinstance(data, dict):
+        raise CriticError("the critic's answer must be a JSON object {reviews: [...]}")
+    try:
+        return CriticBatch.model_validate(data)
+    except ValidationError as e:
+        raise CriticError(f"the critic's answer is not {{reviews: [{{item, agrees, concerns, evidence_checked}}]}}: "
+                          f"{str(e)[:600]}") from None
+
+
+def batch_packet(ws, addendum: str, entries: list[tuple[str, object, list[str], dict]]) -> dict:
+    """The request of one batched review: `entries` are (key, item, reasons, statements by id). The units the items cite
+    (the provision, the target) are printed once under `units`; each item names them."""
+    prev, pst = None, {}
+    if ws is not None:
+        try:
+            prev = ws.prev_stage(addendum)
+            pst = ws.stage(prev).state
+        except Exception:                                        # noqa: BLE001 (a refused build: no stage)
+            pst = {}
+
+    def unit(uid):
+        u = pst.get(uid)
+        if u is None and ws is not None:
+            iu = ws.units_by_id.get(uid)
+            return None if iu is None else {"text_as_issued": iu.get("text"), "pages": iu.get("pages")}
+        return None if u is None else {"doc": u.doc, "kind": u.kind, "status": u.status, "pages": u.pages,
+                                       "text_before_addendum": u.text, "cells": u.cells or None}
+    units: dict = {}
+    items = []
+    for key, it, why, statements in entries:
+        p = _payload(it)
+        tgt = getattr(it, "target", None) or p.get("target")
+        for uid in (getattr(it, "provision", None), tgt):
+            if uid and uid not in units:
+                v = unit(uid)
+                if v is not None:
+                    units[uid] = v
+        d = it.model_dump(mode="json", by_alias=True)
+        items.append({"key": key, "why_selected": why,
+                      "item": {k: v for k, v in d.items() if k not in ("state", "validation", "review",
+                                                                     "verification_status")},
+                      "controller_status": it.verification_status,
+                      "controller_validation": [v.model_dump() for v in it.validation],
+                      "provision": getattr(it, "provision", None), "target": tgt,
+                      "statements_relied_on": [statements[s].model_dump(mode="json") for s in it.statements
+                                               if s in statements]})
+    return {"task": CRITIC_TASK, "addendum": addendum, "stage_before_addendum": prev, "reminder": NOT_APPROVAL,
+            "note": "the units are printed once; each item names its provision and target", "units": units,
+            "items": items}
+
+
+def batch_prompt(packet: dict) -> str:
+    return "CRITIC REQUEST\n" + json.dumps(packet, ensure_ascii=False, default=str)
+
+
+def review_batch(packet: dict, *, route: str, cfg: dict, log, cwd: Path, policy, model: str | None = None,
+                 provider=None, cassette=None, caps: dict | None = None, sleep=time.sleep, runner=subprocess.run,
+                 staging: Path | None = None, run_id: str = "critic") -> dict:
+    """ONE critic request for the items of `packet` (batch_packet), through the request layer. Returns {answers: {key:
+    ReviewEntry}, missing: [keys], outcome: Outcome record, model_requested, model_reported}. Raises the request layer's
+    errors (RateLimited, ProviderFailed, Malformed, CapabilityRefused, TooLarge)."""
+    from . import requests as R
+    sp = R.spec("critic")
+    fields = {"run_id": run_id, "created": "-", "route": route, "provider": route, "model_requested": model or "-",
+              "model_reported": None, "task": CRITIC_TASK}
+    prompt = batch_prompt(packet)
+    if route == "host":
+        from . import hostsession as HS
+        ps_ = HS.PlainSession(cfg, sp.system, schema=CRITIC_BATCH_SCHEMA,
+                              model=model if model is not None else settings(cfg).get("model"),
+                              timeout_s=float((settings(cfg).get("host") or {}).get("timeout_s", 240)),
+                              max_turns=int((settings(cfg).get("host") or {}).get("max_turns", 3)),
+                              claude_bin=(settings(cfg).get("host") or {}).get("claude_bin")
+                              or (cfg.get("host_session") or {}).get("claude_bin"), runner=runner, label="critic")
+
+        class _S:                       # the plain session in the shape ask_host expects
+            model = ps_.model
+            last = None
+
+            def capabilities(self):
+                return HS.declared_capabilities(cfg)
+
+            def host_model_label(self):
+                return ps_.host_model_label()
+
+            def system_prompt(self):
+                return sp.system
+
+            def prompt(self, pk):
+                return prompt
+
+            def run_batch(self, pk):
+                r = ps_.run(prompt, cwd, log)
+                if r.structured_output is not None:
+                    r.final_text = json.dumps(r.structured_output, ensure_ascii=False)
+                self.last = r
+                return {}
+        out = R.ask_host(sp, _S(), packet, cfg=cfg, policy=policy, log=log, fields=fields, cwd=cwd, sleep=sleep,
+                         settings=R.settings_for(cfg, "host"), runner=runner)
+        mreq = ps_.host_model_label()
+    else:
+        from .providers import make
+        rcfg = C.route(cfg, route)
+        prov = provider or make(route, model or C.default_model(rcfg, "check") or C.default_model(rcfg), cfg, cassette)
+        caps_ = C.caps(cfg, route, caps)
+        price = B.price_for(cfg, prov.model)
+        B.check_startable(route, rcfg, caps_, price)
+        out = R.converse(sp, prov, packet, ws=None, route=route, caps_=caps_, price=price, policy=policy, log=log,
+                         staging=Path(staging or cwd), run_id=run_id, fields={**fields, "model_requested": prov.model},
+                         sleep=sleep, prompt_text=prompt, settings=R.settings_for(cfg, route))
+        mreq = prov.model
+    answers = {r.item: r for r in out.answer.reviews}
+    keys = [x["key"] for x in packet["items"]]
+    return {"answers": answers, "missing": [k for k in keys if k not in answers], "outcome": out.record(),
+            "model_requested": mreq, "model_reported": out.model_reported}

@@ -117,6 +117,44 @@ batching:
   output_tokens_fixed: 1500        # the set's envelope, state and statements
   prior_turns_tokens: 30000        # allowance for tool calls and results before the answer
   context_margin: 0.10
+  # Session 11: EVERY request of every phase is sized the same way before it is sent (tenderpack/ai/requests.py):
+  # system + tool definitions + the packet as sent + images + later turns (tool phases) + the expected output below,
+  # against the context window (verified, a cassette's, or the host's declared one) and the output cap. A request that
+  # does not fit is split by provision or task; one that does not fit alone is escalated with its size. Never truncated.
+  expected_output:                 # [fixed, per unit] output tokens per phase (estimates; analysis uses the two above)
+    downstream: [1500, 900]        # per task
+    reading: [8000, 0]             # one Reading of an image region
+    critic: [300, 350]             # per item reviewed
+    repair: [1500, 700]
+
+# Failure classes (session 11; tenderpack/ai/requests.py). Three failures, handled differently:
+#   rate_limit  HTTP 429, a provider's rate-limit error, the host CLI's session/usage limit (api_error_status 429):
+#               bounded exponential backoff with jitter, then the batch is DEFERRED (never failed): the run stops
+#               cleanly with everything done so far checkpointed (on_deferred: stop), or goes on with the next batch
+#               (continue: later requests in the same drive get ONE try each, no backoff). `tenderpack ai resume`
+#               asks the deferred batches again and never re-asks a batch that succeeded.
+#   provider    5xx, 529, timeouts, connection errors, a host CLI that cannot start or ends without a result: bounded
+#               retries (API routes: the run's caps retries/backoff_s unless set here), then the batch FAILS.
+#   malformed   an answer that does not parse or fails the schema or its references: ONE re-ask carrying the
+#               validation errors (on the host route a plain no-tool session given the answer); what still fails is
+#               set aside ITEM BY ITEM (`malformed_items`); an answer that is not a set at all fails the batch.
+failures:
+  rate_limit:
+    backoff_s: [30, 60, 120, 240]  # waits before the 2nd..5th try; +/- jitter
+    jitter: 0.2
+    max_tries: 4                   # retries after the first attempt (bounded): about 7.5 minutes at most
+    honour_reset_up_to_s: 300      # a reset the provider names (retry-after; "resets 4:30pm (UTC)") within this is
+                                   # waited for; beyond it the batch is deferred at once (no tries burnt)
+    on_deferred: stop              # stop | continue
+    seed: null                     # the jitter's random seed (null: random); tests set one
+  provider: {host_retries: 1}      # API routes: caps.retries / caps.backoff_s; the host CLI: one retry, 2 s
+  malformed: {repairs: 1}          # bounded at 1
+
+# Concurrency (session 11). The workflow runs its batches ONE AT A TIME. WARNING: concurrent sessions do not lift a
+# plan's rate limit; they reach it sooner (blind-04: the host plan answered 429 after about seven sessions in 40
+# minutes, and every later session died within seconds). Only 1 is supported; another value is refused at start.
+concurrency:
+  batches: 1
 
 # Independent critic (tenderpack/ai/critic.py; `tenderpack ai critic RUN_ID`): a second model pass over SELECTED items
 # only, with its own system prompt and the evidence inline (no tools). It writes review.critic and changes no status:
@@ -127,6 +165,14 @@ critic:
   select: [removal, conflicting, consequential_interpretation, uncertain_target]
   max_items: 25                    # items over the limit are listed as not reviewed
   host: {timeout_s: 240, max_turns: 3}   # claude -p --tools "" --system-prompt <critic> --json-schema <answer> --output-format json
+  # Session 11: in the workflow the critic runs after each analysis batch's validation and, in the `critic` step, after
+  # the downstream validation: ONE request per batch for that batch's selected items (not one per item), through the
+  # request layer (failure classes as above). On a recorded run it replays the cassette's `critic` sessions; a batch
+  # without one is `skipped` with the reason. `conflicting` also selects items whose evidence contradicts another
+  # item (the same target or row with different new words, values or parameters). Findings: review.critic (analysis
+  # items), downstream/critic.yaml (downstream items), the review packet. It changes no status; agreement is not
+  # approval.
+  workflow: true
 
 # Actual host session (tenderpack/ai/hostsession.py; `tenderpack ai host-session ADD-NN --provisions ...`):
 #   claude -p --mcp-config <run>/mcp.json --strict-mcp-config --tools "" --allowedTools "mcp__tenderpack__*"
@@ -140,6 +186,17 @@ host_session:
   max_turns: 40
   timeout_s: 900
   output_format: stream-json       # every tool call and result is recorded; the final result has the json fields
+  plain_timeout_s: 300             # a plain no-tool session (the bounded repair; the critic has its own timeout)
+  # Session 11: the host's capabilities are DECLARED here, not verified (a host's model cannot be queried by this tool).
+  # Every request on the host route is checked against them (the reading phase needs images: true) and carries a route
+  # notice "capabilities declared, not verified" (run log, checkpoint, review packet). context_tokens bounds the
+  # request accounting; set it to the smallest context the host's model may have.
+  capabilities:
+    images: true                   # MCP image content reached the host's model in the real sessions of 4 Oct 2026
+    tools: true                    # the MCP tools
+    context_tokens: 200000
+    max_output_tokens: 32000
+    basis: "observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified"
 
 # USD per million tokens, {model: {input_per_mtok: N, output_per_mtok: N}}. With a price, cost_usd is computed from
 # the usage the endpoint reports and max_usd can be enforced; without one, cost_usd is null ("no price configured")

@@ -1,0 +1,928 @@
+# A1 register rows for Volume I (Stage 3). PROPOSED: drafted by the register agent, session 05. No row has been
+# reviewed or accepted by a person. Rows already held in curation/register/rows.yaml (VOL-I 5.2, 5.4, 6.1, 6.3, 6.4,
+# 7.1, 8.3, 8.5 + footnote 12, 8.6, 9.3, 9.4, 11.2, 11.3, Table 1-1 B and D) are not repeated here; this file adds
+# only the obligations they do not cover. Interpretations are added at an addendum stage only where that addendum
+# addresses one of the row's units; any other change to a dependency leaves the row STALE for a person.
+doc: VOL-I
+prepared_by: "AI-assisted draft (register agent, session 05); not reviewed"
+method: >-
+  Every Volume I unit read in order (build/units.json); one row per independently testable obligation (D3), grouped
+  by source clause. Quotes copied from the effective text at each stage (ADD-01, ADD-02 checked with tenderpack.amend);
+  consequences quoted only from the unit that states them, never inferred. Ambiguities are recorded as issues for a
+  person, not resolved. Dates are rules (tenderpack.dates); events not in the pack are external.
+rows:
+  # ---------------------------------------------------------------- Section 1: eligibility
+  - id: VOL-I-1.4-01
+    group: "VOL-I:1.4"
+    scope: [eligibility, qualification]
+    requirement: "Only a Bidder prequalified under RFQ NUPA/ISTP/2025/031 and named in Appendix 1 may submit a Proposal"
+    units: ["VOL-I:1.4"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    no_deliverable: "an eligibility status (prequalified and named in Appendix 1), not a document; the Bidder submits in its prequalified name"
+    interpretations:
+      - stage: BASE
+        quote: "Only Bidders prequalified under Request for Qualification NUPA/ISTP/2025/031 and named in Appendix 1 to this Volume are eligible to submit a Proposal."
+        consequence: {class: rejection, unit: "VOL-I:1.4", quote: "A Proposal received from any other person shall be rejected without evaluation."}
+        note: "Appendix 1 names five prequalified Bidders; which one is ours is a bidder fact."
+    confidence: high
+    confidence_reason: "verbatim; the Bidder's identity is an assumption, not a fact from the pack"
+    issues: [I-BIDDER-FACTS]
+  # ---------------------------------------------------------------- Section 3: documents and conflicts
+  - id: VOL-I-3.3-01
+    group: "VOL-I:3.3"
+    scope: [clarification, conflicts]
+    requirement: "Raise any conflict, ambiguity or discrepancy found in the RFP Documents as a clarification request under Section 5"
+    units: ["VOL-I:3.3"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-CLARIFICATIONS]
+    interpretations:
+      - stage: BASE
+        quote: "A Bidder that identifies a conflict, ambiguity or discrepancy shall raise it as a request for clarification under Section 5."
+        consequence: {class: lesser, unit: "VOL-I:3.3", quote: "A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation."}
+        note: "Conflicts found in the pack (Envelope B contents, Form 4-B contract value, concession term) fall under this clause; requests are subject to the VOL-I 5.2 cut-off."
+    confidence: high
+    confidence_reason: "verbatim; the consequence ('at its own risk') is stated in the same clause"
+    issues: [I-VOL-I-ENV-B, I-VOL-I-ENV-A-PRICES, I-CONCESSION]
+  - id: VOL-I-3.4-01
+    group: "VOL-I:3.4"
+    scope: [clarification, completeness, deadline]
+    requirement: "Check the completeness of the RFP Documents downloaded from the Portal; omission claims are not entertained after the Proposal Due Date and time as amended (a cut-off separate from the VOL-I 5.2 clarification deadline)"
+    units: ["VOL-I:3.4"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-CLARIFICATIONS]
+    date_rules:
+      - {rule_id: OMISSION-CLAIM-CUTOFF, kind: anchor, purpose: deadline, anchor: PDD, source_unit: "VOL-I:3.4", text: "No claim arising from an alleged omission shall be entertained after the Proposal Due Date."}
+    interpretations:
+      - stage: BASE
+        quote: "Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal."
+        consequence: {class: lesser, unit: "VOL-I:3.4", quote: "No claim arising from an alleged omission shall be entertained after the Proposal Due Date."}
+        note: "Volume III (Drawings) is listed in VOL-I 3.1 but not supplied; gaps are raised as clarification requests before the VOL-I 5.2 cut-off."
+      - stage: ADD-01
+        quote: Bidders shall satisfy themselves as to the completeness of the RFP Documents downloaded from the Portal.
+        consequence:
+          class: lesser
+          unit: VOL-I:3.4
+          quote: No claim arising from an alleged omission shall be entertained after the Proposal Due Date.
+        parameters:
+          omission_claim_cutoff: 'the amended Proposal Due Date and time: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6;
+            6.1 as amended by ADD-01 2.1)'
+          separate_from: the VOL-I 5.2 clarification-request deadline (ten Working Days before the Proposal Due Date;
+            row VOL-I-5.2-01; 12 November 2026 on the planning reading)
+        note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the cut-off for omission
+          claims follows the amended Proposal Due Date and time; no claim arising from an alleged omission is entertained
+          after 26 November 2026, 14:00 Riyadh time (VOL-I 3.4 with 2.6; ADD-01 2.1). It is a separate cut-off from the
+          earlier clarification-request deadline of VOL-I 5.2 (ten Working Days before the Proposal Due Date, adjusted
+          under ADD-01 2.2; row VOL-I-5.2-01): VOL-I 3.4 does not refer to 5.2 and the two are not merged. Whether to
+          raise a known gap as a clarification request is a separate decision (the clarification register). [Applied from
+          proposal P-S08-VOL-I-3.4-01 by Claude Code (assistant), on Ahmad''s written instruction of 3 Oct 2026 (session
+          08 §3) on 2026-10-03.]'
+    confidence: medium
+    confidence_reason: "verbatim; the cut-off moves with the PDD but this clause is not named in ADD-01 §2.2 (non-exhaustive list)"
+    issues: [I-VOL-III]
+  # ---------------------------------------------------------------- Section 4: communications and blackout
+  - id: VOL-I-4.1-01
+    group: "VOL-I:4.1"
+    scope: [communications, conduct]
+    requirement: "Make all communications with the Authority through the Portal, in English unless Volume I expressly requires Arabic"
+    units: ["VOL-I:4.1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    no_deliverable: "a rule on how every communication is made; no deliverable of its own"
+    interpretations:
+      - stage: BASE
+        quote: "All communications between a Bidder and the Authority shall be made exclusively through the Portal and shall be in the English language, save where this Volume expressly requires Arabic."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated (a procedural rule)"
+  - id: VOL-I-4.2-01
+    group: "VOL-I:4.2"
+    scope: [communications, conduct, blackout]
+    requirement: "Blackout: no contact with the Authority's board, staff, consultants or advisors about the Project other than through the Portal, until the PBN"
+    units: ["VOL-I:4.2"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    no_deliverable: "a conduct rule binding the Bidder and anyone acting for it; nothing to submit"
+    date_rules:
+      - {rule_id: BLACKOUT-START, kind: fixed, purpose: window_start, fixed: "2026-09-14", source_unit: "VOL-I:4.2", text: "From the date of issue of this Volume"}
+      - {rule_id: BLACKOUT-END, kind: external, purpose: event, anchor: PBN, source_unit: "VOL-I:4.2", text: "until the issue of the Preferred Bidder Notification"}
+    interpretations:
+      - stage: BASE
+        quote: "no Bidder, and no person acting for a Bidder, shall contact any board member, officer, employee, consultant or advisor of the Authority in relation to the Project other than through the Portal"
+        consequence: {class: disqualification, unit: "VOL-I:4.2", quote: "Breach of this Clause shall result in the disqualification of the Bidder."}
+        note: "The issue date (14 September 2026) is printed on the Volume I cover. The window ends at the Preferred Bidder Notification, an event not in the pack."
+    confidence: high
+    confidence_reason: "verbatim; the window's end date depends on an event not yet known"
+  - id: VOL-I-4.3-01
+    group: "VOL-I:4.3"
+    scope: [communications]
+    requirement: "Nominate a single point of contact and notify the Authority of any change within two Working Days"
+    units: ["VOL-I:4.3"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-SPOC]
+    date_rules:
+      - {rule_id: SPOC-CHANGE-NOTICE, kind: external, purpose: deadline, anchor: SPOC-CHANGE, offset: 2, unit: working_day, direction: after, source_unit: "VOL-I:4.3", text: "notify the Authority of any change within two (2) Working Days"}
+    interpretations:
+      - stage: BASE
+        quote: "Each Bidder shall nominate a single point of contact and shall notify the Authority of any change within two (2) Working Days."
+    confidence: high
+    confidence_reason: "verbatim; the period runs from a change (an event), and forward Working Day counting is not defined"
+  # ---------------------------------------------------------------- Section 5: clarifications, site
+  - id: VOL-I-5.1-01
+    group: "VOL-I:5.1"
+    scope: [clarification]
+    requirement: "Submit clarification requests through the Portal, each citing the Volume, Clause and page it relates to"
+    units: ["VOL-I:5.1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-CLARIFICATIONS]
+    interpretations:
+      - stage: BASE
+        quote: "Each request shall cite the Volume, Clause and page to which it relates."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated (a procedural rule)"
+  - id: VOL-I-5.5-01
+    group: "VOL-I:5.5"
+    scope: [site, risk]
+    requirement: "The Bidder must satisfy itself as to site conditions; attending the site visit is optional and does not relieve it of this"
+    units: ["VOL-I:5.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: procedural
+    no_deliverable: "a risk the Bidder carries; the site visit (the day after the Pre-Bid Conference) was optional"
+    interpretations:
+      - stage: BASE
+        quote: "Attendance at the site visit is optional and does not relieve a Bidder of its obligation to satisfy itself as to site conditions."
+        note: "ADD-01 Q4 (ground conditions at the wadi crossing) states the same for ground conditions; the geotechnical report is in the data room, not the pack."
+    confidence: medium
+    confidence_reason: "the clause refers to the obligation rather than stating it; no consequence stated"
+    issues: [I-VOL-III]
+  # ---------------------------------------------------------------- Section 6: submission
+  - id: VOL-I-6.2-01
+    group: "VOL-I:6.2"
+    scope: [bid_submission, envelopes]
+    requirement: "Submit the Proposal in two separately sealed, clearly marked envelopes: A (Technical Proposal) and B (Commercial Proposal)"
+    units: ["VOL-I:6.2"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-DELIVERY]
+    interpretations:
+      - stage: BASE
+        quote: "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal)."
+        note: "The marking wording is not stated here; Appendix 3 gives a marking (row VOL-I-App3-01)."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated for the envelopes themselves"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-6.2-02
+    group: "VOL-I:6.2"
+    scope: [envelope_A, commercial_separation]
+    requirement: "No price, rate or other commercial information anywhere in Envelope A"
+    units: ["VOL-I:6.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    no_deliverable: "a check on the content of every Envelope A document, not a deliverable of its own"
+    interpretations:
+      - stage: BASE
+        quote: "The appearance of any price, rate, or other commercial information within Envelope A"
+        consequence: {class: non_responsive, unit: "VOL-I:6.2", quote: "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive."}
+        note: "'Other commercial information' is not defined. Form 4-B (Envelope A) asks for a contract value in SAR: see I-VOL-I-ENV-A-PRICES."
+    confidence: medium
+    confidence_reason: "verbatim consequence; the scope of 'other commercial information' is not defined and Form 4-B conflicts"
+    issues: [I-VOL-I-ENV-A-PRICES]
+  - id: VOL-I-6.5-01
+    group: "VOL-I:6.5"
+    scope: [bid_submission, copies]
+    requirement: "Submit one marked original, three hard copies and one searchable electronic copy on encrypted USB media"
+    units: ["VOL-I:6.5"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-COPIES]
+    interpretations:
+      - stage: BASE
+        quote: "Each Proposal shall be submitted as one (1) marked original, three (3) hard copies, and one (1) searchable electronic copy on encrypted USB media."
+        parameters: {originals: 1, hard_copies: 3, electronic_copies: 1, electronic_media: "encrypted USB, searchable"}
+        note: "Where the electronic copy materially differs, the marked original is evaluated (same clause); that is a rule of precedence, not a bid-out consequence."
+    confidence: medium
+    confidence_reason: "verbatim; whether the copies are per envelope or per Proposal is not stated; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-COPIES]
+  - id: VOL-I-6.5-02
+    group: "VOL-I:6.5"
+    scope: [bid_submission, electronic_copy, file_naming]
+    requirement: "Name electronic files per the Appendix 2 convention (pattern, folder depth up to 3 levels, names up to 120 characters)"
+    units: ["VOL-I:6.5", "VOL-I:App2/para1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-COPIES]
+    interpretations:
+      - stage: BASE
+        quote: "Electronic files shall be named strictly in accordance with the convention at Appendix 2."
+        parameters: {pattern: "ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf", folder_depth_max: 3, file_name_chars_max: 120}
+        consequence: {class: lesser, unit: "VOL-I:App2/para1", quote: "Non-conforming file names will be corrected by the Authority at the Bidder's risk."}
+    confidence: medium
+    confidence_reason: "verbatim; the '.pdf' pattern cannot fit the Excel Financial Model and [YYYYMMDD] is not explained"
+    issues: [I-VOL-I-FILE-NAMES]
+  - id: VOL-I-6.7-01
+    group: "VOL-I:6.7"
+    scope: [bid_submission, deadline]
+    requirement: "A withdrawal or modification of the Proposal may be made by written notice through the Portal at any time before the Proposal Due Date; no modification will be accepted thereafter"
+    units: ["VOL-I:6.7"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    no_deliverable: "an option: arises only if the Bidder withdraws or modifies its Proposal"
+    date_rules:
+      - {rule_id: MODIFY-CUTOFF, kind: anchor, purpose: deadline, anchor: PDD, source_unit: "VOL-I:6.7", text: "at any time before the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
+        consequence: {class: lesser, unit: "VOL-I:6.7", quote: "No modification will be accepted thereafter."}
+      - stage: ADD-01
+        quote: A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice
+          through the Portal.
+        consequence:
+          class: lesser
+          unit: VOL-I:6.7
+          quote: No modification will be accepted thereafter.
+        parameters:
+          cutoff: 'the amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6; 6.1 as amended by ADD-01
+            2.1)'
+          means: written notice through the Portal
+          express_late_prohibition: modifications only ('No modification will be accepted thereafter')
+        note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): a Bidder may withdraw
+          or modify its Proposal by written notice through the Portal at any time before the amended Proposal Due Date,
+          26 November 2026, 14:00 Riyadh time (VOL-I 6.7 with 2.6; ADD-01 2.1). The clause''s express prohibition after
+          that time concerns modifications only (''No modification will be accepted thereafter''); it is not extended
+          to withdrawals, and nothing further is read into it. [Applied from proposal P-S08-VOL-I-6.7-01 by Claude Code
+          (assistant), on Ahmad''s written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]'
+    confidence: high
+    confidence_reason: "verbatim; the cut-off moves with the PDD although ADD-01 §2.2 does not name this clause"
+  # ---------------------------------------------------------------- Section 7: validity extension
+  - id: VOL-I-7.2-01
+    group: "VOL-I:7.2"
+    scope: [validity, bid_security]
+    requirement: "If the Bidder agrees to an Authority request to extend validity, procure a corresponding extension of its Bid Bond"
+    units: ["VOL-I:7.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: procedural
+    no_deliverable: "conditional: arises only if the Authority requests an extension and the Bidder agrees (refusal is allowed)"
+    interpretations:
+      - stage: BASE
+        quote: "a Bidder that agrees shall procure a corresponding extension of its Bid Bond"
+        note: "A Bidder may refuse without forfeiting its Bid Bond (same clause): the absence of a consequence, not a consequence."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated for failing to procure the extension"
+  # ---------------------------------------------------------------- Section 8: qualification
+  - id: VOL-I-8.1-01
+    group: "VOL-I:8.1"
+    scope: [qualification, consortium]
+    requirement: "Bid as the prequalified entity or consortium; no change to composition, shareholding or lead member without the Authority's prior written consent"
+    units: ["VOL-I:8.1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    no_deliverable: "a status (the consortium as prequalified); the Authority's written consent is needed only before any change"
+    interpretations:
+      - stage: BASE
+        quote: "No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority."
+        consequence: {class: rejection, unit: "VOL-I:8.1", quote: "An unapproved change shall result in rejection of the Proposal."}
+    confidence: high
+    confidence_reason: "verbatim; the consortium's composition is a bidder fact"
+    issues: [I-BIDDER-FACTS]
+  - id: VOL-I-8.2-01
+    group: "VOL-I:8.2"
+    scope: [qualification, conduct, multiple_participation]
+    requirement: "No firm or affiliate of a member may participate in more than one Proposal"
+    units: ["VOL-I:8.2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "No firm, and no affiliate of a firm, shall participate in more than one Proposal."
+        consequence: {class: rejection, unit: "VOL-I:8.2", quote: "Participation in more than one Proposal shall cause every Proposal in which that firm or affiliate participates to be rejected."}
+        note: "Form 4-C declaration 2 (Arabic, image reading; transcription confirmed by the owner, 3 Oct 2026) declares this; 'affiliate' is not defined in the pack."
+    confidence: high
+    confidence_reason: "verbatim; 'affiliate' is not defined"
+    issues: [I-BIDDER-FACTS]
+  - id: VOL-I-8.4-01
+    group: "VOL-I:8.4"
+    scope: [qualification, financial, envelope_A]
+    requirement: "Combined tangible net worth (weighted by shareholding) of at least SAR 800,000,000 per the most recent audited statements"
+    units: ["VOL-I:8.4"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: pass_fail
+    evidence: [EV-FIN-STANDING]
+    interpretations:
+      - stage: BASE
+        quote: "(a) a consolidated tangible net worth of not less than SAR 800,000,000 as at the most recent audited financial statements"
+        parameters: {tangible_net_worth_min_sar: 800000000, basis: "combined across members, weighted by shareholding"}
+    confidence: medium
+    confidence_reason: "verbatim; how the shareholding weighting is applied and which statements count as most recent are not stated"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-I-8.4-02
+    group: "VOL-I:8.4"
+    scope: [qualification, financial, envelope_A]
+    requirement: "Combined average annual turnover (weighted by shareholding) over the last three audited years of at least SAR 1,200,000,000"
+    units: ["VOL-I:8.4"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: pass_fail
+    evidence: [EV-FIN-STANDING]
+    interpretations:
+      - stage: BASE
+        quote: "(b) an average annual turnover over the last three (3) audited financial years of not less than SAR 1,200,000,000"
+        parameters: {average_turnover_min_sar: 1200000000, years: 3, basis: "combined across members, weighted by shareholding"}
+    confidence: medium
+    confidence_reason: "verbatim; how the shareholding weighting is applied is not stated"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-I-8.7-01
+    group: "VOL-I:8.7"
+    scope: [qualification, guarantee, envelope_A]
+    requirement: "Executed Parent Company Guarantee from the EPC Contractor's ultimate parent, substantially in Form 4-D, unconditional for the construction period"
+    units: ["VOL-I:8.7", "VOL-I:9.1(d)"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "The Bidder shall submit an executed Parent Company Guarantee from the ultimate parent company of the proposed EPC Contractor, substantially in the form set out in Form 4-D"
+      - stage: ADD-02
+        quote: "The Bidder shall submit an executed Parent Company Guarantee from the ultimate parent company of the proposed EPC Contractor, substantially in the form set out in Form 4-D"
+        note: "ADD-02 Q10: required from the ultimate parent of the EPC Contractor only, not from the O&M Operator; no change to this row."
+    confidence: high
+    confidence_reason: "verbatim; confirmed by ADD-02 Q10 (no consequence stated)"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-8.8-01
+    group: "VOL-I:8.8"
+    scope: [qualification, operations, envelope_A]
+    requirement: "O&M Operator: at least five years' continuous operation of a wastewater treatment facility of at least 50,000 m3/day"
+    units: ["VOL-I:8.8"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: pass_fail
+    evidence: [EV-OM-EXPERIENCE]
+    interpretations:
+      - stage: BASE
+        quote: "shall evidence not less than five (5) years of continuous operation of at least one (1) wastewater treatment facility of nominal capacity not less than 50,000"
+        parameters: {years_min: 5, facilities_min: 1, capacity_min_m3_day: 50000}
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated; the period's end date is not stated"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-I-8.9-01
+    group: "VOL-I:8.9"
+    scope: [qualification, licensing, envelope_A]
+    requirement: "For each foreign member: a current investment licence, or a signed undertaking to obtain one before Financial Close"
+    units: ["VOL-I:8.9"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-INVESTMENT-LICENCE]
+    date_rules:
+      - {rule_id: INVESTMENT-LICENCE-BY-FC, kind: external, purpose: deadline, anchor: FC, source_unit: "VOL-I:8.9", text: "a signed undertaking to obtain such licence prior to Financial Close"}
+    interpretations:
+      - stage: BASE
+        quote: "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close."
+    confidence: high
+    confidence_reason: "verbatim; which members are foreign is a bidder fact; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-I-8.10-01
+    group: "VOL-I:8.10"
+    scope: [qualification, debarment, envelope_A]
+    requirement: "No member debarred by a public authority in the Kingdom now or in the preceding five years; declared in Form 4-C"
+    units: ["VOL-I:8.10"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    date_rules:
+      - {rule_id: DEBARMENT-LOOKBACK, kind: external, purpose: window_start, offset: 5, unit: year, direction: before, source_unit: "VOL-I:8.10", text: "within the preceding five (5) years"}
+    interpretations:
+      - stage: BASE
+        quote: "No member of the Bidder shall be the subject of, or have been the subject of within the preceding five (5) years, any debarment by a public authority in the Kingdom."
+        note: "The same clause requires the declaration in Form 4-C. The date the five years run back from is not stated (external rule, not computed)."
+    confidence: medium
+    confidence_reason: "verbatim; the look-back's reference date is not stated; no consequence stated in this clause"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  # ---------------------------------------------------------------- Section 9: Envelope A
+  - id: VOL-I-9.1-01
+    group: "VOL-I:9.1"
+    scope: [envelope_A, order]
+    requirement: "Envelope A contains items (a) to (i) in the stated order, separated by numbered dividers"
+    units: ["VOL-I:9.1", "VOL-I:9.1(a)", "VOL-I:9.1(b)", "VOL-I:9.1(c)", "VOL-I:9.1(d)", "VOL-I:9.1(e)", "VOL-I:9.1(f)", "VOL-I:9.1(g)", "VOL-I:9.1(h)", "VOL-I:9.1(i)"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-DELIVERY]
+    interpretations:
+      - stage: BASE
+        quote: "Envelope A shall contain, in the following order and separated by numbered dividers"
+        parameters: {items: ["Form 4-A", "Form 4-B (one per reference project)", "Form 4-C", "Form 4-D (executed)", "Form 4-E", "Technical Proposal narrative", "Bid Bond", "notarised Powers of Attorney", "Section 8 certificates and evidence"]}
+      - stage: ADD-02
+        quote: "Envelope A shall contain, in the following order and separated by numbered dividers"
+        parameters: {items: ["Form 4-A", "Form 4-B (one per reference project)", "Form 4-C", "Form 4-D (executed)", "Form 4-E", "Form 4-G", "Technical Proposal narrative", "Bid Bond", "notarised Powers of Attorney", "Section 8 certificates and evidence"]}
+        note: "ADD-02 §7.1 inserts Form 4-G after item (e) (row ADD-02-7.2-01); the re-lettering of the later items is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; no consequence stated; the lettering after ADD-02's insertion is not stated"
+    issues: [I-NO-CONSEQUENCE, I-F4G-LETTERING]
+  - id: VOL-I-9.1h-01
+    group: "VOL-I:9.1"
+    scope: [envelope_A, authority_to_sign]
+    requirement: "Include a notarised Power of Attorney for each signatory in Envelope A"
+    units: ["VOL-I:9.1(h)"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-POA]
+    interpretations:
+      - stage: BASE
+        quote: "notarised Powers of Attorney for each signatory"
+        note: "Wider than VOL-I 9.3 (the Form 4-A signatory): covers every signatory, e.g. the Form 4-C signatory of each member. Which documents' signatories are meant is not listed."
+    confidence: medium
+    confidence_reason: "verbatim list item; 'each signatory' is not defined; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-I-9.2-01
+    group: "VOL-I:9.2"
+    scope: [envelope_A, technical_proposal, page_limit]
+    requirement: "Technical Proposal narrative within the A4 page limit (Form Sheets and Volume II-permitted appendices excluded)"
+    units: ["VOL-I:9.2"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The Technical Proposal narrative shall not exceed one hundred and twenty (120) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II."
+        parameters: {page_limit: 120, paper: A4}
+        consequence: {class: lesser, unit: "VOL-I:9.2", quote: "Pages in excess of the limit will be removed before evaluation and will not be scored."}
+      - stage: ADD-01
+        quote: "The Technical Proposal narrative shall not exceed one hundred and twenty (120) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II."
+        parameters: {page_limit: 120, paper: A4}
+        consequence: {class: lesser, unit: "VOL-I:9.2", quote: "Pages in excess of the limit will be removed before evaluation and will not be scored."}
+        note: "ADD-01 Q2: the limit applies to the narrative only; Form Sheets and the appendices permitted by Volume II are excluded."
+      - stage: ADD-02
+        quote: "The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II."
+        parameters: {page_limit: 150, paper: A4}
+        consequence: {class: lesser, unit: "VOL-I:9.2", quote: "Pages in excess of the limit will be removed before evaluation and will not be scored."}
+        note: "ADD-02 §2.1 raises the limit from 120 to 150 pages. ADD-01 Q2's '120-page limit' wording is now stale; its substance (forms excluded) still holds."
+    confidence: high
+    confidence_reason: "verbatim at every stage; the 'appendices expressly permitted by Volume II' were not found in the extract"
+    issues: [I-VOL-I-APPENDICES]
+  - id: VOL-I-9.5-01
+    group: "VOL-I:9.5"
+    scope: [envelope_A, references, forms]
+    requirement: "A separate Form 4-B for each reference project relied on under 8.5, each with a client completion certificate"
+    units: ["VOL-I:9.5", "VOL-I:9.1(b)"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4B, EV-COMPLETION-CERT]
+    interpretations:
+      - stage: BASE
+        quote: "A separate Form 4-B shall be submitted for each reference project relied upon under Clause 8.5, accompanied by a client completion certificate."
+        consequence: {class: lesser, unit: "VOL-I:9.5", quote: "A reference project not evidenced by a completion certificate will be disregarded."}
+        note: "A disregarded reference may leave fewer than the two plants footnote 12 requires (row VOL-I-8.5-01, rejection); that link is for a person to confirm."
+    confidence: high
+    confidence_reason: "verbatim; Form 4-B also asks for a contract value in SAR (Envelope A), see I-VOL-I-ENV-A-PRICES"
+    issues: [I-VOL-I-ENV-A-PRICES, I-BIDDER-FACTS]
+  - id: VOL-I-9.6-01
+    group: "VOL-I:9.6"
+    scope: [envelope_A, deviations, forms]
+    requirement: "Form 4-E lists every deviation, qualification or reservation to Volume V; never 'no deviations' with a qualification elsewhere"
+    units: ["VOL-I:9.6", "VOL-I:9.1(e)"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4E]
+    interpretations:
+      - stage: BASE
+        quote: "Form 4-E shall list every deviation, qualification or reservation to Volume V."
+        consequence: {class: non_responsive, unit: "VOL-I:9.6", quote: "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."}
+        note: "Whether to list the concession-term point (VOL-I 12.1 vs VOL-V 3.1) as a deviation is for a person (I-CONCESSION)."
+    confidence: high
+    confidence_reason: "verbatim"
+    issues: [I-CONCESSION]
+  - id: VOL-I-9.7-01
+    group: "VOL-I:9.7"
+    scope: [envelope_A, technical_proposal]
+    requirement: "Technical Proposal narrative (Envelope A item (f)) addressing at least the six listed topics"
+    units: ["VOL-I:9.7", "VOL-I:9.1(f)"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel."
+        parameters: {topics_min: [process design, construction methodology and programme, O&M philosophy, health and safety plan, environmental and social management approach, organisation and key personnel]}
+        note: "The topics correspond to the Table 1-1 criteria, where they are scored."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated for a missing topic"
+    issues: [I-NO-CONSEQUENCE]
+  # ---------------------------------------------------------------- Section 10: Envelope B
+  - id: VOL-I-10.1-01
+    group: "VOL-I:10.1"
+    scope: [envelope_B, commercial]
+    requirement: "Envelope B contains only Form 4-F and the Financial Model; no other document"
+    units: ["VOL-I:10.1"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F, EV-FIN-MODEL]
+    interpretations:
+      - stage: BASE
+        quote: "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B."
+        note: "VOL-I 10.3 (model auditor's opinion) and 10.6 (financing assumptions schedule) require further documents; not resolved here."
+    confidence: medium
+    confidence_reason: "verbatim; conflicts with VOL-I 10.3 and 10.6; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
+  - id: VOL-I-10.2-01
+    group: "VOL-I:10.2"
+    scope: [envelope_B, price]
+    requirement: "Quote a single Availability Payment in SAR per annum, calculated per the Volume V Clause 29 payment mechanism"
+    units: ["VOL-I:10.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F]
+    interpretations:
+      - stage: BASE
+        quote: "The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum, calculated in accordance with the payment mechanism at Volume V Clause 29."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated (VOL-I 10.5 covers conditional or alternative prices)"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-10.3-01
+    group: "VOL-I:10.3"
+    scope: [envelope_B, financial_model]
+    requirement: "Financial Model in unlocked, fully formula-linked Excel, with no macros and no hard-coded values in calculation cells"
+    units: ["VOL-I:10.3"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: pass_fail
+    evidence: [EV-FIN-MODEL]
+    interpretations:
+      - stage: BASE
+        quote: "The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded values in calculation cells"
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated; Appendix 2 names files '.pdf'"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-FILE-NAMES]
+  - id: VOL-I-10.3-02
+    group: "VOL-I:10.3"
+    scope: [envelope_B, financial_model, model_audit]
+    requirement: "Financial Model accompanied by an independent model auditor's opinion addressed to the Authority"
+    units: ["VOL-I:10.3"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: pass_fail
+    evidence: [EV-MODEL-AUDIT]
+    interpretations:
+      - stage: BASE
+        quote: "shall be accompanied by an opinion from an independent model auditor addressed to the Authority"
+        note: "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; conflicts with VOL-I 10.1; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
+  - id: VOL-I-10.4-01
+    group: "VOL-I:10.4"
+    scope: [envelope_B, price]
+    requirement: "All prices exclusive of VAT and stated in Saudi Riyals"
+    units: ["VOL-I:10.4"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F]
+    interpretations:
+      - stage: BASE
+        quote: "All prices shall be exclusive of value added tax and shall be stated in Saudi Riyals."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-10.5-01
+    group: "VOL-I:10.5"
+    scope: [envelope_B, price]
+    requirement: "No conditional price, alternative price, or price subject to adjustment other than as provided in Volume V"
+    units: ["VOL-I:10.5"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F]
+    interpretations:
+      - stage: BASE
+        quote: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price"
+        consequence: {class: non_responsive, unit: "VOL-I:10.5", quote: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive."}
+      - stage: ADD-02
+        quote: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price"
+        consequence: {class: non_responsive, unit: "VOL-I:10.5", quote: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive."}
+        note: "ADD-02 Q14 concerns alternative technical solutions (row VOL-I-10.5-02); reviewed for this row, no change."
+    confidence: high
+    confidence_reason: "verbatim"
+  - id: VOL-I-10.5-02
+    group: "VOL-I:10.5"
+    scope: [alternative_solution]
+    requirement: "An alternative technical solution only as a supplement to a fully compliant base Proposal (considered at the Authority's discretion)"
+    units: ["VOL-I:10.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    no_deliverable: "applies only if the Bidder offers an alternative technical solution; nothing to submit otherwise"
+    interpretations:
+      - stage: BASE
+        quote: "An alternative technical solution may be submitted only as a supplement to a fully compliant base Proposal and will be considered at the Authority's sole discretion."
+      - stage: ADD-02
+        quote: "An alternative technical solution may be submitted only as a supplement to a fully compliant base Proposal and will be considered at the Authority's sole discretion."
+        note: "ADD-02 Q14: an alternative technical solution may not be submitted alone; VOL-I 10.5 applies."
+    confidence: medium
+    confidence_reason: "verbatim; what happens to an alternative submitted without a compliant base is not stated"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-10.6-01
+    group: "VOL-I:10.6"
+    scope: [envelope_B, financing]
+    requirement: "With Form 4-F, a schedule of the principal financing assumptions (debt tenor, margin, gearing)"
+    units: ["VOL-I:10.6"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: pass_fail
+    evidence: [EV-FIN-ASSUMPTIONS]
+    interpretations:
+      - stage: BASE
+        quote: "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing."
+        note: "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; whether this schedule is part of Form 4-F is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; conflicts with VOL-I 10.1; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
+  # ---------------------------------------------------------------- Section 11: evaluation
+  - id: VOL-I-11.5-01
+    group: "VOL-I:11.5"
+    scope: [clarification, post_submission, price]
+    requirement: "A response to an Authority clarification request must not change the Availability Payment quoted"
+    units: ["VOL-I:11.5"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: procedural
+    no_deliverable: "arises only after submission, if the Authority seeks a written clarification"
+    interpretations:
+      - stage: BASE
+        quote: "A response to a clarification shall not change the Availability Payment quoted"
+        consequence: {class: non_responsive, unit: "VOL-I:11.5", quote: "any response that does so shall render the Proposal non-responsive"}
+    confidence: high
+    confidence_reason: "verbatim"
+  - id: VOL-I-T1-1-A
+    group: "VOL-I:T1-1"
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion A (process design, treatment performance and compliance with Volume II)"
+    units: ["VOL-I:T1-1/A"]
+    follows_replacement: true
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 25"
+        parameters: {marks: 25}
+      - stage: ADD-02
+        quote: "Marks: 25"
+        parameters: {marks: 25}
+        note: "Table 1-1 reissued by ADD-02 §3.1; A unchanged. Note (3)'s 'standard five-point scale' and 'weight shown' are not defined in the pack."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  - id: VOL-I-T1-1-C
+    group: "VOL-I:T1-1"
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion C (operations and maintenance philosophy and lifecycle strategy)"
+    units: ["VOL-I:T1-1/C"]
+    follows_replacement: true
+    discipline: Operations
+    owner: O&M lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 20"
+        parameters: {marks: 20}
+      - stage: ADD-02
+        quote: "Marks: 20"
+        parameters: {marks: 20}
+        note: "Table 1-1 reissued by ADD-02 §3.1; C unchanged."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  - id: VOL-I-T1-1-E
+    group: "VOL-I:T1-1"
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion E (organisation, key personnel and consortium governance)"
+    units: ["VOL-I:T1-1/E"]
+    follows_replacement: true
+    discipline: Bid management
+    owner: Bid manager
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 10"
+        parameters: {marks: 10}
+      - stage: ADD-02
+        quote: "Marks: 10"
+        parameters: {marks: 10}
+        note: "Table 1-1 reissued by ADD-02 §3.1; E unchanged."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  - id: VOL-I-T1-1-F
+    group: "VOL-I:T1-1"
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion F (health, safety and security of supply)"
+    units: ["VOL-I:T1-1/F"]
+    follows_replacement: true
+    discipline: HSE
+    owner: HSE lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 10"
+        parameters: {marks: 10}
+      - stage: ADD-02
+        quote: "Marks: 10"
+        parameters: {marks: 10}
+        note: "Table 1-1 reissued by ADD-02 §3.1; F unchanged."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  # ---------------------------------------------------------------- Section 12: award and close (post-award)
+  - id: VOL-I-12.1-01
+    group: "VOL-I:12.1"
+    scope: [concession, post_award]
+    requirement: "Concession period of 25 years from the Project Commercial Operation Date, then transfer of the Project to the Authority per Volume V"
+    units: ["VOL-I:12.1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be obtained at PCOD, the Independent Engineer''s certification that
+        fixes PCOD (VOL-V 1.5), from which VOL-I 12.1 runs the 25-year concession period, and to be produced at the
+        end of that period, the record of transfer of the Project to the Authority under Volume V (rows VOL-V-3.2-01
+        and VOL-V-42.1-01).'
+      basis:
+      - unit: VOL-I:12.1
+        page: 6
+        words: The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation
+          Date, following which the Project shall transfer to the Authority in accordance with Volume V.
+      - unit: VOL-I:2.3
+        page: 2
+        words: PCOD means the Project Commercial Operation Date, as defined in Volume V.
+      - unit: VOL-V:1.5
+        page: 2
+        words: PCOD means the date on which the Independent Engineer certifies that the Facility has satisfied the requirements
+          of Volume II Clause 7.2.
+      when: at PCOD (start of the concession period on the VOL-I 12.1 reading) and at transfer at the end of the period
+      bid_stage_note: 'Decide now (I-CONCESSION): VOL-V 3.1 runs the 25 years from the Effective Date instead, and ADD-02
+        Q7 refers Bidders to the order of precedence at VOL-I 3.2 without amending either clause; the term start drives
+        the Financial Model''s operating period and the transfer date, and Legal should decide whether to record the
+        assumed start in Form 4-E, since a deviation not listed there is taken as accepted (VOL-V Note to Bidders).'
+    date_rules:
+      - {rule_id: CONCESSION-END-PCOD, kind: external, purpose: event, anchor: PCOD, offset: 25, unit: year, direction: after, source_unit: "VOL-I:12.1", text: "twenty-five (25) years commencing on the Project Commercial Operation Date"}
+    interpretations:
+      - stage: BASE
+        quote: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date, following which the Project shall transfer to the Authority in accordance with Volume V."
+        parameters: {term_years: 25, start: "Project Commercial Operation Date"}
+        note: "VOL-V 3.1 runs the term from the Effective Date instead; not resolved here (I-CONCESSION)."
+      - stage: ADD-02
+        quote: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date, following which the Project shall transfer to the Authority in accordance with Volume V."
+        parameters: {term_years: 25, start: "Project Commercial Operation Date"}
+        note: "ADD-02 Q7 notes the VOL-V 3.1 conflict, refers to the order of precedence at VOL-I 3.2 and makes no amendment. Which start date governs is for a person."
+    confidence: low
+    confidence_reason: "verbatim, but conflicts with VOL-V 3.1 and the Authority declined to resolve it (ADD-02 Q7)"
+    issues: [I-CONCESSION]
+  - id: VOL-I-12.2-01
+    group: "VOL-I:12.2"
+    scope: [award, commercial_close, post_award]
+    requirement: "Preferred Bidder to achieve Commercial Close within 120 days of the Preferred Bidder Notification"
+    units: ["VOL-I:12.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show Commercial Close within 120 days of the Preferred Bidder Notification
+        cannot be specified, because the pack does not define Commercial Close or say what it comprises (VOL-I Section
+        2 and the VOL-V extract give no definition).'
+      basis:
+      - unit: VOL-I:12.2
+        page: 6
+        words: The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days
+      - unit: ADD-02:Q13
+        page: 2
+        words: The periods in Volume I Clause 12.2 are unchanged.
+      missing: A definition of Commercial Close (which agreements or steps it comprises), absent from VOL-I Section
+        2 (Definitions) and from the VOL-V extract; the Preferred Bidder Notification that starts the 120 days is not
+        a pack event, and the pack states no consequence of missing Commercial Close (unlike Financial Close).
+    date_rules:
+      - {rule_id: PB-COMMERCIAL-CLOSE, kind: external, purpose: deadline, anchor: PBN, offset: 120, unit: calendar_day, direction: after, source_unit: "VOL-I:12.2", text: "Commercial Close within one hundred and twenty (120) days ... of the date of the Preferred Bidder Notification"}
+    interpretations:
+      - stage: BASE
+        quote: "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days"
+        parameters: {days_after_pbn: 120}
+      - stage: ADD-02
+        quote: "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days"
+        parameters: {days_after_pbn: 120}
+        note: "ADD-02 Q13: the periods in VOL-I 12.2 are unchanged."
+    confidence: high
+    confidence_reason: "verbatim; anchored to the PBN, an event not in the pack; no consequence stated for Commercial Close"
+  - id: VOL-I-12.2-02
+    group: "VOL-I:12.2"
+    scope: [award, financial_close, bid_security, post_award]
+    requirement: "Preferred Bidder to achieve Financial Close within 270 days of the Preferred Bidder Notification"
+    units: ["VOL-I:12.2"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show Financial Close within 270 days of the Preferred Bidder Notification
+        cannot be specified, because the pack defines neither Financial Close nor ''the long-stop date'' by which failure
+        entitles the Authority to call the Bid Bond.'
+      basis:
+      - unit: VOL-I:12.2
+        page: 6
+        words: Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification
+      - unit: VOL-I:12.2
+        page: 6
+        words: Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond
+          and to proceed with the next ranked Bidder.
+      - unit: ADD-02:Q13
+        page: 2
+        words: Will the Authority extend the Financial Close long-stop date?
+      - unit: ADD-02:Q13
+        page: 2
+        words: The periods in Volume I Clause 12.2 are unchanged.
+      missing: What event constitutes Financial Close (VOL-V 1.4 defines the Financing Documents but not Financial Close)
+        and what 'the long-stop date' in VOL-I 12.2 is (whether it is the 270-day date or a later one); neither is defined
+        in VOL-I Section 2 or the VOL-V extract, and ADD-02 Q13 did not define it (I-VOL-I-BOND-LONGSTOP).
+      bid_stage_note: 'Bid Bond exposure now: the Bid Bond must remain valid for 180 days from the Proposal Due Date
+        and be extended on demand where the Authority extends Proposal validity (VOL-I 6.3), while VOL-I 12.2 lets the
+        Authority call it if Financial Close is missed by the undefined long-stop date (I-VOL-I-BOND-LONGSTOP); if the
+        VOL-I 8.9 undertaking route is used for a foreign member''s investment licence, the licence is due ''prior to
+        Financial Close'', the same undefined event.'
+    date_rules:
+      - {rule_id: PB-FINANCIAL-CLOSE, kind: external, purpose: deadline, anchor: PBN, offset: 270, unit: calendar_day, direction: after, source_unit: "VOL-I:12.2", text: "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"}
+    interpretations:
+      - stage: BASE
+        quote: "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"
+        parameters: {days_after_pbn: 270}
+        consequence: {class: contractual, unit: "VOL-I:12.2", quote: "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."}
+        note: "'Long-stop date' is not defined in Volume I."
+      - stage: ADD-02
+        quote: "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"
+        parameters: {days_after_pbn: 270}
+        consequence: {class: contractual, unit: "VOL-I:12.2", quote: "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."}
+        note: "ADD-02 Q13: the Authority will not extend; the periods in VOL-I 12.2 are unchanged."
+    confidence: medium
+    confidence_reason: "verbatim; 'long-stop date' undefined and the Bid Bond's 180-day validity may not reach it"
+    issues: [I-VOL-I-BOND-LONGSTOP]
+  # ---------------------------------------------------------------- Section 13 and Appendix 3
+  - id: VOL-I-13.2-01
+    group: "VOL-I:13.2"
+    scope: [confidentiality, conduct]
+    requirement: "Keep the RFP Documents confidential; disclose only to members, advisors and financiers on a need-to-know basis under equivalent terms"
+    units: ["VOL-I:13.2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: procedural
+    no_deliverable: "a conduct rule on handling the RFP Documents; nothing to submit"
+    interpretations:
+      - stage: BASE
+        quote: "The RFP Documents are confidential and shall not be disclosed other than to a Bidder's members, advisors and financiers on a need-to-know basis and subject to equivalent confidentiality obligations."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated"
+  - id: VOL-I-App3-01
+    group: "VOL-I:App3"
+    scope: [bid_submission, address, marking]
+    requirement: "Deliver to Tender Box 4, Administrative Building C, Sakaka; marking 'NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE'"
+    units: ["VOL-I:App3/para1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-DELIVERY]
+    interpretations:
+      - stage: BASE
+        quote: "Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka."
+        parameters: {address: "Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka", marking: "NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE"}
+        note: "The address of VOL-I 6.1 (row VOL-I-6.1-01 carries the deadline and the late-receipt rejection)."
+    confidence: medium
+    confidence_reason: "verbatim; whether 'Marked:' is the envelope marking required by VOL-I 6.2 is not stated"
+    issues: [I-NO-CONSEQUENCE]

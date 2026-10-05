@@ -253,7 +253,14 @@ def test_gates_hold_finalisation_only_and_name_the_decision_date(r, base):
     for aid, issues in GATES.items():
         a = x[aid]
         assert a["decision_status"].startswith("GATED") and all(i in a["decision_status"] for i in issues)
-        assert a["decision_needed_by"] == a["latest_start"] and f"decision needed by {a['latest_start']}" in a["decision_status"]
+        # session 11 (audit A5-1): a gate whose issue has a drafted clarification question also names the last day to
+        # decide whether to ask (the clarification route's latest start); decision_needed_by is the earlier date
+        assert a["finalise_by"] == a["latest_start"]
+        if a["ask_by"]:
+            assert a["decision_needed_by"] == min(a["ask_by"], a["latest_start"])
+            assert f"finalise by {a['latest_start']}" in a["decision_status"] and a["ask_by"] in a["decision_status"]
+        else:
+            assert a["decision_needed_by"] == a["latest_start"] and f"decision needed by {a['latest_start']}" in a["decision_status"]
         assert a["timing_status"] == a["status"] and not a["status"].startswith("GATED")   # timing stays separate
         assert all(i in r["curated_issues"] for i in issues)                         # open issues in the register
     for prep in ("form-4a-prep", "poa", "spoc", "form-4b-prep", "references", "completion-certs", "model-audit-opinion",

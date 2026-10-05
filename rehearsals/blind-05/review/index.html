@@ -1,0 +1,1323 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Review: ADD-03, run ADD-03-run-host-blind05-20261005T025444Z</title><style>body{font:14px/1.45 sans-serif;max-width:1200px;margin:16px auto;padding:0 16px;color:#111}table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid #bbb;padding:3px 6px;vertical-align:top;font-size:13px}th{background:#eee}code{background:#f3f3f3;padding:0 3px}li.sub{margin-left:24px;list-style:circle}blockquote{background:#fde2e2;border:2px solid #b00000;color:#7a0000;padding:6px 10px;margin:8px 0;font-weight:bold}</style></head><body><div class="tp-candidate-banner" style="background:#fde2e2;border:2px solid #b00000;color:#7a0000;font:bold 14px sans-serif;padding:6px 10px;margin:0 0 8px 0">CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted</div><h1>Review packet: ADD-03, AI workflow run ADD-03-run-host-blind05-20261005T025444Z</h1>
+<blockquote><strong>CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted.</strong> Statuses are the controller's; a person decides every item. The real <code>curation/</code>, <code>config/</code> and <code>out/</code> were only read: everything below lives in this run's folder.</blockquote>
+<ul>
+<li>PDF: <code>/home/user/tender-pack-reader/rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf</code> (sha256 9c5e22d59a80d48f…, 5 pages); preceding state: pack <code>/home/user/tender-pack-reader/config/pack.yaml</code> (NUPA-ISTP-2026-014), previous evidence build <code>/home/user/tender-pack-reader/build</code></li>
+<li>route <strong>host</strong>; model requested <code>claude-code headless (opus)</code>, reported <code>None</code>; host sessions report: claude-opus-5-5</li>
+<li>status <strong>partial</strong>: 23 provision(s) unresolved in the candidate (listed first in the review packet); 23 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:cover/para3, esc:ADD-03:2.1, esc:ADD-03:3.3, esc:ADD-03:3.3(b), esc:ADD-03:5.1, esc:ADD-03:5.2, esc:ADD-03:Q18, esc:ADD-03:7.2 …; check-register on the candidate: exit 1, 1 finding(s) {'quote': 1}</li>
+<li>usage: 0 call(s), 0 input / 0 output tokens; cost not computed</li>
+</ul>
+<h2>Execution, completeness and approval (three separate things)</h2>
+<ul>
+<li><strong>Execution</strong> (what ran): ingest done, readings done, analysis done, validation done, downstream done, downstream_validation done, critic done, promotion done, pin done, check_register done, outputs done, diff done, review running; batches reading: {'done': 1}; analysis: {'done': 9}; downstream: {'done': 5}</li>
+<li><strong>Completeness</strong> (what the run completed): <strong>partial</strong>: 23 provision(s) unresolved in the candidate (listed first in the review packet); 23 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:cover/para3, esc:ADD-03:2.1, esc:ADD-03:3.3, esc:ADD-03:3.3(b), esc:ADD-03:5.1, esc:ADD-03:5.2, esc:ADD-03:Q18, esc:ADD-03:7.2 …; check-register on the candidate: exit 1, 1 finding(s) {'quote': 1}</li>
+<li class=sub>downstream tasks: 54; answered 31; unanswered 0; answered only by items that cannot be promoted 23; answered 'no change' 8</li>
+<li><strong>Human approval</strong>: <strong>none</strong> (nothing approved, accepted, rejected or sent); no decision is recorded in the candidate's decisions file</li>
+</ul>
+<h2>What is candidate and what is real</h2>
+<ul>
+<li><strong>Candidate</strong> (proposed by this run, nothing accepted): <code>../candidate/</code> — a copy of the curation and configuration with ADD-03 added, its evidence build, its op file, rows, issues, templates and outputs.</li>
+<li><strong>Last validated state</strong>: <code>../candidate/out-before/</code> (the pre-addendum outputs built from the copied curation and the previous evidence build; done)</li>
+<li><strong>Real</strong> (untouched): <code>curation/</code>, <code>config/</code>, <code>out/</code>; the owner's approvals and readings were copied unchanged and used read-only.</li>
+</ul>
+<ul>
+<li>real inputs changed since the run started: none</li>
+</ul>
+<h2>Candidate outputs</h2>
+<p>Exit 0 (WORKING DRAFT (not releasable)); every file carries the banner (<code>../candidate/out/CANDIDATE.md</code>); A1 has a candidate status column {'UNRESOLVED': 14, 'proposed (existing row; not changed by this run; not reviewed)': 179, 'PROPOSED BY THE AI WORKFLOW': 14}.</p>
+<table>
+<tr><th>Output</th><th>Candidate</th><th>Before (ADD-03 not applied)</th></tr>
+<tr><td>A1 register</td><td><a href="../candidate/out/a1/a1.xlsx">../candidate/out/a1/a1.xlsx</a></td><td><a href="../candidate/out-before/a1/a1.xlsx">../candidate/out-before/a1/a1.xlsx</a></td></tr>
+<tr><td>A2 changes</td><td><a href="../candidate/out/a2/a2.md">../candidate/out/a2/a2.md</a></td><td><a href="../candidate/out-before/a2/a2.md">../candidate/out-before/a2/a2.md</a></td></tr>
+<tr><td>A3 consequences</td><td><a href="../candidate/out/a3/a3.pdf">../candidate/out/a3/a3.pdf</a></td><td><a href="../candidate/out-before/a3/a3.pdf">../candidate/out-before/a3/a3.pdf</a></td></tr>
+<tr><td>A4 clarification register</td><td><a href="../candidate/out/a4/clarification_register.md">../candidate/out/a4/clarification_register.md</a></td><td><a href="../candidate/out-before/a4/clarification_register.md">../candidate/out-before/a4/clarification_register.md</a></td></tr>
+<tr><td>A5 programme</td><td><a href="../candidate/out/a5/README.md">../candidate/out/a5/README.md</a></td><td><a href="../candidate/out-before/a5/README.md">../candidate/out-before/a5/README.md</a></td></tr>
+<tr><td>A5 Gantt</td><td><a href="../candidate/out/a5/gantt.html">../candidate/out/a5/gantt.html</a></td><td><a href="../candidate/out-before/a5/gantt.html">../candidate/out-before/a5/gantt.html</a></td></tr>
+<tr><td>A5 marshalling</td><td><a href="../candidate/out/a5/marshalling.csv">../candidate/out/a5/marshalling.csv</a></td><td><a href="../candidate/out-before/a5/marshalling.csv">../candidate/out-before/a5/marshalling.csv</a></td></tr>
+<tr><td>Checks</td><td><a href="../candidate/out/checks.json">../candidate/out/checks.json</a></td><td><a href="../candidate/out-before/checks.json">../candidate/out-before/checks.json</a></td></tr>
+</table>
+<ul>
+<li>before → after: {"a1": {"rows_before": 205, "rows_after": 207, "new": 2, "gone": 0}, "a3": {"before": 17, "after": 17, "enters": 0, "leaves": 0}, "a5": {"activities_before": 43, "activities_after": 43, "new": 0, "gone": 0}}</li>
+</ul>
+<ul>
+<li>ADD-03 is <strong>PARTIAL</strong> in the candidate (provisions unresolved): A3 and the A5 programme show the validated state (ADD-02); ADD-03 as proposed is in A1's <code>Status after ADD-03</code> column, in A2, in the candidate A3 and A5 below, in <code>a5/working/ADD-03.json</code> and in the diff below.</li>
+</ul>
+<h3>Validated and candidate A3 / A5 (partial should not mean useless)</h3>
+<ul>
+<li><strong>Validated</strong> (unchanged; ADD-02): <a href="../candidate/out/a3/a3.pdf">a3/a3.pdf</a> (one page), <a href="../candidate/out/a5/README.md">a5/README.md</a>, <a href="../candidate/out/a5/gantt.html">a5/gantt.html</a></li>
+<li><strong>Candidate</strong> (CANDIDATE — NOT VALIDATED; ADD-03 as proposed): <a href="../candidate/out/a3/a3_candidate.pdf">a3/a3_candidate.pdf</a> (9 page(s)), <a href="../candidate/out/a3/a3_candidate.md">a3/a3_candidate.md</a>, <a href="../candidate/out/a5/candidate/README.md">a5/candidate/README.md</a>, <a href="../candidate/out/a5/candidate/gantt.html">a5/candidate/gantt.html</a></li>
+</ul>
+<p><strong>What may be changing.</strong> ADD-03 is PARTIAL: 23 of 54 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 12 op(s) that are valid there stood (each still a proposal: review proposed 12), A3 would gain 0 row(s) (none), lose 0 (none) and change 1 (VOL-IV-F4F-02 (register)); A5, replanned at ADD-03's issue date (2026-11-15), would move the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 5 REVIEW through relationships. Not settled: 11 activities blocked by an unresolved row (fin-model-build, technical-proposal, fin-model-freeze, form-4a-prep and 7 more), 2 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship chain(s) blocked or incomplete, 8 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT and 6 more. Nothing here is validated, accepted or applied to the real state.</p>
+<ul>
+<li>CHANGES VOL-IV-F4F-02: now STALE; ops none (no op of the pending stage names it: a register-level difference; NOT SETTLED: ADD-03:3.3 UNRESOLVED: not promotable: ADD-03/3.3 insufficient_evidence (missing_information: the proposer declares missing: Limb (b) of the replacement (ADD-03:3.3(b)) is not carrie…; NOT SETTLED: STALE at ADD-03: its reading was not re-made (new dependency ADD-03:Q19; new dependency ADD-03:Q20; VOL-IV:F4-F/para1 changed since BASE (by ADD-03/Q19, ADD-03/Q20)))</li>
+</ul>
+<ul>
+<li>blockers: 23 unresolved provision(s), 11 blocked activit(y/ies), 2 STALE row(s), 0 C46 gap(s), 0 relationship chain(s) blocked or incomplete, 8 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT, I-VOL-III, I-ADD03-29.2-NO-OP, I-VOL-II-MISSING, I-VOL-V-MISSING, I-VOL-IV-SCALE, I-OP-ADD-01/Q4</li>
+<li>conditional scenarios: 0</li>
+</ul>
+<p><strong>Image-read units</strong> (the review packet of each region shows every crop beside its reading; translations are proposals, not evidence):</p>
+<ul>
+<li>ADD-03-p4-r1 (ADD-03 p4; reading pending): <a href="../candidate/build/review/ADD-03-p4-r1/packet.html">packet</a>; 18 unit(s) touched</li>
+<li class=sub><code>ADD-03:p4-image</code>: “Appendix A image (Arabic with English office name): Northern Region Airspace Safeguarding Office letter, Table 5-1 Maximum height of structures and equipment on the site”</li>
+<li class=sub><code>ADD-03:p4-image/hdr-en</code>: “Northern Region Airspace Safeguarding Office”</li>
+<li class=sub><code>ADD-03:p4-image/hdr-ar</code>: “مكتب حماية المجال الجوي بالمنطقة الشمالية”; translation (apart): ‘Northern Region Airspace Safeguarding Office’</li>
+<li class=sub><code>ADD-03:p4-image/date</code>: “التاريخ: ١٠ نوفمبر ٢٠٢٦م”; translation (apart): ‘Date: 10 November 2026 AD’</li>
+<li class=sub><code>ADD-03:p4-image/ref</code>: “الرقم: ٤٧١/٢٠٢٦”; translation (apart): ‘Reference number: 471/2026’</li>
+<li class=sub><code>ADD-03:p4-image/subject</code>: “الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان”; translation (apart): ‘Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant’</li>
+<li class=sub><code>ADD-03:p4-image/tender-ref</code>: “مناقصة رقم: NUPA/ISTP/2026/014”; translation (apart): ‘Tender number: NUPA/ISTP/2026/014’</li>
+<li class=sub><code>ADD-03:p4-image/table-title</code>: “جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع”; translation (apart): ‘Table 5-1: Maximum height of structures and equipment on the site’</li>
+<li class=sub><code>ADD-03:p4-image/table-intro</code>: “يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:”; translation (apart): ‘The maximum permitted height in each zone of the site is set as follows:’</li>
+<li class=sub><code>ADD-03:p4-image/table-header</code>: “المنطقة / الوصف الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) / الإنارة التحذيرية”; translation (apart): ‘Column headings, right to left: Zone / Description / Maximum height (metres above natural ground level) / Warning lighting’; uncertain: no ruled grid was detected although the image shows a ruled table; columns are separated here with ' / ' in reading (right-to-left) order, which is a reading convention, not printed text</li>
+<li class=sub><code>ADD-03:p4-image/row-a</code>: “أ / الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع / ٢٥ مطلوبة”; translation (apart): ‘Zone A / The part of the site lying within a distance of 1,500 m of the eastern boundary of the site / 25 / Required’; uncertain: the thousands separator in ١٬٥٠٠ is read as the Arabic thousands separator (U+066C); it could be printed as an apostrophe-like mark; reviewer to confirm it is not a decimal mark (1.5); the descriptio…</li>
+<li class=sub><code>ADD-03:p4-image/row-b</code>: “ب / باقي مساحة الموقع ٤٠ / مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً”; translation (apart): ‘Zone B / Remainder of the site area / 40 / Required for any part whose height exceeds 30 metres’</li>
+<li class=sub>… 6 more in <code>a3/a3_candidate.md</code></li>
+<li>VOL-II-p3-r1 (VOL-II p3; reading approved): <a href="../candidate/build/review/VOL-II-p3-r1/packet.html">packet</a>; not touched by this addendum</li>
+<li>VOL-IV-p6-r1 (VOL-IV p6; reading approved): <a href="../candidate/build/review/VOL-IV-p6-r1/packet.html">packet</a>; not touched by this addendum</li>
+</ul>
+<h2>Timings (wall clock per step)</h2>
+<table>
+<tr><th>Step</th><th>Seconds</th><th>Status</th></tr>
+<tr><td>ingest</td><td>17.9</td><td>done</td></tr>
+<tr><td>readings</td><td>209.3</td><td>done</td></tr>
+<tr><td>analysis</td><td>2675.7</td><td>done</td></tr>
+<tr><td>validation</td><td>3.4</td><td>done</td></tr>
+<tr><td>downstream</td><td>1260.1</td><td>done</td></tr>
+<tr><td>downstream_validation</td><td>0.8</td><td>done</td></tr>
+<tr><td>critic</td><td>66.4</td><td>done</td></tr>
+<tr><td>promotion</td><td>16.9</td><td>done</td></tr>
+<tr><td>pin</td><td>1.1</td><td>done</td></tr>
+<tr><td>check_register</td><td>3.3</td><td>done</td></tr>
+<tr><td>outputs</td><td>85.6</td><td>done</td></tr>
+<tr><td>diff</td><td>2.0</td><td>done</td></tr>
+<tr><td>review</td><td>0.0</td><td>running</td></tr>
+<tr><td><strong>total</strong></td><td><strong>4342.5</strong> (72.4 min)</td><td>target 30 min from the PDF to candidate outputs and this packet, human review excluded</td></tr>
+</table>
+<h2>Readings of the addendum's image regions (AI-proposed, PENDING HUMAN REVIEW)</h2>
+<p>Ingest first refused the candidate because these image regions had no reading (C05): ADD-03-p4-r1. Each reading below was proposed by the route of this run, checked by readings.check_reading and written into the candidate's readings; it is an interpretation of an image, never approved, and every unit made from it carries <code>reading.status: pending</code>.</p>
+<ul>
+<li><strong>ADD-03-p4-r1</strong> — done; controller status <strong>interpretation_pending</strong>; unit <code>ADD-03:p4-image</code>; file <code>../candidate/curation/readings/ADD-03-p4-r1.yaml</code></li>
+<li class=sub>the reading beside its crops (the build's review packet): <a href="../candidate/build/review/ADD-03-p4-r1/packet.html">../candidate/build/review/ADD-03-p4-r1/packet.html</a></li>
+<li class=sub>form reading, languages ['ar', 'en']; prepared by: AI-assisted: headless host session ADD-03-hostsession-20261005T025503Z-0189 (claude-code headless (opus); the CLI reported claude-opus-5-5), in AI workflow run ADD-03-run-host-blind05-20261005T025444Z (reading-ADD-03-p4-r1), 2026-10-05T02:58:19Z; proposed for a person's review, not approved</li>
+<li class=sub>uncertainty: The table is ruled in the image but no grid was detected from pixels; rows are therefore read as band lines with ' | ' between cells in right-to-left reading order.</li>
+<li class=sub>uncertainty: Band 5 is measured from x=34 although the printed text starts near x=625; the extra extent is taken to be speckle, not text.</li>
+<li class=sub>uncertainty: The signature in band 13 left is a drawn stroke, not text; it is not transcribed.</li>
+<li class=sub>uncertainty: Diacritics (shadda on الحدّ, المعدّات; damma/kasra on يُحدِّد, يُقاس; tanween on يوماً, متراً) were read on the enlarged crops.</li>
+<li class=sub>uncertainty: prepared_by is left empty for the controller to write.</li>
+</ul>
+<h2>First: unresolved provisions and escalations</h2>
+<p>23 of 54 provisions are not answered by a promoted item (each is <code>unresolved</code> in the candidate op file with the reason); 8 escalation(s).</p>
+<ul>
+<li><strong>ESCALATED ADD-03/2.1(b)</strong> (ADD-03:2.1): ADD-03:2.1 prints 'Volume I Clauses 6.6 and 6.7 are deleted', so VOL-I:6.7 must be set to status deleted. In simulate_amendment the engine rejects set_status on VOL-I:6.7 under C22 ('declared target VOL-I:6.7 is not cited; the provision cites [VOL-I:6.6, VOL-I:6.1]'): its citation parser does not p…</li>
+<li class=sub>unsupported: A set_status 'deleted' op on VOL-I:6.7 for provision ADD-03:2.1 cannot pass C22 with the current citation parsing; a person must record the deletion of 6.7 (or the citation list must be corrected). Without it VOL-I:6.7 stays active and its 'withdraw or modify ... at any time before the Proposal Due…</li>
+<li class=sub>evidence: ADD-03:2.1 p1: “Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6”; VOL-I:6.7 p3: “A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted th…”</li>
+<li class=sub>affected scope: units VOL-I:6.1, VOL-I:6.6; rows VOL-I-6.1-01; activities assemble-envelope-a, assemble-envelope-b, copies, deliver, seal-and-mark; clarifications none</li>
+<li><strong>ESCALATED ADD-03/3.3(b)</strong> (ADD-03:3.3(b)): ADD-03:3.3(b) is the second half of the replacement Clause 29.2 quoted in ADD-03:3.3. It sets the Indexed Proportion at 75% from year 11 and states that the balance remains fixed. It must become part of VOL-V:29.2. In the dry run, append_text with provision ADD-03:3.3(b) failed C22 ('the provision …</li>
+<li class=sub>unsupported: A single quoted replacement that is split across two provision units (a clause and its child list item), where the child does not itself cite the target. A person must append '(b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall…</li>
+<li class=sub>evidence: ADD-03:3.3(b) p1: “(b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed.’”; ADD-03:3.3 p1: “Volume V Clause 29.2 is deleted and replaced by the following:”; VOL-V:29.2 p3: “forty per cent (40%) remaining fixed.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/7.2</strong> (ADD-03:7.2): 7.2 sets a governing-language rule: the Arabic Table 5-1 (Appendix A image) governs over the English translation (Appendix B). The governing Arabic differs in substance from the English. Note 1 covers permanent and temporary structures, including cranes and construction equipment, where the English…</li>
+<li class=sub>unsupported: No op type records a language-precedence rule between two renderings of a table inside the same addendum. The units affected (ADD-03:T5-1, ADD-03:p4-image) are not in force at ADD-02, so they cannot be targeted. A person must record the precedence and the resulting content of Table 5-1 once the Ara…</li>
+<li class=sub>evidence: ADD-03:7.2 p3: “Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only.”; ADD-03:p4-image/note1 p4: “١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.”; ADD-03:p4-image/note2 p4: “٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/7.3</strong> (ADD-03:7.3): 7.3 imposes a new free-standing bidder obligation with a pre-PDD deadline: notify the Authority through the Portal of the zone and height of any structure, plant or equipment over 30 m, not later than three Working Days before the PDD. It amends no unit in force at ADD-02. annotate (adds_obligation…</li>
+<li class=sub>unsupported: A free-standing addendum obligation with no existing target unit. It needs an A1 register row (row_new) and an A5 programme milestone, which a person must create. The scope ('structure, plant or equipment') may, under the governing Arabic note 1, include construction cranes.</li>
+<li class=sub>evidence: ADD-03:7.3 p3: “A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the Authority through th…”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/7.4</strong> (ADD-03:7.4): 7.4 imposes a free-standing bidder obligation ('Bidders shall reflect Table 5-1 in the Technical Proposal') that amends no unit in force at ADD-02. annotate (adds_obligation) on the new Clause 5.6 fails C22 (no target at ADD-02). It obliges, so no_effect is not available.</li>
+<li class=sub>unsupported: A free-standing proposal-content obligation with no existing target. It needs an A1 register row created by a person. What Table 5-1 contains depends on the governing Arabic text (see the 7.2 issue).</li>
+<li class=sub>evidence: ADD-03:7.4 p3: “Bidders shall reflect Table 5-1 in the Technical Proposal.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/AppB/para1</strong> (ADD-03:AppB/para1): AppB/para1 makes the Arabic Table 5-1 (Appendix A image) govern over the English translation at Appendix B ('The Arabic text of Table 5-1 at Appendix A governs.'). The two versions differ materially: the English note (2) and column header use finished ground level after grading and filling, while t…</li>
+<li class=sub>unsupported: The op types (replace_text, annotate, etc.) act on units as they stand at the previous stage (ADD-02). Both Table 5-1 versions are first issued by ADD-03 and are not_issued at ADD-02, so no op can record that one ADD-03 unit prevails over another. A person must decide how the register records that …</li>
+<li class=sub>evidence: ADD-03:AppB/para1 p5: “This translation is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.”; ADD-03:T5-1/note(2) p5: “Height is measured from finished ground level after grading and filling.”; ADD-03:p4-image/note2 p4: “٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.”; ADD-03:p4-image/note1 p4: “١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/T5-1/note(1)</strong> (ADD-03:T5-1/note(1)): The English note (1), 'These limits apply to all permanent structures, including stacks.', does not match the governing Arabic note 1 (reading pending). The Arabic applies the limits to permanent AND temporary structures, including stacks, cranes and construction equipment ('المنشآت الدائمة والمؤقت…</li>
+<li class=sub>unsupported: No op type records a conflict between a non-governing translation and its governing image-read source; deciding which scope applies, and whether to raise a clarification, is for a person.</li>
+<li class=sub>evidence: ADD-03:T5-1/note(1) p5: “These limits apply to all permanent structures, including stacks.”; ADD-03:p4-image/note1 p4: “١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.”; ADD-03:7.2 p3: “The Arabic text governs.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/T5-1/note(2)</strong> (ADD-03:T5-1/note(2)): The English note (2), 'Height is measured from finished ground level after grading and filling.', and the English column heading 'm above finished ground level' give the opposite datum to the governing Arabic (readings pending). Arabic note 2 reads 'يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال …</li>
+<li class=sub>unsupported: No op type records a conflict between a non-governing translation and its governing image-read source; which datum is applied, and whether to clarify, is for a person.</li>
+<li class=sub>evidence: ADD-03:T5-1/note(2) p5: “Height is measured from finished ground level after grading and filling.”; ADD-03:p4-image/note2 p4: “٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.”; ADD-03:p4-image/table-header p4: “الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)”; ADD-03:7.2 p3: “The Arabic text governs.”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>UNRESOLVED ADD-03:cover/para3</strong> (paragraph, p1): not promotable: ADD-03/cover/para3 conflicting (declared_conflicts: the proposer declares: The cover says the 6.6/6.7 consolidation is 'without change of substance', but ADD-03:2.1 shortens the modification window to two Workin…)</li>
+<li><strong>UNRESOLVED ADD-03:3.3</strong> (clause, p1): not promotable: ADD-03/3.3 insufficient_evidence (missing_information: the proposer declares missing: Limb (b) of the replacement (ADD-03:3.3(b)) is not carried by this op: see the escalation ADD-03/3.3(b).); ADD-03/3.3-clar evidence_verified (dropped: )</li>
+<li><strong>UNRESOLVED ADD-03:5.1</strong> (clause, p2): not promotable: ADD-03/5.1 conflicting (declared_conflicts: the proposer declares: ADD-03:cover/para3 names Volume II Clause 3.5 for the odour criterion; the operative provision 5.1 names Clause 3.4 and quotes words fou…)</li>
+<li><strong>UNRESOLVED ADD-03:5.2</strong> (clause, p2): not promotable: ADD-03/5.2 insufficient_evidence (missing_information: the proposer declares missing: Demonstrating compliance needs the ESIA Figure 7-2 concentration, which is not in the evidence build.)</li>
+<li><strong>UNRESOLVED ADD-03:Q18</strong> (table_row, p2): not promotable: ADD-03/Q18 insufficient_evidence (missing_information: the proposer declares missing: ESIA Figure 7-2 content (receptor and concentration) is not in the evidence build reviewed)</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/table-header</strong> (reading_block, p4): not promotable: ADD-03/p4-image/table-header conflicting (declared_conflicts: the proposer declares: ADD-03:T5-1)</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/row-a</strong> (reading_block, p4): not promotable: ADD-03/p4-image/row-a insufficient_evidence (missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row A column split between ٢٥ and مطلوبة))</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/row-b</strong> (reading_block, p4): not promotable: ADD-03/p4-image/row-b insufficient_evidence (missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row B column split between باقي مساحة الموقع and ٤٠))</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/note1</strong> (reading_block, p4): not promotable: ADD-03/p4-image/note1 conflicting (declared_conflicts: the proposer declares: ADD-03:T5-1/note(1))</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/note2</strong> (reading_block, p4): not promotable: ADD-03/p4-image/note2 conflicting (declared_conflicts: the proposer declares: ADD-03:T5-1/note(2))</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/note3</strong> (reading_block, p4): not promotable: ADD-03/p4-image/note3 insufficient_evidence (missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1)</li>
+<li><strong>UNRESOLVED ADD-03:p4-image/stamp</strong> (reading_block, p4): not promotable: ADD-03/p4-image/stamp insufficient_evidence (missing_information: the proposer declares missing: The stamp prints no text, so no words can be quoted from it; whether the absence of a stamp impression matters for the letter's …)</li>
+<li><strong>UNRESOLVED ADD-03:T5-1/a</strong> (table_row, p5): not promotable: ADD-03/T5-1/a conflicting (declared_conflicts: the proposer declares: English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية' (natural ground level))</li>
+<li><strong>UNRESOLVED ADD-03:T5-1/b</strong> (table_row, p5): not promotable: ADD-03/T5-1/b conflicting (declared_conflicts: the proposer declares: English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية' (natural ground level))</li>
+<li><strong>UNRESOLVED ADD-03:T5-1/note(3)</strong> (note, p5): not promotable: ADD-03/T5-1/note(3) insufficient_evidence (missing_information: the proposer declares missing: whether 'days' are calendar or working days (unqualified in the Arabic))</li>
+</ul>
+<h2>Per provision: source evidence → proposed transition → validation → downstream impact → output difference</h2>
+<h3>ADD-03:cover/para1 (paragraph, p1) — answered</h3>
+<ul>
+<li>source: “Issued 15 November 2026”</li>
+<li>transition: <code>ADD-03/cover/para1</code> disposition no_effect: the issue date line 'Issued 15 November 2026' (the stage date); it amends, obliges or excepts nothing</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para2 (paragraph, p1) — answered</h3>
+<ul>
+<li>source: “Tender NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/cover/para2</code> disposition no_effect: title line identifying the tender ('Tender NUPA/ISTP/2026/014'); it amends, obliges or excepts nothing</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para3 (paragraph, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of Availability Payment and the indexation of the Availability Payment under Volume V Clause 29.2, adds a membrane filtration requirement to Volume II Clause 3.1, replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental an…”</li>
+<li>transition: <code>ADD-03/cover/para3</code> amendment_op annotate ADD-03:cover/para3 effect adds_obligation</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: The cover says the 6.6/6.7 consolidation is 'without change of substance', but ADD-03:2.1 shortens the modification window to two Working Days before the Proposal Due Date (S-I1).; The cover says …</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: Annotation (adds_obligation) of Form 4-A acknowledgement is consistent with the cover text. The target is the provision itself, which is acceptable for a self-annotation, but the cover also lists changes to Vol V 29.2, Vol II 3.1/3.5/5.6 that are not applied here (stated as carried elsewhere).</li>
+<li class=sub>concern: Real conflicts: cover says 'without change of substance' but ADD-03:2.1 shortens the modification window (old 6.7: any time before due date; new: 2 Working Days before). Also the cover cites an 'odour criterion' in Vol II 3.5 while the evidence shows VOL-II:3.5 as a noise criterion (S-I2). Both are…</li>
+<li class=sub>concern: The statement that the Form 4-A acknowledgement is at paragraph 1 as reissued by ADD-01 rests on ADD-01 text only; ADD-01 span says it is added at paragraph 1, which is fine. Whether ADD-02 changed Form 4-A is not shown.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-ESC-COVER</code> escalation (esc:ADD-03:cover/para3): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict between the cover and ADD-03 5.1 is real. The cover says the odour criterion is in VOL-II 3.5, but VOL-II:3.5 is a noise limit (55/45 dB(A)). The odour limit is in VOL-II 3.4, and that is the clause 5.1 amends.</li>
+<li class=sub>concern: The claim that 2.1 contradicts 'without change of substance' is not shown. ADD-03:2.1 and the original VOL-I 6.6/6.7 text are not printed in the units. Only the 2.1 quote about a two-Working-Day modification deadline is given. Without the earlier 6.6/6.7 wording, we can't tell whether that deadline…</li>
+<li class=sub>concern: The statement that the Form 4-A units in units_after are all superseded is not in the printed evidence. The unclear acknowledgement version therefore can't be checked.</li>
+<li class=sub>concern: The item cites 'VOL-I 3.2 precedence within a document'. The cover itself only says the addendum takes precedence over the RFP Documents. No VOL-I 3.2 text is shown.</li>
+<li class=sub>concern: The 'unsupported downstream changes' list names rows, activities and clarifications that are not in the evidence. This part can't be checked.</li>
+</ul>
+<h3>ADD-03:1.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.”</li>
+<li>transition: <code>ADD-03/1.1</code> disposition no_effect: Recital. 'This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.' It restates…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Reading as a recital with no_effect follows from the words. It does restate precedence, but VOL-I:3.2 and 5.3 texts are not printed in the evidence, so the claim that it merely restates existing precedence cannot be verified here.</li>
+</ul>
+<h3>ADD-03:1.2 (clause, p1) — answered</h3>
+<ul>
+<li>source: “A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.”</li>
+<li>transition: <code>ADD-03/1.2</code> disposition no_effect: Rule of reading for this Addendum's own references: 'A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Add…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong> — semantic: no_effect on amendment language: a person must confirm (its words carry 'unless')</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: It is a rule of reading for the Addendum's own references, so no_effect on unit text is reasonable. However, 'unless otherwise stated' could change which version a reference points to; the controller flagged it for a person. No instance of an 'otherwise stated' reference is shown in this evidence.</li>
+</ul>
+<h3>ADD-03:1.3 (clause, p1) — answered</h3>
+<ul>
+<li>source: “Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered.”</li>
+<li>transition: <code>ADD-03/1.3</code> disposition no_effect: Recital applying the existing rule in VOL-I:5.2 ('Requests received after that time will not be answered.'): 'Requests for clarification received after the tim…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Recital reporting that late clarification requests were not answered; consistent with the VOL-I:5.2 quotation. No unit text changed.</li>
+</ul>
+<h3>ADD-03:2.1 (clause, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6 A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated …”</li>
+<li>transition: <code>ADD-03/2.1(a)</code> amendment_op replace_text VOL-I:6.6 “A Proposal received after the time stated in Clause 6.1 will be rejected unopen…” → “A Bidder may withdraw its Proposal at any time before the Proposal Due Date, an…”</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: Cover ADD-03:cover/para3 says 'without change of substance'; the new text moves the modification cut-off to two Working Days before the Proposal Due Date (S-I1).</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: old words located in the target; model claude-sonnet-5-5</li>
+<li class=sub>concern: Replacement text matches ADD-03:2.1 verbatim and the previous value matches VOL-I:6.6. The op replaces 6.6 text only; the deletion of 6.7 is handled separately (2.1(b)), so the two must be applied together or 6.7 will conflict.</li>
+<li class=sub>concern: Real conflict with the cover's 'without change of substance': modification now cut off 2 Working Days before due date (S-I1). The operative text governs only if a person confirms this.</li>
+<li class=sub>concern: The 24 Nov 2026 cut-off depends on assumption S-A1 (due date 26 Nov 2026 from VOL-I:6.1, and 'Working Days' definition/calendar not shown); it needs confirmation, including whether the due date is moved elsewhere. Note that new text also adds that late modifications are rejected unopened, a substan…</li>
+<li>transition: <code>ADD-03/2.1(b)</code> escalation why: ADD-03:2.1 prints 'Volume I Clauses 6.6 and 6.7 are deleted', so VOL-I:6.7 must be set to status deleted. In simulate_amendment the engine rejects set_status on VOL-I:6.7 under C22 ('declared target …</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: Escalation is appropriate: 2.1 prints that Clauses 6.6 and 6.7 are deleted, and VOL-I:6.7 is a separate unit that must be deleted. The stated reason (engine C22 citation parsing missing 6.7) is a tool limitation reported by the proposer; it is not shown in the evidence printed here, so it cannot be…</li>
+<li class=sub>downstream proposal <code>DS-ADD03-ESC-21</code> escalation (esc:ADD-03:2.1): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:2.2 (clause, p1) — answered</h3>
+<ul>
+<li>source: “The number 6.7 is not reused. The Clauses of Volume I are not renumbered.”</li>
+<li>transition: <code>ADD-03/2.2</code> disposition no_effect: 'The number 6.7 is not reused. The Clauses of Volume I are not renumbered.' It confirms that no renumbering follows the deletion of 6.7 under ADD-03:2.1 (escal…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong> — semantic: no_effect on amendment language: a person must confirm (its words carry 'renumbered')</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Words say 6.7 is not reused and no renumbering; no_effect on text is consistent. The controller flagged 'renumbered' as amendment language; a person should confirm. It depends on 6.7 actually being recorded as deleted (2.1(b)).</li>
+</ul>
+<h3>ADD-03:3.1 (clause, p1) — answered</h3>
+<ul>
+<li>source: “In Volume V Clause 1.1, ‘the annual payment calculated under Clause 29’ is deleted and ‘the annual payment, expressed at Base Date prices, calculated under Clause 29’ is substituted.”</li>
+<li>transition: <code>ADD-03/3.1</code> amendment_op replace_text VOL-V:1.1 “the annual payment calculated under Clause 29” → “the annual payment, expressed at Base Date prices, calculated under Clause 29”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-V:1.1; rows citing them none</li>
+</ul>
+<h3>ADD-03:3.2 (clause, p1) — answered</h3>
+<ul>
+<li>source: “The following new Clause 1.1A is inserted in Volume V after Clause 1.1: ‘1.1A Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.’”</li>
+<li>transition: <code>ADD-03/3.2</code> amendment_op insert_unit VOL-V:1.1 “Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.”</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The printed number 1.1A is not held in the stored text (S-A1). A person should confirm this convention.</li>
+<li class=sub>concern: The Base Date depends on the Proposal Due Date in force. The item correctly does not compute it.</li>
+<li class=sub>downstream: units changed VOL-V:1.1+ADD-03; rows citing them none</li>
+<li class=sub>downstream proposal <code>DS-ADD03-06</code> row_new (c46:ADD-03/3.2): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: NEW ADD-03-3.2-01</li>
+</ul>
+<h3>ADD-03:3.3 (clause, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “Volume V Clause 29.2 is deleted and replaced by the following: ‘29.2 The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9. The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall be: (a) until the end of the tenth (10th) year of operations, the percentage state…”</li>
+<li>transition: <code>ADD-03/3.3</code> amendment_op replace_text VOL-V:29.2 “The Availability Payment shall be indexed annually in accordance with Schedule …” → “The Availability Payment shall be indexed annually from the Base Date in accord…”</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: Limb (b) of the replacement (ADD-03:3.3(b)) is not carried by this op: see the escalation ADD-03/3.3(b).</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: old words located in the target; model claude-sonnet-5-5</li>
+<li class=sub>concern: The op leaves VOL-V:29.2 ending in '; and' until limb (b) is appended. The effective text is incomplete in the meantime, as S-I1 says.</li>
+<li class=sub>concern: The old text is located in the target, not quoted by the provision. The old words match VOL-V:29.2 exactly, but a person must confirm that 'deleted and replaced' means the whole clause.</li>
+<li class=sub>concern: The change is substantive. It moves from a fixed 60/40 split to a Bidder-chosen 50-70% in the first ten years, plus a Base Date indexation start. The text is stored without the '29.2' label, in the same way as S-A1.</li>
+<li class=sub>concern: The claim that the engine rejects limb (b) under C21/C22 is not visible in the evidence shown. Only the dry-run result is asserted.</li>
+<li>transition: <code>ADD-03/3.3-clar</code> clarification {"gap": "The new Clause 29.2(a) requires 'the percentage stated by the Bidder in Form 4-F' (50%-70%). At ADD-02, Form 4-F has no field for that percentage; its only indexation field is 'Indexation ba…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Only one Form 4-F field, 'Indexation basis assumed: Per Volume V Clause 29.2', is shown in the evidence. The claim that none of the 20 members is a field for the Indexed Proportion cannot be checked from what is printed.</li>
+<li class=sub>concern: The gap is real on the evidence shown. Clause 29.2(a) refers to a percentage stated in Form 4-F, and the only indexation field points back to Clause 29.2.</li>
+<li class=sub>concern: ADD-03 provisions outside this batch might reissue Form 4-F. The proposer admits this was not checked.</li>
+<li class=sub>concern: The interim handling is a suggestion for a person to decide.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-04</code> escalation (row:VOL-V-29.2-01): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-05</code> issue (row:VOL-V-29.2-01): <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The printed VOL-V:29.2 text is still the 60%/40% wording, and the controller validated it as verbatim after the ops. ADD-03 3.3 plainly says the clause is deleted and replaced. This supports the claim that the replacement was not applied.</li>
+<li class=sub>concern: The statement that no promoted op exists for 3.3 comes from the proposer's statement. The op list is not printed here.</li>
+<li class=sub>concern: The statement that Schedule 9 is missing is not in the evidence shown.</li>
+<li class=sub>concern: The 75% from year 11 rests on a 3.3(b) quote that is not printed in the units.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-ESC-33</code> escalation (esc:ADD-03:3.3): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:3.3(b) (list_item, p1) — UNRESOLVED</h3>
+<ul>
+<li>source: “(b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed.’”</li>
+<li>transition: <code>ADD-03/3.3(b)</code> escalation why: ADD-03:3.3(b) is the second half of the replacement Clause 29.2 quoted in ADD-03:3.3. It sets the Indexed Proportion at 75% from year 11 and states that the balance remains fixed. It must become part…</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: ADD-03:3.3(b) does contain limb (b), with 75% from year 11 and the balance fixed, and the closing quote. The text supports the escalation.</li>
+<li class=sub>concern: The engine rejections (C22, C21) are asserted by the proposer. They are not shown in the evidence.</li>
+<li class=sub>concern: A person must append limb (b) to 29.2, or 29.2 stays incomplete.</li>
+<li class=sub>concern: The (a)/(b) split leaves a gap. Limb (a) ends at the tenth year of operations, and limb (b) starts at the eleventh. Nothing in the evidence shows a gap in coverage, but a person should confirm the operations-year counting.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-ESC-33B</code> escalation (esc:ADD-03:3.3(b)): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:3.4 (clause, p1) — answered</h3>
+<ul>
+<li>source: “Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause 10.3.”</li>
+<li>transition: <code>ADD-03/3.4</code> amendment_op annotate VOL-I:10.3 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The words 'shall reflect this Section 3' do impose an obligation without changing the text of VOL-I:10.3.</li>
+<li class=sub>concern: The note mentions 'Base Date pricing'. That comes from ADD-03/3.1, which is not in the evidence shown.</li>
+<li class=sub>concern: Whether the obligation is 'adds_obligation' or 'no_effect' is an interpretation. A person must confirm it.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R01</code> row_reading (row:VOL-I-10.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-R02</code> row_reading (row:VOL-I-10.3-02): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-09</code> activity (act:fin-model-build): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-10</code> no_change (act:fin-model-freeze): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-11</code> no_change (act:model-auditor-appoint): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-12</code> no_change (act:model-audit-review): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-13</code> no_change (act:model-audit-opinion): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: A5 REWORK fin-model-build; A5 REWORK fin-model-freeze; A5 REWORK model-audit-opinion; A5 REWORK model-audit-review; A5 REWORK model-auditor-appoint; A5 REVIEW (confirmed dependency) fin-model-build; A5 REVIEW (proposed relationship) fin-model-build; A5 REVIEW (confirmed dependency) fin-model-freeze; A5 REVIEW (proposed relationship) fin-model-freeze; A5 REVIEW (confirmed dependency) form-4f</li>
+</ul>
+<h3>ADD-03:4.1 (clause, p2) — answered</h3>
+<ul>
+<li>source: “In Volume II Clause 3.1, ‘The Authority does not mandate a particular process train.’ is deleted and ‘The treatment process shall include a membrane filtration step, either in the tertiary treatment stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding sentence, the Authority does not mandate a pa…”</li>
+<li>transition: <code>ADD-03/4.1</code> amendment_op replace_text VOL-II:3.1 “The Authority does not mandate a particular process train.” → “The treatment process shall include a membrane filtration step, either in the t…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-II:3.1; rows citing them VOL-II-3.1-01</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R08</code> row_reading (row:VOL-II-3.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-TECH</code> activity (act:technical-proposal): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-II-3.1-01; A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:4.2 (clause, p2) — answered</h3>
+<ul>
+<li>source: “Bidders shall reflect this Section 4 in the process design submitted under Volume II Section 3.”</li>
+<li>transition: <code>ADD-03/4.2</code> amendment_op annotate VOL-II:S3 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The note's detail about a membrane filtration step with pore size not exceeding 0.1 µm comes from ADD-03 Section 4.1. That is not in the evidence shown, so it cannot be verified here.</li>
+<li class=sub>concern: The target VOL-II:S3 is a group. The evidence is only its heading. The obligation attaches to the design submission, not to any text.</li>
+<li class=sub>concern: Whether the obligation is 'adds_obligation' or 'no_effect' is an interpretation. A person must confirm it.</li>
+</ul>
+<h3>ADD-03:5.1 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor’ is substituted. The basis of assessment (98th percentile hourly value) is u…”</li>
+<li>transition: <code>ADD-03/5.1</code> amendment_op replace_text VOL-II:3.4 “not more than 5 OU/m³ at the site boundary” → “not more than the odour concentration shown for the nearest sensitive receptor …”</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:cover/para3 names Volume II Clause 3.5 for the odour criterion; the operative provision 5.1 names Clause 3.4 and quotes words found only in 3.4 (3.5 is the noise clause).</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: Real conflict: ADD-03 cover/para3 names Clause 3.5 (the noise clause), but operative 5.1 names Clause 3.4 and quotes words found only in 3.4. The operative text and the quoted words support targeting 3.4, but a person should confirm which clause the cover summary intends.</li>
+<li class=sub>concern: The new limit's numeric value (ESIA Figure 7-2) is not in the evidence, so the replacement cannot be expressed as a number. This is a declared gap.</li>
+<li class=sub>concern: The replacement changes the location from site boundary to nearest sensitive receptor. The trailing words ', assessed as a 98th percentile hourly value' remain, which matches the statement that the basis is unchanged.</li>
+<li class=sub>concern: The old string appears exactly once in 3.4 and matches verbatim, including the m³ superscript.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-ESC-51</code> escalation (esc:ADD-03:5.1): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real. 5.1 amends VOL-II 3.4, whose text before the addendum is the 5 OU/m³ site-boundary limit, while the cover names 3.5. It is probably a cover misreference, but a person should decide that.</li>
+<li class=sub>concern: The new limit is whatever Figure 7-2 of the ESIA shows. Only the VOL-II 9.1 phrase 'available in the data room' is quoted, and the ESIA itself is not in the evidence, so the numeric criterion can't be stated. The item says this correctly.</li>
+<li class=sub>concern: Statements such as 'the 5.1 op is not promotable' and the listed downstream rows go beyond the printed evidence. They are process or controller matters and can't be verified here.</li>
+</ul>
+<h3>ADD-03:5.2 (clause, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.”</li>
+<li>transition: <code>ADD-03/5.2</code> amendment_op annotate VOL-II:3.4 effect adds_obligation</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: Demonstrating compliance needs the ESIA Figure 7-2 concentration, which is not in the evidence build.</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The obligation to demonstrate compliance in the Technical Proposal is clearly stated in ADD-03:5.2, so the adds_obligation annotation is plausible. But the interpretation I1 that it is a new obligation, not confirming an existing one, has no evidence attached. The evidence shown does not include an…</li>
+<li class=sub>concern: Compliance demonstration depends on the ESIA Figure 7-2 value, which is not in the evidence, and on 5.1 and its unresolved cover-page conflict (Clause 3.4 vs 3.5). It therefore stays pending a person's confirmation.</li>
+<li class=sub>concern: Controller status is insufficient_evidence, which is consistent with this.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-5.2</code> escalation (esc:ADD-03:5.2): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:Q15 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 15 | Bidder question: Volume II Clause 6.4 requires process data to be retained for not less than seven (7) years. Would a retention period of ten (10) years be acceptable? | Authority response: Volume II Clause 6.4 states a minimum period. A Bidder may propose a longer period but is not required to do so.”</li>
+<li>transition: <code>ADD-03/Q15</code> amendment_op annotate VOL-II:6.4 effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R09</code> row_reading (row:VOL-II-6.4-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-R10</code> row_reading (row:VOL-II-6.4-02): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:Q16 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 16 | Bidder question: May a Bidder state ‘no deviations’ in Form 4-E and set out its assumptions on Volume V in the Technical Proposal? | Authority response: A Bidder that states ‘no deviations’ in Form 4-E shall not include any qualification of Volume V elsewhere in its Proposal. An assumption that limits or qualifies an obligation in Volume V is a qua…”</li>
+<li>transition: <code>ADD-03/Q16</code> amendment_op annotate VOL-I:9.6, VOL-IV:F4-E effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Payload note says a 'no deviations' statement precludes any qualification elsewhere; this comes from the response's first sentence, which is supported. Clause 9.6 itself only makes such a Proposal non-responsive, so the response adds the 'shall not' wording. Target is 9.6 with Form 4-E as a second …</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R06</code> row_reading (row:VOL-I-9.6-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The evidence shown for VOL-I 9.6 is only the Form 4-E listing sentence. The 'no deviations' non-responsive consequence quote was checked only through the controller's register validation, not through printed text.</li>
+<li class=sub>concern: Whether the concession-term point is a deviation is left open and is not decided by this reading.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R11</code> row_reading (row:VOL-IV-F4E-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-DEVREV</code> activity (act:deviations-review): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-F4E</code> activity (act:form-4e): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-IV-F4E-01; A5 REWORK deviations-review; A5 REWORK form-4e</li>
+</ul>
+<h3>ADD-03:Q17 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 17 | Bidder question: Where the proposed EPC Contractor is an unincorporated joint venture, which entity must hold the ISO 9001:2015 certificate required by Volume I Clause 8.3? | Authority response: Each member of the joint venture shall hold a certificate that meets Volume I Clause 8.3, and a copy of each certificate shall be submitted with Envelope A.”</li>
+<li>transition: <code>ADD-03/Q17</code> amendment_op annotate VOL-I:8.3 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Clause 8.3 text is unchanged. The response adds a per-member requirement, so 'adds_obligation' fits. Cited evidence for the clause is only the first sentence.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R05</code> row_reading (row:VOL-I-8.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-ISO</code> activity (act:iso-copy): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: A5 REWORK iso-copy</li>
+</ul>
+<h3>ADD-03:Q18 (table_row, p2) — UNRESOLVED</h3>
+<ul>
+<li>source: “No: 18 | Bidder question: Will the Authority provide dispersion modelling inputs for the design of the odour control system? | Authority response: The nearest sensitive receptor, and the odour concentration applicable at it for the purposes of Volume II Clause 3.4 as amended by Section 5 of this Addendum, are shown in Figure 7-2 of the Environmental and Soc…”</li>
+<li>transition: <code>ADD-03/Q18</code> amendment_op annotate VOL-II:3.4 effect interprets</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: ESIA Figure 7-2 content (receptor and concentration) is not in the evidence build reviewed</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The response points to ESIA Figure 7-2, which is not in the evidence, so the receptor and concentration cannot be checked. The proposer declares this missing.</li>
+<li class=sub>concern: The response refers to Clause 3.4 'as amended by Section 5', and the amendment is not in the evidence. VOL-II:3.4 as printed says 'site boundary', so the response may conflict with it or change it. This cannot be judged from this evidence.</li>
+<li class=sub>concern: The controller status is insufficient_evidence, so this should not be treated as a clean interpretation.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-Q18</code> escalation (esc:ADD-03:Q18): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:Q19 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 19 | Bidder question: Form 4-F requests the Availability Payment for year 1 of operations. Is that figure to be stated in the prices of year 1 of operations? | Authority response: Yes. The Availability Payment stated in Form 4-F is the amount payable for year 1 of operations, in the prices of that year. Indexation under Volume V Clause 29.2 applies from…”</li>
+<li>transition: <code>ADD-03/Q19</code> amendment_op annotate VOL-IV:F4-F, VOL-V:29.2 effect interprets</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The proposer flags possible tension with ADD-03:3.1 and 3.3 (Base Date prices and indexation), which are not in the evidence. The response says year 1 prices and indexation from the first anniversary of PCOD. A person should check this.</li>
+<li class=sub>concern: The VOL-V:29.2 text shown is only a fragment. It mentions Schedule 9 and does not show when indexation starts, so the start point cannot be compared with the response.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-I01</code> issue (row:VOL-IV-F4F-01): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the words. Q19 states year 1 prices with indexation from the first anniversary of PCOD. 3.1 states Base Date prices, and 3.3 indexes annually from the Base Date.</li>
+<li class=sub>concern: The Base Date definition in 3.2 and the content of Schedule 9 are not in the evidence shown. The proposer correctly lists them as missing, so the conflict cannot be resolved from the pack.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-CQ01</code> clarification_item (row:VOL-IV-F4F-01): <strong>insufficient_evidence</strong> — held back: linked issues not promotable: ['I-ADD03-AP-PRICE-BASIS']</li>
+<li class=sub>downstream proposal <code>DS-ADD03-02</code> issue (row:VOL-IV-F4F-02): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict follows from the quoted words: Base Date prices indexed from the Base Date (3.1, 3.3), against year 1 prices indexed from the first anniversary of PCOD (Q19).</li>
+<li class=sub>concern: The Base Date being 28 days before the PDD is not in the evidence shown.</li>
+<li class=sub>concern: The 2026-11-12 clarification cut-off and the 2026-11-15 issue date are not in the evidence shown.</li>
+<li class=sub>concern: The 75% from year 11 rests on a 3.3(b) quote. The printed 3.3 text is truncated after '(a)... and'. That quote is not in this item's own evidence list.</li>
+<li class=sub>concern: The ADD-03 3.4 Financial Model reference is not in the evidence shown.</li>
+<li class=sub>concern: Pending a person's decision on the price basis.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-03</code> clarification_item (row:VOL-IV-F4F-02): <strong>interpretation_pending</strong></li>
+</ul>
+<h3>ADD-03:Q20 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 20 | Bidder question: Form 4-F states ‘Per Volume V Clause 29.2’ against ‘Indexation basis assumed’. Is any figure to be stated in that row? | Authority response: Yes. The Bidder shall complete that row by stating, after the words ‘Per Volume V Clause 29.2’, the Indexed Proportion as a percentage. The Indexed Proportion shall not be stated anywhere in E…”</li>
+<li>transition: <code>ADD-03/Q20</code> amendment_op annotate VOL-IV:F4-F, VOL-I:6.2 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Real conflict. Response 20 requires the Indexed Proportion to be stated in Form 4-F. It also says the Proportion must not appear anywhere in Envelope A. VOL-I:6.2 makes any commercial information in Envelope A non-responsive. The evidence does not show whether Form 4-F is in Envelope A or in anothe…</li>
+<li class=sub>concern: The proposer states that I-Q20 'confirms the Indexed Proportion is commercial information'. The response does not say so. It only says it must not be in Envelope A and that 6.2 applies.</li>
+<li class=sub>concern: 'Indexed Proportion' is defined in ADD-03:3.3, which is not in the evidence.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R03</code> row_reading (row:VOL-I-6.2-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-R04</code> row_reading (row:VOL-I-6.2-02): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The reading is an interpretation. Q20 says only that Clause 6.2 applies, and 'other commercial information' is not defined, so a person must confirm it.</li>
+<li class=sub>concern: Q20 also requires the figure in the Form 4-F row. The evidence shown does not say which envelope Form 4-F belongs to, so the reading depends on Form 4-F being outside Envelope A.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R12</code> row_reading (row:VOL-IV-F4F-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-01</code> row_reading (row:VOL-IV-F4F-02): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the words shown. Q19 says year 1 prices with indexation from the first anniversary of PCOD. ADD-03 3.3 says indexation runs 'from the Base Date', and the 3.1 quote says 'expressed at Base Date prices'.</li>
+<li class=sub>concern: The 3.1 text is not printed in the units. I relied on the controller's verbatim check of that quote.</li>
+<li class=sub>concern: The claim that Q20's field is not a qualification is an interpretation, and a person must confirm it. The target sentence is unchanged and states no consequence.</li>
+<li class=sub>concern: Q20 also says 'Volume I Clause 6.2 applies'. The item does not discuss it, and its text is not in the evidence.</li>
+<li class=sub>concern: The Base Date being 28 days before the PDD is not in the evidence shown.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-14</code> no_change (act:deliver): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-15</code> no_change (act:seal-and-mark): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-16</code> no_change (act:copies): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-ENV-A</code> activity (act:assemble-envelope-a): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-NC-ENV-B</code> no_change (act:assemble-envelope-b): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-ACT-F4F</code> activity (act:form-4f): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-IV-F4F-01; A5 REWORK assemble-envelope-a; A5 REWORK assemble-envelope-b; A5 REWORK copies; A5 REWORK deliver; A5 REWORK fin-model-build; A5 REWORK fin-model-freeze; A5 REWORK form-4f; A5 REWORK seal-and-mark; A5 REVIEW (confirmed dependency) fin-model-build; A5 REVIEW (proposed relationship) fin-model-build; A5 REVIEW (confirmed dependency) fin-model-freeze; A5 REVIEW (proposed relationship) fin-model-freeze; A5 REVIEW (confirmed dependency) form-4f; A5 REVIEW (proposed relationship) form-4f</li>
+</ul>
+<h3>ADD-03:Q21 (table_row, p2) — answered</h3>
+<ul>
+<li>source: “No: 21 | Bidder question: Does the Technical Proposal need to address construction plant in addition to the matters listed in Volume I Clause 9.7? | Authority response: Yes. The construction methodology in the Technical Proposal shall include a crane and lifting plan that demonstrates compliance with Table 5-1 (Volume II Clause 5.6, inserted by Section 7 of…”</li>
+<li>transition: <code>ADD-03/Q21</code> amendment_op annotate VOL-I:9.7 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Clause 5.6 and Table 5-1 are not in the evidence, so the content of the crane and lifting plan requirement cannot be checked. This is acknowledged in the item and is a dependency on ADD-03:7.1.</li>
+<li class=sub>downstream proposal <code>DS-ADD03-R07</code> row_reading (row:VOL-I-9.7-01): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:7.1 (clause, p2) — answered</h3>
+<ul>
+<li>source: “The following new Clause 5.6 is inserted in Volume II after Clause 5.5: ‘5.6 The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into this Volume by reference.’”</li>
+<li>transition: <code>ADD-03/7.1</code> amendment_op insert_unit VOL-II:5.5 “The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendu…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: VOL-II:5.5 is only the insertion anchor and stays unchanged, which matches the provision text. The new clause incorporates Table 5-1 by reference, so what it requires depends on the Arabic Appendix A reading, which is still pending. The rationale's description of the crop (zone values, letter refer…</li>
+<li class=sub>downstream: units changed VOL-II:5.5+ADD-03; rows citing them none</li>
+<li class=sub>downstream proposal <code>DS-ADD03-07</code> row_new (c46:ADD-03/7.1): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-ADD03-08</code> issue (c46:ADD-03/7.1): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: NEW ADD-03-7.1-01</li>
+</ul>
+<h3>ADD-03:7.2 (clause, p3) — UNRESOLVED</h3>
+<ul>
+<li>source: “Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only.”</li>
+<li>transition: <code>ADD-03/7.2</code> escalation why: 7.2 sets a governing-language rule: the Arabic Table 5-1 (Appendix A image) governs over the English translation (Appendix B). The governing Arabic differs in substance from the English. Note 1 cover…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(1); ADD-03:T5-1/note(2)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic notes are a pending image reading, and the item says so. My own reading of the Arabic matches the proposer's: note 1 covers permanent and temporary structures including stacks, cranes and construction equipment. Note 2 measures from natural ground before grading and filling.</li>
+<li class=sub>concern: The English notes in the evidence are the permanent-structures note and the finished-ground-level note, so the two conflicts are real.</li>
+<li class=sub>concern: I2's claim that the Arabic is the more restrictive reading holds only where the site is filled. If the site is cut, the effect reverses. The statement should be conditional.</li>
+<li class=sub>concern: Whether 7.2 has any effect depends on the target. T5-1 is not yet in force at ADD-02, so no existing op type can record the precedence. Escalation is a reasonable choice, but it rests on the C22 failure, which is not printed in the evidence.</li>
+<li>transition: <code>ADD-03/7.2/issue</code> issue {"text": "The governing Arabic Table 5-1 (ADD-03 Appendix A) differs from the convenience English translation (Appendix B) in two places. (1) Scope: the Arabic note 1 applies the limits to permanent …</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(1); ADD-03:T5-1/note(2)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The headline 'wider and stricter' overstates the datum point. The Arabic is stricter only if the finished level is above natural ground (fill). The item lists fill depths as missing, which supports this caveat.</li>
+<li class=sub>concern: The references to Q21 and the 7.3 notification of items over 30 m are not backed by evidence shown here.</li>
+<li class=sub>concern: Everything depends on the pending Appendix A Arabic reading, which is a reading and not yet an approved text.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-7.2</code> escalation (esc:ADD-03:7.2): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:7.3 (clause, p3) — UNRESOLVED</h3>
+<ul>
+<li>source: “A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the zone of Table 5-1 in which it is to be located and its proposed height.”</li>
+<li>transition: <code>ADD-03/7.3</code> escalation why: 7.3 imposes a new free-standing bidder obligation with a pre-PDD deadline: notify the Authority through the Portal of the zone and height of any structure, plant or equipment over 30 m, not later tha…</li>
+<li class=sub>validation: <strong>escalated</strong> — missing_information: the proposer declares missing: The PDD at ADD-03 (other batches); Whether temporary cranes count as 'equipment' for 7.3 (Arabic note 1)</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-7.3</code> escalation (esc:ADD-03:7.3): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:7.4 (clause, p3) — UNRESOLVED</h3>
+<ul>
+<li>source: “Bidders shall reflect Table 5-1 in the Technical Proposal.”</li>
+<li>transition: <code>ADD-03/7.4</code> escalation why: 7.4 imposes a free-standing bidder obligation ('Bidders shall reflect Table 5-1 in the Technical Proposal') that amends no unit in force at ADD-02. annotate (adds_obligation) on the new Clause 5.6 fa…</li>
+<li class=sub>validation: <strong>escalated</strong> — missing_information: the proposer declares missing: Approval of the Appendix A Arabic reading</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-7.4</code> escalation (esc:ADD-03:7.4): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:AppA/para1 (paragraph, p4) — answered</h3>
+<ul>
+<li>source: “Table 5-1 is reproduced below as issued by the Northern Region Airspace Safeguarding Office. The Arabic text governs in accordance with Section 7 of this Addendum.”</li>
+<li>transition: <code>ADD-03/AppA/para1</code> disposition no_effect: This is an introductory paragraph to Appendix A. 'Table 5-1 is reproduced below as issued by the Northern Region Airspace Safeguarding Office' describes the re…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/hdr-en (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “Northern Region Airspace Safeguarding Office”</li>
+<li>transition: <code>ADD-03/p4-image/hdr-en</code> disposition no_effect: Letterhead of the issuing office ('Northern Region Airspace Safeguarding Office') on the Appendix A image; it identifies the issuer and changes no unit. The in…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/hdr-ar (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “مكتب حماية المجال الجوي بالمنطقة الشمالية”</li>
+<li>transition: <code>ADD-03/p4-image/hdr-ar</code> disposition no_effect: Arabic letterhead 'مكتب حماية المجال الجوي بالمنطقة الشمالية' naming the issuing office; it changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/date (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “التاريخ: ١٠ نوفمبر ٢٠٢٦م”</li>
+<li>transition: <code>ADD-03/p4-image/date</code> disposition no_effect: Letter date 'التاريخ: ١٠ نوفمبر ٢٠٢٦م' of the Appendix A letter; a document identifier that sets no time limit and changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/ref (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “الرقم: ٤٧١/٢٠٢٦”</li>
+<li>transition: <code>ADD-03/p4-image/ref</code> disposition no_effect: Letter reference number 'الرقم: ٤٧١/٢٠٢٦'; an identifier only, it changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/subject (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان”</li>
+<li>transition: <code>ADD-03/p4-image/subject</code> disposition no_effect: Subject line 'الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان'; it describes the letter's subject and changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/tender-ref (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “مناقصة رقم: NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/p4-image/tender-ref</code> disposition no_effect: Tender reference 'مناقصة رقم: NUPA/ISTP/2026/014'; an identifier, it changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:p4-image/table-title (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع”</li>
+<li>transition: <code>ADD-03/p4-image/table-title</code> disposition no_effect: Title of Table 5-1 'جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع'; a caption. The table is inserted/incorporated by ADD-03:7.1, not by this title.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Evidence for ADD-03:7.1 supports that the table is incorporated by reference there, so a caption having no independent effect is consistent. The 'inserts Volume II Clause 5.6' part of F2 is not shown in the quoted words of 7.1, but this does not affect the no_effect conclusion. The reading text is …</li>
+</ul>
+<h3>ADD-03:p4-image/table-intro (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:”</li>
+<li>transition: <code>ADD-03/p4-image/table-intro</code> disposition no_effect: Lead-in 'يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:' introduces the zone rows; the limits themselves are in the tabl…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The lead-in says the maximum permitted height in each zone is determined 'as follows', which is introductory. The limits and their binding force sit in the rows and in 7.1, so no_effect is consistent. It depends on the table rows (not shown) carrying the actual limits. F2's reference to inserting C…</li>
+</ul>
+<h3>ADD-03:p4-image/table-header (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “المنطقة | الوصف الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية”</li>
+<li>transition: <code>ADD-03/p4-image/table-header</code> disposition unresolved: Insufficient evidence for a settled effect. The governing Arabic heading 'متر فوق منسوب الأرض الطبيعية' (metres above natural ground level) conflicts with the …</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic heading says natural ground level. The Appendix B quote (finished ground level) appears only in the statement S3 and the T5-1/a unit is not printed here.</li>
+<li class=sub>concern: The reading's column separators are incomplete (الوصف and الحدّ الأقصى are run together), so a person must correct the structure.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-HEADER</code> escalation (esc:ADD-03:p4-image/table-header): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict with ADD-03:T5-1 is declared by the proposer. The English T5-1 text is not printed, so I cannot confirm the conflict independently.</li>
+<li class=sub>concern: The merged-cell claim is plausible. The header reads 'الوصف الحدّ الأقصى للارتفاع ...' with no separator between 'الوصف' and the height column, so the column split is unclear.</li>
+<li class=sub>concern: The approved reading of region ADD-03-p4-r1 is missing, as the proposer says. Escalation to a person is appropriate.</li>
+</ul>
+<h3>ADD-03:p4-image/row-a (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة”</li>
+<li>transition: <code>ADD-03/p4-image/row-a</code> disposition no_effect: This is a row of the newly issued Table 5-1 ('أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة'). It prints no amendment to an…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row A column split between ٢٥ and مطلوبة)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Row A's words add no amendment to any ADD-02 unit, so no_effect on ADD-02 units is consistent. The row is still a substantive height limit that takes effect through 7.1, so the register must link it there.</li>
+<li class=sub>concern: The claim that Arabic and Appendix B agree (1,500 m, lighting) is interpretation S6. Only the '25' is quoted from Appendix B, so the rest is unverified.</li>
+<li class=sub>concern: The reading is unapproved and ٢٥ and مطلوبة are run together.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-ROWA</code> escalation (esc:ADD-03:p4-image/row-a): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:p4-image/row-b (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “ب | باقي مساحة الموقع ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً”</li>
+<li>transition: <code>ADD-03/p4-image/row-b</code> disposition no_effect: This is a row of the newly issued Table 5-1 ('ب | باقي مساحة الموقع ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً'). It prints no amendment to any unit standin…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row B column split between باقي مساحة الموقع and ٤٠)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The same limits apply as for row A. The reading is unapproved and باقي مساحة الموقع and ٤٠ are run together.</li>
+<li class=sub>concern: The claim that Arabic and Appendix B agree (40 m, lighting above 30 m) has no Appendix B quotation printed.</li>
+<li class=sub>concern: This row carries the operative 40 m limit and the lighting requirement. A no_effect label must not hide that it takes effect via 7.1.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-ROWB</code> escalation (esc:ADD-03:p4-image/row-b): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:p4-image/notes-head (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “ملاحظات:”</li>
+<li>transition: <code>ADD-03/p4-image/notes-head</code> disposition no_effect: 'ملاحظات:' (Notes:) is only a heading introducing the notes to Table 5-1. It prints no change, obligation or exception.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+</ul>
+<h3>ADD-03:p4-image/note1 (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.”</li>
+<li>transition: <code>ADD-03/p4-image/note1</code> disposition unresolved: Insufficient evidence for a settled effect. The governing Arabic Note 1 ('تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّ…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(1)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is verbatim and the unresolved status is justified. The Appendix B text is quoted only in S5.</li>
+<li class=sub>concern: The reading is unapproved.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-NOTE1</code> escalation (esc:ADD-03:p4-image/note1): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (1) in ADD-03:T5-1 is not printed in the evidence, so the claimed conflict rests on the proposer's declaration.</li>
+<li class=sub>concern: The Arabic text is quoted accurately: it covers permanent and temporary structures, including stacks, cranes and construction equipment.</li>
+<li class=sub>concern: The link to the crane plan under Q21 is not supported by any evidence shown here.</li>
+<li class=sub>concern: The reading has no approval, so escalation is reasonable.</li>
+</ul>
+<h3>ADD-03:p4-image/note2 (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.”</li>
+<li>transition: <code>ADD-03/p4-image/note2</code> disposition unresolved: Insufficient evidence for a settled effect. The governing Arabic Note 2 ('يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم') measures height fro…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(2)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is verbatim and the datum opposition with Appendix B is quoted in S4.</li>
+<li class=sub>concern: The Arabic table-header datum and Note 2 are consistent with each other, so the conflict is with Appendix B only. The reading is unapproved.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-NOTE2</code> escalation (esc:ADD-03:p4-image/note2): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (2) is not printed, so the conflict is unverified beyond the proposer's declaration.</li>
+<li class=sub>concern: The Arabic text is quoted accurately: height is measured from natural ground level before grading and fill.</li>
+<li class=sub>concern: The reading has no approval, so the height datum stays unsettled and escalation is reasonable.</li>
+</ul>
+<h3>ADD-03:p4-image/note3 (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.”</li>
+<li>transition: <code>ADD-03/p4-image/note3</code> disposition no_effect: The words oblige ('يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع': the Office must be notified at least thirty (30) days before …</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The words contain an obligation ('يجب' = must; 30 days' notice before any crane). Labelling it no_effect risks losing it.</li>
+<li class=sub>concern: The reason says it binds through 7.1's 'shall comply with the height limits in Table 5-1'. A crane-notice duty is not clearly a 'height limit', so this does not clearly follow from 7.1's words. It depends on the incorporation by reference of the whole table including notes.</li>
+<li class=sub>concern: The claim that Appendix B Note (3) agrees is not supported by any quotation shown.</li>
+<li class=sub>concern: The reading is unapproved.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-NOTE3</code> escalation (esc:ADD-03:p4-image/note3): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:p4-image/signatory (reading_block, p4) — answered</h3>
+<ul>
+<li>source: “مدير المكتب”</li>
+<li>transition: <code>ADD-03/p4-image/signatory</code> disposition no_effect: 'مدير المكتب' (the Office Director) is only the signatory's title on the issuing letter. It prints no change, obligation or exception.</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+</ul>
+<h3>ADD-03:p4-image/stamp (reading_block, p4) — UNRESOLVED</h3>
+<ul>
+<li>source: “”</li>
+<li>transition: <code>ADD-03/p4-image/stamp</code> disposition no_effect: The stamp reading block has empty source text: the image shows only an empty oval outline beside the signatory line 'مدير المكتب'; it prints no words, so it am…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: The stamp prints no text, so no words can be quoted from it; whether the absence of a stamp impression matters for the letter's validity is not established by the evidence.</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Evidence is only a crop hash and empty text; I could not view the image, so the 'empty oval' description rests on the proposer's account. The no_effect conclusion follows from there being no words, but the controller marked insufficient_evidence and whether an unfilled stamp affects the letter's au…</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-P4-STAMP</code> escalation (esc:ADD-03:p4-image/stamp): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:AppA/para2 (paragraph, p4) — answered</h3>
+<ul>
+<li>source: “End of reproduction.”</li>
+<li>transition: <code>ADD-03/AppA/para2</code> disposition no_effect: 'End of reproduction.' only marks the end of the reproduced Arabic Table 5-1 at Appendix A; it contains no shall/must/unless words and changes no unit.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:AppB/para1 (paragraph, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “This translation is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.”</li>
+<li>transition: <code>ADD-03/AppB/para1</code> escalation why: AppB/para1 makes the Arabic Table 5-1 (Appendix A image) govern over the English translation at Appendix B ('The Arabic text of Table 5-1 at Appendix A governs.'). The two versions differ materially:…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(2) vs ADD-03:p4-image/note2 (height datum); ADD-03:T5-1/note(1) vs ADD-03:p4-image/note1 (scope of the limits); ADD-03:T5-1 header 'finished ground level' vs ADD-03:p4-image/table…</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the quoted words: English note (2) says finished ground level after grading and filling, Arabic note 2 says natural ground level before grading and filling. Note 1 also differs: English says permanent structures including stacks, Arabic says permanent and temporary including…</li>
+<li class=sub>concern: The claims about the Arabic table header, the zone heights (25, 40) and the 30 m lighting threshold are not quoted in the evidence shown, so I could not check them.</li>
+<li class=sub>concern: The target ADD-03:T5-1 is flagged as not among the units the provision cites. Its text before the addendum shows only the table title, and the English notes come from sub-units (T5-1/note(2), note(1)) not printed in the units block. The target unit may be too coarse.</li>
+<li class=sub>concern: S4 cites clause 7.2 ('The Arabic text governs.') but that unit's text is not printed here, so I could not verify it.</li>
+<li class=sub>concern: S6 is an interpretation that a person must confirm. The escalation is reasonable because no amendment op can record precedence between two units both first issued by ADD-03.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-APPB-PARA1</code> escalation (esc:ADD-03:AppB/para1): <strong>escalated</strong></li>
+</ul>
+<h3>ADD-03:T5-1/a (table_row, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting: Required”</li>
+<li>transition: <code>ADD-03/T5-1/a</code> disposition no_effect: This row ('Maximum height (m above finished ground level): 25 | Obstacle lighting: Required') is part of the English convenience translation. Clause 7.2: 'The …</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية' (natural ground level)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading (p4 image) is pending approval, so the claim that the figures match rests on an unapproved reading.</li>
+<li class=sub>concern: no_effect applies only to the English row as a translation. The row carries 'Required' and a datum that conflicts with the Arabic heading, so a person must confirm it, as the item says. Clause 7.1 is cited from the statements, not printed as a unit.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T5-1-A</code> escalation (esc:ADD-03:T5-1/a): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English row text is verbatim and the governing-text clause (AppB/para1) is quoted, so the escalation as insufficient evidence follows. The Arabic heading is not shown. The 'natural ground level' claim is only the proposer's report, so the conflict is unverified and the real gap is the unread go…</li>
+<li class=sub>concern: Controller found S3 not verbatim: S3 is a paraphrase, and its cited cell '25' does not itself show the datum. The datum is in the column heading and note (2).</li>
+<li class=sub>concern: The claim that the lighting requirement depends on the Arabic text is an inference. The Arabic reading is pending.</li>
+</ul>
+<h3>ADD-03:T5-1/b (table_row, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “Zone: B | Description: The remainder of the site | Maximum height (m above finished ground level): 40 | Obstacle lighting: Required for any part exceeding 30 m”</li>
+<li>transition: <code>ADD-03/T5-1/b</code> disposition no_effect: This row ('Maximum height (m above finished ground level): 40 | Obstacle lighting: Required for any part exceeding 30 m') is part of the English convenience tr…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: English column heading 'm above finished ground level' against the Arabic heading 'متر فوق منسوب الأرض الطبيعية' (natural ground level)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is pending approval.</li>
+<li class=sub>concern: no_effect covers only the translation row. The datum conflict is real and is escalated under note(2). The row's 'Required for any part exceeding 30 m' matches the Arabic reading.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T5-1-B</code> escalation (esc:ADD-03:T5-1/b): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English row text is verbatim. The escalation follows from the governing Arabic text being unread. The datum conflict rests only on the proposer's unverified report.</li>
+<li class=sub>concern: S3 is not verbatim-supported per the controller. It cites the '25' cell of row A, not row B or the heading.</li>
+<li class=sub>concern: The 30 m lighting threshold is plausibly tied to the same datum, but the evidence does not state this.</li>
+</ul>
+<h3>ADD-03:T5-1/notes (note_intro, p5) — answered</h3>
+<ul>
+<li>source: “Notes to Table 5-1:”</li>
+<li>transition: <code>ADD-03/T5-1/notes</code> disposition no_effect: 'Notes to Table 5-1:' is only the introductory heading of the notes in the English convenience translation. It prints no change and no obligation. Clause 7.2: …</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The claim that the Arabic prints a matching 'ملاحظات' heading is in the model rationale only. No quotation of it is shown.</li>
+</ul>
+<h3>ADD-03:T5-1/note(1) (note, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “(1) These limits apply to all permanent structures, including stacks.”</li>
+<li>transition: <code>ADD-03/T5-1/note(1)</code> escalation why: The English note (1), 'These limits apply to all permanent structures, including stacks.', does not match the governing Arabic note 1 (reading pending). The Arabic applies the limits to permanent AND…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(1) against ADD-03:p4-image/note1</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict depends on the pending reading of Arabic note 1. If that reading is approved, English note (1) is narrower: it omits temporary structures, cranes and construction equipment.</li>
+<li class=sub>concern: The link to Q21 and cover/para3 is asserted but no evidence for it is shown.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T5-1-NOTE1</code> escalation (esc:ADD-03:T5-1/note(1)): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (1) text is verbatim, and the Arabic being pending is supported. The wider Arabic scope is only the proposer's claim.</li>
+<li class=sub>concern: The payload ties this to cranes, construction equipment and the lifting plan under ADD-03/Q21 (VOL-I 9.7). No evidence shown contains Q21 or 9.7, so that consequence is unsupported.</li>
+<li class=sub>concern: The 'non-permanent items could include cranes' step is speculation. Without that step the escalation would stand as a plain unread-governing-text issue.</li>
+</ul>
+<h3>ADD-03:T5-1/note(2) (note, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “(2) Height is measured from finished ground level after grading and filling.”</li>
+<li>transition: <code>ADD-03/T5-1/note(2)</code> escalation why: The English note (2), 'Height is measured from finished ground level after grading and filling.', and the English column heading 'm above finished ground level' give the opposite datum to the governi…</li>
+<li class=sub>validation: <strong>conflicting</strong> — declared_conflicts: the proposer declares: ADD-03:T5-1/note(2) against ADD-03:p4-image/note2; ADD-03:T5-1/a and /b column heading against ADD-03:p4-image/table-header</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: Both Arabic readings (note 2 and the heading) are pending approval.</li>
+<li class=sub>concern: The opposite datum is real on the quoted words: finished ground after grading and filling in English, against natural ground before grading and filling in Arabic. The consequence for filled ground follows.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T5-1-NOTE2</code> escalation (esc:ADD-03:T5-1/note(2)): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (2) text is verbatim. The escalation follows from the Arabic reading being pending.</li>
+<li class=sub>concern: The 'opposite datum' wording states as fact what is only the proposer's unverified report. The Arabic note 2 text is not in the evidence.</li>
+<li class=sub>concern: S3 is not verbatim-supported per the controller. The claim that filled sites give different heights follows logically from the datum wording.</li>
+</ul>
+<h3>ADD-03:T5-1/note(3) (note, p5) — UNRESOLVED</h3>
+<ul>
+<li>source: “(3) The Office shall be notified at least thirty (30) days before any crane is erected at the site.”</li>
+<li>transition: <code>ADD-03/T5-1/note(3)</code> disposition no_effect: 'The Office shall be notified at least thirty (30) days before any crane is erected at the site.' is the English convenience translation of Arabic note 3. Clau…</li>
+<li class=sub>validation: <strong>insufficient_evidence</strong> — missing_information: the proposer declares missing: whether 'days' are calendar or working days (unqualified in the Arabic)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic note 3 reading is pending approval.</li>
+<li class=sub>concern: no_effect applies only to the translation. The 30-day notification duty is real and arrives through the Arabic table incorporated by 7.1. The controller flags the 'shall' wording for human confirmation.</li>
+<li class=sub>concern: Neither text says whether the 30 days are calendar or working days. The item states this.</li>
+<li class=sub>downstream proposal <code>ESC-ADD03-T5-1-NOTE3</code> escalation (esc:ADD-03:T5-1/note(3)): <strong>escalated</strong></li>
+</ul>
+<h2>Downstream proposals (validated in the candidate)</h2>
+<table>
+<tr><th>Item</th><th>Type</th><th>Task</th><th>Status</th><th>First failed check, or what a person confirms</th></tr>
+<tr><td>DS-ADD03-R01</td><td>row_reading</td><td>row:VOL-I-10.3-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R02</td><td>row_reading</td><td>row:VOL-I-10.3-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R03</td><td>row_reading</td><td>row:VOL-I-6.2-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R04</td><td>row_reading</td><td>row:VOL-I-6.2-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R05</td><td>row_reading</td><td>row:VOL-I-8.3-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R06</td><td>row_reading</td><td>row:VOL-I-9.6-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R07</td><td>row_reading</td><td>row:VOL-I-9.7-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R08</td><td>row_reading</td><td>row:VOL-II-3.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R09</td><td>row_reading</td><td>row:VOL-II-6.4-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R10</td><td>row_reading</td><td>row:VOL-II-6.4-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R11</td><td>row_reading</td><td>row:VOL-IV-F4E-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-R12</td><td>row_reading</td><td>row:VOL-IV-F4F-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-I01</td><td>issue</td><td>row:VOL-IV-F4F-01</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:Q19; ADD-03:3.1; ADD-03:3.3</td></tr>
+<tr><td>DS-ADD03-CQ01</td><td>clarification_item</td><td>row:VOL-IV-F4F-01</td><td>insufficient_evidence</td><td>held back: linked issues not promotable: ['I-ADD03-AP-PRICE-BASIS']</td></tr>
+<tr><td>DS-ADD03-01</td><td>row_reading</td><td>row:VOL-IV-F4F-02</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-ADD03-PRICE-BASIS</td></tr>
+<tr><td>DS-ADD03-02</td><td>issue</td><td>row:VOL-IV-F4F-02</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-03</td><td>clarification_item</td><td>row:VOL-IV-F4F-02</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-04</td><td>escalation</td><td>row:VOL-V-29.2-01</td><td>escalated</td><td>missing_information: the proposer declares missing: An amendment op for ADD-03:3.3 replacing VOL-V:29.2</td></tr>
+<tr><td>DS-ADD03-05</td><td>issue</td><td>row:VOL-V-29.2-01</td><td>evidence_verified</td><td></td></tr>
+<tr><td>DS-ADD03-06</td><td>row_new</td><td>c46:ADD-03/3.2</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-07</td><td>row_new</td><td>c46:ADD-03/7.1</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>DS-ADD03-08</td><td>issue</td><td>c46:ADD-03/7.1</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-09</td><td>activity</td><td>act:fin-model-build</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-10</td><td>no_change</td><td>act:fin-model-freeze</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-11</td><td>no_change</td><td>act:model-auditor-appoint</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-12</td><td>no_change</td><td>act:model-audit-review</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-13</td><td>no_change</td><td>act:model-audit-opinion</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-14</td><td>no_change</td><td>act:deliver</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-15</td><td>no_change</td><td>act:seal-and-mark</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-16</td><td>no_change</td><td>act:copies</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-ACT-ENV-A</td><td>activity</td><td>act:assemble-envelope-a</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-NC-ENV-B</td><td>no_change</td><td>act:assemble-envelope-b</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>DS-ADD03-ACT-ISO</td><td>activity</td><td>act:iso-copy</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-DEVREV</td><td>activity</td><td>act:deviations-review</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-F4E</td><td>activity</td><td>act:form-4e</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-TECH</td><td>activity</td><td>act:technical-proposal</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ACT-F4F</td><td>activity</td><td>act:form-4f</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>DS-ADD03-ESC-COVER</td><td>escalation</td><td>esc:ADD-03:cover/para3</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:2.1; ADD-03:5.1</td></tr>
+<tr><td>DS-ADD03-ESC-21</td><td>escalation</td><td>esc:ADD-03:2.1</td><td>escalated</td><td>missing_information: the proposer declares missing: A valid op set carrying the deletion of VOL-I 6.7 and the replacement Clause 6.6</td></tr>
+<tr><td>DS-ADD03-ESC-33</td><td>escalation</td><td>esc:ADD-03:3.3</td><td>escalated</td><td>missing_information: the proposer declares missing: Limb (b) carried in the same replacement op; Schedule 9 (not checked in this evidence build)</td></tr>
+<tr><td>DS-ADD03-ESC-33B</td><td>escalation</td><td>esc:ADD-03:3.3(b)</td><td>escalated</td><td>missing_information: the proposer declares missing: An op carrying ADD-03:3.3(b) as part of the replacement VOL-V 29.2</td></tr>
+<tr><td>DS-ADD03-ESC-51</td><td>escalation</td><td>esc:ADD-03:5.1</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:cover/para3</td></tr>
+<tr><td>ESC-ADD03-5.2</td><td>escalation</td><td>esc:ADD-03:5.2</td><td>escalated</td><td>missing_information: the proposer declares missing: ESIA Figure 7-2 (receptor and concentration)</td></tr>
+<tr><td>ESC-ADD03-Q18</td><td>escalation</td><td>esc:ADD-03:Q18</td><td>escalated</td><td>missing_information: the proposer declares missing: ESIA Figure 7-2 (receptor location and concentration)</td></tr>
+<tr><td>ESC-ADD03-7.2</td><td>escalation</td><td>esc:ADD-03:7.2</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1</td></tr>
+<tr><td>ESC-ADD03-7.3</td><td>escalation</td><td>esc:ADD-03:7.3</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (zone definitions); a person's decision on a new A1 row and evidence item for the 7.3 notification</td></tr>
+<tr><td>ESC-ADD03-7.4</td><td>escalation</td><td>esc:ADD-03:7.4</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1</td></tr>
+<tr><td>ESC-ADD03-P4-HEADER</td><td>escalation</td><td>esc:ADD-03:p4-image/table-header</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:T5-1</td></tr>
+<tr><td>ESC-ADD03-P4-ROWA</td><td>escalation</td><td>esc:ADD-03:p4-image/row-a</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row A column split)</td></tr>
+<tr><td>ESC-ADD03-P4-ROWB</td><td>escalation</td><td>esc:ADD-03:p4-image/row-b</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1 (row B column split)</td></tr>
+<tr><td>ESC-ADD03-P4-NOTE1</td><td>escalation</td><td>esc:ADD-03:p4-image/note1</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:T5-1/note(1)</td></tr>
+<tr><td>ESC-ADD03-P4-NOTE2</td><td>escalation</td><td>esc:ADD-03:p4-image/note2</td><td>conflicting</td><td>declared_conflicts: the proposer declares: ADD-03:T5-1/note(2)</td></tr>
+<tr><td>ESC-ADD03-P4-NOTE3</td><td>escalation</td><td>esc:ADD-03:p4-image/note3</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of region ADD-03-p4-r1</td></tr>
+<tr><td>ESC-ADD03-P4-STAMP</td><td>escalation</td><td>esc:ADD-03:p4-image/stamp</td><td>escalated</td><td>missing_information: the proposer declares missing: the content or significance of the page-4 stamp</td></tr>
+<tr><td>ESC-ADD03-APPB-PARA1</td><td>escalation</td><td>esc:ADD-03:AppB/para1</td><td>escalated</td><td>missing_information: the proposer declares missing: approved reading of the Appendix A image (region ADD-03-p4-r1)</td></tr>
+<tr><td>ESC-ADD03-T5-1-A</td><td>escalation</td><td>esc:ADD-03:T5-1/a</td><td>conflicting</td><td>statements: fact downstream-005/S3 is not supported verbatim</td></tr>
+<tr><td>ESC-ADD03-T5-1-B</td><td>escalation</td><td>esc:ADD-03:T5-1/b</td><td>conflicting</td><td>statements: fact downstream-005/S3 is not supported verbatim</td></tr>
+<tr><td>ESC-ADD03-T5-1-NOTE1</td><td>escalation</td><td>esc:ADD-03:T5-1/note(1)</td><td>conflicting</td><td>declared_conflicts: the proposer declares: English note (1) is limited to permanent structures; the proposer reports that the Arabic note 1 is wider (reading pending)</td></tr>
+<tr><td>ESC-ADD03-T5-1-NOTE2</td><td>escalation</td><td>esc:ADD-03:T5-1/note(2)</td><td>conflicting</td><td>statements: fact downstream-005/S3 is not supported verbatim</td></tr>
+<tr><td>ESC-ADD03-T5-1-NOTE3</td><td>escalation</td><td>esc:ADD-03:T5-1/note(3)</td><td>escalated</td><td>missing_information: the proposer declares missing: whether the 30 days are calendar days or Working Days; approved reading of Arabic note 3 (region ADD-03-p4-r1)</td></tr>
+</table>
+<h2>Promoted into the candidate (PROPOSED; nothing accepted)</h2>
+<ul>
+<li>ops: ADD-03/3.1, ADD-03/3.2, ADD-03/3.4, ADD-03/4.1, ADD-03/4.2, ADD-03/Q15, ADD-03/Q16, ADD-03/Q17, ADD-03/Q19, ADD-03/Q20, ADD-03/Q21, ADD-03/7.1</li>
+<li>dispositions: ADD-03:cover/para1: no_effect, ADD-03:cover/para2: no_effect, ADD-03:1.1: no_effect, ADD-03:1.2: no_effect, ADD-03:1.3: no_effect, ADD-03:2.2: no_effect, ADD-03:AppA/para1: no_effect, ADD-03:p4-image/hdr-en: no_effect, ADD-03:p4-image/hdr-ar: no_effect, ADD-03:p4-image/date: no_effect, ADD-03:p4-image/ref: no_effect, ADD-03:p4-image/subject: no_effect, ADD-03:p4-image/tender-ref: no_effect, ADD-03:p4-image/table-title: no_effect, ADD-03:p4-image/table-intro: no_effect, ADD-03:p4-image/notes-head: no_effect, ADD-03:p4-image/signatory: no_effect, ADD-03:AppA/para2: no_effect, ADD-03:T5-1/notes: no_effect</li>
+<li>rows new: ADD-03-3.2-01, ADD-03-7.1-01</li>
+<li>readings: VOL-I-10.3-01, VOL-I-10.3-02, VOL-I-6.2-01, VOL-I-6.2-02, VOL-I-8.3-01, VOL-I-9.6-01, VOL-I-9.7-01, VOL-II-3.1-01, VOL-II-6.4-01, VOL-II-6.4-02, VOL-IV-F4E-01, VOL-IV-F4F-01</li>
+<li>issues: I-ADD03-29.2-NO-OP, I-ADD03-PRICE-BASIS, I-ADD03-T51-DATUM</li>
+<li>activities: fin-model-build, assemble-envelope-a, iso-copy, deviations-review, form-4e, technical-proposal, form-4f</li>
+<li>clarifications: CQ-ADD03-01</li>
+<li>no change: act:fin-model-freeze, act:model-auditor-appoint, act:model-audit-review, act:model-audit-opinion, act:deliver, act:seal-and-mark, act:copies, act:assemble-envelope-b</li>
+<li>unresolved provisions: 23</li>
+</ul>
+<h2>check-register on the candidate</h2>
+<ul>
+<li>exit 1; 1 finding(s) {'quote': 1}</li>
+<li class=sub>[quote] ADD-03-7.1-01: post_award_evidence basis not found as quoted: VOL-II:5.5+ADD-03 p2 'The Project Company shall comply with the height limits in Table 5-1'</li>
+</ul>
+<h2>Coverage</h2>
+<ul>
+<li>provisions: 54; accounted for by the combined set: 54; states {'validated': 54}</li>
+<li>resolution (controller): resolved 13, pending 41, invalid 0, unaccounted 0; approved 0</li>
+<li>structural units of ADD-03 that are not provisions (listed so nothing is dropped): ADD-03:H:cover (heading), ADD-03:H:cover-2 (heading), ADD-03:H:S1 (heading), ADD-03:H:S2 (heading), ADD-03:H:S3 (heading), ADD-03:H:S4 (heading), ADD-03:H:S5 (heading), ADD-03:H:S6 (heading), ADD-03:S6/QA (table), ADD-03:H:S7 (heading), ADD-03:H:AppA (heading), ADD-03:region:ADD-03-p4-r1 (region), ADD-03:p4-image (image_text), ADD-03:H:AppB (heading), ADD-03:T5-1 (table)</li>
+<li>batches: reading-ADD-03-p4-r1 done, analysis-001 done, analysis-002 done, analysis-003 done, analysis-004 done, analysis-005 done, analysis-006 done, analysis-007 done, analysis-008 done, analysis-009 done, downstream-001 done, downstream-002 done, downstream-003 done, downstream-004 done, downstream-005 done</li>
+</ul>
+<h2>Critic (a second model over the selected items; it changed no status)</h2>
+<p><strong>Agreement between the critic and the proposer is not approval</strong>: every item still needs a person's decision, and a disagreement is a concern for that person, not a rejection. The critic reviews only the selected classes (consequential interpretations, uncertain targets, removals, conflicting evidence), in one request per batch.</p>
+<table>
+<tr><th>Batch</th><th>Critic</th><th>Selected</th><th>Reviewed</th><th>Agrees</th><th>Does not agree</th><th>Note</th></tr>
+<tr><td>analysis-001</td><td>done</td><td>7</td><td>7</td><td>7</td><td>0</td><td></td></tr>
+<tr><td>analysis-002</td><td>done</td><td>6</td><td>6</td><td>6</td><td>0</td><td></td></tr>
+<tr><td>analysis-003</td><td>done</td><td>2</td><td>2</td><td>1</td><td>1</td><td></td></tr>
+<tr><td>analysis-004</td><td>done</td><td>7</td><td>7</td><td>5</td><td>2</td><td></td></tr>
+<tr><td>analysis-005</td><td>done</td><td>3</td><td>3</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>analysis-006</td><td>done</td><td>2</td><td>2</td><td>2</td><td>0</td><td></td></tr>
+<tr><td>analysis-007</td><td>done</td><td>8</td><td>8</td><td>7</td><td>1</td><td></td></tr>
+<tr><td>analysis-008</td><td>done</td><td>2</td><td>2</td><td>2</td><td>0</td><td></td></tr>
+<tr><td>analysis-009</td><td>done</td><td>6</td><td>6</td><td>6</td><td>0</td><td></td></tr>
+<tr><td>downstream-001</td><td>done</td><td>3</td><td>3</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>downstream-002</td><td>done</td><td>3</td><td>3</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>downstream-003</td><td>done</td><td>2</td><td>2</td><td>1</td><td>1</td><td></td></tr>
+<tr><td>downstream-004</td><td>done</td><td>3</td><td>3</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>downstream-005</td><td>done</td><td>4</td><td>4</td><td>3</td><td>1</td><td></td></tr>
+</table>
+<ul>
+<li><strong>ADD-03/cover/para3</strong> (analysis-001; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: Annotation (adds_obligation) of Form 4-A acknowledgement is consistent with the cover text. The target is the provision itself, which is acceptable for a self-annotation, but the cover also lists changes to Vol V 29.2, Vol II 3.1/3.5/5.6 that are not applied here (stated as carried elsewhere).</li>
+<li class=sub>concern: Real conflicts: cover says 'without change of substance' but ADD-03:2.1 shortens the modification window (old 6.7: any time before due date; new: 2 Working Days before). Also the cover cites an 'odour criterion' in Vol II 3.5 while the evidence shows VOL-II:3.5 as a noise criterion (S-I2). Both are…</li>
+<li class=sub>concern: The statement that the Form 4-A acknowledgement is at paragraph 1 as reissued by ADD-01 rests on ADD-01 text only; ADD-01 span says it is added at paragraph 1, which is fine. Whether ADD-02 changed Form 4-A is not shown.</li>
+<li><strong>ADD-03/1.1</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Reading as a recital with no_effect follows from the words. It does restate precedence, but VOL-I:3.2 and 5.3 texts are not printed in the evidence, so the claim that it merely restates existing precedence cannot be verified here.</li>
+<li><strong>ADD-03/1.2</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: It is a rule of reading for the Addendum's own references, so no_effect on unit text is reasonable. However, 'unless otherwise stated' could change which version a reference points to; the controller flagged it for a person. No instance of an 'otherwise stated' reference is shown in this evidence.</li>
+<li><strong>ADD-03/1.3</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Recital reporting that late clarification requests were not answered; consistent with the VOL-I:5.2 quotation. No unit text changed.</li>
+<li><strong>ADD-03/2.1(a)</strong> (analysis-001; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: old words located in the target; model claude-sonnet-5-5</li>
+<li class=sub>concern: Replacement text matches ADD-03:2.1 verbatim and the previous value matches VOL-I:6.6. The op replaces 6.6 text only; the deletion of 6.7 is handled separately (2.1(b)), so the two must be applied together or 6.7 will conflict.</li>
+<li class=sub>concern: Real conflict with the cover's 'without change of substance': modification now cut off 2 Working Days before due date (S-I1). The operative text governs only if a person confirms this.</li>
+<li class=sub>concern: The 24 Nov 2026 cut-off depends on assumption S-A1 (due date 26 Nov 2026 from VOL-I:6.1, and 'Working Days' definition/calendar not shown); it needs confirmation, including whether the due date is moved elsewhere. Note that new text also adds that late modifications are rejected unopened, a substan…</li>
+<li><strong>ADD-03/2.1(b)</strong> (analysis-001; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: Escalation is appropriate: 2.1 prints that Clauses 6.6 and 6.7 are deleted, and VOL-I:6.7 is a separate unit that must be deleted. The stated reason (engine C22 citation parsing missing 6.7) is a tool limitation reported by the proposer; it is not shown in the evidence printed here, so it cannot be…</li>
+<li><strong>ADD-03/2.2</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Words say 6.7 is not reused and no renumbering; no_effect on text is consistent. The controller flagged 'renumbered' as amendment language; a person should confirm. It depends on 6.7 actually being recorded as deleted (2.1(b)).</li>
+<li><strong>ADD-03/3.2</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The printed number 1.1A is not held in the stored text (S-A1). A person should confirm this convention.</li>
+<li class=sub>concern: The Base Date depends on the Proposal Due Date in force. The item correctly does not compute it.</li>
+<li><strong>ADD-03/3.3</strong> (analysis-002; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: old words located in the target; model claude-sonnet-5-5</li>
+<li class=sub>concern: The op leaves VOL-V:29.2 ending in '; and' until limb (b) is appended. The effective text is incomplete in the meantime, as S-I1 says.</li>
+<li class=sub>concern: The old text is located in the target, not quoted by the provision. The old words match VOL-V:29.2 exactly, but a person must confirm that 'deleted and replaced' means the whole clause.</li>
+<li class=sub>concern: The change is substantive. It moves from a fixed 60/40 split to a Bidder-chosen 50-70% in the first ten years, plus a Base Date indexation start. The text is stored without the '29.2' label, in the same way as S-A1.</li>
+<li class=sub>concern: The claim that the engine rejects limb (b) under C21/C22 is not visible in the evidence shown. Only the dry-run result is asserted.</li>
+<li><strong>ADD-03/3.3(b)</strong> (analysis-002; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: ADD-03:3.3(b) does contain limb (b), with 75% from year 11 and the balance fixed, and the closing quote. The text supports the escalation.</li>
+<li class=sub>concern: The engine rejections (C22, C21) are asserted by the proposer. They are not shown in the evidence.</li>
+<li class=sub>concern: A person must append limb (b) to 29.2, or 29.2 stays incomplete.</li>
+<li class=sub>concern: The (a)/(b) split leaves a gap. Limb (a) ends at the tenth year of operations, and limb (b) starts at the eleventh. Nothing in the evidence shows a gap in coverage, but a person should confirm the operations-year counting.</li>
+<li><strong>ADD-03/3.3-clar</strong> (analysis-002; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Only one Form 4-F field, 'Indexation basis assumed: Per Volume V Clause 29.2', is shown in the evidence. The claim that none of the 20 members is a field for the Indexed Proportion cannot be checked from what is printed.</li>
+<li class=sub>concern: The gap is real on the evidence shown. Clause 29.2(a) refers to a percentage stated in Form 4-F, and the only indexation field points back to Clause 29.2.</li>
+<li class=sub>concern: ADD-03 provisions outside this batch might reissue Form 4-F. The proposer admits this was not checked.</li>
+<li class=sub>concern: The interim handling is a suggestion for a person to decide.</li>
+<li><strong>ADD-03/3.4</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The words 'shall reflect this Section 3' do impose an obligation without changing the text of VOL-I:10.3.</li>
+<li class=sub>concern: The note mentions 'Base Date pricing'. That comes from ADD-03/3.1, which is not in the evidence shown.</li>
+<li class=sub>concern: Whether the obligation is 'adds_obligation' or 'no_effect' is an interpretation. A person must confirm it.</li>
+<li><strong>ADD-03/4.2</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The note's detail about a membrane filtration step with pore size not exceeding 0.1 µm comes from ADD-03 Section 4.1. That is not in the evidence shown, so it cannot be verified here.</li>
+<li class=sub>concern: The target VOL-II:S3 is a group. The evidence is only its heading. The obligation attaches to the design submission, not to any text.</li>
+<li class=sub>concern: Whether the obligation is 'adds_obligation' or 'no_effect' is an interpretation. A person must confirm it.</li>
+<li><strong>ADD-03/5.1</strong> (analysis-003; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: Real conflict: ADD-03 cover/para3 names Clause 3.5 (the noise clause), but operative 5.1 names Clause 3.4 and quotes words found only in 3.4. The operative text and the quoted words support targeting 3.4, but a person should confirm which clause the cover summary intends.</li>
+<li class=sub>concern: The new limit's numeric value (ESIA Figure 7-2) is not in the evidence, so the replacement cannot be expressed as a number. This is a declared gap.</li>
+<li class=sub>concern: The replacement changes the location from site boundary to nearest sensitive receptor. The trailing words ', assessed as a 98th percentile hourly value' remain, which matches the statement that the basis is unchanged.</li>
+<li class=sub>concern: The old string appears exactly once in 3.4 and matches verbatim, including the m³ superscript.</li>
+<li><strong>ADD-03/5.2</strong> (analysis-003; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The obligation to demonstrate compliance in the Technical Proposal is clearly stated in ADD-03:5.2, so the adds_obligation annotation is plausible. But the interpretation I1 that it is a new obligation, not confirming an existing one, has no evidence attached. The evidence shown does not include an…</li>
+<li class=sub>concern: Compliance demonstration depends on the ESIA Figure 7-2 value, which is not in the evidence, and on 5.1 and its unresolved cover-page conflict (Clause 3.4 vs 3.5). It therefore stays pending a person's confirmation.</li>
+<li class=sub>concern: Controller status is insufficient_evidence, which is consistent with this.</li>
+<li><strong>ADD-03/Q15</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li><strong>ADD-03/Q16</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Payload note says a 'no deviations' statement precludes any qualification elsewhere; this comes from the response's first sentence, which is supported. Clause 9.6 itself only makes such a Proposal non-responsive, so the response adds the 'shall not' wording. Target is 9.6 with Form 4-E as a second …</li>
+<li><strong>ADD-03/Q17</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Clause 8.3 text is unchanged. The response adds a per-member requirement, so 'adds_obligation' fits. Cited evidence for the clause is only the first sentence.</li>
+<li><strong>ADD-03/Q18</strong> (analysis-004; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The response points to ESIA Figure 7-2, which is not in the evidence, so the receptor and concentration cannot be checked. The proposer declares this missing.</li>
+<li class=sub>concern: The response refers to Clause 3.4 'as amended by Section 5', and the amendment is not in the evidence. VOL-II:3.4 as printed says 'site boundary', so the response may conflict with it or change it. This cannot be judged from this evidence.</li>
+<li class=sub>concern: The controller status is insufficient_evidence, so this should not be treated as a clean interpretation.</li>
+<li><strong>ADD-03/Q19</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: The proposer flags possible tension with ADD-03:3.1 and 3.3 (Base Date prices and indexation), which are not in the evidence. The response says year 1 prices and indexation from the first anniversary of PCOD. A person should check this.</li>
+<li class=sub>concern: The VOL-V:29.2 text shown is only a fragment. It mentions Schedule 9 and does not show when indexation starts, so the start point cannot be compared with the response.</li>
+<li><strong>ADD-03/Q20</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation, uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: Real conflict. Response 20 requires the Indexed Proportion to be stated in Form 4-F. It also says the Proportion must not appear anywhere in Envelope A. VOL-I:6.2 makes any commercial information in Envelope A non-responsive. The evidence does not show whether Form 4-F is in Envelope A or in anothe…</li>
+<li class=sub>concern: The proposer states that I-Q20 'confirms the Indexed Proportion is commercial information'. The response does not say so. It only says it must not be in Envelope A and that 6.2 applies.</li>
+<li class=sub>concern: 'Indexed Proportion' is defined in ADD-03:3.3, which is not in the evidence.</li>
+<li><strong>ADD-03/Q21</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Clause 5.6 and Table 5-1 are not in the evidence, so the content of the crane and lifting plan requirement cannot be checked. This is acknowledged in the item and is a dependency on ADD-03:7.1.</li>
+<li><strong>ADD-03/7.1</strong> (analysis-005; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group; model claude-sonnet-5-5</li>
+<li class=sub>concern: VOL-II:5.5 is only the insertion anchor and stays unchanged, which matches the provision text. The new clause incorporates Table 5-1 by reference, so what it requires depends on the Arabic Appendix A reading, which is still pending. The rationale's description of the crop (zone values, letter refer…</li>
+<li><strong>ADD-03/7.2</strong> (analysis-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic notes are a pending image reading, and the item says so. My own reading of the Arabic matches the proposer's: note 1 covers permanent and temporary structures including stacks, cranes and construction equipment. Note 2 measures from natural ground before grading and filling.</li>
+<li class=sub>concern: The English notes in the evidence are the permanent-structures note and the finished-ground-level note, so the two conflicts are real.</li>
+<li class=sub>concern: I2's claim that the Arabic is the more restrictive reading holds only where the site is filled. If the site is cut, the effect reverses. The statement should be conditional.</li>
+<li class=sub>concern: Whether 7.2 has any effect depends on the target. T5-1 is not yet in force at ADD-02, so no existing op type can record the precedence. Escalation is a reasonable choice, but it rests on the C22 failure, which is not printed in the evidence.</li>
+<li><strong>ADD-03/7.2/issue</strong> (analysis-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The headline 'wider and stricter' overstates the datum point. The Arabic is stricter only if the finished level is above natural ground (fill). The item lists fill depths as missing, which supports this caveat.</li>
+<li class=sub>concern: The references to Q21 and the 7.3 notification of items over 30 m are not backed by evidence shown here.</li>
+<li class=sub>concern: Everything depends on the pending Appendix A Arabic reading, which is a reading and not yet an approved text.</li>
+<li><strong>ADD-03/p4-image/table-title</strong> (analysis-006; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Evidence for ADD-03:7.1 supports that the table is incorporated by reference there, so a caption having no independent effect is consistent. The 'inserts Volume II Clause 5.6' part of F2 is not shown in the quoted words of 7.1, but this does not affect the no_effect conclusion. The reading text is …</li>
+<li><strong>ADD-03/p4-image/table-intro</strong> (analysis-006; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The lead-in says the maximum permitted height in each zone is determined 'as follows', which is introductory. The limits and their binding force sit in the rows and in 7.1, so no_effect is consistent. It depends on the table rows (not shown) carrying the actual limits. F2's reference to inserting C…</li>
+<li><strong>ADD-03/p4-image/table-header</strong> (analysis-007; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic heading says natural ground level. The Appendix B quote (finished ground level) appears only in the statement S3 and the T5-1/a unit is not printed here.</li>
+<li class=sub>concern: The reading's column separators are incomplete (الوصف and الحدّ الأقصى are run together), so a person must correct the structure.</li>
+<li><strong>ADD-03/p4-image/row-a</strong> (analysis-007; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Row A's words add no amendment to any ADD-02 unit, so no_effect on ADD-02 units is consistent. The row is still a substantive height limit that takes effect through 7.1, so the register must link it there.</li>
+<li class=sub>concern: The claim that Arabic and Appendix B agree (1,500 m, lighting) is interpretation S6. Only the '25' is quoted from Appendix B, so the rest is unverified.</li>
+<li class=sub>concern: The reading is unapproved and ٢٥ and مطلوبة are run together.</li>
+<li><strong>ADD-03/p4-image/row-b</strong> (analysis-007; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The same limits apply as for row A. The reading is unapproved and باقي مساحة الموقع and ٤٠ are run together.</li>
+<li class=sub>concern: The claim that Arabic and Appendix B agree (40 m, lighting above 30 m) has no Appendix B quotation printed.</li>
+<li class=sub>concern: This row carries the operative 40 m limit and the lighting requirement. A no_effect label must not hide that it takes effect via 7.1.</li>
+<li><strong>ADD-03/p4-image/notes-head</strong> (analysis-007; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li><strong>ADD-03/p4-image/note1</strong> (analysis-007; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is verbatim and the unresolved status is justified. The Appendix B text is quoted only in S5.</li>
+<li class=sub>concern: The reading is unapproved.</li>
+<li><strong>ADD-03/p4-image/note2</strong> (analysis-007; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is verbatim and the datum opposition with Appendix B is quoted in S4.</li>
+<li class=sub>concern: The Arabic table-header datum and Note 2 are consistent with each other, so the conflict is with Appendix B only. The reading is unapproved.</li>
+<li><strong>ADD-03/p4-image/note3</strong> (analysis-007; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The words contain an obligation ('يجب' = must; 30 days' notice before any crane). Labelling it no_effect risks losing it.</li>
+<li class=sub>concern: The reason says it binds through 7.1's 'shall comply with the height limits in Table 5-1'. A crane-notice duty is not clearly a 'height limit', so this does not clearly follow from 7.1's words. It depends on the incorporation by reference of the whole table including notes.</li>
+<li class=sub>concern: The claim that Appendix B Note (3) agrees is not supported by any quotation shown.</li>
+<li class=sub>concern: The reading is unapproved.</li>
+<li><strong>ADD-03/p4-image/signatory</strong> (analysis-007; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li><strong>ADD-03/p4-image/stamp</strong> (analysis-008; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: Evidence is only a crop hash and empty text; I could not view the image, so the 'empty oval' description rests on the proposer's account. The no_effect conclusion follows from there being no words, but the controller marked insufficient_evidence and whether an unfilled stamp affects the letter's au…</li>
+<li><strong>ADD-03/AppB/para1</strong> (analysis-008; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, uncertain_target, uncertain_target: target is not among the units the provision cites; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the quoted words: English note (2) says finished ground level after grading and filling, Arabic note 2 says natural ground level before grading and filling. Note 1 also differs: English says permanent structures including stacks, Arabic says permanent and temporary including…</li>
+<li class=sub>concern: The claims about the Arabic table header, the zone heights (25, 40) and the 30 m lighting threshold are not quoted in the evidence shown, so I could not check them.</li>
+<li class=sub>concern: The target ADD-03:T5-1 is flagged as not among the units the provision cites. Its text before the addendum shows only the table title, and the English notes come from sub-units (T5-1/note(2), note(1)) not printed in the units block. The target unit may be too coarse.</li>
+<li class=sub>concern: S4 cites clause 7.2 ('The Arabic text governs.') but that unit's text is not printed here, so I could not verify it.</li>
+<li class=sub>concern: S6 is an interpretation that a person must confirm. The escalation is reasonable because no amendment op can record precedence between two units both first issued by ADD-03.</li>
+<li><strong>ADD-03/T5-1/a</strong> (analysis-009; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading (p4 image) is pending approval, so the claim that the figures match rests on an unapproved reading.</li>
+<li class=sub>concern: no_effect applies only to the English row as a translation. The row carries 'Required' and a datum that conflicts with the Arabic heading, so a person must confirm it, as the item says. Clause 7.1 is cited from the statements, not printed as a unit.</li>
+<li><strong>ADD-03/T5-1/b</strong> (analysis-009; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic reading is pending approval.</li>
+<li class=sub>concern: no_effect covers only the translation row. The datum conflict is real and is escalated under note(2). The row's 'Required for any part exceeding 30 m' matches the Arabic reading.</li>
+<li><strong>ADD-03/T5-1/notes</strong> (analysis-009; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The claim that the Arabic prints a matching 'ملاحظات' heading is in the model rationale only. No quotation of it is shown.</li>
+<li><strong>ADD-03/T5-1/note(1)</strong> (analysis-009; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict depends on the pending reading of Arabic note 1. If that reading is approved, English note (1) is narrower: it omits temporary structures, cranes and construction equipment.</li>
+<li class=sub>concern: The link to Q21 and cover/para3 is asserted but no evidence for it is shown.</li>
+<li><strong>ADD-03/T5-1/note(2)</strong> (analysis-009; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: Both Arabic readings (note 2 and the heading) are pending approval.</li>
+<li class=sub>concern: The opposite datum is real on the quoted words: finished ground after grading and filling in English, against natural ground before grading and filling in Arabic. The consequence for filled ground follows.</li>
+<li><strong>ADD-03/T5-1/note(3)</strong> (analysis-009; controller status <strong>insufficient_evidence</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The Arabic note 3 reading is pending approval.</li>
+<li class=sub>concern: no_effect applies only to the translation. The 30-day notification duty is real and arrives through the Arabic table incorporated by 7.1. The controller flags the 'shall' wording for human confirmation.</li>
+<li class=sub>concern: Neither text says whether the 30 days are calendar or working days. The item states this.</li>
+<li><strong>DS-ADD03-R04</strong> (downstream-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The reading is an interpretation. Q20 says only that Clause 6.2 applies, and 'other commercial information' is not defined, so a person must confirm it.</li>
+<li class=sub>concern: Q20 also requires the figure in the Form 4-F row. The evidence shown does not say which envelope Form 4-F belongs to, so the reading depends on Form 4-F being outside Envelope A.</li>
+<li><strong>DS-ADD03-R06</strong> (downstream-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The evidence shown for VOL-I 9.6 is only the Form 4-E listing sentence. The 'no deviations' non-responsive consequence quote was checked only through the controller's register validation, not through printed text.</li>
+<li class=sub>concern: Whether the concession-term point is a deviation is left open and is not decided by this reading.</li>
+<li><strong>DS-ADD03-I01</strong> (downstream-001; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting, consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the words. Q19 states year 1 prices with indexation from the first anniversary of PCOD. 3.1 states Base Date prices, and 3.3 indexes annually from the Base Date.</li>
+<li class=sub>concern: The Base Date definition in 3.2 and the content of Schedule 9 are not in the evidence shown. The proposer correctly lists them as missing, so the conflict cannot be resolved from the pack.</li>
+<li><strong>DS-ADD03-01</strong> (downstream-002; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real on the words shown. Q19 says year 1 prices with indexation from the first anniversary of PCOD. ADD-03 3.3 says indexation runs 'from the Base Date', and the 3.1 quote says 'expressed at Base Date prices'.</li>
+<li class=sub>concern: The 3.1 text is not printed in the units. I relied on the controller's verbatim check of that quote.</li>
+<li class=sub>concern: The claim that Q20's field is not a qualification is an interpretation, and a person must confirm it. The target sentence is unchanged and states no consequence.</li>
+<li class=sub>concern: Q20 also says 'Volume I Clause 6.2 applies'. The item does not discuss it, and its text is not in the evidence.</li>
+<li class=sub>concern: The Base Date being 28 days before the PDD is not in the evidence shown.</li>
+<li><strong>DS-ADD03-02</strong> (downstream-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict follows from the quoted words: Base Date prices indexed from the Base Date (3.1, 3.3), against year 1 prices indexed from the first anniversary of PCOD (Q19).</li>
+<li class=sub>concern: The Base Date being 28 days before the PDD is not in the evidence shown.</li>
+<li class=sub>concern: The 2026-11-12 clarification cut-off and the 2026-11-15 issue date are not in the evidence shown.</li>
+<li class=sub>concern: The 75% from year 11 rests on a 3.3(b) quote. The printed 3.3 text is truncated after '(a)... and'. That quote is not in this item's own evidence list.</li>
+<li class=sub>concern: The ADD-03 3.4 Financial Model reference is not in the evidence shown.</li>
+<li class=sub>concern: Pending a person's decision on the price basis.</li>
+<li><strong>DS-ADD03-05</strong> (downstream-002; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation; model claude-sonnet-5-5</li>
+<li class=sub>concern: The printed VOL-V:29.2 text is still the 60%/40% wording, and the controller validated it as verbatim after the ops. ADD-03 3.3 plainly says the clause is deleted and replaced. This supports the claim that the replacement was not applied.</li>
+<li class=sub>concern: The statement that no promoted op exists for 3.3 comes from the proposer's statement. The op list is not printed here.</li>
+<li class=sub>concern: The statement that Schedule 9 is missing is not in the evidence shown.</li>
+<li class=sub>concern: The 75% from year 11 rests on a 3.3(b) quote that is not printed in the units.</li>
+<li><strong>DS-ADD03-ESC-COVER</strong> (downstream-003; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict between the cover and ADD-03 5.1 is real. The cover says the odour criterion is in VOL-II 3.5, but VOL-II:3.5 is a noise limit (55/45 dB(A)). The odour limit is in VOL-II 3.4, and that is the clause 5.1 amends.</li>
+<li class=sub>concern: The claim that 2.1 contradicts 'without change of substance' is not shown. ADD-03:2.1 and the original VOL-I 6.6/6.7 text are not printed in the units. Only the 2.1 quote about a two-Working-Day modification deadline is given. Without the earlier 6.6/6.7 wording, we can't tell whether that deadline…</li>
+<li class=sub>concern: The statement that the Form 4-A units in units_after are all superseded is not in the printed evidence. The unclear acknowledgement version therefore can't be checked.</li>
+<li class=sub>concern: The item cites 'VOL-I 3.2 precedence within a document'. The cover itself only says the addendum takes precedence over the RFP Documents. No VOL-I 3.2 text is shown.</li>
+<li class=sub>concern: The 'unsupported downstream changes' list names rows, activities and clarifications that are not in the evidence. This part can't be checked.</li>
+<li><strong>DS-ADD03-ESC-51</strong> (downstream-003; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict is real. 5.1 amends VOL-II 3.4, whose text before the addendum is the 5 OU/m³ site-boundary limit, while the cover names 3.5. It is probably a cover misreference, but a person should decide that.</li>
+<li class=sub>concern: The new limit is whatever Figure 7-2 of the ESIA shows. Only the VOL-II 9.1 phrase 'available in the data room' is quoted, and the ESIA itself is not in the evidence, so the numeric criterion can't be stated. The item says this correctly.</li>
+<li class=sub>concern: Statements such as 'the 5.1 op is not promotable' and the listed downstream rows go beyond the printed evidence. They are process or controller matters and can't be verified here.</li>
+<li><strong>ESC-ADD03-P4-HEADER</strong> (downstream-004; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The conflict with ADD-03:T5-1 is declared by the proposer. The English T5-1 text is not printed, so I cannot confirm the conflict independently.</li>
+<li class=sub>concern: The merged-cell claim is plausible. The header reads 'الوصف الحدّ الأقصى للارتفاع ...' with no separator between 'الوصف' and the height column, so the column split is unclear.</li>
+<li class=sub>concern: The approved reading of region ADD-03-p4-r1 is missing, as the proposer says. Escalation to a person is appropriate.</li>
+<li><strong>ESC-ADD03-P4-NOTE1</strong> (downstream-004; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (1) in ADD-03:T5-1 is not printed in the evidence, so the claimed conflict rests on the proposer's declaration.</li>
+<li class=sub>concern: The Arabic text is quoted accurately: it covers permanent and temporary structures, including stacks, cranes and construction equipment.</li>
+<li class=sub>concern: The link to the crane plan under Q21 is not supported by any evidence shown here.</li>
+<li class=sub>concern: The reading has no approval, so escalation is reasonable.</li>
+<li><strong>ESC-ADD03-P4-NOTE2</strong> (downstream-004; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (2) is not printed, so the conflict is unverified beyond the proposer's declaration.</li>
+<li class=sub>concern: The Arabic text is quoted accurately: height is measured from natural ground level before grading and fill.</li>
+<li class=sub>concern: The reading has no approval, so the height datum stays unsettled and escalation is reasonable.</li>
+<li><strong>ESC-ADD03-T5-1-A</strong> (downstream-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English row text is verbatim and the governing-text clause (AppB/para1) is quoted, so the escalation as insufficient evidence follows. The Arabic heading is not shown. The 'natural ground level' claim is only the proposer's report, so the conflict is unverified and the real gap is the unread go…</li>
+<li class=sub>concern: Controller found S3 not verbatim: S3 is a paraphrase, and its cited cell '25' does not itself show the datum. The datum is in the column heading and note (2).</li>
+<li class=sub>concern: The claim that the lighting requirement depends on the Arabic text is an inference. The Arabic reading is pending.</li>
+<li><strong>ESC-ADD03-T5-1-B</strong> (downstream-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English row text is verbatim. The escalation follows from the governing Arabic text being unread. The datum conflict rests only on the proposer's unverified report.</li>
+<li class=sub>concern: S3 is not verbatim-supported per the controller. It cites the '25' cell of row A, not row B or the heading.</li>
+<li class=sub>concern: The 30 m lighting threshold is plausibly tied to the same datum, but the evidence does not state this.</li>
+<li><strong>ESC-ADD03-T5-1-NOTE1</strong> (downstream-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (1) text is verbatim, and the Arabic being pending is supported. The wider Arabic scope is only the proposer's claim.</li>
+<li class=sub>concern: The payload ties this to cranes, construction equipment and the lifting plan under ADD-03/Q21 (VOL-I 9.7). No evidence shown contains Q21 or 9.7, so that consequence is unsupported.</li>
+<li class=sub>concern: The 'non-permanent items could include cranes' step is speculation. Without that step the escalation would stand as a plain unread-governing-text issue.</li>
+<li><strong>ESC-ADD03-T5-1-NOTE2</strong> (downstream-005; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting; model claude-sonnet-5-5</li>
+<li class=sub>concern: The English note (2) text is verbatim. The escalation follows from the Arabic reading being pending.</li>
+<li class=sub>concern: The 'opposite datum' wording states as fact what is only the proposer's unverified report. The Arabic note 2 text is not in the evidence.</li>
+<li class=sub>concern: S3 is not verbatim-supported per the controller. The claim that filled sites give different heights follows logically from the datum wording.</li>
+</ul>
+<h2>Requests: failures, deferrals, repairs and route notices</h2>
+<ul>
+<li><strong>downstream-001</strong> (done): repaired once (1 problem(s) before the re-ask)</li>
+</ul>
+<p>Route notices (how the requests were served; they change no status):</p>
+<ul>
+<li><strong>capabilities_declared</strong> (reading-ADD-03-p4-r1): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the reading request was checked a…</li>
+<li><strong>capabilities_declared</strong> (analysis-001): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-002): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-003): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-004): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-005): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-006): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-007): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-008): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (analysis-009): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked …</li>
+<li><strong>capabilities_declared</strong> (downstream-001): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the downstream request was checke…</li>
+<li><strong>capabilities_declared</strong> (downstream-002): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the downstream request was checke…</li>
+<li><strong>capabilities_declared</strong> (downstream-003): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the downstream request was checke…</li>
+<li><strong>capabilities_declared</strong> (downstream-004): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the downstream request was checke…</li>
+<li><strong>capabilities_declared</strong> (downstream-005): capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the downstream request was checke…</li>
+</ul>
+<h2>Manual interventions (and automatic host sessions, named as such: not a person)</h2>
+<ul>
+<li>2026-10-05T02:58:19Z: host session (automatic) — batch reading-ADD-03-p4-r1 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session reading an image; not a person</li>
+<li>2026-10-05T03:04:16Z: host session (automatic) — batch analysis-001 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:10:27Z: host session (automatic) — batch analysis-002 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:12:38Z: host session (automatic) — batch analysis-003 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:17:27Z: host session (automatic) — batch analysis-004 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:23:10Z: host session (automatic) — batch analysis-005 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:28:12Z: host session (automatic) — batch analysis-006 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:34:01Z: host session (automatic) — batch analysis-007 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:36:52Z: host session (automatic) — batch analysis-008 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:42:53Z: host session (automatic) — batch analysis-009 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-05T03:50:32Z: host session (automatic) — batch downstream-001 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-05T03:56:34Z: host session (automatic) — batch downstream-002 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-05T04:00:29Z: host session (automatic) — batch downstream-003 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-05T04:02:53Z: host session (automatic) — batch downstream-004 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+<li>2026-10-05T04:04:11Z: host session (automatic) — batch downstream-005 by tenderpack.ai.hostsession; host model claude-code headless (opus); a headless host session; not a person</li>
+</ul>
+<h2>The diff (ADD-02 → ADD-03; <a href="diff.md">diff.md</a>)</h2>
+<h2>What changed from ADD-02 to ADD-03</h2>
+<h3>ADD-03: PARTIAL (issued 2026-11-15)</h3>
+<ul>
+<li>ops: 12 (0 invalid); provisions: 54 (23 unresolved)</li>
+<li>validated state: ADD-02 — this addendum does NOT replace it until every provision is treated and every op is valid</li>
+<li>UNRESOLVED ADD-03:cover/para3: This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of Availability Payment and the indexation of the Ava</li>
+<li>UNRESOLVED ADD-03:2.1: Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6  A Bidder may withdraw its Proposal at any time before the Propos</li>
+<li>UNRESOLVED ADD-03:3.3: Volume V Clause 29.2 is deleted and replaced by the following: ‘29.2  The Availability Payment shall be indexed annually from the Base Date in accordance with S</li>
+<li>UNRESOLVED ADD-03:3.3(b): (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed.’</li>
+<li>UNRESOLVED ADD-03:5.1: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’ is deleted and ‘not more than the odour concentration shown for the nearest sensitive rece</li>
+<li>UNRESOLVED ADD-03:5.2: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal.</li>
+<li>UNRESOLVED ADD-03:Q18: No: 18 | Bidder question: Will the Authority provide dispersion modelling inputs for the design of the odour control system? | Authority response: The nearest s</li>
+<li>UNRESOLVED ADD-03:7.2: Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only.</li>
+<li>UNRESOLVED ADD-03:7.3: A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the Authority through the</li>
+<li>UNRESOLVED ADD-03:7.4: Bidders shall reflect Table 5-1 in the Technical Proposal.</li>
+<li>UNRESOLVED ADD-03:p4-image/table-header: المنطقة | الوصف الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية) | الإنارة التحذيرية</li>
+<li>UNRESOLVED ADD-03:p4-image/row-a: أ | الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة</li>
+<li>UNRESOLVED ADD-03:p4-image/row-b: ب | باقي مساحة الموقع ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً</li>
+<li>UNRESOLVED ADD-03:p4-image/note1: ١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.</li>
+<li>UNRESOLVED ADD-03:p4-image/note2: ٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.</li>
+<li>UNRESOLVED ADD-03:p4-image/note3: ٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.</li>
+<li>UNRESOLVED ADD-03:p4-image/stamp: </li>
+<li>UNRESOLVED ADD-03:AppB/para1: This translation is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.</li>
+<li>UNRESOLVED ADD-03:T5-1/a: Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting</li>
+<li>UNRESOLVED ADD-03:T5-1/b: Zone: B | Description: The remainder of the site | Maximum height (m above finished ground level): 40 | Obstacle lighting: Required for any part exceeding 30 m</li>
+<li>UNRESOLVED ADD-03:T5-1/note(1): (1)  These limits apply to all permanent structures, including stacks.</li>
+<li>UNRESOLVED ADD-03:T5-1/note(2): (2)  Height is measured from finished ground level after grading and filling.</li>
+<li>UNRESOLVED ADD-03:T5-1/note(3): (3)  The Office shall be notified at least thirty (30) days before any crane is erected at the site.</li>
+<li>cover summary vs provisions (C28, report only): 1 finding(s)</li>
+<li class=sub>no summary: ADD-03's cover has no 'This Addendum ...' sentence; nothing to compare</li>
+</ul>
+<h4>Validated vs candidate (partial should not mean useless)</h4>
+<ul>
+<li>validated (unchanged, ADD-02): <code>&lt;outputs&gt;/a3/a3.pdf</code> (one page), <code>&lt;outputs&gt;/a5/</code></li>
+<li>candidate (CANDIDATE — NOT VALIDATED, ADD-03 as proposed): <code>&lt;outputs&gt;/a3/a3_candidate.pdf</code> / <code>.md</code>, <code>&lt;outputs&gt;/a5/candidate/</code></li>
+</ul>
+<p><strong>What may be changing.</strong> ADD-03 is PARTIAL: 23 of 54 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 12 op(s) that are valid there stood (each still a proposal: review proposed 12), A3 would gain 0 row(s) (none), lose 0 (none) and change 1 (VOL-IV-F4F-02 (register)); A5, replanned at ADD-03's issue date (2026-11-15), would move the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 5 REVIEW through relationships. Not settled: 11 activities blocked by an unresolved row (fin-model-build, technical-proposal, fin-model-freeze, form-4a-prep and 7 more), 2 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship chain(s) blocked or incomplete, 8 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT and 6 more. Nothing here is validated, accepted or applied to the real state.</p>
+<h3>Requirements</h3>
+<ul>
+<li>new: 2; out of force: 0; changed: 3</li>
+</ul>
+<ul>
+<li>NEW ADD-03-3.2-01: NEW (introduced by ADD-03/3.2) (by ADD-03/3.2)</li>
+<li>NEW ADD-03-7.1-01: NEW (introduced by ADD-03/7.1) (by ADD-03/7.1)</li>
+<li>CHANGED VOL-II-3.1-01: wording; secondary unit VOL-II:H:S3 annotated by ADD-03/4.2 (by ADD-03/4.1, ADD-03/4.2)</li>
+<li>CHANGED VOL-IV-F4E-01: secondary units VOL-IV:F4-E/T1/1, VOL-IV:F4-E/T1/2, VOL-IV:F4-E/T1/3, VOL-IV:F4-E/T1/4, VOL-IV:F4-E/T1/5, VOL-IV:F4-E/T1/6, VOL-IV:F4-E/total-number-of-deviations-declared, VOL-IV:F4-E/signature-of-authorised-signatory, VOL-IV:F4-E/date annotated by ADD-03/Q16 (by ADD-03/Q16)</li>
+<li>CHANGED VOL-IV-F4F-01: secondary units VOL-IV:F4-F/bidder, VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations, VOL-IV:F4-F/availability-payment-in-words, VOL-IV:F4-F/estimated-project-cost-sar, VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close, VOL-IV:F4-F/assumed-senior-debt-margin-bps, VOL-IV:F4-F/assumed-gearing-debt-equity, VOL-IV:F4-F/project-irr-nominal-post-tax, VOL-IV:F4-F/equity-irr-nominal-post-tax, VOL-IV:F4-F/indexation-basis-assumed, VOL-IV:F4-F/model-auditor, VOL-IV:F4-F/date-of-model-audit-opinion, VOL-IV:F4-F/signature, VOL-IV:F4-F/name-and-capacity, VOL-IV:F4-F/date annotated by ADD-03/Q19, ADD-03/Q20 (by ADD-03/Q19, ADD-03/Q20)</li>
+</ul>
+<h3>Stale readings and decisions</h3>
+<ul>
+<li>STALE VOL-V-29.2-01: new dependency ADD-03:Q19; VOL-V:29.2 changed since ADD-01 (by ADD-03/Q19)</li>
+<li>STALE VOL-IV-F4F-02: new dependency ADD-03:Q19; new dependency ADD-03:Q20; VOL-IV:F4-F/para1 changed since BASE (by ADD-03/Q19, ADD-03/Q20)</li>
+</ul>
+<h3>Obligations not reaching the outputs (C46)</h3>
+<ul>
+<li>none</li>
+</ul>
+<h3>Reached through relationships (indirect: for review, not direct citations)</h3>
+<p>Curated links (relationships file) followed from what changed. The requirements above cite a changed unit; these are reached through another provision, in three classes that are never merged. A5 marks the activities that serve them REVIEW with their dates unchanged.</p>
+<h4>Confirmed dependency (4)</h4>
+<ul>
+<li>VOL-I-10.2-01 (row; ACTIVE) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM &gt; REL-PAY-QUOTED-PRICE [feeds_calculation; link confirmed]</li>
+<li>VOL-IV-F4F-01 (row; ACTIVE) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM &gt; REL-PAY-FORM-4F [feeds_calculation; link confirmed]; also changed directly</li>
+<li>VOL-IV-F4F-02 (row; ACTIVE) &lt;- VOL-I-10.3-01 via REL-MODEL-FORM-4F [feeds_calculation; link confirmed]; also changed directly</li>
+<li>calc:availability-payment (calculation) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM [feeds_calculation; link confirmed]</li>
+</ul>
+<h4>Proposed relationship (2)</h4>
+<ul>
+<li>VOL-I-10.3-01 (row; ACTIVE) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM &gt; REL-PAY-FINANCIAL-MODEL [depends_on; link proposed]; also changed directly</li>
+<li>VOL-IV-F4F-02 (row; ACTIVE) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM &gt; REL-PAY-FINANCIAL-MODEL &gt; REL-MODEL-FORM-4F [feeds_calculation; link proposed]; also changed directly</li>
+</ul>
+<h4>Possible impact (1)</h4>
+<ul>
+<li>VOL-I-10.6-01 (row; ACTIVE) &lt;- VOL-V:29.2 via REL-PAY-MECHANISM &gt; REL-PAY-FINANCING-ASSUMPTIONS [depends_on; link possible]</li>
+</ul>
+<h4>Referenced but not supplied: conclusions in play that cannot be established (0)</h4>
+<ul>
+<li>none</li>
+</ul>
+<h3>Disqualifiers (A3)</h3>
+<ul>
+<li>no change</li>
+</ul>
+<h3>Programme impact (status date 2026-10-22 -&gt; 2026-11-15)</h3>
+<ul>
+<li>REWORK assemble-envelope-a: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK assemble-envelope-b: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK copies: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK deliver: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK deviations-review: requirement changed: VOL-I-9.6-01, VOL-IV-F4E-01</li>
+<li>REWORK fin-model-build: requirement changed: VOL-I-10.3-01, VOL-IV-F4F-02</li>
+<li>REWORK fin-model-freeze: requirement changed: VOL-I-10.3-01, VOL-IV-F4F-02</li>
+<li>REWORK form-4e: requirement changed: VOL-I-9.6-01, VOL-IV-F4E-01</li>
+<li>REWORK form-4f: requirement changed: VOL-IV-F4F-01, VOL-IV-F4F-02</li>
+<li>REWORK iso-copy: requirement changed: VOL-I-8.3-01</li>
+<li>REWORK model-audit-opinion: requirement changed: VOL-I-10.3-02</li>
+<li>REWORK model-audit-review: requirement changed: VOL-I-10.3-02</li>
+<li>REWORK model-auditor-appoint: requirement changed: VOL-I-10.3-02</li>
+<li>REWORK seal-and-mark: requirement changed: VOL-I-6.2-01</li>
+<li>REWORK technical-proposal: requirement changed: VOL-I-9.7-01, VOL-II-3.1-01, VOL-II-6.4-01, VOL-II-6.4-02</li>
+<li>REVIEW (possible impact) fin-assumptions: VOL-I-10.6-01 reached from VOL-V:29.2 via REL-PAY-FINANCING-ASSUMPTIONS, REL-PAY-MECHANISM; dates unchanged</li>
+<li>REVIEW (confirmed dependency) fin-model-build: VOL-IV-F4F-02 reached from VOL-I-10.3-01 via REL-MODEL-FORM-4F; dates unchanged</li>
+<li>REVIEW (proposed relationship) fin-model-build: VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:29.2 via REL-MODEL-FORM-4F, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged</li>
+<li>REVIEW (confirmed dependency) fin-model-freeze: VOL-IV-F4F-02 reached from VOL-I-10.3-01 via REL-MODEL-FORM-4F; dates unchanged</li>
+<li>REVIEW (proposed relationship) fin-model-freeze: VOL-I-10.3-01, VOL-IV-F4F-02 reached from VOL-V:29.2 via REL-MODEL-FORM-4F, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged</li>
+<li>REVIEW (confirmed dependency) form-4f: VOL-I-10.2-01, VOL-IV-F4F-01, VOL-IV-F4F-02 reached from VOL-I-10.3-01, VOL-V:29.2 via REL-MODEL-FORM-4F, REL-PAY-FORM-4F, REL-PAY-MECHANISM, REL-PAY-QUOTED-PRICE; dates unchanged</li>
+<li>REVIEW (proposed relationship) form-4f: VOL-IV-F4F-02 reached from VOL-V:29.2 via REL-MODEL-FORM-4F, REL-PAY-FINANCIAL-MODEL, REL-PAY-MECHANISM; dates unchanged</li>
+<li>REVIEW (possible impact) lender-terms: VOL-I-10.6-01 reached from VOL-V:29.2 via REL-PAY-FINANCING-ASSUMPTIONS, REL-PAY-MECHANISM; dates unchanged</li>
+<li>FEASIBILITY lcc-ratio: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+<li>FEASIBILITY lcc-certificate: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+<li>FEASIBILITY fin-model-build: OK -&gt; INFEASIBLE by 14 WD</li>
+<li>FEASIBILITY model-auditor-appoint: OK -&gt; INFEASIBLE by 13 WD</li>
+<li>FEASIBILITY pcg-wording: OK -&gt; INFEASIBLE by 13 WD</li>
+<li>FEASIBILITY technical-proposal: OK -&gt; INFEASIBLE by 13 WD</li>
+<li>FEASIBILITY ground-dd: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY lender-terms: OK -&gt; INFEASIBLE by 9 WD</li>
+<li>FEASIBILITY completion-certs: OK -&gt; INFEASIBLE by 8 WD</li>
+<li>FEASIBILITY model-audit-review: OK -&gt; INFEASIBLE by 13 WD</li>
+<li>FEASIBILITY poa-resolutions: OK -&gt; INFEASIBLE by 8 WD</li>
+<li>FEASIBILITY references: OK -&gt; INFEASIBLE by 7 WD</li>
+<li>FEASIBILITY bond-approval: OK -&gt; INFEASIBLE by 6 WD</li>
+<li>FEASIBILITY deviations-review: OK -&gt; INFEASIBLE by 5 WD</li>
+<li>FEASIBILITY om-evidence: OK -&gt; INFEASIBLE by 3 WD</li>
+<li>FEASIBILITY pcg-execution: OK -&gt; INFEASIBLE by 13 WD</li>
+<li>FEASIBILITY poa: OK -&gt; INFEASIBLE by 8 WD</li>
+<li>FEASIBILITY clarifications: OK -&gt; DEADLINE PASSED</li>
+<li>FEASIBILITY fin-statements: OK -&gt; INFEASIBLE by 1 WD</li>
+<li>FEASIBILITY fin-model-freeze: OK -&gt; INFEASIBLE by 14 WD</li>
+<li>FEASIBILITY investment-licence: OK -&gt; INFEASIBLE by 8 WD</li>
+<li>FEASIBILITY model-audit-opinion: OK -&gt; INFEASIBLE by 14 WD</li>
+<li>FEASIBILITY form-4b-prep: OK -&gt; INFEASIBLE by 7 WD</li>
+<li>FEASIBILITY bond-issue: OK -&gt; INFEASIBLE by 6 WD</li>
+<li>FEASIBILITY fin-standing: OK -&gt; INFEASIBLE by 1 WD</li>
+<li>FEASIBILITY form-4c-sign: OK -&gt; INFEASIBLE by 6 WD</li>
+<li>FEASIBILITY fin-assumptions: OK -&gt; INFEASIBLE by 11 WD</li>
+<li>FEASIBILITY form-4e: OK -&gt; INFEASIBLE by 5 WD</li>
+<li>FEASIBILITY form-4f: OK -&gt; INFEASIBLE by 11 WD</li>
+<li>FEASIBILITY form-4a: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY form-4b: OK -&gt; INFEASIBLE by 7 WD</li>
+<li>FEASIBILITY form-4g-sign: OK -&gt; INFEASIBLE by 4 WD</li>
+<li>FEASIBILITY assemble-envelope-a: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+<li>FEASIBILITY assemble-envelope-b: OK -&gt; INFEASIBLE by 14 WD</li>
+<li>FEASIBILITY copies: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+<li>FEASIBILITY seal-and-mark: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+<li>FEASIBILITY deliver: INFEASIBLE by 12 WD -&gt; INFEASIBLE by 28 WD</li>
+</ul>
+<h2>Next (a person)</h2>
+<ul>
+<li>read the unresolved and escalated provisions first, then each item against its evidence (<code>../ai/ADD-03-run-host-blind05-20261005T025444Z-combined/proposals.yaml</code>, <code>../downstream/proposals.yaml</code>)</li>
+<li>nothing here is applied to the real curation: to take an item over, add the PDF to the pack (OPERATING_GUIDE §3 steps 1-2) and copy the reviewed files listed in <code>promotion.json</code>; then <code>pin</code>, <code>check-register</code>, <code>outputs</code> and decide with <code>accept</code> / <code>reject</code> as usual</li>
+</ul></body></html>

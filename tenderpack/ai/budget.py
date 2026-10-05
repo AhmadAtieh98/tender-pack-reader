@@ -244,9 +244,23 @@ def acquire(staging: Path, addendum: str, holder: dict, stale_after_min: float =
     except FileExistsError:
         cur = read_lock(path) or {}
         stale, why = lock_state(cur, stale_after_min)
-        raise Refused(f"another orchestrator holds {addendum}: " + (f"STALE lock ({why}); a person may remove it with "
-                      f"--break-lock --by \"Your Name\"" if stale else f"{why}; wait for it to finish, or a person "
-                      f"removes it with --break-lock --by \"Your Name\"")) from None
+        if stale and why.startswith("its process") and cur.get("host") == socket.gethostname():
+            # session 11 (E135): the holder died on this host (a crash, a container restart): nobody holds the
+            # addendum, so the lock is taken over, as the run lock is, and the takeover is recorded in the new lock
+            info["taken_over_from"] = {k: cur.get(k) for k in ("pid", "run_id", "route", "created", "token")}
+            try:
+                os.unlink(path)
+            except FileNotFoundError:
+                pass
+            try:
+                fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+            except FileExistsError:
+                raise Refused(f"another orchestrator holds {addendum}: the lock was taken by another process while a "
+                              f"dead holder's lock was being taken over") from None
+        else:
+            raise Refused(f"another orchestrator holds {addendum}: " + (f"STALE lock ({why}); a person may remove it with "
+                          f"--break-lock --by \"Your Name\"" if stale else f"{why}; wait for it to finish, or a person "
+                          f"removes it with --break-lock --by \"Your Name\"")) from None
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         json.dump(info, fh, sort_keys=True)
     return Lock(path, info)

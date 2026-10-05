@@ -1,0 +1,108 @@
+[ADD-03-run-host-blind05-20261005T025444Z] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p4-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-blind05-20261005T025444Z] readings ...
+  reading-ADD-03-p4-r1: done (interpretation_pending; /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/candidate/curation/readings/ADD-03-p4-r1.yaml)
+  ingest with the proposed readings: ok (593 units; readings PENDING HUMAN REVIEW: ['ADD-03-p4-r1'])
+  candidate built: 54 provisions of ADD-03 (+15 structural units listed)
+[ADD-03-run-host-blind05-20261005T025444Z] analysis ...
+  54 provisions in 9 batch(es) of at most 8
+  analysis-001: done (9 item(s); run ADD-03-host-20261005T030409Z-1bb2)
+  analysis-001 critic: done (7 reviewed, 0 disagree)
+  analysis-002: done (8 item(s); run ADD-03-host-20261005T031015Z-0272)
+  analysis-002 critic: done (6 reviewed, 0 disagree)
+  analysis-003: done (2 item(s); run ADD-03-host-20261005T031229Z-fd07)
+  analysis-003 critic: done (2 reviewed, 1 disagree)
+  analysis-004: done (7 item(s); run ADD-03-host-20261005T031722Z-2c92)
+  analysis-004 critic: done (7 reviewed, 2 disagree)
+  analysis-005: done (6 item(s); run ADD-03-host-20261005T032303Z-0ada)
+  analysis-005 critic: done (3 reviewed, 0 disagree)
+  analysis-006: done (8 item(s); run ADD-03-host-20261005T032804Z-1fc6)
+  analysis-006 critic: done (2 reviewed, 0 disagree)
+  analysis-007: done (8 item(s); run ADD-03-host-20261005T033353Z-0c84)
+  analysis-007 critic: done (8 reviewed, 1 disagree)
+  analysis-008: done (3 item(s); run ADD-03-host-20261005T033645Z-638e)
+  analysis-008 critic: done (2 reviewed, 0 disagree)
+  analysis-009: done (6 item(s); run ADD-03-host-20261005T034247Z-e6fd)
+  analysis-009 critic: done (6 reviewed, 0 disagree)
+[ADD-03-run-host-blind05-20261005T025444Z] validation ...
+  combined set: 57 item(s); 54/54 provisions accounted for; {'evidence_verified': 14, 'conflicting': 13, 'interpretation_pending': 18, 'escalated': 4, 'insufficient_evidence': 8}
+[ADD-03-run-host-blind05-20261005T025444Z] downstream ...
+  downstream-001: done (14 item(s))
+  downstream-002: done (16 item(s))
+  downstream-003: done (12 item(s))
+  downstream-004: done (12 item(s))
+  downstream-005: done (6 item(s))
+  downstream: 54 task(s) {'row_reading': 14, 'row_new': 2, 'activity': 15, 'escalation': 23}
+[ADD-03-run-host-blind05-20261005T025444Z] downstream_validation ...
+  downstream items: {'interpretation_pending': 32, 'conflicting': 11, 'insufficient_evidence': 1, 'escalated': 15, 'evidence_verified': 1}; held back 1
+[ADD-03-run-host-blind05-20261005T025444Z] critic ...
+  downstream-001 critic: done (3 reviewed, 0 disagree)
+  downstream-002 critic: done (3 reviewed, 0 disagree)
+  downstream-003 critic: done (2 reviewed, 1 disagree)
+  downstream-004 critic: done (3 reviewed, 0 disagree)
+  downstream-005 critic: done (4 reviewed, 1 disagree)
+[ADD-03-run-host-blind05-20261005T025444Z] promotion ...
+  promoted into the candidate: 12 op(s), 19 disposition(s), 23 unresolved, 2 new row(s), 12 reading(s), 3 issue(s), 7 activit(y/ies), 1 clarification(s), 0 relationship(s)
+[ADD-03-run-host-blind05-20261005T025444Z] pin ...
+[ADD-03-run-host-blind05-20261005T025444Z] check_register ...
+  check-register: exit 1, 1 finding(s) {'quote': 1}
+[ADD-03-run-host-blind05-20261005T025444Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/candidate/out (exit 0; 101 file(s) carry the banner)
+[ADD-03-run-host-blind05-20261005T025444Z] diff ...
+[ADD-03-run-host-blind05-20261005T025444Z] review ...
+timings (wall clock per step):
+  ingest                     17.9 s  done
+  readings                  209.3 s  done
+  analysis                 2675.7 s  done
+  validation                  3.4 s  done
+  downstream               1260.1 s  done
+  downstream_validation       0.8 s  done
+  critic                     66.4 s  done
+  promotion                  16.9 s  done
+  pin                         1.1 s  done
+  check_register              3.3 s  done
+  outputs                    85.6 s  done
+  diff                        2.0 s  done
+  review                      2.6 s  done
+  total (steps)            4345.1 s  (72.4 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind05-20261005T025444Z: partial (23 provision(s) unresolved in the candidate (listed first in the review packet); 23 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:cover/para3, esc:ADD-03:2.1, esc:ADD-03:3.3, esc:ADD-03:3.3(b), esc:ADD-03:5.1, esc:ADD-03:5.2, esc:ADD-03:Q18, esc:ADD-03:7.2 …; check-register on the candidate: exit 1, 1 finding(s) {'quote': 1})
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind05-20261005T025444Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "23 provision(s) unresolved in the candidate (listed first in the review packet); 23 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:cover/para3, esc:ADD-03:2.1, esc:ADD-03:3.3, esc:ADD-03:3.3(b), esc:ADD-03:5.1, esc:ADD-03:5.2, esc:ADD-03:Q18, esc:ADD-03:7.2 …; check-register on the candidate: exit 1, 1 finding(s) {'quote': 1}",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z",
+ "provisions": {
+  "validated": 54
+ },
+ "timings": {
+  "ingest": 17.9,
+  "readings": 209.3,
+  "analysis": 2675.7,
+  "validation": 3.4,
+  "downstream": 1260.1,
+  "downstream_validation": 0.8,
+  "critic": 66.4,
+  "promotion": 16.9,
+  "pin": 1.1,
+  "check_register": 3.3,
+  "outputs": 85.6,
+  "diff": 2.0,
+  "review": 2.6
+ },
+ "total_seconds": 4345.1,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "23 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "23 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:cover/para3, esc:ADD-03:2.1, esc:ADD-03:3.3, esc:ADD-03:3.3(b), esc:ADD-03:5.1, esc:ADD-03:5.2, esc:ADD-03:Q18, esc:ADD-03:7.2 …",
+   "check-register on the candidate: exit 1, 1 finding(s) {'quote': 1}"
+  ]
+ },
+ "approval": "none"
+}
+EXIT 0

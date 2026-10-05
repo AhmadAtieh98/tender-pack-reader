@@ -1,0 +1,114 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 3
+    selected_items:
+      D-ADD03-1103-R:
+      - consequential_interpretation
+      D-ADD03-1103-ISSUE:
+      - consequential_interpretation
+      D-ADD03-0841-ISSUE:
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-downstream-001-critic
+    route: host
+    reviewed: 3
+    agrees: 0
+    disagrees: 3
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-003:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-004:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-005:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+items:
+  D-ADD03-1103-R:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The controller''s replace_requirement check failed: the stated old requirement is not the row''s requirement
+          (or new is empty), and the controller status is insufficient_evidence.'
+        - The 120 total and the 84-mark threshold depend on criterion G being worth 20 marks. The printed evidence
+          only shows 'which add criterion G (energy efficiency)' and never states the 20 marks or the table total.
+          The 20 marks and the 70% x 120 calculation are asserted, not shown.
+        - The pack does not define the five-point scale or weight, so the derived mark figure is not settled. The
+          item acknowledges this, which supports a person deciding rather than the reading standing alone.
+        - The wording replacement of 11.3 and the new 11.3A (Envelope B retained unopened) do match the ADD-03 6.2
+          text. The 70% reading is also consistent with note (1).
+        evidence_checked:
+        - ADD-03:6.2
+        - VOL-I:11.3 (quote)
+        - ADD-03:S6/para1 note (1)
+        - controller_validation (replace_requirement ok=false)
+        selected_because:
+        - consequential_interpretation
+        route: host
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  D-ADD03-1103-ISSUE:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The issue's core claim (84/120, up from 70/100, criterion G counting) needs criterion G's 20 marks and
+          the 120 total. The cited evidence only says criterion G is added and that the marks for A to F are unchanged.
+          The weight of G is not in the evidence shown.
+        - The note that 'unchanged at seventy per cent' hides a rise in the mark threshold follows only if the total
+          grew to 120. That cannot be checked from the quoted text.
+        - The 11.3 text does tie the threshold to a percentage of total marks in Table 1-1, so the direction of
+          the issue is plausible. Showing the table or the weight of G would be needed to confirm it.
+        evidence_checked:
+        - VOL-I:11.3
+        - ADD-03:6.1 quote
+        - ADD-03:6.2
+        - controller_validation
+        selected_because:
+        - consequential_interpretation
+        route: host
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  D-ADD03-0841-ISSUE:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The conflict depends on Form 4-F being an Envelope B document and on 8.4 being assessed at Envelope A.
+          The item itself says VOL-I 10.1 is 'not quoted here', and the evidence shown does not support either point.
+        - The evidence does support that 8.4(a) is now 25% of the Estimated Project Cost, that limb (b) is unchanged,
+          and that ADD-03 2.1 substitutes 'as stated by the Bidder in Form 4-F'. 11.3A also supports Envelope B
+          staying unopened for Proposals that fail the technical stage.
+        - The statement that Envelope B is opened only for Proposals that pass technical evaluation is inferred
+          from 11.3A. The base opening procedure is not shown.
+        - The ADD-03 2.1 text is only quoted in part, so the full redefinition of Estimated Project Cost cannot
+          be checked. A person should confirm against VOL-I 10.1 and the opening procedure.
+        evidence_checked:
+        - VOL-I:8.4
+        - ADD-03:3.1
+        - ADD-03:2.1 quote
+        - ADD-03:6.2 11.3A
+        selected_because:
+        - consequential_interpretation
+        route: host
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5

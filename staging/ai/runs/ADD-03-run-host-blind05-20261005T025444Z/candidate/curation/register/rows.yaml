@@ -1,0 +1,663 @@
+# A1 register SLICE (Stage 2): a representative set of rows, not the full register.
+# PROPOSED: drafted by the assistant (session 04). No row has been reviewed or accepted by a person.
+# Each interpretation is pinned to the evidence it was drafted against by `python -m tenderpack pin`, which
+# writes curation/register/pins.yaml (never this file). An interpretation added or re-reviewed is re-pinned.
+# Rule used for re-interpretation in this draft: a row gets a new interpretation at a stage only where that
+# addendum's own text addresses the row's units (amends, names, confirms or answers about them). Any other
+# change to a dependency leaves the row STALE for a person to re-review (e.g. VOL-I 8.3 after the PDD moved).
+prepared_by: "AI-assisted draft, Claude Code session 04 (2 Oct 2026); not reviewed"
+method: >-
+  Rows are independently testable obligations (D3), grouped by source clause (group) and tagged by scope.
+  Quotes are copied from the effective text at each stage and are checked by the build; consequences are
+  quoted from the unit that states them; dates are rules evaluated by tenderpack.dates, never typed.
+anchors:
+  PDD: {name: "Proposal Due Date", defined_in: "VOL-I:6.1"}
+include: ["rows/*.yaml"]          # per-document row files (Stage 3); ids are unique across all files
+rows:
+  # ---------------------------------------------------------------- submission and deadline dependants
+  - id: VOL-I-6.1-01
+    group: VOL-I:6.1
+    scope: [bid_submission, deadline]
+    requirement: "Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address"
+    units: ["VOL-I:6.1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-DELIVERY]
+    date_rules:
+      - {rule_id: PDD, kind: anchor, purpose: deadline, anchor: PDD, source_unit: "VOL-I:6.1", text: "not later than 14:00 hours Riyadh time on <date>"}
+    interpretations:
+      - stage: BASE
+        quote: "not later than 14:00 hours Riyadh time on Thursday 12 November 2026"
+        consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
+      - stage: ADD-01
+        quote: "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"
+        consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
+        note: "ADD-01 §2.1 amends the date; the time is unchanged."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause; the consequence is stated in VOL-I 6.6"
+  - id: VOL-I-5.2-01
+    group: VOL-I:5.2
+    scope: [clarification, deadline]
+    requirement: "Submit any clarification requests no later than ten Working Days before the Proposal Due Date"
+    units: ["VOL-I:5.2"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-CLARIFICATIONS]
+    date_rules:
+      - {rule_id: CLARIFICATION-CUTOFF, kind: relative, purpose: deadline, anchor: PDD, offset: 10, unit: working_day, direction: before, source_unit: "VOL-I:5.2", text: "no later than ten (10) Working Days before the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "no later than ten (10) Working Days before the Proposal Due Date"
+        consequence: {class: lesser, unit: "VOL-I:5.2", quote: "Requests received after that time will not be answered."}
+      - stage: ADD-01
+        quote: "no later than ten (10) Working Days before the Proposal Due Date"
+        consequence: {class: lesser, unit: "VOL-I:5.2", quote: "Requests received after that time will not be answered."}
+        note: "ADD-01 §2.2 names this period as moving with the Proposal Due Date."
+    confidence: high
+    confidence_reason: "backward Working Day counting is defined in VOL-I 2.4"
+  - id: VOL-I-6.3-01
+    group: VOL-I:6.3
+    scope: [envelope_A, bid_security, validity]
+    requirement: "Bid Bond valid for 180 days from the Proposal Due Date (extendable on demand)"
+    units: ["VOL-I:6.3"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-BID-BOND]
+    date_rules:
+      - {rule_id: BID-BOND-VALIDITY, kind: relative, purpose: validity_end, anchor: PDD, offset: 180, unit: calendar_day, direction: after, source_unit: "VOL-I:6.3", text: "valid for one hundred and eighty (180) days from the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "valid for one hundred and eighty (180) days from the Proposal Due Date"
+        parameters: {validity_days: 180}
+      - stage: ADD-01
+        quote: "valid for one hundred and eighty (180) days from the Proposal Due Date"
+        parameters: {validity_days: 180}
+        note: "ADD-01 §2.2 names this period as moving with the Proposal Due Date."
+    confidence: medium
+    confidence_reason: "no consequence is stated; whether day 0 or day 1 is the PDD is not stated (two readings)"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-6.4-01
+    group: VOL-I:6.4
+    scope: [envelope_A, bid_security]
+    requirement: "Bid Bond of SAR 4,500,000, unconditional and payable on first written demand"
+    units: ["VOL-I:6.4"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-BID-BOND]
+    interpretations:
+      - stage: BASE
+        quote: "in the amount of SAR 4,500,000"
+        parameters: {amount_sar: 4500000, form: "unconditional, first written demand"}
+      - stage: ADD-01
+        quote: "in the amount of SAR 4,500,000"
+        parameters: {amount_sar: 4500000, form: "unconditional, first written demand"}
+        note: "ADD-01 Q3 answers about the issuer, not the amount; reviewed for this row, no change."
+      - stage: ADD-02
+        quote: "in the amount of SAR 4,500,000"
+        parameters: {amount_sar: 4500000, form: "unconditional, first written demand"}
+        note: "ADD-02 Q8 confirms the amount is fixed, not a percentage of the bid price."
+    confidence: high
+    confidence_reason: "verbatim; confirmed by ADD-02 Q8 (no consequence stated)"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-6.4-02
+    group: VOL-I:6.4
+    scope: [envelope_A, bid_security]
+    requirement: "Bid Bond issued by a bank licensed in the Kingdom with a long-term rating not lower than A-"
+    units: ["VOL-I:6.4"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-BID-BOND]
+    interpretations:
+      - stage: BASE
+        quote: "issued by a bank licensed to operate in the Kingdom holding a long-term credit rating of not lower than A-"
+      - stage: ADD-01
+        quote: "issued by a bank licensed to operate in the Kingdom holding a long-term credit rating of not lower than A-"
+        note: "ADD-01 Q3: a foreign bank's branch only where licensed in the Kingdom and the issuer meets the rating."
+      - stage: ADD-02
+        quote: "issued by a bank licensed to operate in the Kingdom holding a long-term credit rating of not lower than A-"
+        note: "ADD-02 Q8 concerns the amount; reviewed for this row, no change."
+    confidence: high
+    confidence_reason: "verbatim; clarified by ADD-01 Q3 (no consequence stated)"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-7.1-01
+    group: VOL-I:7.1
+    scope: [validity]
+    requirement: "Proposal open for acceptance for 150 days from the Proposal Due Date"
+    units: ["VOL-I:7.1"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    date_rules:
+      - {rule_id: PROPOSAL-VALIDITY, kind: relative, purpose: validity_end, anchor: PDD, offset: 150, unit: calendar_day, direction: after, source_unit: "VOL-I:7.1", text: "one hundred and fifty (150) days from the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "one hundred and fifty (150) days from the Proposal Due Date"
+        parameters: {validity_days: 150}
+      - stage: ADD-01
+        quote: "one hundred and fifty (150) days from the Proposal Due Date"
+        parameters: {validity_days: 150}
+        note: "ADD-01 §2.2 names this period as moving with the Proposal Due Date."
+    confidence: medium
+    confidence_reason: "no consequence stated; day 0 / day 1 not stated"
+    issues: [I-NO-CONSEQUENCE]
+  - id: VOL-I-8.3-01
+    group: VOL-I:8.3
+    scope:
+    - qualification
+    - envelope_A
+    requirement: EPC Contractor ISO 9001:2015 certificate from an accredited certification body, current as at the
+      Proposal Due Date (as amended), copy with Envelope A; checked pass/fail under VOL-I 11.1(i)
+    units:
+    - VOL-I:8.3
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence:
+    - EV-ISO
+    date_rules:
+    - rule_id: ISO-CURRENT-AT
+      kind: as_at
+      purpose: as_at
+      anchor: PDD
+      source_unit: VOL-I:8.3
+      text: current as at the Proposal Due Date
+    interpretations:
+    - stage: BASE
+      quote: current as at the Proposal Due Date
+    - stage: ADD-01
+      quote: current as at the Proposal Due Date
+      parameters:
+        current_at: 'the latest amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6, 6.1 as
+          amended by ADD-01 2.1; not changed by ADD-02)'
+        issuer: an accredited certification body (VOL-I 8.3)
+        copy: submitted with Envelope A (VOL-I 8.3)
+        gate: 'VOL-I 11.1(i): responsiveness and mandatory compliance check, pass or fail; only Proposals that pass
+          go on to 11.1(ii)'
+      note: 'As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the EPC Contractor''s
+        ISO 9001:2015 certificate must be valid (current) at the latest amended Proposal Due Date, 26 November 2026,
+        14:00 Riyadh time (VOL-I 2.6 defines the Proposal Due Date as the date and time in 6.1 as amended; ADD-01
+        2.1 moved the date and kept the time; ADD-02 does not change it). It must also be issued by an accredited
+        certification body, and a copy must be submitted with Envelope A (VOL-I 8.3). VOL-I 8.3 states no consequence
+        of its own; the requirement is checked at the responsiveness and mandatory compliance stage on a pass or fail
+        basis, and only Proposals that pass that stage go on to technical evaluation (VOL-I 11.1(i)-(ii)). The pack
+        gives no ISO-specific rejection label and says nothing on whether a failure can be cured; neither is implied.
+        [Applied from proposal P-S08-VOL-I-8.3-01 by Claude Code (assistant), on Ahmad''s written instruction of 3
+        Oct 2026 (session 08 §3) on 2026-10-03.]'
+    - stage: ADD-03
+      quote: current as at the Proposal Due Date
+      parameters:
+        current_at: the Proposal Due Date as amended (VOL-I 2.6, 6.1 as amended by ADD-01 2.1); ADD-03 is not shown
+          here to change it
+        issuer: an accredited certification body (VOL-I 8.3)
+        copy: submitted with Envelope A (VOL-I 8.3)
+        jv_epc_contractor: where the EPC Contractor is an unincorporated JV, each member holds a certificate meeting
+          8.3 and a copy of each is submitted with Envelope A (ADD-03 Q17)
+        gate: 'VOL-I 11.1(i): responsiveness and mandatory compliance check, pass or fail'
+      consequence: none_stated
+      note: 'Words of VOL-I 8.3 unchanged. ADD-03 Q17 (annotation, adds obligation): for an unincorporated JV EPC
+        Contractor, each member''s certificate is needed and a copy of each goes in Envelope A, so EV-ISO becomes
+        one per JV member in that case. VOL-I 8.3 states no consequence of its own, and the pack says nothing on whether
+        a failure can be cured. [AI workflow run ADD-03-run-host-blind05-20261005T025444Z (route host, model claude-code
+        headless (opus)); PROPOSED; not reviewed]'
+    confidence: medium
+    confidence_reason: no consequence stated; this period is not named in ADD-01 §2.2 (whose list is non-exhaustive)
+    issues:
+    - I-NO-CONSEQUENCE
+  - id: VOL-I-8.5-01
+    group: VOL-I:8.5
+    scope: [qualification, references]
+    requirement: "Evidence two reference sewage treatment plants of at least 80,000 m3/day, each in commercial operation within the ten years before the Proposal Due Date"
+    units: ["VOL-I:8.5#fn12", "VOL-I:8.5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-REFERENCES]
+    date_rules:
+      - {rule_id: REFERENCE-LOOKBACK, kind: relative, purpose: window_start, anchor: PDD, offset: 10, unit: year, direction: before, source_unit: "VOL-I:8.5#fn12", text: "within the ten (10) years preceding the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000"
+        parameters: {plants_min: 2, capacity_min_m3_day: 80000, lookback_years: 10}
+        consequence: {class: rejection, unit: "VOL-I:8.5#fn12", quote: "shall be rejected without further evaluation"}
+        note: "The rejection rule is in footnote 12, not in the body of 8.5."
+      - stage: ADD-01
+        quote: "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000"
+        parameters: {plants_min: 2, capacity_min_m3_day: 80000, lookback_years: 10}
+        consequence: {class: rejection, unit: "VOL-I:8.5#fn12", quote: "shall be rejected without further evaluation"}
+        note: "ADD-01 §2.2 names footnote 12; ADD-01 Q5: a plant under construction does not count."
+    confidence: high
+    confidence_reason: "verbatim footnote; boundary of the look-back not stated (two readings)"
+  # ---------------------------------------------------------------- Local Content Certificate chain
+  - id: VOL-I-8.6-01
+    group: VOL-I:8.6
+    scope: [qualification, envelope_A]
+    requirement: "Local Content Certificate from the competent authority showing the minimum construction-phase local content ratio"
+    units: ["VOL-I:8.6", "ADD-01:4.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-LCC]
+    interpretations:
+      - stage: BASE
+        quote: "not less than thirty per cent (30%) for the construction phase"
+        parameters: {local_content_min_pct: 30}
+        note: "No consequence stated in the original clause."
+      - stage: ADD-02
+        quote: "not less than thirty-five per cent (35%) for the construction phase"
+        parameters: {local_content_min_pct: 35}
+        consequence: {class: non_responsive, unit: "VOL-I:8.6", quote: "Failure to submit the certificate shall render the Proposal non-responsive."}
+        note: "Reinstated in amended form by ADD-02 §9.1; ADD-01 §4.2's disregard rule revoked by ADD-02 §9.2."
+    confidence: high
+    confidence_reason: "verbatim at every stage; the issuing authority is not named and the lead time is unknown"
+    issues: [I-LCC-ISSUER]
+  # ---------------------------------------------------------------- Pre-bid conference
+  - id: VOL-I-5.4-01
+    group: VOL-I:5.4
+    scope: [pre_bid, fixed_date]
+    requirement: "Be represented at the Pre-Bid Conference on 30 September 2026"
+    units: ["VOL-I:5.4"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-ATTENDANCE]
+    date_rules:
+      - {rule_id: PRE-BID, kind: fixed, purpose: event, fixed: "2026-09-30", source_unit: "VOL-I:5.4", text: "Wednesday 30 September 2026 at 10:00 Riyadh time"}
+    interpretations:
+      - stage: BASE
+        quote: "Attendance by at least one authorised representative of each Bidder is mandatory."
+        consequence: {class: disqualification, unit: "VOL-I:5.4", quote: "A Bidder that is not represented at the Pre-Bid Conference shall be disqualified."}
+    confidence: high
+    confidence_reason: "verbatim; a fixed past date (does not move with the PDD); attendance is a bidder fact"
+    issues: [I-BIDDER-FACTS]
+  - id: ADD-01-3.1-01
+    group: ADD-01:3.1
+    scope: [pre_bid, deadline]
+    requirement: "If the attendance record is wrong, notify the Authority within five Working Days of Addendum No. 1"
+    units: ["ADD-01:3.1"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    evidence: [EV-ATTENDANCE]
+    date_rules:
+      - {rule_id: ATTENDANCE-NOTICE, kind: relative, purpose: deadline, anchor: ADD-01-issue, offset: 5, unit: working_day, direction: after, source_unit: "ADD-01:3.1", text: "within five (5) Working Days of this Addendum"}
+    interpretations:
+      - stage: ADD-01
+        quote: "shall notify the Authority through the Portal within five (5) Working Days of this Addendum"
+    confidence: medium
+    confidence_reason: "forward Working Day counting is not defined (two readings)"
+  # ---------------------------------------------------------------- forms
+  - id: VOL-I-9.3-01
+    group: VOL-I:9.3
+    scope: [envelope_A, forms]
+    requirement: "Form 4-A (as reissued by ADD-01 App A) signed by a person holding a notarised Power of Attorney from the lead member; an unsigned or improperly executed Form 4-A renders the Proposal non-responsive"
+    units: ["VOL-I:9.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4A, EV-POA]
+    interpretations:
+      - stage: BASE
+        quote: "Form 4-A shall be signed by a person holding a notarised Power of Attorney from the lead member of the Bidder."
+        consequence: {class: non_responsive, unit: "VOL-I:9.3", quote: "An unsigned or improperly executed Form 4-A shall render the Proposal non-responsive."}
+    confidence: high
+    confidence_reason: "verbatim"
+    issues: [I-F4A-FIELDS]
+  - id: VOL-IV-F4A-01
+    group: VOL-IV:F4-A
+    scope: [forms, printed_date]
+    requirement: "Use the Form 4-A as issued (reissued by ADD-01 App A: 'Bidders shall use this version'); its printed Proposal Due Date"
+    units: ["VOL-IV:F4-A/proposal-due-date"]
+    follows_replacement: true
+    discipline: Legal
+    owner: Legal counsel
+    assessment: procedural
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "Proposal Due Date: 12 November 2026, 14:00 Riyadh time"
+      - stage: ADD-01
+        quote: "Proposal Due Date: 12 November 2026, 14:00 Riyadh time"
+        note: "The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person."
+    confidence: high
+    confidence_reason: "verbatim printed field; the conflict with the amended PDD is shown, not resolved"
+    issues: [I-F4A-FIELDS]
+  - id: VOL-I-9.4-01
+    group: VOL-I:9.4
+    scope: [envelope_A, forms, arabic]
+    requirement: "Form 4-C completed in Arabic, signed and stamped by an authorised signatory of each member"
+    units: ["VOL-I:9.4", "VOL-IV:F4-C/image"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "Form 4-C shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder."
+        consequence: {class: non_responsive, unit: "VOL-I:9.4", quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+      - stage: ADD-02
+        quote: "Form 4-C shall be completed in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder."
+        consequence: {class: non_responsive, unit: "VOL-I:9.4", quote: "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive."}
+        note: "ADD-02 Q9 confirms Arabic; an English translation may be attached for convenience only."
+    confidence: high
+    confidence_reason: "text-layer clause; the form itself is an image (transcription confirmed by the owner, 3 Oct 2026)"
+    issues: [I-BIDDER-FACTS]
+  - id: VOL-IV-F4C-04
+    group: VOL-IV:F4-C
+    scope: [forms, arabic, declaration]
+    requirement: "Form 4-C declaration 4 (Arabic only): all information in the Proposal is true and complete"
+    units: ["VOL-IV:F4-C/image/decl4"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة"
+        consequence: {class: exclusion, unit: "VOL-IV:F4-C/image/decl4", quote: "يؤدي إلى استبعاد العرض", gloss: "leads to the exclusion of the proposal"}
+        note: "Consequence stated only in Arabic (gloss: the displayed translation, confirmed by the owner on 3 Oct 2026 as a translation). 'Exclusion' (استبعاد) is kept as its own category: it is not treated as equivalent to the pack's rejection, disqualification or non-responsiveness. Which of them, if any, it corresponds to is for a person (I-F4C-EXCLUSION)."
+      - stage: ADD-02
+        quote: "أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة"
+        consequence: {class: exclusion, unit: "VOL-IV:F4-C/image/decl4", quote: "يؤدي إلى استبعاد العرض", gloss: "leads to the exclusion of the proposal"}
+        note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
+    confidence: medium
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); Arabic-only consequence whose category is unresolved"
+    issues: [I-READING-F4C, I-F4C-EXCLUSION]
+  - id: VOL-IV-F4C-N1
+    group: VOL-IV:F4-C
+    scope: [forms, arabic]
+    requirement: "Form 4-C note (Arabic): submit the form in Arabic for each consortium member"
+    units: ["VOL-IV:F4-C/image/note"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف"
+        consequence: {class: non_responsive, unit: "VOL-IV:F4-C/image/note", quote: "عدم تقديمه كاملاً يجعل العرض غير مستجيب", gloss: "failure to submit it complete renders the proposal non-responsive"}
+      - stage: ADD-02
+        quote: "يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف"
+        consequence: {class: non_responsive, unit: "VOL-IV:F4-C/image/note", quote: "عدم تقديمه كاملاً يجعل العرض غير مستجيب", gloss: "failure to submit it complete renders the proposal non-responsive"}
+        note: "ADD-02 Q9 confirms the Arabic requirement."
+    confidence: medium
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026)"
+    issues: [I-READING-F4C]
+  - id: ADD-02-7.2-01
+    group: ADD-02:7
+    scope: [envelope_A, forms, new_in_addendum]
+    requirement: "Complete and submit the new Form 4-G (cybersecurity undertaking) with Envelope A"
+    units: ["ADD-02:7.2", "VOL-I:9.1(e)+ADD-02"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "Form 4-G shall be completed and submitted with Envelope A."
+        consequence: {class: non_responsive, unit: "ADD-02:7.2", quote: "Failure to submit Form 4-G shall render the Proposal non-responsive."}
+    confidence: high
+    confidence_reason: "verbatim; the re-lettering of the Envelope A list after item (e) is not stated"
+    issues: [I-F4G-LETTERING]
+  - id: ADD-02-F4G-01
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 3: appoint a named accountable security officer for the concession period (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "A named accountable security officer will be appointed for the concession period."
+        note: "Form 4-G undertaking 3. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-05
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 4: notify security incidents affecting the Facility to the Authority within 24 hours of detection (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    date_notes:
+      - {text: "within twenty-four (24) hours of detection", treatment: post_award, reason: "undertaking 4: an event-driven post-award period (from detection of each incident), not a bid-stage date"}
+    interpretations:
+      - stage: ADD-02
+        quote: "Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection."
+        note: "Form 4-G undertaking 4. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-06
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 5: an independent penetration test of the OT environment every year, with the report provided to the Authority (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/5"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "An independent penetration test of the operational technology environment will be carried out annually and the report provided to the Authority."
+        note: "Form 4-G undertaking 5. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  - id: ADD-02-F4G-07
+    group: ADD-02:F4-G
+    scope: [forms, post_award, new_in_addendum, cybersecurity]
+    requirement: "Form 4-G undertaking 6: remote access to the control system requires multi-factor authentication and is logged (confirmed Yes or No)"
+    units: ["ADD-02:F4-G/T1/6"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4G]
+    interpretations:
+      - stage: ADD-02
+        quote: "Remote access to the control system will require multi-factor authentication and will be logged."
+        note: "Form 4-G undertaking 6. A separate post-award obligation added by ADD-02 (Form 4-G, ADD-02 7.1-7.2); not in VOL-II 6. Confirmed Yes or No on the form at bid stage; the effect of answering 'No' is not stated (I-F4G-NO)."
+    confidence: medium
+    confidence_reason: "verbatim; the effect of answering 'No' is not stated"
+    issues: [I-F4G-NO]
+  # ---------------------------------------------------------------- repeated wording traps
+  - id: VOL-II-4.4-01
+    group: VOL-II:4.4
+    scope: [technical_design, repeated_wording]
+    requirement: "Standby power sized to carry the inlet works, disinfection and effluent pumping for the stated duration"
+    units: ["VOL-II:4.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "for not less than seventy-two (72) hours"
+        parameters: {standby_power_hours_min: 72}
+      - stage: ADD-02
+        quote: "for not less than ninety-six (96) hours"
+        parameters: {standby_power_hours_min: 96}
+        note: "ADD-02 §4.1. The same words 'seventy-two (72) hours' in VOL-V 31.3 are not targeted."
+    confidence: high
+    confidence_reason: "verbatim; how non-compliance in the technical proposal is treated is not stated"
+  - id: VOL-V-31.3-01
+    group: VOL-V:31.3
+    scope: [contract, post_award, repeated_wording]
+    requirement: "Cure period of 72 hours for an Unavailability Event under VOL-V 31.1(c) (unchanged by the addenda)"
+    units: ["VOL-V:31.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show a VOL-V 31.1(c) event was cured within the 72-hour cure period cannot
+        be specified from the extract, which states the length of the period but not when it starts or what a cure changes,
+        and the deductions are calculated under Schedule 7 (VOL-V 31.2), which is not supplied.'
+      basis:
+      - unit: VOL-V:31.3
+        page: 3
+        words: of seventy-two (72) hours to an event under Clause 31.1(c)
+      - unit: VOL-V:31.2
+        page: 3
+        words: On the occurrence of an Unavailability Event the Authority shall deduct from the Availability Payment
+          the amounts calculated under Schedule 7.
+      missing: 'When the 72-hour cure period starts (occurrence, detection or notice), whether any notice is needed,
+        and whether a cure within it removes or reduces the deduction: VOL-V 31.3 gives only the length, and the deduction
+        calculation is in Schedule 7, referenced in VOL-V 31.2 and not supplied (I-VOL-V-MISSING); once known, a timestamped
+        record of each 31.1(c) event''s start and of the restoration of delivery at the required residual head is the
+        likely evidence.'
+      bid_stage_note: ADD-02 4.1 substitutes ‘ninety-six (96) hours’ for ‘seventy-two (72) hours’ in Volume II Clause
+        4.4 (standby power) only; the 72-hour cure period in VOL-V 31.3 is not amended and is not to be read as 96 hours.
+    interpretations:
+      - stage: BASE
+        quote: "of seventy-two (72) hours to an event under Clause 31.1(c)"
+        parameters: {cure_hours_31_1_c: 72}
+    confidence: high
+    confidence_reason: "verbatim; must not change when VOL-II 4.4's identical words do"
+  # ---------------------------------------------------------------- weighting
+  - id: VOL-I-11.2-01
+    group: VOL-I:11.2
+    scope: [evaluation, weighting, repeated_wording]
+    requirement: "Combined score weighting, technical / commercial"
+    units: ["VOL-I:11.2"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: scored
+    no_deliverable: "an evaluation rule the Authority applies; what it weighs are the Technical Proposal and the commercial proposal, required by their own rows"
+    interpretations:
+      - stage: BASE
+        quote: "sixty per cent (60%) technical and forty per cent (40%) commercial"
+        parameters: {technical_pct: 60, commercial_pct: 40}
+      - stage: ADD-02
+        quote: "sixty-five per cent (65%) technical and thirty-five per cent (35%) commercial"
+        parameters: {technical_pct: 65, commercial_pct: 35}
+        note: "ADD-02 note (2) to Table 1-1 (small print). The old words were located by shape, not quoted by the addendum. The minutes' 'seventy / thirty' is non-binding."
+    confidence: medium
+    confidence_reason: "the amendment is in a small-print table note and does not quote the words it replaces"
+  - id: VOL-V-29.2-01
+    group: VOL-V:29.2
+    scope: [contract, payment, repeated_wording]
+    requirement: "Availability Payment indexation: 60% indexed to CPI, 40% fixed (unchanged by the addenda)"
+    units: ["VOL-V:29.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: not_applicable
+      text: 'Not applicable: indexation of the Availability Payment (60% indexed to the published consumer price index,
+        40% fixed) is a payment term applied in accordance with Schedule 9, not an act the Project Company performs
+        and evidences.'
+      basis:
+      - unit: VOL-V:29.2
+        page: 3
+        words: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
+          (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
+      reason: The clause states how the Availability Payment is indexed ('shall be indexed annually in accordance with
+        Schedule 9'); it gives the Project Company nothing to do. Any indexed amount would appear in the monthly invoices
+        proposed under row VOL-V-29.4-01. Schedule 9, under which the indexation is applied, is not supplied (I-VOL-V-MISSING).
+      bid_stage_note: 'Price assumption: Form 4-F states ''Indexation basis assumed: Per Volume V Clause 29.2'', so
+        the Financial Model should apply the 60/40 split, but Schedule 9 is not supplied; VOL-I 10.5 makes a price subject
+        to adjustment other than as provided in Volume V non-responsive.'
+    interpretations:
+      - stage: BASE
+        quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
+        parameters: {indexed_pct: 60, fixed_pct: 40}
+      - stage: ADD-01
+        quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
+        parameters: {indexed_pct: 60, fixed_pct: 40}
+        note: "ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed for this row: the indexation split is unchanged."
+    confidence: high
+    confidence_reason: "verbatim; must not change when VOL-I 11.2's similar words do"
+  - id: VOL-I-11.3-01
+    group: VOL-I:11.3
+    scope: [evaluation, threshold]
+    requirement: "Technical score of at least 70 out of 100 to proceed to commercial evaluation"
+    units: ["VOL-I:11.3"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "scoring less than seventy (70) marks out of one hundred (100)"
+        parameters: {threshold_marks: 70}
+        consequence: {class: score_elimination, unit: "VOL-I:11.3", quote: "its Envelope B shall be returned unopened"}
+      - stage: ADD-02
+        quote: "scoring less than seventy (70) marks out of one hundred (100)"
+        parameters: {threshold_marks: 70}
+        consequence: {class: score_elimination, unit: "VOL-I:11.3", quote: "its Envelope B shall be returned unopened"}
+        note: "ADD-02 note (1) confirms the threshold is unchanged."
+    confidence: high
+    confidence_reason: "verbatim; confirmed unchanged by ADD-02 note (1)"
+  - id: VOL-I-T1-1-B
+    group: VOL-I:T1-1
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion B (construction methodology, programme and interfaces)"
+    units: ["VOL-I:T1-1/B"]
+    follows_replacement: true
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 20"
+        parameters: {marks: 20}
+      - stage: ADD-02
+        quote: "Marks: 15"
+        parameters: {marks: 15}
+        note: "Table 1-1 reissued by ADD-02 §3.1; B reduced by 5, D increased by 5, total 100 (checked). Note (3) adds a scoring method (a 'standard five-point scale' multiplied by 'the weight shown'); the scale is not defined (issue)."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  - id: VOL-I-T1-1-D
+    group: VOL-I:T1-1
+    scope: [evaluation, weighting]
+    requirement: "Marks available for criterion D (environmental and social management)"
+    units: ["VOL-I:T1-1/D"]
+    follows_replacement: true
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Marks: 15"
+        parameters: {marks: 15}
+      - stage: ADD-02
+        quote: "Marks: 20"
+        parameters: {marks: 20}
+        note: "Table 1-1 reissued by ADD-02 §3.1. Note (3) adds a scoring method (a 'standard five-point scale' multiplied by 'the weight shown'); the scale is not defined (issue)."
+    confidence: high
+    confidence_reason: "verbatim table rows"
+  # ---------------------------------------------------------------- image-based TN
+  - id: VOL-II-T2-4-TN
+    group: VOL-II:T2-4
+    scope: [technical_design, effluent, image]
+    requirement: "Treated effluent Total Nitrogen (TN): value shown in Table 2-4, unit and basis of assessment"
+    units: ["VOL-II:T2-4/TN"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: scored
+    evidence: [EV-TECH-PROPOSAL]
+    interpretations:
+      - stage: BASE
+        quote: "Limit: 5"
+        parameters: {value_shown: 5, unit: "mg/l", basis: "30-day rolling average"}
+        note: "Read from the image (transcription confirmed by the owner, 3 Oct 2026): TN = 5 mg/l is the original reading. The table's qualifier 'all values are maxima' is recorded as context; what the value means is left to a person."
+      - stage: ADD-02
+        quote: "Limit: 3"
+        parameters: {value_shown: 3, unit: "mg/l", basis: "30-day rolling average"}
+        note: "ADD-02 §5.1 amends 'from the value shown' (which exists only in the image) to 3 mg/l, same basis. The Environmental Permit, which prevails over the reproduction (VOL-II p3, reproduction preamble), is not in the pack; no Permit compliance is claimed, including for the amended TN limit."
+    confidence: medium
+    confidence_reason: "base value 5 mg/l and basis come from the image reading (transcription confirmed by the owner, 3 Oct 2026); the separate amended value 3 mg/l comes from ADD-02 5.1 (op proposed); the Permit is not supplied"
+    issues: [I-PERMIT, I-READING-T24]

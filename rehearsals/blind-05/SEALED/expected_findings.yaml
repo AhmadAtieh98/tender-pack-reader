@@ -1,0 +1,435 @@
+# Blind rehearsal 05 - answer key (SEALED). Do not show to the processing agents.
+# Every "old"/"text" quotation below is verbatim from the pack (checked by script against the
+# PyMuPDF text of the six pack PDFs, whitespace-normalised). Every "new" string is verbatim from
+# the ADD-03 PDF text layer (same normalisation; the superscript in "OU/m3" extracts as "m3").
+# Arabic strings are exactly the builder's source strings (logical order, as typed).
+
+meta:
+  rehearsal: blind-05
+  input_pdf: rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf
+  pdf_sha256: 9c5e22d59a80d48f82f07cbb0cfb7649f14a8618fb8fc4503a576f4a0293eae3
+  pages: 5
+  printed_issue_date: "Issued 15 November 2026"
+  issue_date: "2026-11-15 (Sunday, a Working Day)"
+  base_state: "Volumes I, II, IV, V as amended by ADD-01 (8 Oct 2026) and ADD-02 (22 Oct 2026) only. Does not stack on any other rehearsal."
+  proposal_due_date: "Thursday 26 November 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1) - UNCHANGED by ADD-03"
+  planning_date_after_ingest: "2026-11-15 (latest addendum date, per the 2 Oct 2026 hiring-team reply)"
+  working_day_rule: "VOL-I 2.4: Sunday-Thursday, excluding public holidays; counting backwards the stated date is not counted. No Saudi public holiday falls between 15 Oct and 31 Dec 2026."
+  author_model: claude-opus-5-5 (Opus 5.5)
+  structure:
+    - "Cover band, project line, cover summary, standard precedence paragraph"
+    - "1 Recitals (1.1-1.3)"
+    - "2 Consolidation of VOL-I 6.6 and 6.7 (2.1-2.2)"
+    - "3 Availability Payment and indexation (3.1-3.4)"
+    - "4 Membrane filtration (4.1-4.2)"
+    - "5 Odour control (5.1-5.2)"
+    - "6 Responses to clarification requests 15 to 21"
+    - "7 Height of structures (7.1-7.4)"
+    - "Appendix A - Table 5-1 (Arabic), IMAGE ONLY, page 4"
+    - "Appendix B - English translation of Table 5-1 (convenience only), page 5"
+  image_only_elements:
+    - page: 4
+      what: "Table 5-1 as issued by the Northern Region Airspace Safeguarding Office (Arabic letter extract): letterhead, ref and date, subject, title, 4-column table (zone, description, maximum height with unit and datum, obstacle lighting), 3 notes, signature block. Raster 1750 x 1500 RGB (equal channels), FlateDecode, drawn at x 56.69, width 481.89 pt, as VOL-II draws Table 2-4."
+      text_layer_on_page: "Only the heading 'APPENDIX A - TABLE 5-1 (ARABIC)', one paragraph and 'End of reproduction.' The table content exists only in the image."
+
+state_before:
+  - {id: SB01, doc: VOL-I, clause: "6.6", page: 3, text: "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder."}
+  - {id: SB02, doc: VOL-I, clause: "6.7", page: 3, text: "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter."}
+  - {id: SB03, doc: VOL-I, clause: "2.4", page: 2, text: "Working Day means any day from Sunday to Thursday inclusive, other than a day declared a public holiday in the Kingdom. Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."}
+  - {id: SB04, doc: VOL-I, clause: "2.6", page: 2, text: "Proposal Due Date means the date and time stated in Clause 6.1, as the same may be amended by Addendum."}
+  - {id: SB05, doc: VOL-I, clause: "5.2", page: 3, text: "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered."}
+  - {id: SB06, doc: VOL-I, clause: "3.2(a)", page: 2, text: "(a) the Addenda, a later Addendum prevailing over an earlier one;"}
+  - {id: SB07, doc: VOL-I, clause: "3.3", page: 2, text: "A Bidder that identifies a conflict, ambiguity or discrepancy shall raise it as a request for clarification under Section 5. A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation."}
+  - {id: SB08, doc: VOL-I, clause: "6.2", page: 3, text: "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive."}
+  - {id: SB09, doc: VOL-I, clause: "8.3", page: 4, text: "The proposed EPC Contractor shall hold a valid ISO 9001:2015 quality management certificate, current as at the Proposal Due Date, issued by an accredited certification body. A copy of the certificate shall be submitted with Envelope A."}
+  - {id: SB10, doc: VOL-I, clause: "9.6", page: 5, text: "Form 4-E shall list every deviation, qualification or reservation to Volume V. A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."}
+  - {id: SB11, doc: VOL-I, clause: "9.7", page: 5, text: "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel."}
+  - {id: SB12, doc: VOL-I, clause: "10.1", page: 5, text: "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B."}
+  - {id: SB13, doc: VOL-I, clause: "10.2", page: 5, text: "The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum, calculated in accordance with the payment mechanism at Volume V Clause 29."}
+  - {id: SB14, doc: VOL-I, clause: "10.5", page: 5, text: "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive."}
+  - {id: SB15, doc: VOL-I, clause: "11.5", page: 5, text: "A response to a clarification shall not change the Availability Payment quoted; any response that does so shall render the Proposal non-responsive."}
+  - {id: SB16, doc: VOL-I, clause: "12.1", page: 6, text: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date"}
+  - {id: SB17, doc: VOL-I, clause: "Table 1-1 row B", page: 6, text: "Construction methodology, programme and interface management"}
+  - {id: SB18, doc: VOL-II, clause: "3.1 (second sentence)", page: 3, text: "The Authority does not mandate a particular process train."}
+  - {id: SB19, doc: VOL-II, clause: "3.2", page: 3, text: "Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions in the lifecycle plan and shall warrant a membrane life of not less than seven (7) years."}
+  - {id: SB20, doc: VOL-II, clause: "3.4", page: 3, text: "Odour control shall achieve not more than 5 OU/m3 at the site boundary, assessed as a 98th percentile hourly value."}
+  - {id: SB21, doc: VOL-II, clause: "3.5", page: 3, text: "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."}
+  - {id: SB22, doc: VOL-II, clause: "4.3", page: 4, text: "Each treatment stage shall be arranged in not fewer than four (4) parallel streams, such that the Facility can meet Table 2-4 with any one stream out of service."}
+  - {id: SB23, doc: VOL-II, clause: "2.2 (part)", page: 2, text: "with lifecycle replacement provided for in the Project Company's lifecycle plan"}
+  - {id: SB24, doc: VOL-II, clause: "5.5", page: 4, text: "All permanent civil structures shall be designed for a seismic event with a return period of 475 years and for a flood with a return period of 100 years."}
+  - {id: SB25, doc: VOL-II, clause: "6.4", page: 4, text: "All process data shall be retained for not less than seven (7) years and shall be made available to the Authority on demand in a non-proprietary format."}
+  - {id: SB26, doc: VOL-II, clause: "9.1 (part)", page: 5, text: "The Project Company shall comply with the Environmental and Social Impact Assessment prepared for the site and available in the data room"}
+  - {id: SB27, doc: VOL-IV, clause: "Form 4-F row", page: 9, text: "Availability Payment (SAR per annum, year 1 of operations)"}
+  - {id: SB28, doc: VOL-IV, clause: "Form 4-F row", page: 9, text: "Indexation basis assumed Per Volume V Clause 29.2"}
+  - {id: SB29, doc: VOL-IV, clause: "Form 4-F confirmation", page: 9, text: "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form."}
+  - {id: SB30, doc: VOL-IV, clause: "Index of Forms note", page: 2, text: "Forms shall be reproduced without alteration to their wording."}
+  - {id: SB31, doc: VOL-V, clause: "1.1", page: 2, text: "Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause 31."}
+  - {id: SB32, doc: VOL-V, clause: "29.1", page: 3, text: "From PCOD the Authority shall pay the Project Company the Availability Payment in equal monthly instalments in arrears, subject to the deductions in Clause 31."}
+  - {id: SB33, doc: VOL-V, clause: "29.2", page: 3, text: "The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed."}
+  - {id: SB34, doc: VOL-V, clause: "31.1", page: 3, text: "An Unavailability Event occurs where (a) the Facility is unable to treat the flow delivered to it, (b) the treated effluent fails any parameter in Volume II Table 2-4, or (c) the Facility fails to deliver treated effluent to the delivery point at the required residual head."}
+  - {id: SB35, doc: VOL-V, clause: "42.1", page: 4, text: "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance and with a remaining design life of not less than five (5) years for all major assets."}
+  - {id: SB36, doc: VOL-V, clause: "3.1 (part)", page: 2, text: "This Agreement shall come into force on the Effective Date and shall continue for a period of twenty-five (25) years from the Effective Date"}
+  - {id: SB37, doc: ADD-01, clause: "6 response 1", page: 1, text: "Is a membrane bioreactor process mandatory? No. Volume II Clause 3.1 does not mandate a process train. Any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable."}
+  - {id: SB38, doc: ADD-01, clause: "2.1", page: 1, text: "Volume I Clause 6.1 is amended by deleting ‘Thursday 12 November 2026’ and substituting ‘Thursday 26 November 2026’. The time of 14:00 Riyadh time is unchanged."}
+  - {id: SB39, doc: ADD-01, clause: "1.2", page: 1, text: "Capitalised terms have the meanings given in Volume I."}
+  - {id: SB40, doc: ADD-02, clause: "6 response 7 (last sentence)", page: 2, text: "The Authority does not consider further amendment necessary at this stage."}
+
+cover:
+  text: "This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of Availability Payment and the indexation of the Availability Payment under Volume V Clause 29.2, adds a membrane filtration requirement to Volume II Clause 3.1, replaces the odour criterion in Volume II Clause 3.5 by reference to the Environmental and Social Impact Assessment, inserts a new Volume II Clause 5.6 limiting the height of permanent structures at the site in accordance with Table 5-1, and responds to clarification requests 15 to 21."
+  planted_errors:
+    - id: E1
+      mechanism: "False editorial characterisation: a substantive change is labelled as a consolidation 'without change of substance'. (Not used in blind-01..04.)"
+      claim: "consolidates Volume I Clauses 6.6 and 6.7 without change of substance"
+      truth: "The merged 6.6 moves the last day for MODIFYING a Proposal from 'at any time before the Proposal Due Date' to 'not later than two (2) Working Days before the Proposal Due Date' (Tuesday 24 November 2026), and a late modification is now 'rejected unopened and returned to the Bidder' (formerly 'No modification will be accepted thereafter'). Withdrawal is still allowed until the PDD."
+      detect_by: "Diff ADD-03 2.1's quoted 6.6 against VOL-I 6.6 + 6.7 (SB01, SB02) clause by clause; do not trust the 'consolidation' label."
+      severity: high
+    - id: E2
+      mechanism: "Wrong-provision attribution: the cover names a real neighbouring clause number (VOL-II 3.5, noise) for a change the body makes to another clause (VOL-II 3.4, odour). (Not used in blind-01..04.)"
+      claim: "replaces the odour criterion in Volume II Clause 3.5"
+      truth: "Section 5.1 amends VOL-II Clause 3.4 (odour). The quoted deleted words 'not more than 5 OU/m3 at the site boundary' exist only in 3.4. VOL-II 3.5 (noise, 55/45 dB(A)) is NOT amended."
+      detect_by: "Locate the deleted words of 5.1 in the pack (SB20, VOL-II p.3, Clause 3.4); check SB21 is untouched by the body."
+      severity: medium
+      trap: "A tool indexing changes from the cover would flag VOL-II 3.5 (noise) as amended - must not be reported (see must_not_report)."
+    - id: E3
+      mechanism: "The cover repeats the non-governing convenience translation: it describes the scope of Table 5-1 as the English translation does ('permanent structures') although the governing Arabic text says otherwise. (Not used in blind-01..04.)"
+      claim: "limiting the height of permanent structures at the site"
+      truth: "Arabic Note 1 of Table 5-1 (governing, ADD-03 7.2): the limits apply to all permanent AND TEMPORARY structures, including stacks, cranes and construction equipment. Only the English translation (Appendix B Note (1)) says 'all permanent structures, including stacks'."
+      detect_by: "Read the image on page 4 (Arabic Note 1: 'الدائمة والمؤقتة' and 'الرافعات ومعدّات الإنشاء'); corroborated in the English body by 7.3 ('any structure, plant or equipment') and Q21 (crane and lifting plan must demonstrate compliance with Table 5-1)."
+      severity: high
+  accurate_items:
+    - "amends the definition of Availability Payment (VOL-V 1.1) and the indexation under VOL-V 29.2"
+    - "adds a membrane filtration requirement to VOL-II 3.1"
+    - "the odour criterion is replaced by reference to the ESIA (only the clause number is wrong)"
+    - "inserts a new VOL-II 5.6 in accordance with Table 5-1 (only the scope description is wrong)"
+    - "responds to clarification requests 15 to 21 (seven answers; range correct)"
+  not_planted_but_acceptable_to_note:
+    - "The cover does not mention the new VOL-V Clause 1.1A (Base Date) - part of the AP/indexation change; noting it is correct but it is not a planted error."
+    - "The cover does not mention 7.3 (notice of structures over 30 m) or the requirement-level changes made in responses 17, 20 and 21; the cover of ADD-02 likewise did not itemise Q&A content."
+
+secondary_undisclosed_effects:
+  - {id: S1, where: "2.1 (merged 6.6)", effect: "Modification cut-off moves to 2 Working Days before the PDD (Tue 24 Nov 2026); a late modification is rejected unopened and returned. Hidden behind E1."}
+  - {id: S2, where: "3.2", effect: "New defined term Base Date (VOL-V 1.1A) = 28 days before the PDD = Thursday 29 October 2026 (already in the past at issue)."}
+  - {id: S3, where: "3.3 (new 29.2)", effect: "Indexation runs from the Base Date; the 60/40 split is replaced by a Bidder-elected Indexed Proportion of 50%-70% until the end of year 10 of operations, then a fixed 75% from year 11 (outside the band by design)."}
+  - {id: S4, where: "5.1", effect: "The odour assessment point moves from the site boundary to the nearest sensitive receptor (location only in ESIA Figure 7-2), and the 5 OU/m3 value is replaced by a value not in the pack."}
+  - {id: S5, where: "4.1", effect: "VOL-II 3.2 (membrane life >= 7 years warranted, replacement in lifecycle plan) switches from conditional ('Where a membrane process is proposed') to always applicable; ADD-01 response 1 becomes partly wrong."}
+  - {id: S6, where: "7.3", effect: "New Portal notice by Mon 23 Nov 2026 for any structure, plant or equipment above 30 m (Bidder-design-dependent); no consequence stated."}
+  - {id: S7, where: "Table 5-1 Arabic (image)", effect: "Datum = natural ground level before grading/fill; scope includes temporary structures, cranes, construction equipment and stacks; 30-day prior notice to the Office before erecting any crane."}
+  - {id: S8, where: "Q17", effect: "VOL-I 8.3 extended: every member of an unincorporated EPC JV must hold a compliant ISO 9001:2015 certificate; a copy of each in Envelope A."}
+  - {id: S9, where: "Q20", effect: "Form 4-F row 'Indexation basis assumed' must be completed with the Indexed Proportion after the pre-printed words; the Indexed Proportion must not appear anywhere in Envelope A (VOL-I 6.2)."}
+  - {id: S10, where: "Q21", effect: "VOL-I 9.7 extended: the construction methodology must include a crane and lifting plan demonstrating compliance with Table 5-1."}
+
+provisions:
+  - ref: "ADD-03 1.3"
+    target: "VOL-I 5.2 (context)"
+    type: recital_fact
+    new: "Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered."
+    expected_result: "No change to 5.2. Record that the clarification cut-off (Thu 12 Nov 2026) passed before ADD-03 was issued (Sun 15 Nov 2026): no clarification route remains for anything ADD-03 makes unclear."
+  - ref: "ADD-03 2.1"
+    target: "VOL-I 6.6 + 6.7"
+    type: "merger of two clauses with a hidden substantive change"
+    old: ["A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.", "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter."]
+    new: "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder."
+    expected_result: "VOL-I 6.6 AMENDED (replaced by merged text); VOL-I 6.7 DELETED (number left unused). Register rows that cited 6.7 must be re-pointed to 6.6 with the chain VOL-I 6.6/6.7 -> ADD-03 2.1."
+    consequences:
+      - "Withdrawal: unchanged (until the PDD)."
+      - "Modification: last day Tuesday 24 November 2026 (2 WD before Thu 26 Nov, VOL-I 2.4 backward count). Time of day not stated (see D2)."
+      - "Late modification: rejected unopened and returned (new consequence wording)."
+      - "Late Proposal: unchanged (rejected unopened and returned)."
+  - ref: "ADD-03 2.2"
+    target: "VOL-I numbering"
+    type: "non-renumbering statement"
+    new: "The number 6.7 is not reused. The Clauses of Volume I are not renumbered."
+    expected_result: "No renumbering anywhere. Clause 6.7 becomes a gap."
+  - ref: "ADD-03 3.1"
+    target: "VOL-V 1.1 (definition used in Form 4-F, VOL-I 10.2, 11.5, VOL-V 24.3, 29, 31)"
+    type: "change to a defined term whose term is used in forms"
+    old: "the annual payment calculated under Clause 29"
+    new: "the annual payment, expressed at Base Date prices, calculated under Clause 29"
+    expected_result: "VOL-V 1.1 AMENDED. Every use of 'Availability Payment' now means a Base-Date-price amount, including the three uses in Form 4-F (row 'Availability Payment (SAR per annum, year 1 of operations)', the words row, and the confirmation statement), which Form 4-F itself does not show."
+    consequences: ["Form 4-F and the Financial Model must state the AP at Base Date prices (but see D1: Q19 says the opposite)."]
+  - ref: "ADD-03 3.2"
+    target: "VOL-V new 1.1A"
+    type: insertion_of_definition
+    new: "Base Date means the date falling twenty-eight (28) days before the Proposal Due Date."
+    expected_result: "VOL-V 1.1A ADDED. Base Date = Thursday 29 October 2026 (calendar days, not Working Days). It moves if the PDD moves."
+  - ref: "ADD-03 3.3"
+    target: "VOL-V 29.2"
+    type: "tolerance band replacing a single value + Bidder election + staged (two time phases)"
+    old: "The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed."
+    new: "The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9. The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%); and (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed."
+    expected_result: "VOL-V 29.2 REPLACED. Register: Indexed Proportion = Bidder election in [50%, 70%] (fixed balance 30%-50%) to end of year 10; 75%/25% from year 11; indexation from the Base Date per Schedule 9 (not supplied). The register must hold the band AND the election AND both stages, not a single value."
+    consequences:
+      - "A figure outside 50%-70% in Form 4-F is a 'price subject to adjustment other than as provided in Volume V' -> non-responsive under VOL-I 10.5 (derived; the addendum states no consequence itself)."
+      - "Form 4-F row 'Indexation basis assumed' must carry the figure (Q20)."
+      - "Stage (b) 75% lies outside the stage (a) band on purpose; it is not an inconsistency."
+  - ref: "ADD-03 3.4"
+    target: "VOL-I 10.3 Financial Model"
+    type: confirming_instruction
+    new: "Bidders shall reflect this Section 3 in the Financial Model submitted under Volume I Clause 10.3."
+    expected_result: "Financial Model row: add the Base Date price basis and the staged indexation (and flag D1)."
+  - ref: "ADD-03 4.1"
+    target: "VOL-II 3.1"
+    type: "replacement whose main effect is to trigger a conditional clause and overtake an earlier answer"
+    old: "The Authority does not mandate a particular process train."
+    new: "The treatment process shall include a membrane filtration step, either in the tertiary treatment stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding sentence, the Authority does not mandate a particular process train."
+    expected_result: "VOL-II 3.1 AMENDED (new mandatory requirement: membrane filtration, pore size <= 0.1 µm, tertiary or MBR)."
+    consequences:
+      - "VOL-II 3.2 becomes APPLICABLE (status change from conditional to mandatory) although 3.2 is not cited: warranted membrane life >= 7 years; membrane replacement in the lifecycle plan."
+      - "ADD-01 response 1 is now PARTLY WRONG: 'No' (MBR not mandatory) still holds; 'Any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable' no longer holds."
+      - "VOL-II 4.3 (four parallel streams per treatment stage) applies to the membrane filtration stage."
+  - ref: "ADD-03 4.2"
+    target: "VOL-II Section 3 process design"
+    type: confirming_instruction
+    new: "Bidders shall reflect this Section 4 in the process design submitted under Volume II Section 3."
+  - ref: "ADD-03 5.1"
+    target: "VOL-II 3.4"
+    type: "change expressed by cross-reference to another document's figure (value not supplied)"
+    old: "not more than 5 OU/m3 at the site boundary"
+    new: "not more than the odour concentration shown for the nearest sensitive receptor in Figure 7-2 of the Environmental and Social Impact Assessment referred to in Volume II Clause 9.1, at that receptor"
+    expected_result: "VOL-II 3.4 AMENDED: limit = value in ESIA Figure 7-2 (NOT IN PACK), assessed at the nearest sensitive receptor (location NOT IN PACK); 98th percentile hourly basis unchanged. The 5 OU/m3 value is gone; no replacement value may be stated. Status: amended, value unresolved (missing evidence ME1)."
+  - ref: "ADD-03 5.2"
+    target: "Technical Proposal"
+    type: confirming_instruction
+    new: "Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical Proposal."
+  - ref: "ADD-03 7.1"
+    target: "VOL-II new 5.6"
+    type: "insertion incorporating an image-only foreign-language table by reference"
+    new: "The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into this Volume by reference."
+    expected_result: "VOL-II 5.6 ADDED; Table 5-1 (Arabic, image) ADDED. Values must be read from the image: Zone A (within 1,500 m of the eastern site boundary) 25 m; Zone B (remainder) 40 m; metres above NATURAL ground level; obstacle lighting required in Zone A, and in Zone B for any part above 30 m; limits cover permanent and temporary structures incl. stacks, cranes, construction equipment; 30 days' prior notice to the Office before erecting any crane."
+  - ref: "ADD-03 7.2"
+    target: "Table 5-1 language"
+    type: governing_language_rule
+    new: "Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+    expected_result: "Where Appendix B differs from Appendix A, record the Arabic. Two discrepancies (AR1, AR2) must be reported."
+  - ref: "ADD-03 7.3"
+    target: "new bid-stage notice (Bidder-design-dependent)"
+    type: "change that depends on the Bidder's own election, with a derived deadline"
+    new: "A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the zone of Table 5-1 in which it is to be located and its proposed height."
+    expected_result: "New conditional obligation: applies only if the Bidder's design or construction plant (cranes count, see Arabic Note 1 and Q21) exceeds 30 m; deadline Monday 23 November 2026; content = zone + proposed height. No consequence stated: NOT an A3 disqualifier."
+  - ref: "ADD-03 7.4"
+    target: "Technical Proposal"
+    type: confirming_instruction
+    new: "Bidders shall reflect Table 5-1 in the Technical Proposal."
+
+answers:
+  - no: 15
+    class: decoy_no_effect
+    question_topic: "VOL-II 6.4 data retention: 7 years vs 10 years"
+    response: "Volume II Clause 6.4 states a minimum period. A Bidder may propose a longer period but is not required to do so."
+    expected: "No change. VOL-II 6.4 stays 'not less than seven (7) years'. Must not register 10 years."
+  - no: 16
+    class: confirming_in_imperative_words
+    question_topic: "Form 4-E 'no deviations' and assumptions in the Technical Proposal"
+    response: "A Bidder that states ‘no deviations’ in Form 4-E shall not include any qualification of Volume V elsewhere in its Proposal. An assumption that limits or qualifies an obligation in Volume V is a qualification and shall be listed in Form 4-E. Volume I Clause 9.6 applies."
+    expected: "Confirms VOL-I 9.6 (already a non-responsiveness trigger); no new requirement, no status change. May be linked to the 9.6 row as a confirmation. Note its interaction with D1: an assumption about the AP price basis would be a qualification (Form 4-E is in Envelope A, so it would also be commercial information under 6.2)."
+  - no: 17
+    class: changing
+    question_topic: "VOL-I 8.3 ISO 9001:2015 where the EPC Contractor is an unincorporated JV"
+    response: "Each member of the joint venture shall hold a certificate that meets Volume I Clause 8.3, and a copy of each certificate shall be submitted with Envelope A."
+    expected: "VOL-I 8.3 AMENDED by Q17 (condition: EPC Contractor is an unincorporated JV): one compliant certificate per JV member, current at the PDD, copies in Envelope A. Marshalling count depends on the Bidder's EPC structure (editable assumption)."
+  - no: 18
+    class: missing_evidence_pointer
+    question_topic: "odour dispersion inputs"
+    response: "The nearest sensitive receptor, and the odour concentration applicable at it for the purposes of Volume II Clause 3.4 as amended by Section 5 of this Addendum, are shown in Figure 7-2 of the Environmental and Social Impact Assessment, which is available to Bidders in the data room. No other modelling inputs will be provided."
+    expected: "Confirms that both the receptor and the odour value are only in ESIA Figure 7-2 (data room, not in the pack). No value may be inferred."
+  - no: 19
+    class: changing_and_conflicting (deliberate ambiguity D1)
+    question_topic: "price basis of the AP in Form 4-F"
+    response: "Yes. The Availability Payment stated in Form 4-F is the amount payable for year 1 of operations, in the prices of that year. Indexation under Volume V Clause 29.2 applies from the first anniversary of PCOD."
+    expected: "Report as conflicting with ADD-03 3.1 and 3.3 (same Addendum). Do not resolve. Escalate (D1)."
+  - no: 20
+    class: changing
+    question_topic: "Form 4-F row 'Indexation basis assumed'"
+    response: "Yes. The Bidder shall complete that row by stating, after the words ‘Per Volume V Clause 29.2’, the Indexed Proportion as a percentage. The Indexed Proportion shall not be stated anywhere in Envelope A. Volume I Clause 6.2 applies."
+    expected: "Form 4-F completion instruction changed (row now carries the elected %). This is not an 'alteration of wording' under the Index note because the Authority directs it. Indexed Proportion anywhere in Envelope A -> VOL-I 6.2 non-responsive."
+  - no: 21
+    class: changing
+    question_topic: "construction plant in the Technical Proposal"
+    response: "Yes. The construction methodology in the Technical Proposal shall include a crane and lifting plan that demonstrates compliance with Table 5-1 (Volume II Clause 5.6, inserted by Section 7 of this Addendum)."
+    expected: "VOL-I 9.7 extended (new Technical Proposal content: crane and lifting plan). Corroborates the Arabic scope (cranes are within Table 5-1) against Appendix B Note (1) and the cover (E3)."
+
+arabic:
+  governing_rule: "ADD-03 7.2 - the Arabic text of Table 5-1 governs; Appendix B is a convenience translation."
+  strings:
+    office: "مكتب حماية المجال الجوي بالمنطقة الشمالية"
+    ref: "الرقم: ٤٧١/٢٠٢٦"
+    date: "التاريخ: ١٠ نوفمبر ٢٠٢٦م"
+    subject: "الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان"
+    tender: "مناقصة رقم: NUPA/ISTP/2026/014"
+    title: "جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع"
+    intro: "يُحدَّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:"
+    h_zone: "المنطقة"
+    h_desc: "الوصف"
+    h_max: "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)"
+    h_light: "الإنارة التحذيرية"
+    z_a: "أ"
+    d_a: "الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع"
+    m_a: "٢٥"
+    l_a: "مطلوبة"
+    z_b: "ب"
+    d_b: "باقي مساحة الموقع"
+    m_b: "٤٠"
+    l_b: "مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً"
+    notes: "ملاحظات:"
+    n1: "١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء."
+    n2: "٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم."
+    n3: "٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع."
+    sign: "مدير المكتب"
+  letter_metadata_only_in_image: "Ref 471/2026, dated 10 November 2026; the subject line names the Wadi Sirhan ISTP and the tender number. Appendix B does not translate these."
+  discrepancies:
+    - id: AR1
+      kind: "datum (reference level), not a number"
+      arabic: "column header and note 2: metres above natural ground level (منسوب الأرض الطبيعية), measured before grading and filling (قبل أعمال التسوية والردم)"
+      english: "column header 'Maximum height (m above finished ground level)' and Note (2) 'Height is measured from finished ground level after grading and filling.'"
+      governs: arabic
+      effect: "Heights are measured from natural ground. Where the platform is raised by fill (e.g. for the 100-year flood level, VOL-II 5.5) the Arabic is stricter by the fill depth; where the site is cut it is less strict. The direction and size cannot be determined: site levels are not in the pack (Volume III not supplied). Report the discrepancy; do not quantify."
+    - id: AR2
+      kind: "scope omission in the translation"
+      arabic: "note 1: all permanent and temporary structures, including stacks, cranes and construction equipment"
+      english: "Note (1) 'These limits apply to all permanent structures, including stacks.'"
+      governs: arabic
+      effect: "Construction cranes and temporary equipment are capped at 25 m (Zone A) / 40 m (Zone B) above natural ground. Affects construction methodology (VOL-I 9.7; Table 1-1 criterion B), the Q21 lifting plan and the 7.3 notice (cranes above 30 m in Zone B)."
+  consistent_items: "Numbers 25 and 40, the 1,500 m zone boundary, lighting entries, the 30-day crane notice (Arabic note 3 = English Note (3)) and the title agree in both texts."
+  hint_for_careful_readers: "English Note (3) speaks of cranes although English Note (1) leaves them out; the Arabic is consistent."
+
+derived_dates:
+  - {id: DD1, what: "ADD-03 issue / new planning date", date: "Sunday 15 November 2026", basis: "printed cover"}
+  - {id: DD2, what: "Clarification cut-off (VOL-I 5.2)", date: "Thursday 12 November 2026", basis: "10 WD before Thu 26 Nov, backward count excluding the stated date (25,24,23,22,19,18,17,16,15,12)", note: "Already passed at issue: no clarification can be raised on ADD-03."}
+  - {id: DD3, what: "Base Date (VOL-V 1.1A)", date: "Thursday 29 October 2026", basis: "26 Nov 2026 minus 28 calendar days", note: "Before the issue date; fixes the CPI base."}
+  - {id: DD4, what: "Last day to modify a Proposal (merged VOL-I 6.6)", date: "Tuesday 24 November 2026", basis: "2 WD before Thu 26 Nov (25, 24)", note: "Time of day not stated (D2)."}
+  - {id: DD5, what: "Notice of structures/plant/equipment above 30 m (ADD-03 7.3)", date: "Monday 23 November 2026", basis: "3 WD before Thu 26 Nov (25, 24, 23)", note: "Conditional on the Bidder's design and crane plan."}
+  - {id: DD6, what: "Withdrawal of a Proposal", date: "before Thursday 26 November 2026, 14:00", basis: "merged 6.6 (unchanged)"}
+  - {id: DD7, what: "Proposal Due Date", date: "Thursday 26 November 2026, 14:00 Riyadh time", basis: "unchanged"}
+  - {id: DD8, what: "Working Days available from issue to the PDD", value: 9, basis: "Sun 15 - Wed 25 Nov inclusive (15,16,17,18,19,22,23,24,25)"}
+  - {id: DD9, what: "Date on the reproduced Table 5-1 letter", date: "Tuesday 10 November 2026", basis: "image only"}
+  - {id: DD10, what: "Crane erection notice to the Office", value: "at least 30 calendar days before erecting any crane", basis: "Table 5-1 note 3 - construction stage, no bid-stage date"}
+
+marshalling_effects:
+  - "Planning date moves to Sun 15 Nov 2026; 9 Working Days remain before the PDD. Every backward-computed start date earlier than 15 Nov must be flagged as already missed or compressed, not silently clipped."
+  - "Clarification activity: the route closed on Thu 12 Nov; any 'raise clarification on ADD-03' activity is infeasible. Ambiguities go to the escalation list instead."
+  - "Form 4-A (ADD-01 Appendix A version): 'Addenda acknowledged (numbers)' must now cover Nos. 1 to 3."
+  - "Envelope A, VOL-I 8.3 evidence: if the EPC Contractor is an unincorporated JV, one ISO 9001:2015 certificate copy per JV member (Q17); certificates current at the PDD. Count = editable setting."
+  - "Envelope A, Technical Proposal: add membrane filtration process design (4.1) with membrane warranty and replacement provisions (VOL-II 3.2 now applicable); odour compliance at the ESIA receptor (5.2; needs ESIA Figure 7-2 from the data room); Table 5-1 compliance (7.4); crane and lifting plan (Q21)."
+  - "Portal notice by Mon 23 Nov 2026 if any structure, plant or equipment, including cranes, exceeds 30 m (7.3): zone + proposed height. Owner: design/construction lead; depends on the design freeze."
+  - "Envelope B, Form 4-F: AP figure basis is unresolved (D1) - commercial sign-off item; 'Indexation basis assumed' row completed with the Indexed Proportion (50%-70%) (Q20). The Indexed Proportion must not appear in Envelope A (Q20 + VOL-I 6.2)."
+  - "Envelope B, Financial Model: Base Date prices, indexation from the Base Date, elected Indexed Proportion years 1-10 and 75% from year 11 (3.3, 3.4); membrane replacement capex in the lifecycle (VOL-II 3.2)."
+  - "Modification of an already lodged Proposal: last day Tue 24 Nov 2026 (merged 6.6)."
+  - "Information to obtain (not in pack): ESIA Figure 7-2 (data room); site levels and the eastern boundary/zone line (Volume III not supplied); Schedule 9 indexation formula."
+
+a3_delta:
+  new_or_changed_disqualifiers:
+    - "Merged VOL-I 6.6: a modification received after Tue 24 Nov 2026 is rejected unopened and returned (new wording); a late Proposal is rejected unopened (unchanged in substance, now cited as 6.6 - the 6.7 citation must go)."
+    - "VOL-I 6.2 (commercial information in Envelope A -> non-responsive) gains a specific trigger: stating the Indexed Proportion anywhere in Envelope A (Q20)."
+    - "VOL-I 10.5 (price subject to adjustment other than as provided in Volume V -> non-responsive), derived: an Indexed Proportion outside 50%-70%; and any qualification of the AP price basis (also barred by the Form 4-F confirmation 'not subject to any qualification'). Medium confidence (derived, not stated by ADD-03)."
+  unchanged_but_now_relevant:
+    - "VOL-I 11.5: a clarification response that changes the AP -> non-responsive (relevant to D1: the price basis cannot be corrected after submission)."
+    - "VOL-I 9.6: confirmed by Q16 (no change)."
+    - "VOL-I 8.3: if the tool lists 8.3 as a pass/fail mandatory item (VOL-I 11.1 stage (i)), its evidence now covers every member of an unincorporated EPC JV (Q17). The pack states no explicit rejection wording for 8.3; keep the existing confidence."
+  must_not_be_added:
+    - "ADD-03 7.3 notice (no consequence stated)."
+    - "Table 5-1 height limits, odour limit, membrane filtration (design/performance requirements; no rejection wording)."
+    - "Q15 data retention."
+  unresolved_list_additions:
+    - "D1 - price basis and indexation start of the AP in Form 4-F (no correct answer; escalate to the commercial lead)."
+    - "ME1 - odour limit and receptor location (ESIA Figure 7-2 not in pack)."
+    - "ME2 - Table 5-1 zone line and natural ground levels (Volume III not supplied)."
+    - "D2 - time of day of the 6.6 modification cut-off."
+    - "No clarification route remains (5.2 cut-off passed before issue)."
+
+missing_evidence:
+  - id: ME1
+    referenced_in: ["ADD-03 5.1", "Q18"]
+    item: "Figure 7-2 of the Environmental and Social Impact Assessment: the nearest sensitive receptor and the odour concentration that now replaces 5 OU/m3."
+    status: "Not in the pack (VOL-II 9.1 says the ESIA is 'available in the data room'; Q18 confirms the Authority will not reproduce it)."
+    expected: "Flag the odour limit as unknown; do not keep 5 OU/m3 and do not invent or 'know' a value (typical limits such as 1-5 OU/m3 are outside knowledge, not pack facts)."
+  - id: ME2
+    referenced_in: ["Table 5-1 (Arabic) zone A description and datum", "ADD-03 7.3"]
+    item: "The site's eastern boundary line/zone boundary and the natural and finished ground levels."
+    status: "Not in the pack (Volume III drawings referenced but not supplied - already a known gap, now made material)."
+    expected: "Report that the Zone A / Zone B split and the effect of the natural-ground datum cannot be determined; no site elevation (e.g. Sakaka's) may be used as a pack fact."
+  - id: ME3
+    referenced_in: ["ADD-03 3.3 (new 29.2)"]
+    item: "Schedule 9 (indexation formula and index base)"
+    status: "Pre-existing reference, never supplied; ADD-03 now indexes from the Base Date under it."
+    expected: "Note as an unchanged, pre-existing gap that is now more material; low priority."
+
+must_not_report:
+  - "VOL-II 3.5 (noise) amended - the cover's '3.5' is wrong (E2); noise stays 55 dB(A) day / 45 dB(A) night."
+  - "Any numeric odour limit after ADD-03 (5 OU/m3 is deleted; the new value is unknown)."
+  - "Height limits measured above finished ground level, or limits applying to permanent structures only (both are the non-governing translation)."
+  - "Any height in metres above sea level, or any site elevation, as a pack fact."
+  - "VOL-II 6.4 changed or a 10-year retention requirement (Q15 is a decoy)."
+  - "A new requirement created by Q16 (it confirms 9.6)."
+  - "Withdrawal deadline moved (only modification moved)."
+  - "Renumbering of Volume I Clauses (2.2 says none; 6.7 is a gap)."
+  - "PDD, its time (14:00) or the clarification cut-off changed (all unchanged)."
+  - "The 75% of stage (b) as an error or inconsistency with the 50%-70% band."
+  - "A resolved answer to D1 (either 'Base Date prices' or 'year-1 nominal' presented as the requirement), or a resolution by an interpretive canon (specific over general, body over Q&A, later text in the document prevails, definitions prevail)."
+  - "The 7.3 notice as a disqualifier or as applying to every Bidder."
+  - "Q17 applying to the O&M Operator, to consortium members generally, or to an incorporated EPC Contractor."
+  - "Table 2-4, Table 2-6 or any effluent limit changed (nothing in ADD-03 touches them)."
+  - "Odour becoming an Unavailability Event or a deduction item (VOL-V 31.1 does not list odour)."
+  - "A defined number of membrane replacements, or membranes being 'major assets' under VOL-V 42.1, stated as a requirement (inference only; see IE5)."
+  - "The Base Date as a Working Day count, or as a date after the issue date."
+  - "Form 4-F wording altered or Form 4-F reissued (only the completion of one row is directed)."
+  - "Any statement that ADD-03 can still be clarified under VOL-I 5.2."
+
+deliberate_ambiguities:
+  - id: D1
+    no_correct_answer: true
+    subject: "Price basis of the Availability Payment stated in Form 4-F, and the start of indexation"
+    horn_a: "ADD-03 3.1 + 3.2 + 3.3: AP 'expressed at Base Date prices' (29 Oct 2026) and 'indexed annually from the Base Date' -> Form 4-F carries a Base-Date (real) figure that is indexed up to and through operations."
+    horn_b: "ADD-03 Q19: the Form 4-F figure is 'the amount payable for year 1 of operations, in the prices of that year' and indexation 'applies from the first anniversary of PCOD' -> Form 4-F carries a nominal year-1 figure. Supported by the pre-printed Form 4-F label 'year 1 of operations'."
+    why_unresolvable:
+      - "Both texts are in the same Addendum; VOL-I 3.2(a) ranks only a later Addendum over an earlier one, and nothing ranks body over responses within one Addendum."
+      - "The clarification route closed on Thu 12 Nov 2026, before ADD-03 was issued (VOL-I 5.2; ADD-03 1.3); VOL-I 3.3 says unilateral resolution is at the Bidder's risk."
+      - "The Bidder cannot qualify the price: conditional/qualified price -> VOL-I 10.5 non-responsive; Form 4-F confirms the AP 'is not subject to any qualification'; an assumption in Form 4-E would sit in Envelope A (6.2) and qualify the price."
+      - "It cannot be fixed later: a clarification response that changes the AP is non-responsive (VOL-I 11.5)."
+    stakes: "For the same economic offer the Form 4-F number differs by the CPI movement on the Indexed Proportion from 29 Oct 2026 to year 1 of operations (several years: Financial Close up to 270 days after PBN, then 36 months to Scheduled PCOD), plus one extra year of indexation under horn A. Schedule 9 is not supplied, so the size can only be expressed as a formula."
+    expected: "Escalate to a named human owner (commercial lead) with both horns, the clause references and the non-responsiveness constraints. No machine resolution, no default."
+  - id: D2
+    no_correct_answer: false
+    subject: "Time of day of the modification cut-off in merged 6.6"
+    note: "'not later than two (2) Working Days before the Proposal Due Date' gives Tue 24 Nov 2026 but no time; PDD is a date and time (VOL-I 2.6). Conservative planning: 14:00 Riyadh time on Tue 24 Nov. Flag, do not assert."
+  - id: D3
+    no_correct_answer: false
+    subject: "Which height datum 7.3's 'exceeding thirty (30) metres in height' uses"
+    note: "7.3 states no datum; reading it with Table 5-1 (Arabic) gives natural ground level. Flag with medium confidence."
+  - id: D4
+    no_correct_answer: false
+    subject: "Whether membranes are 'major assets' for VOL-V 42.1 handback"
+    note: "Undefined in the pack; affects the lifecycle chain IE5 only. Flag as an assumption if used."
+
+indirect_effects:
+  - id: IE1
+    trigger: "ADD-03 3.1 (VOL-V 1.1 definition)"
+    chain: ["VOL-V 1.1 'Availability Payment' now at Base Date prices", "Form 4-F rows 'Availability Payment (SAR per annum, year 1 of operations)', 'Availability Payment in words' and the confirmation statement (do not cite VOL-V 1.1)", "VOL-I 10.2 single AP 'calculated in accordance with the payment mechanism at Volume V Clause 29'", "Financial Model (VOL-I 10.3; ADD-03 3.4)", "conflict with Q19 -> D1"]
+    expected: "Register the change against every row that uses the term, not only VOL-V 1.1; raise D1."
+  - id: IE2
+    trigger: "ADD-03 3.3 (Indexed Proportion band and election)"
+    chain: ["VOL-V 29.2 Bidder-elected 50%-70%", "Form 4-F 'Indexation basis assumed' row (Q20)", "VOL-I 10.1 (Envelope B holds only Form 4-F and the Financial Model)", "VOL-I 6.2: the figure must not appear in Envelope A", "VOL-I 10.5: an out-of-band figure is an adjustment not provided in Volume V -> non-responsive"]
+    expected: "A3 picks up the 6.2 and 10.5 triggers; A5 puts the elected figure under commercial sign-off in Envelope B only."
+  - id: IE3
+    trigger: "ADD-03 4.1 (membrane filtration mandatory)"
+    chain: ["VOL-II 3.1 new sentence", "VOL-II 3.2 conditional 'Where a membrane process is proposed' -> now always applies (7-year warranted life; replacement in lifecycle plan)", "VOL-II 2.2 lifecycle plan", "VOL-II 4.3 four parallel streams per stage -> applies to the membrane stage", "ADD-01 response 1 partly superseded ('Any process ... is acceptable')"]
+    expected: "Status change on VOL-II 3.2 although ADD-03 never cites it; A2 lists ADD-01 response 1 among earlier answers now (partly) wrong."
+  - id: IE4
+    trigger: "Table 5-1 Arabic note 1 (cranes and temporary equipment) + Q21 + 7.3"
+    chain: ["Arabic scope includes cranes and construction equipment", "construction methodology (VOL-I 9.7; Table 1-1 criterion B) must show crane heights within 25 m / 40 m", "Q21 crane and lifting plan in the Technical Proposal", "7.3 Portal notice by Mon 23 Nov if any crane or structure exceeds 30 m", "Arabic note 3: 30 days' notice to the Office before erecting any crane (construction programme)"]
+    expected: "A5 gains a design/construction activity and a conditional Portal notice; the cover and Appendix B understate the scope."
+  - id: IE5
+    trigger: "VOL-II 3.2 now applicable (via IE3)"
+    chain: ["warranted membrane life >= 7 years", "concession 25 years from PCOD (VOL-I 12.1; VOL-V 3.1 says from the Effective Date - the pack's own unresolved ADD-02 response 7 issue)", "replacements in years 7, 14, 21 (3 sets) over 25 years", "VOL-V 42.1: >= 5 years remaining design life for major assets at expiry -> the last set must be installed in or after year 23 if membranes are major assets (D4)", "extra or rescheduled replacement in the Financial Model lifecycle cost"]
+    expected: "Optional depth: a careful reader notes the lifecycle/handback interaction and its dependence on D4 and on the term-commencement ambiguity; no definite requirement may be asserted."
+  - id: IE6
+    trigger: "Issue date Sun 15 Nov 2026 vs VOL-I 5.2 cut-off Thu 12 Nov 2026"
+    chain: ["ADD-03 1.3 recital", "VOL-I 5.2 'Requests received after that time will not be answered'", "VOL-I 3.3 unilateral resolution at own risk", "every ADD-03 ambiguity (D1-D3, ME1-ME2) has no clarification route"]
+    expected: "The A3 unresolved list and the A5 plan must say so explicitly and route to human decision."
+  - id: IE7
+    trigger: "ADD-03 2.1 merger"
+    chain: ["6.7 deleted, number unused", "rows citing 6.7 (withdrawal/modification) re-pointed to 6.6", "new modification cut-off Tue 24 Nov in A5", "late modification consequence in A3"]
+    expected: "No renumbering; traceable chain VOL-I 6.6/6.7 -> ADD-03 2.1."
+  - id: IE8
+    trigger: "ADD-03 5.1 (odour at receptor)"
+    chain: ["assessment point moves off-site to the ESIA receptor", "stack heights constrained by Table 5-1 (25 m / 40 m above natural ground)", "dispersion design (Q18: no inputs beyond ESIA Figure 7-2)", "Table 1-1 criteria A and D"]
+    expected: "Record the interplay as a design risk; the limit value stays unresolved (ME1)."

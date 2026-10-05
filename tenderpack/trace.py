@@ -39,7 +39,7 @@ OBLIGATION_DISPOSITIONS = ("requirement", "consequence", "duplicate")
 
 
 def _in_force(status: str) -> bool:
-    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
+    return not status.startswith(("NOT ISSUED", "NOT IN FORCE", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
 
 
 # a refused document and zero marks under a criterion (session 09; not in the dispositions lexicon)

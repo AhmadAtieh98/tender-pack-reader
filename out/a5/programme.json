@@ -164,6 +164,21 @@
    "width": 20
   },
   {
+   "header": "clarification_questions",
+   "key": "clarification_questions",
+   "width": 20
+  },
+  {
+   "header": "ask_by",
+   "key": "ask_by",
+   "width": 20
+  },
+  {
+   "header": "finalise_by",
+   "key": "finalise_by",
+   "width": 20
+  },
+  {
    "header": "condition",
    "key": "condition",
    "width": 20
@@ -186,11 +201,13 @@
  ],
  "exceptions": {},
  "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
- "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
  "planning_date": "2026-10-22",
  "problems": [],
  "rows": [
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -209,6 +226,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-LCC",
+   "finalise_by": null,
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: latest start 2026-10-06 is before the planning date 2026-10-22; not compressed)"
    ],
@@ -233,6 +251,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "the Bidder considers its attendance at the Pre-Bid Conference to have been incorrectly recorded (ADD-01 3.1)",
    "count": 1,
    "deadline": "ATTENDANCE-NOTICE = 2026-10-14 (from ADD-01-3.1-01)",
@@ -251,6 +271,7 @@
    "envelope": "none",
    "es_driven_by": "planning date",
    "evidence": "EV-ATTENDANCE",
+   "finalise_by": null,
    "flags": [
     "CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known (ATTENDANCE-NOTICE = 2026-10-14 is before the planning date 2026-10-22; needed only if the Bidder considers its attendance at the Pre-Bid Conference to have been incorrectly recorded (ADD-01 3.1); an elapsed window alone does not establish a missed duty: a person records whether the condition arose and, if it did, what was done)"
    ],
@@ -276,6 +297,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -294,6 +317,7 @@
    "envelope": "A",
    "es_driven_by": "lcc-ratio",
    "evidence": "EV-LCC",
+   "finalise_by": null,
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: latest start 2026-10-13 is before the planning date 2026-10-22; not compressed)"
    ],
@@ -313,13 +337,15 @@
     "VOL-I-8.6-01"
    ],
    "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
+   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.464 vs capacity 2 staff)",
    "status": "INFEASIBLE by 12 WD",
    "timing_status": "INFEASIBLE by 12 WD",
    "waiting_on": "competent authority (not named in the pack)",
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -338,13 +364,14 @@
    "envelope": "B",
    "es_driven_by": "planning date",
    "evidence": "EV-FIN-MODEL",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 2,
+   "float_wd": 0,
    "gated_by": [],
    "id": "fin-model-build",
    "issuer": "Bidder",
-   "latest_finish": "2026-11-15",
-   "latest_start": "2026-10-26",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-22",
    "multiplicity": "",
    "name": "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells)",
    "owner": "Commercial",
@@ -355,13 +382,15 @@
     "VOL-IV-F4F-02"
    ],
    "resource": "financial_modeller",
-   "resource_status": "OVERLOAD financial_modeller on 2026-11-03..2026-11-16 (peak 1.3 vs capacity 1 staff)",
+   "resource_status": "OVERLOAD financial_modeller on 2026-11-01..2026-11-12 (peak 1.3 vs capacity 1 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "",
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -380,13 +409,14 @@
    "envelope": "B",
    "es_driven_by": "planning date",
    "evidence": "EV-MODEL-AUDIT",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 3,
+   "float_wd": 1,
    "gated_by": [],
    "id": "model-auditor-appoint",
    "issuer": "Bidder",
-   "latest_finish": "2026-11-02",
-   "latest_start": "2026-10-27",
+   "latest_finish": "2026-10-29",
+   "latest_start": "2026-10-25",
    "multiplicity": "",
    "name": "Appoint the independent model auditor (opinion to be addressed to the Authority)",
    "owner": "Commercial",
@@ -402,6 +432,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -420,6 +452,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-FORM-4D",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 3,
    "gated_by": [],
@@ -450,6 +483,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -468,8 +503,9 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-TECH-PROPOSAL",
+   "finalise_by": null,
    "flags": [
-    "REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation)"
+    "REVIEW (confirmed dependency): VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-3.1-01, VOL-II-4.3-02, VOL-II-7.2-01 reached from VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS, REL-T24-PROCESS-DESIGN, REL-T24-RELIABILITY-RUN; dates unchanged (a relationship, not a direct citation); BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed)"
    ],
    "float_wd": 3,
    "gated_by": [],
@@ -574,6 +610,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -592,13 +630,14 @@
    "envelope": "none",
    "es_driven_by": "planning date",
    "evidence": "EV-GROUND-DD",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 7,
+   "float_wd": 5,
    "gated_by": [],
    "id": "ground-dd",
    "issuer": "Bidder",
-   "latest_finish": "2026-11-15",
-   "latest_start": "2026-11-02",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-29",
    "multiplicity": "",
    "name": "Review the data-room geotechnical report and satisfy the Bidder as to ground conditions (e.g. the wadi crossing; ADD-01 Q4); feed the construction methodology and the price",
    "owner": "Technical",
@@ -614,6 +653,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -632,13 +673,14 @@
    "envelope": "B",
    "es_driven_by": "planning date",
    "evidence": "EV-FIN-ASSUMPTIONS",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 7,
+   "float_wd": 5,
    "gated_by": [],
    "id": "lender-terms",
    "issuer": "Lenders",
-   "latest_finish": "2026-11-15",
-   "latest_start": "2026-11-02",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-29",
    "multiplicity": "",
    "name": "Obtain indicative financing terms (debt tenor, margin, gearing) for the model",
    "owner": "Commercial",
@@ -654,46 +696,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
-   "condition": "",
-   "count": 2,
-   "deadline": "",
-   "decision_needed_by": null,
-   "decision_status": "READY",
-   "discipline": "Technical",
-   "driven_by": "assemble-envelope-a",
-   "duration_assumption": "completion_certificate",
-   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Technical): obtain a client completion certificate for each reference plant from a third-party client; none is assumed to be held already; not stated",
-   "duration_wd": 15,
-   "earliest_finish": "2026-11-11",
-   "earliest_start": "2026-10-22",
-   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Technical): one engineer-day per reference to request, chase and check the certificate; the rest is the client's time; waits on: client of each reference plant",
-   "effort_total_wd": 2,
-   "effort_wd": 1,
-   "envelope": "A",
-   "es_driven_by": "planning date",
-   "evidence": "EV-COMPLETION-CERT",
-   "flags": [],
-   "float_wd": 8,
-   "gated_by": [],
-   "id": "completion-certs",
-   "issuer": "Client of each reference plant",
-   "latest_finish": "2026-11-23",
-   "latest_start": "2026-11-03",
-   "multiplicity": "x2 (per reference: bidder.reference_plants_offered = 2; PROVISIONAL ASSUMPTION)",
-   "name": "Obtain the client completion certificate for each reference project (a reference without one is disregarded, VOL-I 9.5)",
-   "owner": "Technical",
-   "predecessors": [],
-   "req_ids": [
-    "VOL-I-9.5-01"
-   ],
-   "resource": "technical_lead",
-   "resource_status": "OK",
-   "status": "OK",
-   "timing_status": "OK",
-   "waiting_on": "client of each reference plant",
-   "work_type": "external waiting + staff effort"
-  },
-  {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -712,13 +716,14 @@
    "envelope": "B",
    "es_driven_by": "model-auditor-appoint",
    "evidence": "EV-MODEL-AUDIT",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 3,
+   "float_wd": 1,
    "gated_by": [],
    "id": "model-audit-review",
    "issuer": "Independent model auditor",
-   "latest_finish": "2026-11-16",
-   "latest_start": "2026-11-03",
+   "latest_finish": "2026-11-12",
+   "latest_start": "2026-11-01",
    "multiplicity": "",
    "name": "Rolling review of the draft Financial Model by the model auditor",
    "owner": "Commercial",
@@ -729,13 +734,58 @@
     "VOL-I-10.3-02"
    ],
    "resource": "financial_modeller",
-   "resource_status": "OVERLOAD financial_modeller on 2026-11-03..2026-11-16 (peak 1.3 vs capacity 1 staff)",
+   "resource_status": "OVERLOAD financial_modeller on 2026-11-01..2026-11-12 (peak 1.3 vs capacity 1 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "independent model auditor",
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
+   "condition": "",
+   "count": 2,
+   "deadline": "",
+   "decision_needed_by": null,
+   "decision_status": "READY",
+   "discipline": "Technical",
+   "driven_by": "form-4b",
+   "duration_assumption": "completion_certificate",
+   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Technical): obtain a client completion certificate for each reference plant from a third-party client; none is assumed to be held already; not stated",
+   "duration_wd": 15,
+   "earliest_finish": "2026-11-11",
+   "earliest_start": "2026-10-22",
+   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Technical): one engineer-day per reference to request, chase and check the certificate; the rest is the client's time; waits on: client of each reference plant",
+   "effort_total_wd": 2,
+   "effort_wd": 1,
+   "envelope": "A",
+   "es_driven_by": "planning date",
+   "evidence": "EV-COMPLETION-CERT",
+   "finalise_by": null,
+   "flags": [],
+   "float_wd": 7,
+   "gated_by": [],
+   "id": "completion-certs",
+   "issuer": "Client of each reference plant",
+   "latest_finish": "2026-11-22",
+   "latest_start": "2026-11-02",
+   "multiplicity": "x2 (per reference: bidder.reference_plants_offered = 2; PROVISIONAL ASSUMPTION)",
+   "name": "Obtain the client completion certificate for each reference project (a reference without one is disregarded, VOL-I 9.5)",
+   "owner": "Technical",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-9.5-01"
+   ],
+   "resource": "technical_lead",
+   "resource_status": "OK",
+   "status": "OK",
+   "timing_status": "OK",
+   "waiting_on": "client of each reference plant",
+   "work_type": "external waiting + staff effort"
+  },
+  {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 3,
    "deadline": "",
@@ -754,6 +804,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-POA",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 8,
    "gated_by": [],
@@ -777,6 +828,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 2,
    "deadline": "",
@@ -795,6 +848,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-REFERENCES",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 9,
    "gated_by": [],
@@ -817,6 +871,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -835,6 +891,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-BID-BOND",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 10,
    "gated_by": [],
@@ -859,6 +916,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -877,6 +936,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-FORM-4E",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 11,
    "gated_by": [],
@@ -901,6 +961,52 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
+   "condition": "",
+   "count": 1,
+   "deadline": "",
+   "decision_needed_by": null,
+   "decision_status": "READY",
+   "discipline": "Legal",
+   "driven_by": "clarifications",
+   "duration_assumption": "consortium_confirmation",
+   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Legal): confirm against the prequalification record (VOL-I Appendix 1) that the Bidder, its members, shareholdings and lead member are unchanged, or that the Authority's prior written consent to a change is held (VOL-I 1.4, 8.1); not stated in the pack",
+   "duration_wd": 1,
+   "earliest_finish": "2026-10-22",
+   "earliest_start": "2026-10-22",
+   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Legal): half a lawyer-day; internal (session 11, audit A5-2); waits on: no external party",
+   "effort_total_wd": 0.5,
+   "effort_wd": 0.5,
+   "envelope": "",
+   "es_driven_by": "planning date",
+   "evidence": "",
+   "finalise_by": null,
+   "flags": [],
+   "float_wd": 13,
+   "gated_by": [],
+   "id": "consortium-check",
+   "issuer": "Bidder",
+   "latest_finish": "2026-11-10",
+   "latest_start": "2026-11-10",
+   "multiplicity": "",
+   "name": "Confirm the Proposal is submitted by the Bidder prequalified and named in VOL-I Appendix 1, with no change to its composition, shareholding or lead member, or that the Authority's prior written consent to any change is held (VOL-I 1.4, 8.1)",
+   "owner": "Legal",
+   "predecessors": [],
+   "req_ids": [
+    "VOL-I-1.4-01",
+    "VOL-I-8.1-01"
+   ],
+   "resource": "legal_counsel",
+   "resource_status": "OK",
+   "status": "OK",
+   "timing_status": "OK",
+   "waiting_on": "",
+   "work_type": "staff effort"
+  },
+  {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -919,6 +1025,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-OM-EXPERIENCE",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 13,
    "gated_by": [],
@@ -941,6 +1048,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -959,6 +1068,7 @@
    "envelope": "A",
    "es_driven_by": "pcg-wording",
    "evidence": "EV-FORM-4D",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 3,
    "gated_by": [],
@@ -991,6 +1101,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 3,
    "deadline": "",
@@ -1009,6 +1121,7 @@
    "envelope": "A",
    "es_driven_by": "poa-resolutions",
    "evidence": "EV-POA",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 8,
    "gated_by": [],
@@ -1034,6 +1147,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "CLARIFICATION-CUTOFF = 2026-11-12 (from VOL-I-5.2-01)",
@@ -1044,16 +1159,17 @@
    "duration_assumption": "clarification_drafting",
    "duration_basis": "ASSUMPTION (PROVISIONAL; owner Bid management): draft and submit requests or notices through the Portal; not stated",
    "duration_wd": 2,
-   "earliest_finish": "2026-10-25",
-   "earliest_start": "2026-10-22",
+   "earliest_finish": "2026-10-26",
+   "earliest_start": "2026-10-25",
    "effort_basis": "ASSUMPTION (PROVISIONAL; owner Bid management): one and a half bid-manager days; internal; waits on: no external party",
    "effort_total_wd": 1.5,
    "effort_wd": 1.5,
    "envelope": "none",
-   "es_driven_by": "planning date",
+   "es_driven_by": "consortium-check",
    "evidence": "EV-CLARIFICATIONS",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 14,
+   "float_wd": 13,
    "gated_by": [],
    "id": "clarifications",
    "issuer": "Bidder",
@@ -1062,7 +1178,9 @@
    "multiplicity": "",
    "name": "Submit clarification requests citing Volume, Clause and page (e.g. Form 4-A printed date; Envelope B contents; one USB per envelope)",
    "owner": "Bid management",
-   "predecessors": [],
+   "predecessors": [
+    "consortium-check"
+   ],
    "req_ids": [
     "VOL-I-3.3-01",
     "VOL-I-3.4-01",
@@ -1078,6 +1196,57 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
+   "condition": "",
+   "count": 1,
+   "deadline": "",
+   "decision_needed_by": null,
+   "decision_status": "READY",
+   "discipline": "Commercial",
+   "driven_by": "model-audit-opinion",
+   "duration_assumption": "fin_model_freeze",
+   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): freeze inputs and version for audit and Form 4-F; not stated",
+   "duration_wd": 1,
+   "earliest_finish": "2026-11-12",
+   "earliest_start": "2026-11-12",
+   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): one modeller-day; internal; waits on: no external party",
+   "effort_total_wd": 1,
+   "effort_wd": 1,
+   "envelope": "B",
+   "es_driven_by": "fin-model-build",
+   "evidence": "EV-FIN-MODEL",
+   "finalise_by": null,
+   "flags": [],
+   "float_wd": 0,
+   "gated_by": [],
+   "id": "fin-model-freeze",
+   "issuer": "Bidder",
+   "latest_finish": "2026-11-12",
+   "latest_start": "2026-11-12",
+   "multiplicity": "",
+   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F",
+   "owner": "Commercial",
+   "predecessors": [
+    "fin-model-build",
+    "ground-dd",
+    "lender-terms"
+   ],
+   "req_ids": [
+    "VOL-I-10.1-01",
+    "VOL-I-10.3-01",
+    "VOL-IV-F4F-02"
+   ],
+   "resource": "financial_modeller",
+   "resource_status": "OVERLOAD financial_modeller on 2026-11-01..2026-11-12 (peak 1.3 vs capacity 1 staff)",
+   "status": "OK",
+   "timing_status": "OK",
+   "waiting_on": "",
+   "work_type": "staff effort"
+  },
+  {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 3,
    "deadline": "",
@@ -1096,6 +1265,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-FIN-STANDING",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 15,
    "gated_by": [],
@@ -1119,52 +1289,54 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
    "decision_needed_by": null,
    "decision_status": "READY",
    "discipline": "Commercial",
-   "driven_by": "model-audit-opinion",
-   "duration_assumption": "fin_model_freeze",
-   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): freeze inputs and version for audit and Form 4-F; not stated",
-   "duration_wd": 1,
-   "earliest_finish": "2026-11-12",
-   "earliest_start": "2026-11-12",
-   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): one modeller-day; internal; waits on: no external party",
+   "driven_by": "form-4f",
+   "duration_assumption": "model_audit_opinion",
+   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): final review of the frozen model and issue of the opinion; not stated",
+   "duration_wd": 5,
+   "earliest_finish": "2026-11-19",
+   "earliest_start": "2026-11-15",
+   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): one staff-day to answer final queries and check the opinion's addressee; waits on: independent model auditor",
    "effort_total_wd": 1,
    "effort_wd": 1,
    "envelope": "B",
-   "es_driven_by": "fin-model-build",
-   "evidence": "EV-FIN-MODEL",
+   "es_driven_by": "fin-model-freeze",
+   "evidence": "EV-MODEL-AUDIT",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 2,
+   "float_wd": 0,
    "gated_by": [],
-   "id": "fin-model-freeze",
-   "issuer": "Bidder",
-   "latest_finish": "2026-11-16",
-   "latest_start": "2026-11-16",
+   "id": "model-audit-opinion",
+   "issuer": "Independent model auditor",
+   "latest_finish": "2026-11-19",
+   "latest_start": "2026-11-15",
    "multiplicity": "",
-   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F",
+   "name": "Audit of the frozen Financial Model and issue of the opinion addressed to the Authority (VOL-I 10.3)",
    "owner": "Commercial",
    "predecessors": [
-    "fin-model-build",
-    "ground-dd",
-    "lender-terms"
+    "fin-model-freeze",
+    "model-audit-review"
    ],
    "req_ids": [
-    "VOL-I-10.1-01",
-    "VOL-I-10.3-01",
-    "VOL-IV-F4F-02"
+    "VOL-I-10.3-02"
    ],
-   "resource": "financial_modeller",
-   "resource_status": "OVERLOAD financial_modeller on 2026-11-03..2026-11-16 (peak 1.3 vs capacity 1 staff)",
+   "resource": "commercial_manager",
+   "resource_status": "OK",
    "status": "OK",
    "timing_status": "OK",
-   "waiting_on": "",
-   "work_type": "staff effort"
+   "waiting_on": "independent model auditor",
+   "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1183,6 +1355,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-FORM-4G",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 17,
    "gated_by": [],
@@ -1212,6 +1385,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1230,6 +1405,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-FORM-4C",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 18,
    "gated_by": [],
@@ -1260,6 +1436,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1278,6 +1456,7 @@
    "envelope": "A",
    "es_driven_by": "poa",
    "evidence": "EV-INVESTMENT-LICENCE",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 8,
    "gated_by": [],
@@ -1302,49 +1481,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
-   "condition": "",
-   "count": 1,
-   "deadline": "",
-   "decision_needed_by": null,
-   "decision_status": "READY",
-   "discipline": "Commercial",
-   "driven_by": "assemble-envelope-b",
-   "duration_assumption": "model_audit_opinion",
-   "duration_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): final review of the frozen model and issue of the opinion; not stated",
-   "duration_wd": 5,
-   "earliest_finish": "2026-11-19",
-   "earliest_start": "2026-11-15",
-   "effort_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): one staff-day to answer final queries and check the opinion's addressee; waits on: independent model auditor",
-   "effort_total_wd": 1,
-   "effort_wd": 1,
-   "envelope": "B",
-   "es_driven_by": "fin-model-freeze",
-   "evidence": "EV-MODEL-AUDIT",
-   "flags": [],
-   "float_wd": 2,
-   "gated_by": [],
-   "id": "model-audit-opinion",
-   "issuer": "Independent model auditor",
-   "latest_finish": "2026-11-23",
-   "latest_start": "2026-11-17",
-   "multiplicity": "",
-   "name": "Audit of the frozen Financial Model and issue of the opinion addressed to the Authority (VOL-I 10.3)",
-   "owner": "Commercial",
-   "predecessors": [
-    "fin-model-freeze",
-    "model-audit-review"
-   ],
-   "req_ids": [
-    "VOL-I-10.3-02"
-   ],
-   "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
-   "status": "OK",
-   "timing_status": "OK",
-   "waiting_on": "independent model auditor",
-   "work_type": "external waiting + staff effort"
-  },
-  {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 2,
    "deadline": "",
@@ -1363,6 +1501,7 @@
    "envelope": "A",
    "es_driven_by": "references",
    "evidence": "EV-FORM-4B",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 9,
    "gated_by": [],
@@ -1388,6 +1527,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1406,6 +1547,7 @@
    "envelope": "A",
    "es_driven_by": "bond-approval",
    "evidence": "EV-BID-BOND",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 10,
    "gated_by": [],
@@ -1425,13 +1567,15 @@
     "VOL-I-6.4-02"
    ],
    "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
+   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.464 vs capacity 2 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "issuing bank",
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1450,6 +1594,7 @@
    "envelope": "A",
    "es_driven_by": "fin-statements",
    "evidence": "EV-FIN-STANDING",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 15,
    "gated_by": [],
@@ -1468,13 +1613,15 @@
     "VOL-I-8.4-02"
    ],
    "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
+   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.464 vs capacity 2 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "",
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 3,
    "deadline": "",
@@ -1493,6 +1640,7 @@
    "envelope": "A",
    "es_driven_by": "poa",
    "evidence": "EV-FORM-4C",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 10,
    "gated_by": [],
@@ -1526,6 +1674,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1544,6 +1694,7 @@
    "envelope": "B",
    "es_driven_by": "fin-model-freeze",
    "evidence": "EV-FIN-ASSUMPTIONS",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 5,
    "gated_by": [],
@@ -1561,13 +1712,15 @@
     "VOL-I-10.6-01"
    ],
    "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
+   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.464 vs capacity 2 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "",
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1578,16 +1731,17 @@
    "duration_assumption": "form_4a_preparation",
    "duration_basis": "ASSUMPTION (PROVISIONAL; owner Legal): prepare the content of Form 4-A as reissued by ADD-01 Appendix A (Bidder and lead member, Addenda acknowledged, single point of contact); not stated",
    "duration_wd": 1,
-   "earliest_finish": "2026-10-22",
-   "earliest_start": "2026-10-22",
+   "earliest_finish": "2026-10-25",
+   "earliest_start": "2026-10-25",
    "effort_basis": "ASSUMPTION (PROVISIONAL; owner Legal): one lawyer-day of drafting; no external party; waits on: no external party",
    "effort_total_wd": 1,
    "effort_wd": 1,
    "envelope": "A",
-   "es_driven_by": "planning date",
+   "es_driven_by": "consortium-check",
    "evidence": "EV-FORM-4A",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 21,
+   "float_wd": 20,
    "gated_by": [],
    "id": "form-4a-prep",
    "issuer": "Bidder",
@@ -1596,7 +1750,9 @@
    "multiplicity": "",
    "name": "Prepare Form 4-A on the version reissued by ADD-01 Appendix A: Bidder and lead member, Addenda acknowledged, single point of contact (preparation; not gated)",
    "owner": "Legal",
-   "predecessors": [],
+   "predecessors": [
+    "consortium-check"
+   ],
    "req_ids": [
     "ADD-01-AppA-01",
     "VOL-I-7.1-01",
@@ -1612,6 +1768,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1630,6 +1788,7 @@
    "envelope": "A",
    "es_driven_by": "poa",
    "evidence": "EV-FORM-4E",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 11,
    "gated_by": [],
@@ -1657,6 +1816,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1667,16 +1828,17 @@
    "duration_assumption": "form_4f_preparation",
    "duration_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): complete and sign Form 4-F from the frozen model; not stated",
    "duration_wd": 2,
-   "earliest_finish": "2026-11-16",
-   "earliest_start": "2026-11-15",
+   "earliest_finish": "2026-11-23",
+   "earliest_start": "2026-11-22",
    "effort_basis": "ASSUMPTION (PROVISIONAL; owner Commercial): one and a half staff-days; internal; waits on: no external party",
    "effort_total_wd": 1.5,
    "effort_wd": 1.5,
    "envelope": "B",
-   "es_driven_by": "fin-model-freeze",
+   "es_driven_by": "model-audit-opinion",
    "evidence": "EV-FORM-4F",
+   "finalise_by": null,
    "flags": [],
-   "float_wd": 5,
+   "float_wd": 0,
    "gated_by": [],
    "id": "form-4f",
    "issuer": "Bidder",
@@ -1687,6 +1849,7 @@
    "owner": "Commercial",
    "predecessors": [
     "fin-model-freeze",
+    "model-audit-opinion",
     "poa"
    ],
    "req_ids": [
@@ -1698,13 +1861,15 @@
     "VOL-IV-F4F-02"
    ],
    "resource": "commercial_manager",
-   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.664 vs capacity 2 staff)",
+   "resource_status": "OVERLOAD commercial_manager on 2026-11-22..2026-11-23 (peak 2.464 vs capacity 2 staff)",
    "status": "OK",
    "timing_status": "OK",
    "waiting_on": "",
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1723,6 +1888,7 @@
    "envelope": "A",
    "es_driven_by": "planning date",
    "evidence": "EV-ISO",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 21,
    "gated_by": [],
@@ -1745,6 +1911,8 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1763,6 +1931,7 @@
    "envelope": "none",
    "es_driven_by": "planning date",
    "evidence": "EV-SPOC",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 21,
    "gated_by": [],
@@ -1785,11 +1954,15 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-F4A-REISSUE"
+   ],
    "condition": "",
    "count": 1,
    "deadline": "",
-   "decision_needed_by": "2026-11-23",
-   "decision_status": "GATED: finalisation waits on I-F4A-FIELDS; decision needed by 2026-11-23",
+   "decision_needed_by": "2026-11-11",
+   "decision_status": "GATED: finalisation waits on I-F4A-FIELDS; clarification question drafted (CQ-F4A-REISSUE): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-23",
    "discipline": "Legal",
    "driven_by": "assemble-envelope-a",
    "duration_assumption": "form_4a_signature",
@@ -1803,6 +1976,7 @@
    "envelope": "A",
    "es_driven_by": "poa",
    "evidence": "EV-FORM-4A",
+   "finalise_by": "2026-11-23",
    "flags": [],
    "float_wd": 12,
    "gated_by": [
@@ -1835,26 +2009,31 @@
    "work_type": "external waiting + staff effort"
   },
   {
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-F4B-CONTRACT-VALUE"
+   ],
    "condition": "",
    "count": 2,
    "deadline": "",
-   "decision_needed_by": "2026-11-23",
-   "decision_status": "GATED: finalisation waits on I-VOL-I-ENV-A-PRICES; decision needed by 2026-11-23",
+   "decision_needed_by": "2026-11-11",
+   "decision_status": "GATED: finalisation waits on I-VOL-I-ENV-A-PRICES; clarification question drafted (CQ-F4B-CONTRACT-VALUE): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-23",
    "discipline": "Technical",
    "driven_by": "assemble-envelope-a",
    "duration_assumption": "form_4b_finalise",
    "duration_basis": "ASSUMPTION (PROVISIONAL; owner Technical): finalise each Form 4-B, including the 'Contract value (SAR equivalent)' field as the decision on I-VOL-I-ENV-A-PRICES directs; not stated",
    "duration_wd": 1,
-   "earliest_finish": "2026-11-10",
-   "earliest_start": "2026-11-10",
+   "earliest_finish": "2026-11-12",
+   "earliest_start": "2026-11-12",
    "effort_basis": "ASSUMPTION (PROVISIONAL; owner Technical): a quarter engineer-day per form; internal; waits on: no external party",
    "effort_total_wd": 0.5,
    "effort_wd": 0.25,
    "envelope": "A",
-   "es_driven_by": "form-4b-prep",
+   "es_driven_by": "completion-certs",
    "evidence": "EV-FORM-4B",
+   "finalise_by": "2026-11-23",
    "flags": [],
-   "float_wd": 9,
+   "float_wd": 7,
    "gated_by": [
     "I-VOL-I-ENV-A-PRICES"
    ],
@@ -1866,9 +2045,11 @@
    "name": "Finalise each Form 4-B: the 'Contract value (SAR equivalent)' field is kept (not deleted or relocated) and completed as the decision on I-VOL-I-ENV-A-PRICES directs (VOL-I 6.2: no commercial information in Envelope A)",
    "owner": "Technical",
    "predecessors": [
+    "completion-certs",
     "form-4b-prep"
    ],
    "req_ids": [
+    "VOL-I-6.2-02",
     "VOL-I-9.5-01",
     "VOL-IV-F4B-01"
    ],
@@ -1880,6 +2061,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1898,6 +2081,7 @@
    "envelope": "A",
    "es_driven_by": "poa",
    "evidence": "EV-FORM-4G",
+   "finalise_by": null,
    "flags": [],
    "float_wd": 12,
    "gated_by": [],
@@ -1930,6 +2114,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -1948,6 +2134,7 @@
    "envelope": "A+B",
    "es_driven_by": "lcc-certificate",
    "evidence": "EV-DELIVERY",
+   "finalise_by": null,
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-10 (after lcc-certificate) is after the latest start 2026-11-24; not compressed)"
    ],
@@ -1982,6 +2169,7 @@
    "req_ids": [
     "VOL-I-6.1-01",
     "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
     "VOL-I-9.1-01",
     "VOL-I-App3-01"
    ],
@@ -1993,26 +2181,31 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-ENV-B-CONTENTS"
+   ],
    "condition": "",
    "count": 1,
    "deadline": "",
-   "decision_needed_by": "2026-11-24",
-   "decision_status": "GATED: finalisation waits on I-VOL-I-ENV-B; decision needed by 2026-11-24",
+   "decision_needed_by": "2026-11-11",
+   "decision_status": "GATED: finalisation waits on I-VOL-I-ENV-B; clarification question drafted (CQ-ENV-B-CONTENTS): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-24",
    "discipline": "Document control",
    "driven_by": "copies",
    "duration_assumption": "envelope_assembly",
    "duration_basis": "ASSUMPTION (PROVISIONAL; owner Bid management): assemble the marked original of one envelope in the required order with numbered dividers; not stated",
    "duration_wd": 1,
-   "earliest_finish": "2026-11-22",
-   "earliest_start": "2026-11-22",
+   "earliest_finish": "2026-11-24",
+   "earliest_start": "2026-11-24",
    "effort_basis": "ASSUMPTION (PROVISIONAL; owner Bid management): one document-controller day per envelope; internal; waits on: no external party",
    "effort_total_wd": 1,
    "effort_wd": 1,
    "envelope": "A+B",
-   "es_driven_by": "model-audit-opinion",
+   "es_driven_by": "form-4f",
    "evidence": "EV-DELIVERY",
+   "finalise_by": "2026-11-24",
    "flags": [],
-   "float_wd": 2,
+   "float_wd": 0,
    "gated_by": [
     "I-VOL-I-ENV-B"
    ],
@@ -2043,11 +2236,15 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": "2026-11-11",
+   "clarification_questions": [
+    "CQ-USB-PACKAGING"
+   ],
    "condition": "",
    "count": 1,
    "deadline": "",
-   "decision_needed_by": "2026-11-25",
-   "decision_status": "GATED: finalisation waits on I-VOL-I-COPIES; decision needed by 2026-11-25",
+   "decision_needed_by": "2026-11-11",
+   "decision_status": "GATED: finalisation waits on I-VOL-I-COPIES; clarification question drafted (CQ-USB-PACKAGING): decide whether to ask the Authority by 2026-11-11 (latest start of clarifications, which must finish by the CLARIFICATION-CUTOFF 2026-11-12; VOL-I 3.3, VOL-I 5.2); finalise by 2026-11-25",
    "discipline": "Document control",
    "driven_by": "seal-and-mark",
    "duration_assumption": "copies_and_usb",
@@ -2061,6 +2258,7 @@
    "envelope": "A+B",
    "es_driven_by": "assemble-envelope-a",
    "evidence": "EV-COPIES",
+   "finalise_by": "2026-11-25",
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-13 (after assemble-envelope-a) is after the latest start 2026-11-25; not compressed)"
    ],
@@ -2095,6 +2293,8 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
    "deadline": "",
@@ -2113,6 +2313,7 @@
    "envelope": "A+B",
    "es_driven_by": "copies",
    "evidence": "EV-DELIVERY",
+   "finalise_by": null,
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-13 (after copies) is after the latest start 2026-11-25; not compressed)"
    ],
@@ -2142,9 +2343,11 @@
    "work_type": "staff effort"
   },
   {
+   "ask_by": null,
+   "clarification_questions": [],
    "condition": "",
    "count": 1,
-   "deadline": "PDD = 2026-11-26 (from VOL-I-6.1-01)",
+   "deadline": "PDD = 2026-11-26 14:00 Riyadh time (from VOL-I-6.1-01; VOL-I 6.1 as amended by ADD-01 2.1); delivery buffer 0 WD (submission.delivery_buffer_wd: PROVISIONAL ASSUMPTION, owner Bid manager): finish on the pack date itself, before 14:00",
    "decision_needed_by": null,
    "decision_status": "READY",
    "discipline": "Document control",
@@ -2160,6 +2363,7 @@
    "envelope": "A+B",
    "es_driven_by": "seal-and-mark",
    "evidence": "EV-DELIVERY",
+   "finalise_by": null,
    "flags": [
     "INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-14 (after seal-and-mark) is after the latest start 2026-11-26; not compressed)"
    ],

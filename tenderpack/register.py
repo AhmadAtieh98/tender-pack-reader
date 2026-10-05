@@ -24,8 +24,18 @@ quote that survives the op (the rest of VOL-I 10.3: the Financial Model is still
 saying that the row's words survive the op, and an unsupported removal never takes a row out of force: the row keeps
 its status, consequence and A5 activities until a person re-makes the reading.
 
+Where a row comes into force (session 11). By default, from the stage its primary unit (units[0]) is issued in: BASE
+for a volume unit, the addendum for an addendum's own unit or a unit an op inserted (reported as DERIVED). A row whose
+obligation an addendum creates in a unit that existed before (blind rehearsal 04: a new row citing VOL-V 18.1, issued
+in BASE, read at ADD-03 only) states it: `introduced: {stage, by: <op id or provision unit>, evidence: {unit, page,
+words}}`. Before that stage the row is NOT IN FORCE (no reading demanded, never STALE, off A3 and A5); at it, NEW
+(introduced by <by>); from it, the usual checks. The claim is checked (the op is applied at that stage or the provision
+is that addendum's; the words are printed there, new at that stage, in the introducing provision, a unit its op changed
+or names, or a unit of the row; no reading made before it); an unsupported claim is a problem (C16) and the row is read
+as if it had no field. Putting an addendum's provision first in `units` remains a convention, never the evidence.
+
 Separate statuses, never merged:
-  status            what the documents say at that stage (ACTIVE / AMENDED / REMOVED / DELETED / ...)
+  status            what the documents say at that stage (NOT IN FORCE / ACTIVE / AMENDED / REMOVED / DELETED / ...)
   transcription     review status of an image reading the row relies on (pending until approved)
   interpretation    review status of the row itself (proposed until a named person accepts it)
   ops               review status of the amendment ops that changed it (proposed / accepted)
@@ -40,7 +50,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_serializer
 
-from .amend import BASE, StageResult, UState, unit_pin
+from .amend import BASE, StageResult, UState, inserted_ref, unit_pin
 from .dates import Calendar, DateRule, Interpretation, interpretations, parse_date, planning_value
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
@@ -133,6 +143,36 @@ class PostAwardEvidence(_Strict):
     bid_stage_note: str | None = None
 
 
+class Quotation(_Strict):
+    """Words printed in one unit, on one page: {unit, page, words}."""
+    unit: str
+    page: int
+    words: str
+
+
+class Introduction(_Strict):
+    """Where a row's obligation comes into force (session 11): the `stage`, what introduces it there (`by`: an op of
+    that stage, or a provision of that stage's addendum) and the words printed there that say so (`evidence`). Before
+    that stage the row is NOT IN FORCE (no reading is demanded, it is never STALE and stays off A3 and A5); from it the
+    usual checks apply. The claim is checked (Register._introduction_problems); an unsupported one is a problem (C16) and
+    never takes the row out of force: the row is then read as a row without the field."""
+    stage: str
+    by: str
+    evidence: Quotation
+    note: str = ""
+
+
+class Corroboration(_Strict):
+    """This row's consequence restates the consequence of another row (session 11, audit A3-6): A3 lists the trigger
+    once, on `row`, with this row and the places in `also` as corroborating sources, and says what `adds` adds. `also` and
+    `adds_evidence` are printed words ({unit, page, words}); each must be found in its unit's effective text, otherwise
+    the row is not folded and is flagged (stage2.a3). Proposed content, like the row."""
+    row: str
+    also: list[Quotation] = Field(default_factory=list)
+    adds: str = ""
+    adds_evidence: list[Quotation] = Field(default_factory=list)
+
+
 class Row(_Strict):
     id: str
     group: str
@@ -152,8 +192,23 @@ class Row(_Strict):
     owner: str | None = None                     # role accountable for the row (defaults to the discipline)
     no_deliverable: str | None = None            # why a bid-stage row needs no deliverable (A5 two-way check)
     post_award_evidence: PostAwardEvidence | None = None   # post-award rows: proposed evidence / not applicable / unresolved
+    # session 11: where the obligation comes into force, with evidence. A row without it is in force from the stage its
+    # primary unit is issued in (BASE for a volume unit), as before; the register reports that as derived.
+    introduced: Introduction | None = None
+    corroborates: Corroboration | None = None    # session 11 (A3-6): restates another row's consequence
     review: Literal["proposed", "accepted"] = "proposed"
     reviewer: str | None = None
+
+    @model_serializer(mode="wrap")
+    def _without_unset_introduction(self, handler):
+        # a row without `introduced` dumps exactly as before the field existed, so what a review decision on a row is
+        # bound to (review.row_binding) does not change for rows that do not use it
+        d = handler(self)
+        if self.introduced is None:
+            d.pop("introduced", None)
+        if self.corroborates is None:                # likewise for `corroborates` (session 11)
+            d.pop("corroborates", None)
+        return d
 
     @property
     def owner_role(self) -> str:
@@ -363,6 +418,78 @@ class Register:
         self.op_review = {r.op.id: r.op.review for s in stages for r in s.ops}
         self.op_result = {r.op.id: r for s in stages for r in s.ops}
         self.issued = {s.stage: s.issued for s in stages}
+        # session 11 audit (A1-2): every list item an applied insert_unit op put into a volume unit: a row whose primary
+        # unit is the list the item is inserted into is AMENDED by that op at its stage
+        self.insertions = []
+        for s in stages:
+            for x in s.ops:
+                nid = f"{x.op.anchor}+{s.stage}" if x.op.type == "insert_unit" and x.op.anchor else None
+                if x.applied and nid in s.state:
+                    self.insertions.append({"op": x.op.id, "stage": s.stage, "unit": nid, "anchor": x.op.anchor,
+                                            "parent": s.state[nid].parent})
+
+    def inserted_into(self, row: Row, stage: str) -> list[dict]:
+        """The insertions (op, stage, unit, anchor, parent) made at or before `stage` into the row's primary unit: an
+        item inserted in the list the row's first unit is (ADD-02 7.1: Form 4-G after VOL-I 9.1(e) amends the Envelope A
+        list VOL-I-9.1-01). Inserting after an item does not amend that item's own row."""
+        i = self.order.index(stage)
+        return [x for x in self.insertions if x["parent"] and x["parent"] == row.units[0]
+                and self.order.index(x["stage"]) <= i]
+
+    def unchanged_by(self, row: Row, op_id: str) -> str | None:
+        """Session 11 audit (A1-8): how an op that changed one of the row's units left the row's OWN words, or None when
+        it changed them. 'reissued': every unit the row cites reads exactly the same (text and cells) after the op's stage
+        as before it (a reissued table whose row is printed again unchanged: Table 1-1 A, C, E, F). 'elsewhere': a text op
+        changed other words of the unit, and the row's reading was RE-MADE at the op's stage with the same quote and
+        consequence (a person read the row against the amended unit); the quote is in the unit before and after and no
+        word the op wrote or struck is in the sentence that holds it; its date rules are unaffected (VOL-II 4.4: 72 -> 96
+        hours; the N+1 sentence untouched). A row not re-read there is not 'unchanged': words elsewhere in a clause can
+        change what its quote means ('All other utilities ...' once the grid connection is struck), so it stays AMENDED
+        (and STALE until a person re-reads it). Insertions, deletions, reinstatements and figure changes in the row's
+        words are changes (None)."""
+        x = self.op_result.get(op_id)
+        if x is None or not x.applied or x.op.type not in ("replace_unit", "replace_text", "append_text", "set_value"):
+            return None
+        i = self.order.index(self.op_stage[op_id])
+        if i == 0:
+            return None
+        prev, cur = self.stages[i - 1], self.stages[i]
+
+        def reads(st, uid):
+            u = effective(st, uid, row.follows_replacement)
+            return None if u is None else (u.status, u.text, u.cells)
+        if all(reads(prev.state, k) == reads(cur.state, k) for k in row.units):
+            return "reissued"
+        if x.op.type == "replace_unit":
+            return None
+        a, b = self.interp_at(row, prev.stage), self.interp_at(row, cur.stage)
+        if a is None or b is None or b.stage != cur.stage or a.quote != b.quote or a.consequence != b.consequence \
+                or a.removed or b.removed:
+            return None                               # (only a reading re-made at the op's stage can say so)
+        texts = lambda st: [u.text for k in row.units if (u := effective(st, k, row.follows_replacement)) is not None  # noqa: E731
+                            and u.status == "active"]
+        if not any(found(b.quote, t) for t in texts(prev.state)) or not any(found(b.quote, t) for t in texts(cur.state)):
+            return None
+        new, old = (x.op.new or "").strip(), (x.op.old or "").strip() if x.op.type == "replace_text" else ""
+        if not new and not old:
+            return None
+        for st, words in ((cur.state, new), (prev.state, old)):   # the words written after, the words struck before
+            for t in (texts(st) if words else []):
+                for sent in re.split(r"(?<=[.;])\s+", t):
+                    if found(b.quote, sent) and (found(words, sent) or found(sent, words)):
+                        return None
+        for rd in row.date_rules:
+            src = effective(cur.state, rd.source_unit, True)
+            if src is not None and src.status == "active" and not found(rd.text, src.text) and \
+                    rd.kind == "relative" and re.search(r"\(\d+\)", rd.text):
+                return None
+        return "elsewhere"
+
+    def _unchanged_words(self, ops: list[str], row: Row) -> str:
+        re_, el = [h for h in ops if self.unchanged_by(row, h) == "reissued"], [h for h in ops
+                                                                                if self.unchanged_by(row, h) != "reissued"]
+        return "; ".join(([f"reissued by {', '.join(re_)}, unchanged"] if re_ else [])
+                         + ([f"unit amended by {', '.join(el)}; the row's words unchanged"] if el else []))
 
     def interp_at(self, row: Row, stage: str) -> Interp | None:
         idx = self.order.index(stage)
@@ -373,12 +500,102 @@ class Register:
         deps = dependencies(row, interp, stage.state, self.rf.anchors, self.op_provision)
         return {d: pin_value(stage.state, d) for d in deps}
 
+    # ------------------------------------------------------------------ introduction (session 11)
+    def introduction(self, row: Row) -> dict:
+        """Where the row comes into force and on what basis: {stage, by, explicit, basis, problems, claimed}.
+        `explicit` when the row carries `introduced` and the claim is supported (problems empty): the row is NOT IN FORCE
+        before that stage. Otherwise the stage is DERIVED, as it always was, from the row's primary unit: the first stage
+        at which it exists and is issued (BASE for a volume unit, the addendum for an addendum's own unit or a unit an op
+        inserted). `problems` are those of an `introduced` claim (reported as C16 at the claimed stage); `claimed` is the
+        claimed stage (None without the field)."""
+        uid = row.units[0]
+        first = next((s for s in self.stages if (u := s.state.get(uid)) is not None and u.status != "not_issued"), None)
+        if first is None:
+            derived = {"stage": None, "by": None, "basis": f"derived from the primary unit {uid}, which no stage issues"}
+        else:
+            u = first.state[uid]
+            by = (u.history[0] if u.origin == "addendum_op" and u.history else u.issued_by or (BASE if first.stage == BASE
+                                                                                                else None))
+            how = ("issued in BASE" if first.stage == BASE else f"inserted by {by}" if u.origin == "addendum_op"
+                   else f"issued by {first.stage}")
+            derived = {"stage": first.stage, "by": by, "basis": f"derived from the primary unit {uid} ({how})"}
+        ii = row.introduced
+        if ii is None:
+            return {**derived, "explicit": False, "problems": [], "claimed": None}
+        problems = self._introduction_problems(row, ii)
+        if problems:
+            return {**derived, "explicit": False, "problems": problems, "claimed": ii.stage,
+                    "basis": derived["basis"] + f"; the `introduced` claim ({ii.stage} by {ii.by}) is not supported"}
+        return {"stage": ii.stage, "by": ii.by, "explicit": True, "problems": [], "claimed": ii.stage,
+                "basis": f"introduced at {ii.stage} by {ii.by}: '{ii.evidence.words[:80]}' ({ii.evidence.unit} "
+                         f"p{ii.evidence.page})"}
+
+    def _introduction_problems(self, row: Row, ii: Introduction) -> list[str]:
+        """C16 for `introduced: {stage, by, evidence}`: the stage is a stage of the pack; `by` is an op applied at that
+        stage, or a provision of that stage's addendum in force there (a unit of a volume for BASE); the evidence words
+        are printed, at that stage, in the unit and on the page given, are new there (not in the same unit at the stage
+        before), and come from the introducing provision, a unit its op changed or names, or a unit of the row; and no
+        interpretation of the row is made before that stage."""
+        if ii.stage not in self.order:
+            return [f"introduced at {ii.stage}, which is not a stage of this pack ({', '.join(self.order)})"]
+        i = self.order.index(ii.stage)
+        s = self.stages[i]
+        st = s.state
+        out: list[str] = []
+        related = set(row.units) | {e.unit_id for u in row.units if (e := effective(st, u, row.follows_replacement))}
+        x = self.op_result.get(ii.by)
+        if x is not None:
+            if self.op_stage[ii.by] != ii.stage:
+                out.append(f"introduced by {ii.by}: the op applies at {self.op_stage[ii.by]}, not {ii.stage}")
+            elif getattr(x, "conditional_pending", False):
+                out.append(f"introduced by {ii.by}: the op is a conditional amendment held at {ii.stage} (no person has "
+                           "recorded that its trigger occurred): the row is not in force from it until a trigger fact is "
+                           "recorded")
+            elif not x.applied:
+                out.append(f"introduced by {ii.by}: the op is not applied at {ii.stage} ("
+                           + ("withheld after a person's rejection)" if x.valid else "invalid)"))
+            related |= {x.op.provision, *x.changed, *x.op.targets, *(x.details.get("content") or [])} | \
+                {k for k in (x.op.target, x.op.anchor, x.op.replacement, x.op.new_group, x.op.new_text_from) if k}
+        elif ii.by in st:
+            u = st[ii.by]
+            own = (u.issued_by is None and not u.doc.startswith("ADD-")) if ii.stage == BASE else u.doc == ii.stage
+            if not own or u.status != "active":
+                out.append(f"introduced by {ii.by}: not a provision of {ii.stage} in force there" if ii.stage != BASE
+                           else f"introduced by {ii.by}: not a unit of the documents as issued")
+            related.add(ii.by)
+        else:
+            out.append(f"introduced by {ii.by}: no op of the amendment path and no unit of the pack has that id")
+        ev = ii.evidence
+        u = effective(st, ev.unit, True)
+        if u is None or u.status != "active":
+            out.append(f"introduction evidence: {ev.unit} is not in force at {ii.stage}")
+        else:
+            if ev.page not in (u.pages or []):
+                out.append(f"introduction evidence: {ev.unit} is on page(s) {u.pages}, not page {ev.page}")
+            if not (ev.words or "").strip() or not found(ev.words, u.text):
+                out.append(f"introduction evidence: the words are not in {ev.unit} at {ii.stage}: '{ev.words[:60]}'")
+            elif i > 0:
+                p = effective(self.stages[i - 1].state, ev.unit, True)
+                if p is not None and p.status == "active" and found(ev.words, p.text):
+                    out.append(f"introduction evidence: '{ev.words[:60]}' is already in {ev.unit} at "
+                               f"{self.order[i - 1]}: it does not show what {ii.stage} introduces")
+            if ev.unit not in related and u.unit_id not in related:
+                out.append(f"introduction evidence: {ev.unit} is neither the introducing provision, a unit its op "
+                           "changed or names, nor a unit of the row")
+        early = [it.stage for it in row.interpretations if it.stage in self.order and self.order.index(it.stage) < i]
+        if early:
+            out.append(f"interpretation(s) made at {', '.join(early)}, before the row's introduction at {ii.stage}")
+        return out
+
     def evaluate(self, row: Row, s: StageResult) -> dict:
         st = s.state
         prim = st.get(row.units[0])
         eff = effective(st, row.units[0], row.follows_replacement)
         out = {"stage": s.stage, "stage_status": s.status}
-        it = self.interp_at(row, s.stage)            # its `removed` decides the status (session 09)
+        intro = self.introduction(row)               # session 11: explicit (`introduced`, supported) or derived
+        pre = intro["explicit"] and self.order.index(s.stage) < self.order.index(intro["stage"])
+        out["introduction"] = {k: intro[k] for k in ("stage", "by", "explicit", "basis")}
+        it = None if pre else self.interp_at(row, s.stage)    # its `removed` decides the status (session 09)
         removal = it.removed if it is not None else None
         removal_problems: list[str] = []
         if removal is not None and prim is not None and eff is not None and eff.status == "active" \
@@ -391,9 +608,14 @@ class Register:
         # --- status
         hist = (prim.history if prim else []) + ([h for h in eff.history if h not in prim.history]
                                                   if eff is not None and prim is not None and eff is not prim else [])
+        inserted = [] if pre else self.inserted_into(row, s.stage)     # session 11 audit (A1-2)
+        hist += [x["op"] for x in inserted if x["op"] not in hist]
         here = [h for h in hist if self.op_stage.get(h) == s.stage]
         earlier = [h for h in hist if h not in here and self.order.index(self.op_stage.get(h, BASE)) < self.order.index(s.stage)]
-        if prim is None or prim.status == "not_issued":
+        introduced_here = intro["explicit"] and intro["stage"] == s.stage
+        if pre:                                      # session 11: the obligation is not yet in force (`introduced`)
+            status = f"NOT IN FORCE (introduced at {intro['stage']} by {intro['by']})"
+        elif prim is None or prim.status == "not_issued":
             status = "NOT ISSUED"
         elif eff.status == "deleted":
             status = f"DELETED ({', '.join(here or earlier)})" if here else f"DELETED (by {', '.join(earlier)})"
@@ -403,18 +625,29 @@ class Register:
             status = f"REPLACED (by {eff.superseded_by})"
         elif removal is not None:                    # the obligation's words were deleted; the unit stays in force
             status = f"REMOVED ({removal.by})"
-        elif prim.issued_by == s.stage or (eff.origin == "addendum_op" and here):
+        elif introduced_here:
+            status = f"NEW (introduced by {intro['by']})"
+        elif prim.issued_by == s.stage or (eff.origin == "addendum_op" and here and eff.issued_by in (None, s.stage)):
+            # (session 11: a unit an op inserted is NEW at the stage that inserted it; a later addendum amends it)
             status = "NEW"
+        elif here and all(self.unchanged_by(row, h) for h in here):
+            # session 11 audit (A1-8): reissued or amended elsewhere in the unit; the row's own words are unchanged
+            changed_before = [h for h in earlier if not self.unchanged_by(row, h)]
+            status = "ACTIVE (" + (f"as amended by {', '.join(changed_before)}; " if changed_before else "") + \
+                self._unchanged_words(here, row) + ")"
         elif here:
             reinstated = any(self._op_type(h) == ("set_status", "reinstated") for h in here)
             status = ("REINSTATED-AMENDED" if reinstated else "AMENDED") + f" ({', '.join(here)})"
         elif earlier:
-            status = f"ACTIVE (as amended by {', '.join(earlier)})"
+            changed_before = [h for h in earlier if not self.unchanged_by(row, h)]
+            same = [h for h in earlier if h not in changed_before]
+            status = "ACTIVE (" + "; ".join(([f"as amended by {', '.join(changed_before)}"] if changed_before else [])
+                                            + ([self._unchanged_words(same, row)] if same else [])) + ")"
         else:
             status = "ACTIVE"
         out["status"] = status
         unit_active = prim is not None and eff is not None and eff.status == "active" and prim.status != "not_issued"
-        active = unit_active and removal is None
+        active = unit_active and removal is None and not pre
         out["active"] = active
         out["text"] = eff.text if eff is not None and eff.status != "not_issued" else ""
         out["cells"] = eff.cells if eff is not None else None
@@ -465,6 +698,9 @@ class Register:
             stale += [f"{p} (expected: the interpretation predates the change)" for p in problems]
             problems = []
         problems += removal_problems                  # a claim the curation makes now: never explained away as STALE
+        if intro["problems"] and (intro["claimed"] == s.stage or (intro["claimed"] not in self.order
+                                                                  and s.stage == self.order[0])):
+            problems += intro["problems"]            # session 11: an unsupported `introduced` claim (C16)
         out["stale"] = stale
         # --- transcription status of image readings the row relies on
         rel = [effective(st, u, True) for u in row.units] + \
@@ -529,16 +765,139 @@ class Register:
                             "text": e_u.text if e_u is not None and e_u.status not in ("not_issued",) else "",
                             "status": e_u.status if e_u is not None else "absent",
                             "ops": [h for h in (e_u.history if e_u is not None else []) if self.op_stage.get(h)]})
+        for x in inserted:                            # session 11 audit (A1-2): each inserted item in its position
+            u = st.get(x["unit"])
+            if u is None:
+                continue
+            d = {"unit": x["unit"], "ref": self._ref(x["unit"], st), "original_text": "", "issued_by": u.issued_by,
+                 "effective_unit": x["unit"], "effective_ref": self._ref(x["unit"], st),
+                 "text": u.text if u.status != "not_issued" else "", "status": u.status,
+                 "ops": [h for h in u.history if self.op_stage.get(h)]}
+            at = [j for j, dd in enumerate(details) if dd["unit"] == x["anchor"]]
+            details.insert(at[0] + 1 if at else len(details), d)
         out["units_detail"] = details
+        self._conditional_and_effective(row, s, out, anchors)     # session 11 (D3): conditional / effective-dated state
         return out
 
+    # ------------------------------------------------------------------ conditional and effective-dated state (s11)
+    def _conditional_and_effective(self, row: Row, s: StageResult, out: dict, anchors: dict) -> None:
+        """Session 11. A conditional amendment (amend.Condition) that is pending at this stage and would change one of
+        the row's units (or names the row or a unit in `affects`): the row is CONDITIONAL, never AMENDED: `status`
+        becomes 'CONDITIONAL (<op>: not in effect unless <trigger>; in force: <status as computed>)' while the row is
+        in force, and `conditional` lists both states ({op, condition, trigger, trigger_unit, applicability, state,
+        stated_at, deadline {rule_id, text, value, readings}, state_if_not_triggered, state_if_triggered, fact}); the
+        trigger's deadline is added to `dates` as a deadline rule (`conditional: {condition, op}`, so A5 plans a
+        decision milestone). A condition a person recorded as not triggered, or as triggered (the op then applies as
+        any other), is a flag. An op with an effective date is listed in `effective` ({op, effective_from, effective:
+        retroactive | deferred | on issue}) and flagged; a change that flowed through an earlier addendum's amending
+        text says so in `chain`. Nothing here assumes a trigger occurred."""
+        mine = set(row.units) | {e.unit_id for u in row.units if (e := effective(s.state, u, row.follows_replacement))}
+        conds = []
+        for c in getattr(s, "conditions", None) or []:
+            if not c.get("valid", True) or c.get("state") == "invalid":
+                continue
+            hit = sorted(mine & set(c.get("targets") or []))
+            named = sorted((mine | {row.id}) & set(c.get("affects") or []))
+            if not hit and not named:
+                continue
+            conds.append((c, hit, named))
+        lines = []
+        for c, hit, named in conds:
+            dl = c.get("deadline")
+            dentry = None
+            if dl:
+                rid = "TRIGGER-" + re.sub(r"[^A-Za-z0-9]+", "-", str(c["condition"])).strip("-").upper()
+                rule = DateRule(rule_id=rid, kind=dl.get("kind", "relative"), purpose="deadline", anchor=dl.get("anchor"),
+                                offset=int(dl.get("offset") or 0), unit=dl.get("unit", "calendar_day"),
+                                direction=dl.get("direction", "after"),
+                                fixed=date.fromisoformat(dl["fixed"]) if dl.get("fixed") else None,
+                                source_unit=c.get("trigger_unit") or "", text=dl.get("text") or "")
+                ins = interpretations(rule, anchors, self.cal_by_stage[s.stage])
+                plan = planning_value(rule, ins, self.policy)
+                dentry = {"rule_id": rid, "text": rule.text, "source_unit": rule.source_unit, "purpose": "deadline",
+                          "reread": None, "anchor": rule.anchor,
+                          "anchor_value": anchors.get(rule.anchor).isoformat() if anchors.get(rule.anchor) else None,
+                          "interpretations": [{"key": i.key, "label": i.label, "value": i.value.isoformat() if i.value
+                                               else None, "basis": i.basis} for i in ins],
+                          "planning": {"key": plan.key, "value": plan.value.isoformat() if plan.value else None,
+                                       "policy": self.policy},
+                          "readings_differ": len({i.value for i in ins}) > 1,
+                          "conditional": {"condition": c["condition"], "op": c["op"], "trigger": c.get("trigger"),
+                                          "trigger_unit": c.get("trigger_unit"), "state": c.get("state")}}
+            u0 = hit[0] if hit else None
+            states = c.get("if_triggered") or {}
+            rec = {"op": c["op"], "condition": c["condition"], "stated_at": c.get("stated_at"),
+                   "trigger": c.get("trigger"), "trigger_unit": c.get("trigger_unit"),
+                   "applicability": c.get("applicability"), "if_not_triggered": c.get("if_not_triggered"),
+                   "state": c.get("state"), "fact": c.get("fact"), "units": hit, "named_in_affects": named,
+                   "deadline": ({"rule_id": dentry["rule_id"], "text": dentry["text"],
+                                 "value": dentry["planning"]["value"], "readings": dentry["interpretations"]}
+                                if dentry else None),
+                   "state_if_not_triggered": {u: (s.state[u].text if u in s.state else None) for u in hit},
+                   "state_if_triggered": {u: (states.get(u) or {}).get("after") for u in hit}}
+            out.setdefault("conditional", []).append(rec)
+            short = " ".join(str(c.get("trigger") or "").split())[:140]
+            if c.get("state") == "pending":
+                if dentry and out.get("active"):
+                    out["dates"].append(dentry)
+                lines.append(f"{c['op']}: not in effect unless {short}"
+                             + (f"; decide by {dentry['planning']['value']} ({dentry['rule_id']})"
+                                if dentry and dentry["planning"]["value"] else ""))
+                out["flags"].append(f"CONDITIONAL: {c['op']} ({c['condition']}, {c.get('trigger_unit')}) would change "
+                                    f"{', '.join(hit) or ', '.join(named)} only if {short}; both states are kept, "
+                                    "nothing assumes the trigger occurred"
+                                    + (f"; the trigger's deadline is {dentry['planning']['value']}" if dentry and
+                                       dentry["planning"]["value"] else ""))
+            elif c.get("state") == "not_triggered":
+                f = c.get("fact") or {}
+                out["flags"].append(f"conditional {c['op']} ({c['condition']}) not triggered: recorded by "
+                                    f"{f.get('recorded_by')} on {f.get('date')}; the unit stands as it is")
+        if lines and out.get("active") and not str(out["status"]).startswith(("NOT ", "DELETED", "REVOKED", "REPLACED",
+                                                                                "REMOVED")):
+            out["status"] = f"CONDITIONAL ({'; '.join(lines)}; in force: {out['status']})"
+        # effective dates and changes that flowed through an earlier addendum's amending text
+        eff, flowed = [], {}
+        for h in out.get("ops") or []:
+            x = self.op_result.get(h)
+            if x is None or not x.applied:
+                continue
+            if x.details.get("effective_from"):
+                eff.append({"op": h, "effective_from": x.details["effective_from"],
+                            "effective": x.details.get("effective") or ("on the trigger" if x.details.get("conditional")
+                                                                        else "")})
+            for fl in x.details.get("flowed") or []:
+                if fl["unit"] in mine:
+                    flowed[h] = fl
+            cd = x.details.get("conditional") or {}
+            if cd.get("state") == "triggered":
+                f = cd.get("fact") or {}
+                out["flags"].append(f"{h} applies on its trigger ({cd.get('condition')}): recorded by "
+                                    f"{f.get('recorded_by')} as occurred on {f.get('date')}")
+        if eff:
+            out["effective"] = eff
+            out["flags"] += [f"{e['op']}: effective from {e['effective_from']}"
+                             + (f" ({e['effective']}" + (f" to before its issue on {self.issued.get(self.op_stage[e['op']])})"
+                                                          if e["effective"] == "retroactive" else ")") if e["effective"]
+                                else "") for e in eff]
+        if flowed:
+            chain = []
+            for ln in out["chain"]:
+                h = ln.split(" ", 1)[0]
+                fl = flowed.get(h)
+                chain.append(ln + (f" (amends {self.op_result[h].op.target}, whose op {fl['via']} had written the words "
+                                   f"into {fl['unit']}: the change flows to {fl['unit']})" if fl else ""))
+            out["chain"] = chain
+
     # ------------------------------------------------------------------ provenance (latest reference)
-    def _ref(self, uid: str, st: dict[str, UState]) -> str:
+    def _ref(self, uid: str, st: dict[str, UState], pages: bool = True) -> str:
         u = st.get(uid) or self.stages[0].state.get(uid)
+        ins = inserted_ref(st, u, pages) if u is not None else None
+        if ins:                                       # session 11 audit (A1-5): printed in the addendum, inserted at a place
+            return ins
         doc, _, local = uid.partition(":")
-        pages = u.pages if u is not None else []
+        pg = u.pages if u is not None else []
         shown = f"{u.number} (issued as {local})" if u is not None and u.number else local
-        return f"{doc} {shown}" + (f" p{','.join(map(str, pages))}" if pages else "")
+        return f"{doc} {shown}" + (f" p{','.join(map(str, pg))}" if pages and pg else "")
 
     def _op_by_id(self, op_id: str):
         for s in self.stages:
@@ -642,7 +1001,8 @@ class Register:
                 return {"latest": latest, "refs": refs + [self._ref(x.op.provision, st) for x in supplied],
                         "from_amendment": True, "ops": [x.op.id for x in supplied]}
             verb = {"set_status": "reinstating" if h.op.status == "reinstated" else "changing"}.get(h.op.type, "amending")
-            latest = f"{prov} ({verb} {refs[0].rsplit(' p', 1)[0]})"
+            unpaged = self._ref(uid, self.stages[0].state if uid in self.stages[0].state else st, pages=False)
+            latest = f"{prov} ({verb} {unpaged})"
             return {"latest": latest, "refs": refs + [self._ref(x.op.provision, st) for x in supplied],
                     "from_amendment": True, "ops": [x.op.id for x in supplied]}
         latest = refs[0] + (f" as amended by {', '.join(self._ref(h.op.provision, st) for h in hist)}" if hist else "")
@@ -661,20 +1021,80 @@ class Register:
         st = s.state
         base = self.stages[0].state
         out, hist = [], []
+
+        def unit_line(uid: str, u0: UState) -> str:
+            if u0.printed_in:                         # session 11 audit (A1-5): printed in the addendum, inserted at a place
+                where = inserted_ref(st, u0) or ""
+                after = where[where.index(" (inserted after ") + 2:-1] if " (inserted after " in where else ""
+                return (f"{uid} ({u0.printed_in} p{','.join(map(str, u0.pages))}; {u0.origin.replace('_', ' ')}"
+                        + (f"; issued by {u0.issued_by}" if u0.issued_by else "") + (f"; {after}" if after else "") + ")")
+            return (f"{uid} ({u0.doc} p{','.join(map(str, u0.pages))}; {u0.origin.replace('_', ' ')}"
+                    + (f"; issued by {u0.issued_by}" if u0.issued_by else "") + ")")
         for uid in row.units:
             u0 = base.get(uid) or st.get(uid)
             if u0 is not None:
-                out.append(f"{uid} ({u0.doc} p{','.join(map(str, u0.pages))}; {u0.origin.replace('_', ' ')}"
-                           + (f"; issued by {u0.issued_by}" if u0.issued_by else "") + ")")
+                out.append(unit_line(uid, u0))
             eff = effective(st, uid, row.follows_replacement)
             for k in [uid] + ([eff.unit_id] if eff is not None and eff.unit_id != uid else []):
                 hist += [h for h in (st[k].history if k in st else []) if h not in hist]
+        for x in self.inserted_into(row, s.stage):  # session 11 audit (A1-2): the items inserted into the row's list
+            if x["unit"] in st and x["unit"] not in row.units:
+                out.append(unit_line(x["unit"], st[x["unit"]]))
+                hist += [h for h in st[x["unit"]].history if h not in hist]
+        why = {h: "" for h in hist}
+        for h, w in self._chain_annotations(row, s).items():   # session 11 audit (A1-1, A2-7): annotations, anchors
+            why.setdefault(h, w)
+        hist += [h for h in why if h not in hist]
         hist.sort(key=lambda h: self.order.index(self.op_stage.get(h, BASE)))   # in addendum order (stable within one)
         for h in hist:
             prov = self.op_provision.get(h)
             pu = st.get(prov)
-            out.append(f"{h} [{self.op_stage.get(h)}; {self.op_review.get(h)}] <- {prov} ({pu.doc} p{','.join(map(str, pu.pages))})"
-                       if pu else h)
+            out.append(f"{h} [{self.op_stage.get(h)}; {self.op_review.get(h)}{why.get(h) or ''}] <- {prov} "
+                       f"({pu.doc} p{','.join(map(str, pu.pages))})" if pu else h)
+        return out
+
+    def _chain_annotations(self, row: Row, s: StageResult) -> dict[str, str]:
+        """Session 11 audit (A1-1, A2-7): the ops that re-make a row or move its dates without changing its units, for the
+        evidence chain, up to stage `s`: at each addendum stage where the row's reading is re-made or its dates move, every
+        annotation on the row's dependency units (its units, their replacements and annotated parents: the answer or rule
+        the reading follows, e.g. ADD-01/2.2 on VOL-I 5.2, ADD-02/Q7 on VOL-I 12.1); where its dates move, also the op that
+        changed the date anchor's defining unit (ADD-01/2.1 on VOL-I 6.1 for VOL-I 8.3). {op id: '; why'}."""
+        out: dict[str, str] = {}
+        upto = self.order.index(s.stage)
+        made = {it.stage for it in row.interpretations}
+        for i in range(1, upto + 1):
+            cur, prev = self.stages[i], self.stages[i - 1]
+            moved = []
+            for rd in row.date_rules:
+                a = self.rf.anchors.get(rd.anchor or "")
+                if not a:
+                    continue
+                va = anchor_values(prev.state, {rd.anchor: a}, {}).get(rd.anchor)
+                vb = anchor_values(cur.state, {rd.anchor: a}, {}).get(rd.anchor)
+                d = cur.state.get(a["defined_in"])
+                if va != vb and d is not None:
+                    moved += [(h, f"; moves the date anchor {rd.anchor} ({a['defined_in']})") for h in d.history
+                              if self.op_stage.get(h) == cur.stage]
+            if cur.stage not in made and not moved:
+                continue
+            deps = set()
+            for uid in row.units:
+                deps.add(uid)
+                e = effective(cur.state, uid, row.follows_replacement)
+                if e is not None:
+                    deps.add(e.unit_id)
+            for it in row.interpretations:          # session 11 recheck (A1-1): the consequence's unit is a dependency too
+                cu = getattr(getattr(it, "consequence", None), "unit", None)
+                if cu:
+                    deps.add(cu)
+            deps |= {cur.state[k].parent for k in list(deps) if k in cur.state and cur.state[k].parent}
+            for k in sorted(deps):
+                for h in (cur.state[k].annotations if k in cur.state else []):
+                    if self.op_stage.get(h) == cur.stage and h not in out:
+                        x = self.op_result.get(h)
+                        out[h] = f"; annotates {k}" + (f" ({x.op.effect})" if x is not None and x.op.effect else "")
+            for h, w in moved:
+                out.setdefault(h, w)
         return out
 
     def all(self) -> list[dict]:
@@ -739,6 +1159,59 @@ def printed_date_conflicts(stage: StageResult, anchors: dict) -> list[dict]:
                     out.append({"unit": uid, "printed": p[0].isoformat(), "anchor": name, "effective": v.isoformat(),
                                 "defined_in": a["defined_in"], "page": u.pages, "doc": u.doc})
     return out
+
+
+# ---------------------------------------------------------------------------------------------- glosses (session 11)
+
+GLOSS_NOT_REVIEWED = "proposed translation, not reviewed"
+_AR_RUN = re.compile("[\u0600-\u06ff]+(?:\\s+[\u0600-\u06ff]+)*")
+
+
+def gloss_label(gloss: str | None, unit: dict | None, approval: dict | None, issues: dict[str, str] | None = None,
+                quote: str = "") -> str:
+    """How the English gloss of a non-English consequence is labelled, derived from the approval state at build time
+    (session 11, audit A3-4/R-1). The gloss is 'confirmed' only when the unit comes from an image reading that is
+    approved now (its `reading.status`, from curation/approvals.yaml at ingest) and the gloss is part of the reading's
+    own displayed translation, which is what the approval confirms; otherwise it is the assistant's proposal. Open
+    issues (`issues`: id -> text) that quote the consequence's own words keep what the words mean open, and are named.
+    One wording for every output (A1, A3, a3_detail, the review batches)."""
+    rd = (unit or {}).get("reading") or {}
+    tr = (unit or {}).get("translation") or ""
+    if not (gloss and approval and rd.get("status") == "approved" and approval.get("date")
+            and normalize_latin(gloss).lower() in normalize_latin(tr).lower()):
+        return GLOSS_NOT_REVIEWED
+    words = [w for w in _AR_RUN.findall(normalize_arabic(quote or "")) if len(w.split()) >= 2] or \
+        ([normalize_arabic(quote)] if quote else [])
+    open_ = sorted(i for i, t in (issues or {}).items()
+                   if any(w and w in normalize_arabic(t or "") for w in words))
+    return (f"translation confirmed by the owner {approval['date']} ({rd.get('region')})"
+            + (f"; category mapping open ({', '.join(open_)})" if open_ else ""))
+
+
+def reading_approval(r: dict, region: str | None) -> dict | None:
+    """The approval recorded for an image reading in this build (the evidence build's review packet, written at ingest
+    from curation/approvals.yaml and valid only for the reading as approved), or None. Cached on `r`."""
+    cache = r.setdefault("_reading_approvals", {})
+    if region not in cache:
+        p = Path(r.get("evidence_dir") or ".") / "review" / str(region) / "packet.json"
+        try:
+            cache[region] = json.loads(p.read_text(encoding="utf-8")).get("approval") if region and p.exists() else None
+        except (OSError, ValueError):
+            cache[region] = None
+    return cache[region]
+
+
+def consequence_gloss(r: dict, row: Row, cons) -> str:
+    """gloss_label for a row's consequence in a stage2 run `r`: the consequence unit (as ingested), its reading's
+    approval and the row's open issues. '' when the consequence has no gloss."""
+    if not isinstance(cons, Consequence) or not cons.gloss:
+        return ""
+    units = r.setdefault("_units_by_id", {u["unit_id"]: u for u in r.get("units") or []})
+    unit = units.get(cons.unit)
+    region = ((unit or {}).get("reading") or {}).get("region")
+    cur = r.get("curated_issues") or {}
+    issues = {i: (cur.get(i) or {}).get("text", "") for i in row.issues if i in cur}
+    return gloss_label(cons.gloss, unit, reading_approval(r, region), issues, cons.quote)
 
 
 def dump(obj) -> str:

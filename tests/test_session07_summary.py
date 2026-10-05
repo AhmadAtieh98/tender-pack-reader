@@ -57,7 +57,9 @@ def test_real_add01_summary_claims_are_found_and_its_omissions_reported(real):
         "publishes the minutes of the Pre-Bid Conference", "responds to clarification requests 1 to 6"]
     assert {c["status"] for c in sc["claims"]} == {"supported"}
     assert "ADD-01/4.1" in sc["claims"][1]["matched"] and "ADD-01/2.1" in sc["claims"][0]["matched"]
-    assert kinds(sc) == {("omitted", "ADD-01/AppA/para1"), ("omitted", "ADD-01/3.1"), ("understated", "ADD-01/Q4")}
+    # session 11 audit (A2-6): ADD-01 Q4 restates VOL-I 5.5 (op `restates`, read with summary.classify_answer: one
+    # sentence confirms, one interprets), so it is no longer reported as an understated new obligation
+    assert kinds(sc) == {("omitted", "ADD-01/AppA/para1"), ("omitted", "ADD-01/3.1")}
     omitted = next(f for f in sc["findings"] if f.get("op") == "ADD-01/AppA/para1")
     assert "VOL-IV:F4-A" in omitted["detail"]
 

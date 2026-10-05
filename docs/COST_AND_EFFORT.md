@@ -1,4 +1,4 @@
-# Cost and effort (honest breakdown, as of session 08)
+# Cost and effort (honest breakdown, as of session 10; session 11 in progress and provisional)
 
 ## Where the numbers come from
 
@@ -10,18 +10,21 @@
 | Session | When (UTC) | Wall clock | Main work |
 |---|---|---|---|
 | 01 | 1 Oct 20:56–21:20 | ~0.5 h | Source analysis and engineering plan |
-| 02 | 1 Oct 21:40–22:30 | ~1 h | Stage 1: evidence, units, image readings (pending) |
+| 02 | 1 Oct 21:40–22:30 | ~1 h | Stage 1: evidence, units, image readings (proposed; approved by the owner on 3 Oct 2026, session 08) |
 | 03 | 1 Oct 22:59–2 Oct 01:10 | ~2.2 h | Owner's Stage 1 review: six gaps, fixed |
 | 04 | 2 Oct 07:32–13:00 | ~5.5 h | Second review repairs; adversarial review; Stage 2 slice; drill A |
 | 05 | 2 Oct 13:31–18:25, with a pause at a usage limit (~1 h) | ~4 h of work | Five review findings; Stage 3 (full register) and Stage 4 (A5) with subagents; drill B |
 | 06 | 3 Oct 00:42–01:54 and from 05:41, with a pause at a usage limit (3 h 47 min) | about 1 h 55 min of work (00:42–01:54 and 05:41–about 06:05) | Four findings; accept workflow; `show`/`diff`; C12/C30/C32/C46/C47; blind rehearsal; archive |
 | 07 | 3 Oct from 08:32 | about 1 h (see the work log) | C28 cover-summary check; drafter cover rule; review packets in the review folder; archive rebuilt and verified; Mac wheels split |
 | 08 | 3 Oct 19:30–20:27 and 4 Oct 05:17–about 08:15, with a pause at a usage limit (8 h 50 min) | about 4 h of work | Four findings; the owner's confirmations recorded; interpretations via proposals; A1–A3; A5 and Gantt; clarification register; blind rehearsal 02; archive |
-| 09 | 4 Oct 08:42–about 13:00, no pause | about 4 h 20 min of work (the coordinator as Fable 5.1; seven Opus 5.5 subagents, five of them in parallel) |
-| 10 | 4 Oct 13:33–(provisional; cost and pricing left provisional at the owner's instruction) | the coordinator as Fable 5.1; six Opus 5.5 subagents (W1 393,636 tokens; W2 559,500; W3 691,476 + 761,072 after its resume; W4 485,159; W5 228,008; W6 382,414); the headless host sessions of blind-04 ran on the host's own plan (the CLI's cost figures are the host's, not the application's; no API key, no application spend) | Six control findings; the AI layer and four routes; blind rehearsal 03 with the AI layer in the loop; records. Uncommitted at the owner's instruction |
-| **Total so far** | | **about 20 h of assistant wall-clock time** | |
+| 09 | 4 Oct 08:42–about 13:00, no pause | about 4 h 20 min of work (the coordinator as Fable 5.1; seven Opus 5.5 subagents, five of them in parallel) | Six control findings (failing tests first); the AI layer (`tenderpack/ai/`), the MCP server and four routes; blind rehearsal 03 with a sealed key (31 hit / 3 partial / 0 missed of 34); post-key fixes; committed as `a41e104` on the owner's authorisation |
+| 10 | 4 Oct 13:33–17:58, no pause (the session disconnected for about 30 min after the blind-04 run) | about 4 h 25 min of work (the coordinator as Fable 5.1; six Opus 5.5 subagents, by their own reports: W1 393,636 tokens; W2 559,500; W3 691,476 + 761,072 after its resume; W4 485,159; W5 228,008; W6 382,414) | Four controls (failing tests first); the runnable, resumable workflow `tenderpack ai run` with a candidate workspace and review packet; relationships with statuses and missing-document blockers; route hardening (capability policy, structured outputs, batching, critic, a real host/MCP session); disposable fixtures; blind rehearsal 04 with a sealed key (19 hit / 10 partial / 6 missed of 35 in 45.6 min; 7 batches killed by the host plan's HTTP 429); committed as `a57f118` at 17:58 on the owner's authorisation ("commit the session 10 work", 17:57) |
+| 11 | 4 Oct 18:27–5 Oct about 07:55, with two pauses at the plan's limit (19:37–21:30, 04:45–07:30) and a container restart (23:10) | about 10 h of work (provisional) | the coordinator as Fable 5.1; Opus 5.5 subagents by their own reports: four implementers (D1–D4), the blind-05 author, six audit reviewers (A1–A5, R), three audit fixers; a 2-hour pause at the host plan's session limit (19:37–21:30) and a container restart at 23:10 | The downstream workflow finished; one request path with failure classes; calculation tools, relationships, conditional amendments; candidate A3/A5; blind-04 regression and blind-05 sealed run; the audit of the real package BASE → ADD-02 with fixes; uncommitted until the owner authorises |
+| **Total so far** | | **about 29 h of assistant wall-clock time through session 10** (sessions 01–08 about 20 h; 09 about 4 h 20 min; 10 about 4 h 25 min), session 11 to be added | |
 
-**Subagents** (each started cold from a written brief; the orchestrator checked their output):
+**Models.** Sessions 01–08: the coordinator ran as Opus 5.5 (the commit trailers of `95b8408` … `34f7bc4`; the session transcript's model field, checked in the session-11 audit); from session 09 (4 Oct 08:42) as Fable 5.1 (`a41e104`, `a57f118`). Every subagent of sessions 04–11 reported Opus 5.5 by its own instructions; the launching session cannot verify a subagent's model (session-10 log, E127). The headless host sessions report their model through the CLI (recorded per run in `worklog/model_calls/` and `staging/ai/runs/*/ai/*/session.json`).
+
+**Subagents** (each started cold from a written brief; the orchestrator checked their output; every brief is in `worklog/subagent_briefs/`, exported verbatim in session 11):
 
 | Session | Agents |
 |---|---|
@@ -36,14 +39,13 @@ Four session 05 agents were stopped by a usage limit and resumed.
 ## The owner's time
 
 - **So far:** reading the reports and outputs; the code reviews of sessions 03, 05 and 06 (the findings were the owner's); correspondence with the hiring team.
+- **Done:** the two image readings (batch 1) were reviewed and approved on 3 Oct 2026 (`curation/approvals.yaml`); the session-06 STALE-row proposals were superseded in session 08 (no STALE row remains).
 - **Not yet spent, and needed before submission:**
 
 | Review | Items | Estimate |
 |---|---|---|
-| The two image readings (batch 1) | 2 readings: Table 2-4 (12 units) and Form 4-C (28 units) | 30–45 min, with the crops |
 | Disqualifiers (batch 2) | 19 rows | 45–60 min |
 | Amendment ops (batch 3) | 37 ops | 45–60 min |
-| STALE-row proposals (batch 4) | 3 | 10 min |
 | Remaining rows (batches 5–9) | 183 | 3–4 h at about 1 minute each; can be split by owner role |
 | Legal and commercial calls (issues on A3) | 10 | Depends on advisers |
 
@@ -62,7 +64,7 @@ These estimates are mine, untested against a real reviewer.
 
 - **Compute:** a laptop. Stage 1 takes about 13 s and the outputs about 80 s on the cloud container (the A5 scenarios, the Gantt and the review packets were added since session 06). The full tests take about 30 minutes there.
 - **Network:** none at run time. One download at setup (about 45 MB of wheels per Mac architecture), or none with the wheelhouse.
-- **Model calls:** none in the reviewed build, which needs no model. Since session 09 the AI layer can call a model to *propose* (Anthropic, OpenRouter or local Ollama; or a coding host's own model at no application cost); every paid run is capped (`config/ai.yaml`, `--max-usd`) and metered in `staging/ai/spend.jsonl`. No live call has been made: there is no key in the cloud environment, so no USD figure exists yet.
+- **Model calls:** none in the deterministic build (`ingest`, `outputs`), which needs no model. No API-key call has been made (the Anthropic, OpenRouter and Ollama routes are tested with recorded responses only). The host route has run for real on the host's own plan since session 09 (`docs/AI_ROUTES.md` §8, `worklog/model_calls/`, `rehearsals/blind-03..05`), at no application cost; the host reported its own plan cost per session where it did. Since session 09 the AI layer can call a model to *propose* (Anthropic, OpenRouter or local Ollama; or a coding host's own model at no application cost); every paid run is capped (`config/ai.yaml`, `--max-usd`) and metered in `staging/ai/spend.jsonl`. No live call has been made: there is no key in the cloud environment, so no USD figure exists yet.
 
 ## Where the effort went that was not planned
 

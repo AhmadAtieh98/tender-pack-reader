@@ -66,7 +66,7 @@ def _canon(obj) -> str:
 
 
 def _in_force(status: str) -> bool:
-    return not status.startswith(("NOT ISSUED", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
+    return not status.startswith(("NOT ISSUED", "NOT IN FORCE", "DELETED", "REVOKED", "REPLACED", "REMOVED"))
 
 
 def documents(r: dict) -> dict[str, str | None]:

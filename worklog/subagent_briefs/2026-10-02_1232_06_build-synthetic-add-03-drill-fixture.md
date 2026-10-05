@@ -1,0 +1,46 @@
+# Subagent brief 6: Build synthetic ADD-03 drill fixture
+
+Launched 2026-10-02 12:32:41 UTC; model option requested: `(default)`; subagent type: `general-purpose`.
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 4 Oct 2026, session 11).
+
+---
+
+You are working in the Python repo at /home/user/tender-pack-reader (venv: .venv/bin/python; PyMuPDF installed as `pymupdf`). It reads a tender pack of PDFs (config/pack.yaml lists VOL-I, VOL-II, VOL-IV, VOL-V, ADD-01, ADD-02 under sources/candidate_pack/). `python -m tenderpack ingest --pack P --out O` builds Stage 1 evidence (units.json etc.); `python -m tenderpack draft ADD-0N --evidence O` runs the pattern drafter (tenderpack/draft.py) that proposes amendment ops for an addendum.
+
+YOUR TASK: write ONE new file, `tests/fixtures/make_drill.py`, that builds a synthetic future addendum "Addendum No. 3" (ADD-03) and a 7-document drill pack around it, so that the SAME ingest + draft + amendment path used for ADD-01/ADD-02 can be exercised on it. Do not modify or create any other file in the repository (no edits to tenderpack/, config/, curation/, sources/, tests/ other than that one file). Never create any approvals.yaml. Do not commit or push. Use the scratchpad /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/drill-agent/ for any trial outputs.
+
+API required:
+  build(out_dir: Path) -> dict      # writes the files below into out_dir (created if needed) and returns the `expected` dict
+  if __name__ == "__main__": build(Path(sys.argv[1]))
+Files written into out_dir:
+  - ADD-03_Addendum_No_3.pdf
+  - pack.yaml: pack_id "NUPA-ISTP-2026-014-DRILL"; `manifest:` and `furniture:` as ABSOLUTE paths to files in out_dir; `readings_dir: curation/readings` (repo-relative, so the real image readings are used); `approvals:` absolute path out_dir/approvals.yaml (must NOT be created); `amendments_dir: curation/amendments`; `register: curation/register/rows.yaml`; documents = the six real documents exactly as in config/pack.yaml (same repo-relative paths) plus `{doc_id: ADD-03, kind: addendum, number: 3, path: <absolute path of the new PDF>}`. Paths in the code resolve as `root / path`, so absolute paths work with root = repo root.
+  - manifest.json: {"files": [...]} with the six real entries copied from sources/manifest.json (same "path" keys) plus an entry for ADD-03 (path exactly as in pack.yaml, sha256, pages, bytes).
+  - furniture.yaml: see fonts below.
+  - expected.yaml: the builder's own record of what it placed (provision ids you expect, their text, the intended outcome listed below). Written from the builder's inputs, not from program output.
+The build must be deterministic: two builds give byte-identical PDFs (fixed metadata dates, `doc.save(..., garbage=3, deflate=True, no_new_id=True)`).
+
+MATCH THE REAL ADDENDA'S LAYOUT so the existing segmenter, furniture rules and drafter treat ADD-03 exactly like ADD-02. Inspect sources/candidate_pack/ADD-02_Addendum_No_2.pdf with page.get_text("dict") and page.get_drawings(): A4 595x842; furniture: watermark 'FICTIONAL — ASSESSMENT PACK' Helvetica-Bold 34pt #dbdbdb rotated 52 deg; header 'Addendum No. 3' and 'NUPA/ISTP/2026/014' Helvetica 6.8 #5a5a5a at y≈32; footer disclaimer 'FICTIONAL DOCUMENT — prepared solely for a Lamar Holding internal capability assessment. Not a real tender.' and 'Page N' Helvetica 6.4 #5a5a5a at y≈802 (see config/furniture.yaml for the exact rules). Cover: dark band with white 'ADDENDUM NO. 3' (Helvetica-Bold 15), 'Issued 5 November 2026' (Helvetica-Bold 8.5), 'Tender NUPA/ISTP/2026/014' (Helvetica 8.5); then 'Wadi Sirhan Independent Sewage Treatment Plant' (Helvetica-Bold 10.5) and two front-matter paragraphs (Times-Roman 9.6). Section headings Helvetica-Bold 13 like '2. AMENDMENT TO VOLUME I CLAUSE 6.1'; clause numbers Times-Bold 9.6 at x=62.7 with text Times-Roman 9.6 continuing at x≈74.7 and wrapped lines at x≈99.5; Q&A table ruled like ADD-02 page 2 (dark header row with white Helvetica-Bold 8.2 headings 'No', 'Bidder question', 'Authority response', body Times-Roman 8.2, same column x positions and rules). Read tenderpack/segment.py and tenderpack/extract.py to see what the segmenter relies on (font names/bold flags, x positions, numbering) and match it. The em dash: base-14 fonts via page.insert_text may not encode '—' (tests/fixtures/make_fixture.py notes it renders as a middle dot). Try pymupdf.TextWriter with pymupdf.Font('helv') etc., or another approach that yields the correct '—' character in extraction AND span font names 'Helvetica', 'Helvetica-Bold', 'Times-Roman', 'Times-Bold'. Only if that is impossible, write out_dir/furniture.yaml as a copy of config/furniture.yaml plus the minimum extra, specific rules for the drill's ASCII variants, and check that the `expect_per_page` watermark logic still passes. If the em dash works, furniture.yaml is simply a copy of config/furniture.yaml.
+
+ADD-03 CONTENT (use these exact provision wordings; ASCII quotes may be the typographic ‘ ’ as in the real addenda):
+  Front matter: 'This Addendum amends the Proposal Due Date, Volume V Clause 31.3, Volume II Table 2-4 and Volume II Clause 4.4, deletes Volume I Clause 8.6, and responds to clarification requests 15 and 16.' and 'This Addendum forms part of the RFP Documents and takes precedence in accordance with Volume I Clause 3.2. Bidders shall acknowledge receipt in Form 4-A. All other terms of the RFP Documents remain unchanged.'
+  1. RECITALS — 1.1 'This Addendum is issued under Volume I Clause 5.3 and takes precedence in accordance with Volume I Clause 3.2.'
+  2. AMENDMENT TO VOLUME I CLAUSE 6.1 — 2.1 'In Volume I Clause 6.1, ‘Thursday 26 November 2026’ is deleted and ‘Thursday 10 December 2026’ is substituted.'   (intended: valid replace_text; PDD moves; dependants recomputed and STALE)
+  3. AMENDMENT TO VOLUME V CLAUSE 31.3 — 3.1 'In Volume V Clause 31.3, ‘seventy-two (72) hours’ is deleted and ‘forty-eight (48) hours’ is substituted.'   (intended: valid; VOL-II 4.4, which once had the same words, untouched)
+  4. DELETION OF VOLUME I CLAUSE 8.6 — 4.1 'Volume I Clause 8.6 (Local Content Certificate) is deleted in its entirety.'   (intended: valid set_status deleted; LCC chain deleted -> reinstated -> deleted)
+  5. AMENDMENT TO VOLUME II TABLE 2-4 — 5.1 'In Volume II Table 2-4, the limit for Total Phosphorus (TP) is amended from the value shown to 0.5 mg/l, assessed on the same basis. All other parameters in Table 2-4 are unchanged.'   (intended: valid set_value on an image reading still pending)
+  6. BID SECURITY — 6.1 'The bid security period is extended by thirty days.'   (intended: unresolved — no recognised phrasing, ambiguous target)
+  7. AMENDMENT TO VOLUME II CLAUSE 4.4 — 7.1 'In Volume II Clause 4.4, ‘seventy-two (72) hours’ is deleted and ‘sixty (60) hours’ is substituted.'   (intended: INVALID op — ADD-02 already changed those words to 'ninety-six (96) hours', so the old words are not in the target; the engine must not retarget to VOL-V 31.3)
+  8. RESPONSES TO CLARIFICATION REQUESTS 15 TO 16 — table rows:
+     15 | 'Does the 150-page limit in Volume I Clause 9.2 include the Form Sheets?' | 'No. The response to request 2 in Addendum No. 1 continues to apply.'   (negative control: cites a unit ADD-03 does not change)
+     16 | 'Addendum No. 1 moved the Proposal Due Date to 26 November 2026. Is that date firm?' | 'See Section 2 of this Addendum.'   (quotes a value ADD-03 replaces: must be listed for review, never revoked automatically)
+  Lay it out over 2 pages (sections 1-7 on page 1 if they fit, else spill; Q&A table on page 2), wrapping long lines like the real addenda.
+
+VERIFY before reporting:
+  1. .venv/bin/python tests/fixtures/make_drill.py <scratch>/drill-src ; run it twice into two dirs and confirm the PDFs are byte-identical.
+  2. .venv/bin/python -m tenderpack ingest --pack <scratch>/drill-src/pack.yaml --out <scratch>/drill-build  -> must exit 0 (it prints PENDING HUMAN REVIEW for the real image readings; that is expected). If it exits 2 (structural failure), read <out>.failed/coverage.md and fix the fixture (not the program).
+  3. Inspect <scratch>/drill-build/units.json for doc ADD-03: you should see ADD-03:cover/para1 = 'Issued 5 November 2026', clause units ADD-03:1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1 with their full text, and table rows ADD-03:Q15, ADD-03:Q16 with cells No / Bidder question / Authority response. Also confirm the six real documents' units are identical to those in /home/user/tender-pack-reader/build/units.json (same ids and texts).
+  4. .venv/bin/python -m tenderpack draft ADD-03 --evidence <scratch>/drill-build and check the drafted ops: replace_text for 2.1 (target VOL-I:6.1), 3.1 (VOL-V:31.3), 7.1 (VOL-II:4.4); set_status deleted for 4.1 (VOL-I:8.6); set_value for 5.1 (target VOL-II:T2-4/TP, column Limit, new 0.5); unresolved dispositions for 6.1, Q15 and Q16; no_effect for cover and recitals.
+If the program itself (not your fixture) behaves unexpectedly, do NOT change the program: report exactly what you saw.
+
+REPORT BACK (concise): the file path; how you solved the em dash/fonts; the ADD-03 unit ids and kinds; the drafter's output summary; both runs' PDF sha256; anything that did not work as intended.

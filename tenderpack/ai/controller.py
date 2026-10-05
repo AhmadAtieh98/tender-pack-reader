@@ -1666,3 +1666,113 @@ def review_markdown(ps: ProposalSet, report: dict) -> str:  # noqa: F811
         return md
     head, sep, rest = md.partition("\n## ")
     return head.rstrip("\n") + "\n\n" + "\n".join(lines) + ("\n## " + rest if sep else "")
+
+
+# ---------------------------------------------------------------------------------------------- session 11 hook (D3)
+# A clarification answer annotated `confirms` must add no requirement (blind rehearsal 04: Q15 restated VOL-I 8.7 and
+# Form 4-D; the diff then marked them CHANGED). summary.confirms_check reads the answer against the words of the units
+# it annotates (and the addendum's other provisions as context): an answer whose words add or change a requirement is a
+# 'no change' answer on amendment language, pending for a person (never invalid: the classifier is deterministic but
+# not a reading). Thin hook over the session 10 check; the classifier lives in tenderpack.summary.
+_semantic_checks_s10 = _semantic_checks
+
+
+def _semantic_checks(ws: Workspace, ps: ProposalSet, F: list[dict], sim_ops: list, sim_disps: list,  # noqa: F811
+                     addendum: str) -> list[str]:
+    from ..summary import answer_targets, confirms_check
+    flagged = _semantic_checks_s10(ws, ps, F, sim_ops, sim_disps, addendum)
+    ops = dict(sim_ops)
+    changed = {op.provision for op in ops.values() if op.type != "annotate"}   # next to its own change op: left alone
+
+    def answer(op) -> bool:                       # a clarification answer, not an amending provision
+        t = ws.units_by_id.get(op.provision, {}).get("text") or ""
+        return bool(re.search(r":Q\d+$", op.provision)) or "Authority response:" in t
+    ops = {i: op for i, op in ops.items() if op.type == "annotate" and op.effect == "confirms"
+           and op.provision not in changed and answer(op)}
+    if not ops:
+        return flagged
+    prev = ws.stage(ws.prev_stage(addendum)).state if addendum in ws.r["order"] else {}
+    context = [(u["unit_id"], u.get("text") or "") for u in ws.r["units"] if u["doc"] == addendum
+               and u["kind"] in PROVISION_KINDS and not re.search(r":Q\d+$", u["unit_id"]) and ":cover/" not in u["unit_id"]]
+    for i, op in ops.items():
+        it = ps.items[i]
+        text = ws.units_by_id.get(op.provision, {}).get("text") or ""
+        cited = {f"{addendum}:{m}" for m in re.findall(r"\bSection (\d+(?:\.\d+)?) of this Addendum", text)}
+        ctx = [t for k, t in context if any(k == c or k.startswith(c + ".") for c in cited)]   # the sections it cites
+        ok, detail, _ = confirms_check(text, answer_targets(prev, [t for t in op.targets if t != op.provision]), ctx)
+        F[i]["recs"].append(ValidationRecord(check="semantic", ok=ok, detail=detail, aspect="semantic"))
+        if not ok:                                # pending for a person; kept apart from the session 10 list of
+            F[i]["interp"].append(f"a 'confirms' annotation on {it.provision}, an answer that adds or changes a "
+                                  "requirement")         # 'no change on amendment language' (provision_semantics)
+    return flagged
+
+
+# ---------------------------------------------------------------------------------------------- session 11 hook (D2)
+# The standalone proposal run (`tenderpack ai propose`) on the COMMON request path (tenderpack/ai/requests.py), like
+# every phase of the workflow: the proposal-set schema on every request, the capability check before any call, the
+# complete size (the context bound enforced; the output estimate is a route notice for this single run, which cannot
+# split), the failure classes (a rate limit backs off, then the set is `deferred`, never `provider_failed`; a provider
+# failure is retried as before; a malformed answer is re-asked once, then malformed, or its schema-failing items set
+# aside) and the shared context once per request (requests.compact_analysis). Validation, staging, the lock and the
+# log are as before; the CLI's statuses and exit codes are unchanged (a deferred set exits 1, as provider_failed did).
+_run_s10 = _run
+
+
+def _run(ws, cfg, prov, route, model_requested, addendum, caps_, price, staging, run_id, log, clock, sleep,  # noqa: F811
+         include_crops, provisions, reference) -> ProposalSet:
+    from . import requests as R
+    created = _now(clock).strftime("%Y-%m-%dT%H:%M:%SZ")
+    state = ws.identity()
+    packet = task_packet(ws, addendum, provisions, include_crops)
+    images = [{"type": "image", "path": c["_path"], "sha256": c["sha256"], "media_type": c["media_type"]}
+              for c in packet["crops"]]
+    pub = R.compact_analysis(dict(packet, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
+                                                 for c in packet["crops"]]))
+    fields = {"run_id": run_id, "created": created, "route": route, "provider": prov.name,
+              "model_requested": model_requested, "model_reported": None, "task": TASK,
+              "controller_version": CONTROLLER_VERSION}
+    status, parsed, out = None, None, None
+    try:
+        out = R.converse(R.spec("analysis"), prov, pub, ws=ws, route=route, caps_=caps_, price=price,
+                         policy=R.FailurePolicy.from_cfg(cfg, caps_), log=log, staging=staging, run_id=run_id,
+                         fields=fields, sleep=sleep, images=images, settings=R.settings_for(cfg, route),
+                         enforce_output_estimate=False)
+        parsed = out.answer
+    except R.RateLimited as e:
+        status, out = "deferred", e.outcome
+    except R.ProviderFailed as e:
+        status, out = "provider_failed", e.outcome
+    except R.Malformed as e:
+        status, out = "malformed", e.outcome
+    except (R.ContextExhausted, B.BudgetExhausted) as e:
+        status, out = "budget_exhausted", getattr(e, "outcome", None)
+    u = out.usage if out is not None else {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cost_usd": None,
+                                           "cost_basis": "no call made"}
+    usage = Usage(calls=u["calls"], input_tokens=u["input_tokens"], output_tokens=u["output_tokens"],
+                  cost_usd=u["cost_usd"], cost_basis=u["cost_basis"])
+    overwrites = list(out.overwrites) if out is not None else []
+    if parsed is None:
+        ps = _empty_set(run_id, created, route, prov.name, model_requested, addendum, state, status)
+        ps.model_reported = out.model_reported if out is not None else None
+        provs = _provisions(ws, addendum)
+        ps.coverage = Coverage(provisions_total=len(provs), accounted=0, unaccounted=provs)
+        report = {"overwrites": overwrites, "note": f"no proposal to validate: {status}"
+                  + (" (a rate limit outlasted the bounded backoff: run it again later)" if status == "deferred" else "")}
+    else:
+        ps = parsed
+        ref = reference
+        if ref is None:
+            p = ws._p(ws.r["cfg"].get("amendments_dir", "curation/amendments")) / f"{addendum}.yaml"
+            ref = p if p.exists() else None
+        report = validate_set(ws, ps, log, expected_addendum=addendum, reference=ref, overwrites=overwrites)
+        if not recheck_fresh(ws, ps, report):
+            log.event("stale", differences=report["state_differences"])
+        if out.malformed_items:
+            report["malformed_items"] = out.malformed_items
+    if out is not None:
+        report["request"] = {k: v for k, v in out.record().items() if k != "notices"}
+    ps.usage = usage
+    d = write_staging(ws, ps, report)
+    log.event("end", status=ps.status, usage=usage.model_dump(), staging=str(d),
+              statuses={it.id: it.verification_status for it in ps.items}, coverage=ps.coverage.model_dump())
+    return ps

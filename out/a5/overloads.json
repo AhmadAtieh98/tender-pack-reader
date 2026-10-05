@@ -46,7 +46,7 @@
  ],
  "levelling": "resource levelling is NOT implemented; overloads are reported, not resolved",
  "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
- "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26.",
+ "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
  "planning_date": "2026-10-22",
  "rows": [
   {
@@ -55,8 +55,7 @@
     "fin-assumptions",
     "fin-standing",
     "form-4f",
-    "lcc-certificate",
-    "model-audit-opinion"
+    "lcc-certificate"
    ],
    "capacity": 2,
    "dates": [
@@ -65,7 +64,7 @@
    ],
    "days": 2,
    "from": "2026-11-22",
-   "peak_load": 2.664,
+   "peak_load": 2.464,
    "resource": "commercial_manager",
    "to": "2026-11-23"
   },
@@ -92,6 +91,8 @@
    ],
    "capacity": 1,
    "dates": [
+    "2026-11-01",
+    "2026-11-02",
     "2026-11-03",
     "2026-11-04",
     "2026-11-05",
@@ -99,15 +100,13 @@
     "2026-11-09",
     "2026-11-10",
     "2026-11-11",
-    "2026-11-12",
-    "2026-11-15",
-    "2026-11-16"
+    "2026-11-12"
    ],
    "days": 10,
-   "from": "2026-11-03",
+   "from": "2026-11-01",
    "peak_load": 1.3,
    "resource": "financial_modeller",
-   "to": "2026-11-16"
+   "to": "2026-11-12"
   },
   {
    "activities": [

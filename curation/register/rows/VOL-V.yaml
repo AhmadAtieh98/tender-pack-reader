@@ -66,9 +66,9 @@ rows:
       - stage: ADD-02
         quote: "shall continue for a period of twenty-five (25) years from the Effective Date"
         parameters: {term_years: 25, from: "Effective Date"}
-        note: "ADD-02 Q7: 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' Which start date governs is not answered; a deviation not listed in Form 4-E is taken as accepted (VOL-V Note)."
+        note: "ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' Under VOL-I 3.2 Volume I prevails over Volume V, so for the RFP Documents this clause is subordinate to VOL-I 12.1 (from PCOD); it is left unamended, and 'A deviation not listed in Form 4-E will be taken as accepted.' (VOL-V Note to Bidders, p2): what to record in Form 4-E and the Financial Model stays for Legal (I-CONCESSION, CQ-CONCESSION-TERM). (Session 11 audit A1-3 wording, PROPOSED.)"
     confidence: medium
-    confidence_reason: "verbatim, but conflicts with VOL-I 12.1 and the Authority declined to resolve it; the Effective Date is not a pack event"
+    confidence_reason: "verbatim; subordinate to VOL-I 12.1 under VOL-I 3.2 as ADD-02 Q7 directs, but left unamended (what to record in Form 4-E is open for Legal, I-CONCESSION); the Effective Date is not a pack event"
     issues: [I-CONCESSION]
   - id: VOL-V-3.2-01
     group: VOL-V:3.2
@@ -87,9 +87,10 @@ rows:
       - unit: VOL-V:3.2
         page: 2
         words: On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration.
-      when: on expiry of the term (the expiry date depends on the unresolved term start, I-CONCESSION)
+      when: on expiry of the term (the expiry date depends on the term start; VOL-I 12.1 prevails under VOL-I 3.2 as ADD-02 Q7 directs, VOL-V 3.1 left unamended, I-CONCESSION)
       bid_stage_note: 'Price assumption: nothing is received for the Facility at expiry (''for nil consideration''),
-        and the expiry date depends on the unresolved term start (I-CONCESSION).'
+        and the expiry date depends on the term start: VOL-I 12.1 (from PCOD) prevails under VOL-I 3.2 as ADD-02 Q7
+        directs, while VOL-V 3.1 (from the Effective Date) is left unamended (I-CONCESSION).'
     interpretations:
       - stage: BASE
         quote: "On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration."
@@ -130,7 +131,7 @@ rows:
         quote: "shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)"
         parameters: {months_from_notice_to_proceed: 36}
         consequence: {class: contractual, unit: "VOL-V:18.1", quote: "the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay"}
-        note: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to termination (18.2), capped at 10% of the Estimated Project Cost (18.4). PCOD: certified by the Independent Engineer against VOL-II 7.2 (VOL-V 1.5). The date rule records 36 months as 3 years (date rules have no month unit)."
+        note: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to termination (18.2). Cap: their aggregate 'shall not exceed ten per cent (10%) of the Estimated Project Cost' (VOL-V 18.4, p2; session 11 audit A1-6, PROPOSED). PCOD: certified by the Independent Engineer against VOL-II 7.2 (VOL-V 1.5). The date rule records 36 months as 3 years (date rules have no month unit)."
     confidence: high
     confidence_reason: "verbatim; the Notice to Proceed is not a pack event, so the Scheduled PCOD cannot be dated"
   - id: VOL-V-18.3-01
@@ -886,7 +887,7 @@ rows:
         parameters: {from_term_year: 20}
         note: "The term runs from the Effective Date under VOL-V 3.1 but from PCOD under VOL-I 12.1. The date rule records the start of year 20 as 19 years after the term starts."
     confidence: medium
-    confidence_reason: "verbatim; when year 20 starts depends on the unresolved term start"
+    confidence_reason: "verbatim; when year 20 starts depends on the term start: VOL-I 12.1 (from PCOD) prevails under VOL-I 3.2 as ADD-02 Q7 directs, but VOL-V 3.1 (from the Effective Date) is left unamended (I-CONCESSION)"
     issues: [I-CONCESSION]
   # ---------------------------------------------------------------- Clause 44: disputes
   - id: VOL-V-44.2-01

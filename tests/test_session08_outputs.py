@@ -131,7 +131,8 @@ def test_a3_separates_explicit_gate_and_grouped_unresolved_on_one_page(written, 
     groups = a3["groups"]["groups"]
     listed = {i["id"] for g in groups for i in g["items"]} | {f for g in groups for i in g["items"] for f in i["folds"]}
     issue_ids = {i["id"] for i in a3["issues_detail"]}
-    assert issue_ids - listed <= {"I-NO-CONSEQUENCE"}                                     # complete (gate note cites it)
+    detail_only = {i["id"] for i in a3["issues_detail"] if i.get("detail_only")}        # session 11 (A3-5)
+    assert issue_ids - listed - detail_only <= {"I-NO-CONSEQUENCE"}                     # complete (gate note cites it)
     qs = {q for g in groups for q in g["questions"]}
     assert qs == {c["id"] for c in real["clarifications"]["clarifications"]}
     doc = pymupdf.open(out / "a3/a3.pdf")

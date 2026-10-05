@@ -15,6 +15,14 @@
 # date it is reported as CONDITIONAL (whether the condition arose is not known), never as a missed duty.
 # An activity listed under two evidence items (a YAML alias, e.g. `copies`) is one activity needed by both.
 # `_exceptions: {EV-ID: reason}` lists evidence items that need no activity (C44), each with its reason.
+# `_row_checks: {row id: {activities: [ids], basis}}` (session 11, audit A5-2): a row with no deliverable of its own
+# (`no_deliverable` in the register) whose compliance a step of the programme checks; the row id is attached to those
+# activities' req_ids at build time, only while the row is in force at the stage and only to activities the programme
+# has at that stage. An activity that exists only to carry such a row is defined under `_row_check_activities`.
+# `_row_exceptions: {row id: reason}`: an A3 (bid-out) row in force that no bid-programme step can carry, with the
+# reason. Every A3 row in force is either carried by an activity or listed here, else C48 (schedule.plan).
+# `finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}`: the activity finishes that many Working Days
+# before the pack date (a PROVISIONAL ASSUMPTION in config/assumptions.yaml); the legal deadline is kept as written.
 #
 # Envelope chain (both envelopes): every Envelope A document -> assemble-envelope-a; every Envelope B document
 # -> assemble-envelope-b; both -> copies (3 hard copies + encrypted USB, Appendix 2 naming) -> seal-and-mark
@@ -27,6 +35,23 @@
 # parameter at the stage, e.g. the Appendix 3 marking). In the label of an anchor milestone: {time} {tz} {date} {source}.
 
 _exceptions: {}
+
+# PROPOSED (session 11, audit A5-2); not reviewed. Source words in each `basis`.
+_row_checks:
+  VOL-I-6.2-02:
+    activities: [assemble-envelope-a, form-4b]
+    basis: "VOL-I 6.2 p3: 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' assemble-envelope-a performs that check on every Envelope A document (its name: 'check that no price or commercial information appears (VOL-I 6.2)'); form-4b finalises the one Envelope A form that prints a price field (VOL-IV F4-B p4 'Contract value (SAR equivalent)'; I-VOL-I-ENV-A-PRICES)"
+  VOL-I-8.1-01:
+    activities: [consortium-check]
+    basis: "VOL-I 8.1: 'No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority.' / 'An unapproved change shall result in rejection of the Proposal.' The row is a status (no_deliverable), so a step confirms it before Form 4-A names the Bidder and lead member"
+  VOL-I-1.4-01:
+    activities: [consortium-check]
+    basis: "VOL-I 1.4: 'A Proposal received from any other person shall be rejected without evaluation.' (only a Bidder prequalified and named in Appendix 1 may submit); the same step confirms the Proposal is made in the prequalified name"
+_row_check_activities:
+  - {id: consortium-check, name: "Confirm the Proposal is submitted by the Bidder prequalified and named in VOL-I Appendix 1, with no change to its composition, shareholding or lead member, or that the Authority's prior written consent to any change is held (VOL-I 1.4, 8.1)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: consortium_confirmation, predecessors: [], successors: [form-4a-prep]}
+_row_exceptions:
+  VOL-I-4.2-01: "A conduct rule, not a step: VOL-I 4.2 'Breach of this Clause shall result in the disqualification of the Bidder.' binds the Bidder and anyone acting for it from the date of issue of Volume I until the Preferred Bidder Notification (no_deliverable: 'nothing to submit'); no bid-programme activity discharges it"
+  VOL-I-11.5-01: "Arises only after submission: VOL-I 11.5 'any response that does so shall render the Proposal non-responsive' applies to a response to an Authority clarification request, which can come only after the Proposal Due Date (no_deliverable); outside this bid programme"
 
 # Document counts the evidence vocabulary cannot express (the count used for the document, marshalling and copy
 # totals). None is needed now: since session 08 the vocabulary itself says per foreign_member (EV-INVESTMENT-LICENCE).
@@ -53,7 +78,8 @@ _milestones:
 
 # ------------------------------------------------------------------ both envelopes / actions
 EV-DELIVERY:
-  - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD}}
+  # session 11 (audit A5-7): the delivery buffer before the PDD is an explicit PROVISIONAL ASSUMPTION (0 WD in the baseline)
+  - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}}
   - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
   - &copies {id: copies, name: "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: copies_and_usb, predecessors: [assemble-envelope-a, assemble-envelope-b], item: "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)", gated_by: [I-VOL-I-COPIES]}
   - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: []}
@@ -61,7 +87,7 @@ EV-DELIVERY:
 EV-COPIES:
   - *copies
 EV-CLARIFICATIONS:
-  - {id: clarifications, name: "Submit clarification requests citing Volume, Clause and page (e.g. Form 4-A printed date; Envelope B contents; one USB per envelope)", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: clarification_drafting, predecessors: [], finish: {deadline_of: CLARIFICATION-CUTOFF}}
+  - {id: clarifications, name: "Submit clarification requests citing Volume, Clause and page (e.g. Form 4-A printed date; Envelope B contents; one USB per envelope)", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: clarification_drafting, predecessors: [consortium-check], finish: {deadline_of: CLARIFICATION-CUTOFF}}  # session 11 recheck (A5-2): a change of composition needs the Authority's prior written consent (VOL-I 8.1), which must be sought before the clarification cut-off
 EV-ATTENDANCE:
   - {id: attendance-notice, name: "If the attendance record is wrong, notify the Authority through the Portal", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: clarification_drafting, predecessors: [], finish: {deadline_of: ATTENDANCE-NOTICE}, condition: "the Bidder considers its attendance at the Pre-Bid Conference to have been incorrectly recorded (ADD-01 3.1)"}
 EV-GROUND-DD:
@@ -78,7 +104,9 @@ EV-FORM-4A:
   - {id: form-4a, name: "Finalise Form 4-A (which form version and fields, and how its stale printed Proposal Due Date is corrected, as decided on I-F4A-FIELDS) and sign by the lead member's PoA holder", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "PoA holder of the lead member", duration: form_4a_signature, predecessors: [poa, form-4a-prep], successors: [assemble-envelope-a], item: "Form 4-A (signed)", gated_by: [I-F4A-FIELDS]}
 EV-FORM-4B:
   - {id: form-4b-prep, name: "Prepare one Form 4-B for each reference project from the reference evidence, every printed field drafted (preparation; not gated)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4b_preparation, per: reference, predecessors: [references]}
-  - {id: form-4b, name: "Finalise each Form 4-B: the 'Contract value (SAR equivalent)' field is kept (not deleted or relocated) and completed as the decision on I-VOL-I-ENV-A-PRICES directs (VOL-I 6.2: no commercial information in Envelope A)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4b_finalise, per: reference, predecessors: [form-4b-prep], successors: [assemble-envelope-a], item: "Form 4-B (one per reference project)", gated_by: [I-VOL-I-ENV-A-PRICES]}
+  # session 11 (audit A5-3, PROPOSED): after completion-certs: VOL-IV F4-B p4 'Attach the client completion certificate to
+  # each Form.' and the field 'Completion certificate attached?: Yes / No'
+  - {id: form-4b, name: "Finalise each Form 4-B: the 'Contract value (SAR equivalent)' field is kept (not deleted or relocated) and completed as the decision on I-VOL-I-ENV-A-PRICES directs (VOL-I 6.2: no commercial information in Envelope A)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4b_finalise, per: reference, predecessors: [form-4b-prep, completion-certs], successors: [assemble-envelope-a], item: "Form 4-B (one per reference project)", gated_by: [I-VOL-I-ENV-A-PRICES]}
 EV-COMPLETION-CERT:
   - {id: completion-certs, name: "Obtain the client completion certificate for each reference project (a reference without one is disregarded, VOL-I 9.5)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: "Client of each reference plant", duration: completion_certificate, per: reference, predecessors: [], successors: [assemble-envelope-a], item: "Client completion certificate (one per reference project)"}
 EV-REFERENCES:
@@ -125,4 +153,6 @@ EV-MODEL-AUDIT:
   - {id: model-audit-review, name: "Rolling review of the draft Financial Model by the model auditor", owner: Commercial, discipline: Commercial, resource: financial_modeller, issuer: "Independent model auditor", duration: model_audit_review, predecessors: [model-auditor-appoint]}
   - {id: model-audit-opinion, name: "Audit of the frozen Financial Model and issue of the opinion addressed to the Authority (VOL-I 10.3)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Independent model auditor", duration: model_audit_opinion, predecessors: [model-audit-review, fin-model-freeze], successors: [assemble-envelope-b], item: "Independent model auditor's opinion (original)"}
 EV-FORM-4F:
-  - {id: form-4f, name: "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: form_4f_preparation, predecessors: [fin-model-freeze, poa], successors: [assemble-envelope-b], item: "Form 4-F Financial Proposal Schedule (signed)"}
+  # session 11 (audit A5-3, PROPOSED): after model-audit-opinion: VOL-IV F4-F p9 prints the fields 'Model auditor:' and
+  # 'Date of model audit opinion:', so the form cannot be completed before the opinion is dated
+  - {id: form-4f, name: "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: form_4f_preparation, predecessors: [fin-model-freeze, poa, model-audit-opinion], successors: [assemble-envelope-b], item: "Form 4-F Financial Proposal Schedule (signed)"}

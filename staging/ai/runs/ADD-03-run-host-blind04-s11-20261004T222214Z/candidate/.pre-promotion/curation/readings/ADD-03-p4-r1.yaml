@@ -1,0 +1,289 @@
+# AI-PROPOSED READING — PENDING HUMAN REVIEW. Not approved. Written into the CANDIDATE of AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z
+# (readings step); the controller's status is interpretation_pending. `source` is the text as printed;
+# `translation` is separate and is not evidence. Approval is a person's: `tenderpack approve`.
+region_id: ADD-03-p4-r1
+unit_id: ADD-03:F4-H/image
+title: 'Form 4-H (image, Arabic with English labels): Beneficial Ownership Declaration'
+source:
+  doc: ADD-03
+  page: 4
+  bbox_pt:
+  - 66.6
+  - 68.4
+  - 528.7
+  - 721.8
+  native_sha256: c0660e9ff7d23a7fec9a3629c81f050fd8cf46bde70e797ddce30b4ea91a1454
+content_type: form
+languages:
+- ar
+- en
+prepared_by: 'AI-assisted: headless host session ADD-03-hostsession-20261004T222232Z-03e4 (claude-code headless
+  (opus); the CLI reported claude-opus-5-5), in AI workflow run ADD-03-run-host-blind04-s11-20261004T222214Z (reading-ADD-03-p4-r1),
+  2026-10-04T22:25:42Z; proposed for a person''s review, not approved'
+method: Visual reading of the embedded image (native 1654x2339 px) and enlarged band crops. No OCR. Text bands,
+  rule bands and left/right splits measured from pixels by tenderpack.regions.text_bands; no ruled grid was detected,
+  so the beneficial-owner table is read band by band.
+blocks:
+- key: hdr-en
+  lang: en
+  role: header
+  lines:
+  - band: 0
+    side: left
+    source: NORTHERN UTILITIES PROCUREMENT AUTHORITY
+- key: hdr-ar
+  lang: ar
+  role: header
+  translation: Northern Utilities Procurement Authority
+  lines:
+  - band: 0
+    side: right
+    source: الهيئة الشمالية للمشتريات المرفقية
+- key: ref-en
+  lang: en
+  role: header
+  lines:
+  - band: 1
+    side: left
+    source: 'Tender Ref: NUPA/ISTP/2026/014'
+- key: ref-ar
+  lang: mixed
+  role: header
+  translation: 'Tender number: NUPA/ISTP/2026/014'
+  lines:
+  - band: 1
+    side: right
+    source: 'مناقصة رقم: NUPA/ISTP/2026/014'
+    numerals:
+    - text: 2026/014
+      visual_ltr_expected: 2026/014
+      meaning: digits of the tender reference (Latin script run inside Arabic text)
+- key: form-en
+  lang: en
+  role: form-number
+  lines:
+  - band: 2
+    side: left
+    source: FORM 4-H
+- key: form-ar
+  lang: ar
+  role: form-number
+  translation: Form 4-H (the Arabic letter ح, eighth in abjad order, is used for H)
+  lines:
+  - band: 2
+    side: right
+    source: النموذج ٤-ح
+    numerals:
+    - text: ٤-ح
+      visual_ltr_expected: ح-٤
+      meaning: Form 4-H
+      uncertain: true
+      alternatives:
+      - ح-٤ stored logically (i.e. 'H-4' in reading order), if the crop shows ٤ at the left and ح at the right
+      note: Stored as logical ٤-ح (number first in reading order, matching FORM 4-H), which renders ح-٤ left to
+        right. The preparer could not settle the left-to-right glyph order with confidence on the band 2 right crop;
+        reviewer to confirm.
+- key: title
+  lang: ar
+  role: form-title
+  translation: Beneficial Owner Declaration
+  lines:
+  - band: 3
+    source: إقرار المستفيد الحقيقي
+- key: intro
+  lang: ar
+  role: preamble
+  translation: 'We, the undersigned, in our capacity as authorised representatives of the member named below in
+    the Bidder''s consortium, declare and undertake the following:'
+  lines:
+  - band: 4
+    source: نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض،
+  - band: 5
+    source: 'نقر ونتعهد بما يلي:'
+- key: decl1
+  lang: ar
+  role: declaration
+  translation: 'First: that the natural persons shown in the table below are all the beneficial owners of the member;
+    a beneficial owner is every natural person who owns, directly or indirectly, ten per cent (10%) or more of the
+    member''s capital or of its voting rights, or who controls the member by any other means.'
+  lines:
+  - band: 6
+    source: 'أولاً: أن الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو،'
+  - band: 7
+    source: والمستفيد الحقيقي هو كل شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، ما نسبته عشرة في
+  - band: 8
+    source: المائة (١٠٪) أو أكثر من رأس مال العضو أو من حقوق التصويت فيه، أو يسيطر على العضو بأي
+    numerals:
+    - text: ١٠
+      visual_ltr_expected: ١٠
+      meaning: ten (10) per cent ownership threshold, also written out in words (عشرة في المائة)
+      note: printed inside brackets with the Arabic percent sign ٪, stored after the digits in logical order; the
+        build renders ٪ to the left of ١٠, reviewer to confirm against the band 8 crop
+  - band: 9
+    source: وسيلة أخرى.
+- key: decl2
+  lang: ar
+  role: declaration
+  translation: 'Second: that none of the beneficial owners owns, directly or indirectly, any share in a member of
+    another consortium submitting a proposal for this tender.'
+  lines:
+  - band: 10
+    source: 'ثانياً: أنه لا يملك أيٌّ من المستفيدين الحقيقيين، بصورة مباشرة أو غير مباشرة، أي حصة في'
+  - band: 11
+    source: عضو في ائتلاف آخر يقدم عرضاً لهذه المناقصة.
+- key: decl3
+  lang: ar
+  role: declaration
+  translation: 'Third: that we have attached to this declaration a certified copy of the register of partners or
+    shareholders of the member, issued within the thirty (30) days preceding the date of submission of proposals.'
+  lines:
+  - band: 12
+    source: 'ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين في العضو، صادرة'
+  - band: 13
+    source: خلال الثلاثين (٣٠) يوماً السابقة لتاريخ تقديم العروض.
+    numerals:
+    - text: ٣٠
+      visual_ltr_expected: ٣٠
+      meaning: thirty (30) days, also written out in words
+  uncertain:
+  - '''the date of submission of proposals'' is read as printed; which deadline it refers to (and whether as moved
+    by an addendum) is for a person to decide'
+- key: table-header
+  lang: ar
+  role: table-header
+  translation: No. | Name of beneficial owner | Nationality | Ownership percentage (%) | Direct / Indirect
+  lines:
+  - band: 15
+    source: م | اسم المستفيد الحقيقي | الجنسية | نسبة الملكية (٪) | مباشرة / غير مباشرة
+  uncertain:
+  - column headings of the beneficial-owner table, printed right to left in separate ruled cells; ' | ' marks a
+    cell boundary and is not printed
+- key: table-row4
+  lang: ar
+  role: table-row-number
+  translation: 4 (row number of the beneficial-owner table)
+  lines:
+  - band: 19
+    side: right
+    source: ٤
+    numerals:
+    - text: ٤
+      visual_ltr_expected: ٤
+      meaning: row number 4 of the beneficial-owner table
+- key: table-row4-cells
+  lang: en
+  role: table-row-blank-cells
+  lines:
+  - band: 19
+    side: left
+    source: ''
+  uncertain:
+  - 'no text: the left half of band 19 holds only the vertical cell rules of the four empty data cells of row 4'
+- key: field-member-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 22
+    source: Name of consortium member
+- key: field-member-ar
+  lang: ar
+  role: field-label
+  translation: 'Name of the member in the consortium:'
+  lines:
+  - band: 22
+    source: 'اسم العضو في الائتلاف :'
+- key: field-cr-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 23
+    source: Commercial registration number
+- key: field-cr-ar
+  lang: ar
+  role: field-label
+  translation: 'Commercial registration number:'
+  lines:
+  - band: 23
+    source: 'رقم السجل التجاري :'
+- key: field-signatory-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 24
+    source: Name of authorised signatory
+- key: field-signatory-ar
+  lang: ar
+  role: field-label
+  translation: 'Name of the person authorised to sign:'
+  lines:
+  - band: 24
+    source: 'اسم المفوض بالتوقيع :'
+- key: field-capacity-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 25
+    side: left
+    source: Capacity
+- key: field-capacity-ar
+  lang: ar
+  role: field-label
+  translation: 'Capacity:'
+  lines:
+  - band: 25
+    side: right
+    source: 'الصفة :'
+- key: field-date-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 27
+    source: Date
+- key: field-date-ar
+  lang: ar
+  role: field-label
+  translation: 'Date:'
+  lines:
+  - band: 27
+    source: 'التاريخ :'
+- key: field-signature-en
+  lang: en
+  role: field-label
+  lines:
+  - band: 28
+    source: Signature and company seal
+- key: field-signature-ar
+  lang: ar
+  role: field-label
+  translation: 'Signature and seal:'
+  lines:
+  - band: 28
+    source: 'التوقيع والختم :'
+- key: note
+  lang: ar
+  role: note
+  translation: 'Note: this form must be submitted in Arabic for each member of the consortium, and the Arabic text
+    is the authoritative one. Failure to submit it complete renders the proposal non-responsive.'
+  lines:
+  - band: 29
+    source: 'ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص العربي هو المعتمد.'
+  - band: 30
+    source: عدم تقديمه كاملاً يجعل العرض غير مستجيب.
+  uncertain:
+  - '''والنص العربي هو المعتمد'' (the Arabic text is the authoritative one) is a language-precedence statement;
+    how it relates to the pack''s language-precedence provisions is for a person to decide, not a reading question'
+- key: image-footer
+  lang: en
+  role: image-footer
+  lines:
+  - band: 31
+    source: FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.
+uncertainties:
+- The beneficial-owner table (5 columns, 4 numbered rows, all data cells blank) was not detected as a ruled grid;
+  only its header row (band 15) and the row holding ٤ (band 19) were measured as text bands. Row numbers ١, ٢, ٣
+  are printed in the first column but fall in no measured text band, so they appear in no line; reviewer to confirm.
+- Bands 22, 23, 24, 27 and 28 each hold an English label at the left and an Arabic label at the right but were not
+  split; both labels are given as full-band lines in separate blocks.
+- Diacritics (tanween on أولاً, ثانياً, ثالثاً, عرضاً, يوماً, كاملاً; shadda and tanween on أيٌّ) were read on the
+  enlarged crops; reviewer to confirm on native pixels.
+- Blank fill-in lines under each field label are rule bands (structure), not text.

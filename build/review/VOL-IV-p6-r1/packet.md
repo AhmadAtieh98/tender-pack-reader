@@ -125,7 +125,7 @@ From the reading's recorded uncertainties; each is a question for you, not somet
 2. Where printed tanween sits relative to the final alef is not visible; it is stored after the alef. Matching text removes tashkeel, so this does not affect matching.
 3. Blank fill-in lines under each field label are rule bands (structure), not text.
 4. `decl4`: translation of استبعاد العرض as 'exclusion of the proposal': the English text of the pack never uses 'exclusion'; how it maps to the pack's rejection / disqualification / non-responsiveness categories is for a person to decide
-5. `decl5` numeral `٤-٢`: Order is settled: the crop shows the hyphenated pair left to right as [digit]-[٤], which is what logical 4-x renders as. Identity of the left digit is not settled by machine: shape (chamfer) comparison favours ٢ over ٣ at three thresholds, a template-overlap score favoured ٣, and the preparer's visual comparison favours ٢. Reviewer to read the crop.
+5. `decl5` numeral `٤-٢`: Order is settled: the crop shows the hyphenated pair left to right as [digit]-[٤], which is what logical 4-x renders as. Identity of the left digit is not settled by machine: shape (chamfer) comparison favours ٢ over ٣ at three thresholds, a template-overlap score favoured ٣, and the preparer's visual comparison favours ٢. Reviewer to read the crop. — settled by Ahmad 2026-10-03: Declaration 5 (خامساً) refers to Volume I clause 4.2 (البند ٤-٢): the reviewer settles the uncertain left glyph of the clause numeral as ٢; the alternative recorded in the reading (٤-٣, VOL-I 4.3) is set aside by the reviewer
 6. Read every segment below against its crop and either approve the reading as a whole or correct the reading file (see the end of this packet).
 
 ## Numerals

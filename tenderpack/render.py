@@ -107,10 +107,11 @@ def write_csv_json(table: dict, out_dir: Path, stem: str) -> list[Path]:
 
 STATUS_FILLS = (                                   # first match wins
     (lambda v: v.startswith(("DELETED", "REMOVED")), "D9D9D9"),
+    (lambda v: v.startswith(("REPLACED", "REVOKED")), "DDEBF7"),      # session 11 audit (A1-11): out of force, replaced
     (lambda v: "STALE" in v, "FCE4D6"),
     (lambda v: v.startswith(("NEW", "REINSTATED")), "E2EFDA"),
     (lambda v: v.startswith("AMENDED"), "FFF2CC"),
-    (lambda v: v.startswith("NOT ISSUED"), "F2F2F2"),
+    (lambda v: v.startswith(("NOT ISSUED", "NOT IN FORCE")), "F2F2F2"),
 )
 WRAP_TOP = Alignment(wrap_text=True, vertical="top")
 HEADER_BORDER = Border(bottom=Side(style="thin"))
@@ -215,14 +216,14 @@ _ARABIC = re.compile("[\u0600-\u06ff]")
 _ARABIC_RUN = re.compile("[\u0600-\u06ff](?:[^A-Za-z]*[\u0600-\u06ff])?")   # no Latin letter inside
 
 A3_PAGE = pymupdf.paper_rect("a4")
-A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 26, 20, 26
+A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 26, 17, 26
 A3_CSS = """
-body {font-family: sans-serif; font-size: 8.5px; line-height: 1.16; color: #000}
+body {font-family: sans-serif; font-size: 8.5px; line-height: 1.1; color: #000}
 .title {font-size: 13px; font-weight: bold; margin: 0 0 1px 0}
 .sub {color: #333; margin: 0 0 4px 0}
 .banner {background-color: #e3e3e3; border: 0.5px solid #8c8c8c; padding: 2px 5px; font-weight: bold;
          margin: 0 0 5px 0}
-h2 {font-size: 9.5px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 6px 0 2px 0;
+h2 {font-size: 9.5px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 4px 0 1.5px 0;
     padding: 0 0 1px 0}
 p {margin: 0 0 1.5px 0}
 .note {font-style: italic; color: #444}
@@ -232,6 +233,9 @@ p {margin: 0 0 1.5px 0}
 .ids {font-size: 8.5px; color: #222}
 a {color: #000; text-decoration: none}
 .none {color: #444; font-style: italic}
+.nw {white-space: nowrap}
+.grp {margin: 1px 0 0 0}
+.it2 {padding-left: 18px; text-indent: -9px}
 """
 A3_FOOTER_CSS = """
 body {font-family: sans-serif; font-size: 8.5px; line-height: 1.2; color: #444}
@@ -258,29 +262,49 @@ def _rtl(text: str) -> str:
     return f'{LRM}<span dir="rtl">{RLE}{_esc(display_form(text))}{POP}</span>{LRM}'
 
 
+_ID_TOKEN = re.compile(r"\b[A-Z][A-Z0-9]*(?:-[A-Za-z0-9.]+)+(?:/[A-Za-z0-9.\-]+)*(?:\(\d+\))?")
+
+
+def _nw(escaped: str) -> str:
+    """Ids inside running text (VOL-I-6.1-01, I-A5-FEASIBILITY, ADD-02/T1-1-rev/note(2)) kept on one line (session 11,
+    audit R-6): a line may break between ids, never at an id's internal hyphen. The span has no effect where the CSS has
+    no `nw` class."""
+    return _ID_TOKEN.sub(lambda m: f'<span class="nw">{m.group(0)}</span>', escaped)
+
+
 def _rich(text: str) -> str:
-    """Escaped HTML for one field, with any Arabic laid out right to left."""
+    """Escaped HTML for one field, with any Arabic laid out right to left and ids unbroken."""
     text = text or ""
     if not _ARABIC.search(text):
-        return _esc(text)
+        return _nw(_esc(text))
     if _first_strong_rtl(text):
         return _rtl(text)
     out, pos = [], 0
     for m in _ARABIC_RUN.finditer(text):
-        out += [_esc(text[pos:m.start()]), _rtl(m.group(0))]
+        out += [_nw(_esc(text[pos:m.start()])), _rtl(m.group(0))]
         pos = m.end()
-    return "".join(out) + _esc(text[pos:])
+    return "".join(out) + _nw(_esc(text[pos:]))
+
+
+def _id(i: str, bold: bool = True) -> str:
+    """An id linked to its line on a3_detail.html, never broken across lines at its internal hyphens (session 11, audit
+    R-6): a list of ids breaks only after its ', ' or '; ' separators."""
+    a = f'<a href="a3_detail.html#{_esc(i)}">{_esc(i)}</a>'
+    return f'<span class="nw">{"<b>" + a + "</b>" if bold else a}</span>'
 
 
 def _a3_item(it: dict) -> str:
-    """Bold id (linked to a3_detail.html), text, class: "consequence" (proposed translation), source, confidence,
-    flags in red. A compact item leaves the quotation to the detail page."""
-    parts = [f'<b><a href="a3_detail.html#{_esc(it["id"])}">{_esc(it["id"])}</a></b> {_rich(it["text"])}']
+    """Bold id (linked to a3_detail.html), text, computed date facts, class: "consequence" (its translation, labelled
+    from the approval state), the rows that corroborate it, source, confidence, flags in red. A compact item leaves the
+    quotation to the detail page."""
+    parts = [f'{_id(it["id"])} {_rich(it["text"])}']
+    if it.get("facts"):                                  # session 11 (A3-7, A3-9): computed dates, never typed
+        parts.append("\u2014 " + "; ".join(_rich(f) for f in it["facts"]))
     if it.get("consequence") and not it.get("compact"):
         cls = f"<i>{_esc(it['class'])}</i>: " if it.get("class") else ""
         parts.append(f"\u2014 {cls}\u201c{_rich(it['consequence'])}\u201d")
         if it.get("gloss"):
-            parts.append(f"(proposed translation, not reviewed: \u2018{_esc(it['gloss'])}\u2019)")
+            parts.append(f"({_esc(it.get('gloss_label') or 'proposed translation, not reviewed')}: \u2018{_esc(it['gloss'])}\u2019)")
     meta = [_rich(it["source"])] if it.get("source") else []
     if it.get("confidence"):
         meta.append(f"confidence {_rich(it['confidence'])}")
@@ -290,6 +314,11 @@ def _a3_item(it: dict) -> str:
         parts.append(f'<span class="meta">[{SEP.join(meta)}]</span>')
     if it.get("flags"):
         parts.append(f'<span class="flag">{SEP.join(_rich(f) for f in it["flags"])}</span>')
+    for c in it.get("corroborated_by") or []:            # session 11 (A3-6): one trigger, its corroborating sources
+        parts.append("\u2014 also stated in " + _id(c["id"], bold=False) + f" ({_rich(c['source'])}"
+                     + (f", confidence {_esc(c['confidence'])}" if c.get("confidence") else "") + ")"
+                     + "".join(f", <span class=\"nw\">{_esc(a)}</span>" for a in c.get("also") or [])
+                     + (f"; {_rich(c['adds'])}" if c.get("adds") else ""))
     return f'<p class="it">{" ".join(parts)}</p>'
 
 
@@ -306,28 +335,35 @@ def _a3_html(a3: dict) -> str:
             out.append(f'<p class="note">{_rich(sec["note"])}</p>')
         if sec.get("ids"):
             own = sec.get("owners") or {}
-            out.append('<p class="ids">' + ", ".join(f'<a href="a3_detail.html#{_esc(i)}">{_esc(i)}</a>'
+            out.append('<p class="ids">' + ", ".join(_id(i, bold=False)
                                                      + (f' <span class="meta">({_esc(own[i])})</span>' if own.get(i) else "")
                                                      for i in sec["ids"]) + "</p>")
             continue
         if "ids" in sec and not sec.get("items"):
             continue
-        out += [_a3_item(it) for it in sec["items"]] or ['<p class="none">None.</p>']
+        # a row that corroborates another is shown on that row's line (session 11, A3-6)
+        out += [_a3_item(it) for it in sec["items"] if not it.get("corroborates")] or ['<p class="none">None.</p>']
     if a3.get("groups"):
         g = a3["groups"]
         out.append(f"<h2>{_rich(g['heading'])}</h2>")
         if g.get("note"):
             out.append(f'<p class="note">{_rich(g["note"])}</p>')
-        link = lambda i: f'<a href="a3_detail.html#{_esc(i)}"><b>{_esc(i)}</b></a>'  # noqa: E731
+        link = _id
         for grp in g["groups"]:
-            items = [link(i["id"]) + (f" {_rich(i['short'])}" if i.get("short") else "")
-                     for i in grp["items"]]
             qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
-                  if grp.get("questions") else "")
-            if "count" in grp:                     # condensed to a count (stage2.condense_a3 level 3): ids on a3_detail.html
-                qs = f' <span class="meta">questions drafted: {grp["n_questions"]}</span>' if grp.get("n_questions") else ""
+                  if grp.get("questions") else
+                  f' <span class="meta">questions drafted: {grp["n_questions"]}</span>' if grp.get("n_questions") else "")
+            if "count" in grp:                     # condensed to a count (stage2.condense_a3 level 4): ids on a3_detail.html
                 out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({grp["count"]})' + qs + "</p>")
                 continue
+            mark = lambda i: "\u2020\u00a0" if i.get("decide") else ""  # noqa: E731
+            own = lambda i: f' <span class="meta">({_rich(i["owner"])})</span>' if i.get("owner") else ""  # noqa: E731
+            fold = lambda i: f' <span class="meta">+{len(i["folds"])}</span>' if i.get("folds") else ""  # noqa: E731
+            if any(i.get("short") for i in grp["items"]):     # session 11 (A3-1, R-3): one line each, reason and owner
+                out.append(f'<p class="grp"><b>{_rich(grp["title"])}</b> ({len(grp["items"])})' + qs + "</p>")
+                out += [f'<p class="it2">{mark(i)}{link(i["id"])} {_rich(i["short"])}{own(i)}{fold(i)}</p>' for i in grp["items"]]
+                continue
+            items = [mark(i) + link(i["id"]) + own(i) + fold(i) for i in grp["items"]]   # condensed: ids and owners
             out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({len(grp["items"])}): ' + "; ".join(items) + qs + "</p>")
     return "\n".join(out)
 
@@ -377,3 +413,237 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
     path.write_bytes(doc.tobytes(garbage=3, deflate=True, no_new_id=True))
     doc.close()
     return {"pages": 1, "scale": round(scale, 3), "spare_pt": r1(spare), "min_text_pt": round(8.5 * scale, 2)}
+
+
+# ------------------------------------------------------------------ candidate A3 (session 11): a PARTIAL addendum
+
+CANDIDATE_CSS = """
+body {font-family: sans-serif; font-size: 9px; line-height: 1.2; color: #000}
+.title {font-size: 14px; font-weight: bold; margin: 0 0 2px 0}
+.sub {color: #333; margin: 0 0 4px 0}
+.banner {background-color: #fde2e2; border: 0.8px solid #b00000; color: #7a0000; padding: 3px 6px; font-weight: bold;
+         margin: 0 0 6px 0}
+h2 {font-size: 11px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 8px 0 3px 0; padding: 0 0 1px 0}
+h3 {font-size: 9.5px; font-weight: bold; margin: 5px 0 2px 0}
+p {margin: 0 0 2px 0}
+.it {padding-left: 10px; text-indent: -10px}
+.sub2 {padding-left: 20px; text-indent: -10px; color: #333}
+.meta {color: #444}
+.flag {color: #b00000}
+.mark {color: #b00000; font-weight: bold}
+.note {font-style: italic; color: #444}
+"""
+CANDIDATE_FOOTER_H = 18
+
+
+def _c_item(it: dict, mark: str = "") -> str:
+    """A candidate A3 line: the mark (ENTERS / CHANGES), the id, the requirement, the class and the quoted consequence
+    (never compacted: the candidate may run to several pages), source and flags."""
+    parts = ([f'<span class="mark">[{_esc(mark)}]</span>'] if mark else []) + [f'<b>{_esc(it["id"])}</b> {_rich(it["text"])}']
+    if it.get("consequence"):
+        cls = f"<i>{_esc(it.get('class', ''))}</i>: " if it.get("class") else ""
+        parts.append(f"— {cls}“{_rich(it['consequence'])}”")
+        if it.get("gloss"):                              # session 11: labelled from the approval state (stage2)
+            parts.append(f"({_esc(it.get('gloss_label') or 'proposed translation, not reviewed')}: ‘{_esc(it['gloss'])}’)")
+    if it.get("source"):
+        parts.append(f'<span class="meta">[{_rich(it["source"])}]</span>')
+    if it.get("flags"):
+        parts.append(f'<span class="flag">{SEP.join(_rich(f) for f in it["flags"])}</span>')
+    return f'<p class="it">{" ".join(parts)}</p>'
+
+
+def _c_body(c: dict) -> str:
+    """The candidate A3 as HTML (tenderpack.partial.compute output): what may change, the changes against the validated
+    A3 with their ops, every A3 section in full, the blockers, the conditional scenarios, the image-read units and the
+    open issues. Presentation only."""
+    a3 = c["a3"]
+    stages = ", ".join(x["stage"] for x in c["pending"])
+    pages = c.get("pages")
+    out = [f'<div class="title">A3 CANDIDATE — what would put this bid out if the valid ops of {_esc(stages)} stood '
+           f'(NOT VALIDATED)</div>',
+           f'<div class="sub">{_rich(a3["subtitle"])}</div>',
+           f'<div class="banner">{_esc(c["banner"])}. The validated A3 (a3.pdf, one page) stays at '
+           f'{_esc(c["validated_stage"])} and is unchanged. This candidate is a view for review, not a deliverable: every '
+           f'op in it is a proposal and nothing is accepted. It is not held to the one-page rule (C43 applies to the '
+           f'validated A3 only)' + (f' and runs to {pages} page{"s" if pages != 1 else ""}.' if pages else ".") + '</div>',
+           "<h2>What may be changing</h2>", f"<p>{_rich(c['paragraph'])}</p>",
+           f"<h2>Changes against the validated A3 ({len(c['changes'])})</h2>"]
+    for x in c["changes"]:
+        out.append(f'<p class="it"><span class="mark">{_esc(x["change"].upper())}</span> <b>{_esc(x["row"])}</b> '
+                   f'{_rich("; ".join(x["what"]))} <span class="meta">(row {_esc(x["status_validated"])} -&gt; '
+                   f'{_esc(x["status_candidate"])}; review {_esc(x["row_review"])}' + ("; STALE" if x["stale"] else "")
+                   + ")</span></p>")
+        out += [f'<p class="sub2">source op {_rich(o["label"])}</p>' for o in x["ops"]]
+        out += [f'<p class="sub2">{_rich(y)}</p>' for y in x["why"]]
+    if not c["changes"]:
+        out.append('<p class="note">No row enters, leaves or changes.</p>')
+    marks = {x["row"]: x["change"].upper() for x in c["changes"]}
+    out.append("<h2>The candidate A3, every section in full</h2>")
+    for sec in a3["sections"]:
+        out.append(f"<h3>{_rich(sec['heading'])}</h3>")
+        if sec.get("note"):
+            out.append(f'<p class="note">{_rich(sec["note"])}</p>')
+        out += [_c_item(it, marks.get(it["id"], "")) for it in sec.get("items") or []]
+        if sec.get("ids"):
+            out.append('<p class="meta">' + ", ".join((f'<span class="mark">[{_esc(marks[i])}]</span> ' if i in marks else "")
+                                                       + _esc(i) for i in sec["ids"]) + "</p>")
+    b = c["blockers"]
+    out.append("<h2>Blockers: what stops the candidate becoming the validated state, or what it cannot establish</h2>")
+    out.append(f"<h3>Unresolved provisions ({len(b['provisions'])})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["provision"])}</b> ({_esc(x["stage"])} p{_esc(str(x["page"]))}; {_esc(x["kind"])}): '
+            f'{_rich(x["reason"])} <span class="meta">— words: “{_rich(x["text"])}”; rows: '
+            f'{_esc(", ".join(x["rows"]) or "none")}; activities: {_esc(", ".join(x["activities"]) or "none")}</span></p>'
+            for x in b["provisions"]] or ['<p class="note">None.</p>']
+    if b["invalid_ops"] or b["withheld_ops"]:
+        out.append(f"<h3>Invalid or withheld ops ({len(b['invalid_ops']) + len(b['withheld_ops'])})</h3>")
+        out += [f'<p class="it">INVALID <b>{_esc(x["op"])}</b> ({_esc(x["provision"])}): {_rich(x["failed"])}</p>'
+                for x in b["invalid_ops"]]
+        out += [f'<p class="it">WITHHELD <b>{_esc(x["op"])}</b> ({_esc(x["provision"])}): rejected by a person</p>'
+                for x in b["withheld_ops"]]
+    out.append(f"<h3>Rows not settled in the candidate ({len(b['unresolved_rows'])})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["row"])}</b>: {_rich("; ".join(x["why"]))}</p>' for x in b["unresolved_rows"]] \
+        or ['<p class="note">None.</p>']
+    out.append(f"<h3>A5 activities blocked by an unresolved row ({len(b['blocked_activities'])})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["activity"])}</b> {_rich(x["name"])} <span class="meta">(rows '
+            f'{_esc(", ".join(x["rows"]))})</span></p>' for x in b["blocked_activities"]] or ['<p class="note">None.</p>']
+    out.append(f"<h3>Obligations reaching no output (C46) ({len(b['c46'])})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["op"])}</b> [{_esc(x["output"])}]: {_rich(x["detail"])}</p>' for x in b["c46"]] \
+        or ['<p class="note">None.</p>']
+    ch = b.get("chains") or []
+    out.append(f"<h3>Relationship chains blocked or incomplete ({len(ch)})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["target"])}</b> via {_esc(" > ".join(x["path"]))}: '
+            + "; ".join([f"BLOCKED: {_rich(y['document'] or '')} not supplied ({_esc(y['entry_id'] or '')}): cannot be "
+                         f"established: {_rich(y['blocks'] or '')}" for y in x["blockers"]]
+                        + ([f"CHAIN INCOMPLETE ({_esc(x['truncated_by'] or 'bound')}); not followed: "
+                            f"{_esc(', '.join(x['unfollowed']))}"] if x["completeness"] == "truncated" else [])
+                        + ([f"CYCLIC: {_esc(' > '.join(x['cycle']))}"] if x["completeness"] == "cyclic" else []))
+            + "</p>" for x in ch] or ['<p class="note">None.</p>']
+    out.append(f"<h3>Documents referenced but not supplied ({len(b['missing_documents'])}): kept visible</h3>")
+    out += [f'<p class="it"><b>{_esc(x["id"])}</b> ' + (f"{_rich(x['document'])}: " if x["document"] else "")
+            + _rich(x["blocks"]) + ' <span class="meta">— ' + (
+                f"reached by this addendum: {_esc(', '.join(x['reached_by_this_addendum'][:8]))}"
+                if x["reached_by_this_addendum"] else "not reached by this addendum's changes; still open")
+            + (f"; issues {_esc(', '.join(x['issues']))}" if x["issues"] else "") + "</span></p>"
+            for x in b["missing_documents"]] or ['<p class="note">None.</p>']
+    out.append(f"<h3>Conflicts ({len(b['conflicts'])})</h3>")
+    out += [f'<p class="it">{_rich(x["what"])} <span class="meta">({_esc(x["source"])})</span></p>' for x in b["conflicts"]] \
+        or ['<p class="note">None.</p>']
+    if b["op_issues"]:
+        out.append(f"<h3>Issues the ops raise ({len(b['op_issues'])})</h3>")
+        out += [f'<p class="it"><b>{_esc(x["op"])}</b>{"" if x["applied"] else " (not applied)"}: {_rich(x["issue"])}</p>'
+                for x in b["op_issues"]]
+    out.append(f"<h3>Open issues in play: kept open, never resolved here ({len(c['open_issues_in_play'])})</h3>")
+    out += [f'<p class="it"><b>{_esc(x["id"])}</b> ({_esc(x["owner"])}): {_rich(x["text"])} <span class="meta">— via '
+            f'{_esc(", ".join(x["via"][:8]))}</span></p>' for x in c["open_issues_in_play"]] or ['<p class="note">None.</p>']
+    out.append(f"<h2>Conditional scenarios ({len(c['scenarios'])})</h2>")
+    for x in c["scenarios"]:
+        out.append(f'<p class="it"><b>{_esc(x["provision"])}</b> ({_esc(x["kind"])} {_esc(x.get("what") or "")}; '
+                   f'{_esc(x["source"])}; '
+                   f'{"applied" if x["applied"] else "not applied"} in the candidate)'
+                   + (f": decision by <b>{_esc(x['trigger_deadline'])}</b>" if x["trigger_deadline"] else "")
+                   + (f"; effective from {_esc(x['effective_from'])}" if x["effective_from"] else "") + "</p>")
+        out += [f'<p class="sub2">trigger words: “{_rich(x["trigger"])}”</p>' if x["trigger"] else "",
+                f'<p class="sub2">if triggered: {_rich(x["if_triggered"])}; if not: {_rich(x["if_not_triggered"])}</p>',
+                f'<p class="sub2">rows: {_esc(", ".join(x["rows"][:10]) or "none")}; {_esc(x["model"])}</p>']
+    if not c["scenarios"]:
+        out.append('<p class="note">None in the op file: no op or unresolved provision says it is conditional or '
+                   'effective-dated.</p>')
+    out.append("<h2>Image-read units: crops, Arabic verbatim, translations apart, table context, units, uncertainties</h2>")
+    out.append('<p class="note">The review packet of each region (in the evidence build) shows every crop beside its '
+               'reading. Translations are proposals, never evidence; what a value means (maximum, range, target) is '
+               'decided by a person.</p>')
+    for g in c["images"]:
+        out.append(f'<p class="it"><b>{_esc(g["region"])}</b> ({_esc(g["doc"])} p{_esc(str(g["page"]))}; reading '
+                   f'{_esc(g["status"])}): packet &lt;evidence build&gt;/{_esc(g["packet"])}'
+                   + ("" if g["touched"] else f" — not touched by {_esc(c['stage'])}; kept available") + "</p>")
+        out += [f'<p class="sub2">uncertainty: {_rich(u)}</p>' for u in g["uncertainties"][:8]]
+        for u in g["units"]:
+            words = u["text"] or "; ".join(f"{k}: {v}" for k, v in u["cells"].items())
+            bits = [f"<b>{_esc(u['unit'])}</b> “{_rich(words)}”"]
+            if u["translation"]:
+                bits.append(f"translation (a proposal, not evidence): ‘{_rich(u['translation'])}’")
+            if u["measure"]:
+                bits.append(f"unit {_esc(u['measure'])}")
+            if u["table"].get("column_headings"):
+                bits.append(f"table: {_rich(u['table'].get('table_title') or '')} columns "
+                            f"{_esc(', '.join(u['table']['column_headings']))}"
+                            + (f"; qualifier {_rich(u['table']['qualifier'])}" if u["table"].get("qualifier") else ""))
+            if u["candidate"]:
+                cand = u["candidate"]
+                bits.append(f"at {_esc(c['stage'])}: {_esc(cand['status'])} “{_rich(cand['text'] or '; '.join(f'{k}: {v}' for k, v in (cand['cells'] or {}).items()))}”"
+                            f" (by {_esc(', '.join(cand['changed_by']))})")
+            if u["uncertain"]:
+                bits.append(f"uncertain: {_rich('; '.join(u['uncertain']))}")
+            if u["issues"]:
+                bits.append(f"issues {_esc(', '.join(u['issues']))}")
+            bits.append(f'<span class="meta">touched: {_rich("; ".join(u["touched"]))}</span>')
+            out.append(f'<p class="sub2">{SEP.join(bits)}</p>')
+    g = a3.get("groups") or {}
+    out.append(f"<h2>{_rich(g.get('heading', 'Open issues'))}</h2>")
+    for grp in g.get("groups") or []:
+        out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({len(grp["items"])}): '
+                   + "; ".join(f"<b>{_esc(i['id'])}</b> {_rich(i['short'])}" for i in grp["items"])
+                   + (f' <span class="meta">questions drafted: {_esc(", ".join(grp["questions"]))}</span>'
+                      if grp.get("questions") else "") + "</p>")
+    out.append(f"<h2>Ops standing in the candidate ({len(c['ops'])})</h2>")
+    out += [f'<p class="it">{_rich(o["label"])}</p>' for o in c["ops"]] or ['<p class="note">None.</p>']
+    return "\n".join(x for x in out if x)
+
+
+def candidate_a3_html(c: dict, standalone: bool = False) -> str:
+    """The candidate A3 as HTML: the body for the PDF, or (standalone) a page for a browser."""
+    body = _c_body(c)
+    if not standalone:
+        return body
+    return ("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" "
+            "content=\"width=device-width, initial-scale=1\"><title>A3 candidate</title><style>"
+            "body{font-family:system-ui,sans-serif;margin:16px;max-width:1100px;color:#111;background:#fff;font-size:14px;"
+            "line-height:1.35}.title{font-size:20px;font-weight:bold}.banner{background:#fde2e2;border:2px solid #b00000;"
+            "color:#7a0000;font-weight:bold;padding:6px 10px;margin:8px 0}.it{padding-left:14px;text-indent:-14px;"
+            "margin:2px 0}.sub2{padding-left:28px;color:#333;margin:1px 0}.meta{color:#555}.flag,.mark{color:#b00000}"
+            ".mark{font-weight:bold}.note{font-style:italic;color:#555}h2{border-bottom:1px solid #999}"
+            "</style></head><body>" + body + "</body></html>\n")
+
+
+def write_candidate_a3_pdf(c: dict, path: Path) -> dict:
+    """The candidate A3 on as many A4 pages as it needs (pymupdf Story), each with a footer 'A3 CANDIDATE (not
+    validated) ... page i of N'; the banner states N (laid out twice when the count changes). Deterministic: fixed
+    metadata, no /ID, no links. Returns {"pages": N}."""
+    w, h = A3_PAGE.width, A3_PAGE.height
+    where = pymupdf.Rect(A3_MARGIN_X, A3_MARGIN_Y, w - A3_MARGIN_X, h - A3_MARGIN_Y - CANDIDATE_FOOTER_H - 4)
+
+    def layout(n):
+        story = pymupdf.Story(html=_c_body(dict(c, pages=n)), user_css=CANDIDATE_CSS)
+        buf = io.BytesIO()
+        wr = pymupdf.DocumentWriter(buf)
+        more = 1
+        while more:
+            dev = wr.begin_page(A3_PAGE)
+            more, _ = story.place(where)
+            story.draw(dev)
+            wr.end_page()
+        wr.close()
+        return pymupdf.open("pdf", buf.getvalue())
+    n, src = None, None
+    for _ in range(3):
+        src = layout(n)
+        if src.page_count == n:
+            break
+        n = src.page_count
+    doc = pymupdf.open()
+    doc.insert_pdf(src)
+    stage = c["stage"]
+    for i, page in enumerate(doc, 1):
+        foot = pymupdf.Rect(A3_MARGIN_X, h - A3_MARGIN_Y - CANDIDATE_FOOTER_H, w - A3_MARGIN_X, h - A3_MARGIN_Y)
+        page.insert_htmlbox(foot, f'<div class="foot">A3 CANDIDATE (not validated) — {_esc(stage)} as proposed; the '
+                                  f'validated A3 is a3.pdf — page {i} of {doc.page_count}</div>',
+                            css=A3_FOOTER_CSS, scale_low=A3_SCALE_LOW)
+    doc.subset_fonts()
+    doc.set_metadata({"title": f"A3 CANDIDATE {stage} (not validated)", "creator": PRODUCER, "producer": PRODUCER,
+                      "creationDate": PDF_DATE, "modDate": PDF_DATE})
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(doc.tobytes(garbage=3, deflate=True, no_new_id=True))
+    pages = doc.page_count
+    doc.close()
+    return {"pages": pages}

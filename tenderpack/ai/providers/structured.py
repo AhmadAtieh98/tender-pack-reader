@@ -21,6 +21,11 @@ object before the controller's strict parse, which then validates it as before. 
 
 A provider that rejects the schema (`is_schema_rejection`) is answered by the plain tool-use path (the final answer as
 text, parsed locally) with a route notice in the run log and the review request; never silently.
+
+Session 11: every phase's request carries its own schema through the request layer (tenderpack/ai/requests.py): the
+proposal set, the reading answer (regionread.answer_schema), the downstream set and the critic's reviews. Whatever the
+schema, `decode_free_form(data, schema)` restores every free-form object that travelled as a JSON string (an item's
+payload, a table row's cells), following the ORIGINAL schema, before the strict local parse.
 """
 from __future__ import annotations
 
@@ -135,6 +140,61 @@ def decode_payloads(data):
         items.append(it)
     data["items"] = items
     return data
+
+
+def decode_free_form(data, schema: dict):
+    """Session 11, every phase: undo what `for_provider(schema, "anthropic")` did to free-form objects. Wherever the
+    ORIGINAL schema has an object without properties (an item's payload, a reading as a whole, a table row's cells) and
+    the answer carries a string that is a JSON object, the object is restored; anything else is left as it is, so the
+    strict local parse reports it. Follows $ref, anyOf/oneOf/allOf, arrays and properties. Returns a copy when anything
+    changed (the input is never modified)."""
+    defs = (schema or {}).get("$defs") or {}
+
+    def resolve(node, depth=0):
+        while isinstance(node, dict) and isinstance(node.get("$ref"), str) and depth < 50:
+            node = defs.get(node["$ref"].rsplit("/", 1)[-1]) or {}
+            depth += 1
+        return node if isinstance(node, dict) else {}
+
+    def walk(value, node, depth=0):
+        if depth > 60:
+            return value
+        node = resolve(node)
+        alts = [resolve(x) for k in ("anyOf", "oneOf", "allOf") for x in node.get(k) or []]
+        if isinstance(value, str):
+            cands = [node] + alts
+            if any(_free_form(c) or (c.get("type") == "object" and c.get("additionalProperties") not in (None, False)
+                                     and not c.get("properties")) for c in cands):
+                try:
+                    obj = json.loads(value)
+                except ValueError:
+                    return value
+                return obj if isinstance(obj, dict) else value
+            return value
+        if isinstance(value, dict):
+            props = dict(node.get("properties") or {})
+            for a in alts:
+                props.update(a.get("properties") or {})
+            addl = node.get("additionalProperties")
+            out, changed = {}, False
+            for k, v in value.items():
+                sub = props.get(k) or (addl if isinstance(addl, dict) else None)
+                nv = walk(v, sub, depth + 1) if sub is not None else v
+                changed |= nv is not v
+                out[k] = nv
+            return out if changed else value
+        if isinstance(value, list):
+            item = node.get("items")
+            if item is None:
+                for a in alts:
+                    item = item or a.get("items")
+            if not isinstance(item, dict):
+                return value
+            new = [walk(v, item, depth + 1) for v in value]
+            return new if any(n is not o for n, o in zip(new, value)) else value
+        return value
+
+    return walk(data, schema or {})
 
 
 _REJECT = re.compile(r"output_config|output_format|json_schema|response_format|\bschema\b|\bformat\b", re.I)

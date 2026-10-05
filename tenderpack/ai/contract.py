@@ -43,7 +43,8 @@ CONTROLLER_VERSION = "s10-ai-1"     # s10: inputs bound to the state identity; s
 STATEMENT_TYPES = ("amendment_op", "disposition", "row_reading", "row_new", "issue", "clarification", "escalation")
 VERIFICATION = ("unverified", "evidence_verified", "insufficient_evidence", "invalid", "conflicting", "escalated",
                 "interpretation_pending")
-SET_STATUS = ("complete", "partial", "malformed", "provider_failed", "budget_exhausted", "stale")
+SET_STATUS = ("complete", "partial", "malformed", "provider_failed", "budget_exhausted", "stale",
+              "deferred")                   # s11: a rate limit outlasted the bounded backoff (requests.py)
 
 # fields of a ProposalSet / ChangeProposal that only the controller writes
 CONTROLLER_SET_FIELDS = ("run_id", "created", "route", "provider", "model_requested", "model_reported", "task",
@@ -72,6 +73,16 @@ class StateIdentity(_Strict):
     unrecorded_crops_sha256: str | None = Field(None, description="one sha256 over the image crops the units name that "
                                                                   "BUILD_MANIFEST.json does not record; null when it "
                                                                   "records every one")
+    # session 11 (D1): the curated inputs the register reads; a proposal made before any of them changed is STALE
+    register_sha256: str | None = Field(None, description="one sha256 over the register: rows.yaml, every row file its "
+                                                          "`include` names and the machine-written pins.yaml")
+    relationships_sha256: str | None = Field(None, description="sha256 of the relationships file the pack reads; null "
+                                                               "when there is none")
+    curation_sha256: str | None = Field(None, description="one sha256 over the other curated inputs the pack names: "
+                                                          "the issues (and per-document issue files), the dispositions, "
+                                                          "the evidence items, the clarification register, the row-id "
+                                                          "ledger, the scenarios, the recorded trigger facts and the "
+                                                          "approved-formula registry")
 
     def fingerprint(self) -> str:
         """sha256 of the whole identity: what a calculation or a simulation states it was computed under."""
@@ -221,7 +232,8 @@ class ProposalSet(_Strict):
     coverage: Coverage = Field(default_factory=Coverage)
     resolution: Resolution = Field(default_factory=Resolution)
     usage: Usage = Field(default_factory=Usage)
-    status: Literal["complete", "partial", "malformed", "provider_failed", "budget_exhausted", "stale"] = "partial"
+    status: Literal["complete", "partial", "malformed", "provider_failed", "budget_exhausted", "stale",
+                    "deferred"] = "partial"
     controller_version: str = CONTROLLER_VERSION
 
 
@@ -318,7 +330,14 @@ def model_fill_schema() -> dict:  # noqa: F811 (the review is controller-written
 
 DOWNSTREAM_TASK = "propose_downstream"
 DOWNSTREAM_TYPES = ("row_reading", "row_new", "issue", "clarification_item", "evidence_item", "activity", "dependency",
-                    "escalation")
+                    "escalation", "no_change")
+
+
+class NoChangePayload(_Strict):
+    """Session 11 (D1): the answer to a downstream task that needs nothing (an activity or a clarification entry the
+    change does not affect), with its verbatim evidence. Never for a row task (a STALE row's reading is re-made) or an
+    obligation without a row (C46). At most `interpretation_pending`: a person confirms that nothing changes."""
+    why: str
 
 
 class IssueItemPayload(_Strict):
@@ -388,14 +407,14 @@ class DownstreamItem(_Strict):
     id: str
     state: StateIdentity
     statement_type: Literal["row_reading", "row_new", "issue", "clarification_item", "evidence_item", "activity",
-                            "dependency", "escalation"]
+                            "dependency", "escalation", "no_change"]
     task: str = Field(description="the id of the downstream task in the packet this item answers")
     provision: str | None = Field(None, description="the addendum provision whose change the item follows")
     target: str | None = None
     payload: dict = Field(description="row_reading: {row, interpretation, replace_requirement}; row_new: {row}; "
                                       "issue: IssueItemPayload; clarification_item: {entry}; evidence_item: {id, "
                                       "item}; activity: ActivityPayload; dependency: DependencyPayload; escalation: "
-                                      "{why, what_is_unsupported}")
+                                      "{why, what_is_unsupported}; no_change: {why}")
     evidence: list[EvidenceRef] = Field(default_factory=list, description="at least one verbatim quotation, an "
                                         "escalation included (from units_after or the addendum's own text)")
     dependencies: list[str] = Field(default_factory=list, description="ids of rows, items, activities it relies on")
@@ -452,7 +471,7 @@ def downstream_payload_schemas() -> dict:
             "issue": IssueItemPayload.model_json_schema(), "clarification_item": ClarificationItemPayload.model_json_schema(),
             "evidence_item": {**EvidenceItemPayload.model_json_schema(), "item_schema": EvidenceItem.model_json_schema()},
             "activity": ActivityPayload.model_json_schema(), "dependency": DependencyPayload.model_json_schema(),
-            "escalation": EscalationPayload.model_json_schema()}
+            "escalation": EscalationPayload.model_json_schema(), "no_change": NoChangePayload.model_json_schema()}
 
 
 # ---------------------------------------------------------------------------------------------- region readings (s10)

@@ -16,6 +16,11 @@ NEEDED) without an early bar; non-working days shaded; the planning date as a so
 milestones (the PDD at the time the pack states, clarification cut-off, Pre-Bid Conference, site visit, ...) as
 dashed lines; milestones outside the chart are listed under it. Deterministic: no clock, stable ordering, fixed
 number formatting.
+Session 11 (audit A5-1, A5-6, A5-8, R-9): a gate whose issue has a drafted clarification question shows both dates
+("ask by" = the last day to decide whether to raise it, a hollow diamond; "finalise by" = its latest start, the filled
+diamond); the row's flags (REVIEW, BLOCKED, STALE, ...) are tags in the status column and in full in the row's title,
+with its predecessors; the status column wraps to a second line instead of truncating; a milestone whose readings
+differ prints every reading ("14 Oct (conservative; 15 Oct if ...)"); the HTML table lists predecessors and flags.
 
 Text other than plain ASCII (session 09). A string that is plain ASCII once typographic punctuation is mapped to
 ASCII (dashes, quotes, ...) takes exactly the earlier path: Base-14 Helvetica in the PDF, the same characters in the
@@ -32,6 +37,7 @@ and notes, not the activity names, which are in the SVG row titles and the HTML)
 from __future__ import annotations
 
 import html as _html
+import re
 import unicodedata
 from datetime import date, timedelta
 from pathlib import Path
@@ -202,11 +208,52 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
     elif st != "OK":
         out.append((st, CRIT if st.startswith(("DEADLINE", "NO WORKING")) else MUTED, "square"))
     if a.get("gated_by"):
-        by = _d(a.get("decision_needed_by"))
-        out.append((f"GATED {', '.join(a['gated_by'])}; decide by {f'{by.day} {by:%b}' if by else '-'}", WARN, "diamond"))
+        ask, fin = _d(a.get("ask_by")), _d(a.get("finalise_by") or a.get("decision_needed_by"))
+        day = lambda d: f"{d.day} {d:%b}" if d else "-"                    # noqa: E731
+        out.append((f"GATED {', '.join(a['gated_by'])}; " + (f"ask by {day(ask)}; finalise by {day(fin)}" if ask
+                                                             else f"decide by {day(fin)}"), WARN, "diamond"))
     rs = str(a.get("resource_status", ""))
     if rs.startswith("OVERLOAD"):
         out.append((f"OVERLOAD {a.get('resource', '')}", SERIOUS, "triangle"))
+    for f in a.get("flags") or []:                          # session 11 (audit A5-6): review and blocking flags
+        if f.startswith("REVIEW ("):
+            out.append((f.split(":")[0], WARN, "square"))
+            out += [(f"BLOCKED: {b.split(' (')[0]}", CRIT, "square") for b in re.findall(r"; BLOCKED: ([^;]+)", f)]
+        elif f.startswith(("BLOCKED", "REQUIREMENT STALE", "IMAGE READING PENDING", "GATE ISSUE NOT IN THE REGISTER")):
+            out.append((f.split(" (")[0], CRIT if f.startswith(("BLOCKED", "REQUIREMENT STALE")) else MUTED, "square"))
+    return out
+
+
+def _status_layout(tags: list[tuple[str, str, str]], x0: float, x1: float, size: float, lines: int,
+                   force: bool) -> list[tuple] | None:
+    """[(line, x, text, colour, marker or None)] placing the status tags (a marker, then the text) on up to `lines`
+    lines between x0 and x1. A tag that does not fit in the rest of a line is split at a space and continues on the
+    next line. None when not `force` and the tags do not fit on the lines; with `force`, only what does not fit on the
+    last line is cut (with '...'): the full text is in the row's title, gantt.html and programme.csv."""
+    out, ln, x = [], 0, x0
+    for text, colour, marker in tags:
+        rest, mk = text, marker
+        while rest:
+            room = x1 - x - 6
+            if _w(rest, size) <= room:
+                out.append((ln, x, rest, colour, mk))
+                x += 6 + _w(rest, size) + 6
+                break
+            if not force:
+                return None
+            words, head = rest.split(" "), ""
+            while words and _w((head + " " + words[0]).strip(), size) <= room:
+                head = (head + " " + words.pop(0)).strip()
+            if ln + 1 < lines:
+                if head:
+                    out.append((ln, x, head, colour, mk))
+                    rest, mk = " ".join(words), None
+                ln, x = ln + 1, x0
+                continue
+            s = _fit(rest, size, max(room, 1.0))
+            out.append((ln, x, s, colour, mk))
+            x += 6 + _w(s, size) + 6
+            break
     return out
 
 
@@ -216,7 +263,18 @@ def _title(a: dict) -> str:
             f"effort {_n(float(a.get('effort_total_wd') or 0))} WD, waits on: {a.get('waiting_on') or 'nobody external'} | "
             f"ES {a.get('earliest_start')} EF {a.get('earliest_finish')} LS {a.get('latest_start')} LF "
             f"{a.get('latest_finish')} float {a.get('float_wd')} WD | timing: {a['status']} | decision: "
-            f"{a.get('decision_status')} | resource: {a.get('resource_status')}")
+            f"{a.get('decision_status')} | resource: {a.get('resource_status')} | after: "
+            f"{', '.join(a.get('predecessors') or []) or 'none (starts from the planning date)'} | flags: "
+            f"{' | '.join(a.get('flags') or []) or 'none'}")
+
+
+def _alt(ms: list[dict]) -> str:
+    """' (conservative; 15 Oct if the ADD-01 issue day is excluded)' for milestones whose readings differ, else ''."""
+    alts = [(m.get("reading_policy") or "planning", x) for m in ms for x in m.get("alternatives") or []]
+    if not alts:
+        return ""
+    return (f" ({alts[0][0]}; " + "; ".join(f"{_d(x['value']).day} {_d(x['value']):%b} {x['words']}" for _, x in alts)
+            + ")")
 
 
 def layout(prog: dict) -> list[tuple]:
@@ -288,7 +346,7 @@ def layout(prog: dict) -> list[tuple]:
             mx = x(md) + dw / 2
         labels.append((mx, " / ".join(_ltr(k["short"]) + (" (conditional)" if k.get("conditional") and "conditional" not in
                                                           k["short"] else "") for k in ms)
-                       + f" {md.day} {md.strftime('%b')}", False))
+                       + f" {md.day} {md.strftime('%b')}" + _alt(ms), False))
     levels: list[float] = []
     for mx, s, bold in sorted(labels, key=lambda t: t[0]):
         size = 6.0
@@ -334,11 +392,20 @@ def layout(prog: dict) -> list[tuple]:
             if not shown and ids:
                 shown = _fit(f"{ids[0]} +{len(ids) - 1}" if len(ids) > 1 else ids[0], fs - 0.8, avail)
             L.text(hx, y + rh * 0.68, shown, fs - 0.8, INK2)
-            # status column
-            sx = MARGIN + LABEL_W + 4
-            for text, colour, marker in _tags(a):
-                cy = y + rh * 0.5
-                if marker == "square":
+            # status column: one line when everything fits, else two (R-9); markers centred on their line
+            sx0, sx1 = MARGIN + LABEL_W + 4, MARGIN + LABEL_W + STATUS_W - 6
+            tags = _tags(a)
+            placed = _status_layout(tags, sx0, sx1, fs - 0.6, 1, False)
+            if placed is not None:
+                ssize, base = fs - 0.6, (y + rh * 0.68,)
+            else:
+                ssize = fs - 1.0
+                placed, base = _status_layout(tags, sx0, sx1, ssize, 2, True), (y + rh * 0.46, y + rh * 0.93)
+            for ln, sx, text, colour, marker in placed:
+                cy = base[ln] - ssize * 0.34
+                if marker is None:
+                    pass
+                elif marker == "square":
                     L.rect(sx, cy - 2.2, 4.4, 4.4, colour)
                 elif marker == "diamond":
                     L.diamond(sx + 2.2, cy, 2.6, colour, INK2)
@@ -348,12 +415,7 @@ def layout(prog: dict) -> list[tuple]:
                     L.poly([(sx + 2.2 + 2.2 * c, cy + 2.2 * s) for c, s in ((1, 0), (0.7, 0.7), (0, 1), (-0.7, 0.7),
                                                                            (-1, 0), (-0.7, -0.7), (0, -1), (0.7, -0.7))],
                            None, colour, 0.8)
-                room = MARGIN + LABEL_W + STATUS_W - 6 - (sx + 6)
-                s = _fit(text, fs - 0.6, room)
-                L.text(sx + 6, y + rh * 0.68, s, fs - 0.6, INK)
-                sx += 6 + _w(s, fs - 0.6) + 6
-                if sx > MARGIN + LABEL_W + STATUS_W - 20:
-                    break
+                L.text(sx + 6, base[ln], text, ssize, INK)
             # bars
             es, ef, ls, lf = (_d(a.get(k)) for k in ("earliest_start", "earliest_finish", "latest_start", "latest_finish"))
             scheduled = not st.startswith(("CONDITIONAL", "DEADLINE PASSED", "NOT NEEDED"))
@@ -382,6 +444,11 @@ def layout(prog: dict) -> list[tuple]:
                     L.text(x(ef) + dw + 2, bt + bh * 0.9, f"{fl} WD", fs - 0.6, CRIT, True)
             if a.get("gated_by") and ls:
                 L.diamond(x(ls), y + rh * 0.75, min(3.4, rh * 0.32), WARN, INK2)
+            ask = _d(a.get("ask_by"))
+            if a.get("gated_by") and ask:                    # session 11: the last day to decide whether to ask
+                r_ = min(3.4, rh * 0.32)
+                L.poly([(x(ask), y + rh * 0.75 - r_), (x(ask) + r_, y + rh * 0.75), (x(ask), y + rh * 0.75 + r_),
+                        (x(ask) - r_, y + rh * 0.75)], SURFACE, WARN, 0.9)
             for day in sorted(overload_days.get(a["id"], ())):
                 dd = _d(day)
                 if ls and lf and max(ls, pd) <= dd <= lf:
@@ -395,7 +462,9 @@ def layout(prog: dict) -> list[tuple]:
     items = [("staff", "staff effort (early bar ES..EF)"), ("wait", "external waiting + staff effort (hatched, ES..EF)"),
              ("late", "late window LS..LF"), ("float", "float (EF to LF)"), ("zero", "0-WD step"),
              ("crit", "INFEASIBLE: negative float, shortfall in WD (never compressed)"),
-             ("gate", "GATED: decision needed by (latest start)"), ("over", "OVERLOAD: role over capacity that day"),
+             ("gate", "GATED: finalise by (latest start)"),
+             ("ask", "ask by: last day to decide whether to raise a clarification request"),
+             ("over", "OVERLOAD: role over capacity that day"),
              ("cond", "CONDITIONAL / not scheduled (late window only)"), ("nonwork", "non-working day"),
              ("today", "planning date"), ("mile", "pack milestone")]
     lx, row = MARGIN + 40, 0
@@ -421,6 +490,8 @@ def layout(prog: dict) -> list[tuple]:
             L.rect(lx, yy, 16, 5, CRIT)
         elif kind == "gate":
             L.diamond(lx + 8, yy + 2.5, 3.2, WARN, INK2)
+        elif kind == "ask":
+            L.poly([(lx + 8, yy - 0.7), (lx + 11.2, yy + 2.5), (lx + 8, yy + 5.7), (lx + 4.8, yy + 2.5)], SURFACE, WARN, 0.9)
         elif kind == "over":
             L.triangle(lx + 8, yy + 2.5, 2.8, SERIOUS)
         elif kind == "cond":
@@ -434,14 +505,23 @@ def layout(prog: dict) -> list[tuple]:
         L.text(lx + 20, yy + 4.6, label, 6.2, INK2)
         lx += w
     ny = ly + 11 * (row + 1) + 4
-    out_txt = "; ".join(f"{_ltr(m['short'])} {m['date']}" for m in outside)
+    out_txt = "; ".join(f"{_ltr(m['short'])} {m['date']}" + (f" ({m.get('reading_policy') or 'planning'}; "
+                                                             f"{m['other_readings']})" if m.get("other_readings") else "")
+                        for m in outside)
     notes = [f"PROPOSAL, not reviewed. Timing, decision readiness and resource feasibility are separate statuses; "
              f"{NO_LEVELLING}. No bidder references, certificates, attendance or financial standing are assumed to exist.",
              "Each row: activity id, count, then the A1 requirement ids that fit (+n more); ALL ids are in the row's hover "
              "title, gantt.html and programme.csv. Load window: late (LS..LF, clipped at the planning date).",
              f"Milestones outside the chart: {out_txt or 'none'}."]
-    for s in notes:
-        L.text(MARGIN, ny, _fit(s, 6.2, PAGE_W - 2 * MARGIN), 6.2, INK2)
+    for s in notes:                                   # wrapped, never cut (session 11)
+        line = ""
+        for wd in s.split(" "):
+            if line and _w(line + " " + wd, 6.2) > PAGE_W - 2 * MARGIN:
+                L.text(MARGIN, ny, line, 6.2, INK2)
+                ny, line = ny + 8.6, wd
+            else:
+                line = (line + " " + wd).strip()
+        L.text(MARGIN, ny, line, 6.2, INK2)
         ny += 8.6
     return L.items
 
@@ -551,16 +631,19 @@ def html(prog: dict, svg_text: str | None = None) -> str:
     svg_text = svg_text if svg_text is not None else svg(prog)
     rows = []
     for gname, acts in _groups(prog):
-        rows.append(f'<tr class="g"><td colspan="13">{esc(gname)} ({len(acts)})</td></tr>')
+        rows.append(f'<tr class="g"><td colspan="15">{esc(gname)} ({len(acts)})</td></tr>')
         for a in acts:
             rows.append("<tr>" + "".join(f"<td>{v}</td>" for v in (
                 f"<b>{esc(a['id'])}</b>" + (f" x{a['count']}" if a.get("count", 1) != 1 else ""),
-                esc(", ".join(a["req_ids"])), esc(a.get("earliest_start")), esc(a.get("earliest_finish")),
+                esc(", ".join(a["req_ids"])), esc(", ".join(a.get("predecessors") or []) or "-"),
+                esc(a.get("earliest_start")), esc(a.get("earliest_finish")),
                 esc(a.get("latest_start")), esc(a.get("latest_finish")), esc(a.get("float_wd")), esc(a["status"]),
                 esc(a.get("decision_status")), esc(a.get("resource_status")),
                 esc(f"{a['duration_wd']} WD elapsed; staff {_n(float(a.get('effort_total_wd') or 0))} WD"),
-                esc(a.get("waiting_on") or "-"), esc(a.get("resource")))) + "</tr>")
-    ms = [f"<tr><td>{esc(m['date'] or 'no date')} {esc(m.get('time') or '')}</td><td>{esc(m['label'])}</td>"
+                esc(a.get("waiting_on") or "-"), esc(a.get("resource")), esc(" | ".join(a.get("flags") or []) or "-"))) + "</tr>")
+    ms = [f"<tr><td>{esc(m['date'] or 'no date')} {esc(m.get('time') or '')}"
+          + (f" ({esc(m.get('reading_policy') or 'planning')}; {esc(m['other_readings'])})" if m.get("other_readings") else "")
+          + f"</td><td>{esc(m['label'])}</td>"
           f"<td>{esc(m['source'])}</td><td>{esc(m['kind'])}</td></tr>" for m in prog.get("milestones", [])]
     ov = [f"<li>{esc(o['resource'])}: {esc(o['from'])}..{esc(o['to'])} ({o['days']} WD), peak {_n(float(o['peak_load']))} "
           f"vs capacity {esc(o['capacity'])} staff: {esc(', '.join(o['activities']))}</li>"
@@ -571,7 +654,10 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "Outline below the bar: late window, latest start to latest finish (LS..LF).",
               "Grey line from the bar to the end of the late window: positive float (Working Days).",
               "Red bar and '-n WD': negative float, INFEASIBLE by n Working Days; nothing is compressed.",
-              "Amber diamond on the late window: GATED; the decision is needed by the latest start.",
+              "Amber diamond on the late window: GATED; finalise by the latest start. Hollow amber diamond: the last day "
+              "to decide whether to raise the gate's drafted clarification question (the latest start of the activity "
+              "that must finish by the clarification cut-off).",
+              "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
               "Orange triangles: OVERLOAD days of the row's role (load above capacity). Not levelled.",
               "Dotted outline only: CONDITIONAL (window elapsed; whether the condition arose is not known), DEADLINE "
               "PASSED or NOT NEEDED: no work scheduled.",
@@ -590,9 +676,10 @@ def html(prog: dict, svg_text: str | None = None) -> str:
             f"<p><b>{esc(NO_LEVELLING[0].upper() + NO_LEVELLING[1:])}.</b></p>"
             f"<div class=\"chart\">{svg_text}</div>"
             "<h2>Legend</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in legend) + "</ul>"
-            "<h2>Rows (every A1 requirement id)</h2><table><tr><th>Activity</th><th>A1 requirement ids</th><th>ES</th>"
+            "<h2>Rows (every A1 requirement id)</h2><table><tr><th>Activity</th><th>A1 requirement ids</th>"
+            "<th>Predecessors</th><th>ES</th>"
             "<th>EF</th><th>LS</th><th>LF</th><th>Float (WD)</th><th>Timing</th><th>Decision</th><th>Resource</th>"
-            "<th>Duration / effort</th><th>Waits on</th><th>Role</th></tr>" + "".join(rows) + "</table>"
+            "<th>Duration / effort</th><th>Waits on</th><th>Role</th><th>Flags</th></tr>" + "".join(rows) + "</table>"
             "<h2>Milestones</h2><table><tr><th>Date</th><th>Milestone</th><th>Source</th><th>Kind</th></tr>"
             + "".join(ms) + "</table>"
             f"<h2>Overloads ({len(ov)}; reported, not resolved)</h2><ul>" + ("".join(ov) or "<li>none</li>") + "</ul>"

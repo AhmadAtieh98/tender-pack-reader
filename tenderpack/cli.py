@@ -514,6 +514,35 @@ def decide_cmd(items: list[str], decision: str, reviewer: str, note: str | None,
     return code
 
 
+def discover_cmd(evidence: Path, pack_path: Path, to: Path, include_addenda: bool = False) -> int:
+    """`relationships discover --to <file>` (session 11): links proposed from the documents' own cross-references,
+    written as PROPOSED entries to a new file for a person. The pack's curated relationships file is read (to leave out
+    links it already has) and never written; nothing is confirmed."""
+    from . import relationships, stage2
+    cfg = load_yaml(pack_path)
+    curated = relationships.default_path(cfg, ROOT).resolve()
+    to = Path(to).resolve()
+    if to == curated:
+        print(f"REFUSED: {to} is the pack's curated relationships file; discovery writes a separate file for a person")
+        return 2
+    r = stage2.run(evidence, pack_path, ROOT)
+    res = relationships.discover(r["units"], r["rowfile"].rows, r.get("relationships") or [],
+                                 include_addenda=include_addenda)
+    found = relationships.validate(res["entries"], r["units"], r["rowfile"].rows, r["templates"],
+                                   evidence_items=r["evidence_items"])
+    try:
+        relationships.write_discovered(to, res, f"evidence build {evidence}; pack {pack_path.name}")
+    except FileExistsError as e:
+        print(f"REFUSED: {e}")
+        return 2
+    print(f"{len(res['entries'])} proposed link(s) written to {to} (status proposed, origin discover; nothing confirmed); "
+          f"{len(res['already_curated'])} already in the curated file; {len(res['unresolved'])} reference(s) to "
+          f"documents not in the evidence; defined terms not proposed one by one: {res['skipped_terms'] or 'none'}")
+    if found:
+        print("validation findings (a person fixes or drops these entries):\n  " + "\n  ".join(found))
+    return 1 if found else 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="tenderpack")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -582,12 +611,22 @@ def main(argv: list[str] | None = None) -> int:
     k.add_argument("--evidence", default=str(ROOT / "build"))
     k.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     k.add_argument("--proposals", default=str(ROOT / "curation/register/proposals"))
+    rel = sub.add_parser("relationships", help="relationships between provisions (session 11: discover)")
+    rsub = rel.add_subparsers(dest="rel_cmd", required=True)
+    rd = rsub.add_parser("discover", help="propose links from the documents' own cross-references, for a person "
+                                          "(written PROPOSED to a NEW file; never confirmed; never the curated file)")
+    rd.add_argument("--to", required=True, help="the new file to write (refused if it exists)")
+    rd.add_argument("--evidence", default=str(ROOT / "build"))
+    rd.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
+    rd.add_argument("--include-addenda", action="store_true", help="also read the addenda's own units")
     from .ai.cli import add_parser as add_ai_parser          # session 09: `tenderpack ai ...` (tenderpack/ai/cli.py)
     add_ai_parser(sub)
     args = ap.parse_args(argv)
     if args.cmd == "ai":
         from .ai.cli import run as ai_run
         return ai_run(args)
+    if args.cmd == "relationships":
+        return discover_cmd(Path(args.evidence), Path(args.pack), Path(args.to), args.include_addenda)
     if args.cmd in ("accept", "reject"):
         return decide_cmd(args.items, args.cmd, args.reviewer, args.note, Path(args.evidence), Path(args.pack), args.decisions)
     if args.cmd == "apply-proposal":

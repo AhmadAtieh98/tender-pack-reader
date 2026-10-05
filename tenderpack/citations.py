@@ -56,6 +56,12 @@ def citations(text: str) -> list[Citation]:
         add(m, f"{VOLUMES[m.group(2)]}:{m.group(3)}#fn{m.group(1)}", "footnote")
     for m in re.finditer(_VOL + r" Clause (\d+(?:\.\d+)*)", t):
         add(m, f"{VOLUMES[m.group(1)]}:{m.group(2)}", "clause")
+    # session 11 (blind-05, post-key): the plural list "Volume I Clauses 6.6 and 6.7", "Clauses 3.1, 3.2 and 3.4",
+    # "Clauses 29.1 to 29.3" cites every clause listed (a range cites its two ends; the clauses between are not
+    # inferred: an op that means them names them)
+    for m in re.finditer(_VOL + r" Clauses ((?:\d+(?:\.\d+)*)(?:(?:,\s*|\s+and\s+|\s+to\s+)\d+(?:\.\d+)*)*)", t):
+        for n in re.findall(r"\d+(?:\.\d+)*", m.group(2)):
+            add(m, f"{VOLUMES[m.group(1)]}:{n}", "clause")
     for m in re.finditer(_VOL + r" Table (\d+-\d+)", t):
         add(m, f"{VOLUMES[m.group(1)]}:T{m.group(2)}", "table")
     for m in re.finditer(r"Table (\d+-\d+) of " + _VOL, t):

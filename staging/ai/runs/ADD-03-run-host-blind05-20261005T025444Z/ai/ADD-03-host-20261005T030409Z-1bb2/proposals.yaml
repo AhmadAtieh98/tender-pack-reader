@@ -1,0 +1,1633 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T030409Z-1bb2
+  created: '2026-10-05T03:04:09Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+    register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+  statements:
+  - id: S-F1
+    kind: fact
+    text: ADD-03:2.1 deletes Volume I Clauses 6.6 and 6.7 and prints a single replacement Clause 6.6.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F2
+    kind: fact
+    text: At ADD-02, VOL-I:6.7 permits modification at any time before the Proposal Due Date; the new Clause 6.6
+      permits modification only not later than two (2) Working Days before it.
+    evidence:
+    - doc: VOL-I
+      unit_id: VOL-I:6.7
+      page: 3
+      kind: span
+      words: A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice
+        through the Portal.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: may modify its Proposal not later than two (2) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F3
+    kind: fact
+    text: The cover of ADD-03 describes the consolidation as being without change of substance.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I1
+    kind: interpretation
+    text: The new Clause 6.6 does change substance (the modification cut-off moves from any time before the Proposal
+      Due Date to two Working Days before it, and late modifications are now rejected unopened), which conflicts
+      with the cover's 'without change of substance'. The operative words of 2.1 are taken to govern; a person should
+      confirm and consider a clarification.
+    evidence: []
+    note: null
+  - id: S-A1
+    kind: assumption
+    text: The Proposal Due Date is the date in VOL-I:6.1 at ADD-02 (Thursday 26 November 2026) and is not moved
+      by another ADD-03 provision outside this batch. On that basis calculate(relative_date, 2026-11-26, 2 working_day
+      before, purpose deadline) gives Tuesday 24 November 2026 as the last day to modify under the new Clause 6.6.
+    evidence:
+    - doc: VOL-I
+      unit_id: VOL-I:6.1
+      page: 3
+      kind: span
+      words: not later than 14:00 hours Riyadh time on Thursday 26 November 2026
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-F6
+    kind: fact
+    text: Form 4-A as reissued by ADD-01 already contains the acknowledgement of Addenda.
+    evidence:
+    - doc: ADD-01
+      unit_id: ADD-01:AppA/para1
+      page: 3
+      kind: span
+      words: Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I2
+    kind: interpretation
+    text: The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02
+      is a noise criterion; this discrepancy belongs to the batch that answers the Volume II provisions and is flagged
+      here only.
+    evidence:
+    - doc: VOL-II
+      unit_id: VOL-II:3.5
+      page: 3
+      kind: span
+      words: Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S-I3
+    kind: interpretation
+    text: 'ADD-03:1.1, 1.2 and 1.3 are recitals: they state the authority for the Addendum, how its references are
+      read, and that late clarification requests were not answered (consistent with VOL-I:5.2); none changes the
+      text of any unit.'
+    evidence: []
+    note: null
+  - id: S-I4
+    kind: interpretation
+    text: ADD-03:2.2 confirms that the deletion of 6.7 leaves a gap in numbering and that no Volume I clause is
+      renumbered; it changes no unit beyond the 6.7 deletion carried by 2.1.
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/cover/para1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:cover/para1
+    target: null
+    payload:
+      provision: ADD-03:cover/para1
+      disposition: no_effect
+      reason: the issue date line 'Issued 15 November 2026' (the stage date); it amends, obliges or excepts nothing
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 15 November 2026
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:cover/para1 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para1 at ADD-02
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        the addendum''s issue date line (used as the stage date)): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: evidence_verified
+    model_rationale: Date line only; no target.
+    review: null
+  - id: ADD-03/cover/para2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:cover/para2
+    target: null
+    payload:
+      provision: ADD-03:cover/para2
+      disposition: no_effect
+      reason: title line identifying the tender ('Tender NUPA/ISTP/2026/014'); it amends, obliges or excepts nothing
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para2
+      page: 1
+      kind: span
+      words: Tender NUPA/ISTP/2026/014
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:cover/para2 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para2 at ADD-02
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        recital or cover text; changes nothing by itself): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: evidence_verified
+    model_rationale: Title line only.
+    review: null
+  - id: ADD-03/cover/para3
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:cover/para3
+    target: ADD-03:cover/para3
+    payload:
+      id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      targets:
+      - ADD-03:cover/para3
+      old_resolved: quoted
+      effect: adds_obligation
+      note: 'Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A (paragraph 1 of Form 4-A as reissued
+        by ADD-01). The summary of changes in this paragraph is not applied as an op: each change is carried by
+        its own operative provision in other batches.'
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: Bidders shall acknowledge receipt in Form 4-A.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-01
+      unit_id: ADD-01:AppA/para1
+      page: 3
+      kind: span
+      words: Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-IV:F4-A
+    - ADD-01:AppA/para1
+    conflicts:
+    - The cover says the 6.6/6.7 consolidation is 'without change of substance', but ADD-03:2.1 shortens the modification
+      window to two Working Days before the Proposal Due Date (S-I1).
+    - The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is
+      a noise criterion (S-I2).
+    missing_information: []
+    statements:
+    - S-F3
+    - S-F6
+    - S-I1
+    - S-I2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:cover/para3 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'an annotation that adds obligation is an interpretation of the provision: a person confirms it'
+      aspect: semantic
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-01:AppA/para1 p3
+      ok: true
+      detail: verbatim in ADD-01:AppA/para1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I2: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: The cover says the 6.6/6.7 consolidation is ''without change of substance'',
+        but ADD-03:2.1 shortens the modification window to two Working Days before the Proposal Due Date (S-I1).;
+        The cover says ADD-03 replaces ''the odour criterion in Volume II Clause 3.5'', but VOL-II:3.5 at ADD-02
+        is a noise criterion (S-I2).'
+      aspect: decision
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: conflicting
+    model_rationale: Same pattern as ADD-02:cover/para3 (self-annotation, adds_obligation). Simulated valid. The
+      two discrepancies in the summary are flagged for a person, not resolved here.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Annotation (adds_obligation) of Form 4-A acknowledgement is consistent with the cover text. The target
+          is the provision itself, which is acceptable for a self-annotation, but the cover also lists changes to
+          Vol V 29.2, Vol II 3.1/3.5/5.6 that are not applied here (stated as carried elsewhere).
+        - 'Real conflicts: cover says ''without change of substance'' but ADD-03:2.1 shortens the modification window
+          (old 6.7: any time before due date; new: 2 Working Days before). Also the cover cites an ''odour criterion''
+          in Vol II 3.5 while the evidence shows VOL-II:3.5 as a noise criterion (S-I2). Both are genuine and need
+          a person.'
+        - The statement that the Form 4-A acknowledgement is at paragraph 1 as reissued by ADD-01 rests on ADD-01
+          text only; ADD-01 span says it is added at paragraph 1, which is fine. Whether ADD-02 changed Form 4-A
+          is not shown.
+        evidence_checked:
+        - ADD-03:cover/para3
+        - ADD-01:AppA/para1 span
+        - ADD-03:2.1
+        - VOL-I:6.7
+        - VOL-II:3.5 span in S-I2
+        selected_because:
+        - conflicting
+        - consequential_interpretation
+        - uncertain_target
+        - 'uncertain_target: target is not among the units the provision cites'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/1.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:1.1
+    target: null
+    payload:
+      provision: ADD-03:1.1
+      disposition: no_effect
+      reason: Recital. 'This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos.
+        1 and 2 in accordance with Volume I Clause 3.2.' It restates the existing order of precedence (VOL-I:3.2)
+        and the power to issue Addenda (VOL-I:5.3); it changes the text of no unit. A person confirms.
+      candidates:
+      - VOL-I:5.3
+      - VOL-I:3.2
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.1
+      page: 1
+      kind: span
+      words: This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in
+        accordance with Volume I Clause 3.2.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:1.1 p1
+      ok: true
+      detail: verbatim in ADD-03:1.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I3: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        recital or cover text; changes nothing by itself): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Recital relying on existing VOL-I 3.2 and 5.3; no change printed.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Reading as a recital with no_effect follows from the words. It does restate precedence, but VOL-I:3.2
+          and 5.3 texts are not printed in the evidence, so the claim that it merely restates existing precedence
+          cannot be verified here.
+        evidence_checked:
+        - ADD-03:1.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/1.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:1.2
+    target: null
+    payload:
+      provision: ADD-03:1.2
+      disposition: no_effect
+      reason: 'Rule of reading for this Addendum''s own references: ''A reference in this Addendum to a Clause,
+        Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.''
+        The ''unless otherwise stated'' exception only governs how ADD-03''s references are resolved (targets are
+        read at ADD-02, as the engine does); it changes the text of no unit. A person confirms.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.2
+      page: 1
+      kind: span
+      words: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended
+        by Addenda Nos. 1 and 2, unless otherwise stated.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:1.2 p1
+      ok: true
+      detail: verbatim in ADD-03:1.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I3: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''unless'')'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Interpretive recital; consistent with reading targets at the previous stage (ADD-02).
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - It is a rule of reading for the Addendum's own references, so no_effect on unit text is reasonable. However,
+          'unless otherwise stated' could change which version a reference points to; the controller flagged it
+          for a person. No instance of an 'otherwise stated' reference is shown in this evidence.
+        evidence_checked:
+        - ADD-03:1.2
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/1.3
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:1.3
+    target: null
+    payload:
+      provision: ADD-03:1.3
+      disposition: no_effect
+      reason: 'Recital applying the existing rule in VOL-I:5.2 (''Requests received after that time will not be
+        answered.''): ''Requests for clarification received after the time stated in Volume I Clause 5.2 have not
+        been answered.'' It changes the text of no unit.'
+      candidates:
+      - VOL-I:5.2
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:1.3
+      page: 1
+      kind: span
+      words: Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:5.2
+      page: 3
+      kind: span
+      words: Requests received after that time will not be answered.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-I3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:1.3 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:1.3 p1
+      ok: true
+      detail: verbatim in ADD-03:1.3 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:5.2 p3
+      ok: true
+      detail: verbatim in VOL-I:5.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I3: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (the pattern drafter disposes it as no_effect:
+        recital or cover text; changes nothing by itself): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: States the application of VOL-I:5.2 unchanged.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Recital reporting that late clarification requests were not answered; consistent with the VOL-I:5.2 quotation.
+          No unit text changed.
+        evidence_checked:
+        - ADD-03:1.3
+        - VOL-I:5.2 span
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/2.1(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:2.1
+    target: VOL-I:6.6
+    payload:
+      id: ADD-03/2.1(a)
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:6.6
+      old: A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the
+        Bidder.
+      old_resolved: matched_in_target
+      new: A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal
+        not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through
+        the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the
+        time stated in this Clause, will be rejected unopened and returned to the Bidder.
+      note: Whole text of 6.6 replaced by the single new Clause 6.6 printed in ADD-03:2.1 (label '6.6' omitted).
+        replace_unit was tried first and the engine dry run failed with an internal error; replace_text of the whole
+        effective text simulated valid (C21-C24 pass).
+      origin: assistant
+    previous_value: A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned
+      to the Bidder.
+    proposed_value: A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify
+      its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice
+      through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after
+      the time stated in this Clause, will be rejected unopened and returned to the Bidder.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal
+        not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through
+        the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the
+        time stated in this Clause, will be rejected unopened and returned to the Bidder.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:6.6
+      page: 3
+      kind: span
+      words: A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the
+        Bidder.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:6.1
+    - VOL-I:6.7
+    conflicts:
+    - Cover ADD-03:cover/para3 says 'without change of substance'; the new text moves the modification cut-off to
+      two Working Days before the Proposal Due Date (S-I1).
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F2
+    - S-F3
+    - S-I1
+    - S-A1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: interpretation
+      ok: true
+      detail: 'the old words are located in the target, not quoted by the provision: a person checks them'
+      aspect: semantic
+    - check: previous_value
+      ok: true
+      detail: '''A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned
+        to the Bidder.'' matches VOL-I:6.6 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its
+        Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice
+        through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received
+        after the time stated in this Clause, will be rejected unopened and returned to the Bidder.'' is what the
+        op writes'
+      aspect: engine
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:6.6 p3
+      ok: true
+      detail: verbatim in VOL-I:6.6 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I1: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S-A1: a person must confirm it'
+      aspect: evidence
+    - check: declared_conflicts
+      ok: false
+      detail: 'the proposer declares: Cover ADD-03:cover/para3 says ''without change of substance''; the new text
+        moves the modification cut-off to two Working Days before the Proposal Due Date (S-I1).'
+      aspect: decision
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: conflicting
+    model_rationale: 'Printed replacement; operative words govern over the cover''s summary. Engine reports C46
+      need: no A1 row holds the new modification cut-off obligation. calculate gives 24 Nov 2026 as the cut-off
+      under S-A1.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Replacement text matches ADD-03:2.1 verbatim and the previous value matches VOL-I:6.6. The op replaces
+          6.6 text only; the deletion of 6.7 is handled separately (2.1(b)), so the two must be applied together
+          or 6.7 will conflict.
+        - 'Real conflict with the cover''s ''without change of substance'': modification now cut off 2 Working Days
+          before due date (S-I1). The operative text governs only if a person confirms this.'
+        - The 24 Nov 2026 cut-off depends on assumption S-A1 (due date 26 Nov 2026 from VOL-I:6.1, and 'Working
+          Days' definition/calendar not shown); it needs confirmation, including whether the due date is moved elsewhere.
+          Note that new text also adds that late modifications are rejected unopened, a substantive addition.
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.6
+        - VOL-I:6.7
+        - VOL-I:6.1 span
+        - ADD-03:cover/para3
+        selected_because:
+        - conflicting
+        - uncertain_target
+        - 'uncertain_target: old words located in the target'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/2.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: escalation
+    provision: ADD-03:2.1
+    target: VOL-I:6.7
+    payload:
+      why: 'ADD-03:2.1 prints ''Volume I Clauses 6.6 and 6.7 are deleted'', so VOL-I:6.7 must be set to status deleted.
+        In simulate_amendment the engine rejects set_status on VOL-I:6.7 under C22 (''declared target VOL-I:6.7
+        is not cited; the provision cites [VOL-I:6.6, VOL-I:6.1]''): its citation parser does not pick up the second
+        clause number in ''Clauses 6.6 and 6.7''.'
+      what_is_unsupported: A set_status 'deleted' op on VOL-I:6.7 for provision ADD-03:2.1 cannot pass C22 with
+        the current citation parsing; a person must record the deletion of 6.7 (or the citation list must be corrected).
+        Without it VOL-I:6.7 stays active and its 'withdraw or modify ... at any time before the Proposal Due Date'
+        would conflict with the new 6.6.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.1
+      page: 1
+      kind: span
+      words: Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:6.7
+      page: 3
+      kind: span
+      words: A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice
+        through the Portal. No modification will be accepted thereafter.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-I:6.7
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-F1
+    - S-F2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: payload
+      ok: true
+      detail: a well-formed escalation payload
+      aspect: structure
+    - check: evidence ADD-03:2.1 p1
+      ok: true
+      detail: verbatim in ADD-03:2.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-I:6.7 p3
+      ok: true
+      detail: verbatim in VOL-I:6.7 at ADD-02
+      aspect: evidence
+    verification_status: escalated
+    model_rationale: Printed deletion that the engine will not accept structurally; escalated rather than dropped
+      or turned into no_effect.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'Escalation is appropriate: 2.1 prints that Clauses 6.6 and 6.7 are deleted, and VOL-I:6.7 is a separate
+          unit that must be deleted. The stated reason (engine C22 citation parsing missing 6.7) is a tool limitation
+          reported by the proposer; it is not shown in the evidence printed here, so it cannot be verified. If 6.7
+          stays active it would conflict with the new 6.6, as stated.'
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.7
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: target is not among the units the provision cites'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/2.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: disposition
+    provision: ADD-03:2.2
+    target: null
+    payload:
+      provision: ADD-03:2.2
+      disposition: no_effect
+      reason: '''The number 6.7 is not reused. The Clauses of Volume I are not renumbered.'' It confirms that no
+        renumbering follows the deletion of 6.7 under ADD-03:2.1 (escalated as ADD-03/2.1(b)); it changes no unit
+        itself. A person confirms.'
+      candidates: []
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:2.2
+      page: 1
+      kind: span
+      words: The number 6.7 is not reused. The Clauses of Volume I are not renumbered.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:2.1
+    - VOL-I:6.7
+    conflicts: []
+    missing_information: []
+    statements:
+    - S-I4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:2.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:2.2 p1
+      ok: true
+      detail: verbatim in ADD-03:2.2 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S-I4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: false
+      detail: 'no_effect on amendment language: a person must confirm (its words carry ''renumbered'')'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Negative statement (no renumbering); nothing to apply.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Words say 6.7 is not reused and no renumbering; no_effect on text is consistent. The controller flagged
+          'renumbered' as amendment language; a person should confirm. It depends on 6.7 actually being recorded
+          as deleted (2.1(b)).
+        evidence_checked:
+        - ADD-03:2.2
+        - ADD-03:2.1
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+        created: '2026-10-05T03:04:29Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 54
+    accounted: 8
+    unaccounted:
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/row-a
+    - ADD-03:p4-image/row-b
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+  resolution:
+    provisions_total: 54
+    accounted: 8
+    resolved: 2
+    pending: 6
+    invalid: 0
+    unaccounted: 46
+    pending_provisions:
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    invalid_provisions: []
+    no_change_on_amendment_language:
+    - ADD-03:1.2
+    - ADD-03:2.2
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S-F1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+        aspect: null
+    S-F2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-I:6.7 p3
+        ok: true
+        detail: verbatim in VOL-I:6.7 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:2.1 p1
+        ok: true
+        detail: verbatim in ADD-03:2.1 at ADD-02
+        aspect: null
+    S-F3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:cover/para3 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para3 at ADD-02
+        aspect: null
+    S-I1:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-A1:
+      kind: assumption
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-I:6.1 p3
+        ok: true
+        detail: verbatim in VOL-I:6.1 at ADD-02
+        aspect: null
+    S-F6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-01:AppA/para1 p3
+        ok: true
+        detail: verbatim in ADD-01:AppA/para1 at ADD-02
+        aspect: null
+    S-I2:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence VOL-II:3.5 p3
+        ok: true
+        detail: verbatim in VOL-II:3.5 at ADD-02
+        aspect: null
+    S-I3:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S-I4:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/cover/para3
+      provision: ADD-03:cover/para3
+      type: annotate
+      target: ADD-03:cover/para3
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:cover/para3 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''ADD-03:cover/para3'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/2.1(a)
+      provision: ADD-03:2.1
+      type: replace_text
+      target: VOL-I:6.6
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:2.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:2.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-I:6.6 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-I:6.6 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned
+          to the Bidder.'' occurs 1 time(s) in VOL-I:6.6'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-I:6.6
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-I:6.6
+        - VOL-I:6.1
+        also_in: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:cover/para3
+      disposition: op
+      accounted_by:
+      - ADD-03/cover/para3
+    - provision: ADD-03:1.1
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:1.2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:1.3
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:2.1
+      disposition: op
+      accounted_by:
+      - ADD-03/2.1(a)
+    - provision: ADD-03:2.2
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3(b)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/date
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/subject
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/row-b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-head
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-intro
+    - ADD-03:p4-image/table-header
+    - ADD-03:p4-image/row-a
+    - ADD-03:p4-image/row-b
+    - ADD-03:p4-image/notes-head
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - VOL-I:6.6
+    c46_needs:
+    - op: ADD-03/cover/para3
+      output: A1
+      rows: []
+      detail: 'ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition
+        of Availability Payment and the indexation of the Availability Payment under Volume V Cl…'
+    - op: ADD-03/2.1(a)
+      output: A1
+      rows: []
+      detail: 'ADD-03/2.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6 A Bidder
+        may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Propo…'
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 03cff2dd9a352e85c84337fd4dbf651e245680a64a7077c95965f411c1bb436c
+    computed_under:
+      evidence_build_id: 77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings:
+    - '2 provisions with amendment language carry no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 2 need a person): ADD-03:1.2, ADD-03:2.2'
+    clean: false
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units: []
+    rows_citing_changed_units: []
+    rows_stale_at_addendum: []
+    decisions_voided: []
+    c46_needs: []
+    clarifications_citing_changed_units: []
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: no summary
+        detail: ADD-03's cover has no 'This Addendum ...' sentence; nothing to compare
+      candidate:
+        validated_stage: ADD-02
+        stage: ADD-03
+        paragraph: 'ADD-03 is PARTIAL: 52 of 54 provisions unresolved, so A3 and A5 stay validated at ADD-02. If
+          the 0 op(s) that are valid there stood (each still a proposal: none), A3 would gain 0 row(s) (none), lose
+          0 (none) and change 0 (none); A5, replanned at ADD-03''s issue date (2026-11-15), would move the latest
+          dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 0 REVIEW through relationships.
+          Not settled: 18 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint, technical-proposal,
+          model-audit-review and 14 more), 0 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship
+          chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued
+          for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions),
+          I-PERMIT and 5 more. Nothing here is validated, accepted or applied to the real state.'
+        a3:
+          enters: []
+          leaves: []
+          changes: []
+        blocked_activities:
+        - fin-model-build
+        - model-auditor-appoint
+        - technical-proposal
+        - model-audit-review
+        - deviations-review
+        - clarifications
+        - fin-model-freeze
+        - model-audit-opinion
+        - form-4a-prep
+        - form-4e
+        - form-4f
+        - iso-copy
+        - form-4a
+        - assemble-envelope-a
+        - assemble-envelope-b
+        - copies
+        - seal-and-mark
+        - deliver
+        scenarios: []
+      requirements:
+        new: []
+        out: []
+        changed: []
+        secondary: {}
+      stale: []
+      relationships:
+        confirmed dependency: []
+        proposed relationship: []
+        possible impact: []
+        not supplied: []
+      a3:
+        enters: []
+        leaves: []
+      programme: []
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-15)\n\n- ops: 0 (0\
+      \ invalid); provisions: 54 (52 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para3: This Addendum consolidates\
+      \ Volume I Clauses 6.6 and 6.7 without change of substance, amends the definition of Availability Payment\
+      \ and the indexation of the Ava\n- UNRESOLVED ADD-03:1.1: This Addendum is issued under Volume I Clause 5.3\
+      \ and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.\n- UNRESOLVED ADD-03:1.2:\
+      \ A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda\
+      \ Nos. 1 and 2, unless otherwise stated.\n- UNRESOLVED ADD-03:1.3: Requests for clarification received after\
+      \ the time stated in Volume I Clause 5.2 have not been answered.\n- UNRESOLVED ADD-03:2.1: Volume I Clauses\
+      \ 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6  A Bidder may withdraw its\
+      \ Proposal at any time before the Propos\n- UNRESOLVED ADD-03:2.2: The number 6.7 is not reused. The Clauses\
+      \ of Volume I are not renumbered.\n- UNRESOLVED ADD-03:3.1: In Volume V Clause 1.1, ‘the annual payment calculated\
+      \ under Clause 29’ is deleted and ‘the annual payment, expressed at Base Date prices, calculated under Clau\n\
+      - UNRESOLVED ADD-03:3.2: The following new Clause 1.1A is inserted in Volume V after Clause 1.1: ‘1.1A  Base\
+      \ Date means the date falling twenty-eight (28) days before the Proposal Due D\n- UNRESOLVED ADD-03:3.3: Volume\
+      \ V Clause 29.2 is deleted and replaced by the following: ‘29.2  The Availability Payment shall be indexed\
+      \ annually from the Base Date in accordance with S\n- UNRESOLVED ADD-03:3.3(b): (b) from the start of the\
+      \ eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain\
+      \ fixed.’\n- UNRESOLVED ADD-03:3.4: Bidders shall reflect this Section 3 in the Financial Model submitted\
+      \ under Volume I Clause 10.3.\n- UNRESOLVED ADD-03:4.1: In Volume II Clause 3.1, ‘The Authority does not mandate\
+      \ a particular process train.’ is deleted and ‘The treatment process shall include a membrane filtration \n\
+      - UNRESOLVED ADD-03:4.2: Bidders shall reflect this Section 4 in the process design submitted under Volume\
+      \ II Section 3.\n- UNRESOLVED ADD-03:5.1: In Volume II Clause 3.4, ‘not more than 5 OU/m³ at the site boundary’\
+      \ is deleted and ‘not more than the odour concentration shown for the nearest sensitive rece\n- UNRESOLVED\
+      \ ADD-03:5.2: Bidders shall demonstrate compliance with Volume II Clause 3.4, as amended, in the Technical\
+      \ Proposal.\n- UNRESOLVED ADD-03:Q15: No: 15 | Bidder question: Volume II Clause 6.4 requires process data\
+      \ to be retained for not less than seven (7) years. Would a retention period of ten (10) year\n- UNRESOLVED\
+      \ ADD-03:Q16: No: 16 | Bidder question: May a Bidder state ‘no deviations’ in Form 4-E and set out its assumptions\
+      \ on Volume V in the Technical Proposal? | Authority response\n- UNRESOLVED ADD-03:Q17: No: 17 | Bidder question:\
+      \ Where the proposed EPC Contractor is an unincorporated joint venture, which entity must hold the ISO 9001:2015\
+      \ certificate required by\n- UNRESOLVED ADD-03:Q18: No: 18 | Bidder question: Will the Authority provide dispersion\
+      \ modelling inputs for the design of the odour control system? | Authority response: The nearest s\n- UNRESOLVED\
+      \ ADD-03:Q19: No: 19 | Bidder question: Form 4-F requests the Availability Payment for year 1 of operations.\
+      \ Is that figure to be stated in the prices of year 1 of operations\n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder\
+      \ question: Form 4-F states ‘Per Volume V Clause 29.2’ against ‘Indexation basis assumed’. Is any figure to\
+      \ be stated in that row? | Authority res\n- UNRESOLVED ADD-03:Q21: No: 21 | Bidder question: Does the Technical\
+      \ Proposal need to address construction plant in addition to the matters listed in Volume I Clause 9.7? |\
+      \ Authority r\n- UNRESOLVED ADD-03:7.1: The following new Clause 5.6 is inserted in Volume II after Clause\
+      \ 5.5: ‘5.6  The Project Company shall comply with the height limits in Table 5-1, which is rep\n- UNRESOLVED\
+      \ ADD-03:7.2: Table 5-1 is issued in the Arabic language. The Arabic text governs. The English translation\
+      \ at Appendix B is provided for convenience only.\n- UNRESOLVED ADD-03:7.3: A Bidder whose Proposal provides\
+      \ for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the\
+      \ Authority through the\n- UNRESOLVED ADD-03:7.4: Bidders shall reflect Table 5-1 in the Technical Proposal.\n\
+      - UNRESOLVED ADD-03:AppA/para1: Table 5-1 is reproduced below as issued by the Northern Region Airspace Safeguarding\
+      \ Office. The Arabic text governs in accordance with Section 7 of this Addend\n- UNRESOLVED ADD-03:p4-image/hdr-en:\
+      \ Northern Region Airspace Safeguarding Office\n- UNRESOLVED ADD-03:p4-image/hdr-ar: مكتب حماية المجال الجوي\
+      \ بالمنطقة الشمالية\n- UNRESOLVED ADD-03:p4-image/date: التاريخ: ١٠ نوفمبر ٢٠٢٦م\n- UNRESOLVED ADD-03:p4-image/ref:\
+      \ الرقم: ٤٧١/٢٠٢٦\n- UNRESOLVED ADD-03:p4-image/subject: الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه\
+      \ الصرف الصحي المستقلة بوادي السرحان\n- UNRESOLVED ADD-03:p4-image/tender-ref: مناقصة رقم: NUPA/ISTP/2026/014\n\
+      - UNRESOLVED ADD-03:p4-image/table-title: جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع\n- UNRESOLVED\
+      \ ADD-03:p4-image/table-intro: يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو\
+      \ الآتي:\n- UNRESOLVED ADD-03:p4-image/table-header: المنطقة | الوصف الحدّ الأقصى للارتفاع (متر فوق منسوب\
+      \ الأرض الطبيعية) | الإنارة التحذيرية\n- UNRESOLVED ADD-03:p4-image/row-a: أ | الجزء من الموقع الواقع ضمن\
+      \ مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع | ٢٥ مطلوبة\n- UNRESOLVED ADD-03:p4-image/row-b: ب | باقي مساحة الموقع\
+      \ ٤٠ | مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً\n- UNRESOLVED ADD-03:p4-image/notes-head: ملاحظات:\n- UNRESOLVED\
+      \ ADD-03:p4-image/note1: ١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات\
+      \ ومعدّات الإنشاء.\n- UNRESOLVED ADD-03:p4-image/note2: ٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال\
+      \ التسوية والردم.\n- UNRESOLVED ADD-03:p4-image/note3: ٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل\
+      \ من تركيب أي رافعة في الموقع.\n- UNRESOLVED ADD-03:p4-image/signatory: مدير المكتب\n- UNRESOLVED ADD-03:p4-image/stamp:\
+      \ \n- UNRESOLVED ADD-03:AppA/para2: End of reproduction.\n- UNRESOLVED ADD-03:AppB/para1: This translation\
+      \ is provided for convenience only. The Arabic text of Table 5-1 at Appendix A governs.\n- UNRESOLVED ADD-03:T5-1/a:\
+      \ Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height\
+      \ (m above finished ground level): 25 | Obstacle lighting\n- UNRESOLVED ADD-03:T5-1/b: Zone: B | Description:\
+      \ The remainder of the site | Maximum height (m above finished ground level): 40 | Obstacle lighting: Required\
+      \ for any part exceeding 30 m\n- UNRESOLVED ADD-03:T5-1/notes: Notes to Table 5-1:\n- UNRESOLVED ADD-03:T5-1/note(1):\
+      \ (1)  These limits apply to all permanent structures, including stacks.\n- UNRESOLVED ADD-03:T5-1/note(2):\
+      \ (2)  Height is measured from finished ground level after grading and filling.\n- UNRESOLVED ADD-03:T5-1/note(3):\
+      \ (3)  The Office shall be notified at least thirty (30) days before any crane is erected at the site.\n-\
+      \ cover summary vs provisions (C28, report only): 1 finding(s)\n  - no summary: ADD-03's cover has no 'This\
+      \ Addendum ...' sentence; nothing to compare\n\n### Validated vs candidate (partial should not mean useless)\n\
+      \n- validated (unchanged, ADD-02): `<outputs>/a3/a3.pdf` (one page), `<outputs>/a5/`\n- candidate (CANDIDATE\
+      \ — NOT VALIDATED, ADD-03 as proposed): `<outputs>/a3/a3_candidate.pdf` / `.md`, `<outputs>/a5/candidate/`\n\
+      \n**What may be changing.** ADD-03 is PARTIAL: 52 of 54 provisions unresolved, so A3 and A5 stay validated\
+      \ at ADD-02. If the 0 op(s) that are valid there stood (each still a proposal: none), A3 would gain 0 row(s)\
+      \ (none), lose 0 (none) and change 0 (none); A5, replanned at ADD-03's issue date (2026-11-15), would move\
+      \ the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 0 REVIEW through relationships.\
+      \ Not settled: 18 activities blocked by an unresolved row (fin-model-build, model-auditor-appoint, technical-proposal,\
+      \ model-audit-review and 14 more), 0 STALE row(s), 0 obligation(s) reaching no output (C46), 0 relationship\
+      \ chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued for\
+      \ the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT\
+      \ and 5 more. Nothing here is validated, accepted or applied to the real state.\n\n## Requirements\n\n- new:\
+      \ 0; out of force: 0; changed: 0\n\n\n## Stale readings and decisions\n\n- no row is STALE\n\n## Obligations\
+      \ not reaching the outputs (C46)\n\n- none\n\n## Reached through relationships (indirect: for review, not\
+      \ direct citations)\n\nCurated links (relationships file) followed from what changed. The requirements above\
+      \ cite a changed unit; these are reached through another provision, in three classes that are never merged.\
+      \ A5 marks the activities that serve them REVIEW with their dates unchanged.\n\n### Confirmed dependency (0)\n\
+      - none\n\n### Proposed relationship (0)\n- none\n\n### Possible impact (0)\n- none\n\n### Referenced but not\
+      \ supplied: conclusions in play that cannot be established (0)\n- none\n\n## Disqualifiers (A3)\n\n- no change\n\
+      \n## Programme impact (status date 2026-10-22 -> 2026-11-15)\n\n- no activity changes\n- FEASIBILITY lcc-ratio:\
+      \ INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD\n- FEASIBILITY lcc-certificate: INFEASIBLE by 12 WD -> INFEASIBLE\
+      \ by 28 WD\n- FEASIBILITY fin-model-build: OK -> INFEASIBLE by 14 WD\n- FEASIBILITY model-auditor-appoint:\
+      \ OK -> INFEASIBLE by 13 WD\n- FEASIBILITY pcg-wording: OK -> INFEASIBLE by 13 WD\n- FEASIBILITY technical-proposal:\
+      \ OK -> INFEASIBLE by 13 WD\n- FEASIBILITY ground-dd: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY lender-terms:\
+      \ OK -> INFEASIBLE by 9 WD\n- FEASIBILITY completion-certs: OK -> INFEASIBLE by 8 WD\n- FEASIBILITY model-audit-review:\
+      \ OK -> INFEASIBLE by 13 WD\n- FEASIBILITY poa-resolutions: OK -> INFEASIBLE by 8 WD\n- FEASIBILITY references:\
+      \ OK -> INFEASIBLE by 7 WD\n- FEASIBILITY bond-approval: OK -> INFEASIBLE by 6 WD\n- FEASIBILITY deviations-review:\
+      \ OK -> INFEASIBLE by 5 WD\n- FEASIBILITY om-evidence: OK -> INFEASIBLE by 3 WD\n- FEASIBILITY pcg-execution:\
+      \ OK -> INFEASIBLE by 13 WD\n- FEASIBILITY poa: OK -> INFEASIBLE by 8 WD\n- FEASIBILITY clarifications: OK\
+      \ -> DEADLINE PASSED\n- FEASIBILITY fin-statements: OK -> INFEASIBLE by 1 WD\n- FEASIBILITY fin-model-freeze:\
+      \ OK -> INFEASIBLE by 14 WD\n- FEASIBILITY investment-licence: OK -> INFEASIBLE by 8 WD\n- FEASIBILITY model-audit-opinion:\
+      \ OK -> INFEASIBLE by 14 WD\n- FEASIBILITY form-4b-prep: OK -> INFEASIBLE by 7 WD\n- FEASIBILITY bond-issue:\
+      \ OK -> INFEASIBLE by 6 WD\n- FEASIBILITY fin-standing: OK -> INFEASIBLE by 1 WD\n- FEASIBILITY form-4c-sign:\
+      \ OK -> INFEASIBLE by 6 WD\n- FEASIBILITY fin-assumptions: OK -> INFEASIBLE by 11 WD\n- FEASIBILITY form-4e:\
+      \ OK -> INFEASIBLE by 5 WD\n- FEASIBILITY form-4f: OK -> INFEASIBLE by 11 WD\n- FEASIBILITY form-4a: OK ->\
+      \ INFEASIBLE by 4 WD\n- FEASIBILITY form-4b: OK -> INFEASIBLE by 7 WD\n- FEASIBILITY form-4g-sign: OK -> INFEASIBLE\
+      \ by 4 WD\n- FEASIBILITY assemble-envelope-a: INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD\n- FEASIBILITY assemble-envelope-b:\
+      \ OK -> INFEASIBLE by 14 WD\n- FEASIBILITY copies: INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD\n- FEASIBILITY\
+      \ seal-and-mark: INFEASIBLE by 12 WD -> INFEASIBLE by 28 WD\n- FEASIBILITY deliver: INFEASIBLE by 12 WD ->\
+      \ INFEASIBLE by 28 WD\n"
+    findings:
+    - '2 provisions with amendment language carry no change (0 contradict a change the pattern drafter drafts from
+      their words: invalid; 2 need a person): ADD-03:1.2, ADD-03:2.2'
+  reference: null
+  findings:
+  - '2 provisions with amendment language carry no change (0 contradict a change the pattern drafter drafts from
+    their words: invalid; 2 need a person): ADD-03:1.2, ADD-03:2.2'
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind05-20261005T025444Z-analysis-001-critic
+    route: host
+    items:
+    - item: ADD-03/cover/para3
+      agrees: true
+      concerns: 3
+    - item: ADD-03/1.1
+      agrees: true
+      concerns: 1
+    - item: ADD-03/1.2
+      agrees: true
+      concerns: 1
+    - item: ADD-03/1.3
+      agrees: true
+      concerns: 1
+    - item: ADD-03/2.1(a)
+      agrees: true
+      concerns: 3
+    - item: ADD-03/2.1(b)
+      agrees: true
+      concerns: 1
+    - item: ADD-03/2.2
+      agrees: true
+      concerns: 1
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

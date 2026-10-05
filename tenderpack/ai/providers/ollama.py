@@ -89,7 +89,12 @@ class OllamaProvider:
         if why is None and self.structured_mode != "native":
             why = f"routes.ollama.structured_output.mode is {self.structured_mode!r}"
         if why is None and request.tools and not self.structured_with_tools:
-            return None             # a tool-use turn: `format` is withheld (with_tools false; see the module docstring)
+            # a tool-use turn: `format` is withheld (with_tools false; see the module docstring). Session 11: said, once
+            notice("structured_output_withheld", "native structured output withheld on turns that offer tools "
+                                                 "(routes.ollama.structured_output.with_tools is false until checked on "
+                                                 "the Mac); the answer is parsed and validated locally from text",
+                   route="ollama", model=self.model)
+            return None
         if why is None:
             try:
                 return SO.for_provider(request.response_schema, "ollama")

@@ -1,7 +1,7 @@
 # A1-A5 outputs (WORKING DRAFT)
 
 Structural checks: **ok**. Release: **WORKING DRAFT (not releasable)**. Validated state: **ADD-02**.
-Structurally checked does not mean reviewed or approved by a person. Interpretations and ops are PROPOSED; image readings are PENDING the owner's review.
+Structurally checked does not mean reviewed or approved by a person. Interpretations and ops are PROPOSED; image readings approved by a named reviewer: VOL-II-p3-r1, VOL-IV-p6-r1 (see build/coverage.md).
 
 ## What blocks a release (`outputs --strict`)
 
@@ -31,7 +31,8 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C40 | pass | every A5 activity cites an A1 row in force |
 | C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
 | C45 | pass | every dependency and lead time is defined |
-| C43 | pass | A3 fits one page; smallest text 8.12 pt (scale 0.955) |
+| C43 | pass | A3 fits one page; smallest text 7.72 pt (scale 0.908) |
+| C52 | pass | 2 confirmed translation(s) of approved readings; none called 'not reviewed' in the outputs |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 15 ops; invalid: none |
 | C20 ADD-02 | ok | 40 provisions; unresolved or unaccounted: none |
@@ -39,6 +40,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C11 | ok | STALE rows: none |
 | C30 | ok | 46 date/period phrases in force; uncovered: none; explicitly not computed: none |
 | C32 | ok | 5 date rule(s) with unstated counting conventions: every reading shown (A1 Dates), planning uses the configured policy |
-| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2, understated 1; report only, the summary is never applied (A2) |
+| C28 ADD-01 | REPORTED | cover summary (5 claims) vs provisions: omitted 2; report only, the summary is never applied (A2) |
 | C28 ADD-02 | REPORTED | cover summary (7 claims) vs provisions: consequence not mentioned 2, omitted 3, understated 1; report only, the summary is never applied (A2) |
 | C46 | ok | every new or amended obligation reaches A1, A3 where it carries a consequence, and A5 |
+| C48 | ok | 17 A3 (bid-out) rows in force: 15 carried by the A5 programme, 2 excepted with a reason; not carried: none |

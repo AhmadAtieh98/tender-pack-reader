@@ -1,0 +1,240 @@
+[ADD-03-run-host-blind04-s11-20261004T222214Z] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p4-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-blind04-s11-20261004T222214Z] readings ...
+  reading-ADD-03-p4-r1: done (interpretation_pending; /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/candidate/curation/readings/ADD-03-p4-r1.yaml)
+  ingest with the proposed readings: ok (613 units; readings PENDING HUMAN REVIEW: ['ADD-03-p4-r1'])
+  candidate built: 70 provisions of ADD-03 (+19 structural units listed)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] analysis ...
+  70 provisions in 10 batch(es) of at most 8
+  analysis-001: done (9 item(s); run ADD-03-host-20261004T223041Z-3920)
+  analysis-001 critic: done (5 reviewed, 0 disagree)
+  analysis-002: done (5 item(s); run ADD-03-host-20261004T223447Z-d132)
+  analysis-002 critic: done (1 reviewed, 0 disagree)
+  analysis-004: done (17 item(s); run ADD-03-host-20261004T224836Z-24d7)
+  analysis-004 critic: done (13 reviewed, 1 disagree)
+  analysis-005: done (9 item(s); run ADD-03-host-20261004T225700Z-ac91)
+  analysis-005 critic: done (5 reviewed, 0 disagree)
+  analysis-009: done (1 item(s); run ADD-03-host-20261004T225829Z-8021)
+  analysis-009 critic: done (1 reviewed, 0 disagree)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] validation ...
+  combined set: 41 item(s); 70/70 provisions accounted for; {'evidence_verified': 11, 'interpretation_pending': 27, 'insufficient_evidence': 1, 'escalated': 2}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream ...
+  downstream-001: done (15 item(s))
+  downstream-002: done (14 item(s))
+=== RESUME after the container restart, 23:12:40 UTC ===
+note: the run lock of process 5474 (no longer running) was taken over
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream ...
+  downstream-003: done (0 item(s))
+  downstream-004: done (0 item(s))
+  downstream-005: done (0 item(s))
+  downstream: 51 task(s) {'row_reading': 30, 'row_new': 8, 'clarification_item': 4, 'activity': 8, 'escalation': 1}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream_validation ...
+  downstream items: {'escalated': 1, 'interpretation_pending': 17, 'insufficient_evidence': 11}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] critic ...
+  downstream-001 critic: done (3 reviewed, 3 disagree)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] promotion ...
+  promoted into the candidate: 25 op(s), 7 disposition(s), 1 unresolved, 0 new row(s), 14 reading(s), 2 issue(s), 0 activit(y/ies), 0 clarification(s), 1 relationship(s)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] pin ...
+[ADD-03-run-host-blind04-s11-20261004T222214Z] check_register ...
+  check-register: exit 1, 15 finding(s) {'C46': 15}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/candidate/out (exit 0; 101 file(s) carry the banner)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] diff ...
+[ADD-03-run-host-blind04-s11-20261004T222214Z] review ...
+timings (wall clock per step):
+  ingest                     16.7 s  done
+  readings                  204.8 s  done
+  analysis                 1968.6 s  done
+  validation                  3.9 s  done
+  downstream                 48.3 s  done
+  downstream_validation       0.4 s  done
+  critic                     15.4 s  done
+  promotion                  15.4 s  done
+  pin                         1.3 s  done
+  check_register              3.8 s  done
+  outputs                    85.1 s  done
+  diff                        2.5 s  done
+  review                      1.5 s  done
+  total (steps)            2367.7 s  (39.5 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind04-s11-20261004T222214Z: partial (1 provision(s) unresolved in the candidate (listed first in the review packet); 27 of 51 downstream task(s) unanswered: row:VOL-IV-F4D-06, row:VOL-IV-F4D-07, row:VOL-IV-F4D-08, row:VOL-IV-F4F-01, row:VOL-IV-F4F-02, row:VOL-V-12.1-01, c46:ADD-03/cover/para3, c46:ADD-03/4.1(a) …; 7 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05; check-register on the candidate: exit 1, 15 finding(s) {'C46': 15}; C46: [C46] ADD-03/cover/para3: [A1] ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'This Addendum amends the…; [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/4.1(a): [A1] ADD-03/4.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'In Volume V Clause 18.1, ‘SAR …)
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "1 provision(s) unresolved in the candidate (listed first in the review packet); 27 of 51 downstream task(s) unanswered: row:VOL-IV-F4D-06, row:VOL-IV-F4D-07, row:VOL-IV-F4D-08, row:VOL-IV-F4F-01, row:VOL-IV-F4F-02, row:VOL-V-12.1-01, c46:ADD-03/cover/para3, c46:ADD-03/4.1(a) …; 7 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05; check-register on the candidate: exit 1, 15 finding(s) {'C46': 15}; C46: [C46] ADD-03/cover/para3: [A1] ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'This Addendum amends the…; [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/4.1(a): [A1] ADD-03/4.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'In Volume V Clause 18.1, ‘SAR …",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "provisions": {
+  "validated": 70
+ },
+ "timings": {
+  "ingest": 16.7,
+  "readings": 204.8,
+  "analysis": 1968.6,
+  "validation": 3.9,
+  "downstream": 48.3,
+  "downstream_validation": 0.4,
+  "critic": 15.4,
+  "promotion": 15.4,
+  "pin": 1.3,
+  "check_register": 3.8,
+  "outputs": 85.1,
+  "diff": 2.5,
+  "review": 1.5
+ },
+ "total_seconds": 2367.7,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "1 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "27 of 51 downstream task(s) unanswered: row:VOL-IV-F4D-06, row:VOL-IV-F4D-07, row:VOL-IV-F4D-08, row:VOL-IV-F4F-01, row:VOL-IV-F4F-02, row:VOL-V-12.1-01, c46:ADD-03/cover/para3, c46:ADD-03/4.1(a) …",
+   "7 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05",
+   "check-register on the candidate: exit 1, 15 finding(s) {'C46': 15}; C46: [C46] ADD-03/cover/para3: [A1] ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'This Addendum amends the…; [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/4.1(a): [A1] ADD-03/4.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'In Volume V Clause 18.1, ‘SAR …"
+  ]
+ },
+ "approval": "none"
+}
+EXIT 0
+=== RESUME 2 after the E135 fix, 23:19:19 UTC ===
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream ...
+  downstream-003: deferred (deferred: host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 2:30am (UTC)); the host names a reset in 11264.9 s, beyond 300 s)
+DEFERRED: rate limit: downstream-003 was deferred after the bounded backoff (host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 2:30am (UTC)); the host names a reset in 11264.9 s, beyond 300 s); everything done so far is checkpointed; the provider names a reset in about 188 min. Resume later: `tenderpack ai resume ADD-03-run-host-blind04-s11-20261004T222214Z` (done batches are not asked again)
+timings (wall clock per step):
+  ingest                     16.7 s  done
+  readings                  204.8 s  done
+  analysis                 1968.6 s  done
+  validation                  3.9 s  done
+  downstream                222.6 s  stopped
+  downstream_validation       0.4 s  pending
+  critic                     15.4 s  pending
+  promotion                  15.4 s  pending
+  pin                         1.3 s  pending
+  check_register              3.8 s  pending
+  outputs                    85.1 s  pending
+  diff                        2.5 s  pending
+  review                      1.5 s  pending
+  total (steps)            2542.0 s  (42.4 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind04-s11-20261004T222214Z: deferred (rate limit: downstream-003 was deferred after the bounded backoff (host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 2:30am (UTC)); the host names a reset in 11264.9 s, beyond 300 s); everything done so far is checkpointed; the provider names a reset in about 188 min. Resume later: `tenderpack ai resume ADD-03-run-host-blind04-s11-20261004T222214Z` (done batches are not asked again))
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "addendum": "ADD-03",
+ "status": "deferred",
+ "status_reason": "rate limit: downstream-003 was deferred after the bounded backoff (host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 2:30am (UTC)); the host names a reset in 11264.9 s, beyond 300 s); everything done so far is checkpointed; the provider names a reset in about 188 min. Resume later: `tenderpack ai resume ADD-03-run-host-blind04-s11-20261004T222214Z` (done batches are not asked again)",
+ "exit_code": 5,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "provisions": {
+  "validated": 70
+ },
+ "timings": {
+  "ingest": 16.7,
+  "readings": 204.8,
+  "analysis": 1968.6,
+  "validation": 3.9,
+  "downstream": 222.6,
+  "downstream_validation": 0.4,
+  "critic": 15.4,
+  "promotion": 15.4,
+  "pin": 1.3,
+  "check_register": 3.8,
+  "outputs": 85.1,
+  "diff": 2.5,
+  "review": 1.5
+ },
+ "total_seconds": 2542.0,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "promotion into the candidate did not run (step pending)",
+   "the downstream step did not run (step stopped)",
+   "downstream batch downstream-003 deferred (deferred: host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 2:30am (UTC)); the host names a reset in 11264.9 s, beyond 300 s): 12 task(s) not asked",
+   "downstream batch downstream-004 pending (the host session ended without an answer: refused: another orchestrator holds ADD-03: STALE lock (its process 5474 is no longer running); a person may remove it with --break-lock --by \"Your Name\"): 12 task(s) not asked",
+   "downstream batch downstream-005 pending (the host session ended without an answer: refused: another orchestrator holds ADD-03: STALE lock (its process 5474 is no longer running); a person may remove it with --break-lock --by \"Your Name\"): 3 task(s) not asked",
+   "27 of 51 downstream task(s) unanswered: row:VOL-IV-F4D-06, row:VOL-IV-F4D-07, row:VOL-IV-F4D-08, row:VOL-IV-F4F-01, row:VOL-IV-F4F-02, row:VOL-V-12.1-01, c46:ADD-03/cover/para3, c46:ADD-03/4.1(a) …",
+   "7 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05",
+   "check-register did not run on the candidate (step pending)",
+   "the candidate outputs were not built (step pending)"
+  ]
+ },
+ "approval": "none"
+}
+EXIT 5
+=== RESUME 3 after the plan's reset, 02:33:04 UTC ===
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream ...
+  downstream-003: done (25 item(s))
+  downstream-004: done (18 item(s))
+  downstream-005: done (3 item(s))
+  downstream: 51 task(s) {'row_reading': 30, 'row_new': 8, 'clarification_item': 4, 'activity': 8, 'escalation': 1}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] downstream_validation ...
+  downstream items: {'escalated': 2, 'interpretation_pending': 38, 'insufficient_evidence': 29, 'invalid': 4, 'conflicting': 1, 'evidence_verified': 1}; held back 9
+[ADD-03-run-host-blind04-s11-20261004T222214Z] critic ...
+[ADD-03-run-host-blind04-s11-20261004T222214Z] promotion ...
+  promoted into the candidate: 25 op(s), 7 disposition(s), 1 unresolved, 3 new row(s), 20 reading(s), 6 issue(s), 0 activit(y/ies), 4 clarification(s), 1 relationship(s)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] pin ...
+[ADD-03-run-host-blind04-s11-20261004T222214Z] check_register ...
+  check-register: exit 1, 12 finding(s) {'disposition': 1, 'C46': 11}
+[ADD-03-run-host-blind04-s11-20261004T222214Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/candidate/out (exit 0; 101 file(s) carry the banner)
+[ADD-03-run-host-blind04-s11-20261004T222214Z] diff ...
+[ADD-03-run-host-blind04-s11-20261004T222214Z] review ...
+timings (wall clock per step):
+  ingest                     16.7 s  done
+  readings                  204.8 s  done
+  analysis                 1968.6 s  done
+  validation                  3.9 s  done
+  downstream               1319.4 s  done
+  downstream_validation       1.2 s  done
+  critic                     16.1 s  done
+  promotion                  36.5 s  done
+  pin                         2.5 s  done
+  check_register              7.4 s  done
+  outputs                   186.3 s  done
+  diff                        5.0 s  done
+  review                      8.6 s  done
+  total (steps)            3777.0 s  (63.0 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind04-s11-20261004T222214Z: partial (1 provision(s) unresolved in the candidate (listed first in the review packet); 17 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05, c46:ADD-03/6.1 …; check-register on the candidate: exit 1, 12 finding(s) {'disposition': 1, 'C46': 11}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/6.1: [A1] ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Table 1-1 (revised) and the Notes to…; [C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a r…)
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "1 provision(s) unresolved in the candidate (listed first in the review packet); 17 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05, c46:ADD-03/6.1 …; check-register on the candidate: exit 1, 12 finding(s) {'disposition': 1, 'C46': 11}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/6.1: [A1] ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Table 1-1 (revised) and the Notes to…; [C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a r…",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z",
+ "provisions": {
+  "validated": 70
+ },
+ "timings": {
+  "ingest": 16.7,
+  "readings": 204.8,
+  "analysis": 1968.6,
+  "validation": 3.9,
+  "downstream": 1319.4,
+  "downstream_validation": 1.2,
+  "critic": 16.1,
+  "promotion": 36.5,
+  "pin": 2.5,
+  "check_register": 7.4,
+  "outputs": 186.3,
+  "diff": 5.0,
+  "review": 8.6
+ },
+ "total_seconds": 3777.0,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind04-s11-20261004T222214Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "1 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "17 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-T1-1-N3-01, row:VOL-II-5.2-01, row:VOL-IV-F4D-01, row:VOL-IV-F4D-02, row:VOL-IV-F4D-03, row:VOL-IV-F4D-04, row:VOL-IV-F4D-05, c46:ADD-03/6.1 …",
+   "check-register on the candidate: exit 1, 12 finding(s) {'disposition': 1, 'C46': 11}; C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['liquidated damages'] that no row's consequence carries at ADD-03: 'This Addendu…; [C46] ADD-03/6.1: [A1] ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Table 1-1 (revised) and the Notes to…; [C46] ADD-03/8.1: [A1] ADD-03/8.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-I:9.1; a r…"
+  ]
+ },
+ "approval": "none"
+}
+EXIT 0

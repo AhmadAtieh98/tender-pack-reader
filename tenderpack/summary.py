@@ -46,6 +46,17 @@ target heading. Only ops of a kind the verb allows are candidates, and the best-
 descriptive claim names one subject. A deletion of words with nothing put in their place is a deletion
 ("removes ..."), not an amendment. Claims are split at every ", <verb>" and " and <verb>" ("removes ..., re-letters
 Volume I Clause 9.1").
+
+Direction words (session 11, blind rehearsal 04 E1: "relaxes the velocity limit" for a lowered maximum). A claim whose
+verb is one of DIRECTION_VERBS (relaxes, tightens, increases, reduces, extends, shortens) is matched, when its words
+find no op, to the op changing one figure whose name in the target shares a word with it ('a maximum velocity of');
+direction_claims() pairs it with that op's old and new figures and the sense of the limit in the target (limit_sense:
+"maximum", "not more than", "minimum", "at least" ...). Where the numbers and the sense decide it, C28 reports
+"contradicted by the numbers" (a lowered maximum is a tightening); where they do not (a figure that becomes a
+percentage of another, no sense words), an `unchecked` finding says why and critic_direction_items() hands the claim,
+with its evidence, to the critic. Clarification answers (session 11): classify_answer() reads an answer against the
+units it annotates (none | confirms | interprets | adds | changes, with the words that would change what a row
+requires); confirms_check() is the controller's semantic check of an `annotate confirms`.
 """
 from __future__ import annotations
 
@@ -61,7 +72,7 @@ VERBS = {
     "amends": "change", "corrects": "change", "extends": "change", "reduces": "change", "increases": "change",
     "modifies": "change", "revises": "change", "varies": "change", "updates": "change",
     # session 10 (blind rehearsal 04): verbs a cover uses for a changed limit, a split clause or a conditional change
-    "relaxes": "change", "tightens": "change", "divides": "change", "splits": "change",
+    "relaxes": "change", "tightens": "change", "divides": "change", "splits": "change", "shortens": "change",
     "makes a conditional amendment to": "change", "makes conditional amendments to": "change",
     "deletes": "delete", "removes": "delete",
     "reinstates": "reinstate", "restores": "reinstate",
@@ -538,9 +549,16 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                                       for x in cand if cls(x) in allowed]
                             best = max((n for n, _ in scored), default=(0, 0))
                             ih = [x for n, x in scored if n[0] >= need and n == best]
+                            # no-effect provisions that do what the claim says ('publishes the minutes': ADD-01 1.1 and
+                            # Appendix B), whether or not an op also matched (restored: session 11 audit A2-8)
                             if "none" in allowed:
                                 ip = [p["provision"] for p in no_effect
                                       if len(words & set(_words(f"{p['text']} {section(p['provision'])}"))) >= need]
+                        if words and not ih and c["verb"] in DIRECTION_VERBS:
+                            # session 11: a direction claim names a quantity ('the velocity limit'): the op that
+                            # changes one figure whose name in the target ('a maximum velocity of 2.0 m/s') shares a
+                            # word with the claim
+                            ih = _quantity_match(words, [x for x in cand if cls(x) in allowed], prev)
                     if not ih and not ip:
                         missing.append(item)
                     hit += [x for x in ih if x not in hit]
@@ -584,13 +602,17 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                 matched_by.setdefault(x.op.id, []).append(c["n"])
                 covered_sections.add(section(x.op.provision))
                 o, kind = x.op, cls(x)
-                if not x.applied:
+                if not x.applied and not getattr(x, "conditional_pending", False):   # a held conditional op: as stated
                     rec["findings"].append({"kind": "claimed, not applied", "claim": c["n"], "op": o.id,
                                             "provision": o.provision, "detail":
                                             f"'{c['text']}' describes {o.id}, which is "
                                             f"{'rejected by a person (withheld)' if x.withdrawn else 'INVALID'} and was "
                                             "not applied" + (f" ({_failed(x)})" if not x.valid else "")})
-                if c["kind"] in ("answers", "info") and kind in CHANGES | {"obligation"}:
+                ac = (x.details.get("answer_class") or {}).get("class")
+                if c["kind"] in ("answers", "info") and kind in CHANGES | {"obligation"} and \
+                        not (kind == "obligation" and ac in ("none", "confirms", "interprets")):
+                    # (session 11 audit, A2-6: an answer read against the units it restates or annotates that only
+                    # confirms or interprets them is not an understated obligation)
                     rec["findings"].append({"kind": "understated", "claim": c["n"], "op": o.id, "provision": o.provision,
                                             "detail": f"'{c['text']}', but {o.id} {_does(o)}: "
                                                       f"'{_gist(s.state[o.provision].text if o.provision in s.state else '')}'"})
@@ -621,8 +643,11 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                 rec["findings"].append({"kind": "omitted", "op": o.id, "provision": o.provision, "detail":
                                         f"{o.id} {_does(o)}; the summary does not mention it: '{_gist(ptext)}'"
                                         + (f" (it states a consequence: '{cons}')" if cons else "")
-                                        + ("" if x.applied else " [op withheld after a rejection: not applied]"
+                                        + ("" if x.applied else " [conditional: not in effect unless its trigger "
+                                           "occurs]" if getattr(x, "conditional_pending", False) else
+                                           " [op withheld after a rejection: not applied]"
                                            if x.valid else " [op INVALID: not applied]")})
+        _check_direction(rec, s, prev)                # session 11: the cover's direction words against the numbers
         with_op = {x.op.provision for x in s.ops}
         for c in unresolved:
             if c["provision"] in with_op:              # it has an op that failed: reported with that op, not here
@@ -677,3 +702,311 @@ def _gist(t: str) -> str:
     """The words a person needs: an answer's response rather than the question; up to 240 characters."""
     m = re.search(r"Authority response:\s*(.*)", t or "", re.S)
     return _short(m.group(1) if m else t, 240)
+
+
+# ---------------------------------------------------------------------------------------------- direction words (s11)
+# Blind rehearsal 04 (E1): the cover said "relaxes the velocity limit" for a lowered MAXIMUM velocity (2.0 -> 1.5 m/s),
+# a tightening. A direction verb is checked against the op's old and new figures and the sense of the limit in the
+# target (the words just before the old figure: "maximum", "not more than", "minimum", "at least" ...). Where the
+# numbers and the sense decide it, C28 reports "contradicted by the numbers"; where they do not (a figure that becomes a
+# percentage of another figure, no sense words, several figures), the claim is left for the critic and a person
+# (critic_direction_items), never decided here.
+DIRECTION_VERBS = {"relaxes": "relax", "tightens": "tighten", "increases": "up", "reduces": "down", "extends": "up",
+                   "shortens": "down"}
+_CEILING = re.compile(r"\b(?:maximum|max\.|shall not exceed|not (?:to )?exceed|not more than|no more than|at most|up to|"
+                      r"ceiling|upper limit|capped at|cap of)\b", re.I)
+_FLOOR = re.compile(r"\b(?:minimum|min\.|not less than|no less than|at least|floor|lower limit)\b", re.I)
+
+
+def _name_before(text: str, old: str) -> str:
+    """The words naming the quantity just before `old` in `text`, within its clause ('with a maximum velocity of')."""
+    t = normalize_latin(text or "")
+    i = t.lower().find(normalize_latin(old or "").lower())
+    if i < 0:
+        return ""
+    seg = re.split(r"[.;,:]|\band\b|\bwith\b(?=\s+(?:a|an|the)\b)", t[max(0, i - 120):i])[-1]
+    return seg.strip()
+
+
+def limit_sense(text: str, old: str) -> tuple[str | None, str]:
+    """('maximum' | 'minimum' | None, the words that say so): the sense of the limit whose figure `old` is in `text`,
+    from the nearest qualifier before it in the same clause, else 'or less' / 'or more' right after it."""
+    t = normalize_latin(text or "")
+    i = t.lower().find(normalize_latin(old or "").lower())
+    if i < 0:
+        return None, ""
+    seg = re.split(r"[.;]|\band\b(?=\s+(?:a|an|the)\b)", t[max(0, i - 120):i])[-1]
+    cands = [(m.end(), "maximum", m.group(0)) for m in _CEILING.finditer(seg)] + \
+            [(m.end(), "minimum", m.group(0)) for m in _FLOOR.finditer(seg)]
+    if cands:
+        _, sense, words = max(cands)
+        return sense, words
+    after = t[i + len(old): i + len(old) + 20].lower()
+    if re.match(r"\s*or (?:less|lower|below)\b", after):
+        return "maximum", "or less"
+    if re.match(r"\s*or (?:more|greater|higher|above)\b", after):
+        return "minimum", "or more"
+    return None, ""
+
+
+def _quantity_match(words: set[str], cand: list, prev) -> list:
+    """Ops changing one figure whose name in the target shares the most words with a direction claim (session 11)."""
+    best, out = 0, []
+    for x in cand:
+        o = x.op
+        if o.type not in ("replace_text", "set_value") or o.target not in prev:
+            continue
+        old = o.old if o.type == "replace_text" else str((prev[o.target].cells or {}).get(o.column) or "")
+        name = _name_before(prev[o.target].text, old) if o.type == "replace_text" else \
+            f"{o.column} {prev[o.target].label or ''} {next(iter((prev[o.target].cells or {}).values()), '')}"
+        n = len(words & set(_words(name)))
+        if n > best:
+            best, out = n, [x]
+        elif n == best and n:
+            out.append(x)
+    return out
+
+
+def _old_new(x, prev) -> tuple[str, str, str]:
+    """(old words, new words, target text before) of a figure-changing op."""
+    o = x.op
+    tgt = prev.get(o.target)
+    text = tgt.text if tgt is not None else ""
+    if o.type == "set_value":
+        old = str(x.details.get("old_value") or ((tgt.cells or {}).get(o.column) if tgt is not None else "") or "")
+        unit = next((v for c, v in ((tgt.cells or {}) if tgt is not None else {}).items() if c.lower() == "unit"), "")
+        return (f"{old} {unit}".strip(), f"{o.new or ''} {unit}".strip(), text)
+    return o.old or "", o.new or "", text
+
+
+def direction_claims(rec: dict, stage, prev) -> list[dict]:
+    """One verdict per (cover claim with a direction verb, op it matched) of a summary_check record: {claim, verb,
+    claim_text, op, provision, target, old, new, old_value, new_value, unit, moved (raised | lowered | unchanged), sense
+    (maximum | minimum), sense_words, effect (tightens | relaxes), verdict (supported | contradicted | undecided), why,
+    evidence {provision_text, target_text_before}}."""
+    from .calc import parse_quantity
+    from .dates import parse_date
+    by_id = {x.op.id: x for x in stage.ops}
+    out = []
+    for c in rec.get("claims") or []:
+        want = DIRECTION_VERBS.get(c.get("verb"))
+        if not want:
+            continue
+        for oid in c.get("matched") or []:
+            x = by_id.get(oid)
+            if x is None:
+                continue
+            o = x.op
+            old, new, text = _old_new(x, prev)
+            v = {"claim": c["n"], "verb": c["verb"], "claim_text": c["text"], "op": o.id, "provision": o.provision,
+                 "target": o.target, "old": old, "new": new, "old_value": None, "new_value": None, "unit": "",
+                 "moved": None, "sense": None, "sense_words": "", "effect": None, "verdict": "undecided", "why": "",
+                 "evidence": {"provision_text": stage.state[o.provision].text if o.provision in stage.state else "",
+                              "target_text_before": text}}
+            out.append(v)
+            if o.type not in ("replace_text", "set_value") or not old or not new:
+                v["why"] = f"{o.id} does not replace one figure by another ({o.type})"
+                continue
+            try:
+                d_old, d_new = parse_date(old), parse_date(new)
+            except ValueError:
+                d_old = d_new = None
+            if d_old and d_new:
+                a, b, unit = d_old[0], d_new[0], "date"
+            else:
+                qo, qn = parse_quantity(old), parse_quantity(new)
+                if len({q[0] for q in qo}) != 1 or len({q[0] for q in qn}) != 1:
+                    v["why"] = (f"the old and new words do not each state one figure ('{_short(old, 60)}' -> "
+                                f"'{_short(new, 60)}')")
+                    continue
+                (a, ua), (b, ub) = qo[0], qn[0]
+                if ua != ub and ua and ub:
+                    v["why"] = (f"the figure changes kind ({_short(old, 50)} -> {_short(new, 60)}): whether the "
+                                "requirement is higher or lower depends on another figure, which the numbers do not give")
+                    continue
+                unit = ua or ub
+            v.update({"old_value": str(a), "new_value": str(b), "unit": unit,
+                      "moved": "raised" if b > a else "lowered" if b < a else "unchanged"})
+            if want in ("up", "down"):
+                ok = (v["moved"] == "raised") == (want == "up") and v["moved"] != "unchanged"
+                v["verdict"] = "supported" if ok else "contradicted"
+                v["why"] = f"{o.id} {v['moved']} the figure ({old} -> {new})"
+                continue
+            sense, words = limit_sense(text, old)
+            v["sense"], v["sense_words"] = sense, words
+            if sense is None or v["moved"] == "unchanged":
+                v["why"] = ("the figure is unchanged" if v["moved"] == "unchanged" else
+                            f"the target does not say whether {old} is a maximum or a minimum")
+                if v["moved"] == "unchanged":
+                    v["verdict"] = "contradicted"
+                continue
+            tight = (sense == "maximum") == (v["moved"] == "lowered")
+            v["effect"] = "tightens" if tight else "relaxes"
+            v["verdict"] = "supported" if (want == "tighten") == tight else "contradicted"
+            v["why"] = (f"{o.id} {v['moved']} a {sense} in {_ref(o.target)} ({old} -> {new}; '{words}'), which "
+                        f"{v['effect']} the requirement")
+    return out
+
+
+def _check_direction(rec: dict, stage, prev) -> None:
+    """C28 for the direction verbs (session 11): a claim the numbers contradict is `contradicted` ("contradicted by the
+    numbers"); one they do not decide gets an `unchecked` finding naming why, for the critic and a person."""
+    verdicts = direction_claims(rec, stage, prev)
+    for c in rec["claims"]:
+        mine = [v for v in verdicts if v["claim"] == c["n"]]
+        if not mine:
+            continue
+        c["direction"] = mine
+        for v in mine:
+            if v["verdict"] == "contradicted":
+                c["status"] = "contradicted"
+                rec["findings"].append({"kind": "contradicted", "claim": c["n"], "op": v["op"], "provision": v["provision"],
+                                        "detail": f"'{c['text']}', but contradicted by the numbers: {v['why']}"})
+            elif v["verdict"] == "undecided":
+                rec["findings"].append({"kind": "unchecked", "claim": c["n"], "op": v["op"], "provision": v["provision"],
+                                        "detail": f"'{c['text']}': the direction is not decided by the numbers ({v['why']}); "
+                                                  "left for the critic and a person"})
+
+
+def critic_direction_items(records: list[dict]) -> list[dict]:
+    """The cover claims about direction that the numbers do not decide, with the evidence a critic needs (for
+    tenderpack.ai.critic): [{addendum, stage, cover, claim, verb, claim_text, op, provision, target, old, new, why,
+    evidence {provision_text, target_text_before}, question}]. Decided claims are left out: C28 already reports them."""
+    out = []
+    for rec in records or []:
+        for c in rec.get("claims") or []:
+            for v in c.get("direction") or []:
+                if v["verdict"] != "undecided":
+                    continue
+                out.append({"addendum": rec.get("addendum"), "stage": rec.get("stage"), "cover": rec.get("cover"),
+                            **{k: v[k] for k in ("claim", "verb", "claim_text", "op", "provision", "target", "old", "new",
+                                                 "why", "evidence")},
+                            "question": (f"The cover says the addendum {v['claim_text']}. Does {v['op']} (in "
+                                         f"{v['provision']}) make the requirement in {v['target']} "
+                                         f"{'less' if v['verb'] == 'relaxes' else 'more' if v['verb'] == 'tightens' else 'differently'}"
+                                         " onerous, as the verb says? Answer from the provision and the target's words "
+                                         "only; say so if they do not decide it.")})
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- answers (s11)
+# A clarification answer annotated `confirms` must add no requirement (blind rehearsal 04: Q15 restates VOL-I 8.7 and
+# Form 4-D; the diff then marked them CHANGED). classify_answer reads the answer's response sentence by sentence against
+# the words of the units it annotates (and, as context, the addendum's other provisions):
+#   none        no content: it notes the question, says nothing is amended, or only says that clauses apply
+#   confirms    every sentence restates words the targets (or the context) already print, or refers to them
+#   interprets  it says how or where an existing requirement applies, with words the targets do not print, and no
+#               word of obligation or change ('applies to the whole length ..., including the crossings')
+#   adds        a sentence of obligation (shall, must, required, ...) with words the targets do not print
+#   changes     words of change ('is amended', 'instead of', 'no longer', 'with effect from' ...), or a figure the targets
+#               do not print where they print another of the same kind
+# `evidence` lists the words that would change or add to what a row requires (empty for none / confirms).
+ANSWER_CLASSES = ("none", "confirms", "interprets", "adds", "changes")
+_ANS_CHANGE = re.compile(r"\b(?:(?:is|are|shall be|will be) (?:hereby |now |further )?(?:amended|deleted|replaced|"
+                         r"substituted|extended|reduced|increased|revised|varied|withdrawn|waived)|instead of|no longer|"
+                         r"in place of|in lieu of|notwithstanding|with effect from|(?:is|are|shall) now)\b", re.I)
+_ANS_MODAL = re.compile(r"\b(?:shall|must|is required|are required|is to be|are to be|required to|may not|will not be "
+                        r"accepted|is mandatory|are mandatory)\b", re.I)
+_ANS_EXCEPT = re.compile(r"\b(?:only if|unless|except|provided that|subject to|otherwise)\b", re.I)
+_ANS_NULL = re.compile(r"\b(?:notes the (?:question|request|comment)|does not consider (?:any |further )?amendment|no "
+                       r"(?:further )?amendment is (?:required|necessary|made)|has nothing (?:further )?to add|refers? "
+                       r"(?:the )?bidders? to|is not able to (?:answer|comment))\b", re.I)
+_REF_ID = r"(?:\d[\w.\-()]*|[A-Z]\b|\([a-z0-9]{1,4}\))"
+_REFS = re.compile(r"\b(?:Volume (?:I{1,3}|IV|V)\s+)?(?i:clauses?|sections?|tables?|forms?|appendix|appendices|"
+                   r"schedules?|items?|paragraphs?|notes?|clarification requests?)\s+" + _REF_ID
+                   + r"(?:\s*(?:,|and|to|or)\s*" + _REF_ID + r")*(?:\s+of\s+(?:this\s+)?Addendum(?: No\.? ?\d+)?)?")
+_ANS_REF = re.compile(r"\b(?:appl(?:y|ies)|remains? (?:unchanged|in force|applicable)|(?:is|are) unchanged)\s*$", re.I)
+_ANS_STOP = _STOP | {"yes", "authority", "bidder", "bidders", "proposal", "proposals", "otherwise", "including",
+                     "whole", "same", "stated", "set", "out", "given", "accordance", "provided", "provide", "apply",
+                     "applies", "amended", "section", "sections", "form", "forms", "table", "tables", "relevant",
+                     "unchanged", "remain", "remains", "stands", "stand"}
+
+
+def _ans_tokens(text: str) -> tuple[set[str], set[str]]:
+    """(content-word stems, figures) of a text: words not in the stop list, stemmed as C28 stems them; figures as printed
+    without thousands separators ('7,500' -> '7500'; '1.5'; '10%')."""
+    t = normalize_latin(text or "")
+    figs = {f.replace(",", "") for f in re.findall(r"\d[\d,]*(?:\.\d+)?%?", t)}
+    words = {_stem(w) for w in re.findall(r"[A-Za-z][A-Za-z\-]+", t) if w.lower() not in _ANS_STOP and len(w) > 2}
+    return words, figs
+
+
+def answer_targets(state, targets: list[str]) -> dict[str, str]:
+    """{unit: text} for an annotation's targets at a state; a table or form id stands for its members."""
+    out = {}
+    for t in targets or []:
+        for k in ([t] if t in state else group_members(state, t)):
+            if k in state and state[k].text:
+                out[k] = state[k].text
+    return out
+
+
+def classify_answer(answer: str, targets, context=()) -> dict:
+    """{class (ANSWER_CLASSES), evidence [{sentence, words, kind}], why, sentences [{text, kind, new_words, new_figures}]}
+    for a clarification answer (its 'Authority response:' part when there is one) against the texts of the units it
+    annotates (`targets`: {unit: text} or a list of texts; answer_targets builds it) and `context` (texts that count as
+    already printed: the addendum's other provisions). Deterministic; a person decides."""
+    m = re.search(r"Authority response:\s*(.*)", answer or "", re.S)
+    resp = normalize_latin(m.group(1) if m else (answer or "")).strip()
+    texts = list(targets.values()) if isinstance(targets, dict) else list(targets or [])
+    texts = [t for t in texts if normalize_latin(t or "").strip() != normalize_latin(answer or "").strip()]  # not itself
+    known_w, known_f = set(), set()
+    for t in texts + list(context or []):
+        w, f = _ans_tokens(t)
+        known_w |= w
+        known_f |= f
+    target_f = set().union(*[_ans_tokens(t)[1] for t in texts]) if texts else set()
+    sents = [x.strip() for x in re.split(r"(?<=[.;])\s+(?=[A-Z(‘'\"])", resp) if x.strip()]
+    rank = {k: i for i, k in enumerate(ANSWER_CLASSES)}
+    out, ev, top = [], [], "none"
+    for s in sents:
+        plain = s
+        for c in citations(s):
+            plain = plain.replace(c.text, " ")
+        plain = re.sub(r"\bas amended by\b[^,.;]*", " ", plain)
+        plain = _REFS.sub(" ", plain)             # 'Clauses 6.2 and 11.1': references, not figures or words
+        words, figs = _ans_tokens(plain)
+        new_w = sorted(words - known_w)
+        new_f = sorted(figs - known_f)
+        if re.fullmatch(r"(?:Yes|No)\.?", s, re.I) or _ANS_NULL.search(s) or not (words or figs):
+            kind = "none"
+        elif _ANS_CHANGE.search(s):
+            kind = "changes"
+        elif new_f and target_f:
+            kind = "changes"                       # a figure the targets do not print, where they print figures
+        elif _ANS_REF.search(plain.strip(" .")) and len(new_w) <= 1 and not new_f:
+            kind = "confirms"                      # 'Volume I Clause 8.7 and Form 4-D apply.'
+        elif len(new_w) <= 1 and not new_f:
+            kind = "confirms"                      # restates the targets' words
+        elif _ANS_MODAL.search(s):
+            kind = "adds"
+        else:
+            kind = "interprets"
+        rec = {"text": s, "kind": kind, "new_words": new_w, "new_figures": new_f}
+        out.append(rec)
+        if rank[kind] > rank["confirms"]:
+            words_ev = ([_ANS_CHANGE.search(s).group(0)] if kind == "changes" and _ANS_CHANGE.search(s) else []) + \
+                [w for w in re.findall(r"[A-Za-z][A-Za-z\-]+|\d[\d,]*(?:\.\d+)?%?", plain)
+                 if (_stem(w) in new_w or w.replace(",", "") in new_f) and w.lower() not in _ANS_STOP]
+            ev.append({"sentence": s, "words": list(dict.fromkeys(words_ev)), "kind": kind})
+        if rank[kind] > rank[top]:
+            top = kind
+    why = {"none": "the answer has no content of its own (it notes the question, says nothing is amended, or only says "
+                   "that clauses apply)",
+           "confirms": "every sentence restates words the annotated units already print, or refers to them",
+           "interprets": "it says how or where an existing requirement applies, with words the annotated units do not "
+                         "print, and no word of obligation or change",
+           "adds": "a sentence of obligation carries words the annotated units do not print",
+           "changes": "it carries words of change, or a figure the annotated units do not print"}[top]
+    return {"class": top, "evidence": ev, "why": why, "sentences": out}
+
+
+def confirms_check(answer: str, targets, context=()) -> tuple[bool, str, dict]:
+    """For the controller's semantic check of an `annotate confirms` (session 11): (ok, detail, classify_answer result).
+    ok when the answer adds no requirement (class none or confirms); otherwise the detail names the words that would
+    change what a row requires."""
+    c = classify_answer(answer, targets, context)
+    if c["class"] in ("none", "confirms"):
+        return True, f"a confirming answer: {c['why']}", c
+    words = "; ".join(f"'{_short(e['sentence'], 120)}' ({e['kind']}: {', '.join(e['words'][:8])})" for e in c["evidence"])
+    return False, f"annotated 'confirms', but the answer {c['class']}: {c['why']}: {words}", c

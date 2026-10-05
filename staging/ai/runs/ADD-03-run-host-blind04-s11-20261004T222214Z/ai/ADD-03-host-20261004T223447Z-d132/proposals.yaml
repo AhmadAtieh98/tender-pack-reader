@@ -1,0 +1,1982 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261004T223447Z-d132
+  created: '2026-10-04T22:34:47Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+    activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+    readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+    amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+    unrecorded_crops_sha256: null
+    register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 Section 4.1 deletes 'SAR 180,000 for each day of delay' in VOL-V Clause 18.1 and substitutes a
+      rate of 0.05% of the Estimated Project Cost per day; the quoted old words occur once in VOL-V:18.1 at ADD-02.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per cent (0.05%) of the Estimated
+        Project Cost for each day of delay’ is substituted
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:18.1
+      page: 2
+      kind: span
+      words: delay liquidated damages at the rate of SAR 180,000 for each day of delay
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: ADD-03 Section 4.1 states that VOL-V Clause 18.4 (aggregate cap of 10% of the Estimated Project Cost)
+      is unchanged; by the approved cap calculation the cap is reached after 200 days of delay at the new rate.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: Volume V Clause 18.4 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:18.4
+      page: 2
+      kind: span
+      words: shall not exceed ten per cent (10%) of the Estimated Project Cost
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: fact
+    text: ADD-03 Section 5.1 substitutes '1.5 m/s' for '2.0 m/s' in VOL-II Clause 5.2; the residual head of 15 m
+      stays.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 1
+      kind: span
+      words: In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.2
+      page: 4
+      kind: span
+      words: with a maximum velocity of 2.0 m/s and a minimum residual head of 15 m at the delivery point
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S4
+    kind: fact
+    text: ADD-03 Section 5.2 amends ADD-01 Section 5.1 (whose op wrote the GRP sentence into VOL-II:5.3) with effect
+      from 8 October 2026; ADD-03 is dated 'Issued 9 November 2026', so the stated effective date precedes the issue
+      date.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 1
+      kind: span
+      words: With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the buried
+        sections of the transmission main’
+      cell: null
+      crop_sha256: null
+    - doc: ADD-01
+      unit_id: ADD-01:5.1
+      page: 1
+      kind: span
+      words: Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections
+        of the transmission main
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para1
+      page: 1
+      kind: span
+      words: Issued 9 November 2026
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S5
+    kind: interpretation
+    text: The retroactive effective date (8 October 2026, before the 9 November 2026 issue) is taken as printed;
+      whether it affects anything done between those dates is for a person to decide.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 1
+      kind: span
+      words: With effect from 8 October 2026
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S6
+    kind: fact
+    text: ADD-03 Section 6.1 deletes Table 1-1 (revised) and its Notes issued by ADD-02 and replaces them with Table
+      1-1 (second revision), which adds criterion G (20 marks); rows A to F carry the same marks; the total becomes
+      120.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced
+        by the table and Notes below
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev
+      page: 1
+      kind: span
+      words: Table 1-1 (revised) — Technical evaluation criteria — Ref | Criterion | Marks
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/G
+      page: 2
+      kind: cell
+      words: '20'
+      cell:
+        row_key: G
+        column: Marks
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1/total
+      page: 2
+      kind: cell
+      words: '120'
+      cell:
+        row_key: total
+        column: Marks
+      crop_sha256: null
+    note: null
+  - id: S7
+    kind: fact
+    text: The new Notes (ADD-03:S6/para1) are parsed as a separate paragraph, not as notes of ADD-03:T1-1, so the
+      replace_unit removes the ADD-02 notes but does not bring in the new ones. The new notes change the threshold
+      wording from 'seventy (70) marks' to 'seventy per cent (70%)' and the weighting from 65/35 to 70/30. That
+      provision is outside this batch.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:S6/para1
+      page: 2
+      kind: span
+      words: The technical score threshold in Volume I Clause 11.3 is unchanged at seventy per cent (70%).
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev/note(1)
+      page: 1
+      kind: span
+      words: The technical score threshold in Volume I Clause 11.3 is unchanged at seventy (70) marks.
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: ADD-03/4.1(a)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-V:18.1
+    payload:
+      id: ADD-03/4.1(a)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-V:18.1
+      old: SAR 180,000 for each day of delay
+      old_resolved: quoted
+      new: one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay
+      origin: assistant
+    previous_value: SAR 180,000 for each day of delay
+    proposed_value: one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: In Volume V Clause 18.1, ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per
+        cent (0.05%) of the Estimated Project Cost for each day of delay’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:18.1
+      page: 2
+      kind: span
+      words: If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay
+        liquidated damages at the rate of SAR 180,000 for each day of delay.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:18.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''SAR 180,000 for each day of delay'' matches VOL-V:18.1 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''one-twentieth of one per cent (0.05%) of the Estimated Project Cost for each day of delay'' is
+        what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:4.1 p1
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:18.1 p2
+      ok: true
+      detail: verbatim in VOL-V:18.1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: 'Printed old/new pair; old words occur once in VOL-V:18.1 at ADD-02 (simulate: C23/C24 ok).
+      Matches the reference op.'
+    review: null
+  - id: ADD-03/4.1(b)
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:4.1
+    target: VOL-V:18.4
+    payload:
+      id: ADD-03/4.1(b)
+      provision: ADD-03:4.1
+      type: annotate
+      target: VOL-V:18.4
+      targets:
+      - VOL-V:18.4
+      effect: confirms
+      note: 'ADD-03 Section 4.1 states ''Volume V Clause 18.4 is unchanged.'' The 10% EPC cap now interacts with
+        a 0.05% EPC/day rate: cap reached after 200 days (calculate: cap).'
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.1
+      page: 1
+      kind: span
+      words: Volume V Clause 18.4 is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:18.4
+      page: 2
+      kind: span
+      words: The aggregate liability of the Project Company for delay liquidated damages under this Clause 18 shall
+        not exceed ten per cent (10%) of the Estimated Project Cost.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-V:18.4
+    - ADD-03/4.1(a)
+    conflicts: []
+    missing_information: []
+    statements:
+    - S2
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:4.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: evidence ADD-03:4.1 p1
+      ok: true
+      detail: verbatim in ADD-03:4.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-V:18.4 p2
+      ok: true
+      detail: verbatim in VOL-V:18.4 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Confirmation-only annotation, no text change. Recorded so the cap/rate interaction (200 days
+      from the approved cap calculation) is visible against 18.4.
+    review: null
+  - id: ADD-03/5.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:5.1
+    target: VOL-II:5.2
+    payload:
+      id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:5.2
+      old: 2.0 m/s
+      old_resolved: quoted
+      new: 1.5 m/s
+      origin: assistant
+    previous_value: 2.0 m/s
+    proposed_value: 1.5 m/s
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.1
+      page: 1
+      kind: span
+      words: In Volume II Clause 5.2, ‘2.0 m/s’ is deleted and ‘1.5 m/s’ is substituted. The minimum residual head
+        of 15 m at the delivery point is unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.2
+      page: 4
+      kind: span
+      words: The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s and
+        a minimum residual head of 15 m at the delivery point.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II:5.2
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.1 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''2.0 m/s'' matches VOL-II:5.2 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''1.5 m/s'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:5.1 p1
+      ok: true
+      detail: verbatim in ADD-03:5.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:5.2 p4
+      ok: true
+      detail: verbatim in VOL-II:5.2 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: Printed old/new pair, single occurrence. The 'unchanged' sentence about the 15 m head is in
+      the same clause and the replace_text leaves it alone.
+    review: null
+  - id: ADD-03/5.2
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:5.2
+    target: ADD-01:5.1
+    payload:
+      id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: replace_text
+      target: ADD-01:5.1
+      old: for the buried sections of the transmission main
+      old_resolved: quoted
+      new: for the buried sections of the transmission main other than the trenchless crossings required by Volume
+        II Clause 5.4, at which ductile iron only shall be used
+      effective_from: '2026-10-08'
+      origin: assistant
+    previous_value: for the buried sections of the transmission main
+    proposed_value: for the buried sections of the transmission main other than the trenchless crossings required
+      by Volume II Clause 5.4, at which ductile iron only shall be used
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:5.2
+      page: 1
+      kind: span
+      words: With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the buried
+        sections of the transmission main’ and substituting ‘for the buried sections of the transmission main other
+        than the trenchless crossings required by Volume II Clause 5.4, at which ductile iron only shall be used’.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-01
+      unit_id: ADD-01:5.1
+      page: 1
+      kind: span
+      words: Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried sections
+        of the transmission main, subject to the whole-life cost comparison required by this Clause.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:5.4
+      page: 4
+      kind: span
+      words: Three (3) road crossings and one (1) wadi crossing shall be executed by trenchless methods.
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-01:5.1
+    - VOL-II:5.3
+    - VOL-II:5.4
+    conflicts: []
+    missing_information: []
+    statements:
+    - S4
+    - S5
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:5.2 is a provision of ADD-03 (p1)
+      aspect: structure
+    - check: previous_value
+      ok: true
+      detail: '''for the buried sections of the transmission main'' matches ADD-01:5.1 at ADD-02'
+      aspect: engine
+    - check: proposed_value
+      ok: true
+      detail: '''for the buried sections of the transmission main other than the trenchless crossings required by
+        Volume II Clause 5.4, at which ductile iron only shall be used'' is what the op writes'
+      aspect: engine
+    - check: evidence ADD-03:5.2 p1
+      ok: true
+      detail: verbatim in ADD-03:5.2 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-01:5.1 p1
+      ok: true
+      detail: verbatim in ADD-01:5.1 at ADD-02
+      aspect: evidence
+    - check: evidence VOL-II:5.4 p4
+      ok: true
+      detail: verbatim in VOL-II:5.4 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S5: a person must confirm it'
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: interpretation_pending
+    model_rationale: Printed old/new pair on ADD-01:5.1. The engine passes the change through to VOL-II:5.3 (written
+      by ADD-01/5.1), so I dropped a separate VOL-II:5.3 op; the engine rejected it as an uncited target. VOL-II:5.4
+      is only referenced and not changed. effective_from 2026-10-08 is printed; the engine marks it 'retroactive'
+      because ADD-03 is dated 'Issued 9 November 2026' (S5, for a person to note). Replaces the reference's 'unresolved'
+      disposition.
+    review: null
+  - id: ADD-03/6.1
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      activity_templates_sha256: e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f
+      readings_sha256: 6f7b61a9896a57110e03a37a91ae43f2ec4384eb43e987bf2c3a3e02157ede0b
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      unrecorded_crops_sha256: null
+      register_sha256: 37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a
+    statement_type: amendment_op
+    provision: ADD-03:6.1
+    target: ADD-02:T1-1-rev
+    payload:
+      id: ADD-03/6.1
+      provision: ADD-03:6.1
+      type: replace_unit
+      target: ADD-02:T1-1-rev
+      replacement: ADD-03:T1-1
+      origin: assistant
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:6.1
+      page: 2
+      kind: span
+      words: Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced
+        by the table and Notes below, which add criterion G (energy efficiency). The marks for criteria A to F are
+        unchanged.
+      cell: null
+      crop_sha256: null
+    - doc: ADD-02
+      unit_id: ADD-02:T1-1-rev
+      page: 1
+      kind: span
+      words: Table 1-1 (revised) — Technical evaluation criteria — Ref | Criterion | Marks
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T1-1
+      page: 2
+      kind: span
+      words: Table 1-1 (second revision) — Technical evaluation criteria — Ref | Criterion | Marks
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-02:T1-1-rev
+    - ADD-03:T1-1
+    - ADD-03:S6/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S6
+    - S7
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:6.1 is a provision of ADD-03 (p2)
+      aspect: structure
+    - check: evidence ADD-03:6.1 p2
+      ok: true
+      detail: verbatim in ADD-03:6.1 at ADD-02
+      aspect: evidence
+    - check: evidence ADD-02:T1-1-rev p1
+      ok: true
+      detail: verbatim in ADD-02:T1-1-rev at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:T1-1 p2
+      ok: true
+      detail: verbatim in ADD-03:T1-1 at ADD-02
+      aspect: evidence
+    - check: engine (C21-C27)
+      ok: true
+      detail: valid in the dry run
+      aspect: engine
+    verification_status: evidence_verified
+    model_rationale: 'The whole table and its notes are replaced: replace_unit ADD-02:T1-1-rev (12 units including
+      notes) -> ADD-03:T1-1 (9 units). I checked that rows A-F carry the same marks (25/15/20/20/10/10), which agrees
+      with ''unchanged''. The reference named the wrong candidate (ADD-02:T1-1); the target in force is ADD-02:T1-1-rev.
+      Caveat (S7): the new Notes are a separate paragraph, ADD-03:S6/para1, and not part of the replacement group,
+      so they are not brought in by this op. That provision is outside this batch and must be handled there. Their
+      content (70% threshold out of 120 marks, 70/30 weighting) is substantive.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The target is right: ADD-03:6.1 names ''Table 1-1 (revised) ... issued by Section 3 of Addendum No. 2'',
+          which matches ADD-02:T1-1-rev. The replacement ADD-03:T1-1 is ''Table 1-1 (second revision)''.'
+        - The provision deletes and replaces the table AND its Notes. The op only maps the table group to ADD-03:T1-1.
+          The new Notes (ADD-03:S6/para1) are not part of the replacement, so the ADD-02 notes would be removed
+          with no replacement in this op. This is a real gap that the item flags correctly and that someone must
+          resolve.
+        - The notes change is substantive. The old note says the threshold is 'seventy (70) marks'. The new note
+          says 'seventy per cent (70%)'. With a total of 120 that is 84 marks, not 70. The wording 'unchanged' in
+          the new note does not match the old note.
+        - 'The rationale''s claims are not shown in the printed evidence. These are: rows A-F being 25/15/20/20/10/10,
+          the old 65/35 weighting versus the new 70/30, and the 12-unit versus 9-unit counts. Only G=20 and total=120
+          are quoted, so I could not verify these.'
+        - The unit status of ADD-03:6.1 is printed as 'not_issued'. The evidence does not explain this, and a person
+          should check it.
+        evidence_checked:
+        - ADD-03:6.1
+        - ADD-02:T1-1-rev
+        - ADD-03:T1-1
+        - S6 cells G=20 and total=120
+        - S7 quotations of the old and new threshold notes
+        selected_because:
+        - uncertain_target
+        - 'uncertain_target: resolved through a group'
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-002-critic
+        created: '2026-10-04T22:35:04Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 70
+    accounted: 12
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+  resolution:
+    provisions_total: 70
+    accounted: 12
+    resolved: 11
+    pending: 1
+    invalid: 0
+    unaccounted: 58
+    pending_provisions:
+    - ADD-03:5.2
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.1 p1
+        ok: true
+        detail: verbatim in ADD-03:4.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-V:18.1 p2
+        ok: true
+        detail: verbatim in VOL-V:18.1 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.1 p1
+        ok: true
+        detail: verbatim in ADD-03:4.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-V:18.4 p2
+        ok: true
+        detail: verbatim in VOL-V:18.4 at ADD-02
+        aspect: null
+    S3:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.1 p1
+        ok: true
+        detail: verbatim in ADD-03:5.1 at ADD-02
+        aspect: null
+      - check: evidence VOL-II:5.2 p4
+        ok: true
+        detail: verbatim in VOL-II:5.2 at ADD-02
+        aspect: null
+    S4:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.2 p1
+        ok: true
+        detail: verbatim in ADD-03:5.2 at ADD-02
+        aspect: null
+      - check: evidence ADD-01:5.1 p1
+        ok: true
+        detail: verbatim in ADD-01:5.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-03:cover/para1 p1
+        ok: true
+        detail: verbatim in ADD-03:cover/para1 at ADD-02
+        aspect: null
+    S5:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:5.2 p1
+        ok: true
+        detail: verbatim in ADD-03:5.2 at ADD-02
+        aspect: null
+    S6:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:6.1 p2
+        ok: true
+        detail: verbatim in ADD-03:6.1 at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-1/G p2
+        ok: true
+        detail: verbatim in ADD-03:T1-1/G at ADD-02
+        aspect: null
+      - check: evidence ADD-03:T1-1/total p2
+        ok: true
+        detail: verbatim in ADD-03:T1-1/total at ADD-02
+        aspect: null
+    S7:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:S6/para1 p2
+        ok: true
+        detail: verbatim in ADD-03:S6/para1 at ADD-02
+        aspect: null
+      - check: evidence ADD-02:T1-1-rev/note(1) p1
+        ok: true
+        detail: verbatim in ADD-02:T1-1-rev/note(1) at ADD-02
+        aspect: null
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops:
+    - id: ADD-03/4.1(a)
+      provision: ADD-03:4.1
+      type: replace_text
+      target: VOL-V:18.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:4.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-V:18.1 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-V:18.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''SAR 180,000 for each day of delay'' occurs 1 time(s) in VOL-V:18.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-V:18.1
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-V:18.1
+        - VOL-V:18.4
+        also_in: []
+    - id: ADD-03/4.1(b)
+      provision: ADD-03:4.1
+      type: annotate
+      target: VOL-V:18.4
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:4.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: 'targets exist: [''VOL-V:18.4'']'
+      - id: C22
+        ok: true
+        detail: every annotated target is cited by the provision
+      failed: []
+      changed: []
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details: {}
+    - id: ADD-03/5.1
+      provision: ADD-03:5.1
+      type: replace_text
+      target: VOL-II:5.2
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.1 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.1
+      - id: C22
+        ok: true
+        detail: declared target VOL-II:5.2 is cited
+      - id: C22
+        ok: true
+        detail: target VOL-II:5.2 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''2.0 m/s'' occurs 1 time(s) in VOL-II:5.2'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      failed: []
+      changed:
+      - VOL-II:5.2
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - VOL-II:5.2
+        also_in: []
+    - id: ADD-03/5.2
+      provision: ADD-03:5.2
+      type: replace_text
+      target: ADD-01:5.1
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:5.2 belongs to ADD-03
+      - id: C21
+        ok: true
+        detail: the provision prints the effective date 2026-10-08
+      - id: C21
+        ok: true
+        detail: quoted words found in ADD-03:5.2
+      - id: C22
+        ok: true
+        detail: declared target ADD-01:5.1 is cited
+      - id: C22
+        ok: true
+        detail: target ADD-01:5.1 exists
+      - id: C22
+        ok: true
+        detail: target is active
+      - id: C23
+        ok: true
+        detail: '''for the buried sections of the transmission main'' occurs 1 time(s) in ADD-01:5.1'
+      - id: C24
+        ok: true
+        detail: 'post-condition: old removed once, new present'
+      - id: C22
+        ok: true
+        detail: the change flows to VOL-II:5.3 (written by ADD-01/5.1); ADD-01:5.1 itself is amended too
+      failed: []
+      changed:
+      - ADD-01:5.1
+      - VOL-II:5.3
+      content: []
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        effective_from: '2026-10-08'
+        effective: retroactive
+        cited:
+        - ADD-01:5.1
+        - VOL-II:5.4
+        also_in: []
+        flow: the change flows to VOL-II:5.3 (written by ADD-01/5.1); ADD-01:5.1 itself is amended too
+        flowed:
+        - unit: VOL-II:5.3
+          via: ADD-01/5.1
+          via_provision: ADD-01:5.1
+          before: The main shall be of ductile iron to the relevant international standard, internally lined and
+            externally protected, with a minimum nominal diameter of DN1200. Alternative materials will be considered
+            only where supported by a whole-life cost comparison. Glass reinforced plastic pipe of an equivalent
+            pressure class is acceptable for the buried sections of the transmission main, subject to the whole-life
+            cost comparison required by this Clause.
+          after: The main shall be of ductile iron to the relevant international standard, internally lined and
+            externally protected, with a minimum nominal diameter of DN1200. Alternative materials will be considered
+            only where supported by a whole-life cost comparison. Glass reinforced plastic pipe of an equivalent
+            pressure class is acceptable for the buried sections of the transmission main other than the trenchless
+            crossings required by Volume II Clause 5.4, at which ductile iron only shall be used, subject to the
+            whole-life cost comparison required by this Clause.
+          inserted_before: Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried
+            sections of the transmission main, subject to the whole-life cost comparison required by this Clause.
+          inserted_after: Glass reinforced plastic pipe of an equivalent pressure class is acceptable for the buried
+            sections of the transmission main other than the trenchless crossings required by Volume II Clause 5.4,
+            at which ductile iron only shall be used, subject to the whole-life cost comparison required by this
+            Clause.
+    - id: ADD-03/6.1
+      provision: ADD-03:6.1
+      type: replace_unit
+      target: ADD-02:T1-1-rev
+      valid: true
+      withdrawn: false
+      applied: true
+      checks:
+      - id: C21
+        ok: true
+        detail: provision ADD-03:6.1 belongs to ADD-03
+      - id: C22
+        ok: true
+        detail: declared target ADD-02:T1-1-rev is cited
+      - id: C22
+        ok: true
+        detail: ADD-02:T1-1-rev (12 units) replaced by ADD-03:T1-1 (9 units)
+      - id: C22
+        ok: true
+        detail: the replacement ADD-03:T1-1 is printed in ADD-03
+      - id: C22
+        ok: true
+        detail: the replacement is printed after the provision
+      - id: C22
+        ok: true
+        detail: 'the replacement''s title names ADD-02:T1-1-rev: ''Table 1-1 (second revision) — Technical evaluation
+          criteria '''
+      failed: []
+      changed:
+      - ADD-02:T1-1-rev
+      - ADD-02:T1-1-rev/A
+      - ADD-02:T1-1-rev/B
+      - ADD-02:T1-1-rev/C
+      - ADD-02:T1-1-rev/D
+      - ADD-02:T1-1-rev/E
+      - ADD-02:T1-1-rev/F
+      - ADD-02:T1-1-rev/total
+      - ADD-02:T1-1-rev/notes
+      - ADD-02:T1-1-rev/note(1)
+      - ADD-02:T1-1-rev/note(2)
+      - ADD-02:T1-1-rev/note(3)
+      - ADD-03:T1-1
+      - ADD-03:T1-1/A
+      - ADD-03:T1-1/B
+      - ADD-03:T1-1/C
+      - ADD-03:T1-1/D
+      - ADD-03:T1-1/E
+      - ADD-03:T1-1/F
+      - ADD-03:T1-1/G
+      - ADD-03:T1-1/total
+      content:
+      - ADD-03:T1-1
+      - ADD-03:T1-1/A
+      - ADD-03:T1-1/B
+      - ADD-03:T1-1/C
+      - ADD-03:T1-1/D
+      - ADD-03:T1-1/E
+      - ADD-03:T1-1/F
+      - ADD-03:T1-1/G
+      - ADD-03:T1-1/total
+      c47: []
+      pending: false
+      conditional_pending: false
+      details:
+        cited:
+        - ADD-02:T1-1-rev
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: op
+      accounted_by:
+      - ADD-03/4.1(a)
+      - ADD-03/4.1(b)
+    - provision: ADD-03:5.1
+      disposition: op
+      accounted_by:
+      - ADD-03/5.1
+    - provision: ADD-03:5.2
+      disposition: op
+      accounted_by:
+      - ADD-03/5.2
+    - provision: ADD-03:6.1
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/A
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/B
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/C
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/D
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/E
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/F
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/G
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:T1-1/total
+      disposition: op
+      accounted_by:
+      - ADD-03/6.1
+    - provision: ADD-03:S6/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:6.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:8.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/hdr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/hdr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/ref-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/form-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/title
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/intro
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/decl3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-header
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/table-row4-cells
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-member-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-cr-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signatory-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-capacity-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-date-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-en
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/field-signature-ar
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/note
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/image/image-footer
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/T1/4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:F4-H/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:S6/para1
+    - ADD-03:6.2
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:8.1
+    - ADD-03:8.2
+    - ADD-03:8.3
+    - ADD-03:8.4
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:AppA/para1
+    - ADD-03:F4-H/image/hdr-en
+    - ADD-03:F4-H/image/hdr-ar
+    - ADD-03:F4-H/image/ref-en
+    - ADD-03:F4-H/image/ref-ar
+    - ADD-03:F4-H/image/form-en
+    - ADD-03:F4-H/image/form-ar
+    - ADD-03:F4-H/image/title
+    - ADD-03:F4-H/image/intro
+    - ADD-03:F4-H/image/decl1
+    - ADD-03:F4-H/image/decl2
+    - ADD-03:F4-H/image/decl3
+    - ADD-03:F4-H/image/table-header
+    - ADD-03:F4-H/image/table-row4
+    - ADD-03:F4-H/image/table-row4-cells
+    - ADD-03:F4-H/image/field-member-en
+    - ADD-03:F4-H/image/field-member-ar
+    - ADD-03:F4-H/image/field-cr-en
+    - ADD-03:F4-H/image/field-cr-ar
+    - ADD-03:F4-H/image/field-signatory-en
+    - ADD-03:F4-H/image/field-signatory-ar
+    - ADD-03:F4-H/image/field-capacity-en
+    - ADD-03:F4-H/image/field-capacity-ar
+    - ADD-03:F4-H/image/field-date-en
+    - ADD-03:F4-H/image/field-date-ar
+    - ADD-03:F4-H/image/field-signature-en
+    - ADD-03:F4-H/image/field-signature-ar
+    - ADD-03:F4-H/image/note
+    - ADD-03:F4-H/image/image-footer
+    - ADD-03:AppB/para1
+    - ADD-03:F4-H/para1
+    - ADD-03:F4-H/T1/1
+    - ADD-03:F4-H/T1/2
+    - ADD-03:F4-H/T1/3
+    - ADD-03:F4-H/T1/4
+    - ADD-03:F4-H/para2
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units:
+    - ADD-01:5.1
+    - ADD-02:T1-1-rev
+    - ADD-02:T1-1-rev/A
+    - ADD-02:T1-1-rev/B
+    - ADD-02:T1-1-rev/C
+    - ADD-02:T1-1-rev/D
+    - ADD-02:T1-1-rev/E
+    - ADD-02:T1-1-rev/F
+    - ADD-02:T1-1-rev/note(1)
+    - ADD-02:T1-1-rev/note(2)
+    - ADD-02:T1-1-rev/note(3)
+    - ADD-02:T1-1-rev/notes
+    - ADD-02:T1-1-rev/total
+    - ADD-03:T1-1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - VOL-II:5.2
+    - VOL-II:5.3
+    - VOL-V:18.1
+    c46_needs:
+    - op: ADD-03/4.1(a)
+      output: A1
+      rows: []
+      detail: 'ADD-03/4.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''In Volume V Clause 18.1, ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per
+        cent (0.05%) of the Estimated Project Cost for each day of delay’ is substituted. Volume V Cla…'
+    - op: ADD-03/6.1
+      output: A1
+      rows: []
+      detail: 'ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced
+        by the table and Notes below, which add criterion G (energy efficiency). The marks for criteri…'
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 174ed4b875b0faad07e1727e7e67fbd5e7277d3e880f15e3ee7f1859090ba427
+    computed_under:
+      evidence_build_id: fefc497f4a2730920f44b6185d04a6e26b6ac20ec5ffaba244a92749392b7ae0
+      assumptions_sha256: 661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc
+      amendments_sha256: 05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact:
+    basis: engine dry run of the evidence_verified ops and dispositions only, over the current state before ADD-03;
+      nothing persisted
+    addendum_status_if_applied: PARTIAL
+    changed_units:
+    - ADD-02:T1-1-rev
+    - ADD-02:T1-1-rev/A
+    - ADD-02:T1-1-rev/B
+    - ADD-02:T1-1-rev/C
+    - ADD-02:T1-1-rev/D
+    - ADD-02:T1-1-rev/E
+    - ADD-02:T1-1-rev/F
+    - ADD-02:T1-1-rev/note(1)
+    - ADD-02:T1-1-rev/note(2)
+    - ADD-02:T1-1-rev/note(3)
+    - ADD-02:T1-1-rev/notes
+    - ADD-02:T1-1-rev/total
+    - ADD-03:T1-1
+    - ADD-03:T1-1/A
+    - ADD-03:T1-1/B
+    - ADD-03:T1-1/C
+    - ADD-03:T1-1/D
+    - ADD-03:T1-1/E
+    - ADD-03:T1-1/F
+    - ADD-03:T1-1/G
+    - ADD-03:T1-1/total
+    - VOL-II:5.2
+    - VOL-V:18.1
+    rows_citing_changed_units:
+    - ADD-02-T1-1-N3-01
+    - VOL-II-5.2-01
+    - VOL-II-5.2-02
+    rows_stale_at_addendum:
+    - row: VOL-I-11.3-01
+      why:
+      - ADD-02:T1-1-rev/note(1) changed since ADD-02 (by ADD-03/6.1)
+    - row: VOL-I-T1-1-B
+      why:
+      - new dependency ADD-03:T1-1/B
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/B no longer applies
+    - row: VOL-I-T1-1-D
+      why:
+      - new dependency ADD-03:T1-1/D
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/D no longer applies
+    - row: VOL-I-T1-1-A
+      why:
+      - new dependency ADD-03:T1-1/A
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/A no longer applies
+    - row: VOL-I-T1-1-C
+      why:
+      - new dependency ADD-03:T1-1/C
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/C no longer applies
+    - row: VOL-I-T1-1-E
+      why:
+      - new dependency ADD-03:T1-1/E
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/E no longer applies
+    - row: VOL-I-T1-1-F
+      why:
+      - new dependency ADD-03:T1-1/F
+      - dependency ADD-02:T1-1-rev no longer applies
+      - dependency ADD-02:T1-1-rev/F no longer applies
+    - row: VOL-II-5.2-01
+      why:
+      - VOL-II:5.2 changed since BASE (by ADD-03/5.1)
+      - 'quote not found in the effective text at ADD-03: ''The main shall be sized for the peak hourly flow in
+        Table 2-'' (expected: the interpretation predates the change)'
+    - row: VOL-II-5.2-02
+      why:
+      - VOL-II:5.2 changed since BASE (by ADD-03/5.1)
+    - row: VOL-V-12.1-01
+      why:
+      - VOL-V:18.1 changed since BASE (by ADD-03/4.1(a))
+      - 'consequence quote not found in VOL-V:18.1 at ADD-03 (expected: the interpretation predates the change)'
+    decisions_voided: []
+    c46_needs:
+    - op: ADD-03/4.1(a)
+      output: A1
+      rows: []
+      detail: 'ADD-03/4.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''In Volume V Clause 18.1, ‘SAR 180,000 for each day of delay’ is deleted and ‘one-twentieth of one per
+        cent (0.05%) of the Estimated Project Cost for each day of delay’ is substituted. Volume V Cla…'
+    - op: ADD-03/6.1
+      output: A1
+      rows: []
+      detail: 'ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds:
+        ''Table 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced
+        by the table and Notes below, which add criterion G (energy efficiency). The marks for criteri…'
+    clarifications_citing_changed_units:
+    - CQ-DWF-STORM-FLOW
+    - CQ-VOL-III-DRAWINGS
+    - CQ-PCOD-RELIABILITY-RUN
+    - CQ-SCORING-METHOD
+    diff:
+      from: ADD-02
+      to: ADD-03
+      summary_check:
+      - kind: not found
+        claim: 1
+        detail: '''amends the definition of Estimated Project Cost, the financial capacity requirement in Volume
+          I Clause 8.4 and the delay liquidated damages in Volume V Clause 18.1'': no provision of ADD-03 matches
+          ''the financial capacity requirement in Volume I Clause 8.4'''
+      - kind: not found
+        claim: 3
+        detail: '''amends Section 5.1 of Addendum No. 1'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 5
+        detail: '''divides Volume I Clause 11.3 into two Clauses'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 6
+        detail: '''makes a conditional amendment to Volume II Clause 1.4'': no provision of ADD-03 does this'
+      - kind: not found
+        claim: 7
+        detail: '''adds a Declaration of Beneficial Ownership (Form 4-H) which all Bidders may submit through the
+          Portal within five Working Days after the Proposal Due Date'': no provision of ADD-03 does this'
+      - kind: contradicted
+        claim: 2
+        op: ADD-03/5.1
+        provision: ADD-03:5.1
+        detail: '''relaxes the velocity limit for the treated effluent transmission main'', but contradicted by
+          the numbers: ADD-03/5.1 lowered a maximum in VOL-II 5.2 (2.0 m/s -> 1.5 m/s; ''maximum''), which tightens
+          the requirement'
+      - kind: unchecked
+        provision: ADD-03:1.1
+        detail: ADD-03:1.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:1.2
+        detail: ADD-03:1.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.1
+        detail: ADD-03:2.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:2.2
+        detail: ADD-03:2.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:3.1
+        detail: ADD-03:3.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:5.2
+        detail: ADD-03:5.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:S6/para1
+        detail: ADD-03:S6/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:6.2
+        detail: ADD-03:6.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.1
+        detail: ADD-03:7.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:7.2
+        detail: ADD-03:7.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.1
+        detail: ADD-03:8.1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.2
+        detail: ADD-03:8.2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.3
+        detail: ADD-03:8.3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:8.4
+        detail: ADD-03:8.4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q15
+        detail: ADD-03:Q15 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q16
+        detail: ADD-03:Q16 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q17
+        detail: ADD-03:Q17 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q18
+        detail: ADD-03:Q18 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q19
+        detail: ADD-03:Q19 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:Q20
+        detail: ADD-03:Q20 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:AppA/para1
+        detail: ADD-03:AppA/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/hdr-en
+        detail: ADD-03:F4-H/image/hdr-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/hdr-ar
+        detail: ADD-03:F4-H/image/hdr-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/ref-en
+        detail: ADD-03:F4-H/image/ref-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/ref-ar
+        detail: ADD-03:F4-H/image/ref-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/form-en
+        detail: ADD-03:F4-H/image/form-en is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/form-ar
+        detail: ADD-03:F4-H/image/form-ar is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/title
+        detail: ADD-03:F4-H/image/title is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/intro
+        detail: ADD-03:F4-H/image/intro is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/decl1
+        detail: ADD-03:F4-H/image/decl1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/decl2
+        detail: ADD-03:F4-H/image/decl2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/decl3
+        detail: ADD-03:F4-H/image/decl3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/table-header
+        detail: ADD-03:F4-H/image/table-header is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/table-row4
+        detail: ADD-03:F4-H/image/table-row4 is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/table-row4-cells
+        detail: ADD-03:F4-H/image/table-row4-cells is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-member-en
+        detail: ADD-03:F4-H/image/field-member-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-member-ar
+        detail: ADD-03:F4-H/image/field-member-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-cr-en
+        detail: ADD-03:F4-H/image/field-cr-en is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-cr-ar
+        detail: ADD-03:F4-H/image/field-cr-ar is unresolved (no op yet), so its effect cannot be compared with the
+          summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-signatory-en
+        detail: ADD-03:F4-H/image/field-signatory-en is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-signatory-ar
+        detail: ADD-03:F4-H/image/field-signatory-ar is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-capacity-en
+        detail: ADD-03:F4-H/image/field-capacity-en is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-capacity-ar
+        detail: ADD-03:F4-H/image/field-capacity-ar is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-date-en
+        detail: ADD-03:F4-H/image/field-date-en is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-date-ar
+        detail: ADD-03:F4-H/image/field-date-ar is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-signature-en
+        detail: ADD-03:F4-H/image/field-signature-en is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/field-signature-ar
+        detail: ADD-03:F4-H/image/field-signature-ar is unresolved (no op yet), so its effect cannot be compared
+          with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/note
+        detail: ADD-03:F4-H/image/note is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/image/image-footer
+        detail: ADD-03:F4-H/image/image-footer is unresolved (no op yet), so its effect cannot be compared with
+          the summary
+      - kind: unchecked
+        provision: ADD-03:AppB/para1
+        detail: ADD-03:AppB/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/para1
+        detail: ADD-03:F4-H/para1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/1
+        detail: ADD-03:F4-H/T1/1 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/2
+        detail: ADD-03:F4-H/T1/2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/3
+        detail: ADD-03:F4-H/T1/3 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/T1/4
+        detail: ADD-03:F4-H/T1/4 is unresolved (no op yet), so its effect cannot be compared with the summary
+      - kind: unchecked
+        provision: ADD-03:F4-H/para2
+        detail: ADD-03:F4-H/para2 is unresolved (no op yet), so its effect cannot be compared with the summary
+      candidate:
+        validated_stage: ADD-02
+        stage: ADD-03
+        paragraph: 'ADD-03 is PARTIAL: 59 of 70 provisions unresolved, so A3 and A5 stay validated at ADD-02. If
+          the 4 op(s) that are valid there stood (each still a proposal: review proposed 4), A3 would gain 0 row(s)
+          (none), lose 0 (none) and change 1 (VOL-I-11.3-01 (register)); A5, replanned at ADD-03''s issue date (2026-11-09),
+          would move the latest dates of 0 activities (none), add 0 (none) and remove 0 (none), and marks 0 REVIEW
+          through relationships. Not settled: 24 activities blocked by an unresolved row (fin-model-build, pcg-wording,
+          technical-proposal, completion-certs and 20 more), 10 STALE row(s), 2 obligation(s) reaching no output
+          (C46), 0 relationship chain(s) blocked or incomplete, 2 conflict(s); documents not supplied: the Environmental
+          Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule
+          7 (deductions), I-PERMIT and 5 more; conditional or effective-dated: ADD-03:cover/para3 (conditional amendment);
+          ADD-03:5.2 (effective-dated amendment, effective 2026-10-08); ADD-03:7.1 (conditional amendment); ADD-03:7.2
+          (conditional amendment). Nothing here is validated, accepted or applied to the real state.'
+        a3:
+          enters: []
+          leaves: []
+          changes:
+          - VOL-I-11.3-01
+        blocked_activities:
+        - fin-model-build
+        - pcg-wording
+        - technical-proposal
+        - completion-certs
+        - poa-resolutions
+        - deviations-review
+        - pcg-execution
+        - poa
+        - fin-statements
+        - fin-model-freeze
+        - form-4g-review
+        - form-4b-prep
+        - fin-standing
+        - form-4a-prep
+        - form-4e
+        - form-4f
+        - form-4a
+        - form-4b
+        - form-4g-sign
+        - assemble-envelope-a
+        - assemble-envelope-b
+        - copies
+        - seal-and-mark
+        - deliver
+        scenarios:
+        - SCENARIO-ADD-03:cover/para3
+        - SCENARIO-ADD-03:5.2
+        - SCENARIO-ADD-03:7.1
+        - SCENARIO-ADD-03:7.2
+        - SCENARIO-ADD-03:Q15
+        - SCENARIO-ADD-03:Q16
+      requirements:
+        new: []
+        out:
+        - ADD-02-T1-1-N3-01
+        changed:
+        - VOL-I-T1-1-B
+        - VOL-I-T1-1-D
+        - VOL-I-T1-1-A
+        - VOL-I-T1-1-C
+        - VOL-I-T1-1-E
+        - VOL-I-T1-1-F
+        - VOL-II-5.2-01
+        - VOL-II-5.2-02
+        secondary: {}
+      stale:
+      - VOL-I-11.3-01
+      - VOL-I-T1-1-B
+      - VOL-I-T1-1-D
+      - VOL-I-T1-1-A
+      - VOL-I-T1-1-C
+      - VOL-I-T1-1-E
+      - VOL-I-T1-1-F
+      - VOL-II-5.2-01
+      - VOL-II-5.2-02
+      - VOL-V-12.1-01
+      relationships:
+        confirmed dependency: []
+        proposed relationship: []
+        possible impact: []
+        not supplied: []
+      a3:
+        enters: []
+        leaves: []
+      programme:
+      - activity: technical-proposal
+        change: REWORK
+        detail: 'requirement changed: VOL-I-11.3-01, VOL-I-T1-1-A, VOL-I-T1-1-B, VOL-I-T1-1-C, VOL-I-T1-1-D, VOL-I-T1-1-E,
+          VOL-I-T1-1-F, VOL-II-5.2-01, VOL-II-5.2-02'
+    diff_markdown: "# What changed from ADD-02 to ADD-03\n\n## ADD-03: PARTIAL (issued 2026-11-09)\n\n- ops: 4 (0\
+      \ invalid); provisions: 70 (59 unresolved)\n- validated state: ADD-02 — this addendum does NOT replace it\
+      \ until every provision is treated and every op is valid\n- UNRESOLVED ADD-03:cover/para1: Issued 9 November\
+      \ 2026\n- UNRESOLVED ADD-03:cover/para2: Tender NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:cover/para3: This\
+      \ Addendum amends the definition of Estimated Project Cost, the financial capacity requirement in Volume I\
+      \ Clause 8.4 and the delay liquidated damages in Vol\n- UNRESOLVED ADD-03:1.1: This Addendum is issued under\
+      \ Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.\n\
+      - UNRESOLVED ADD-03:1.2: A reference in this Addendum to a Clause, Table or Form is to that Clause, Table\
+      \ or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.\n- UNRESOLVED ADD-03:2.1: In Volume\
+      \ V Clause 1.3, ‘as set out in the agreed Financial Model at Financial Close’ is deleted and ‘as stated by\
+      \ the Bidder in Form 4-F, excluding financing c\n- UNRESOLVED ADD-03:2.2: The definition in Volume V Clause\
+      \ 1.3, as amended by Section 2.1, applies wherever the expression Estimated Project Cost is used in the RFP\
+      \ Documents.\n- UNRESOLVED ADD-03:3.1: In Volume I Clause 8.4, ‘SAR 800,000,000’ is deleted and ‘twenty-five\
+      \ per cent (25%) of the Estimated Project Cost’ is substituted. Limb (b) of Clause 8.4 is un\n- UNRESOLVED\
+      \ ADD-03:5.2: With effect from 8 October 2026, Section 5.1 of Addendum No. 1 is amended by deleting ‘for the\
+      \ buried sections of the transmission main’ and substituting ‘for t\n- UNRESOLVED ADD-03:S6/para1: Notes to\
+      \ Table 1-1 (second revision): (1)  The technical score threshold in Volume I Clause 11.3 is unchanged at\
+      \ seventy per cent (70%). (2)  The combined score\n- UNRESOLVED ADD-03:6.2: Volume I Clause 11.3 is deleted\
+      \ and replaced by the following two Clauses: ‘11.3  A Proposal whose technical score is less than seventy\
+      \ per cent (70%) of the to\n- UNRESOLVED ADD-03:7.1: This Section 7 has effect only if the Authority notifies\
+      \ Bidders through the Portal, not later than ten (10) Working Days before the Proposal Due Date, that the\n\
+      - UNRESOLVED ADD-03:7.2: Where this Section 7 has effect: (a) in Volume II Clause 1.4, the words ‘together\
+      \ with a grid connection point at the site boundary’, and the comma before them,\n- UNRESOLVED ADD-03:8.1:\
+      \ A new Form 4-H (Declaration of Beneficial Ownership) is added to Volume IV and to the list at Volume I Clause\
+      \ 9.1, to be inserted after Form 4-G. Form 4-H is re\n- UNRESOLVED ADD-03:8.2: Form 4-H shall be completed\
+      \ in the Arabic language, signed and stamped by an authorised signatory of each member of the Bidder. The\
+      \ Arabic text governs. The Eng\n- UNRESOLVED ADD-03:8.3: Form 4-H shall be submitted with Envelope A. A member\
+      \ of the Bidder that is incorporated outside the Kingdom may instead submit its Form 4-H through the Portal\
+      \ \n- UNRESOLVED ADD-03:8.4: Failure to submit a complete and properly executed Form 4-H for each member of\
+      \ the Bidder by the time required by Section 8.3 shall render the Proposal non-resp\n- UNRESOLVED ADD-03:Q15:\
+      \ No: 15 | Bidder question: Volume I Clause 8.7 requires a Parent Company Guarantee that is unconditional\
+      \ as to the EPC Contractor's obligations during the constr\n- UNRESOLVED ADD-03:Q16: No: 16 | Bidder question:\
+      \ Does the Estimated Project Cost to be stated in Form 4-F include the cost of the grid connection works?\
+      \ | Authority response: Only if \n- UNRESOLVED ADD-03:Q17: No: 17 | Bidder question: Will the Authority publish\
+      \ the reference specific energy consumption against which criterion G of Table 1-1 will be assessed? | Author\n\
+      - UNRESOLVED ADD-03:Q18: No: 18 | Bidder question: Does the maximum velocity in Volume II Clause 5.2 apply\
+      \ to the trenchless crossings? | Authority response: Yes. Volume II Clause 5.2, \n- UNRESOLVED ADD-03:Q19:\
+      \ No: 19 | Bidder question: How is compliance with Volume I Clause 8.4(a), as amended, to be demonstrated\
+      \ in Envelope A, given that the Estimated Project Cost is \n- UNRESOLVED ADD-03:Q20: No: 20 | Bidder question:\
+      \ Must the certified copy of the register of shareholders attached to Form 4-H be legalised where the member\
+      \ is incorporated outside the\n- UNRESOLVED ADD-03:AppA/para1: Form 4-H is reproduced on the following page\
+      \ as issued. It shall be completed in the Arabic language in accordance with Section 8 of this Addendum.\n\
+      - UNRESOLVED ADD-03:F4-H/image/hdr-en: NORTHERN UTILITIES PROCUREMENT AUTHORITY\n- UNRESOLVED ADD-03:F4-H/image/hdr-ar:\
+      \ الهيئة الشمالية للمشتريات المرفقية\n- UNRESOLVED ADD-03:F4-H/image/ref-en: Tender Ref: NUPA/ISTP/2026/014\n\
+      - UNRESOLVED ADD-03:F4-H/image/ref-ar: مناقصة رقم: NUPA/ISTP/2026/014\n- UNRESOLVED ADD-03:F4-H/image/form-en:\
+      \ FORM 4-H\n- UNRESOLVED ADD-03:F4-H/image/form-ar: النموذج ٤-ح\n- UNRESOLVED ADD-03:F4-H/image/title: إقرار\
+      \ المستفيد الحقيقي\n- UNRESOLVED ADD-03:F4-H/image/intro: نحن الموقعون أدناه، بصفتنا ممثلين مفوضين عن العضو\
+      \ المذكور أدناه في ائتلاف مقدم العرض، نقر ونتعهد بما يلي:\n- UNRESOLVED ADD-03:F4-H/image/decl1: أولاً: أن\
+      \ الأشخاص الطبيعيين المبينين في الجدول أدناه هم جميع المستفيدين الحقيقيين من العضو، والمستفيد الحقيقي هو كل\
+      \ شخص طبيعي يملك، بصورة مباشرة أو غير مباشرة، \n- UNRESOLVED ADD-03:F4-H/image/decl2: ثانياً: أنه لا يملك\
+      \ أيٌّ من المستفيدين الحقيقيين، بصورة مباشرة أو غير مباشرة، أي حصة في عضو في ائتلاف آخر يقدم عرضاً لهذه المناقصة.\n\
+      - UNRESOLVED ADD-03:F4-H/image/decl3: ثالثاً: أننا أرفقنا بهذا الإقرار نسخة مصدقة من سجل الشركاء أو المساهمين\
+      \ في العضو، صادرة خلال الثلاثين (٣٠) يوماً السابقة لتاريخ تقديم العروض.\n- UNRESOLVED ADD-03:F4-H/image/table-header:\
+      \ م | اسم المستفيد الحقيقي | الجنسية | نسبة الملكية (٪) | مباشرة / غير مباشرة\n- UNRESOLVED ADD-03:F4-H/image/table-row4:\
+      \ ٤\n- UNRESOLVED ADD-03:F4-H/image/table-row4-cells: \n- UNRESOLVED ADD-03:F4-H/image/field-member-en: Name\
+      \ of consortium member\n- UNRESOLVED ADD-03:F4-H/image/field-member-ar: اسم العضو في الائتلاف :\n- UNRESOLVED\
+      \ ADD-03:F4-H/image/field-cr-en: Commercial registration number\n- UNRESOLVED ADD-03:F4-H/image/field-cr-ar:\
+      \ رقم السجل التجاري :\n- UNRESOLVED ADD-03:F4-H/image/field-signatory-en: Name of authorised signatory\n-\
+      \ UNRESOLVED ADD-03:F4-H/image/field-signatory-ar: اسم المفوض بالتوقيع :\n- UNRESOLVED ADD-03:F4-H/image/field-capacity-en:\
+      \ Capacity\n- UNRESOLVED ADD-03:F4-H/image/field-capacity-ar: الصفة :\n- UNRESOLVED ADD-03:F4-H/image/field-date-en:\
+      \ Date\n- UNRESOLVED ADD-03:F4-H/image/field-date-ar: التاريخ :\n- UNRESOLVED ADD-03:F4-H/image/field-signature-en:\
+      \ Signature and company seal\n- UNRESOLVED ADD-03:F4-H/image/field-signature-ar: التوقيع والختم :\n- UNRESOLVED\
+      \ ADD-03:F4-H/image/note: ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف، والنص\
+      \ العربي هو المعتمد. عدم تقديمه كاملاً يجعل العرض غير مستجيب.\n- UNRESOLVED ADD-03:F4-H/image/image-footer:\
+      \ FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.\n- UNRESOLVED ADD-03:AppB/para1:\
+      \ This translation is provided for convenience only. The Arabic text of Form 4-H at Appendix A governs.\n\
+      - UNRESOLVED ADD-03:F4-H/para1: We, the undersigned, as the authorised representatives of the member of the\
+      \ Bidder's consortium named below, declare and undertake as follows: First: that the n\n- UNRESOLVED ADD-03:F4-H/T1/1:\
+      \ No: 1\n- UNRESOLVED ADD-03:F4-H/T1/2: No: 2\n- UNRESOLVED ADD-03:F4-H/T1/3: No: 3\n- UNRESOLVED ADD-03:F4-H/T1/4:\
+      \ No: 4\n- UNRESOLVED ADD-03:F4-H/para2: Name of consortium member: _______________________ Commercial registration\
+      \ number: _______________ Name of authorised signatory: _______________________ Capacit\n- cover summary vs\
+      \ provisions (C28, report only): 6 finding(s)\n  - not found: 'amends the definition of Estimated Project\
+      \ Cost, the financial capacity requirement in Volume I Clause 8.4 and the delay liquidated damages in Volume\
+      \ V Clause 18.1': no provision of ADD-03 matches 'the financial capacity requirement in Volume I Clause 8.4'\n\
+      \  - not found: 'amends Section 5.1 of Addendum No. 1': no provision of ADD-03 does this\n  - not found: 'divides\
+      \ Volume I Clause 11.3 into two Clauses': no provision of ADD-03 does this\n  - not found: 'makes a conditional\
+      \ amendment to Volume II Clause 1.4': no provision of ADD-03 does this\n  - not found: 'adds a Declaration\
+      \ of Beneficial Ownership (Form 4-H) which all Bidders may submit through the Portal within five Working Days\
+      \ after the Proposal Due Date': no provision of ADD-03 does this\n  - contradicted: 'relaxes the velocity\
+      \ limit for the treated effluent transmission main', but contradicted by the numbers: ADD-03/5.1 lowered a\
+      \ maximum in VOL-II 5.2 (2.0 m/s -> 1.5 m/s; 'maximum'), which tightens the requirement\n\n### Validated vs\
+      \ candidate (partial should not mean useless)\n\n- validated (unchanged, ADD-02): `<outputs>/a3/a3.pdf` (one\
+      \ page), `<outputs>/a5/`\n- candidate (CANDIDATE — NOT VALIDATED, ADD-03 as proposed): `<outputs>/a3/a3_candidate.pdf`\
+      \ / `.md`, `<outputs>/a5/candidate/`\n\n**What may be changing.** ADD-03 is PARTIAL: 59 of 70 provisions unresolved,\
+      \ so A3 and A5 stay validated at ADD-02. If the 4 op(s) that are valid there stood (each still a proposal:\
+      \ review proposed 4), A3 would gain 0 row(s) (none), lose 0 (none) and change 1 (VOL-I-11.3-01 (register));\
+      \ A5, replanned at ADD-03's issue date (2026-11-09), would move the latest dates of 0 activities (none), add\
+      \ 0 (none) and remove 0 (none), and marks 0 REVIEW through relationships. Not settled: 24 activities blocked\
+      \ by an unresolved row (fin-model-build, pcg-wording, technical-proposal, completion-certs and 20 more), 10\
+      \ STALE row(s), 2 obligation(s) reaching no output (C46), 0 relationship chain(s) blocked or incomplete, 2\
+      \ conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11\
+      \ (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT and 5 more; conditional\
+      \ or effective-dated: ADD-03:cover/para3 (conditional amendment); ADD-03:5.2 (effective-dated amendment, effective\
+      \ 2026-10-08); ADD-03:7.1 (conditional amendment); ADD-03:7.2 (conditional amendment). Nothing here is validated,\
+      \ accepted or applied to the real state.\n\n## Requirements\n\n- new: 0; out of force: 1; changed: 8\n\n-\
+      \ OUT ADD-02-T1-1-N3-01: REPLACED (by ADD-03:T1-1)\n- CHANGED VOL-I-T1-1-B: amended (by ADD-03/6.1)\n- CHANGED\
+      \ VOL-I-T1-1-D: amended (by ADD-03/6.1)\n- CHANGED VOL-I-T1-1-A: amended (by ADD-03/6.1)\n- CHANGED VOL-I-T1-1-C:\
+      \ amended (by ADD-03/6.1)\n- CHANGED VOL-I-T1-1-E: amended (by ADD-03/6.1)\n- CHANGED VOL-I-T1-1-F: amended\
+      \ (by ADD-03/6.1)\n- CHANGED VOL-II-5.2-01: wording (by ADD-03/5.1)\n- CHANGED VOL-II-5.2-02: wording (by\
+      \ ADD-03/5.1)\n\n## Stale readings and decisions\n\n- STALE VOL-I-11.3-01: ADD-02:T1-1-rev/note(1) changed\
+      \ since ADD-02 (by ADD-03/6.1)\n- STALE VOL-I-T1-1-B: new dependency ADD-03:T1-1/B; dependency ADD-02:T1-1-rev\
+      \ no longer applies; dependency ADD-02:T1-1-rev/B no longer applies; dependency ADD-02:T1-1-rev/note(3) no\
+      \ longer applies\n- STALE VOL-I-T1-1-D: new dependency ADD-03:T1-1/D; dependency ADD-02:T1-1-rev no longer\
+      \ applies; dependency ADD-02:T1-1-rev/D no longer applies; dependency ADD-02:T1-1-rev/note(3) no longer applies\n\
+      - STALE VOL-I-T1-1-A: new dependency ADD-03:T1-1/A; dependency ADD-02:T1-1-rev no longer applies; dependency\
+      \ ADD-02:T1-1-rev/A no longer applies; dependency ADD-02:T1-1-rev/note(3) no longer applies\n- STALE VOL-I-T1-1-C:\
+      \ new dependency ADD-03:T1-1/C; dependency ADD-02:T1-1-rev no longer applies; dependency ADD-02:T1-1-rev/C\
+      \ no longer applies; dependency ADD-02:T1-1-rev/note(3) no longer applies\n- STALE VOL-I-T1-1-E: new dependency\
+      \ ADD-03:T1-1/E; dependency ADD-02:T1-1-rev no longer applies; dependency ADD-02:T1-1-rev/E no longer applies;\
+      \ dependency ADD-02:T1-1-rev/note(3) no longer applies\n- STALE VOL-I-T1-1-F: new dependency ADD-03:T1-1/F;\
+      \ dependency ADD-02:T1-1-rev no longer applies; dependency ADD-02:T1-1-rev/F no longer applies; dependency\
+      \ ADD-02:T1-1-rev/note(3) no longer applies\n- STALE VOL-II-5.2-01: VOL-II:5.2 changed since BASE (by ADD-03/5.1);\
+      \ quote not found in the effective text at ADD-03: 'The main shall be sized for the peak hourly flow in Table\
+      \ 2-' (expected: the interpretation predates the change)\n- STALE VOL-II-5.2-02: VOL-II:5.2 changed since\
+      \ BASE (by ADD-03/5.1)\n- STALE VOL-V-12.1-01: VOL-V:18.1 changed since BASE (by ADD-03/4.1(a)); consequence\
+      \ quote not found in VOL-V:18.1 at ADD-03 (expected: the interpretation predates the change)\n\n## Obligations\
+      \ not reaching the outputs (C46)\n\n- ADD-03/4.1(a) [A1]: ADD-03/4.1(a) (replace_text) creates or amends an\
+      \ obligation that no A1 row in force at ADD-03 holds: 'In Volume V Clause 18.1, ‘SAR 180,000 for each day\
+      \ of delay’ is deleted and ‘one-twentieth of one per cent (0.05%) of the Estimated Proje\n- ADD-03/6.1 [A1]:\
+      \ ADD-03/6.1 (replace_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Table\
+      \ 1-1 (revised) and the Notes to it, issued by Section 3 of Addendum No. 2, are deleted and replaced by the\
+      \ table and Notes below, which\n\n## Reached through relationships (indirect: for review, not direct citations)\n\
+      \nCurated links (relationships file) followed from what changed. The requirements above cite a changed unit;\
+      \ these are reached through another provision, in three classes that are never merged. A5 marks the activities\
+      \ that serve them REVIEW with their dates unchanged.\n\n### Confirmed dependency (0)\n- none\n\n### Proposed\
+      \ relationship (0)\n- none\n\n### Possible impact (0)\n- none\n\n### Referenced but not supplied: conclusions\
+      \ in play that cannot be established (0)\n- none\n\n## Disqualifiers (A3)\n\n- no change\n\n## Programme impact\
+      \ (status date 2026-10-22 -> 2026-11-09)\n\n- REWORK technical-proposal: requirement changed: VOL-I-11.3-01,\
+      \ VOL-I-T1-1-A, VOL-I-T1-1-B, VOL-I-T1-1-C, VOL-I-T1-1-D, VOL-I-T1-1-E, VOL-I-T1-1-F, VOL-II-5.2-01, VOL-II-5.2-02\n\
+      - FEASIBILITY lcc-ratio: INFEASIBLE by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY lcc-certificate: INFEASIBLE\
+      \ by 12 WD -> INFEASIBLE by 24 WD\n- FEASIBILITY fin-model-build: OK -> INFEASIBLE by 10 WD\n- FEASIBILITY\
+      \ model-auditor-appoint: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY pcg-wording: OK -> INFEASIBLE by 9 WD\n-\
+      \ FEASIBILITY technical-proposal: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY ground-dd: OK -> INFEASIBLE by 5\
+      \ WD\n- FEASIBILITY lender-terms: OK -> INFEASIBLE by 5 WD\n- FEASIBILITY completion-certs: OK -> INFEASIBLE\
+      \ by 4 WD\n- FEASIBILITY model-audit-review: OK -> INFEASIBLE by 9 WD\n- FEASIBILITY poa-resolutions: OK ->\
+      \ INFEASIBLE by 4 WD\n- FEASIBILITY references: OK -> INFEASIBLE by 3 WD\n- FEASIBILITY bond-approval: OK\
+      \ -> INFEASIBLE by 2 WD\n- FEASIBILITY deviations-review: OK -> INFEASIBLE by 1 WD\n- FEASIBILITY pcg-execution:\
+      \ OK -> INFEASIBLE by 9 WD\n- FEASIBILITY poa: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY fin-model-freeze: OK\
+      \ -> INFEASIBLE by 10 WD\n- FEASIBILITY investment-licence: OK -> INFEASIBLE by 4 WD\n- FEASIBILITY model-audit-opinion:\
+      \ OK -> INFEASIBLE by 10 WD\n- FEASIBILITY form-4b-prep: OK -> INFEASIBLE by 3 WD\n- FEASIBILITY bond-issue:\
+      \ OK -> INFEASIBLE by 2 WD\n- FEASIBILITY form-4c-sign: OK -> INFEASIBLE by 2 "
+    findings: []
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind04-s11-20261004T222214Z-analysis-002-critic
+    route: host
+    items:
+    - item: ADD-03/6.1
+      agrees: true
+      concerns: 5
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

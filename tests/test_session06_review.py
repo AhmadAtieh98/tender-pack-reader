@@ -301,7 +301,9 @@ def test_a3_condenses_in_labelled_steps_and_never_drops_a_disqualifier(page, tmp
     deterministic, stated on the page, and never touches the explicit consequences."""
     from tenderpack.render import write_a3_pdf
     _, a3, _ = page
-    for level in (1, 2):
+    # session 11 (audit A3-1): the gate list goes first (level 1), then the question ids (level 2: the real pack fits here,
+    # every issue with its reason); level 3 (ids and owners only) is the earlier level 1
+    for level in (2, 3):
         cond = stage2.condense_a3(a3, level)
         fit = write_a3_pdf(cond, tmp_path / f"a3-{level}.pdf")
         text = " ".join(pymupdf.open(tmp_path / f"a3-{level}.pdf")[0].get_text().split()).replace("- ", "-")  # wrapped ids

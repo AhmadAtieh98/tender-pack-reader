@@ -1,0 +1,1776 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T025833Z-7360",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:cover/para1",
+  "ADD-03:cover/para2",
+  "ADD-03:cover/para3",
+  "ADD-03:1.1",
+  "ADD-03:1.2",
+  "ADD-03:1.3",
+  "ADD-03:2.1",
+  "ADD-03:2.2"
+ ],
+ "started": "2026-10-05T02:58:33.127759+00:00",
+ "elapsed_s": 343.5,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01Hn5ZRo6Y5b5QgvPbyKajuV",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-I:6.6",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_016tahVQEHKjLwtnLjG6fSey",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-I:6.7",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01NcywkJJw4rEiDG6wUfFJEo",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:2.1"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01RAa6gTDtgskDHDLK331ihN",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "acknowledge receipt of Addenda Form 4-A",
+    "limit": 8
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01ENNp5CDrkVETzrQGjXcgjd",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:cover/para3"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01CK2ns8MbbXq7vN8XL5JtzS",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-IV:F4-A/item1",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01ASVCi8AwEdezECHbkXRJ9q",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-02:cover/para3",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01HurtALodvph3bZ4xiJEvcM",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.1(a)",
+      "provision": "ADD-03:2.1",
+      "type": "replace_unit",
+      "target": "VOL-I:6.6",
+      "old": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+      "old_resolved": "matched_in_target",
+      "new_text": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+      "origin": "assistant"
+     },
+     {
+      "id": "ADD-03/2.1(b)",
+      "provision": "ADD-03:2.1",
+      "type": "set_status",
+      "target": "VOL-I:6.7",
+      "status": "deleted",
+      "origin": "assistant"
+     },
+     {
+      "id": "ADD-03/cover/para3",
+      "provision": "ADD-03:cover/para3",
+      "type": "annotate",
+      "targets": [
+       "ADD-03:cover/para3"
+      ],
+      "effect": "adds_obligation",
+      "note": "Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A",
+      "origin": "assistant"
+     }
+    ],
+    "dispositions": [
+     {
+      "provision": "ADD-03:cover/para1",
+      "disposition": "no_effect",
+      "reason": "issue date line 'Issued 15 November 2026'; changes nothing",
+      "origin": "assistant"
+     },
+     {
+      "provision": "ADD-03:cover/para2",
+      "disposition": "no_effect",
+      "reason": "title line 'Tender NUPA/ISTP/2026/014'; changes nothing",
+      "origin": "assistant"
+     },
+     {
+      "provision": "ADD-03:1.1",
+      "disposition": "no_effect",
+      "reason": "x",
+      "origin": "assistant"
+     },
+     {
+      "provision": "ADD-03:1.2",
+      "disposition": "no_effect",
+      "reason": "x",
+      "origin": "assistant"
+     },
+     {
+      "provision": "ADD-03:1.3",
+      "disposition": "no_effect",
+      "reason": "x",
+      "origin": "assistant"
+     },
+     {
+      "provision": "ADD-03:2.2",
+      "disposition": "no_effect",
+      "reason": "x",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": false,
+   "images": 0
+  },
+  {
+   "id": "toolu_01FUdLmTgUFTCdFx9jRLpeTT",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.1(b)",
+      "provision": "ADD-03:2.1",
+      "type": "set_status",
+      "target": "VOL-I:6.7",
+      "status": "deleted",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01TA8GvgCALzxnqW3QEVQzfA",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/cover/para3",
+      "provision": "ADD-03:cover/para3",
+      "type": "annotate",
+      "targets": [
+       "ADD-03:cover/para3"
+      ],
+      "effect": "adds_obligation",
+      "note": "Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EBfnjwDi2o7ru6CtPV7Ynm",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.1(a)",
+      "provision": "ADD-03:2.1",
+      "type": "replace_unit",
+      "target": "VOL-I:6.6",
+      "new_text": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": false,
+   "images": 0
+  },
+  {
+   "id": "toolu_01HQ3FPKp1rrfciVfRUgtDcs",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/2.1(a)",
+      "provision": "ADD-03:2.1",
+      "type": "replace_text",
+      "target": "VOL-I:6.6",
+      "old": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+      "old_resolved": "matched_in_target",
+      "new": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+      "origin": "assistant"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_0167uBcgxkT7v6m6PAVRCEEQ",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 2,
+     "unit": "working_day",
+     "direction": "before",
+     "purpose": "ADD-03:2.1 last day to modify a Proposal (not later than two (2) Working Days before the Proposal Due Date)"
+    }
+   },
+   "ok": false,
+   "images": 0
+  },
+  {
+   "id": "toolu_01GQqaT7u3YdYLMC4msA6JMM",
+   "name": "calculate",
+   "arguments": {
+    "kind": "relative_date",
+    "args": {
+     "anchor_date": "2026-11-26",
+     "offset": 2,
+     "unit": "working_day",
+     "direction": "before",
+     "purpose": "deadline"
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Dct1j265R5vjYaNSXkFvSJ",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-I:5.2",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01JC4ko3okGgGqTDTipobHyv",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-I:6.1",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01TvvBGd7GqRcigGP6wFQHFR",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "VOL-II:3.5",
+    "stage": "ADD-02"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01HQNe9xv9NdM2eXvE7g6ENy",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03:2.1 deletes Volume I Clauses 6.6 and 6.7 and prints a single replacement Clause 6.6.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6"
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "At ADD-02, VOL-I:6.7 permits modification at any time before the Proposal Due Date; the new Clause 6.6 permits modification only not later than two (2) Working Days before it.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.7",
+         "page": 3,
+         "kind": "span",
+         "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "may modify its Proposal not later than two (2) Working Days before the Proposal Due Date"
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "The cover of ADD-03 describes the consolidation as being without change of substance.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "The new Clause 6.6 does change substance (the modification cut-off moves from any time before the Proposal Due Date to two Working Days before it, and late modifications are now rejected unopened), which conflicts with the cover's 'without change of substance'. The operative words of 2.1 are taken to govern; a person should confirm and consider a clarification."
+      },
+      {
+       "id": "S-A1",
+       "kind": "assumption",
+       "text": "The Proposal Due Date is the date in VOL-I:6.1 at ADD-02 (Thursday 26 November 2026) and is not moved by another ADD-03 provision outside this batch.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.1",
+         "page": 3,
+         "kind": "span",
+         "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"
+        }
+       ]
+      },
+      {
+       "id": "S-F4",
+       "kind": "fact",
+       "text": "calculate(relative_date, 2026-11-26, 2 working_day before, deadline) gives Tuesday 24 November 2026 (stated date excluded; readings do not differ) as the last day to modify under the new Clause 6.6, under S-A1."
+      },
+      {
+       "id": "S-F5",
+       "kind": "fact",
+       "text": "simulate_amendment rejects a set_status 'deleted' op on VOL-I:6.7 under C22: the engine's citation parser records only VOL-I:6.6 and VOL-I:6.1 as cited by ADD-03:2.1, although the provision prints 'Clauses 6.6 and 6.7 are deleted'."
+      },
+      {
+       "id": "S-F6",
+       "kind": "fact",
+       "text": "Form 4-A as reissued by ADD-01 already contains the acknowledgement of Addenda.",
+       "evidence": [
+        {
+         "doc": "ADD-01",
+         "unit_id": "ADD-01:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1."
+        }
+       ]
+      },
+      {
+       "id": "S-I2",
+       "kind": "interpretation",
+       "text": "The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is a noise criterion; this discrepancy belongs to the batch that answers the Volume II provisions and is flagged here only.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.5",
+         "page": 3,
+         "kind": "span",
+         "words": "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        }
+       ]
+      },
+      {
+       "id": "S-I3",
+       "kind": "interpretation",
+       "text": "ADD-03:1.1, 1.2 and 1.3 are recitals: they state the authority for the Addendum, how its references are read, and that late clarification requests were not answered (consistent with VOL-I:5.2); none changes the text of any unit."
+      },
+      {
+       "id": "S-I4",
+       "kind": "interpretation",
+       "text": "ADD-03:2.2 confirms that the deletion of 6.7 leaves a gap in numbering and that no Volume I clause is renumbered; it changes no unit beyond the 6.7 deletion carried by 2.1."
+      }
+     ],
+     "items": []
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01KJfB8k6xNWN2V17KdZhxuY",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03:2.1 deletes Volume I Clauses 6.6 and 6.7 and prints a single replacement Clause 6.6.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6"
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "At ADD-02, VOL-I:6.7 permits modification at any time before the Proposal Due Date; the new Clause 6.6 permits modification only not later than two (2) Working Days before it.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.7",
+         "page": 3,
+         "kind": "span",
+         "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "may modify its Proposal not later than two (2) Working Days before the Proposal Due Date"
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "The cover of ADD-03 describes the consolidation as being without change of substance.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "The new Clause 6.6 does change substance (the modification cut-off moves from any time before the Proposal Due Date to two Working Days before it, and late modifications are now rejected unopened), which conflicts with the cover's 'without change of substance'. The operative words of 2.1 are taken to govern; a person should confirm and consider a clarification."
+      },
+      {
+       "id": "S-A1",
+       "kind": "assumption",
+       "text": "The Proposal Due Date is the date in VOL-I:6.1 at ADD-02 (Thursday 26 November 2026) and is not moved by another ADD-03 provision outside this batch.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.1",
+         "page": 3,
+         "kind": "span",
+         "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"
+        }
+       ]
+      },
+      {
+       "id": "S-F4",
+       "kind": "fact",
+       "text": "calculate(relative_date, 2026-11-26, 2 working_day before, deadline) gives Tuesday 24 November 2026 (stated date excluded; readings do not differ) as the last day to modify under the new Clause 6.6, under S-A1."
+      },
+      {
+       "id": "S-F5",
+       "kind": "fact",
+       "text": "simulate_amendment rejects a set_status 'deleted' op on VOL-I:6.7 under C22: the engine's citation parser records only VOL-I:6.6 and VOL-I:6.1 as cited by ADD-03:2.1, although the provision prints 'Clauses 6.6 and 6.7 are deleted'."
+      },
+      {
+       "id": "S-F6",
+       "kind": "fact",
+       "text": "Form 4-A as reissued by ADD-01 already contains the acknowledgement of Addenda.",
+       "evidence": [
+        {
+         "doc": "ADD-01",
+         "unit_id": "ADD-01:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1."
+        }
+       ]
+      },
+      {
+       "id": "S-I2",
+       "kind": "interpretation",
+       "text": "The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is a noise criterion; this discrepancy belongs to the batch that answers the Volume II provisions and is flagged here only.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.5",
+         "page": 3,
+         "kind": "span",
+         "words": "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        }
+       ]
+      },
+      {
+       "id": "S-I3",
+       "kind": "interpretation",
+       "text": "ADD-03:1.1, 1.2 and 1.3 are recitals: they state the authority for the Addendum, how its references are read, and that late clarification requests were not answered (consistent with VOL-I:5.2); none changes the text of any unit."
+      },
+      {
+       "id": "S-I4",
+       "kind": "interpretation",
+       "text": "ADD-03:2.2 confirms that the deletion of 6.7 leaves a gap in numbering and that no Volume I clause is renumbered; it changes no unit beyond the 6.7 deletion carried by 2.1."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/cover/para1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:cover/para1",
+       "payload": {
+        "provision": "ADD-03:cover/para1",
+        "disposition": "no_effect",
+        "reason": "the issue date line 'Issued 15 November 2026' (the stage date); it amends, obliges or excepts nothing",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para1",
+         "page": 1,
+         "kind": "span",
+         "words": "Issued 15 November 2026"
+        }
+       ],
+       "statements": [],
+       "model_rationale": "Date line only; no target."
+      },
+      {
+       "id": "ADD-03/cover/para2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:cover/para2",
+       "payload": {
+        "provision": "ADD-03:cover/para2",
+        "disposition": "no_effect",
+        "reason": "title line identifying the tender ('Tender NUPA/ISTP/2026/014'); it amends, obliges or excepts nothing",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para2",
+         "page": 1,
+         "kind": "span",
+         "words": "Tender NUPA/ISTP/2026/014"
+        }
+       ],
+       "statements": [],
+       "model_rationale": "Title line only."
+      },
+      {
+       "id": "ADD-03/cover/para3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:cover/para3",
+       "target": "ADD-03:cover/para3",
+       "payload": {
+        "id": "ADD-03/cover/para3",
+        "provision": "ADD-03:cover/para3",
+        "type": "annotate",
+        "targets": [
+         "ADD-03:cover/para3"
+        ],
+        "old_resolved": "quoted",
+        "effect": "adds_obligation",
+        "note": "Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A (paragraph 1 of Form 4-A as reissued by ADD-01). The summary of changes in this paragraph is not applied as an op: each change is carried by its own operative provision in other batches.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "Bidders shall acknowledge receipt in Form 4-A."
+        },
+        {
+         "doc": "ADD-01",
+         "unit_id": "ADD-01:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1."
+        }
+       ],
+       "dependencies": [
+        "VOL-IV:F4-A",
+        "ADD-01:AppA/para1"
+       ],
+       "conflicts": [
+        "The cover says the 6.6/6.7 consolidation is 'without change of substance', but ADD-03:2.1 shortens the modification window to two Working Days before the Proposal Due Date (S-I1).",
+        "The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is a noise criterion (S-I2)."
+       ],
+       "statements": [
+        "S-F3",
+        "S-F6",
+        "S-I1",
+        "S-I2"
+       ],
+       "model_rationale": "Same pattern as ADD-02:cover/para3 (self-annotation, adds_obligation). Simulated valid. The two discrepancies in the summary are flagged for a person, not resolved here."
+      },
+      {
+       "id": "ADD-03/1.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.1",
+       "payload": {
+        "provision": "ADD-03:1.1",
+        "disposition": "no_effect",
+        "reason": "Recital. 'This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.' It restates the existing order of precedence (VOL-I:3.2) and the power to issue Addenda (VOL-I:5.3); it changes the text of no unit. A person confirms.",
+        "candidates": [
+         "VOL-I:5.3",
+         "VOL-I:3.2"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.1",
+         "page": 1,
+         "kind": "span",
+         "words": "This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "Recital relying on existing VOL-I 3.2 and 5.3; no change printed."
+      },
+      {
+       "id": "ADD-03/1.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.2",
+       "payload": {
+        "provision": "ADD-03:1.2",
+        "disposition": "no_effect",
+        "reason": "Rule of reading for this Addendum's own references: 'A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.' The 'unless otherwise stated' exception only governs how ADD-03's references are resolved (targets are read at ADD-02, as the engine does); it changes the text of no unit. A person confirms.",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.2",
+         "page": 1,
+         "kind": "span",
+         "words": "A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "Interpretive recital; consistent with reading targets at the previous stage (ADD-02)."
+      },
+      {
+       "id": "ADD-03/1.3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.3",
+       "payload": {
+        "provision": "ADD-03:1.3",
+        "disposition": "no_effect",
+        "reason": "Recital applying the existing rule in VOL-I:5.2 ('Requests received after that time will not be answered.'): 'Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered.' It changes the text of no unit.",
+        "candidates": [
+         "VOL-I:5.2"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.3",
+         "page": 1,
+         "kind": "span",
+         "words": "Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered."
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:5.2",
+         "page": 3,
+         "kind": "span",
+         "words": "Requests received after that time will not be answered."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "States the application of VOL-I:5.2 unchanged."
+      },
+      {
+       "id": "ADD-03/2.1(a)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-I:6.6",
+       "payload": {
+        "id": "ADD-03/2.1(a)",
+        "provision": "ADD-03:2.1",
+        "type": "replace_text",
+        "target": "VOL-I:6.6",
+        "old": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+        "old_resolved": "matched_in_target",
+        "new": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+        "note": "Whole text of 6.6 replaced by the single new Clause 6.6 printed in ADD-03:2.1 (label '6.6' omitted). replace_unit was tried first and the engine dry run failed with an internal error; replace_text of the whole effective text simulated valid (C21-C24 pass).",
+        "origin": "assistant"
+       },
+       "previous_value": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+       "proposed_value": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder."
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.6",
+         "page": 3,
+         "kind": "span",
+         "words": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder."
+        }
+       ],
+       "dependencies": [
+        "VOL-I:6.1",
+        "VOL-I:6.7"
+       ],
+       "conflicts": [
+        "Cover ADD-03:cover/para3 says 'without change of substance'; the new text moves the modification cut-off to two Working Days before the Proposal Due Date (S-I1)."
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1",
+        "S-A1",
+        "S-F4"
+       ],
+       "model_rationale": "Printed replacement; operative words govern over the cover's summary. Engine reports C46 need: no A1 row holds the new modification cut-off obligation (24 Nov 2026 by calculate under S-A1)."
+      },
+      {
+       "id": "ADD-03/2.1(b)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-I:6.7",
+       "payload": {
+        "why": "ADD-03:2.1 prints 'Volume I Clauses 6.6 and 6.7 are deleted', so VOL-I:6.7 must be set to status deleted. The engine rejects set_status on VOL-I:6.7 under C22 ('declared target VOL-I:6.7 is not cited; the provision cites [VOL-I:6.6, VOL-I:6.1]'): its citation parser does not pick up the second clause number in 'Clauses 6.6 and 6.7'.",
+        "what_is_unsupported": "A set_status 'deleted' op on VOL-I:6.7 for provision ADD-03:2.1 cannot pass C22 with the current citation parsing; a person must record the deletion of 6.7 (or the citation list must be corrected). Without it VOL-I:6.7 stays active and its 'withdraw or modify ... at any time before the Proposal Due Date' would conflict with the new 6.6."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6"
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.7",
+         "page": 3,
+         "kind": "span",
+         "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter."
+        }
+       ],
+       "dependencies": [
+        "ADD-03/2.1(a)"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F5"
+       ],
+       "model_rationale": "Printed deletion that the engine will not accept structurally; escalated rather than dropped or turned into no_effect."
+      },
+      {
+       "id": "ADD-03/2.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:2.2",
+       "payload": {
+        "provision": "ADD-03:2.2",
+        "disposition": "no_effect",
+        "reason": "'The number 6.7 is not reused. The Clauses of Volume I are not renumbered.' It confirms that no renumbering follows the deletion of 6.7 under ADD-03:2.1 (escalated as ADD-03/2.1(b)); it changes no unit itself. A person confirms.",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "The number 6.7 is not reused. The Clauses of Volume I are not renumbered."
+        }
+       ],
+       "dependencies": [
+        "ADD-03/2.1(b)"
+       ],
+       "statements": [
+        "S-I4"
+       ],
+       "model_rationale": "Negative statement (no renumbering); nothing to apply."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_019HbrHbz8J9VZJZJ5QECu4C",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (opus)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+      "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+      "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+      "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+     },
+     "statements": [
+      {
+       "id": "S-F1",
+       "kind": "fact",
+       "text": "ADD-03:2.1 deletes Volume I Clauses 6.6 and 6.7 and prints a single replacement Clause 6.6.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6"
+        }
+       ]
+      },
+      {
+       "id": "S-F2",
+       "kind": "fact",
+       "text": "At ADD-02, VOL-I:6.7 permits modification at any time before the Proposal Due Date; the new Clause 6.6 permits modification only not later than two (2) Working Days before it.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.7",
+         "page": 3,
+         "kind": "span",
+         "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal."
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "may modify its Proposal not later than two (2) Working Days before the Proposal Due Date"
+        }
+       ]
+      },
+      {
+       "id": "S-F3",
+       "kind": "fact",
+       "text": "The cover of ADD-03 describes the consolidation as being without change of substance.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "This Addendum consolidates Volume I Clauses 6.6 and 6.7 without change of substance"
+        }
+       ]
+      },
+      {
+       "id": "S-I1",
+       "kind": "interpretation",
+       "text": "The new Clause 6.6 does change substance (the modification cut-off moves from any time before the Proposal Due Date to two Working Days before it, and late modifications are now rejected unopened), which conflicts with the cover's 'without change of substance'. The operative words of 2.1 are taken to govern; a person should confirm and consider a clarification."
+      },
+      {
+       "id": "S-A1",
+       "kind": "assumption",
+       "text": "The Proposal Due Date is the date in VOL-I:6.1 at ADD-02 (Thursday 26 November 2026) and is not moved by another ADD-03 provision outside this batch. On that basis calculate(relative_date, 2026-11-26, 2 working_day before, purpose deadline) gives Tuesday 24 November 2026 as the last day to modify under the new Clause 6.6.",
+       "evidence": [
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.1",
+         "page": 3,
+         "kind": "span",
+         "words": "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"
+        }
+       ]
+      },
+      {
+       "id": "S-F6",
+       "kind": "fact",
+       "text": "Form 4-A as reissued by ADD-01 already contains the acknowledgement of Addenda.",
+       "evidence": [
+        {
+         "doc": "ADD-01",
+         "unit_id": "ADD-01:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1."
+        }
+       ]
+      },
+      {
+       "id": "S-I2",
+       "kind": "interpretation",
+       "text": "The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is a noise criterion; this discrepancy belongs to the batch that answers the Volume II provisions and is flagged here only.",
+       "evidence": [
+        {
+         "doc": "VOL-II",
+         "unit_id": "VOL-II:3.5",
+         "page": 3,
+         "kind": "span",
+         "words": "Noise at the nearest sensitive receptor shall not exceed 55 dB(A) by day and 45 dB(A) by night."
+        }
+       ]
+      },
+      {
+       "id": "S-I3",
+       "kind": "interpretation",
+       "text": "ADD-03:1.1, 1.2 and 1.3 are recitals: they state the authority for the Addendum, how its references are read, and that late clarification requests were not answered (consistent with VOL-I:5.2); none changes the text of any unit."
+      },
+      {
+       "id": "S-I4",
+       "kind": "interpretation",
+       "text": "ADD-03:2.2 confirms that the deletion of 6.7 leaves a gap in numbering and that no Volume I clause is renumbered; it changes no unit beyond the 6.7 deletion carried by 2.1."
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/cover/para1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:cover/para1",
+       "payload": {
+        "provision": "ADD-03:cover/para1",
+        "disposition": "no_effect",
+        "reason": "the issue date line 'Issued 15 November 2026' (the stage date); it amends, obliges or excepts nothing",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para1",
+         "page": 1,
+         "kind": "span",
+         "words": "Issued 15 November 2026"
+        }
+       ],
+       "statements": [],
+       "model_rationale": "Date line only; no target."
+      },
+      {
+       "id": "ADD-03/cover/para2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:cover/para2",
+       "payload": {
+        "provision": "ADD-03:cover/para2",
+        "disposition": "no_effect",
+        "reason": "title line identifying the tender ('Tender NUPA/ISTP/2026/014'); it amends, obliges or excepts nothing",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para2",
+         "page": 1,
+         "kind": "span",
+         "words": "Tender NUPA/ISTP/2026/014"
+        }
+       ],
+       "statements": [],
+       "model_rationale": "Title line only."
+      },
+      {
+       "id": "ADD-03/cover/para3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:cover/para3",
+       "target": "ADD-03:cover/para3",
+       "payload": {
+        "id": "ADD-03/cover/para3",
+        "provision": "ADD-03:cover/para3",
+        "type": "annotate",
+        "targets": [
+         "ADD-03:cover/para3"
+        ],
+        "old_resolved": "quoted",
+        "effect": "adds_obligation",
+        "note": "Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A (paragraph 1 of Form 4-A as reissued by ADD-01). The summary of changes in this paragraph is not applied as an op: each change is carried by its own operative provision in other batches.",
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:cover/para3",
+         "page": 1,
+         "kind": "span",
+         "words": "Bidders shall acknowledge receipt in Form 4-A."
+        },
+        {
+         "doc": "ADD-01",
+         "unit_id": "ADD-01:AppA/para1",
+         "page": 3,
+         "kind": "span",
+         "words": "Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1."
+        }
+       ],
+       "dependencies": [
+        "VOL-IV:F4-A",
+        "ADD-01:AppA/para1"
+       ],
+       "conflicts": [
+        "The cover says the 6.6/6.7 consolidation is 'without change of substance', but ADD-03:2.1 shortens the modification window to two Working Days before the Proposal Due Date (S-I1).",
+        "The cover says ADD-03 replaces 'the odour criterion in Volume II Clause 3.5', but VOL-II:3.5 at ADD-02 is a noise criterion (S-I2)."
+       ],
+       "statements": [
+        "S-F3",
+        "S-F6",
+        "S-I1",
+        "S-I2"
+       ],
+       "model_rationale": "Same pattern as ADD-02:cover/para3 (self-annotation, adds_obligation). Simulated valid. The two discrepancies in the summary are flagged for a person, not resolved here."
+      },
+      {
+       "id": "ADD-03/1.1",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.1",
+       "payload": {
+        "provision": "ADD-03:1.1",
+        "disposition": "no_effect",
+        "reason": "Recital. 'This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.' It restates the existing order of precedence (VOL-I:3.2) and the power to issue Addenda (VOL-I:5.3); it changes the text of no unit. A person confirms.",
+        "candidates": [
+         "VOL-I:5.3",
+         "VOL-I:3.2"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.1",
+         "page": 1,
+         "kind": "span",
+         "words": "This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "Recital relying on existing VOL-I 3.2 and 5.3; no change printed."
+      },
+      {
+       "id": "ADD-03/1.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.2",
+       "payload": {
+        "provision": "ADD-03:1.2",
+        "disposition": "no_effect",
+        "reason": "Rule of reading for this Addendum's own references: 'A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated.' The 'unless otherwise stated' exception only governs how ADD-03's references are resolved (targets are read at ADD-02, as the engine does); it changes the text of no unit. A person confirms.",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.2",
+         "page": 1,
+         "kind": "span",
+         "words": "A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "Interpretive recital; consistent with reading targets at the previous stage (ADD-02)."
+      },
+      {
+       "id": "ADD-03/1.3",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:1.3",
+       "payload": {
+        "provision": "ADD-03:1.3",
+        "disposition": "no_effect",
+        "reason": "Recital applying the existing rule in VOL-I:5.2 ('Requests received after that time will not be answered.'): 'Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered.' It changes the text of no unit.",
+        "candidates": [
+         "VOL-I:5.2"
+        ],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:1.3",
+         "page": 1,
+         "kind": "span",
+         "words": "Requests for clarification received after the time stated in Volume I Clause 5.2 have not been answered."
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:5.2",
+         "page": 3,
+         "kind": "span",
+         "words": "Requests received after that time will not be answered."
+        }
+       ],
+       "statements": [
+        "S-I3"
+       ],
+       "model_rationale": "States the application of VOL-I:5.2 unchanged."
+      },
+      {
+       "id": "ADD-03/2.1(a)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "amendment_op",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-I:6.6",
+       "payload": {
+        "id": "ADD-03/2.1(a)",
+        "provision": "ADD-03:2.1",
+        "type": "replace_text",
+        "target": "VOL-I:6.6",
+        "old": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+        "old_resolved": "matched_in_target",
+        "new": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+        "note": "Whole text of 6.6 replaced by the single new Clause 6.6 printed in ADD-03:2.1 (label '6.6' omitted). replace_unit was tried first and the engine dry run failed with an internal error; replace_text of the whole effective text simulated valid (C21-C24 pass).",
+        "origin": "assistant"
+       },
+       "previous_value": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+       "proposed_value": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the Portal. A Proposal received after the time stated in Clause 6.1, and a modification received after the time stated in this Clause, will be rejected unopened and returned to the Bidder."
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.6",
+         "page": 3,
+         "kind": "span",
+         "words": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder."
+        }
+       ],
+       "dependencies": [
+        "VOL-I:6.1",
+        "VOL-I:6.7"
+       ],
+       "conflicts": [
+        "Cover ADD-03:cover/para3 says 'without change of substance'; the new text moves the modification cut-off to two Working Days before the Proposal Due Date (S-I1)."
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2",
+        "S-F3",
+        "S-I1",
+        "S-A1"
+       ],
+       "model_rationale": "Printed replacement; operative words govern over the cover's summary. Engine reports C46 need: no A1 row holds the new modification cut-off obligation. calculate gives 24 Nov 2026 as the cut-off under S-A1."
+      },
+      {
+       "id": "ADD-03/2.1(b)",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:2.1",
+       "target": "VOL-I:6.7",
+       "payload": {
+        "why": "ADD-03:2.1 prints 'Volume I Clauses 6.6 and 6.7 are deleted', so VOL-I:6.7 must be set to status deleted. In simulate_amendment the engine rejects set_status on VOL-I:6.7 under C22 ('declared target VOL-I:6.7 is not cited; the provision cites [VOL-I:6.6, VOL-I:6.1]'): its citation parser does not pick up the second clause number in 'Clauses 6.6 and 6.7'.",
+        "what_is_unsupported": "A set_status 'deleted' op on VOL-I:6.7 for provision ADD-03:2.1 cannot pass C22 with the current citation parsing; a person must record the deletion of 6.7 (or the citation list must be corrected). Without it VOL-I:6.7 stays active and its 'withdraw or modify ... at any time before the Proposal Due Date' would conflict with the new 6.6."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.1",
+         "page": 1,
+         "kind": "span",
+         "words": "Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6"
+        },
+        {
+         "doc": "VOL-I",
+         "unit_id": "VOL-I:6.7",
+         "page": 3,
+         "kind": "span",
+         "words": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter."
+        }
+       ],
+       "dependencies": [
+        "VOL-I:6.7"
+       ],
+       "statements": [
+        "S-F1",
+        "S-F2"
+       ],
+       "model_rationale": "Printed deletion that the engine will not accept structurally; escalated rather than dropped or turned into no_effect."
+      },
+      {
+       "id": "ADD-03/2.2",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "77784d6d270a9e3441eda83d753e899b3afc5017259553df5da942007c34d4b0",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "661746332a14752fb78ad2b679490bd644b783bdae9a892a6829f458dbb1e7bc",
+        "activity_templates_sha256": "e03a7b9bfdb61c761a95606fb4b907ecf29aa8bd6a0a650d402c4f91c165b49f",
+        "readings_sha256": "fce83f220c41c04514b4dafd34f81fdc8643f9273627c3de55c37d6529878da3",
+        "amendments_sha256": "05da72cc81f1eaada64d130dba484462fcc69c11cd065a2854ceb50136c40171",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "37e4d5d76af3afe207c1405108861145401650c700fe4691c28b4e230be81f9a",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "92edb64154b515c8ab7cb6e5379224b3805869f561e17b3bdc3a8183f23ba12a"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:2.2",
+       "payload": {
+        "provision": "ADD-03:2.2",
+        "disposition": "no_effect",
+        "reason": "'The number 6.7 is not reused. The Clauses of Volume I are not renumbered.' It confirms that no renumbering follows the deletion of 6.7 under ADD-03:2.1 (escalated as ADD-03/2.1(b)); it changes no unit itself. A person confirms.",
+        "candidates": [],
+        "origin": "assistant"
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:2.2",
+         "page": 1,
+         "kind": "span",
+         "words": "The number 6.7 is not reused. The Clauses of Volume I are not renumbered."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:2.1",
+        "VOL-I:6.7"
+       ],
+       "statements": [
+        "S-I4"
+       ],
+       "model_rationale": "Negative statement (no renumbering); nothing to apply."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [],
+ "images_received": [],
+ "submission": {
+  "run_id": "ADD-03-host-20261005T030409Z-1bb2",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/ai/ADD-03-host-20261005T030409Z-1bb2",
+  "coverage": {
+   "provisions_total": 54,
+   "accounted": 8,
+   "unaccounted": [
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.3(b)",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:Q21",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:7.3",
+    "ADD-03:7.4",
+    "ADD-03:AppA/para1",
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/table-intro",
+    "ADD-03:p4-image/table-header",
+    "ADD-03:p4-image/row-a",
+    "ADD-03:p4-image/row-b",
+    "ADD-03:p4-image/notes-head",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3",
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1",
+    "ADD-03:T5-1/a",
+    "ADD-03:T5-1/b",
+    "ADD-03:T5-1/notes",
+    "ADD-03:T5-1/note(1)",
+    "ADD-03:T5-1/note(2)",
+    "ADD-03:T5-1/note(3)"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 54,
+   "accounted": 8,
+   "resolved": 2,
+   "pending": 6,
+   "invalid": 0,
+   "unaccounted": 46,
+   "pending_provisions": [
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:1.3",
+    "ADD-03:2.1",
+    "ADD-03:2.2"
+   ],
+   "invalid_provisions": [],
+   "no_change_on_amendment_language": [
+    "ADD-03:1.2",
+    "ADD-03:2.2"
+   ],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/cover/para1",
+    "status": "evidence_verified"
+   },
+   {
+    "id": "ADD-03/cover/para2",
+    "status": "evidence_verified"
+   },
+   {
+    "id": "ADD-03/cover/para3",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/1.1",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/1.2",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/1.3",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/2.1(a)",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/2.1(b)",
+    "status": "escalated"
+   },
+   {
+    "id": "ADD-03/2.2",
+    "status": "interpretation_pending"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/cover/para1": "evidence_verified",
+  "ADD-03/cover/para2": "evidence_verified",
+  "ADD-03/cover/para3": "conflicting",
+  "ADD-03/1.1": "interpretation_pending",
+  "ADD-03/1.2": "interpretation_pending",
+  "ADD-03/1.3": "interpretation_pending",
+  "ADD-03/2.1(a)": "conflicting",
+  "ADD-03/2.1(b)": "escalated",
+  "ADD-03/2.2": "interpretation_pending"
+ },
+ "num_turns": 21,
+ "usage": {
+  "input_tokens": 30,
+  "cache_creation_input_tokens": 73272,
+  "cache_read_input_tokens": 470331,
+  "output_tokens": 30990,
+  "output_tokens_details": {
+   "thinking_tokens": 2855
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 73272,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 299,
+    "cache_read_input_tokens": 60565,
+    "cache_creation_input_tokens": 12707,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 12707
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 1.3001622,
+ "final_text": "I submitted run ADD-03-host-20261005T030409Z-1bb2, status partial: all 8 provisions in this batch are covered and none failed. 2 are verified and 6 wait for a person. One item is escalated: 2.1 says \"Volume I Clauses 6.6 and 6.7 are deleted\", but the engine's C22 check rejects deleting 6.7 because it reads only 6.6 and 6.1 as cited. I flagged two conflicts: the new 6.6 moves the deadline for changing a Proposal to two Working Days before the due date, though the cover says \"without change of substance\"; and the cover calls VOL-II 3.5 an odour criterion, but it is a noise limit. I read no crops because the packet listed none.",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/ai/ADD-03-hostsession-20261005T025833Z-7360",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

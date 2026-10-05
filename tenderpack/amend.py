@@ -29,6 +29,24 @@ Operation types (a small closed set; PLAN §4.4):
 Dispositions for provisions that carry no op: no_effect (reason) or unresolved (blocks validation). Every
 provision is treated (an op, op content or a disposition).
 
+Session 11 (blind rehearsal 04), three attributes of an op rather than new types:
+  effective_from  'With effect from 8 October 2026': the ISO date the provision prints (C21). The op applies at its
+                  addendum's stage as any other; its result says `effective` retroactive | deferred | on issue, and the
+                  register shows the date. The states of earlier stages are copies and are never rewritten.
+  an amendment of an earlier addendum's amending text: a replace_text whose target is an earlier addendum's unit (ADD-01:5.1)
+                  that wrote words into other units (ADD-01/5.1 appended a sentence to VOL-II:5.3) changes those words
+                  where they were written as well (`details.flowed`; VOL-II 5.3 <- ADD-01 5.1 <- ADD-03 5.2). Words the
+                  earlier op never wrote change only that addendum's unit, as before; words it wrote that are no longer
+                  there as written make the op invalid (nothing is half applied).
+  condition       a conditional amendment ('This Section 7 has effect only if ...'): {id, trigger, trigger_unit,
+                  applicability, deadline (a date rule), if_not_triggered, affects}, every quoted field printed in the
+                  trigger unit or the provision (C21/C22). The op is checked as if triggered and both states are kept
+                  (`details.conditional`: if_triggered {unit: {before, after}}), but it applies only when a person has
+                  recorded the trigger as a dated fact with evidence (load_triggers: curation/triggers.yaml), and then
+                  from that date; otherwise it is `pending` (OpResult.pending; applied False), its provision and trigger
+                  unit are accounted `conditional`, and a held conditional op does not make the addendum PARTIAL. Nothing
+                  assumes a trigger occurred. StageResult.conditions lists the conditions in play (conditions_of).
+
 Checks per op (an invalid op is listed and changes NOTHING: the state, including history, annotations and
 the unit order, is restored to what it was before the op; ops are applied as transactions):
   C21 the op's quoted words (old/new/new_text) occur in its provision; a set_value's new value is the figure
@@ -73,13 +91,14 @@ import copy
 import json
 import re
 from dataclasses import dataclass, field
+from datetime import date
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_serializer
 
 from .citations import after_row, citations, is_index_table, verify_target
-from .dates import parse_date
+from .dates import MONTHS, parse_date
 from .textnorm import has_arabic, normalize_arabic, normalize_latin, slug
 from .util import load_yaml, sha256_text
 
@@ -90,6 +109,33 @@ OP_TYPES = ("replace_text", "set_value", "append_text", "set_status", "replace_u
 
 class _Strict(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+class DeadlineRule(_Strict):
+    """The trigger's deadline as a date rule (dates.DateRule fields; session 11), so A5 can plan a decision milestone:
+    e.g. {kind: relative, anchor: PDD, offset: 10, unit: working_day, direction: before, text: 'not later than ten (10)
+    Working Days before the Proposal Due Date'}. `text` is printed in the trigger unit."""
+    kind: Literal["relative", "fixed", "anchor"] = "relative"
+    anchor: str | None = None
+    offset: int = 0
+    unit: Literal["calendar_day", "working_day", "week", "month", "year"] = "calendar_day"
+    direction: Literal["after", "before"] = "after"
+    fixed: str | None = None
+    text: str
+
+
+class Condition(_Strict):
+    """A conditional amendment (session 11): the op applies only if a stated event occurs. Every quoted field is printed
+    in the trigger unit (or, for the applicability and the lapse, in the op's provision); a person records whether the
+    event occurred (a trigger fact, `triggers`), and only then does the engine apply the op. Ops sharing an `id` are
+    the alternative state 'if triggered'; the state if not is the unit as it stands."""
+    id: str                                                    # shared by every op of the condition (e.g. ADD-03/S7)
+    trigger: str                                               # the event, verbatim
+    trigger_unit: str                                          # the unit that states it (ADD-03:7.1)
+    applicability: str                                         # 'has effect only if' (not in effect unless ...)
+    deadline: DeadlineRule | None = None                       # when the trigger must occur by
+    if_not_triggered: str | None = None                        # the words saying what happens otherwise ('... lapses')
+    affects: list[str] = Field(default_factory=list)           # further obligations the curator names (rows, units)
 
 
 class Op(_Strict):
@@ -120,9 +166,27 @@ class Op(_Strict):
     expect: list[dict] = Field(default_factory=list)           # [{row, column, delta}|{row, column, equals}|{contains}]
     issue: str | None = None                                   # something the op leaves open for a person
     note: str | None = None
+    # session 11 audit (A2-6): annotate on a clarification answer: units of the documents the answer RESTATES without
+    # citing them (ADD-01 Q4 restates VOL-I 5.5). Checked: each is in force before the op and the answer, read against
+    # it (summary.classify_answer), has a sentence that confirms it; never an annotation of that unit
+    restates: list[str] = Field(default_factory=list)
+    effective_from: str | None = None                          # session 11: ISO date the provision prints ('With effect from ...')
+    condition: Condition | None = None                         # session 11: applies only if a person records the trigger
     origin: Literal["pattern", "assistant", "person"] = "assistant"
     review: Literal["proposed", "accepted", "rejected"] = "proposed"
     reviewer: str | None = None
+
+    @model_serializer(mode="wrap")
+    def _without_unset_session11(self, handler):
+        # an op without the session 11 fields dumps exactly as before they existed, so what a review decision on it is
+        # bound to does not change for ops that do not use them
+        d = handler(self)
+        for k in ("effective_from", "condition"):
+            if getattr(self, k) is None:
+                d.pop(k, None)
+        if not self.restates:                     # session 11 audit: absent unless used (bindings unchanged)
+            d.pop("restates", None)
+        return d
 
 
 class Disposition(_Strict):
@@ -167,6 +231,10 @@ class UState:
     annotations: list[str] = field(default_factory=list)        # op ids that annotate it
     superseded_by: str | None = None
     issued_by: str | None = None                                 # addendum stage that issued it (addendum units)
+    # session 11 audit (A1-5): a unit an op inserted is PRINTED in the addendum (its pages are the provision's), at a
+    # place in a volume: `printed_in` is that addendum, `inserted_after` the unit it follows (inserted_ref labels it)
+    printed_in: str | None = None
+    inserted_after: str | None = None
 
     def sha(self) -> str:
         return sha256_text(json.dumps({"status": self.status, "text": self.text, "cells": self.cells},
@@ -265,14 +333,22 @@ class OpResult:
     details: dict = field(default_factory=dict)
     withdrawn: bool = False                  # a person rejected it: checked, but not applied
     subject: dict = field(default_factory=dict)   # what a decision is bound to (state immediately before the op)
+    pending: bool = False                    # session 11: a conditional op whose trigger no person has recorded as having
+                                             # occurred (or recorded as not occurred): checked on a copy, never applied
 
     @property
     def applied(self) -> bool:
-        return self.valid and not self.withdrawn
+        return self.valid and not self.withdrawn and not self.pending
+
+    @property
+    def conditional_pending(self) -> bool:
+        """Valid, not withdrawn, and held only because its condition is not (or not yet) met: correctly not applied."""
+        return self.valid and not self.withdrawn and self.pending
 
     def to_dict(self) -> dict:
         return {"op": self.op.model_dump(exclude_none=True), "stage": self.stage, "valid": self.valid,
                 "withdrawn": self.withdrawn, "applied": self.applied,
+                **({"pending": True} if self.pending else {}),
                 "checks": self.checks, "changed": self.changed, "details": self.details}
 
 
@@ -288,6 +364,24 @@ def unit_evidence(u: dict, doc_sha256: str | None = None) -> dict:
             "reading": (u.get("reading") or {}).get("subject_sha256")}
 
 
+def inserted_ref(state: dict[str, "UState"], u: "UState", pages: bool = True) -> str | None:
+    """The reference of a unit an addendum op inserted (session 11 audit, A1-5): the document and page it is PRINTED on
+    (the addendum, the provision's page), then its insertion point with that unit's own page: 'ADD-02 p3 (inserted after
+    VOL-I 9.1(e), p4)'. None for any other unit. Never the volume's name with the addendum's page."""
+    if u is None or not u.printed_in:
+        return None
+    head = u.printed_in + (f" p{','.join(map(str, u.pages))}" if pages and u.pages else "")
+    if not u.inserted_after:
+        return head
+    a = state.get(u.inserted_after)
+    doc, _, local = u.inserted_after.partition(":")
+    where = f"{doc} {a.number} (issued as {local})" if a is not None and a.number else f"{doc} {local}"
+    if a is not None and a.printed_in:                       # inserted after a unit that was itself inserted
+        where = inserted_ref(state, a, pages=False) or where
+    return head + f" (inserted after {where}" + (f", p{','.join(map(str, a.pages))}" if pages and a is not None
+                                                 and a.pages and not a.printed_in else "") + ")"
+
+
 def unit_pin(state: dict[str, "UState"], uid: str, evidence: dict | None = None) -> str:
     """A unit as it stands: status, text and cells, the annotations on it and, for an image reading, the
     reading's review-subject fingerprint. 'absent' when the unit does not exist.
@@ -301,7 +395,9 @@ def unit_pin(state: dict[str, "UState"], uid: str, evidence: dict | None = None)
     content = u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or "")
     if evidence is None:
         return sha256_text(content)[:16]
-    src = evidence.get(uid) or {"doc": u.doc, "pages": list(u.pages), "created_by": u.history[:1]}
+    # a unit an op inserted is printed in the addendum, on the provision's pages, at its insertion point (A1-5)
+    src = evidence.get(uid) or {"doc": u.printed_in or u.doc, "pages": list(u.pages), "created_by": u.history[:1],
+                                **({"inserted_after": u.inserted_after} if u.inserted_after else {})}
     return sha256_text(content + "|" + json.dumps(src, ensure_ascii=False, sort_keys=True))[:16]
 
 
@@ -319,6 +415,8 @@ class StageResult:
     opfile: str | None = None
     prepared_by: str | None = None
     non_working_days: list[str] = field(default_factory=list)   # days notified under VOL-I 2.4 at or before this stage
+    conditions: list[dict] = field(default_factory=list)        # session 11: conditional ops stated at or before this
+                                                                 # stage, with their state (conditions_of)
 
 
 # ---------------------------------------------------------------------------------------------- engine
@@ -344,14 +442,23 @@ def heading_of(units_order: list[str], state: dict[str, UState], unit_id: str) -
 
 
 class Engine:
-    def __init__(self, units: list[dict], opfiles: list[OpFile], withdrawn: dict[str, dict] | None = None):
-        """withdrawn: op id -> the person's rejection ({reviewer, date, note}); those ops are checked, never applied."""
+    def __init__(self, units: list[dict], opfiles: list[OpFile], withdrawn: dict[str, dict] | None = None,
+                 triggers: dict[str, dict] | None = None):
+        """withdrawn: op id -> the person's rejection ({reviewer, date, note}); those ops are checked, never applied.
+        triggers (session 11): condition id -> the fact a person recorded (load_triggers); without one a conditional
+        op is pending and never applied."""
         self.units = units
         self.order = [u["unit_id"] for u in units]
         self.opfiles = sorted(opfiles, key=lambda f: int(f.addendum.split("-")[1]))
         self.addenda = [f.addendum for f in self.opfiles]
         self.withdrawn = dict(withdrawn or {})
+        self.triggers = dict(triggers or {})
         self.evidence = {u["unit_id"]: unit_evidence(u) for u in units}    # where each unit is printed (unit_pin)
+        self._issued_now: str | None = None                       # the issue date of the stage being applied
+        # session 11 (D1): a clause an addendum inserted ('new Clause 9.3 ... after Clause 9.2' -> VOL-I:9.2+ADD-01) is
+        # cited by later addenda by the number it was inserted as: {inserted unit id: 'VOL-I:9.3'}
+        self.inserted_as: dict[str, str] = {}
+        self._applied_before: list[OpResult] = []                 # ops applied at earlier stages (flows, session 11)
 
     # ------------------------------------------------------------------ run
     def run(self) -> list[StageResult]:
@@ -369,6 +476,7 @@ class Engine:
             elif prev_issued and res.issued < prev_issued:
                 res.problems.append(f"issued {res.issued} before the previous addendum ({prev_issued})")
             prev_issued = res.issued or prev_issued
+            self._issued_now = res.issued
             for k, u in st.items():                                   # the addendum's own units are issued
                 if u.doc == f.addendum and u.status == "not_issued":
                     u.status = "active"
@@ -379,7 +487,9 @@ class Engine:
                 r = self._apply(op, st, f.addendum)
                 rej = self.withdrawn.get(op.id) or ({"reviewer": op.reviewer, "flag": "review: rejected in the op file"}
                                                     if op.review == "rejected" else None)
-                if not r.valid or rej:                # a failed or withdrawn op changes nothing: restore state and order
+                if op.condition is not None:          # session 11: checked as if triggered; applied only on a fact
+                    r.pending = self._condition(op, r, snap, st, f.addendum, res)
+                if not r.valid or rej or r.pending:   # a failed, withdrawn or pending op changes nothing: restore
                     st.clear()
                     st.update(snap)
                     self.order[:] = order
@@ -393,11 +503,98 @@ class Engine:
             self._scope(res, before, f.addendum)
             res.non_working_days = sorted(set(stages[-1].non_working_days)
                                           | {x.details["non_working_day"] for x in res.ops if x.applied and x.details.get("non_working_day")})
-            if res.problems or res.scope_leak or any(not r.applied for r in res.ops) or \
+            res.conditions = conditions_of(stages[-1], res)
+            # a conditional op that is valid and held only by its condition is correctly not applied: it does not make
+            # the addendum PARTIAL (session 11); an invalid or withdrawn one does
+            if res.problems or res.scope_leak or any(not r.applied and not r.conditional_pending for r in res.ops) or \
                     any(c["disposition"] in ("unresolved", "rejected") or not c["accounted_by"] for c in res.coverage):
                 res.status = "PARTIAL"
             stages.append(res)
+            self._applied_before += [x for x in res.ops if x.applied]
         return stages
+
+    # ------------------------------------------------------------------ conditions (session 11)
+    def _condition(self, op: Op, r: OpResult, snap: dict[str, UState], st: dict[str, UState], addendum: str,
+                   res: StageResult) -> bool:
+        """Check a conditional op's condition against the state before it (every quoted field printed in the trigger
+        unit, a unit of this addendum, or in the provision), record both states (`details.conditional`) and decide from
+        the trigger facts whether it applies. Returns True when the op is pending (held: no fact that the trigger
+        occurred). A failed check makes the op invalid."""
+        c = op.condition
+        tu = snap.get(c.trigger_unit)
+        prov = snap.get(op.provision)
+        ttext = tu.text if tu is not None else ""
+        both = ttext + " \n " + (prov.text if prov is not None else "")
+
+        def check(cid, ok, detail):
+            r.checks.append({"id": cid, "ok": bool(ok), "detail": detail})
+            if not ok:
+                r.valid = False
+        check("C22", tu is not None and tu.doc == addendum, f"the trigger unit {c.trigger_unit} is a unit of {addendum}"
+              if tu is not None and tu.doc == addendum else f"the trigger unit {c.trigger_unit} is not a unit of {addendum}")
+        check("C21", bool(ttext) and _quoted_in(ttext, c.trigger), f"the trigger is printed in {c.trigger_unit}"
+              if ttext and _quoted_in(ttext, c.trigger) else f"the trigger is not in {c.trigger_unit}: '{c.trigger[:80]}'")
+        check("C21", _quoted_in(both, c.applicability), "the applicability words are printed in the trigger unit or the "
+              "provision" if _quoted_in(both, c.applicability) else f"the applicability words are not in "
+                                                                     f"{c.trigger_unit} or {op.provision}: '{c.applicability[:80]}'")
+        if c.if_not_triggered:
+            check("C21", _quoted_in(both, c.if_not_triggered), "the words for the state if not triggered are printed"
+                  if _quoted_in(both, c.if_not_triggered) else f"the words for the state if not triggered are not in "
+                                                                f"{c.trigger_unit} or {op.provision}")
+        if c.deadline is not None:
+            d = c.deadline
+            ok = _quoted_in(ttext, d.text) and (d.kind != "relative" or (bool(d.anchor) and d.offset >= 1)) and \
+                (d.kind != "fixed" or bool(d.fixed))
+            check("C21", ok, f"the trigger's deadline is printed in {c.trigger_unit} ('{d.text[:60]}')" if ok else
+                  f"the trigger's deadline is not a usable date rule printed in {c.trigger_unit}: '{d.text[:60]}'")
+        r.details["conditional"] = cd = {
+            "condition": c.id, "trigger": c.trigger, "trigger_unit": c.trigger_unit, "applicability": c.applicability,
+            "deadline": c.deadline.model_dump() if c.deadline else None, "if_not_triggered": c.if_not_triggered,
+            "affects": list(c.affects), "state": "pending", "fact": None,
+            "if_triggered": {k: {"before": snap[k].text if k in snap else None, "after": st[k].text if k in st else None}
+                             for k in r.changed} if r.valid else {},
+            "targets": list(r.changed) if r.valid else []}
+        if not r.valid:
+            cd["state"] = "invalid"
+            return False
+        fact, problems = self._trigger_fact(c.id)
+        if problems:
+            res.problems += [f"trigger record for {c.id}: {p}" for p in problems]
+            cd["trigger_problems"] = problems
+            return True
+        if fact is None:
+            return True                                           # nothing assumes the trigger occurred
+        cd["fact"] = fact
+        if not fact["occurred"]:
+            cd["state"] = "not_triggered"
+            return True
+        cd["state"] = "triggered"
+        r.details.setdefault("effective_from", fact["date"])
+        return False
+
+    def _trigger_fact(self, cid: str) -> tuple[dict | None, list[str]]:
+        """The fact a person recorded for a condition: {condition, occurred, date, recorded_by, evidence, note}. A
+        record that is not a person's, has no ISO date or no evidence is a problem, and the op stays pending."""
+        f = self.triggers.get(cid)
+        if f is None:
+            return None, []
+        from .readings import is_assistant, valid_reviewer
+        out = []
+        if not isinstance(f.get("occurred"), bool):
+            out.append("`occurred` must be true or false")
+        try:
+            date.fromisoformat(str(f.get("date")))
+        except ValueError:
+            out.append(f"`date` must be the ISO date the event occurred (or was established not to), got {f.get('date')!r}")
+        who = f.get("recorded_by")
+        if not valid_reviewer(who) or is_assistant(who):
+            out.append("`recorded_by` must name the person who recorded the fact (never the program or a model)")
+        ev = f.get("evidence")
+        if not isinstance(ev, list) or not ev or not all(isinstance(q, dict) and str(q.get("words") or "").strip()
+                                                          and (q.get("source") or q.get("unit")) for q in ev):
+            out.append("`evidence` must list [{source or unit, words}] (the notice that shows it)")
+        return (None if out else {k: f.get(k) for k in ("condition", "occurred", "date", "recorded_by", "evidence",
+                                                         "note")}), out
 
     def subject(self, op: Op, st: dict[str, UState]) -> dict:
         """What a decision on `op` is bound to, from the state immediately before it (see the module docstring). Each
@@ -431,21 +628,33 @@ class Engine:
         by_op: dict[str, list[str]] = {}
         applied_for: dict[str, bool] = {}
         withdrawn_for: dict[str, bool] = {}
+        held_for: dict[str, str] = {}                 # session 11: provision -> why its conditional op is held
         for r in res.ops:
-            for p in [r.op.provision] + r.op.covers + r.details.get("content", []):
+            cond = r.op.condition.trigger_unit if r.op.condition is not None else None
+            for p in [r.op.provision] + r.op.covers + r.details.get("content", []) + ([cond] if cond else []):
                 if r.op.id not in by_op.setdefault(p, []):
                     by_op[p].append(r.op.id)
                 applied_for[p] = applied_for.get(p, False) or r.applied
                 withdrawn_for[p] = withdrawn_for.get(p, False) or r.withdrawn
+                if r.conditional_pending and p not in held_for:
+                    cd = r.details.get("conditional") or {}
+                    held_for[p] = (f"conditional ({cd.get('condition')}): "
+                                   + ("not triggered, as a person recorded" if cd.get("state") == "not_triggered" else
+                                      f"not in effect unless the trigger occurs ('{_short_words(cd.get('trigger'), 120)}');"
+                                      " no person has recorded that it did")
+                                   + "; both states are kept")
         for p in provisions(st, f.addendum):
             d = disp.get(p)
             if d:
                 kind, reason = d.disposition, d.reason
             elif p in by_op:
                 # a provision none of whose ops applies is not accounted for (C20): `rejected` when a person withdrew
-                # an op for it, `unresolved` when its ops are invalid. Both keep the addendum PARTIAL
+                # an op for it, `unresolved` when its ops are invalid. Both keep the addendum PARTIAL. A conditional op
+                # held by its condition accounts for its provision and its trigger unit (`conditional`, session 11)
                 if applied_for[p]:
                     kind, reason = "op", ""
+                elif p in held_for and not withdrawn_for[p]:
+                    kind, reason = "conditional", held_for[p]
                 elif withdrawn_for[p]:
                     kind, reason = "rejected", ("every op for this provision was rejected by a person and is withheld; "
                                                 "a corrected op or a disposition is needed")
@@ -485,6 +694,17 @@ class Engine:
         if not check("C21", prov is not None and prov.doc == addendum, f"provision {op.provision} belongs to {addendum}"):
             return r
         ptext = prov.text
+        if op.effective_from is not None:            # session 11: an effective date is the one the provision prints
+            printed = _printed_dates(ptext)
+            if not check("C21", op.effective_from in printed,
+                         f"the provision prints the effective date {op.effective_from}" if op.effective_from in printed
+                         else f"the effective date must be a date the provision prints ({printed or 'none'}); the op "
+                              f"says {op.effective_from!r}"):
+                return r
+            r.details["effective_from"] = op.effective_from
+            if self._issued_now:
+                r.details["effective"] = ("retroactive" if op.effective_from < self._issued_now else
+                                          "deferred" if op.effective_from > self._issued_now else "on issue")
         cite_text = ptext + " " + heading_of(self.order, st, op.provision)
         quoted = [x for x in (op.old if op.old_resolved == "quoted" else None, op.new, op.new_text) if x]
         if op.type in ("replace_text", "append_text", "set_status") and quoted:
@@ -525,6 +745,26 @@ class Engine:
                              else f"the notified day must be the date the provision prints ({printed}); the op says {op.date!r}"):
                     return r
                 r.details["non_working_day"] = op.date
+            if op.restates:
+                # session 11 audit (A2-6): a clarification answer that restates a unit it does not cite, read against
+                # it and its annotated targets; one that only confirms or interprets is not a new obligation (C28 reads
+                # `answer_class`). Only on a curated `restates` claim: no answer is reclassified without one
+                from .summary import answer_targets, classify_answer
+                bad = [k for k in op.restates if k not in st or st[k].status != "active" or st[k].doc == addendum]
+                if not check("C22", not bad, f"restated units in force: {op.restates}" if not bad
+                             else f"restated units not in force before {op.id} (or units of {addendum}): {bad}"):
+                    return r
+                question = re.split(r"Authority response:", ptext)[0]
+                tg = answer_targets(st, [t for t in op.targets if t != op.provision] + list(op.restates))
+                c = classify_answer(ptext, tg, [question])
+                r.details["answer_class"] = {"class": c["class"], "restates": list(op.restates), "why": c["why"],
+                                             "sentences": [{"text": x["text"], "kind": x["kind"]} for x in c["sentences"]]}
+                if op.restates and not check(
+                        "C22", any(x["kind"] == "confirms" for x in c["sentences"]),
+                        f"the answer restates {', '.join(op.restates)} (a sentence confirms it)"
+                        if any(x["kind"] == "confirms" for x in c["sentences"]) else
+                        f"no sentence of the answer confirms {', '.join(op.restates)}: not a restatement"):
+                    return r
             for t in op.targets:
                 for k in ([t] if t in st else group_members(st, t)):
                     st[k].annotations.append(op.id)
@@ -548,6 +788,10 @@ class Engine:
         if op.type == "insert_unit":
             target = op.anchor or op.new_group
         ok, why, cited = verify_target(target, cite_text, ids, label) if target else (False, "no target", [])
+        alias = self.inserted_as.get(target) if target else None
+        if not ok and alias and alias not in ids and verify_target(alias, cite_text, ids | {alias}, label)[0]:
+            # session 11 (D1): the provision cites the clause an earlier addendum inserted by its inserted number
+            ok, why, cited = True, f"declared target {target} is {alias} as inserted by {st[target].issued_by}", [target]
         if op.type == "insert_unit" and op.new_group and not op.anchor:
             ok, why = True, "new group from this addendum"
         r.details["cited"] = cited
@@ -623,6 +867,17 @@ class Engine:
                     t.status = op.status
             t.history.append(op.id)
             r.changed = [op.target]
+            if op.type == "replace_text" and t.doc.startswith("ADD-") and t.doc != addendum:
+                # session 11: an earlier addendum's amending text is amended: the change flows to the units that
+                # addendum's op wrote those words into (VOL-II 5.3 <- ADD-01 5.1 <- ADD-03 5.2, blind rehearsal 04)
+                ok, why, flowed = self._flow(op, st)
+                if not check("C22", ok, why):
+                    return r
+                if flowed:                            # (nothing flowed: the op is exactly what it was before s11)
+                    r.details["flow"] = why
+                    r.changed += [x["unit"] for x in flowed if x["unit"] not in r.changed]
+                    r.details["flowed"] = flowed
+                    r.details["also_in"] = [k for k in r.details.get("also_in", []) if k not in r.changed]
         elif op.type == "replace_unit":
             old = group_members(st, op.target)
             new = [k for k in group_members(st, op.replacement, exclude={op.provision}) if st[k].kind != "note"
@@ -692,7 +947,13 @@ class Engine:
                 if not check("C22", new_id not in st, f"{new_id} is a new id"):
                     return r
                 st[new_id] = UState(new_id, a.doc, a.kind, "active", text, None, list(prov.pages), "addendum_op",
-                                    None, parent=a.parent, label=f"after {a.label}", history=[op.id], issued_by=addendum)
+                                    None, parent=a.parent, label=f"after {a.label}", history=[op.id], issued_by=addendum,
+                                    printed_in=addendum, inserted_after=op.anchor)
+                num = re.search(r"\bnew (?:Clause|clause|Section|section|Paragraph|paragraph) (\d+(?:\.\d+)*[A-Z]?)\b"
+                                r"[^.]{0,80}?\binserted\b", ptext)
+                if num:                                  # session 11: the number later addenda cite it by
+                    self.inserted_as[new_id] = f"{a.doc}:{num.group(1)}"
+                    r.details["inserted_as"] = num.group(1)
                 content.append(new_id)
                 self.order.insert(self.order.index(op.anchor) + 1, new_id)
             r.changed, r.details["content"] = content, content
@@ -750,10 +1011,10 @@ class Engine:
                      else f"cells not printed in the provision after their column's name: {unstated}"):
             return r
         row = {c: cells[c] for c in cols if c in cells}                    # in the header's order, as the siblings
+        after = op.after or (members[-1] if members else op.target)
         st[new_id] = UState(new_id, t.doc, "table_row", "active", " | ".join(f"{c}: {v}" for c, v in row.items() if v),
                             row, list(prov.pages), "addendum_op", None, parent=op.target, label=key, history=[op.id],
-                            issued_by=addendum)
-        after = op.after or (members[-1] if members else op.target)
+                            issued_by=addendum, printed_in=addendum, inserted_after=after)
         self.order.insert(self.order.index(after) + 1, new_id)
         r.changed = [new_id]
         r.details.update({"inserted": new_id, "after": after, "cells": row})
@@ -766,6 +1027,55 @@ class Engine:
                 if o.id == op_id:
                     return o.provision
         return ""
+
+    def _flow(self, op: Op, st: dict[str, UState]) -> tuple[bool, str, list[dict]]:
+        """A replace_text on an earlier addendum's unit (session 11). When that unit is the provision of ops applied at
+        earlier stages that wrote words into other units (append_text / replace_text `new`, a reinstatement's or an
+        inserted item's `new_text`), and `old` is inside those words exactly once, the same change is made inside them
+        in every unit those ops wrote into (each such unit must still hold the words exactly once). Returns (ok, why,
+        [{unit, via, via_provision, before, after, inserted_before, inserted_after}]). The earlier stages' states are
+        copies and are never touched: the historical state is not rewritten."""
+        wrote = []
+        for x in self._applied_before:
+            if x.op.provision != op.target:
+                continue
+            words = x.op.new if x.op.type in ("append_text", "replace_text") else (
+                x.op.new_text if x.op.type in ("set_status", "insert_unit") else None)
+            if words:
+                wrote.append((x, words))
+        if not wrote:
+            return True, f"{op.target} wrote nothing into another unit: only its own words change", []
+        flowed, why_not = [], []
+        for x, words in wrote:
+            if _contains(words, op.old) != 1:
+                why_not.append(f"'{op.old[:60]}' is not once in the words {x.op.id} wrote")
+                continue
+            new_words = _replace_once(words, op.old, op.new)
+            for k in x.changed:
+                if k == op.target:
+                    continue
+                u = st.get(k)
+                n = u.text.count(words) if u is not None else 0
+                if u is None or u.status != "active" or n != 1:
+                    return False, (f"the words {x.op.id} wrote into {k} are no longer there once as written ({n} "
+                                   f"occurrence(s){'' if u is None else '; ' + u.status}): the change to {op.target} "
+                                   "cannot flow to it; a person decides"), []
+                before_old = _contains(u.text, op.old)
+                after = u.text.replace(words, new_words, 1)
+                if _contains(after, op.old) != before_old - 1 + _contains(op.new, op.old) or _contains(after, op.new) < 1:
+                    return False, f"post-condition failed in {k} for the flowed change", []
+                flowed.append({"unit": k, "via": x.op.id, "via_provision": x.op.provision, "before": u.text,
+                               "after": after, "inserted_before": words, "inserted_after": new_words})
+                u.text = after
+                u.history.append(op.id)
+        if not flowed:
+            # words of the earlier addendum that its ops did not write anywhere (blind rehearsal 02: ADD-03 2.2 strikes
+            # ADD-01 2.1's 'The time of 14:00 Riyadh time is unchanged.'): only that addendum's own unit changes
+            return True, (f"only {op.target} changes: the amended words are not among those "
+                          f"{', '.join(x.op.id for x, _ in wrote)} wrote into other units ({'; '.join(why_not)}), so "
+                          "nothing flows (a re-targeting of the earlier amendment would need its own op)"), []
+        return True, ("the change flows to " + ", ".join(f"{x['unit']} (written by {x['via']})" for x in flowed)
+                      + f"; {op.target} itself is amended too"), flowed
 
 
 def _names_column(provision_text: str, column: str) -> bool:
@@ -880,6 +1190,78 @@ def _expect_rows(st, e: dict, old: list[str], new: list[str]) -> tuple[bool, str
         return False, f"row {e['row']} not in the replaced table"
     d = _num(n.cells.get(col)) - _num(o.cells.get(col))
     return d == float(e["delta"]), f"{e['row']} {col}: {o.cells.get(col)} -> {n.cells.get(col)} (change {d:+g}, expected {e['delta']:+g})"
+
+
+_PRINTED_DATE = re.compile(r"\b(\d{1,2})\s+(" + "|".join(MONTHS) + r"),?\s+(\d{4})\b")
+
+
+def _printed_dates(text: str) -> list[str]:
+    """Every calendar date printed like '8 October 2026' in the text, as ISO strings (an impossible date is skipped)."""
+    out = []
+    for m in _PRINTED_DATE.finditer(normalize_latin(text or "")):
+        try:
+            out.append(date(int(m.group(3)), MONTHS.index(m.group(2)) + 1, int(m.group(1))).isoformat())
+        except ValueError:
+            continue
+    return out
+
+
+def _short_words(t, n: int) -> str:
+    t = " ".join(str(t or "").split())
+    return t if len(t) <= n else t[: n - 1] + "…"
+
+
+def conditions_of(prev: StageResult | None, res: StageResult) -> list[dict]:
+    """The conditional amendments in play at a stage (session 11): those stated by this stage's ops, then those stated
+    earlier and still pending (carried with `stated_at`; their `if_triggered` texts are as computed then). Each:
+    {op, condition, stated_at, provision, state (pending | triggered | not_triggered | invalid), trigger, trigger_unit,
+    applicability, deadline (a DeadlineRule dict), if_not_triggered, affects, targets, if_triggered {unit: {before,
+    after}}, fact}."""
+    out = []
+    for x in res.ops:
+        if x.op.condition is None or x.withdrawn:
+            continue
+        cd = dict(x.details.get("conditional") or {})
+        out.append({"op": x.op.id, "stated_at": res.stage, "provision": x.op.provision, "valid": x.valid, **cd})
+    mine = {c["op"] for c in out}
+    for c in (prev.conditions if prev is not None else []):
+        if c["op"] not in mine and c.get("state") == "pending":
+            out.append(dict(c))
+    return out
+
+
+def triggers_path(cfg: dict, root: Path) -> Path:
+    """`triggers:` in the pack config, else curation/triggers.yaml (a pack without one has no recorded triggers)."""
+    p = Path(cfg.get("triggers") or "curation/triggers.yaml")
+    return p if p.is_absolute() else Path(root) / p
+
+
+def load_triggers(path) -> dict[str, dict]:
+    """The trigger facts a person recorded (session 11), {condition id: fact}; {} when the file does not exist.
+
+        triggers:
+          - condition: ADD-03/S7            the Condition.id of the conditional op(s)
+            occurred: true | false          a person's finding; nothing is ever assumed
+            date: 2026-11-10                when it occurred (or was established not to have occurred by the deadline)
+            recorded_by: <a person>         never the program or a model
+            evidence: [{source or unit, words}]   the notice that shows it
+            note: ...
+    The engine checks each record when it uses it (Engine._trigger_fact); a condition recorded twice raises."""
+    p = Path(path)
+    if not p.exists():
+        return {}
+    data = load_yaml(p) or {}
+    out: dict[str, dict] = {}
+    for f in data.get("triggers") or []:
+        if not isinstance(f, dict) or not f.get("condition"):
+            raise ValueError(f"{p}: every trigger record names its `condition`")
+        if f["condition"] in out:
+            raise ValueError(f"{p}: condition {f['condition']} recorded twice")
+        f = dict(f)
+        if hasattr(f.get("date"), "isoformat"):
+            f["date"] = f["date"].isoformat()
+        out[f["condition"]] = f
+    return out
 
 
 def validated_stage(stages: list[StageResult]) -> StageResult:

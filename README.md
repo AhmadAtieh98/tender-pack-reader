@@ -2,7 +2,9 @@
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 
-**Status (session 08, `docs/PLAN.md` revision 8): DRAFT handover, stopped for the owner's review before final submission.**
+**Status (session 11, `docs/PLAN.md` revision 11): DRAFT handover, stopped for the owner's review before final submission. Sessions 09 and 10 are committed (`a41e104`, `a57f118`, each on the owner's authorisation); the session 11 work is uncommitted until the owner authorises it.**
+
+**A4, the work log, is not only `out/a4/`:** start at `worklog/README.md` (the index of the commit history, the verbatim prompts, the subagent briefs, the model-call logs, the error index and the session reports). `out/a4/` holds the clarification register, a supporting record.
 
 - **Stages 1–4** (evidence, the amendment path, the full register, A5) are the working basis. The owner's session 08 code-review findings are fixed, each with failing-first tests: a rejected op is never re-applied by a rebuild; decisions bind to the state immediately before each op, including every member row of a replaced table; an inserted obligation needs its own A1 row; a Friday or holiday deadline keeps its legal date and gets a Working-Day window or an explicit conflict.
 - **Review:**
@@ -17,7 +19,7 @@ Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
   - checks C12 (stable ids), C28 (cover summary vs provisions, report only), C30 (date coverage), C32 (counting conventions), C46 (obligation trace) and C47 (every added word printed).
 - **Draft archive:** built by `scripts/make_draft_archive.py`. See `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md` and `docs/COST_AND_EFFORT.md`.
 - **Tested:** two blind rehearsals against independently written Addenda No. 3 (`rehearsals/blind-01/`, `rehearsals/blind-02/`), and a third (`rehearsals/blind-03/`) run with the AI layer in the loop (session 09): 31 hits, 3 partial, 0 missed of 34 scored items before the sealed key was opened; every derived date right; the deliberate ambiguity escalated, not resolved.
-- **AI layer (session 09, `tenderpack/ai/`, `docs/AI_ROUTES.md`):** a model proposes through narrow tools; deterministic code validates, assigns every status, simulates the impact and writes to `staging/` only. Four routes: Claude Code and Codex over MCP or the CLI (the host's own model), the Anthropic API, OpenRouter and local Ollama (the application's calls, capped). Offline-tested with recorded responses; **no live model call has been made yet** (no key here), and nothing on the Mac has been measured. Model choices and caps are configuration (`config/ai.yaml`); keys live in the environment only.
+- **AI layer (session 09, `tenderpack/ai/`, `docs/AI_ROUTES.md`):** a model proposes through narrow tools; deterministic code validates, assigns every status, simulates the impact and writes to `staging/` only. Four routes: Claude Code and Codex over MCP or the CLI (the host's own model), the Anthropic API, OpenRouter and local Ollama (the application's calls, capped). Offline-tested with recorded responses; **no API-key call has been made** (the Anthropic, OpenRouter and Ollama routes are tested with recorded responses only; the host route has run for real on the host's own plan since session 09, see `docs/AI_ROUTES.md` §8 and `worklog/model_calls/`; no key here), and nothing on the Mac has been measured. Model choices and caps are configuration (`config/ai.yaml`); keys live in the environment only.
 
 ```
 make setup      # once, needs network: creates .venv from uv.lock
@@ -69,7 +71,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 
 **Decisions on rows and ops.** `accept` and `reject` append to `curation/reviews/decisions.yaml` (it does not exist yet). Each decision is bound to a fingerprint of the item, its evidence items and its dependency values; when any of them changes, the decision shows as CHANGED and no longer counts. The `review:` fields in the YAML are drafting flags and never count.
 
-**Approvals of readings.** Only a person approves, by running `approve` with their own name; placeholders such as `<name>` are refused, as are readings that fail their checks. An approval pins the review subject: the reading (content, uncertainties, source claims), and its evidence (source PDF, region position, native image). Any change to these makes the reading pending again. `--approvals PATH` writes to another file (used in tests); by default it is `curation/approvals.yaml`, which does not exist yet.
+**Approvals of readings.** Only a person approves, by running `approve` with their own name; placeholders such as `<name>` are refused, as are readings that fail their checks. An approval pins the review subject: the reading (content, uncertainties, source claims), and its evidence (source PDF, region position, native image). Any change to these makes the reading pending again. `--approvals PATH` writes to another file (used in tests); by default it is `curation/approvals.yaml`, which holds the owner's two approvals of the image readings (VOL-II-p3-r1 and VOL-IV-p6-r1, reviewer Ahmad, 3 Oct 2026, session 08); `build/coverage.md` shows both as approved.
 
 | Path | Contents |
 |---|---|
@@ -77,16 +79,19 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `sources/brief/` | The candidate brief as received |
 | `sources/correspondence/` | Correspondence received and sent, as provided by the owner |
 | `sources/manifest.json` | SHA-256, size and page count for every source file |
-| `docs/PLAN.md` | Source findings and the engineering plan (revision 7) |
+| `docs/PLAN.md` | Source findings and the engineering plan (revision 11) |
 | `docs/session-03_before-after.md` | Short before/after report on the six gaps found in the owner's Stage 1 review |
 | `docs/session-04_report.md` | Session 04: repair evidence, Stage 2 outputs, decisions needed |
 | `docs/session-05_report.md` | Session 05: review fixes, working outputs, rehearsal results, remaining gaps, prioritised decisions |
 | `docs/session-06_report.md` | Session 06: the four findings, the accept workflow, live commands, the blind rehearsal, the draft archive, decisions needed |
 | `docs/session-08_report.md` | Session 08 before and after: the four findings, your confirmations, A1–A5, the clarification register, blind rehearsal 02, verification results, what remains for you |
 | `docs/OPERATING_GUIDE.md`, `docs/VERIFY_ON_MAC.md`, `docs/COST_AND_EFFORT.md` | Operating guide (incl. the live-addendum procedure), offline verification on a Mac, cost and effort |
+| `docs/session-09_report.md`, `docs/session-10_report.md`, `docs/session-11_report.md` | Session 09: controls and the AI layer, blind rehearsal 03. Session 10: the runnable workflow, blind rehearsal 04. Session 11: the workflow finished, blind rehearsal 05, the audit of the real package |
+| `docs/AI_ROUTES.md` | The AI layer: routes, what was run live and what was recorded (§8), the workflow, failure classes, the request layer |
+| `worklog/` | **A4:** `README.md` (the index), one log per session with the owner's prompts verbatim, `subagent_briefs/` (every brief given to a subagent, verbatim), `model_calls/` (runtime model-call logs), the error index |
 | `tenderpack/` | **The program.** Stage 1: extraction, regions, units, readings, review packets, coverage. Stage 2: citations, amend, draft, dates, register, schedule, render, stage2. Stages 3–4: dispositions (and sweeps), evidence (item vocabulary), programme (documents, resources, drivers, scenarios) |
 | `config/` | Pack definition, declared furniture rules, planning assumptions (`assumptions.yaml`: calendar, counting policy, bidder, copies, resources, lead times with basis and owner, all PROVISIONAL), A5 scenarios (`scenarios.yaml`) |
-| `curation/readings/` | Proposed readings of image regions, pending review; approvals go in `curation/approvals.yaml` |
+| `curation/readings/` | The two image readings (Table 2-4, Form 4-C), approved by the owner on 3 Oct 2026 in `curation/approvals.yaml` (transcriptions only; interpretations stay proposed); any later change makes a reading pending again |
 | `curation/amendments/` | Op files for ADD-01 and ADD-02 (proposed ops and dispositions; every provision accounted for) |
 | `curation/register/` | **The A1 register:** `rows.yaml` (core rows; includes `rows/*.yaml` per volume), unit dispositions (`dispositions/*.yaml`), open issues (`issues.yaml`, `issues/*.yaml`), machine-written pins (`pins.yaml`), the row-id ledger (`ids.yaml`), prepared proposals not yet applied (`proposals/`) |
 | `curation/evidence_items/` | The evidence-item vocabulary: envelope, issuer, multiplicity, counted |
@@ -96,6 +101,7 @@ On a structural failure nothing is published, the previous `out/` is kept and th
 | `out-drill/` | The same outputs for the pack plus the synthetic ADD-03 (PARTIAL; validated state stays ADD-02) |
 | `out-drill-b/` | Drill B rehearsal: the drill pack (`src/`), its evidence (`build/`), outputs with ADD-03 drafted (`out-drafted/`, PARTIAL) and curated (`out-curated/`, APPLIED). No review of any kind |
 | `rehearsals/blind-01/` | Blind rehearsal: an independently written Addendum No. 3, its frozen and sealed answer key, the curation, outputs and `COMPARISON.md` (score and timeline) |
+| `rehearsals/blind-03/`, `blind-04/`, `blind-05/` | Blind rehearsals 03–05: independently written Addenda No. 3 with sealed keys, run with the AI layer (03), the workflow (04) and the session-11 workflow (05); each with `FROZEN.md`, `COMPARISON.md` and the scored outputs |
 | `rehearsals/blind-02/` | Blind rehearsal 02: a second independently written Addendum No. 3 (time moved on the same date, revocation, re-lettering, notes that amend), curated through the normal pipeline; `COMPARISON.md` scores it against the sealed key |
 | `scripts/` | `make_draft_archive.py` (the A1–A5 draft archive from a clean commit), `compare_outputs.py` (rebuilt outputs vs an archive) |
 | `tests/` | Tests, golden expectations written from the rendered pages, synthetic fixture builder |

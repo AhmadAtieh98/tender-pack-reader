@@ -1015,7 +1015,7 @@
    "volume": "Volume I"
   }
  ],
- "condensed": 1,
+ "condensed": 3,
  "explicit": [
   {
    "class": "rejection",
@@ -1023,7 +1023,7 @@
    "confidence": "high",
    "consequence": "will be rejected unopened and returned to the Bidder",
    "flags": [
-    "INFEASIBLE: assemble-envelope-a, copies, seal-and-mark, deliver",
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY",
     "amended by addendum"
    ],
    "gloss": null,
@@ -1037,6 +1037,9 @@
    "cls": "rejection",
    "confidence": "high",
    "consequence": "shall be rejected without further evaluation",
+   "facts": [
+    "window starts 2016-11-27 (2016-11-26 if boundary inclusive): 10 years before the PDD 2026-11-26"
+   ],
    "flags": [
     "see ADD-01/2.2, ADD-01/Q5"
    ],
@@ -1044,7 +1047,7 @@
    "id": "VOL-I-8.5-01",
    "row_source": "VOL-I 8.5#fn12 p4",
    "source": "VOL-I 8.5#fn12 p4",
-   "text": "Evidence two reference sewage treatment plants of at least 80,000 m3/day, each in commercial operation within the ten years before the Proposal Due Date — “at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000”"
+   "text": "Evidence at least two (2) reference sewage treatment plants of at least 80,000 m3/day, each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date"
   },
   {
    "class": "non-responsive",
@@ -1052,7 +1055,7 @@
    "confidence": "high",
    "consequence": "Failure to submit the certificate shall render the Proposal non-responsive.",
    "flags": [
-    "INFEASIBLE: lcc-ratio, lcc-certificate",
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY",
     "see ADD-01/4.2",
     "reinstated by addendum"
    ],
@@ -1067,6 +1070,10 @@
    "cls": "disqualification",
    "confidence": "high",
    "consequence": "A Bidder that is not represented at the Pre-Bid Conference shall be disqualified.",
+   "facts": [
+    "held 2026-09-30 (before the status date): compliance is a bidder fact to confirm (I-BIDDER-FACTS)",
+    "ADD-01 3.1 window closed 2026-10-14 (2026-10-15 if event day excluded)"
+   ],
    "flags": [],
    "gloss": null,
    "id": "VOL-I-5.4-01",
@@ -1091,6 +1098,24 @@
    "cls": "non_responsive",
    "confidence": "high",
    "consequence": "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive.",
+   "corroborated_by": [
+    {
+     "adds": "ADD-02 Q9: English with an Arabic translation is not acceptable",
+     "adds_evidence": [
+      "ADD-02:Q9 p2: “May Form 4-C be submitted in English with an Arabic translation?”",
+      "ADD-02:Q9 p2: “No. Form 4-C shall be completed in Arabic.”"
+     ],
+     "also": [
+      "VOL-IV F4-C/para1 p5"
+     ],
+     "confidence": "medium",
+     "consequence": "عدم تقديمه كاملاً يجعل العرض غير مستجيب",
+     "gloss": "failure to submit it complete renders the proposal non-responsive",
+     "gloss_label": "proposed translation, not reviewed",
+     "id": "VOL-IV-F4C-N1",
+     "source": "VOL-IV F4-C/image/note p6"
+    }
+   ],
    "flags": [
     "image reading pending"
    ],
@@ -1109,6 +1134,7 @@
     "image reading pending"
    ],
    "gloss": "leads to the exclusion of the proposal",
+   "gloss_label": "proposed translation, not reviewed",
    "id": "VOL-IV-F4C-04",
    "row_source": "VOL-IV F4-C/image/decl4 p6",
    "source": "VOL-IV F4-C/image/decl4 p6",
@@ -1119,10 +1145,12 @@
    "cls": "non_responsive",
    "confidence": "medium",
    "consequence": "عدم تقديمه كاملاً يجعل العرض غير مستجيب",
+   "corroborates": "VOL-I-9.4-01",
    "flags": [
     "image reading pending"
    ],
    "gloss": "failure to submit it complete renders the proposal non-responsive",
+   "gloss_label": "proposed translation, not reviewed",
    "id": "VOL-IV-F4C-N1",
    "row_source": "VOL-IV F4-C/image/note p6",
    "source": "VOL-IV F4-C/image/note p6",
@@ -1260,31 +1288,38 @@
  ],
  "footer": "tenderpack: evidence build + curation + config/assumptions.yaml. Each id links to a3_detail.html (quotes, sources, flags) and traces to A1 and A2.",
  "groups": {
+  "counts": {
+   "all": 50,
+   "decide": 18,
+   "detail_only": 5,
+   "folded": 17,
+   "gate_note": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "listed": 27
+  },
   "groups": [
    {
     "items": [
      {
+      "decide": true,
       "folds": [
-       "I-OP-ADD-01/AppA/para1",
-       "I-AUTO-PRINTED-AppA-proposal-due-date"
+       "I-AUTO-PRINTED-AppA-proposal-due-date",
+       "I-OP-ADD-01/AppA/para1"
       ],
       "id": "I-F4A-FIELDS",
       "owner": "Legal",
       "short": "reissued Form 4-A: stale printed PDD, dropped fields, correction method"
      },
      {
-      "folds": [],
-      "id": "I-READING-F4C",
-      "owner": "Owner (Arabic reviewer)",
-      "short": "Form 4-C: diacritic placement"
-     },
-     {
+      "decide": true,
       "folds": [],
       "id": "I-F4C-EXCLUSION",
       "owner": "Legal",
       "short": "Form 4-C: 'exclusion' category"
      },
      {
+      "decide": false,
       "folds": [
        "I-OP-ADD-02/7.1"
       ],
@@ -1293,6 +1328,7 @@
       "short": "Form 4-G: re-lettering of the VOL-I 9.1 list"
      },
      {
+      "decide": true,
       "folds": [],
       "id": "I-F4G-NO",
       "owner": "Technical",
@@ -1310,30 +1346,35 @@
    {
     "items": [
      {
+      "decide": true,
       "folds": [],
       "id": "I-VOL-I-ENV-B",
       "owner": "Bid manager",
       "short": "Envelope B: auditor opinion and financing schedule vs VOL-I 10.1 'only'"
      },
      {
+      "decide": true,
       "folds": [],
       "id": "I-VOL-I-ENV-A-PRICES",
       "owner": "Bid manager",
       "short": "Form 4-B contract values vs no commercial information in Envelope A"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-I-COPIES",
       "owner": "Bid manager",
       "short": "USB copy vs the two sealed envelopes (copies per Proposal: settled)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-I-FILE-NAMES",
       "owner": "Bid manager",
       "short": "file naming of the Excel Financial Model (Excel itself: settled)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-I-APPENDICES",
       "owner": "Technical lead",
@@ -1353,12 +1394,14 @@
    {
     "items": [
      {
+      "decide": false,
       "folds": [],
       "id": "I-READING-T24",
       "owner": "Owner",
       "short": "Table 2-4: anything outside the visible image"
      },
      {
+      "decide": false,
       "folds": [
        "I-OP-ADD-02/Q11"
       ],
@@ -1367,6 +1410,7 @@
       "short": "dry weather flow undefined (follow-up; average/peak settled by ADD-02 Q11)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-II-T24-TENSIONS",
       "owner": "Process engineer",
@@ -1385,20 +1429,23 @@
    {
     "items": [
      {
+      "decide": true,
       "folds": [
        "I-OP-ADD-02/Q7"
       ],
       "id": "I-CONCESSION",
       "owner": "Legal",
-      "short": "concession term: Volume V left unamended (Q7 precedence settles the governing clause)"
+      "short": "concession term: VOL-I 12.1 prevails (VOL-I 3.2, ADD-02 Q7); VOL-V 3.1 left unamended (open)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-I-BOND-LONGSTOP",
       "owner": "Commercial lead",
       "short": "bid bond validity vs the Financial Close call (12.2 periods: settled by Q13)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-VOL-V-PERSISTENT-BREACH",
       "owner": "Legal counsel",
@@ -1417,18 +1464,13 @@
    {
     "items": [
      {
+      "decide": false,
       "folds": [
        "I-OP-ADD-02/T1-1-rev/note(3)"
       ],
       "id": "I-VOL-IV-SCALE",
       "owner": "Bid manager",
       "short": "five-point scoring scale undefined"
-     },
-     {
-      "folds": [],
-      "id": "I-OP-ADD-02/T1-1-rev/note(2)",
-      "owner": "Bid manager",
-      "short": "the addendum restates the value without quoting the old words; the old words were…"
      }
     ],
     "key": "evaluation",
@@ -1440,18 +1482,23 @@
    {
     "items": [
      {
-      "folds": [],
+      "decide": true,
+      "folds": [
+       "I-AUTO-NOT-SUPPLIED-ENVIRONMENTAL-PERMIT"
+      ],
       "id": "I-PERMIT",
       "owner": "Technical",
       "short": "Environmental Permit not supplied; Permit compliance not claimed"
      },
      {
+      "decide": true,
       "folds": [],
       "id": "I-VOL-III",
       "owner": "Technical",
       "short": "Volume III / Drawing 03-C-114 not supplied"
      },
      {
+      "decide": false,
       "folds": [
        "I-OP-ADD-01/Q4"
       ],
@@ -1460,28 +1507,14 @@
       "short": "ESIA, geotechnical report and other data-room items not supplied"
      },
      {
-      "folds": [],
+      "decide": true,
+      "folds": [
+       "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11",
+       "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-7"
+      ],
       "id": "I-VOL-V-MISSING",
       "owner": "Legal counsel",
       "short": "VOL-V extract: Schedules 7, 9, 11, 12 and Direct Agreement missing"
-     },
-     {
-      "folds": [],
-      "id": "I-AUTO-NOT-SUPPLIED-ENVIRONMENTAL-PERMIT",
-      "owner": "Technical",
-      "short": "the Environmental Permit issued for the site not supplied: blocks VOL-II-2.4-01, VOL-II-T2-4-BOD5, VOL-II-T2-4-COD and 9 more (a3_detail.html)"
-     },
-     {
-      "folds": [],
-      "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11",
-      "owner": "Legal counsel",
-      "short": "Volume V Schedule 11 (Project Company Events of Default) not supplied: blocks VOL-V-39.1-01, VOL-V:18.2, VOL-V-31.4-01 and 1 more (a3_detail.html)"
-     },
-     {
-      "folds": [],
-      "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-7",
-      "owner": "Legal counsel",
-      "short": "Volume V Schedule 7 (deductions) not supplied: blocks VOL-V-31.1-01, VOL-V-31.1-02, VOL-V-31.1-03"
      }
     ],
     "key": "missing",
@@ -1495,70 +1528,40 @@
    {
     "items": [
      {
-      "folds": [],
+      "decide": true,
+      "folds": [
+       "I-A5-FEASIBILITY",
+       "I-A5-assemble-envelope-a",
+       "I-A5-copies",
+       "I-A5-deliver",
+       "I-A5-lcc-certificate",
+       "I-A5-lcc-ratio",
+       "I-A5-seal-and-mark"
+      ],
       "id": "I-LCC-ISSUER",
       "owner": "Commercial",
-      "short": "LCC issuer and lead time not stated"
+      "short": "LCC issuer and lead time not stated; A5: 6 INFEASIBLE by 12 WD (PROVISIONAL Local Content Certificate 30 WD)"
      },
      {
+      "decide": false,
       "folds": [],
       "id": "I-BIDDER-FACTS",
       "owner": "Bid manager",
       "short": "bidder facts are assumptions to confirm"
      },
      {
+      "decide": true,
       "folds": [],
       "id": "I-AUTO-COUNTING",
       "owner": "Bid manager",
       "short": "counting conventions not stated for some date rules: every reading in A1 Dates"
      },
      {
-      "folds": [],
-      "id": "I-A5-lcc-ratio",
-      "owner": "Commercial",
-      "short": "A5 lcc-ratio: INFEASIBLE by 12 WD (total float -12 WD: latest start 2026-10-06 is before…"
-     },
-     {
+      "decide": false,
       "folds": [],
       "id": "I-A5-attendance-notice",
       "owner": "Bid management",
-      "short": "A5 attendance-notice: CONDITIONAL — window elapsed 2026-10-14; whether the condition…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-lcc-certificate",
-      "owner": "Commercial",
-      "short": "A5 lcc-certificate: INFEASIBLE by 12 WD (total float -12 WD: latest start 2026-10-13 is…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-assemble-envelope-a",
-      "owner": "Bid management",
-      "short": "A5 assemble-envelope-a: INFEASIBLE by 12 WD (total float -12 WD: earliest start…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-copies",
-      "owner": "Bid management",
-      "short": "A5 copies: INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-13 (after…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-seal-and-mark",
-      "owner": "Bid management",
-      "short": "A5 seal-and-mark: INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-13…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-deliver",
-      "owner": "Bid management",
-      "short": "A5 deliver: INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-14 (after…"
-     },
-     {
-      "folds": [],
-      "id": "I-A5-FEASIBILITY",
-      "owner": "Bid manager",
-      "short": "A5 at the status date: assemble-envelope-a INFEASIBLE by 12 WD, copies INFEASIBLE by 12…"
+      "short": "CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known"
      }
     ],
     "key": "programme",
@@ -1570,36 +1573,21 @@
    {
     "items": [
      {
+      "decide": true,
       "folds": [],
       "id": "I-PARTIAL-ADD-03",
       "owner": "Bid manager",
       "short": "ADD-03 PARTIAL: provisions not yet applied (A2)"
      },
      {
+      "decide": true,
       "folds": [],
       "id": "I-AUTO-UNTRACED-ADD-03",
       "owner": "Bid manager",
       "short": "ADD-03: obligations not carried to the outputs (C46): ADD-03/cover/para3 [A1]"
      },
      {
-      "folds": [],
-      "id": "I-AUTO-SUMMARY-ADD-01",
-      "owner": "Bid manager",
-      "short": "ADD-01 cover summary vs provisions: findings in A2 (C28)"
-     },
-     {
-      "folds": [],
-      "id": "I-AUTO-SUMMARY-ADD-02",
-      "owner": "Bid manager",
-      "short": "ADD-02 cover summary vs provisions: findings in A2 (C28)"
-     },
-     {
-      "folds": [],
-      "id": "I-AUTO-SUMMARY-ADD-03",
-      "owner": "Bid manager",
-      "short": "ADD-03 cover summary vs provisions: findings in A2 (C28)"
-     },
-     {
+      "decide": true,
       "folds": [],
       "id": "I-AUTO-PENDING-READINGS",
       "owner": "Owner",
@@ -1611,11 +1599,14 @@
     "title": "Addenda and register status"
    }
   ],
-  "heading": "Unresolved matters, grouped — 42 open issues, 21 clarification questions drafted (not sent)",
-  "note": "Each id links to its text and owner (a3_detail.html); the questions are in the A4 clarification register. Unknown answers stay unknown."
+  "heading": "Unresolved matters, grouped — 27 open issues, 21 clarification questions drafted (not sent)",
+  "note": "50 open issues: 27 listed, 17 folded into the issue they restate (+n), 5 only on a3_detail.html (pipeline, A2, reading precision), I-NO-CONSEQUENCE in the gate note. Line: id, reason (owner); † = decide before submission (12 could not be resolved, 6 not supplied; 14 marked, the rest folded). Questions: A4 register. Unknown answers stay unknown."
  },
+ "issue_counts": "50 open issues: 27 listed, 17 folded into the issue they restate (+n), 5 only on a3_detail.html (pipeline, A2, reading precision), I-NO-CONSEQUENCE in the gate note.",
  "issues_detail": [
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-NO-CONSEQUENCE",
    "owner": "Bid manager",
@@ -1666,6 +1657,8 @@
    "theme": ""
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-LCC-ISSUER",
    "owner": "Commercial",
@@ -1676,6 +1669,8 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-BIDDER-FACTS",
    "owner": "Bid manager",
@@ -1703,6 +1698,8 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-F4A-FIELDS",
    "owner": "Legal",
@@ -1722,6 +1719,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": false,
+   "detail_only": true,
    "folded_into": "",
    "id": "I-READING-F4C",
    "owner": "Owner (Arabic reviewer)",
@@ -1737,6 +1736,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-F4C-EXCLUSION",
    "owner": "Legal",
@@ -1747,6 +1748,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-READING-T24",
    "owner": "Owner",
@@ -1775,6 +1778,8 @@
    "theme": "Technical, permit and design basis"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-F4G-LETTERING",
    "owner": "Bid manager",
@@ -1786,6 +1791,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-F4G-NO",
    "owner": "Technical",
@@ -1801,6 +1808,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-PERMIT",
    "owner": "Technical",
@@ -1826,6 +1835,8 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-CONCESSION",
    "owner": "Legal",
@@ -1842,10 +1853,12 @@
     "VOL-V-42.1-01",
     "VOL-V-42.2-01"
    ],
-   "text": "Concession term: VOL-I 12.1 (25 years from PCOD) vs VOL-V 3.1 (from the Effective Date). Settled by ADD-02 Q7: the order of precedence in VOL-I 3.2 applies, under which Volume I prevails over Volume V, and no further amendment is considered necessary. Follow-up only: Volume V is not amended, so the Form 4-E deemed-acceptance note and the reading of 'the term' in VOL-V 3.2 and 42.2 remain (draft question CQ-CONCESSION-TERM). A legal and commercial question",
+   "text": "Concession term: VOL-I 12.1 (25 years from PCOD) vs VOL-V 3.1 (25 years from the Effective Date). ADD-02 Q7 p2: 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' Under VOL-I 3.2 Volume I ((b)) prevails over Volume V ((c)), so for the RFP Documents the term runs from PCOD (VOL-I 12.1); VOL-V 3.1 is left unamended. Open for Legal (draft question CQ-CONCESSION-TERM): what to record in Form 4-E (a deviation not listed is taken as accepted, VOL-V Note to Bidders), which term start the Financial Model assumes, and how 'the term' in VOL-V 3.2 and 42.2 reads. A legal and commercial question",
    "theme": "Contract, bond and concession"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-FLOWS",
    "owner": "Technical",
@@ -1862,6 +1875,8 @@
    "theme": "Technical, permit and design basis"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-III",
    "owner": "Technical",
@@ -1877,6 +1892,8 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-ENV-B",
    "owner": "Bid manager",
@@ -1891,6 +1908,8 @@
    "theme": "Envelopes, copies and files"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-ENV-A-PRICES",
    "owner": "Bid manager",
@@ -1904,6 +1923,8 @@
    "theme": "Envelopes, copies and files"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-COPIES",
    "owner": "Bid manager",
@@ -1914,6 +1935,8 @@
    "theme": "Envelopes, copies and files"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-FILE-NAMES",
    "owner": "Bid manager",
@@ -1925,6 +1948,8 @@
    "theme": "Envelopes, copies and files"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-BOND-LONGSTOP",
    "owner": "Commercial lead",
@@ -1935,6 +1960,8 @@
    "theme": "Contract, bond and concession"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-I-APPENDICES",
    "owner": "Technical lead",
@@ -1945,6 +1972,8 @@
    "theme": "Envelopes, copies and files"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-II-MISSING",
    "owner": "Technical lead",
@@ -1958,6 +1987,8 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-II-T24-TENSIONS",
    "owner": "Process engineer",
@@ -1971,6 +2002,8 @@
    "theme": "Technical, permit and design basis"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-V-MISSING",
    "owner": "Legal counsel",
@@ -1985,6 +2018,8 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-V-PERSISTENT-BREACH",
    "owner": "Legal counsel",
@@ -1995,6 +2030,8 @@
    "theme": "Contract, bond and concession"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-VOL-IV-SCALE",
    "owner": "Bid manager",
@@ -2005,7 +2042,9 @@
    "theme": "Evaluation and scoring"
   },
   {
-   "folded_into": "",
+   "decide": true,
+   "detail_only": false,
+   "folded_into": "I-PERMIT",
    "id": "I-AUTO-NOT-SUPPLIED-ENVIRONMENTAL-PERMIT",
    "owner": "Technical",
    "rows": [
@@ -2026,7 +2065,9 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
-   "folded_into": "",
+   "decide": true,
+   "detail_only": false,
+   "folded_into": "I-VOL-V-MISSING",
    "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11",
    "owner": "Legal counsel",
    "rows": [
@@ -2037,7 +2078,9 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
-   "folded_into": "",
+   "decide": true,
+   "detail_only": false,
+   "folded_into": "I-VOL-V-MISSING",
    "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-7",
    "owner": "Legal counsel",
    "rows": [
@@ -2049,6 +2092,8 @@
    "theme": "Referenced but not supplied (impact noted; not a prerequisite for completion)"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "I-F4A-FIELDS",
    "id": "I-AUTO-PRINTED-AppA-proposal-due-date",
    "owner": "Legal",
@@ -2057,6 +2102,8 @@
    "theme": "Forms and declarations"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-VOL-II-MISSING",
    "id": "I-OP-ADD-01/Q4",
    "owner": "Bid manager",
@@ -2065,6 +2112,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-F4A-FIELDS",
    "id": "I-OP-ADD-01/AppA/para1",
    "owner": "Bid manager",
@@ -2073,6 +2122,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": true,
    "folded_into": "",
    "id": "I-OP-ADD-02/T1-1-rev/note(2)",
    "owner": "Bid manager",
@@ -2081,6 +2132,8 @@
    "theme": "Evaluation and scoring"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-VOL-IV-SCALE",
    "id": "I-OP-ADD-02/T1-1-rev/note(3)",
    "owner": "Bid manager",
@@ -2089,6 +2142,8 @@
    "theme": "Evaluation and scoring"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-CONCESSION",
    "id": "I-OP-ADD-02/Q7",
    "owner": "Bid manager",
@@ -2097,6 +2152,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-FLOWS",
    "id": "I-OP-ADD-02/Q11",
    "owner": "Bid manager",
@@ -2105,6 +2162,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "I-F4G-LETTERING",
    "id": "I-OP-ADD-02/7.1",
    "owner": "Bid manager",
@@ -2113,6 +2172,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-PARTIAL-ADD-03",
    "owner": "Bid manager",
@@ -2121,6 +2182,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-AUTO-UNTRACED-ADD-03",
    "owner": "Bid manager",
@@ -2129,14 +2192,18 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": true,
    "folded_into": "",
    "id": "I-AUTO-SUMMARY-ADD-01",
    "owner": "Bid manager",
    "rows": [],
-   "text": "ADD-01's cover summary does not match its provisions (C28): [understated] 'responds to clarification requests 1 to 6', but ADD-01/Q4 adds an obligation (ADD-01:Q4): 'The geotechnical report in the data room is provided for information. Bidders shall satisfy themselves as to ground conditions.'; [omitted] ADD-01/3.1 adds an obligation (ADD-01:3.1); the summary does not mention it: 'The attendance record is held by the Authority. A Bidder that considers its attendance to have been incorrectly recorded shall notify the Authority through the Portal within five (5) Working Days of this Addendum.'; [omitted] ADD-01/AppA/para1 replaces VOL-IV:F4-A; the summary does not mention it: 'Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1. Bidders shall use this version.'. The summary is never applied; a person decides whether to raise a clarification",
+   "text": "ADD-01's cover summary does not match its provisions (C28): [omitted] ADD-01/3.1 adds an obligation (ADD-01:3.1); the summary does not mention it: 'The attendance record is held by the Authority. A Bidder that considers its attendance to have been incorrectly recorded shall notify the Authority through the Portal within five (5) Working Days of this Addendum.'; [omitted] ADD-01/AppA/para1 replaces VOL-IV:F4-A; the summary does not mention it: 'Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1. Bidders shall use this version.'. The summary is never applied; a person decides whether to raise a clarification",
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": true,
    "folded_into": "",
    "id": "I-AUTO-SUMMARY-ADD-02",
    "owner": "Bid manager",
@@ -2145,6 +2212,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": false,
+   "detail_only": true,
    "folded_into": "",
    "id": "I-AUTO-SUMMARY-ADD-03",
    "owner": "Bid manager",
@@ -2153,6 +2222,8 @@
    "theme": "Addenda and register status"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-AUTO-COUNTING",
    "owner": "Bid manager",
@@ -2161,6 +2232,8 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
+   "decide": true,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-AUTO-PENDING-READINGS",
    "owner": "Owner",
@@ -2190,7 +2263,9 @@
    "theme": "Addenda and register status"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-lcc-ratio",
    "owner": "Commercial",
    "rows": [
@@ -2200,6 +2275,8 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
+   "decide": false,
+   "detail_only": false,
    "folded_into": "",
    "id": "I-A5-attendance-notice",
    "owner": "Bid management",
@@ -2211,7 +2288,9 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-lcc-certificate",
    "owner": "Commercial",
    "rows": [
@@ -2221,20 +2300,25 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-assemble-envelope-a",
    "owner": "Bid management",
    "rows": [
     "VOL-I-6.1-01",
     "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
     "VOL-I-9.1-01",
     "VOL-I-App3-01"
    ],
-   "text": "A5 assemble-envelope-a: INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-10 (after lcc-certificate) is after the latest start 2026-11-24; not compressed) (VOL-I-6.1-01, VOL-I-6.2-01, VOL-I-9.1-01, VOL-I-App3-01; duration 1 WD is an ASSUMPTION: envelope_assembly)",
+   "text": "A5 assemble-envelope-a: INFEASIBLE by 12 WD (total float -12 WD: earliest start 2026-12-10 (after lcc-certificate) is after the latest start 2026-11-24; not compressed) (VOL-I-6.1-01, VOL-I-6.2-01, VOL-I-6.2-02, VOL-I-9.1-01, VOL-I-App3-01; duration 1 WD is an ASSUMPTION: envelope_assembly)",
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-copies",
    "owner": "Bid management",
    "rows": [
@@ -2249,7 +2333,9 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-seal-and-mark",
    "owner": "Bid management",
    "rows": [
@@ -2262,7 +2348,9 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": false,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-deliver",
    "owner": "Bid management",
    "rows": [
@@ -2275,12 +2363,15 @@
    "theme": "Programme, evidence and bidder facts"
   },
   {
-   "folded_into": "",
+   "decide": true,
+   "detail_only": false,
+   "folded_into": "I-LCC-ISSUER",
    "id": "I-A5-FEASIBILITY",
    "owner": "Bid manager",
    "rows": [
     "VOL-I-6.1-01",
     "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
     "VOL-I-6.5-01",
     "VOL-I-6.5-02",
     "VOL-I-8.6-01",
@@ -2292,35 +2383,41 @@
   }
  ],
  "missing": {
-  "heading": "Referenced but not supplied — impact: 6",
+  "heading": "Referenced but not supplied — impact: 6 (marked † in the grouped list)",
   "items": [
    {
     "id": "I-PERMIT",
+    "listed_as": "I-PERMIT",
     "owner": "Technical",
     "text": "The Environmental Permit is not supplied, yet it prevails over the Table 2-4 reproduction (VOL-II p3 preamble): Permit compliance is not claimed"
    },
    {
     "id": "I-VOL-III",
+    "listed_as": "I-VOL-III",
     "owner": "Technical",
     "text": "Volume III and Drawing 03-C-114 (effluent delivery point, VOL-II 5.1) not supplied; no omission claim after the PDD (VOL-I 3.4)"
    },
    {
     "id": "I-VOL-V-MISSING",
+    "listed_as": "I-VOL-V-MISSING",
     "owner": "Legal counsel",
     "text": "VOL-V is an extract: Schedules 7, 9, 11, 12 and the Direct Agreement are missing, yet unlisted deviations count as accepted"
    },
    {
     "id": "I-AUTO-NOT-SUPPLIED-ENVIRONMENTAL-PERMIT",
+    "listed_as": "I-PERMIT",
     "owner": "Technical",
     "text": "the Environmental Permit issued for the site not supplied (VOL-II 2.4, VOL-II T2-4-heading/para1): blocks conclusions on VOL-II-2.4-01, VOL-II-T2-4-BOD5, VOL-II-T2-4-COD, VOL-II-T2-4-TSS and 8 more (a3_detail.html)"
    },
    {
     "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11",
+    "listed_as": "I-VOL-V-MISSING",
     "owner": "Legal counsel",
     "text": "Volume V Schedule 11 (Project Company Events of Default) not supplied (VOL-V 39.1): blocks conclusions on VOL-V-39.1-01, VOL-V:18.2, VOL-V-31.4-01, VOL-V:39.3"
    },
    {
     "id": "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-7",
+    "listed_as": "I-VOL-V-MISSING",
     "owner": "Legal counsel",
     "text": "Volume V Schedule 7 (deductions) not supplied (VOL-V 31.2): blocks conclusions on VOL-V-31.1-01, VOL-V-31.1-02, VOL-V-31.1-03"
    }
@@ -2418,7 +2515,7 @@
    "confidence": "high",
    "consequence": "",
    "flags": [
-    "INFEASIBLE: assemble-envelope-a, copies, seal-and-mark, deliver"
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY"
    ],
    "id": "VOL-I-6.2-01",
    "row_source": "VOL-I 6.2 p3",
@@ -2429,7 +2526,7 @@
    "confidence": "medium",
    "consequence": "",
    "flags": [
-    "INFEASIBLE: copies"
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY"
    ],
    "id": "VOL-I-6.5-01",
    "row_source": "VOL-I 6.5 p3",
@@ -2494,7 +2591,8 @@
    "confidence": "medium",
    "consequence": "",
    "flags": [
-    "INFEASIBLE: assemble-envelope-a, copies, seal-and-mark, deliver"
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY",
+    "amended by addendum"
    ],
    "id": "VOL-I-9.1-01",
    "row_source": "VOL-I 9.1 p4",
@@ -2586,7 +2684,7 @@
    "confidence": "medium",
    "consequence": "",
    "flags": [
-    "INFEASIBLE: assemble-envelope-a, copies, seal-and-mark, deliver"
+    "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY"
    ],
    "id": "VOL-I-App3-01",
    "row_source": "VOL-I App3/para1 p7",
@@ -2929,7 +3027,7 @@
      "confidence": "high",
      "consequence": "will be rejected unopened and returned to the Bidder",
      "flags": [
-      "INFEASIBLE: assemble-envelope-a, copies, seal-and-mark, deliver",
+      "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY",
       "amended by addendum"
      ],
      "gloss": null,
@@ -2944,6 +3042,9 @@
      "compact": true,
      "confidence": "high",
      "consequence": "shall be rejected without further evaluation",
+     "facts": [
+      "window starts 2016-11-27 (2016-11-26 if boundary inclusive): 10 years before the PDD 2026-11-26"
+     ],
      "flags": [
       "see ADD-01/2.2, ADD-01/Q5"
      ],
@@ -2951,7 +3052,7 @@
      "id": "VOL-I-8.5-01",
      "row_source": "VOL-I 8.5#fn12 p4",
      "source": "VOL-I 8.5#fn12 p4",
-     "text": "Evidence two reference sewage treatment plants of at least 80,000 m3/day, each in commercial operation within the ten years before the Proposal Due Date — “at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000”"
+     "text": "Evidence at least two (2) reference sewage treatment plants of at least 80,000 m3/day, each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date"
     },
     {
      "class": "rejection",
@@ -3004,6 +3105,10 @@
      "compact": true,
      "confidence": "high",
      "consequence": "A Bidder that is not represented at the Pre-Bid Conference shall be disqualified.",
+     "facts": [
+      "held 2026-09-30 (before the status date): compliance is a bidder fact to confirm (I-BIDDER-FACTS)",
+      "ADD-01 3.1 window closed 2026-10-14 (2026-10-15 if event day excluded)"
+     ],
      "flags": [],
      "gloss": null,
      "id": "VOL-I-5.4-01",
@@ -3028,7 +3133,7 @@
    "note": ""
   },
   {
-   "heading": "Explicit — Non-responsive: 9",
+   "heading": "Explicit — Non-responsive: 8",
    "items": [
     {
      "class": "non-responsive",
@@ -3037,7 +3142,7 @@
      "confidence": "high",
      "consequence": "Failure to submit the certificate shall render the Proposal non-responsive.",
      "flags": [
-      "INFEASIBLE: lcc-ratio, lcc-certificate",
+      "INFEASIBLE on PROVISIONAL assumed lead times: Local Content Certificate 30 WD, not stated in the pack; float -12 WD; I-A5-FEASIBILITY",
       "see ADD-01/4.2",
       "reinstated by addendum"
      ],
@@ -3066,6 +3171,24 @@
      "compact": true,
      "confidence": "high",
      "consequence": "Failure to submit a complete and properly executed Form 4-C for each member shall render the Proposal non-responsive.",
+     "corroborated_by": [
+      {
+       "adds": "ADD-02 Q9: English with an Arabic translation is not acceptable",
+       "adds_evidence": [
+        "ADD-02:Q9 p2: “May Form 4-C be submitted in English with an Arabic translation?”",
+        "ADD-02:Q9 p2: “No. Form 4-C shall be completed in Arabic.”"
+       ],
+       "also": [
+        "VOL-IV F4-C/para1 p5"
+       ],
+       "confidence": "medium",
+       "consequence": "عدم تقديمه كاملاً يجعل العرض غير مستجيب",
+       "gloss": "failure to submit it complete renders the proposal non-responsive",
+       "gloss_label": "proposed translation, not reviewed",
+       "id": "VOL-IV-F4C-N1",
+       "source": "VOL-IV F4-C/image/note p6"
+      }
+     ],
      "flags": [
       "image reading pending"
      ],
@@ -3081,10 +3204,12 @@
      "compact": true,
      "confidence": "medium",
      "consequence": "عدم تقديمه كاملاً يجعل العرض غير مستجيب",
+     "corroborates": "VOL-I-9.4-01",
      "flags": [
       "image reading pending"
      ],
      "gloss": "failure to submit it complete renders the proposal non-responsive",
+     "gloss_label": "proposed translation, not reviewed",
      "id": "VOL-IV-F4C-N1",
      "row_source": "VOL-IV F4-C/image/note p6",
      "source": "VOL-IV F4-C/image/note p6",
@@ -3173,6 +3298,7 @@
       "image reading pending"
      ],
      "gloss": "leads to the exclusion of the proposal",
+     "gloss_label": "proposed translation, not reviewed",
      "id": "VOL-IV-F4C-04",
      "row_source": "VOL-IV F4-C/image/decl4 p6",
      "source": "VOL-IV F4-C/image/decl4 p6",
@@ -3200,7 +3326,17 @@
    "note": ""
   },
   {
-   "heading": "General gate — mandatory compliance, pass or fail (VOL-I 11.1(i)): 37",
+   "envelope_b_ids": [
+    "VOL-I-10.1-01",
+    "VOL-I-10.2-01",
+    "VOL-I-10.3-01",
+    "VOL-I-10.3-02",
+    "VOL-I-10.4-01",
+    "VOL-I-10.6-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ],
+   "heading": "General gate — mandatory, pass or fail; no bid-out consequence stated (VOL-I 11.1(i)): 37",
    "ids": [
     "VOL-I-6.3-01",
     "VOL-I-6.4-01",
@@ -3241,71 +3377,83 @@
     "VOL-IV-F4F-02"
    ],
    "items": [],
-   "note": "These clauses state no consequence of their own. Each is checked pass or fail at stage (i) of the evaluation; only Proposals that pass go on to technical evaluation (11.1(ii)). No clause-specific label, curability or incurability is implied (I-NO-CONSEQUENCE)."
+   "note": "Mandatory; no bid-out consequence stated. VOL-I 11.1(i) is a general pass/fail check; the pack does not say which clause is checked at which stage (8 are Envelope B items, VOL-I 11.3). No clause-specific label or curability is implied (I-NO-CONSEQUENCE)."
   }
  ],
- "subtitle": "Validated state ADD-02 (issued 2026-10-22); Proposal Due Date 2026-11-26 14:00 Riyadh time. Working state ADD-03 is PARTIAL and NOT used here. 205 register rows; 17 with an explicit consequence.",
+ "subtitle": "Validated state ADD-02 (issued 2026-10-22); Proposal Due Date 2026-11-26 14:00 Riyadh time. Working state ADD-03 is PARTIAL and NOT used here. 205 register rows; 16 explicit bid-out triggers (17 rows, 1 corroborating) + 1 below the score threshold.",
  "title": "A3 — What would put this bid out (working draft)",
  "unresolved": {
-  "heading": "Could not resolve — kept with people: 12",
+  "heading": "Could not resolve — kept with people: 12 (marked † in the grouped list)",
   "items": [
    {
     "id": "I-F4A-FIELDS",
+    "listed_as": "I-F4A-FIELDS",
     "owner": "Legal",
     "text": "Reissued Form 4-A (ADD-01 App A) drops fields and numbered confirmations and cites a 'paragraph 1' it does not have: what to print and sign"
    },
    {
     "id": "I-F4C-EXCLUSION",
+    "listed_as": "I-F4C-EXCLUSION",
     "owner": "Legal",
     "text": "Form 4-C decl. 4 (Arabic): 'exclusion of the proposal' for any incorrect statement; not equated with rejection, disqualification or non-responsiveness"
    },
    {
     "id": "I-F4G-NO",
+    "listed_as": "I-F4G-NO",
     "owner": "Technical",
     "text": "Form 4-G: the effect of a 'No' answer is not stated; undertakings 3-6 add post-award obligations not in VOL-II 6"
    },
    {
     "id": "I-CONCESSION",
+    "listed_as": "I-CONCESSION",
     "owner": "Legal",
     "text": "Concession term: ADD-02 Q7 points to VOL-I 3.2 (Volume I prevails: from PCOD); Volume V left unamended (follow-up CQ-CONCESSION-TERM)"
    },
    {
     "id": "I-VOL-I-ENV-B",
+    "listed_as": "I-VOL-I-ENV-B",
     "owner": "Bid manager",
     "text": "Envelope B holds 'only' Form 4-F and the Financial Model (VOL-I 10.1), yet 10.3 and 10.6 require more documents"
    },
    {
     "id": "I-VOL-I-ENV-A-PRICES",
+    "listed_as": "I-VOL-I-ENV-A-PRICES",
     "owner": "Bid manager",
     "text": "No commercial information in Envelope A (VOL-I 6.2), yet Form 4-B there asks for each reference's contract value"
    },
    {
     "id": "I-AUTO-PRINTED-AppA-proposal-due-date",
+    "listed_as": "I-F4A-FIELDS",
     "owner": "Legal",
     "text": "ADD-01:AppA/proposal-due-date prints the Proposal Due Date as 2026-11-12; effective 2026-11-26. Not corrected: what to print and sign is for a person"
    },
    {
     "id": "I-PARTIAL-ADD-03",
+    "listed_as": "I-PARTIAL-ADD-03",
     "owner": "Bid manager",
     "text": "ADD-03 is PARTIAL (unresolved: ADD-03:6.1, ADD-03:7.1, ADD-03:Q15, ADD-03:Q16; invalid: ADD-03/7.1): A3 and A5 stay on ADD-02"
    },
    {
     "id": "I-AUTO-UNTRACED-ADD-03",
+    "listed_as": "I-AUTO-UNTRACED-ADD-03",
     "owner": "Bid manager",
     "text": "ADD-03: obligations not carried to the outputs (C46): ADD-03/cover/para3 [A1]. A row, consequence or deliverable must be added"
    },
    {
     "id": "I-AUTO-COUNTING",
+    "listed_as": "I-AUTO-COUNTING",
     "owner": "Bid manager",
     "text": "Counting conventions not stated for 5 date rule(s): every reading in A1 Dates; planning uses the conservative one"
    },
    {
     "id": "I-AUTO-PENDING-READINGS",
+    "listed_as": "I-AUTO-PENDING-READINGS",
     "owner": "Owner",
     "text": "20 row(s) rely on the image readings (Table 2-4, Form 4-C) pending the owner's review"
    },
    {
     "id": "I-A5-FEASIBILITY",
+    "listed_as": "I-LCC-ISSUER",
     "owner": "Bid manager",
     "text": "A5 at the status date: assemble-envelope-a INFEASIBLE by 12 WD, copies INFEASIBLE by 12 WD, deliver INFEASIBLE by 12 WD, lcc-certificate INFEASIBLE by 12 WD, lcc-ratio INFEASIBLE by 12 WD and 1 more (a3_detail.html) (lead times PROVISIONAL)"
    }

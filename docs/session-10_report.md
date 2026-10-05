@@ -1,6 +1,6 @@
 # Session 10: implementation report (the runnable unseen-addendum workflow)
 
-For the owner. The full record is `worklog/2026-10-04_session-10_ai-workflow.md`; your message is kept verbatim in `worklog/2026-10-04_session-10_prompt.md`. **Nothing is committed** (you asked that nothing be committed, pushed, amended or rewritten until you authorise it). **Nothing was sent to anyone, no clarification question was sent, and no row, op, reading, relationship or proposal was accepted, approved or rejected** by the program or the assistant. Your confirmed readings, decisions, labelled assumptions and unresolved questions are preserved. Cost and pricing stay provisional (`docs/COST_AND_EFFORT.md` is not updated beyond a note).
+For the owner. The full record is `worklog/2026-10-04_session-10_ai-workflow.md`; your message is kept verbatim in `worklog/2026-10-04_session-10_prompt.md`. **Committed as `a57f118` at 17:58 UTC on the owner's authorisation ("commit the session 10 work", 17:57 UTC); nothing was committed before that** (you asked that nothing be committed, pushed, amended or rewritten until you authorise it). **Nothing was sent to anyone, no clarification question was sent, and no row, op, reading, relationship or proposal was accepted, approved or rejected** by the program or the assistant. Your confirmed readings, decisions, labelled assumptions and unresolved questions are preserved. Cost and pricing stay provisional (`docs/COST_AND_EFFORT.md` is not updated beyond a note).
 
 **What ran.** The coordinator as Fable 5.1. Six implementation, authoring and review subagents launched as Opus 5.5 (each reports that model from its own instructions; the session probe reports the coordinator's model, so the subagents' identity is recorded as their claim). The headless host sessions (`claude -p`) ran on the host's own plan: the CLI's default model, which reported itself as Sonnet 5.5, for W3's and W4's exercises; the `opus` alias (reported as Opus 5.5) for blind rehearsal 04. No API key exists here, so there is **no live API execution** in this session; the API routes are recorded-tested only.
 
@@ -67,7 +67,7 @@ An independent subagent wrote a 5-page Addendum No. 3 (definition changes used a
 8. **Conditional amendments** have no op shape of their own (trigger, deadline, two states), so A5 cannot plan a decision milestone for them; they are escalated.
 9. **The candidate is PARTIAL** whenever any provision is unresolved, so A3 and the A5 programme show the previous validated state; the proposals are visible in A1's status column, A2, `a5/working/` and the diff. This is by design (the last validated state is preserved), but it means a 24-unresolved candidate shows little on A3/A5.
 10. **Human review time is estimated**, not measured; the rehearsals' outputs were not reviewed by a person.
-11. **Checked on Linux x86_64 only;** the Mac, native viewers and every live route are unchecked. The offline archive was not rebuilt (nothing is committed).
+11. **Checked on Linux x86_64 only;** the Mac, native viewers and every live route are unchecked. The offline archive was not rebuilt in session 10 (the commit came at its very end).
 
 ## 8. Inputs needed from you
 

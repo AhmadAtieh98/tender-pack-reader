@@ -40,8 +40,8 @@ from pathlib import Path
 
 from .dates import Calendar, calendar_from_config
 from .render import write_csv_json
-from .schedule import (DISCIPLINES, LOAD_WINDOW, NO_LEVELLING, date_span, multiplicity, network, plan, resource_load,
-                       resource_statuses)
+from .schedule import (BLOCKING_FLAGS, DISCIPLINES, LOAD_WINDOW, NO_LEVELLING, date_span, multiplicity, network, plan,
+                       resource_load, resource_statuses)
 from .util import write_text
 
 NOTICE = ("PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource "
@@ -203,6 +203,9 @@ def marshalling(prog: dict, docs: dict) -> list[dict]:
             counts = {"marked_originals": 0, "hard_copies": 0, "physical_count": 0, "electronic_copy": "no"}
         order = sorted(mine, key=lambda a: (a["latest_start"] or "9999", a["id"]))
         flags += [f"{a['id']}: {a['status']}" for a in order if a["id"] != prod["id"] and a["status"] != "OK"]
+        # session 11 (audit A5-6): the flags of the item's activities (review, blocked, stale, ...) where it appears
+        flags = list(dict.fromkeys(flags + [f"{a['id']}: {f}" for a in order for f in a.get("flags") or []
+                                            if not f.startswith(BLOCKING_FLAGS + ("CONDITIONAL (only if",))]))
         gated = [a for a in mine if a.get("gated_by")]
         out.append({**row, **counts, "item": prod.get("item") or d.get("name", ""), "activity": prod["id"],
                     "activities": [a["id"] for a in order], "lead_time_wd": lt, "lead_time_chain": path,
@@ -211,7 +214,8 @@ def marshalling(prog: dict, docs: dict) -> list[dict]:
                                        + "; ".join(_lead_label(a) for a in order),
                     "waiting_on": "; ".join(sorted({a["waiting_on"] for a in mine if a.get("waiting_on")})),
                     "drop_dead_start": min((a["latest_start"] for a in mine if a["latest_start"]), default=None),
-                    "needed_by": prod["latest_finish"], "earliest_finish": prod.get("earliest_finish"),
+                    "needed_by": (f"{prod['latest_finish']} {prod['latest_finish_time']}" if prod.get("latest_finish_time")
+                                  else prod["latest_finish"]), "earliest_finish": prod.get("earliest_finish"),
                     "float_wd": prod.get("float_wd"), "status": prod["status"], "timing_status": prod["status"],
                     "decision_status": "; ".join(f"{a['id']}: {a['decision_status']}" for a in gated) or "READY",
                     "resource_status": "; ".join(sorted({f"{a['id']}: {a['resource_status']}" for a in mine
@@ -262,6 +266,7 @@ def disciplines(prog: dict) -> list[dict]:
 def _graph(prog: dict) -> dict[str, dict]:
     return {a["id"]: {"duration_wd": int(a["duration_wd"]), "predecessors": list(a["predecessors"]),
                       "deadline_rule": a.get("deadline_rule"), "deadline_date": _d(a.get("deadline_date")),
+                      "buffer_wd": int(a.get("deadline_buffer_wd") or 0),
                       "key": a["duration_assumption"]} for a in prog["activities"]}
 
 
@@ -368,7 +373,7 @@ def extend(prog: dict, evidence_items: dict, assumptions: dict, cal: Calendar) -
     out["disciplines"] = disciplines(out)
     out["drivers"] = drivers(out, assumptions, cal)
     out["assumptions"] = {k: copy.deepcopy(assumptions.get(k)) for k in
-                          ("planning", "calendar", "bidder", "bidder_basis", "resources", "lead_times")}
+                          ("planning", "calendar", "bidder", "bidder_basis", "resources", "lead_times", "submission")}
     return out
 
 
@@ -546,7 +551,8 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
         pdd = next((d["anchor_value"] for e in evals for d in e["stages"][stage]["dates"] if d["anchor"] == "PDD"), None)
         prog = plan(stage, evals, r["templates"], a, cal, status_date, {"PDD": pdd}, evidence_items=r["evidence_items"],
                     anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified,
-                    reached=((r.get("relationship_impact") or {}).get(stage) or {}).get("records"))
+                    reached=((r.get("relationship_impact") or {}).get(stage) or {}).get("records"),
+                    questions=gate_questions(r))
         for act in prog["activities"]:
             for i in act.get("gated_by") or []:
                 if i not in open_issues:
@@ -557,13 +563,68 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
     return make_plan
 
 
+def gate_questions(r: dict) -> dict[str, list[str]]:
+    """Open issue -> the ids of the clarification questions drafted on it (the clarification register's
+    `linked_issues`; a question answered or withdrawn no longer counts). Session 11, audit A5-1."""
+    out: dict[str, list[str]] = {}
+    for c in (r.get("clarifications") or {}).get("clarifications") or []:
+        if str(c.get("response_status") or "").lower().startswith(("answered", "withdrawn")):
+            continue
+        for i in c.get("linked_issues") or []:
+            out.setdefault(i, []).append(str(c.get("id")))
+    return {k: sorted(set(v)) for k, v in sorted(out.items())}
+
+
+def answers_by_row(r: dict, stage: str) -> dict[str, list[dict]]:
+    """Row -> the annotations applied at `stage` (not at the stage before) to the units it cites, each {op, answer,
+    class, why}: a clarification answer (an 'Authority response:' or a Q-numbered provision) is read by
+    summary.classify_answer against the words of the units it annotates at the stage before; any other op is listed
+    with answer False (its effect as class). For schedule.deltas(answers=...): a confirming answer never makes a
+    requirement change (session 11, audit A5-4)."""
+    import re
+    from .summary import answer_targets, classify_answer
+    order = list(r["order"])
+    if stage not in order or order.index(stage) == 0:
+        return {}
+    by = {s.stage: s for s in r["stages"]}
+    st, prev = by[stage].state, by[order[order.index(stage) - 1]].state
+    texts = {u["unit_id"]: u.get("text") or "" for u in r.get("units") or []}
+    cache: dict[str, dict] = {}
+    out: dict[str, list[dict]] = {}
+    for e in r["evals"]:
+        ev = e["stages"].get(stage) or {}
+        uids = list(dict.fromkeys(list(e["row"].units) + [u.get("effective_unit") for u in ev.get("units_detail") or []
+                                                          if u.get("effective_unit")]))
+        recs = []
+        for uid in uids:
+            old = set(prev[uid].annotations) if uid in prev else set()
+            for oid in (st[uid].annotations if uid in st else []):
+                if oid in old or any(x["op"] == oid for x in recs):
+                    continue
+                if oid not in cache:
+                    x = r["register"]._op_by_id(oid)
+                    op = x.op if x is not None else None
+                    text = (st[op.provision].text if op is not None and op.provision in st else
+                            texts.get(getattr(op, "provision", ""), ""))
+                    if op is not None and (re.search(r":Q\d+$", op.provision) or "Authority response:" in text):
+                        c = classify_answer(text, answer_targets(prev, [t for t in op.targets if t != op.provision]))
+                        cache[oid] = {"op": oid, "answer": True, "class": c["class"], "why": c["why"]}
+                    else:
+                        cache[oid] = {"op": oid, "answer": False, "class": str(getattr(op, "effect", "") or ""), "why": ""}
+                recs.append(cache[oid])
+        if recs:
+            out[e["row"].id] = recs
+    return out
+
+
 # ---------------------------------------------------------------------------------------------- write
 
 PROGRAMME_COLS = ("id", "name", "discipline", "evidence", "envelope", "req_ids", "owner", "resource", "issuer", "count",
                   "multiplicity", "duration_wd", "duration_assumption", "duration_basis", "effort_wd", "effort_total_wd",
                   "effort_basis", "waiting_on", "work_type", "predecessors", "earliest_start", "earliest_finish",
                   "es_driven_by", "latest_start", "latest_finish", "driven_by", "float_wd", "deadline", "timing_status",
-                  "decision_status", "gated_by", "decision_needed_by", "condition", "resource_status", "status", "flags")
+                  "decision_status", "gated_by", "decision_needed_by", "clarification_questions", "ask_by", "finalise_by",
+                  "condition", "resource_status", "status", "flags")
 MARSHALLING_COLS = ("evidence", "item", "name", "kind", "envelope", "issuer", "per", "count", "count_basis",
                     "marked_originals", "hard_copies", "physical_count", "electronic_copy", "activity", "activities",
                     "lead_time_wd", "lead_time_chain", "lead_time_keys", "lead_time_basis", "waiting_on",
@@ -578,7 +639,7 @@ OVERLOAD_COLS = ("resource", "from", "to", "days", "dates", "peak_load", "capaci
 DISCIPLINE_COLS = ("discipline", "activities", "staff_effort_wd", "elapsed_wd", "waiting_activities", "external_parties",
                    "roles", "gated", "infeasible", "overloaded", "activity_ids")
 MILESTONE_COLS = ("id", "date", "time", "short", "label", "kind", "purpose", "conditional", "derived", "reading",
-                  "readings_differ", "source", "words", "rows", "activities")
+                  "readings_differ", "other_readings", "source", "words", "rows", "activities")
 DRIVER_COLS = ("activity", "status", "shortfall_wd", "float_wd", "earliest_start", "latest_start", "latest_finish",
                "status_date", "deadline", "forward_chain", "chain", "lead_time_values", "would_make_feasible", "resource",
                "req_ids")
@@ -610,7 +671,9 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
          "## Planning basis", "", p["planning_basis"], "",
          f"Pack milestones are kept at their legal dates (a deadline on a non-working day keeps its date; the work "
          f"finishes on the last Working Day before it):", ""]
-    L += [f"- **{m['date']}{(' ' + m['time']) if m['time'] else ''}** {_md(m['label'])} "
+    L += [f"- **{m['date']}{(' ' + m['time']) if m['time'] else ''}**"
+          + (f" ({m.get('reading_policy') or 'planning'} reading; {_md(m['other_readings'])})" if m.get("other_readings") else "")
+          + f" {_md(m['label'])} "
           f"({m['kind']}; {m['source'] or 'derived'}" + ("; CONDITIONAL" if m["conditional"] else "") + ")"
           for m in p.get("milestones", []) if m["date"]]
     undated = [m for m in p.get("milestones", []) if not m["date"]]
@@ -634,8 +697,9 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
           "## Three separate statuses", "",
           "- `timing_status` (= `status`): OK / INFEASIBLE by n WD / DEADLINE PASSED / NO WORKING WINDOW / NO DEADLINE "
           "REACHED / CONDITIONAL — window elapsed ... / NOT NEEDED (count 0).",
-          "- `decision_status`: READY, or GATED: finalisation waits on an open issue; the decision is needed by the gated "
-          "activity's latest start. Preparation is never gated.",
+          "- `decision_status`: READY, or GATED: finalisation waits on an open issue; the decision is needed by `ask_by` "
+          "(the clarifications activity's latest start) when a clarification question is drafted on the issue, else by "
+          "the gated activity's latest start (`finalise_by`). Preparation is never gated.",
           "- `resource_status`: OK / OVERLOAD role on dates (peak load vs capacity) / NOT LOADED (why).", "",
           "A gated activity can be on time, and an infeasible one can be decision-ready: the three are read separately.",
           "", "## Decision gates (finalisation only; preparation continues)", ""]
@@ -643,10 +707,42 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     by_id = {a["id"]: a for a in acts}
     for a in gated:
         preps = [x for x in a["predecessors"] if not by_id.get(x, {}).get("gated_by")]
-        L.append(f"- `{a['id']}` — {a['decision_status']} (timing: {a['status']}; preparation continuing: "
-                 f"{', '.join(preps) or 'none'})")
+        if a.get("ask_by"):                 # session 11 (audit A5-1): a drafted question gives the gate two dates
+            L.append(f"- `{a['id']}` — finalisation waits on {', '.join(a['gated_by'])}; clarification question drafted: "
+                     f"{', '.join(a.get('clarification_questions') or [])}. **Decide whether to ask the Authority by "
+                     f"{a['ask_by']}**; **finalise by {a.get('finalise_by')}**. (timing: {a['status']}; preparation "
+                     f"continuing: {', '.join(preps) or 'none'})")
+        else:
+            L.append(f"- `{a['id']}` — {a['decision_status']} (timing: {a['status']}; preparation continuing: "
+                     f"{', '.join(preps) or 'none'})")
     if not gated:
         L.append("- none")
+    gr = p.get("gate_route")
+    if gr and any(a.get("ask_by") for a in gated):
+        why = "; ".join(f"{_md(str(b['unit']).replace(':', ' '))}: '{_md(b['quote'])}' and '{_md(b['consequence'])}'"
+                        for b in gr.get("basis") or [])
+        L += ["", f"Why two dates: the route the pack gives for a conflict, ambiguity or discrepancy is a clarification "
+                  f"request ({why or 'see the clarification rows'}). Requests close at the {gr['rule']} "
+                  f"({_md(str(gr['source']).replace(':', ' '))}: '{_md(gr['words'])}') = {gr['cutoff']}; `{gr['activity']}` "
+                  f"must finish by then, so its latest start, {gr['ask_by']}, is the last day to decide whether to ask. "
+                  "The finalisation date is the gated activity's own latest start. A gate whose issue has no drafted "
+                  "question keeps one date (its latest start)."]
+    cov = p.get("a3_coverage")
+    if cov is not None:                     # session 11 (audit A5-2)
+        L += ["", f"## A3 rows carried by the programme ({len(cov['rows'])} A3 (bid-out) rows in force; "
+                  f"{len(cov['carried'])} carried, {len(cov['excepted'])} excepted with a reason, "
+                  f"{len(cov['uncarried'])} not carried)", ""]
+        L += [f"- `{k}`: carried by {', '.join(v)}" + (" (through `_row_checks`: a check, not a deliverable)"
+                                                        if k in cov.get("row_checks", {}) else "")
+              for k, v in cov["carried"].items()]
+        L += [f"- `{k}`: no step carries it: {_md(v)}" for k, v in cov["excepted"].items()]
+        L += [f"- `{k}`: NOT CARRIED and no reason given (C48: add the step that checks it under `_row_checks`, or the "
+              "reason under `_row_exceptions`, in curation/activity_templates.yaml)" for k in cov["uncarried"]]
+    fl = [(a, [f for f in a.get("flags") or [] if not f.startswith(BLOCKING_FLAGS + ("CONDITIONAL (only if",))])
+          for a in acts]
+    fl = [(a, f) for a, f in fl if f]
+    L += ["", f"## Flags on activities ({len(fl)}; review, blocked, stale; the dates are unchanged)", ""]
+    L += [f"- `{a['id']}`: " + " | ".join(_md(x) for x in f) for a, f in fl] or ["- none"]
     L += ["", "## Conditional obligations", ""]
     cond = [a for a in acts if a.get("condition")]
     for a in cond:
@@ -679,6 +775,12 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     bb = asm.get("bidder_basis") or {}
     L += [f"| bidder.{k} | {_md(v)} | {_md((bb.get(k) or {}).get('basis', 'configurable assumption'))} | "
           f"{_md((bb.get(k) or {}).get('owner', 'Bid manager'))} |" for k, v in (asm.get("bidder") or {}).items()]
+    sub = asm.get("submission") or {}
+    if "delivery_buffer_wd" in sub:         # session 11 (audit A5-7): the delivery buffer is a visible choice
+        db = sub.get("delivery_buffer_basis") or {}
+        L += ["", "### Submission", "", "| Setting | Value | Basis | Owner |", "|---|---|---|---|",
+              f"| submission.delivery_buffer_wd | {sub['delivery_buffer_wd']} | {_md(db.get('basis', ''))} | "
+              f"{_md(db.get('owner', ''))} |"]
     L += ["", "### Resource capacities", "", "| Role | Capacity (staff per WD) | Basis | Owner |", "|---|---|---|---|"]
     L += [f"| {k} | {v.get('capacity')} | {_md(v.get('basis'))} | {_md(v.get('owner'))} |"
           for k, v in (asm.get("resources") or {}).items()]
@@ -744,3 +846,216 @@ def write(prog_ext: dict, scenarios_result: dict | None, out_dir: Path) -> list[
     write_text(a5 / "README.md", readme(prog_ext, scenarios_result))
     paths.append(a5 / "README.md")
     return paths
+
+
+# ---------------------------------------------------------------------------------------------- candidate (session 11)
+# A PARTIAL addendum: the programme replanned at the working stage beside the validated A5, which is never touched
+# (tenderpack.partial builds the inputs; stage2.write calls it).
+
+CANDIDATE_NOTICE = ("CANDIDATE — NOT VALIDATED. The programme replanned at the working stage of a PARTIAL addendum: every "
+                    "op valid there stands as a proposal, none is accepted, and the validated A5 (the a5/ folder above "
+                    "this one) is unchanged. " + NOTICE)
+CANDIDATE_PROGRAMME_COLS = ("id", "name", "candidate_status", "candidate_change", "blocked", "earliest_start_validated",
+                            "earliest_start", "latest_start_validated", "latest_start", "latest_finish_validated",
+                            "latest_finish", "shift_wd", "status_validated", "status", "caused_by_rows", "caused_by_ops",
+                            "decision_milestones")
+CANDIDATE_PROGRAMME_COLS += tuple(c for c in PROGRAMME_COLS if c not in CANDIDATE_PROGRAMME_COLS)
+CANDIDATE_CHANGE_COLS = ("id", "name", "change", "earliest_start_validated", "earliest_start", "latest_start_validated",
+                         "latest_start", "latest_finish_validated", "latest_finish", "shift_wd", "status_validated",
+                         "status", "caused_by_rows", "caused_by_ops", "blocked", "review")
+CANDIDATE_BLOCKED_COLS = ("activity", "name", "rows", "why", "latest_start", "latest_finish", "status")
+CANDIDATE_SCENARIO_COLS = ("id", "kind", "stage", "provision", "op", "applied", "trigger_deadline", "effective_from",
+                           "trigger", "if_triggered", "if_not_triggered", "rows", "activities", "dates_printed", "model",
+                           "source")
+
+
+def candidate_replan(prog_v: dict | None, prog_c: dict, ev: dict, ew: dict, cal: Calendar, *, blocked: dict[str, list[str]],
+                     row_ops: dict[str, list[str]], scenarios: list[dict], label: str,
+                     date_rows: set[str] | None = None) -> dict:
+    """The candidate A5 of a PARTIAL addendum (session 11): `prog_c` (the extended programme of the working stage, its
+    planning date the working stage's issue date) compared with `prog_v` (the validated one) by `compare` and
+    schedule.deltas: per activity what moves (NEW / REMOVED / MOVED / EARLY DATES / STATUS / REWORK / REVIEW), the rows
+    that moved it (`date_rows`, rows whose planning dates changed or that came into force with dates, for MOVED; else
+    `row_ops`: rows whose status, reading or ops changed, with their ops), whether it is BLOCKED (a row it serves is
+    unresolved: `blocked`, row -> why; its candidate dates are not reliable) and the decision milestones of the
+    conditional scenarios that reach it: the engine's own decision milestone when the conditional model gives one
+    (schedule.milestones, `decision`), else one at the trigger deadline as printed; an effective-dated amendment at
+    its effective date. Pure; prog_v and prog_c are not changed."""
+    from .schedule import deltas
+    date_rows = set(date_rows or ())
+    cmp_ = compare(prog_v, prog_c, cal) if prog_v else {"activities": []}
+    by = {a["id"]: a for a in cmp_["activities"]}
+    extra: dict[str, list[str]] = {}
+    for d in (deltas(prog_v, prog_c, ev, ew) if prog_v else []):
+        if d["change"] not in ("MOVED", "NEW", "REMOVED", "STATUS") and d["change"] not in extra.setdefault(d["activity"], []):
+            extra[d["activity"]].append(d["change"])
+    vacts = {a["id"]: a for a in (prog_v or {}).get("activities", [])}
+    have = {m["id"]: m for m in prog_c.get("milestones") or []}
+    decisions, scen = [], []
+    for sc in scenarios:
+        hit = sorted(a["id"] for a in prog_c["activities"] if set(a["req_ids"]) & set(sc.get("rows") or []))
+        scen.append({**sc, "activities": hit})
+        if sc.get("milestone") in have:                     # the engine planned it (conditional model): referenced
+            decisions.append({**have[sc["milestone"]], "activities": sorted(set(have[sc["milestone"]].get("activities")
+                                                                                   or []) | set(hit)), "existing": True})
+            continue
+        when = sc.get("trigger_deadline") if sc["kind"] == "conditional" else sc.get("effective_from")
+        dated = bool(when and len(str(when)) == 10 and str(when)[4] == "-")
+        decisions.append({
+            "id": f"{'DECISION' if sc['kind'] == 'conditional' else 'EFFECTIVE'}-{sc['provision']}",
+            "date": str(when) if dated else "", "time": "",
+            "short": f"{'decision' if sc['kind'] == 'conditional' else 'takes effect'}: {sc['provision']}",
+            "label": (f"CANDIDATE decision: does {sc['provision']} take effect? (conditional; the trigger is never assumed)"
+                      if sc["kind"] == "conditional" else f"CANDIDATE: {sc['provision']} takes effect (effective-dated)"),
+            "kind": ("decision (conditional amendment; trigger deadline as printed, not computed)" if dated else
+                     "decision (conditional amendment; event-dependent, no date)") if sc["kind"] == "conditional" else
+                    "effective date (as printed)",
+            "purpose": "decision", "conditional": True, "derived": False, "reading": "as printed in the addendum",
+            "readings_differ": False, "source": sc["provision"], "words": sc.get("trigger") or "",
+            "rows": list(sc.get("rows") or []), "activities": hit})
+    acts = []
+    for a in prog_c["activities"]:
+        x, v = by.get(a["id"]), vacts.get(a["id"])
+        change = list(x["change"]) if x else ["NEW"]
+        change += [c for c in extra.get(a["id"], []) if c not in change]
+        moved = bool({"MOVED", "NEW", "REWORK"} & set(change))
+        rows = sorted(r for r in a["req_ids"] if r in row_ops) if moved else []
+        if "MOVED" in change and set(rows) & date_rows:            # the rows whose dates moved, when there are some
+            rows = sorted(set(rows) & date_rows)
+        blk = sorted({f"{r}: {why}" for r in a["req_ids"] for why in blocked.get(r, [])})
+        dec = [m["id"] for m in decisions if a["id"] in m["activities"]]
+        status = ("BLOCKED" if blk else "MOVED" if "MOVED" in change else "NEW" if "NEW" in change else
+                  "REVIEW" if a.get("relationship_review") else "REWORK" if "REWORK" in change else "unchanged")
+        acts.append({**a, "candidate_status": status, "candidate_change": change, "blocked": blk,
+                     "earliest_start_validated": (v or {}).get("earliest_start"),
+                     "latest_start_validated": (v or {}).get("latest_start"),
+                     "latest_finish_validated": (v or {}).get("latest_finish"),
+                     "status_validated": (v or {}).get("status"), "shift_wd": x["shift_wd"] if x else None,
+                     "caused_by_rows": rows, "caused_by_ops": sorted({o for r in rows for o in row_ops[r]}),
+                     "decision_milestones": dec,
+                     "flags": list(a.get("flags") or []) + ([f"BLOCKED (candidate): {'; '.join(blk)}"] if blk else [])})
+    removed = [{"id": x["id"], "name": x["name"], "change": x["change"], "latest_start_validated": x["latest_start_base"],
+                "latest_finish_validated": x["latest_finish_base"], "status_validated": x["status_base"]}
+               for x in cmp_["activities"] if "REMOVED" in x["change"]]
+    by_act = {a["id"]: a for a in acts}
+    changes = []
+    for a in acts:
+        if a["candidate_change"] or a["blocked"]:
+            changes.append({k: a.get(k) for k in ("id", "name", "earliest_start_validated", "earliest_start",
+                                                  "latest_start_validated", "latest_start", "latest_finish_validated",
+                                                  "latest_finish", "shift_wd", "status_validated", "status",
+                                                  "caused_by_rows", "caused_by_ops", "blocked")}
+                           | {"change": a["candidate_change"],
+                              "review": [f"{rv['class']}: {', '.join(rv['targets'])}" for rv in a.get("relationship_review") or []]})
+    changes += [dict(x, earliest_start=None, latest_start=None, latest_finish=None, status=None, caused_by_rows=[],
+                     caused_by_ops=[], blocked=[], review=[]) for x in removed]
+    blocked_rows = [{"activity": a["id"], "name": a["name"], "rows": sorted(set(a["req_ids"]) & set(blocked)),
+                     "why": sorted({w for r in a["req_ids"] for w in blocked.get(r, [])}),
+                     "latest_start": a["latest_start"], "latest_finish": a["latest_finish"], "status": a["status"]}
+                    for a in acts if a["blocked"]]
+    marsh = [dict(m, blocked=sorted({x for act in m.get("activities") or [] for x in (by_act.get(act) or {}).get("blocked", [])}))
+             for m in prog_c.get("marshalling") or []]
+    ms = sorted(list(prog_c.get("milestones") or []) + [m for m in decisions if not m.get("existing")],
+                key=lambda m: (m["date"] or "9999", m["id"]))
+    summary = {"moved": sorted(a["id"] for a in acts if "MOVED" in a["candidate_change"]),
+               "new": sorted(a["id"] for a in acts if "NEW" in a["candidate_change"]),
+               "removed": sorted(x["id"] for x in removed),
+               "rework": sorted(a["id"] for a in acts if "REWORK" in a["candidate_change"]),
+               "review": sorted(a["id"] for a in acts if a.get("relationship_review")),
+               "blocked": sorted(a["id"] for a in acts if a["blocked"]),
+               "status_changed": sorted(a["id"] for a in acts if "STATUS" in a["candidate_change"]),
+               "decisions": [m["id"] for m in decisions]}
+    return {"stage": label, "status_date": prog_c["status_date"],
+            "planning_date": prog_c.get("planning_date", prog_c["status_date"]),
+            "validated_status_date": (prog_v or {}).get("status_date"), "validated_stage": (prog_v or {}).get("stage"),
+            "planning_basis": prog_c.get("planning_basis", ""), "anchors": prog_c.get("anchors", {}),
+            "activities": acts, "removed": removed, "changes": changes, "blocked": blocked_rows, "scenarios": scen,
+            "decisions": decisions, "milestones": ms, "marshalling": marsh, "summary": summary,
+            "programme": {**prog_c, "stage": label, "activities": acts, "milestones": ms}}
+
+
+def _ctable(cols, rows, **extra) -> dict:
+    return {"columns": [{"key": k, "header": k, "width": 20} for k in cols],
+            "rows": [{k: r.get(k) for k in cols} for r in rows], "notice": CANDIDATE_NOTICE, **extra}
+
+
+def write_candidate(cand: dict, a5_dir: Path, paragraph: str = "") -> list[Path]:
+    """The candidate A5 (candidate_replan) under `a5_dir` (out/a5/candidate/): programme, changes, marshalling,
+    milestones (with the decision milestones), blockers, scenarios, the Gantt drawn from the same data and a README.
+    Deterministic; nothing outside `a5_dir` is written."""
+    import html as _html
+    from . import gantt
+    a5 = Path(a5_dir)
+    meta = {"stage": cand["stage"], "status_date": cand["status_date"], "planning_date": cand["planning_date"],
+            "validated_stage": cand["validated_stage"], "validated_status_date": cand["validated_status_date"],
+            "planning_basis": cand["planning_basis"], "anchors": cand["anchors"]}
+    paths = []
+    paths += write_csv_json(_ctable(CANDIDATE_PROGRAMME_COLS, cand["activities"], **meta, summary=cand["summary"]),
+                            a5, "programme")
+    paths += write_csv_json(_ctable(CANDIDATE_CHANGE_COLS, cand["changes"], **meta), a5, "changes")
+    paths += write_csv_json(_ctable(MARSHALLING_COLS + ("blocked",), cand["marshalling"], **meta), a5, "marshalling")
+    paths += write_csv_json(_ctable(MILESTONE_COLS, cand["milestones"], **meta), a5, "milestones")
+    paths += write_csv_json(_ctable(CANDIDATE_BLOCKED_COLS, cand["blocked"], **meta), a5, "blockers")
+    paths += write_csv_json(_ctable(CANDIDATE_SCENARIO_COLS, cand["scenarios"], **meta), a5, "scenarios")
+    paths += gantt.write(cand["programme"], a5)
+    g = a5 / "gantt.html"
+    t = g.read_text(encoding="utf-8")
+    i = t.find("<body>") + len("<body>")
+    g.write_text(t[:i] + '<p style="background:#fde2e2;border:2px solid #b00000;color:#7a0000;font-weight:bold;'
+                 f'padding:6px 10px">{_html.escape(CANDIDATE_NOTICE.split(". ")[0])}: {_html.escape(paragraph)}</p>' + t[i:],
+                 encoding="utf-8")
+    write_text(a5 / "README.md", candidate_readme(cand, paragraph))
+    paths.append(a5 / "README.md")
+    return paths
+
+
+def candidate_readme(cand: dict, paragraph: str = "") -> str:
+    s = cand["summary"]
+    acts = {a["id"]: a for a in cand["activities"]}
+    L = [f"# A5 CANDIDATE — {cand['stage']}", "",
+         f"> **CANDIDATE — NOT VALIDATED.** The validated A5 is `../README.md` ({cand['validated_stage']}, planning date "
+         f"{cand['validated_status_date']}); nothing there is changed. This folder replans the programme at the working "
+         f"stage (planning date {cand['status_date']}, its issue date) with every op that is valid there standing as a "
+         "proposal. Earliest dates move with the planning date for every activity (EARLY DATES); the latest dates move "
+         "only where a pack date or a requirement changes.", ""]
+    if paragraph:
+        L += ["## What may be changing", "", paragraph, ""]
+    L += [f"## Dates that move ({len(s['moved'])} activities; latest start / finish, validated -> candidate)", "",
+          "| Activity | Latest start | Latest finish | Shift (WD) | Timing | Rows that move it | Ops |", "|---|---|---|---|---|---|---|"]
+    L += [f"| {a} | {acts[a]['latest_start_validated']} -> {acts[a]['latest_start']} | {acts[a]['latest_finish_validated']} -> "
+          f"{acts[a]['latest_finish']} | {acts[a]['shift_wd']} | {acts[a]['status_validated']} -> {acts[a]['status']} | "
+          f"{', '.join(acts[a]['caused_by_rows']) or 'through the network (a linked activity or a pack date)'} | "
+          f"{', '.join(acts[a]['caused_by_ops']) or '-'} |" for a in s["moved"]] or ["| none | | | | | | |"]
+    L += ["", f"## New and removed activities ({len(s['new'])} new, {len(s['removed'])} removed)", ""]
+    L += [f"- NEW `{a}`: needed by {', '.join(acts[a]['req_ids'])}; latest start {acts[a]['latest_start']}"
+          + (f" (ops {', '.join(acts[a]['caused_by_ops'])})" if acts[a]["caused_by_ops"] else "") for a in s["new"]]
+    L += [f"- REMOVED `{x['id']}` (was latest start {x['latest_start_validated']})" for x in cand["removed"]]
+    if not s["new"] and not s["removed"]:
+        L.append("- none")
+    L += ["", f"## Requirement changed: work may need redoing (REWORK, {len(s['rework'])})", ""]
+    L += [f"- `{a}`: rows {', '.join(acts[a]['caused_by_rows']) or 'see changes.csv'}" for a in s["rework"]] or ["- none"]
+    L += ["", f"## Marked REVIEW through relationships ({len(s['review'])}; dates unchanged)", ""]
+    L += [f"- `{a}`: " + "; ".join(f"{rv['class']}: {', '.join(rv['targets'])} via {', '.join(rv['entries'])}"
+                                   for rv in acts[a].get("relationship_review") or []) for a in s["review"]] or ["- none"]
+    L += ["", f"## Blocked: the row is unresolved, the candidate dates are not reliable ({len(cand['blocked'])})", ""]
+    L += [f"- `{b['activity']}` (rows {', '.join(b['rows'])}): {'; '.join(b['why'])}" for b in cand["blocked"]] or ["- none"]
+    L += ["", f"## Conditional scenarios and decision milestones ({len(cand['scenarios'])})", ""]
+    for sc, m in zip(cand["scenarios"], cand["decisions"]):
+        L += [f"- **{m['id']}** {m['date'] or '(no date: event-dependent)'}: {sc['provision']} ({sc['kind']} "
+              f"{sc.get('what') or ''}; "
+              f"{'applied' if sc['applied'] else 'not applied'} in the candidate). If triggered: {sc['if_triggered']}. "
+              f"If not: {sc['if_not_triggered']}. Activities reached: {', '.join(sc['activities']) or 'none'}"
+              + (" — their dates in both states: " + "; ".join(
+                  f"{a} LS {acts[a]['latest_start_validated']} (without) / {acts[a]['latest_start']} (with)"
+                  for a in sc["activities"]) if sc["activities"] else "") + f". {sc['model']}."]
+    if not cand["scenarios"]:
+        L.append("- none in the op file")
+    L += ["", "## Files", "", "| File | Content |", "|---|---|",
+          "| programme.csv/json | every activity at the working stage with its validated dates beside it, candidate status "
+          "(BLOCKED / MOVED / NEW / REVIEW / REWORK / unchanged), the rows and ops that move it |",
+          "| changes.csv/json | every activity that changes (and the removed ones) |",
+          "| marshalling.csv/json | the marshalling plan at the working stage, with blocked items |",
+          "| milestones.csv/json | the pack milestones and the candidate decision milestones |",
+          "| blockers.csv/json | activities whose row is unresolved |", "| scenarios.csv/json | conditional scenarios |",
+          "| gantt.svg, gantt.html, gantt.pdf | the Gantt drawn from the same data |", "", CANDIDATE_NOTICE, ""]
+    return "\n".join(L)

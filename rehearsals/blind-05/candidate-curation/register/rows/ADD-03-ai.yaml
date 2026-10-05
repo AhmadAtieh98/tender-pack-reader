@@ -1,0 +1,114 @@
+# CANDIDATE rows written by AI workflow run ADD-03-run-host-blind05-20261005T025444Z: PROPOSED, not reviewed.
+doc: ADD-03
+prepared_by: AI workflow run ADD-03-run-host-blind05-20261005T025444Z (route host, model claude-code headless (opus));
+  PROPOSED; not reviewed
+method: AI workflow downstream proposals validated by tenderpack.ai.downstream
+rows:
+- id: ADD-03-3.2-01
+  group: VOL-V:1.1+ADD-03
+  scope:
+  - contract
+  - payment
+  - definitions
+  - price_basis
+  requirement: 'VOL-V Clause 1.1A (inserted by ADD-03): Base Date is the date falling 28 days before the Proposal
+    Due Date; the Availability Payment is expressed at Base Date prices (VOL-V 1.1 as amended)'
+  units:
+  - VOL-V:1.1+ADD-03
+  discipline: Commercial
+  assessment: informational
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.
+    parameters:
+      offset_days: 28
+      anchor: PDD
+      direction: before
+    consequence: none_stated
+    note: 'A definition. It sets the price reference date for the Availability Payment (VOL-V 1.1 as amended by
+      ADD-03 3.1) and the start of indexation under 29.2 as replaced by ADD-03 3.3 (not yet applied, I-ADD03-29.2-NO-OP).
+      Q19 gives a conflicting basis: year 1 prices, indexation from the first anniversary of PCOD (I-ADD03-PRICE-BASIS).
+      The Base Date moves with the PDD. At the ADD-03 PDD it falls on 2026-10-29 (PDD as day 0) or 2026-10-30 (PDD
+      as day 1); the pack does not state the counting. It is not a deadline for the Bidder. [AI workflow run ADD-03-run-host-blind05-20261005T025444Z
+      (route host, model claude-code headless (opus)); PROPOSED; not reviewed]'
+  date_notes:
+  - text: twenty-eight (28) days before the Proposal Due Date
+    treatment: unresolved
+    reason: A pricing reference date, not a submission deadline, so no A5 activity is driven by it. 'days' are read
+      as calendar days (assumption). The counting reading differs (2026-10-29 or 2026-10-30 at the ADD-03 PDD),
+      and its use as the start of indexation conflicts with Q19 (I-ADD03-PRICE-BASIS).
+  confidence: medium
+  confidence_reason: Definition verbatim. Its use in pricing conflicts with ADD-03 Q19, and the replacement 29.2
+    is not yet applied.
+  issues:
+  - I-ADD03-PRICE-BASIS
+  - I-ADD03-29.2-NO-OP
+  owner: Commercial lead
+  no_deliverable: A definition; it is reflected in the Financial Model and Form 4-F price basis (ADD-03 3.4; rows
+    VOL-I-10.3-01, VOL-IV-F4F-02) and needs no separate deliverable.
+  introduced:
+    stage: ADD-03
+    by: ADD-03/3.2
+    evidence:
+      unit: ADD-03:3.2
+      page: 1
+      words: Base Date means the date falling twenty-eight (28) days before the Proposal Due Date.
+    note: New VOL-V Clause 1.1A inserted by ADD-03 3.2.
+- id: ADD-03-7.1-01
+  group: VOL-II:5.5+ADD-03
+  scope:
+  - contract
+  - technical
+  - site
+  - height_limits
+  requirement: 'VOL-II Clause 5.6 (inserted by ADD-03): the Project Company shall comply with the height limits
+    in Table 5-1 (Appendix A to ADD-03, Northern Region Airspace Safeguarding Office; Arabic text governs)'
+  units:
+  - VOL-II:5.5+ADD-03
+  discipline: Technical
+  assessment: contractual_post_award
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix
+      A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into
+      this Volume by reference.
+    parameters:
+      table: Table 5-1 (ADD-03 Appendix A, Arabic governs per ADD-03 7.2)
+    consequence: none_stated
+    note: 'No consequence is stated in the clause. The height values are not taken as parameters here. Appendix
+      A is an image whose reading (region ADD-03-p4-r1) is still pending, and the English Appendix B is for convenience
+      only. The datum may differ between the versions: the Arabic heading as read says natural ground level, while
+      Appendix B note (2) says finished ground level (I-ADD03-T51-DATUM). Bid-stage links that need their own rows:
+      Q21 requires a crane and lifting plan in the Technical Proposal, and ADD-03 7.3 requires a Portal notification
+      for anything over 30 m. [AI workflow run ADD-03-run-host-blind05-20261005T025444Z (route host, model claude-code
+      headless (opus)); PROPOSED; not reviewed]'
+  confidence: medium
+  confidence_reason: Clause verbatim. The governing Arabic table's reading is pending, and the height datum is uncertain.
+  issues:
+  - I-ADD03-T51-DATUM
+  owner: Technical lead
+  post_award_evidence:
+    kind: proposed
+    text: 'To be produced after award: design height schedules and as-built height surveys for each Table 5-1 zone,
+      plus construction-phase crane and lifting records, showing that permanent structures and equipment stay within
+      the Table 5-1 limits.'
+    basis:
+    - unit: VOL-II:5.5+ADD-03
+      page: 2
+      words: The Project Company shall comply with the height limits in Table 5-1
+    when: Design, construction and operation
+    reason: The clause imposes a continuing compliance duty on the Project Company.
+    bid_stage_note: At the bid stage the process design and layout should respect Table 5-1 (Arabic governs); see
+      ADD-03 Q21 (crane and lifting plan) and 7.3 (Portal notification for anything over 30 m).
+  introduced:
+    stage: ADD-03
+    by: ADD-03/7.1
+    evidence:
+      unit: ADD-03:7.1
+      page: 2
+      words: The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix
+        A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into
+        this Volume by reference.
+    note: New VOL-II Clause 5.6 inserted after Clause 5.5 by ADD-03 7.1.

@@ -5,10 +5,17 @@ at any point (a crash, a kill, Ctrl-C, a wait for a host submission) continues f
 
     format        "tenderpack-ai-run/1"
     run_id, addendum, created, updated
-    status        running | waiting_for_host | stopped | failed | complete | partial
-                  (complete: every provision accounted for by a promoted item and the candidate outputs built;
-                   partial: candidate outputs built with provisions left unresolved; stopped: --stop-after or a
-                   structural failure, with `status_reason`; failed: a step raised, with the reason)
+    status        running | waiting_for_host | stopped | failed | complete | partial | deferred (session 11: a
+                  batch was deferred for a rate limit and the run stopped cleanly; `resume` continues it)
+                  (complete: the `completeness` record is complete, session 11: every provision answered by a
+                   promoted item, every downstream task answered by a promotable item and every downstream batch
+                   run, check-register on the candidate clean, the candidate outputs published; partial: the run
+                   finished without all of that, the reasons in `status_reason` and `completeness`; stopped:
+                   --stop-after or a structural failure, with `status_reason`; failed: a step raised, with the reason)
+    execution, completeness, approval
+                  (session 11) three separate records, rewritten at the end of every drive (workflow.execution,
+                  completeness, approval): what ran; what the run completed and why not; human approval (always
+                  "none" from the run, with any decisions a person recorded in the candidate's decisions file)
     settings      what the run was started with (route, model, cassette, pack, evidence, staging, worklog, batch sizes,
                   caps); `resume` reuses them
     inputs        the PDF (path, sha256, pages, the candidate copy), the preceding state (pack id, evidence build id)
@@ -19,7 +26,19 @@ at any point (a crash, a kill, Ctrl-C, a wait for a host submission) continues f
                   the wall-clock time spent in the step, summed over attempts (a wait for a host is not counted)
     batches       {batch id: {phase (reading | analysis | downstream), provisions|tasks|region, status, attempts,
                   staged_run, error, session, seconds}}
-                  status pending | running | waiting_for_host | done | failed | skipped
+                  status pending | running | waiting_for_host | done | failed | skipped | interrupted, and (session 11,
+                  the request layer, tenderpack/ai/requests.py):
+                    deferred   a rate limit outlasted the bounded backoff: asked again by `resume` (never failed)
+                    escalated  a single provision / task / region whose request does not fit even alone: its size is
+                               recorded and a person splits it (never truncated)
+                    split      a batch whose request did not fit, replaced by its parts (`parts`), in order
+                  Per batch, the request layer also records: `failure_class` (rate_limit | provider | malformed) with
+                  `attempts` (every failed call: class, kind, status, wait), `deferrals` (each with its time and the
+                  reset the provider named), `request` (the complete size, the repair, the malformed items, the usage,
+                  the route notices), `malformed_items` (items set aside after the one repair) and `critic` ({status
+                  pending | done | deferred | failed | not_needed | skipped, selected, reviewed, agrees, errors, ...}).
+    notices       the route notices of the run (capabilities used unverified or declared by the host; a structured-output
+                  schema not used or rejected), each with its batch; shown in the review packet
     provisions    {unit id: {kind, pages, batch, status, items, accounted, accounted_by, statuses, reason, history}}
                   status pending -> proposed -> validated, or unaccounted (its batch ran and nothing accounts for it)
     structure     the addendum's units that are not provisions (headings, table containers, image regions), each
@@ -44,8 +63,10 @@ import time
 from pathlib import Path
 
 FORMAT = "tenderpack-ai-run/1"
-STEPS = ("ingest", "readings", "analysis", "validation", "downstream", "downstream_validation", "promotion", "pin",
-         "check_register", "outputs", "diff", "review")
+STEPS = ("ingest", "readings", "analysis", "validation", "downstream", "downstream_validation", "critic", "promotion",
+         "pin", "check_register", "outputs", "diff", "review")
+BATCH_STATES = ("pending", "running", "waiting_for_host", "done", "failed", "skipped", "interrupted", "deferred",
+                "escalated", "split")
 PROVISION_STATES = ("pending", "proposed", "validated", "unaccounted")
 ITEM_STATES = ("pending", "proposed", "validated")
 
