@@ -33,3 +33,20 @@ formulas:
     source: "continuity of flow: v = Q / A with A = pi x d^2 / 4 for a full circular bore (engineering identity)"
     assumptions:
       - "full-bore flow in a circular pipe at the stated flow"
+# Counting rules for calc.deadline (session 12, W3b): how "N <unit> before/after X" is counted. One entry per case the
+# rules settle, each with where it comes from. A case no entry covers (Working Days counted forwards, "within N days of X",
+# a period whose unit the words do not state) has more than one reading: calc.deadline returns them all as `ambiguous`
+# and the item is escalated to a person, never chosen.
+counting:
+  working-days-before:
+    unit: working_day
+    direction: before
+    convention: stated_date_excluded
+    source: {unit: "VOL-I:2.4", page: 2, words: "Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."}
+    basis: "stated in the pack (VOL-I 2.4)"
+  calendar-days-before:
+    unit: day
+    direction: before
+    convention: stated_date_excluded
+    source: {unit: "VOL-I:2.4", page: 2, words: "the stated date itself shall not be counted"}
+    basis: "the date falling N days before X is X less N calendar days: X is not one of the N days, as VOL-I 2.4 states for a period counted backwards (in Working Days); counting X as day 1 would put 'one day before X' on X itself. The pack states the rule for Working Days only: a person may remove this entry, and every such date is then ambiguous and escalated"

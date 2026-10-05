@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import math
 import re
 from datetime import date, timedelta
@@ -42,7 +43,7 @@ from pathlib import Path
 
 from .util import ROOT, load_yaml
 
-METHODS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula")
+METHODS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula", "deadline")
 REGISTRY = ROOT / "config/formulas.yaml"
 ROUNDING = {"none": "not rounded (exact; the pack states no rounding rule)",
             "up": "rounded up to a whole number", "down": "rounded down to a whole number",
@@ -397,6 +398,82 @@ def unit_conversion(value, to_unit: str, anchor_date: str | None = None, directi
         return _result(m, operands=ops, reason=str(e))
 
 
+# ---------------------------------------------------------------------------------------------- deadlines (s12)
+
+def deadline(offset, anchor, direction: str = "before", calendar=None, registry: dict | None = None,
+             resolve_source=None) -> dict:
+    """Session 12 (W3b): the date "N <unit> before/after X" (blind-05 follow-up 7). `offset` is an operand (a literal
+    count with its unit, Working Days or days, and its quoted words); `anchor` {name, date (ISO), source}. Counted under
+    the counting rules of the registry (config/formulas.yaml `counting`, each with its source; VOL-I 2.4 for Working Days
+    counted backwards): exactly one reading when a rule covers the unit and the direction (status `resolved`); otherwise
+    every plausible reading (dates.interpretations) with status `ambiguous`, `escalate: true` and the reason (never one
+    chosen). An anchor with no date, a count that is not a whole literal number or a unit other than days / Working
+    Days is `unresolved`. The result carries the inputs, the counting rule and a fingerprint over them."""
+    from .dates import DateRule, interpretations
+    m = "deadline"
+    reg = registry if registry is not None else load_registry()
+    ops: list[dict] = []
+    base = {"method": m, "status": "unresolved", "value": None, "unit": "date", "text": "", "readings": [],
+            "counting": None, "escalate": False, "operands": [], "steps": [], "reason": None,
+            "registry": {"path": reg.get("path"), "sha256": reg.get("sha256")}}
+    try:
+        x = _operand("offset", offset, resolve_source)
+        ops.append(x)
+        unit = {"day": "day", "working_day": "working_day", "week": "week"}.get(x["unit"])
+        if unit is None:
+            raise CalcError(f"the period's unit {x['unit'] or 'not stated'!r} is not days or Working Days: a person "
+                            "reads it")
+        n = x["value"]
+        if n != n.to_integral_value() or n < 0:
+            raise CalcError("a count of days is a whole, non-negative number")
+        n = int(n) * (7 if unit == "week" else 1)
+        unit = "day" if unit == "week" else unit
+        if direction not in ("before", "after"):
+            raise CalcError("direction must be 'before' or 'after'")
+        a = dict(anchor or {})
+        try:
+            ad = date.fromisoformat(str(a.get("date")))
+        except ValueError:
+            raise CalcError(f"the anchor {a.get('name') or '?'} has no known date ({a.get('date')!r}): nothing is "
+                            "computed until it occurs or is stated") from None
+        if calendar is None:
+            raise CalcError("a deadline needs the register's calendar")
+        inputs = {"offset": {"count": n, "unit": unit, "words": (x.get("source") or {}).get("words")},
+                  "anchor": {"name": a.get("name"), "date": ad.isoformat(), "source": a.get("source")},
+                  "direction": direction}
+        rule = DateRule(rule_id="calc", kind="relative", purpose="deadline", anchor="X", offset=n,
+                        unit="calendar_day" if unit == "day" else "working_day", direction=direction, fixed=None,
+                        source_unit=(x.get("source") or {}).get("unit") or "", text=str(inputs["offset"]["words"] or ""),
+                        note="")
+        readings = [{"key": i.key, "value": i.value.isoformat() if i.value else None, "basis": i.basis, "label": i.label}
+                    for i in interpretations(rule, {"X": ad}, calendar)]
+        hit = next(((cid, c) for cid, c in (reg.get("counting") or {}).items()
+                    if c["unit"] == unit and c["direction"] == direction), None)
+        fp = hashlib.sha256(json.dumps({"inputs": inputs, "rule": hit and hit[0], "registry": reg.get("sha256"),
+                                        "weekend": sorted(calendar.weekend),
+                                        "holidays": sorted(h.isoformat() for h in calendar.holidays)},
+                                       sort_keys=True, default=str).encode()).hexdigest()
+        base.update(operands=_public(ops), inputs=inputs, readings=readings, fingerprint=fp)
+        if hit is None:
+            base.update(status="ambiguous", escalate=True, reason=(
+                f"the counting rules state nothing for {PLURAL.get(unit, unit)} counted {direction} a date ("
+                f"{'VOL-I 2.4 covers Working Days counted backwards' if unit == 'working_day' else 'no rule in the registry'}"
+                f"): not stated, so every reading is kept and a person decides"))
+            return base
+        cid, c = hit
+        sign = -1 if direction == "before" else 1
+        v = calendar.add_working_days(ad, sign * n) if unit == "working_day" else ad + timedelta(days=sign * n)
+        base.update(status="resolved", value=v.isoformat(), text=v.isoformat(),
+                    counting={"id": cid, "convention": c["convention"], "source": c["source"], "basis": c.get("basis")},
+                    readings=[{"key": c["convention"], "value": v.isoformat(), "basis": c.get("basis") or c["source"]["unit"]}],
+                    steps=[f"{n} {PLURAL.get(unit, unit)} {direction} {a.get('name')} ({ad.isoformat()}), {a.get('name')} "
+                           f"itself not counted ({c['source']['unit']}): {v.isoformat()}"])
+        return base
+    except CalcError as e:
+        base.update(operands=_public(ops), reason=str(e))
+        return base
+
+
 # ---------------------------------------------------------------------------------------------- approved formulas
 
 _BIN = {ast.Add: lambda a, b: a + b, ast.Sub: lambda a, b: a - b, ast.Mult: lambda a, b: a * b,
@@ -489,7 +566,17 @@ def load_registry(path: Path | str | None = None) -> dict:
             good[fid] = spec
         except CalcError as e:
             bad[fid] = str(e)
-    return {"formulas": good, "problems": bad, "path": str(p), "sha256": hashlib.sha256(raw).hexdigest() if raw else None}
+    counting = {}                                      # session 12 (W3b): the counting rules calc.deadline reads
+    for cid, spec in sorted(((data or {}).get("counting") or {}).items()):
+        if not isinstance(spec, dict) or spec.get("unit") not in ("day", "working_day") or \
+                spec.get("direction") not in ("before", "after") or not (spec.get("source") or {}).get("unit") or \
+                spec.get("convention") != "stated_date_excluded":
+            bad[f"counting:{cid}"] = "a counting rule needs unit (day | working_day), direction, convention " \
+                                     "(stated_date_excluded) and its source {unit, page, words}"
+            continue
+        counting[cid] = spec
+    return {"formulas": good, "problems": bad, "counting": counting, "path": str(p),
+            "sha256": hashlib.sha256(raw).hexdigest() if raw else None}
 
 
 def approved_formula(formula: str, operands: dict | None, registry: dict | None = None, resolve_source=None) -> dict:
@@ -558,7 +645,8 @@ def approved_formula(formula: str, operands: dict | None, registry: dict | None 
 
 # ---------------------------------------------------------------------------------------------- dispatch
 
-_ARGS = {"percentage_of": ({"percent", "of"}, set()), "threshold_of_total": ({"percent", "total"}, {"rounding"}),
+_ARGS = {"deadline": ({"offset", "anchor"}, {"direction"}),
+         "percentage_of": ({"percent", "of"}, set()), "threshold_of_total": ({"percent", "total"}, {"rounding"}),
          "ratio": ({"numerator", "denominator"}, set()), "cap": ({"cap", "rate"}, set()),
          "unit_conversion": ({"value", "to_unit"}, {"anchor_date", "direction"}),
          "approved_formula": ({"formula", "operands"}, set())}
@@ -585,6 +673,9 @@ def compute(method: str, args: dict, *, resolve_source=None, calendar=None, regi
         return ratio(args["numerator"], args["denominator"], resolve_source)
     if method == "cap":
         return cap(args["cap"], args["rate"], resolve_source)
+    if method == "deadline":
+        return deadline(args["offset"], args["anchor"], args.get("direction", "before"), calendar, registry,
+                        resolve_source)
     if method == "unit_conversion":
         return unit_conversion(args["value"], args["to_unit"], args.get("anchor_date"), args.get("direction", "after"),
                                calendar, resolve_source)

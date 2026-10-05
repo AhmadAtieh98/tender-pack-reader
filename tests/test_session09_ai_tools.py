@@ -169,7 +169,10 @@ def test_validate_proposal_keeps_rows_issues_and_questions_apart_from_verified_c
     res = call_tool(ws, "validate_proposal", {"proposal": {"addendum": "ADD-03", "state": st, "items": [
         op, row, bad_row, new_row, issue, question, unresolved]}}, "model")
     got = {x["id"]: x["verification_status"] for x in res["items"]}
+    # session 12 (part 1, tests/test_session12_human_owned.py): an issue is a matter kept open for people
+    # (tenderpack.human_owned): its quotation verifies, its conclusion is a person's, so I1 is interpretation_pending,
+    # no longer evidence_verified
     assert got == {"ADD-03/3.1": "evidence_verified", "R1": "interpretation_pending", "R2": "insufficient_evidence",
-                   "R3": "invalid", "I1": "evidence_verified", "C1": "insufficient_evidence", "D1": "insufficient_evidence"}
+                   "R3": "invalid", "I1": "interpretation_pending", "C1": "insufficient_evidence", "D1": "insufficient_evidence"}
     assert res["set_status"] == "partial" and res["coverage"]["accounted"] == 2      # 3.1 (op) and 7.1 (disposition)
     assert "ADD-03:3.3" in res["coverage"]["unaccounted"]                       # an issue or a question accounts for nothing

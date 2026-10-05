@@ -3,7 +3,10 @@ config/ai.yaml; an unknown route raises ConfigError. No adapter is a fallback fo
 
 `cfg["_allow_unverified_capabilities"]` (set by controller.propose(allow_unverified_capabilities=True), i.e. the
 person's --allow-unverified-capabilities) lets a live adapter run on the configured `capabilities:` block when its
-endpoint does not verify the model; without it such a run is refused (base.unverified)."""
+endpoint does not verify the model; without it such a run is refused (base.unverified).
+
+Session 12: in offline mode (tenderpack/ai/offline.py) `make` refuses the host, anthropic and openrouter routes with
+OfflineError (a ConfigError) before an adapter exists, so no hosted call can follow."""
 from __future__ import annotations
 
 from ..config import ConfigError, model_entry, route
@@ -12,6 +15,8 @@ from .base import (ALLOW_UNVERIFIED_KEY, Capabilities, Provider, ProviderError, 
 
 
 def make(route_name: str, model: str | None, cfg: dict, cassette=None) -> Provider:
+    from ..offline import check_route
+    check_route(cfg, route_name, f"a {route_name} provider")       # session 12: offline mode, before any call
     rcfg = route(cfg, route_name)
     if route_name == "recorded":
         if cassette is None:

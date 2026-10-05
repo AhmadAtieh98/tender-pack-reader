@@ -11,6 +11,20 @@
 
 ## 1. Two kinds of route
 
+Session 12 names four kinds. `tenderpack ai routes` prints each route's kind, what has been verified and what is
+pending on the Mac:
+
+- **Connected coding host** (`host`): Claude Code or Codex, working with its own model over MCP or the CLI.
+  - Claude Code headless sessions are started by the workflow and have run for real.
+  - For Codex, the MCP interface is tested; automated Codex execution is unverified. The workflow starts Claude Code
+    only; Codex is the manual MCP / `submit-batch` path.
+- **Hosted API** (`anthropic`, `openrouter`): the application makes paid calls.
+- **Local inference** (`ollama`): a model on this machine. Offline mode (§17) runs every phase here and nothing hosted.
+- **Recorded**: tests only.
+
+All four use the same request layer and the controller's validation (tested in
+`tests/test_session12_offline.py::test_every_route_applies_the_same_validation_to_the_same_answer`).
+
 | | Coding host (Claude Code, Codex) | Application routes (`anthropic`, `openrouter`, `ollama`) |
 |---|---|---|
 | Whose model | the host's own model, in its own session | the model named in `config/ai.yaml` / `--model` |
@@ -110,6 +124,12 @@ args = ["-m", "tenderpack", "ai", "serve-mcp"]
 # args = ["-m", "tenderpack", "ai", "serve-mcp", "--evidence", "/abs/rehearsals/blind-02/build", "--pack", "/abs/rehearsals/blind-02/work/pack.yaml"]
 ```
 
+**Status (session 12): MCP interface tested; automated Codex execution unverified.**
+
+- Tested: the MCP server Codex would use, over stdio JSON-RPC (`tests/test_session09_ai_mcp.py`).
+- Never run: a Codex session against it. The workflow's automatic host sessions start Claude Code (`claude -p`) only;
+  Codex is the manual path (MCP tools, then `tenderpack ai submit` or `submit-batch`).
+
 Then follow the same steps as in §2. The package is installed in editable mode, so the server finds the repository from any working directory. A Codex-assisted review is logged like any other host session:
 
 - every tool call goes to `worklog/model_calls/mcp-<session>.jsonl`;
@@ -175,7 +195,9 @@ read -rs OPENROUTER_API_KEY && export OPENROUTER_API_KEY
 
 ## 6. Application route: Ollama on the owner's Mac (local)
 
-This route runs **on the Mac only** (M5 Pro, 48 GB). The cloud session cannot reach the Mac's `localhost`, and nothing assumes it can.
+This route runs **on the Mac only** (M5 Pro, 48 GB). The cloud session cannot reach the Mac's `localhost`, and nothing assumes it can. The setup, the launcher and the offline checks are in `docs/MAC_SETUP.md`. Offline mode is §17.
+
+The pull commands below are a person's choice. tenderpack never pulls a model; a missing one is reported with the command.
 
 ```
 ollama pull qwen3-vl:32b        # vision candidate, about 20 GB at 4-bit (published size; not measured here)
@@ -186,6 +208,14 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 ```
 
 - **Capabilities** come from `/api/show`. A task with image crops and a model without `vision` is refused, and so is a model without `tools`. A reply without a context length is refused too (the `num_ctx` bound cannot be checked), unless `--allow-unverified-capabilities` is given.
+- **Models per role (session 12).** `routes.ollama.models`:
+  - `text` (or `propose`): the analysis and downstream phases. `--model` overrides it.
+  - `vision`: the readings.
+  - `critic`: the local critic. The critic has no fallback: when none is configured, the review is recorded as skipped.
+- **Installed and memory (session 12).**
+  - A model that `/api/show` does not know is **not installed**. The run stops with the `ollama pull` command and the installed list (`/api/tags`).
+  - The memory a model needs at `num_ctx` is estimated: weights at the reported quantisation, plus an f16 KV cache, plus 1 GB. It is compared with `routes.ollama.machine` (48 GB × an assumed 0.75). A model that cannot hold its context is refused, with the numbers.
+  - The workflow checks the analysis model at start (`ollama_preflight` in the checkpoint).
 - **Structured output.** `format: <schema>` on `/api/chat`. With `with_tools: false` (the default) it is withheld on a turn that offers tools, because a format grammar may stop the model emitting tool calls; requests without tools (the critic) carry it. Check this on the Mac, then set `with_tools: true`.
 - **Context.** `num_ctx` is bounded at 32768 (`config/ai.yaml`), and never set above what `/api/show` reports.
 - **Packet size.** The blind-02 ADD-03 task packet is 47,443 characters. That is about 13,600 tokens, estimated at 3.5 characters per token (not a tokenizer count). With 16,000 output tokens it fits 32768 only at the start. The controller stops the run (`budget_exhausted`, "context bound") before the conversation outgrows the bound.
@@ -238,7 +268,8 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 | Host route | `submit` is tested with the recorded run's set (same statuses). **Run once for real** on blind rehearsal 03 (4 Oct 2026, 10:14–10:27 UTC): a Claude Code subagent (declared model Opus 5.5) used the CLI tools (`ai task`, `ai tool`, `ai submit`) and produced `staging/ai/ADD-03-host-20261004T102718Z-97c1/` (35 of 35 provisions accounted for). The MCP server was driven by hand over stdio (initialize, tools/list, get_unit); an interactive session registered with `claude mcp add` or a Codex session has **not** been run; a headless `claude -p --mcp-config` session has (session 10, §2a) |
 | Anthropic | adapter written over `urllib`; **no live call made** (no key in this environment) |
 | OpenRouter | adapter written; the model listing is **blocked by policy** here, so live use is refused |
-| Ollama | adapter written; **not reachable** from the cloud; to be run and measured on the Mac |
+| Ollama | adapter written; **not reachable** from the cloud. Session 12: the adapter, offline mode, the capability and memory checks and a whole workflow run were tested against a FAKE local server on 127.0.0.1 (real HTTP; recorded answers; `tests/test_session12_offline.py`). A real local model: **PENDING ON THE MAC** (`docs/MAC_SETUP.md`) |
+| Codex | **MCP interface tested; automated Codex execution unverified** (no Codex session has run; the workflow starts Claude Code only) |
 
 ## 9. Budgets, spend and cost
 
@@ -427,6 +458,10 @@ One runnable, resumable workflow from a new addendum PDF and the preceding tende
   - 2: refused before anything ran, or ingest found a structural failure;
   - 4: the run waits for a host submission;
   - 5 (session 11): a batch was deferred for a rate limit and the run stopped cleanly (`status: deferred`); resume later.
+  - 6 (session 12): the run stopped because it cannot go on until a person acts (`status: stopped`): an image region
+    has no usable reading, or the readings were escalated to a person, or the inputs changed before promotion. The
+    reason says what to do, then `resume`. Before session 12 such a stop exited 0, like a finished run. A stop asked
+    for with `--stop-after` still exits 0, and a structural ingest refusal exits 2.
 - **The caps** bound the whole run, not each batch: every batch gets what is left.
 
 ### The steps
@@ -570,7 +605,7 @@ Every model request, whatever the entry point (the workflow; the standalone `ten
 
 **Batch states** (checkpoint): besides `pending`, `running`, `waiting_for_host`, `done`, `failed`, `skipped`, `interrupted`: `deferred` (with `deferrals`: when, the message, the reset named), `split` (with its `parts`), `escalated` (with its `size`). Each batch records its `failure_class`, every failed call (`failures`: class, kind, status, wait), and `request` (the size, the repair, the malformed items, the usage, the route notices). The review packet lists them under "Requests: failures, deferrals, repairs and route notices".
 
-**Fewer and smaller sessions.** Batches run one at a time (`concurrency.batches: 1`; another value is refused: concurrent sessions do not lift a plan's rate limit, they reach it sooner). After one deferral in a drive, later requests are tried once and deferred without backoff. The shared context is sent once per session (§14), the critic makes one request per batch (§15), and a batch that succeeded is never asked again.
+**Fewer and smaller sessions.** By default, batches run one at a time (`concurrency.batches: 1`; another value is refused: concurrent sessions do not lift a plan's rate limit, they reach it sooner). Session 12 adds bounded batches at once on the host route, `concurrency.max_parallel_sessions` (§18). After one deferral in a drive, later requests are tried once and deferred without backoff. The shared context is sent once per session (§14), the critic makes one request per batch (§15), and a batch that succeeded is never asked again.
 
 **What is tested, and how** (`tests/test_session11_requests.py`; every exchange recorded or mocked):
 
@@ -584,3 +619,131 @@ Every model request, whatever the entry point (the workflow; the standalone `ten
 | manual host (`submit-batch`) | the answer's checks before anything is taken | session-10 workflow test |
 
 **Taking anything over.** Nothing is applied to the real curation. A person adds the PDF to the pack (OPERATING_GUIDE §3 steps 1–2), reviews and copies the files `promotion.json` lists, then runs `pin`, `check-register` and `outputs`, and decides with `accept` / `reject`.
+
+## 17. Offline mode (session 12)
+
+Use offline mode on the owner's Mac, with no internet and no key. It is on when **any** of these holds:
+
+- `--offline` is passed to `ai run`, `resume`, `propose`, `capabilities`, `critic`, `plan-batches` or `routes`;
+- `offline: true` is set in `config/ai.yaml`;
+- `TENDERPACK_OFFLINE=1` is set. The Mac launcher and `scripts/mac/checks.sh` set it.
+
+The source is recorded in the run's settings and its `started` event.
+
+```
+.venv/bin/python -m tenderpack ai routes --offline                      # kinds; local models checked now; nothing pulled
+.venv/bin/python -m tenderpack ai run ADD-03 --pdf PATH --offline       # --route defaults to ollama offline
+.venv/bin/python -m tenderpack ai resume RUN_ID --offline               # an ollama run kept offline from now on
+.venv/bin/python -m tenderpack ai critic RUN_ID --offline               # the local critic, or refused
+```
+
+What it forces (`tenderpack/ai/offline.py`):
+
+- **Every phase on `ollama`.** That covers the readings, analysis, downstream, the critic, the bounded repair (on a
+  provider route the repair is a turn of the same conversation) and the capability checks.
+- **Hosted routes refused before anything starts.** `--route host|anthropic|openrouter` raises an OfflineError (a
+  ConfigError, exit 2) before the run folder exists. The recorded route stays a test replay and is never a fallback.
+- **Guards at every hosted entry point.** Each one refuses in offline mode **before** its process or connection:
+  - `providers.make` for `host`, `anthropic` and `openrouter`;
+  - every host session (`HostSession`, `AnswerSession`, `PlainSession`);
+  - the host critic (`HostCritic`, `review_batch(route="host")`), with the message "offline mode: the host critic is
+    not available; configure routes.ollama.models.critic or accept a skipped review";
+  - the host repair (`requests.host_repair`).
+- **Local address only.** The Ollama URL must be a loopback address, and a loopback URL is never sent through an HTTP
+  proxy (`providers/base.http_json`).
+- **The critic.** It runs on `routes.ollama.models.critic`; `critic.route` (host by default) is not consulted offline.
+  - When no local critic is configured, or it is not installed, or it cannot hold the request (capabilities, context,
+    memory), the batch's critic is **`skipped`** with "independent review did not run: <reason>".
+  - The reason appears in the run log (`critic_skipped`), the checkpoint, the review packet ("Reviews that did not
+    run") and the candidate `out/README.md` ("Independent review").
+  - A skipped review is never counted as agreement, and a review was never needed when no item was selected.
+- **Readings without vision.** When the reading model (`models.vision`, else the run's model) does not report image
+  input, or is missing, the readings step is "cannot run locally with this model":
+  - the image regions are **escalated to a person** (batch status `escalated`, the event
+    `readings_escalated_to_person`), and nothing is asked of the model;
+  - ingest refuses the candidate without these readings (C05), so the text phases cannot start, and the run stops
+    with the way on: record the readings and `resume --from ingest`, or configure a vision model.
+- **Not offline: an `ollama` run with a hosted critic.** Outside offline mode, an `ollama` run whose `critic.route` is
+  hosted logs `critic_route_notice`, so the hosted call is visible.
+
+**What is tested, and how.** `tests/test_session12_offline.py` uses a fake Ollama server on 127.0.0.1 (real HTTP),
+replaying the hand-written recorded workflow. A guard records every socket connection and every process, and refuses
+anything except the fake's port, and any `claude` or `codex` process. The tests show:
+
+- a whole workflow run to the critic, with only localhost contacted;
+- the local critic reviewing the selected items on the configured model;
+- the same statuses as the recorded route;
+- hosted routes and processes refused before any call;
+- the skipped review with its reason;
+- not-installed and oversized models refused with the exact text;
+- readings escalated when the model has no vision;
+- `ai routes`;
+- the same validation outcome on the anthropic, openrouter, ollama and host routes.
+
+PENDING ON THE MAC: all of the above with the real Ollama and the models actually installed, with Wi-Fi off
+(`scripts/mac/checks.sh`). A recorded answer is a test, not proof of a live integration.
+
+## 18. Time: less repeated context, batches at once (session 12)
+
+Blind-05 took 72 min 27 s. The steps of its run (`staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z`):
+
+| Step | Time | What ran |
+|---|---|---|
+| analysis | 2,676 s | 9 MCP host sessions of 112–358 s each (about 60 s fixed plus about 35 s per provision); 9 plain critic sessions of about 12 s |
+| downstream | 1,260 s | 5 answer sessions (77–438 s) and 1 repair |
+| readings | 209 s | 1 session |
+| critic step | 66 s | 5 plain critic sessions |
+| everything else | about 135 s | |
+
+The time is model turns. The prompts are a small part of it.
+
+**Less repeated context** (`requests.compact_shared`, applied to every analysis and downstream packet on every route):
+
+- the packet's `tools` are now names only. The definitions already come with the request: the MCP tool list, or the
+  API's `tools`.
+- the `schema` and `payload_schemas` lose their generated `title` strings.
+- every `$defs` entry is printed once, in `schema_defs`.
+
+The batch's own provisions, targets, tasks, units and evidence are byte-identical. The schema sent natively and the
+local validation are unchanged.
+
+Measured on blind-05's 15 prompts, as sent (the script is in the session-12 report):
+
+- total: 538,853 → 461,551 characters, −14.3% (about 154k → 132k tokens at 3.5 characters per token);
+- analysis prompts: −17.5% to −22.2% each;
+- downstream prompts: −8.2% to −14.0%;
+- the reading prompt: −4.3%.
+
+**Batches at once** (`concurrency.max_parallel_sessions`, 1–4, default **1**). Up to N analysis or downstream batches
+of one run ask their sessions at once. This is allowed on the **host** route only (the recorded test route aside):
+
+- the paid API routes check their caps per request;
+- local inference shares one machine's memory.
+
+What is kept safe:
+
+- **One lock per run.** The run holds the addendum's lock once (scope `run`); sessions do not take their own, and a
+  host submission does not release the run's lock.
+- **Separate files.** Each batch has its own staging folder and log.
+- **One rate-limit gate.** One 429 pauses every worker (a shared gate; `rate_gate` in the checkpoint).
+- **Plan order.** The answers are taken in plan order by the run's own thread, so the result is the sequential result.
+  A worker's answer whose packet changed before its turn is discarded and asked again.
+- **Checkpoints.** They are written per batch by that thread only.
+- **Deferral.** No new batch is dispatched; those already asked are taken; then the run stops with exit 5. `resume`
+  never asks a done batch again.
+
+Tested with recorded sessions and a recorded delay (`tests/test_session12_concurrency.py`):
+
+- the bound is held;
+- the result is identical to one at a time;
+- one 429 pauses all workers;
+- deferral and resume behave as above.
+
+**No speed-up is claimed.** The plan's rate limit is the risk: blind-04 hit 429 after about seven sessions in 40
+minutes. The next sealed rehearsal measures it.
+
+**Not done here** (see the session-12 report):
+
+- one critic request across several batches. Blind-05 sent 43 selected analysis items in 9 critic sessions; 2 would
+  fit;
+- routing deterministic downstream tasks (computed dates, pure quotations, no_change checks) away from the model.

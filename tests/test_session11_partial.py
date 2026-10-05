@@ -136,7 +136,8 @@ def test_a_failing_candidate_never_blocks_the_validated_outputs(p02, blind02_bui
 def test_the_validated_a3_and_a5_are_the_add02_state(p02, blind02_run):
     on = p02["on"]
     a3 = json.loads((on / "a3" / "a3.json").read_text(encoding="utf-8"))
-    assert a3["subtitle"].startswith("Validated state ADD-02") and "Working state ADD-03 is PARTIAL and NOT used" in a3["subtitle"]
+    # session 12 (F2, audit A3-3): 'Validated state' reads 'State after' on the page (plain words)
+    assert a3["subtitle"].startswith("State after ADD-02") and "Working state ADD-03 is PARTIAL and NOT used" in a3["subtitle"]
     assert "ADD-03-6.8-01" not in a3["explicit_ids"] and "ADD-03-Q20-01" not in a3["explicit_ids"]
     prog = json.loads((on / "a5" / "programme.json").read_text(encoding="utf-8"))
     assert prog["stage"] == "ADD-02" and prog["status_date"] == "2026-10-22"

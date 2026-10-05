@@ -4,6 +4,11 @@ Only a person makes a decision, by running
     tenderpack accept ITEM [ITEM ...] --reviewer "Name" [--note TEXT]
     tenderpack reject ITEM [ITEM ...] --reviewer "Name" --note "what is wrong"
 where ITEM is an A1 row id (VOL-I-8.6-01) or an op id (ADD-02/9.1). The program never decides anything itself.
+Session 12: ITEM may also be a clarification entry (CQ-...) or an issue (I-...): accepting one records that a person
+decided the entry as it now reads, including a closing response status ("answered by addendum", "withdrawn (not
+sent)") or an issue's status/resolution; until then every output shows it as HUMAN DECISION PENDING
+(tenderpack.human_owned). The decision is bound to the entry's fingerprint (human_owned.entry_fingerprint: every
+field), so any later edit voids it. The AI workflow never calls this; only a person running `accept`/`reject` does.
 
 Each decision is bound to a FINGERPRINT of what was reviewed:
   row  the row as written (requirement, units, scope, assessment, owner, evidence, date rules and every
@@ -194,7 +199,25 @@ def compute(r: dict, decisions: list[dict]) -> dict:
             fp = fingerprint(b)
             out[("op", x.op.id)] = {**status_of(decisions, "op", x.op.id, fp, x.op.review), "fingerprint": fp,
                                     "binding": b, "stage": s.stage, "valid": x.valid}
+    # session 12: clarification entries and issues (tenderpack.human_owned), bound to the entry as it reads
+    from .human_owned import entry_binding, entry_fingerprint
+    for c in (r.get("clarifications") or {}).get("clarifications") or []:
+        cid = str(c.get("id"))
+        fp = entry_fingerprint("clarification", c)
+        out[("clarification", cid)] = {**status_of(decisions, "clarification", cid, fp), "fingerprint": fp,
+                                       "binding": entry_binding("clarification", c)}
+    for iid, it in (r.get("curated_issues") or {}).items():
+        fp = entry_fingerprint("issue", it)
+        out[("issue", iid)] = {**status_of(decisions, "issue", iid, fp), "fingerprint": fp,
+                               "binding": entry_binding("issue", it)}
     return out
+
+
+def item_kind(item: str) -> str:
+    """The kind of an ITEM named on the command line: a clarification entry (CQ-...), an issue (I-...), an op (it has
+    a '/'), else a row."""
+    return ("clarification" if item.startswith("CQ-") else "issue" if item.startswith("I-") else
+            "op" if "/" in item else "row")
 
 
 def record(path: Path, entries: list[dict]) -> None:
@@ -222,7 +245,7 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
     last = r["order"][-1]
     entries = []
     for item in items:
-        kind = "op" if "/" in item else "row"
+        kind = item_kind(item)
         cur = reviews.get((kind, item))
         if cur is None:
             msgs.append(f"refused: no {kind} {item}")
@@ -240,9 +263,20 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
         if decision == "accept" and kind == "op" and not cur["valid"]:
             msgs.append(f"refused: op {item} is invalid at {cur['stage']}; an invalid op cannot be accepted (reject it instead)")
             continue
+        if decision == "accept" and kind == "clarification":     # session 12: an answer it closes with is checked
+            from .clarify import check as clarify_check
+            bad = clarify_check({"clarifications": [cur["binding"]["entry"]]}, r.get("units") or [],
+                                set(r.get("curated_issues") or {}))
+            if bad:
+                msgs.append(f"refused: {item} does not pass the register's checks: {bad[:2]}")
+                continue
         b = cur["binding"]
         summary = ({"evidence": sorted(b["evidence"]), "dependencies": sorted({d for s in b["states"] for d in s["dependencies"]})}
-                   if kind == "row" else {"provision": b["provision"]["unit"], "units_before_op": sorted(b["before"])})
+                   if kind == "row" else {"entry": item, "response_status": b["entry"].get("response_status"),
+                                          "answer": b["entry"].get("answer"), "status": b["entry"].get("status")}
+                   if kind in ("clarification", "issue") else
+                   {"provision": b["provision"]["unit"], "units_before_op": sorted(b["before"])})
+        summary = {k: v for k, v in summary.items() if v is not None}
         entries.append({"kind": kind, "item": item, "decision": decision, "reviewer": reviewer.strip(),
                         "date": today or dt.date.today().isoformat(), "note": (note or "").strip() or None,
                         "fingerprint": cur["fingerprint"], "bound_to": summary})

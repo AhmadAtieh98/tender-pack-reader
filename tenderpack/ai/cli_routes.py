@@ -18,6 +18,11 @@
           the bounded batches for the addendum (JSON): every provision in exactly one batch; a provision too large
           alone is flagged "too large: needs a person to split". Capabilities come from the endpoint (or a cassette);
           numbers given on the command line are labelled as such.
+  routes [--json] [--offline]    (session 12) every route: its kind (connected coding host | hosted API | local
+          inference | recorded), what is verified here and what is PENDING ON THE MAC, the configured models and, for
+          ollama only, their capabilities checked now against the LOCAL endpoint (installed, vision, tools, context,
+          estimated memory). It never calls a hosted endpoint, never starts a host process and never pulls a model.
+Session 12: --offline on critic and plan-batches (offline mode, tenderpack/ai/offline.py): a hosted route is refused.
 Exit codes: 0 done, 1 done with failures (an item the critic could not review; a host session without a submission;
 a provision too large), 2 refused before anything ran.
 """
@@ -29,7 +34,7 @@ from pathlib import Path
 
 from ..util import ROOT
 
-COMMANDS = ("critic", "host-session", "plan-batches")
+COMMANDS = ("critic", "host-session", "plan-batches", "routes")
 
 
 def _common(p) -> None:
@@ -55,6 +60,7 @@ def add_subcommands(sub) -> None:
     c.add_argument("--allow-unverified-capabilities", action="store_true",
                    help="a person's choice: run on the configured capabilities when the endpoint does not verify them "
                         "(logged; shown in the review request)")
+    c.add_argument("--offline", action="store_true", help="offline mode: the local critic (ollama) only")
     _caps(c)
     _common(c)
     h = sub.add_parser("host-session", help="an actual headless Claude Code session over the MCP tools")
@@ -75,7 +81,12 @@ def add_subcommands(sub) -> None:
     b.add_argument("--provisions")
     b.add_argument("--count-tokens", action="store_true", help="calibrate sizes with the route's token-count endpoint")
     b.add_argument("--allow-unverified-capabilities", action="store_true")
+    b.add_argument("--offline", action="store_true", help="offline mode: only the ollama (or recorded) route")
     _common(b)
+    r = sub.add_parser("routes", help="every route: kind, what is verified vs pending on the Mac, models, local checks")
+    r.add_argument("--json", action="store_true")
+    r.add_argument("--offline", action="store_true")
+    r.add_argument("--config", default=str(ROOT / "config/ai.yaml"))
 
 
 def _ws(a):
@@ -90,7 +101,9 @@ def _print(obj) -> None:
 def _cfg(a) -> dict:
     from . import config as C
     from .providers.base import ALLOW_UNVERIFIED_KEY
+    from .offline import activate, requested
     cfg = C.load(Path(a.config))
+    activate(cfg, requested(cfg, getattr(a, "offline", False)))          # session 12
     if getattr(a, "allow_unverified_capabilities", False):
         cfg[ALLOW_UNVERIFIED_KEY] = True
     return cfg
@@ -108,6 +121,8 @@ def handle(a) -> int:
             return _host_session(a)
         if a.ai_cmd == "plan-batches":
             return _plan(a)
+        if a.ai_cmd == "routes":
+            return _routes(a)
     except (B.Refused, C.ConfigError, ToolError) as e:
         print(f"REFUSED: {e}", file=sys.stdout)
         return 2
@@ -119,9 +134,13 @@ def handle(a) -> int:
 
 def _critic(a) -> int:
     from . import critic
+    from .offline import active
+    cfg = _cfg(a)
+    if active(cfg) and a.route is None:
+        a.route = "ollama"                                           # session 12: offline: the local critic
     caps = {"max_calls": a.max_calls, "max_input_tokens": a.max_input_tokens, "max_output_tokens": a.max_output_tokens,
             "max_usd": a.max_usd}
-    res = critic.run(_ws(a), a.run_id, route=a.route, model=a.model, cassette=a.cassette, cfg=_cfg(a),
+    res = critic.run(_ws(a), a.run_id, route=a.route, model=a.model, cassette=a.cassette, cfg=cfg,
                      max_items=a.max_items, caps={k: v for k, v in caps.items() if v is not None})
     _print(res)
     return 1 if res["errors"] else 0
@@ -192,7 +211,7 @@ def _plan(a) -> int:
     prov = None
     if a.route:
         from .providers import make
-        prov = make(a.route, a.model or C.default_model(C.route(cfg, a.route)), cfg, a.cassette)
+        prov = make(a.route, C.phase_model(C.route(cfg, a.route), a.route, "analysis", a.model), cfg, a.cassette)
         if hasattr(prov, "check_ready") and a.route != "ollama":
             prov.check_ready()
         caps = prov.capabilities().to_dict()
@@ -222,6 +241,95 @@ def _plan(a) -> int:
                 "provisions_total": pk["provisions_total"]})
     _print(out)
     return 1 if out["too_large"] else 0
+
+
+VERIFIED = {
+    "host": ("Claude Code headless sessions (claude -p over the MCP tools) have run for real on the host's own plan "
+             "(sessions 10-11, blind-04 and blind-05); the MCP server is tested (stdio JSON-RPC); MCP interface "
+             "tested; automated Codex execution unverified (no Codex session has run; the workflow starts Claude "
+             "Code only, Codex is the manual MCP / submit-batch path)"),
+    "anthropic": "recorded responses only (tests); no API-key call has been made from this project's environment",
+    "openrouter": "recorded responses only (tests); openrouter.ai is blocked from the cloud environment; keys later",
+    "ollama": ("tested here with a fake local server and recorded answers (tests/test_session12_offline.py); a real "
+               "local model: PENDING ON THE MAC (docs/MAC_SETUP.md, scripts/mac/checks.sh)"),
+    "recorded": "test replay of hand-written cassettes; not a live integration",
+}
+
+
+def _routes(a) -> int:
+    """`tenderpack ai routes` (session 12): see the module docstring."""
+    from . import config as C
+    from .hostsession import declared_capabilities
+    from .offline import KINDS, active
+    cfg = _cfg(a)
+    off = active(cfg)
+    rows = []
+    for name in ("host", "anthropic", "openrouter", "ollama", "recorded"):
+        if name not in cfg["routes"]:
+            continue
+        rc = C.route(cfg, name)
+        row = {"route": name, "kind": KINDS[name], "paid": rc.get("paid"), "verified": VERIFIED[name]}
+        if name == "host":
+            hs = cfg.get("host_session") or {}
+            row["models"] = [{"role": "host_session", "id": hs.get("model") or "the CLI's default (as it reports it)"}]
+            row["capabilities"] = {k: v for k, v in declared_capabilities(cfg).to_dict().items()
+                                   if k in ("images", "tools", "context_tokens", "max_output_tokens", "source")}
+        elif name != "recorded":
+            row["models"] = [{"role": r, "id": v.get("id") if isinstance(v, dict) else v,
+                              "status": v.get("status") if isinstance(v, dict) else None}
+                             for r, v in (rc.get("models") or {}).items()]
+        if off and name in ("host", "anthropic", "openrouter"):
+            row["checked"] = "disabled in offline mode (refused before any call)"
+        elif name == "host":
+            row["checked"] = "not checked by this command (it would start a host process); capabilities are declared"
+        elif name in ("anthropic", "openrouter"):
+            row["checked"] = (f"not checked by this command (it would call a hosted endpoint); `tenderpack ai "
+                              f"capabilities --route {name} --model M` checks it live")
+        elif name == "ollama":
+            from .providers.ollama import check_models
+            rep = check_models(cfg)
+            row.update(checked=f"checked now against {rep['base_url']} (local; nothing pulled)",
+                       reachable=rep["reachable"], installed=rep["installed"], models=rep["models"],
+                       machine=rc.get("machine"))
+            if rep.get("error"):
+                row["error"] = rep["error"] + " (expected in the cloud: the owner's Mac only)"
+        else:
+            row["checked"] = "nothing to check (a cassette per test)"
+        rows.append(row)
+    out = {"offline": cfg.get("_offline") if off else None, "routes": rows,
+           "note": "kinds: connected coding host (Claude Code / Codex with their own model, over MCP or the CLI) | "
+                   "hosted API (the application's paid calls) | local inference (Ollama on this machine) | recorded "
+                   "(tests). Every route goes through the same request layer and the controller's validation."}
+    if a.json:
+        _print(out)
+        return 0
+    print(f"AI routes ({'offline mode: ' + str(out['offline']) if off else 'offline mode off'})")
+    for r in rows:
+        print(f"\n{r['route']}: {r['kind']}{' (paid)' if r.get('paid') else ''}")
+        print(f"  verified: {r['verified']}")
+        print(f"  checked:  {r['checked']}")
+        if r.get("error"):
+            print(f"  error:    {r['error']}")
+        if r.get("installed") is not None:
+            print(f"  installed: {', '.join(r['installed']) or 'none'}")
+        for m in r.get("models") or []:
+            bits = [f"{m.get('role')}: {m.get('id')}"]
+            if r["route"] == "ollama":
+                if m.get("ok"):
+                    mem = m.get("memory") or {}
+                    bits.append(f"vision={m.get('images')} tools={m.get('tools')} context={m.get('context_tokens')} "
+                                f"memory~{mem.get('total_gb')} GB of ~{mem.get('budget_gb')} GB")
+                else:
+                    bits.append(f"NOT USABLE: {m.get('problem')}")
+            elif m.get("status"):
+                bits.append(str(m["status"]))
+            print("  - " + "; ".join(bits))
+        if r.get("capabilities"):
+            c = r["capabilities"]
+            print(f"  declared capabilities: images={c.get('images')} tools={c.get('tools')} "
+                  f"context={c.get('context_tokens')}")
+    print("\n" + out["note"])
+    return 0
 
 
 def main(argv=None) -> int:

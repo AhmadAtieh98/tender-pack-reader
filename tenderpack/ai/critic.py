@@ -24,7 +24,8 @@ Routes (config `critic.route`, or --route):
   host       a headless Claude Code call (`claude -p`, no tools, --system-prompt CRITIC_SYSTEM, --json-schema for the
              answer, --output-format json, a timeout): the host's own plan pays; the model is the one the CLI reports
   recorded   a cassette (providers.recorded): offline tests only
-  anthropic / openrouter / ollama   the same provider interface as propose (Request with no tools and
+  anthropic / openrouter / ollama   the same provider interface as propose (session 12: the model is config
+             `models.critic` of the route; on ollama ONLY that one, no fallback, see config.critic_model) (Request with no tools and
              response_schema = the critic schema; native structured output where the adapter supports it), under the
              route's caps, with capabilities verified as for propose (base.unverified)
 Every call is logged to the run's log files (worklog/model_calls/<run_id>.jsonl and staging/ai/<run_id>/log.jsonl,
@@ -40,6 +41,10 @@ new words, values or parameters), and `select_downstream` for downstream items (
 interpretations, a row whose interpretation states a consequence or an issue for the A3 sheet; uncertain targets, a
 reading of a row that is not its task's row; conflicts). `run()` (the `tenderpack ai critic` command) is unchanged: one
 request per item.
+
+Session 12, offline mode (tenderpack/ai/offline.py): the host critic is refused before any process ("offline mode: the
+host critic is not available; configure routes.ollama.models.critic or accept a skipped review"); in the workflow the
+critic then runs on the local critic model or is recorded SKIPPED with its reason ("independent review did not run").
 """
 from __future__ import annotations
 
@@ -326,6 +331,8 @@ class HostCritic:
     route = "host"
 
     def __init__(self, cfg: dict, model: str | None = None, runner=subprocess.run):
+        from .offline import check_host_session
+        check_host_session(cfg, "critic")                          # session 12: offline mode, before any process
         h = dict(settings(cfg).get("host") or {})
         self.claude_bin = h.get("claude_bin") or (cfg.get("host_session") or {}).get("claude_bin") or "claude"
         self.timeout_s = float(h.get("timeout_s", 240))
@@ -374,8 +381,7 @@ class ProviderCritic:
         from .providers import make
         rcfg = C.route(cfg, route)
         self.route = route
-        self.prov = provider or make(route, model or C.default_model(rcfg, "check") or C.default_model(rcfg), cfg,
-                                     cassette)
+        self.prov = provider or make(route, C.critic_model(rcfg, route, model), cfg, cassette)
         self.caps = C.caps(cfg, route, caps)
         self.price = B.price_for(cfg, self.prov.model)
         B.check_startable(route, rcfg, self.caps, self.price)
@@ -624,6 +630,8 @@ def review_batch(packet: dict, *, route: str, cfg: dict, log, cwd: Path, policy,
     prompt = batch_prompt(packet)
     if route == "host":
         from . import hostsession as HS
+        from .offline import check_host_session
+        check_host_session(cfg, "critic")                         # session 12: offline mode, before any process
         ps_ = HS.PlainSession(cfg, sp.system, schema=CRITIC_BATCH_SCHEMA,
                               model=model if model is not None else settings(cfg).get("model"),
                               timeout_s=float((settings(cfg).get("host") or {}).get("timeout_s", 240)),
@@ -659,7 +667,7 @@ def review_batch(packet: dict, *, route: str, cfg: dict, log, cwd: Path, policy,
     else:
         from .providers import make
         rcfg = C.route(cfg, route)
-        prov = provider or make(route, model or C.default_model(rcfg, "check") or C.default_model(rcfg), cfg, cassette)
+        prov = provider or make(route, C.critic_model(rcfg, route, model), cfg, cassette)
         caps_ = C.caps(cfg, route, caps)
         price = B.price_for(cfg, prov.model)
         B.check_startable(route, rcfg, caps_, price)

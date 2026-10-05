@@ -1,0 +1,1207 @@
+# AI proposal run (tenderpack ai). STAGING ONLY: nothing here is accepted, applied or published.
+# verification_status is assigned by the controller; a person decides every item. Promote verified items
+# into curation as PROPOSED drafts with: tenderpack ai promote RUN_ID --by "Your Name"
+proposal_set:
+  run_id: ADD-03-host-20261005T132405Z-d37a
+  created: '2026-10-05T13:24:05Z'
+  route: host
+  provider: host
+  model_requested: claude-code headless (opus)
+  model_reported: null
+  task: propose_amendment
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+    activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+    readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+    amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+    unrecorded_crops_sha256: null
+    register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+    relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+    curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+  statements:
+  - id: S1
+    kind: fact
+    text: ADD-03 Clause 7.1 inserts Volume II Clause 5.6, which obliges compliance with the height limits in Table
+      5-1 reproduced at Appendix A and incorporates it by reference.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix
+        A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into
+        this Volume by reference.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S2
+    kind: fact
+    text: Appendix A states that Table 5-1 is reproduced as issued by the Office and that the Arabic text governs.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:AppA/para1
+      page: 4
+      kind: span
+      words: Table 5-1 is reproduced below as issued by the Northern Region Airspace Safeguarding Office. The Arabic
+        text governs in accordance with Section 7 of this Addendum.
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: S3
+    kind: interpretation
+    text: The eight answered blocks (English and Arabic letterhead, date, reference number, subject, tender reference,
+      table title, table lead-in) identify or introduce the reproduced letter and table. None of them prints an
+      amendment (no old/new pair, deletion, substitution or insertion) or an obligation of its own. The operative
+      effect of Table 5-1 is carried by ADD-03:7.1 and by the table rows and notes, which are answered in other
+      batches.
+    evidence: []
+    note: null
+  - id: S4
+    kind: assumption
+    text: The pending image readings' source texts for these blocks are taken as correct. Their readings are status
+      'pending' (not approved). The host compared each one by eye with its band crop and found it consistent.
+    evidence: []
+    note: null
+  items:
+  - id: ADD-03/p4-image/hdr-en
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/hdr-en
+    target: null
+    payload:
+      provision: ADD-03:p4-image/hdr-en
+      disposition: no_effect
+      reason: English letterhead 'Northern Region Airspace Safeguarding Office'. It identifies the office that issued
+        the reproduced Table 5-1 and prints no change and no obligation. The incorporation is made by ADD-03:7.1
+        ('is incorporated into this Volume by reference').
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/hdr-en
+      page: 4
+      kind: reading
+      words: Northern Region Airspace Safeguarding Office
+      cell: null
+      crop_sha256: 55b215de1ef0b4e60eb4ff4c0956e056ddcf617909533d124df917c06e845111
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: is incorporated into this Volume by reference
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    - ADD-03:AppA/para1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S2
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/hdr-en is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/hdr-en p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/hdr-en at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.1 p2
+      ok: true
+      detail: verbatim in ADD-03:7.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b00-left shows one line of Latin-script serif text, 'Northern Region Airspace Safeguarding
+      Office', at the top left of the letter page, opposite the Arabic letterhead. It is the letterhead only, with
+      no operative words.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - S3 and S4 are an interpretation and an assumption, and a person must confirm them. The reading is still
+          pending.
+        - The reason says the letterhead 'identifies the office that issued the reproduced Table 5-1'. The unit
+          text itself is only the office name. The link to Table 5-1 comes from ADD-03:7.1 and Appendix A, not from
+          this block.
+        evidence_checked:
+        - ADD-03:p4-image/hdr-en
+        - ADD-03:7.1 quotation
+        - ADD-03:AppA/para1 quotation
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/hdr-ar
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/hdr-ar
+    target: null
+    payload:
+      provision: ADD-03:p4-image/hdr-ar
+      disposition: no_effect
+      reason: Arabic letterhead 'مكتب حماية المجال الجوي بالمنطقة الشمالية', which names the issuing office. It
+        prints no change and no obligation. The incorporation of Table 5-1 is made by ADD-03:7.1.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/hdr-ar
+      page: 4
+      kind: reading
+      words: مكتب حماية المجال الجوي بالمنطقة الشمالية
+      cell: null
+      crop_sha256: 085fee9b38a86ab0627eaaf03d4b4688b3462b1fc1f70838c4516a7b05239b84
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/hdr-ar is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/hdr-ar p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/hdr-ar at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b00-right shows one bold line of Arabic script, 'مكتب حماية المجال الجوي بالمنطقة الشمالية',
+      at the top right of the letter. It is the letterhead, with no operative words.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The text is only an office name, so no_effect follows. S3 and S4 still need a person to confirm them.
+        - The Arabic letterhead matches the English one in meaning. Appendix A says the Arabic text governs, but
+          there is no conflict here.
+        evidence_checked:
+        - ADD-03:p4-image/hdr-ar
+        - ADD-03:7.1 quotation
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/date
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/date
+    target: null
+    payload:
+      provision: ADD-03:p4-image/date
+      disposition: no_effect
+      reason: 'Letter date ''التاريخ: ١٠ نوفمبر ٢٠٢٦م''. It dates the Office''s letter and prints no change, no
+        deadline and no effective-from date for any unit of the pack.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/date
+      page: 4
+      kind: reading
+      words: 'التاريخ: ١٠ نوفمبر ٢٠٢٦م'
+      cell: null
+      crop_sha256: 611b9b7d4091da1d66770ea4b93355d345c3a1357acf8f24d9a3028e4bcb3fb2
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/date is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/date p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/date at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop b01-left shows ''التاريخ: ١٠ نوفمبر ٢٠٢٦م'' in Arabic script with Arabic-Indic digits
+      (10 November 2026 CE), under the letterhead on the left. It is a dateline only. For the reviewer: that date
+      is after the session date (2026-10-05), which may be worth checking against the ADD-03 issue date. It does
+      not affect this disposition.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The date '١٠ نوفمبر ٢٠٢٦م' (10 November 2026) is after the session date of 2026-10-05. The evidence does
+          not show ADD-03's own issue date, so the item cannot show that this date is consistent with it. A person
+          should check it. It does not change the no_effect disposition, because a dateline states no change or
+          deadline.
+        - S3 and S4 need a person to confirm them.
+        evidence_checked:
+        - ADD-03:p4-image/date
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/ref
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/ref
+    target: null
+    payload:
+      provision: ADD-03:p4-image/ref
+      disposition: no_effect
+      reason: 'Letter reference number ''الرقم: ٤٧١/٢٠٢٦''. It identifies the Office''s letter and prints no change
+        and no obligation.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/ref
+      page: 4
+      kind: reading
+      words: 'الرقم: ٤٧١/٢٠٢٦'
+      cell: null
+      crop_sha256: 36f0bc6f100e664d3d517c42ac951f889ef31a2991983d383036dbe61033a3a8
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/ref is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/ref p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/ref at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop b01-right shows ''الرقم: ٤٧١/٢٠٢٦'' in Arabic-Indic digits (reference 471/2026) at the
+      right, under the letterhead. It is a reference line only.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The text is only a reference number, so no_effect follows. S3 and S4 still need confirmation.
+        evidence_checked:
+        - ADD-03:p4-image/ref
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/subject
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/subject
+    target: null
+    payload:
+      provision: ADD-03:p4-image/subject
+      disposition: no_effect
+      reason: 'Subject line ''الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان''.
+        It describes the letter''s subject and prints no change and no obligation.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/subject
+      page: 4
+      kind: reading
+      words: 'الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان'
+      cell: null
+      crop_sha256: 53c8cf8bb00428ec168e4cf0413857cac8422edd7464b54ba73d2e332e88b887
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/subject is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/subject p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/subject at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b02-full shows one full-width Arabic line beginning 'الموضوع:', the subject line (height
+      requirements for the independent sewage treatment plant site at Wadi al-Sirhan). It contains no operative
+      words.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The subject line only describes the letter's topic. S3 and S4 need confirmation.
+        evidence_checked:
+        - ADD-03:p4-image/subject
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/tender-ref
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/tender-ref
+    target: null
+    payload:
+      provision: ADD-03:p4-image/tender-ref
+      disposition: no_effect
+      reason: 'Tender reference ''مناقصة رقم: NUPA/ISTP/2026/014''. It identifies the tender the letter relates
+        to and prints no change and no obligation.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/tender-ref
+      page: 4
+      kind: reading
+      words: 'مناقصة رقم: NUPA/ISTP/2026/014'
+      cell: null
+      crop_sha256: e5f0adb3b0e582475eef3dcd78e3716cf9ebfc4db2d03bb28bd5d1786689a381
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/tender-ref is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/tender-ref p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/tender-ref at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b03-full shows the Arabic label 'مناقصة رقم:' followed by the Latin-script reference 'NUPA/ISTP/2026/014'.
+      This matches the tender number in the pack id; it is an identification line only.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The item says the number matches the pack id, but that match is not shown in the evidence printed here.
+          It does not affect the disposition.
+        - S3 and S4 need confirmation.
+        evidence_checked:
+        - ADD-03:p4-image/tender-ref
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/table-title
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/table-title
+    target: null
+    payload:
+      provision: ADD-03:p4-image/table-title
+      disposition: no_effect
+      reason: 'Table title ''جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع''. It names the table; the
+        limits are in the rows and notes (other provisions), and the obligation to comply is in ADD-03:7.1 (''shall
+        comply with the height limits in Table 5-1''). The title itself prints no change.'
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/table-title
+      page: 4
+      kind: reading
+      words: 'جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع'
+      cell: null
+      crop_sha256: 90dc8591dc7f5410f177dadfc5236c9f7a1e4f58960572f0907a58a1660c7e6a
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: The Project Company shall comply with the height limits in Table 5-1
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/table-title is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/table-title p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/table-title at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.1 p2
+      ok: true
+      detail: verbatim in ADD-03:7.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: 'Crop b04-full shows the bold Arabic title ''جدول ٥-١: ...'' (Table 5-1: maximum height of
+      structures and equipment on site) directly above the ruled four-column table. It is a heading only.'
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The title only names the table. The compliance obligation comes from ADD-03:7.1, which the quotation supports.
+        - S3 and S4 need confirmation.
+        evidence_checked:
+        - ADD-03:p4-image/table-title
+        - ADD-03:7.1 quotation
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  - id: ADD-03/p4-image/table-qualifier
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      activity_templates_sha256: 05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101
+      readings_sha256: f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      unrecorded_crops_sha256: null
+      register_sha256: 1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611
+      relationships_sha256: 3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467
+      curation_sha256: 31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04
+    statement_type: disposition
+    provision: ADD-03:p4-image/table-qualifier
+    target: null
+    payload:
+      provision: ADD-03:p4-image/table-qualifier
+      disposition: no_effect
+      reason: Lead-in 'يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:'. It
+        ends with a colon and introduces the zone rows that follow; it states no limit, exception or obligation
+        of its own. The obligation is ADD-03:7.1 ('shall comply with the height limits in Table 5-1'). A person
+        should confirm.
+    previous_value: null
+    proposed_value: null
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:p4-image/table-qualifier
+      page: 4
+      kind: reading
+      words: 'يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:'
+      cell: null
+      crop_sha256: e35486565f7cebe1d0d8ae3e8d035c8896c6cae5b44d2cc8b9f1400f8948816f
+    - doc: ADD-03
+      unit_id: ADD-03:7.1
+      page: 2
+      kind: span
+      words: The Project Company shall comply with the height limits in Table 5-1
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - ADD-03:7.1
+    conflicts: []
+    missing_information: []
+    statements:
+    - S1
+    - S3
+    - S4
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:p4-image/table-qualifier is a provision of ADD-03 (p4)
+      aspect: structure
+    - check: evidence ADD-03:p4-image/table-qualifier p4
+      ok: true
+      detail: verbatim in ADD-03:p4-image/table-qualifier at ADD-02
+      aspect: evidence
+    - check: evidence ADD-03:7.1 p2
+      ok: true
+      detail: verbatim in ADD-03:7.1 at ADD-02
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation S3: a person must confirm it'
+      aspect: evidence
+    - check: statements
+      ok: true
+      detail: 'depends on assumption S4: a person must confirm it'
+      aspect: evidence
+    - check: semantic
+      ok: true
+      detail: 'no amendment language in the provision''s own words (no amendment, obligation or exception words
+        remain once the sentences that say nothing changes are set aside): no_effect is consistent with them'
+      aspect: semantic
+    verification_status: interpretation_pending
+    model_rationale: Crop b05-full shows one Arabic sentence ending with a colon, directly above the table header
+      row. It introduces the zones (أ, ب) and carries no figure. The figures (٢٥ and ٤٠) are in the row cells, which
+      belong to other batches.
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The sentence says the maximum permitted height is set 'in each zone of the site as follows'. That is introductory
+          wording rather than a limit, but it is close to operative. The limits themselves sit in the rows and notes,
+          which are not shown here, so the no_effect disposition is safe only if those rows are handled elsewhere.
+        - The item already says a person should confirm. S3 and S4 also need confirmation.
+        evidence_checked:
+        - ADD-03:p4-image/table-qualifier
+        - ADD-03:7.1 quotation
+        selected_because:
+        - consequential_interpretation
+        route: host
+        model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+        model_reported: claude-sonnet-5-5
+        critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+        created: '2026-10-05T13:24:31Z'
+        note: 'a second model''s opinion: agreement between models is not approval, and it changes no status'
+  coverage:
+    provisions_total: 63
+    accounted: 8
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/col-lighting
+    - ADD-03:p4-image/col-height
+    - ADD-03:p4-image/col-description
+    - ADD-03:p4-image/col-zone
+    - ADD-03:p4-image/rowA-zone
+    - ADD-03:p4-image/rowA-description
+    - ADD-03:p4-image/rowA-height
+    - ADD-03:p4-image/rowA-lighting
+    - ADD-03:p4-image/rowB-zone
+    - ADD-03:p4-image/rowB-description
+    - ADD-03:p4-image/rowB-height
+    - ADD-03:p4-image/rowB-lighting
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+  resolution:
+    provisions_total: 63
+    accounted: 8
+    resolved: 0
+    pending: 8
+    invalid: 0
+    unaccounted: 55
+    pending_provisions:
+    - ADD-03:p4-image/hdr-en
+    - ADD-03:p4-image/hdr-ar
+    - ADD-03:p4-image/date
+    - ADD-03:p4-image/ref
+    - ADD-03:p4-image/subject
+    - ADD-03:p4-image/tender-ref
+    - ADD-03:p4-image/table-title
+    - ADD-03:p4-image/table-qualifier
+    invalid_provisions: []
+    no_change_on_amendment_language: []
+    approved: 0
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: 'host route: no application API call (the host''s own usage is not visible to this tool)'
+  status: partial
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    S1:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:7.1 p2
+        ok: true
+        detail: verbatim in ADD-03:7.1 at ADD-02
+        aspect: null
+    S2:
+      kind: fact
+      duplicate: false
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:AppA/para1 p4
+        ok: true
+        detail: verbatim in ADD-03:AppA/para1 at ADD-02
+        aspect: null
+    S3:
+      kind: interpretation
+      duplicate: false
+      evidence_ok: false
+      checks: []
+    S4:
+      kind: assumption
+      duplicate: false
+      evidence_ok: false
+      checks: []
+  state_differences: []
+  simulation:
+    addendum: ADD-03
+    from_stage: ADD-02
+    status: PARTIAL
+    ops: []
+    parse_errors: []
+    coverage:
+    - provision: ADD-03:cover/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:cover/para3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:1.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:2.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.3(b)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:3.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:4.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:5.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q15
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q16
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q17
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q18
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q19
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q20
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:Q21
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:7.4
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/hdr-en
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/hdr-ar
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/date
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/ref
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/subject
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/tender-ref
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/table-title
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/table-qualifier
+      disposition: no_effect
+      accounted_by:
+      - no_effect
+    - provision: ADD-03:p4-image/col-lighting
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/col-height
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/col-description
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/col-zone
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowA-zone
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowA-description
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowA-height
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowA-lighting
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowB-zone
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowB-description
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowB-height
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/rowB-lighting
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/notes-heading
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/note3
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/signatory
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:p4-image/stamp
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppA/para2
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:AppB/para1
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/a
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/b
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/notes
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(1)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(2)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    - provision: ADD-03:T5-1/note(3)
+      disposition: UNACCOUNTED
+      accounted_by: []
+    unaccounted:
+    - ADD-03:cover/para1
+    - ADD-03:cover/para2
+    - ADD-03:cover/para3
+    - ADD-03:1.1
+    - ADD-03:1.2
+    - ADD-03:1.3
+    - ADD-03:2.1
+    - ADD-03:2.2
+    - ADD-03:3.1
+    - ADD-03:3.2
+    - ADD-03:3.3
+    - ADD-03:3.3(b)
+    - ADD-03:3.4
+    - ADD-03:4.1
+    - ADD-03:4.2
+    - ADD-03:5.1
+    - ADD-03:5.2
+    - ADD-03:Q15
+    - ADD-03:Q16
+    - ADD-03:Q17
+    - ADD-03:Q18
+    - ADD-03:Q19
+    - ADD-03:Q20
+    - ADD-03:Q21
+    - ADD-03:7.1
+    - ADD-03:7.2
+    - ADD-03:7.3
+    - ADD-03:7.4
+    - ADD-03:AppA/para1
+    - ADD-03:p4-image/col-lighting
+    - ADD-03:p4-image/col-height
+    - ADD-03:p4-image/col-description
+    - ADD-03:p4-image/col-zone
+    - ADD-03:p4-image/rowA-zone
+    - ADD-03:p4-image/rowA-description
+    - ADD-03:p4-image/rowA-height
+    - ADD-03:p4-image/rowA-lighting
+    - ADD-03:p4-image/rowB-zone
+    - ADD-03:p4-image/rowB-description
+    - ADD-03:p4-image/rowB-height
+    - ADD-03:p4-image/rowB-lighting
+    - ADD-03:p4-image/notes-heading
+    - ADD-03:p4-image/note1
+    - ADD-03:p4-image/note2
+    - ADD-03:p4-image/note3
+    - ADD-03:p4-image/signatory
+    - ADD-03:p4-image/stamp
+    - ADD-03:AppA/para2
+    - ADD-03:AppB/para1
+    - ADD-03:T5-1/a
+    - ADD-03:T5-1/b
+    - ADD-03:T5-1/notes
+    - ADD-03:T5-1/note(1)
+    - ADD-03:T5-1/note(2)
+    - ADD-03:T5-1/note(3)
+    c47_unevidenced_additions: []
+    scope_leak: []
+    problems: []
+    changed_units: []
+    c46_needs: []
+    note: 'dry run: nothing persisted; validity is structural (C21-C27, C47), not acceptance'
+    inputs_fingerprint: 6001cbdf39e2ba4ed0ded7217095481a30eb43abae3abea58b2bd9623b8c47e9
+    computed_under:
+      evidence_build_id: e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933
+      assumptions_sha256: be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0
+      amendments_sha256: 79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d
+      validated_stage: ADD-02
+      working_stage: ADD-03
+    findings: []
+    clean: true
+  impact: null
+  reference: null
+  findings: []
+  critic_runs:
+  - critic_run: ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic
+    route: host
+    items:
+    - item: ADD-03/p4-image/hdr-en
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/hdr-ar
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/date
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/ref
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/subject
+      agrees: true
+      concerns: 1
+    - item: ADD-03/p4-image/tender-ref
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/table-title
+      agrees: true
+      concerns: 2
+    - item: ADD-03/p4-image/table-qualifier
+      agrees: true
+      concerns: 2
+    errors: []
+    not_reviewed_over_limit: []
+    note: agreement between models is not approval; the critic changes no status

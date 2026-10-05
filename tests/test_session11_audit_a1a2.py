@@ -189,7 +189,12 @@ def test_a1_3_one_concession_wording_and_no_inverted_confidence(real, a1):
              rows["VOL-V-3.2-01"].confidence_reason, rows["VOL-V-42.2-01"].confidence_reason]
     for t in texts:
         assert not re.search(r"\b(settled|declined|unresolved term start)\b", t, re.I), t
-    assert "VOL-I 3.2" in rows["VOL-I-12.1-01"].confidence_reason and "prevail" in rows["VOL-I-12.1-01"].confidence_reason
+    # session 12 (F1; audit A1-1/A2-1/A3-1): changed deliberately. The session-11 wording said VOL-I 12.1 'prevails';
+    # ADD-02 Q7 does not say which clause applies and no person has decided, so the reason now names VOL-I 3.2 and
+    # leaves which clause governs to Legal, with the same confidence on both rows
+    assert "VOL-I 3.2" in rows["VOL-I-12.1-01"].confidence_reason and "prevail" not in rows["VOL-I-12.1-01"].confidence_reason
+    assert "no decision recorded" in rows["VOL-I-12.1-01"].confidence_reason
+    assert rows["VOL-I-12.1-01"].confidence == rows["VOL-V-3.1-01"].confidence
     assert "CQ-CONCESSION-TERM" in issue and "Form 4-E" in issue
 
 
@@ -270,7 +275,8 @@ def test_a2_4_op_issues_are_on_the_page_untruncated(real, a2):
     q7 = next(x for s in real["stages"] for x in s.ops if x.op.id == "ADD-02/Q7").op
     assert q7.issue in md
     line = next(ln for ln in md.splitlines() if ln.startswith("| ADD-02/Q7 |"))
-    assert "confirms, with open question" in line and "CQ-CONCESSION-TERM" in line and "I-CONCESSION" in line, line
+    # session 12 (F1; audit A2-1): changed deliberately: Q7 confirms neither clause; it points to VOL-I 3.2 (`interprets`)
+    assert "interprets, with open question" in line and "CQ-CONCESSION-TERM" in line and "I-CONCESSION" in line, line
     rows = [ln for ln in md.splitlines() if ln.startswith("| VOL-IV-F4A-01 |")]
     assert rows and "…" not in rows[0], rows
 

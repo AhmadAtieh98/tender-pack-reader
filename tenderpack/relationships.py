@@ -91,6 +91,11 @@ KINDS = {
 }
 STATUSES = ("confirmed", "proposed", "possible")
 CLASSES = {"confirmed": "confirmed dependency", "proposed": "proposed relationship", "possible": "possible impact"}
+# Session 12 (audit R-6): one line printed wherever relationships are listed (A1, A2, a3_detail, diff), so that a link's
+# "confirmed" (the documents state it) is not read as "confirmed by the owner", the words used for the image readings.
+STATUS_LEGEND = ("Relationship status: confirmed = stated in the documents (the entry quotes the cross-reference), not "
+                 "confirmed by a person; proposed = inferred by a curator or a model, a person decides; possible = a "
+                 "weaker inference.")
 _RANK = {s: i for i, s in enumerate(STATUSES)}
 FIELDS = ("id", "from", "to", "kind", "status", "evidence", "basis", "origin", "note", "issues", "document",
           "document_id", "blocks", "confirmed_by", "review", "reviewer")

@@ -20,7 +20,13 @@ def test_the_blind05_sentence_cites_both_deleted_clauses_and_the_new_one():
 
 def test_plural_clauses_with_commas_and_a_range_cite_the_listed_ends():
     assert _targets("Volume II Clauses 3.1, 3.2 and 3.4 apply") == ["VOL-II:3.1", "VOL-II:3.2", "VOL-II:3.4"]
-    assert _targets("Volume V Clauses 29.1 to 29.3 are amended") == ["VOL-V:29.1", "VOL-V:29.3"]
+    # session 12 (deliberate change): a range is no longer read as its two ends; it is one `clause_range` citation that
+    # resolve() expands against the document's structure (tests/test_session12_citations.py)
+    from tenderpack.citations import resolve
+    assert _targets("Volume V Clauses 29.1 to 29.3 are amended") == []
+    assert [c.kind for c in citations("Volume V Clauses 29.1 to 29.3 are amended")] == ["clause_range"]
+    assert resolve(citations("Volume V Clauses 29.1 to 29.3 are amended"),
+                   {"VOL-V:29.1", "VOL-V:29.2", "VOL-V:29.3"}) == ["VOL-V:29.1", "VOL-V:29.2", "VOL-V:29.3"]
 
 
 def test_the_singular_forms_are_unchanged():

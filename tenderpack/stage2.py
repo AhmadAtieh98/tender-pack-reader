@@ -50,13 +50,14 @@ from .evidence import load_evidence_items
 from .draft import draft
 from .register import (BID_OUT, GLOSS_NOT_REVIEWED, Consequence, Register, consequence_gloss, found, load_rows,
                        printed_date_conflicts)
+from .readings import approval_covers
 from .render import A3OverflowError, write_a1, write_a3_pdf, write_csv_json
 from . import programme
 from .schedule import deltas, in_force, plan
 from .trace import obligation_trace
 from .summary import date_changes_by_stage, rule_index, summary_check
 from .datecover import counting_conventions, date_coverage
-from . import clarify, relationships, review
+from . import clarify, derived, human_owned, relationships, review, signals
 from .textnorm import normalize_latin
 from .util import dump_json, load_yaml, sha256_file, write_text
 
@@ -205,6 +206,8 @@ def evaluate(r: dict) -> dict:
     from .register import anchor_details      # date, time, timezone and source of each anchor, from its effective text
     r["anchor_details"] = {s.stage: anchor_details(s.state, r["rowfile"].anchors, reg.issued, reg.op_stage,
                                                    reg.op_provision) for s in stages}
+    from .signals import attach_dependencies  # session 12 (F2): what each row depends on, for the one change predicate
+    attach_dependencies(r)
     r["reviews"] = review.compute(r, r["decisions"])
     r["trace"] = obligation_trace(r)
     r["summary_check"] = summary_check(r["stages"], units, r["rowfile"].anchors,    # C28: report only, never applied
@@ -357,9 +360,15 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
             rows_by_issue.setdefault(i, []).append(e["row"].id)
     out = []
     for iid, it in r["curated_issues"].items():
-        out.append({"id": iid, "text": it["text"], "owner": it["owner"], "source": "curated (proposed wording)",
-                    "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3")), "a3": it.get("a3"),
-                    "theme": it.get("theme"), "short": it.get("short"), "folds": list(it.get("folds") or [])})
+        # session 12: an issue the AI workflow proposed, or one carrying a status or resolution, reads HUMAN DECISION
+        # PENDING until a person's decision is bound to it (tenderpack.human_owned.issue_label); open curated issues
+        # are open by construction and read as before
+        lab = human_owned.issue_label(iid, it, r.get("decisions"))
+        pre = (lambda t: f"{lab}: {t}" if t else t) if lab else (lambda t: t)  # noqa: E731
+        out.append({"id": iid, "text": pre(it["text"]), "owner": it["owner"], "source": "curated (proposed wording)",
+                    "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3")), "a3": pre(it.get("a3")),
+                    "theme": it.get("theme"), "short": pre(it.get("short")), "folds": list(it.get("folds") or [])}
+                   | ({"human_decision": lab} if lab else {}))
     out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
     for c in printed_date_conflicts(val, r["rowfile"].anchors):
         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
@@ -427,8 +436,8 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
         out.append({"id": "I-AUTO-COUNTING", "text": f"Counting conventions not stated in the pack for {', '.join(differ)}: every "
                     f"reading is shown (A1 Dates); planning uses the {r['policy']} reading (config/assumptions.yaml)",
                     "owner": "Bid manager", "source": "D4 (automatic)", "rows": [], "show_in_a3": True,
-                    "a3": f"Counting conventions not stated for {len(differ)} date rule(s): every reading in A1 Dates; planning "
-                          f"uses the {r['policy']} one"})
+                    "a3": f"counting conventions not stated for {', '.join(differ)}: both readings in A1 Dates; A5 plans "
+                          f"the {r['policy']} one"})
     pend = sorted({e["row"].id for e in r["evals"] if e["stages"][val.stage]["transcription"] == "pending"})
     if pend:
         out.append({"id": "I-AUTO-PENDING-READINGS", "text": f"{len(pend)} row(s) rely on image readings (Table 2-4, "
@@ -438,9 +447,22 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
     if a5:
         bad = [a for a in a5["activities"] if a["status"] != "OK"]
         for a in bad:
+            # session 12 (audit A3-2, A3-4): a conditional activity's line names its condition, and the window end shows
+            # every reading of its rule (the ambiguous count is never chosen: config/formulas.yaml), as A1 and A3 do
+            when = next((d for e in r["evals"] for d in e["stages"][val.stage]["dates"]
+                         if a.get("deadline_rule") and d["rule_id"] == a["deadline_rule"]), None)
+            st = a["status"]
+            if when is not None and when["planning"]["value"]:
+                st = st.replace(str(when["planning"]["value"]), _when(when), 1)
+            if a.get("condition") and "whether the condition arose" in st:     # the condition named where it is asked
+                a3_ = st.replace("whether the condition arose", f"whether {a['condition']}", 1)
+            else:
+                a3_ = st + (f"; needed only if {a['condition']}" if a.get("condition") else "")
+            a3_ = a3_ if a["status"].startswith("CONDITIONAL") else None
             out.append({"id": f"I-A5-{a['id']}", "text": f"A5 {a['id']}: {a['flags'][0]} ({', '.join(a['req_ids'])}; "
                         f"duration {a['duration_wd']} WD is an ASSUMPTION: {a['duration_assumption']})",
-                        "owner": a["owner"], "source": "A5 (automatic)", "rows": a["req_ids"], "show_in_a3": False})
+                        "owner": a["owner"], "source": "A5 (automatic)", "rows": a["req_ids"], "show_in_a3": False,
+                        **({"a3": a3_} if a3_ else {})})
         late = [a for a in bad if a["status"].startswith(("INFEASIBLE", "DEADLINE PASSED"))]
         if late:
             out.append({"id": "I-A5-FEASIBILITY", "text": "A5 at the status date: " + "; ".join(
@@ -503,14 +525,77 @@ def issue_theme(i: dict) -> str:
     return "addenda"
 
 
+_GAP_MARK = re.compile(r"(?:^|[.;:]\s+)(?:still open|open|unresolved|not resolved)\s*:\s*", re.I)
+_DRAFT_REF = re.compile(r"\s*\((?:draft question|draft questions|follow-up|clarification register)\b[^()]*\)", re.I)
+
+
+def gap_clause(text) -> str:
+    """The clause of an issue's text that states the gap (session 12, audit A3-2): the words after the text's own
+    open-point marker ('Still open:', 'Open:', 'Unresolved:'), to the end of that clause (the first ';' or sentence end
+    outside brackets, or before a relative clause (', which', ', on which', ', so') that starts after 60 characters),
+    without the bracketed draft-question ids (they are on the A4 register). '' when the text has no marker: such a text
+    states its gap first, and its short line is that statement."""
+    t = " ".join(str(text or "").split())
+    m = _GAP_MARK.search(t)
+    if not m:
+        return ""
+    rest, depth, end = t[m.end():], 0, None
+    for j, ch in enumerate(rest):
+        depth += (ch == "(") - (ch == ")")
+        if depth <= 0 and (ch == ";" or (ch == "." and (j + 1 == len(rest) or rest[j + 1] == " "))):
+            end = j
+            break
+    c = _DRAFT_REF.sub("", rest[:end]).strip(" ;,.")
+    m2 = re.compile(r", (?:on which|which|so that|so) ").search(c, 60)   # the first clause: what follows is on the detail
+    return c[:m2.start()] if m2 else c
+
+
+_STOP = {"the", "and", "for", "with", "from", "that", "this", "its", "not", "are", "was", "how", "any", "all", "which",
+         "whether", "under", "into", "per", "vs"}
+
+
+def _content(t: str) -> set[str]:
+    return {w for w in re.findall(r"[\w./-]+", re.sub(r"'s\b", "", t.lower())) if len(w) >= 3 and w not in _STOP}
+
+
+def with_reason(short: str, gap: str) -> str:
+    """The short line with the reason clause of its issue (gap_clause), never longer than it must be: unchanged when it
+    already says the clause; the clause itself (after the short's subject, the words before a ':') when the clause
+    restates the short's words; else the short, its bracketed 'settled' note giving way to the open clause, and the
+    clause ('Table 2-4: anything outside the visible image (e.g. whether a further note was cut off below Note 1)')."""
+    norm = lambda x: " ".join(re.sub(r"[^\w./-]+", " ", x.lower()).split())  # noqa: E731
+    if not gap or norm(gap) in norm(short):
+        return short
+    bare = re.sub(r"\s*\([^()]*\)", "", short).strip()
+    subj = re.split(r": | vs ", bare, maxsplit=1)[0] if re.search(r": | vs ", bare) else ""
+    sw = _content(bare) - _content(subj)
+    if sw and len(sw & _content(gap)) >= 0.6 * len(sw):
+        return (subj + ": " if subj and not _content(subj) <= _content(gap) else "") + gap
+    base = re.sub(r"\s*\([^()]*\bsettled\b[^()]*\)", "", short).strip()
+    gw = gap.split()
+    for k in range(len(gw) - 1, 2, -1):                  # the short ends with the clause's first words: continue it
+        if norm(base).endswith(norm(" ".join(gw[:k]))):
+            gap = " ".join(gw[k:])
+            break
+    return base + (" " if gap.startswith("(") else " — ") + gap
+
+
 def issue_short(i: dict) -> str:
+    """The reason of an open issue on its A3 line: the curated `short` (or one made from the generated text), always
+    with the clause of the issue text that states the gap (gap_clause; session 12, audit A3-2): never an id alone."""
+    return with_reason(_issue_short(i), gap_clause(i.get("text")))
+
+
+def _issue_short(i: dict) -> str:
     if i.get("short"):
         return i["short"]
     iid = i["id"]
     if iid.startswith("I-AUTO-SUMMARY-"):
         return f"{iid.rsplit('-', 2)[-2]}-{iid.rsplit('-', 1)[-1]} cover summary vs provisions: findings in A2 (C28)"
-    if iid == "I-AUTO-COUNTING":
-        return "counting conventions not stated for some date rules: every reading in A1 Dates"
+    if iid == "I-AUTO-COUNTING":                          # session 12 (A3-2): which rules, and the reading planned
+        return i.get("a3") or "counting conventions not stated for some date rules: every reading in A1 Dates"
+    if iid.startswith("I-A5-") and i.get("a3"):          # session 12 (A3-2, A3-4): the condition and both readings
+        return i["a3"]
     if iid == "I-AUTO-STALE":
         return "rows STALE: their reading needs a person (A1)"
     if iid.startswith("I-PARTIAL-"):
@@ -584,6 +669,8 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
     rows = []
     summary_stale = summary_currency(r)
     row_rel = relationship_lines(r)
+    computed_by = {s: derived.computed_deadlines(r, s) for s in order[1:]}    # session 12 (W3b): calc deadlines
+    computed = computed_by.get(val) or []
     for e in r["evals"]:
         row, stg = e["row"], e["stages"]
         v = stg[val]
@@ -593,9 +680,12 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         src = last.get("source") or {}
         ud = last.get("units_detail") or []
         multi = len(ud) > 1
+        # session 12 (F1; audit A1-5): one rule for 'Text as issued': the text as the issuing document printed it; a unit
+        # first issued by an addendum is labelled with its reference and the addendum (single- and multi-unit rows alike)
         orig = ("\n".join(f"[{d['ref']}" + (f"; issued by {d['issued_by']}" if d["issued_by"] else "") + f"] "
                           + (d["original_text"] or "(not in the volumes as issued)") for d in ud)
-                if multi else last.get("original_text", ""))
+                if multi else (f"[{ud[0]['ref']}; issued by {ud[0]['issued_by']}] " if ud and ud[0]["issued_by"] else "")
+                + (last.get("original_text", "") or (ud[0]["original_text"] if ud else "")))
         seen, eff_parts = set(), []
         for d in ud:
             if d["effective_unit"] in seen:
@@ -617,6 +707,9 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             rec[f"status:{s}"] = ev["status"] + (" — STALE" if ev["stale"] else "")
             if i:
                 rec[f"change:{s}"] = stage_change(stg[order[i - 1]], ev, s)
+                sw = [f for f in ev.get("flags") or [] if derived.is_switch_flag(f)]      # session 12 (W3b)
+                if sw:
+                    rec[f"change:{s}"] = "; ".join([x for x in [rec[f"change:{s}"]] if x] + sw)
             rec[f"source:{s}"] = ("" if ev["status"] == "NOT ISSUED" or ev["status"].startswith("NOT IN FORCE")
                                   else (ev.get("source") or {}).get("latest", ""))
         rec["consequence"] = ((f"{CLASS_WORDS[cons.cls]}: \"{cons.quote}\""      # gloss label from the approval state
@@ -624,7 +717,8 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                               if isinstance(cons, Consequence) else "none stated in the documents")
         csrc = last.get("consequence_source") or {}
         rec["consequence_source"] = (csrc.get("latest") or cons.unit) if isinstance(cons, Consequence) else ""
-        rec["dates"] = [f"{d['rule_id']}: {d['planning']['value']} ({d['planning']['key']})" for d in v["dates"]] \
+        rec["dates"] = [f"{d['rule_id']}: {d['planning']['value']} ({d['planning']['key']})"
+                        + derived.date_derivation(computed, d) for d in v["dates"]] \
             if v["active"] else []                    # session 11 audit (A1-9): no dates where the row is not in force
         rec["confidence"] = f"{row.confidence}: {row.confidence_reason}"
         rec["note"] = (it.note or "") if it else ""
@@ -646,7 +740,8 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                 dates_rows.append({"row": e["row"].id, "stage": s, "rule": d["rule_id"], "text": d["text"],
                                    "anchor": f"{d['anchor']} = {d['anchor_value']}" if d["anchor"] else "",
                                    "readings": [f"{i['key']}: {i['value']} ({i['basis']})" for i in d["interpretations"]],
-                                   "planning": f"{d['planning']['value']} ({d['planning']['key']}, policy {d['planning']['policy']})",
+                                   "planning": f"{d['planning']['value']} ({d['planning']['key']}, policy {d['planning']['policy']})"
+                                   + derived.date_derivation(computed_by.get(s) or [], d),
                                    "readings_differ": d["readings_differ"]})
     stages_rows = [{"stage": s.stage, "addendum": s.addendum or "", "issued": s.issued or "", "status": s.status,
                     "ops": len(s.ops), "invalid_ops": sum(1 for x in s.ops if not x.valid),
@@ -679,6 +774,11 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
     oc = _count(v["status"] for (k, _), v in r["reviews"].items() if k == "op")
     pending = sorted({u["reading"]["region"] for u in r["units"] if (u.get("reading") or {}).get("status") == "pending"
                       and "region" in u["reading"]})
+    approved = {}                    # session 12 (R-2): region -> whether the approved reading displays translations
+    for u in r["units"]:
+        rd = u.get("reading") or {}
+        if rd.get("status") == "approved" and rd.get("region") and u["kind"] != "region":
+            approved[rd["region"]] = approved.get(rd["region"], False) or bool(u.get("translation"))
     used = sorted({x["row"].assessment for x in r["evals"]})
     evid = {k: {"name": v.name, "issuer": v.issuer, "envelope": v.envelope, "per": v.per, "source": v.source}
             for k, v in sorted((r.get("evidence_items") or {}).items())}
@@ -688,13 +788,18 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                    + ", ".join(f"{k} {n}" for k, n in sorted(rc.items())) + "; amendment ops: "
                    + ", ".join(f"{k} {n}" for k, n in sorted(oc.items())) + "). Rows and ops count as accepted only with a "
                    "named person's decision bound to their current content. Image readings pending the owner's review: "
-                   + (", ".join(pending) or "none") + f". Validated state: {val}"
+                   + (", ".join(pending) or "none")
+                   + ("; approved by the owner: " + ", ".join(f"{g} ({approval_covers(tr).replace('the ', '')})"
+                                                             for g, tr in sorted(approved.items()))
+                      + "; their interpretations stay proposed" if approved else "")
+                   + f". Validated state: {val}"
                    + (f"; working state {working} is PARTIAL" if working else "") + ". Pass/fail or scored: "
                    + "; ".join(f"{k} = {ASSESSMENT_WORDS.get(k, k)}" for k in used)
                    + ". 'Change at <stage>' says what that addendum did to the row besides its status (the reading "
                    "re-made, with its note; dates moved; the ops and annotations, with provision and page); a row "
                    "whose unit an op reissued or amended elsewhere with the row's own words unchanged reads 'ACTIVE "
-                   "(reissued by <op>, unchanged)'. Evidence codes are defined in the Evidence sheet."),
+                   "(reissued by <op>, unchanged)'. Evidence codes are defined in the Evidence sheet."
+                   + (" " + relationships.STATUS_LEGEND if r.get("relationships") else "")),
         "stages": order, "validated_stage": val, "working_stage": working, "evidence_items": evid,
         "columns": [{"key": k, "header": h, "width": w} for k, h, w in cols], "rows": rows,
         "sheets": {
@@ -714,10 +819,10 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             "Date coverage": sheet([{k: x[k] for k in ("unit", "phrase", "treatment", "by", "sentence")}
                                     for x in r.get("date_coverage", [])],
                                    [("unit", 22), ("phrase", 26), ("treatment", 14), ("by", 60), ("sentence", 80)]),
-            **({"Relationships": sheet(relationship_sheet(r), [
+            **({"Relationships": dict(notice=relationships.STATUS_LEGEND, **sheet(relationship_sheet(r), [
                 ("id", 30), ("kind", 16), ("status", 11), ("class", 20), ("from", 30), ("to", 34), ("evidence", 70),
                 ("basis", 60), ("note", 50), ("document", 30), ("blocks", 60), ("issues", 20), ("origin", 12),
-                ("review", 10), ("reached", 30)])} if r.get("relationships") else {}),
+                ("review", 10), ("reached", 30)]))} if r.get("relationships") else {}),
         },
     }
 
@@ -869,17 +974,73 @@ def replaced_figures(x, state) -> list[tuple[str, str]]:
     return out
 
 
+REREAD = "to be re-read against the new text"
+
+
 def answers_to_review(r: dict, s: StageResult) -> list[dict]:
     """Clarification answers that cite a unit this addendum changed, or quote a figure it replaced. They are
     listed for a person to review; an answer is never marked revoked automatically. Non-binding minutes are
-    not answers and are listed separately."""
-    changed = {}
+    not answers and are listed separately.
+    Session 12 (W3a; blind-05 S5/IE3, follow-up 8): an answer also relies on the units its own annotation op targets
+    (ADD-01/Q1 annotates VOL-II 3.1), and on what those govern through a curated relationship (relationships.trace from
+    the changed units: a path that reaches a unit or a row the answer relies on); 'changed' also counts appended words,
+    an inserted table row and an annotation that adds an obligation (never a confirming or interpreting one:
+    signals.CONFIRMING_EFFECTS). Each answer carries `reread`: 'to be re-read against the new text of <units> (<ops>)'.
+    Session 12 (F1; audit A2-4): a changed table or form row also stands for its table in that trace, for an answer whose
+    own words name the table (ADD-01 Q1 'Any process capable of meeting Table 2-4', after ADD-02 5.1 sets the TN row).
+    Nothing decides the outcome: the status stays REVIEW (not automatically revoked)."""
+    from .signals import CONFIRMING_EFFECTS
+    changed, extra = {}, {}
     for x in s.ops:
         if x.applied and x.op.type in ("replace_text", "set_value", "set_status", "replace_unit"):
             changed[x.op.target] = x
         if x.applied and x.op.effect == "renumbers":           # an answer citing a renumbered clause reads differently now
             for k in x.op.renumber:
                 changed[k] = x
+        if x.applied and x.op.type in ("append_text", "insert_row"):                # session 12
+            extra.setdefault(x.op.target, x)
+        if x.applied and x.op.type == "annotate" and x.op.effect not in CONFIRMING_EFFECTS + ("renumbers",):
+            for k in x.op.targets:
+                extra.setdefault(k, x)
+    for k, x in derived.switched_units(r, s).items():   # session 12 (W3b): a clause whose condition an op switched
+        extra.setdefault(k, x)
+    changed = {**extra, **changed}                 # the session-08 ops keep their precedence over the session-12 ones
+    reg = r["register"]
+    relied_by_op: dict[str, list[tuple[str, str]]] = {}          # answer unit -> [(target, its annotation op)]
+    for h, prov in reg.op_provision.items():
+        o = reg._op_by_id(h)
+        if o is not None and o.op.type == "annotate" and reg.order.index(reg.op_stage.get(h, BASE)) <= \
+                reg.order.index(s.stage):
+            relied_by_op.setdefault(prov, []).extend((t, h) for t in o.op.targets)
+    # what the changed units reach through the curated relationships (a unit, or a row and the units it cites)
+    rows_units = {e["row"].id: set(e["row"].units) for e in r["evals"]}
+    via: dict[str, list[tuple[str, list[str], str]]] = {}        # reached unit -> [(changed source, path, op id)]
+    # session 12 (F1; audit A2-4): a changed table or form row stands for its table too, as in
+    # relationships.impact_between (a relationship from VOL-II:T2-4 is reached when ADD-02 5.1 sets its TN row), for an
+    # answer whose own words name that table ('Any process capable of meeting Table 2-4'); an answer that only relies on
+    # a clause the table's relationships reach, without naming the table, is not listed through the table
+    parent_of, parent_name = {}, {}
+    for t in changed:
+        p = getattr(s.state.get(t), "parent", None)
+        pu = s.state.get(p) if p else None
+        if p and p not in changed and pu is not None and pu.kind in ("table", "form"):
+            parent_of.setdefault(p, t)
+            m = re.match(r"((?:Table|Form)\s+[\w.-]+)", pu.label or "")
+            if m:
+                parent_name[p] = re.compile(r"\b" + re.escape(m.group(1)).replace(r"\ ", r"\s+") + r"(?![\w-])", re.I)
+    if r.get("relationships") and changed:
+        for rec in relationships.trace(r["relationships"], set(changed) | set(parent_of)):
+            if rec.get("kind") == "missing_document":
+                continue
+            src = next((x for x in rec.get("sources") or [] if x in changed), None)
+            named = None
+            if src is None:
+                named = next((x for x in rec.get("sources") or [] if x in parent_of), None)
+                src = parent_of.get(named) if named else None
+            if src is None:
+                continue
+            for u in ({rec["target"]} | rows_units.get(rec["target"], set())):
+                via.setdefault(u, []).append((src, list(rec.get("path") or []), changed[src].op.id, named))
     figures = {}                                   # (label, regex) -> op: a replaced figure WITH its unit
     for t, x in changed.items():
         for label, rx in replaced_figures(x, s.state):
@@ -891,13 +1052,30 @@ def answers_to_review(r: dict, s: StageResult) -> list[dict]:
         text = " ".join(v for c, v in u.cells.items() if c not in ("No", "No.", "Q"))   # never the question number
         text = re.sub(r"\((" + _NUM + r")\)", r"\1", text)                           # 'ten (10) Working Days' -> '... 10 Working Days'
         cited = [c.target for c in citations(text)]
-        hit = [(t, x) for t, x in changed.items() if t in cited or any(t.startswith(c + "/") or t.startswith(c + "#") for c in cited)]
+        under = lambda t, c: t == c or t.startswith(c + "/") or t.startswith(c + "#")  # noqa: E731
+        hit = [(t, x) for t, x in changed.items() if any(under(t, c) for c in cited)]
+        mine = relied_by_op.get(k, []) if u.issued_by != s.stage else []
+        tgt = [(t, h, x) for t, x in changed.items() for (c, h) in mine
+               if under(t, c) and not any(t == y for y, _ in hit)]
         num = [(lab, x) for (lab, rx), x in figures.items() if re.search(rx, text, re.I)]
-        if hit or num:
+        relied = set(cited) | {c for c, _ in mine}
+        rel = [] if hit or tgt or u.issued_by == s.stage else \
+            [(c, src, path, oid) for c in sorted(relied) for (src, path, oid, named) in via.get(c, [])
+             if named is None or (named in parent_name and parent_name[named].search(text))][:3]
+        if hit or num or tgt or rel:
             why = [f"cites {t}, changed by {x.op.id}" for t, x in hit] + \
+                  [f"its annotation {h} targets {t}, changed by {x.op.id}" for t, h, x in tgt] + \
+                  [f"relies on {c}, which {src} (changed by {oid}) governs through {' > '.join(path)}"
+                   for c, src, path, oid in rel] + \
                   [f"quotes '{lab}', a figure {x.op.id} replaced" for lab, x in num if not any(x is y for _, y in hit)]
+            units = list(dict.fromkeys([t for t, _ in hit] + [t for t, _, _ in tgt] + [src for _, src, _, _ in rel]
+                                       + [x.op.target for _, x in num if x.op.target]))
+            ops = list(dict.fromkeys([x.op.id for _, x in hit] + [x.op.id for _, _, x in tgt] + [o for *_, o in rel]
+                                     + [x.op.id for _, x in num]))
             out.append({"answer": k, "issued_by": u.issued_by, "text": _short(u.text, 220), "why": "; ".join(why),
-                        "status": "REVIEW (not automatically revoked)"})
+                        "status": "REVIEW (not automatically revoked)",
+                        "reread": f"{REREAD} of {', '.join(units)} ({', '.join(ops)}); a person decides whether the "
+                                  "answer still holds"})
     return out
 
 
@@ -906,7 +1084,9 @@ def reversed_ops(r: dict, s: StageResult, prev: StageResult) -> list[dict]:
     earlier answers to review: a set_status that reinstates, deletes or revokes a unit an earlier op changed (ADD-02 9.1
     reinstates VOL-I 8.6, which ADD-01/4.1 deleted), or that revokes the provision of an earlier op (ADD-02 9.2 revokes
     ADD-01 4.2, the provision of ADD-01/4.2); and a replace_unit of a unit an earlier op changed. Never revoked
-    automatically: listed for a person."""
+    automatically. Session 12 (F1; audit A2-4): where a set_status op applies the addendum's own words (reinstated,
+    deleted, revoked), the line says so plainly ('REVERSED by ADD-02 9.1', 'REVOKED by ADD-02 9.2', quoting the
+    provision) instead of 'a person decides': the pack decided it; the op stays proposed. A replacement keeps REVIEW."""
     reg = r["register"]
     out = []
     for x in s.ops:
@@ -915,6 +1095,11 @@ def reversed_ops(r: dict, s: StageResult, prev: StageResult) -> list[dict]:
             continue
         verb = {"reinstated": "reversed (reinstated)", "deleted": "reversed (deleted)", "revoked": "revoked"}.get(
             o.status or "", "superseded (replaced)")
+        # session 12 (F1; audit A2-4): a set_status op applies the addendum's own words ('is reinstated', 'ceases to have
+        # effect'): the pack itself reverses or revokes the earlier op, so the line says so plainly; 'a person decides'
+        # stays only where the pack is silent (a replacement, whose new text a person compares)
+        express = o.type == "set_status" and o.status in ("reinstated", "deleted", "revoked")
+        pv = s.state.get(o.provision)
         tgt = prev.state.get(o.target)
         hits = [(h, f"{o.target} was changed by {h}") for h in (tgt.history if tgt is not None else [])
                 if reg.op_stage.get(h) and reg.order.index(reg.op_stage[h]) < reg.order.index(s.stage)]
@@ -924,10 +1109,33 @@ def reversed_ops(r: dict, s: StageResult, prev: StageResult) -> list[dict]:
             if any(y["answer"] == h for y in out):
                 continue
             pu = prev.state.get(reg.op_provision.get(h))
+            if express:
+                status = (f"{'REVOKED' if o.status == 'revoked' else 'REVERSED'} by {_doc_clause(o.provision)} "
+                          f"(op {o.id}, proposed)")
+                reread = (f"the addendum says so in its own words ({_doc_clause(o.provision)}: "
+                          f"'{_short(pv.text if pv else '', 160)}'); no longer in force as written")
+            else:
+                status = "REVIEW (not automatically revoked)"
+                reread = f"{REREAD} of {o.target} ({o.id}); a person decides whether it still holds"
             out.append({"answer": h, "issued_by": reg.op_stage[h], "text": _short(pu.text if pu else "", 220),
-                        "why": f"{verb} by {o.id} ({o.provision}): {how}",
-                        "status": "REVIEW (not automatically revoked)"})
+                        "why": f"{verb} by {o.id} ({o.provision}): {how}", "status": status, "reread": reread})
     return out
+
+
+def _date_readings(d: dict) -> str:
+    """'ATTENDANCE-NOTICE 2026-10-14 (2026-10-15 if the ADD-01 issue day is excluded)': the planning value and, when the
+    counting convention is not stated and the readings differ, every other reading in the words A5 uses
+    (schedule.other_readings), never chosen (config/formulas.yaml). Session 12 (F1; audit A2-5)."""
+    from .schedule import other_readings
+    alt = other_readings({"planning": d.get("planning"), "readings": d.get("interpretations") or [],
+                          "readings_differ": d.get("readings_differ"), "anchor": d.get("anchor")})
+    return (f"{d['rule_id']} {d['planning']['value']}"
+            + (" (" + "; ".join(f"{x['value']} {x['words']}" for x in alt) + ")" if alt else ""))
+
+
+def _doc_clause(uid: str) -> str:
+    """'ADD-02:9.1' -> 'ADD-02 9.1'."""
+    return str(uid or "").replace(":", " ", 1)
 
 
 def _word_diff(old: str, new: str) -> str:
@@ -1046,6 +1254,17 @@ def a2(r: dict) -> dict:
                             "valid": x.valid, "withdrawn": x.withdrawn, "applied": x.applied, "failed_checks": bad, "review": review.label(r["reviews"][("op", o.id)]), "origin": o.origin,
                             "issue": o.issue or "", "issue_ids": ids})
         md += ["", "### Register rows that move", "", "| Row | Before | After | Why |", "|---|---|---|---|"]
+        # session 12 (W3a): one predicate with A5, the diff and the candidate (signals.requirement_delta): a row that a
+        # confirming op or a re-made reading with the same words, values, parameters, dates and consequence touches is
+        # CONFIRMED (unchanged), listed apart with the op and provision it rests on, never as a row that moves
+        from .signals import CONFIRMED, requirement_delta
+        causes = programme.answers_by_row(r, s.stage)
+        unsettled = {}
+        if r.get("working") is not None and s.stage in {x.stage for x in r["stages"]
+                                                        if r["order"].index(x.stage) > r["order"].index(r["validated"].stage)}:
+            from .partial import unresolved_rows
+            unsettled = unresolved_rows(r)                # a row a pending stage does not settle is never CONFIRMED
+        confirmed_md = []
         for e in r["evals"]:
             a, b = e["stages"][prev.stage], e["stages"][s.stage]
             pa = [d["planning"] for d in a["dates"]] if a["active"] else []
@@ -1061,20 +1280,42 @@ def a2(r: dict) -> dict:
                 why.append("dates moved")
             if bool(a["stale"]) != bool(b["stale"]):
                 why.append("became STALE" if b["stale"] else "no longer STALE")
+            # session 12 (F2, audit A2-2/A2-3): the one predicate for every row in force at both stages; a row whose
+            # dependencies (relationships, its consequence unit, a printed anchor date) or cited units changed is listed
+            # and CHANGED with the cause named, whatever confirmation touched it
+            dl = requirement_delta(a, b, causes.get(e["row"].id), unsettled.get(e["row"].id)) \
+                if a["active"] and b["active"] else None
+            if dl is not None and dl["changed"] and dl.get("causes"):
+                why.append("changed through: " + "; ".join(x["text"] for x in dl["causes"]))
             if why:
-                da = "; ".join(f"{d['rule_id']} {d['planning']['value']}" for d in a["dates"]) if a["active"] else ""
-                db = "; ".join(f"{d['rule_id']} {d['planning']['value']}" for d in b["dates"]) if b["active"] else ""
+                da = "; ".join(_date_readings(d) for d in a["dates"]) if a["active"] else ""
+                db = "; ".join(_date_readings(d) for d in b["dates"]) if b["active"] else ""
                 before = a["status"] + (f" [{da}]" if da else "")
                 after = b["status"] + (f" [{db}]" if db else "") + (" — STALE: " + "; ".join(b["stale"]) if b["stale"] else "")
+                if dl is not None and dl["unsettled"]:
+                    why = why + [dl["detail"]]
+                if dl is not None and not dl["changed"] and dl["confirmed"]:
+                    why = [f"{CONFIRMED}: {dl['detail']}"]
+                    confirmed_md.append(f"| {e['row'].id} | {before} | {after.replace('|', '/')} | "
+                                        f"{dl['detail'].replace('|', '/')} |")
+                    moved.append({"stage": s.stage, "row": e["row"].id, "change": CONFIRMED, "before": before,
+                                  "after": after, "why": why, "chain": b["chain"]})
+                    continue
                 md.append(f"| {e['row'].id} | {before} | {after.replace('|', '/')} | {'; '.join(why).replace('|', '/')} |")
-                moved.append({"stage": s.stage, "row": e["row"].id, "before": before, "after": after, "why": why,
-                              "chain": b["chain"]})
+                moved.append({"stage": s.stage, "row": e["row"].id, "change": "CHANGED", "before": before, "after": after,
+                              "why": why, "chain": b["chain"]})
+        if confirmed_md:
+            md += ["", f"### Rows confirmed or re-read, unchanged ({CONFIRMED})", "",
+                   "A confirming op (an annotation labelled confirms or interprets, or an answer that only confirms) or a "
+                   "reading re-made with the same words, values, parameters, dates and consequence: not a change. The op "
+                   "and provision it rests on are named; labels are proposals a person checks.", "",
+                   "| Row | Before | After | Confirmed by |", "|---|---|---|---|"] + confirmed_md
         if r.get("relationships"):                  # session 10: indirect effects, kept apart from the rows above
             recs = ((r.get("relationship_impact") or {}).get(s.stage) or {}).get("records", [])
             md += ["", "### Reached through relationships (indirect: for review, not direct citations)", "",
                    "Curated links (relationships file) followed from what this addendum changed. The rows above cite a "
                    "changed unit; these are reached through another provision. A5 marks the activities that serve them "
-                   "REVIEW with their dates unchanged.", ""]
+                   "REVIEW with their dates unchanged.", "", relationships.STATUS_LEGEND, ""]
             for cls, items in relationships.by_class(recs):
                 md.append(f"**{cls[0].upper() + cls[1:]}** ({len(items)})")
                 md += [f"- {relationships.label(x)}".replace("|", "/") for x in items] or ["- none"]
@@ -1098,7 +1339,8 @@ def a2(r: dict) -> dict:
                           "via_target": False, "direct": True, "blocked_by": [x.op.issue]} for x in op_missing]
         ans = answers_to_review(r, s) + reversed_ops(r, s, prev)     # session 11 audit (A2-10): ops reversed too
         md += ["", "### Earlier answers to review (never revoked automatically)", ""]
-        md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}. {x['status']}." for x in ans] or ["None found."]
+        md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}. {x['status']}"
+               + (f": {x['reread']}." if x.get("reread") else ".") for x in ans] or ["None found."]
         answers += [dict(x, stage=s.stage) for x in ans]
         sc = next((x for x in r.get("summary_check", []) if x["stage"] == s.stage), None)
         if sc is not None:
@@ -1182,6 +1424,16 @@ def _infeasible_flag(acts: list[str], basis: dict[str, dict]) -> str:
     fl = sorted({basis[a]["float_wd"] for a in acts if a in basis and basis[a].get("float_wd") is not None})
     return ("INFEASIBLE on PROVISIONAL assumed lead times: " + ("; ".join(lts) or "see A5 drivers")
             + (f"; float {fl[0]} WD" if fl else "") + "; I-A5-FEASIBILITY")
+
+
+def _cite_listed(f: str, folded: dict[str, str]) -> str:
+    """A flag with each folded issue id replaced by the id it is listed under on the page (once)."""
+    for i in signals.issue_refs(f):
+        if i in folded:
+            root = folded[i]
+            f = re.sub(r"(?<![\w./-])" + re.escape(i) + r"(?![\w-])", "" if root in f else root, f)
+            f = re.sub(r"(?:;\s*){2,}", "; ", f).strip(" ;")
+    return f
 
 
 def _when(d: dict) -> str:
@@ -1340,6 +1592,12 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             flags.append("image reading pending")
         if ev["stale"]:
             flags.append("STALE")
+        flags += [f for f in ev.get("flags") or [] if derived.is_switch_flag(f)]   # session 12 (W3b): re-read
+        if getattr(row, "derived_consequence", None) is not None:                   # session 12 (W3b)
+            dc = row.derived_consequence
+            flags.append(f"DERIVED CONSEQUENCE from {dc.rule} (PROPOSED; " + (
+                "deterministic: the rule's words name the value)" if dc.owner == "deterministic" else
+                f"{human_owned.HUMAN_DECISION_PENDING}: whether {dc.unit} covers it)"))
         if row.id in infeasible:
             flags.append(_infeasible_flag(infeasible[row.id], basis))
         narrowed = []                    # clarifications that add to, narrow or renumber the row's units
@@ -1411,6 +1669,17 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     fo = fold_issues(r, issues, a5, basis)
     folded, detail_only = fo["folded"], set(fo["detail"])
     listed_as = lambda i: folded.get(i, i)  # noqa: E731
+    # session 12 (audit A3-3, A3-4): a flag cites an issue as it is listed on the page (a folded id by the issue it is
+    # folded into), and a confidence below high points to the row's issues listed on the page (its reason)
+    on_page = {i["id"] for i in issues if i["id"] not in folded and i["id"] not in detail_only}
+    rows_by_id = {e["row"].id: e["row"] for e in r["evals"]}
+    for x in [*explicit, *score, *none_stated, *refused, *zero]:
+        x["flags"] = [_cite_listed(f, folded) for f in x.get("flags") or []]
+        if x.get("confidence") and x["confidence"] != "high":
+            see = list(dict.fromkeys(listed_as(i) for i in rows_by_id[x["id"]].issues if listed_as(i) in on_page
+                                     and listed_as(i) not in dict(A3_CLASS_ORDER).get(x.get("cls"), "")))
+            if see:
+                x["confidence"] = f"{x['confidence']} (see {', '.join(see[:2])})"
     decide = {listed_as(i["id"]) for i in shown}
     clar = r.get("clarifications") or {}
     groups = []
@@ -1425,11 +1694,12 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             "questions": qs})
     n_listed = sum(len(g["items"]) for g in groups)
     gate_issues = sorted(i["id"] for i in issues if issue_theme(i) not in dict(ISSUE_THEMES))
+    # session 12 (audit A3-2/A3-3): the same counts in fewer words, so the reasons on the lines keep the page's size
     issue_counts = (f"{len(issues)} open issues: {n_listed} listed, {len(folded)} folded into the issue they restate (+n), "
-                    f"{len(detail_only)} only on a3_detail.html (pipeline, A2, reading precision)"
+                    f"{len(detail_only)} on a3_detail.html only"
                     + (f", {', '.join(gate_issues)} in the gate note" if gate_issues else "") + ".")
     n_marked = sum(1 for g in groups for it in g["items"] if it.get("decide"))
-    decide_note = (f"† = decide before submission ({len(unresolved)} could not be resolved, {len(missing)} not supplied"
+    decide_note = (f"† = decide before submission ({len(unresolved)} unresolved, {len(missing)} not supplied"
                    + (f"; {n_marked} marked, the rest folded)" if n_marked < len(unresolved) + len(missing) else ")"))
     pdd = next((d["anchor_value"] for e in r["evals"] for d in e["stages"][v]["dates"] if d["anchor"] == "PDD"), None)
     working = r["working"]
@@ -1478,27 +1748,28 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     readings = sorted({(u["reading"]["region"], u["reading"]["status"]) for u in r["units"]
                        if (u.get("reading") or {}).get("region") and u["kind"] != "region"})
     pend = [g for g, st in readings if st == "pending"]
+    # session 12 (audit A3-2): the footer already says every id links to its quotes, sources and flags (a3_detail.html)
     banner = ("WORKING DRAFT — every register row and amendment op is PROPOSED: "
-              + ", ".join(f"{k} {n}" for k, n in sorted(rc.items())) + " rows. "
+              + (f"{rc['proposed']} rows. " if set(rc) == {"proposed"} else
+                 ", ".join(f"{k} {n}" for k, n in sorted(rc.items())) + " rows. ")
               + (f"Image readings pending the owner's review: {', '.join(pend)}. " if pend else
-                 "Image readings: transcriptions confirmed by the owner (approval file); their interpretations are proposed. ")
-              + "Explicit wording only. Quotations, sources and flags for every line: a3_detail.html.")
-    return {
+                 f"Image readings: {approval_covers(any(u.get('translation') for u in r['units'] if (u.get('reading') or {}).get('status') == 'approved'), plural=True)} "   # session 12 (R-2)
+                 "confirmed by the owner (approval file); their interpretations are proposed. ")
+              + "Explicit wording only.")
+    page = {
         "title": "A3 — What would put this bid out (working draft)",
-        "subtitle": f"Validated state {v} (issued {val.issued}); Proposal Due Date "      # from the anchor's effective text
+        "subtitle": f"State after {v} (issued {val.issued}); Proposal Due Date "      # from the anchor's effective text
                     + (" ".join(str(x) for x in map((r["anchor_details"][v].get("PDD") or {}).get, ("date", "time", "tz")) if x)
                        or "not stated in the effective text")
                     + (f". Working state {working.stage} is PARTIAL and NOT used here" if working else "")
-                    + f". {n_rows} register rows; {n_distinct} explicit bid-out triggers"
-                    + (f" ({len(explicit)} rows, {len(explicit) - n_distinct} corroborating)" if n_distinct != len(explicit) else "")
-                    + f" + {len(score)} below the score threshold.",
+                    + f". {n_distinct} explicit bid-out triggers"   # (A3-3: a row restating another is shown on that
+                    + f" + {len(score)} below the score threshold.",  # row's line; the row count is in the banner)
         "banner": banner,
         "sections": sections,
         "groups": {"heading": f"Unresolved matters, grouped — {n_listed} open issues"
-                              + (f", {len(clar.get('clarifications', []))} clarification questions drafted (not sent)"
+                              + (f", {len(clar.get('clarifications', []))} clarification questions drafted (not sent; A4)"
                                  if clar.get("clarifications") else ""),
-                   "note": issue_counts + f" Line: id, reason (owner); {decide_note}. Questions: A4 register. "
-                           "Unknown answers stay unknown.",
+                   "note": issue_counts + f" Line: id, reason (owner); {decide_note}. Unknown answers stay unknown.",
                    "counts": {"all": len(issues), "listed": n_listed, "folded": len(folded), "detail_only": len(detail_only),
                               "gate_note": gate_issues, "decide": len(shown)},
                    "groups": groups},
@@ -1520,7 +1791,9 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                            "detail_only": i["id"] in detail_only, "decide": i["show_in_a3"]}
                           for i in issues],
         "issue_counts": issue_counts,
-        "clarifications": clar.get("clarifications", []),
+        # session 12: the status as presented (never answered/withdrawn without a person's recorded decision)
+        "clarifications": [dict(q, response_status=human_owned.clarification_status(q, r.get("decisions")))
+                           for q in clar.get("clarifications", [])],
         **({"relationships": {
             "stage": v, "from": ((r.get("relationship_impact") or {}).get(v) or {}).get("from"),
             "note": "Rows, activities and calculations reached through the curated relationships from what the addendum "
@@ -1531,9 +1804,28 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                        "kind": x["kind"], "link_status": x["status"], "sources": x["sources"], "path": x["path"],
                        "direct": x.get("direct", False)} for x in rel_recs]}} if r.get("relationships") else {}),
     }
+    page["legend"] = a3_legend(page)                # session 12 (audit A3-3): abbreviations written out, at the top
+    if page["legend"]:
+        page["subtitle"] += " " + page["legend"]
+    return page
 
 
 A3_LEVELS = 4
+# session 12 (audit A3-3): every abbreviation the page uses, written out (definitions as the pack gives them); the page
+# shows those its text uses (condense_a3 keeps them; a3_legend picks them)
+A3_LEGEND = (("WD", "Working Day (VOL-I 2.4)"), ("PDD", "Proposal Due Date"),
+             ("PBN", "Preferred Bidder Notification"), ("LCC", "Local Content Certificate"),
+             ("PCOD", "Project Commercial Operation Date"))
+
+
+def a3_legend(page: dict) -> str:
+    """'Abbreviations: WD = Working Day (...); PDD = ...' for the abbreviations the page's text uses, else ''."""
+    import json as _json
+    text = _json.dumps({k: v for k, v in page.items() if k not in ("issues_detail", "clarifications", "legend",
+                                                                   "relationships", "none_stated", "explicit", "score",
+                                                                   "missing", "unresolved")}, ensure_ascii=False)
+    used = [(k, v) for k, v in A3_LEGEND if re.search(r"(?<![\w-])" + k + r"(?![\w-])", text)]
+    return ("; ".join(f"{k} = {v}" for k, v in used) + ".") if used else ""
 
 
 def condense_a3(a3d: dict, level: int) -> dict:
@@ -1569,7 +1861,7 @@ def condense_a3(a3d: dict, level: int) -> dict:
             sec = a3d[key]
             page[key] = {"heading": sec["heading"], "note": note,
                          "ids": [i["id"] for i in sec["items"]], "owners": {i["id"]: i.get("owner") for i in sec["items"]}}
-    page["subtitle"] = a3d["subtitle"] + f" Condensed (level {level}) to fit one page."
+    page["subtitle"] = a3d["subtitle"] + " Shortened to fit one page."
     return page
 
 
@@ -1621,7 +1913,8 @@ def a3_detail_html(a3d: dict) -> str:
     rel = a3d.get("relationships")
     if rel:                                                       # session 10
         rows.append(f"<h2>Reached through relationships at {esc(rel['stage'])} ({len(rel['items'])})</h2>"
-                    f"<p>{esc(rel['note'])}</p><table><tr><th>Class</th><th>Target</th><th>Status at the stage</th>"
+                    f"<p>{esc(rel['note'])}</p><p><i>{esc(relationships.STATUS_LEGEND)}</i></p>"   # session 12 (R-6)
+                    "<table><tr><th>Class</th><th>Target</th><th>Status at the stage</th>"
                     "<th>Reached from</th><th>Via (relationships)</th><th>Kind; link status</th></tr>")
         rows += [f"<tr><td>{esc(x['class'])}</td><td><b>{esc(x['target'])}</b> <small>{esc(x['target_type'])}</small></td>"
                  f"<td>{esc(x['target_status'])}</td><td>{esc(', '.join(x['sources']))}</td>"
@@ -1718,7 +2011,7 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
     if r.get("relationships"):                                    # session 10: indirect effects per addendum
         write_csv_json(tbl(a2d["relationships"]), out / "a2", "a2_relationship_impact")
     if r.get("clarifications"):
-        clarify.write(r["clarifications"], out / "a4")              # the detailed register sits with A4
+        clarify.write(r["clarifications"], out / "a4", r.get("decisions"))   # the detailed register sits with A4
     if main:
         # A5 at the validated stage: programme, marshalling with document counts, resources, infeasibility drivers,
         # and the scenarios (consortium size, lead times, working calendar) run through the same planner
@@ -1761,12 +2054,8 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
     checks = structural_checks(r, a3_fit, {st: p for st, p in progs.items() if st == val})
     checks.append(gloss_currency_check(r, out))             # session 11 (C52): stale 'not reviewed' glosses
     rep = reported_checks(r)
-    cov = (progs.get(val) or {}).get("a3_coverage")
-    if cov is not None:                             # session 11 audit (A5-2, F3): A3 rows the programme carries
-        rep.append({"id": "C48", "ok": not cov["uncarried"],
-                    "detail": f"{len(cov['rows'])} A3 (bid-out) rows in force: {len(cov['carried'])} carried by the A5 "
-                              f"programme, {len(cov['excepted'])} excepted with a reason; not carried: "
-                              f"{', '.join(cov['uncarried']) or 'none'}"})
+    if (progs.get(val) or {}).get("a3_coverage") is not None:   # session 11 audit (A5-2, F3): rows the programme carries
+        rep.append(programme.coverage_check(progs[val]))         # session 12 (audit A5-4): every A1 row in force
     status = "ok" if all(c["ok"] for c in checks) else "structural_failure"
     blockers = release_blockers(r)
     release = "RELEASABLE" if not blockers else "WORKING DRAFT (not releasable)"
@@ -2032,8 +2321,7 @@ def register_findings(r: dict) -> list[dict]:
                 out.append({"kind": "deliverable", "where": row.id, "detail": f"post_award_evidence ({pa.kind}) has no `{need}`"})
             units = {u["unit_id"]: u for u in r["units"]}
             for b in pa.basis:
-                u = units.get(b.get("unit"))
-                if u is None or not found(b.get("words", ""), u.get("text", "")) or b.get("page") not in u.get("pages", []):
+                if not basis_found(b, units, r["stages"][-1].state):
                     out.append({"kind": "quote", "where": row.id, "detail": f"post_award_evidence basis not found as quoted: "
                                 f"{b.get('unit')} p{b.get('page')} '{str(b.get('words'))[:80]}'"})
     c14, c15 = r["sweeps"]
@@ -2057,6 +2345,9 @@ def register_findings(r: dict) -> list[dict]:
         out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
     for p in relationship_findings(r):                                    # session 10: every quote, target and status
         out.append({"kind": "relationship", "where": p.split(":")[0], "detail": p})
+    from .signals import issue_ref_findings                               # session 12: issue ids must exist
+    out += issue_ref_findings(r["rowfile"].rows, r.get("templates") or {}, r.get("clarifications") or {},
+                              set(r["curated_issues"]), r.get("opfiles") or [])
     return out
 
 
@@ -2085,6 +2376,21 @@ def update_ids(r: dict) -> int:
                                 allow_unicode=True, sort_keys=False))
     print(f"recorded {len(new)} new row id(s) in {path}")
     return 0
+
+
+def basis_found(b: dict, units: dict, state: dict) -> bool:
+    """A quoted basis {unit, page, words} is found: the words in the unit's text, on one of its pages. A unit an addendum
+    inserted (VOL-II:5.5+ADD-03) is not in the evidence build; it is printed in the addendum, so its text and pages are
+    the inserted unit's in the state, i.e. the inserting provision's pages (session 12, blind-05 follow-up 13)."""
+    u = units.get(b.get("unit"))
+    if u is not None:
+        text, pages = u.get("text", ""), u.get("pages", [])
+    else:
+        su = state.get(b.get("unit"))
+        if su is None or su.origin != "addendum_op":
+            return False
+        text, pages = su.text or "", list(su.pages or [])
+    return found(b.get("words", ""), text) and b.get("page") in pages
 
 
 def check_register(evidence_dir: Path, pack_path: Path, root: Path, doc: str | None = None, update: bool = False) -> int:

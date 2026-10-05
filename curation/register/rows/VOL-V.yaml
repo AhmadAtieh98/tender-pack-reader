@@ -66,9 +66,11 @@ rows:
       - stage: ADD-02
         quote: "shall continue for a period of twenty-five (25) years from the Effective Date"
         parameters: {term_years: 25, from: "Effective Date"}
-        note: "ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' Under VOL-I 3.2 Volume I prevails over Volume V, so for the RFP Documents this clause is subordinate to VOL-I 12.1 (from PCOD); it is left unamended, and 'A deviation not listed in Form 4-E will be taken as accepted.' (VOL-V Note to Bidders, p2): what to record in Form 4-E and the Financial Model stays for Legal (I-CONCESSION, CQ-CONCESSION-TERM). (Session 11 audit A1-3 wording, PROPOSED.)"
+        # session 12 (F1; audit A1-1/A2-1/A3-1, PROPOSED wording): the session 11 wording (audit A1-3) made this clause
+        # subordinate to VOL-I 12.1; Q7 does not say which clause applies and no person has decided
+        note: "ADD-02 Q7 (p2) was asked 'Which applies?' and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither. Two readings: this clause, 'twenty-five (25) years from the Effective Date'; VOL-I 12.1 (p6), 'twenty-five (25) years commencing on the Project Commercial Operation Date' (row VOL-I-12.1-01). VOL-I 3.2 (p2) orders the RFP Documents '(a) the Addenda, a later Addendum prevailing over an earlier one;' '(b) Volume I (Instructions to Bidders);' '(c) Volume V (Draft Project Agreement);' 'the first named prevailing'; VOL-I 3.3 (p2): 'A Bidder that resolves such a conflict unilaterally does so at its own risk'; and 'A deviation not listed in Form 4-E will be taken as accepted.' (VOL-V Note to Bidders, p2). Which clause governs the term, what to record in Form 4-E and which term start the Financial Model assumes are a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded."
     confidence: medium
-    confidence_reason: "verbatim; subordinate to VOL-I 12.1 under VOL-I 3.2 as ADD-02 Q7 directs, but left unamended (what to record in Form 4-E is open for Legal, I-CONCESSION); the Effective Date is not a pack event"
+    confidence_reason: "verbatim; conflicts with VOL-I 12.1 (from PCOD); ADD-02 Q7 refers to the order of precedence at VOL-I 3.2 without saying which clause applies; which clause governs is a decision for a person (Legal, I-CONCESSION); no decision recorded; the Effective Date is not a pack event"
     issues: [I-CONCESSION]
   - id: VOL-V-3.2-01
     group: VOL-V:3.2
@@ -87,10 +89,11 @@ rows:
       - unit: VOL-V:3.2
         page: 2
         words: On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration.
-      when: on expiry of the term (the expiry date depends on the term start; VOL-I 12.1 prevails under VOL-I 3.2 as ADD-02 Q7 directs, VOL-V 3.1 left unamended, I-CONCESSION)
+      when: on expiry of the term (the expiry date depends on the term start, VOL-I 12.1 from PCOD or VOL-V 3.1 from the Effective Date; which clause governs is a decision for a person, none recorded, I-CONCESSION)
       bid_stage_note: 'Price assumption: nothing is received for the Facility at expiry (''for nil consideration''),
-        and the expiry date depends on the term start: VOL-I 12.1 (from PCOD) prevails under VOL-I 3.2 as ADD-02 Q7
-        directs, while VOL-V 3.1 (from the Effective Date) is left unamended (I-CONCESSION).'
+        and the expiry date depends on the term start: VOL-I 12.1 (from PCOD) or VOL-V 3.1 (from the Effective Date);
+        ADD-02 Q7 refers to VOL-I 3.2 without saying which applies, and which clause governs is a decision for a person
+        (Legal, I-CONCESSION); no decision recorded.'
     interpretations:
       - stage: BASE
         quote: "On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration."
@@ -131,7 +134,8 @@ rows:
         quote: "shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)"
         parameters: {months_from_notice_to_proceed: 36}
         consequence: {class: contractual, unit: "VOL-V:18.1", quote: "the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay"}
-        note: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to termination (18.2). Cap: their aggregate 'shall not exceed ten per cent (10%) of the Estimated Project Cost' (VOL-V 18.4, p2; session 11 audit A1-6, PROPOSED). PCOD: certified by the Independent Engineer against VOL-II 7.2 (VOL-V 1.5). The date rule records 36 months as 3 years (date rules have no month unit)."
+        # provenance: the 18.4 cap quoted here by the session 11 audit fix A1-6 (PROPOSED); not printed in A1 (session 12, F1, audit A1-6)
+        note: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to termination (18.2). Cap: their aggregate 'shall not exceed ten per cent (10%) of the Estimated Project Cost' (VOL-V 18.4, p2). PCOD: certified by the Independent Engineer against VOL-II 7.2 (VOL-V 1.5). The date rule records 36 months as 3 years (date rules have no month unit)."
     confidence: high
     confidence_reason: "verbatim; the Notice to Proceed is not a pack event, so the Scheduled PCOD cannot be dated"
   - id: VOL-V-18.3-01
@@ -751,7 +755,7 @@ rows:
         quote: "only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over the term"
         parameters: {threshold_sar: 5000000}
       - stage: ADD-02
-        quote: "only to the extent that such expenditure exceeds SAR 2,500,000 in aggregate over the term"
+        quote: "SAR 2,500,000"          # session 12 (F1; audit A1-3): verbatim on ADD-02 8.1 p3
         parameters: {threshold_sar: 2500000}
         note: "ADD-02 8.1 deletes 'SAR 5,000,000' and substitutes 'SAR 2,500,000'."
     confidence: high
@@ -887,7 +891,7 @@ rows:
         parameters: {from_term_year: 20}
         note: "The term runs from the Effective Date under VOL-V 3.1 but from PCOD under VOL-I 12.1. The date rule records the start of year 20 as 19 years after the term starts."
     confidence: medium
-    confidence_reason: "verbatim; when year 20 starts depends on the term start: VOL-I 12.1 (from PCOD) prevails under VOL-I 3.2 as ADD-02 Q7 directs, but VOL-V 3.1 (from the Effective Date) is left unamended (I-CONCESSION)"
+    confidence_reason: "verbatim; when year 20 starts depends on the term start: VOL-I 12.1 (from PCOD) or VOL-V 3.1 (from the Effective Date); ADD-02 Q7 refers to VOL-I 3.2 without saying which applies; which clause governs is a decision for a person (Legal, I-CONCESSION); no decision recorded"
     issues: [I-CONCESSION]
   # ---------------------------------------------------------------- Clause 44: disputes
   - id: VOL-V-44.2-01

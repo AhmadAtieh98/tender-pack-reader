@@ -22,6 +22,7 @@ from __future__ import annotations
 import csv
 import html
 import io
+import math
 import re
 import unicodedata
 import zipfile
@@ -46,6 +47,8 @@ A1_SHEET = "A1 register"
 A1_HEADER_ROW = 4                                  # rows 1-2: banner; row 3: blank
 A3_SCALE_LOW = 0.9                                 # 8.5 pt body text never drops below 7.6 pt; else: prioritise
 A3_MIN_TEXT_PT = 7.5                               # smallest rendered text allowed on A3 (C43)
+BANNER_SCREEN_WIDTH = 160                          # column-width units a sheet's banner is merged across (about a screen)
+BANNER_LINE_PT = 15                                # row height per wrapped line of the default 11 pt font
 
 
 # ------------------------------------------------------------------ values as text
@@ -152,6 +155,26 @@ def _write_table(ws, cols: list[dict], rows: list[dict], header_row: int, styled
     ws.auto_filter.ref = f"A{header_row}:{last}{header_row + len(rows)}"
 
 
+def _banner(ws, row: int, text: str, cols: list[dict]) -> None:
+    """A long notice in one cell, readable in the sheet (session 12, audit R-5: the A1 notice, over 1,100 characters,
+    sat in one unwrapped, unmerged cell at the default row height and could be read only in the formula bar). The cell
+    is merged across the leading columns that fit about one screen (at least two, never wider than the table), wrapped
+    at the top, and its row given the height of the wrapped lines plus one (Excel does not size a merged row itself;
+    a column-width unit is about one character, so the line count errs on the generous side). Only that row changes."""
+    widths = [c["width"] for c in cols] or [BANNER_SCREEN_WIDTH]
+    n = total = 0
+    for w in widths:
+        if n >= 2 and total + w > BANNER_SCREEN_WIDTH:
+            break
+        n, total = n + 1, total + w
+    cell = ws.cell(row, 1, text)
+    cell.alignment = Alignment(wrap_text=True, vertical="top")
+    if n > 1:
+        ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=n)
+    lines = sum(max(1, math.ceil(len(part) / max(total, 1))) for part in str(text).split("\n"))
+    ws.row_dimensions[row].height = min(409, BANNER_LINE_PT * (lines + 1))
+
+
 def _a1_workbook(a1: dict) -> Workbook:
     wb = Workbook()
     p = wb.properties
@@ -162,13 +185,16 @@ def _a1_workbook(a1: dict) -> Workbook:
     ws.title = A1_SHEET
     ws["A1"] = a1["title"]
     ws["A1"].font = Font(bold=True, size=12)
-    ws["A2"] = a1["notice"]
+    _banner(ws, 2, a1["notice"], _columns(a1))
     ws["A2"].font = Font(italic=True)
     _write_table(ws, _columns(a1), a1["rows"], A1_HEADER_ROW, styled=True)
     for name, sheet in a1.get("sheets", {}).items():
         if name == A1_SHEET:
             raise ValueError(f"extra sheet may not be named {A1_SHEET!r}")
-        _write_table(wb.create_sheet(name), _columns(sheet), sheet["rows"], 1, styled=False)
+        sh = wb.create_sheet(name)
+        if sheet.get("notice"):                    # session 12 (R-6): a legend above the table, header one row down
+            _banner(sh, 1, sheet["notice"], _columns(sheet))
+        _write_table(sh, _columns(sheet), sheet["rows"], 2 if sheet.get("notice") else 1, styled=False)
     return wb
 
 
@@ -220,10 +246,10 @@ A3_MARGIN_X, A3_MARGIN_Y, A3_FOOTER_H = 26, 17, 26
 A3_CSS = """
 body {font-family: sans-serif; font-size: 8.5px; line-height: 1.1; color: #000}
 .title {font-size: 13px; font-weight: bold; margin: 0 0 1px 0}
-.sub {color: #333; margin: 0 0 4px 0}
+.sub {color: #333; margin: 0 0 3px 0}
 .banner {background-color: #e3e3e3; border: 0.5px solid #8c8c8c; padding: 2px 5px; font-weight: bold;
-         margin: 0 0 5px 0}
-h2 {font-size: 9.5px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 4px 0 1.5px 0;
+         margin: 0 0 4px 0}
+h2 {font-size: 9.5px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 3.5px 0 1.5px 0;
     padding: 0 0 1px 0}
 p {margin: 0 0 1.5px 0}
 .note {font-style: italic; color: #444}
@@ -234,8 +260,8 @@ p {margin: 0 0 1.5px 0}
 a {color: #000; text-decoration: none}
 .none {color: #444; font-style: italic}
 .nw {white-space: nowrap}
-.grp {margin: 1px 0 0 0}
-.it2 {padding-left: 18px; text-indent: -9px}
+.grp {margin: 0.5px 0 0 0}
+.it2 {padding-left: 18px; text-indent: -9px; margin: 0 0 0.5px 0}
 """
 A3_FOOTER_CSS = """
 body {font-family: sans-serif; font-size: 8.5px; line-height: 1.2; color: #444}
@@ -420,7 +446,7 @@ def write_a3_pdf(a3: dict, path: Path) -> dict:
 CANDIDATE_CSS = """
 body {font-family: sans-serif; font-size: 9px; line-height: 1.2; color: #000}
 .title {font-size: 14px; font-weight: bold; margin: 0 0 2px 0}
-.sub {color: #333; margin: 0 0 4px 0}
+.sub {color: #333; margin: 0 0 3px 0}
 .banner {background-color: #fde2e2; border: 0.8px solid #b00000; color: #7a0000; padding: 3px 6px; font-weight: bold;
          margin: 0 0 6px 0}
 h2 {font-size: 11px; font-weight: bold; border-bottom: 0.5px solid #8c8c8c; margin: 8px 0 3px 0; padding: 0 0 1px 0}
@@ -492,7 +518,8 @@ def _c_body(c: dict) -> str:
     out.append(f"<h3>Unresolved provisions ({len(b['provisions'])})</h3>")
     out += [f'<p class="it"><b>{_esc(x["provision"])}</b> ({_esc(x["stage"])} p{_esc(str(x["page"]))}; {_esc(x["kind"])}): '
             f'{_rich(x["reason"])} <span class="meta">— words: “{_rich(x["text"])}”; rows: '
-            f'{_esc(", ".join(x["rows"]) or "none")}; activities: {_esc(", ".join(x["activities"]) or "none")}</span></p>'
+            f'{_esc(", ".join(x["rows"]) or "none")}; activities: {_esc(", ".join(x["activities"]) or "none")}</span>'
+            + (f' <span class="flag">— {_rich(x["route"])}</span>' if x.get("route") else "") + '</p>'
             for x in b["provisions"]] or ['<p class="note">None.</p>']
     if b["invalid_ops"] or b["withheld_ops"]:
         out.append(f"<h3>Invalid or withheld ops ({len(b['invalid_ops']) + len(b['withheld_ops'])})</h3>")

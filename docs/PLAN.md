@@ -1,6 +1,6 @@
 # Tender Pack Reader: Engineering Plan
 
-> **STATUS (revision 11, session 11, 4–5 Oct 2026; sessions 09 and 10 are committed as `a41e104` and `a57f118` on the owner's authorisation; the session 11 changes are uncommitted until the owner authorises the commit):**
+> **STATUS (revision 11, session 11, 4–5 Oct 2026; sessions 09 and 10 are committed as `a41e104` and `a57f118` on the owner's authorisation; session 11 as `6053493` on 5 Oct; the session 12 changes are uncommitted until the owner authorises the commit):**
 > - **Direction:** accepted by the owner (session 02).
 > - **Stage 1 (evidence and units):** implemented in session 02, revised in sessions 03 and 04 after the owner's reviews (§9). **Both image readings carry the owner's confirmations** (Ahmad, 3 Oct 2026; `curation/approvals.yaml`): the transcriptions only, pinned to the versions reviewed; the register's interpretations, the amendment ops and bidder compliance are not covered (§14).
 > - **Stage 2 (the amendment path):** built in session 04 (§10). The owner's code reviews of it were reproduced and fixed: five findings in session 05 (§11), four in session 06 (§12), four in session 08 (§14: rejections hold across rebuilds; decisions bound to every member row and to the state immediately before each op; inserted obligations need their own row; Working-Day windows for Friday and holiday deadlines).
@@ -923,7 +923,7 @@ Full record: `worklog/2026-10-03_session-08_review-confirmations-a5-clarificatio
 
 ## 15. Session 09 status (controls, the AI layer, four routes, blind rehearsal 03)
 
-Full record: `worklog/2026-10-04_session-09_ai-integration.md`; the owner's message is kept verbatim in `worklog/2026-10-04_session-09_prompt.md`; the compact report is `docs/session-09_report.md`. **Nothing is committed**: the owner asked that no commit, push or history rewrite happen until authorised.
+Full record: `worklog/2026-10-04_session-09_ai-integration.md`; the owner's message is kept verbatim in `worklog/2026-10-04_session-09_prompt.md`; the compact report is `docs/session-09_report.md`. Nothing was committed during the session (the owner asked that no commit, push or history rewrite happen until authorised); committed afterwards as `a41e104` on the owner's authorisation.
 
 **The six control findings** (each reproduced by a test that failed before the fix; `tests/test_session09_*.py`):
 
@@ -982,7 +982,7 @@ Full record: `worklog/2026-10-04_session-10_ai-workflow.md`; the owner's message
 
 ## 17. Session 11 status (the workflow finished, the AI phases under one set of controls, the audit of the real package)
 
-Full record: `worklog/2026-10-04_session-11_workflow-and-audit.md`; the owner's message verbatim in `worklog/2026-10-04_session-11_prompt.md`; the compact report `docs/session-11_report.md`. Uncommitted until the owner authorises the commit.
+Full record: `worklog/2026-10-04_session-11_workflow-and-audit.md`; the owner's message verbatim in `worklog/2026-10-04_session-11_prompt.md`; the compact report `docs/session-11_report.md`. Committed as `6053493` on 5 Oct on the owner's authorisation.
 
 **Part 1, the downstream workflow** (D1; failing tests first against an extracted copy of the committed code): `Row.introduced` records where a requirement comes into force with evidence (stage, op or provision, the printed words and page); a row is NOT IN FORCE before that stage and NEW at it, the claim is checked, and without the field the stage is derived from the primary unit and reported; downstream validates new rows and re-made readings at every stage of the candidate and refuses a new row that would be in force before its addendum (blind-04's C16 refusal reproduced and fixed at the cause, not by citation order); rows are found and updated by id through the YAML composer; `completeness` requires every provision answered, every task answered by a promotable item, every batch run, check-register clean and outputs published, and lists every reason otherwise, apart from `execution` and `approval`; the state identity covers the register, relationships, issues, dispositions, evidence items, clarifications, the ledger, scenarios, triggers and formulas, freshness re-reads bytes, and the combined set is revalidated immediately before promotion (a set made against another state is refused). A four-addenda test keeps the history, evidence and A5 activity through NOT IN FORCE → NEW → AMENDED → DELETED → REINSTATED-AMENDED. A recorded end-to-end run promotes AI-generated rows, readings, issues, an evidence item, an activity and a clarification entry to a clean check-register and published outputs.
 

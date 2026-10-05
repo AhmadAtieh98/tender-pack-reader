@@ -189,9 +189,12 @@ def test_downstream_proposals_are_validated_in_the_candidate(full):
     d = full["dir"]
     data = _yaml(d / "downstream/proposals.yaml")
     st = {it["id"]: it["verification_status"] for it in data["downstream_set"]["items"]}
+    # session 12 (part 1, tests/test_session12_human_owned.py): D6 is an issue, a matter kept open for people, and D7
+    # asks for the response status 'sent' (tenderpack.human_owned): their quotations still verify, their conclusions are
+    # a person's, so both are interpretation_pending (still promotable as proposals), no longer evidence_verified
     assert st == {"D1": "interpretation_pending", "D2": "insufficient_evidence", "D3": "interpretation_pending",
-                  "D4": "evidence_verified", "D5": "interpretation_pending", "D6": "evidence_verified",
-                  "D7": "evidence_verified", "D8": "interpretation_pending"}
+                  "D4": "evidence_verified", "D5": "interpretation_pending", "D6": "interpretation_pending",
+                  "D7": "interpretation_pending", "D8": "interpretation_pending"}
     d2 = next(it for it in data["downstream_set"]["items"] if it["id"] == "D2")
     assert any(not v["ok"] and "quote not found" in v["detail"] for v in d2["validation"])   # a fabricated quotation
     ow = {(o["item"], o.get("field")) for o in data["controller"]["overwrites"]}

@@ -18,6 +18,16 @@ Recognised forms (as written in the pack; extend the patterns, not the outcomes)
   amendment engine resolves it); "the entry for Form 4-F" names the index row keyed "4-F"; after_row() reads the
   row an insertion follows ("after the entry for Form 4-F" -> "4-F")
 A bare "Clause 4.2" takes its volume from the nearest preceding volume citation in the same text.
+(session 12, blind-05 follow-up 1) a clause RANGE "Volume V Clauses 29.1 to 29.3" (also "29.1-29.3" with any dash,
+"29.1 through 29.3", "... inclusive", and a range inside a list "Clauses 28, 29.1 to 29.3 and 30.2") is one citation of
+kind `clause_range` (target "VOL-V:29.1..29.3"). resolve() expands it against the document's structure: every clause
+numbered between the ends under the same parent that the unit ids show, in numeric order, each resolved as a cited
+clause is (the clause itself, or its sub-clauses when the volume prints only those); a clause missing between the ends
+is simply not there. An end that does not exist, a reversed range or a range crossing parents ("29.3 to 30.2") is
+flagged INCOMPLETE SCOPE by resolve_scope() (the reason the caller shows; verify_target puts it in its reason) and only
+what exists is cited: the clauses between parents are never inferred. The plural list ("Clauses 6.6 and 6.7") still
+cites each clause listed (kind `clause`). The pack itself prints no range and no Arabic clause list (build/units.md),
+so no Arabic form is recognised.
 """
 from __future__ import annotations
 
@@ -35,6 +45,26 @@ class Citation:
     text: str
     target: str          # unit id or group id (e.g. "VOL-IV:F4-A", "ADD-01:S4", "VOL-II:S3")
     kind: str            # clause | table | footnote | section | form | addendum_section | list_item | row
+
+
+_NUM = r"\d+(?:\.\d+)*"
+_RANGE_SEP = r"\s*(?:-|\bto\b|\bthrough\b)\s*"            # en/em dashes are '-' after normalize_latin
+_CLAUSE_ITEM = _NUM + r"(?:" + _RANGE_SEP + _NUM + r")?"
+# "6.6 and 6.7" · "3.1, 3.2 and 3.4" · "29.1 to 29.3" · "28, 29.1-29.3 and 30.2" · "... inclusive"
+_CLAUSE_LIST = r"(" + _CLAUSE_ITEM + r"(?:(?:,\s*(?:and\s+)?|\s+and\s+)" + _CLAUSE_ITEM + r")*)(?:,?\s+inclusive\b)?"
+
+
+def _list_items(doc: str, group: str) -> list[tuple[str, str]]:
+    """The targets of a plural clause list: ('VOL-V:28', 'clause') per clause, ('VOL-V:29.1..29.3', 'clause_range')
+    per range (session 12)."""
+    out = []
+    for item in re.split(r",\s*(?:and\s+)?|\s+and\s+", group):
+        r = re.fullmatch(r"(" + _NUM + r")" + _RANGE_SEP + r"(" + _NUM + r")", item.strip())
+        if r:
+            out.append((f"{doc}:{r.group(1)}..{r.group(2)}", "clause_range"))
+        elif item.strip():
+            out.append((f"{doc}:{item.strip()}", "clause"))
+    return out
 
 
 def _addendum(n: str) -> str:
@@ -56,12 +86,12 @@ def citations(text: str) -> list[Citation]:
         add(m, f"{VOLUMES[m.group(2)]}:{m.group(3)}#fn{m.group(1)}", "footnote")
     for m in re.finditer(_VOL + r" Clause (\d+(?:\.\d+)*)", t):
         add(m, f"{VOLUMES[m.group(1)]}:{m.group(2)}", "clause")
-    # session 11 (blind-05, post-key): the plural list "Volume I Clauses 6.6 and 6.7", "Clauses 3.1, 3.2 and 3.4",
-    # "Clauses 29.1 to 29.3" cites every clause listed (a range cites its two ends; the clauses between are not
-    # inferred: an op that means them names them)
-    for m in re.finditer(_VOL + r" Clauses ((?:\d+(?:\.\d+)*)(?:(?:,\s*|\s+and\s+|\s+to\s+)\d+(?:\.\d+)*)*)", t):
-        for n in re.findall(r"\d+(?:\.\d+)*", m.group(2)):
-            add(m, f"{VOLUMES[m.group(1)]}:{n}", "clause")
+    # session 11 (blind-05, post-key): the plural list "Volume I Clauses 6.6 and 6.7", "Clauses 3.1, 3.2 and 3.4"
+    # cites every clause listed. Session 12: a range in it ("Clauses 29.1 to 29.3") is one `clause_range` citation,
+    # resolved against the document's structure (resolve_scope), never just its two ends
+    for m in re.finditer(_VOL + r" Clauses " + _CLAUSE_LIST, t):
+        for target, kind in _list_items(VOLUMES[m.group(1)], m.group(2)):
+            add(m, target, kind)
     for m in re.finditer(_VOL + r" Table (\d+-\d+)", t):
         add(m, f"{VOLUMES[m.group(1)]}:T{m.group(2)}", "table")
     for m in re.finditer(r"Table (\d+-\d+) of " + _VOL, t):
@@ -98,6 +128,14 @@ def citations(text: str) -> list[Citation]:
             fn = re.search(r"footnote (\d+) to\s*$", t[:m.start()], re.I)
             if fn:                                                    # "footnote 12 to Clause 8.5"
                 add(m, f"{last_vol}:{m.group(2)}#fn{fn.group(1)}", "footnote", start=m.start() + 1)
+    # bare plural "Clauses 29.1 to 29.3" after a volume citation in the same text ("In Volume V, Clauses ...")
+    last_vol = None
+    for m in re.finditer(_VOL + r"|\bClauses " + _CLAUSE_LIST, t):
+        if m.group(1):
+            last_vol = VOLUMES[m.group(1)]
+        elif last_vol and not re.search(r"Volume (?:I{1,3}|IV|V)\s*$", t[:m.start()]):
+            for target, kind in _list_items(last_vol, m.group(2)):
+                add(m, target, kind)
     # "Clause 8.5 footnote 12": a footnote named after its clause
     for m in re.finditer(r"Clause (\d+(?:\.\d+)*),? footnote (\d+)", t, re.I):
         clause = next((c.target for p, c in sorted(out, key=lambda x: x[0]) if p <= m.start() and c.kind == "clause"
@@ -151,17 +189,69 @@ def _slug(s) -> str:
     return re.sub(r"[^a-z0-9]+", "-", normalize_latin(str(s or "")).lower()).strip("-")
 
 
+def _clause(t: str, unit_ids: set[str]) -> list[str]:
+    """A cited clause as the document has it: the clause (a unit, or the prefix of its rows or list items), or, for a
+    whole clause the volume prints only as sub-clauses ("Volume V Clause 29"), its sub-clauses 29.1, 29.2 ..."""
+    if t in unit_ids or any(u.startswith(t + "/") or u.startswith(t + "(") for u in unit_ids):
+        return [t]
+    if any(u.startswith(t + ".") for u in unit_ids):
+        return sorted((u for u in unit_ids if u.startswith(t + ".") and u[len(t) + 1:].split("/")[0].isdigit()),
+                      key=lambda u: int(u[len(t) + 1:].split("/")[0]))
+    return []
+
+
+def _range(target: str, unit_ids: set[str]) -> tuple[list[str], str | None]:
+    """A clause range against the document's structure (session 12): (the clauses it cites, an INCOMPLETE SCOPE reason
+    or None). Siblings are the clause numbers under the ends' common parent that the unit ids show; the clauses
+    between two parents are never inferred."""
+    doc, _, rng = target.partition(":")
+    a, _, b = rng.partition("..")
+    pa, pb = a.split("."), b.split(".")
+    ends = [x for e in (a, b) for x in _clause(f"{doc}:{e}", unit_ids)]
+    if len(pa) != len(pb) or pa[:-1] != pb[:-1]:
+        return ends, (f"INCOMPLETE SCOPE: the range {doc} {a} to {b} crosses from one parent clause to another; only "
+                      f"its ends that exist are cited ({', '.join(ends) or 'none'}), the clauses between are not "
+                      "inferred: a person confirms the scope")
+    lo, hi = int(pa[-1]), int(pb[-1])
+    if lo > hi:
+        return ends, (f"INCOMPLETE SCOPE: the range {doc} {a} to {b} runs backwards; only its ends that exist are "
+                      f"cited ({', '.join(ends) or 'none'}): a person confirms the scope")
+    prefix = f"{doc}:{'.'.join(pa[:-1])}." if len(pa) > 1 else f"{doc}:"
+    present = set()
+    for u in unit_ids:
+        if u.startswith(prefix):
+            n = re.match(r"(\d+)(?=$|[.(/#])", u[len(prefix):])
+            if n and lo <= int(n.group(1)) <= hi:
+                present.add(int(n.group(1)))
+    out = [x for n in sorted(present) for x in _clause(f"{prefix}{n}", unit_ids)]
+    missing = [f"{prefix}{n}" for n in (lo, hi) if n not in present]
+    if missing:
+        return out, (f"INCOMPLETE SCOPE: the range {doc} {a} to {b} names {' and '.join(missing)}, which "
+                     f"{'does' if len(missing) == 1 else 'do'} not exist in the document; it is resolved to the clauses "
+                     f"that do ({', '.join(out) or 'none'}): a person confirms the scope")
+    return out, None
+
+
 def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
     """Targets that exist, as unit ids or as group prefixes of existing units."""
-    out = []
+    return resolve_scope(cites, unit_ids)[0]
+
+
+def resolve_scope(cites: list[Citation], unit_ids: set[str]) -> tuple[list[str], list[str]]:
+    """resolve(), and the INCOMPLETE SCOPE reasons of the clause ranges that could not be resolved in full (session 12)."""
+    out, flags = [], []
     for c in cites:
         t = c.target
-        if t in unit_ids or any(u.startswith(t + "/") or u.startswith(t + "(") for u in unit_ids):
+        if c.kind == "clause_range":
+            got, flag = _range(t, unit_ids)
+            out += got
+            if flag:
+                flags.append(flag)
+        elif t in unit_ids or any(u.startswith(t + "/") or u.startswith(t + "(") for u in unit_ids):
             out.append(t)
         elif c.kind == "clause" and t not in unit_ids and any(u.startswith(t + ".") for u in unit_ids):
             # a whole clause cited ("Volume V Clause 29") that the volume prints only as sub-clauses 29.1, 29.2 ...
-            out += sorted((u for u in unit_ids if u.startswith(t + ".") and u[len(t) + 1:].split("/")[0].isdigit()),
-                          key=lambda u: int(u[len(t) + 1:].split("/")[0]))
+            out += _clause(t, unit_ids)
         elif c.kind in ("section", "addendum_section"):
             doc, sec = t.split(":")
             if f"{doc}:H:{sec}" in unit_ids:
@@ -178,7 +268,7 @@ def resolve(cites: list[Citation], unit_ids: set[str]) -> list[str]:
             pat = re.compile(r"^" + re.escape(local) + r"(?:-[A-Za-z0-9]+)?$")
             out += sorted({f"{doc}:{u.split(':', 1)[1].split('/')[0]}" for u in unit_ids
                            if u.split(":", 1)[0] == doc and "/" in u.split(":", 1)[1] and pat.match(u.split(":", 1)[1].split("/")[0])})
-    return list(dict.fromkeys(out))                 # a target named twice (body and heading) is listed once
+    return list(dict.fromkeys(out)), list(dict.fromkeys(flags))   # a target named twice (body and heading) is listed once
 
 
 def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None) -> tuple[bool, str, list[str]]:
@@ -187,11 +277,12 @@ def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None)
     A row of a cited table is accepted only if the provision also names the row (e.g. '(TN)').
     `row_label_of(unit_id)` returns the row's key/label (for matching names)."""
     cites = citations(text)
-    cited = resolve(cites, unit_ids)
+    cited, flags = resolve_scope(cites, unit_ids)
+    scope = ("; " + "; ".join(flags)) if flags else ""        # session 12: an incomplete range is said, never silent
     if not cited:
-        return False, "the provision cites no clause, table, form or section that exists in the pack", cited
+        return False, "the provision cites no clause, table, form or section that exists in the pack" + scope, cited
     if target in cited:
-        return True, f"declared target {target} is cited", cited
+        return True, f"declared target {target} is cited" + scope, cited
     names = row_names(text)
     for c in cited:
         if target.startswith(c + "/"):
@@ -202,4 +293,4 @@ def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None)
             if [u for u in unit_ids if u.startswith(c + "/")] == [target]:     # session 08: 'Volume I Appendix 3' = its one paragraph
                 return True, f"declared target {target} is the only unit of cited {c}", cited
             return False, f"declared target {target} is a row of cited {c}, but the provision does not name it", cited
-    return False, f"declared target {target} is not cited; the provision cites {cited}", cited
+    return False, f"declared target {target} is not cited; the provision cites {cited}" + scope, cited

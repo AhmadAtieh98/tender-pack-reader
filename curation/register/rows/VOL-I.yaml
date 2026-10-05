@@ -439,7 +439,8 @@ rows:
       - stage: ADD-02
         quote: "Envelope A shall contain, in the following order and separated by numbered dividers"
         parameters: {items: ["Form 4-A", "Form 4-B (one per reference project)", "Form 4-C", "Form 4-D (executed)", "Form 4-E", "Form 4-G", "Technical Proposal narrative", "Bid Bond", "notarised Powers of Attorney", "Section 8 certificates and evidence"]}
-        note: "ADD-02 §7.1 inserts Form 4-G after item (e) (row ADD-02-7.2-01); the re-lettering of the later items is not stated."
+        # session 12 (F1; audit A2-7, PROPOSED): the Local Content Certificate's path through item (i) (REL-LCC-ENVELOPE-A)
+        note: "ADD-02 §7.1 inserts Form 4-G after item (e) (row ADD-02-7.2-01); the re-lettering of the later items is not stated. Item (i), 'the certificates and evidence required under Section 8', again includes the Local Content Certificate: ADD-01 4.1 deleted VOL-I 8.6 (the certificate left this list at ADD-01) and ADD-02 9.1 reinstates it at 35% (row VOL-I-8.6-01)."
     confidence: medium
     confidence_reason: "verbatim; no consequence stated; the lettering after ADD-02's insertion is not stated"
     issues: [I-NO-CONSEQUENCE, I-F4G-LETTERING]
@@ -479,10 +480,11 @@ rows:
         consequence: {class: lesser, unit: "VOL-I:9.2", quote: "Pages in excess of the limit will be removed before evaluation and will not be scored."}
         note: "ADD-01 Q2: the limit applies to the narrative only; Form Sheets and the appendices permitted by Volume II are excluded."
       - stage: ADD-02
-        quote: "The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II."
+        quote: "one hundred and fifty (150) pages"          # session 12 (F1; audit A1-3): verbatim on ADD-02 2.1 p1
         parameters: {page_limit: 150, paper: A4}
         consequence: {class: lesser, unit: "VOL-I:9.2", quote: "Pages in excess of the limit will be removed before evaluation and will not be scored."}
-        note: "ADD-02 §2.1 raises the limit from 120 to 150 pages. ADD-01 Q2's '120-page limit' wording is now stale; its substance (forms excluded) still holds."
+        # session 12 (F1; audit R-1): whether ADD-01 Q2 survives ADD-02 2.1 is listed for review in A2, not settled here
+        note: "ADD-02 §2.1 raises the limit from 120 to 150 pages; the clause as amended still prints 'excluding the Form Sheets and the appendices expressly permitted by Volume II'. ADD-01 Q2 answered about the '120-page limit': whether that answer still holds after ADD-02 2.1 is listed for review in A2 (a decision for a person; none recorded)."
     confidence: high
     confidence_reason: "verbatim at every stage; the 'appendices expressly permitted by Volume II' were not found in the extract"
     issues: [I-VOL-I-APPENDICES]
@@ -808,9 +810,11 @@ rows:
       - stage: ADD-02
         quote: "The concession period shall be twenty-five (25) years commencing on the Project Commercial Operation Date, following which the Project shall transfer to the Authority in accordance with Volume V."
         parameters: {term_years: 25, start: "Project Commercial Operation Date"}
-        note: "ADD-02 Q7 (p2): 'The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' VOL-I 3.2 (p2) ranks '(b) Volume I (Instructions to Bidders)' above '(c) Volume V (Draft Project Agreement)', so this clause prevails over VOL-V 3.1 for the RFP Documents: the concession runs 25 years from PCOD. VOL-V 3.1 is left unamended; what to record in Form 4-E and which term start the Financial Model assumes stay for Legal (I-CONCESSION, CQ-CONCESSION-TERM). Confidence medium, not lower than VOL-V-3.1-01: this is the clause that prevails (session 11 audit A1-3, PROPOSED)."
+        # session 12 (F1; audit A1-1/A2-1/A3-1, PROPOSED wording): the session 11 wording (audit A1-3) said this clause
+        # prevails; Q7 does not say which clause applies and no person has decided, so both readings are kept open
+        note: "ADD-02 Q7 (p2) was asked 'Which applies?' and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither. Two readings: this clause, 'twenty-five (25) years commencing on the Project Commercial Operation Date'; VOL-V 3.1 (p2), 'twenty-five (25) years from the Effective Date' (row VOL-V-3.1-01). VOL-I 3.2 (p2) orders the RFP Documents '(a) the Addenda, a later Addendum prevailing over an earlier one;' '(b) Volume I (Instructions to Bidders);' '(c) Volume V (Draft Project Agreement);' 'the first named prevailing'; VOL-I 3.3 (p2): 'A Bidder that resolves such a conflict unilaterally does so at its own risk'. Which clause governs the term, what to record in Form 4-E and which term start the Financial Model assumes are a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded."
     confidence: medium
-    confidence_reason: "verbatim; prevails over VOL-V 3.1 under VOL-I 3.2 as ADD-02 Q7 directs; VOL-V 3.1 left unamended, so what to record in Form 4-E and the Financial Model is open for Legal (I-CONCESSION)"
+    confidence_reason: "verbatim; conflicts with VOL-V 3.1 (from the Effective Date); ADD-02 Q7 refers to the order of precedence at VOL-I 3.2 without saying which clause applies; which clause governs is a decision for a person (Legal, I-CONCESSION); no decision recorded"
     issues: [I-CONCESSION]
   - id: VOL-I-12.2-01
     group: "VOL-I:12.2"

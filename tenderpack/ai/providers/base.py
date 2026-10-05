@@ -125,8 +125,11 @@ def http_json(method: str, url: str, headers: dict, body: dict | None, timeout: 
     the credential) are never included in an error or a log."""
     data = json.dumps(body).encode("utf-8") if body is not None else None
     req = urllib.request.Request(url, data=data, method=method, headers={"content-type": "application/json", **headers})
+    from ..offline import is_loopback
+    # session 12: a loopback endpoint (the local Ollama) is reached directly, never through an HTTP proxy
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({})) if is_loopback(url) else None
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with (opener.open(req, timeout=timeout) if opener else urllib.request.urlopen(req, timeout=timeout)) as resp:
             raw = resp.read()
             return resp.status, dict(resp.headers), (json.loads(raw.decode("utf-8")) if raw else {})
     except urllib.error.HTTPError as e:

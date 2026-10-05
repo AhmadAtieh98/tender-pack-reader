@@ -23,7 +23,9 @@ candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging
           [--host-model M] [--host-manual] [--stop-after STEP] [--no-background] [--no-cache] [caps]
           Exit 0 when the run finished (complete or partial) or stopped where asked, 1 when a step failed or the
           candidate outputs build was refused, 2 when refused before anything ran (or ingest failed structurally),
-          4 when it waits for a host submission.
+          4 when it waits for a host submission, 5 when a batch was deferred for a rate limit, 6 (session 12) when
+          it stopped because it cannot go on until a person acts (no usable reading of an image region, readings
+          escalated to a person, inputs changed before promotion); the reason says what to do, then `resume`.
   resume RUN_ID [--stop-after STEP] [--no-retry] [--from STEP]
                                  continue from the checkpoint (a failed batch is asked again; --from reruns a
                                  done step and the later ones after a code change; done batches are never asked again)
@@ -31,7 +33,10 @@ candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging
           the manual host path: the set answering a waiting batch's packet (batches/<id>.packet.json); recorded
           (who, when, the file's sha256) and validated as an API run's; the run then continues
   run-status RUN_ID                                 the checkpoint summary and the timings
-Routes layer (tenderpack/ai/cli_routes.py, when present): critic, host-session, plan-batches.
+Routes layer (tenderpack/ai/cli_routes.py, when present): critic, host-session, plan-batches, routes.
+Session 12: --offline on run, resume, propose, capabilities, critic, plan-batches and routes (offline mode,
+tenderpack/ai/offline.py): only the local ollama route (the recorded test replay aside); a hosted route is refused
+before any call.
 """
 from __future__ import annotations
 
@@ -70,6 +75,7 @@ def add_parser(sub) -> None:
                    help="a person's choice: run on the configured capabilities when the endpoint does not verify them "
                         "(logged; shown in the review request)")
     p.add_argument("--by", help="the person breaking a lock")
+    p.add_argument("--offline", action="store_true", help="offline mode: only the ollama (or recorded) route")
     common(p)
     t = s.add_parser("task")
     t.add_argument("addendum")
@@ -96,6 +102,7 @@ def add_parser(sub) -> None:
     c.add_argument("--model")
     c.add_argument("--cassette")
     c.add_argument("--allow-unverified-capabilities", action="store_true")
+    c.add_argument("--offline", action="store_true", help="offline mode: only the ollama (or recorded) route")
     c.add_argument("--config", default=str(ROOT / "config/ai.yaml"))
     pr = s.add_parser("promote")
     pr.add_argument("run_id")
@@ -126,7 +133,11 @@ def _add_workflow(s, common) -> None:
     r = s.add_parser("run", help="the workflow: a new addendum PDF -> candidate A1-A5 outputs and a review packet")
     r.add_argument("addendum")
     r.add_argument("--pdf", required=True)
-    r.add_argument("--route", default="host", choices=["recorded", "host", "anthropic", "openrouter", "ollama"])
+    r.add_argument("--route", default=None, choices=["recorded", "host", "anthropic", "openrouter", "ollama"],
+                   help="default: host, or ollama in offline mode")
+    r.add_argument("--offline", action="store_true",
+                   help="offline mode: every phase on the local ollama route, no hosted call (also config offline: "
+                        "true or TENDERPACK_OFFLINE=1)")
     r.add_argument("--run-id")
     r.add_argument("--batch-size", type=int, default=8, help="provisions per analysis batch (at most)")
     r.add_argument("--downstream-batch-size", type=int, default=12, help="downstream tasks per batch (at most)")
@@ -150,6 +161,7 @@ def _add_workflow(s, common) -> None:
     rs.add_argument("run_id")
     rs.add_argument("--stop-after", choices=list(STEPS))
     rs.add_argument("--no-retry", action="store_true", help="do not ask failed batches again")
+    rs.add_argument("--offline", action="store_true", help="offline mode for this run from now on (ollama runs only)")
     rs.add_argument("--from", dest="from_step", choices=list(STEPS),
                     help="rerun this step and the later ones even when done (after a code change); "
                          "batches that succeeded are never asked again")
@@ -170,6 +182,10 @@ def _add_workflow(s, common) -> None:
 def _run_workflow(a) -> int:
     from . import workflow as W
     if a.ai_cmd == "run":
+        if a.route is None:
+            from . import config as C
+            from .offline import requested
+            a.route = "ollama" if requested(C.load(Path(a.config)), a.offline) else "host"
         caps = {"max_usd": a.max_usd, "max_calls": a.max_calls, "max_input_tokens": a.max_input_tokens,
                 "max_output_tokens": a.max_output_tokens, "timeout_s": a.timeout_s, "max_turns": a.max_turns}
         res = W.start(a.addendum, Path(a.pdf), route=a.route, pack=Path(a.pack), evidence=Path(a.evidence),
@@ -178,10 +194,10 @@ def _run_workflow(a) -> int:
                       cassette=Path(a.cassette) if a.cassette else None, caps=caps, host_model=a.host_model,
                       host_mode="manual" if a.host_manual else "auto", host_session_model=a.host_model_alias,
                       allow_unverified_capabilities=a.allow_unverified_capabilities, stop_after=a.stop_after,
-                      background_before=not a.no_background, cache=not a.no_cache)
+                      background_before=not a.no_background, cache=not a.no_cache, offline=a.offline)
     elif a.ai_cmd == "resume":
         res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry,
-                       from_step=a.from_step)
+                       from_step=a.from_step, offline=a.offline)
     elif a.ai_cmd == "submit-batch":
         res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue)
     else:
@@ -222,10 +238,12 @@ def run(a) -> int:
             from .providers import make
             from .providers.base import ProviderError
             cfg = C.load(Path(a.config))
+            from .offline import activate, requested
+            activate(cfg, requested(cfg, a.offline))
             rcfg = C.route(cfg, a.route)
             if getattr(a, "allow_unverified_capabilities", False):
                 cfg["_allow_unverified_capabilities"] = True
-            prov = make(a.route, a.model or C.default_model(rcfg), cfg, a.cassette)
+            prov = make(a.route, C.phase_model(rcfg, a.route, "analysis", a.model), cfg, a.cassette)
             try:
                 _print({"route": a.route, "model": prov.model, **prov.capabilities().to_dict()})
             except ProviderError as e:
@@ -235,6 +253,8 @@ def run(a) -> int:
         ws = _ws(a)
         if a.ai_cmd == "propose":
             cfg = C.load(Path(a.config))
+            from .offline import activate, requested
+            activate(cfg, requested(cfg, a.offline))
             caps = {"max_usd": a.max_usd, "max_calls": a.max_calls, "max_input_tokens": a.max_input_tokens,
                     "max_output_tokens": a.max_output_tokens, "timeout_s": a.timeout_s, "max_turns": a.max_turns}
             if a.break_lock and not a.by:

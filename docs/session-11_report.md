@@ -1,8 +1,8 @@
 # Session 11 report: the workflow finished, the AI phases under one set of controls, blind rehearsal 05, and the audit of the real package through ADD-02
 
 For the owner. The full record is `worklog/2026-10-04_session-11_workflow-and-audit.md`; your message is kept verbatim in
-`worklog/2026-10-04_session-11_prompt.md`. **Nothing is committed in this session** (your instruction); the tree holds
-every change. Nothing was approved, accepted, rejected or sent. Cost and pricing stay provisional.
+`worklog/2026-10-04_session-11_prompt.md`. **Nothing was committed during the session** (your instruction); the work was committed afterwards as `6053493`
+(08:20 UTC, 5 Oct) on your authorisation and pushed. Nothing was approved, accepted, rejected or sent. Cost and pricing stay provisional.
 
 ## 1. What you asked, what was done
 
@@ -121,7 +121,7 @@ Each reviewer derived the rows of the brief for its deliverable (`A1-1` … `R-4
 
 ## 6. Decisions that need you
 
-1. **The commit.** Everything of session 11 is uncommitted on your instruction: the code, the tests, the records, the rebuilt `out/` and `build/`, the rehearsals. Until you authorise a commit, the committed `out/README.md` still says the readings are pending and the committed outputs lack every fix above (audit R-2).
+1. **The commit.** Done after the session: you authorised it ("commit", 08:13 UTC, 5 Oct) and everything of session 11 is committed as `6053493` and pushed. The committed `out/README.md` now names the approved readings and the committed outputs carry every fix above (audit R-2).
 2. **The history of 2 Oct 2026** (audit A4-1, blocking in the reviewer's rating). Four commits were rewritten at your instruction with their dates kept and force-pushed; the record still calls the history real and two prompts verbatim. Either an erratum is added to the session-03 and session-04 logs and the A4 index (time, the four old → new hashes, what changed and why, without the wording you asked to be removed), or the record stops calling the bundle "the real history" and those prompts "verbatim". I have made neither change.
 3. **The reading YAML headers.** `curation/readings/VOL-II-p3-r1.yaml` and `VOL-IV-p6-r1.yaml` still begin "PROPOSED READING — PENDING HUMAN REVIEW. Not approved." (written before your approval). Your approval entries pin each file's sha256, so even a comment change alters a recorded hash; only you should change them (and re-record with `approve`, which shows the differences).
 4. **The proposed content changes of the audit fixes**, all still `review: proposed`, each with the source words quoted in the YAML: the concession-term wording (I-CONCESSION, VOL-I-12.1-01 medium confidence, VOL-V-3.1-01/3.2-01/42.2-01); VOL-I-4.2-01 and VOL-I-11.5-01 as pass_fail; ADD-02-5.2-01's pass_fail reasoned; VOL-V-12.1-01's 18.4 cap and the VOL-V:18.4 disposition; VOL-I-8.5-01 in footnote 12's words; VOL-IV-F4C-N1 corroborating VOL-I-9.4-01; ADD-01-Q4-01 and the ADD-01/Q4 op as `interprets` restating VOL-I 5.5; VOL-II-4.2-01's note aligned with I-FLOWS; the two Form 4-C confidence reasons; I-READING-F4C on the detail page only; the A5 templates (Form 4-F after the model audit opinion, Form 4-B after the completion certificates, the consortium check before the clarifications, VOL-I-6.2-02 and VOL-I-8.1-01 carried, VOL-I-4.2-01 and VOL-I-11.5-01 excepted) and the two new provisional assumptions (`submission.delivery_buffer_wd: 0`, `lead_times.consortium_confirmation: 1 WD`). Accept, reject or amend them with `tenderpack accept|reject`; nothing is applied as accepted.

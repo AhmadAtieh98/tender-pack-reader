@@ -55,7 +55,10 @@ rows:
     units: ["ADD-02:5.2", "ADD-02:5.1"]
     discipline: Technical
     owner: Technical lead
-    assessment: pass_fail
+    # session 11 recheck (A1-10, PROPOSED) classed it pass_fail. Session 12 (F1; audit A1-4, PROPOSED): the pack states
+    # no consequence, so the row takes the class of the design it governs (VOL-II-3.1-01, VOL-II-T2-4-TN: scored under
+    # criterion A); no consequence is invented
+    assessment: scored
     evidence: [EV-TECH-PROPOSAL]
     interpretations:
       - stage: ADD-02
@@ -63,7 +66,7 @@ rows:
         parameters: {tn_limit_mg_l: 3}
         note: "The amended limit is '3 mg/l, assessed on the same basis' (ADD-02 5.1; row VOL-II-T2-4-TN). The old value and the basis exist only in the Table 2-4 image (transcription confirmed by the owner, 3 Oct 2026); the Environmental Permit prevails over the reproduction and is not supplied (I-PERMIT). No consequence stated."
     confidence: medium
-    confidence_reason: "verbatim; the basis of assessment rests on the image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit is not supplied. Assessed pass_fail because the amended limit is a mandatory Volume II requirement the design must reflect; the quality of the process design is scored separately under Table 1-1 criterion A (VOL-I-T1-1-A)"  # session 11 recheck (A1-10, PROPOSED)
+    confidence_reason: "verbatim; the basis of assessment rests on the image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit is not supplied. An obligation with no consequence stated (I-NO-CONSEQUENCE): the pack states no rejection or non-responsiveness for a design that does not reflect the limit, and does not say whether the VOL-I 11.1(i) mandatory compliance check covers it; the process design it governs is marked under Table 1-1 criterion A 'Process design, treatment performance and compliance with Volume II' (25 marks, reissued by ADD-02 3.1; row VOL-I-T1-1-A), so it is classed scored, as VOL-II-3.1-01 is"
     issues: [I-NO-CONSEQUENCE, I-PERMIT, I-READING-T24]
   - id: ADD-02-T1-1-N3-01
     group: "ADD-02:T1-1-rev"

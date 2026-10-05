@@ -224,8 +224,15 @@ class Lock:
 
     def release(self) -> None:
         cur = read_lock(self.path)
-        if cur and cur.get("token") == self.info.get("token"):
+        if cur and self.info.get("token") is not None and cur.get("token") == self.info.get("token"):
             self.path.unlink(missing_ok=True)
+
+
+def own_run_lock(cur: dict, holder: dict) -> bool:
+    """Session 12: `cur` is a run-scoped lock (scope "run") held by THIS process on this host, and `holder` is a
+    session of the same process: the run's own lock, not another orchestrator's."""
+    return (cur.get("scope") == "run" and cur.get("host") == socket.gethostname() and holder.get("scope") != "run"
+            and cur.get("pid") == os.getpid() and holder.get("pid") in (None, os.getpid()))
 
 
 def acquire(staging: Path, addendum: str, holder: dict, stale_after_min: float = 120, concurrency: int | None = None) -> Lock:
@@ -243,6 +250,10 @@ def acquire(staging: Path, addendum: str, holder: dict, stale_after_min: float =
         fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
     except FileExistsError:
         cur = read_lock(path) or {}
+        if own_run_lock(cur, holder):
+            # session 12: the workflow run that holds the addendum for the run (scope run) is this process: a session
+            # it starts works under that lock and never releases it (a Lock with no token of its own)
+            return Lock(path, {**holder, "under_run_lock": cur.get("run_id"), "token": None})
         stale, why = lock_state(cur, stale_after_min)
         if stale and why.startswith("its process") and cur.get("host") == socket.gethostname():
             # session 11 (E135): the holder died on this host (a crash, a container restart): nobody holds the

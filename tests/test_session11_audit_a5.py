@@ -55,7 +55,10 @@ def test_a5_1_gates_with_a_drafted_question_have_an_ask_by_date(r, base, written
     for g in ("form-4a", "form-4b", "assemble-envelope-b", "copies"):
         x = a[g]
         want = sorted(q for i in x["gated_by"] for q in qs[i])
-        assert want and x["clarification_questions"] == want, g
+        # session 12 (F3, audit A5-1, deliberate): clarification_questions also lists the questions drafted on the issues
+        # of the rows the activity carries, gated or not; the gate's own questions are still the ones decision_status names
+        assert want and set(want) <= set(x["clarification_questions"]), g
+        assert all(q in x["decision_status"] for q in want), g
         assert x["ask_by"] == "2026-11-11" and x["finalise_by"] == x["latest_start"], g
         assert x["decision_needed_by"] == "2026-11-11", g             # the first decision is whether to ask
         assert "decide whether to ask the Authority by 2026-11-11" in x["decision_status"], x["decision_status"]
@@ -81,7 +84,8 @@ def test_a5_2_every_a3_row_in_force_is_carried_or_excepted(r, base, written):
     assert "VOL-I-6.2-02" in a["assemble-envelope-a"]["req_ids"] and "VOL-I-6.2-02" in a["form-4b"]["req_ids"]
     carriers = [x for x in base["activities"] if "VOL-I-8.1-01" in x["req_ids"]]
     assert carriers and all("prequalified" in x["name"] for x in carriers)
-    assert all(x["duration_basis"].startswith("ASSUMPTION (PROVISIONAL") for x in carriers)
+    # session 12 (F3, audit A5-9, deliberate): the owner's label "PROVISIONAL ASSUMPTION" (was "ASSUMPTION (PROVISIONAL")
+    assert all(x["duration_basis"].startswith("PROVISIONAL ASSUMPTION") for x in carriers)
     stage = r["validated"].stage
     a3 = {e["row"].id for e in r["evals"] if schedule.in_force(e["stages"][stage]["status"])
           and isinstance((e["stages"][stage]["interpretation"] or {}).get("consequence"), dict)
@@ -131,7 +135,9 @@ def test_a5_4_a_note_added_is_not_a_requirement_change(replan, kind):
                      ("pcg-wording", "VOL-I-8.7-01"), ("pcg-execution", "VOL-I-8.7-01"), ("form-4f", "VOL-I-10.5-01"),
                      ("clarifications", "VOL-II-4.2-01")):
         assert row not in rework.get(aid, ""), (aid, rework.get(aid))
-        assert any(d["activity"] == aid and d["change"] == "REVIEW (clarification noted, no change)" and row in d["detail"]
+        # session 12 (W3a, deliberate): one label for a confirmation or a reading re-made with the same substance,
+        # CONFIRMED (unchanged) (was 'REVIEW (clarification noted, no change)'); the detail cites the confirming op
+        assert any(d["activity"] == aid and d["change"] == "CONFIRMED (unchanged)" and row in d["detail"]
                    for d in dl), aid
     assert "VOL-I-9.1-01" in rework["assemble-envelope-a"]          # Form 4-G inserted: the reading did change
 
@@ -140,7 +146,7 @@ def test_a5_4_confirming_answers_are_classified(r, replan):
     ans = programme.answers_by_row(r, "ADD-02")
     q8 = [x for x in ans["VOL-I-6.4-01"] if x["op"] == "ADD-02/Q8"]
     assert q8 and q8[0]["answer"] and q8[0]["class"] in ("none", "confirms")
-    d = next(d for d in replan["answers"] if d["activity"] == "bond-approval" and d["change"].startswith("REVIEW (clar"))
+    d = next(d for d in replan["answers"] if d["activity"] == "bond-approval" and d["change"] == "CONFIRMED (unchanged)")
     assert "ADD-02/Q8" in d["detail"] and "confirms" in d["detail"]
 
 

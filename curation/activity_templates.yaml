@@ -21,6 +21,21 @@
 # has at that stage. An activity that exists only to carry such a row is defined under `_row_check_activities`.
 # `_row_exceptions: {row id: reason}`: an A3 (bid-out) row in force that no bid-programme step can carry, with the
 # reason. Every A3 row in force is either carried by an activity or listed here, else C48 (schedule.plan).
+# Session 12 (audit A5-4): C48 covers every A1 row in force: carried by an activity, or excepted with a reason, which is
+# `_row_exceptions` here, else the row's own `no_deliverable`, else (assessment contractual_post_award) its
+# post_award_evidence; a row with none of these is NOT CARRIED (C48 problem). A5 lists every row not carried, with the
+# reason (a5/README.md and a5/requirements_not_carried.csv).
+# `_volume_checks: {volume: {activities, basis, review}}` (session 12, audit A5-2): activities that check every clause of
+# a volume (the Form 4-E review of Volume V); every row in force whose units are in that volume is attached to their
+# req_ids at build time, so an amended clause of the volume marks them REWORK at a replan.
+# `_addenda_checks: {activity id: {rows, basis, review}}` (session 12, audit A5-6): an activity whose output names the
+# Addenda issued (Form 4-A 'Addenda acknowledged (numbers)'); each Addendum issued at a later stage changes what it must
+# record, so the replan marks it REWORK with those rows (while in force and carried by it), quoting the rule.
+# `envelope_rules: A|B` on an activity: it carries the rows of its own envelope only; a row whose scope names the other
+# envelope alone (envelope_A / envelope_B) is not attached to it (session 12, audit A5-5).
+# `_discipline_map: {A5 discipline: [A1 disciplines]}` (session 12, audit A5-8): A1's discipline vocabulary is the
+# register's; an A5 discipline that is not an A1 discipline names the A1 disciplines whose rows it plans. Printed in
+# a5/README.md.
 # `finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}`: the activity finishes that many Working Days
 # before the pack date (a PROVISIONAL ASSUMPTION in config/assumptions.yaml); the legal deadline is kept as written.
 #
@@ -44,9 +59,49 @@ _row_checks:
   VOL-I-8.1-01:
     activities: [consortium-check]
     basis: "VOL-I 8.1: 'No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority.' / 'An unapproved change shall result in rejection of the Proposal.' The row is a status (no_deliverable), so a step confirms it before Form 4-A names the Bidder and lead member"
+  # PROPOSED (session 12, audit A5-4 and A5-5); not reviewed. Rows an activity discharges by checking them.
+  VOL-IV-FORMS-01:
+    activities: [form-4a, form-4b, form-4c-sign, pcg-wording, form-4e, form-4f, form-4g-sign]
+    basis: "VOL-IV cover para 5: 'Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk.' Each step that finalises a Form (and the PCG wording, which VOL-I 8.7 requires 'substantially in the form' of Form 4-D) checks that its wording is unaltered; the row is a rule on how each Form is reproduced (no_deliverable)"
+    review: proposed
+  VOL-I-4.1-01:
+    activities: [clarifications]
+    basis: "VOL-I 4.1: 'All communications between a Bidder and the Authority shall be made exclusively through the Portal and shall be in the English language, save where this Volume expressly requires Arabic.' The clarification requests are the Bidder's communications to the Authority in this programme (VOL-I 5.1: 'A Bidder may submit requests for clarification of the RFP Documents through the Portal')"
+    review: proposed
+  VOL-I-5.5-01:
+    activities: [ground-dd]
+    basis: "VOL-I 5.5: 'Attendance at the site visit is optional and does not relieve a Bidder of its obligation to satisfy itself as to site conditions.' ground-dd is the step in which the Bidder satisfies itself as to the ground conditions (its name)"
+    review: proposed
+  VOL-I-10.1-01:
+    activities: [assemble-envelope-b]
+    basis: "VOL-I 10.1: 'Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.' assemble-envelope-b assembles Envelope B (its name cites VOL-I 10.1) and so checks that rule; the Envelope A list (VOL-I 9.1) is not its rule (envelope_rules: B)"
+    review: proposed
   VOL-I-1.4-01:
     activities: [consortium-check]
     basis: "VOL-I 1.4: 'A Proposal received from any other person shall be rejected without evaluation.' (only a Bidder prequalified and named in Appendix 1 may submit); the same step confirms the Proposal is made in the prequalified name"
+# PROPOSED (session 12, audit A5-2); not reviewed.
+_volume_checks:
+  VOL-V:
+    activities: [deviations-review, form-4e]
+    basis: "VOL-V Note to Bidders p2: the clauses 'on which the Authority invites comment through Form 4-E'; 'A deviation not listed in Form 4-E will be taken as accepted.' VOL-I 9.6: 'Form 4-E shall list every deviation, qualification or reservation to Volume V.' The deviations review and Form 4-E check every clause of Volume V in force, so an amended clause (e.g. ADD-02 8.1 on VOL-V 36.2) means re-checking the schedule of deviations"
+    review: proposed
+# PROPOSED (session 12, audit A5-6); not reviewed.
+_addenda_checks:
+  form-4a-prep:
+    rows: [ADD-01-AppA-01]
+    basis: "ADD-01 App A: 'Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1. Bidders shall use this version.' (field 'Addenda acknowledged (numbers)'); each Addendum's cover: 'Bidders shall acknowledge receipt in Form 4-A.' The numbers to acknowledge grow with every Addendum issued"
+    review: proposed
+  form-4a:
+    rows: [ADD-01-AppA-01]
+    basis: "as form-4a-prep: the signed Form 4-A must acknowledge every Addendum issued ('Bidders shall acknowledge receipt in Form 4-A.')"
+    review: proposed
+# PROPOSED (session 12, audit A5-8); not reviewed. A1's vocabulary is the register's (curation/register/rows): A5 plans
+# finance work under Commercial (roles commercial_manager, financial_modeller), operations, environmental and HSE
+# evidence under Technical (technical_lead), and the envelope chain under Document control (document_controller).
+_discipline_map:
+  Commercial: [Commercial, Finance]
+  Technical: [Technical, Operations, Environmental, HSE]
+  Document control: [Bid management]
 _row_check_activities:
   - {id: consortium-check, name: "Confirm the Proposal is submitted by the Bidder prequalified and named in VOL-I Appendix 1, with no change to its composition, shareholding or lead member, or that the Authority's prior written consent to any change is held (VOL-I 1.4, 8.1)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: consortium_confirmation, predecessors: [], successors: [form-4a-prep]}
 _row_exceptions:
@@ -82,8 +137,8 @@ EV-DELIVERY:
   - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}}
   - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
   - &copies {id: copies, name: "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: copies_and_usb, predecessors: [assemble-envelope-a, assemble-envelope-b], item: "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)", gated_by: [I-VOL-I-COPIES]}
-  - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: []}
-  - {id: assemble-envelope-b, name: "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1); package the model auditor's opinion and the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (both are prepared regardless)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], gated_by: [I-VOL-I-ENV-B]}
+  - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], envelope_rules: A}
+  - {id: assemble-envelope-b, name: "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1); package the model auditor's opinion and the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (both are prepared regardless)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], gated_by: [I-VOL-I-ENV-B], envelope_rules: B}
 EV-COPIES:
   - *copies
 EV-CLARIFICATIONS:
@@ -119,7 +174,9 @@ EV-FORM-4D:
   - {id: pcg-execution, name: "Obtain the executed Parent Company Guarantee from the ultimate parent", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Ultimate parent of the EPC Contractor", duration: pcg_execution, per: epc_contractor, predecessors: [pcg-wording], successors: [assemble-envelope-a], item: "Form 4-D Parent Company Guarantee (executed original)"}
 EV-FORM-4E:
   - {id: deviations-review, name: "Review Volume V and list every deviation, qualification or reservation", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: deviations_review, predecessors: []}
-  - {id: form-4e, name: "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: form_4e_finalise, predecessors: [deviations-review, poa], successors: [assemble-envelope-a], item: "Form 4-E Schedule of Deviations (signed)"}
+  # session 12 (audit A5-3, PROPOSED): after technical-proposal: the cross-check needs the narrative it checks. Whether the
+  # commercial documents (Form 4-F, the financing schedule) also gate it is for the owner (not added)
+  - {id: form-4e, name: "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: form_4e_finalise, predecessors: [deviations-review, poa, technical-proposal], successors: [assemble-envelope-a], item: "Form 4-E Schedule of Deviations (signed)", basis: "VOL-I 9.6 p5: 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' Form 4-E is finalised against the Technical Proposal narrative, so it follows technical-proposal", review: proposed}
 EV-FORM-4G:
   - {id: form-4g-review, name: "Review the six Form 4-G undertakings with the O&M and OT security leads", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4g_review, predecessors: []}
   - {id: form-4g-sign, name: "Complete and sign Form 4-G", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4g_signature, predecessors: [form-4g-review, poa], successors: [assemble-envelope-a], item: "Form 4-G (signed)"}

@@ -799,7 +799,10 @@ def simulate(ws: Workspace, addendum: str, ops: list[dict], dispositions: list[d
                         "details": {k: v for k, v in x.details.items() if k in ("old_value", "cell", "also_in", "cited",
                                                                               "renumbered", "evidence", "mentions",
                                                                               "flowed", "flow", "effective_from",
-                                                                              "effective", "conditional")}})
+                                                                              "effective", "conditional",
+                                                                              # session 12
+                                                                              "resolved_targets", "quoted_across",
+                                                                              "span", "lettering", "precedence")}})
     changed = sorted({k for x in s.ops if x.applied for k in x.changed})
     cov = [{"provision": c["provision"], "disposition": c["disposition"], "accounted_by": c["accounted_by"]}
            for c in s.coverage]

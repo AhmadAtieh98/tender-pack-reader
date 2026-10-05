@@ -40,11 +40,13 @@ For one stage of the amendment path:
      overloads are reported, not resolved.
 Deltas between consecutive stages: NEW, REMOVED, MOVED (latest start changed), REWORK (the
 requirement behind an activity changed — its wording, cells, planning dates, status, STALE flag or the substance of its
-reading (quote, parameters, consequence): work done against the earlier version may need redoing), REVIEW (clarification
-noted, no change) (session 11, audit A5-4: the reading was re-made only to note a clarification; nothing the row
-requires changed; a clarification answer is classified by summary.classify_answer when the caller passes `answers`, and
-an answer that confirms never makes a requirement change), STATUS (audit A5-5: the timing status or the total float
-changed between the stages).
+reading (quote, parameters, consequence): work done against the earlier version may need redoing), CONFIRMED (unchanged)
+(session 12; it replaces session 11's 'REVIEW (clarification noted, no change)', audit A5-4: the reading was re-made
+with the same words, values, parameters, dates and consequence, or a confirming op landed on the row's units: an
+annotation labelled confirms/interprets, or an answer summary.classify_answer reads as none/confirms when the caller
+passes `answers`; the detail cites the confirming op and its provision; one predicate decides, signals.requirement_delta,
+shared with A2, the diff and the candidate A5), STATUS (audit A5-5: the timing status or the total float changed between
+the stages).
 Session 11 (audit A5-1, A5-2, A5-7, A5-8):
   gates and the clarification route: a gated activity whose open issue has a drafted clarification question (`questions`,
     issue -> question ids, from the clarification register) carries two dates: `ask_by` (decide whether to ask the
@@ -60,6 +62,15 @@ Session 11 (audit A5-1, A5-2, A5-7, A5-8):
     assumption (e.g. submission.delivery_buffer_wd) of Working Days to finish before the pack date (legal date kept);
   milestones whose readings differ carry `other_readings` (each other reading's date and what it assumes).
 
+Session 12 (audit A5-1 .. A5-9):
+  the clarification route reaches every activity, gated or not, whose rows carry an issue with a drafted question
+    (`clarification_questions`, `ask_by`, and a flag CLARIFICATION QUESTION DRAFTED, not sent, on an activity that is not
+    gated; decision_status stays READY: preparation is never gated);
+  `_volume_checks` attach every row in force of a volume to the activities that check its clauses (the Form 4-E review of
+    Volume V), so an amended clause makes them REWORK; `_addenda_checks` make an activity that names the Addenda issued
+    (Form 4-A) REWORK at every later stage; `envelope_rules` keep the other envelope's rows off an envelope's assembly;
+  `row_coverage`: every A1 row in force is carried, or excepted with the reason A1 holds (uncarried_reason), or NOT
+    CARRIED (C48, reported); the label of every assumed value is PROVISIONAL ("PROVISIONAL ASSUMPTION").
 Both directions are checked (failures are returned in `problems` and are structural in the build):
   C40 every activity cites at least one row in force (an activity needs a requirement)
   C44 every evidence item a row in force needs has activities, or a justified exception in the templates
@@ -97,6 +108,8 @@ IN_FORCE_PREFIXES = ("ACTIVE", "AMENDED", "REINSTATED", "NEW", "CONDITIONAL")
 BLOCKING_FLAGS = ("INFEASIBLE", "DEADLINE PASSED", "NO DEADLINE", "NO WORKING WINDOW", "CONDITIONAL —", "NOT NEEDED")
 NOT_SCHEDULED = ("DEADLINE PASSED", "CONDITIONAL", "NOT NEEDED")      # timing statuses whose work is not loaded
 DISCIPLINES = ("Legal", "Commercial", "Technical", "Bid management", "Document control")
+# session 12 (audit A5-9): the owner's label for every assumed value, in every data file (one string, searchable)
+PROVISIONAL = "PROVISIONAL ASSUMPTION"
 NO_LEVELLING = "resource levelling is NOT implemented; overloads are reported, not resolved"
 LOAD_WINDOW = ("late: each activity's staff effort (effort_wd x multiplicity) is spread evenly over the Working Days of "
                "its late window, latest start..latest finish, clipped at the planning date (as late as possible)")
@@ -139,7 +152,7 @@ def multiplicity(per: str | None, bidder: dict) -> tuple[int, str]:
 
 def multiplicity_label(per: str | None, bidder: dict) -> str:
     n, expr = multiplicity(per, bidder)
-    return f"x{n} (per {per}: {expr}; PROVISIONAL ASSUMPTION)" if expr else ""
+    return f"x{n} (per {per}: {expr}; {PROVISIONAL})" if expr else ""
 
 
 def _strip(b: str) -> str:
@@ -151,8 +164,9 @@ def _strip(b: str) -> str:
 
 
 def duration_basis(lt: dict) -> str:
-    """'ASSUMPTION (PROVISIONAL; owner Commercial): <basis>' for a lead-time entry."""
-    return f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {_strip(lt.get('basis', ''))}"
+    """'PROVISIONAL ASSUMPTION (owner Commercial): <basis>' for a lead-time entry (session 12, audit A5-9: the owner's
+    label, PROVISIONAL, in every data file; it was 'ASSUMPTION (PROVISIONAL; owner ...)')."""
+    return f"{PROVISIONAL} (owner {lt.get('owner', '?')}): {_strip(lt.get('basis', ''))}"
 
 
 def effort_of(lt: dict) -> tuple[float, str, str]:
@@ -166,7 +180,7 @@ def effort_of(lt: dict) -> tuple[float, str, str]:
     else:
         eff = int(lt.get("value", 0))
         b = "no effort_wd configured: the whole elapsed duration is counted as staff effort (conservative default)"
-    return eff, waiting, (f"ASSUMPTION (PROVISIONAL; owner {lt.get('owner', '?')}): {b}; "
+    return eff, waiting, (f"{PROVISIONAL} (owner {lt.get('owner', '?')}): {b}; "
                           f"waits on: {waiting or 'no external party'}")
 
 
@@ -462,6 +476,27 @@ def check_templates(templates: dict, assumptions: dict) -> list[str]:
             problems.append(f"C45: _row_checks.{rid} names no activity or an unknown one ({', '.join(bad) or 'none'})")
         if not str(spec.get("basis") or "").strip():
             problems.append(f"C45: _row_checks.{rid} gives no basis (the source words saying why the activity checks it)")
+    for vol, spec in (templates.get("_volume_checks") or {}).items():          # session 12 (audit A5-2)
+        spec = spec if isinstance(spec, dict) else {}
+        bad = [x for x in spec.get("activities") or [] if x not in defined]
+        if not spec.get("activities") or bad:
+            problems.append(f"C45: _volume_checks.{vol} names no activity or an unknown one ({', '.join(bad) or 'none'})")
+        if not str(spec.get("basis") or "").strip():
+            problems.append(f"C45: _volume_checks.{vol} gives no basis (the source words saying why the activity checks it)")
+    for aid, spec in (templates.get("_addenda_checks") or {}).items():         # session 12 (audit A5-6)
+        spec = spec if isinstance(spec, dict) else {}
+        if aid not in defined:
+            problems.append(f"C45: _addenda_checks names unknown activity '{aid}'")
+        if not spec.get("rows") or not str(spec.get("basis") or "").strip():
+            problems.append(f"C45: _addenda_checks.{aid} gives no rows or no basis (the words of the acknowledgement rule)")
+    for d, a1 in (templates.get("_discipline_map") or {}).items():             # session 12 (audit A5-8)
+        if d not in DISCIPLINES or not isinstance(a1, list) or not a1:
+            problems.append(f"C45: _discipline_map.{d} must map an A5 discipline ({', '.join(DISCIPLINES)}) to a list of "
+                            "A1 disciplines")
+    for item, ts in template_groups(templates):
+        for t in ts:
+            if t.get("envelope_rules") not in (None, "A", "B"):
+                problems.append(f"C45: activity {t['id']} ({item}): envelope_rules must be A or B")
     for ev, o in (templates.get("_per_overrides") or {}).items():
         try:
             multiplicity((o or {}).get("per"), bidder)
@@ -679,6 +714,65 @@ def milestones(rules: dict[str, dict], templates: dict, assumptions: dict, act_r
     return sorted(out, key=lambda m: (m["date"] or "9999", m["id"]))
 
 
+# ---------------------------------------------------------------------------------------------- coverage (session 12)
+
+def envelope_ok(t: dict, row) -> bool:
+    """Whether template `t` may carry `row`: an activity with `envelope_rules: A|B` (it assembles one envelope) does not
+    carry a row whose scope names the other envelope alone (audit A5-5: the Envelope A list is not Envelope B's rule)."""
+    own = t.get("envelope_rules")
+    if not own or row is None:
+        return True
+    scope = set(getattr(row, "scope", None) or [])
+    other = "envelope_B" if own == "A" else "envelope_A"
+    return not (other in scope and f"envelope_{own}" not in scope)
+
+
+def uncarried_reason(row, row_exceptions: dict) -> tuple[str, str]:
+    """(reason, where A1 or the templates state it) for a row no activity carries, or ('', '') when none is stated:
+    `_row_exceptions` (templates), the row's `no_deliverable` (A1 'Evidence needed: none: ...'), or its assessment
+    contractual_post_award (A1 'Pass/fail or scored', with its post_award_evidence)."""
+    x = str(row_exceptions.get(row.id) or "").strip()
+    if x:
+        return x, "_row_exceptions (curation/activity_templates.yaml)"
+    if str(getattr(row, "no_deliverable", None) or "").strip():
+        return str(row.no_deliverable).strip(), "no_deliverable (A1 Evidence needed: none)"
+    if getattr(row, "assessment", None) == "contractual_post_award":
+        from .stage2 import ASSESSMENT_WORDS
+        pa = getattr(row, "post_award_evidence", None)
+        return (ASSESSMENT_WORDS["contractual_post_award"] + (f"; {pa.text}" if pa is not None else ""),
+                "assessment contractual_post_award (A1)" + (f", post_award_evidence {pa.kind}" if pa is not None else ""))
+    return "", ""
+
+
+def row_coverage(evals: list[dict], stage: str, activities: list[dict], row_exceptions: dict,
+                 a3_rows: dict | None = None) -> dict:
+    """Every A1 row in force at `stage` (session 12, audit A5-4): `carried` {row: activities}, `excepted` {row: {reason,
+    source, status, assessment, discipline, a3}} (uncarried_reason), `uncarried` [rows with no activity and no reason]."""
+    carriers: dict[str, list[str]] = {}
+    for a in activities:
+        for k in a["req_ids"]:
+            carriers.setdefault(k, []).append(a["id"])
+    out = {"rows": [], "carried": {}, "excepted": {}, "uncarried": []}
+    for e in sorted(evals, key=lambda e: e["row"].id):
+        ev = e["stages"].get(stage) or {}
+        if not in_force(str(ev.get("status") or "")):
+            continue
+        k = e["row"].id
+        out["rows"].append(k)
+        if carriers.get(k):
+            out["carried"][k] = sorted(carriers[k])
+            continue
+        why, src = uncarried_reason(e["row"], row_exceptions or {})
+        if why:
+            out["excepted"][k] = {"reason": why, "source": src, "status": ev.get("status"),
+                                  "assessment": getattr(e["row"], "assessment", None),
+                                  "discipline": getattr(e["row"], "discipline", None),
+                                  "a3": k in (a3_rows or {})}
+        else:
+            out["uncarried"].append(k)
+    return out
+
+
 # ---------------------------------------------------------------------------------------------- plan
 
 def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal: Calendar, status_date: date,
@@ -732,6 +826,7 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     bidder = assumptions.get("bidder") or {}
     fields = anchor_fields(anchor_details)
     by_row = {e["row"].id: e["stages"].get(stage) or {} for e in evals}
+    row_obj = {e["row"].id: e["row"] for e in evals}
     named_rows: dict[str, set[str]] = {}                  # activity -> rows its name or item quotes ({ROW:...})
 
     def row_value(rid: str, param: str):
@@ -782,13 +877,18 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
         if item is None:
             a["evidence"] = a["evidence"] or ""
         else:
-            a["req_ids"] = sorted(set(a["req_ids"]) | set(need[item]))
+            a["req_ids"] = sorted(set(a["req_ids"]) | {x for x in need[item] if envelope_ok(t, row_obj.get(x))})
             a["evidence_items"] = sorted(set(a["evidence_items"]) | {item})
             a["evidence"] = a["evidence"] or item
         return a
 
+    # session 12 (W3b): an activity proposed for rows resting on a reading still pending approval is not planned
+    held = {e["row"].conditional_on.reading for e in evals if getattr(e["row"], "conditional_on", None) is not None
+            and str((e["stages"].get(stage) or {}).get("status") or "").startswith("PENDING READING")}
     for item in sorted(need):
         for t in templates.get(item) or []:
+            if (t.get("conditional_on") or {}).get("reading") in held:
+                continue
             make(t, item)
     # session 11 (audit A5-2): rows whose compliance is a check carried by a step (`_row_checks`), while in force
     rc_defs = {t["id"]: t for t in templates.get("_row_check_activities") or []}
@@ -799,6 +899,27 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             a = acts.get(aid) or (make(rc_defs[aid], None) if aid in rc_defs else None)
             if a is not None:                    # an activity the programme does not have at this stage carries nothing
                 a["req_ids"] = sorted(set(a["req_ids"]) | {rid})
+    # session 12 (audit A5-2): activities that check every clause of a volume carry its rows in force (`_volume_checks`)
+    checked_by: dict[str, set[str]] = {}                 # row -> activities that carry it only as a check of its volume
+    for vol, spec in sorted((templates.get("_volume_checks") or {}).items()):
+        spec = spec if isinstance(spec, dict) else {}
+        vrows = sorted(k for k, ev in by_row.items() if in_force(str(ev.get("status") or ""))
+                       and any(str(u).startswith(f"{vol}:") for u in getattr(row_obj.get(k), "units", None) or []))
+        for aid in spec.get("activities") or []:
+            a = acts.get(aid)
+            if a is None or not vrows:
+                continue
+            for k in vrows:
+                if k not in a["req_ids"]:
+                    checked_by.setdefault(k, set()).add(aid)
+            a["req_ids"] = sorted(set(a["req_ids"]) | set(vrows))
+            a["volume_checks"] = sorted(set(a.get("volume_checks") or []) | {vol})
+    # session 12 (audit A5-6): an activity whose output names the Addenda issued (`_addenda_checks`)
+    for aid, spec in sorted((templates.get("_addenda_checks") or {}).items()):
+        a = acts.get(aid)
+        if a is not None and isinstance(spec, dict):
+            a["addenda_rows"] = [k for k in spec.get("rows") or [] if k in a["req_ids"]
+                                 and in_force(str((by_row.get(k) or {}).get("status") or ""))]
     # links: predecessors declared on the successor, successors declared on the predecessor
     for a in acts.values():
         a["not_required_here"] = sorted({p for p in a["predecessors"] + a["successors"] if p not in acts and p in defined})
@@ -868,14 +989,28 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                 flags += [review_flag(x) for x in rv]
         g = a["gated_by"]
         ls = t["ls"]
-        qs = sorted({q for i in g for q in (questions or {}).get(i) or []})
-        ask = net[route["id"]]["ls"] if (g and qs and route is not None) else None
+        gq = sorted({q for i in g for q in (questions or {}).get(i) or []})
+        # session 12 (audit A5-1): a question drafted on an issue of a row the activity carries also gives it the route,
+        # gated or not (the clarification register's linked_issues; a question a person closed no longer counts)
+        row_issues = sorted({i for rid in a["req_ids"] for i in getattr(row_obj.get(rid), "issues", None) or []})
+        rq = {i: sorted((questions or {})[i]) for i in row_issues if (questions or {}).get(i)}
+        qs = sorted(set(gq) | {q for v in rq.values() for q in v})
+        ask = net[route["id"]]["ls"] if (qs and route is not None) else None
         fin = (ls.isoformat() + (" (already before the planning date; see timing)" if ls < status_date else "")
                if ls else "no latest start (not linked to a pack date)")
+        closed_note = " (already before the planning date: the clarification route has closed)"
+        route_words = (f"latest start of {route['id']}, which must finish by the {CLARIFICATION_RULE} "
+                       f"{route['deadline_date']}" if route is not None else "")
+        if qs and not g:
+            on = "; ".join(f"{', '.join(v)} on {i}" for i, v in rq.items())
+            flags.append(f"CLARIFICATION QUESTION DRAFTED, not sent ({on}, an issue of the rows it carries): "
+                         + (f"decide whether to ask the Authority by {ask.isoformat()}"
+                            + (closed_note if ask < status_date else "") + f" ({route_words})" if ask is not None else
+                            f"no activity must finish by the {CLARIFICATION_RULE} at this stage, so no date to ask by"))
         if not g:
             decision = "READY"
-        elif ask is not None:
-            decision = (f"GATED: finalisation waits on {', '.join(g)}; clarification question drafted ({', '.join(qs)}): "
+        elif ask is not None and gq:
+            decision = (f"GATED: finalisation waits on {', '.join(g)}; clarification question drafted ({', '.join(gq)}): "
                         f"decide whether to ask the Authority by {ask.isoformat()}"
                         + (" (already before the planning date: the clarification route has closed)" if ask < status_date
                            else "")
@@ -883,9 +1018,11 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                           f"{route['deadline_date']}; {cites}); finalise by {fin}")
         else:
             decision = (f"GATED: finalisation waits on {', '.join(g)}; "
-                        + (f"clarification question drafted ({', '.join(qs)}), but no activity must finish by the "
-                           f"{CLARIFICATION_RULE} at this stage, so no date to ask by; " if qs else "")
-                        + f"decision needed by {fin}")
+                        + (f"clarification question drafted ({', '.join(gq)}), but no activity must finish by the "
+                           f"{CLARIFICATION_RULE} at this stage, so no date to ask by; " if gq else "")
+                        + f"decision needed by {fin}"
+                        + (f"; finalise by {fin}; clarification question drafted on its rows ({', '.join(qs)}): decide "
+                           f"whether to ask the Authority by {ask.isoformat()} ({route_words})" if ask is not None else ""))
         dl = ""
         tm = ""
         if a["deadline_rule"] in deadlines:
@@ -906,7 +1043,9 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                      "latest_start": iso(ls), "latest_finish": iso(t["lf"]), "latest_finish_time": lf_time,
                      "float_wd": t["float_wd"], "driven_by": t["driven_by"], "deadline": dl,
                      "flags": flags, "status": status, "timing_status": status, "decision_status": decision,
-                     "clarification_questions": qs if g else [], "ask_by": iso(ask), "finalise_by": iso(ls) if g else None,
+                     "clarification_questions": qs, "ask_by": iso(ask), "finalise_by": iso(ls) if g else None,
+                     "a1_disciplines": sorted({str(getattr(row_obj[x], "discipline", None)) for x in a["req_ids"]
+                                               if getattr(row_obj.get(x), "discipline", None)}),
                      "decision_needed_by": (iso(min(ask, ls)) if ask is not None and ls else iso(ls)) if g else None})
     load = resource_load(rows, assumptions.get("resources") or {}, cal, status_date)
     rst = resource_statuses(rows, load)
@@ -954,15 +1093,27 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
               "uncarried": [k for k, v in carriers.items() if not v and not str(rexc.get(k) or "").strip()],
               "row_checks": {k: list((s or {}).get("activities") or []) for k, s in
                              sorted((templates.get("_row_checks") or {}).items()) if k in a3_rows}}
+    for k, v in sorted(checked_by.items()):         # session 12: a row carried only as a check is not itself infeasible
+        if k in a3_rows:
+            a3_cov["row_checks"][k] = sorted(set(a3_cov["row_checks"].get(k) or []) | v)
     for k in a3_cov["uncarried"]:
         problems.append(f"C48: {k} is an A3 row ({a3_rows[k].get('class')}, {a3_rows[k].get('unit')}) in force at {stage}, "
                         "but no activity carries it and no reason is given (curation/activity_templates.yaml: "
                         "_row_checks for the step that checks it, or _row_exceptions with the reason)")
+    # session 12 (audit A5-4): every A1 row in force is carried, or excepted with the reason A1 holds, or NOT CARRIED
+    row_cov = row_coverage(evals, stage, rows, rexc, a3_rows)
+    for k in row_cov["uncarried"]:
+        if k not in a3_rows:
+            problems.append(f"C48: {k} is an A1 row in force at {stage}, but no activity carries it and no reason is given "
+                            "(its no_deliverable or post-award assessment in the register, or _row_checks / "
+                            "_row_exceptions in curation/activity_templates.yaml)")
     bufs = sorted({(r["deadline_buffer"], r["deadline_buffer_wd"]) for r in rows if r.get("deadline_buffer")})
     if bufs:
         basis += " " + "; ".join(f"Buffer before the pack date: {k} = {v} WD (PROVISIONAL ASSUMPTION, owner "
                                  f"{assumption_basis(assumptions, k).get('owner', '?')})" for k, v in bufs) + "."
-    linked = {x for r in rows for x in r["req_ids"]}
+    # the rows the activities serve; a row carried only as a check of its volume (`_volume_checks`, e.g. a post-award
+    # clause reviewed for Form 4-E) does not bring its own event-dependent dates into the bid programme
+    linked = {x for r in rows for x in r["req_ids"] if r["id"] not in checked_by.get(x, ())}
     ms = milestones(rules, templates, assumptions, act_rules, linked, anchor_details, problems)
     return {"stage": stage, "status_date": status_date.isoformat(), "planning_date": status_date.isoformat(),
             "start_date": day0.isoformat(), "planning_basis": basis, "anchors": anchors, "activities": rows,
@@ -970,14 +1121,16 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
             "exceptions": {k: v for k, v in exceptions.items() if k in need},
             "evidence_needed": {k: sorted(v) for k, v in sorted(need.items())},
             "deadlines": {k: {"date": v[0], "row": v[1]} for k, v in sorted(deadlines.items())},
-            "milestones": ms, "gate_route": gate_route, "a3_coverage": a3_cov,
+            "milestones": ms, "gate_route": gate_route, "a3_coverage": a3_cov, "row_coverage": row_cov,
+            "discipline_map": {k: list(v) for k, v in (templates.get("_discipline_map") or {}).items()},
             "per_overrides": {k: dict(v) for k, v in sorted((templates.get("_per_overrides") or {}).items()) if k in need},
             "calendar": {"weekend": sorted(cal.weekend), "holidays": sorted(h.isoformat() for h in cal.holidays)},
             "load": {"window": load["window"], "overloads": load["overloads"], "notes": load["notes"]}}
 
 
-_READING_META = ("stage", "note", "pins")
-NOTED = "REVIEW (clarification noted, no change)"
+# session 12: one label for every 'no change' a re-made reading or a confirming op gives (signals.requirement_delta)
+CONFIRMED = "CONFIRMED (unchanged)"
+NOTED = CONFIRMED
 
 
 def _fl(v) -> str:
@@ -997,62 +1150,76 @@ def status_changed(a: dict, b: dict) -> bool:
 
 
 def requirement_change(a: dict, b: dict, answers: list[dict] | None = None) -> tuple[list[str], str]:
-    """How one row's evaluation changed between two stages: (what changed in the requirement: 'text', 'cells',
-    'dates', 'status', 'stale', 'reading'), and '' or why it is only NOTED: the reading was re-made at the later stage
-    with nothing but its note (and stage) different, or (with `answers`, programme.answers_by_row) its substance changed
-    while text, cells, dates and status did not and every op on the row at the stage is a clarification answer that
-    summary.classify_answer reads as none/confirms: a confirming answer never makes a requirement change."""
-    what = [w for w, x, y in (("text", a.get("text"), b.get("text")), ("cells", a.get("cells"), b.get("cells")),
-                              ("dates", [d["planning"] for d in a.get("dates") or []],
-                               [d["planning"] for d in b.get("dates") or []]),
-                              ("status", False, status_changed(a, b)),
-                              ("stale", bool(a.get("stale")), bool(b.get("stale")))) if x != y]
-    ia, ib = a.get("interpretation"), b.get("interpretation")
-    sub = lambda i: {k: v for k, v in (i or {}).items() if k not in _READING_META}      # noqa: E731
-    ans = list(answers or [])
-    confirming = bool(ans) and all(x.get("answer") and x.get("class") in ("none", "confirms") for x in ans)
-    noted = ""
-    if ia != ib and sub(ia) == sub(ib):
-        noted = f"reading re-made at {(ib or {}).get('stage')} to note: '{str((ib or {}).get('note') or '')[:160]}'"
-    elif ia != ib and not what and confirming:
-        noted = f"reading re-made at {(ib or {}).get('stage')} after an answer that confirms"
-    elif ia != ib:
-        what.append("reading")
-    if noted and ans:
-        noted += "; " + "; ".join(f"{x['op']} " + (x["class"] if x.get("answer") else
-                                                   f"(not a clarification answer; {x.get('class') or 'op'})")
-                                  + (f" (summary.classify_answer: {x['why']})" if x.get("answer") else "") for x in ans)
-    return what, ("" if what else noted)
+    """How one row's evaluation changed between two stages: (what changed in the requirement: 'text', 'cells', 'dates',
+    'status', 'consequence', 'quote', 'parameters', 'reading', 'stale', 'cited units', 'dependency', 'anchor date'),
+    and why: for a change the causes it names (session 12, F2), else '' or why it is CONFIRMED (unchanged): the
+    reading was re-made with the same words, values, parameters, dates and consequence, or (with `answers`, the ops new on
+    its units at the later stage: programme.answers_by_row) every difference is the recorded effect of a confirming op.
+    One predicate for every deliverable: signals.requirement_delta (session 12)."""
+    from .signals import requirement_delta
+    d = requirement_delta(a, b, answers)
+    # session 12 (F2): for a change, the causes it names (a cited unit, a dependency, an anchor date), else ''
+    return d["what"], d["detail"] if not d["changed"] or d.get("causes") else ""
 
 
 def deltas(prev: dict, cur: dict, prev_evals: dict, cur_evals: dict, answers: dict[str, list[dict]] | None = None) -> list[dict]:
-    """NEW / REMOVED / MOVED / REWORK / REVIEW (clarification noted, no change) / STATUS between the programme of two
+    """NEW / REMOVED / MOVED / REWORK / CONFIRMED (unchanged) / NOT SETTLED / STATUS between the programme of two
     stages, then REVIEW (<class>) for each activity of `cur` that a relationship reaches at its stage
     (plan(reached=...)): never merged with REWORK, which is direct. `answers` (optional): row -> the ops applied to
-    its units at the later stage, each {op, answer, class, why} (programme.answers_by_row)."""
+    its units at the later stage, each {op, type, effect, provision, answer, class, why} (programme.answers_by_row).
+    REWORK and CONFIRMED carry `rows`: the rows that changed, or that were confirmed; NEW and REMOVED the rows that
+    need (needed) the activity (session 12, audit A5-7). Session 12 (audit A5-6): an activity whose output names the
+    Addenda issued (`addenda_rows`, plan() from the templates' `_addenda_checks`) is REWORK at every later stage (a new
+    Addendum to acknowledge), quoting the rule; those rows are not CONFIRMED. NOT SETTLED (session 12, F2) marks the
+    rows that did not change but are not confirmed either (signals.requirement_delta: a printed date conflict)."""
     p = {a["id"]: a for a in prev["activities"]}
     c = {a["id"]: a for a in cur["activities"]}
     out = []
+    new_stage = prev.get("stage") != cur.get("stage")
     for k in sorted(set(p) | set(c)):
         if k not in p:
-            out.append({"activity": k, "change": "NEW", "detail": f"needed by {', '.join(c[k]['req_ids'])}"})
+            out.append({"activity": k, "change": "NEW", "detail": f"needed by {', '.join(c[k]['req_ids'])}",
+                        "rows": list(c[k]["req_ids"])})
             continue
         if k not in c:
-            out.append({"activity": k, "change": "REMOVED", "detail": f"no longer needed by any row in force"})
+            out.append({"activity": k, "change": "REMOVED", "detail": f"no longer needed by any row in force",
+                        "rows": list(p[k]["req_ids"])})
             continue
-        changed_rows, noted_rows = [], []
+        changed_rows, noted_rows, rw, cf, open_rows, ns = [], [], [], [], [], []
+        ack = [r for r in c[k].get("addenda_rows") or [] if new_stage and r in c[k]["req_ids"]]
+        for r in ack:
+            ev = cur_evals.get(r) or {}
+            it = ev.get("interpretation") or {}
+            units = [u.get("unit") for u in ev.get("units_detail") or []
+                     if str(u.get("unit") or "").startswith(f"{cur.get('stage')}:")]
+            changed_rows.append(f"{r} (Addenda to acknowledge: {cur.get('stage')} issued since {prev.get('stage')}"
+                                + (f"; {', '.join(units)}" if units else "")
+                                + (f": '{it['quote']}'" if it.get("quote") else "") + ")")
+            rw.append(r)
         for r in c[k]["req_ids"]:
+            if r in ack:
+                continue
             if r in prev_evals and r in cur_evals:
                 what, why = requirement_change(prev_evals[r], cur_evals[r], (answers or {}).get(r))
                 if what:
-                    changed_rows.append(f"{r} ({', '.join(what)})")
+                    changed_rows.append(f"{r} ({', '.join(what)}{': ' + why if why else ''})")
+                    rw.append(r)
+                elif why.startswith("NOT SETTLED"):     # session 12 (F2): e.g. a printed date conflict: never confirmed
+                    open_rows.append(f"{r}: {why.removeprefix('NOT SETTLED: ')}")
+                    ns.append(r)
                 elif why:
                     noted_rows.append(f"{r}: {why}")
+                    cf.append(r)
         if changed_rows:
-            out.append({"activity": k, "change": "REWORK", "detail": f"requirement changed: {', '.join(changed_rows)}"})
+            out.append({"activity": k, "change": "REWORK", "detail": f"requirement changed: {', '.join(changed_rows)}",
+                        "rows": rw})
         if noted_rows:
-            out.append({"activity": k, "change": NOTED,
-                        "detail": "; ".join(noted_rows) + "; text, cells, dates and status unchanged: work done stands"})
+            out.append({"activity": k, "change": CONFIRMED, "rows": cf,
+                        "detail": "; ".join(noted_rows) + "; text, cells, dates, status and consequence unchanged: "
+                                  "work done stands"})
+        if open_rows:
+            out.append({"activity": k, "change": "NOT SETTLED", "rows": ns,
+                        "detail": "; ".join(open_rows) + "; unchanged at this stage but not confirmed: a person decides"})
         if p[k]["latest_start"] != c[k]["latest_start"]:
             out.append({"activity": k, "change": "MOVED", "detail": f"latest start {p[k]['latest_start']} -> {c[k]['latest_start']}"})
         if p[k].get("status") != c[k].get("status") or p[k].get("float_wd") != c[k].get("float_wd"):

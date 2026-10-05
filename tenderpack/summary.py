@@ -18,6 +18,16 @@ reports what a person should look at:
   claimed, not applied       the provision a claim describes has an op that is invalid or rejected, so nothing applied
   unchecked                  a provision still unresolved (no op yet), so its effect cannot be compared
   no summary                 the cover has no "This Addendum ..." sentence
+  unknown verb               (session 12) the summary's verb is not one C28 knows ("consolidates" in blind rehearsal
+                             05): the claim is matched by its targets only and the finding says that a person reads
+                             what the verb claims; never "no summary"
+  scope (governing language) (session 12) a scope word of a claim ("permanent", "temporary", "all", "only" ...) is
+                             printed in a rendering that an op's `precedence` says does not govern (an English
+                             translation of an Arabic table): unchecked against the governing rendering; a person compares
+
+The summary sentence is found for ANY verb (session 12): "This Addendum <verb>s ...", except the incorporation and
+status sentences every addendum prints ("This Addendum forms part of the RFP Documents and takes precedence ...", "is
+issued under ...", "has effect ..."), which describe no change.
 
 "Unchanged" claims (session 09, blind rehearsal 02): any other cover sentence of the form "<X> is unchanged | is not
 changed | is not extended | remains unchanged" is a claim of kind `unchanged` (an answer saying the same is an
@@ -93,11 +103,18 @@ ALLOWS = {
     "renumber": {"renumber"},
     "answers": {"interpretation", "none"},
     "info": {"interpretation", "none"},
+    # session 12: a verb C28 does not know claims nothing it can check; it is matched by its targets only
+    "unknown": {"change", "add", "replace", "delete", "reinstate", "revoke", "renumber", "obligation", "interpretation"},
 }
 CHANGES = {"change", "add", "replace", "delete", "reinstate", "revoke", "renumber"}
 _VERB_RE = "|".join(sorted((re.escape(v) for v in VERBS), key=len, reverse=True))
-# a sentence ends at a full stop followed by a capitalised word, or at the end ("Clause 5.3" does not end it)
-SUMMARY_RE = re.compile(r"\bThis Addendum (?:" + _VERB_RE + r")\b.*?(?:\.(?=\s+[A-Z(‘'\"])|\.?\s*$)", re.I | re.S)
+# session 12: the incorporation and status sentences are not summaries, whatever their verb
+_NOT_SUMMARY = (r"(?:forms?\s+part|takes?\s+(?:precedence|effect)|is\s+issued|shall\s+be\s+read|is\s+to\s+be\s+read|"
+                r"is\s+incorporated|prevails|has\s+effect|comes?\s+into|is|was|has|does)\b")
+# a sentence ends at a full stop followed by a capitalised word, or at the end ("Clause 5.3" does not end it); any verb
+# (session 12): a known one, or any other "<word>s" (reported as an unknown verb)
+SUMMARY_RE = re.compile(r"\bThis Addendum (?!" + _NOT_SUMMARY + r")(?:" + _VERB_RE + r"|[a-z]+s)\b.*?"
+                        r"(?:\.(?=\s+[A-Z(‘'\"])|\.?\s*$)", re.I | re.S)
 CONSEQUENCE = re.compile(r"\b(?:reject\w*|disqualif\w*|non-responsive|returned unopened|excluded from (?:the )?"
                          r"(?:evaluation|tender)|shall not be evaluated)\b", re.I)
 _NUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
@@ -349,9 +366,12 @@ def parse_claims(sentence: str) -> list[dict]:
         if not piece:
             continue
         m = verb_at.fullmatch(piece)
+        unknown = re.fullmatch(r"([a-z]+s)\b\s*(.*)", piece, re.I | re.S) if not m and not claims else None
         if m:
             verb = m.group(1).lower()
             claims.append({"verb": verb, "kind": VERBS[verb], "object": m.group(2).strip()})
+        elif unknown:                              # session 12: the sentence's first verb, not one C28 knows
+            claims.append({"verb": unknown.group(1).lower(), "kind": "unknown", "object": unknown.group(2).strip()})
         elif claims:
             claims[-1]["object"] += ", " + re.sub(r"^and\s+", "", piece)
     for i, c in enumerate(claims, 1):
@@ -510,6 +530,11 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
         covered_sections: set[str] = set()
         for c in (cl for _, sent in sents for cl in parse_claims(sent)):
             c["n"] = len(rec["claims"]) + 1
+            if c["kind"] == "unknown":                # session 12: reported, never "no summary"
+                rec["findings"].append({"kind": "unknown verb", "claim": c["n"], "detail":
+                                        f"'{c['text']}': C28 does not know the verb '{c['verb']}', so what it claims is "
+                                        "compared by its targets only; a person reads it against the provisions"})
+            _check_scope_words(rec, c, s)
             rng = _answers(c["object"]) if c["kind"] == "answers" else None
             allowed = ALLOWS[c["kind"]]
             hit: list = []
@@ -658,6 +683,30 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
         _check_unchanged(rec, s, prev, covers, anchors or {})
         _check_no_date_effect(rec, s.stage, covers, date_changes, anchors or {}, rules)
     return out
+
+
+# session 12: words that set the scope of an obligation; compared, never interpreted
+# ('new', 'existing', 'above' are left out: a claim uses them to describe the change, not to limit its scope)
+SCOPE_WORDS = ("permanent", "temporary", "all", "only", "fixed", "mobile", "including", "excluding")
+
+
+def _check_scope_words(rec: dict, c: dict, s) -> None:
+    """A claim's scope words printed in a rendering that an op's `precedence` says does not govern (session 12)."""
+    words = {w for w in re.findall(r"[a-z]+", normalize_latin(c.get("object") or "").lower()) if w in SCOPE_WORDS}
+    if not words:
+        return
+    for x in s.ops:
+        pr = x.details.get("precedence") if x.applied else None
+        if not pr or pr.get("governs") == "unstated":
+            continue
+        for o in pr.get("over") or []:
+            text = " ".join(u.text or "" for k, u in s.state.items() if k == o or k.startswith(o + "/")).lower()
+            hit = sorted(w for w in words if re.search(r"\b" + w + r"\b", text))
+            if hit:
+                rec["findings"].append({"kind": "scope (governing language)", "claim": c["n"], "op": x.op.id,
+                                        "detail": f"'{c['text']}': its scope word(s) {', '.join(hit)} are printed in {o}, "
+                                                  f"which does not govern ('{pr.get('words')}', {pr.get('stated_by')}); "
+                                                  f"{pr.get('governs')} governs: unchecked against it, a person compares"})
 
 
 def _rangetext(rng: set[int]) -> str:

@@ -54,6 +54,11 @@ def write_zip(folder: Path, dest: Path, stamp: tuple) -> None:
             z.writestr(info, f.read_bytes())
 
 
+def rehearsals_to_include(repo: Path) -> list[Path]:
+    """Every blind rehearsal folder that has a comparison (session 12: the list was hardcoded to blind-01..03)."""
+    return sorted(p for p in (repo / "rehearsals").glob("blind-*") if (p / "COMPARISON.md").exists())
+
+
 def readme(sha: str, date: str, checks: dict, items: dict, sessions: str) -> str:
     blockers = checks["release"]["blockers"]
     pend: dict[str, int] = {}
@@ -117,9 +122,11 @@ def main(dest: Path, wheels: Path | None) -> int:
     a4 = stage / "A4_work_log"
     copytree(REPO / "worklog", a4 / "worklog")
     (a4 / "docs").mkdir()
-    for f in ("PLAN.md", "session-03_before-after.md", "session-04_report.md", "session-05_report.md", "session-06_report.md",
-              "session-08_report.md", "session-09_report.md", "session-10_report.md", "session-11_report.md",
-              "AI_ROUTES.md", "COST_AND_EFFORT.md", "OPERATING_GUIDE.md"):
+    # session 12: every session report is copied (no hardcoded list), plus the named guides that exist
+    docs_named = ["PLAN.md", "session-03_before-after.md", "AI_ROUTES.md", "COST_AND_EFFORT.md", "OPERATING_GUIDE.md",
+                  "MAC_SETUP.md", "VERIFY_ON_MAC.md"]
+    docs_reports = sorted(p.name for p in (REPO / "docs").glob("session-*_report.md"))
+    for f in docs_named + docs_reports:
         if (REPO / "docs" / f).exists():
             shutil.copy(REPO / "docs" / f, a4 / "docs" / f)
     subprocess.run(["git", "bundle", "create", str(a4 / "repository.bundle"), "--all"], cwd=REPO, check=True, capture_output=True)
@@ -133,20 +140,25 @@ def main(dest: Path, wheels: Path | None) -> int:
         shutil.copy(REPO / "curation/approvals.yaml", rr / "approvals.yaml")
         copytree(REPO / "curation/reading-snapshots", rr / "reading-snapshots")
     copytree(REPO / "curation/register/proposals", rr / "proposals")
-    for name_ in ("blind-01", "blind-02", "blind-03"):
-        src = REPO / "rehearsals" / name_
-        if not (src / "COMPARISON.md").exists():
-            continue
-        rb = stage / "REHEARSALS" / name_
+    # session 12: every blind rehearsal with a comparison is included (the list was hardcoded to blind-01..03 before),
+    # with its frozen-output records, post-key regression notes, clocks, diffs and candidate A3/A5 where they exist
+    for src in rehearsals_to_include(REPO):
+        rb = stage / "REHEARSALS" / src.name
         rb.mkdir(parents=True)
-        for f in ("README.md", "FROZEN.md", "COMPARISON.md", "clock.txt", "diff-ADD-02-to-ADD-03.md"):
+        files = ["README.md", "FROZEN.md", "FROZEN-OUTPUTS.md", "FROZEN-OUTPUTS.sha256", "COMPARISON.md", "run.id"]
+        files += sorted(p.name for pat in ("REGRESSION*.md", "clock*.txt", "diff-*.md") for p in src.glob(pat))
+        for f in files:
             if (src / f).exists():
                 shutil.copy(src / f, rb / f)
-        for d_ in ("SEALED", "input"):
+        for d_ in ("SEALED", "input", "review"):
             if (src / d_).is_dir():
                 copytree(src / d_, rb / d_)
-        if (src / "out-curated/a3").is_dir():
-            copytree(src / "out-curated/a3", rb / "out-curated-a3")
+        for sub, name_ in (("out-curated/a3", "out-curated-a3"), ("out-candidate/a3", "out-candidate-a3"),
+                           ("out-candidate/a5", "out-candidate-a5")):
+            if (src / sub).is_dir():
+                copytree(src / sub, rb / name_)
+        if (src / "out-candidate/README.md").exists():
+            shutil.copy(src / "out-candidate/README.md", rb / "out-candidate-README.md")
     for f in ("OPERATING_GUIDE.md", "COST_AND_EFFORT.md", "VERIFY_ON_MAC.md"):
         shutil.copy(REPO / "docs" / f, stage / f)
     checks = json.loads((out / "checks.json").read_text(encoding="utf-8"))

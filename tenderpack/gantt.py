@@ -50,6 +50,9 @@ from .schedule import NO_LEVELLING
 PAGE_W, PAGE_H = 1190.0, 842.0                    # A3 landscape, points
 MARGIN = 22.0
 LABEL_W, STATUS_W = 292.0, 200.0
+# session 12 (audit A5-10): gantt.html shows the chart at a width at which its smallest text is at least this many CSS
+# pixels (it scrolls horizontally inside its frame); the SVG and the PDF are unchanged
+HTML_MIN_FONT_PX = 9.0
 PDF_DATE = "D:20261001000000Z"
 PRODUCER = "tenderpack"
 
@@ -212,6 +215,9 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
         day = lambda d: f"{d.day} {d:%b}" if d else "-"                    # noqa: E731
         out.append((f"GATED {', '.join(a['gated_by'])}; " + (f"ask by {day(ask)}; finalise by {day(fin)}" if ask
                                                              else f"decide by {day(fin)}"), WARN, "diamond"))
+    elif _route_shown(a):                                   # session 12 (audit A5-1): the route on a late chain
+        ask = _d(a["ask_by"])
+        out.append((f"question drafted: ask by {ask.day} {ask:%b}", WARN, "diamond"))
     rs = str(a.get("resource_status", ""))
     if rs.startswith("OVERLOAD"):
         out.append((f"OVERLOAD {a.get('resource', '')}", SERIOUS, "triangle"))
@@ -222,6 +228,14 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
         elif f.startswith(("BLOCKED", "REQUIREMENT STALE", "IMAGE READING PENDING", "GATE ISSUE NOT IN THE REGISTER")):
             out.append((f.split(" (")[0], CRIT if f.startswith(("BLOCKED", "REQUIREMENT STALE")) else MUTED, "square"))
     return out
+
+
+def _route_shown(a: dict) -> bool:
+    """Whether the chart shows the clarification route of an activity that is not gated (session 12, audit A5-1): a
+    question is drafted on its rows (`ask_by`) and its timing is not OK (asking the Authority is one way to move the
+    pack date that makes it late); every other activity has it in its title, gantt.html and programme.csv."""
+    st = str(a.get("status") or "OK")
+    return bool(a.get("ask_by")) and not a.get("gated_by") and st != "OK" and not st.startswith(("CONDITIONAL", "NOT NEEDED"))
 
 
 def _status_layout(tags: list[tuple[str, str, str]], x0: float, x1: float, size: float, lines: int,
@@ -445,7 +459,7 @@ def layout(prog: dict) -> list[tuple]:
             if a.get("gated_by") and ls:
                 L.diamond(x(ls), y + rh * 0.75, min(3.4, rh * 0.32), WARN, INK2)
             ask = _d(a.get("ask_by"))
-            if a.get("gated_by") and ask:                    # session 11: the last day to decide whether to ask
+            if (a.get("gated_by") or _route_shown(a)) and ask:   # session 11: the last day to decide whether to ask
                 r_ = min(3.4, rh * 0.32)
                 L.poly([(x(ask), y + rh * 0.75 - r_), (x(ask) + r_, y + rh * 0.75), (x(ask), y + rh * 0.75 + r_),
                         (x(ask) - r_, y + rh * 0.75)], SURFACE, WARN, 0.9)
@@ -629,16 +643,21 @@ def html(prog: dict, svg_text: str | None = None) -> str:
     esc = lambda s: _html.escape(str(s if s is not None else ""), quote=False)  # noqa: E731
     from .programme import NOTICE
     svg_text = svg_text if svg_text is not None else svg(prog)
+    smallest = min((it[4] for it in layout(prog) if it[0] == "text"), default=HTML_MIN_FONT_PX)
+    width = int(-(-PAGE_W * HTML_MIN_FONT_PX // smallest)) if smallest < HTML_MIN_FONT_PX else int(PAGE_W)
     rows = []
     for gname, acts in _groups(prog):
-        rows.append(f'<tr class="g"><td colspan="15">{esc(gname)} ({len(acts)})</td></tr>')
+        rows.append(f'<tr class="g"><td colspan="16">{esc(gname)} ({len(acts)})</td></tr>')
         for a in acts:
             rows.append("<tr>" + "".join(f"<td>{v}</td>" for v in (
                 f"<b>{esc(a['id'])}</b>" + (f" x{a['count']}" if a.get("count", 1) != 1 else ""),
                 esc(", ".join(a["req_ids"])), esc(", ".join(a.get("predecessors") or []) or "-"),
                 esc(a.get("earliest_start")), esc(a.get("earliest_finish")),
                 esc(a.get("latest_start")), esc(a.get("latest_finish")), esc(a.get("float_wd")), esc(a["status"]),
-                esc(a.get("decision_status")), esc(a.get("resource_status")),
+                esc(a.get("decision_status")),
+                esc((", ".join(a.get("clarification_questions") or []) + (f" (ask by {a['ask_by']})" if a.get("ask_by")
+                                                                         else "")) or "-"),
+                esc(a.get("resource_status")),
                 esc(f"{a['duration_wd']} WD elapsed; staff {_n(float(a.get('effort_total_wd') or 0))} WD"),
                 esc(a.get("waiting_on") or "-"), esc(a.get("resource")), esc(" | ".join(a.get("flags") or []) or "-"))) + "</tr>")
     ms = [f"<tr><td>{esc(m['date'] or 'no date')} {esc(m.get('time') or '')}"
@@ -656,7 +675,9 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "Red bar and '-n WD': negative float, INFEASIBLE by n Working Days; nothing is compressed.",
               "Amber diamond on the late window: GATED; finalise by the latest start. Hollow amber diamond: the last day "
               "to decide whether to raise the gate's drafted clarification question (the latest start of the activity "
-              "that must finish by the clarification cut-off).",
+              "that must finish by the clarification cut-off); on a late activity that is not gated, 'question drafted: "
+              "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
+              "questions column lists every activity's).",
               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
               "Orange triangles: OVERLOAD days of the row's role (load above capacity). Not levelled.",
               "Dotted outline only: CONDITIONAL (window elapsed; whether the condition arose is not known), DEADLINE "
@@ -666,7 +687,8 @@ def html(prog: dict, svg_text: str | None = None) -> str:
     return ("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" "
             "content=\"width=device-width, initial-scale=1\"><title>A5 Gantt</title><style>"
             "body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;margin:16px;color:#0b0b0b;background:#fcfcfb}"
-            ".chart{overflow-x:auto;border:1px solid #e1e0d9}.chart svg{display:block;max-width:100%;height:auto}"
+            ".chart{overflow-x:auto;border:1px solid #e1e0d9}"
+            f".chart svg{{display:block;width:{width}px;max-width:none;height:auto}}"
             "table{border-collapse:collapse;width:100%;margin:8px 0 18px}td,th{border:1px solid #e1e0d9;padding:3px 5px;"
             "font-size:12px;text-align:left;vertical-align:top}th{background:#f2f1ed}tr.g td{background:#f2f1ed;"
             "font-weight:bold}.notice{color:#52514e}</style></head><body>"
@@ -674,11 +696,14 @@ def html(prog: dict, svg_text: str | None = None) -> str:
             f"<p class=\"notice\">{esc(NOTICE)}</p>"
             f"<p><b>Planning basis.</b> {esc(prog.get('planning_basis', ''))}</p>"
             f"<p><b>{esc(NO_LEVELLING[0].upper() + NO_LEVELLING[1:])}.</b></p>"
+            f"<p class=\"notice\">The chart is shown {width} px wide so that its smallest text is at least "
+            f"{_n(HTML_MIN_FONT_PX)} px; scroll it sideways. gantt.pdf (one A3 page) and gantt.svg are the same drawing.</p>"
             f"<div class=\"chart\">{svg_text}</div>"
             "<h2>Legend</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in legend) + "</ul>"
             "<h2>Rows (every A1 requirement id)</h2><table><tr><th>Activity</th><th>A1 requirement ids</th>"
             "<th>Predecessors</th><th>ES</th>"
-            "<th>EF</th><th>LS</th><th>LF</th><th>Float (WD)</th><th>Timing</th><th>Decision</th><th>Resource</th>"
+            "<th>EF</th><th>LS</th><th>LF</th><th>Float (WD)</th><th>Timing</th><th>Decision</th>"
+            "<th>Clarification questions (drafted, not sent)</th><th>Resource</th>"
             "<th>Duration / effort</th><th>Waits on</th><th>Role</th><th>Flags</th></tr>" + "".join(rows) + "</table>"
             "<h2>Milestones</h2><table><tr><th>Date</th><th>Milestone</th><th>Source</th><th>Kind</th></tr>"
             + "".join(ms) + "</table>"

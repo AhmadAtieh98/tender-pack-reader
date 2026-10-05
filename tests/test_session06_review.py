@@ -307,7 +307,9 @@ def test_a3_condenses_in_labelled_steps_and_never_drops_a_disqualifier(page, tmp
         cond = stage2.condense_a3(a3, level)
         fit = write_a3_pdf(cond, tmp_path / f"a3-{level}.pdf")
         text = " ".join(pymupdf.open(tmp_path / f"a3-{level}.pdf")[0].get_text().split()).replace("- ", "-")  # wrapped ids
-        assert fit["pages"] == 1 and f"Condensed (level {level})" in text
+        # session 12 (F2, audit A3-3): the page says it was shortened in plain words, without a level number; each step
+        # stays stated by its own note (gate rows, question counts, reasons on a3_detail.html), the level in checks C43
+        assert fit["pages"] == 1 and "Shortened to" in text and "one page" in text and "(level" not in text  # ligature ﬁ
         assert all(i["id"] in text for i in a3["explicit"] + a3["score"])
         # ids stay, linked: each issue shown, or folded into the issue it duplicates (session 08 grouping)
         folded = {f: i["id"] for g in a3["groups"]["groups"] for i in g["items"] for f in i["folds"]}

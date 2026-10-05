@@ -29,6 +29,31 @@ Operation types (a small closed set; PLAN §4.4):
 Dispositions for provisions that carry no op: no_effect (reason) or unresolved (blocks validation). Every
 provision is treated (an op, op content or a disposition).
 
+Session 12 (blind rehearsal 05, follow-ups 2 and 5): one quotation, one op.
+  run-on quotations  ingest splits a provision into the clause and its list items (ADD-03:3.3, ADD-03:3.3(b)); an op's
+                  quoted words may run on from its provision into the provision's own list items, in order (C21 reads
+                  the provision and its items joined); the items the words reach are content of the op (C20) and
+                  `details.quoted_across` lists them
+  span replace_text   the volume splits a clause the same way (VOL-I:9.1, VOL-I:9.1(a) ...): when `old` is not in the
+                  target alone, it is matched once across the clause and its active list items in order (normalised
+                  as everywhere), replaced, and the result is re-split at its item letters into the clause body and
+                  the items it now has (fewer or more). A unit whose words are unchanged keeps its id (re-lettered:
+                  its text and `number` carry the new letter); a changed item keeps the id of the item with its letter;
+                  a new item gets a new id (`<clause>(<letter>)`, or `...+<addendum>` if that id was ever used), printed
+                  in the addendum; an item the result no longer has is deleted. Every unit whose text or status changes
+                  carries the op in its history (rows citing it are re-read by today's rules); `details.span` records
+                  before and after. A quotation that does not match as one contiguous span says where it breaks
+                  (the unit it matched from, the unit and words where it stopped matching), never just "not found"
+  inserted targets   a unit an earlier op of the same addendum (or an earlier addendum) inserted exists for later
+                  ops; an op may name it by the number it was inserted as ('VOL-II:5.6' for VOL-II:5.5+ADD-03,
+                  `details.resolved_targets`); an annotation of a unit printed in this addendum is cited as the
+                  addendum's own units are
+  precedence      on an annotate op over two renderings issued together (an Arabic table and its English
+                  translation): {governs, over, words}, where `words` is printed in the provision (C21) and governs/over
+                  are the op's targets (C22); or `unstated` when the addendum does not say, refused if the provision
+                  prints a precedence word (governs, prevails, takes precedence). The engine never decides which
+                  rendering governs; `unstated` is carried to the rows as a flag for a person (register)
+
 Session 11 (blind rehearsal 04), three attributes of an op rather than new types:
   effective_from  'With effect from 8 October 2026': the ISO date the provision prints (C21). The op applies at its
                   addendum's stage as any other; its result says `effective` retroactive | deferred | on issue, and the
@@ -138,6 +163,13 @@ class Condition(_Strict):
     affects: list[str] = Field(default_factory=list)           # further obligations the curator names (rows, units)
 
 
+class Precedence(_Strict):
+    """Which of two renderings issued together governs, in the addendum's own words (session 12)."""
+    governs: str                                               # the governing rendering (a target of the op)
+    over: list[str] = Field(default_factory=list)              # the renderings it prevails over (targets of the op)
+    words: str                                                 # the words of the provision that say so (C21)
+
+
 class Op(_Strict):
     id: str
     provision: str
@@ -172,6 +204,7 @@ class Op(_Strict):
     restates: list[str] = Field(default_factory=list)
     effective_from: str | None = None                          # session 11: ISO date the provision prints ('With effect from ...')
     condition: Condition | None = None                         # session 11: applies only if a person records the trigger
+    precedence: Literal["unstated"] | Precedence | None = None # session 12: annotate over two renderings issued together
     origin: Literal["pattern", "assistant", "person"] = "assistant"
     review: Literal["proposed", "accepted", "rejected"] = "proposed"
     reviewer: str | None = None
@@ -181,7 +214,7 @@ class Op(_Strict):
         # an op without the session 11 fields dumps exactly as before they existed, so what a review decision on it is
         # bound to does not change for ops that do not use them
         d = handler(self)
-        for k in ("effective_from", "condition"):
+        for k in ("effective_from", "condition", "precedence"):
             if getattr(self, k) is None:
                 d.pop(k, None)
         if not self.restates:                     # session 11 audit: absent unless used (bindings unchanged)
@@ -235,6 +268,7 @@ class UState:
     # place in a volume: `printed_in` is that addendum, `inserted_after` the unit it follows (inserted_ref labels it)
     printed_in: str | None = None
     inserted_after: str | None = None
+    reading_region: str | None = None   # session 12 (W3b): the image reading (region id) the unit was read from
 
     def sha(self) -> str:
         return sha256_text(json.dumps({"status": self.status, "text": self.text, "cells": self.cells},
@@ -254,7 +288,8 @@ def base_state(units: list[dict], addenda: list[str]) -> dict[str, UState]:
             text=u.get("text", ""), cells=copy.deepcopy(u.get("cells")), pages=list(u.get("pages", [])),
             origin=u.get("origin", "text_layer"), reading_status=(u.get("reading") or {}).get("status"),
             parent=u.get("parent"), label=u.get("label"), issued_by=doc if add else None,
-            reading_subject=(u.get("reading") or {}).get("subject_sha256"))
+            reading_subject=(u.get("reading") or {}).get("subject_sha256"),
+            reading_region=(u.get("reading") or {}).get("region"))
     return st
 
 
@@ -287,6 +322,12 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
     stage's addendum. Returns 'unit: added words' for each run of added words the addendum does not print."""
     import difflib
     evidence = " \n ".join(_evidence_form(u.text) for u in cur.values() if u.doc == addendum)
+    # session 12: one quotation that ingest split into a provision and its list items is printed as one text
+    kids: dict[str, list[str]] = {}
+    for u in cur.values():
+        if u.doc == addendum and u.kind == "list_item" and u.parent in cur:
+            kids.setdefault(u.parent, []).append(u.text or "")
+    evidence += "".join(" \n " + _evidence_form(" ".join([cur[p].text or ""] + t)) for p, t in kids.items())
     out = []
     for k, u in cur.items():
         if u.doc == addendum:
@@ -707,22 +748,40 @@ class Engine:
                                           "deferred" if op.effective_from > self._issued_now else "on issue")
         cite_text = ptext + " " + heading_of(self.order, st, op.provision)
         quoted = [x for x in (op.old if op.old_resolved == "quoted" else None, op.new, op.new_text) if x]
+        # session 12: the quotation may run on into the provision's own list items (one quotation that ingest split)
+        kids = [k for k in self.order if k in st and st[k].parent == op.provision and st[k].doc == addendum
+                and st[k].kind == "list_item"]
+        run_on: list[str] = []
         if op.type in ("replace_text", "append_text", "set_status") and quoted:
             bad = [q for q in quoted if not _quoted_in(ptext, q)]
-            if not check("C21", not bad, f"quoted words found in {op.provision}" if not bad else f"not in the provision: {bad}"):
+            if bad and kids:
+                run_on = _items_reached([ptext] + [st[k].text for k in kids], [op.provision] + kids, bad)
+                bad = [q for q in bad if not run_on or not _quoted_in(" ".join([ptext] + [st[k].text for k in kids]), q)]
+            if not check("C21", not bad, (f"quoted words found in {op.provision}" + (
+                    f" and its list items {', '.join(k for k in run_on if k != op.provision)} (one quotation)"
+                    if run_on else "")) if not bad else f"not in the provision: {bad}"):
                 return r
+            if run_on:
+                r.details["quoted_across"] = run_on
         ids = set(st)
         label = lambda uid: st[uid].label if uid in st else None  # noqa: E731
 
         if op.type == "annotate":
-            missing = [t for t in op.targets if t not in st and not group_members(st, t)]
-            if not check("C22", op.targets and not missing, f"targets exist: {op.targets}" + (f"; missing {missing}" if missing else "")):
+            targets, resolved = self._inserted_targets(op.targets, st)          # session 12
+            if resolved:
+                r.details["resolved_targets"] = resolved
+            missing = [t for t in targets if t not in st and not group_members(st, t)]
+            if not check("C22", targets and not missing, f"targets exist: {op.targets}" + (f"; missing {missing}" if missing else "")):
                 return r
             if op.effect in ("confirms", "interprets", "adds_obligation"):
-                cited_ok = [verify_target(t, cite_text, ids, label)[0] or t.startswith(addendum) for t in op.targets]
+                # a unit printed in this addendum (inserted by an earlier op of it) is cited as the addendum's own are
+                cited_ok = [verify_target(t, cite_text, ids, label)[0] or t.startswith(addendum)
+                            or (t in st and st[t].printed_in == addendum) for t in targets]
                 if not check("C22", all(cited_ok), "every annotated target is cited by the provision"
-                             if all(cited_ok) else f"not cited: {[t for t, ok in zip(op.targets, cited_ok) if not ok]}"):
+                             if all(cited_ok) else f"not cited: {[t for t, ok in zip(targets, cited_ok) if not ok]}"):
                     return r
+            if op.precedence is not None and not self._precedence(op, targets, ptext, st, r, check):
+                return r
             if op.effect == "renumbers":
                 bad = [k for k in op.renumber if k not in op.targets or k not in st]
                 stated = ptext + " " + _letter_ranges(ptext)       # "(g) to (j)" states (g), (h), (i) and (j)
@@ -765,7 +824,7 @@ class Engine:
                         if any(x["kind"] == "confirms" for x in c["sentences"]) else
                         f"no sentence of the answer confirms {', '.join(op.restates)}: not a restatement"):
                     return r
-            for t in op.targets:
+            for t in targets:
                 for k in ([t] if t in st else group_members(st, t)):
                     st[k].annotations.append(op.id)
             if op.subject:
@@ -785,6 +844,11 @@ class Engine:
 
         # every other op has one declared target that must be the cited one
         target = op.target
+        if target and target not in st:                                  # session 12: named by its inserted number
+            (target,), resolved = self._inserted_targets([target], st)
+            if resolved:
+                r.details["resolved_targets"] = resolved
+        tgt = target
         if op.type == "insert_unit":
             target = op.anchor or op.new_group
         ok, why, cited = verify_target(target, cite_text, ids, label) if target else (False, "no target", [])
@@ -806,7 +870,7 @@ class Engine:
                 return r
 
         if op.type in ("replace_text", "append_text", "set_status", "set_value"):
-            t = st.get(op.target)
+            t = st.get(tgt)
             if not check("C22", t is not None, f"target {op.target} exists"):
                 return r
             r.details["reading_status"] = t.reading_status
@@ -814,10 +878,16 @@ class Engine:
                 if not check("C22", t.status == "active", f"target is {t.status}"):
                     return r
                 n = _contains(t.text, op.old)
+                items = [k for k in self.order if k in st and st[k].parent == tgt and st[k].kind == "list_item"
+                         and st[k].status == "active"]
+                if n == 0 and items:                 # session 12: the old words span the clause and its list items
+                    if not self._replace_span(op, tgt, items, st, addendum, prov, r, check):
+                        return r
+                    return self._finish(op, r, run_on)
                 if not check("C23", n == 1, f"'{op.old}' occurs {n} time(s) in {op.target}"):
-                    r.details["also_in"] = _also_in(st, op.target, op.old)
+                    r.details["also_in"] = _also_in(st, tgt, op.old)
                     return r
-                r.details["also_in"] = _also_in(st, op.target, op.old)
+                r.details["also_in"] = _also_in(st, tgt, op.old)
                 new_text = _replace_once(t.text, op.old, op.new)
                 if not check("C24", _contains(new_text, op.old) == n - 1 + _contains(op.new, op.old)
                              and _contains(new_text, op.new) >= 1, "post-condition: old removed once, new present"):
@@ -866,7 +936,7 @@ class Engine:
                 else:
                     t.status = op.status
             t.history.append(op.id)
-            r.changed = [op.target]
+            r.changed = [tgt]
             if op.type == "replace_text" and t.doc.startswith("ADD-") and t.doc != addendum:
                 # session 11: an earlier addendum's amending text is amended: the change flows to the units that
                 # addendum's op wrote those words into (VOL-II 5.3 <- ADD-01 5.1 <- ADD-03 5.2, blind rehearsal 04)
@@ -957,8 +1027,145 @@ class Engine:
                 content.append(new_id)
                 self.order.insert(self.order.index(op.anchor) + 1, new_id)
             r.changed, r.details["content"] = content, content
+        return self._finish(op, r, run_on)
+
+    # ------------------------------------------------------------------ session 12 helpers
+    def _finish(self, op: Op, r: OpResult, run_on: list[str]) -> OpResult:
+        """A valid op: the list items its quotation ran on into are content of it (C20)."""
+        extra = [k for k in run_on if k != op.provision and k not in (r.details.get("content") or [])]
+        if extra:
+            r.details["content"] = list(r.details.get("content") or []) + extra
         r.valid = True
         return r
+
+    def _inserted_targets(self, targets: list[str], st: dict[str, UState]) -> tuple[list[str], dict[str, str]]:
+        """Targets named by the number an earlier op inserted them as ('VOL-II:5.6' -> 'VOL-II:5.5+ADD-03')."""
+        by_number = {v: k for k, v in self.inserted_as.items() if k in st}
+        out, resolved = [], {}
+        for t in targets:
+            if t not in st and not group_members(st, t) and t in by_number:
+                resolved[t] = by_number[t]
+                out.append(by_number[t])
+            else:
+                out.append(t)
+        return out, resolved
+
+    def _precedence(self, op: Op, targets: list[str], ptext: str, st: dict[str, UState], r: OpResult, check) -> bool:
+        """Which of two renderings governs, as the provision says it; never decided here (session 12)."""
+        p = op.precedence
+        if p == "unstated":
+            said = re.search(r"\b(?:govern(?:s|ing)?|prevail(?:s|ing)?|takes? precedence|is authoritative)\b", ptext, re.I)
+            if not check("C21", said is None, "the provision states no precedence between the renderings" if said is None
+                         else f"the provision states a precedence ('{_short_words(ptext[max(0, said.start() - 60):said.end() + 40], 160)}'):"
+                              " quote its words instead of 'unstated'"):
+                return False
+            r.details["precedence"] = {"governs": "unstated", "over": list(targets), "stated_by": None,
+                                       "flag": "the addendum does not say which rendering governs: a person decides "
+                                               "(nothing is assumed)"}
+            return True
+        ok = p.governs in targets and bool(p.over) and all(o in targets and o != p.governs for o in p.over)
+        if not check("C22", ok, f"{p.governs} governs {p.over}: both are targets of the op" if ok
+                     else f"governs/over must be distinct targets of the op ({targets}); got {p.governs} over {p.over}"):
+            return False
+        if not check("C21", _quoted_in(ptext, p.words), f"the provision prints '{p.words}'" if _quoted_in(ptext, p.words)
+                     else f"the provision does not print '{p.words}': the precedence must be the addendum's own words"):
+            return False
+        # the words name a language: the rendering they make govern must be in it (checked on the units' own letters)
+        lang = "Arabic" if re.search(r"\bArabic\b", p.words, re.I) else "English" if re.search(r"\bEnglish\b", p.words, re.I) else None
+        def arabic(g: str) -> bool:
+            return any(has_arabic(st[k].text or "") for k in ([g] if g in st else []) + group_members(st, g) if k in st)
+        if lang is not None:
+            ok = arabic(p.governs) and not any(arabic(o) for o in p.over) if lang == "Arabic" else \
+                not arabic(p.governs) and any(arabic(o) for o in p.over)
+            if not check("C22", ok, f"'{p.words}' names the {lang} text: {p.governs} is in {lang}" if ok
+                         else f"'{p.words}' names the {lang} text, but {p.governs} is not the {lang} rendering of {targets}"):
+                return False
+        r.details["precedence"] = {"governs": p.governs, "over": list(p.over), "words": p.words, "stated_by": op.provision}
+        return True
+
+    def _replace_span(self, op: Op, target: str, items: list[str], st: dict[str, UState], addendum: str,
+                      prov: UState, r: OpResult, check) -> bool:
+        """replace_text whose old words span a clause and its list items (module docstring, session 12)."""
+        fam = [target] + items
+        texts = [st[k].text for k in fam]
+        joined = " ".join(texts)
+        n = _contains(joined, op.old)
+        if n != 1:
+            check("C23", False, f"'{op.old}' occurs 0 time(s) in {target}; " + _span_break(fam, texts, op.old)
+                  if n == 0 else f"'{op.old}' occurs {n} time(s) across {target} and its list items {items}")
+            return False
+        if len(_split_items(joined)) != len(fam):
+            check("C22", False, f"{target} and its list items {items} cannot be re-split at their item letters; the "
+                                "replacement is not applied (a person writes it)")
+            return False
+        new_joined = _replace_once(joined, op.old, op.new)
+        if new_joined == joined:                       # typographic forms differ in length: work on the normalised text
+            new_joined = _replace_once(normalize_latin(joined), normalize_latin(op.old), op.new)
+        if not check("C24", _contains(new_joined, op.old) == _contains(op.new, op.old) and _contains(new_joined, op.new) >= 1,
+                     "post-condition: old removed once, new present (across the clause and its list items)"):
+            return False
+        pieces = _split_items(new_joined)
+        body, new_items = pieces[0], pieces[1:]
+
+        def words(x: str) -> str:
+            return normalize_latin(re.sub(r"^\(([a-z]{1,3})\)\s*", "", x)).lower()
+
+        def letter(x: str) -> str | None:
+            m = re.match(r"^\(([a-z]{1,3})\)", x.strip())
+            return m.group(1) if m else None
+        free, assigned = list(items), {}
+        for i, x in enumerate(new_items):                       # 1. words unchanged: the same id (re-lettered)
+            k = next((k for k in free if words(st[k].text) == words(x)), None)
+            if k:
+                assigned[i] = k
+                free.remove(k)
+        for i, x in enumerate(new_items):                       # 2. the item with the same letter, changed in place
+            if i not in assigned:
+                k = next((k for k in free if letter(st[k].text) == letter(x)), None)
+                if k:
+                    assigned[i] = k
+                    free.remove(k)
+        changed, after, prev_id = [], {}, target
+        before = {k: st[k].text for k in fam}
+        if st[target].text != body:
+            st[target].text = body
+            changed.append(target)
+        for i, x in enumerate(new_items):
+            k = assigned.get(i)
+            if k is None:                                      # 3. a new item, printed in this addendum
+                k = f"{target}({letter(x) or i + 1})"
+                if k in st:
+                    k = f"{k}+{addendum}"
+                st[k] = UState(k, st[target].doc, "list_item", "active", x, None, list(prov.pages), "addendum_op", None,
+                               parent=target, label=f"({letter(x)})" if letter(x) else None, issued_by=addendum,
+                               printed_in=addendum, inserted_after=prev_id)
+                self.order.insert(self.order.index(prev_id) + 1 if prev_id in self.order else len(self.order), k)
+                changed.append(k)
+            elif st[k].text != x:
+                st[k].text = x
+                changed.append(k)
+            if letter(x) and letter(st[k].text) != letter(before.get(k, x)) and k in before:
+                st[k].number = f"({letter(x)})"
+            after[k] = x
+            prev_id = k
+        for k in free:                                         # an item the result no longer has
+            st[k].status = "deleted"
+            changed.append(k)
+        for k in changed:
+            st[k].history.append(op.id)
+        if target not in changed:                              # the clause as a whole was amended
+            st[target].history.append(op.id)
+        r.changed = [target] + [k for k in changed if k != target]
+        r.details["before"] = joined
+        r.details["span"] = {"units_before": fam, "before": before, "after": {target: body, **after},
+                             "deleted": list(free)}
+        letters = [letter(x) for x in new_items]
+        twice = sorted({x for x in letters if x and letters.count(x) > 1})
+        if twice:                                             # said, never corrected: the addendum printed the letters
+            r.details["lettering"] = (f"after {op.id} the list of {target} has more than one item lettered "
+                                      f"{', '.join(f'({x})' for x in twice)}: the addendum does not re-letter it; a person "
+                                      "checks the lettering")
+        return True
 
     def _insert_row(self, op: Op, st: dict[str, UState], addendum: str, prov: UState, cite_text: str, r: OpResult,
                     check) -> OpResult:
@@ -1156,6 +1363,74 @@ def _arabic_span(text: str, old: str) -> tuple[int, int] | None:
             idx.append(i)
     k = "".join(pieces).find(target)
     return None if k < 0 else (idx[k], idx[k + len(target) - 1] + 1)
+
+
+_ITEM_START = re.compile(r"(?:(?<=:)|(?<=;)|(?<=; and)|(?<=; or)|(?<=, and)|(?<=\.))\s+(?=\(([a-z]{1,3})\)\s)")
+
+
+def _split_items(text: str) -> list[str]:
+    """A clause's text split into its body and list items at item letters that follow a ':', ';', '; and', '; or' or
+    '.', in sequence from (a) (an '(a)' inside a sentence that no '(b)' follows in sequence is not a list) (session 12)."""
+    cuts, want, last = [], "a", None
+    for m in _ITEM_START.finditer(text):
+        if m.group(1) in (want, last):            # a repeated letter (an insertion the addendum did not re-letter) is kept
+            cuts.append(m)
+            last = m.group(1)
+            want = chr(ord(last) + 1) if len(last) == 1 else last
+    out, at = [], 0
+    for m in cuts:
+        out.append(text[at:m.start()].strip())
+        at = m.end()
+    out.append(text[at:].strip())
+    return [x for x in out if x] if cuts else [text.strip()]
+
+
+def _items_reached(texts: list[str], ids: list[str], quotes: list[str]) -> list[str]:
+    """The units (a provision and its list items, in order) that the quotations reach when the units are read as one
+    text; [] when a quotation is not in that text (session 12)."""
+    norm = [normalize_latin(t).replace("'", "") for t in texts]
+    joined = " ".join(norm)
+    reached: set[int] = set()
+    for q in quotes:
+        i = joined.find(normalize_latin(q).replace("'", ""))
+        if i < 0:
+            return []
+        j, off = i + len(normalize_latin(q).replace("'", "")), 0
+        for n, t in enumerate(norm):
+            if off < j and i < off + len(t):
+                reached.add(n)
+            off += len(t) + 1
+    return [ids[n] for n in sorted(reached | {0})]
+
+
+def _span_break(ids: list[str], texts: list[str], old: str) -> str:
+    """Where a quotation stops matching a clause and its list items read as one text (session 12)."""
+    norm = [normalize_latin(t) for t in texts]
+    joined = " ".join(norm)
+    w = normalize_latin(old).split()
+    lo, hi = 0, len(w)
+    while lo < hi:                                       # the longest leading run of the quotation's words found
+        mid = (lo + hi + 1) // 2
+        if " ".join(w[:mid]) in joined:
+            lo = mid
+        else:
+            hi = mid - 1
+    k = lo
+    if k == 0:
+        return f"read across {ids[0]} and its list items {ids[1:]}, no part of the quotation's start is found"
+
+    def unit_at(pos: int) -> str:
+        off = 0
+        for uid, t in zip(ids, norm):
+            if pos < off + len(t) + 1:
+                return uid
+            off += len(t) + 1
+        return ids[-1]
+    start = joined.find(" ".join(w[:k]))
+    end = start + len(" ".join(w[:k]))
+    return (f"read across {ids[0]} and its list items {ids[1:]}, the quotation matches from {unit_at(start)} as far "
+            f"as '...{' '.join(w[max(0, k - 6):k])}' and breaks in {unit_at(min(end + 1, len(joined) - 1))} at "
+            f"'{' '.join(w[k:k + 8])}' (the text there reads '{joined[end:end + 60].strip()}')")
 
 
 def _replace_once(text: str, old: str, new: str) -> str:

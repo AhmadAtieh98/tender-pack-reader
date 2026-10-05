@@ -75,7 +75,9 @@ def obligation_trace(r: dict) -> list[dict]:
                 continue
             prov = st[op.provision]
             if op.type == "annotate":
-                carriers = [op.provision] + [k for t in op.targets for k in ([t] if t in st else group_members(st, t))]
+                # (session 12: a target named by the number an earlier op inserted it as is that inserted unit)
+                tg = [(x.details.get("resolved_targets") or {}).get(t, t) for t in op.targets]
+                carriers = [op.provision] + [k for t in tg for k in ([t] if t in st else group_members(st, t))]
             else:
                 carriers = [k for k in x.changed if k in st and st[k].status != "superseded"]
             needs: list[tuple[str, set[str]]] = []               # (what, the units any one of which a row must hold)

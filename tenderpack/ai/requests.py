@@ -39,15 +39,21 @@ the same safeguards on every route (recorded, anthropic, openrouter, ollama: the
                                     item)
 Nothing here assigns a verification status: the controller (analysis), downstream.validate, regionread.validate and
 the critic's guard do, exactly as before.
+
+Session 12: compact_shared(packet) sends the shared part of a packet smaller (tool names only, schema titles dropped,
+$defs printed once); RateGate is the run's shared rate-limit pause when batches run at once (call_provider and
+call_host wait for it before each call and pause it on a 429); in offline mode host_repair refuses before any process
+(tenderpack/ai/offline.py).
 """
 from __future__ import annotations
 
 import json
 import random
 import socket
+import threading
 import time
 import urllib.error
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 from typing import Callable
 
@@ -188,6 +194,7 @@ class FailurePolicy:
     host_retries: int = 1
     repairs: int = 1
     after_deferral: bool = False          # a batch was deferred in this drive: one try, then defer (no backoff)
+    gate: object = None                   # session 12: the run's shared RateGate when batches run at once
 
     @classmethod
     def from_cfg(cls, cfg: dict | None, caps: dict | None = None) -> "FailurePolicy":
@@ -219,7 +226,46 @@ class FailurePolicy:
         return round(wait, 1)
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        return {f.name: getattr(self, f.name) for f in fields(self) if f.name != "gate"} | (
+            {"gate": "shared by the run's workers"} if self.gate is not None else {})
+
+
+class RateGate:
+    """Session 12: ONE rate-limit pause shared by every worker of a run whose batches run at once
+    (concurrency.max_parallel_sessions > 1). A rate-limited call pauses the gate for its backoff (or the reset the
+    provider names); every worker waits for the gate before its next call, so one 429 pauses all of them until the
+    wait is over (more sessions never lift a plan's limit; they reach it sooner). Thread-safe; records its pauses."""
+
+    def __init__(self, clock=time.monotonic):
+        self.clock, self.until, self.pauses, self.waits = clock, 0.0, 0, []
+        self._lock = threading.Lock()
+
+    def pause(self, seconds: float) -> None:
+        with self._lock:
+            self.until = max(self.until, self.clock() + max(0.0, float(seconds or 0)))
+            self.pauses += 1
+
+    def wait(self, sleep) -> float:
+        with self._lock:
+            rem = self.until - self.clock()
+        if rem > 0:
+            self.waits.append(round(rem, 1))
+            sleep(rem)
+            return rem
+        return 0.0
+
+    def record(self) -> dict:
+        return {"pauses": self.pauses, "waits": len(self.waits), "longest_wait_s": max(self.waits, default=0.0)}
+
+
+def _gate_wait(policy: "FailurePolicy", sleep) -> None:
+    if getattr(policy, "gate", None) is not None:
+        policy.gate.wait(sleep)
+
+
+def _gate_pause(policy: "FailurePolicy", seconds) -> None:
+    if getattr(policy, "gate", None) is not None:
+        policy.gate.pause(seconds)
 
 
 def classify(err) -> str:
@@ -248,6 +294,7 @@ def call_provider(prov, req, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
     attempts: list[dict] = []
     rl = pv = 0
     while True:
+        _gate_wait(policy, sleep)                        # session 12: a pause another worker's 429 started
         if before_attempt:
             before_attempt()
         try:
@@ -271,12 +318,14 @@ def call_provider(prov, req, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
                        f"the provider names a reset in {hint:g} s, beyond {policy.honour_reset_up_to_s:g} s"
                        if hint is not None and hint > policy.honour_reset_up_to_s else
                        f"still rate limited after {rl} backoff(s) of {sum(x['wait_s'] or 0 for x in attempts):g} s")
+                _gate_pause(policy, hint if hint is not None else policy.backoff_s[0])
                 raise RateLimited(f"rate limit ({getattr(err, 'kind', '')}: {_short(err.message, 200)}); {why}",
                                   attempts, hint)
             wait = policy.rate_wait(rl, rng, hint)
             a = _attempt(cls, err, wait, n)
             attempts.append(a)
             record and record(a)
+            _gate_pause(policy, wait)
             sleep(wait)
             rl += 1
             continue
@@ -303,6 +352,7 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
     attempts: list[dict] = []
     rl = pv = 0
     while True:
+        _gate_wait(policy, sleep)                        # session 12: a pause another worker's 429 started
         res = run()
         cls = getattr(res, "failure_class", None)
         if cls == "refused":                              # session 11 (E135): a local refusal (a lock) is not retried
@@ -323,11 +373,13 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
                        f"the host names a reset in {hint:g} s, beyond {policy.honour_reset_up_to_s:g} s"
                        if hint is not None and hint > policy.honour_reset_up_to_s else
                        f"still rate limited after {rl} backoff(s) of {sum(x['wait_s'] or 0 for x in attempts):g} s")
+                _gate_pause(policy, hint if hint is not None else policy.backoff_s[0])
                 raise RateLimited(f"host rate limit ({err.message}); {why}", attempts, hint)
             wait = policy.rate_wait(rl, rng, hint)
             a = _attempt(cls, err, wait, n)
             attempts.append(a)
             record and record(a)
+            _gate_pause(policy, wait)
             sleep(wait)
             rl += 1
             continue
@@ -460,6 +512,59 @@ def compact_analysis(packet: dict) -> dict:
         ref["note"] = "the pattern drafter's output for THIS batch's provisions only"
         pk["reference"] = ref
     pk["packet_note"] = PACKET_NOTE + " `candidate_targets` name entries of `targets`."
+    return compact_shared(pk)
+
+
+SHARED_NOTE = ("`tools` names the tools offered with the request (their definitions come with the request itself); "
+               "`#/$defs/NAME` in `schema` and `payload_schemas` is `schema_defs.NAME`, each definition printed once.")
+
+
+def _untitled(x):
+    """A JSON schema without its generated `title` strings (pydantic's 'Row Key' for row_key): nothing a model or the
+    local validation uses. A PROPERTY named title (a dict under `properties`) is kept."""
+    if isinstance(x, dict):
+        return {k: _untitled(v) for k, v in x.items() if not (k == "title" and isinstance(v, str))}
+    if isinstance(x, list):
+        return [_untitled(v) for v in x]
+    return x
+
+
+def compact_shared(packet: dict) -> dict:
+    """Session 12: the shared part of a packet (repeated in every batch's session) sent smaller, its meaning kept:
+      * `tools`: the names only; the definitions reach the model with the request (the MCP tool list on the host
+        route, the request's `tools` on the API routes), so the packet no longer repeats their descriptions;
+      * `schema` and `payload_schemas`: without the generated `title` strings, and every `$defs` entry printed ONCE
+        in `schema_defs` (a definition whose name clashes with a different one stays where it is).
+    Nothing of the batch's own provisions, tasks, targets or evidence is touched, and the answer's schema sent
+    NATIVELY (structured output) and the local validation are unchanged (they come from the contract, not the packet).
+    Measured on blind-05's packets: see tests/test_session12_concurrency.py and the session-12 report."""
+    pk = dict(packet)
+    if isinstance(pk.get("tools"), list) and pk["tools"] and isinstance(pk["tools"][0], dict):
+        pk["tools"] = [t.get("name") for t in pk["tools"]]
+    if not isinstance(pk.get("schema"), dict) and not isinstance(pk.get("payload_schemas"), dict):
+        return pk
+    defs: dict = {}
+
+    def lift(sc):
+        sc = _untitled(sc)
+        if isinstance(sc, dict) and isinstance(sc.get("$defs"), dict):
+            own = {}
+            for k, v in sc["$defs"].items():
+                if k in defs and defs[k] != v:
+                    own[k] = v
+                else:
+                    defs[k] = v
+            sc = {k: v for k, v in sc.items() if k != "$defs"}
+            if own:
+                sc["$defs"] = own
+        return sc
+    if isinstance(pk.get("schema"), dict):
+        pk["schema"] = lift(pk["schema"])
+    if isinstance(pk.get("payload_schemas"), dict):
+        pk["payload_schemas"] = {k: lift(v) for k, v in pk["payload_schemas"].items()}
+    if defs:
+        pk["schema_defs"] = defs
+    pk["shared_note"] = SHARED_NOTE
     return pk
 
 

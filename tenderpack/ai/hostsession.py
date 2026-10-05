@@ -177,9 +177,12 @@ def settings(cfg: dict) -> dict:
 class HostSession:
     def __init__(self, ws, cfg: dict | None = None, *, model: str | None = None, max_turns: int | None = None,
                  timeout_s: float | None = None, claude_bin: str | None = None, runner=subprocess.run,
-                 python: str | None = None):
+                 python: str | None = None, run_lock: bool = False):
         self.ws = ws
+        self.run_lock = bool(run_lock)          # session 12: the workflow run holds the addendum's lock for the run
         self.cfg = cfg or C.load(ws.ai_config)
+        from .offline import check_host_session
+        check_host_session(self.cfg, f"a host session ({type(self).__name__})")   # session 12: before any process
         s = settings(self.cfg)
         self.model = model if model is not None else s["model"]
         self.max_turns = int(max_turns or s["max_turns"])
@@ -189,6 +192,12 @@ class HostSession:
         self.runner = runner
         self.python = python or sys.executable
         self.last: SessionResult | None = None
+
+    @staticmethod
+    def takes_lock(run_lock: bool) -> bool:
+        """Session 12: a session takes the addendum's lock itself unless the run holds it (batches at once: ONE lock
+        per run, never one per session; a submission does not release a run's lock, controller.releases_host_lock)."""
+        return not run_lock
 
     # ------------------------------------------------------------------ pieces
     def mcp_config(self) -> dict:
@@ -264,9 +273,10 @@ class HostSession:
         log.event("prompt", system=self.system_prompt(), prompt=prompt)
         lock = None
         try:
-            lock = B.acquire(staging, addendum, {"route": "host", "run_id": run_id, "pid": os.getpid(),
-                                                 "model": self.host_model_label()},
-                             self.cfg.get("lock_stale_after_min", 120))
+            if self.takes_lock(self.run_lock):
+                lock = B.acquire(staging, addendum, {"route": "host", "run_id": run_id, "pid": os.getpid(),
+                                                     "model": self.host_model_label()},
+                                 self.cfg.get("lock_stale_after_min", 120))
         except B.Refused as e:
             res.error = f"refused: {e}"
             classify(res)                                 # session 11 (E135): failure_class "refused", never an answer
@@ -526,6 +536,8 @@ class PlainSession:
     def __init__(self, cfg: dict, system: str, *, schema: dict | None = None, model: str | None = None,
                  timeout_s: float | None = None, max_turns: int | None = None, claude_bin: str | None = None,
                  runner=subprocess.run, label: str = "plain"):
+        from .offline import check_host_session
+        check_host_session(cfg, "critic" if label == "critic" else f"a plain host session ({label})")   # session 12
         s = settings(cfg)
         self.cfg, self.system, self.schema = cfg, system, schema
         self.model = model if model is not None else s["model"]

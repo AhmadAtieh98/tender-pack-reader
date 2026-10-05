@@ -1,0 +1,1734 @@
+{
+ "run_id": "ADD-03-hostsession-20261005T132111Z-2050",
+ "addendum": "ADD-03",
+ "provisions": [
+  "ADD-03:p4-image/col-lighting",
+  "ADD-03:p4-image/col-height",
+  "ADD-03:p4-image/col-description",
+  "ADD-03:p4-image/col-zone",
+  "ADD-03:p4-image/rowA-zone",
+  "ADD-03:p4-image/rowA-description",
+  "ADD-03:p4-image/rowA-height",
+  "ADD-03:p4-image/rowA-lighting"
+ ],
+ "started": "2026-10-05T13:21:11.935494+00:00",
+ "elapsed_s": 334.7,
+ "exit_code": 0,
+ "timed_out": false,
+ "error": null,
+ "model_requested": "opus",
+ "model_reported": [
+  "claude-opus-5-5"
+ ],
+ "tool_calls": [
+  {
+   "id": "toolu_01RN4Vbety3ruBJtv6BX992A",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/rowA-height",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01Uu9CeyHCbtaf5YMCqH6AwA",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/rowA-height"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01SehmMYe6iwfttFQ246mM67",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/col-height"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01DG8eBxCTP25fEt1nkTp9dh",
+   "name": "get_crop",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image/rowA-lighting"
+   },
+   "ok": true,
+   "images": 3
+  },
+  {
+   "id": "toolu_01KF75semjF5pdgz7feMzi1g",
+   "name": "search_evidence",
+   "arguments": {
+    "query": "Table 5-1 maximum height zone obstacle lighting Appendix A",
+    "limit": 15
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_017kAy61ueo5tvENoe44QoUJ",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:p4-image",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01BptKW3rXpzSNxXr7ao4Hae",
+   "name": "get_group",
+   "arguments": {
+    "group_id": "ADD-03:T5-1",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01EvNsExQXA21BWymrc9eH73",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:7.2",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_016Ezz7u5eWsV2bxJNRWzYkj",
+   "name": "get_unit",
+   "arguments": {
+    "unit_id": "ADD-03:7.1",
+    "stage": "ADD-03"
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01LmPuGmGoujeWyYgVZ5x8kZ",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [
+     {
+      "id": "ADD-03/p4-image/rowA-height",
+      "provision": "ADD-03:p4-image/rowA-height",
+      "type": "annotate",
+      "target": "ADD-03:T5-1/a",
+      "effect": "confirms",
+      "column": "Maximum height (m above finished ground level)",
+      "precedence": {
+       "governs": "ADD-03:p4-image/rowA-height",
+       "over": [
+        "ADD-03:T5-1/a"
+       ],
+       "words": "The Arabic text governs."
+      },
+      "note": "Arabic Zone A height ٢٥ agrees with the English translation cell 25."
+     }
+    ],
+    "dispositions": [
+     {
+      "provision": "ADD-03:p4-image/col-zone",
+      "disposition": "no_effect",
+      "reason": "Column heading 'المنطقة' of the Arabic Table 5-1 reproduced at Appendix A; it is incorporated by Clause 7.1 and changes no unit by itself."
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01XZ6YH3hqAgHCaeeXgHoYQQ",
+   "name": "simulate_amendment",
+   "arguments": {
+    "addendum": "ADD-03",
+    "ops": [],
+    "dispositions": [
+     {
+      "provision": "ADD-03:p4-image/col-zone",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/col-description",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/col-lighting",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/rowA-zone",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/rowA-description",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/rowA-lighting",
+      "disposition": "no_effect",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/rowA-height",
+      "disposition": "unresolved",
+      "reason": "x"
+     },
+     {
+      "provision": "ADD-03:p4-image/col-height",
+      "disposition": "unresolved",
+      "reason": "x"
+     }
+    ]
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_016cK6BBRYtS7EQfr8WDdTps",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+      "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+      "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Clause 7.1 inserts Volume II Clause 5.6, which incorporates Table 5-1 as reproduced at Appendix A by reference; the Appendix A table cells do not themselves name or amend any unit existing at ADD-02.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "Clause 7.2 states the Arabic text of Table 5-1 governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "fact",
+       "text": "The Arabic height column heading as read from the image is 'الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S4",
+       "kind": "fact",
+       "text": "The English translation at Appendix B heads the height column 'Maximum height (m above finished ground level)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level)"
+        }
+       ]
+      },
+      {
+       "id": "S5",
+       "kind": "interpretation",
+       "text": "'منسوب الأرض الطبيعية' means natural (existing, pre-grading) ground level, not finished ground level; the governing Arabic datum therefore differs from the English translation's 'finished ground level'. Translation is proposed, not evidence; a person must confirm it.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "متر فوق منسوب الأرض الطبيعية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S6",
+       "kind": "interpretation",
+       "text": "The Arabic Zone A row cells (أ; the 1,500 m eastern-boundary description; ٢٥; مطلوبة) and the column headings Zone, Description and Warning lighting agree in substance with the English translation row ADD-03:T5-1/a and its headings.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1/a",
+         "page": 5,
+         "kind": "span",
+         "words": "Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting: Required"
+        }
+       ]
+      }
+     ],
+     "items": []
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_01VYs972mWWohL4Du3qd8Nzw",
+   "name": "validate_proposal",
+   "arguments": {
+    "proposal": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+      "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+      "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Clause 7.1 inserts Volume II Clause 5.6, which incorporates Table 5-1 as reproduced at Appendix A by reference; the Appendix A table cells do not themselves name or amend any unit existing at ADD-02.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "Clause 7.2 states the Arabic text of Table 5-1 governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "fact",
+       "text": "The Arabic height column heading as read from the image is 'الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S4",
+       "kind": "fact",
+       "text": "The English translation at Appendix B heads the height column 'Maximum height (m above finished ground level)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level)"
+        }
+       ]
+      },
+      {
+       "id": "S5",
+       "kind": "interpretation",
+       "text": "'منسوب الأرض الطبيعية' means natural (existing, pre-grading) ground level, not finished ground level; the governing Arabic datum therefore differs from the English translation's 'finished ground level'. The translation is proposed, not evidence; a person must confirm it.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "متر فوق منسوب الأرض الطبيعية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S6",
+       "kind": "interpretation",
+       "text": "The Arabic Zone A row cells (أ; the 1,500 m eastern-boundary description; ٢٥; مطلوبة) and the Zone, Description and warning-lighting column headings agree in substance with the English translation row ADD-03:T5-1/a and its headings.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1/a",
+         "page": 5,
+         "kind": "span",
+         "words": "Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting: Required"
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/p4-image/col-zone",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-zone",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-zone",
+        "disposition": "no_effect",
+        "reason": "Column heading 'المنطقة' of the Arabic Table 5-1 reproduced at Appendix A. It prints no change and names no unit existing at ADD-02; the table is brought into Volume II by Clause 7.1 ('is incorporated into this Volume by reference'), which is accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-zone",
+         "page": 4,
+         "kind": "reading",
+         "words": "المنطقة",
+         "crop_sha256": "f3c1fa139a1cf3345a2ad8cfa6f69c7b2547827645df49714ee9818f939a7db6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-right shows the right-most header cell of the ruled table, Arabic script 'المنطقة' (zone), first column in RTL order. A heading only; no change printed."
+      },
+      {
+       "id": "ADD-03/p4-image/col-description",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-description",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-description",
+        "disposition": "no_effect",
+        "reason": "Column heading 'الوصف' of the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-description",
+         "page": 4,
+         "kind": "reading",
+         "words": "الوصف",
+         "crop_sha256": "f3c1fa139a1cf3345a2ad8cfa6f69c7b2547827645df49714ee9818f939a7db6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-right shows the second header cell from the right, Arabic 'الوصف' (description). A heading only."
+      },
+      {
+       "id": "ADD-03/p4-image/col-lighting",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-lighting",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-lighting",
+        "disposition": "no_effect",
+        "reason": "Column heading 'الإنارة التحذيرية' of the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-lighting",
+         "page": 4,
+         "kind": "reading",
+         "words": "الإنارة التحذيرية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-left shows the left-most header cell, Arabic 'الإنارة التحذيرية' (warning lighting); the English translation calls it 'Obstacle lighting'. A heading only."
+      },
+      {
+       "id": "ADD-03/p4-image/col-height",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:p4-image/col-height",
+       "target": "ADD-03:T5-1",
+       "payload": {
+        "why": "The governing Arabic heading reads 'الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)' (metres above NATURAL ground level), while the English translation issued in the same addendum heads the column 'Maximum height (m above finished ground level)'. Clause 7.2 says 'The Arabic text governs.' The two renderings set different datums for every height limit in Table 5-1. The cell names no unit existing at ADD-02, so no op can carry this. The reading is still pending and its translation is only proposed, so a person must confirm the reading and decide how the datum conflict is recorded (for example as an issue or a clarification).",
+        "what_is_unsupported": "A conflict between two renderings issued in the same addendum (Arabic image reading vs English translation, ADD-03:T5-1) where neither is a target at ADD-02. No amend op type can record which datum governs for a table brought in by reference."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level)"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "The Arabic text governs."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1",
+        "ADD-03:7.2",
+        "ADD-03:T5-1"
+       ],
+       "conflicts": [
+        "ADD-03:T5-1"
+       ],
+       "missing_information": [
+        "approval of the pending reading ADD-03-p4-r1",
+        "which datum (natural or finished ground level) the Authority intends"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+       ],
+       "model_rationale": "Crop b06-left shows the height header cell on two lines: 'الحدّ الأقصى للارتفاع' above '(متر فوق منسوب الأرض الطبيعية)'. 'الطبيعية' means natural. The English heading says finished. In the full image, note 2 ('يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم', before grading and fill) agrees with natural ground level, against the English note (2) 'finished ground level after grading and filling'. That note is in another batch."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-zone",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-zone",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-zone",
+        "disposition": "no_effect",
+        "reason": "Zone label 'أ' of row A in the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-zone",
+         "page": 4,
+         "kind": "reading",
+         "words": "أ",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the right-most cell of the first body row, the Arabic letter 'أ' (alif with hamza, zone A)."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-description",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-description",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-description",
+        "disposition": "no_effect",
+        "reason": "Zone A description 'الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع' in the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-description",
+         "page": 4,
+         "kind": "reading",
+         "words": "الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the description cell on two lines: 'الجزء من الموقع الواقع ضمن مسافة' / '١٬٥٠٠ متر من الحدّ الشرقي للموقع'. The numeral ١٬٥٠٠ uses Eastern Arabic digits with the Arabic thousands separator and agrees with '1,500 m' in English row T5-1/a."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-height",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-height",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-height",
+        "disposition": "unresolved",
+        "reason": "Insufficient evidence. The Zone A limit '٢٥' agrees in figure with '25' in the English translation, but the governing Arabic column heading measures it 'متر فوق منسوب الأرض الطبيعية' (natural ground level) while the English says 'finished ground level'. Until the datum conflict escalated under ADD-03:p4-image/col-height is resolved and the pending reading is approved, the meaning of this limit cannot be settled."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "٢٥",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "متر فوق منسوب الأرض الطبيعية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1/a",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level): 25"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1",
+        "ADD-03:7.2",
+        "ADD-03/p4-image/col-height"
+       ],
+       "conflicts": [
+        "ADD-03:T5-1/a"
+       ],
+       "missing_information": [
+        "which ground-level datum governs the 25 m limit"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the height cell of row A with the Eastern Arabic numeral '٢٥' (two-five = 25), centred in the column under the natural-ground-level heading."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-lighting",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-lighting",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-lighting",
+        "disposition": "no_effect",
+        "reason": "Cell 'مطلوبة' (required) for Zone A in the Arabic Table 5-1 at Appendix A. The cell states a requirement, but it prints no change and names no unit existing at ADD-02. The obligation reaches Volume II only through Clause 7.1 ('The Project Company shall comply with the height limits in Table 5-1 ... incorporated into this Volume by reference'), which is accounted for separately. A person confirms."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-lighting",
+         "page": 4,
+         "kind": "reading",
+         "words": "مطلوبة",
+         "crop_sha256": "ba4894a1b73be496eae1d04c58d7601bb2dd73300450491cea8905db6736a4d5"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall comply with the height limits in Table 5-1"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-left shows the left-most cell of row A with the single word 'مطلوبة' (required) and no qualifier, unlike row B, which qualifies it above 30 m. This agrees with 'Required' in English row T5-1/a."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  },
+  {
+   "id": "toolu_018h9KZ3PtCj8jVAKDLJ4iAp",
+   "name": "submit_proposals",
+   "arguments": {
+    "host_model": "claude-code headless (opus)",
+    "proposal_set": {
+     "addendum": "ADD-03",
+     "state": {
+      "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+      "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+      "validated_stage": "ADD-02",
+      "working_stage": "ADD-03",
+      "decisions_sha256": null,
+      "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+      "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+      "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+      "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+      "unrecorded_crops_sha256": null,
+      "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+      "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+      "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+     },
+     "statements": [
+      {
+       "id": "S1",
+       "kind": "fact",
+       "text": "Clause 7.1 inserts Volume II Clause 5.6, which incorporates Table 5-1 as reproduced at Appendix A by reference; the Appendix A table cells do not themselves name or amend any unit existing at ADD-02.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall comply with the height limits in Table 5-1, which is reproduced at Appendix A to this Addendum as issued by the Northern Region Airspace Safeguarding Office and is incorporated into this Volume by reference."
+        }
+       ]
+      },
+      {
+       "id": "S2",
+       "kind": "fact",
+       "text": "Clause 7.2 states the Arabic text of Table 5-1 governs and the English translation at Appendix B is for convenience only.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+        }
+       ]
+      },
+      {
+       "id": "S3",
+       "kind": "fact",
+       "text": "The Arabic height column heading as read from the image is 'الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S4",
+       "kind": "fact",
+       "text": "The English translation at Appendix B heads the height column 'Maximum height (m above finished ground level)'.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level)"
+        }
+       ]
+      },
+      {
+       "id": "S5",
+       "kind": "interpretation",
+       "text": "'منسوب الأرض الطبيعية' means natural (existing, pre-grading) ground level, not finished ground level; the governing Arabic datum therefore differs from the English translation's 'finished ground level'. The translation is proposed, not evidence; a person must confirm it.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "متر فوق منسوب الأرض الطبيعية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        }
+       ]
+      },
+      {
+       "id": "S6",
+       "kind": "interpretation",
+       "text": "The Arabic Zone A row cells (أ; the 1,500 m eastern-boundary description; ٢٥; مطلوبة) and the Zone, Description and warning-lighting column headings agree in substance with the English translation row ADD-03:T5-1/a and its headings.",
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1/a",
+         "page": 5,
+         "kind": "span",
+         "words": "Zone: A | Description: The part of the site within 1,500 m of the eastern site boundary | Maximum height (m above finished ground level): 25 | Obstacle lighting: Required"
+        }
+       ]
+      }
+     ],
+     "items": [
+      {
+       "id": "ADD-03/p4-image/col-zone",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-zone",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-zone",
+        "disposition": "no_effect",
+        "reason": "Column heading 'المنطقة' of the Arabic Table 5-1 reproduced at Appendix A. It prints no change and names no unit existing at ADD-02; the table is brought into Volume II by Clause 7.1 ('is incorporated into this Volume by reference'), which is accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-zone",
+         "page": 4,
+         "kind": "reading",
+         "words": "المنطقة",
+         "crop_sha256": "f3c1fa139a1cf3345a2ad8cfa6f69c7b2547827645df49714ee9818f939a7db6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-right shows the right-most header cell of the ruled table, Arabic script 'المنطقة' (zone), first column in RTL order. A heading only; no change printed."
+      },
+      {
+       "id": "ADD-03/p4-image/col-description",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-description",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-description",
+        "disposition": "no_effect",
+        "reason": "Column heading 'الوصف' of the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-description",
+         "page": 4,
+         "kind": "reading",
+         "words": "الوصف",
+         "crop_sha256": "f3c1fa139a1cf3345a2ad8cfa6f69c7b2547827645df49714ee9818f939a7db6"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-right shows the second header cell from the right, Arabic 'الوصف' (description). A heading only."
+      },
+      {
+       "id": "ADD-03/p4-image/col-lighting",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/col-lighting",
+       "payload": {
+        "provision": "ADD-03:p4-image/col-lighting",
+        "disposition": "no_effect",
+        "reason": "Column heading 'الإنارة التحذيرية' of the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-lighting",
+         "page": 4,
+         "kind": "reading",
+         "words": "الإنارة التحذيرية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b06-left shows the left-most header cell, Arabic 'الإنارة التحذيرية' (warning lighting); the English translation calls it 'Obstacle lighting'. A heading only."
+      },
+      {
+       "id": "ADD-03/p4-image/col-height",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "escalation",
+       "provision": "ADD-03:p4-image/col-height",
+       "target": "ADD-03:T5-1",
+       "payload": {
+        "why": "The governing Arabic heading reads 'الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)' (metres above NATURAL ground level), while the English translation issued in the same addendum heads the column 'Maximum height (m above finished ground level)'. Clause 7.2 says 'The Arabic text governs.' The two renderings set different datums for every height limit in Table 5-1. The cell names no unit existing at ADD-02, so no op can carry this. The reading is still pending and its translation is only proposed, so a person must confirm the reading and decide how the datum conflict is recorded (for example as an issue or a clarification).",
+        "what_is_unsupported": "A conflict between two renderings issued in the same addendum (Arabic image reading vs English translation, ADD-03:T5-1) where neither is a target at ADD-02. No amend op type can record which datum governs for a table brought in by reference."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level)"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.2",
+         "page": 3,
+         "kind": "span",
+         "words": "The Arabic text governs."
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1",
+        "ADD-03:7.2",
+        "ADD-03:T5-1"
+       ],
+       "conflicts": [
+        "ADD-03:T5-1"
+       ],
+       "missing_information": [
+        "approval of the pending reading ADD-03-p4-r1",
+        "which datum (natural or finished ground level) the Authority intends"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+       ],
+       "model_rationale": "Crop b06-left shows the height header cell on two lines: 'الحدّ الأقصى للارتفاع' above '(متر فوق منسوب الأرض الطبيعية)'. 'الطبيعية' means natural. The English heading says finished. In the full image, note 2 ('يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم', before grading and fill) agrees with natural ground level, against the English note (2) 'finished ground level after grading and filling'. That note is in another batch."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-zone",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-zone",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-zone",
+        "disposition": "no_effect",
+        "reason": "Zone label 'أ' of row A in the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-zone",
+         "page": 4,
+         "kind": "reading",
+         "words": "أ",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the right-most cell of the first body row, the Arabic letter 'أ' (alif with hamza, zone A)."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-description",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-description",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-description",
+        "disposition": "no_effect",
+        "reason": "Zone A description 'الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع' in the Arabic Table 5-1 at Appendix A. It prints no change and names no unit existing at ADD-02; the table takes effect through Clause 7.1 ('is incorporated into this Volume by reference'), accounted for separately."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-description",
+         "page": 4,
+         "kind": "reading",
+         "words": "الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "is incorporated into this Volume by reference"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the description cell on two lines: 'الجزء من الموقع الواقع ضمن مسافة' / '١٬٥٠٠ متر من الحدّ الشرقي للموقع'. The numeral ١٬٥٠٠ uses Eastern Arabic digits with the Arabic thousands separator and agrees with '1,500 m' in English row T5-1/a."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-height",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-height",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-height",
+        "disposition": "unresolved",
+        "reason": "Insufficient evidence. The Zone A limit '٢٥' agrees in figure with '25' in the English translation. However, the governing Arabic column heading measures it 'متر فوق منسوب الأرض الطبيعية' (natural ground level), while the English says 'finished ground level'. The datum of this limit depends on the conflict escalated under ADD-03:p4-image/col-height and on approval of the pending reading; a person must decide it."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "٢٥",
+         "crop_sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/col-height",
+         "page": 4,
+         "kind": "reading",
+         "words": "متر فوق منسوب الأرض الطبيعية",
+         "crop_sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:T5-1/a",
+         "page": 5,
+         "kind": "span",
+         "words": "Maximum height (m above finished ground level): 25"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1",
+        "ADD-03:7.2",
+        "ADD-03:p4-image/col-height"
+       ],
+       "conflicts": [
+        "ADD-03:T5-1/a"
+       ],
+       "missing_information": [
+        "which ground-level datum governs the 25 m limit"
+       ],
+       "statements": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-right shows the height cell of row A with the Eastern Arabic numeral '٢٥' (two-five = 25), centred in the column under the natural-ground-level heading."
+      },
+      {
+       "id": "ADD-03/p4-image/rowA-lighting",
+       "state": {
+        "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+        "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+        "validated_stage": "ADD-02",
+        "working_stage": "ADD-03",
+        "decisions_sha256": null,
+        "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+        "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+        "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+        "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+        "unrecorded_crops_sha256": null,
+        "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+        "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+        "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+       },
+       "statement_type": "disposition",
+       "provision": "ADD-03:p4-image/rowA-lighting",
+       "payload": {
+        "provision": "ADD-03:p4-image/rowA-lighting",
+        "disposition": "no_effect",
+        "reason": "Cell 'مطلوبة' (required) for Zone A in the Arabic Table 5-1 at Appendix A. The cell states a requirement, but it prints no change and names no unit existing at ADD-02. The obligation reaches Volume II only through Clause 7.1 ('The Project Company shall comply with the height limits in Table 5-1 ... incorporated into this Volume by reference'), which is accounted for separately. A person confirms."
+       },
+       "evidence": [
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:p4-image/rowA-lighting",
+         "page": 4,
+         "kind": "reading",
+         "words": "مطلوبة",
+         "crop_sha256": "ba4894a1b73be496eae1d04c58d7601bb2dd73300450491cea8905db6736a4d5"
+        },
+        {
+         "doc": "ADD-03",
+         "unit_id": "ADD-03:7.1",
+         "page": 2,
+         "kind": "span",
+         "words": "The Project Company shall comply with the height limits in Table 5-1"
+        }
+       ],
+       "dependencies": [
+        "ADD-03:7.1"
+       ],
+       "statements": [
+        "S1",
+        "S6"
+       ],
+       "model_rationale": "Crop b07-left shows the left-most cell of row A with the single word 'مطلوبة' (required) and no qualifier, unlike row B, which qualifies it above 30 m. This agrees with 'Required' in English row T5-1/a."
+      }
+     ]
+    }
+   },
+   "ok": true,
+   "images": 0
+  }
+ ],
+ "crops_read": [
+  "ADD-03:p4-image/rowA-height",
+  "ADD-03:p4-image/col-height",
+  "ADD-03:p4-image/rowA-lighting"
+ ],
+ "images_received": [
+  {
+   "unit_id": "ADD-03:p4-image/rowA-height",
+   "sent": [
+    {
+     "sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b07-right.png",
+     "kind": "unit",
+     "bytes": 21913,
+     "attached": true
+    },
+    {
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 385840,
+     "attached": true
+    },
+    {
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 314613,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 21913,
+     "sha256": "09a3078ef437190f19726553a346ad22fedebf26b1bd4448cdff863bb10ccd24"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 385840,
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 314613,
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/col-height",
+   "sent": [
+    {
+     "sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b06-left.png",
+     "kind": "unit",
+     "bytes": 20510,
+     "attached": true
+    },
+    {
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 385840,
+     "attached": true
+    },
+    {
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 314613,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 20510,
+     "sha256": "c32f5643cdf613b17dfc55f78c3d94bf20f179077952fa01fb2c27ddee1bbc77"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 385840,
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 314613,
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+    }
+   ]
+  },
+  {
+   "unit_id": "ADD-03:p4-image/rowA-lighting",
+   "sent": [
+    {
+     "sha256": "ba4894a1b73be496eae1d04c58d7601bb2dd73300450491cea8905db6736a4d5",
+     "path_in_build": "review/ADD-03-p4-r1/bands/b07-left.png",
+     "kind": "unit",
+     "bytes": 5839,
+     "attached": true
+    },
+    {
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11",
+     "path_in_build": "regions/ADD-03-p4-r1/crop.png",
+     "kind": "region_crop",
+     "bytes": 385840,
+     "attached": true
+    },
+    {
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7",
+     "path_in_build": "regions/ADD-03-p4-r1/native.png",
+     "kind": "native",
+     "bytes": 314613,
+     "attached": true
+    }
+   ],
+   "received": [
+    {
+     "media_type": "image/png",
+     "bytes": 5839,
+     "sha256": "ba4894a1b73be496eae1d04c58d7601bb2dd73300450491cea8905db6736a4d5"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 385840,
+     "sha256": "dadbcea99754e4c585d3635c98959063cd677996366ab8f956cfc8e6b3fbab11"
+    },
+    {
+     "media_type": "image/png",
+     "bytes": 314613,
+     "sha256": "ed8d365c159d2f54ad1da03a9ab42d6e50f54ab997b556b8239b26e6bb14dbc7"
+    }
+   ]
+  }
+ ],
+ "submission": {
+  "run_id": "ADD-03-host-20261005T132640Z-bb63",
+  "status": "partial",
+  "staging": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/ai/ADD-03-host-20261005T132640Z-bb63",
+  "coverage": {
+   "provisions_total": 63,
+   "accounted": 8,
+   "unaccounted": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:1.3",
+    "ADD-03:2.1",
+    "ADD-03:2.2",
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.3(b)",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2",
+    "ADD-03:5.1",
+    "ADD-03:5.2",
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:Q21",
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:7.3",
+    "ADD-03:7.4",
+    "ADD-03:AppA/para1",
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/table-qualifier",
+    "ADD-03:p4-image/rowB-zone",
+    "ADD-03:p4-image/rowB-description",
+    "ADD-03:p4-image/rowB-height",
+    "ADD-03:p4-image/rowB-lighting",
+    "ADD-03:p4-image/notes-heading",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3",
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1",
+    "ADD-03:T5-1/a",
+    "ADD-03:T5-1/b",
+    "ADD-03:T5-1/notes",
+    "ADD-03:T5-1/note(1)",
+    "ADD-03:T5-1/note(2)",
+    "ADD-03:T5-1/note(3)"
+   ]
+  },
+  "resolution": {
+   "provisions_total": 63,
+   "accounted": 8,
+   "resolved": 0,
+   "pending": 8,
+   "invalid": 0,
+   "unaccounted": 55,
+   "pending_provisions": [
+    "ADD-03:p4-image/col-lighting",
+    "ADD-03:p4-image/col-height",
+    "ADD-03:p4-image/col-description",
+    "ADD-03:p4-image/col-zone",
+    "ADD-03:p4-image/rowA-zone",
+    "ADD-03:p4-image/rowA-description",
+    "ADD-03:p4-image/rowA-height",
+    "ADD-03:p4-image/rowA-lighting"
+   ],
+   "invalid_provisions": [],
+   "no_change_on_amendment_language": [],
+   "approved": 0
+  },
+  "items": [
+   {
+    "id": "ADD-03/p4-image/col-zone",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/p4-image/col-description",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/p4-image/col-lighting",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/p4-image/col-height",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/p4-image/rowA-zone",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/p4-image/rowA-description",
+    "status": "interpretation_pending"
+   },
+   {
+    "id": "ADD-03/p4-image/rowA-height",
+    "status": "conflicting"
+   },
+   {
+    "id": "ADD-03/p4-image/rowA-lighting",
+    "status": "interpretation_pending"
+   }
+  ]
+ },
+ "statuses": {
+  "ADD-03/p4-image/col-zone": "interpretation_pending",
+  "ADD-03/p4-image/col-description": "interpretation_pending",
+  "ADD-03/p4-image/col-lighting": "interpretation_pending",
+  "ADD-03/p4-image/col-height": "conflicting",
+  "ADD-03/p4-image/rowA-zone": "interpretation_pending",
+  "ADD-03/p4-image/rowA-description": "interpretation_pending",
+  "ADD-03/p4-image/rowA-height": "conflicting",
+  "ADD-03/p4-image/rowA-lighting": "interpretation_pending"
+ },
+ "num_turns": 15,
+ "usage": {
+  "input_tokens": 18,
+  "cache_creation_input_tokens": 83867,
+  "cache_read_input_tokens": 362942,
+  "output_tokens": 29995,
+  "output_tokens_details": {
+   "thinking_tokens": 2729
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 83867,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 188,
+    "cache_read_input_tokens": 73492,
+    "cache_creation_input_tokens": 14490,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 14490
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "host_plan_cost_usd": 1.3434964,
+ "final_text": "Submitted as run ADD-03-host-20261005T132640Z-bb63 with status \"partial\": all 8 provisions in my batch are covered and pending review, and the other 55 belong to other batches. Six are no-effect pending your confirmation. col-height is escalated and rowA-height left unresolved: the governing Arabic says natural ground level, the English says \"finished ground level\". Crops read: b06-left, b06-right, b07-right and b07-left (shown with the region crop and native image).",
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/ai/ADD-03-hostsession-20261005T132111Z-2050",
+ "api_error_status": null,
+ "terminal_reason": "completed",
+ "failure_class": null,
+ "reset_in_s": null,
+ "structured_output": null
+}

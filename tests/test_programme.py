@@ -85,7 +85,9 @@ def test_every_activity_has_a_resource_and_a_provisional_labelled_lead_time(r, b
     for p in (base, full_plan(r)):
         for a in p["activities"]:
             assert a["resource"] in asm["resources"], a["id"]
-            assert a["duration_basis"].startswith("ASSUMPTION (PROVISIONAL; owner "), a["id"]
+            # session 12 (F3, audit A5-9, deliberate): the owner's label "PROVISIONAL ASSUMPTION" in every data file
+            # (was "ASSUMPTION (PROVISIONAL; owner ...)", which a search for the owner's label missed)
+            assert a["duration_basis"].startswith("PROVISIONAL ASSUMPTION (owner "), a["id"]
             assert a["duration_assumption"] in asm["lead_times"]
     for k, v in asm["lead_times"].items():
         assert v["basis"].startswith("PROVISIONAL ASSUMPTION:") and v["owner"], k
@@ -210,7 +212,9 @@ def test_a_shorter_lcc_lead_time_makes_it_feasible_or_reduces_the_shortfall(r, b
     b, a = acts(base)["lcc-certificate"], acts(s["programme"])["lcc-certificate"]
     short = lambda st: int(re.search(r"by (\d+) WD", st).group(1)) if st.startswith("INFEASIBLE") else 0  # noqa: E731
     assert short(a["status"]) < short(b["status"])
-    assert a["duration_wd"] == 15 and a["duration_basis"].startswith("ASSUMPTION") and "SCENARIO lcc-15wd" in a["duration_basis"]
+    # session 12 (F3, audit A5-9, deliberate): the label is "PROVISIONAL ASSUMPTION" (was "ASSUMPTION (PROVISIONAL; ...")
+    assert a["duration_wd"] == 15 and a["duration_basis"].startswith("PROVISIONAL ASSUMPTION") \
+        and "SCENARIO lcc-15wd" in a["duration_basis"]
     # session 08 (owner: forward pass and float): the shortfall is the negative total float of the whole LCC chain
     # (ratio + certificate from the planning date), 12 WD, and it runs on to the delivery; 15 WD clears all of it
     assert "lcc-certificate: INFEASIBLE by 12 WD -> OK" in s["changes"]["status_changes"]

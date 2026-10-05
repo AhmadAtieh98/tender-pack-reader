@@ -341,7 +341,10 @@ class NoChangePayload(_Strict):
 
 
 class IssueItemPayload(_Strict):
-    id: str = Field(description="a new issue id, I-...")
+    """Session 12: an issue is a matter kept open for people; a proposal never changes an existing issue (a new id only,
+    no status or resolution field) and is at most `interpretation_pending`, shown HUMAN DECISION PENDING."""
+    id: str = Field(description="a NEW issue id, I-... (an existing issue is never changed, closed or resolved by a "
+                                "proposal; there is no status or resolution field)")
     text: str
     owner: str
     theme: str
@@ -351,10 +354,18 @@ class IssueItemPayload(_Strict):
 
 
 class ClarificationItemPayload(_Strict):
+    """Session 12: a proposal never changes a question's response status (new or existing id): the controller keeps the
+    register's status (a new entry is 'draft, not sent'); whether a question is answered or withdrawn is a person's
+    decision. An addendum unit that responds to the question may be quoted as `answer: {unit, page, words}`: it is kept
+    as `recorded_answer` ("answer recorded; whether it resolves the question is a human decision"), never applied."""
     entry: dict = Field(description="one entry of the clarification register in its own shape: id (CQ-...), kind, "
                                     "volume, clause, page, units, sources [{unit, page, words}], gap, already_settled, "
                                     "practical_impact, proposed_question, interim_handling, decision_owner, "
-                                    "response_status ('draft, not sent'), linked_issues, theme. A DRAFT: never sent")
+                                    "response_status ('draft, not sent'), linked_issues, theme. A DRAFT: never sent. "
+                                    "You may NOT set response_status to 'answered by addendum' or 'withdrawn (not "
+                                    "sent)', for a new or an existing id: the register's status is kept. You MAY quote "
+                                    "the addendum words that respond to an existing question as answer: {unit, page, "
+                                    "words}; it is recorded, not applied: a person decides whether it resolves it")
 
 
 class EvidenceItemPayload(_Strict):

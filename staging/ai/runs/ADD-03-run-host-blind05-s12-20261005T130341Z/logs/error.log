@@ -1,0 +1,38 @@
+2026-10-05T13:32:38Z analysis
+Traceback (most recent call last):
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 658, in _drive
+    STEP_FUNCS[step](ctx, st)
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 1451, in step_analysis
+    _analysis_batch(ctx, st, bid, todo)
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 1483, in _analysis_batch
+    ps = _host_analysis(ctx, st, bid, todo)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 1646, in _host_analysis
+    got = Prefetch.result(pre)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 371, in result
+    raise rec["value"]
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 344, in run
+    return ("ok", work())
+                  ^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 1736, in work
+    res = R.call_host(run, pol, sleep=ctx.sleep, rng=ctx.rng, record=attempts.append)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/requests.py", line 356, in call_host
+    res = run()
+          ^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/workflow.py", line 1730, in run
+    box["data"] = sess.run_batch(packet)
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/hostsession.py", line 314, in run_batch
+    return self._finish(log, packet, res, stdout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/hostsession.py", line 427, in _finish
+    addendum=res.addendum, state=ws.identity(), status="provider_failed",
+                                 ^^^^^^^^^^^^^
+  File "/home/user/tender-pack-reader/tenderpack/ai/tools.py", line 332, in identity
+    self.check_fresh()
+  File "/home/user/tender-pack-reader/tenderpack/ai/tools.py", line 254, in check_fresh
+    raise ToolError(f"workspace stale: reload (changed since it was loaded: {', '.join(changed[:4])}"
+tenderpack.ai.tools.ToolError: workspace stale: reload (changed since it was loaded: config/formulas.yaml)
+

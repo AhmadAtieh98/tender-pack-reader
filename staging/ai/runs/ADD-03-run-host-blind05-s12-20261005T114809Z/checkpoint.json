@@ -1,0 +1,329 @@
+{
+ "format": "tenderpack-ai-run/1",
+ "run_id": "ADD-03-run-host-blind05-s12-20261005T114809Z",
+ "addendum": "ADD-03",
+ "settings": {
+  "addendum": "ADD-03",
+  "pdf": "/home/user/tender-pack-reader/rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf",
+  "route": "host",
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "staging": "/home/user/tender-pack-reader/staging/ai",
+  "worklog": "/home/user/tender-pack-reader/worklog/model_calls",
+  "ai_config": "/home/user/tender-pack-reader/config/ai.yaml",
+  "batch_size": 8,
+  "downstream_batch_size": 12,
+  "model": null,
+  "cassette": null,
+  "caps": {},
+  "host_model": null,
+  "host_mode": "auto",
+  "host_session_model": "opus",
+  "allow_unverified_capabilities": false,
+  "background_before": true,
+  "cache": true,
+  "offline": null,
+  "ollama_preflight": null,
+  "max_parallel_sessions": 2
+ },
+ "inputs": {
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "pdf": {
+   "path": "/home/user/tender-pack-reader/rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf",
+   "sha256": "9c5e22d59a80d48f82f07cbb0cfb7649f14a8618fb8fc4503a576f4a0293eae3",
+   "pages": 5,
+   "bytes": 309063
+  },
+  "copied": {
+   "manifest": "sources/manifest.json",
+   "furniture": "config/furniture.yaml",
+   "readings_dir": "curation/readings",
+   "approvals": "curation/approvals.yaml",
+   "clarifications": "curation/clarifications/register.yaml",
+   "amendments_dir": "curation/amendments",
+   "register": "curation/register/rows.yaml",
+   "issues": "curation/register/issues.yaml",
+   "dispositions_dir": "curation/register/dispositions",
+   "row_ids": "curation/register/ids.yaml",
+   "evidence_items_dir": "curation/evidence_items",
+   "activity_templates": "curation/activity_templates.yaml",
+   "assumptions": "config/assumptions.yaml",
+   "scenarios": "config/scenarios.yaml",
+   "relationships": "curation/relationships.yaml"
+  },
+  "real_hashes": {
+   "config/assumptions.yaml": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+   "config/furniture.yaml": "1fd1b89520a26e7df1ac9b3017b1151256fbb093f482e57898b9535dda0a7533",
+   "config/pack.yaml": "52788e8474d401f70c7eb544431270ea8c00d3cff5c2629dd717eb6831ac0363",
+   "config/scenarios.yaml": "cf25bff61c3211f4346e731a1e5b77bcfd4a4c442ba16783834604f0890dac69",
+   "curation/activity_templates.yaml": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+   "curation/amendments/ADD-01.yaml": "8bc289bd4ba7549b6627929d6cd587dffabae736b4ec45255e5389211eb85a31",
+   "curation/amendments/ADD-02.yaml": "56130032fdad9d2ed7b0236057e6a6bb3078ff5f0a0cfe638b122ace5cf6f6de",
+   "curation/approvals.yaml": "23d2dc4d8061ba062601837140c3843467808082350fe269d8b806dbf679e393",
+   "curation/clarifications/register.yaml": "0ca5deb40a5e9dfe7a27f55f5a3c972c2972eeecbc7d898c02a6c7fc9b2c8f58",
+   "curation/evidence_items/VOL-IV.yaml": "6b577b671dec85b568c6b5ab3f158419a2bf1715338f29c42670729052cc30c7",
+   "curation/evidence_items/core.yaml": "b9bf90b7e40751c97608c25aaa50348f6565f56d9113a7f20bab7f80986ba73b",
+   "curation/reading-snapshots/VOL-II-p3-r1@6bc6505956429dc7.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/reading-snapshots/VOL-IV-p6-r1@f433c2ca4e562679.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/readings/VOL-II-p3-r1.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/readings/VOL-IV-p6-r1.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/register/dispositions/VOL-I.yaml": "125b676e7de62f10d5da30ee920db0b2b4bd04658f2ae3159499a55c792997fa",
+   "curation/register/dispositions/VOL-II.yaml": "aa50a1d13ea819b7bcbcd3b224f0a6e4ad966fecdb8bc2f8f5663c2e20e0e135",
+   "curation/register/dispositions/VOL-IV.yaml": "0458a38ebb9ce760ba4b3267c4c6c52e8d23ccf0ec641d9ce2689319f69a1112",
+   "curation/register/dispositions/VOL-V.yaml": "4640e7e2bcef689f1af365012f800d10b93f41b77159ba8f68c16e5cb6e192de",
+   "curation/register/ids.yaml": "431d8b329cda9fe96606c035b533ac22a1f0bb49ec81b503a3dcbe30f23dae83",
+   "curation/register/issues.yaml": "3b1a4053d2b84b6ba64a6860124af6b9165de1841b1ad814f8fec3396845ad37",
+   "curation/register/issues/VOL-I.yaml": "47779bac43928ccb6f1ae19223881816c785c18c5225c8dea84b46ec224dbae5",
+   "curation/register/issues/VOL-II-V.yaml": "ed1372cb535eface9d350b66b27fcee97f9adf404addf201235e07efe1b275aa",
+   "curation/register/issues/VOL-IV.yaml": "366e0bc2765e3a900d85fa2b887440dde07d60d5dc9e2b29fa006d520672f4b8",
+   "curation/register/pins.yaml": "e1f3eaff46462e317f4c926a8ff8ebeed0df175b319a99757b91d50177d92ff1",
+   "curation/register/proposals/2026-10-03_session-08_owner-directed.yaml": "c5ef0ea4d35d3b70ea6eb106106b0e4c2ec4d5d49ed4686563c2b2ada6466f49",
+   "curation/register/proposals/2026-10-03_stale-rows.yaml": "0fadce50465c75f76cd6fdd1c9f69cb4477810aab80f3a39c42892e217d97869",
+   "curation/register/rows.yaml": "5420fdd2c7b6d1a5fe24c636fd962d1f0d37457a7ebe6175d16aca4db6df3c6e",
+   "curation/register/rows/ADD.yaml": "dab0ca1133073c61279613dbd24f7de7e6b35580ff4d133c81e31dc43566ed61",
+   "curation/register/rows/VOL-I.yaml": "7f11526c1261926ac00783672985214f4d59a9a303312795d42beca27716bc21",
+   "curation/register/rows/VOL-II.yaml": "2f23ed841dc2918a01f6a5987abfcefebd0844102b8d0867558d0d10a376e25e",
+   "curation/register/rows/VOL-IV.yaml": "22a7245555302d8f610cf2a807f5f1fa2b425928a1a45de6fed21c5d2b2c7f38",
+   "curation/register/rows/VOL-V.yaml": "f3ad724a547d405248f0a51bea59f13118565b7d19f4d17a31159f830ce23b91",
+   "curation/relationships.yaml": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+   "sources/manifest.json": "6c01add4c30c9f1eaeb34e2a8175d504a613e20ff3b870707070485a6adac4c9"
+  },
+  "preceding_pack_id": "NUPA-ISTP-2026-014"
+ },
+ "candidate": {
+  "dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate",
+  "pack": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/pack.yaml",
+  "pack_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/pack-before.yaml",
+  "build": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/build",
+  "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/out",
+  "out_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/out-before",
+  "pdf_copy": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/candidate/input/ADD-03_Addendum_No_3.pdf"
+ },
+ "created": "2026-10-05T11:48:09Z",
+ "updated": "2026-10-05T11:48:26Z",
+ "status": "stopped",
+ "status_reason": "no usable reading for the image region(s) ['ADD-03-p4-r1'] (ADD-03-p4-r1: refused: refused: another orchestrator holds ADD-03: held by host run ADD-03-run-host-blind05-s12-20261005T114809Z (pid 26936, 0.3 min old); wait for it to finish, or a person removes it with --break-lock --by \"Your Name\"); ingest cannot read the addendum without them. Resume to ask again: `tenderpack ai resume ADD-03-run-host-blind05-s12-20261005T114809Z`",
+ "steps": {
+  "ingest": {
+   "status": "done",
+   "seconds": 16.118,
+   "attempts": 1,
+   "started": "2026-10-05T11:48:09Z",
+   "exit_code": 2,
+   "units": 575,
+   "pending_review": [],
+   "failed_checks": [
+    "C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none"
+   ],
+   "refused_for_readings": true,
+   "unread_regions": [
+    "ADD-03-p4-r1"
+   ],
+   "reason": "STRUCTURAL FAILURE: C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none",
+   "finished": "2026-10-05T11:48:25Z"
+  },
+  "readings": {
+   "status": "stopped",
+   "seconds": 0.427,
+   "attempts": 1,
+   "started": "2026-10-05T11:48:25Z",
+   "batches": {
+    "reading-ADD-03-p4-r1": "failed"
+   },
+   "readings": {
+    "ADD-03-p4-r1": {
+     "status": null,
+     "file": null
+    }
+   }
+  },
+  "analysis": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "validation": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "downstream": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "downstream_validation": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "critic": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "promotion": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "pin": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "check_register": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "outputs": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "diff": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "review": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  }
+ },
+ "batches": {
+  "reading-ADD-03-p4-r1": {
+   "phase": "reading",
+   "region": "ADD-03-p4-r1",
+   "status": "failed",
+   "attempts": 1,
+   "seconds": 0.425,
+   "pid": 26936,
+   "started": "2026-10-05T11:48:25Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/batches/reading-ADD-03-p4-r1.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T114826Z-bf61",
+    "elapsed_s": 0.0,
+    "error": "refused: another orchestrator holds ADD-03: held by host run ADD-03-run-host-blind05-s12-20261005T114809Z (pid 26936, 0.3 min old); wait for it to finish, or a person removes it with --break-lock --by \"Your Name\"",
+    "model_reported": [],
+    "tool_calls": 0,
+    "failure_class": "refused",
+    "note": "the session's final message is the proposed reading"
+   },
+   "error": "refused: refused: another orchestrator holds ADD-03: held by host run ADD-03-run-host-blind05-s12-20261005T114809Z (pid 26936, 0.3 min old); wait for it to finish, or a person removes it with --break-lock --by \"Your Name\""
+  }
+ },
+ "provisions": {},
+ "structure": [],
+ "downstream": {
+  "tasks": {},
+  "items": {}
+ },
+ "interventions": [
+  {
+   "ts": "2026-10-05T11:48:26Z",
+   "kind": "host session (automatic)",
+   "batch": "reading-ADD-03-p4-r1",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session reading an image; not a person"
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null
+ },
+ "events": [
+  {
+   "ts": "2026-10-05T11:48:09Z",
+   "event": "started",
+   "by_pid": 26936
+  },
+  {
+   "ts": "2026-10-05T11:48:09Z",
+   "event": "run_lock_scoped",
+   "scope": "run",
+   "lock": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T114809Z/ai/.lock-ADD-03",
+   "max_parallel_sessions": 2
+  }
+ ],
+ "out_before": {
+  "status": "running",
+  "pid": 26990,
+  "key": "9c00231a5c41cb8ab0379ebb33f767042420eb69ac2763005d4f7fa98be6dcdb",
+  "started": "2026-10-05T11:48:25Z",
+  "evidence": "/home/user/tender-pack-reader/build"
+ },
+ "rate_gate": {
+  "pauses": 0,
+  "waits": 0,
+  "longest_wait_s": 0.0
+ },
+ "execution": {
+  "run_status": "stopped",
+  "steps": {
+   "ingest": "done",
+   "readings": "stopped",
+   "analysis": "pending",
+   "validation": "pending",
+   "downstream": "pending",
+   "downstream_validation": "pending",
+   "critic": "pending",
+   "promotion": "pending",
+   "pin": "pending",
+   "check_register": "pending",
+   "outputs": "pending",
+   "diff": "pending",
+   "review": "pending"
+  },
+  "batches": {
+   "reading": {
+    "failed": 1
+   }
+  }
+ },
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "promotion into the candidate did not run (step pending)",
+   "the downstream step did not run (step pending)",
+   "check-register did not run on the candidate (step pending)",
+   "the candidate outputs were not built (step pending)"
+  ],
+  "provisions": {
+   "total": 0,
+   "unresolved": [],
+   "answered": 0
+  },
+  "downstream": {
+   "tasks": 0,
+   "answered": 0,
+   "unanswered": [],
+   "unresolved": [],
+   "batches_not_done": [],
+   "no_change": []
+  },
+  "check_register": {
+   "exit_code": null,
+   "findings": null,
+   "by_kind": null,
+   "c46": []
+  },
+  "outputs": {
+   "published": false,
+   "refused": false,
+   "reason": null,
+   "exit_code": null
+  }
+ },
+ "approval": {
+  "status": "none",
+  "by_the_workflow": "nothing approved, accepted, rejected or sent",
+  "decisions": []
+ }
+}

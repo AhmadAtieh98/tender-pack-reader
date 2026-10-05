@@ -55,22 +55,30 @@ def test_blind_02_rows_citing_the_replaced_table_2_2_rows_are_changed(blind02, m
     assert set(old["requirements"]["changed"]) <= set(data["requirements"]["changed"])
     for h in HEADINGS:
         assert any(x.startswith(h) for x in text.splitlines()), h
-    assert [x for x in old_text.splitlines() if not x.startswith(("- CHANGED", "- new:"))] == \
-        [x for x in text.splitlines() if not x.startswith(("- CHANGED", "- new:"))]
+    # session 12 (W3a): a row with no change of its own is listed CONFIRMED (unchanged) or NOT SETTLED; with its secondary
+    # units it can move from that line to a CHANGED line, so those lines are compared with the CHANGED ones
+    moved_lines = ("- CHANGED", "- new:", "- CONFIRMED (unchanged)", "- NOT SETTLED")
+    assert [x for x in old_text.splitlines() if not x.startswith(moved_lines)] == \
+        [x for x in text.splitlines() if not x.startswith(moved_lines)]
 
 
 def test_real_pack_add_01_to_add_02_changes_only_by_genuine_secondary_units(real, monkeypatch):
     old_text, old = _without_secondary(monkeypatch, real, "ADD-01", "ADD-02")
     text, data = live.diff(real, "ADD-01", "ADD-02")
     sec = data["requirements"]["secondary"]
-    # the rows whose cited units genuinely changed at ADD-02 besides their first unit (session 09 report)
-    assert set(sec) == {"VOL-I-9.4-01", "ADD-01-AppA-01", "VOL-II-3.1-01", "VOL-V-29.3-01"}, sec
+    # the rows whose cited units genuinely changed at ADD-02 besides their first unit (session 09 report). Session 12
+    # (W3a, deliberate): VOL-I-9.4-01's secondary unit is only annotated by ADD-02/Q9, labelled `confirms`: a confirmation
+    # is not a change (blind-04 follow-up 6, blind-05 follow-up 10), so the row is listed CONFIRMED (unchanged) with the
+    # annotation and the op, not CHANGED
+    assert set(sec) == {"ADD-01-AppA-01", "VOL-II-3.1-01", "VOL-V-29.3-01"}, sec
     assert "secondary unit VOL-II:T2-4/TN amended by ADD-02/5.1 (Limit: 5 -> 3)" in _line(text, "VOL-V-29.3-01")
-    assert "secondary unit VOL-IV:F4-C/image annotated by ADD-02/Q9" in _line(text, "VOL-I-9.4-01")
+    conf = next(x for x in text.splitlines() if x.startswith("- CONFIRMED (unchanged) VOL-I-9.4-01:"))
+    assert "secondary unit VOL-IV:F4-C/image annotated by ADD-02/Q9" in conf and "VOL-I-9.4-01" in data["requirements"]["confirmed"]
     assert "secondary unit VOL-II:H:S3 annotated by ADD-02/5.2" in _line(text, "VOL-II-3.1-01")
     assert "secondary unit ADD-02:cover/para3 issued" in _line(text, "ADD-01-AppA-01")
     # every other line is exactly as before
-    changed_lines = {f"- CHANGED {rid}:" for rid in sec}
+    # session 12 (W3a): without its secondary units a row may read CONFIRMED (unchanged); that line moves with it
+    changed_lines = {f"{h} {rid}:" for rid in sec for h in ("- CHANGED", "- CONFIRMED (unchanged)", "- NOT SETTLED")}
     keep = lambda t: [x for x in t.splitlines() if not x.startswith(tuple(changed_lines)) and not x.startswith("- new:")]  # noqa: E731
     assert keep(old_text) == keep(text)
     assert set(data["requirements"]["changed"]) - set(old["requirements"]["changed"]) <= set(sec)

@@ -367,7 +367,8 @@ def test_a5_is_generated_from_rows_in_force_with_labelled_assumptions(written, r
     force = {e["row"].id for e in real["evals"] if e["stages"]["ADD-02"]["status"].startswith(("ACTIVE", "AMENDED", "REINSTATED", "NEW"))}
     for a in prog["activities"]:
         assert set(a["req_ids"]) <= force and a["req_ids"]
-        assert a["duration_basis"].startswith("ASSUMPTION")
+        # session 12 (F3, audit A5-9, deliberate): the owner's label "PROVISIONAL ASSUMPTION" in every data file
+        assert a["duration_basis"].startswith("PROVISIONAL ASSUMPTION")
     acts = {a["id"]: a for a in prog["activities"]}
     assert acts["lcc-certificate"]["status"] == "INFEASIBLE by 12 WD"          # session 08: forward pass, whole LCC chain
     # session 08: a conditional duty whose window elapsed is not a missed duty
@@ -437,7 +438,8 @@ def test_partial_addendum_preserves_the_last_validated_state_in_outputs(tmp_path
     assert a1["validated_stage"] == "ADD-01" and a1["working_stage"] == "ADD-02"
     assert "WORKING, not validated" in next(c["header"] for c in a1["columns"] if c["key"] == "status:ADD-02")
     a3 = json.loads((tmp_path / "out/a3/a3.json").read_text(encoding="utf-8"))
-    assert a3["subtitle"].startswith("Validated state ADD-01") and "NOT used here" in a3["subtitle"]
+    # session 12 (F2, audit A3-3): 'Validated state' reads 'State after' on the page (plain words)
+    assert a3["subtitle"].startswith("State after ADD-01") and "NOT used here" in a3["subtitle"]
     assert "I-PARTIAL-ADD-02" in {i["id"] for i in a3["unresolved"]["items"]}
     main = json.loads((tmp_path / "out/a5/programme.json").read_text(encoding="utf-8"))["rows"]
     assert "lcc-certificate" not in {a["id"] for a in main}     # A5 from ADD-01 (LCC deleted), not ADD-02

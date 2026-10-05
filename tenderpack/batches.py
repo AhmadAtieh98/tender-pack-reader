@@ -79,6 +79,17 @@ def _packet_link(build_dir: Path, out: Path, rg: str) -> str:
             "visible.</p>")
 
 
+def batch4_intro(statuses: list[str], accepted: int) -> str:
+    """The batch-04 header, counted from the proposals' states (session 12, audit R-3: a fixed "Prepared, not applied
+    and not accepted" stood above cards that said "Applied."). `statuses`: one per proposal ("applied", "superseded",
+    "not applied"); `accepted`: how many of their rows a person has accepted (a recorded decision)."""
+    n = {s: statuses.count(s) for s in ("applied", "superseded", "not applied")}
+    return (f"{len(statuses)} proposal(s): {n['applied']} applied, {n['superseded']} superseded (never applied, kept for "
+            f"the record only), {n['not applied']} not applied; their rows: {accepted} accepted by a person. Applying a "
+            "proposal writes the interpretation and pins it; the row is then PROPOSED and needs your decision. Applied is "
+            "not accepted.")
+
+
 def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
     out = Path(out)
     if out.exists():
@@ -124,11 +135,13 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         decisions = "".join(f"<li>{_e(_tagged(d, appr))}</li>" for d in packet.get("decisions") or [])
         if appr:
             from .packets import approval_scope_html
+            from .readings import approval_scope_line
             box = (f'<div class="decide"><b>Approved by {_e(appr.get("reviewer"))} on {_e(appr.get("date"))}</b> for '
                    f"review subject <code>{_e(packet.get('subject_sha256', '')[:16])}</code> (this reading and its evidence, "
                    "exactly as shown here). No decision is needed unless the reading changes: any change makes it pending "
                    "again, and <code>tenderpack approve</code> then shows the differences before an approval can be "
-                   "extended. The approval covers the transcription only." + approval_scope_html({"status": "approved", **appr})
+                   "extended. " + _e(approval_scope_line(appr, any(u.get("translation") for u in rus)))   # session 12 (R-2)
+                   + approval_scope_html({"status": "approved", **appr})
                    + "<p>Points the reading itself records as uncertain (kept as recorded):</p>"
                    f"<ul>{decisions}</ul></div>")
         else:
@@ -144,7 +157,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                                    else "approve the reading (or correct it)"),
                       "command": "" if appr else f'python -m tenderpack approve {rg} --reviewer "Your Name"'})
     (out / "batch-01-image-readings.html").write_text(_page(
-        "Batch 1 — the two image readings", "Readings are transcriptions only; what a value means is decided in the rows. "
+        "Batch 1 — the two image readings", "A reading is a transcription, with any translation displayed beside it; what a "
+        "value means is decided in the rows. "
         "An approval pins the reading and its evidence; any later change makes it pending again.", body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batch 2: disqualifiers (A3 rows)
@@ -264,10 +278,10 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                       "decision": f"none: superseded by {p.get('superseded_by')}" if superseded
                       else p.get("decision_needed", ""),
                       "command": "" if superseded else f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
+    b4 = [x for x in items if x["batch"] == 4]
+    accepted = sum(1 for p in props.values() if p.get("row") in rows and rv.get(("row", p["row"]), {}).get("status") == "accepted")
     (out / "batch-04-stale-proposals.html").write_text(_page(
-        "Batch 4 — proposals for the STALE rows", "Prepared, not applied and not accepted. Applying one writes the "
-        "interpretation and pins it; the row is then PROPOSED and needs your decision. A proposal superseded by your own "
-        "interpretation is kept for the record only.", body), encoding="utf-8")
+        "Batch 4 — proposals for the STALE rows", batch4_intro([x["status"] for x in b4], accepted), body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batches 5+: the remaining rows
     rest = [e for e in r["evals"] if e["row"].id not in done]

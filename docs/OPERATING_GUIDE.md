@@ -82,7 +82,9 @@ Times are from the blind rehearsals (`rehearsals/blind-01/COMPARISON.md`, `rehea
 
 Nothing is lost: every step and batch is checkpointed under `staging/ai/runs/<run>/checkpoint.json`. Run
 `python -m tenderpack ai resume <run>`; batches that succeeded are never asked again, a batch the plan's rate limit
-deferred (exit 5, "DEFERRED") is asked again, and the steps after the last done batch are recomputed. A run killed
+deferred (exit 5, "DEFERRED") is asked again, and the steps after the last done batch are recomputed. A run that
+stops because it cannot go on by itself exits 6 (session 12): an image region without a usable reading, readings
+escalated to a person, or inputs changed before promotion. Do what its reason says, then `resume`. A run killed
 mid-batch (a crash, a container restart) leaves its locks behind; `resume` takes over the run lock and the
 addendum's staging lock when their process is no longer running on this machine and records the takeover; a lock
 held by a live process is still refused, and an old lock without a dead process needs a person
@@ -136,6 +138,31 @@ The `review:` fields in the YAML files are drafting flags. They never count.
 ## 6. The AI layer (session 09)
 
 The system still runs without a model: every reviewed output above is produced offline. When a model is used, it proposes and never decides: `docs/AI_ROUTES.md` gives the commands for each route (Claude Code or Codex over MCP/CLI with their own model; the Anthropic API, OpenRouter or local Ollama with the application's capped calls), what is recorded versus live, and the credential rules (environment only). A run ends in `staging/ai/<run_id>/review_request.md`; `tenderpack ai promote RUN_ID --by "Your Name"` copies the verified items into curation as PROPOSED drafts, and the decisions of §4 still follow. Nothing in `staging/` is applied or published.
+
+### 6a. Offline on the Mac (session 12)
+
+On the owner's Mac, `docs/MAC_SETUP.md` covers the one-time setup (`bash scripts/mac/setup.sh`), the double-click
+launcher (`scripts/mac/launch.command`) and the offline checks (`bash scripts/mac/checks.sh`, with Wi-Fi off). After
+setup, `ingest`, `outputs`, `outputs --strict` and `check-register` need neither internet nor a key.
+
+Local AI runs only in **offline mode**: `--offline`, `offline: true` in `config/ai.yaml`, or `TENDERPACK_OFFLINE=1`.
+In that mode every phase uses the local Ollama, and a hosted route is refused before any call (`docs/AI_ROUTES.md` §17).
+
+```
+.venv/bin/python -m tenderpack ai routes --offline                      # each route's kind; local models checked; nothing pulled
+.venv/bin/python -m tenderpack ai run ADD-03 --pdf PATH --offline       # every phase on the local ollama route
+.venv/bin/python -m tenderpack ai resume RUN_ID --offline
+.venv/bin/python -m tenderpack ai run-status RUN_ID
+```
+
+What to expect from an offline run:
+
+- **Model not installed.** A missing local model stops the run with the `ollama pull` command you may run yourself.
+- **Readings.** A reading model without vision escalates the image regions to you.
+- **Critic.** The critic runs on `routes.ollama.models.critic`, or the review packet says "independent review did not
+  run" with the reason.
+- **Checks on the Mac.** These checks are tested here with a fake local server only; on your Mac they are pending
+  (`docs/MAC_SETUP.md` lists them).
 
 ## 7. Relationships: effects through other provisions (session 10)
 

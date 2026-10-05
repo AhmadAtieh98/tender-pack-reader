@@ -196,6 +196,29 @@ def review_subject(reading: Reading, region: Region, doc_sha256: str) -> dict:
             "evidence": evidence}
 
 
+def approval_covers(translated: bool, plural: bool = False) -> str:
+    """What an owner's approval of an image reading confirms, in one wording for every output (session 12, audit R-2:
+    the packets said "the transcription only" while the approval record confirms the displayed translations). An
+    approval pins the review subject above: the whole reading, its displayed translations included, and its evidence
+    (the `covers` field of curation/approvals.yaml). So it confirms the transcription and, where the reading displays
+    translations, those translations as displayed; what they mean stays in the rows. `translated`: the reading has a
+    translation on at least one of its units."""
+    if plural:
+        return "transcriptions and displayed translations" if translated else "transcriptions"
+    return "the transcription and the displayed translations" if translated else "the transcription"
+
+
+def approval_scope_line(approval: dict, translated: bool) -> str:
+    """One sentence for a review page: what the approval covers (approval_covers) and what it does not cover, from the
+    approval entry's own `does_not_cover` list (the head of each item, before its explanation)."""
+    items = approval.get("does_not_cover") or []
+    heads = [re.split(r":| \(", str(x))[0].strip() for x in (items if isinstance(items, list) else [items])]
+    heads = [h for h in heads if h]
+    tail = (", ".join(heads[:-1]) + " or " + heads[-1]) if len(heads) > 1 else "".join(heads)
+    return (f"The approval covers {approval_covers(translated)}, as shown, with the reading's evidence"
+            + (f"; it does not cover {tail}" if tail else "") + ".")
+
+
 def review_status(reading: Reading, approvals: list[dict], subject: dict) -> dict:
     sha = subject["sha256"]
     mine = [a for a in approvals if a.get("region_id") == reading.region_id]

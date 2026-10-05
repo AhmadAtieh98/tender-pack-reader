@@ -60,6 +60,20 @@ Batches that succeeded are never asked again on resume. The selective critic rev
 items after its validation, and each downstream batch's selected items in the `critic` step after the downstream
 validation, in one request per batch; its findings are review.critic (analysis items) and downstream/critic.yaml
 (downstream items); it changes no status, and agreement is not approval.
+
+Session 12:
+  * offline mode (tenderpack/ai/offline.py; `--offline`, config `offline: true`, TENDERPACK_OFFLINE=1): every phase on
+    the local ollama route; a hosted route is refused at start (and every host session, hosted adapter and host
+    critic refuses in its constructor); the models are checked against the local endpoint first (_ollama_preflight);
+    the critic runs on routes.ollama.models.critic or is recorded `skipped` ("independent review did not run: ...",
+    in the log, the checkpoint, the review packet and the candidate README); readings with a model that does not
+    report vision are escalated to a person (_local_reading_check).
+  * models per phase on ollama (config.phase_model): readings `vision`, the text phases `propose`/`text`/--model.
+  * bounded concurrency (Prefetch; config concurrency.max_parallel_sessions, host and recorded routes only): the
+    exchanges of up to N analysis or downstream batches run in worker threads under ONE run-scoped addendum lock and a
+    shared rate-limit gate (requests.RateGate); everything else (packets, validation, checkpoints, the critic) stays in
+    the run's thread, in plan order, so the result is the sequential result.
+  * the shared part of every packet is sent smaller (requests.compact_shared).
 """
 from __future__ import annotations
 
@@ -75,16 +89,19 @@ import time
 import traceback
 import typing
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import yaml
 
+from .. import human_owned as HO
 from ..util import ROOT, load_yaml, sha256_file
 from . import budget as B
 from . import candidate as CAND
 from . import config as C
 from . import controller
 from . import downstream as DS
+from . import offline as OFF
 from . import regionread as RR
 from . import requests as R
 from .checkpoint import STEPS, Checkpoint, RunLock, RunLockError, now_iso
@@ -93,10 +110,13 @@ from .runlog import RunLog
 from .tools import Workspace
 
 ROUTES = ("recorded", "host", "anthropic", "openrouter", "ollama")
+PARALLEL_ROUTES = ("host", "recorded")            # session 12: where batches may ask their sessions at once
+MAX_PARALLEL = 4
 API_ROUTES = ("anthropic", "openrouter", "ollama")
 TARGET_MIN = 30.0
 EXIT_CODES = {"complete": 0, "partial": 0, "stopped": 0, "waiting_for_host": 4, "failed": 1, "refused": 2,
               "deferred": 5}
+STOP_FOR_PERSON = 6                                # session 12: `stopped` because the run cannot go on by itself
 RUNNABLE = ("pending", "deferred")                 # batch states a drive asks (a deferred batch: a rate limit)
 
 
@@ -105,9 +125,12 @@ class WaitingForHost(Exception):
 
 
 class StopRun(Exception):
-    def __init__(self, status: str, reason: str):
+    """`code` (session 12): the exit code of a `stopped` run: 0 only for a stop that was asked for (--stop-after), 2 for
+    a structural ingest refusal (as documented), else 6 (STOP_FOR_PERSON: the run cannot go on until a person acts)."""
+
+    def __init__(self, status: str, reason: str, code: int | None = None):
         super().__init__(reason)
-        self.status, self.reason = status, reason
+        self.status, self.reason, self.code = status, reason, code
 
 
 class BatchFailed(Exception):
@@ -185,6 +208,10 @@ class Ctx:
         self._ws = self._cfg = self._cassette = self._promoted = None
         self.before_proc = None
         self.stop_batches: str | None = None
+        self.prefetch: "Prefetch | None" = None          # session 12: batches at once (max_parallel_sessions > 1)
+        self.gate: "R.RateGate | None" = None
+        self.run_lock = None
+        self.stop_pending: "StopRun | None" = None
 
     @property
     def ws(self) -> Workspace:
@@ -197,6 +224,9 @@ class Ctx:
     def cfg(self) -> dict:
         if self._cfg is None:
             self._cfg = C.load(Path(self.s["ai_config"]) if self.s.get("ai_config") else None)
+            src = self.s.get("offline") or OFF.requested(self._cfg)        # session 12: offline mode, kept on resume
+            if src:
+                OFF.activate(self._cfg, src)
             if self.s.get("allow_unverified_capabilities"):
                 from .providers.base import ALLOW_UNVERIFIED_KEY
                 self._cfg[ALLOW_UNVERIFIED_KEY] = True
@@ -221,6 +251,8 @@ class Ctx:
                  if (b.get("critic") or {}).get("status") == "done"} - {None}
         used |= {c.get("session") for c in (self.cp.data["downstream"].get("critic") or {}).values()
                  if c.get("status") == "done"} - {None}
+        if self.prefetch is not None:                     # sessions reserved by batches asked ahead (session 12)
+            used |= {r.get("session") for r in self.prefetch.recs.values()} - {None}
         return used
 
     def remaining_caps(self) -> dict:
@@ -258,6 +290,7 @@ class Ctx:
         caps = C.caps(self.cfg, route, self.s.get("caps") or {}) if route != "host" else {}
         p = R.FailurePolicy.from_cfg(self.cfg, caps)
         p.after_deferral = bool(getattr(self, "deferred_in_drive", None))
+        p.gate = self.gate
         return p
 
     @property
@@ -281,6 +314,94 @@ class Ctx:
                 self.log.event("route_notice", **rec)
 
 
+class Prefetch:
+    """Session 12: bounded concurrency of a run's analysis and downstream batches (concurrency.max_parallel_sessions).
+
+    The run's own thread plans, dispatches and TAKES every batch in plan order, exactly as one at a time; only the
+    exchange with the model (a host session, or a provider conversation) runs in a worker thread, at most `n` at once.
+    A worker touches no checkpoint, no candidate input and no other batch's files (its own staging folder and log).
+    When the batch's turn comes, its packet is built again; the worker's answer is used only when that packet is the
+    one the worker sent (otherwise it is discarded, recorded, and the batch is asked as usual), so the result is the
+    sequential result. A deferral stops new dispatches; the batches already asked are taken, then the run stops."""
+
+    def __init__(self, ctx: "Ctx", n: int):
+        self.ctx, self.n = ctx, int(n)
+        self.pool = ThreadPoolExecutor(max_workers=self.n, thread_name_prefix="tenderpack-batch")
+        self.recs: dict[str, dict] = {}
+        self.tried: set[str] = set()
+        self.discarded: list[str] = []
+
+    @staticmethod
+    def key(packet: dict) -> str:
+        import hashlib
+        return hashlib.sha256(json.dumps(packet, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
+
+    def submit(self, bid: str, rec: dict) -> None:
+        work = rec.pop("work")
+
+        def run():
+            try:
+                return ("ok", work())
+            except BaseException as e:                      # noqa: BLE001 (handed to the run's thread as is)
+                return ("exc", e)
+        rec["future"] = self.pool.submit(run)
+        self.recs[bid] = rec
+        self.ctx.log.event("batch_asked_ahead", batch=bid, in_flight=len(self.recs))
+
+    def peek(self, bid: str) -> dict | None:
+        return self.recs.get(bid)
+
+    def take(self, bid: str, key: str) -> dict | None:
+        rec = self.recs.pop(bid, None)
+        if rec is None:
+            return None
+        kind, val = rec["future"].result()
+        if rec["key"] != key:
+            self.discarded.append(bid)
+            self.ctx.cp.event("prefetch_discarded", batch=bid, reason="the batch's packet changed before its turn "
+                                                                      "(an earlier batch answered part of it); asked "
+                                                                      "again as usual")
+            return None
+        rec["kind"], rec["value"] = kind, val
+        return rec
+
+    @staticmethod
+    def result(rec: dict):
+        if rec["kind"] == "exc":
+            raise rec["value"]
+        return rec["value"]
+
+    def close(self) -> None:
+        self.pool.shutdown(wait=True, cancel_futures=True)
+        left = sorted(self.recs)
+        if left:
+            self.ctx.cp.event("prefetch_not_taken", batches=left,
+                              reason="the run stopped before their answers were taken; they stay pending and are asked "
+                                     "again on resume")
+            self.recs.clear()
+
+
+def _fill(ctx: "Ctx", phase: str, start: str, **kw) -> None:
+    """Dispatch the batches of `phase` from `start` on (plan order) until `n` are in flight (session 12)."""
+    pf = ctx.prefetch
+    if pf is None or ctx.stop_batches or ctx.stop_pending is not None:
+        return
+    keys = ctx.cp.batches(phase)
+    for k in keys[keys.index(start):] if start in keys else []:
+        if len(pf.recs) >= pf.n:
+            break
+        if k in pf.recs or k in pf.tried or ctx.cp.batch(k)["status"] not in ("pending", "deferred"):
+            continue
+        pf.tried.add(k)
+        try:
+            rec = (_prep_analysis(ctx, k) if phase == "analysis" else _prep_downstream(ctx, k, **kw))
+        except Exception as e:                                   # noqa: BLE001 (the batch then runs in its turn)
+            ctx.log.event("prefetch_skipped", batch=k, error=f"{type(e).__name__}: {_short(str(e), 300)}")
+            rec = None
+        if rec is not None:
+            pf.submit(k, rec)
+
+
 def _load_staged(ws: Workspace, run_id: str) -> tuple[ProposalSet, dict]:
     f = B.safe_staging(ws.staging, ws.root, ws.evidence) / run_id / "proposals.yaml"
     d = load_yaml(f) or {}
@@ -302,9 +423,19 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
           model: str | None = None, cassette=None, caps: dict | None = None, host_model: str | None = None,
           host_mode: str = "auto", host_session_model: str | None = None,
           allow_unverified_capabilities: bool = False, stop_after: str | None = None, background_before: bool = True,
-          cache: bool = True, echo=print, sleep=time.sleep) -> dict:
+          cache: bool = True, echo=print, sleep=time.sleep, offline: bool = False) -> dict:
     """Start a run (see the module docstring). Refuses (budget.Refused / candidate.CandidateError) before creating
-    anything when the inputs cannot work."""
+    anything when the inputs cannot work.
+
+    Session 12: `offline` (or config `offline: true`, or TENDERPACK_OFFLINE=1) is offline mode (tenderpack/ai/offline.py):
+    the route must be ollama (a hosted route raises OfflineError, a ConfigError, before anything is created), and on the
+    ollama route the models are checked against the local endpoint first (`_ollama_preflight`: installed, tool use,
+    context, estimated memory; a missing model is named with the `ollama pull` command a person may run)."""
+    cfg_off = C.load(Path(ai_config) if ai_config else None)
+    off_src = OFF.requested(cfg_off, offline)
+    if off_src:
+        OFF.activate(cfg_off, off_src)
+        OFF.check_run_route(cfg_off, route)
     if route not in ROUTES:
         raise B.Refused(f"unknown route {route!r} ({', '.join(ROUTES)})")
     if stop_after and stop_after not in STEPS:
@@ -321,6 +452,7 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
         R.FailurePolicy.from_cfg(cfg0)
     except C.ConfigError as e:
         raise B.Refused(f"config/ai.yaml failures: {e}") from None
+    n_par = parallel_sessions(cfg0, route)
     pack = Path(pack or ROOT / "config/pack.yaml").absolute()
     evidence = Path(evidence or ROOT / "build").absolute()
     staging = Path(staging or ROOT / "staging/ai").absolute()
@@ -330,11 +462,14 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
     run_id = B.check_run_id(run_id or new_run_id(addendum, route))
     if (rd / run_id).exists():
         raise B.Refused(f"run {run_id} exists ({rd / run_id}): resume it with `tenderpack ai resume {run_id}`")
+    preflight = None
     if route not in ("recorded", "host"):
         cfg = C.load(Path(ai_config) if ai_config else None)
         rcfg = C.route(cfg, route)
-        mdl = model or C.default_model(rcfg)
+        mdl = C.phase_model(rcfg, route, "analysis", model)
         B.check_startable(route, rcfg, C.caps(cfg, route, caps), B.price_for(cfg, mdl or ""))
+        if route == "ollama":
+            preflight = _ollama_preflight(cfg_off, model)
     settings = {"addendum": addendum, "pdf": str(Path(pdf).absolute()), "route": route, "pack": str(pack),
                 "evidence": str(evidence), "staging": str(staging), "worklog": str(worklog),
                 "ai_config": str(Path(ai_config).absolute()) if ai_config else None, "batch_size": int(batch_size),
@@ -343,11 +478,62 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
                 "caps": {k: v for k, v in (caps or {}).items() if v is not None}, "host_model": host_model,
                 "host_mode": host_mode, "host_session_model": host_session_model,
                 "allow_unverified_capabilities": bool(allow_unverified_capabilities),
-                "background_before": bool(background_before), "cache": bool(cache)}
+                "background_before": bool(background_before), "cache": bool(cache), "offline": off_src,
+                "ollama_preflight": preflight, "max_parallel_sessions": n_par}
     cp = Checkpoint.new(rd / run_id / "checkpoint.json", run_id=run_id, addendum=addendum, settings=settings,
                         inputs={"pack": str(pack), "evidence": str(evidence)}, candidate={})
-    cp.event("started", by_pid=os.getpid())
+    cp.event("started", by_pid=os.getpid(), **({"offline": off_src} if off_src else {}))
     return _drive(cp, stop_after, echo, sleep)
+
+
+def parallel_sessions(cfg: dict, route: str) -> int:
+    """config concurrency.max_parallel_sessions (session 12): 1..4; above 1 only on the host and recorded routes (see
+    config/ai.yaml). Raises budget.Refused with the reason."""
+    n = (cfg.get("concurrency") or {}).get("max_parallel_sessions", 1)
+    if not isinstance(n, int) or isinstance(n, bool) or not 1 <= n <= MAX_PARALLEL:
+        raise B.Refused(f"config/ai.yaml concurrency.max_parallel_sessions must be between 1 and {MAX_PARALLEL}, "
+                        f"not {n!r}")
+    if n > 1 and route not in PARALLEL_ROUTES:
+        why = ("the paid API routes check the run's caps per request, so requests at once could overrun them"
+               if route in ("anthropic", "openrouter") else
+               "local inference shares one machine: requests at once multiply the KV cache in the same memory")
+        raise B.Refused(f"config/ai.yaml concurrency.max_parallel_sessions is {n}: batches at once run only on the "
+                        f"host route (and the recorded test route); not on {route}: {why}. Set it to 1")
+    return n
+
+
+def _ollama_preflight(cfg: dict, model: str | None) -> dict:
+    """Session 12: the ollama route's models checked against the LOCAL endpoint before a run starts (never pulled):
+    the analysis model must be installed (/api/tags), report tool use, and hold its context bound in the configured
+    machine's memory (an estimate); the other roles (vision for the readings, critic) are checked and recorded, and a
+    missing one is handled where it is needed (readings escalated to a person; the review recorded as skipped).
+    Raises ConfigError with the exact reason."""
+    from .providers import make
+    from .providers.base import ProviderError
+    from .providers.ollama import check_models, not_installed_message
+    rcfg = C.route(cfg, "ollama")
+    need = C.phase_model(rcfg, "ollama", "analysis", model)
+    if not need:
+        raise C.ConfigError("the ollama route needs a model: --model, or routes.ollama.models.propose (or text) in "
+                            "config/ai.yaml")
+    rep = check_models(cfg)
+    if not rep["reachable"]:
+        raise C.ConfigError(f"{rep.get('error')}: is Ollama running on this machine (`ollama serve`)? The ollama "
+                            "route runs on the owner's Mac only")
+    if need not in (rep["installed"] or []):
+        raise C.ConfigError(not_installed_message(need, rep["installed"]))
+    try:
+        caps = make("ollama", need, cfg).capabilities()
+    except ProviderError as e:
+        raise C.ConfigError(f"the analysis model {need}: {e.message}") from None
+    if caps.tools is not True:
+        raise C.ConfigError(f"the analysis model {need} does not report tool use (/api/show capabilities "
+                            f"{caps.details.get('reported_capabilities')}); the analysis phase offers tools: refused, "
+                            "never assumed")
+    return {"checked": now_iso(), "base_url": rep["base_url"], "installed": rep["installed"], "analysis_model": need,
+            "analysis_capabilities": {"images": caps.images, "tools": caps.tools, "context_tokens": caps.context_tokens,
+                                      "memory": caps.details.get("memory")},
+            "models": rep["models"], "note": "checked against the local endpoint at start; nothing was pulled"}
 
 
 def load(run_id: str, staging=None) -> Checkpoint:
@@ -359,7 +545,7 @@ def load(run_id: str, staging=None) -> Checkpoint:
 
 
 def resume(run_id: str, staging=None, stop_after: str | None = None, retry_failed: bool = True, echo=print,
-           sleep=time.sleep, from_step: str | None = None) -> dict:
+           sleep=time.sleep, from_step: str | None = None, offline: bool = False) -> dict:
     """Continue a stopped, interrupted, failed or waiting run from its checkpoint. Done steps and batches are skipped;
     a batch that failed is asked again (`retry_failed`), and the steps after it are recomputed from the candidate as it
     was before any promotion.
@@ -372,6 +558,15 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
     if from_step and from_step not in STEPS:
         raise B.Refused(f"--from must be one of {', '.join(STEPS)}")
     cp = load(run_id, staging)
+    s_ = cp.data["settings"]
+    cfg_off = C.load(Path(s_["ai_config"]) if s_.get("ai_config") else None)
+    off_src = s_.get("offline") or OFF.requested(cfg_off, offline)
+    if off_src:                                                 # session 12: before anything is asked
+        OFF.activate(cfg_off, off_src)
+        OFF.check_run_route(cfg_off, s_["route"])
+        if s_.get("offline") != off_src:
+            s_["offline"] = off_src
+            cp.event("offline_mode", source=off_src)
     cp.event("resumed", by_pid=os.getpid(), status_before=cp.data["status"],
              **({"from_step": from_step} if from_step else {}))
     if from_step:
@@ -438,8 +633,22 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
     if lock.taken_over:
         cp.event("stale_run_lock_taken_over", previous=lock.taken_over)
         ctx.say(f"note: the run lock of process {lock.taken_over.get('pid')} (no longer running) was taken over")
+    cp.data.pop("stop_code", None)                     # session 12: set again only by this drive's own stop
     cp.set_status("running")
     step = None
+    n_par = int(cp.data["settings"].get("max_parallel_sessions") or 1)
+    if n_par > 1:                                  # session 12: batches at once, under one run-scoped lock
+        ctx.gate = R.RateGate()
+        ctx.prefetch = Prefetch(ctx, n_par)
+        try:
+            ctx.run_lock = B.acquire(ctx.dir / "ai", ctx.addendum, {"route": cp.data["settings"]["route"],
+                                                                    "run_id": ctx.run_id, "pid": os.getpid(),
+                                                                    "scope": "run"})
+            cp.event("run_lock_scoped", scope="run", lock=str(B.lock_path(ctx.dir / "ai", ctx.addendum)),
+                     max_parallel_sessions=n_par)
+        except B.Refused as e:
+            lock.release()
+            raise B.Refused(f"batches at once need the addendum's lock for the run: {e}") from None
     try:
         for step in STEPS:
             if cp.done(step):
@@ -449,12 +658,14 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
                 STEP_FUNCS[step](ctx, st)
             if stop_after == step and step != STEPS[-1]:
                 raise StopRun("stopped", f"stopped after {step} (--stop-after); resume with `tenderpack ai resume "
-                                         f"{ctx.run_id}`")
+                                         f"{ctx.run_id}`", code=0)
         cp.set_status(*_final_status(cp))
     except WaitingForHost as w:
         cp.set_status("waiting_for_host", str(w))
         ctx.say(str(w))
     except StopRun as s:
+        if s.status == "stopped":
+            cp.data["stop_code"] = STOP_FOR_PERSON if s.code is None else s.code
         cp.set_status(s.status, s.reason)
         ctx.say(f"{s.status.upper()}: {s.reason}")
     except KeyboardInterrupt:
@@ -470,6 +681,12 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
         cp.set_status("failed", f"{step}: {type(e).__name__}: {_short(str(e), 500)} (traceback in logs/error.log)")
         ctx.say(f"FAILED in {step}: {type(e).__name__}: {_short(str(e), 300)}")
     finally:
+        if ctx.prefetch is not None:
+            ctx.prefetch.close()
+        if ctx.gate is not None:
+            cp.data["rate_gate"] = ctx.gate.record()
+        if ctx.run_lock is not None:
+            ctx.run_lock.release()
         _record_outcome(cp)                         # session 11: execution, completeness, approval (kept apart)
         lock.release()
     out = summary(cp)
@@ -633,7 +850,7 @@ def summary(cp: Checkpoint) -> dict:
     prov = Counter(v["status"] for v in d["provisions"].values())
     return {"run_id": d["run_id"], "addendum": d["addendum"], "status": d["status"], "status_reason": d["status_reason"],
             "exit_code": 1 if d["status"] in ("complete", "partial") and cp.step("outputs").get("refused")
-            else EXIT_CODES.get(d["status"], 1),
+            else d.get("stop_code", 0) if d["status"] == "stopped" else EXIT_CODES.get(d["status"], 1),
             "run_dir": str(cp.path.parent), "provisions": dict(prov), "timings": cp.timings(),
             "total_seconds": round(sum(cp.timings().values()), 1),
             "review": str(cp.path.parent / "review" / "index.md"),
@@ -673,7 +890,7 @@ def step_ingest(ctx: Ctx, st: dict) -> None:
             _start_before(ctx)
             return
         st["status"], st["reason"] = "stopped", res.get("reason") or res["status"]
-        raise StopRun("stopped", f"ingest refused the candidate (exit {res['exit_code']}): {st['reason']}")
+        raise StopRun("stopped", f"ingest refused the candidate (exit {res['exit_code']}): {st['reason']}", code=2)
     _after_ingest(ctx, st)
     _start_before(ctx)
 
@@ -788,6 +1005,7 @@ def step_readings(ctx: Ctx, st: dict) -> None:
             cp.data["batches"][f"reading-{rid}"] = {"phase": "reading", "region": rid, "status": "pending",
                                                     "attempts": 0, "seconds": 0.0}
         cp.save()
+    _local_reading_check(ctx, st)                                 # session 12: a local model without vision
     for bid in cp.batches("reading"):
         b = cp.batch(bid)
         if b["status"] in ("done", "skipped"):
@@ -821,10 +1039,57 @@ def step_readings(ctx: Ctx, st: dict) -> None:
     if res["exit_code"] != 0:
         st["status"] = "stopped"
         raise StopRun("stopped", f"ingest refused the candidate again after the proposed readings (exit "
-                                 f"{res['exit_code']}): {res.get('reason') or res['status']}")
+                                 f"{res['exit_code']}): {res.get('reason') or res['status']}", code=2)
     ctx.say(f"  ingest with the proposed readings: ok ({res.get('units')} units; readings PENDING HUMAN REVIEW: "
             f"{res.get('pending_review')})")
     _after_ingest(ctx, st)
+
+
+def _local_reading_check(ctx: Ctx, st: dict) -> None:
+    """Session 12: on the ollama route the readings phase needs a local model that REPORTS image input (/api/show
+    `vision`; never assumed). When the reading model (routes.ollama.models.vision, else the run's model) is missing,
+    cannot be checked or does not report vision, the step is a visible "cannot run locally with this model": every
+    reading still to do is ESCALATED to a person (status `escalated`, the reason on the batch, an event in the
+    checkpoint and the run log), nothing is asked of the model, and the run stops with the reason and the way on
+    (ingest refuses the candidate without the readings, C05, so the text phases cannot start)."""
+    cp, s = ctx.cp, ctx.s
+    if s["route"] != "ollama":
+        return
+    todo = [k for k in cp.batches("reading") if cp.batch(k)["status"] not in ("done", "skipped")]
+    if not todo:
+        return
+    from .providers import make
+    from .providers.base import ProviderError
+    rcfg = C.route(ctx.cfg, "ollama")
+    model = C.phase_model(rcfg, "ollama", "reading", s.get("model"))
+    why = None
+    try:
+        caps = make("ollama", model, ctx.cfg, None).capabilities()
+        if caps.images is not True:
+            why = (f"{model} does not report image input (/api/show capabilities "
+                   f"{caps.details.get('reported_capabilities')})")
+    except (ProviderError, C.ConfigError) as e:
+        why = f"{model}: {getattr(e, 'message', None) or e}"
+    if why is None:
+        for k in todo:                                           # a vision model is there now: asked as usual
+            if cp.batch(k)["status"] == "escalated" and cp.batch(k).get("failure_class") == "capability":
+                cp.batch(k).update(status="pending")
+        cp.save()
+        return
+    reason = f"cannot run locally with this model: {why}"
+    rdir = _readings_dir(ctx)
+    regions = [cp.batch(k)["region"] for k in todo]
+    for k in todo:
+        cp.batch(k).update(status="escalated", failure_class="capability",
+                           error=f"{reason}; escalated to a person (read the image region and record the reading)")
+    cp.event("readings_escalated_to_person", regions=regions, reason=reason, model=model)
+    ctx.log.event("readings_escalated_to_person", regions=regions, reason=reason, model=model)
+    st.update(status="stopped", escalated=regions, reason=reason)
+    raise StopRun("stopped", f"the readings step {reason}. The image region(s) {regions} are escalated to a person: "
+                             "ingest refuses the candidate without their readings (C05), so the text phases cannot "
+                             f"start. A person records each reading (PENDING HUMAN REVIEW) in {rdir} and resumes with "
+                             f"`tenderpack ai resume {ctx.run_id} --from ingest`, or configures a local model that "
+                             "reports vision (routes.ollama.models.vision) and resumes")
 
 
 def _reading_batch(ctx: Ctx, st: dict, bid: str, rid: str) -> None:
@@ -868,7 +1133,7 @@ def _reading_batch(ctx: Ctx, st: dict, bid: str, rid: str) -> None:
             else:
                 from .providers import make
                 rcfg = C.route(ctx.cfg, s["route"])
-                prov = make(s["route"], s.get("model") or C.default_model(rcfg), ctx.cfg, None)
+                prov = make(s["route"], C.phase_model(rcfg, s["route"], "reading", s.get("model")), ctx.cfg, None)
             prop = _converse(ctx, prov, packet, bid, system=RR.SYSTEM, parse=RR.parse, task=RR.READING_TASK,
                              tool_names=["get_region", "validate_reading"], ws=rws)
             who = f"{s['route']} route, model {prov.model}"
@@ -931,7 +1196,8 @@ def _reading_host_session(ctx: Ctx, hs, rws: Workspace, bid: str, packet: dict):
     layer: the host's declared image input checked (the reading phase requires it), the size, the failure classes and
     one bounded repair of a malformed answer."""
     sess = hs.AnswerSession(rws, ctx.cfg, system=RR.SYSTEM, rules=READING_HOST_RULES,
-                            tools=["get_region", "validate_reading"], model=ctx.s.get("host_session_model"))
+                            tools=["get_region", "validate_reading"], model=ctx.s.get("host_session_model"),
+                            run_lock=ctx.run_lock is not None)
     pk = dict(packet, addendum=ctx.addendum, provisions=[])
     fields = {"run_id": f"{ctx.run_id}-{bid}", "created": now_iso(), "route": "host", "provider": "host-session",
               "model_requested": sess.host_model_label(), "model_reported": None, "task": RR.READING_TASK}
@@ -1003,7 +1269,7 @@ def _route_caps(ctx: Ctx):
 def _make_provider(ctx: Ctx):
     from .providers import make
     rcfg = C.route(ctx.cfg, ctx.s["route"])
-    return make(ctx.s["route"], ctx.s.get("model") or C.default_model(rcfg), ctx.cfg, None)
+    return make(ctx.s["route"], C.phase_model(rcfg, ctx.s["route"], "analysis", ctx.s.get("model")), ctx.cfg, None)
 
 
 def _max_out(ctx: Ctx) -> int | None:
@@ -1084,14 +1350,19 @@ def _stop_if_deferred(ctx: Ctx, st: dict, bid: str) -> None:
     ctx.deferred_in_drive = True
     if ctx.policy.on_deferred != "stop":
         return
-    st["status"] = "stopped"
     last = (b.get("deferrals") or [{}])[-1] if b["status"] == "deferred" else (b.get("critic") or {})
     reset = last.get("reset_in_s")
-    raise StopRun("deferred", f"rate limit: {bid}{' (its critic)' if b['status'] != 'deferred' else ''} was deferred "
+    stop = StopRun("deferred", f"rate limit: {bid}{' (its critic)' if b['status'] != 'deferred' else ''} was deferred "
                               f"after the bounded backoff ({_short(last.get('message') or last.get('error'), 200)}); "
                               "everything done so far is checkpointed"
                               + (f"; the provider names a reset in about {reset / 60:.0f} min" if reset else "")
                               + f". Resume later: `tenderpack ai resume {ctx.run_id}` (done batches are not asked again)")
+    if ctx.prefetch is not None and ctx.prefetch.recs:
+        if ctx.stop_pending is None:      # session 12: no new dispatch; the batches already asked are taken first
+            ctx.stop_pending = stop
+        return
+    st["status"] = "stopped"
+    raise ctx.stop_pending or stop
 
 
 def _split(ctx: Ctx, bid: str, key: str, units: list, e) -> None:
@@ -1156,6 +1427,9 @@ def step_analysis(ctx: Ctx, st: dict) -> None:
         b = cp.batch(bid)
         if b["status"] in ("skipped", "split", "escalated"):
             continue
+        if ctx.stop_pending is not None and b["status"] != "done" and not (ctx.prefetch and bid in ctx.prefetch.recs):
+            st["status"] = "stopped"
+            raise ctx.stop_pending                    # session 12: the batches asked ahead were taken; now stop
         if b["status"] == "done":
             if (b.get("critic") or {}).get("status") in ("pending", "deferred") and b.get("staged_run"):
                 _critic_analysis(ctx, bid)                   # a critic deferred (or never run) before: asked alone
@@ -1173,10 +1447,16 @@ def step_analysis(ctx: Ctx, st: dict) -> None:
             b.update(status="failed", error=f"not run: {ctx.stop_batches}")
             cp.save()
             continue
+        _fill(ctx, "analysis", bid)                   # session 12: batches at once (max_parallel_sessions > 1)
         _analysis_batch(ctx, st, bid, todo)
         if cp.batch(bid)["status"] == "done":
             _critic_analysis(ctx, bid)
         _stop_if_deferred(ctx, st, bid)
+        if ctx.gate is not None:
+            cp.data["rate_gate"] = ctx.gate.record()
+    if ctx.stop_pending is not None:
+        st["status"] = "stopped"
+        raise ctx.stop_pending
     st["batches"] = {k: cp.batch(k)["status"] for k in cp.batches("analysis")}
     st["provisions"] = dict(Counter(v["status"] for v in cp.data["provisions"].values()))
     deferred = [k for k in cp.batches("analysis") if cp.batch(k)["status"] == "deferred"]
@@ -1203,7 +1483,9 @@ def _analysis_batch(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> None:
             ps = _host_analysis(ctx, st, bid, todo)
         else:
             if s["route"] == "recorded":
-                prov, sess = ctx.cassette.provider("analysis", todo, ctx.used_sessions())
+                pre = ctx.prefetch.peek(bid) if ctx.prefetch else None
+                prov, sess = ((pre["prov"], pre["session"]) if pre else
+                              ctx.cassette.provider("analysis", todo, ctx.used_sessions()))
                 if prov is None:
                     raise BatchFailed("no recorded session covers this batch (the cassette does not record it)")
                 b["session"] = sess
@@ -1318,26 +1600,17 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
     cp, ws = ctx.cp, ctx.ws
     b = cp.batch(bid)
     hs = _host_auto(ctx)
-    packet = (hs.host_packet(ws, ctx.addendum, todo) if hs and hasattr(hs, "host_packet")
-              else controller.host_task(ws, ctx.addendum, claim=False, provisions=todo))
-    packet = R.compact_analysis(packet)
-    packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "analysis", "answer_only": todo,
-                          "note": "answer the provisions in answer_only; any other provision in the packet belongs to "
-                                  "another batch",
-                          "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL"}
-    path = ctx.dir / "batches" / f"{bid}.packet.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({k: v for k, v in packet.items() if k != "crops"} | {
-        "crops": [{k: v for k, v in c.items() if not k.startswith("_")} for c in packet.get("crops") or []]},
-        ensure_ascii=False, indent=1), encoding="utf-8")
-    b["packet"] = str(path)
+    packet = _host_analysis_packet(ctx, hs, bid, todo)
+    b["packet"] = str(ctx.dir / "batches" / f"{bid}.packet.json")
     if hs is None:
         b.update(status="waiting_for_host", waiting_since=now_iso(), waiting_epoch=time.time())
         cp.save()
         st["status"] = "waiting_for_host"
         raise WaitingForHost(_wait_message(ctx, bid))
     from .providers.base import collect_notices
-    sess = hs.HostSession(ws, ctx.cfg, model=ctx.s.get("host_session_model"))
+    pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
+    sess = pre["sess"] if pre else hs.HostSession(ws, ctx.cfg, model=ctx.s.get("host_session_model"),
+                                                  run_lock=ctx.run_lock is not None)
     sp = R.spec("analysis", system=sess.system_prompt())
     run_id, log, staging = _batch_log(ctx, bid, ws)
     out = R.Outcome("analysis", run_id=run_id)
@@ -1366,7 +1639,14 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
             def rec(a):
                 out.attempts.append(a)
                 log.event("host_failure", **a)
-            res = R.call_host(run, ctx.policy, sleep=ctx.sleep, rng=ctx.rng, record=rec)
+            if pre is not None:                          # session 12: the session already ran in a worker
+                for a in pre["attempts"]:
+                    rec(a)
+                out.host_sessions += pre["sessions"]
+                got = Prefetch.result(pre)
+                res, box["data"] = got["res"], got["data"]
+            else:
+                res = R.call_host(run, ctx.policy, sleep=ctx.sleep, rng=ctx.rng, record=rec)
             ps = ProposalSet.model_validate(box["data"])
             if ps.status in ("provider_failed", "malformed"):
                 ps = _host_analysis_repair(ctx, bid, sp, sess, packet, ps, res, out, log, staging, rec)
@@ -1397,6 +1677,136 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
               malformed_items=out.malformed_items, host_sessions=out.host_sessions, notices=out.notices)
     _record_request(ctx, bid, out)
     return ps
+
+
+def _host_analysis_packet(ctx: Ctx, hs, bid: str, todo: list[str]) -> dict:
+    """The task packet of a host analysis batch (written to batches/<bid>.packet.json, private crop paths left out)."""
+    ws = ctx.ws
+    packet = (hs.host_packet(ws, ctx.addendum, todo) if hs and hasattr(hs, "host_packet")
+              else controller.host_task(ws, ctx.addendum, claim=False, provisions=todo))
+    packet = R.compact_analysis(packet)
+    packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "analysis", "answer_only": todo,
+                          "note": "answer the provisions in answer_only; any other provision in the packet belongs to "
+                                  "another batch",
+                          "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL"}
+    path = ctx.dir / "batches" / f"{bid}.packet.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({k: v for k, v in packet.items() if k != "crops"} | {
+        "crops": [{k: v for k, v in c.items() if not k.startswith("_")} for c in packet.get("crops") or []]},
+        ensure_ascii=False, indent=1), encoding="utf-8")
+    return packet
+
+
+def _prep_analysis(ctx: Ctx, bid: str) -> dict | None:
+    """Session 12 (Prefetch): an analysis batch asked ahead: the packet built here (the run's thread), the exchange
+    with the model in a worker. None when the batch is not one to ask ahead (it is then asked in its turn)."""
+    cp, s = ctx.cp, ctx.s
+    b = cp.batch(bid)
+    todo = [p for p in b["provisions"] if cp.provision(p)["status"] == "pending"]
+    if not todo:
+        return None
+    n = int(b.get("attempts", 0)) + 1
+    if s["route"] == "host":
+        hs = _host_auto(ctx)
+        if hs is None:
+            return None
+        packet = _host_analysis_packet(ctx, hs, bid, todo)
+        sess = hs.HostSession(ctx.ws, ctx.cfg, model=s.get("host_session_model"), run_lock=ctx.run_lock is not None)
+        sp = R.spec("analysis", system=sess.system_prompt())
+        caps = sess.capabilities()
+        n_img = R.packet_images(packet)
+        R.require(sp, caps, n_img, "host", sess.host_model_label())
+        sz = R.size(sp, caps, sess.prompt(packet), system=sess.system_prompt(),
+                    tools_spec=[controller.TOOLS[t].spec() for t in sp.tools], images=n_img,
+                    units=len(packet.get("provisions") or []), settings=R.settings_for(ctx.cfg, "host"))
+        if not sz.fits:
+            return None
+        pol, attempts, sessions = ctx.policy, [], []
+
+        def work():
+            box: dict = {}
+
+            def run():
+                box["data"] = sess.run_batch(packet)
+                last = sess.last
+                sessions.append({"run_id": last.run_id, "elapsed_s": last.elapsed_s, "error": last.error,
+                                 "failure_class": last.failure_class, "crops_read": last.crops_read,
+                                 "model_reported": last.model_reported, "reset_in_s": last.reset_in_s})
+                return last
+            res = R.call_host(run, pol, sleep=ctx.sleep, rng=ctx.rng, record=attempts.append)
+            return {"res": res, "data": box.get("data")}
+        return {"key": Prefetch.key(packet), "sess": sess, "attempts": attempts, "sessions": sessions, "work": work}
+    if s["route"] != "recorded":
+        return None
+    ws = ctx.ws
+    ws.refresh()
+    ws.require_ok()
+    raw = controller.task_packet(ws, ctx.addendum, todo)
+    images = [{"type": "image", "path": c["_path"], "sha256": c["sha256"], "media_type": c["media_type"]}
+              for c in raw["crops"]]
+    packet = R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
+                                                 for c in raw["crops"]]))
+    prov, sess = ctx.cassette.provider("analysis", todo, ctx.used_sessions())
+    if prov is None:
+        return None
+    return _prep_converse(ctx, bid, R.spec("analysis"), prov, sess, packet, n, images=images)
+
+
+def _prep_converse(ctx: Ctx, bid: str, sp, prov, sess, packet: dict, n: int, images=None) -> dict:
+    """A provider conversation asked ahead (Prefetch): its own workspace for the tools, log and staging folder."""
+    a = _request_args(ctx, sp, prov, bid, n=n)
+    pol = ctx.policy
+    route = ctx.s["route"]
+    a["log"].event("start", route=route, provider=prov.name, model_requested=prov.model, task=sp.task, phase=sp.phase,
+                   batch=bid, caps=a["caps_"], cassette=getattr(prov, "cassette_path", None), policy=pol.to_dict(),
+                   asked_ahead=True)
+    s = ctx.s
+    wsn = Workspace(ctx.P["build"], ctx.P["pack"], ROOT, ctx.dir / "ai", Path(s["worklog"]),
+                    Path(s["ai_config"]) if s.get("ai_config") else None)
+
+    def work():
+        return R.converse(sp, prov, packet, ws=wsn, route=route, caps_=a["caps_"], price=a["price"], policy=pol,
+                          log=a["log"], staging=a["staging"], run_id=a["run_id"], fields=a["fields"],
+                          sleep=ctx.sleep, rng=ctx.rng, images=images, settings=R.settings_for(ctx.cfg, route))
+    return {"key": Prefetch.key(packet), "prov": prov, "session": sess, "work": work}
+
+
+def _prep_downstream(ctx: Ctx, bid: str, by_id: dict | None = None, promoted: dict | None = None,
+                     total: int = 0) -> dict | None:
+    """Session 12 (Prefetch): a downstream batch asked ahead (see _prep_analysis)."""
+    cp, s = ctx.cp, ctx.s
+    b = cp.batch(bid)
+    batch = [by_id[t] for t in b["tasks"] if t in (by_id or {})]
+    if not batch:
+        return None
+    n = int(b.get("attempts", 0)) + 1
+    packet = _downstream_packet(ctx, batch, promoted, total)
+    if s["route"] == "host":
+        hs = _host_auto(ctx)
+        if hs is None:
+            return None
+        packet = _host_downstream_packet(ctx, bid, packet)
+        sess = hs.AnswerSession(ctx.ws, ctx.cfg, system=DS.SYSTEM, rules=DOWNSTREAM_HOST_RULES,
+                                model=s.get("host_session_model"), run_lock=ctx.run_lock is not None)
+        sp = R.spec("downstream", system=sess.system_prompt())
+        run_id, log, staging = _batch_log(ctx, bid, n=n)
+        fields = {"run_id": run_id, "created": now_iso(), "route": "host", "provider": "host-session",
+                  "model_requested": sess.host_model_label(), "model_reported": None, "task": DOWNSTREAM_TASK}
+        log.event("start", route="host", phase=sp.phase, batch=bid, model_requested=sess.host_model_label(),
+                  policy=ctx.policy.to_dict(), asked_ahead=True)
+        pol = ctx.policy
+
+        def work():
+            return R.ask_host(sp, sess, packet, cfg=ctx.cfg, policy=pol, log=log, fields=fields,
+                              cwd=staging / run_id, sleep=ctx.sleep, rng=ctx.rng,
+                              settings=R.settings_for(ctx.cfg, "host"))
+        return {"key": Prefetch.key(packet), "sess": sess, "work": work}
+    if s["route"] != "recorded":
+        return None
+    prov, sess = ctx.cassette.provider("downstream", [t["id"] for t in batch], ctx.used_sessions())
+    if prov is None:
+        return None
+    return _prep_converse(ctx, bid, R.spec("downstream"), prov, sess, packet, n)
 
 
 def _host_analysis_repair(ctx: Ctx, bid: str, sp, sess, packet: dict, ps: ProposalSet, res, out, log, staging, rec):
@@ -1442,10 +1852,10 @@ def _host_analysis_repair(ctx: Ctx, bid: str, sp, sess, packet: dict, ps: Propos
     return _load_staged(ws, sub["run_id"])[0]
 
 
-def _batch_log(ctx: Ctx, bid: str, ws=None):
+def _batch_log(ctx: Ctx, bid: str, ws=None, n: int | None = None):
     """The run id, log and staging folder of one request of a batch (`<run>-<batch>`, `-aN` from the second attempt)."""
     ws = ws or ctx.ws
-    n = ctx.cp.data["batches"].get(bid, {}).get("attempts", 1) or 1
+    n = n or ctx.cp.data["batches"].get(bid, {}).get("attempts", 1) or 1
     run_id = B.check_run_id(f"{ctx.run_id}-{bid}" + (f"-a{n}" if n > 1 else ""))
     staging = B.safe_staging(ws.staging, ws.root, ws.evidence)
     log = RunLog(run_id, [staging / run_id / "log.jsonl", Path(ctx.s["worklog"]) / f"{run_id}.jsonl"])
@@ -1477,30 +1887,43 @@ def _add_usage(ctx: Ctx, out) -> None:
     _mirror_spend(ctx)
 
 
+def _request_args(ctx: Ctx, sp, prov, bid: str, ws=None, n: int | None = None) -> dict:
+    """What one request of a batch is sent with (caps, price, its run id, log and staging folder, the fields)."""
+    route = ctx.s["route"]
+    caps_ = C.caps(ctx.cfg, route, ctx.remaining_caps())
+    price = B.price_for(ctx.cfg, prov.model) if route != "recorded" else None
+    B.check_startable(route, C.route(ctx.cfg, route), caps_, price)
+    run_id, log, staging = _batch_log(ctx, bid, ws, n)
+    fields = {"run_id": run_id, "created": now_iso(), "route": route, "provider": prov.name,
+              "model_requested": prov.model, "model_reported": None, "task": sp.task}
+    if sp.phase == "analysis":
+        from .contract import CONTROLLER_VERSION
+        fields["controller_version"] = CONTROLLER_VERSION
+    return {"caps_": caps_, "price": price, "run_id": run_id, "log": log, "staging": staging, "fields": fields}
+
+
 def _request(ctx: Ctx, sp, prov, packet: dict, bid: str, *, images: list | None = None, ws=None,
-             account_usage: bool = True, prompt_text: str | None = None):
+             account_usage: bool = True, prompt_text: str | None = None, pre: dict | None = None):
     """One request of a workflow batch with a provider (recorded or an API route) through the request layer
     (requests.converse). Returns the Outcome; maps its failures to the workflow's: a rate limit -> Deferred, a
     provider failure, a malformed answer or a conversation that outgrew the context -> BatchFailed (with the class on
     the batch); TooLarge and a capability refusal propagate (the caller splits or stops)."""
     s, ws = ctx.s, (ws or ctx.ws)
     route = s["route"]
-    caps_ = C.caps(ctx.cfg, route, ctx.remaining_caps())
-    price = B.price_for(ctx.cfg, prov.model) if route != "recorded" else None
-    B.check_startable(route, C.route(ctx.cfg, route), caps_, price)
-    run_id, log, staging = _batch_log(ctx, bid, ws)
     pol = ctx.policy
-    log.event("start", route=route, provider=prov.name, model_requested=prov.model, task=sp.task, phase=sp.phase,
-              batch=bid, caps=caps_, cassette=getattr(prov, "cassette_path", None), policy=pol.to_dict())
-    fields = {"run_id": run_id, "created": now_iso(), "route": route, "provider": prov.name,
-              "model_requested": prov.model, "model_reported": None, "task": sp.task}
-    if sp.phase == "analysis":
-        from .contract import CONTROLLER_VERSION
-        fields["controller_version"] = CONTROLLER_VERSION
+    if pre is None:
+        a = _request_args(ctx, sp, prov, bid, ws)
+        a["log"].event("start", route=route, provider=prov.name, model_requested=prov.model, task=sp.task,
+                       phase=sp.phase, batch=bid, caps=a["caps_"], cassette=getattr(prov, "cassette_path", None),
+                       policy=pol.to_dict())
     try:
-        out = R.converse(sp, prov, packet, ws=ws, route=route, caps_=caps_, price=price, policy=pol, log=log,
-                         staging=staging, run_id=run_id, fields=fields, sleep=ctx.sleep, rng=ctx.rng, images=images,
-                         settings=R.settings_for(ctx.cfg, route), prompt_text=prompt_text)
+        if pre is not None:                             # session 12: the exchange already ran in a worker
+            out = Prefetch.result(pre)
+        else:
+            out = R.converse(sp, prov, packet, ws=ws, route=route, caps_=a["caps_"], price=a["price"], policy=pol,
+                             log=a["log"], staging=a["staging"], run_id=a["run_id"], fields=a["fields"],
+                             sleep=ctx.sleep, rng=ctx.rng, images=images, settings=R.settings_for(ctx.cfg, route),
+                             prompt_text=prompt_text)
     except R.RateLimited as e:
         _add_usage(ctx, e.outcome)
         _record_request(ctx, bid, e.outcome, "rate_limit")
@@ -1524,15 +1947,21 @@ def _request(ctx: Ctx, sp, prov, packet: dict, bid: str, *, images: list | None 
     return out
 
 
-def _host_request(ctx: Ctx, bid: str, sp, sess, packet: dict, fields: dict, ws=None):
-    """One request of a workflow batch in a host answer session (requests.ask_host); failures mapped as _request."""
-    run_id, log, staging = _batch_log(ctx, bid, ws)
-    fields = {**fields, "run_id": run_id}
-    log.event("start", route="host", phase=sp.phase, batch=bid, model_requested=sess.host_model_label(),
-              policy=ctx.policy.to_dict())
+def _host_request(ctx: Ctx, bid: str, sp, sess, packet: dict, fields: dict, ws=None, pre: dict | None = None):
+    """One request of a workflow batch in a host answer session (requests.ask_host); failures mapped as _request.
+    `pre` (session 12): the same request already asked by a worker (Prefetch)."""
+    if pre is None:
+        run_id, log, staging = _batch_log(ctx, bid, ws)
+        fields = {**fields, "run_id": run_id}
+        log.event("start", route="host", phase=sp.phase, batch=bid, model_requested=sess.host_model_label(),
+                  policy=ctx.policy.to_dict())
     try:
-        out = R.ask_host(sp, sess, packet, cfg=ctx.cfg, policy=ctx.policy, log=log, fields=fields,
-                         cwd=staging / run_id, sleep=ctx.sleep, rng=ctx.rng, settings=R.settings_for(ctx.cfg, "host"))
+        if pre is not None:
+            out = Prefetch.result(pre)
+        else:
+            out = R.ask_host(sp, sess, packet, cfg=ctx.cfg, policy=ctx.policy, log=log, fields=fields,
+                             cwd=staging / run_id, sleep=ctx.sleep, rng=ctx.rng,
+                             settings=R.settings_for(ctx.cfg, "host"))
     except R.RateLimited as e:
         _record_request(ctx, bid, e.outcome, "rate_limit")
         raise Deferred(e.message, e.reset_in_s) from None
@@ -1561,12 +1990,20 @@ def _analysis_request(ctx: Ctx, bid: str, todo: list[str], prov) -> ProposalSet:
     packet = R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
                                                  for c in raw["crops"]]))
     staging = B.safe_staging(ws.staging, ws.root, ws.evidence)
-    lock = B.acquire(staging, ctx.addendum, {"route": s["route"], "run_id": f"{ctx.run_id}-{bid}", "pid": os.getpid(),
-                                             "model": prov.model}, ctx.cfg.get("lock_stale_after_min", 120))
+    pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
+    if pre is None and ctx.prefetch is not None and bid in ctx.prefetch.discarded and s["route"] == "recorded":
+        prov, sess = ctx.cassette.provider("analysis", todo, ctx.used_sessions())   # its reserved session, afresh
+        if prov is None:
+            raise BatchFailed("no recorded session covers this batch (the cassette does not record it)")
+        ctx.cp.batch(bid)["session"] = sess
+    lock = None if ctx.run_lock is not None else B.acquire(
+        staging, ctx.addendum, {"route": s["route"], "run_id": f"{ctx.run_id}-{bid}", "pid": os.getpid(),
+                                "model": prov.model}, ctx.cfg.get("lock_stale_after_min", 120))
     try:
-        out = _request(ctx, R.spec("analysis"), prov, packet, bid, images=images, account_usage=False)
+        out = _request(ctx, R.spec("analysis"), prov, packet, bid, images=images, account_usage=False, pre=pre)
     finally:
-        lock.release()
+        if lock is not None:
+            lock.release()
     ps = out.answer
     log = RunLog(out.run_id, [staging / out.run_id / "log.jsonl", Path(s["worklog"]) / f"{out.run_id}.jsonl"])
     report = controller.validate_set(ws, ps, log, expected_addendum=ctx.addendum,
@@ -1725,14 +2162,23 @@ def step_downstream(ctx: Ctx, st: dict) -> None:
         b = cp.batch(bid)
         if b["status"] in ("done", "skipped", "split", "escalated"):
             continue
+        if ctx.stop_pending is not None and not (ctx.prefetch and bid in ctx.prefetch.recs):
+            st["status"] = "stopped"
+            raise ctx.stop_pending
         if b["status"] == "waiting_for_host":
             st["status"] = "waiting_for_host"
             raise WaitingForHost(_wait_message(ctx, bid))
         if ctx.stop_batches:
             b.update(status="failed", error=f"not run: {ctx.stop_batches}")
             continue
+        _fill(ctx, "downstream", bid, by_id=by_id, promoted=promoted, total=len(tasks))
         _downstream_batch(ctx, st, bid, [by_id[t] for t in b["tasks"] if t in by_id], promoted, len(tasks))
         _stop_if_deferred(ctx, st, bid)
+        if ctx.gate is not None:
+            cp.data["rate_gate"] = ctx.gate.record()
+    if ctx.stop_pending is not None:
+        st["status"] = "stopped"
+        raise ctx.stop_pending
     st.update(tasks=len(tasks), by_kind=dict(Counter(t["kind"] for t in tasks)),
               batches={k: cp.batch(k)["status"] for k in cp.batches("downstream")})
     deferred = [k for k in cp.batches("downstream") if cp.batch(k)["status"] == "deferred"]
@@ -1749,7 +2195,7 @@ def _downstream_packet(ctx: Ctx, batch: list[dict], promoted: dict, total: int, 
     try:
         st2 = DS._stage(promoted["r2"], ctx.addendum).state
     except (KeyError, StopIteration):
-        return pk
+        return R.compact_shared(pk)
     restored = []
     for uid, v in (pk.get("units_after") or {}).items():
         u = st2.get(uid)
@@ -1759,7 +2205,7 @@ def _downstream_packet(ctx: Ctx, batch: list[dict], promoted: dict, total: int, 
             restored.append(uid)
     if restored:
         pk["units_after_note"] = f"full text restored for {restored} (never shortened in a request)"
-    return pk
+    return R.compact_shared(pk)                        # session 12: the shared part smaller, its meaning kept
 
 
 def _plan_downstream(ctx: Ctx, tasks: list[dict], promoted: dict) -> tuple[list[list[dict]], list[str]]:
@@ -1814,13 +2260,8 @@ def _downstream_batch(ctx: Ctx, st: dict, bid: str, batch: list[dict], promoted:
         res_path = ctx.dir / "batches" / f"{bid}.result.json"
         packet = _downstream_packet(ctx, batch, promoted, total)
         if s["route"] == "host":
-            packet["system"] = DS.SYSTEM
-            packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "downstream",
-                                  "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL"}
-            path = ctx.dir / "batches" / f"{bid}.packet.json"
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(json.dumps(packet, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
-            b["packet"] = str(path)
+            packet = _host_downstream_packet(ctx, bid, packet)
+            b["packet"] = str(ctx.dir / "batches" / f"{bid}.packet.json")
             hs = _host_auto(ctx)
             if hs is None:
                 b.update(status="waiting_for_host", waiting_since=now_iso(), waiting_epoch=time.time())
@@ -1829,14 +2270,16 @@ def _downstream_batch(ctx: Ctx, st: dict, bid: str, batch: list[dict], promoted:
                 raise WaitingForHost(_wait_message(ctx, bid))
             ds = _downstream_host_session(ctx, hs, bid, packet)
         else:
+            pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
             if s["route"] == "recorded":
-                prov, sess = ctx.cassette.provider("downstream", [t["id"] for t in batch], ctx.used_sessions())
+                prov, sess = ((pre["prov"], pre["session"]) if pre else
+                              ctx.cassette.provider("downstream", [t["id"] for t in batch], ctx.used_sessions()))
                 if prov is None:
                     raise BatchFailed("no recorded session covers this batch (the cassette does not record it)")
                 b["session"] = sess
             else:
                 prov = _make_provider(ctx)
-            ds = _converse(ctx, prov, packet, bid)
+            ds = _converse(ctx, prov, packet, bid, pre=pre)
         _take_downstream(ctx, bid, ds, res_path)
     except Deferred as e:
         _defer(ctx, bid, e)
@@ -1869,8 +2312,19 @@ def _take_downstream(ctx: Ctx, bid: str, ds: DownstreamSet, res_path: Path) -> N
                     provision=it.provision)
 
 
+def _host_downstream_packet(ctx: Ctx, bid: str, packet: dict) -> dict:
+    packet = dict(packet)
+    packet["system"] = DS.SYSTEM
+    packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "downstream",
+                          "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL"}
+    path = ctx.dir / "batches" / f"{bid}.packet.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(packet, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    return packet
+
+
 def _converse(ctx: Ctx, prov, packet: dict, bid: str, system: str | None = None, parse=None, task: str = DOWNSTREAM_TASK,
-              tool_names: list[str] | None = None, ws=None):
+              tool_names: list[str] | None = None, ws=None, pre: dict | None = None):
     """One request of a downstream (or reading) batch with a provider (recorded or an API route), through the request
     layer (session 11; requests.converse): the phase's schema on every request, the capability check before any call
     (the reading phase requires image input), the complete size (a request that does not fit raises
@@ -1878,7 +2332,7 @@ def _converse(ctx: Ctx, prov, packet: dict, bid: str, system: str | None = None,
     bounded repair. `parse` and `system` override the phase's own; `tool_names` the tools offered; `ws` the workspace
     the tools read (default: the candidate's). Returns the parsed answer (DownstreamSet / RegionReadingProposal)."""
     sp = R.spec(R.phase_of_task(task), system=system, parse=parse, tools=tool_names)
-    return _request(ctx, sp, prov, packet, bid, ws=ws).answer
+    return _request(ctx, sp, prov, packet, bid, ws=ws, pre=pre).answer
 
 
 _run_tool = R.run_tool                                          # kept for callers of the session-10 name
@@ -1890,12 +2344,15 @@ def _downstream_host_session(ctx: Ctx, hs, bid: str, packet: dict) -> Downstream
     request layer (requests.ask_host): the declared capabilities and the size checked, the failure classes, and ONE
     bounded repair of a malformed answer (a plain session given the answer and the errors: an item's `statements` are
     ids, never free text); what still fails is set aside item by item."""
-    sess = hs.AnswerSession(ctx.ws, ctx.cfg, system=DS.SYSTEM, rules=DOWNSTREAM_HOST_RULES,
-                            model=ctx.s.get("host_session_model"))
+    pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
+    sess = pre["sess"] if pre else hs.AnswerSession(ctx.ws, ctx.cfg, system=DS.SYSTEM, rules=DOWNSTREAM_HOST_RULES,
+                                                    model=ctx.s.get("host_session_model"),
+                                                    run_lock=ctx.run_lock is not None)
     fields = {"run_id": f"{ctx.run_id}-{bid}", "created": now_iso(), "route": "host", "provider": "host-session",
               "model_requested": sess.host_model_label(), "model_reported": None, "task": DOWNSTREAM_TASK}
     try:
-        out = _host_request(ctx, bid, R.spec("downstream", system=sess.system_prompt()), sess, packet, fields)
+        out = _host_request(ctx, bid, R.spec("downstream", system=sess.system_prompt()), sess, packet, fields,
+                            pre=pre)
     finally:
         last = sess.last
         if last is not None:
@@ -1974,33 +2431,62 @@ def _load_downstream(ctx: Ctx) -> tuple[DownstreamSet | None, dict]:
 # ---------------------------------------------------------------------------------------------- the critic (session 11)
 
 def _critic_route(ctx: Ctx, keys: list[str]):
-    """(route, (recorded provider, session index) or None, why it cannot run) for one batch's critic."""
+    """(route, (recorded provider, session index) or None, why it cannot run, model) for one batch's critic.
+
+    Session 12: in offline mode the critic is LOCAL: the ollama route with `routes.ollama.models.critic` (it may be the
+    same model as propose); without one the review is skipped with the reason. config `critic.route` (host by default)
+    is never consulted offline, and nothing falls back to another route."""
     from . import critic as CR
     cs = CR.settings(ctx.cfg)
     if cs.get("workflow") is False:
-        return None, None, "critic.workflow is false in config/ai.yaml"
+        return None, None, "critic.workflow is false in config/ai.yaml", None
     if ctx.s["route"] == "recorded":
         prov, sess = ctx.cassette.provider("critic", keys, ctx.used_sessions())
         if prov is None:
-            return None, None, "the recorded workflow has no critic session for these items (not run; nothing implied)"
-        return "recorded", (prov, sess), None
+            return (None, None, "the recorded workflow has no critic session for these items (not run; nothing implied)",
+                    None)
+        return "recorded", (prov, sess), None, None
+    if OFF.active(ctx.cfg):
+        rcfg = C.route(ctx.cfg, "ollama")
+        model = C.critic_model(rcfg, "ollama", cs.get("model") if cs.get("route") == "ollama" else None)
+        if not model:
+            return ("ollama", None, "independent review did not run: offline mode: no local critic model is configured "
+                    "(routes.ollama.models.critic; it may name the same model as propose)", None)
+        return "ollama", None, None, model
     route = cs.get("route") or "host"
     if route == "host":
         binary = (cs.get("host") or {}).get("claude_bin") or (ctx.cfg.get("host_session") or {}).get("claude_bin") \
             or "claude"
         if not (shutil.which(binary) or Path(binary).exists()):
-            return None, None, f"the host CLI ({binary}) is not installed here: the host critic cannot run"
-    return route, None, None
+            return None, None, f"the host CLI ({binary}) is not installed here: the host critic cannot run", None
+    return route, None, None, cs.get("model")
 
 
 def _critic_run(ctx: Ctx, label: str, entries: list, ws) -> dict:
     """ONE critic request for the selected items of a batch (critic.review_batch through the request layer)."""
     from . import critic as CR
     keys = [k for k, _, _, _ in entries]
-    route, rec_prov, why = _critic_route(ctx, keys)
+    route, rec_prov, why, model = _critic_route(ctx, keys)
     base = {"selected": len(entries), "selected_items": {k: w for k, _, w, _ in entries}}
-    if route is None:
-        return {**base, "status": "skipped", "reason": why}
+    if route is None or why:
+        ctx.log.event("critic_skipped", batch=label, route=route, reason=why, items=keys)
+        return {**base, "status": "skipped", "reason": why, **({"route": route} if route else {})}
+    offline = OFF.active(ctx.cfg)
+    local_prov = None
+    if offline:                                       # session 12: the local critic model checked before the packet
+        from .providers import make
+        from .providers.base import ProviderError
+        try:
+            local_prov = make("ollama", model, ctx.cfg, None)
+            local_prov.capabilities()
+        except (ProviderError, C.ConfigError) as e:
+            why = f"independent review did not run: the local critic model {model}: {getattr(e, 'message', None) or e}"
+            ctx.log.event("critic_skipped", batch=label, route="ollama", reason=why, items=keys)
+            return {**base, "status": "skipped", "route": "ollama", "model_requested": model, "reason": why}
+    elif ctx.s["route"] == "ollama" and route in OFF.HOSTED_ROUTES:
+        ctx.log.event("critic_route_notice", batch=label, route=route,
+                      note=f"the critic of this ollama run uses the {route} route (config critic.route; "
+                           f"{OFF.KINDS[route]}), not local inference; --offline keeps every phase local")
     run_id, log, staging = _batch_log(ctx, f"{label}-critic", ws)
     packet = CR.batch_packet(ws, ctx.addendum, entries)
     cs = CR.settings(ctx.cfg)
@@ -2008,13 +2494,20 @@ def _critic_run(ctx: Ctx, label: str, entries: list, ws) -> dict:
     (staging / run_id).mkdir(parents=True, exist_ok=True)
     try:
         res = CR.review_batch(packet, route=route, cfg=ctx.cfg, log=log, cwd=(staging / run_id), policy=ctx.policy,
-                              model=cs.get("model"), provider=rec_prov[0] if rec_prov else None, sleep=ctx.sleep,
+                              model=model, provider=rec_prov[0] if rec_prov else local_prov, sleep=ctx.sleep,
                               staging=staging, run_id=run_id)
     except R.RateLimited as e:
         ctx.deferred_in_drive = True
         return {**base, "status": "deferred", "critic_run": run_id, "route": route, "error": _short(e.message, 400),
                 "message": _short(e.message, 400), "reset_in_s": e.reset_in_s, "attempts": e.attempts}
-    except (R.ProviderFailed, R.Malformed, R.ContextExhausted, B.Refused, CR.CriticError, C.ConfigError) as e:
+    except (R.CapabilityRefused, R.TooLarge, C.ConfigError) as e:
+        if not offline:
+            return {**base, "status": "failed", "critic_run": run_id, "route": route,
+                    "error": f"{type(e).__name__}: {_short(getattr(e, 'message', None) or str(e), 400)}"}
+        why = f"independent review did not run: the local critic model {model}: {_short(str(e), 400)}"
+        ctx.log.event("critic_skipped", batch=label, route=route, reason=why, items=keys)
+        return {**base, "status": "skipped", "route": route, "model_requested": model, "reason": why}
+    except (R.ProviderFailed, R.Malformed, R.ContextExhausted, B.Refused, CR.CriticError) as e:
         return {**base, "status": "failed", "critic_run": run_id, "route": route,
                 "error": f"{type(e).__name__}: {_short(getattr(e, 'message', None) or str(e), 400)}"}
     items = {}
@@ -2335,7 +2828,30 @@ def step_outputs(ctx: Ctx, st: dict) -> None:
     st.update(refused=False, marked=len(marked), unmarked=[m for m in marked if m.startswith("NOT MARKED")],
               row_statuses=dict(Counter(statuses.get(e["row"].id, default).split(":")[0]
                                         for e in res["run"]["evals"])))
+    _review_not_run_note(ctx, out)
     ctx.say(f"  candidate outputs published to {out} (exit 0; {len(marked)} file(s) carry the banner)")
+
+
+def skipped_reviews(cp: Checkpoint) -> list[tuple[str, str]]:
+    """(batch, reason) of every critic recorded `skipped` (session 12: offline without a local critic, a missing
+    model, a model that cannot hold the request): an independent review that did not run, never an agreement."""
+    return [(k, (cp.batch(k).get("critic") or {}).get("reason") or "no reason recorded")
+            for k in cp.batches("analysis") + cp.batches("downstream")
+            if (cp.batch(k).get("critic") or {}).get("status") == "skipped"]
+
+
+def _review_not_run_note(ctx: Ctx, out: Path) -> None:
+    """The candidate README says which independent reviews did not run, and why (session 12)."""
+    sk = skipped_reviews(ctx.cp)
+    readme = Path(out) / "README.md"
+    if not sk or not readme.exists():
+        return
+    lines = ["", "## Independent review (the selective critic)", "",
+             "Some selected items had NO second-model review; nothing here implies agreement:", ""]
+    lines += [f"- {k}: {_short(r if r.startswith('independent review did not run') else 'independent review did not run: ' + r, 400)}"
+              for k, r in sk]
+    readme.write_text(readme.read_text(encoding="utf-8").rstrip("\n") + "\n" + "\n".join(lines) + "\n",
+                      encoding="utf-8")
 
 
 def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
@@ -2398,6 +2914,8 @@ def step_diff(ctx: Ctx, st: dict) -> None:
     prev = r["order"][r["order"].index(ctx.addendum) - 1]
     md, data = live.diff(r, prev, ctx.addendum)
     data["stage_status"] = next(s.status for s in r["stages"] if s.stage == ctx.addendum)
+    from .. import derived                              # session 12 (W3b): pending readings, computed deadlines, the
+    data["derived"] = derived.summary(r, ctx.addendum)  # Working Days left, switched conditions, bands and their rules
     rd = ctx.dir / "review"
     rd.mkdir(parents=True, exist_ok=True)
     (rd / "diff.md").write_text(f"> **{CAND.BANNER}**\n\n" + md, encoding="utf-8")
@@ -2603,9 +3121,14 @@ def review_markdown(ctx: Ctx) -> str:
     L += ["## First: unresolved provisions and escalations", "",
           f"{len(unres)} of {len(d['provisions'])} provisions are not answered by a promoted item (each is `unresolved` in "
           f"the candidate op file with the reason); {len(esc)} escalation(s).", ""]
+    from ..clarify import route_lines                   # session 12 (W3a): the closed clarification route, one wording
+    win = diff.get("clarification_window") or {}
+    L += route_lines(win) + ([""] if win.get("closed") else [])
     for it in esc:
         sc = ((tasks.get(f"esc:{it.provision}") or {}).get("scope")) or _scope(ctx, it.provision)
-        L += [f"- **ESCALATED {it.id}** ({it.provision}): {_short(it.payload.get('why'), 300)}",
+        L += [f"- **ESCALATED {it.id}** ({it.provision}): {_short(it.payload.get('why'), 300)}"]
+        L += [f"  - clarification route: {win['note']}"] if win.get("closed") else []
+        L += [
               f"  - unsupported: {_short(it.payload.get('what_is_unsupported'), 300)}",
               "  - evidence: " + ("; ".join(f"{x.unit_id} p{x.page}: “{_short(x.words, 160)}”" for x in it.evidence) or "none"),
               f"  - affected scope: units {', '.join(sc.get('units', [])[:12]) or 'none'}; rows {', '.join(sc.get('rows', [])[:12]) or 'none'}; "
@@ -2615,8 +3138,17 @@ def review_markdown(ctx: Ctx) -> str:
         if any(it.provision == p for it in esc):
             continue
         v = d["provisions"].get(p, {})
-        L.append(f"- **UNRESOLVED {p}** ({v.get('kind')}, p{','.join(map(str, v.get('pages') or []))}): {answers[p].get('why')}")
+        L.append(f"- **UNRESOLVED {p}** ({v.get('kind')}, p{','.join(map(str, v.get('pages') or []))}): {answers[p].get('why')}"
+                 + (f" — {win['note']}" if win.get("closed") else ""))
     L.append("")
+    rr = diff.get("answers_to_reread") or []            # session 12 (W3a): superseded answers, for a person
+    if rr:
+        L += ["## Earlier answers to re-read against the new text (never revoked; a person decides)", ""]
+        L += [f"- `{x['answer']}` ({x['issued_by']}): {_short(x['why'], 300)}; {x['reread']}"
+              + (f" (downstream task `reread:{x['answer']}`)" if f"reread:{x['answer']}" in tasks else "") for x in rr]
+        L.append("")
+    from ..derived import review_lines as derived_lines  # session 12 (W3b): derived effects, each for a person
+    L += derived_lines(diff.get("derived"))
     # ---- per provision chain
     L += ["## Per provision: source evidence → proposed transition → validation → downstream impact → output difference", ""]
     units = ctx.ws.units_by_id if ctx.P["build"].exists() else {}
@@ -2637,7 +3169,7 @@ def review_markdown(ctx: Ctx) -> str:
         for it in mine:
             bad = next((x for x in it.validation if not x.ok), None)
             L.append(f"- transition: `{it.id}` {it.statement_type} {_transition(it)}")
-            L.append(f"  - validation: **{it.verification_status}**" + (f" — {bad.check}: {_short(bad.detail, 220)}" if bad else ""))
+            L.append(f"  - validation: **{_shown_status(it)}**" + (f" — {bad.check}: {_short(bad.detail, 220)}" if bad else ""))
             L += _critic_item_lines(getattr(getattr(it, "review", None), "critic", None))
             oid = it.payload.get("id", it.id) if it.statement_type == "amendment_op" else None
             if oid and oid in ops_changed:
@@ -2651,7 +3183,7 @@ def review_markdown(ctx: Ctx) -> str:
         dits = [it for it in (ds.items if ds else []) if it.provision == p
                 or any(t_ == it.task for t_, tk in tasks.items() if p in (tk.get("provisions") or []))]
         for it in dits:
-            L.append(f"  - downstream proposal `{it.id}` {it.statement_type} ({it.task}): **{it.verification_status}**"
+            L.append(f"  - downstream proposal `{it.id}` {it.statement_type} ({it.task}): **{_shown_status(it)}**"
                      + (f" — held back: {dreport.get('held_back', {}).get(it.id)}" if dreport.get("held_back", {}).get(it.id) else ""))
             L += _critic_item_lines(next((v.get("critic") for v in d["downstream"].get("items", {}).values()
                                           if v.get("id_in_set") == it.id and v.get("critic")), None), "    ")
@@ -2660,6 +3192,7 @@ def review_markdown(ctx: Ctx) -> str:
         od = [f"NEW {x}" for x in req.get("new") or [] if x in rows_all] + \
              [f"OUT {x}" for x in req.get("out") or [] if x in rows_all] + \
              [f"CHANGED {x}" for x in req.get("changed") or [] if x in rows_all] + \
+             [f"CONFIRMED (unchanged) {x}" for x in req.get("confirmed") or [] if x in rows_all] + \
              [f"A3 enters {x}" for x in (diff.get("a3") or {}).get("enters") or [] if x in rows_all] + \
              [f"A5 {g['change']} {g['activity']}" for g in prog if any(x in g.get("detail", "") for x in rows_all)]
         if od:
@@ -2671,8 +3204,11 @@ def review_markdown(ctx: Ctx) -> str:
               "| Item | Type | Task | Status | First failed check, or what a person confirms |", "|---|---|---|---|---|"]
         for it in ds.items:
             bad = next((x for x in it.validation if not x.ok), None)
-            note = next((x.detail for x in it.validation if x.ok and x.check in ("interpretation", "duration", "relationship")), "")
-            L.append(f"| {it.id} | {it.statement_type} | {it.task} | {it.verification_status} | "
+            note = next((x.detail for x in it.validation if x.ok and x.check == HO.CHECK), "") or \
+                next((x.detail for x in it.validation if x.ok and x.check in ("interpretation", "duration", "relationship")), "")
+            if it.statement_type in ("clarification_item", "escalation") and win.get("closed"):
+                note = (note + "; " if note else "") + win["note"]          # session 12: never suggested as sendable
+            L.append(f"| {it.id} | {it.statement_type} | {it.task} | {_shown_status(it)} | "
                      f"{_short((bad.check + ': ' + bad.detail) if bad else note, 200).replace('|', '/')} |")
         L.append("")
         if dreport.get("schedule_problems") or dreport.get("interactions"):
@@ -2753,6 +3289,12 @@ def _critic_item_lines(c, indent: str = "  ") -> list[str]:
     return out
 
 
+def _shown_status(it) -> str:
+    """An item's status as the review packet shows it (session 12): a human-owned item (tenderpack.human_owned) carries
+    HUMAN DECISION PENDING beside its controller status; nothing it concludes is presented as settled."""
+    return it.verification_status + (f" — {HO.HUMAN_DECISION_PENDING}" if HO.is_human_owned(it) else "")
+
+
 def critic_section(ctx: Ctx, cps, ds) -> list[str]:
     """The review packet's Critic section (session 11): per batch, what was selected and reviewed, and every finding."""
     cp = ctx.cp
@@ -2771,6 +3313,13 @@ def critic_section(ctx: Ctx, cps, ds) -> list[str]:
         L.append(f"| {k} | {c.get('status')} | {c.get('selected', 0)} | {c.get('reviewed', '-')} | {c.get('agrees', '-')} | "
                  f"{c.get('disagrees', '-')} | {_short(note, 200).replace('|', '/')} |")
     L.append("")
+    sk = [(k, c) for k, c in rows if c.get("status") == "skipped" and c.get("selected")]
+    if sk:                                                       # session 12: a review that did not run, said plainly
+        L += ["**Reviews that did not run** (the selected items below had NO second-model review; this is not "
+              "agreement):", ""]
+        L += [f"- **{k}** ({c.get('selected')} selected item(s): {', '.join(c.get('selected_items') or {})}): "
+              f"{_short(c.get('reason'), 400)}" for k, c in sk]
+        L.append("")
     by = {it.id: it for it in (cps.items if cps else [])}
     dsby = {it.id: it for it in (ds.items if ds else [])}
     for k, c in rows:

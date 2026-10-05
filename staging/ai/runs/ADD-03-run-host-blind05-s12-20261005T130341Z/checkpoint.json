@@ -1,0 +1,5362 @@
+{
+ "format": "tenderpack-ai-run/1",
+ "run_id": "ADD-03-run-host-blind05-s12-20261005T130341Z",
+ "addendum": "ADD-03",
+ "settings": {
+  "addendum": "ADD-03",
+  "pdf": "/home/user/tender-pack-reader/rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf",
+  "route": "host",
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "staging": "/home/user/tender-pack-reader/staging/ai",
+  "worklog": "/home/user/tender-pack-reader/worklog/model_calls",
+  "ai_config": "/home/user/tender-pack-reader/config/ai.yaml",
+  "batch_size": 8,
+  "downstream_batch_size": 12,
+  "model": null,
+  "cassette": null,
+  "caps": {},
+  "host_model": null,
+  "host_mode": "auto",
+  "host_session_model": "opus",
+  "allow_unverified_capabilities": false,
+  "background_before": true,
+  "cache": true,
+  "offline": null,
+  "ollama_preflight": null,
+  "max_parallel_sessions": 2
+ },
+ "inputs": {
+  "pack": "/home/user/tender-pack-reader/config/pack.yaml",
+  "evidence": "/home/user/tender-pack-reader/build",
+  "pdf": {
+   "path": "/home/user/tender-pack-reader/rehearsals/blind-05/input/ADD-03_Addendum_No_3.pdf",
+   "sha256": "9c5e22d59a80d48f82f07cbb0cfb7649f14a8618fb8fc4503a576f4a0293eae3",
+   "pages": 5,
+   "bytes": 309063
+  },
+  "copied": {
+   "manifest": "sources/manifest.json",
+   "furniture": "config/furniture.yaml",
+   "readings_dir": "curation/readings",
+   "approvals": "curation/approvals.yaml",
+   "clarifications": "curation/clarifications/register.yaml",
+   "amendments_dir": "curation/amendments",
+   "register": "curation/register/rows.yaml",
+   "issues": "curation/register/issues.yaml",
+   "dispositions_dir": "curation/register/dispositions",
+   "row_ids": "curation/register/ids.yaml",
+   "evidence_items_dir": "curation/evidence_items",
+   "activity_templates": "curation/activity_templates.yaml",
+   "assumptions": "config/assumptions.yaml",
+   "scenarios": "config/scenarios.yaml",
+   "relationships": "curation/relationships.yaml"
+  },
+  "real_hashes": {
+   "config/assumptions.yaml": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+   "config/furniture.yaml": "1fd1b89520a26e7df1ac9b3017b1151256fbb093f482e57898b9535dda0a7533",
+   "config/pack.yaml": "52788e8474d401f70c7eb544431270ea8c00d3cff5c2629dd717eb6831ac0363",
+   "config/scenarios.yaml": "cf25bff61c3211f4346e731a1e5b77bcfd4a4c442ba16783834604f0890dac69",
+   "curation/activity_templates.yaml": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+   "curation/amendments/ADD-01.yaml": "8bc289bd4ba7549b6627929d6cd587dffabae736b4ec45255e5389211eb85a31",
+   "curation/amendments/ADD-02.yaml": "56130032fdad9d2ed7b0236057e6a6bb3078ff5f0a0cfe638b122ace5cf6f6de",
+   "curation/approvals.yaml": "23d2dc4d8061ba062601837140c3843467808082350fe269d8b806dbf679e393",
+   "curation/clarifications/register.yaml": "0ca5deb40a5e9dfe7a27f55f5a3c972c2972eeecbc7d898c02a6c7fc9b2c8f58",
+   "curation/evidence_items/VOL-IV.yaml": "6b577b671dec85b568c6b5ab3f158419a2bf1715338f29c42670729052cc30c7",
+   "curation/evidence_items/core.yaml": "b9bf90b7e40751c97608c25aaa50348f6565f56d9113a7f20bab7f80986ba73b",
+   "curation/reading-snapshots/VOL-II-p3-r1@6bc6505956429dc7.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/reading-snapshots/VOL-IV-p6-r1@f433c2ca4e562679.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/readings/VOL-II-p3-r1.yaml": "dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64",
+   "curation/readings/VOL-IV-p6-r1.yaml": "06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466",
+   "curation/register/dispositions/VOL-I.yaml": "125b676e7de62f10d5da30ee920db0b2b4bd04658f2ae3159499a55c792997fa",
+   "curation/register/dispositions/VOL-II.yaml": "aa50a1d13ea819b7bcbcd3b224f0a6e4ad966fecdb8bc2f8f5663c2e20e0e135",
+   "curation/register/dispositions/VOL-IV.yaml": "0458a38ebb9ce760ba4b3267c4c6c52e8d23ccf0ec641d9ce2689319f69a1112",
+   "curation/register/dispositions/VOL-V.yaml": "4640e7e2bcef689f1af365012f800d10b93f41b77159ba8f68c16e5cb6e192de",
+   "curation/register/ids.yaml": "431d8b329cda9fe96606c035b533ac22a1f0bb49ec81b503a3dcbe30f23dae83",
+   "curation/register/issues.yaml": "3b1a4053d2b84b6ba64a6860124af6b9165de1841b1ad814f8fec3396845ad37",
+   "curation/register/issues/VOL-I.yaml": "47779bac43928ccb6f1ae19223881816c785c18c5225c8dea84b46ec224dbae5",
+   "curation/register/issues/VOL-II-V.yaml": "ed1372cb535eface9d350b66b27fcee97f9adf404addf201235e07efe1b275aa",
+   "curation/register/issues/VOL-IV.yaml": "366e0bc2765e3a900d85fa2b887440dde07d60d5dc9e2b29fa006d520672f4b8",
+   "curation/register/pins.yaml": "e1f3eaff46462e317f4c926a8ff8ebeed0df175b319a99757b91d50177d92ff1",
+   "curation/register/proposals/2026-10-03_session-08_owner-directed.yaml": "c5ef0ea4d35d3b70ea6eb106106b0e4c2ec4d5d49ed4686563c2b2ada6466f49",
+   "curation/register/proposals/2026-10-03_stale-rows.yaml": "0fadce50465c75f76cd6fdd1c9f69cb4477810aab80f3a39c42892e217d97869",
+   "curation/register/rows.yaml": "5420fdd2c7b6d1a5fe24c636fd962d1f0d37457a7ebe6175d16aca4db6df3c6e",
+   "curation/register/rows/ADD.yaml": "dab0ca1133073c61279613dbd24f7de7e6b35580ff4d133c81e31dc43566ed61",
+   "curation/register/rows/VOL-I.yaml": "7f11526c1261926ac00783672985214f4d59a9a303312795d42beca27716bc21",
+   "curation/register/rows/VOL-II.yaml": "2f23ed841dc2918a01f6a5987abfcefebd0844102b8d0867558d0d10a376e25e",
+   "curation/register/rows/VOL-IV.yaml": "22a7245555302d8f610cf2a807f5f1fa2b425928a1a45de6fed21c5d2b2c7f38",
+   "curation/register/rows/VOL-V.yaml": "f3ad724a547d405248f0a51bea59f13118565b7d19f4d17a31159f830ce23b91",
+   "curation/relationships.yaml": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+   "sources/manifest.json": "6c01add4c30c9f1eaeb34e2a8175d504a613e20ff3b870707070485a6adac4c9"
+  },
+  "preceding_pack_id": "NUPA-ISTP-2026-014",
+  "candidate_state": {
+   "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+   "evidence_build_id": "e017ad321f216c3ead31c95775ae3f69119774c8431584a27657e8d570558933",
+   "validated_stage": "ADD-02",
+   "working_stage": "ADD-03",
+   "decisions_sha256": null,
+   "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+   "activity_templates_sha256": "05bf7e1360895cbc335757d297495cee40e773a146130253a5f4b70455604101",
+   "readings_sha256": "f89f6d22215a48502ccbf20e8bc38e051ed7b95c8d1dab05d310ccb2190e81d4",
+   "amendments_sha256": "79b2d72fa98d7f74fb176c2af882fada5d7c0fbf37a61abceae1f772dcff4d7d",
+   "unrecorded_crops_sha256": null,
+   "register_sha256": "1d4239fe59c5c7e6af67174b68f396a58efa5e59dc62d0f7f0ede4f98fc17611",
+   "relationships_sha256": "3455fd00900f1ea40d471a1cf789dffe5e1b5b1971da1d474cabfc9b5cc7a467",
+   "curation_sha256": "31794c2190428bb3c97acfc745d83b013e7573fd034cadfd471fbf0fd0e90a04"
+  }
+ },
+ "candidate": {
+  "dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate",
+  "pack": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/pack.yaml",
+  "pack_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/pack-before.yaml",
+  "build": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/build",
+  "out": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/out",
+  "out_before": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/out-before",
+  "pdf_copy": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/input/ADD-03_Addendum_No_3.pdf"
+ },
+ "created": "2026-10-05T13:03:42Z",
+ "updated": "2026-10-05T13:32:38Z",
+ "status": "failed",
+ "status_reason": "analysis: ToolError: workspace stale: reload (changed since it was loaded: config/formulas.yaml) (traceback in logs/error.log)",
+ "steps": {
+  "ingest": {
+   "status": "done",
+   "seconds": 14.645,
+   "attempts": 1,
+   "started": "2026-10-05T13:03:42Z",
+   "exit_code": 2,
+   "units": 575,
+   "pending_review": [],
+   "failed_checks": [
+    "C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none"
+   ],
+   "refused_for_readings": true,
+   "unread_regions": [
+    "ADD-03-p4-r1"
+   ],
+   "reason": "STRUCTURAL FAILURE: C05: 3 regions; unread ['ADD-03-p4-r1']; readings failing checks none; readings with no detected region none; readings with PARTIAL render checks none; PENDING HUMAN REVIEW: none",
+   "finished": "2026-10-05T13:03:56Z"
+  },
+  "readings": {
+   "status": "done",
+   "seconds": 188.428,
+   "attempts": 1,
+   "started": "2026-10-05T13:03:56Z",
+   "batches": {
+    "reading-ADD-03-p4-r1": "done"
+   },
+   "readings": {
+    "ADD-03-p4-r1": {
+     "status": "interpretation_pending",
+     "file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/curation/readings/ADD-03-p4-r1.yaml"
+    }
+   },
+   "reingest": {
+    "exit_code": 0,
+    "units": 602,
+    "pending_review": [
+     "ADD-03-p4-r1"
+    ],
+    "failed_checks": []
+   },
+   "provisions": 63,
+   "structure_units": 15,
+   "finished": "2026-10-05T13:07:05Z"
+  },
+  "analysis": {
+   "status": "failed",
+   "seconds": 1532.937,
+   "attempts": 1,
+   "started": "2026-10-05T13:07:05Z",
+   "plan_notes": [],
+   "error": "ToolError: workspace stale: reload (changed since it was loaded: config/formulas.yaml)"
+  },
+  "validation": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "downstream": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "downstream_validation": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "critic": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "promotion": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "pin": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "check_register": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "outputs": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "diff": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  },
+  "review": {
+   "status": "pending",
+   "seconds": 0.0,
+   "attempts": 0
+  }
+ },
+ "batches": {
+  "reading-ADD-03-p4-r1": {
+   "phase": "reading",
+   "region": "ADD-03-p4-r1",
+   "status": "done",
+   "attempts": 1,
+   "seconds": 168.479,
+   "pid": 24878,
+   "started": "2026-10-05T13:03:56Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/reading-ADD-03-p4-r1.packet.json",
+   "request": {
+    "phase": "reading",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "reading",
+     "system_tokens": 590,
+     "tools_tokens": 359,
+     "packet_tokens": 7499,
+     "image_tokens": 4800,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 8000,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 1,
+     "input_tokens": 43248
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the reading request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "reading"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T130357Z-ffc5",
+      "elapsed_s": 167.4,
+      "error": null,
+      "failure_class": null,
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "tool_calls": 7,
+      "crops_read": []
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the reading request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "reading"
+    }
+   ],
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T130357Z-ffc5",
+    "elapsed_s": 167.4,
+    "error": null,
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "tool_calls": 7,
+    "failure_class": null,
+    "note": "the session's final message is the proposed reading"
+   },
+   "result": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/reading-ADD-03-p4-r1.result.json",
+   "verification_status": "interpretation_pending",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": "claude-opus-5-5",
+   "reading_file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/curation/readings/ADD-03-p4-r1.yaml",
+   "unit_id": "ADD-03:p4-image"
+  },
+  "analysis-001": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:1.3",
+    "ADD-03:2.1",
+    "ADD-03:2.2"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 341.168,
+   "pid": 24878,
+   "started": "2026-10-05T13:07:09Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-001.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T130708Z-99e9",
+    "elapsed_s": 341.0,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6712,
+     "image_tokens": 0,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 7100,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 8,
+     "input_tokens": 39027
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T130708Z-99e9",
+      "elapsed_s": 341.0,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T131242Z-7984",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/2.1(a)",
+    "ADD-03/2.1(b)",
+    "ADD-03/cover/para3",
+    "ADD-03/cover/para3/issue",
+    "ADD-03/cover/para1",
+    "ADD-03/cover/para2",
+    "ADD-03/1.1",
+    "ADD-03/1.2",
+    "ADD-03/1.3",
+    "ADD-03/2.2"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:cover/para1",
+    "ADD-03:cover/para2",
+    "ADD-03:cover/para3",
+    "ADD-03:1.1",
+    "ADD-03:1.2",
+    "ADD-03:1.3",
+    "ADD-03:2.1",
+    "ADD-03:2.2"
+   ],
+   "critic": {
+    "selected": 3,
+    "selected_items": {
+     "ADD-03/2.1(a)": [
+      "uncertain_target",
+      "uncertain_target: old words located in the target"
+     ],
+     "ADD-03/2.1(b)": [
+      "removal"
+     ],
+     "ADD-03/cover/para3": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-001-critic",
+    "route": "host",
+    "reviewed": 3,
+    "agrees": 3,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/2.1(a)": {
+      "agrees": true,
+      "concerns": [
+       "The provision says 6.6 and 6.7 are replaced by one new 6.6, and the old words quoted in the item are the whole of VOL-I:6.6 at ADD-02. Replacing the whole text is therefore the right unit and the new text matches the provision verbatim.",
+       "The new 6.6 adds a two-Working-Day cut-off for modifications. VOL-I:6.7 allowed modification up to the Proposal Due Date. ADD-03:cover/para3 says the consolidation is 'without change of substance', which contradicts this. The item's `conflicts` list is empty, and the rationale says the change is raised separately as S4. S4 is not in the evidence shown, so a person should confirm it exists.",
+       "'Working Days' is not defined in the evidence shown, so I cannot check how the two-day cut-off is counted.",
+       "The old 6.6 had no withdrawal or modification wording. The new text brings in the withdrawal and modification rule from 6.7, so the replacement goes beyond the text it overwrites. This follows from the provision and is not an error."
+      ],
+      "evidence_checked": [
+       "ADD-03:2.1",
+       "VOL-I:6.6",
+       "VOL-I:6.7",
+       "ADD-03:cover/para3"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: old words located in the target"
+      ]
+     },
+     "ADD-03/2.1(b)": {
+      "agrees": true,
+      "concerns": [
+       "The deletion of 6.7 follows from the words 'Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6'. The previous_value matches VOL-I:6.7 at ADD-02.",
+       "The old 6.7 rule that modification at any time before the Proposal Due Date is allowed is not carried forward. The new 6.6 narrows modification to two Working Days before the due date. The deletion is correct, but a reader should see it together with item (a) and the 'without change of substance' statement in the cover.",
+       "S5 cites ADD-03:2.2, which is not printed in the units shown. I could not check that the number 6.7 is not reused. The deletion still follows from 2.1 alone."
+      ],
+      "evidence_checked": [
+       "ADD-03:2.1",
+       "VOL-I:6.7",
+       "ADD-03:cover/para3"
+      ],
+      "selected_because": [
+       "removal"
+      ]
+     },
+     "ADD-03/cover/para3": {
+      "agrees": true,
+      "concerns": [
+       "The sentence 'Bidders shall acknowledge receipt in Form 4-A.' is verbatim in the cover paragraph, and 'shall' supports an annotation that adds an obligation. The target is the paragraph itself, which is acceptable for an annotation.",
+       "The note says 'Addendum No. 3'. The evidence only says 'this Addendum'. The 'No. 3' is an inference from the document ID ADD-03 and is not stated in the evidence.",
+       "The dependency VOL-IV:F4-A is not among the units printed, so I could not check that Form 4-A exists or what it requires.",
+       "The same paragraph says the consolidation of 6.6 and 6.7 is 'without change of substance'. That claim is contradicted by the new two-Working-Day modification cut-off (see item (a)). This annotation does not record the contradiction."
+      ],
+      "evidence_checked": [
+       "ADD-03:cover/para3"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 3682,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 1350,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 3,
+      "input_tokens": 4042
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T131250Z",
+       "elapsed_s": 20.3,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-002": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.3(b)",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 0.599,
+   "pid": 24878,
+   "started": "2026-10-05T13:13:11Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-002.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T130709Z-0803",
+    "elapsed_s": 326.1,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6621,
+     "image_tokens": 0,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 6400,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 7,
+     "input_tokens": 38936
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T130709Z-0803",
+      "elapsed_s": 326.1,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T131228Z-539c",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/3.1",
+    "ADD-03/3.2",
+    "ADD-03/3.3",
+    "ADD-03/3.4",
+    "ADD-03/4.1",
+    "ADD-03/4.2"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:3.1",
+    "ADD-03:3.2",
+    "ADD-03:3.3",
+    "ADD-03:3.3(b)",
+    "ADD-03:3.4",
+    "ADD-03:4.1",
+    "ADD-03:4.2"
+   ],
+   "critic": {
+    "selected": 4,
+    "selected_items": {
+     "ADD-03/3.2": [
+      "uncertain_target",
+      "uncertain_target: resolved through a group"
+     ],
+     "ADD-03/3.3": [
+      "uncertain_target",
+      "uncertain_target: old words located in the target"
+     ],
+     "ADD-03/3.4": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/4.2": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: target is a group"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-002-critic",
+    "route": "host",
+    "reviewed": 4,
+    "agrees": 4,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/3.2": {
+      "agrees": true,
+      "concerns": [
+       "The item's target is VOL-V:1.1, but the payload inserts a new unit 1.1A after it, with 1.1 as the anchor. This is consistent with the provision.",
+       "The Base Date depends on the Proposal Due Date, which this evidence does not give. Nothing in the item computes it, so this is fine."
+      ],
+      "evidence_checked": [
+       "ADD-03:3.2",
+       "VOL-V:1.1"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: resolved through a group"
+      ]
+     },
+     "ADD-03/3.3": {
+      "agrees": true,
+      "concerns": [
+       "The new text is the single quotation printed across ADD-03:3.3 and ADD-03:3.3(b), with the '29.2' label dropped. It matches word for word, and the old text matches VOL-V:29.2.",
+       "The provision deletes and replaces the whole clause, so replacing the 60/40 split is correct. The 75% from year 11 is new and follows from (b).",
+       "Form 4-F has no field for the bidder-stated percentage (S-F3). I could not check this from the units printed here. The item defers it to Q20, so a person should confirm it is handled.",
+       "The new text uses 'Base Date', which depends on the 1.1A insertion in ADD-03/3.2."
+      ],
+      "evidence_checked": [
+       "ADD-03:3.3",
+       "ADD-03:3.3(b)",
+       "VOL-V:29.2",
+       "S-F1",
+       "S-F2",
+       "S-F3"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: old words located in the target"
+      ]
+     },
+     "ADD-03/3.4": {
+      "agrees": true,
+      "concerns": [
+       "The 'shall' obligation is real, and the annotate op with adds_obligation on VOL-I:10.3 follows from the words.",
+       "The note refers to 'Base Date pricing', which comes from ADD-03/3.1. The evidence printed here does not include 3.1, so I could not check that wording.",
+       "The VOL-I:10.3 quotation is only the opening of the clause. That is enough to identify the target."
+      ],
+      "evidence_checked": [
+       "ADD-03:3.4",
+       "VOL-I:10.3",
+       "S-I1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/4.2": {
+      "agrees": true,
+      "concerns": [
+       "The only evidence for the target group VOL-II:S3 is its heading, 'SECTION 3 — PROCESS REQUIREMENTS'. The printed evidence does not show the section's content or that it covers the process design submission. The group is still the unit the provision cites.",
+       "The note's detail on the membrane filtration step and the 0.1 µm pore size comes from ADD-03/4.1. That is not in the evidence printed here, so I could not check it.",
+       "A person should confirm S-I1, the reading that this is an added obligation rather than a text change."
+      ],
+      "evidence_checked": [
+       "ADD-03:4.2",
+       "VOL-II:H:S3",
+       "S-I1"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: target is a group"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 5302,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 1700,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 4,
+      "input_tokens": 5662
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T131312Z",
+       "elapsed_s": 22.6,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-003": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:5.1",
+    "ADD-03:5.2"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 129.603,
+   "pid": 24878,
+   "started": "2026-10-05T13:13:37Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-003.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T131311Z-15c2",
+    "elapsed_s": 155.3,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 5284,
+     "image_tokens": 0,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 2900,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 2,
+     "input_tokens": 37599
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T131311Z-15c2",
+      "elapsed_s": 155.3,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T131541Z-b560",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/5.1",
+    "ADD-03/5.2",
+    "ADD-03/5.1-clar"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:5.1",
+    "ADD-03:5.2"
+   ],
+   "critic": {
+    "selected": 2,
+    "selected_items": {
+     "ADD-03/5.1": [
+      "conflicting"
+     ],
+     "ADD-03/5.2": [
+      "consequential_interpretation"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-003-critic",
+    "route": "host",
+    "reviewed": 2,
+    "agrees": 2,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/5.1": {
+      "agrees": true,
+      "concerns": [
+       "Real conflict: the ADD-03 cover paragraph 3 names Volume II Clause 3.5 (the noise clause) for the odour change, while operative Clause 5.1 and Q18 name Clause 3.4. The conflict is only declared by the proposer. The cover text is not printed in the evidence, so I could not check it. The operative clause is unambiguous and the old words match VOL-II:3.4, so targeting 3.4 follows from the text, but a person should resolve the cover discrepancy.",
+       "The new limit is a cross-reference to ESIA Figure 7-2. Its numeric value is not in the evidence. The substitution also moves the compliance point from the site boundary to the nearest sensitive receptor. The effective limit cannot be determined from the evidence shown.",
+       "The unchanged 98th percentile hourly basis follows from the second sentence of 5.1 and from the retained tail of 3.4."
+      ],
+      "evidence_checked": [
+       "ADD-03:5.1",
+       "VOL-II:3.4",
+       "controller_validation previous_value/proposed_value/evidence checks"
+      ],
+      "selected_because": [
+       "conflicting"
+      ]
+     },
+     "ADD-03/5.2": {
+      "agrees": true,
+      "concerns": [
+       "Clause 5.2 prints no change of words, so an annotate op with effect adds_obligation on VOL-II:3.4 is a reasonable reading. It is an interpretation (S6) that a person must confirm.",
+       "5.2 refers to 3.4 'as amended'. It therefore depends on 5.1, and 5.1 is itself in conflict with the cover paragraph that names Clause 3.5. If 5.1 is resolved differently, 5.2's target may change.",
+       "The value to be demonstrated (ESIA Figure 7-2) is not in the evidence. The obligation can be recorded, but its content cannot be checked. The controller's insufficient_evidence status is appropriate."
+      ],
+      "evidence_checked": [
+       "ADD-03:5.2",
+       "VOL-II:3.4",
+       "ADD-03:5.1",
+       "controller_validation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 2899,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 1000,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 2,
+      "input_tokens": 3259
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T131547Z",
+       "elapsed_s": 6.7,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-004": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:Q21"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 205.765,
+   "pid": 24878,
+   "started": "2026-10-05T13:15:54Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-004.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T131337Z-857e",
+    "elapsed_s": 342.3,
+    "error": null,
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6910,
+     "image_tokens": 0,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 6400,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 7,
+     "input_tokens": 39225
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T131337Z-857e",
+      "elapsed_s": 342.3,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T131914Z-bfd9",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/Q15",
+    "ADD-03/Q16",
+    "ADD-03/Q17",
+    "ADD-03/Q18",
+    "ADD-03/Q19",
+    "ADD-03/Q19-esc",
+    "ADD-03/Q20",
+    "ADD-03/Q21"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:Q15",
+    "ADD-03:Q16",
+    "ADD-03:Q17",
+    "ADD-03:Q18",
+    "ADD-03:Q19",
+    "ADD-03:Q20",
+    "ADD-03:Q21"
+   ],
+   "critic": {
+    "selected": 8,
+    "selected_items": {
+     "ADD-03/Q15": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/Q16": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: resolved through a group"
+     ],
+     "ADD-03/Q17": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/Q18": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/Q19": [
+      "conflicting",
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: target is a group"
+     ],
+     "ADD-03/Q19-esc": [
+      "conflicting"
+     ],
+     "ADD-03/Q20": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: resolved through a group",
+      "uncertain_target: target is a group"
+     ],
+     "ADD-03/Q21": [
+      "consequential_interpretation"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-004-critic",
+    "route": "host",
+    "reviewed": 8,
+    "agrees": 8,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/Q15": {
+      "agrees": true,
+      "concerns": [],
+      "evidence_checked": [
+       "ADD-03:Q15",
+       "VOL-II:6.4"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/Q16": {
+      "agrees": true,
+      "concerns": [
+       "The VOL-IV:F4-E unit text is not printed in the units. Only the controller's verbatim check supports the quoted Form 4-E line.",
+       "The response's 'shall not include any qualification elsewhere' is consistent with 9.6, which makes such a Proposal non-responsive. The consequence rests on 9.6 and is not new."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q16",
+       "VOL-I:9.6"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: resolved through a group"
+      ]
+     },
+     "ADD-03/Q17": {
+      "agrees": true,
+      "concerns": [
+       "Clause 8.3 names only 'The proposed EPC Contractor'. Requiring a certificate from each JV member is a real extension of 8.3, so adds_obligation is a fair label. A person should confirm it."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q17",
+       "VOL-I:8.3"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/Q18": {
+      "agrees": true,
+      "concerns": [
+       "ADD-03:5.1, the amendment to 3.4 that the response depends on, is not in the printed evidence. The statement that Section 5 substitutes the 3.4 criterion cannot be checked here.",
+       "The proposer notes the addendum cover describes the odour change as Clause 3.5, while Q18 says 3.4. This is unresolved and should be checked in the other batch.",
+       "The only 3.4 text shown is the pre-addendum wording, so the interpretation is a pointer to a data-room figure and not a reading of the clause."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q18",
+       "VOL-II:3.4"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/Q19": {
+      "agrees": true,
+      "concerns": [
+       "The conflict is real on the quoted words. The Q19 response says indexation applies 'from the first anniversary of PCOD'. ADD-03:3.3, quoted in the item, says 'indexed annually from the Base Date'. The ADD-03:3.3 unit text is not printed in the units, only quoted in the item's evidence.",
+       "The VOL-IV:F4-F unit text is not printed in the units. Only the field label is quoted.",
+       "Splitting the first sentence (an interpretation) from the conflicting second sentence (an escalation) is reasonable."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q19",
+       "VOL-V:29.2",
+       "item evidence quoting ADD-03:3.3"
+      ],
+      "selected_because": [
+       "conflicting",
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: target is a group"
+      ]
+     },
+     "ADD-03/Q19-esc": {
+      "agrees": true,
+      "concerns": [
+       "The inconsistency is real on the quoted words. The item rightly makes no ruling on which governs.",
+       "The item's suggestion that the two might be reconcilable (indexation measured from the Base Date and first applied at PCOD+1yr) is speculation. It is not in the evidence."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q19",
+       "VOL-V:29.2",
+       "item evidence quoting ADD-03:3.3"
+      ],
+      "selected_because": [
+       "conflicting"
+      ]
+     },
+     "ADD-03/Q20": {
+      "agrees": true,
+      "concerns": [
+       "The definition of 'Indexed Proportion' (replacement Clause 29.2 at ADD-03:3.3) is not in the printed evidence. The existing 29.2 refers to 60%/40% but does not use that term.",
+       "Possible conflict not examined. The response requires a figure in Form 4-F but bars it 'anywhere in Envelope A'. The evidence does not say which envelope Form 4-F goes in. If it goes in Envelope A, the instruction contradicts itself and conflicts with VOL-I:6.2. conflicts is empty, so a person should check this.",
+       "I-Q20 says Q20 'confirms the Indexed Proportion is commercial information under VOL-I:6.2'. The response only says 6.2 applies and does not say this. The statement slightly overreaches.",
+       "The unit VOL-IV:F4-F/indexation-basis-assumed is quoted only in the item, not printed in the units."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q20",
+       "VOL-I:6.2 as quoted in the item",
+       "Form 4-F row as quoted in the item"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: resolved through a group",
+       "uncertain_target: target is a group"
+      ]
+     },
+     "ADD-03/Q21": {
+      "agrees": true,
+      "concerns": [
+       "Clause 5.6 and Table 5-1 (ADD-03:7.1) are not in the evidence, and the proposer says it did not read the table. The content of the crane and lifting plan requirement cannot be checked.",
+       "The response says 'Yes' to adding to 9.7, and the plan is placed under the construction methodology, which 9.7 already lists. adds_obligation is a fair label."
+      ],
+      "evidence_checked": [
+       "ADD-03:Q21",
+       "VOL-I:9.7"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 11367,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 3100,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 8,
+      "input_tokens": 11727
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T131919Z",
+       "elapsed_s": 20.4,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-005": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:7.3",
+    "ADD-03:7.4",
+    "ADD-03:AppA/para1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 74.56,
+   "pid": 24878,
+   "started": "2026-10-05T13:19:43Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-005.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T131554Z-4d6c",
+    "elapsed_s": 303.4,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 5668,
+     "image_tokens": 0,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 5000,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 5,
+     "input_tokens": 37983
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T131554Z-4d6c",
+      "elapsed_s": 303.4,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [
+       "ADD-03:p4-image"
+      ],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T132051Z-592a",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/7.1",
+    "ADD-03/7.2",
+    "ADD-03/7.3",
+    "ADD-03/7.4",
+    "ADD-03/AppA/para1",
+    "ADD-03/7.2-issue"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:7.1",
+    "ADD-03:7.2",
+    "ADD-03:7.3",
+    "ADD-03:7.4",
+    "ADD-03:AppA/para1"
+   ],
+   "critic": {
+    "selected": 6,
+    "selected_items": {
+     "ADD-03/7.1": [
+      "uncertain_target",
+      "uncertain_target: resolved through a group"
+     ],
+     "ADD-03/7.2": [
+      "conflicting",
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: resolved through a group",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/7.3": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/7.4": [
+      "consequential_interpretation",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/AppA/para1": [
+      "uncertain_target",
+      "uncertain_target: resolved through a group",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/7.2-issue": [
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-005-critic",
+    "route": "host",
+    "reviewed": 6,
+    "agrees": 6,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/7.1": {
+      "agrees": true,
+      "concerns": [
+       "The insertion itself is quoted verbatim and the anchor VOL-II:5.5 is correct (new 5.6 after 5.5).",
+       "The content of the incorporated Table 5-1 depends on Arabic readings that are still pending approval, so the obligation's substance is not settled.",
+       "The 7.1 text says Table 5-1 is 'reproduced at Appendix A', while the provision text shown only states Arabic/English versions elsewhere; I could not view the crop itself."
+      ],
+      "evidence_checked": [
+       "ADD-03:7.1",
+       "VOL-II:5.5",
+       "ADD-03:p4-image",
+       "ADD-03:7.2"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: resolved through a group"
+      ]
+     },
+     "ADD-03/7.2": {
+      "agrees": true,
+      "concerns": [
+       "7.2 says the Arabic text of Table 5-1 governs, so the annotation recording precedence of the Arabic image over the English T5-1 follows from the words.",
+       "The target ADD-03:p4-image is not cited by 7.2; the link is an inference (Arabic image = Arabic text), which a person should confirm.",
+       "The conflicts between Arabic and English (scope of note 1, datum in note 2) rest on pending, unapproved readings of the image; the evidence shown includes only the readings' words, not the crop.",
+       "The 'English translation at Appendix B' is called ADD-03:T5-1 on page 5; the mapping of Appendix B to T5-1 is assumed."
+      ],
+      "evidence_checked": [
+       "ADD-03:7.2",
+       "ADD-03:p4-image",
+       "ADD-03:T5-1",
+       "ADD-03:p4-image/note1",
+       "ADD-03:T5-1/note(1)"
+      ],
+      "selected_because": [
+       "conflicting",
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: resolved through a group",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/7.3": {
+      "agrees": true,
+      "concerns": [
+       "7.3 text is verbatim and imposes a bid-stage notification duty; attaching it to the new Clause 5.6 is an interpretive choice because 7.3 cites no unit.",
+       "How the 30 m is measured depends on the governing Arabic datum (natural ground), which rests on pending readings.",
+       "The deadline (3 Working Days before the Proposal Due Date) is not computed; the proposal says so.",
+       "7.3 refers to 'Table 5-1 zone', which assumes the zones are those in the pending Arabic reading."
+      ],
+      "evidence_checked": [
+       "ADD-03:7.3",
+       "ADD-03:7.1",
+       "ADD-03:7.2",
+       "VOL-II:5.5"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/7.4": {
+      "agrees": true,
+      "concerns": [
+       "7.4 is verbatim; it does not cite any clause, so tying it to new Clause 5.6 rather than VOL-I:9.7 is an interpretation to confirm.",
+       "What must be 'reflected' is the governing Arabic table, whose reading is still pending.",
+       "The Q21 link is relied on in S-I2 but Q21 is not among the units printed here, so I could not check it."
+      ],
+      "evidence_checked": [
+       "ADD-03:7.4",
+       "ADD-03:7.1",
+       "ADD-03:7.2"
+      ],
+      "selected_because": [
+       "consequential_interpretation",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/AppA/para1": {
+      "agrees": true,
+      "concerns": [
+       "The paragraph says the Arabic text governs in accordance with Section 7, which matches the 'confirms' effect.",
+       "Target ADD-03:p4-image and the other target T5-1 are inferred rather than named in the paragraph.",
+       "The cited reading 'rowA-height' (٢٥) does not itself support precedence; it is only context, and it is pending.",
+       "This duplicates 7.2's precedence; a person should confirm both rather than treat them as independent."
+      ],
+      "evidence_checked": [
+       "ADD-03:AppA/para1",
+       "ADD-03:7.2",
+       "ADD-03:p4-image",
+       "ADD-03:T5-1"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: resolved through a group",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/7.2-issue": {
+      "agrees": true,
+      "concerns": [
+       "The quoted Arabic and English notes do differ: notes 1 and 2 differ in scope (temporary, cranes) and datum (natural vs finished ground), and 7.2 says the Arabic governs.",
+       "The Arabic readings are pending and not approved, so the stated difference is provisional; the controller marks it insufficient_evidence.",
+       "The issue says 'cranes and construction equipment' follow from Arabic note 1; this is true on the reading quoted, but the English note's 'including stacks' is also in the Arabic, so only the additions differ.",
+       "The statement that the cover summary understates scope relies on S-I1, an interpretation that needs human confirmation, and on cover/para3, which is not printed in the units shown."
+      ],
+      "evidence_checked": [
+       "ADD-03:7.2",
+       "ADD-03:p4-image/note1",
+       "ADD-03:T5-1/note(1)",
+       "ADD-03:p4-image/note2",
+       "ADD-03:T5-1/note(2)"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 9822,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 2400,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 6,
+      "input_tokens": 10182
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T132057Z",
+       "elapsed_s": 13.2,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-006": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/table-qualifier"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 180.622,
+   "pid": 24878,
+   "started": "2026-10-05T13:21:11Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-006.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T131943Z-6332",
+    "elapsed_s": 269.1,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/hdr-en",
+     "ADD-03:p4-image/hdr-ar",
+     "ADD-03:p4-image/date",
+     "ADD-03:p4-image/ref",
+     "ADD-03:p4-image/subject",
+     "ADD-03:p4-image/tender-ref",
+     "ADD-03:p4-image/table-title",
+     "ADD-03:p4-image/table-qualifier"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6224,
+     "image_tokens": 38400,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 7100,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 8,
+     "input_tokens": 76939
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T131943Z-6332",
+      "elapsed_s": 269.1,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [
+       "ADD-03:p4-image/hdr-en",
+       "ADD-03:p4-image/hdr-ar",
+       "ADD-03:p4-image/date",
+       "ADD-03:p4-image/ref",
+       "ADD-03:p4-image/subject",
+       "ADD-03:p4-image/tender-ref",
+       "ADD-03:p4-image/table-title",
+       "ADD-03:p4-image/table-qualifier"
+      ],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T132405Z-d37a",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/hdr-en",
+    "ADD-03/p4-image/hdr-ar",
+    "ADD-03/p4-image/date",
+    "ADD-03/p4-image/ref",
+    "ADD-03/p4-image/subject",
+    "ADD-03/p4-image/tender-ref",
+    "ADD-03/p4-image/table-title",
+    "ADD-03/p4-image/table-qualifier"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/hdr-en",
+    "ADD-03:p4-image/hdr-ar",
+    "ADD-03:p4-image/date",
+    "ADD-03:p4-image/ref",
+    "ADD-03:p4-image/subject",
+    "ADD-03:p4-image/tender-ref",
+    "ADD-03:p4-image/table-title",
+    "ADD-03:p4-image/table-qualifier"
+   ],
+   "critic": {
+    "selected": 8,
+    "selected_items": {
+     "ADD-03/p4-image/hdr-en": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/hdr-ar": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/date": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/ref": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/subject": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/tender-ref": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/table-title": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/table-qualifier": [
+      "consequential_interpretation"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-006-critic",
+    "route": "host",
+    "reviewed": 8,
+    "agrees": 8,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/p4-image/hdr-en": {
+      "agrees": true,
+      "concerns": [
+       "S3 and S4 are an interpretation and an assumption, and a person must confirm them. The reading is still pending.",
+       "The reason says the letterhead 'identifies the office that issued the reproduced Table 5-1'. The unit text itself is only the office name. The link to Table 5-1 comes from ADD-03:7.1 and Appendix A, not from this block."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/hdr-en",
+       "ADD-03:7.1 quotation",
+       "ADD-03:AppA/para1 quotation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/hdr-ar": {
+      "agrees": true,
+      "concerns": [
+       "The text is only an office name, so no_effect follows. S3 and S4 still need a person to confirm them.",
+       "The Arabic letterhead matches the English one in meaning. Appendix A says the Arabic text governs, but there is no conflict here."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/hdr-ar",
+       "ADD-03:7.1 quotation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/date": {
+      "agrees": true,
+      "concerns": [
+       "The date '١٠ نوفمبر ٢٠٢٦م' (10 November 2026) is after the session date of 2026-10-05. The evidence does not show ADD-03's own issue date, so the item cannot show that this date is consistent with it. A person should check it. It does not change the no_effect disposition, because a dateline states no change or deadline.",
+       "S3 and S4 need a person to confirm them."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/date"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/ref": {
+      "agrees": true,
+      "concerns": [
+       "The text is only a reference number, so no_effect follows. S3 and S4 still need confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/ref"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/subject": {
+      "agrees": true,
+      "concerns": [
+       "The subject line only describes the letter's topic. S3 and S4 need confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/subject"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/tender-ref": {
+      "agrees": true,
+      "concerns": [
+       "The item says the number matches the pack id, but that match is not shown in the evidence printed here. It does not affect the disposition.",
+       "S3 and S4 need confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/tender-ref"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/table-title": {
+      "agrees": true,
+      "concerns": [
+       "The title only names the table. The compliance obligation comes from ADD-03:7.1, which the quotation supports.",
+       "S3 and S4 need confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/table-title",
+       "ADD-03:7.1 quotation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/table-qualifier": {
+      "agrees": true,
+      "concerns": [
+       "The sentence says the maximum permitted height is set 'in each zone of the site as follows'. That is introductory wording rather than a limit, but it is close to operative. The limits themselves sit in the rows and notes, which are not shown here, so the no_effect disposition is safe only if those rows are handled elsewhere.",
+       "The item already says a person should confirm. S3 and S4 also need confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/table-qualifier",
+       "ADD-03:7.1 quotation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 8284,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 3100,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 8,
+      "input_tokens": 8644
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T132412Z",
+       "elapsed_s": 18.9,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-007": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/col-lighting",
+    "ADD-03:p4-image/col-height",
+    "ADD-03:p4-image/col-description",
+    "ADD-03:p4-image/col-zone",
+    "ADD-03:p4-image/rowA-zone",
+    "ADD-03:p4-image/rowA-description",
+    "ADD-03:p4-image/rowA-height",
+    "ADD-03:p4-image/rowA-lighting"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 134.269,
+   "pid": 24878,
+   "started": "2026-10-05T13:24:32Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-007.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T132111Z-2050",
+    "elapsed_s": 334.7,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/rowA-height",
+     "ADD-03:p4-image/col-height",
+     "ADD-03:p4-image/rowA-lighting"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6196,
+     "image_tokens": 38400,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 7100,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 8,
+     "input_tokens": 76911
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T132111Z-2050",
+      "elapsed_s": 334.7,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [
+       "ADD-03:p4-image/rowA-height",
+       "ADD-03:p4-image/col-height",
+       "ADD-03:p4-image/rowA-lighting"
+      ],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T132640Z-bb63",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/col-zone",
+    "ADD-03/p4-image/col-description",
+    "ADD-03/p4-image/col-lighting",
+    "ADD-03/p4-image/col-height",
+    "ADD-03/p4-image/rowA-zone",
+    "ADD-03/p4-image/rowA-description",
+    "ADD-03/p4-image/rowA-height",
+    "ADD-03/p4-image/rowA-lighting"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/col-lighting",
+    "ADD-03:p4-image/col-height",
+    "ADD-03:p4-image/col-description",
+    "ADD-03:p4-image/col-zone",
+    "ADD-03:p4-image/rowA-zone",
+    "ADD-03:p4-image/rowA-description",
+    "ADD-03:p4-image/rowA-height",
+    "ADD-03:p4-image/rowA-lighting"
+   ],
+   "critic": {
+    "selected": 8,
+    "selected_items": {
+     "ADD-03/p4-image/col-zone": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/col-description": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/col-lighting": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/col-height": [
+      "conflicting",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/p4-image/rowA-zone": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/rowA-description": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/rowA-height": [
+      "conflicting"
+     ],
+     "ADD-03/p4-image/rowA-lighting": [
+      "consequential_interpretation"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-007-critic",
+    "route": "host",
+    "reviewed": 8,
+    "agrees": 8,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/p4-image/col-zone": {
+      "agrees": true,
+      "concerns": [
+       "Relies on S6, an interpretation a person must confirm. The Arabic reading itself is only a pending reading; the crop cannot be checked here."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/col-zone",
+       "ADD-03:7.1",
+       "ADD-03:T5-1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/col-description": {
+      "agrees": true,
+      "concerns": [
+       "Relies on S6, which needs human confirmation. The reading is pending."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/col-description",
+       "ADD-03:7.1",
+       "ADD-03:T5-1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/col-lighting": {
+      "agrees": true,
+      "concerns": [
+       "The Arabic 'الإنارة التحذيرية' (warning lighting) is rendered 'Obstacle lighting' in English. S6 treats this as agreement in substance, and that is the person's call.",
+       "The crop hash is the same as for col-height, which is consistent with both being in the left half of the header."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/col-lighting",
+       "ADD-03:7.1",
+       "ADD-03:T5-1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/col-height": {
+      "agrees": true,
+      "concerns": [
+       "The conflict follows from the words. The Arabic says 'الأرض الطبيعية' (natural ground level), the English says 'finished ground level', and Clause 7.2 says the Arabic governs.",
+       "The target ADD-03:T5-1 is the English translation, not a unit existing at ADD-02. An escalation is therefore the right form, and it needs a person's decision.",
+       "The meaning of 'الطبيعية' as natural is an interpretation (S5). The reading is also still pending and must be approved.",
+       "The rationale cites note 2 as support, but that note is not in the evidence shown, so it cannot be verified here."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/col-height",
+       "ADD-03:T5-1",
+       "ADD-03:7.2",
+       "ADD-03:7.1"
+      ],
+      "selected_because": [
+       "conflicting",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/p4-image/rowA-zone": {
+      "agrees": true,
+      "concerns": [
+       "Relies on S6, which needs human confirmation. The reading is pending."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowA-zone",
+       "ADD-03:7.1",
+       "ADD-03:T5-1/a"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/rowA-description": {
+      "agrees": true,
+      "concerns": [
+       "Relies on S6. The reading of the Eastern Arabic numerals is pending approval, and the 1,500 m figure matches the English row."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowA-description",
+       "ADD-03:7.1",
+       "ADD-03:T5-1/a"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/rowA-height": {
+      "agrees": true,
+      "concerns": [
+       "'unresolved' is appropriate. The figure 25 matches, but the datum is in conflict (natural versus finished ground level).",
+       "The datum conflict depends on S5, an interpretation that is not yet confirmed.",
+       "The declared conflict target ADD-03:T5-1/a is an English translation row, and the decision is escalated under col-height."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowA-height",
+       "ADD-03:p4-image/col-height",
+       "ADD-03:T5-1/a",
+       "ADD-03:7.2"
+      ],
+      "selected_because": [
+       "conflicting"
+      ]
+     },
+     "ADD-03/p4-image/rowA-lighting": {
+      "agrees": true,
+      "concerns": [
+       "The cell states a real requirement ('required'). no_effect is acceptable only because the requirement takes effect through Clause 7.1's incorporation, which is accounted for separately. That separate item should actually exist.",
+       "Clause 7.1 as quoted refers to 'height limits'. Whether it also brings in the lighting column is not shown in the evidence. A person should confirm that.",
+       "Relies on S6, which needs human confirmation."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowA-lighting",
+       "ADD-03:7.1",
+       "ADD-03:T5-1/a"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 10147,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 3100,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 8,
+      "input_tokens": 10507
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T132647Z",
+       "elapsed_s": 15.4,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-008": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/rowB-zone",
+    "ADD-03:p4-image/rowB-description",
+    "ADD-03:p4-image/rowB-height",
+    "ADD-03:p4-image/rowB-lighting",
+    "ADD-03:p4-image/notes-heading",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 286.388,
+   "pid": 24878,
+   "started": "2026-10-05T13:27:03Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-008.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T132432Z-48fb",
+    "elapsed_s": 436.4,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/rowB-zone",
+     "ADD-03:p4-image/rowB-height",
+     "ADD-03:p4-image/note1",
+     "ADD-03:p4-image/note3",
+     "ADD-03:p4-image/note2",
+     "ADD-03:p4-image/notes-heading",
+     "ADD-03:p4-image/rowB-description",
+     "ADD-03:p4-image/rowB-lighting"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 6221,
+     "image_tokens": 38400,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 7100,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 8,
+     "input_tokens": 76936
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T132432Z-48fb",
+      "elapsed_s": 436.4,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [
+       "ADD-03:p4-image/rowB-zone",
+       "ADD-03:p4-image/rowB-height",
+       "ADD-03:p4-image/note1",
+       "ADD-03:p4-image/note3",
+       "ADD-03:p4-image/note2",
+       "ADD-03:p4-image/notes-heading",
+       "ADD-03:p4-image/rowB-description",
+       "ADD-03:p4-image/rowB-lighting"
+      ],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T133143Z-a5fc",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/rowB-zone",
+    "ADD-03/p4-image/rowB-description",
+    "ADD-03/p4-image/rowB-height",
+    "ADD-03/p4-image/rowB-lighting",
+    "ADD-03/p4-image/notes-heading",
+    "ADD-03/p4-image/note1",
+    "ADD-03/p4-image/note2",
+    "ADD-03/p4-image/note3"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/rowB-zone",
+    "ADD-03:p4-image/rowB-description",
+    "ADD-03:p4-image/rowB-height",
+    "ADD-03:p4-image/rowB-lighting",
+    "ADD-03:p4-image/notes-heading",
+    "ADD-03:p4-image/note1",
+    "ADD-03:p4-image/note2",
+    "ADD-03:p4-image/note3"
+   ],
+   "critic": {
+    "selected": 8,
+    "selected_items": {
+     "ADD-03/p4-image/rowB-zone": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/rowB-description": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/rowB-height": [
+      "conflicting",
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/rowB-lighting": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/notes-heading": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/note1": [
+      "conflicting",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/p4-image/note2": [
+      "conflicting",
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ],
+     "ADD-03/p4-image/note3": [
+      "consequential_interpretation"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-008-critic",
+    "route": "host",
+    "reviewed": 8,
+    "agrees": 8,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/p4-image/rowB-zone": {
+      "agrees": true,
+      "concerns": [
+       "Relies on S-A1 (Arabic reading still pending approval) and on 7.1 being handled in another batch; the 7.1 text itself is quoted but not printed among the units."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowB-zone",
+       "ADD-03:7.1 quotation in S-F1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/rowB-description": {
+      "agrees": true,
+      "concerns": [
+       "The T5-1/b English cell is cited only through the item's own quotation ('The remainder of the site'), not printed in units; it matches the Arabic 'باقي مساحة الموقع'.",
+       "Depends on pending approval of the Arabic reading."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowB-description",
+       "ADD-03:T5-1/b cell quotation",
+       "S-F1"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/rowB-height": {
+      "agrees": true,
+      "concerns": [
+       "The value 40 matches the English cell, so no_effect for the cell is consistent. The datum difference is real (natural ground vs finished ground) and is correctly kept as a conflict via note2. A person must resolve it.",
+       "The col-height unit is cited but not printed among the units; its reading is quoted in the note2 item."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowB-height",
+       "ADD-03:T5-1/b cell '40'",
+       "ADD-03:p4-image/note2",
+       "ADD-03:T5-1/note(2)"
+      ],
+      "selected_because": [
+       "conflicting",
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/rowB-lighting": {
+      "agrees": true,
+      "concerns": [
+       "Depends on pending approval of the Arabic reading. The English cell is only quoted in the item."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/rowB-lighting",
+       "ADD-03:T5-1/b 'Required for any part exceeding 30 m'"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/notes-heading": {
+      "agrees": true,
+      "concerns": [],
+      "evidence_checked": [
+       "ADD-03:p4-image/notes-heading"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/note1": {
+      "agrees": true,
+      "concerns": [
+       "The divergence is real. Arabic adds temporary structures, cranes and construction equipment; English note (1) has only permanent structures and stacks. Under 7.2 the Arabic governs.",
+       "The proposer's claim that an op is rejected (C22) is tool metadata and cannot be checked from the evidence printed here.",
+       "The Arabic reading is still pending approval."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/note1",
+       "ADD-03:T5-1/note(1)",
+       "ADD-03:7.2 quotation",
+       "ADD-03:cover/para3 quotation"
+      ],
+      "selected_because": [
+       "conflicting",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/p4-image/note2": {
+      "agrees": true,
+      "concerns": [
+       "The divergence is real. Arabic measures from natural ground before grading and filling; English measures from finished ground after grading and filling. Under 7.2 the Arabic governs.",
+       "The C22 rejection is tool metadata and is not verifiable from the evidence printed here. The Arabic reading is still pending approval."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/note2",
+       "ADD-03:T5-1/note(2)",
+       "ADD-03:p4-image/col-height quotation",
+       "ADD-03:7.2 quotation"
+      ],
+      "selected_because": [
+       "conflicting",
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     },
+     "ADD-03/p4-image/note3": {
+      "agrees": true,
+      "concerns": [
+       "The Arabic and English notes agree: notice at least 30 days before any crane is erected. no_effect is on the basis that the obligation enters through 7.1, but the obligation is real and a person should confirm it is carried.",
+       "The Arabic reading is pending approval."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/note3",
+       "ADD-03:T5-1/note(3) quotation",
+       "ADD-03:7.1 quotation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 11752,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 3100,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 8,
+      "input_tokens": 12112
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T133149Z",
+       "elapsed_s": 14.1,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-009": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1"
+   ],
+   "status": "done",
+   "attempts": 1,
+   "seconds": 0.486,
+   "pid": 24878,
+   "started": "2026-10-05T13:32:06Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-009.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T132703Z-aa78",
+    "elapsed_s": 221.7,
+    "error": null,
+    "crops_read": [
+     "ADD-03:p4-image/signatory",
+     "ADD-03:p4-image/stamp"
+    ],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 1
+   },
+   "request": {
+    "phase": "analysis",
+    "malformed_items": [],
+    "repaired": false,
+    "reference_problems": [],
+    "problems_before_repair": [],
+    "attempts": [],
+    "size": {
+     "phase": "analysis",
+     "system_tokens": 946,
+     "tools_tokens": 1369,
+     "packet_tokens": 5344,
+     "image_tokens": 9600,
+     "prior_turns_tokens": 30000,
+     "output_tokens": 4300,
+     "context_tokens": 200000,
+     "usable_tokens": 180000,
+     "output_cap": 32000,
+     "fits": true,
+     "why": "",
+     "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+     "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+     "units": 4,
+     "input_tokens": 47259
+    },
+    "usage": {
+     "calls": 0,
+     "input_tokens": 0,
+     "output_tokens": 0,
+     "cost_usd": null,
+     "cost_basis": "no price configured"
+    },
+    "notices": [
+     {
+      "kind": "capabilities_declared",
+      "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+      "route": "host",
+      "model": "claude-code headless (opus)",
+      "phase": "analysis"
+     }
+    ],
+    "turns": 0,
+    "host_sessions": [
+     {
+      "run_id": "ADD-03-hostsession-20261005T132703Z-aa78",
+      "elapsed_s": 221.7,
+      "error": null,
+      "failure_class": null,
+      "crops_read": [
+       "ADD-03:p4-image/signatory",
+       "ADD-03:p4-image/stamp"
+      ],
+      "model_reported": [
+       "claude-opus-5-5"
+      ],
+      "reset_in_s": null
+     }
+    ]
+   },
+   "notices": [
+    {
+     "kind": "capabilities_declared",
+     "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+     "route": "host",
+     "model": "claude-code headless (opus)",
+     "phase": "analysis"
+    }
+   ],
+   "staged_run": "ADD-03-host-20261005T133037Z-0cf2",
+   "set_status": "partial",
+   "model_requested": "claude-code headless (opus)",
+   "model_reported": null,
+   "items": [
+    "ADD-03/p4-image/signatory",
+    "ADD-03/p4-image/stamp",
+    "ADD-03/AppA/para2",
+    "ADD-03/AppB/para1",
+    "ADD-03/AppB/para1-issue"
+   ],
+   "ignored_items": [],
+   "shown": [
+    "ADD-03:p4-image/signatory",
+    "ADD-03:p4-image/stamp",
+    "ADD-03:AppA/para2",
+    "ADD-03:AppB/para1"
+   ],
+   "critic": {
+    "selected": 4,
+    "selected_items": {
+     "ADD-03/p4-image/signatory": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/p4-image/stamp": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/AppB/para1": [
+      "consequential_interpretation"
+     ],
+     "ADD-03/AppB/para1-issue": [
+      "uncertain_target",
+      "uncertain_target: target is not among the units the provision cites"
+     ]
+    },
+    "status": "done",
+    "critic_run": "ADD-03-run-host-blind05-s12-20261005T130341Z-analysis-009-critic",
+    "route": "host",
+    "reviewed": 4,
+    "agrees": 4,
+    "disagrees": 0,
+    "missing": [],
+    "model_requested": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+    "model_reported": "claude-sonnet-5-5",
+    "items": {
+     "ADD-03/p4-image/signatory": {
+      "agrees": true,
+      "concerns": [
+       "Reading is only the title and a signature stroke; the signature stroke is not in the printed words, so a person should confirm against the crop. Whether the title alone authenticates the letter is not decided by this item."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/signatory reading 'مدير المكتب'",
+       "controller semantic check"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/p4-image/stamp": {
+      "agrees": true,
+      "concerns": [
+       "Evidence is only a crop with empty words; I cannot see the crop, so 'empty oval, no legible text' rests on the model's visual reading (S2) and must be confirmed by a person.",
+       "Absence of text does not prove the stamp has no significance. Whether a blank stamp authenticates the letter is a separate human question."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/stamp (empty text, crop hash only)",
+       "controller validation"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/AppB/para1": {
+      "agrees": true,
+      "concerns": [
+       "The controller flagged the semantic check as not ok ('provided' wording), so a person must confirm no_effect.",
+       "The provision's words 'The Arabic text of Table 5-1 at Appendix A governs' do carry a precedence statement. no_effect holds only if that precedence is carried by the ops on Clause 7.1/7.2. That is asserted in S5 but is not shown in this evidence.",
+       "Clause 7.2 is broader (the Arabic text generally governs) while AppB/para1 names Table 5-1 specifically, so it is a restatement rather than an exact duplicate."
+      ],
+      "evidence_checked": [
+       "ADD-03:AppB/para1 text",
+       "ADD-03:7.2 quotation",
+       "controller semantic check (ok:false)"
+      ],
+      "selected_because": [
+       "consequential_interpretation"
+      ]
+     },
+     "ADD-03/AppB/para1-issue": {
+      "agrees": true,
+      "concerns": [
+       "The Arabic readings (note1, note2) are pending approval; the divergence rests on them.",
+       "The issue payload says the column header carries the same difference and that English note 1 'says permanent structures including stacks'. Only note 2 English and the Arabic notes 1 and 2 are quoted. The English note (1) text and the Arabic and English headers are not quoted in the evidence shown, so those parts cannot be checked here.",
+       "The target T5-1 is not among the cited units' own evidence, but it is the table the provision names. That fits.",
+       "The conclusion that the Arabic governs rests on 7.2 and AppB/para1. A person decides the consequence."
+      ],
+      "evidence_checked": [
+       "ADD-03:p4-image/note2 reading",
+       "ADD-03:T5-1/note(2) span",
+       "ADD-03:p4-image/note1 reading",
+       "ADD-03:AppB/para1",
+       "ADD-03:7.2 quotation"
+      ],
+      "selected_because": [
+       "uncertain_target",
+       "uncertain_target: target is not among the units the provision cites"
+      ]
+     }
+    },
+    "request": {
+     "phase": "critic",
+     "malformed_items": [],
+     "repaired": false,
+     "reference_problems": [],
+     "problems_before_repair": [],
+     "attempts": [],
+     "size": {
+      "phase": "critic",
+      "system_tokens": 360,
+      "tools_tokens": 0,
+      "packet_tokens": 4327,
+      "image_tokens": 0,
+      "prior_turns_tokens": 0,
+      "output_tokens": 1700,
+      "context_tokens": 200000,
+      "usable_tokens": 180000,
+      "output_cap": 32000,
+      "fits": true,
+      "why": "",
+      "size_source": "estimate: 3.5 characters per token (not a tokenizer count)",
+      "capability_source": "config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified",
+      "units": 4,
+      "input_tokens": 4687
+     },
+     "usage": {
+      "calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": null,
+      "cost_basis": "no price configured"
+     },
+     "notices": [
+      {
+       "kind": "capabilities_declared",
+       "message": "capabilities declared, not verified: host claude-code headless (the CLI's default model; recorded from the CLI output) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the critic request was checked against them",
+       "route": "host",
+       "model": "claude-code headless (the CLI's default model; recorded from the CLI output)",
+       "phase": "critic"
+      }
+     ],
+     "turns": 0,
+     "host_sessions": [
+      {
+       "run_id": "critic-20261005T133206Z",
+       "elapsed_s": 10.0,
+       "error": null,
+       "failure_class": null,
+       "model_reported": [
+        "claude-sonnet-5-5"
+       ],
+       "tool_calls": 0,
+       "crops_read": []
+      }
+     ]
+    },
+    "note": "agreement between models is not approval; the critic changes no status",
+    "not_reviewed_over_limit": []
+   }
+  },
+  "analysis-010": {
+   "phase": "analysis",
+   "provisions": [
+    "ADD-03:T5-1/a",
+    "ADD-03:T5-1/b",
+    "ADD-03:T5-1/notes",
+    "ADD-03:T5-1/note(1)",
+    "ADD-03:T5-1/note(2)",
+    "ADD-03:T5-1/note(3)"
+   ],
+   "status": "interrupted",
+   "attempts": 1,
+   "seconds": 21.429,
+   "pid": 24878,
+   "started": "2026-10-05T13:32:16Z",
+   "packet": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/batches/analysis-010.packet.json",
+   "host_session": {
+    "run_id": "ADD-03-hostsession-20261005T133206Z-bdf2",
+    "elapsed_s": 32.1,
+    "error": "the host did not submit a proposal set through submit_proposals",
+    "crops_read": [],
+    "model_reported": [
+     "claude-opus-5-5"
+    ],
+    "failure_class": null,
+    "sessions": 0
+   }
+  }
+ },
+ "provisions": {
+  "ADD-03:cover/para1": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para1": "evidence_verified"
+   }
+  },
+  "ADD-03:cover/para2": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para2": "evidence_verified"
+   }
+  },
+  "ADD-03:cover/para3": {
+   "kind": "paragraph",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/cover/para3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/cover/para3": "interpretation_pending"
+   }
+  },
+  "ADD-03:1.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/1.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/1.1": "evidence_verified"
+   }
+  },
+  "ADD-03:1.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/1.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/1.2": "interpretation_pending"
+   }
+  },
+  "ADD-03:1.3": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/1.3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/1.3": "interpretation_pending"
+   }
+  },
+  "ADD-03:2.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/2.1(a)",
+    "ADD-03/2.1(b)",
+    "ADD-03/cover/para3/issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/2.1(a)": "interpretation_pending",
+    "ADD-03/2.1(b)": "evidence_verified",
+    "ADD-03/cover/para3/issue": "interpretation_pending"
+   }
+  },
+  "ADD-03:2.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-001",
+   "items": [
+    "ADD-03/2.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:12:50Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/2.2": "interpretation_pending"
+   }
+  },
+  "ADD-03:3.1": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/3.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/3.1": "evidence_verified"
+   }
+  },
+  "ADD-03:3.2": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/3.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/3.2": "evidence_verified"
+   }
+  },
+  "ADD-03:3.3": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/3.3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/3.3": "interpretation_pending"
+   }
+  },
+  "ADD-03:3.3(b)": {
+   "kind": "list_item",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "accounted_by": [
+    "ADD-03/3.3",
+    "ADD-03/3.3"
+   ],
+   "answered_in": "analysis-002",
+   "statuses": {}
+  },
+  "ADD-03:3.4": {
+   "kind": "clause",
+   "pages": [
+    1
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/3.4"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/3.4": "interpretation_pending"
+   }
+  },
+  "ADD-03:4.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/4.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/4.1": "evidence_verified"
+   }
+  },
+  "ADD-03:4.2": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-002",
+   "items": [
+    "ADD-03/4.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:13:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/4.2": "interpretation_pending"
+   }
+  },
+  "ADD-03:5.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/5.1",
+    "ADD-03/5.1-clar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:15:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:15:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/5.1": "conflicting",
+    "ADD-03/5.1-clar": "interpretation_pending"
+   }
+  },
+  "ADD-03:5.2": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-003",
+   "items": [
+    "ADD-03/5.2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:15:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:15:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/5.2": "insufficient_evidence"
+   }
+  },
+  "ADD-03:Q15": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q15"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q15": "interpretation_pending"
+   }
+  },
+  "ADD-03:Q16": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q16"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q16": "interpretation_pending"
+   }
+  },
+  "ADD-03:Q17": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q17"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q17": "interpretation_pending"
+   }
+  },
+  "ADD-03:Q18": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q18"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q18": "interpretation_pending"
+   }
+  },
+  "ADD-03:Q19": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q19",
+    "ADD-03/Q19-esc"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q19": "conflicting",
+    "ADD-03/Q19-esc": "conflicting"
+   }
+  },
+  "ADD-03:Q20": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q20"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q20": "interpretation_pending"
+   }
+  },
+  "ADD-03:Q21": {
+   "kind": "table_row",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-004",
+   "items": [
+    "ADD-03/Q21"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:19:19Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/Q21": "interpretation_pending"
+   }
+  },
+  "ADD-03:7.1": {
+   "kind": "clause",
+   "pages": [
+    2
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/7.1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.1": "insufficient_evidence"
+   }
+  },
+  "ADD-03:7.2": {
+   "kind": "clause",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/7.2",
+    "ADD-03/7.2-issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.2": "conflicting",
+    "ADD-03/7.2-issue": "insufficient_evidence"
+   }
+  },
+  "ADD-03:7.3": {
+   "kind": "clause",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/7.3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.3": "interpretation_pending"
+   }
+  },
+  "ADD-03:7.4": {
+   "kind": "clause",
+   "pages": [
+    3
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/7.4"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/7.4": "interpretation_pending"
+   }
+  },
+  "ADD-03:AppA/para1": {
+   "kind": "paragraph",
+   "pages": [
+    4
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-005",
+   "items": [
+    "ADD-03/AppA/para1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:20:57Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/AppA/para1": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/hdr-en": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/hdr-en"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/hdr-en": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/hdr-ar": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/hdr-ar"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/hdr-ar": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/date": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/date"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/date": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/ref": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/ref"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/ref": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/subject": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/subject"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/subject": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/tender-ref": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/tender-ref"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/tender-ref": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/table-title": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/table-title"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/table-title": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/table-qualifier": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-006",
+   "items": [
+    "ADD-03/p4-image/table-qualifier"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:24:12Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/table-qualifier": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/col-lighting": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/col-lighting"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/col-lighting": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/col-height": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/col-height"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/col-height": "conflicting"
+   }
+  },
+  "ADD-03:p4-image/col-description": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/col-description"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/col-description": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/col-zone": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/col-zone"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/col-zone": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowA-zone": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/rowA-zone"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowA-zone": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowA-description": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/rowA-description"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowA-description": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowA-height": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/rowA-height"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowA-height": "conflicting"
+   }
+  },
+  "ADD-03:p4-image/rowA-lighting": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-007",
+   "items": [
+    "ADD-03/p4-image/rowA-lighting"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:26:46Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowA-lighting": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowB-zone": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/rowB-zone"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowB-zone": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowB-description": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/rowB-description"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowB-description": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/rowB-height": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/rowB-height"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowB-height": "conflicting"
+   }
+  },
+  "ADD-03:p4-image/rowB-lighting": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/rowB-lighting"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/rowB-lighting": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/notes-heading": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/notes-heading"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/notes-heading": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/note1": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/note1"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/note1": "conflicting"
+   }
+  },
+  "ADD-03:p4-image/note2": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/note2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/note2": "conflicting"
+   }
+  },
+  "ADD-03:p4-image/note3": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-008",
+   "items": [
+    "ADD-03/p4-image/note3"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:31:49Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/note3": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/signatory": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/signatory"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/signatory": "interpretation_pending"
+   }
+  },
+  "ADD-03:p4-image/stamp": {
+   "kind": "reading_block",
+   "pages": [
+    4
+   ],
+   "origin": "image_reading",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/p4-image/stamp"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/p4-image/stamp": "interpretation_pending"
+   }
+  },
+  "ADD-03:AppA/para2": {
+   "kind": "paragraph",
+   "pages": [
+    4
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/AppA/para2"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/AppA/para2": "evidence_verified"
+   }
+  },
+  "ADD-03:AppB/para1": {
+   "kind": "paragraph",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "validated",
+   "batch": "analysis-009",
+   "items": [
+    "ADD-03/AppB/para1",
+    "ADD-03/AppB/para1-issue"
+   ],
+   "accounted": true,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "proposed"
+    },
+    {
+     "ts": "2026-10-05T13:32:06Z",
+     "status": "validated"
+    }
+   ],
+   "statuses": {
+    "ADD-03/AppB/para1": "interpretation_pending",
+    "ADD-03/AppB/para1-issue": "interpretation_pending"
+   }
+  },
+  "ADD-03:T5-1/a": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  },
+  "ADD-03:T5-1/b": {
+   "kind": "table_row",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  },
+  "ADD-03:T5-1/notes": {
+   "kind": "note_intro",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  },
+  "ADD-03:T5-1/note(1)": {
+   "kind": "note",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  },
+  "ADD-03:T5-1/note(2)": {
+   "kind": "note",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  },
+  "ADD-03:T5-1/note(3)": {
+   "kind": "note",
+   "pages": [
+    5
+   ],
+   "origin": "text_layer",
+   "status": "pending",
+   "batch": "analysis-010",
+   "items": [],
+   "accounted": false,
+   "history": [
+    {
+     "ts": "2026-10-05T13:07:05Z",
+     "status": "pending"
+    }
+   ]
+  }
+ },
+ "structure": [
+  {
+   "unit_id": "ADD-03:H:cover",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "ADDENDUM NO. 3",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:cover-2",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "Wadi Sirhan Independent Sewage Treatment Plant",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S1",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "1. RECITALS",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S2",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "2. CONSOLIDATION OF VOLUME I CLAUSES 6.6 AND 6.7",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S3",
+   "kind": "heading",
+   "pages": [
+    1
+   ],
+   "text": "3. AVAILABILITY PAYMENT AND INDEXATION",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S4",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "4. MEMBRANE FILTRATION",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S5",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "5. ODOUR CONTROL",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S6",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "6. RESPONSES TO CLARIFICATION REQUESTS 15 TO 21",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:S6/QA",
+   "kind": "table",
+   "pages": [
+    2
+   ],
+   "text": "No | Bidder question | Authority response",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:S7",
+   "kind": "heading",
+   "pages": [
+    2
+   ],
+   "text": "7. HEIGHT OF STRUCTURES",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:AppA",
+   "kind": "heading",
+   "pages": [
+    4
+   ],
+   "text": "APPENDIX A — TABLE 5-1 (ARABIC)",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:region:ADD-03-p4-r1",
+   "kind": "region",
+   "pages": [
+    4
+   ],
+   "text": "",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:p4-image",
+   "kind": "image_text",
+   "pages": [
+    4
+   ],
+   "text": "Appendix A image (Arabic letter with table): Northern Region Airspace Safeguarding Office, Table 5-1 Maximum Height of …",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:H:AppB",
+   "kind": "heading",
+   "pages": [
+    5
+   ],
+   "text": "APPENDIX B — ENGLISH TRANSLATION OF TABLE 5-1",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  },
+  {
+   "unit_id": "ADD-03:T5-1",
+   "kind": "table",
+   "pages": [
+    5
+   ],
+   "text": "Table 5-1 — Maximum height of structures and equipment at the site — Zone | Description | Maximum height (m above finis…",
+   "note": "structure, not a provision (headings, table and form containers, image regions are read through their members and readings)"
+  }
+ ],
+ "downstream": {
+  "tasks": {},
+  "items": {}
+ },
+ "interventions": [
+  {
+   "ts": "2026-10-05T13:06:44Z",
+   "kind": "host session (automatic)",
+   "batch": "reading-ADD-03-p4-r1",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "note": "a headless host session reading an image; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:12:50Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-001",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:13:11Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-002",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:15:46Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-003",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:19:19Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-004",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:20:57Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-005",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:24:12Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-006",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:26:46Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-007",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:31:49Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-008",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:32:06Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-009",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 1,
+   "note": "a headless host session over the MCP tools; not a person"
+  },
+  {
+   "ts": "2026-10-05T13:32:38Z",
+   "kind": "host session (automatic)",
+   "batch": "analysis-010",
+   "by": "tenderpack.ai.hostsession",
+   "host_model": "claude-code headless (opus)",
+   "sessions": 0,
+   "note": "a headless host session over the MCP tools; not a person"
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null
+ },
+ "events": [
+  {
+   "ts": "2026-10-05T13:03:42Z",
+   "event": "started",
+   "by_pid": 24878
+  },
+  {
+   "ts": "2026-10-05T13:03:42Z",
+   "event": "run_lock_scoped",
+   "scope": "run",
+   "lock": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/ai/.lock-ADD-03",
+   "max_parallel_sessions": 2
+  },
+  {
+   "ts": "2026-10-05T13:06:45Z",
+   "event": "reading_written",
+   "region": "ADD-03-p4-r1",
+   "file": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T130341Z/candidate/curation/readings/ADD-03-p4-r1.yaml",
+   "status": "interpretation_pending"
+  }
+ ],
+ "out_before": {
+  "status": "running",
+  "pid": 25011,
+  "key": "4564e8a93ba3cc8d925835276ee35c3fc7e1ae9926ea0910ca24cf96f7c3f8db",
+  "started": "2026-10-05T13:03:56Z",
+  "evidence": "/home/user/tender-pack-reader/build"
+ },
+ "notices": [
+  {
+   "batch": "reading-ADD-03-p4-r1",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the reading request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "reading"
+  },
+  {
+   "batch": "analysis-001",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-002",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-003",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-004",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-005",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-006",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-007",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-008",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  },
+  {
+   "batch": "analysis-009",
+   "kind": "capabilities_declared",
+   "message": "capabilities declared, not verified: host claude-code headless (opus) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: observed in real headless host sessions on 4 Oct 2026 (session 10: crops read over MCP); declared, not verified); the analysis request was checked against them",
+   "route": "host",
+   "model": "claude-code headless (opus)",
+   "phase": "analysis"
+  }
+ ],
+ "rate_gate": {
+  "pauses": 0,
+  "waits": 0,
+  "longest_wait_s": 0.0
+ },
+ "execution": {
+  "run_status": "failed",
+  "steps": {
+   "ingest": "done",
+   "readings": "done",
+   "analysis": "failed",
+   "validation": "pending",
+   "downstream": "pending",
+   "downstream_validation": "pending",
+   "critic": "pending",
+   "promotion": "pending",
+   "pin": "pending",
+   "check_register": "pending",
+   "outputs": "pending",
+   "diff": "pending",
+   "review": "pending"
+  },
+  "batches": {
+   "reading": {
+    "done": 1
+   },
+   "analysis": {
+    "done": 9,
+    "interrupted": 1
+   }
+  }
+ },
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "promotion into the candidate did not run (step pending)",
+   "the downstream step did not run (step pending)",
+   "check-register did not run on the candidate (step pending)",
+   "the candidate outputs were not built (step pending)"
+  ],
+  "provisions": {
+   "total": 63,
+   "unresolved": [],
+   "answered": 0
+  },
+  "downstream": {
+   "tasks": 0,
+   "answered": 0,
+   "unanswered": [],
+   "unresolved": [],
+   "batches_not_done": [],
+   "no_change": []
+  },
+  "check_register": {
+   "exit_code": null,
+   "findings": null,
+   "by_kind": null,
+   "c46": []
+  },
+  "outputs": {
+   "published": false,
+   "refused": false,
+   "reason": null,
+   "exit_code": null
+  }
+ },
+ "approval": {
+  "status": "none",
+  "by_the_workflow": "nothing approved, accepted, rejected or sent",
+  "decisions": []
+ }
+}

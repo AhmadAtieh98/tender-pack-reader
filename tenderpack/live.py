@@ -16,6 +16,13 @@
                 relationship, feasibility changes, document counts). When the addendum is PARTIAL (session 11), it
                 also points to the validated and the candidate A3/A5 and says in one paragraph what may be changing
                 (partial.diff_lines).
+                Session 12 (W3a): one change predicate with A2 and A5 (signals.requirement_delta): a row that a confirming
+                op (an annotation labelled confirms or interprets, an answer that only confirms) or a reading re-made
+                with the same words, values, parameters, dates and consequence touches is listed CONFIRMED (unchanged)
+                with the op and its provision, never CHANGED; a row whose reading changed in substance is CHANGED; the
+                programme impact reads the ops' labels the same way. The closed clarification route
+                (clarify.window) and the earlier answers to re-read against the new text (stage2.answers_to_review)
+                are listed.
 Both read a published evidence build and the curated inputs; neither writes into a build, the outputs or curation.
 """
 from __future__ import annotations
@@ -222,13 +229,28 @@ def _unit_changes(sa: dict, sb: dict, uid: str) -> list[dict]:
     return out
 
 
-def _secondary(row, sa: dict, sb: dict) -> tuple[list[str], list[str]]:
-    """Reasons and op ids for the secondary units of a row (every unit it cites after the first), grouped by change and
-    op: 'secondary units VOL-II:T2-2/bod5, VOL-II:T2-2/cod replaced by ADD-03/6.1 (now ADD-03:T2-2-rev/bod5, ...)'."""
+def _secondary_groups(row, sa: dict, sb: dict) -> dict[tuple, list[dict]]:
     groups: dict[tuple, list[dict]] = {}
     for uid in dict.fromkeys(row.units[1:]):
         for c in _unit_changes(sa, sb, uid):
             groups.setdefault((c["change"], tuple(c["ops"]), c.get("detail")), []).append(c)
+    return groups
+
+
+def _secondary(row, sa: dict, sb: dict) -> tuple[list[str], list[str]]:
+    """Reasons and op ids for the secondary units of a row (every unit it cites after the first), grouped by change and
+    op: 'secondary units VOL-II:T2-2/bod5, VOL-II:T2-2/cod replaced by ADD-03/6.1 (now ADD-03:T2-2-rev/bod5, ...)'."""
+    return _secondary_lines(_secondary_groups(row, sa, sb))
+
+
+def _confirming_secondary(row, sa: dict, sb: dict, confirming: set[str]) -> tuple[list[str], list[str]]:
+    """Session 12: the secondary-unit reasons that are only annotations by confirming ops (signals.confirming_ops), in
+    the words _secondary gives them, so the diff lists them CONFIRMED (unchanged) and not CHANGED."""
+    return _secondary_lines({k: v for k, v in _secondary_groups(row, sa, sb).items()
+                             if k[0].endswith("annotated") and k[1] and set(k[1]) <= confirming})
+
+
+def _secondary_lines(groups: dict[tuple, list[dict]]) -> tuple[list[str], list[str]]:
     reasons, ops = [], []
     for (change, oids, detail), cs in groups.items():
         units = [c["unit"] for c in cs]
@@ -274,8 +296,20 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
         md += cand_md
         if cand:
             data["candidate"] = cand
+    from .clarify import route_lines, window
+    win = window(r, to) if sto.addendum else None
+    if win and win.get("closed"):                  # session 12: the closed clarification route, in one wording
+        md += route_lines(win) + [""]
+    data["clarification_window"] = win or {"stage": to, "closed": False, "note": ""}
     # ---- requirements
-    new, gone, changed, secondary = [], [], [], {}
+    from .signals import CONFIRMED, cause_label, causes_between, confirming_ops, requirement_delta
+    causes = causes_between(r, frm, to)
+    conf_ops = confirming_ops(r)
+    unsettled = {}
+    if r.get("working") is not None and order.index(to) > order.index(r["validated"].stage):
+        from .partial import unresolved_rows
+        unsettled = unresolved_rows(r)                    # never CONFIRMED while a pending stage does not settle it
+    new, gone, changed, secondary, confirmed, notsettled = [], [], [], {}, [], []
     for e in r["evals"]:
         a, b = e["stages"][frm], e["stages"][to]
         fa, fb = _in_force(a["status"]), _in_force(b["status"])
@@ -295,18 +329,41 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
             db = {d["rule_id"]: d["planning"]["value"] for d in b["dates"]}
             what += [f"{k} {da.get(k)} -> {v}" for k, v in db.items() if da.get(k) != v]
             sec, sec_ops = _secondary(e["row"], sfrm.state, sto.state)     # every other unit the row cites
+            csec, cops = _confirming_secondary(e["row"], sfrm.state, sto.state, conf_ops)
+            sec = [x for x in sec if x not in csec]                         # session 12: a confirmation is not a change
+            sec_ops = [h for h in sec_ops if h not in cops]
             what += sec
             why += [h for h in sec_ops if h not in why]
             if sec:
                 secondary[rid] = sec
+            dl = requirement_delta(a, b, causes.get(rid), unsettled.get(rid))
+            sub = [x for x in dl["what"] if x in ("parameters", "consequence", "reading")
+                   or x == "quote" and "quoted words" not in what]
+            if sub:
+                what.append("reading: " + ", ".join(sub))
+            # session 12 (F2): what the row depends on (relationships, consequence unit, a printed anchor date): the same
+            # causes A2 and A5 name
+            what += [x["text"] for x in dl.get("causes") or [] if x["kind"] in ("dependency", "anchor date")
+                     and x["text"] not in what]
             if what or why:
                 changed.append((rid, b["status"], why, what))
+            elif dl["unsettled"] and (csec or causes.get(rid) or a.get("interpretation") != b.get("interpretation")):
+                notsettled.append((rid, dl["detail"]))
+            elif dl["confirmed"] or csec:
+                labels = [cause_label(c) for c in causes.get(rid) or [] if c["op"] in cops]
+                confirmed.append((rid, "; ".join(([dl["detail"]] if dl["detail"] else [])
+                                                 + [x for x in csec] + ([f"confirmed by {'; '.join(labels)}"]
+                                                                        if labels and not dl["detail"] else []))))
     md += ["## Requirements", "", f"- new: {len(new)}; out of force: {len(gone)}; changed: {len(changed)}", ""]
     md += [f"- NEW {rid}: {st}" + (f" (by {', '.join(w)})" if w else "") for rid, st, w in new]
     md += [f"- OUT {rid}: {st}" for rid, st, _ in gone]
     md += [f"- CHANGED {rid}: {'; '.join(w) or 'amended'}" + (f" (by {', '.join(o)})" if o else "") for rid, st, o, w in changed]
+    md += [f"- {CONFIRMED} {rid}: {why}" for rid, why in confirmed]
+    md += [f"- NOT SETTLED {rid}: unchanged by the applied ops; not confirmed while: "
+           f"{why.removeprefix('NOT SETTLED: ')}" for rid, why in notsettled]
     data["requirements"] = {"new": [x[0] for x in new], "out": [x[0] for x in gone], "changed": [x[0] for x in changed],
-                            "secondary": secondary}
+                            "secondary": secondary, "confirmed": [x[0] for x in confirmed],
+                            "not_settled": [x[0] for x in notsettled]}
     # ---- stale interpretations, voided decisions, image-read values changed
     stale = [(e["row"].id, e["stages"][to]["stale"]) for e in r["evals"] if e["stages"][to]["stale"]]
     carried = {e["row"].id for e in r["evals"] if e["stages"][frm]["stale"]}
@@ -335,7 +392,7 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
         md += ["", "## Reached through relationships (indirect: for review, not direct citations)", "",
                "Curated links (relationships file) followed from what changed. The requirements above cite a changed "
                "unit; these are reached through another provision, in three classes that are never merged. A5 marks the "
-               "activities that serve them REVIEW with their dates unchanged.", ""]
+               "activities that serve them REVIEW with their dates unchanged.", "", relationships.STATUS_LEGEND, ""]
         data["relationships"] = {}
         for cls, items in relationships.by_class(recs):
             md.append(f"### {cls[0].upper() + cls[1:]} ({len(items)})")
@@ -365,6 +422,13 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
     if md[-1] == "":
         md.append("- no change")
     data["a3"] = {"enters": [k for k in xb if k not in xa], "leaves": [k for k in xa if k not in xb]}
+    # ---- session 12: earlier answers that relied on what this addendum changed, to be re-read by a person
+    from .stage2 import answers_to_review
+    rr = [dict(x, stage=s.stage) for s in r["stages"] if s.stage in order[order.index(frm) + 1: order.index(to) + 1]
+          for x in answers_to_review(r, s)]
+    md += ["", "## Earlier answers to re-read against the new text (never revoked; a person decides)", ""]
+    md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}; {x['reread']}" for x in rr] or ["- none"]
+    data["answers_to_reread"] = rr
     # ---- programme
     try:
         pa = programme.stage_planner(r, frm)(r["assumptions"])
@@ -374,7 +438,7 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
         return "\n".join(md) + "\n", data
     ea = {e["row"].id: e["stages"][frm] for e in r["evals"]}
     eb = {e["row"].id: e["stages"][to] for e in r["evals"]}
-    dl = deltas(pa, pb, ea, eb)
+    dl = deltas(pa, pb, ea, eb, answers=causes)    # session 12: the ops' labels read as A2 and A5 read them
     sa = {a["id"]: a["status"] for a in pa["activities"]}
     md += ["", f"## Programme impact (status date {pa['status_date']} -> {pb['status_date']})", ""]
     md += [f"- {d['change']} {d['activity']}: {d['detail']}" for d in dl] or ["- no activity changes"]

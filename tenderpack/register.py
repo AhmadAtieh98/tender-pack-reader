@@ -173,6 +173,27 @@ class Corroboration(_Strict):
     adds_evidence: list[Quotation] = Field(default_factory=list)
 
 
+class ConditionalOn(_Strict):
+    """Session 12 (W3b; blind-05 follow-up 6): the row (or activity) was proposed from an image reading that no person has
+    approved. While the reading is pending the row is not in force (status derived.PENDING_STATUS naming the reading:
+    shown in A1, off A3 and A5); once the reading is approved it is an ordinary row. `subject_sha256` pins the reading's
+    review subject the proposal was made from (written by the validator): a reading changed since is a problem (C16)."""
+    reading: str                                 # the reading's region id (curation/readings/<region>.yaml)
+    until: Literal["approval"] = "approval"
+    subject_sha256: str | None = None
+
+
+class DerivedConsequence(_Strict):
+    """Session 12 (W3b; blind-05 follow-up 9): the row's bid-out consequence is quoted from an EXISTING rule (another
+    row's consequence, same unit and class), read with a value or a band the addendum states. `owner: person` when
+    whether the rule covers the value is a judgment (HUMAN DECISION PENDING); `deterministic` when the rule's own words
+    name the value. Written by the validator; a proposal, like the row."""
+    rule: str                                    # the existing row whose consequence is quoted
+    unit: str
+    owner: Literal["person", "deterministic"]
+    basis: str = ""
+
+
 class Row(_Strict):
     id: str
     group: str
@@ -196,6 +217,8 @@ class Row(_Strict):
     # primary unit is issued in (BASE for a volume unit), as before; the register reports that as derived.
     introduced: Introduction | None = None
     corroborates: Corroboration | None = None    # session 11 (A3-6): restates another row's consequence
+    conditional_on: ConditionalOn | None = None  # session 12 (W3b): proposed from a reading pending approval
+    derived_consequence: DerivedConsequence | None = None   # session 12 (W3b): the consequence of an existing rule
     review: Literal["proposed", "accepted"] = "proposed"
     reviewer: str | None = None
 
@@ -208,6 +231,9 @@ class Row(_Strict):
             d.pop("introduced", None)
         if self.corroborates is None:                # likewise for `corroborates` (session 11)
             d.pop("corroborates", None)
+        for k in ("conditional_on", "derived_consequence"):   # and the session-12 fields
+            if getattr(self, k) is None:
+                d.pop(k, None)
         return d
 
     @property
@@ -712,6 +738,7 @@ class Register:
         val_old = [r for r in s.ops if r.op.type == "set_value" and r.op.target in row.units and r.details.get("reading_status") == "pending"]
         if val_old:
             flags.append("amended value replaces a value read from an image still pending review")
+        flags += self._precedence_flags(rel, s)              # session 12: two renderings issued together
         # --- dates
         anchors = anchor_values(st, self.rf.anchors, self.issued)
         dates = []
@@ -758,7 +785,7 @@ class Register:
             b = self.stages[0].state.get(uid)
             e_u = effective(st, uid, row.follows_replacement)
             details.append({"unit": uid, "ref": self._ref(uid, self.stages[0].state if uid in self.stages[0].state else st),
-                            "original_text": b.text if b is not None and b.status != "not_issued" else "",
+                            "original_text": self.as_issued_text(uid),
                             "issued_by": b.issued_by if b is not None else None,
                             "effective_unit": e_u.unit_id if e_u is not None else None,
                             "effective_ref": self._ref(e_u.unit_id, st) if e_u is not None else "",
@@ -769,7 +796,8 @@ class Register:
             u = st.get(x["unit"])
             if u is None:
                 continue
-            d = {"unit": x["unit"], "ref": self._ref(x["unit"], st), "original_text": "", "issued_by": u.issued_by,
+            d = {"unit": x["unit"], "ref": self._ref(x["unit"], st), "original_text": self.as_issued_text(x["unit"]),
+                 "issued_by": u.issued_by,
                  "effective_unit": x["unit"], "effective_ref": self._ref(x["unit"], st),
                  "text": u.text if u.status != "not_issued" else "", "status": u.status,
                  "ops": [h for h in u.history if self.op_stage.get(h)]}
@@ -777,6 +805,66 @@ class Register:
             details.insert(at[0] + 1 if at else len(details), d)
         out["units_detail"] = details
         self._conditional_and_effective(row, s, out, anchors)     # session 11 (D3): conditional / effective-dated state
+        self._derived_state(row, s, out, rel)                      # session 12 (W3b): pending reading; switched conditions
+        return out
+
+    def _derived_state(self, row: Row, s: StageResult, out: dict, rel: list) -> None:
+        """Session 12 (W3b; tenderpack.derived). A row `conditional_on` a reading still pending (or changed since the
+        proposal) is not in force: its status names the reading and `active` is False (A3 and A5 leave it out); after a
+        person's approval it is ordinary. A row whose unit's condition, or a defined term its units use, an op of this
+        stage changed is flagged for a re-read (nothing decided; the status is unchanged)."""
+        from . import derived
+        from .schedule import in_force
+        co = row.conditional_on
+        if co is not None:
+            mine = [u for u in rel if u is not None and u.origin == "image_reading" and u.reading_region == co.reading]
+            if not mine:
+                out["problems"].append(f"conditional_on: the row cites no unit of reading {co.reading} at {s.stage}")
+            else:
+                pend = [u.unit_id for u in mine if u.reading_status != "approved"]
+                if co.subject_sha256 and all(u.reading_subject != co.subject_sha256 for u in mine):
+                    out["problems"].append(f"conditional_on: reading {co.reading} changed since the row was proposed from "
+                                           f"it (review subject {co.subject_sha256[:12]}… now {str(mine[0].reading_subject)[:12]}…): "
+                                           "re-read the row against the reading")
+                    pend = pend or [mine[0].unit_id]
+                if pend:
+                    if in_force(out["status"]):
+                        out["status"], out["active"] = derived.pending_status(co.reading), False
+                    out["flags"].append(f"{derived.label(co.reading)} (pending): proposed from the reading, not in force")
+                else:
+                    out["flags"].append(f"conditional_on reading {co.reading}: approved, the condition is met (an "
+                                        "ordinary row now)")
+        cache = self.__dict__.setdefault("_switched", {})
+        if s.stage not in cache:
+            cache[s.stage] = derived.switched_in(self.stages, s.stage) if s.stage in self.order else []
+        if cache[s.stage] and out.get("active"):
+            out["flags"] += [f for f in derived.row_flags(cache[s.stage], row, s.state) if f not in out["flags"]]
+
+    def _precedence_flags(self, rel: list, s: StageResult) -> list[str]:
+        """Session 12: a row that relies on one of two renderings issued together (an annotate op's `precedence`, at this
+        stage or before): flagged for a person when the addendum does not say which governs, and when the row relies on
+        the rendering the addendum's words say does not govern. Nothing is decided here."""
+        upto = self.order[: self.order.index(s.stage) + 1] if s.stage in self.order else [s.stage]
+        out = []
+        for x in (x for st_ in self.stages if st_.stage in upto for x in st_.ops):
+            pr = x.details.get("precedence") if x.applied else None
+            if not pr:
+                continue
+
+            def under(uid: str, t: str) -> bool:
+                return uid == t or uid.startswith(t + "/")
+            uids = [u.unit_id for u in rel if u is not None]
+            if pr["governs"] == "unstated":
+                hit = [u for u in uids if any(under(u, t) for t in pr["over"])]
+                if hit:
+                    out.append(f"relies on {', '.join(hit)}, one of renderings issued together ({', '.join(pr['over'])}); "
+                               f"{x.op.provision} does not say which governs (precedence unstated, {x.op.id}): a person "
+                               "decides")
+            else:
+                hit = [u for u in uids if any(under(u, t) for t in pr["over"])]
+                if hit:
+                    out.append(f"relies on {', '.join(hit)}, a rendering that does not govern: '{pr['words']}' "
+                               f"({pr['stated_by']}, {x.op.id}); {pr['governs']} governs")
         return out
 
     # ------------------------------------------------------------------ conditional and effective-dated state (s11)
@@ -965,6 +1053,19 @@ class Register:
             doc, _, local = uid.partition(":")
             out["latest"] = out["latest"].replace(f"{doc} {local}", f"{doc} {num} (issued as {local})", 1)
         return out
+
+    def as_issued_text(self, uid: str) -> str:
+        """A unit's text as issued (never assembled): the volume's text, or, for a unit first issued by an addendum, the
+        addendum's own text at the stage that issued it (session 12, F1; audit A1-5: one rule for every row first issued
+        by an addendum, so 'Text as issued' never shows a placeholder for some and the text for others)."""
+        b = self.stages[0].state.get(uid)
+        if b is not None and b.status != "not_issued":
+            return b.text
+        for s in self.stages[1:]:
+            u = s.state.get(uid)
+            if u is not None and u.status != "not_issued":
+                return u.text or ""
+        return ""
 
     def _source_of(self, uid: str, quote: str | None, s: StageResult, follow: bool = True) -> dict:
         """Where the words of `quote` in a unit's effective text come from at stage `s`: the unit as issued,

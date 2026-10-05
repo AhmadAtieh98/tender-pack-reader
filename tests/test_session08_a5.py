@@ -216,7 +216,8 @@ def test_every_activity_separates_effort_from_waiting_with_labelled_assumptions(
     for a in base["activities"]:
         assert a["effort_wd"] == lead[a["duration_assumption"]]["effort_wd"], a["id"]
         assert a["effort_total_wd"] == pytest.approx(a["effort_wd"] * a["count"]), a["id"]
-        assert a["effort_basis"].startswith("ASSUMPTION (PROVISIONAL; owner "), a["id"]
+        # session 12 (F3, audit A5-9, deliberate): the owner's label "PROVISIONAL ASSUMPTION" in every data file
+        assert a["effort_basis"].startswith("PROVISIONAL ASSUMPTION (owner "), a["id"]
         assert a["discipline"] in schedule.DISCIPLINES, a["id"]
         assert a["work_type"] == ("external waiting + staff effort" if a["waiting_on"] else "staff effort"), a["id"]
     x = acts(base)

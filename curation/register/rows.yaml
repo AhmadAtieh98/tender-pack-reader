@@ -31,7 +31,9 @@ rows:
         quote: "not later than 14:00 hours Riyadh time on Thursday 12 November 2026"
         consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
       - stage: ADD-01
-        quote: "not later than 14:00 hours Riyadh time on Thursday 26 November 2026"
+        # session 12 (F1; audit A1-3): the quoted words are verbatim on one page (ADD-01 2.1 p1); the assembled
+        # sentence is the effective text column ('not later than 14:00 hours ... on Thursday 26 November 2026')
+        quote: "Thursday 26 November 2026"
         consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
         note: "ADD-01 §2.1 amends the date; the time is unchanged."
     confidence: high
@@ -390,6 +392,8 @@ rows:
       - stage: ADD-02
         quote: "Form 4-G shall be completed and submitted with Envelope A."
         consequence: {class: non_responsive, unit: "ADD-02:7.2", quote: "Failure to submit Form 4-G shall render the Proposal non-responsive."}
+        # session 12 (F1; audit A2-7, PROPOSED): the addendum does not amend the Index of Forms; no index row is invented
+        note: "ADD-02 7.1 adds Form 4-G 'to Volume IV and to the list at Volume I Clause 9.1'; it prints no entry for the Index of Forms (VOL-IV p2, which lists Forms 4-A to 4-F), so no index row is inserted, and where the form sits in Volume IV is not stated."
     confidence: high
     confidence_reason: "verbatim; the re-lettering of the Envelope A list after item (e) is not stated"
     issues: [I-F4G-LETTERING]
@@ -474,7 +478,7 @@ rows:
         quote: "for not less than seventy-two (72) hours"
         parameters: {standby_power_hours_min: 72}
       - stage: ADD-02
-        quote: "for not less than ninety-six (96) hours"
+        quote: "ninety-six (96) hours"          # session 12 (F1; audit A1-3): verbatim on ADD-02 4.1 p1
         parameters: {standby_power_hours_min: 96}
         note: "ADD-02 §4.1. The same words 'seventy-two (72) hours' in VOL-V 31.3 are not targeted."
     confidence: high

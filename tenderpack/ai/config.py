@@ -71,3 +71,26 @@ def model_entry(rcfg: dict, model: str) -> dict:
 def default_model(rcfg: dict, role: str = "propose") -> str | None:
     v = (rcfg.get("models") or {}).get(role)
     return v.get("id") if isinstance(v, dict) else v
+
+
+def phase_model(rcfg: dict, route_name: str, phase: str, explicit: str | None = None) -> str | None:
+    """Session 12: the model of a workflow phase on a route. `explicit` (--model) wins for the text phases. On the
+    ollama route (local models, one per role in config/ai.yaml): the reading phase takes `models.vision` when
+    configured (it needs image input; the capability check still decides), the text phases `propose`, else `text`.
+    Other routes: --model, else `models.propose` (unchanged)."""
+    if route_name == "ollama":
+        if phase == "reading":
+            return default_model(rcfg, "vision") or explicit or default_model(rcfg) or default_model(rcfg, "text")
+        return explicit or default_model(rcfg) or default_model(rcfg, "text")
+    return explicit or default_model(rcfg)
+
+
+def critic_model(rcfg: dict, route_name: str, explicit: str | None = None) -> str | None:
+    """The critic's model on a route: `explicit`, else `models.critic`; on the API routes also `check`, then `propose`
+    (session 10). On the ollama route ONLY `models.critic` (it may name the same model as `propose`): no implicit
+    fallback, so a missing local critic is recorded as a skipped review, never silently replaced."""
+    if explicit:
+        return explicit
+    if route_name == "ollama":
+        return default_model(rcfg, "critic")
+    return default_model(rcfg, "critic") or default_model(rcfg, "check") or default_model(rcfg)

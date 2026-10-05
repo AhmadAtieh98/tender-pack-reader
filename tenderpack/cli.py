@@ -40,6 +40,8 @@ Stage 2 (from a published evidence build; see tenderpack/stage2.py):
   reject   ITEM [ITEM ...] --reviewer NAME --note TEXT [--decisions PATH]
            a person's decision on A1 rows (VOL-I-8.6-01) or amendment ops (ADD-02/9.1), bound to the fingerprint
            of the item, its evidence and its dependencies (tenderpack/review.py). A later change voids it.
+           Also clarification entries (CQ-...) and issues (I-...): a closing response status or an issue's
+           resolution is shown as settled only once a person accepts the entry as it reads (session 12).
            Refuses placeholder names, STALE rows, invalid ops (accept) and rejections without a note.
   apply-proposal PROPOSAL_ID --by NAME [--proposals PATH]
            write a prepared proposal (e.g. a re-made interpretation for a STALE row) into the register and pin
@@ -599,7 +601,8 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--update-ids", action="store_true", help="record new row ids in the id ledger (C12) first")
     for name in ("accept", "reject"):
         h = sub.add_parser(name)
-        h.add_argument("items", nargs="+", help="A1 row ids and/or op ids (ADD-0N/<provision>)")
+        h.add_argument("items", nargs="+", help="A1 row ids, op ids (ADD-0N/<provision>), clarification entries "
+                                                "(CQ-...) and/or issues (I-...)")
         h.add_argument("--reviewer", required=True)
         h.add_argument("--note", required=(name == "reject"))
         h.add_argument("--evidence", default=str(ROOT / "build"))

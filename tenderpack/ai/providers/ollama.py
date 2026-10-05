@@ -22,10 +22,21 @@ and is never assumed to be reachable from a cloud session.
     role "tool" messages. Usage from prompt_eval_count / eval_count.
   * Candidates in config/ai.yaml are marked "candidate, unmeasured": no performance is claimed until measured on
     the Mac (docs/AI_ROUTES.md gives the measurement protocol).
+  * Session 12 (offline mode, tenderpack/ai/offline.py): a model /api/show does not know (404) is NOT INSTALLED: the
+    error names the model, the command a person may run (`ollama pull X`; tenderpack never pulls) and the installed
+    models (GET /api/tags). Image input and tool use are taken ONLY from the reported `capabilities` (never assumed).
+    The memory a model needs at its context bound is ESTIMATED from /api/show (parameter size x the quantisation's
+    bits per weight, plus the KV cache: layers x KV heads x (key + value length) x 2 bytes x num_ctx, plus 1 GB) and
+    compared with `routes.ollama.machine` (unified_memory_gb x usable_fraction, an assumption about macOS's GPU
+    working-set limit, not measured): a model that cannot hold its context is REFUSED with the numbers; without a
+    parameter size or a quantisation the estimate is "unknown" (recorded with the capabilities, not a refusal). `check_models(cfg)`
+    reports every configured model this way (`tenderpack ai routes`, the workflow's preflight). A loopback base URL is
+    always reached directly, never through an HTTP proxy.
 """
 from __future__ import annotations
 
 import os
+import re
 
 from . import structured as SO
 from .base import (ALLOW_UNVERIFIED_KEY, Capabilities, ProviderError, Request, Response, ToolCall, http_json, image_b64,
@@ -57,6 +68,9 @@ class OllamaProvider:
         try:
             _, _, data = self._fetch("POST", f"{self.base_url}/api/show", {}, {"model": self.model}, 20)
         except ProviderError as e:
+            if e.status == 404 or "not found" in str(e.message).lower():
+                raise ProviderError("model_not_installed", not_installed_message(self.model, self._installed()),
+                                    False, 404) from None
             raise ProviderError("capabilities_unavailable",
                                 f"Ollama at {self.base_url} could not be reached ({e.kind}): this route runs on the "
                                 "owner's Mac only; live use is refused", False) from None
@@ -74,13 +88,25 @@ class OllamaProvider:
             return self._caps
         bound = min(x for x in (self.num_ctx, ctx) if x)
         self.num_ctx = bound
+        mem = memory_estimate(data, bound, self.rcfg.get("machine"))
+        if mem.get("fits") is False:
+            raise ProviderError("memory", f"ollama {self.model}: {mem['why']}; refused before any request (lower "
+                                          "num_ctx in config/ai.yaml or choose a smaller model)", False)
         self._caps = Capabilities(images="vision" in caps, tools="tools" in caps,
                                   structured_output=None, context_tokens=bound,
                                   retention=retention,
                                   source=f"POST {self.base_url}/api/show (capabilities {sorted(caps)}; context "
                                          f"{ctx}; bounded by config num_ctx {self.mcfg.get('num_ctx')})",
-                                  details={"reported_context_length": ctx, "details": data.get("details")})
+                                  details={"reported_context_length": ctx, "details": data.get("details"),
+                                           "reported_capabilities": sorted(caps), "memory": mem})
         return self._caps
+
+    def _installed(self) -> list[str] | None:
+        try:
+            _, _, tags = self._fetch("GET", f"{self.base_url}/api/tags", {}, None, 20)
+        except ProviderError:
+            return None
+        return sorted(m.get("name") or m.get("model") for m in (tags or {}).get("models") or [])
 
     def native_format(self, request: Request) -> dict | None:
         if request.response_schema is None:
@@ -169,3 +195,125 @@ class OllamaProvider:
                                                                    "eval_duration") if k in data}},
                         model_reported=data.get("model"), raw={k: v for k, v in data.items() if k != "context"},
                         stop_reason=data.get("done_reason"))
+
+
+# ---------------------------------------------------------------------------------------------- session 12: local checks
+
+BITS_PER_WEIGHT = {"Q2_K": 3.35, "Q3_K_S": 3.5, "Q3_K_M": 3.9, "Q3_K_L": 4.3, "Q4_0": 4.55, "Q4_1": 5.0,
+                   "Q4_K_S": 4.6, "Q4_K_M": 4.85, "Q5_0": 5.5, "Q5_1": 6.0, "Q5_K_S": 5.55, "Q5_K_M": 5.7,
+                   "Q6_K": 6.6, "Q8_0": 8.5, "F16": 16.0, "BF16": 16.0, "F32": 32.0, "MXFP4": 4.25}
+OVERHEAD_GB = 1.0
+GB = 1024 ** 3
+
+
+def not_installed_message(model: str, installed: list[str] | None) -> str:
+    have = ", ".join(installed) if installed else ("none" if installed is not None else "the list could not be read")
+    return (f"model {model} is not installed; install it yourself with `ollama pull {model}` if you want it "
+            f"(installed: {have}); tenderpack never downloads a model")
+
+
+def _params(s) -> float | None:
+    m = re.match(r"^\s*([\d.]+)\s*([KMBT]?)", str(s or ""), re.I)
+    if not m:
+        return None
+    return float(m.group(1)) * {"": 1, "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12}[m.group(2).upper()]
+
+
+def _info(info: dict, suffix: str):
+    v = next((v for k, v in info.items() if k.endswith("." + suffix)), None)
+    if isinstance(v, list):
+        v = max((x for x in v if isinstance(x, (int, float))), default=None)
+    return v if isinstance(v, (int, float)) else None
+
+
+def machine_budget_gb(machine: dict | None) -> tuple[float | None, str]:
+    m = machine or {}
+    if not m.get("unified_memory_gb"):
+        return None, "no routes.ollama.machine.unified_memory_gb configured"
+    frac = float(m.get("usable_fraction", 0.75))
+    return float(m["unified_memory_gb"]) * frac, (f"{m['unified_memory_gb']:g} GB unified memory x {frac:g} usable "
+                                                  "(an assumption about macOS's GPU working-set limit; not measured)")
+
+
+def memory_estimate(show: dict, num_ctx: int | None, machine: dict | None = None) -> dict:
+    """An ESTIMATE of the memory a model needs at `num_ctx` from its /api/show reply (see the module docstring), and
+    whether it fits the configured machine: {weights_gb, kv_cache_gb, overhead_gb, total_gb, budget_gb, fits, why,
+    max_ctx_that_fits}. fits None: not estimated (and why)."""
+    det = (show or {}).get("details") or {}
+    info = (show or {}).get("model_info") or {}
+    params, quant = _params(det.get("parameter_size")), str(det.get("quantization_level") or "").upper()
+    bits = BITS_PER_WEIGHT.get(quant)
+    budget, basis = machine_budget_gb(machine)
+    out = {"parameter_size": det.get("parameter_size"), "quantization": det.get("quantization_level"),
+           "num_ctx": num_ctx, "budget_gb": round(budget, 1) if budget else None, "budget_basis": basis,
+           "basis": "an estimate from /api/show (weights + f16 KV cache + 1 GB overhead), not a measurement"}
+    if params is None or bits is None:
+        return {**out, "fits": None, "why": f"memory need not estimated (parameter size {det.get('parameter_size')!r}, "
+                                            f"quantisation {det.get('quantization_level')!r} not both known)"}
+    weights = params * bits / 8 / GB
+    layers, kvh = _info(info, "block_count"), _info(info, "attention.head_count_kv")
+    kl, vl = _info(info, "attention.key_length"), _info(info, "attention.value_length")
+    if kl is None and _info(info, "embedding_length") and _info(info, "attention.head_count"):
+        kl = vl = _info(info, "embedding_length") / _info(info, "attention.head_count")
+    per_token = (layers * (kvh or 1) * ((kl or 0) + (vl or kl or 0)) * 2) if layers and kl else None
+    kv = per_token * (num_ctx or 0) / GB if per_token else None
+    total = weights + (kv or 0) + OVERHEAD_GB
+    out.update(weights_gb=round(weights, 1), kv_cache_gb=round(kv, 1) if kv is not None else None,
+               overhead_gb=OVERHEAD_GB, total_gb=round(total, 1))
+    if budget is None:
+        return {**out, "fits": None, "why": f"about {total:.1f} GB at num_ctx {num_ctx} (estimate); {basis}"}
+    if per_token:
+        out["max_ctx_that_fits"] = max(0, int((budget - weights - OVERHEAD_GB) * GB / per_token))
+    kvs = f"KV cache {kv:.1f} GB" if kv is not None else "KV cache not estimated (no layer/head figures)"
+    if total > budget:
+        return {**out, "fits": False,
+                "why": f"estimated memory {total:.1f} GB at num_ctx {num_ctx} (weights {weights:.1f} GB at "
+                       f"{det.get('quantization_level')}, {kvs}, overhead {OVERHEAD_GB:g} GB) exceeds about "
+                       f"{budget:.1f} GB ({basis})"}
+    return {**out, "fits": True, "why": f"estimated {total:.1f} GB of about {budget:.1f} GB ({kvs})"}
+
+
+def check_models(cfg: dict, roles: list[str] | None = None, env=os.environ, fetch=None) -> dict:
+    """Every configured Ollama model (or `roles`), checked against the local endpoint: installed (/api/tags),
+    capabilities as REPORTED (vision, tools), context bound, estimated memory. Never pulls. Returns {base_url,
+    reachable, installed, models: [{role, id, installed, images, tools, context_tokens, memory, ok, problem}]}."""
+    from .. import config as C
+    rcfg = C.route(cfg, "ollama")
+    url_env = rcfg.get("base_url_env") or "TENDERPACK_OLLAMA_URL"
+    base = (env.get(url_env) or rcfg.get("base_url") or "http://127.0.0.1:11434").rstrip("/")
+    fetch = fetch or http_json
+    out = {"base_url": base, "reachable": False, "installed": None, "models": []}
+    try:
+        _, _, tags = fetch("GET", f"{base}/api/tags", {}, None, 20)
+        out["reachable"] = True
+        out["installed"] = sorted(m.get("name") or m.get("model") for m in (tags or {}).get("models") or [])
+    except ProviderError as e:
+        out["error"] = f"Ollama at {base} could not be reached ({e.kind}: {str(e.message)[:200]})"
+    for role, v in (rcfg.get("models") or {}).items():
+        if roles and role not in roles:
+            continue
+        mid = v.get("id") if isinstance(v, dict) else v
+        rec = {"role": role, "id": mid, "status": v.get("status") if isinstance(v, dict) else None}
+        if not out["reachable"]:
+            rec.update(ok=False, installed=None, problem=out["error"])
+        elif mid not in (out["installed"] or []):
+            rec.update(ok=False, installed=False, problem=not_installed_message(mid, out["installed"]))
+        else:
+            prov = OllamaProvider(mid, rcfg, v if isinstance(v, dict) else {}, env=env, fetch=fetch)
+            try:
+                caps = prov.capabilities()
+                rec.update(ok=True, installed=True, images=caps.images, tools=caps.tools,
+                           context_tokens=caps.context_tokens,
+                           reported_context=caps.details.get("reported_context_length"),
+                           capabilities=caps.details.get("reported_capabilities"), memory=caps.details.get("memory"))
+            except ProviderError as e:
+                rec.update(ok=False, installed=True, problem=e.message)
+                try:
+                    _, _, data = fetch("POST", f"{base}/api/show", {}, {"model": mid}, 20)
+                    caps_ = set(data.get("capabilities") or [])
+                    rec.update(images="vision" in caps_, tools="tools" in caps_, capabilities=sorted(caps_),
+                               memory=memory_estimate(data, prov.num_ctx, rcfg.get("machine")))
+                except ProviderError:
+                    pass
+        out["models"].append(rec)
+    return out

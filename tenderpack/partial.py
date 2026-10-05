@@ -27,6 +27,13 @@ milestone), then an op's `effective_from`, then what the op file says in words o
 unresolved provision's reason, saying it is conditional or effective-dated), with the dates printed in the words it can
 see, labelled as text only. A trigger is never assumed to have occurred.
 
+Session 12 (W3a): the candidate A5's deltas use the shared change predicate (signals.requirement_delta: a confirmation
+is CONFIRMED (unchanged), never REWORK); 'reached by this addendum' for a document or issue not supplied also counts the
+rows not settled because an unresolved provision cites them, the rows the pending stages change and the issues the
+addendum's own words or provisions name; the unresolved provisions, the paragraph and the clarification activity say
+when the clarification window closed before the addendum issued (clarify.window, one wording); an issue id a row in play
+names that is not among the promoted issues is shown as a BROKEN ISSUE REFERENCE, never as a link.
+
 Nothing here validates, accepts or applies anything: the files are views of the working stage that stage2 already
 computes (A1's WORKING column, a5/working/). Pure functions except `write`."""
 from __future__ import annotations
@@ -260,8 +267,10 @@ def a3_changes(r: dict, a3v: dict, a3c: dict, op_status: dict | None = None,
 
 # ---------------------------------------------------------------------------------------------- blockers
 
-def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict]) -> dict:
-    """Everything that stops the candidate from becoming the validated state, or that it cannot establish."""
+def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict], window: dict | None = None) -> dict:
+    """Everything that stops the candidate from becoming the validated state, or that it cannot establish. `window`
+    (clarify.window at the working stage): when closed, every unresolved provision carries its note in `route`."""
+    from .clarify import window as clar_window
     w = r["working"].stage
     acts = (prog_c or {}).get("activities") or []
     provs, invalid, held, conflicts, op_issues = [], [], [], [], []
@@ -278,9 +287,11 @@ def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict
                     "not analysed" if "not analysed" in low else "invalid op" if "invalid" in low else
                     "rejected by a person" if c["disposition"] == "rejected" else
                     "unaccounted" if c["disposition"] == "UNACCOUNTED" else "unresolved")
+            win = window if (window or {}).get("stage") == s.stage else clar_window(r, s.stage)
             provs.append({"stage": s.stage, "provision": c["provision"], "page": c.get("page"), "kind": kind,
                           "disposition": c["disposition"], "reason": reason, "text": _short(u.text if u else c.get("text"), 300),
-                          "rows": rows, "activities": sorted({a["id"] for a in acts if set(a["req_ids"]) & set(rows)})})
+                          "rows": rows, "activities": sorted({a["id"] for a in acts if set(a["req_ids"]) & set(rows)}),
+                          "route": (win or {}).get("note") or ""})
             if "conflict" in low:
                 conflicts.append({"stage": s.stage, "what": f"{c['provision']}: {_short(reason, 260)}",
                                   "source": "unresolved provision"})
@@ -317,17 +328,52 @@ def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict
                 "why": sorted({y for rid in set(a["req_ids"]) & set(unres_rows) for y in unres_rows[rid]})}
                for a in acts if set(a["req_ids"]) & set(unres_rows)]
     return {"provisions": provs, "invalid_ops": invalid, "withheld_ops": held, "stale_rows": stale, "c46": gaps,
-            "missing_documents": missing_documents(r, issues_c), "conflicts": conflicts, "op_issues": op_issues,
+            "missing_documents": missing_documents(r, issues_c, unres_rows), "conflicts": conflicts, "op_issues": op_issues,
             "blocked_activities": blocked, "unresolved_rows": [{"row": k, "why": v} for k, v in unres_rows.items()],
             "chains": chains}
 
 
-def missing_documents(r: dict, issues: list[dict]) -> list[dict]:
+def _reached_rows(r: dict, unres_rows: dict | None) -> dict[str, str]:
+    """Row -> why the pending stages reach it: not settled (an unresolved provision cites it, or STALE), or changed by
+    an op of a pending stage (its ops, status or reading differ between the validated and the working stage)."""
+    from .schedule import status_changed
+    v, w = r["validated"].stage, r["working"].stage
+    out = {k: f"{k} (not settled: {_short(why[0], 90)})" for k, why in (unres_rows or {}).items() if why}
+    for e in r["evals"]:
+        a, b = e["stages"][v], e["stages"][w]
+        if e["row"].id not in out and (a.get("ops") != b.get("ops") or status_changed(a, b)
+                                       or a.get("interpretation") != b.get("interpretation")):
+            out[e["row"].id] = f"{e['row'].id} (changed at {w})"
+    return out
+
+
+def _issue_reached(r: dict, i: dict, reached_rows: dict[str, str]) -> list[str]:
+    """How the pending stages reach an open issue (session 12, blind-05 false signal 4): a row naming it (its `issues`,
+    the issue's rows, or a row id its words name) that is not settled or changed; a provision or unit of a pending stage
+    its words cite (the addendum's own issue); the unresolved provisions whose words or reasons name it."""
+    rows = set(i.get("rows") or []) | {e["row"].id for e in r["evals"] if i["id"] in e["row"].issues}
+    text = " ".join(str(i.get(k) or "") for k in ("text", "a3", "short"))
+    rows |= {e["row"].id for e in r["evals"] if re.search(r"(?<![\w-])" + re.escape(e["row"].id) + r"(?![\w.-])", text)}
+    out = sorted(reached_rows[x] for x in rows if x in reached_rows)
+    pend = pending(r)
+    docs = {s.stage for s in pend}
+    cited = set(resolve(citations(text), set(r["working"].state)))
+    out += sorted(u for u in cited if u.split(":", 1)[0] in docs)
+    for s in pend:
+        for c in s.coverage:
+            if c["disposition"] in UNRES and i["id"] in (c.get("reason") or ""):
+                out.append(f"{c['provision']} (unresolved; its reason names {i['id']})")
+    return list(dict.fromkeys(out))
+
+
+def missing_documents(r: dict, issues: list[dict], unres_rows: dict | None = None) -> list[dict]:
     """Every document the pack refers to but does not supply: the relationships file's missing_document entries (with
     the conclusions they block, and whether what the pending stages changed reaches them) and the open issues that say
-    so (e.g. I-PERMIT). Kept visible whatever the addendum does."""
+    so (e.g. I-PERMIT). Kept visible whatever the addendum does. Session 12: 'reached' also counts the rows the pending
+    stages do not settle (`unres_rows`: an unresolved provision cites them) or change, and the addendum's own words."""
     from .stage2 import MISSING_DOC_WORDS, issue_theme
     w = r["working"].stage
+    rr = _reached_rows(r, unres_rows)
     recs = ((r.get("relationship_impact") or {}).get(w) or {}).get("records") or []
     reached = {}
     for rec in relationships.gaps(recs):
@@ -342,35 +388,51 @@ def missing_documents(r: dict, issues: list[dict]) -> list[dict]:
                     "issues": sorted({i for e in d["entries"] for i in e.get("issues") or []}),
                     "blocks": "; ".join(_short(e.get("blocks"), 220) for e in d["entries"]),
                     "targets": d["targets"], "referenced_in": d["sources"],
-                    "reached_by_this_addendum": sorted({t for x in ents for t in reached.get(x, [])})})
+                    "reached_by_this_addendum": sorted({t for x in ents for t in reached.get(x, [])}
+                                                       | {rr[t] for t in d["targets"] if t in rr})})
     named = {i for m in out for i in m["issues"]}
     for i in issues:
         if i["id"].startswith("I-AUTO-NOT-SUPPLIED-"):
             continue
         if issue_theme(i) == "missing" or any(x in i["text"].lower() for x in MISSING_DOC_WORDS):
             out.append({"id": i["id"], "document": "", "issues": [i["id"]], "blocks": _short(i.get("a3") or i["text"], 300),
-                        "targets": i.get("rows") or [], "referenced_in": [], "reached_by_this_addendum": [],
-                        "linked": i["id"] in named})
+                        "targets": i.get("rows") or [], "referenced_in": [],
+                        "reached_by_this_addendum": _issue_reached(r, i, rr), "linked": i["id"] in named})
+    # one hop: an open issue the words of a reached issue name is reached through it (blind-05: the addendum's own
+    # I-ADD03-29.2-NO-OP says 'Schedule 9 is still not supplied (I-VOL-V-MISSING)')
+    texts = {i["id"]: " ".join(str(i.get(k) or "") for k in ("text", "a3")) for i in issues}
+    for m in out:
+        if m["reached_by_this_addendum"]:
+            continue
+        via = sorted(x["id"] for x in out if x is not m and x["reached_by_this_addendum"]
+                     and re.search(r"(?<![\w-])" + re.escape(m["id"]) + r"(?![\w-])", texts.get(x["id"], "")))
+        m["reached_by_this_addendum"] = [f"{v} (reached; its words name {m['id']})" for v in via]
     return out
 
 
 def open_issues_in_play(r: dict, rows: set[str], issues: list[dict]) -> list[dict]:
     """The open issues the rows in play (entering, leaving, changing, blocked or reached at the working stage) name, and
     the issues on the relationship entries that reach them: kept open, never resolved here."""
+    from .signals import BROKEN, broken_issue_refs, issue_refs
     by_id = {i["id"]: i for i in issues}
     w = r["working"].stage
     hit: dict[str, set[str]] = {}
     for e in r["evals"]:
         if e["row"].id in rows:
-            for i in e["row"].issues:
+            it = (e["stages"][w].get("interpretation") or {})
+            for i in list(e["row"].issues) + issue_refs(it.get("note")):     # session 12: the notes name issues too
                 hit.setdefault(i, set()).add(e["row"].id)
     ents = {x.get("id"): x for x in r.get("relationships") or [] if isinstance(x, dict)}
     for rec in ((r.get("relationship_impact") or {}).get(w) or {}).get("records") or []:
         for eid in rec["path"]:
             for i in (ents.get(eid) or {}).get("issues") or []:
                 hit.setdefault(i, set()).add(rec["target"])
-    return [{"id": i, "text": _short((by_id.get(i) or {}).get("text", "(not in the open-issue register)"), 400),
-             "owner": (by_id.get(i) or {}).get("owner", ""), "via": sorted(v)} for i, v in sorted(hit.items())]
+    broken = set(broken_issue_refs(hit, by_id))
+    return [{"id": i, "text": (f"{BROKEN}: {i} is named here but is not among the promoted issues (the register's and "
+                               "the candidate's); a person corrects the reference" if i in broken else
+                               _short((by_id.get(i) or {}).get("text", "(not in the open-issue register)"), 400)),
+             "owner": (by_id.get(i) or {}).get("owner", ""), "via": sorted(v), "broken": i in broken}
+            for i, v in sorted(hit.items())]
 
 
 # ---------------------------------------------------------------------------------------------- conditional scenarios
@@ -635,12 +697,15 @@ def compute(r: dict, a3v: dict | None = None, prog_v: dict | None = None, prog_c
     issues_c = [i for i in stage2.collect_issues(rc, prog_c) if i["id"] not in {f"I-PARTIAL-{s.stage}" for s in pend}]
     a3c = stage2.a3(rc, issues_c, prog_c)
     a3c["title"] = f"A3 CANDIDATE — {w} as proposed ({BANNER})"
-    a3c["subtitle"] = a3c["subtitle"].replace(f"Validated state {w}", f"Candidate state {w} (NOT validated: the "
+    # session 12 (F2, audit A3-3): the validated A3 reads 'State after <stage>'; the candidate says it is not validated
+    a3c["subtitle"] = a3c["subtitle"].replace(f"State after {w}", f"Candidate state {w} (NOT validated: the "
                                               f"validated state is {v})", 1)
     a3c["banner"] = f"{BANNER}. " + a3c["banner"]
     unres = unresolved_rows(r)
     changes = a3_changes(r, a3v, a3c, op_status, unres)
-    blk = blockers(r, unres, prog_c, issues_c)
+    from .clarify import window as clar_window
+    win = clar_window(r, w) or {"stage": w, "closed": False, "note": ""}
+    blk = blockers(r, unres, prog_c, issues_c, win)
     scen = conditional_scenarios(r, prog_c)
     imp = (r.get("relationship_impact") or {}).get(w) or {}
     in_play = ({c["row"] for c in changes} | set(unres) | set(imp.get("direct_rows") or [])
@@ -653,7 +718,7 @@ def compute(r: dict, a3v: dict | None = None, prog_v: dict | None = None, prog_c
                          "ops": len(s.ops), "applied": sum(1 for x in s.ops if x.applied)} for s in pend],
             "ops": applied, "a3": a3c, "changes": changes, "blockers": blk, "scenarios": scen,
             "open_issues_in_play": open_issues_in_play(r, in_play, issues_c),
-            "images": image_units(r, in_play), "issues": issues_c}
+            "images": image_units(r, in_play), "issues": issues_c, "clarification_window": win}
     cal = r["register"].cal_by_stage[w]
     if prog_c is not None:
         ev = {e["row"].id: e["stages"][v] for e in r["evals"]}
@@ -668,10 +733,16 @@ def compute(r: dict, a3v: dict | None = None, prog_v: dict | None = None, prog_c
                 moved_rows[e["row"].id] = row_sources(r, e["row"].id)["ops"]
                 if dates_moved:
                     date_rows.add(e["row"].id)
+        from .signals import causes_between
         cand["a5"] = programme.candidate_replan(prog_v, prog_c, ev, ew, cal, blocked=unres, row_ops=moved_rows,
-                                                date_rows=date_rows, scenarios=scen, label=f"{w} [{BANNER}]")
+                                                date_rows=date_rows, scenarios=scen, label=f"{w} [{BANNER}]",
+                                                answers=causes_between(r, v, w), window=win)
     else:
         cand["a5"] = None
+    from . import derived                                     # session 12 (W3b): pending readings, computed deadlines,
+    cand["derived"] = derived.summary(r, w)                   # switched conditions, bands (a person decides each)
+    if cand["a5"] is not None:
+        cand["a5"]["derived"] = cand["derived"]
     cand["paragraph"] = paragraph(cand)
     return cand
 
@@ -716,6 +787,9 @@ def paragraph(c: dict) -> str:
         t += ("; conditional or effective-dated: " + "; ".join(
             f"{x['provision']} ({x['kind']} {x.get('what', '')}" + (f", decision by {x['trigger_deadline']}" if x["trigger_deadline"] else "")
             + (f", effective {x['effective_from']}" if x["effective_from"] else "") + ")" for x in c["scenarios"][:4]))
+    win = c.get("clarification_window") or {}
+    if win.get("closed"):
+        t += f". Clarification route: {win['note']}"
     return t + ". Nothing here is validated, accepted or applied to the real state."
 
 
@@ -740,6 +814,8 @@ def markdown(c: dict) -> str:
         L += [f"  - source op {_md(o['label'])}" for o in x["ops"]] + [f"  - {_md(y)}" for y in x["why"]]
     if not c["changes"]:
         L.append("- none: no row enters, leaves or changes")
+    from .derived import a3_lines                            # session 12 (W3b): derived, never in force
+    L += [""] + [_md(x) if x.startswith("- ") else x for x in a3_lines(c.get("derived"))]
     L += ["", "## The candidate A3 (every section in full)", "", f"_{_md(a3c['subtitle'])}_", ""]
     marks = {x["row"]: x["change"].upper() for x in c["changes"]}
     for sec in a3c["sections"]:
@@ -755,8 +831,12 @@ def markdown(c: dict) -> str:
     b = c["blockers"]
     L += ["## Blockers (what stops the candidate becoming the validated state, or what it cannot establish)", "",
           f"### Unresolved provisions ({len(b['provisions'])})", ""]
+    win = c.get("clarification_window") or {}
+    if win.get("closed"):
+        L += [f"_Clarification route: {win['note']}._", ""]
     L += [f"- **{x['provision']}** ({x['stage']}, p{x['page']}; {x['kind']}): {_md(x['reason'])} — words: “{_md(x['text'])}”; "
-          f"rows: {_ids(x['rows'], 12)}; activities: {_ids(x['activities'], 12)}" for x in b["provisions"]] or ["- none"]
+          f"rows: {_ids(x['rows'], 12)}; activities: {_ids(x['activities'], 12)}"
+          + (f" — {_md(x['route'])}" if x.get("route") else "") for x in b["provisions"]] or ["- none"]
     L += ["", f"### Invalid or withheld ops ({len(b['invalid_ops']) + len(b['withheld_ops'])})", ""]
     L += [f"- INVALID {x['op']} ({x['provision']}): {_md(x['failed'])}" for x in b["invalid_ops"]]
     L += [f"- WITHHELD {x['op']} ({x['provision']}): rejected by a person" for x in b["withheld_ops"]]

@@ -18,6 +18,12 @@
 # endpoint reports support; the controller still parses and validates the answer itself. A schema the provider rejects
 # switches the run to the plain tool-use path with a route notice (log and review request), never silently.
 version: 1
+# Offline mode (session 12; tenderpack/ai/offline.py, docs/AI_ROUTES.md "Offline mode"): true, or the flag --offline,
+# or TENDERPACK_OFFLINE=1, puts EVERY AI phase (readings, analysis, downstream, critic, repair, capability checks) on
+# the local ollama route: a hosted route (host, anthropic, openrouter) is refused before any process or network call,
+# the Ollama URL must be a loopback address, and the critic runs on routes.ollama.models.critic or is recorded as
+# skipped ("independent review did not run: <reason>"). Nothing falls back to another route; no model is ever pulled.
+offline: false
 lock_stale_after_min: 120        # an orchestrator lock older than this (or whose process is dead) is reported as stale
 
 defaults:
@@ -88,6 +94,11 @@ routes:
     base_url: http://127.0.0.1:11434
     base_url_env: TENDERPACK_OLLAMA_URL
     note: candidates only; capabilities come from /api/show; no performance is claimed until measured on the Mac
+    # Session 12: the memory a model needs at its num_ctx is ESTIMATED from /api/show (weights at the reported
+    # quantisation + an f16 KV cache + 1 GB) and compared with unified_memory_gb x usable_fraction; a model that cannot
+    # hold its context is refused with the numbers. usable_fraction is an ASSUMPTION (macOS lets the GPU wire about
+    # three quarters of unified memory on larger machines); measure on the Mac and adjust.
+    machine: {unified_memory_gb: 48, usable_fraction: 0.75, basis: "the owner's M5 Pro MacBook Pro; usable fraction assumed, not measured"}
     # `format: <schema>` on /api/chat. with_tools false: withheld on a turn that offers tools (a format grammar may stop
     # tool calls; check on the Mac, then set true). Requests without tools (the critic) carry it. Unverified here.
     structured_output: {mode: native, with_tools: false}
@@ -98,9 +109,13 @@ routes:
         status: candidate, unmeasured
         approx_size: about 20 GB at 4-bit (from the published model card; not measured here)
         num_ctx: 32768           # context bound sent as options.num_ctx (never more than /api/show reports)
-      text:
+      text:                      # the text phases (analysis, downstream) unless --model or a `propose` role is set
         id: qwen3:30b-a3b
         status: candidate, unmeasured
+        num_ctx: 32768
+      critic:                    # session 12: the local critic (offline mode); another model than `text`, its own prompt.
+        id: qwen3-vl:32b         # Not installed -> the review is recorded as skipped with that reason (never pulled).
+        status: candidate, unmeasured (a different model from the proposer; no tools or images needed)
         num_ctx: 32768
     caps: {max_calls: 40, max_input_tokens: 2000000, max_output_tokens: 200000, max_usd: null, timeout_s: 3600, concurrency: 1}
 
@@ -153,8 +168,15 @@ failures:
 # Concurrency (session 11). The workflow runs its batches ONE AT A TIME. WARNING: concurrent sessions do not lift a
 # plan's rate limit; they reach it sooner (blind-04: the host plan answered 429 after about seven sessions in 40
 # minutes, and every later session died within seconds). Only 1 is supported; another value is refused at start.
+# Session 12: max_parallel_sessions (1-4, default 1) lets the analysis and downstream batches of ONE run ask their
+# sessions at once, on the host route (and the recorded test route) only: each batch has its own staging folder and
+# log; the run holds the addendum's lock once (scope run); one rate limit pauses every worker (a shared gate); the
+# answers are taken in plan order (the sequential result), checkpoints are written by the run alone; exit 5 and
+# resume are unchanged. The paid API routes check their caps per request and Ollama shares one machine's memory:
+# refused there. Untested against the real plan: the next sealed rehearsal measures it (no speed-up is claimed).
 concurrency:
   batches: 1
+  max_parallel_sessions: 1
 
 # Independent critic (tenderpack/ai/critic.py; `tenderpack ai critic RUN_ID`): a second model pass over SELECTED items
 # only, with its own system prompt and the evidence inline (no tools). It writes review.critic and changes no status:

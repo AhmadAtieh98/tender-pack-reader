@@ -61,9 +61,10 @@ def test_a3_1_every_listed_issue_shows_its_reason_and_owner_on_the_one_page(buil
         assert i["id"] in text, i["id"]
         assert " ".join(i["short"].split())[:40] in text, (i["id"], i["short"])
         assert f"({i['owner']})" in text, i["id"]
-    # the gate's 37 ids became a count before any issue text was removed
+    # the gate's 36 ids became a count before any issue text was removed (session 12, F1, audit A1-4: changed
+    # deliberately from 37: ADD-02-5.2-01 states no consequence and is now classed scored, not a pass/fail gate)
     gate = next(s for s in a3["sections"] if s["heading"].startswith("General gate"))
-    assert len(gate["ids"]) == 37 and "VOL-I-10.1-01" not in text and "a3_detail.html" in text
+    assert len(gate["ids"]) == 36 and "VOL-I-10.1-01" not in text and "a3_detail.html" in text
     # the curated 'unresolved' (9) and 'missing' (6) lists are merged into the grouped list, marked †, never dropped
     roots = {i["id"] for i in listed if i.get("decide")}
     for key in ("unresolved", "missing"):
@@ -100,7 +101,9 @@ def test_a3_8_counts_and_lists_agree_across_pdf_html_and_json(built):
     assert a3["issue_counts"] in detail and f"{c['all']} open issues: {c['listed']} listed, {c['folded']} folded" in detail
     for key in ("unresolved", "missing"):                 # rendered on the detail page too (grep 'Could not resolve')
         assert a3[key]["heading"] in detail
-    assert "16 explicit bid-out triggers (17 rows, 1 corroborating) + 1 below the score threshold" in a3["subtitle"]
+    # session 12 (F2, audit A3-3): '(17 rows, 1 corroborating)' was a pipeline term; the corroborating row is shown on
+    # the line of the row it restates ('also stated in ...'), so the subtitle counts the triggers only
+    assert "16 explicit bid-out triggers + 1 below the score threshold" in a3["subtitle"]
     assert sum(int(s["heading"].rsplit(": ", 1)[1]) for s in a3["sections"] if s["heading"].startswith("Explicit")) == 16 + 1
 
 
@@ -111,7 +114,9 @@ def test_a3_2_infeasible_flags_state_the_assumed_lead_time_they_rest_on(built):
     for rid in ("VOL-I-6.1-01", "VOL-I-8.6-01"):
         flag = next(f for f in _item(built["a3"], rid)["flags"] if f.startswith("INFEASIBLE"))
         assert f"Local Content Certificate {lead['value']} WD, not stated in the pack" in flag
-        assert "PROVISIONAL" in flag and "float -12 WD" in flag and "I-A5-FEASIBILITY" in flag
+        # session 12 (F2, audit A3-3): the flag cites the issue as listed on the page; I-A5-FEASIBILITY is folded into
+        # I-LCC-ISSUER, so the flag cites I-LCC-ISSUER
+        assert "PROVISIONAL" in flag and "float -12 WD" in flag and "I-LCC-ISSUER" in flag
         assert " ".join(flag.split())[:60] in built["text"]
 
 

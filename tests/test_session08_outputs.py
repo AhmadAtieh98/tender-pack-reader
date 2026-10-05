@@ -153,8 +153,14 @@ def test_clarification_register_is_verified_unsent_and_keeps_settled_answers(rea
     assert "Q11" in qs["CQ-DWF-STORM-FLOW"]["already_settled"] and "Q13" in qs["CQ-BOND-FC-COVERAGE"]["already_settled"]
     assert "Which applies" not in qs["CQ-CONCESSION-TERM"]["proposed_question"]              # not re-asked
     closed = " ".join(c["topic"] + " " + c["finding"] for c in reg["checked_no_question"])
-    for settled in ("copy quantities", "Excel", "Form 4-G", "not contradictory"):
+    # session 12 (F1; audit R-1, A4-2): changed deliberately. The Form 4-G 'No' answers and the average/peak flow reading
+    # rest on a judgment (what the bid answers; an engineering reading), so they are listed as pending a person's
+    # decision, not as checked and closed; the points the pack's own words settle stay closed
+    for settled in ("copy quantities", "Excel"):
         assert settled in closed, settled
+    pending = " ".join(c["topic"] + " " + c["finding"] for c in reg["pending_decision"])
+    for held in ("Form 4-G", "not contradictory", "which clause governs"):
+        assert held in pending and held not in closed, held
     for k in ("Form 4-A", "Envelope B", "Form 4-B"):                                         # the owner's interim approaches
         assert any(k in c["gap"] or k in c["proposed_question"] for c in qs.values()), k
     assert not [c for c in qs.values() if re.search(r"software|defect in the tool|assessment administration", c["gap"], re.I)]

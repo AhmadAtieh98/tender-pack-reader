@@ -205,6 +205,46 @@ relationships:
     basis: "The schedule states the financing assumptions underlying the Availability Payment; whether a change to the payment mechanism changes them (for example debt sized on the Ramp-Up revenue) is a commercial judgement."
     origin: curator
     review: proposed
+  # ------------------------------------------------------------------ indirect effects (session 12, F1; audit A2-7)
+  - id: REL-LCC-ENVELOPE-A
+    from: ["VOL-I:8.6"]
+    # the item of the VOL-I-9.1-01 row that refers to Section 8 (a unit, so the path shows in A2 and in the row's note
+    # without re-flagging every Envelope A activity of A5, whose dates and contents it does not change)
+    to: ["VOL-I:9.1(i)"]
+    kind: cites
+    status: confirmed
+    evidence:
+      - {unit: "VOL-I:9.1(i)", page: 4, words: "(i) the certificates and evidence required under Section 8."}
+      - {unit: "VOL-I:8.6", page: 4, words: "The Bidder shall submit a Local Content Certificate issued by the competent authority"}
+    note: "Item (i) of the Envelope A list is whatever Section 8 requires: the Local Content Certificate leaves it when ADD-01 4.1 deletes VOL-I 8.6 and returns when ADD-02 9.1 reinstates 8.6 at 35%."
+    issues: [I-LCC-ISSUER]
+    origin: curator
+    review: proposed
+  - id: REL-VOL-V-FORM-4E
+    from: ["VOL-V:1.1", "VOL-V:1.2", "VOL-V:1.3", "VOL-V:1.4", "VOL-V:1.5", "VOL-V:1.6", "VOL-V:3.1", "VOL-V:3.2",
+           "VOL-V:3.3", "VOL-V:12.1", "VOL-V:12.2", "VOL-V:12.3", "VOL-V:12.4", "VOL-V:18.1", "VOL-V:18.2",
+           "VOL-V:18.3", "VOL-V:18.4", "VOL-V:24.1", "VOL-V:24.2", "VOL-V:24.3", "VOL-V:24.4", "VOL-V:29.1",
+           "VOL-V:29.2", "VOL-V:29.3", "VOL-V:29.4", "VOL-V:29.5", "VOL-V:31.1", "VOL-V:31.2", "VOL-V:31.3",
+           "VOL-V:31.4", "VOL-V:31.5", "VOL-V:34.1", "VOL-V:34.2", "VOL-V:34.3", "VOL-V:36.1", "VOL-V:36.2",
+           "VOL-V:36.3", "VOL-V:39.1", "VOL-V:39.2", "VOL-V:39.3", "VOL-V:39.4", "VOL-V:39.5", "VOL-V:40.1",
+           "VOL-V:40.2", "VOL-V:40.3", "VOL-V:42.1", "VOL-V:42.2", "VOL-V:44.1", "VOL-V:44.2", "VOL-V:44.3"]
+    to: [VOL-IV-F4E-01]
+    kind: depends_on
+    status: confirmed
+    evidence:
+      - {unit: "VOL-V:cover/note-to-bidders", page: 2, words: "This extract contains the clauses of the draft Project Agreement on which the Authority invites comment through Form 4-E."}
+      - {unit: "VOL-V:cover/note-to-bidders", page: 2, words: "A deviation not listed in Form 4-E will be taken as accepted."}
+    note: "A changed Volume V clause (ADD-02 8.1: VOL-V 36.2, SAR 5,000,000 to SAR 2,500,000) is a clause on which Form 4-E invites comment: whether to list a deviation from it is re-read; what to list is for Legal."
+    origin: curator
+    review: proposed
+  - id: REL-CHANGE-IN-LAW-FINANCIAL-MODEL
+    from: ["VOL-V:36.2"]
+    to: [VOL-I-10.3-01]
+    kind: depends_on
+    status: possible
+    basis: "VOL-V 36.2 sets the capital expenditure a General Change in Law must exceed before the Project Company is compensated (SAR 2,500,000 after ADD-02 8.1); no clause links it to the Financial Model, and whether the model prices the retained Change in Law risk is a commercial judgement (inferred, not stated)."
+    origin: curator
+    review: proposed
   # ------------------------------------------------------------------ referenced but not supplied
   - id: REL-MISSING-SCHEDULE-11-DEFAULTS
     from: ["VOL-V:39.1"]

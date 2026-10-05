@@ -42,6 +42,14 @@ validate_set: the model's verification_status and validation are overwritten (an
   evidence_verified every quotation, page and the state identity check out and (for ops) the engine dry run is valid.
                     It is not an acceptance and does not verify meaning; a person decides.
   Precedence: invalid > conflicting > escalated > insufficient_evidence > interpretation_pending > evidence_verified.
+  Cover discrepancies (session 12, blind-05 follow-up 3): VOL-I 3.2 orders the documents (the Addenda first, a later
+  Addendum prevailing); an addendum's cover paragraph ("This Addendum amends ...") is its summary of itself, never an
+  operative provision. A declared conflict that is only a discrepancy between the cover and ONE operative provision
+  (split_cover_conflicts: it names the addendum's cover and no other operative provision of the addendum than the
+  item's own) does not make the item `conflicting`: it is recorded (`cover_discrepancy`, ok), listed in the report's
+  `cover_findings`, and becomes a PROPOSED issue in the candidate naming both texts (cover_issues; C28 compares the
+  cover too, report only). A conflict between two operative provisions, or one that does not name the cover, is
+  genuine and makes the item `conflicting`, as before.
   Signals supplied by the model (its own conflicts or missing information) can only lower a status, never raise it.
 Semantic resolution (session 10), kept apart from evidence verification (records with aspect 'semantic'): a "no change"
 answer (a no_effect disposition; an annotation that changes nothing) is checked against what the provision's own words
@@ -147,6 +155,66 @@ class ParseError(Exception):
     pass
 
 
+_COVER_WORD = re.compile(r"(?<![\w-])cover(?:/|'s\b|\s+(?:summary|paragraph|note|sentence|text|says|said|names|"
+                         r"states|describes|calls|claims|lists|reads)\b)|\b(?:the|this|its|addendum's|Addendum's)\s+"
+                         r"cover\b|^\s*cover\b", re.I)
+
+
+def _base(pid: str) -> str:
+    return re.sub(r"(?:\([a-z]{1,3}\))+$", "", pid)
+
+
+def split_cover_conflicts(conflicts: list[str], addendum: str, provision: str,
+                          provisions: list[str]) -> tuple[list[str], list[str]]:
+    """(cover discrepancies, genuine conflicts) among an item's declared conflicts (session 12). A cover discrepancy
+    names the addendum's cover (its unit id, or the cover as a noun: 'the cover', 'cover summary', 'Cover ...') and no
+    operative provision of the addendum other than the item's own (its clause and list items); on the cover's own item,
+    at most one. Operative provisions are named by id ('ADD-03:3.1', 'ADD-03/3.1') or by answer number ('Q19'). Anything
+    else is genuine: nothing is waved through on a guess."""
+    provs = set(provisions)
+    is_cover = ":cover/" in provision
+    own = _base(provision)
+    out_c, out_g = [], []
+    for c in conflicts:
+        names_cover = is_cover or bool(re.search(re.escape(addendum) + r"[:/ ]\s*cover\b", c)) or bool(_COVER_WORD.search(c))
+        named = {f"{addendum}:{m}" for m in re.findall(re.escape(addendum) + r"[:/](Q\d+|\d+(?:\.\d+)*[A-Z]?(?:\([a-z]{1,3}\))?)", c)}
+        named |= {f"{addendum}:Q{n}" for n in re.findall(r"(?<![\w/:-])Q(\d+)\b", c)}
+        operative = {_base(x) for x in named if _base(x) in {_base(p) for p in provs} or x in provs} - {own}
+        if names_cover and len(operative) <= (1 if is_cover else 0):
+            out_c.append(c)
+        else:
+            out_g.append(c)
+    return out_c, out_g
+
+
+def cover_issues(ps, texts: dict[str, str], provisions: list[str]) -> dict[str, dict]:
+    """The cover discrepancies validation retained (session 12), as PROPOSED issues for the candidate: each names the
+    cover's text and the operative provision's text, says the cover is a summary, and decides nothing."""
+    addendum = ps.addendum
+    covers = [p for p in provisions if p.startswith(f"{addendum}:cover/")]
+    out: dict[str, dict] = {}
+    for it in ps.items:
+        if not any(getattr(v, "check", None) == "cover_discrepancy" for v in it.validation or []):
+            continue
+        found, _ = split_cover_conflicts(list(it.conflicts or []), addendum, it.provision, provisions)
+        for c in found:
+            cover = next((p for p in covers if p in c), None) or next(
+                (p for p in covers if re.search(r"\bThis Addendum\b", texts.get(p) or "")), covers[0] if covers else None)
+            other = it.provision if ":cover/" not in it.provision else next(
+                (f"{addendum}:{m}" for m in re.findall(re.escape(addendum) + r"[:/](\d+(?:\.\d+)*|Q\d+)", c)), None)
+            iid = f"I-{addendum}-COVER-{len(out) + 1:02d}"
+            out[iid] = {
+                "text": (f"Cover discrepancy (retained; not a conflict between operative provisions): {_short(c, 300)} "
+                         f"The cover {cover} reads: '{_short(texts.get(cover) or '', 400)}'. "
+                         + (f"The operative provision {other} reads: '{_short(texts.get(other) or '', 400)}'. " if other else "")
+                         + "The cover is the addendum's summary of itself, never an operative provision (VOL-I 3.2 orders "
+                           "the documents; the summary orders nothing): the operative provision's change proceeds under "
+                           "the normal rules, and a person confirms the cover's error."),
+                "owner": "Bid manager", "source": f"AI workflow validation (cover discrepancy on {it.id})", "rows": [],
+                "show_in_a3": False}
+    return out
+
+
 def _short(t, n: int = 300) -> str:
     t = " ".join(str(t or "").split())
     return t if len(t) <= n else t[: n - 1] + "…"
@@ -154,6 +222,12 @@ def _short(t, n: int = 300) -> str:
 
 def _now(clock=None) -> dt.datetime:
     return (clock() if clock else dt.datetime.now(dt.timezone.utc)).astimezone(dt.timezone.utc)
+
+
+def releases_host_lock(info: dict | None) -> bool:
+    """A host submission releases the host's own session lock, never a workflow run's lock (session 12: scope "run",
+    held by the run while its batches' sessions run at once)."""
+    return bool(info) and info.get("route") == "host" and info.get("scope") != "run"
 
 
 def make_run_id(addendum: str, route: str, clock=None) -> str:
@@ -537,7 +611,8 @@ _ASPECT = {"id": "structure", "provision": "structure", "payload": "structure", 
            "state": "state", "statements": "evidence", "missing_information": "evidence", "row quote": "evidence",
            "dependencies": "evidence", "engine": "engine", "engine (C21-C27)": "engine", "C47": "engine",
            "C25": "engine", "previous_value": "engine", "proposed_value": "engine", "interpretation": "semantic",
-           "semantic": "semantic", "decision": "decision", "approvals": "decision", "declared_conflicts": "decision"}
+           "semantic": "semantic", "decision": "decision", "approvals": "decision", "declared_conflicts": "decision",
+           "cover_discrepancy": "semantic"}                    # session 12: retained for a person, never a hold
 
 
 def _aspect(check: str) -> str | None:
@@ -709,7 +784,15 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
             elif not s["evidence_ok"]:
                 rec("statements", False, f"fact {sid} is not supported verbatim", "insufficient")
         if it.conflicts:
-            rec("declared_conflicts", False, "the proposer declares: " + "; ".join(it.conflicts)[:400], "conflict")
+            cover_c, genuine = split_cover_conflicts(it.conflicts, addendum, it.provision, provs_all)
+            if genuine:
+                rec("declared_conflicts", False, "the proposer declares: " + "; ".join(genuine)[:400], "conflict")
+            if cover_c:                                  # session 12: retained, never a hold on the operative op
+                rec("cover_discrepancy", True, "retained as a cover finding, not a conflict between operative provisions: "
+                    "the cover is the addendum's summary of itself, never an operative provision (VOL-I 3.2 orders the "
+                    "documents; the summary orders nothing): " + "; ".join(cover_c)[:400])
+                report.setdefault("cover_findings", []).append({"item": it.id, "provision": it.provision,
+                                                                "discrepancies": list(cover_c)})
         if it.missing_information:
             rec("missing_information", False, "the proposer declares missing: " + "; ".join(it.missing_information)[:400],
                 "insufficient")
@@ -804,6 +887,17 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
             F[i]["conflict"].append("row decided")
         _row_quote_checks(it, F[i], rows, r2, addendum, pst)
 
+    # session 12: judgments a person owns (tenderpack.human_owned, by type and content, never by the model's label): an
+    # annotation that confirms or interprets a precedence answer, a waiver or an ambiguity closed; a 'no effect' that
+    # declares a matter closed; an issue or a question. Never evidence_verified: the evidence is recorded as verified,
+    # the conclusion stays a person's.
+    from ..human_owned import CHECK as _HO, analysis_reasons, record_detail
+    for i, it in enumerate(ps.items):
+        ptext = (pst[it.provision].text if it.provision in pst else "") or ""
+        why = analysis_reasons(it.statement_type, dict(it.payload or {}), ptext)
+        if why and it.statement_type != "escalation":
+            F[i]["recs"].append(ValidationRecord(check=_HO, ok=True, detail=record_detail(why), aspect="decision"))
+            F[i]["interp"].append(_HO)
     for i, it in enumerate(ps.items):
         f = F[i]
         if f["invalid"]:
@@ -1098,6 +1192,10 @@ def review_markdown(ps: ProposalSet, report: dict) -> str:
         L += ["## STALE: made against another state", ""] + [f"- {x}" for x in report["state_differences"]] + [""]
     if report.get("findings"):
         L += ["## Findings (a person looks at each)", ""] + [f"- {x}" for x in report["findings"]] + [""]
+    if report.get("cover_findings"):                # session 12: retained, and distinct from genuine conflicts
+        L += ["## Cover discrepancies (retained; the cover is a summary, not a conflict between operative provisions)",
+              ""] + [f"- {x['item']} ({x['provision']}): " + "; ".join(_short(d, 300) for d in x["discrepancies"])
+                     for x in report["cover_findings"]] + [""]
     if ps.coverage.unaccounted:
         L += ["## Provisions not accounted for (a person treats each)", ""] + [f"- {p}" for p in ps.coverage.unaccounted] + [""]
     order = ("evidence_verified", "interpretation_pending", "insufficient_evidence", "conflicting", "escalated", "invalid",
@@ -1177,7 +1275,7 @@ def propose(ws: Workspace, addendum: str, route: str, cfg: dict | None = None, m
     ws.require_ok()
     if addendum not in ws.addenda():
         raise B.Refused(f"{addendum} is not an addendum of this pack ({ws.addenda()})")
-    prov = provider or make_provider(route, model or C.default_model(rcfg), cfg, cassette)
+    prov = provider or make_provider(route, C.phase_model(rcfg, route, "analysis", model), cfg, cassette)
     model_requested = model or prov.model
     price = B.price_for(cfg, model_requested)
     B.check_startable(route, rcfg, caps_, price)
@@ -1459,7 +1557,7 @@ def submit(ws: Workspace, data, host_model: str, via: str = "cli", clock=None, r
     ps.usage = Usage(calls=0, cost_usd=None, cost_basis="host route: no application API call (the host's own usage is "
                                                          "not visible to this tool)")
     d = write_staging(ws, ps, report)
-    if info and info.get("route") == "host":
+    if releases_host_lock(info):
         path.unlink(missing_ok=True)
         log.event("lock_released", addendum=addendum)
     log.event("end", status=ps.status, staging=str(d), statuses={it.id: it.verification_status for it in ps.items})

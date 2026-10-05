@@ -12,7 +12,9 @@ deterministically in the candidate workspace and promoted INTO THE CANDIDATE onl
                      scope (units, rows, activities, clarification entries reached).
     packet()         one bounded batch of tasks for a proposer: the tasks, the effective text after the proposed ops of
                      every unit they involve, the promoted ops, the register's vocabulary, the schema and the state.
-    validate()       the controller's statuses for a DownstreamSet, from the register's own checks (register.Register
+    validate()       the controller's statuses for a DownstreamSet (session 12: an item a person owns, by type or content,
+                     tenderpack.human_owned, is never above `interpretation_pending`; a clarification entry's response
+                     status is never changed, an answer is only recorded), from the register's own checks (register.Register
                      over the post-op stages: quotes verbatim in the effective text at the stage, the consequence class
                      with its quote from the unit stating it, date rules that parse and whose words are in their unit,
                      ids unique and absent from the id ledger), issues (schema, ids), clarification items
@@ -57,12 +59,14 @@ import yaml
 from pydantic import ValidationError
 
 from .. import amend, clarify, schedule
+from .. import human_owned as H
 from ..amend import Disposition, Op, OpFile
 from ..citations import citations, resolve
 from ..evidence import EvidenceItem
 from ..register import Interp, Register, Row, RowFile, effective, found
 from ..util import load_yaml
 from . import controller
+from . import derived_tasks as DT
 from ..schedule import in_force
 from .contract import (DOWNSTREAM_MODEL_FIELDS, DOWNSTREAM_TASK, ActivityPayload, ClarificationItemPayload,
                        DependencyPayload, DownstreamItem, DownstreamSet, EscalationPayload, EvidenceItemPayload,
@@ -105,7 +109,12 @@ op changed). A row without it is in force from the stage its first unit is issue
 checked at every stage from there: putting the provision first in `units` is not evidence.
 9. Every new row and re-made reading is checked at every stage where it is in force (quote, consequence, dates, the \
 activities its evidence items need), not only at the addendum.
-10. When you have finished, reply with ONLY the JSON object described by `schema`: no prose, no code fence."""
+10. You never decide a legal or commercial question: which clause governs or prevails, what a term means, a waiver, \
+or that a conflict, an ambiguity, an issue or a question is resolved, settled, answered or withdrawn. State the \
+evidence and leave the conclusion to a person: such an item is never above `interpretation_pending` whatever its \
+quotations, and a clarification entry's response_status is never changed (an addendum's answer to an existing \
+question is quoted as `answer` and recorded, not applied).
+11. When you have finished, reply with ONLY the JSON object described by `schema`: no prose, no code fence."""
 
 
 class DownstreamParseError(Exception):
@@ -229,6 +238,9 @@ def tasks(ws: Workspace, ps, promoted: dict, provision_status: dict[str, dict]) 
     for t in by_op.values():
         so = next((o for o in sim["ops"] if o["id"] == t["op"]), {})
         t["units_changed"] = so.get("changed", [])
+        resolved = (so.get("details") or {}).get("resolved_targets") or {}
+        if resolved:                 # session 12: the unit an earlier op of the addendum inserted, by the id a row cites
+            t["attaches_to"] = sorted(set(resolved.values()))
         # session 11: a new row states where it comes into force, with the words that introduce it (register.Introduction)
         t["introduce"] = {"stage": addendum, "by": t["op"], "provision": op_prov.get(t["op"]),
                           "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the "
@@ -256,6 +268,12 @@ def tasks(ws: Workspace, ps, promoted: dict, provision_status: dict[str, dict]) 
         if st.get("needs_person"):
             out.append({"id": f"esc:{pid}", "kind": "escalation", "provision": pid, "status": st.get("why"),
                         "scope": scope_of(ws, r2, addendum, pid)})
+    out += [t_ for t_ in reread_tasks(r2, addendum) if t_["id"] not in {x["id"] for x in out}]   # session 12
+    out += DT.tasks(ws, r2, addendum, out)   # session 12 (W3b): pending readings, computed dates, conditions, consequences
+    win = window_fields(r2, addendum)                    # session 12: the closed clarification route, said on each
+    for t_ in out:
+        if win and t_["kind"] in ("escalation", "clarification_item"):
+            t_.update(win)
     return out, imp
 
 
@@ -276,6 +294,8 @@ def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, tota
             ids += t["changed_units"] + list(t["entry"].get("units") or [])
         elif t["kind"] == "escalation":
             ids += [t["provision"]] + t["scope"]["units"][:20]
+        elif t["kind"] in DT.KINDS:                       # session 12 (W3b)
+            ids += DT.packet_units(t)
         ids += t.get("provisions") or []
     units_after = {}
     for uid in dict.fromkeys(i for i in ids if i):
@@ -376,7 +396,8 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             it.verification_status = "invalid"
         ds.status = "stale"
         return report
-    F = [{"invalid": [], "conflict": [], "insufficient": [], "interp": [], "recs": [], "pl": None} for _ in ds.items]
+    F = [{"invalid": [], "conflict": [], "insufficient": [], "interp": [], "recs": [], "pl": None, "human": []}
+         for _ in ds.items]
 
     def rec(i, check, ok, detail, bucket=None):
         F[i]["recs"].append(ValidationRecord(check=check, ok=bool(ok), detail=detail))
@@ -392,6 +413,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
     lead = dict(r["assumptions"].get("lead_times") or {})
     clar_reg = r.get("clarifications") or {}
     clar_ids = {c.get("id") for c in clar_reg.get("clarifications") or []}
+    clar_by_id = {c.get("id"): c for c in clar_reg.get("clarifications") or []}
     provisions = set(controller._provisions(ws, addendum))
     st_info = {}
     for s in ds.statements:
@@ -408,6 +430,11 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
     decisions = r["decisions"]
     # -------------------------------------------------- pass 1: shape, ids, evidence, statements
     for i, it in enumerate(ds.items):
+        # session 12: a judgment a person owns, read from the proposer's own payload before any field is reset
+        # (tenderpack.human_owned: by type and content, never by the model's label)
+        cid0 = str(((it.payload or {}).get("entry") or {}).get("id") or "") if it.statement_type == "clarification_item" \
+            else ""
+        F[i]["human"] = H.downstream_reasons(it.statement_type, dict(it.payload or {}), clar_by_id.get(cid0))
         if it.id in seen:
             rec(i, "id", False, f"duplicate item id {it.id}", "invalid")
         seen.add(it.id)
@@ -452,8 +479,13 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
                 F[i]["interp"].append(sid)
             elif not s["evidence_ok"]:
                 rec(i, "statements", False, f"fact {sid} is not supported verbatim", "insufficient")
-        if it.conflicts:
-            rec(i, "declared_conflicts", False, "the proposer declares: " + "; ".join(it.conflicts)[:400], "conflict")
+        if it.conflicts:                    # session 12: a discrepancy with the cover only is retained, never a hold
+            cover_c, genuine = controller.split_cover_conflicts(it.conflicts, addendum, "", sorted(provisions))
+            if genuine:
+                rec(i, "declared_conflicts", False, "the proposer declares: " + "; ".join(genuine)[:400], "conflict")
+            if cover_c:
+                rec(i, "cover_discrepancy", True, "retained as a cover finding, not a conflict between operative "
+                    "provisions (the cover is the addendum's summary of itself): " + "; ".join(cover_c)[:400])
         if it.missing_information:
             rec(i, "missing_information", False, "the proposer declares missing: " + "; ".join(it.missing_information)[:400],
                 "insufficient")
@@ -532,13 +564,33 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             if not cid.startswith("CQ-") or cid in new_ids["clar"]:
                 rec(i, "id", False, f"clarification id {cid!r} is not a CQ-... id (or is proposed twice)", "invalid")
             new_ids["clar"].add(cid)
-            if cid not in clar_ids and e.get("response_status") != "draft, not sent":
+            # session 12: the workflow never changes a question's response status, for a new id or an existing one:
+            # whether a question is answered or withdrawn is a person's decision (tenderpack accept CQ-...). An
+            # existing entry keeps the status and answer the register holds; a new one is a draft.
+            old = clar_by_id.get(cid)
+            kept = (old or {}).get("response_status") or H.DRAFT
+            # what the proposer asked for is kept beside the entry (H.PROPOSED_STATUS), so a re-validation of the
+            # rewritten set (before promotion) still sees it and the output can say a status change was not applied
+            asked = e.pop(H.PROPOSED_STATUS, None) or (e.get("response_status")
+                                                       if e.get("response_status") not in (None, kept) else None)
+            if e.get("response_status") != kept or asked:
                 report["overwrites"].append({"item": it.id, "field": "entry.response_status",
-                                             "proposer_value": e.get("response_status")})
-                rec(i, "response_status", True, f"response_status {e.get('response_status')!r} replaced by 'draft, not "
-                                                "sent' (the program never sends a question)")
-                e["response_status"] = "draft, not sent"
-                e.pop("answer", None)
+                                             "proposer_value": asked or e.get("response_status")})
+                rec(i, "response_status", True, f"response_status {(asked or e.get('response_status'))!r} replaced by "
+                                                f"{kept!r} ({'the register holds it' if old else 'a new question is a draft'}"
+                                                "; the program never sends, answers or withdraws a question)")
+                e["response_status"] = kept
+            if asked:
+                e[H.PROPOSED_STATUS] = asked
+            ans = e.pop("answer", None)
+            e.pop(H.MARKER, None)                        # written by promotion only
+            if old is not None and old.get("answer"):
+                e["answer"] = old["answer"]              # an answer the register already records stays as it is
+            if isinstance(ans, dict) and ans and ans != (old or {}).get("answer"):
+                e["recorded_answer"] = {k: ans.get(k) for k in ("unit", "page", "words")}
+                report["overwrites"].append({"item": it.id, "field": "entry.answer", "proposer_value": ans})
+                rec(i, "answer", True, "the proposer's answer is RECORDED (recorded_answer), not applied: whether it "
+                                       "resolves the question is a human decision")
             F[i]["pl"] = ClarificationItemPayload(entry=e)
             it.payload = {"entry": e}
         elif t == "escalation":
@@ -555,6 +607,8 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             else:
                 rec(i, "no_change", True, f"{it.task} needs nothing, says the proposer: a person confirms it")
                 F[i]["interp"].append("no change")
+    # session 12 (W3b): rows resting on a pending reading (conditional_on), computed milestones, derived consequences
+    DT.validate_items(ws, ds, F, r2, addendum, rec, rows, provisions)
     proposed_rows = {F[i]["pl"].row["id"]: i for i, it in enumerate(ds.items)
                      if it.statement_type == "row_new" and F[i]["pl"] is not None and not F[i]["invalid"]}
     proposed_ev = {F[i]["pl"].id: i for i, it in enumerate(ds.items)
@@ -793,6 +847,11 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             if not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
                 rec(j, "C40/C44/C45", True, f"planned at {', '.join(plan_at)} with the proposals without a new A5 problem")
     # -------------------------------------------------- statuses
+    for i, it in enumerate(ds.items):          # session 12: a human-owned item is never evidence_verified
+        if F[i]["human"] and it.statement_type != "escalation":
+            F[i]["recs"].append(ValidationRecord(check=H.CHECK, ok=True, detail=H.record_detail(F[i]["human"]),
+                                                 aspect="decision"))
+            F[i]["interp"].append(H.CHECK)
     for i, it in enumerate(ds.items):
         f = F[i]
         s = ("invalid" if f["invalid"] else "conflicting" if f["conflict"] else
@@ -803,6 +862,54 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
     report["held_back"] = held
     ds.status = "complete"
     return report
+
+
+def _broken_refs(it: DownstreamItem, pl, issues: set, promotable_issues: set) -> list[str]:
+    """Session 12 (W3a; blind-05 false signal 6): the issue ids an item names (a reading's or a new row's notes and
+    `issues`, an activity's gated_by / linked_issues / note, a clarification entry's linked_issues and text) that are
+    neither an issue of the register nor a promotable issue of this set (signals.broken_issue_refs; generated ids such
+    as I-A5-... are accepted)."""
+    from .. import signals as SG
+    t = it.statement_type
+    refs: list[str] = []
+    if t == "row_reading":
+        refs = SG.issue_refs((pl.interpretation or {}).get("note"))
+    elif t == "row_new":
+        row = pl.row or {}
+        refs = list(row.get("issues") or []) + [x for i in row.get("interpretations") or [] for x in SG.issue_refs(i.get("note"))]
+    elif t == "activity":
+        refs = [i for _, i in SG.activity_issue_refs(pl.activity or {})]
+    elif t == "clarification_item":
+        refs = [i for _, i in SG.clarification_issue_refs(pl.entry or {})]
+    return SG.broken_issue_refs(refs, set(issues) | set(promotable_issues))
+
+
+def window_fields(r: dict, addendum: str) -> dict:
+    """Session 12 (W3a): {'clarification_window': the note} for the downstream tasks of an addendum issued after the
+    VOL-I 5.2 cut-off (clarify.window at its stage), so an escalation or a clarification proposal never reads as
+    sendable; {} otherwise."""
+    from ..clarify import window
+    w = window(r, addendum)
+    return {"clarification_window": w["note"]} if w and w.get("closed") else {}
+
+
+def reread_tasks(r2: dict, addendum: str) -> list[dict]:
+    """Session 12 (W3a; blind-05 S5/IE3): one escalation task per earlier answer that relied on a unit this addendum
+    changes (stage2.answers_to_review), so a person re-reads it against the new text. The task never decides the outcome:
+    the answer stays in force and is never revoked."""
+    from ..stage2 import answers_to_review
+    s = _stage(r2, addendum)
+    out = []
+    for x in answers_to_review(r2, s):
+        if x["issued_by"] == addendum:
+            continue                                     # the addendum's own answers are read with its provisions
+        units = list(dict.fromkeys([x["answer"]] + [u for u in re.findall(r"\b(?:VOL-[IVX]+|ADD-\d+):[\w./()+-]+", x["why"])
+                                                     if u.rstrip(".,;)") in s.state]))
+        rows = sorted({e["row"].id for e in r2["evals"] if set(e["row"].units) & set(units)})
+        out.append({"id": f"reread:{x['answer']}", "kind": "escalation", "provision": x["answer"],
+                    "status": f"earlier answer {x['answer']} ({x['issued_by']}): {x['why']}; {x['reread']}",
+                    "scope": {"units": units, "rows": rows, "activities": [], "clarifications": []}})
+    return out
 
 
 def _proposed_id(it: DownstreamItem, pl) -> str | None:
@@ -873,7 +980,10 @@ def _closure(ds: DownstreamSet, F: list, rows: dict, evidence: dict, issues: set
         for i in sorted(ok):
             it, pl = ds.items[i], F[i]["pl"]
             why = None
-            if it.statement_type == "row_new":
+            bad_ref = _broken_refs(it, pl, issues, p_is)    # session 12 (W3a): every issue id it names must be promoted
+            if bad_ref:
+                why = f"issue references not among the promoted issues: {bad_ref}"
+            elif it.statement_type == "row_new":
                 bad_ev = [x for x in pl.row.get("evidence") or [] if x not in evidence and x not in p_ev]
                 no_act = [x for x in pl.row.get("evidence") or [] if not acts_by_ev.get(x) and not exceptions.get(x)]
                 bad_is = [x for x in pl.row.get("issues") or [] if x not in issues and x not in p_is]
@@ -1248,8 +1358,15 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
     # ---- issues, evidence items
     iss = {it.payload["id"]: {k: v for k, v in it.payload.items() if k != "id" and v not in (None, False)}
            for it in items if it.statement_type == "issue"}
+    # session 12: the cover discrepancies the analysis validation retained, as PROPOSED issues naming both texts
+    texts = {u["unit_id"]: u.get("text") or "" for u in ws.r["units"]}
+    for k, v in controller.cover_issues(ps, texts, controller._provisions(ws, addendum)).items():
+        iss.setdefault(k, v)
+    owned = {it.payload["id"] for it in items if it.statement_type == "issue" and H.is_human_owned(it)}
     for k, v in iss.items():
         v["text"] = v["text"] + f" {tag}"
+        if k in owned:                           # session 12: shown HUMAN DECISION PENDING until a person decides
+            v[H.MARKER] = "pending"
     if iss:
         dest = rp("issues", "curation/register/issues.yaml").parent / "issues" / f"{addendum}-ai.yaml"
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -1298,9 +1415,20 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         cp_ = rp("clarifications", "curation/clarifications/register.yaml")
         reg = (load_yaml(cp_) or {}) if cp_.exists() else {}
         entries = reg.setdefault("clarifications", [])
+        from ..clarify import window as _window, with_window
+        win = _window(ws.r, addendum) if any(s.stage == addendum for s in ws.r.get("stages") or []) else None
         for it in cl:
             e = dict(it.payload["entry"], drafted_by=origin)
-            e["response_status"] = e.get("response_status") or "draft, not sent"
+            # session 12: the status (and a person's recorded answer) the register holds is kept, a new entry is a
+            # draft; whatever the proposal carries. An answer the proposer gave stays `recorded_answer`.
+            old = next((x for x in entries if x.get("id") == e["id"]), None)
+            e["response_status"] = (old or {}).get("response_status") or H.DRAFT
+            e.pop("answer", None)
+            if (old or {}).get("answer"):
+                e["answer"] = old["answer"]
+            if H.is_human_owned(it):
+                e[H.MARKER] = "pending"
+            e = with_window(e, win)                      # session 12: closed window: a DRAFT with the note
             entries[:] = [x for x in entries if x.get("id") != e["id"]] + [e]
             summary["clarifications"].append(e["id"])
         _dump_keeping_header(cp_, reg, f"# CANDIDATE clarification register (AI workflow run {run_id} added or re-read: "
