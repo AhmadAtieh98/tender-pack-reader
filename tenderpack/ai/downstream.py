@@ -443,7 +443,10 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         if it.task not in task_ids:
             rec(i, "task", False, f"{it.task!r} is not a task of the downstream packets", "invalid")
         if it.provision and it.provision not in provisions:
-            rec(i, "provision", False, f"{it.provision} is not a provision of {addendum}", "invalid")
+            if it.provision in controller.region_parents(ws.r["units"], provisions):      # session 12 (follow-up 4)
+                rec(i, "provision", True, f"{it.provision} is an image region whose blocks are provisions of {addendum}")
+            else:
+                rec(i, "provision", False, f"{it.provision} is not a provision of {addendum}", "invalid")
         p = dict(it.payload)
         if it.statement_type == "dependency" and p.get("status", "proposed") not in ("proposed", "possible"):
             report["overwrites"].append({"item": it.id, "field": "payload.status", "proposer_value": p["status"]})
@@ -502,9 +505,10 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             if ip.stage != addendum:
                 rec(i, "payload", False, f"a re-made reading is made at {addendum}, not {ip.stage}", "invalid")
             rr = pl.replace_requirement
-            if rr and (rr.get("old") != rows[pl.row].requirement or not rr.get("new")):
-                rec(i, "replace_requirement", False, "replace_requirement.old is not the row's requirement (or new is "
-                                                     "empty)", "insufficient")
+            problem = replace_requirement_problem(rr.model_dump() if hasattr(rr, "model_dump") else rr,
+                                                  rows[pl.row].requirement)
+            if problem:
+                rec(i, "replace_requirement", False, problem, "insufficient")
             if review_latest(decisions, pl.row):
                 d = review_latest(decisions, pl.row)
                 rec(i, "decision", False, f"row {pl.row}: latest decision '{d['decision']}' by {d['reviewer']}", "conflict")
@@ -638,8 +642,10 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             ip = Interp.model_validate({k: v for k, v in pl.interpretation.items() if k != "pins"})
             row = by_row[pl.row]
             row.interpretations = [x for x in row.interpretations if x.stage != addendum] + [ip]
-            if pl.replace_requirement and pl.replace_requirement.get("new"):
-                row.requirement = pl.replace_requirement["new"]
+            rr_ = pl.replace_requirement
+            rr_new = getattr(rr_, "new", None) if rr_ is not None and not isinstance(rr_, dict) else (rr_ or {}).get("new")
+            if rr_new:
+                row.requirement = rr_new
             reading_items.setdefault(row.id, []).append(i)
     try:
         reg = Register(rf2, r2["stages"], r["cal"], r["policy"])
@@ -766,7 +772,8 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         elif it.statement_type == "clarification_item":
             e = pl.entry
             other = [c for c in clar_reg.get("clarifications") or [] if c.get("id") != e.get("id")]
-            found_ = clarify.check({"clarifications": [e]}, r["units"], issues | set(proposed_issues))
+            found_ = clarify.check({"clarifications": [e]}, r["units"], issues | set(proposed_issues),
+                                   state=(r["stages"][-1].state if r.get("stages") else None))   # session 12: amended words
             for f in found_:
                 bucket = "insufficient" if ("not verbatim" in f or "does not exist" in f or " is on page" in f) else "invalid"
                 rec(i, "clarify.check", False, f, bucket)
@@ -1248,6 +1255,27 @@ def _add_include(rows_path: Path, rel: str) -> list[str]:
             "are kept, comments inside the file are not)"]
 
 
+
+
+def replace_requirement_problem(rr: dict | None, current: str) -> str | None:
+    """Session 12 (blind-06 follow-up 3): why a `replace_requirement` payload cannot be applied, naming the field;
+    None when it can (or when there is none)."""
+    if rr is None:
+        return None
+    missing = [k for k in ("old", "new") if not (rr.get(k) or "").strip()]
+    if missing:
+        return f"replace_requirement needs {{old, new}}; missing or empty: {', '.join(missing)}"
+    if rr["old"] != current:
+        return (f"replace_requirement.old is not the row's current requirement: got '{rr['old'][:80]}', the row says "
+                f"'{(current or '')[:80]}'")
+    return None
+
+
+def partly_answered(reason: str | None) -> bool:
+    """A provision answered by a promoted item while a sibling item is an escalation (workflow.answer_state)."""
+    return bool(reason) and reason.startswith("partly answered")
+
+
 def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: DownstreamSet | None, origin: str,
             unresolved_reason: dict[str, str]) -> dict:
     """Write the promotable items INTO THE CANDIDATE (see the module docstring). `cand` holds the candidate paths;
@@ -1280,6 +1308,9 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
             disps.append(Disposition(provision=p, disposition="unresolved", origin="assistant",
                                      reason=f"{why} [{origin}]: a person writes the op or a disposition"))
             summary["unresolved"].append(p)
+        elif partly_answered(unresolved_reason.get(p)):      # session 12 (follow-up 1): the promoted item stands,
+            summary["unresolved"].append(p)                    # the escalated sibling keeps it unresolved
+            summary["notes"].append(f"{p}: {unresolved_reason[p]} (the promoted item stands; the escalation is for a person)")
     from .tools import _issued_from
     of = OpFile(addendum=addendum, issued_from=_issued_from(ws, addendum),
                 prepared_by=f"{origin}: every op PROPOSED; nothing accepted",

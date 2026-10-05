@@ -160,9 +160,20 @@ def with_window(entry: dict, win: dict | None) -> dict:
     return out
 
 
-def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None = None) -> list[str]:
-    """Findings (strings, 'where: what'). `cutoff` (effective_cutoff) adds the cut-off checks."""
+def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None = None,
+          state: dict | None = None) -> list[str]:
+    """Findings (strings, 'where: what'). `cutoff` (effective_cutoff) adds the cut-off checks. `state` (session 12,
+    blind-06 follow-up 2): the working stage's unit state; a quotation is then verbatim when it is found in the unit's
+    printed text OR in its effective text at that stage (the words as amended), so a question about amended words
+    is not refused for quoting them; a quotation matching neither is still a finding, naming both texts."""
     by_id = {u["unit_id"]: u for u in units}
+
+    def effective_text(uid: str) -> str | None:
+        if state is None or uid not in state:
+            return None
+        from .register import effective
+        u = effective(state, uid, True)
+        return u.text if u is not None and u.status == "active" else None
     out = []
 
     def blank(v) -> bool:
@@ -181,7 +192,13 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
             if u is None:
                 out.append(f"{where}: unit {q.get('unit')} does not exist")
             elif not found(q.get("words", ""), u.get("text", "")):
-                out.append(f"{where}: not verbatim in {q.get('unit')}: '{str(q.get('words'))[:80]}'")
+                eff = effective_text(q.get("unit"))
+                if eff is not None and found(q.get("words", ""), eff):
+                    pass                                     # verbatim in the text as amended at the working stage
+                else:
+                    out.append(f"{where}: not verbatim in {q.get('unit')}: '{str(q.get('words'))[:80]}'"
+                               + (" (neither as printed nor as amended at the working stage)" if eff is not None
+                                  and eff != u.get("text", "") else ""))
             elif q.get("page") not in u.get("pages", []):
                 out.append(f"{where}: {q.get('unit')} is on page(s) {u.get('pages')}, not p{q.get('page')}")
 

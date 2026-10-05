@@ -1088,6 +1088,38 @@ def replaced_figures(x, state) -> list[tuple[str, str]]:
 REREAD = "to be re-read against the new text"
 
 
+
+def changed_units_for_reread(ops, switched: dict | None = None) -> dict:
+    """{unit: the applied op result that changed it}: what an earlier answer may have relied on that this addendum
+    changes (answers_to_review). Replaced, set, deleted or renumbered units; appended words and inserted rows; units an
+    annotation (not a confirming or interpreting one) targets; a clause whose condition an op switched (W3b); and,
+    session 12 (blind-06 follow-up 11), an INSERTED unit together with its anchor and new group: a new 31.1(d) event
+    changes what an answer on 29.x relied on when a relationship joins them, which the trace from these units finds."""
+    from .signals import CONFIRMING_EFFECTS
+    changed, extra = {}, {}
+    for x in ops:
+        if not x.applied:
+            continue
+        o = x.op
+        if o.type in ("replace_text", "set_value", "set_status", "replace_unit"):
+            changed[o.target] = x
+        if o.effect == "renumbers":                    # an answer citing a renumbered clause reads differently now
+            for k in o.renumber:
+                changed[k] = x
+        if o.type in ("append_text", "insert_row"):                     # session 12
+            extra.setdefault(o.target, x)
+        if o.type == "insert_unit":                                      # session 12 (follow-up 11)
+            for k in [*(getattr(x, "changed", None) or []), o.anchor, o.new_group]:
+                if k:
+                    extra.setdefault(k, x)
+        if o.type == "annotate" and o.effect not in CONFIRMING_EFFECTS + ("renumbers",):
+            for k in o.targets:
+                extra.setdefault(k, x)
+    for k, x in (switched or {}).items():            # session 12 (W3b): a clause whose condition an op switched
+        extra.setdefault(k, x)
+    return {**extra, **changed}                      # the session-08 ops keep their precedence over the session-12 ones
+
+
 def answers_to_review(r: dict, s: StageResult) -> list[dict]:
     """Clarification answers that cite a unit this addendum changed, or quote a figure it replaced. They are
     listed for a person to review; an answer is never marked revoked automatically. Non-binding minutes are
@@ -1100,22 +1132,7 @@ def answers_to_review(r: dict, s: StageResult) -> list[dict]:
     Session 12 (F1; audit A2-4): a changed table or form row also stands for its table in that trace, for an answer whose
     own words name the table (ADD-01 Q1 'Any process capable of meeting Table 2-4', after ADD-02 5.1 sets the TN row).
     Nothing decides the outcome: the status stays REVIEW (not automatically revoked)."""
-    from .signals import CONFIRMING_EFFECTS
-    changed, extra = {}, {}
-    for x in s.ops:
-        if x.applied and x.op.type in ("replace_text", "set_value", "set_status", "replace_unit"):
-            changed[x.op.target] = x
-        if x.applied and x.op.effect == "renumbers":           # an answer citing a renumbered clause reads differently now
-            for k in x.op.renumber:
-                changed[k] = x
-        if x.applied and x.op.type in ("append_text", "insert_row"):                # session 12
-            extra.setdefault(x.op.target, x)
-        if x.applied and x.op.type == "annotate" and x.op.effect not in CONFIRMING_EFFECTS + ("renumbers",):
-            for k in x.op.targets:
-                extra.setdefault(k, x)
-    for k, x in derived.switched_units(r, s).items():   # session 12 (W3b): a clause whose condition an op switched
-        extra.setdefault(k, x)
-    changed = {**extra, **changed}                 # the session-08 ops keep their precedence over the session-12 ones
+    changed = changed_units_for_reread(s.ops, derived.switched_units(r, s))
     reg = r["register"]
     relied_by_op: dict[str, list[tuple[str, str]]] = {}          # answer unit -> [(target, its annotation op)]
     for h, prov in reg.op_provision.items():
@@ -2536,7 +2553,8 @@ def register_findings(r: dict) -> list[dict]:
     for i in r.get("ids", {}).get("new", []):
         out.append({"kind": "C12", "where": i, "detail": "row id not yet recorded in the id ledger (check-register --update-ids)"})
     for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"]),
-                           cutoff=clarify.effective_cutoff(r)):           # the effective cut-off (session 09)
+                           cutoff=clarify.effective_cutoff(r),            # the effective cut-off (session 09)
+                           state=(r["stages"][-1].state if r.get("stages") else None)):   # session 12: amended words
         out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
     for p in relationship_findings(r):                                    # session 10: every quote, target and status
         out.append({"kind": "relationship", "where": p.split(":")[0], "detail": p})

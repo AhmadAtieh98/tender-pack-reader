@@ -58,6 +58,22 @@ def _cites(row_units: list[str], keys: set[str]) -> bool:
     return any(u in keys or any(u.startswith(k + "/") or k.startswith(u + "/") for k in keys) for u in row_units)
 
 
+
+def provision_consequence_words(op, prov) -> set[str]:
+    """The consequence words an op's own provision brings in (session 12, blind-06 follow-up 8). An inserted unit's
+    words are its own. An annotate's provision text counts only when the provision is an operative clause: a cover
+    or summary paragraph annotated `adds_obligation` (the cover's Form 4-A instruction, say) is not the obligation,
+    so its words ("deduction" in a sentence about something else) are never demanded of a row; the annotation's own
+    note, when it states the obligation, is what the row must carry."""
+    if op.type == "insert_unit":
+        return _consequence_words(prov.text)
+    if op.type != "annotate":
+        return set()
+    if ":cover/" in (op.provision or "") or ":summary" in (op.provision or ""):
+        return _consequence_words(getattr(op, "note", None) or "")
+    return _consequence_words(prov.text)
+
+
 def obligation_trace(r: dict) -> list[dict]:
     units = {u["unit_id"]: u for u in r["units"]}
     disp = r.get("dispositions") or {}
@@ -105,8 +121,7 @@ def obligation_trace(r: dict) -> list[dict]:
                 if (d and d.disposition in OBLIGATION_DISPOSITIONS) or OBLIGATION.search(new) and not OBLIGATION.search(old or ""):
                     bearing = True
                 brought |= _consequence_words(new) - _consequence_words(old)
-            if op.type in ("annotate", "insert_unit"):
-                brought |= _consequence_words(prov.text)
+            brought |= provision_consequence_words(op, prov)
             if not bearing:
                 continue
             noted = any((disp.get(k) and (disp[k].consequence_note or "").strip()) for k in carriers)

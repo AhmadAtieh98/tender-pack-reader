@@ -438,6 +438,24 @@ def _op_class(o) -> str:
     return {"adds_obligation": "obligation", "renumbers": "renumber"}.get(o.effect or "", "interpretation")
 
 
+
+def _amendment_adds_words(o) -> bool:
+    """A replace_text whose new words contain every old word and more: the amendment ADDS to the clause (session 12,
+    blind-06 follow-up 7: "introduces a flow range in Clause 7.2" done by amending 7.2's sentence is accurate)."""
+    if getattr(o, "type", None) != "replace_text" or o.old is None or not (o.new or "").strip():
+        return False
+    old, new = set(_words(o.old)), set(_words(o.new))
+    return bool(new - old) and old <= new
+
+
+def claim_fits(kind: str, op_cls: str, o) -> bool:
+    """Whether an op of class `op_cls` does what a cover claim of `kind` says. An "add"/"introduces" claim is also done
+    by a text amendment that only adds words to the target (follow-up 7); the other kinds follow ALLOWS."""
+    if op_cls in ALLOWS.get(kind, set()):
+        return True
+    return kind == "add" and op_cls == "change" and _amendment_adds_words(o)
+
+
 def _op_keys(o, ptext: str = "") -> list[str]:
     keys = [k for k in [o.target, o.new_group, o.anchor, *o.targets] if k]
     m = re.search(r"\bnew Clause (\d+(?:\.\d+)*)", ptext or "")
@@ -608,7 +626,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
             for item in missing:
                 rec["findings"].append({"kind": "not found", "claim": c["n"], "detail":
                                         f"'{c['text']}': no provision of {add} matches '{item}'"})
-            fit = [x for x in hit if cls(x) in allowed]
+            fit = [x for x in hit if claim_fits(c["kind"], cls(x), x.op)]
             if not fit and not hit_prov:
                 c["status"] = "contradicted"
                 for x in hit:
@@ -621,7 +639,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                     # an op on the same target that the verb does not describe (a renumbering under "inserts") is not
                     # covered by this claim, so it can still be reported as omitted. Answers keep every op: one that
                     # changes or adds something is reported as understated below
-                    hit = [x for x in hit if cls(x) in allowed or cls(x) == "interpretation"]
+                    hit = [x for x in hit if claim_fits(c["kind"], cls(x), x.op) or cls(x) == "interpretation"]
                     c["matched"] = [x.op.id for x in hit]
             if cnt is not None and c["kind"] in ("delete", "reinstate", "revoke", "add", "replace"):
                 n_ok = len({x.op.provision for x in fit})

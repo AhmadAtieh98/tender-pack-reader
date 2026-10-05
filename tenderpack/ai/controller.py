@@ -240,6 +240,15 @@ def _plain(obj):
 
 # ---------------------------------------------------------------------------------------------- task packet
 
+
+def region_parents(units: list[dict], provisions) -> set[str]:
+    """Session 12 (blind-06 follow-up 4): the units (an image region, a table read from an image) whose blocks are
+    provisions of the addendum. A proposal that cites such a parent cites its provisions; "X is not a provision" is
+    right only when none of X's blocks is one."""
+    provisions = set(provisions)
+    return {u.get("parent") for u in units if u.get("unit_id") in provisions and u.get("parent")}
+
+
 def _provisions(ws: Workspace, addendum: str) -> list[str]:
     pst = ws.stage(ws.prev_stage(addendum)).state
     return [u["unit_id"] for u in ws.r["units"] if u["unit_id"] in pst and pst[u["unit_id"]].doc == addendum
@@ -758,7 +767,11 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
             rec("state", False, "the item's state differs from the set's state", "invalid")
         pu = pst.get(it.provision)
         if pu is None or pu.doc != addendum or pu.kind not in PROVISION_KINDS:
-            rec("provision", False, f"{it.provision} is not a provision of {addendum}", "invalid")
+            if pu is not None and pu.doc == addendum and it.provision in region_parents(
+                    ws.r["units"], _provisions(ws, addendum)):                 # session 12 (follow-up 4)
+                rec("provision", True, f"{it.provision} is an image region whose blocks are provisions of {addendum}")
+            else:
+                rec("provision", False, f"{it.provision} is not a provision of {addendum}", "invalid")
         else:
             rec("provision", True, f"{it.provision} is a provision of {addendum} (p{','.join(map(str, pu.pages))})")
         _check_payload(ws, it, f, rec, rows, addendum, sim_ops, sim_disps, i)

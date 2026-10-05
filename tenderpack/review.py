@@ -266,7 +266,8 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
         if decision == "accept" and kind == "clarification":     # session 12: an answer it closes with is checked
             from .clarify import check as clarify_check
             bad = clarify_check({"clarifications": [cur["binding"]["entry"]]}, r.get("units") or [],
-                                set(r.get("curated_issues") or {}))
+                                set(r.get("curated_issues") or {}),
+                                state=(r["stages"][-1].state if r.get("stages") else None))   # session 12
             if bad:
                 msgs.append(f"refused: {item} does not pass the register's checks: {bad[:2]}")
                 continue

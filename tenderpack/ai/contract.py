@@ -152,11 +152,19 @@ class ClarificationPayload(_Strict):
     decision_owner: str | None = None
 
 
+class ReplaceRequirement(_Strict):
+    """Session 12 (blind-06 follow-up 3): the shape of a requirement correction, stated in the packet schema."""
+    old: str = Field(description="the row's CURRENT requirement text, verbatim (the validator compares it)")
+    new: str = Field(description="the corrected requirement text (non-empty)")
+
+
 class RowReadingPayload(_Strict):
     row: str = Field(description="an existing A1 row id")
     interpretation: dict = Field(description="register.Interp fields: stage, quote, parameters, consequence, note "
                                              "(no pins: pins are machine-written)")
-    replace_requirement: dict | None = None
+    replace_requirement: ReplaceRequirement | None = Field(
+        None, description="only when the row's requirement text itself must change: {old: its current text verbatim, "
+                          "new: the corrected text}; omit it when the reading re-states the same requirement")
 
 
 class RowNewPayload(_Strict):
@@ -430,7 +438,7 @@ class DownstreamItem(_Strict):
     task: str = Field(description="the id of the downstream task in the packet this item answers")
     provision: str | None = Field(None, description="the addendum provision whose change the item follows")
     target: str | None = None
-    payload: dict = Field(description="row_reading: {row, interpretation, replace_requirement}; row_new: {row}; "
+    payload: dict = Field(description="row_reading: {row, interpretation, replace_requirement: {old, new} when the requirement text changes}; row_new: {row}; "
                                       "issue: IssueItemPayload; clarification_item: {entry}; evidence_item: {id, "
                                       "item}; activity: ActivityPayload; dependency: DependencyPayload; escalation: "
                                       "{why, what_is_unsupported}; no_change: {why}")

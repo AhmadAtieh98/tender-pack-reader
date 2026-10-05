@@ -2192,6 +2192,18 @@ def step_validation(ctx: Ctx, st: dict) -> None:
 
 # ---------------------------------------------------------------------------------------------- step: downstream
 
+
+def answer_state(promoted_ids: list[str], escalations: list[str]) -> dict:
+    """Session 12 (blind-06 follow-up 1): a provision with a promoted op or disposition is ANSWERED only while none of
+    its sibling items is an escalation. With one, it is "partly answered": the promoted item stands, but the provision
+    stays on the unresolved list, in the packet's first section and in A4, so the escalation never drops out of sight."""
+    if not escalations:
+        return {"answered": True}
+    return {"answered": False, "partly": True,
+            "why": "partly answered" + (f" by {', '.join(promoted_ids)}" if promoted_ids else "")
+                   + "; escalated: " + "; ".join(escalations)}
+
+
 def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict) -> dict[str, dict]:
     """Per provision: whether a promoted op or disposition answers it, and why not."""
     content = {c for o in promoted["sim"]["ops"] if o["valid"] for c in o.get("content") or []}
@@ -2200,10 +2212,12 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict) -> dict[str, dict]:
     out = {}
     for p, v in ctx.cp.data["provisions"].items():
         mine = [it for it in cps.items if it.provision == p]
-        if p in ok:
-            out[p] = {"answered": True}
-            continue
         esc = [it for it in mine if it.statement_type == "escalation"]
+        if p in ok:
+            state = answer_state([it.id for it in mine if it.id in promoted["ops"] or it.id in promoted["dispositions"]],
+                                 [_short(it.payload.get("why"), 200) for it in esc])
+            out[p] = state if state["answered"] else {**state, "needs_person": True}
+            continue
         if esc:
             why = "escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc)
         elif mine:
