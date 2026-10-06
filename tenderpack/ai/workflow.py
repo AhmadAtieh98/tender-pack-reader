@@ -1556,6 +1556,9 @@ def step_analysis(ctx: Ctx, st: dict) -> None:
         _fill(ctx, "analysis", bid)                   # session 12: batches at once (max_parallel_sessions > 1)
         _analysis_batch(ctx, st, bid, todo)
         if cp.batch(bid)["status"] == "done":
+            # session 12 (blind-06 follow-up 14): the next batches are asked BEFORE this batch's critic, so no slot sits
+            # idle while the critic runs; their answers are still taken in plan order (Prefetch.take checks the packet)
+            _fill(ctx, "analysis", bid)
             _critic_analysis(ctx, bid)
         _stop_if_deferred(ctx, st, bid)
         if ctx.gate is not None:
@@ -3453,7 +3456,9 @@ def _critic_item_lines(c, indent: str = "  ") -> list[str]:
 def _shown_status(it) -> str:
     """An item's status as the review packet shows it (session 12): a human-owned item (tenderpack.human_owned) carries
     HUMAN DECISION PENDING beside its controller status; nothing it concludes is presented as settled."""
-    return it.verification_status + (f" — {HO.HUMAN_DECISION_PENDING}" if HO.is_human_owned(it) else "")
+    ap = next((v for v in getattr(it, "validation", None) or [] if v.check == "applied rule"), None)
+    return it.verification_status + (f" — {HO.HUMAN_DECISION_PENDING}" if HO.is_human_owned(it) else "") + (
+        f" — applied rule: {_short(ap.detail, 240).replace('|', '/')}" if ap else "")   # session 12 (follow-up 12)
 
 
 def critic_section(ctx: Ctx, cps, ds) -> list[str]:

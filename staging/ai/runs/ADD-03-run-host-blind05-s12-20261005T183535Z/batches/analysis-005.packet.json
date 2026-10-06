@@ -27,7 +27,8 @@
   "Unknown structures and unsupported change types are escalated, never turned into guessed operations.",
   "The reference below is pattern drafter output, unverified: check it against the evidence before using any of it.",
   "Read targets as they stand before this addendum: get_unit(unit_id, stage=<previous_stage>); quote that text.",
-  "A no_effect disposition on words that amend, oblige or except never verifies: a printed change needs its op; otherwise quote, in the reason, the words that show it changes nothing (a person confirms it)."
+  "A no_effect disposition on words that amend, oblige or except never verifies: a printed change needs its op; otherwise quote, in the reason, the words that show it changes nothing (a person confirms it).",
+  "A free-standing provision (an obligation of the addendum's own that amends no volume unit) is answered by a row_new whose primary unit is that provision's own unit id (the register holds rows on addendum units), introduced at this addendum, with its consequence quoted; it is never escalated for want of a cited unit."
  ],
  "provisions_total": 57,
  "provisions_in_packet": 5,
@@ -560,14 +561,14 @@
     "replace_requirement": {
      "anyOf": [
       {
-       "additionalProperties": true,
-       "type": "object"
+       "$ref": "#/$defs/ReplaceRequirement"
       },
       {
        "type": "null"
       }
      ],
-     "default": null
+     "default": null,
+     "description": "only when the row's requirement text itself must change: {old: its current text verbatim, new: the corrected text}; omit it when the reading re-states the same requirement"
     }
    },
    "required": [
@@ -1271,6 +1272,25 @@
    "required": [
     "governs",
     "words"
+   ],
+   "type": "object"
+  },
+  "ReplaceRequirement": {
+   "additionalProperties": false,
+   "description": "Session 12 (blind-06 follow-up 3): the shape of a requirement correction, stated in the packet schema.",
+   "properties": {
+    "old": {
+     "description": "the row's CURRENT requirement text, verbatim (the validator compares it)",
+     "type": "string"
+    },
+    "new": {
+     "description": "the corrected requirement text (non-empty)",
+     "type": "string"
+    }
+   },
+   "required": [
+    "old",
+    "new"
    ],
    "type": "object"
   }

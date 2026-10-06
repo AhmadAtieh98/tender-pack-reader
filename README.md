@@ -2,7 +2,7 @@
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.
 
-**Status (session 12, `docs/PLAN.md` revision 12): DRAFT handover, stopped for the owner's review before final submission. Sessions 09, 10 and 11 are committed (`a41e104`, `a57f118`, `6053493`, each on the owner's authorisation); session 12 is committed as `cfaac79` (progress, 13:38 UTC on the owner's instruction), a second progress commit (20:08 UTC, before the host plan's 22:30 reset) and S12-PENDING-README-COMMIT (the closing commit, on the owner's instruction of 13:37: "commit progress now and continue the work fully and commit once done").**
+**Status (session 12, `docs/PLAN.md` revision 12): DRAFT handover, stopped for the owner's review before final submission. Sessions 09, 10 and 11 are committed (`a41e104`, `a57f118`, `6053493`, each on the owner's authorisation); session 12 is committed as `cfaac79` (progress, 13:38 UTC on the owner's instruction), `eaea64d` (20:08) and `2cff460` (20:46), then the closing commit, the head of branch `claude/hopeful-curie-7oki9q` at the end of the session (made after this text was written, so its hash is not in it: `git log -1`) (on the owner's instructions of 13:37, "commit progress now and continue the work fully and commit once done", and 21:10, "commit when all is done only and we are not waiting for anything").**
 
 **A4, the work log, is not only `out/a4/`:** start at `worklog/README.md` (the index of the commit history, the verbatim prompts, the subagent briefs, the model-call logs, the error index and the session reports). `out/a4/` holds the clarification register, a supporting record.
 

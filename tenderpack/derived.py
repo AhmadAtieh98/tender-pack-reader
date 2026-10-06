@@ -14,6 +14,13 @@ Computed deadlines (follow-up 7). computed_deadlines(r, stage) finds every "N <u
 addendum's provisions and the units its ops change, and counts it with calc.deadline (one reading under the registry's
 counting rules, else ambiguous and escalated): the inputs, the rule, the result and the fingerprint (`computed_from`).
 A deadline of a conditional obligation (the obligation applies only where, if, or to a Bidder whose ...) is conditional.
+Session 12 (blind-06 follow-up 5): each deadline also carries the register `date_rule` that plans it (dates.KINDS:
+`relative` with its anchor, count, unit and direction; there is no kind "deadline", which is a purpose), and forward
+periods ("within N Working Days of receipt ...", "within N Working Days of the date of this Addendum": the anchor
+'<stage>-issue') are found too (period_phrases): computed where the counting registry has a rule, otherwise with an
+explicit "not computed: no rule ..." note (the readings listed; an event anchor named), never a silent gap. One function
+(compute_deadline) gives the fingerprint computed_deadlines records, the one the validator recomputes an activity's
+claim with (match_computed_from) and the one the programme gives a relative rule's milestone (rule_computed_from).
 working_days_left(r, stage) states the Working Days from the addendum's issue date to the PDD.
 
 Conditions switched on and definitions changed (follow-up 8). switched(r, stage): a clause that applies only "Where /
@@ -147,6 +154,131 @@ _CONDITIONAL = re.compile(r"\b(?:Where|If|In the event that|Unless|Should)\b|\bw
                           r"\bprovides? for any\b|\bexceeding\b", re.I)
 
 
+# session 12 (blind-06 follow-up 5): a forward period "within N <unit> of <X>" and a count from the addendum's own date
+_PERIOD = re.compile(r"(?P<words>(?P<within>within\s+)?(?:" + _NUMW + r")\s+(?P<unit>Working Days?|calendar days?|days?|"
+                     r"weeks?)\s+(?P<dir>of|after|from|following)\s+(?P<what>[^.;,()]{3,80}?))"
+                     r"(?=[.;,]|\s+(?:and|or|but|which|unless|for|to)\b|$)")
+_THIS_ADDENDUM = re.compile(r"^(?:the\s+)?(?:date\s+of\s+(?:issue\s+of\s+)?|issue\s+(?:date\s+)?of\s+)?this\s+Addendum\b",
+                            re.I)
+
+
+def period_phrases(text: str, anchors: dict[str, dict]) -> list[dict]:
+    """Session 12 (blind-06 follow-up 5): every forward period 'within N <unit> of <X>' and every count 'N <unit>
+    after/from the date of this Addendum'. Each: {words, count, unit, direction 'after', what (the words naming X),
+    anchor (a register anchor's key, or None), issue (X is the addendum's own date)}. A count 'N <unit> after <Anchor>'
+    of a register anchor is deadline_phrases' (not repeated here)."""
+    names = {a.get("name"): k for k, a in anchors.items()} | {k: k for k in anchors}
+    out = []
+    for m in _PERIOD.finditer(" ".join(str(text or "").split())):
+        n = m.group(3) or m.group(4)                      # _NUMW's two groups (after `words` and `within`)
+        if n is None:
+            continue
+        what = m.group("what").strip()
+        bare = re.sub(r"^the\s+", "", what, flags=re.I)
+        issue = bool(_THIS_ADDENDUM.match(what))
+        anchor = next((names[x] for x in sorted(names, key=len, reverse=True) if x and bare.startswith(x)), None)
+        if not m.group("within") and not issue:
+            continue                                      # 'N days of X' without 'within' is no period of time
+        if anchor is not None and not m.group("within") and m.group("dir") in ("after", "following"):
+            continue                                      # deadline_phrases has it
+        out.append({"words": m.group("words").strip(), "count": int(n), "unit": m.group("unit"), "direction": "after",
+                    "what": what, "anchor": anchor, "issue": issue})
+    return out
+
+
+def _unit_words(unit: str) -> str:
+    u = str(unit or "").lower()
+    return "Working Days" if u.startswith("working") else ("weeks" if u.startswith("week") else "days")
+
+
+def compute_deadline(count, unit: str, words: str, anchor: str, anchor_date, anchor_source, direction: str, cal,
+                     source_unit: str | None = None, page=None) -> dict:
+    """calc.deadline for one period, with the inputs in one shape (session 12, blind-06 follow-up 5): what
+    computed_deadlines records in `computed_from`, what the validator recomputes an activity's claim with, and what
+    rule_computed_from gives a register date rule (the programme's milestone), so the three fingerprints agree."""
+    from . import calc
+    return calc.deadline({"name": "period", "value": count, "unit": _unit_words(unit),
+                          "source": {"unit": source_unit or "", "page": page, "words": words}},
+                         {"name": anchor, "date": anchor_date.isoformat() if hasattr(anchor_date, "isoformat")
+                          else anchor_date, "source": anchor_source}, direction, cal)
+
+
+def _computed_from(res: dict) -> dict:
+    return {"method": "deadline", "inputs": res.get("inputs"), "counting": (res.get("counting") or {}).get("id"),
+            "result": res.get("value"), "fingerprint": res.get("fingerprint")}
+
+
+def _phrase_words(words: str, anchors: dict | None) -> str:
+    """The period phrase inside a rule's or a claim's words ('not later than eight (8) Working Days before the Proposal
+    Due Date' -> 'eight (8) Working Days before the Proposal Due Date'), as computed_deadlines extracts it."""
+    hits = deadline_phrases(words, anchors or {}) + period_phrases(words, anchors or {})
+    return hits[0]["words"] if len(hits) == 1 else " ".join(str(words or "").split())
+
+
+def rule_computed_from(rule, anchor_value, anchor_source, cal, anchors: dict | None = None) -> dict | None:
+    """`computed_from` of a register date rule of kind `relative` (a row's DateRule or its dict), computed by
+    compute_deadline from the rule's anchor, count, unit, direction and the period phrase in its words: the fingerprint
+    the programme gives the rule's milestone, equal to the one computed_deadlines records for the same words. None for
+    any other kind or an anchor without a date."""
+    g = (lambda k: rule.get(k)) if isinstance(rule, dict) else (lambda k: getattr(rule, k, None))
+    if g("kind") != "relative" or anchor_value is None:
+        return None
+    anchors = anchors if anchors is not None else {g("anchor"): {"name": g("anchor")}}
+    res = compute_deadline(g("offset"), g("unit"), _phrase_words(g("text"), anchors), g("anchor"), anchor_value,
+                           anchor_source, g("direction"), cal, g("source_unit"))
+    return _computed_from(res) if res.get("fingerprint") else None
+
+
+def match_computed_from(cf: dict, deadlines: list[dict], cal, anchors: dict | None = None) -> dict | None:
+    """The computed deadline an activity's `computed_from` claims (session 12, blind-06 follow-up 5): by its
+    fingerprint, else by recomputing the fingerprint from the claimed inputs with compute_deadline (a claim that gives
+    the method and the inputs only, as blind-06's did, is matched); None when neither matches."""
+    fp = (cf or {}).get("fingerprint")
+    known = next((d for d in deadlines if fp and d["computed_from"]["fingerprint"] == fp), None)
+    i = (cf or {}).get("inputs") or {}
+    if known is None and i:
+        off, an = i.get("offset") or {}, i.get("anchor") or {}
+        try:
+            res = compute_deadline(off.get("count"), off.get("unit"), _phrase_words(off.get("words"), anchors),
+                                   an.get("name"), an.get("date"), an.get("source"), i.get("direction"), cal)
+        except Exception:                                    # noqa: BLE001 (a malformed claim matches nothing)
+            return None
+        fp2 = res.get("fingerprint")
+        known = next((d for d in deadlines if fp2 and d["computed_from"]["fingerprint"] == fp2), None)
+    return known
+
+
+def _not_computed_note(res: dict, p: dict, anchor_date, registry: dict) -> str | None:
+    """'not computed: ...' for a period the counting registry does not settle (no rule for its unit and direction, or
+    an anchor that is an event with no date): never a silent gap (session 12, blind-06 follow-up 5)."""
+    if res.get("status") == "resolved":
+        return None
+    unit = "working_day" if _unit_words(p["unit"]) == "Working Days" else "day"
+    why = []
+    if not any(c.get("unit") == unit and c.get("direction") == p["direction"] for c in (registry.get("counting") or {}).values()):
+        why.append(f"no rule in the counting registry (config/formulas.yaml `counting`) for "
+                   f"{'Working Days' if unit == 'working_day' else 'days'} counted {p['direction']} a date (VOL-I 2.4 "
+                   "covers Working Days counted backwards)" + (": every reading is listed and a person decides"
+                                                               if res.get("readings") else ""))
+    if anchor_date is None:
+        why.append(f"its anchor '{p.get('what') or p['anchor']}' is an event, not a date the register holds")
+    if not why:
+        why.append(str(res.get("reason") or res.get("status")))
+    return "not computed: " + "; ".join(why)
+
+
+def _date_rule(k: str, p: dict, anchor: str | None, note: str | None) -> dict:
+    """The register date rule for the phrase (dates.KINDS): `relative` with its anchor, count, unit and direction when
+    the anchor is one the register holds; `unresolved` with the words and the note otherwise."""
+    if anchor is not None and p["count"] >= 1:
+        u = _unit_words(p["unit"])
+        return {"kind": "relative", "purpose": "deadline", "anchor": anchor, "offset": p["count"],
+                "unit": {"Working Days": "working_day", "weeks": "week"}.get(u, "calendar_day"),
+                "direction": p["direction"], "source_unit": k, "text": p["words"]}
+    return {"kind": "unresolved", "purpose": "deadline", "source_unit": k, "text": p["words"],
+            "note": note or "not computed"}
+
+
 def deadline_phrases(text: str, anchors: dict[str, dict]) -> list[dict]:
     """Every 'N <unit> before/after <Anchor Name>' phrase whose anchor is a register anchor (by its name or key)."""
     names = {a.get("name"): k for k, a in anchors.items()} | {k: k for k in anchors}
@@ -178,27 +310,33 @@ def computed_deadlines(r: dict, stage: str) -> list[dict]:
     anchors = reg.rf.anchors
     vals = anchor_values(s.state, anchors, reg.issued)
     cal = reg.cal_by_stage[stage]
+    registry = calc.load_registry()
     mine = {h for x in s.ops if x.applied for h in [x.op.id]}
     units = [k for k, u in s.state.items() if u.status == "active" and (u.issued_by == stage or set(u.history) & mine)]
     out = []
     for k in units:
         u = s.state[k]
-        for p in deadline_phrases(u.text, anchors):
-            av = vals.get(p["anchor"])
-            unit = "Working Days" if p["unit"].lower().startswith("working") else \
-                ("weeks" if p["unit"].lower().startswith("week") else "days")
-            res = calc.deadline({"name": "period", "value": p["count"], "unit": unit,
-                                 "source": {"unit": k, "page": (u.pages or [None])[0], "words": p["words"]}},
-                                {"name": p["anchor"], "date": av.isoformat() if av else None,
-                                 "source": anchors[p["anchor"]].get("defined_in")}, p["direction"], cal)
-            sent = next((x for x in re.split(r"(?<=[.;])\s+", u.text) if p["words"].split(" before")[0] in x), u.text)
+        found_ = [(p, p["anchor"], vals.get(p["anchor"]), anchors[p["anchor"]].get("defined_in"))
+                  for p in deadline_phrases(u.text, anchors)]
+        for p in period_phrases(u.text, anchors):          # session 12 (blind-06 follow-up 5): forward periods
+            if p["issue"]:
+                found_.append((p, f"{stage}-issue", date.fromisoformat(s.issued), getattr(s, "issued_from", None)))
+            elif p["anchor"] is not None:
+                found_.append((p, p["anchor"], vals.get(p["anchor"]), anchors[p["anchor"]].get("defined_in")))
+            else:
+                found_.append((p, None, None, None))         # an event ('receipt of a complete application')
+        for p, anchor, av, src in found_:
+            res = compute_deadline(p["count"], p["unit"], p["words"], anchor or p.get("what"), av, src, p["direction"],
+                                   cal, k, (u.pages or [None])[0])
+            head = p["words"].split(" before")[0].split(" of ")[0]
+            sent = next((x for x in re.split(r"(?<=[.;])\s+", u.text) if head in " ".join(x.split())), u.text)
             cond = _CONDITIONAL.search(sent)
             rows = sorted({e["row"].id for e in r["evals"] if k in e["row"].units})
-            out.append({"unit": k, "pages": list(u.pages), "words": p["words"], "anchor": p["anchor"],
+            note = _not_computed_note(res, p, av, registry)
+            out.append({"unit": k, "pages": list(u.pages), "words": p["words"], "anchor": anchor or p.get("what"),
                         "anchor_date": av.isoformat() if av else None, "result": res,
-                        "computed_from": {"method": "deadline", "inputs": res.get("inputs"),
-                                          "counting": (res.get("counting") or {}).get("id"),
-                                          "result": res.get("value"), "fingerprint": res.get("fingerprint")},
+                        "computed_from": _computed_from(res),
+                        "date_rule": _date_rule(k, p, anchor, note), **({"note": note} if note else {}),
                         "conditional": _short(sent, 240) if cond else None, "rows": rows})
     # an addendum provision that inserts or replaces the words in a volume unit computes the same date twice: the
     # volume unit's entry is kept (the provision's stays when no volume unit carries it)
@@ -508,12 +646,13 @@ def summary(r: dict, stage: str) -> dict:
 def _deadline_line(d: dict) -> str:
     res = d["result"]
     when = res.get("value") or ("AMBIGUOUS: " + "; ".join(f"{x['value']} ({x['key']})" for x in res.get("readings") or [])
-                                if res.get("status") == "ambiguous" else f"not computed: {res.get('reason')}")
+                                if res.get("status") == "ambiguous" else d.get("note") or f"not computed: {res.get('reason')}")
     return (f"- `{d['unit']}` p{','.join(map(str, d['pages']))}: “{d['words']}” -> **{when}** (computed: calc deadline, "
             f"anchor {d['anchor']} = {d['anchor_date']}, rule {(res.get('counting') or {}).get('id') or 'none'}, "
             f"fingerprint {str(res.get('fingerprint') or '')[:12]}; PROPOSED, not validated)"
             + (f"; CONDITIONAL: “{_short(d['conditional'], 160)}”" if d.get("conditional") else "")
-            + ("; ESCALATED: the counting rules do not settle it" if res.get("escalate") else ""))
+            + ("; ESCALATED: the counting rules do not settle it" if res.get("escalate") else "")
+            + (f"; {d['note']}" if d.get("note") and res.get("status") == "ambiguous" else ""))
 
 
 def a5_lines(sm: dict | None) -> list[str]:

@@ -568,6 +568,22 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
                     anchor_details=(r.get("anchor_details") or {}).get(stage), notified_days=notified,
                     reached=((r.get("relationship_impact") or {}).get(stage) or {}).get("records"),
                     questions=gate_questions(r), question_units=question_units(r))
+        # session 12 (blind-06 follow-up 5): a milestone planned from a relative date rule carries the `computed_from`
+        # of the same calc.deadline inputs derived.computed_deadlines records (one function: derived.compute_deadline)
+        from . import derived
+        anchors = r["register"].rf.anchors
+        issued_from = {f"{x.stage}-issue": getattr(x, "issued_from", None) for x in r["stages"]}
+        rules_by_id = {rd.rule_id: rd for row in r["rowfile"].rows for rd in row.date_rules if rd.kind == "relative"}
+        for m in prog.get("milestones") or []:
+            rd = rules_by_id.get(m["id"])
+            if rd is None or not m.get("date"):
+                continue
+            av = next((d["anchor_value"] for e in evals for d in (e["stages"].get(stage) or {}).get("dates") or []
+                       if d["rule_id"] == m["id"] and d.get("anchor_value")), None)
+            src = (anchors.get(rd.anchor) or {}).get("defined_in") or issued_from.get(rd.anchor)
+            cf = derived.rule_computed_from(rd, av, src, cal, anchors) if av else None
+            if cf:
+                m["computed_from"] = cf
         for act in prog["activities"]:
             for i in act.get("gated_by") or []:
                 if i not in open_issues:

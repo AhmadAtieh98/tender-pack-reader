@@ -1,0 +1,415 @@
+{
+ "run_id": "ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-006",
+ "created": "2026-10-05T22:01:10Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (opus)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+  "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+  "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+  "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S1",
+   "kind": "fact",
+   "text": "Amended VOL-V 29.2 (replaced by ADD-03 3.3) requires the Indexed Proportion stated by the Bidder in Form 4-F to be at least 50% and at most 70%.",
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:29.2",
+     "page": 3,
+     "kind": "span",
+     "words": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume V Clause 29.2 is deleted and replaced by the following",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S2",
+   "kind": "fact",
+   "text": "Neither amended VOL-V 29.2 nor ADD-03 3.3 says what happens if a Bidder states a value outside the 50% to 70% band.",
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:29.2",
+     "page": 3,
+     "kind": "span",
+     "words": "which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S3",
+   "kind": "fact",
+   "text": "VOL-I 10.5 says a Proposal is non-responsive if it contains a price subject to adjustment other than as provided in Volume V.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.5",
+     "page": 5,
+     "kind": "span",
+     "words": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S4",
+   "kind": "interpretation",
+   "text": "PROPOSED, HUMAN DECISION PENDING: an Indexed Proportion outside the band may be a price subject to adjustment other than as provided in Volume V, under VOL-I 10.5. A person decides whether VOL-I 10.5 covers that value.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.5",
+     "page": 5,
+     "kind": "span",
+     "words": "price subject to adjustment other than as provided in Volume V",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S5",
+   "kind": "fact",
+   "text": "VOL-I 11.5 makes a Proposal non-responsive only when a clarification response changes the quoted Availability Payment. Its words do not cover the Indexed Proportion first stated in Form 4-F.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:11.5",
+     "page": 5,
+     "kind": "span",
+     "words": "A response to a clarification shall not change the Availability Payment quoted; any response that does so shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S6",
+   "kind": "fact",
+   "text": "Form 4-F is a mandatory Envelope B form. The Bidder confirms in it that the Availability Payment is unconditional and not subject to any qualification.",
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:cover/T1/4-F",
+     "page": 2,
+     "kind": "span",
+     "words": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-F/para1",
+     "page": 9,
+     "kind": "span",
+     "words": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S7",
+   "kind": "fact",
+   "text": "The clarification window has closed (VOL-I 5.2, per the task packet), so this question cannot be raised as a clarification. It is a bid decision for a person.",
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:29.2",
+     "page": 3,
+     "kind": "span",
+     "words": "the percentage stated by the Bidder in Form 4-F",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "D1",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "cons:ADD-03:3.3",
+   "provision": "ADD-03:3.3",
+   "target": "VOL-V:29.2",
+   "payload": {
+    "row": {
+     "id": "ADD-03-3.3-01",
+     "group": "Financial Proposal",
+     "scope": [
+      "proposal"
+     ],
+     "requirement": "State in Form 4-F the Indexed Proportion: the percentage of the Availability Payment indexed to the published consumer price index until the end of the tenth year of operations. It must be not less than 50% and not more than 70%.",
+     "units": [
+      "VOL-V:29.2",
+      "ADD-03:3.3",
+      "VOL-IV:F4-F/para1"
+     ],
+     "discipline": "Commercial",
+     "assessment": "pass_fail",
+     "evidence": [
+      "EV-FORM-4F"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+       "parameters": {
+        "indexed_proportion_min": 50,
+        "indexed_proportion_max": 70,
+        "unit": "%"
+       },
+       "consequence": {
+        "class": "non_responsive",
+        "unit": "VOL-I:10.5",
+        "quote": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+        "gloss": "PROPOSED, HUMAN DECISION PENDING: whether an Indexed Proportion outside the band is a price subject to adjustment other than as provided in Volume V."
+       },
+       "note": "This consequence is derived from an existing rule (VOL-I 10.5), read with Form 4-F. The pack does not state a consequence for a value outside the band."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "until the end of the tenth (10th) year of operations",
+       "treatment": "post_award",
+       "reason": "An indexation term for the operations period, not a bid-stage date."
+      },
+      {
+       "text": "from the start of the eleventh (11th) year of operations",
+       "treatment": "post_award",
+       "reason": "An indexation term for the operations period, not a bid-stage date."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "The band is printed in the pack. The consequence is derived from VOL-I 10.5, and whether that rule covers a value outside the band is for a person to decide.",
+     "issues": [
+      "I-NO-CONSEQUENCE"
+     ],
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/3.3",
+      "evidence": {
+       "unit": "VOL-V:29.2",
+       "page": 3,
+       "words": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)"
+      }
+     },
+     "derived_consequence": {
+      "rule": "VOL-I-10.5-01",
+      "unit": "VOL-I:10.5",
+      "owner": "person",
+      "basis": "VOL-I 10.5 names a price subject to adjustment other than as provided in Volume V. Amended VOL-V 29.2 provides the 50% to 70% band, which is stated in Form 4-F. Whether 10.5 covers a value outside the band is a HUMAN DECISION PENDING."
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 1,
+     "kind": "span",
+     "words": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:29.2",
+     "page": 3,
+     "kind": "span",
+     "words": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.5",
+     "page": 5,
+     "kind": "span",
+     "words": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:cover/T1/4-F",
+     "page": 2,
+     "kind": "span",
+     "words": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-F/para1",
+     "page": 9,
+     "kind": "span",
+     "words": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-10.5-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ],
+   "conflicts": [],
+   "missing_information": [
+    "The pack does not state a consequence for an Indexed Proportion outside the 50% to 70% band. A person decides whether VOL-I 10.5 applies. The clarification window has closed, so this is a bid decision."
+   ],
+   "statements": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S6",
+    "S7"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "VOL-I 9.6 deals with listing deviations in Form 4-E and a 'no deviations' statement, so its words do not reach the stated percentage itself. VOL-I 11.5 deals only with clarification responses. VOL-I 10.5 is the only listed rule whose words could reach a price adjustment that Volume V does not provide for."
+  },
+  {
+   "id": "D2",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "42e9285d5bfded97af9ab513d9a46102db87cdf17e0adf53f00718536633cef4",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "be5a1ecc966dab8d311cb4688827e56b9cd41f28053de21b5fb262fea446b1e0",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "0a9b8da903aded9ca0e91f05236a016f4f0c4c03d12c31caab5e2dfd66e5ff39",
+    "amendments_sha256": "cec31d3931c953f5505c6db86b1f5b1b73e8b52e3817b7c29c409ea616489cca",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "8fa0072209651dfb94d0862e5cac287415c02ac8c85d7e02f0404990aa647ff5",
+    "relationships_sha256": "1e6f35c25cd34a8718fff3d6ac2a8ce8b86821e3211c270742a64caa9b4c3052",
+    "curation_sha256": "2cdf3faa6c1aed208a7e7fc24b6ca69c8a329fe41ffd4faa409c2cc5cc6c93b6",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "cons:VOL-V:29.2",
+   "provision": "ADD-03:3.3",
+   "target": "VOL-V:29.2",
+   "payload": {
+    "why": "No bid-out consequence is stated by the rule listed for this task. VOL-I 11.5 makes a Proposal non-responsive only when a clarification response changes the quoted Availability Payment. Its words do not cover an Indexed Proportion outside the 50% to 70% band that is stated in Form 4-F. Amended VOL-V 29.2 states the band but no consequence for breaching it. A possible derived consequence from VOL-I 10.5 is proposed separately as row ADD-03-3.3-01 (task cons:ADD-03:3.3), and a person decides whether that rule covers the value. The clarification window has closed, so this is a bid decision for a person.",
+    "what_is_unsupported": "A bid-out consequence for an Indexed Proportion outside the band, taken from VOL-I 11.5 or from VOL-V 29.2 itself: no bid-out consequence stated."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:29.2",
+     "page": 3,
+     "kind": "span",
+     "words": "the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:11.5",
+     "page": 5,
+     "kind": "span",
+     "words": "A response to a clarification shall not change the Availability Payment quoted; any response that does so shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-F/para1",
+     "page": 9,
+     "kind": "span",
+     "words": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-11.5-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "ADD-03-3.3-01"
+   ],
+   "conflicts": [],
+   "missing_information": [
+    "The pack does not state a consequence for an Indexed Proportion outside the 50% to 70% band."
+   ],
+   "statements": [
+    "S1",
+    "S2",
+    "S5",
+    "S6",
+    "S7"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

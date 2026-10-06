@@ -1025,6 +1025,28 @@ def answer_targets(state, targets: list[str]) -> dict[str, str]:
     return out
 
 
+# session 12 (blind-06 follow-up 10): a sentence that EXCLUDES something ("X shall not be used as the sole means",
+# "X alone is not acceptable") restates the targets when they already exclude the same subject: the words differ
+# ("sole means" for "alone"), the requirement does not. A negative sentence whose subject the targets never exclude
+# still "adds".
+_ANS_NEG = re.compile(r"\b(?:shall not|may not|must not|will not|cannot|(?:is|are) not (?:acceptable|permitted|allowed|"
+                      r"to be used)|not (?:be )?(?:used|accepted|permitted|allowed))\b", re.I)
+
+
+def _restated_exclusion(sentence: str, target_texts) -> bool:
+    m = _ANS_NEG.search(sentence)
+    if not m:
+        return False
+    subject = {w for w in _words(sentence[:m.start()]) if w not in _ANS_STOP}
+    if not subject:
+        return False
+    for t in target_texts or []:
+        for ts in re.split(r"(?<=[.;])\s+", normalize_latin(t or "")):
+            if _ANS_NEG.search(ts) and subject & set(_words(ts)):
+                return True
+    return False
+
+
 def classify_answer(answer: str, targets, context=()) -> dict:
     """{class (ANSWER_CLASSES), evidence [{sentence, words, kind}], why, sentences [{text, kind, new_words, new_figures}]}
     for a clarification answer (its 'Authority response:' part when there is one) against the texts of the units it
@@ -1064,6 +1086,8 @@ def classify_answer(answer: str, targets, context=()) -> dict:
             kind = "confirms"                      # 'Volume I Clause 8.7 and Form 4-D apply.'
         elif len(new_w) <= 1 and not new_f:
             kind = "confirms"                      # restates the targets' words
+        elif _ANS_NEG.search(s) and _restated_exclusion(s, texts):
+            kind = "confirms"                      # session 12 (blind-06 follow-up 10): an exclusion the targets state
         elif _ANS_MODAL.search(s):
             kind = "adds"
         else:

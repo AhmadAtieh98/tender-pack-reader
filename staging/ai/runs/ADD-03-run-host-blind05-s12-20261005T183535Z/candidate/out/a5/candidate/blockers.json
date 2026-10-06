@@ -1,0 +1,147 @@
+{
+ "_candidate": "CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted",
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "columns": [
+  {
+   "header": "activity",
+   "key": "activity",
+   "width": 20
+  },
+  {
+   "header": "name",
+   "key": "name",
+   "width": 20
+  },
+  {
+   "header": "rows",
+   "key": "rows",
+   "width": 20
+  },
+  {
+   "header": "why",
+   "key": "why",
+   "width": 20
+  },
+  {
+   "header": "latest_start",
+   "key": "latest_start",
+   "width": 20
+  },
+  {
+   "header": "latest_finish",
+   "key": "latest_finish",
+   "width": 20
+  },
+  {
+   "header": "status",
+   "key": "status",
+   "width": 20
+  }
+ ],
+ "notice": "CANDIDATE — NOT VALIDATED. The programme replanned at the working stage of a PARTIAL addendum: every op valid there stands as a proposal, none is accepted, and the validated A5 (the a5/ folder above this one) is unchanged. PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-15 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-15). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
+ "planning_date": "2026-11-15",
+ "rows": [
+  {
+   "activity": "fin-model-build",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-22",
+   "name": "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells), reflecting ADD-03 Section 3 (Base Date pricing and indexation, Indexed Proportion)",
+   "rows": [
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 16 WD",
+   "why": [
+    "ADD-03:Q19 UNRESOLVED: not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer …"
+   ]
+  },
+  {
+   "activity": "technical-proposal",
+   "latest_finish": "2026-11-19",
+   "latest_start": "2026-10-25",
+   "name": "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration; page limit as amended)",
+   "rows": [
+    "VOL-II-3.4-01",
+    "VOL-II-9.1-01",
+    "VOL-II-9.1-02"
+   ],
+   "status": "INFEASIBLE by 15 WD",
+   "why": [
+    "ADD-03:5.1 UNRESOLVED: not promotable: ADD-03/5.1 conflicting (consistency: VOL-II:3.4: ADD-03/5.1, ADD-03/5.2 change the same unit in different ways across the set); ADD-03/5.1-clar…",
+    "STALE at ADD-03: its reading was not re-made (new dependency ADD-03:5.2; new dependency ADD-03:Q18; VOL-II:3.4 changed since BASE (by ADD-03/5.2, ADD-03/Q18))"
+   ]
+  },
+  {
+   "activity": "deviations-review",
+   "latest_finish": "2026-11-19",
+   "latest_start": "2026-11-08",
+   "name": "Review Volume V and list every deviation, qualification or reservation, including any assumption that limits or qualifies a Volume V obligation (ADD-03 response 16)",
+   "rows": [
+    "VOL-V-29.2-01"
+   ],
+   "status": "INFEASIBLE by 5 WD",
+   "why": [
+    "ADD-03:Q19 UNRESOLVED: not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer …"
+   ]
+  },
+  {
+   "activity": "fin-model-freeze",
+   "latest_finish": "2026-11-12",
+   "latest_start": "2026-11-12",
+   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F; check the model reflects ADD-03 Section 3 (Base Date indexation and the Indexed Proportion stated in Form 4-F)",
+   "rows": [
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 16 WD",
+   "why": [
+    "ADD-03:Q19 UNRESOLVED: not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer …"
+   ]
+  },
+  {
+   "activity": "form-4e",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)",
+   "rows": [
+    "VOL-V-29.2-01"
+   ],
+   "status": "INFEASIBLE by 15 WD",
+   "why": [
+    "ADD-03:Q19 UNRESOLVED: not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer …"
+   ]
+  },
+  {
+   "activity": "form-4f",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)",
+   "rows": [
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 16 WD",
+   "why": [
+    "ADD-03:Q19 UNRESOLVED: not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer …"
+   ]
+  },
+  {
+   "activity": "iso-copy",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Obtain a copy of the EPC Contractor's ISO 9001:2015 certificate and check it is current at the PDD",
+   "rows": [
+    "VOL-I-8.3-01"
+   ],
+   "status": "OK",
+   "why": [
+    "STALE at ADD-03: its reading was not re-made (new dependency ADD-03:Q17; VOL-I:8.3 changed since ADD-01 (by ADD-03/Q17))"
+   ]
+  }
+ ],
+ "stage": "ADD-03 [CANDIDATE — NOT VALIDATED]",
+ "status_date": "2026-11-15",
+ "validated_stage": "ADD-02",
+ "validated_status_date": "2026-10-22"
+}

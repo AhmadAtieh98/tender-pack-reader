@@ -170,38 +170,79 @@ rows:
     issues: [I-VOL-III]
   # ---------------------------------------------------------------- Section 6: submission
   - id: VOL-I-6.2-01
-    group: "VOL-I:6.2"
-    scope: [bid_submission, envelopes]
-    requirement: "Submit the Proposal in two separately sealed, clearly marked envelopes: A (Technical Proposal) and B (Commercial Proposal)"
-    units: ["VOL-I:6.2"]
+    group: VOL-I:6.2
+    scope:
+    - bid_submission
+    - envelopes
+    requirement: 'Submit the Proposal in two separately sealed, clearly marked envelopes: A (Technical Proposal) and
+      B (Commercial Proposal)'
+    units:
+    - VOL-I:6.2
     discipline: Bid management
     owner: Bid manager
     assessment: pass_fail
-    evidence: [EV-DELIVERY]
+    evidence:
+    - EV-DELIVERY
     interpretations:
-      - stage: BASE
-        quote: "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal)."
-        note: "The marking wording is not stated here; Appendix 3 gives a marking (row VOL-I-App3-01)."
+    - stage: BASE
+      quote: 'Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical
+        Proposal) and Envelope B (Commercial Proposal).'
+      note: The marking wording is not stated here; Appendix 3 gives a marking (row VOL-I-App3-01).
+    - stage: ADD-03
+      quote: 'Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical
+        Proposal) and Envelope B (Commercial Proposal).'
+      parameters: {}
+      consequence: none_stated
+      note: 'Words unchanged at ADD-03. ADD-03 Q20 cites VOL-I 6.2: the Indexed Proportion goes in Form 4-F (Envelope
+        B) and must not be stated anywhere in Envelope A. The marking wording is still given only in Appendix 3 (row
+        VOL-I-App3-01). [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code
+        headless (opus)); PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim; no consequence stated for the envelopes themselves"
-    issues: [I-NO-CONSEQUENCE]
+    confidence_reason: verbatim; no consequence stated for the envelopes themselves
+    issues:
+    - I-NO-CONSEQUENCE
   - id: VOL-I-6.2-02
-    group: "VOL-I:6.2"
-    scope: [envelope_A, commercial_separation]
-    requirement: "No price, rate or other commercial information anywhere in Envelope A"
-    units: ["VOL-I:6.2"]
+    group: VOL-I:6.2
+    scope:
+    - envelope_A
+    - commercial_separation
+    requirement: No price, rate or other commercial information anywhere in Envelope A
+    units:
+    - VOL-I:6.2
     discipline: Commercial
     owner: Commercial lead
     assessment: pass_fail
-    no_deliverable: "a check on the content of every Envelope A document, not a deliverable of its own"
+    no_deliverable: a check on the content of every Envelope A document, not a deliverable of its own
     interpretations:
-      - stage: BASE
-        quote: "The appearance of any price, rate, or other commercial information within Envelope A"
-        consequence: {class: non_responsive, unit: "VOL-I:6.2", quote: "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive."}
-        note: "'Other commercial information' is not defined. Form 4-B (Envelope A) asks for a contract value in SAR: see I-VOL-I-ENV-A-PRICES."
+    - stage: BASE
+      quote: The appearance of any price, rate, or other commercial information within Envelope A
+      consequence:
+        class: non_responsive
+        unit: VOL-I:6.2
+        quote: The appearance of any price, rate, or other commercial information within Envelope A shall render the
+          Proposal non-responsive.
+      note: '''Other commercial information'' is not defined. Form 4-B (Envelope A) asks for a contract value in SAR:
+        see I-VOL-I-ENV-A-PRICES.'
+    - stage: ADD-03
+      quote: The appearance of any price, rate, or other commercial information within Envelope A
+      parameters:
+        named_by_addendum: 'the Indexed Proportion (ADD-03 Q20: shall not be stated anywhere in Envelope A)'
+      consequence:
+        class: non_responsive
+        unit: VOL-I:6.2
+        quote: The appearance of any price, rate, or other commercial information within Envelope A shall render the
+          Proposal non-responsive.
+      note: Words of VOL-I 6.2 unchanged at ADD-03. ADD-03 Q20 says 'The Indexed Proportion shall not be stated anywhere
+        in Envelope A. Volume I Clause 6.2 applies.' The Indexed Proportion is therefore one item that must be kept
+        out of Envelope A. Whether it falls within 'other commercial information', and what follows if it appears,
+        is for a person; this reading only records the words. 'Other commercial information' is still undefined, and
+        the Form 4-B conflict remains (I-VOL-I-ENV-A-PRICES). [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]
     confidence: medium
-    confidence_reason: "verbatim consequence; the scope of 'other commercial information' is not defined and Form 4-B conflicts"
-    issues: [I-VOL-I-ENV-A-PRICES]
+    confidence_reason: verbatim consequence; the scope of 'other commercial information' is not defined and Form 4-B
+      conflicts
+    issues:
+    - I-VOL-I-ENV-A-PRICES
   - id: VOL-I-6.5-01
     group: "VOL-I:6.5"
     scope: [bid_submission, copies]
@@ -506,39 +547,100 @@ rows:
     confidence_reason: "verbatim; Form 4-B also asks for a contract value in SAR (Envelope A), see I-VOL-I-ENV-A-PRICES"
     issues: [I-VOL-I-ENV-A-PRICES, I-BIDDER-FACTS]
   - id: VOL-I-9.6-01
-    group: "VOL-I:9.6"
-    scope: [envelope_A, deviations, forms]
-    requirement: "Form 4-E lists every deviation, qualification or reservation to Volume V; never 'no deviations' with a qualification elsewhere"
-    units: ["VOL-I:9.6", "VOL-I:9.1(e)"]
+    group: VOL-I:9.6
+    scope:
+    - envelope_A
+    - deviations
+    - forms
+    requirement: Form 4-E lists every deviation, qualification or reservation to Volume V; never 'no deviations' with
+      a qualification elsewhere
+    units:
+    - VOL-I:9.6
+    - VOL-I:9.1(e)
     discipline: Legal
     owner: Legal counsel
     assessment: pass_fail
-    evidence: [EV-FORM-4E]
+    evidence:
+    - EV-FORM-4E
     interpretations:
-      - stage: BASE
-        quote: "Form 4-E shall list every deviation, qualification or reservation to Volume V."
-        consequence: {class: non_responsive, unit: "VOL-I:9.6", quote: "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."}
-        note: "Whether to list the concession-term point (VOL-I 12.1 vs VOL-V 3.1) as a deviation is for a person (I-CONCESSION)."
+    - stage: BASE
+      quote: Form 4-E shall list every deviation, qualification or reservation to Volume V.
+      consequence:
+        class: non_responsive
+        unit: VOL-I:9.6
+        quote: A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the
+          Proposal shall be treated as non-responsive.
+      note: Whether to list the concession-term point (VOL-I 12.1 vs VOL-V 3.1) as a deviation is for a person (I-CONCESSION).
+    - stage: ADD-03
+      quote: Form 4-E shall list every deviation, qualification or reservation to Volume V.
+      parameters: {}
+      consequence:
+        class: non_responsive
+        unit: VOL-I:9.6
+        quote: A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the
+          Proposal shall be treated as non-responsive.
+      note: 'Words of VOL-I 9.6 unchanged at ADD-03. ADD-03 Q16 says: ''An assumption that limits or qualifies an
+        obligation in Volume V is a qualification and shall be listed in Form 4-E. Volume I Clause 9.6 applies.''
+        So Volume V assumptions set out elsewhere, including in the Technical Proposal, must be listed in Form 4-E.
+        Whether to list the concession-term point is still for a person (I-CONCESSION). [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim"
-    issues: [I-CONCESSION]
+    confidence_reason: verbatim
+    issues:
+    - I-CONCESSION
   - id: VOL-I-9.7-01
-    group: "VOL-I:9.7"
-    scope: [envelope_A, technical_proposal]
-    requirement: "Technical Proposal narrative (Envelope A item (f)) addressing at least the six listed topics"
-    units: ["VOL-I:9.7", "VOL-I:9.1(f)"]
+    group: VOL-I:9.7
+    scope:
+    - envelope_A
+    - technical_proposal
+    requirement: Technical Proposal narrative (Envelope A item (f)) addressing at least the six listed topics
+    units:
+    - VOL-I:9.7
+    - VOL-I:9.1(f)
     discipline: Technical
     owner: Technical lead
     assessment: pass_fail
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel."
-        parameters: {topics_min: [process design, construction methodology and programme, O&M philosophy, health and safety plan, environmental and social management approach, organisation and key personnel]}
-        note: "The topics correspond to the Table 1-1 criteria, where they are scored."
+    - stage: BASE
+      quote: The Technical Proposal shall address, as a minimum, the process design, the construction methodology
+        and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and
+        social management approach, and the organisation and key personnel.
+      parameters:
+        topics_min:
+        - process design
+        - construction methodology and programme
+        - O&M philosophy
+        - health and safety plan
+        - environmental and social management approach
+        - organisation and key personnel
+      note: The topics correspond to the Table 1-1 criteria, where they are scored.
+    - stage: ADD-03
+      quote: The Technical Proposal shall address, as a minimum, the process design, the construction methodology
+        and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and
+        social management approach, and the organisation and key personnel.
+      parameters:
+        topics_min:
+        - process design
+        - construction methodology and programme
+        - O&M philosophy
+        - health and safety plan
+        - environmental and social management approach
+        - organisation and key personnel
+        construction_methodology_adds: a crane and lifting plan demonstrating compliance with Table 5-1 (VOL-II 5.6
+          inserted by ADD-03 7.1) (ADD-03 Q21)
+      consequence: none_stated
+      note: Words of VOL-I 9.7 unchanged at ADD-03. ADD-03 Q21 adds that the construction methodology must include
+        a crane and lifting plan showing compliance with Table 5-1. ADD-03 7.2 says the Arabic Table 5-1 (Appendix
+        A image) governs over the English translation at Appendix B. The height limits must therefore come from the
+        approved reading of the Arabic image, whose approval status is not settled here. No consequence is stated
+        for a missing topic. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code
+        headless (opus)); PROPOSED; not reviewed]
     confidence: high
-    confidence_reason: "verbatim; no consequence stated for a missing topic"
-    issues: [I-NO-CONSEQUENCE]
+    confidence_reason: verbatim; no consequence stated for a missing topic
+    issues:
+    - I-NO-CONSEQUENCE
   # ---------------------------------------------------------------- Section 10: Envelope B
   - id: VOL-I-10.1-01
     group: "VOL-I:10.1"
@@ -572,36 +674,69 @@ rows:
     confidence_reason: "verbatim; no consequence stated (VOL-I 10.5 covers conditional or alternative prices)"
     issues: [I-NO-CONSEQUENCE]
   - id: VOL-I-10.3-01
-    group: "VOL-I:10.3"
-    scope: [envelope_B, financial_model]
-    requirement: "Financial Model in unlocked, fully formula-linked Excel, with no macros and no hard-coded values in calculation cells"
-    units: ["VOL-I:10.3"]
+    group: VOL-I:10.3
+    scope:
+    - envelope_B
+    - financial_model
+    requirement: Financial Model in unlocked, fully formula-linked Excel, with no macros and no hard-coded values
+      in calculation cells
+    units:
+    - VOL-I:10.3
     discipline: Finance
     owner: Financial modeller
     assessment: pass_fail
-    evidence: [EV-FIN-MODEL]
+    evidence:
+    - EV-FIN-MODEL
     interpretations:
-      - stage: BASE
-        quote: "The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded values in calculation cells"
+    - stage: BASE
+      quote: The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without
+        macros and without hard-coded values in calculation cells
+    - stage: ADD-03
+      quote: The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without
+        macros and without hard-coded values in calculation cells
+      parameters: {}
+      consequence: none_stated
+      note: 'Words of VOL-I 10.3 unchanged at ADD-03. ADD-03 3.4 adds: ''Bidders shall reflect this Section 3 in the
+        Financial Model submitted under Volume I Clause 10.3.'' Section 3 covers the Availability Payment expressed
+        at Base Date prices (VOL-V 1.1 as amended), the new Base Date definition, and the Indexed Proportion under
+        VOL-V 29.2 as amended. No consequence is stated. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim; no consequence stated; Appendix 2 names files '.pdf'"
-    issues: [I-NO-CONSEQUENCE, I-VOL-I-FILE-NAMES]
+    confidence_reason: verbatim; no consequence stated; Appendix 2 names files '.pdf'
+    issues:
+    - I-NO-CONSEQUENCE
+    - I-VOL-I-FILE-NAMES
   - id: VOL-I-10.3-02
-    group: "VOL-I:10.3"
-    scope: [envelope_B, financial_model, model_audit]
-    requirement: "Financial Model accompanied by an independent model auditor's opinion addressed to the Authority"
-    units: ["VOL-I:10.3"]
+    group: VOL-I:10.3
+    scope:
+    - envelope_B
+    - financial_model
+    - model_audit
+    requirement: Financial Model accompanied by an independent model auditor's opinion addressed to the Authority
+    units:
+    - VOL-I:10.3
     discipline: Finance
     owner: Financial modeller
     assessment: pass_fail
-    evidence: [EV-MODEL-AUDIT]
+    evidence:
+    - EV-MODEL-AUDIT
     interpretations:
-      - stage: BASE
-        quote: "shall be accompanied by an opinion from an independent model auditor addressed to the Authority"
-        note: "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated."
+    - stage: BASE
+      quote: shall be accompanied by an opinion from an independent model auditor addressed to the Authority
+      note: VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated.
+    - stage: ADD-03
+      quote: shall be accompanied by an opinion from an independent model auditor addressed to the Authority
+      parameters: {}
+      consequence: none_stated
+      note: Words of VOL-I 10.3 unchanged at ADD-03. Under ADD-03 3.4 the Financial Model must reflect ADD-03 Section
+        3. Whether the auditor's opinion must cover the Section 3 changes is not stated. Where the opinion goes, given
+        VOL-I 10.1, is still not stated (I-VOL-I-ENV-B). No consequence is stated. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]
     confidence: medium
-    confidence_reason: "verbatim; conflicts with VOL-I 10.1; no consequence stated"
-    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
+    confidence_reason: verbatim; conflicts with VOL-I 10.1; no consequence stated
+    issues:
+    - I-NO-CONSEQUENCE
+    - I-VOL-I-ENV-B
   - id: VOL-I-10.4-01
     group: "VOL-I:10.4"
     scope: [envelope_B, price]

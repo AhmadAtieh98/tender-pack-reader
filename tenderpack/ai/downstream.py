@@ -160,7 +160,13 @@ def promoted_ops(ws: Workspace, ps) -> dict:
         for k, why in bad.items():
             dropped[k] = f"invalid in the dry run of the promotable set (other items left out): {_short(why, 300)}"
             ops.pop(k, None)
-    return {"ops": ops, "dispositions": disps, "dropped": dropped, "sim": sim, "r2": r2}
+    # session 12 (blind-06 follow-up 6 b): each analysis item's own conclusions (its prose and its interpretation
+    # statements, quotations aside), against which validate() checks that downstream does not hand them back
+    st_text = {x.id: x.text for x in getattr(ps, "statements", None) or [] if getattr(x, "kind", None) == "interpretation"}
+    analysis = {it.id: (it.provision, H.prose(dict(it.payload or {})) + " " + " ".join(
+        st_text.get(sid, "") for sid in getattr(it, "statements", None) or []))
+        for it in ps.items if it.verification_status != "invalid" and it.statement_type != "escalation"}
+    return {"ops": ops, "dispositions": disps, "dropped": dropped, "sim": sim, "r2": r2, "analysis": analysis}
 
 
 # ---------------------------------------------------------------------------------------------- scope and tasks
@@ -428,13 +434,24 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
               "activity": ActivityPayload, "dependency": DependencyPayload, "escalation": EscalationPayload,
               "no_change": NoChangePayload}
     decisions = r["decisions"]
+    # session 12 (blind-06 follow-ups 12 and 6 b): points the documents settle, and reversals of the analysis phase
+    from .controller import APPLIED_RULE, _provisions, applied_rule_review, phase_reversals
+    texts_all = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}
+    provs = _provisions(ws, addendum)
     # -------------------------------------------------- pass 1: shape, ids, evidence, statements
     for i, it in enumerate(ds.items):
         # session 12: a judgment a person owns, read from the proposer's own payload before any field is reset
-        # (tenderpack.human_owned: by type and content, never by the model's label)
+        # (tenderpack.human_owned: by type and content, never by the model's label); a point the documents settle is
+        # an applied rule (controller.applied_rule_review), human-owned only for what the rest of its words judge
         cid0 = str(((it.payload or {}).get("entry") or {}).get("id") or "") if it.statement_type == "clarification_item" \
             else ""
-        F[i]["human"] = H.downstream_reasons(it.statement_type, dict(it.payload or {}), clar_by_id.get(cid0))
+        ar = applied_rule_review(it.statement_type, dict(it.payload or {}), it.provision, texts_all, addendum, provs,
+                                 "downstream", clar_by_id.get(cid0))
+        F[i]["human"] = ar["human"]
+        if ar["lines"]:
+            rec(i, APPLIED_RULE, True, "; ".join(ar["lines"])[:600])
+            if it.statement_type != "escalation":
+                F[i]["interp"].append(APPLIED_RULE)
         if it.id in seen:
             rec(i, "id", False, f"duplicate item id {it.id}", "invalid")
         seen.add(it.id)
@@ -671,9 +688,13 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
                 # session 11: the row at EVERY stage of the candidate, not only at the addendum
                 evs = {s.stage: (ev if s.stage == addendum else reg.evaluate(row, s)) for s in r2["stages"]}
             except Exception as e:                               # noqa: BLE001 (a date rule that does not parse, ...)
+                from ..dates import KINDS, PURPOSES
+                hint = ("; a computed deadline is kind 'relative' (anchor, offset, unit, direction): copy the computed_date "
+                        "task's `date_rule`" if any(getattr(rd, "kind", None) in PURPOSES and rd.kind not in KINDS
+                                                   for rd in row.date_rules) else "")     # session 12 (follow-up 5)
                 for i in idxs:
                     F[i]["recs"].append(ValidationRecord(check="register", ok=False,
-                                                         detail=f"the row does not evaluate: {type(e).__name__}: {e}"[:400]))
+                                                         detail=f"the row does not evaluate: {type(e).__name__}: {e}{hint}"[:500]))
                     F[i]["invalid"].append("register")
                 continue
             evs_by_row[rid] = evs
@@ -723,7 +744,8 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
                             F[i]["recs"].append(ValidationRecord(check="date rule", ok=False, detail=(
                                 f"{rd.rule_id}: its words are not in {rd.source_unit} at {addendum}")))
                             F[i]["insufficient"].append("date rule words")
-                        if rd.anchor and rd.anchor not in rf2.anchors:
+                        if rd.anchor and rd.anchor not in rf2.anchors and rd.anchor not in {
+                                f"{x.stage}-issue" for x in r2["stages"] if x.issued}:   # session 12: an issue date
                             F[i]["recs"].append(ValidationRecord(check="date rule", ok=False,
                                                                  detail=f"{rd.rule_id}: unknown anchor {rd.anchor}"))
                             F[i]["invalid"].append("anchor")
@@ -853,6 +875,14 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         for a_id, j in proposed_acts.items():
             if not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
                 rec(j, "C40/C44/C45", True, f"planned at {', '.join(plan_at)} with the proposals without a new A5 problem")
+    # session 12 (blind-06 follow-up 6 b): an item that hands back to a person a point an analysis item concluded by
+    # applying a clause of the documents is a reversal: conflicting, with the analysis item named (never promoted silently)
+    for i, why in phase_reversals([(i, it.provision, H.prose(dict(it.payload or {}))) for i, it in enumerate(ds.items)
+                                   if it.statement_type != "no_change"], promoted.get("analysis") or {}, texts_all,
+                                  addendum, provs).items():
+        if not F[i]["invalid"]:
+            rec(i, "consistency (phases)", False, why, "conflict")
+            report["interactions"].append(f"{ds.items[i].id}: {why}"[:300])
     # -------------------------------------------------- statuses
     for i, it in enumerate(ds.items):          # session 12: a human-owned item is never evidence_verified
         if F[i]["human"] and it.statement_type != "escalation":
@@ -1271,6 +1301,21 @@ def replace_requirement_problem(rr: dict | None, current: str) -> str | None:
     return None
 
 
+def _re_present(it, iss: dict, ws, addendum: str) -> None:
+    """Session 12 (blind-06 follow-up 12): a promotable issue item whose point the documents settle (an APPLIED_RULE
+    record) is written with the rule applied and the clause quoted (controller.re_present_issue); nothing is decided."""
+    if it.statement_type != "issue" or not any(v.check == controller.APPLIED_RULE for v in it.validation or []):
+        return
+    k = (it.payload or {}).get("id")
+    if k not in iss:
+        return
+    texts = {u: (x.get("text") or "") for u, x in ws.units_by_id.items()}
+    ar = controller.applied_rule_review("issue", dict(it.payload or {}), it.provision, texts, addendum,
+                                        controller._provisions(ws, addendum), "downstream")
+    if ar["lines"]:
+        iss[k] = controller.re_present_issue(iss[k], ar["lines"], ar["sentences"])
+
+
 def partly_answered(reason: str | None) -> bool:
     """A provision answered by a promoted item while a sibling item is an escalation (workflow.answer_state)."""
     return bool(reason) and reason.startswith("partly answered")
@@ -1394,6 +1439,8 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
     for k, v in controller.cover_issues(ps, texts, controller._provisions(ws, addendum)).items():
         iss.setdefault(k, v)
     owned = {it.payload["id"] for it in items if it.statement_type == "issue" and H.is_human_owned(it)}
+    for it in items:                             # session 12 (follow-up 12): a settled point, re-presented as applied
+        _re_present(it, iss, ws, addendum)
     for k, v in iss.items():
         v["text"] = v["text"] + f" {tag}"
         if k in owned:                           # session 12: shown HUMAN DECISION PENDING until a person decides

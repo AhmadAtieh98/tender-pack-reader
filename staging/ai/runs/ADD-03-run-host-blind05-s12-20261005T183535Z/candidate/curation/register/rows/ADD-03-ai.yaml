@@ -1,0 +1,75 @@
+# CANDIDATE rows written by AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z: PROPOSED, not reviewed.
+doc: ADD-03
+prepared_by: AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code headless
+  (opus)); PROPOSED; not reviewed
+method: AI workflow downstream proposals validated by tenderpack.ai.downstream
+rows:
+- id: ADD-03-2.1-01
+  group: VOL-I:6.6
+  scope:
+  - bid_submission
+  - deadline
+  requirement: Withdrawal of the Proposal by written notice through the Portal at any time before the Proposal Due
+    Date; modification by written notice through the Portal not later than two Working Days before the Proposal
+    Due Date; a modification received after that time is rejected unopened
+  units:
+  - VOL-I:6.6
+  discipline: Bid management
+  assessment: procedural
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Proposal
+      not later than two (2) Working Days before the Proposal Due Date, in each case by written notice through the
+      Portal.
+    parameters:
+      withdraw_cutoff: 'before the Proposal Due Date (VOL-I 6.1 as amended: 26 November 2026, 14:00 Riyadh time)'
+      modify_cutoff: two (2) Working Days before the Proposal Due Date; planning reading Tuesday 24 November 2026
+        (VOL-I 2.4 calendar, the Proposal Due Date not counted); time of day not stated
+      means: written notice through the Portal
+    consequence:
+      class: rejection
+      unit: VOL-I:6.6
+      quote: a modification received after the time stated in this Clause, will be rejected unopened and returned
+        to the Bidder.
+    note: This replaces the obligation of row VOL-I-6.7-01, whose unit VOL-I 6.7 is deleted by ADD-03/2.1(b). The
+      clause refers to 'the time stated in this Clause' but states only a number of Working Days, not a time of
+      day. The cover says the consolidation is 'without change of substance'; see I-ADD03-6.6-SUBSTANCE. Which governs
+      is for a person. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code
+      headless (opus)); PROPOSED; not reviewed]
+  date_rules:
+  - rule_id: ADD03-WITHDRAW-CUTOFF
+    kind: anchor
+    purpose: deadline
+    anchor: PDD
+    offset: 0
+    unit: calendar_day
+    direction: after
+    source_unit: VOL-I:6.6
+    text: may withdraw its Proposal at any time before the Proposal Due Date
+    note: ''
+  - rule_id: ADD03-MODIFY-CUTOFF
+    kind: anchor
+    purpose: deadline
+    anchor: PDD
+    offset: 2
+    unit: working_day
+    direction: before
+    source_unit: VOL-I:6.6
+    text: not later than two (2) Working Days before the Proposal Due Date
+    note: 'calculate(relative_date): one reading, Tuesday 24 November 2026 (the stated date not counted)'
+  confidence: medium
+  confidence_reason: verbatim text of VOL-I 6.6 as replaced by ADD-03 2.1(a); the time of day of the modification
+    cut-off is not stated, and the cover note ('without change of substance') conflicts with the change in the cut-off
+  issues:
+  - I-ADD03-6.6-SUBSTANCE
+  owner: Bid manager
+  no_deliverable: 'an option: arises only if the Bidder withdraws or modifies its Proposal'
+  introduced:
+    stage: ADD-03
+    by: ADD-03/2.1(a)
+    evidence:
+      unit: VOL-I:6.6
+      page: 3
+      words: may modify its Proposal not later than two (2) Working Days before the Proposal Due Date
+    note: ''

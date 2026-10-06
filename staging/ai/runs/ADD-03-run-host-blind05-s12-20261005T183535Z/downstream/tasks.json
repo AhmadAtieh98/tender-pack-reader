@@ -1,0 +1,2983 @@
+[
+ {
+  "id": "row:VOL-I-10.3-01",
+  "kind": "row_reading",
+  "row": "VOL-I-10.3-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:3.4",
+   "VOL-I:10.3 changed since BASE (by ADD-03/3.4)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-10.3-01",
+   "group": "VOL-I:10.3",
+   "scope": [
+    "envelope_B",
+    "financial_model"
+   ],
+   "requirement": "Financial Model in unlocked, fully formula-linked Excel, with no macros and no hard-coded values in calculation cells",
+   "units": [
+    "VOL-I:10.3"
+   ],
+   "discipline": "Finance",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FIN-MODEL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded values in calculation cells",
+     "parameters": {},
+     "consequence": "none_stated"
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; no consequence stated; Appendix 2 names files '.pdf'",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-VOL-I-FILE-NAMES"
+   ],
+   "owner": "Financial modeller",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded values in calculation cells",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-10.3-02",
+  "kind": "row_reading",
+  "row": "VOL-I-10.3-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:3.4",
+   "VOL-I:10.3 changed since BASE (by ADD-03/3.4)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-10.3-02",
+   "group": "VOL-I:10.3",
+   "scope": [
+    "envelope_B",
+    "financial_model",
+    "model_audit"
+   ],
+   "requirement": "Financial Model accompanied by an independent model auditor's opinion addressed to the Authority",
+   "units": [
+    "VOL-I:10.3"
+   ],
+   "discipline": "Finance",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-MODEL-AUDIT"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "shall be accompanied by an opinion from an independent model auditor addressed to the Authority",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; conflicts with VOL-I 10.1; no consequence stated",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-VOL-I-ENV-B"
+   ],
+   "owner": "Financial modeller",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "shall be accompanied by an opinion from an independent model auditor addressed to the Authority",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; where the opinion goes is not stated."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-6.1-01",
+  "kind": "row_reading",
+  "row": "VOL-I-6.1-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE (as amended by ADD-01/2.1)",
+  "stale": [
+   "VOL-I:6.6 changed since ADD-01 (by ADD-03/2.1(a))"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-6.1-01",
+   "group": "VOL-I:6.1",
+   "scope": [
+    "bid_submission",
+    "deadline"
+   ],
+   "requirement": "Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address",
+   "units": [
+    "VOL-I:6.1"
+   ],
+   "discipline": "Bid management",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-DELIVERY"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "not later than 14:00 hours Riyadh time on Thursday 12 November 2026",
+     "parameters": {},
+     "consequence": {
+      "class": "rejection",
+      "unit": "VOL-I:6.6",
+      "quote": "will be rejected unopened and returned to the Bidder"
+     }
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "Thursday 26 November 2026",
+     "parameters": {},
+     "consequence": {
+      "class": "rejection",
+      "unit": "VOL-I:6.6",
+      "quote": "will be rejected unopened and returned to the Bidder"
+     },
+     "note": "ADD-01 §2.1 amends the date; the time is unchanged."
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "PDD",
+     "kind": "anchor",
+     "purpose": "deadline",
+     "anchor": "PDD",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:6.1",
+     "text": "not later than 14:00 hours Riyadh time on <date>",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause; the consequence is stated in VOL-I 6.6",
+   "owner": "Bid manager",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "Thursday 26 November 2026",
+   "parameters": {},
+   "consequence": {
+    "class": "rejection",
+    "unit": "VOL-I:6.6",
+    "quote": "will be rejected unopened and returned to the Bidder",
+    "gloss": null
+   },
+   "note": "ADD-01 §2.1 amends the date; the time is unchanged."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-6.2-01",
+  "kind": "row_reading",
+  "row": "VOL-I-6.2-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q20",
+   "VOL-I:6.2 changed since BASE (by ADD-03/Q20)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-6.2-01",
+   "group": "VOL-I:6.2",
+   "scope": [
+    "bid_submission",
+    "envelopes"
+   ],
+   "requirement": "Submit the Proposal in two separately sealed, clearly marked envelopes: A (Technical Proposal) and B (Commercial Proposal)",
+   "units": [
+    "VOL-I:6.2"
+   ],
+   "discipline": "Bid management",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-DELIVERY"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal).",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The marking wording is not stated here; Appendix 3 gives a marking (row VOL-I-App3-01)."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; no consequence stated for the envelopes themselves",
+   "issues": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "owner": "Bid manager",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal).",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "The marking wording is not stated here; Appendix 3 gives a marking (row VOL-I-App3-01)."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-6.2-02",
+  "kind": "row_reading",
+  "row": "VOL-I-6.2-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q20",
+   "VOL-I:6.2 changed since BASE (by ADD-03/Q20)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-6.2-02",
+   "group": "VOL-I:6.2",
+   "scope": [
+    "envelope_A",
+    "commercial_separation"
+   ],
+   "requirement": "No price, rate or other commercial information anywhere in Envelope A",
+   "units": [
+    "VOL-I:6.2"
+   ],
+   "discipline": "Commercial",
+   "assessment": "pass_fail",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The appearance of any price, rate, or other commercial information within Envelope A",
+     "parameters": {},
+     "consequence": {
+      "class": "non_responsive",
+      "unit": "VOL-I:6.2",
+      "quote": "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive."
+     },
+     "note": "'Other commercial information' is not defined. Form 4-B (Envelope A) asks for a contract value in SAR: see I-VOL-I-ENV-A-PRICES."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim consequence; the scope of 'other commercial information' is not defined and Form 4-B conflicts",
+   "issues": [
+    "I-VOL-I-ENV-A-PRICES"
+   ],
+   "owner": "Commercial lead",
+   "no_deliverable": "a check on the content of every Envelope A document, not a deliverable of its own",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The appearance of any price, rate, or other commercial information within Envelope A",
+   "parameters": {},
+   "consequence": {
+    "class": "non_responsive",
+    "unit": "VOL-I:6.2",
+    "quote": "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.",
+    "gloss": null
+   },
+   "note": "'Other commercial information' is not defined. Form 4-B (Envelope A) asks for a contract value in SAR: see I-VOL-I-ENV-A-PRICES."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-6.7-01",
+  "kind": "row_reading",
+  "row": "VOL-I-6.7-01",
+  "provisions": [
+   "ADD-03:2.1"
+  ],
+  "status_at_addendum": "DELETED (ADD-03/2.1(b))",
+  "stale": [],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-6.7-01",
+   "group": "VOL-I:6.7",
+   "scope": [
+    "bid_submission",
+    "deadline"
+   ],
+   "requirement": "A withdrawal or modification of the Proposal may be made by written notice through the Portal at any time before the Proposal Due Date; no modification will be accepted thereafter",
+   "units": [
+    "VOL-I:6.7"
+   ],
+   "discipline": "Bid management",
+   "assessment": "procedural",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal.",
+     "parameters": {},
+     "consequence": {
+      "class": "lesser",
+      "unit": "VOL-I:6.7",
+      "quote": "No modification will be accepted thereafter."
+     }
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal.",
+     "parameters": {
+      "cutoff": "the amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6; 6.1 as amended by ADD-01 2.1)",
+      "means": "written notice through the Portal",
+      "express_late_prohibition": "modifications only ('No modification will be accepted thereafter')"
+     },
+     "consequence": {
+      "class": "lesser",
+      "unit": "VOL-I:6.7",
+      "quote": "No modification will be accepted thereafter."
+     },
+     "note": "As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): a Bidder may withdraw or modify its Proposal by written notice through the Portal at any time before the amended Proposal Due Date, 26 November 2026, 14:00 Riyadh time (VOL-I 6.7 with 2.6; ADD-01 2.1). The clause's express prohibition after that time concerns modifications only ('No modification will be accepted thereafter'); it is not extended to withdrawals, and nothing further is read into it. [Applied from proposal P-S08-VOL-I-6.7-01 by Claude Code (assistant), on Ahmad's written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "MODIFY-CUTOFF",
+     "kind": "anchor",
+     "purpose": "deadline",
+     "anchor": "PDD",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:6.7",
+     "text": "at any time before the Proposal Due Date",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; the cut-off moves with the PDD although ADD-01 §2.2 does not name this clause",
+   "owner": "Bid manager",
+   "no_deliverable": "an option: arises only if the Bidder withdraws or modifies its Proposal",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal.",
+   "parameters": {
+    "cutoff": "the amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6; 6.1 as amended by ADD-01 2.1)",
+    "means": "written notice through the Portal",
+    "express_late_prohibition": "modifications only ('No modification will be accepted thereafter')"
+   },
+   "consequence": {
+    "class": "lesser",
+    "unit": "VOL-I:6.7",
+    "quote": "No modification will be accepted thereafter.",
+    "gloss": null
+   },
+   "note": "As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): a Bidder may withdraw or modify its Proposal by written notice through the Portal at any time before the amended Proposal Due Date, 26 November 2026, 14:00 Riyadh time (VOL-I 6.7 with 2.6; ADD-01 2.1). The clause's express prohibition after that time concerns modifications only ('No modification will be accepted thereafter'); it is not extended to withdrawals, and nothing further is read into it. [Applied from proposal P-S08-VOL-I-6.7-01 by Claude Code (assistant), on Ahmad's written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]"
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-I:6.7",
+    "effective_unit": "VOL-I:6.7",
+    "status_after": "deleted",
+    "before": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter.",
+    "after": "A Bidder may withdraw or modify its Proposal at any time before the Proposal Due Date by written notice through the Portal. No modification will be accepted thereafter.",
+    "ops": [
+     "ADD-03/2.1(b)"
+    ]
+   }
+  ],
+  "expect": "the row's unit is no longer in force: no reading is needed unless the obligation's words were deleted from a unit that stays in force (then a reading with `removed: {by: <op>}`)"
+ },
+ {
+  "id": "row:VOL-I-8.3-01",
+  "kind": "row_reading",
+  "row": "VOL-I-8.3-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q17",
+   "VOL-I:8.3 changed since ADD-01 (by ADD-03/Q17)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-8.3-01",
+   "group": "VOL-I:8.3",
+   "scope": [
+    "qualification",
+    "envelope_A"
+   ],
+   "requirement": "EPC Contractor ISO 9001:2015 certificate from an accredited certification body, current as at the Proposal Due Date (as amended), copy with Envelope A; checked pass/fail under VOL-I 11.1(i)",
+   "units": [
+    "VOL-I:8.3"
+   ],
+   "discipline": "Technical",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-ISO"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "current as at the Proposal Due Date",
+     "parameters": {},
+     "consequence": "none_stated"
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "current as at the Proposal Due Date",
+     "parameters": {
+      "current_at": "the latest amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6, 6.1 as amended by ADD-01 2.1; not changed by ADD-02)",
+      "issuer": "an accredited certification body (VOL-I 8.3)",
+      "copy": "submitted with Envelope A (VOL-I 8.3)",
+      "gate": "VOL-I 11.1(i): responsiveness and mandatory compliance check, pass or fail; only Proposals that pass go on to 11.1(ii)"
+     },
+     "consequence": "none_stated",
+     "note": "As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the EPC Contractor's ISO 9001:2015 certificate must be valid (current) at the latest amended Proposal Due Date, 26 November 2026, 14:00 Riyadh time (VOL-I 2.6 defines the Proposal Due Date as the date and time in 6.1 as amended; ADD-01 2.1 moved the date and kept the time; ADD-02 does not change it). It must also be issued by an accredited certification body, and a copy must be submitted with Envelope A (VOL-I 8.3). VOL-I 8.3 states no consequence of its own; the requirement is checked at the responsiveness and mandatory compliance stage on a pass or fail basis, and only Proposals that pass that stage go on to technical evaluation (VOL-I 11.1(i)-(ii)). The pack gives no ISO-specific rejection label and says nothing on whether a failure can be cured; neither is implied. [Applied from proposal P-S08-VOL-I-8.3-01 by Claude Code (assistant), on Ahmad's written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "ISO-CURRENT-AT",
+     "kind": "as_at",
+     "purpose": "as_at",
+     "anchor": "PDD",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:8.3",
+     "text": "current as at the Proposal Due Date",
+     "note": ""
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "no consequence stated; this period is not named in ADD-01 §2.2 (whose list is non-exhaustive)",
+   "issues": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "owner": "Technical lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "current as at the Proposal Due Date",
+   "parameters": {
+    "current_at": "the latest amended Proposal Due Date: 26 November 2026, 14:00 Riyadh time (VOL-I 2.6, 6.1 as amended by ADD-01 2.1; not changed by ADD-02)",
+    "issuer": "an accredited certification body (VOL-I 8.3)",
+    "copy": "submitted with Envelope A (VOL-I 8.3)",
+    "gate": "VOL-I 11.1(i): responsiveness and mandatory compliance check, pass or fail; only Proposals that pass go on to 11.1(ii)"
+   },
+   "consequence": "none_stated",
+   "note": "As directed by the owner on 3 Oct 2026 (worklog/2026-10-03_session-08_prompt.md §3): the EPC Contractor's ISO 9001:2015 certificate must be valid (current) at the latest amended Proposal Due Date, 26 November 2026, 14:00 Riyadh time (VOL-I 2.6 defines the Proposal Due Date as the date and time in 6.1 as amended; ADD-01 2.1 moved the date and kept the time; ADD-02 does not change it). It must also be issued by an accredited certification body, and a copy must be submitted with Envelope A (VOL-I 8.3). VOL-I 8.3 states no consequence of its own; the requirement is checked at the responsiveness and mandatory compliance stage on a pass or fail basis, and only Proposals that pass that stage go on to technical evaluation (VOL-I 11.1(i)-(ii)). The pack gives no ISO-specific rejection label and says nothing on whether a failure can be cured; neither is implied. [Applied from proposal P-S08-VOL-I-8.3-01 by Claude Code (assistant), on Ahmad's written instruction of 3 Oct 2026 (session 08 §3) on 2026-10-03.]"
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-9.6-01",
+  "kind": "row_reading",
+  "row": "VOL-I-9.6-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q16",
+   "VOL-I:9.6 changed since BASE (by ADD-03/Q16)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-9.6-01",
+   "group": "VOL-I:9.6",
+   "scope": [
+    "envelope_A",
+    "deviations",
+    "forms"
+   ],
+   "requirement": "Form 4-E lists every deviation, qualification or reservation to Volume V; never 'no deviations' with a qualification elsewhere",
+   "units": [
+    "VOL-I:9.6",
+    "VOL-I:9.1(e)"
+   ],
+   "discipline": "Legal",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4E"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Form 4-E shall list every deviation, qualification or reservation to Volume V.",
+     "parameters": {},
+     "consequence": {
+      "class": "non_responsive",
+      "unit": "VOL-I:9.6",
+      "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."
+     },
+     "note": "Whether to list the concession-term point (VOL-I 12.1 vs VOL-V 3.1) as a deviation is for a person (I-CONCESSION)."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim",
+   "issues": [
+    "I-CONCESSION"
+   ],
+   "owner": "Legal counsel",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Form 4-E shall list every deviation, qualification or reservation to Volume V.",
+   "parameters": {},
+   "consequence": {
+    "class": "non_responsive",
+    "unit": "VOL-I:9.6",
+    "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.",
+    "gloss": null
+   },
+   "note": "Whether to list the concession-term point (VOL-I 12.1 vs VOL-V 3.1) as a deviation is for a person (I-CONCESSION)."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-9.7-01",
+  "kind": "row_reading",
+  "row": "VOL-I-9.7-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q21",
+   "VOL-I:9.7 changed since BASE (by ADD-03/Q21)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-9.7-01",
+   "group": "VOL-I:9.7",
+   "scope": [
+    "envelope_A",
+    "technical_proposal"
+   ],
+   "requirement": "Technical Proposal narrative (Envelope A item (f)) addressing at least the six listed topics",
+   "units": [
+    "VOL-I:9.7",
+    "VOL-I:9.1(f)"
+   ],
+   "discipline": "Technical",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel.",
+     "parameters": {
+      "topics_min": [
+       "process design",
+       "construction methodology and programme",
+       "O&M philosophy",
+       "health and safety plan",
+       "environmental and social management approach",
+       "organisation and key personnel"
+      ]
+     },
+     "consequence": "none_stated",
+     "note": "The topics correspond to the Table 1-1 criteria, where they are scored."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; no consequence stated for a missing topic",
+   "issues": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "owner": "Technical lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The Technical Proposal shall address, as a minimum, the process design, the construction methodology and programme, the operations and maintenance philosophy, the health and safety plan, the environmental and social management approach, and the organisation and key personnel.",
+   "parameters": {
+    "topics_min": [
+     "process design",
+     "construction methodology and programme",
+     "O&M philosophy",
+     "health and safety plan",
+     "environmental and social management approach",
+     "organisation and key personnel"
+    ]
+   },
+   "consequence": "none_stated",
+   "note": "The topics correspond to the Table 1-1 criteria, where they are scored."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-II-3.1-01",
+  "kind": "row_reading",
+  "row": "VOL-II-3.1-01",
+  "provisions": [
+   "ADD-03:4.1"
+  ],
+  "status_at_addendum": "AMENDED (ADD-03/4.1)",
+  "stale": [
+   "new dependency ADD-03:4.2",
+   "VOL-II:3.1 changed since ADD-02 (by ADD-03/4.1)",
+   "VOL-II:H:S3 changed since ADD-02 (by ADD-03/4.2)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-3.1-01",
+   "group": "VOL-II:3.1",
+   "scope": [
+    "technical_design",
+    "process"
+   ],
+   "requirement": "Treatment process able to achieve the Table 2-4 effluent quality under all Table 2-2 design influent conditions",
+   "units": [
+    "VOL-II:3.1",
+    "VOL-II:H:S3",
+    "VOL-II:T2-2/bod5",
+    "VOL-II:T2-2/cod",
+    "VOL-II:T2-2/total-suspended-solids",
+    "VOL-II:T2-2/total-nitrogen",
+    "VOL-II:T2-2/total-phosphorus",
+    "VOL-II:T2-2/temperature"
+   ],
+   "discipline": "Technical",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The Authority does not mandate a particular process train (second sentence). Limits: rows VOL-II-T2-4-*. The Section 3 heading is a unit because ADD-02 5.2 attaches to it."
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable."
+    },
+    {
+     "stage": "ADD-02",
+     "quote": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; the effluent quality it refers to is an image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit that prevails is not supplied",
+   "issues": [
+    "I-READING-T24",
+    "I-PERMIT"
+   ],
+   "owner": "Process engineer",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-02",
+   "quote": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-II:3.1",
+    "effective_unit": "VOL-II:3.1",
+    "status_after": "active",
+    "before": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2. The Authority does not mandate a particular process train.",
+    "after": "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2. The treatment process shall include a membrane filtration step, either in the tertiary treatment stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm. Subject to the preceding sentence, the Authority does not mandate a particular process train.",
+    "ops": [
+     "ADD-03/4.1"
+    ]
+   }
+  ],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-II-3.4-01",
+  "kind": "row_reading",
+  "row": "VOL-II-3.4-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:5.2",
+   "new dependency ADD-03:Q18",
+   "VOL-II:3.4 changed since BASE (by ADD-03/5.2, ADD-03/Q18)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-3.4-01",
+   "group": "VOL-II:3.4",
+   "scope": [
+    "environmental_performance",
+    "odour"
+   ],
+   "requirement": "Odour at the site boundary of no more than 5 OU/m3 as a 98th percentile hourly value",
+   "units": [
+    "VOL-II:3.4"
+   ],
+   "discipline": "Environmental",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value.",
+     "parameters": {
+      "odour_ou_m3_max": 5,
+      "statistic": "98th percentile hourly",
+      "location": "site boundary"
+     },
+     "consequence": "none_stated"
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause",
+   "owner": "Environmental lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Odour control shall achieve not more than 5 OU/m³ at the site boundary, assessed as a 98th percentile hourly value.",
+   "parameters": {
+    "odour_ou_m3_max": 5,
+    "statistic": "98th percentile hourly",
+    "location": "site boundary"
+   },
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-II-6.4-01",
+  "kind": "row_reading",
+  "row": "VOL-II-6.4-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q15",
+   "VOL-II:6.4 changed since BASE (by ADD-03/Q15)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-6.4-01",
+   "group": "VOL-II:6.4",
+   "scope": [
+    "operations",
+    "data_retention"
+   ],
+   "requirement": "Retain all process data for at least seven years",
+   "units": [
+    "VOL-II:6.4"
+   ],
+   "discipline": "Technical",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "All process data shall be retained for not less than seven (7) years",
+     "parameters": {
+      "retention_years_min": 7
+     },
+     "consequence": "none_stated"
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause",
+   "owner": "Technical lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "All process data shall be retained for not less than seven (7) years",
+   "parameters": {
+    "retention_years_min": 7
+   },
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-II-6.4-02",
+  "kind": "row_reading",
+  "row": "VOL-II-6.4-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q15",
+   "VOL-II:6.4 changed since BASE (by ADD-03/Q15)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-6.4-02",
+   "group": "VOL-II:6.4",
+   "scope": [
+    "operations",
+    "data_access"
+   ],
+   "requirement": "Make process data available to the Authority on demand in a non-proprietary format",
+   "units": [
+    "VOL-II:6.4"
+   ],
+   "discipline": "Technical",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "shall be made available to the Authority on demand in a non-proprietary format",
+     "parameters": {},
+     "consequence": "none_stated"
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause",
+   "owner": "Technical lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "shall be made available to the Authority on demand in a non-proprietary format",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-IV-F4A-01",
+  "kind": "row_reading",
+  "row": "VOL-IV-F4A-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE (reissued by ADD-01/AppA/para1, unchanged)",
+  "stale": [
+   "new dependency ADD-03:cover/para3",
+   "new dependency VOL-IV:F4-A/T1",
+   "VOL-IV:F4-A/proposal-due-date changed since ADD-01 (by ADD-03/cover/para3)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-IV-F4A-01",
+   "group": "VOL-IV:F4-A",
+   "scope": [
+    "forms",
+    "printed_date"
+   ],
+   "requirement": "Use the Form 4-A as issued (reissued by ADD-01 App A: 'Bidders shall use this version'); its printed Proposal Due Date",
+   "units": [
+    "VOL-IV:F4-A/proposal-due-date"
+   ],
+   "discipline": "Legal",
+   "assessment": "procedural",
+   "evidence": [
+    "EV-FORM-4A"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+     "parameters": {},
+     "consequence": "none_stated"
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim printed field; the conflict with the amended PDD is shown, not resolved",
+   "issues": [
+    "I-F4A-FIELDS"
+   ],
+   "follows_replacement": true,
+   "owner": "Legal counsel",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-IV-F4A-02",
+  "kind": "row_reading",
+  "row": "VOL-IV-F4A-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE (as amended by ADD-01/AppA/para1)",
+  "stale": [
+   "new dependency ADD-03:cover/para3",
+   "new dependency VOL-IV:F4-A/T1",
+   "new dependency VOL-IV:F4-A/T2",
+   "VOL-IV:F4-A/capacity changed since ADD-01 (by ADD-03/cover/para3)",
+   "VOL-IV:F4-A/commercial-registration-number changed since ADD-01 (by ADD-03/cover/para3)",
+   "VOL-IV:F4-A/company-seal changed since ADD-01 (by ADD-03/cover/para3)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-IV-F4A-02",
+   "group": "VOL-IV:F4-A",
+   "scope": [
+    "envelope_A",
+    "forms",
+    "reissued_form"
+   ],
+   "requirement": "Complete Form 4-A (Envelope A, mandatory) in the form reissued by ADD-01 App A; VOL-I states no consequence for a blank field. Execution and its consequence (unsigned or improperly executed: non-responsive) are row VOL-I-9.3-01",
+   "units": [
+    "VOL-IV:F4-A/name-of-bidder-lead-member",
+    "VOL-IV:cover/T1/4-A",
+    "VOL-IV:F4-A/tender-reference",
+    "VOL-IV:F4-A/project",
+    "VOL-IV:F4-A/proposal-due-date",
+    "VOL-IV:F4-A/commercial-registration-number",
+    "VOL-IV:F4-A/registered-address",
+    "VOL-IV:F4-A/single-point-of-contact-name-title",
+    "VOL-IV:F4-A/contact-email-and-telephone",
+    "VOL-IV:F4-A/signature",
+    "VOL-IV:F4-A/name-of-signatory",
+    "VOL-IV:F4-A/capacity",
+    "VOL-IV:F4-A/power-of-attorney-reference-and-date",
+    "VOL-IV:F4-A/date",
+    "VOL-IV:F4-A/company-seal",
+    "ADD-01:AppA/para1",
+    "ADD-01:AppA/single-point-of-contact",
+    "ADD-01:AppA/signature-name-capacity"
+   ],
+   "discipline": "Legal",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4A"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Name of Bidder / lead member:",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The form's fields are to be completed (mandatory form, VOL-IV cover table). VOL-I 9.3's consequence is for an 'unsigned or improperly executed' Form 4-A; it is not read as 'every blank field causes rejection' (row VOL-I-9.3-01 carries it). Whether a particular omission would make the form improperly executed is for a person."
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "Name of Bidder / lead member:",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim fields; the reissued form drops fields and still prints the old PDD (a decision for a person)",
+   "issues": [
+    "I-F4A-FIELDS"
+   ],
+   "follows_replacement": true,
+   "owner": "Bid manager",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "Name of Bidder / lead member:",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-IV-F4E-01",
+  "kind": "row_reading",
+  "row": "VOL-IV-F4E-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q16",
+   "new dependency VOL-IV:F4-E/T1",
+   "VOL-IV:F4-E/T1/1 changed since BASE (by ADD-03/Q16)",
+   "VOL-IV:F4-E/T1/2 changed since BASE (by ADD-03/Q16)",
+   "VOL-IV:F4-E/T1/3 changed since BASE (by ADD-03/Q16)",
+   "VOL-IV:F4-E/T1/4 changed since BASE (by ADD-03/Q16)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-IV-F4E-01",
+   "group": "VOL-IV:F4-E",
+   "scope": [
+    "envelope_A",
+    "forms",
+    "deviations"
+   ],
+   "requirement": "Form 4-E (Envelope A, mandatory): one line per deviation (Volume/Clause, nature, proposed wording, rationale), total declared, signed, dated",
+   "units": [
+    "VOL-IV:cover/T1/4-E",
+    "VOL-IV:F4-E/T1/1",
+    "VOL-IV:F4-E/T1/2",
+    "VOL-IV:F4-E/T1/3",
+    "VOL-IV:F4-E/T1/4",
+    "VOL-IV:F4-E/T1/5",
+    "VOL-IV:F4-E/T1/6",
+    "VOL-IV:F4-E/total-number-of-deviations-declared",
+    "VOL-IV:F4-E/signature-of-authorised-signatory",
+    "VOL-IV:F4-E/date"
+   ],
+   "discipline": "Legal",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4E"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Title: Schedule of Deviations | Envelope: A | Status: Mandatory",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "No consequence stated for completing the form. What it must list, and the non-responsive consequence of 'no deviations' with a qualification elsewhere, are VOL-I-9.6-01 (restated in the form's note). VOL-V's note: a deviation not listed is taken as accepted."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; no consequence stated for the form itself",
+   "issues": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "owner": "Legal counsel",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Title: Schedule of Deviations | Envelope: A | Status: Mandatory",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "No consequence stated for completing the form. What it must list, and the non-responsive consequence of 'no deviations' with a qualification elsewhere, are VOL-I-9.6-01 (restated in the form's note). VOL-V's note: a deviation not listed is taken as accepted."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-IV-F4F-01",
+  "kind": "row_reading",
+  "row": "VOL-IV-F4F-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q20",
+   "new dependency VOL-IV:F4-F/T1",
+   "new dependency VOL-IV:F4-F/T2",
+   "VOL-IV:F4-F/assumed-gearing-debt-equity changed since BASE (by ADD-03/Q20)",
+   "VOL-IV:F4-F/assumed-senior-debt-margin-bps changed since BASE (by ADD-03/Q20)",
+   "VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close changed since BASE (by ADD-03/Q20)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-IV-F4F-01",
+   "group": "VOL-IV:F4-F",
+   "scope": [
+    "envelope_B",
+    "forms",
+    "commercial"
+   ],
+   "requirement": "Form 4-F (Envelope B, mandatory): complete every field (Availability Payment in figures and words, cost, financing, IRRs, model audit) and sign",
+   "units": [
+    "VOL-IV:cover/T1/4-F",
+    "VOL-IV:F4-F/bidder",
+    "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+    "VOL-IV:F4-F/availability-payment-in-words",
+    "VOL-IV:F4-F/estimated-project-cost-sar",
+    "VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close",
+    "VOL-IV:F4-F/assumed-senior-debt-margin-bps",
+    "VOL-IV:F4-F/assumed-gearing-debt-equity",
+    "VOL-IV:F4-F/project-irr-nominal-post-tax",
+    "VOL-IV:F4-F/equity-irr-nominal-post-tax",
+    "VOL-IV:F4-F/indexation-basis-assumed",
+    "VOL-IV:F4-F/model-auditor",
+    "VOL-IV:F4-F/date-of-model-audit-opinion",
+    "VOL-IV:F4-F/signature",
+    "VOL-IV:F4-F/name-and-capacity",
+    "VOL-IV:F4-F/date"
+   ],
+   "discipline": "Commercial",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4F"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "No consequence stated for an incomplete form. Envelope B holds only this Form and the Financial Model (VOL-I-10.1-01); its tenor, margin, gearing, model auditor and opinion-date fields partly overlap VOL-I 10.3 and 10.6 (I-VOL-I-ENV-B). Indexation basis printed as 'Per Volume V Clause 29.2'."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim fields; where the 10.3 and 10.6 documents go is an open issue",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-VOL-I-ENV-B"
+   ],
+   "owner": "Commercial lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "No consequence stated for an incomplete form. Envelope B holds only this Form and the Financial Model (VOL-I-10.1-01); its tenor, margin, gearing, model auditor and opinion-date fields partly overlap VOL-I 10.3 and 10.6 (I-VOL-I-ENV-B). Indexation basis printed as 'Per Volume V Clause 29.2'."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-IV-F4F-02",
+  "kind": "row_reading",
+  "row": "VOL-IV-F4F-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q20",
+   "VOL-IV:F4-F/para1 changed since BASE (by ADD-03/Q20)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-IV-F4F-02",
+   "group": "VOL-IV:F4-F",
+   "scope": [
+    "envelope_B",
+    "forms",
+    "confirmation",
+    "commercial"
+   ],
+   "requirement": "Form 4-F: confirm the Availability Payment is unconditional, unqualified and derived from the Financial Model submitted with the Form",
+   "units": [
+    "VOL-IV:F4-F/para1"
+   ],
+   "discipline": "Commercial",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4F",
+    "EV-FIN-MODEL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "No consequence stated in the confirmation; a conditional or alternative price is non-responsive under VOL-I 10.5 (row VOL-I-10.5-01)."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim",
+   "issues": [
+    "I-NO-CONSEQUENCE"
+   ],
+   "owner": "Commercial lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "No consequence stated in the confirmation; a conditional or alternative price is non-responsive under VOL-I 10.5 (row VOL-I-10.5-01)."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-V-29.2-01",
+  "kind": "row_reading",
+  "row": "VOL-V-29.2-01",
+  "provisions": [
+   "ADD-03:3.3"
+  ],
+  "status_at_addendum": "AMENDED (ADD-03/3.3)",
+  "stale": [
+   "VOL-V:29.2 changed since ADD-01 (by ADD-03/3.3)",
+   "quote not found in the effective text at ADD-03: 'sixty per cent (60%) of the payment indexed to the published' (expected: the interpretation predates the change)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-V-29.2-01",
+   "group": "VOL-V:29.2",
+   "scope": [
+    "contract",
+    "payment",
+    "repeated_wording"
+   ],
+   "requirement": "Availability Payment indexation: 60% indexed to CPI, 40% fixed (unchanged by the addenda)",
+   "units": [
+    "VOL-V:29.2"
+   ],
+   "discipline": "Commercial",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed",
+     "parameters": {
+      "indexed_pct": 60,
+      "fixed_pct": 40
+     },
+     "consequence": "none_stated"
+    },
+    {
+     "stage": "ADD-01",
+     "quote": "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed",
+     "parameters": {
+      "indexed_pct": 60,
+      "fixed_pct": 40
+     },
+     "consequence": "none_stated",
+     "note": "ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed for this row: the indexation split is unchanged."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; must not change when VOL-I 11.2's similar words do",
+   "owner": "Commercial lead",
+   "post_award_evidence": {
+    "kind": "not_applicable",
+    "text": "Not applicable: indexation of the Availability Payment (60% indexed to the published consumer price index, 40% fixed) is a payment term applied in accordance with Schedule 9, not an act the Project Company performs and evidences.",
+    "basis": [
+     {
+      "unit": "VOL-V:29.2",
+      "page": 3,
+      "words": "The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed."
+     }
+    ],
+    "reason": "The clause states how the Availability Payment is indexed ('shall be indexed annually in accordance with Schedule 9'); it gives the Project Company nothing to do. Any indexed amount would appear in the monthly invoices proposed under row VOL-V-29.4-01. Schedule 9, under which the indexation is applied, is not supplied (I-VOL-V-MISSING).",
+    "bid_stage_note": "Price assumption: Form 4-F states 'Indexation basis assumed: Per Volume V Clause 29.2', so the Financial Model should apply the 60/40 split, but Schedule 9 is not supplied; VOL-I 10.5 makes a price subject to adjustment other than as provided in Volume V non-responsive."
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-01",
+   "quote": "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed",
+   "parameters": {
+    "indexed_pct": 60,
+    "fixed_pct": 40
+   },
+   "consequence": "none_stated",
+   "note": "ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed for this row: the indexation split is unchanged."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-V:29.2",
+    "effective_unit": "VOL-V:29.2",
+    "status_after": "active",
+    "before": "The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.",
+    "after": "The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9. The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder in Form 4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%); and (b) from the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment shall remain fixed.",
+    "ops": [
+     "ADD-03/3.3"
+    ]
+   }
+  ],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "c46:ADD-03/2.1(a)",
+  "kind": "row_new",
+  "op": "ADD-03/2.1(a)",
+  "provisions": [
+   "ADD-03:2.1"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/2.1(a) (replace_text) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Volume I Clauses 6.6 and 6.7 are deleted and replaced by the following single Clause 6.6: ‘6.6 A Bidder may withdraw its Proposal at any time before the Proposal Due Date, and may modify its Propo…"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-I:6.6"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/2.1(a)",
+   "provision": "ADD-03:2.1",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "computed_dates": [
+   {
+    "unit": "VOL-I:6.6",
+    "words": "two (2) Working Days before the Proposal Due Date",
+    "computed_from": {
+     "method": "deadline",
+     "inputs": {
+      "offset": {
+       "count": 2,
+       "unit": "working_day",
+       "words": "two (2) Working Days before the Proposal Due Date"
+      },
+      "anchor": {
+       "name": "PDD",
+       "date": "2026-11-26",
+       "source": "VOL-I:6.1"
+      },
+      "direction": "before"
+     },
+     "counting": "working-days-before",
+     "result": "2026-11-24",
+     "fingerprint": "481f6dfa21045aa8ae4ddc9b1a18e6d3b8f274ae5b22c0396247d8e615d1f7bf"
+    },
+    "status": "resolved",
+    "conditional": null,
+    "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows the derivation and any disagreement)"
+   }
+  ]
+ },
+ {
+  "id": "c46:ADD-03/3.2",
+  "kind": "row_new",
+  "op": "ADD-03/3.2",
+  "provisions": [
+   "ADD-03:3.2"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:1.1; a row of the anchor VOL-V:1.1 does not count): 'The following new Clause 1.1A is inserted in Volume V after Clause 1.1: ‘1.1A Base Date means the date falling twenty-…"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-V:1.1+ADD-03"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/3.2",
+   "provision": "ADD-03:3.2",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "computed_dates": [
+   {
+    "unit": "VOL-V:1.1+ADD-03",
+    "words": "twenty-eight (28) days before the Proposal Due Date",
+    "computed_from": {
+     "method": "deadline",
+     "inputs": {
+      "offset": {
+       "count": 28,
+       "unit": "day",
+       "words": "twenty-eight (28) days before the Proposal Due Date"
+      },
+      "anchor": {
+       "name": "PDD",
+       "date": "2026-11-26",
+       "source": "VOL-I:6.1"
+      },
+      "direction": "before"
+     },
+     "counting": "calendar-days-before",
+     "result": "2026-10-29",
+     "fingerprint": "64184b01bf55035322bb227d0dd5d5ffd6803081fb9b311d9d96f65de30c9b9e"
+    },
+    "status": "resolved",
+    "conditional": null,
+    "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows the derivation and any disagreement)"
+   }
+  ]
+ },
+ {
+  "id": "c46:ADD-03/7.1",
+  "kind": "row_new",
+  "op": "ADD-03/7.1",
+  "provisions": [
+   "ADD-03:7.1"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/7.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-II:5.5; a row of the anchor VOL-II:5.5 does not count): 'The following new Clause 5.6 is inserted in Volume II after Clause 5.5: ‘5.6 The Project Company shall comply with t…"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-II:5.5+ADD-03"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/7.1",
+   "provision": "ADD-03:7.1",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  }
+ },
+ {
+  "id": "clar:CQ-VOL-V-SCHEDULES",
+  "kind": "clarification_item",
+  "entry": {
+   "id": "CQ-VOL-V-SCHEDULES",
+   "topic": "missing technical/contractual references (Volume V schedules)",
+   "kind": "missing_information",
+   "volume": "Volume V",
+   "clause": "Note to Bidders (with Clauses 29.2, 31.2, 39.1, 39.5 and 40.1)",
+   "page": 2,
+   "units": [
+    "VOL-V:cover/note-to-bidders",
+    "VOL-V:29.2",
+    "VOL-V:31.2",
+    "VOL-V:39.1",
+    "VOL-V:39.5",
+    "VOL-V:40.1",
+    "VOL-V:12.1",
+    "VOL-V:31.5",
+    "VOL-I:9.6"
+   ],
+   "sources": [
+    {
+     "unit": "VOL-V:cover/note-to-bidders",
+     "page": 2,
+     "words": "Clause numbering follows the full draft; omitted clauses are not reproduced. A deviation not listed in Form 4-E will be taken as accepted."
+    },
+    {
+     "unit": "VOL-V:29.2",
+     "page": 3,
+     "words": "The Availability Payment shall be indexed annually in accordance with Schedule 9"
+    },
+    {
+     "unit": "VOL-V:31.2",
+     "page": 3,
+     "words": "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"
+    },
+    {
+     "unit": "VOL-V:39.1",
+     "page": 4,
+     "words": "being the events listed in Schedule 11"
+    },
+    {
+     "unit": "VOL-V:39.5",
+     "page": 4,
+     "words": "the notice and cure period stated in the Direct Agreement"
+    },
+    {
+     "unit": "VOL-V:40.1",
+     "page": 4,
+     "words": "calculated under Schedule 12"
+    }
+   ],
+   "gap": "Volume V is an extract: Schedules 7 (deductions), 9 (indexation), 11 (Project Company defaults) and 12 (termination compensation), the Direct Agreement and the omitted clauses (including those defining Notice to Proceed and Force Majeure Event) are referred to but not issued, yet the Note to Bidders deems any deviation not listed in Form 4-E accepted.",
+   "already_settled": "ADD-02 Q12 refers Bidders to 31.2, under which deductions are uncapped; ADD-01 Q6 confirms the payment is availability based. Neither supplies the missing Schedules.",
+   "practical_impact": "The Availability Payment in Form 4-F and the Financial Model depend on Schedule 9 (index series, base date) and Schedule 7 (deduction levels); termination sums and lender cure rights (Schedules 11-12, Direct Agreement) drive financing terms. Form 4-E cannot list deviations to terms not seen, yet unlisted deviations are deemed accepted.",
+   "proposed_question": "Volume V, Note to Bidders, page 2: The extract refers to Schedules 7, 9, 11 and 12 and to the Direct Agreement (Clauses 29.2, 31.2, 39.1, 39.5 and 40.1, pages 3-4), none of which has been issued, and states that a deviation not listed in Form 4-E will be taken as accepted. Will the Authority issue these Schedules and the Direct Agreement or, if not, does the deemed acceptance in the Note to Bidders apply only to the clauses reproduced in the extract?",
+   "interim_handling": "Build the Financial Model on the reproduced terms (60% CPI / 40% fixed indexation per 29.2; uncapped deductions per 31.2) and record the index and deduction inputs as assumptions in the financing-assumptions schedule, not as price conditions (VOL-I 10.5). Legal decides whether to record a reservation on the unseen Schedules in Form 4-E; nothing is assumed about their content.",
+   "decision_owner": "Legal",
+   "response_status": "draft, not sent",
+   "linked_issues": [
+    "I-VOL-V-MISSING"
+   ],
+   "theme": "missing"
+  },
+  "changed_units": [
+   "VOL-V:29.2"
+  ],
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "act:fin-model-build",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-MODEL",
+  "activity": {
+   "id": "fin-model-build",
+   "name": "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "financial_modeller",
+   "issuer": "Bidder",
+   "duration": "fin_model_build",
+   "predecessors": []
+  },
+  "rows": [
+   "VOL-I-10.3-01",
+   "VOL-IV-F4F-02"
+  ]
+ },
+ {
+  "id": "act:fin-model-freeze",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-MODEL",
+  "activity": {
+   "id": "fin-model-freeze",
+   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "financial_modeller",
+   "issuer": "Bidder",
+   "duration": "fin_model_freeze",
+   "predecessors": [
+    "fin-model-build"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Financial Model (unlocked Excel, frozen version)"
+  },
+  "rows": [
+   "VOL-I-10.3-01",
+   "VOL-IV-F4F-02"
+  ]
+ },
+ {
+  "id": "act:model-auditor-appoint",
+  "kind": "activity",
+  "evidence_item": "EV-MODEL-AUDIT",
+  "activity": {
+   "id": "model-auditor-appoint",
+   "name": "Appoint the independent model auditor (opinion to be addressed to the Authority)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Bidder",
+   "duration": "model_auditor_appointment",
+   "predecessors": []
+  },
+  "rows": [
+   "VOL-I-10.3-02"
+  ]
+ },
+ {
+  "id": "act:model-audit-review",
+  "kind": "activity",
+  "evidence_item": "EV-MODEL-AUDIT",
+  "activity": {
+   "id": "model-audit-review",
+   "name": "Rolling review of the draft Financial Model by the model auditor",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "financial_modeller",
+   "issuer": "Independent model auditor",
+   "duration": "model_audit_review",
+   "predecessors": [
+    "model-auditor-appoint"
+   ]
+  },
+  "rows": [
+   "VOL-I-10.3-02"
+  ]
+ },
+ {
+  "id": "act:model-audit-opinion",
+  "kind": "activity",
+  "evidence_item": "EV-MODEL-AUDIT",
+  "activity": {
+   "id": "model-audit-opinion",
+   "name": "Audit of the frozen Financial Model and issue of the opinion addressed to the Authority (VOL-I 10.3)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Independent model auditor",
+   "duration": "model_audit_opinion",
+   "predecessors": [
+    "model-audit-review",
+    "fin-model-freeze"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Independent model auditor's opinion (original)"
+  },
+  "rows": [
+   "VOL-I-10.3-02"
+  ]
+ },
+ {
+  "id": "act:deliver",
+  "kind": "activity",
+  "evidence_item": "EV-DELIVERY",
+  "activity": {
+   "id": "deliver",
+   "name": "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)",
+   "owner": "Bid management",
+   "discipline": "Document control",
+   "resource": "document_controller",
+   "issuer": "Bidder (courier)",
+   "duration": "delivery",
+   "predecessors": [
+    "seal-and-mark"
+   ],
+   "item": "Sealed Envelopes A and B delivered to the Appendix 3 address",
+   "finish": {
+    "deadline_of": "PDD",
+    "buffer": "submission.delivery_buffer_wd"
+   }
+  },
+  "rows": [
+   "VOL-I-6.1-01",
+   "VOL-I-6.2-01"
+  ]
+ },
+ {
+  "id": "act:seal-and-mark",
+  "kind": "activity",
+  "evidence_item": "EV-DELIVERY",
+  "activity": {
+   "id": "seal-and-mark",
+   "name": "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3)",
+   "owner": "Bid management",
+   "discipline": "Document control",
+   "resource": "document_controller",
+   "issuer": "Bidder",
+   "duration": "seal_and_mark",
+   "predecessors": [
+    "copies"
+   ],
+   "item": "Envelopes A and B, sealed and marked per Appendix 3"
+  },
+  "rows": [
+   "VOL-I-6.1-01",
+   "VOL-I-6.2-01"
+  ]
+ },
+ {
+  "id": "act:copies",
+  "kind": "activity",
+  "evidence_item": "EV-DELIVERY",
+  "activity": {
+   "id": "copies",
+   "name": "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES",
+   "owner": "Bid management",
+   "discipline": "Document control",
+   "resource": "document_controller",
+   "issuer": "Bidder",
+   "duration": "copies_and_usb",
+   "predecessors": [
+    "assemble-envelope-a",
+    "assemble-envelope-b"
+   ],
+   "item": "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)",
+   "gated_by": [
+    "I-VOL-I-COPIES"
+   ]
+  },
+  "rows": [
+   "VOL-I-6.1-01",
+   "VOL-I-6.2-01"
+  ]
+ },
+ {
+  "id": "act:assemble-envelope-a",
+  "kind": "activity",
+  "evidence_item": "EV-DELIVERY",
+  "activity": {
+   "id": "assemble-envelope-a",
+   "name": "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)",
+   "owner": "Bid management",
+   "discipline": "Document control",
+   "resource": "document_controller",
+   "issuer": "Bidder",
+   "duration": "envelope_assembly",
+   "predecessors": [],
+   "envelope_rules": "A"
+  },
+  "rows": [
+   "VOL-I-6.1-01",
+   "VOL-I-6.2-01"
+  ]
+ },
+ {
+  "id": "act:assemble-envelope-b",
+  "kind": "activity",
+  "evidence_item": "EV-DELIVERY",
+  "activity": {
+   "id": "assemble-envelope-b",
+   "name": "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1); package the model auditor's opinion and the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (both are prepared regardless)",
+   "owner": "Bid management",
+   "discipline": "Document control",
+   "resource": "document_controller",
+   "issuer": "Bidder",
+   "duration": "envelope_assembly",
+   "predecessors": [],
+   "gated_by": [
+    "I-VOL-I-ENV-B"
+   ],
+   "envelope_rules": "B"
+  },
+  "rows": [
+   "VOL-I-6.1-01",
+   "VOL-I-6.2-01"
+  ]
+ },
+ {
+  "id": "act:iso-copy",
+  "kind": "activity",
+  "evidence_item": "EV-ISO",
+  "activity": {
+   "id": "iso-copy",
+   "name": "Obtain a copy of the EPC Contractor's ISO 9001:2015 certificate and check it is current at the PDD",
+   "owner": "Technical",
+   "discipline": "Technical",
+   "resource": "technical_lead",
+   "issuer": "EPC Contractor (accredited certification body)",
+   "duration": "iso_certificate_copy",
+   "per": "epc_contractor",
+   "predecessors": [],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "ISO 9001:2015 certificate copy"
+  },
+  "rows": [
+   "VOL-I-8.3-01"
+  ]
+ },
+ {
+  "id": "act:deviations-review",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4E",
+  "activity": {
+   "id": "deviations-review",
+   "name": "Review Volume V and list every deviation, qualification or reservation",
+   "owner": "Legal",
+   "discipline": "Legal",
+   "resource": "legal_counsel",
+   "issuer": "Bidder",
+   "duration": "deviations_review",
+   "predecessors": []
+  },
+  "rows": [
+   "VOL-I-9.6-01",
+   "VOL-IV-F4E-01"
+  ]
+ },
+ {
+  "id": "act:form-4e",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4E",
+  "activity": {
+   "id": "form-4e",
+   "name": "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)",
+   "owner": "Legal",
+   "discipline": "Legal",
+   "resource": "legal_counsel",
+   "issuer": "Bidder",
+   "duration": "form_4e_finalise",
+   "predecessors": [
+    "deviations-review",
+    "poa",
+    "technical-proposal"
+   ],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "Form 4-E Schedule of Deviations (signed)",
+   "basis": "VOL-I 9.6 p5: 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' Form 4-E is finalised against the Technical Proposal narrative, so it follows technical-proposal",
+   "review": "proposed"
+  },
+  "rows": [
+   "VOL-I-9.6-01",
+   "VOL-IV-F4E-01"
+  ]
+ },
+ {
+  "id": "act:technical-proposal",
+  "kind": "activity",
+  "evidence_item": "EV-TECH-PROPOSAL",
+  "activity": {
+   "id": "technical-proposal",
+   "name": "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration; page limit as amended)",
+   "owner": "Technical",
+   "discipline": "Technical",
+   "resource": "proposal_writers",
+   "issuer": "Bidder",
+   "duration": "technical_proposal",
+   "predecessors": [],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)"
+  },
+  "rows": [
+   "VOL-I-9.7-01",
+   "VOL-II-3.1-01",
+   "VOL-II-3.4-01",
+   "VOL-II-6.4-01",
+   "VOL-II-6.4-02"
+  ]
+ },
+ {
+  "id": "act:form-4a-prep",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4A",
+  "activity": {
+   "id": "form-4a-prep",
+   "name": "Prepare Form 4-A on the version reissued by ADD-01 Appendix A: Bidder and lead member, Addenda acknowledged, single point of contact (preparation; not gated)",
+   "owner": "Legal",
+   "discipline": "Legal",
+   "resource": "legal_counsel",
+   "issuer": "Bidder",
+   "duration": "form_4a_preparation",
+   "predecessors": [],
+   "successors": [
+    "form-4a"
+   ]
+  },
+  "rows": [
+   "VOL-IV-F4A-01",
+   "VOL-IV-F4A-02"
+  ]
+ },
+ {
+  "id": "act:form-4a",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4A",
+  "activity": {
+   "id": "form-4a",
+   "name": "Finalise Form 4-A (which form version and fields, and how its stale printed Proposal Due Date is corrected, as decided on I-F4A-FIELDS) and sign by the lead member's PoA holder",
+   "owner": "Legal",
+   "discipline": "Legal",
+   "resource": "legal_counsel",
+   "issuer": "PoA holder of the lead member",
+   "duration": "form_4a_signature",
+   "predecessors": [
+    "poa",
+    "form-4a-prep"
+   ],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "Form 4-A (signed)",
+   "gated_by": [
+    "I-F4A-FIELDS"
+   ]
+  },
+  "rows": [
+   "VOL-IV-F4A-01",
+   "VOL-IV-F4A-02"
+  ]
+ },
+ {
+  "id": "act:form-4f",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4F",
+  "activity": {
+   "id": "form-4f",
+   "name": "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Bidder",
+   "duration": "form_4f_preparation",
+   "predecessors": [
+    "fin-model-freeze",
+    "poa",
+    "model-audit-opinion"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Form 4-F Financial Proposal Schedule (signed)"
+  },
+  "rows": [
+   "VOL-IV-F4F-01",
+   "VOL-IV-F4F-02"
+  ]
+ },
+ {
+  "id": "esc:ADD-03:5.1",
+  "kind": "escalation",
+  "provision": "ADD-03:5.1",
+  "status": "not promotable: ADD-03/5.1 conflicting (consistency: VOL-II:3.4: ADD-03/5.1, ADD-03/5.2 change the same unit in different ways across the set); ADD-03/5.1-clar insufficient_evidence (missing_information: the proposer declares missing: ESIA Figure 7-2)",
+  "scope": {
+   "cited": [
+    "VOL-II:3.4",
+    "VOL-II:9.1"
+   ],
+   "units": [
+    "VOL-II:3.4",
+    "VOL-II:9.1"
+   ],
+   "rows": [
+    "VOL-II-3.4-01",
+    "VOL-II-9.1-01",
+    "VOL-II-9.1-02"
+   ],
+   "activities": [
+    "technical-proposal"
+   ],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:Q19",
+  "kind": "escalation",
+  "provision": "ADD-03:Q19",
+  "status": "not promotable: ADD-03/Q19 conflicting (declared_conflicts: the proposer declares: ADD-03:3.3); ADD-03/Q19-issue conflicting (declared_conflicts: the proposer declares: ADD-03:3.3)",
+  "scope": {
+   "cited": [
+    "VOL-IV:F4-F",
+    "VOL-V:29.2"
+   ],
+   "units": [
+    "VOL-IV:F4-F/T1",
+    "VOL-IV:F4-F/T2",
+    "VOL-IV:F4-F/assumed-gearing-debt-equity",
+    "VOL-IV:F4-F/assumed-senior-debt-margin-bps",
+    "VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close",
+    "VOL-IV:F4-F/availability-payment-in-words",
+    "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+    "VOL-IV:F4-F/bidder",
+    "VOL-IV:F4-F/date",
+    "VOL-IV:F4-F/date-of-model-audit-opinion",
+    "VOL-IV:F4-F/envelope-b-only",
+    "VOL-IV:F4-F/equity-irr-nominal-post-tax",
+    "VOL-IV:F4-F/estimated-project-cost-sar",
+    "VOL-IV:F4-F/indexation-basis-assumed",
+    "VOL-IV:F4-F/model-auditor",
+    "VOL-IV:F4-F/name-and-capacity",
+    "VOL-IV:F4-F/para1",
+    "VOL-IV:F4-F/project-irr-nominal-post-tax",
+    "VOL-IV:F4-F/signature",
+    "VOL-IV:H:F4-F",
+    "VOL-V:29.2"
+   ],
+   "rows": [
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "VOL-V-29.2-01"
+   ],
+   "activities": [
+    "fin-model-build",
+    "fin-model-freeze",
+    "form-4f"
+   ],
+   "clarifications": [
+    "CQ-ENV-B-CONTENTS",
+    "CQ-VOL-V-SCHEDULES"
+   ]
+  },
+  "bid_out_rules": [
+   {
+    "row": "VOL-I-9.6-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:9.6",
+    "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-10.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:10.5",
+    "quote": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-11.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:11.5",
+    "quote": "any response that does so shall render the Proposal non-responsive",
+    "page": 5,
+    "shared": [
+     "Availability Payment"
+    ]
+   }
+  ],
+  "consequence_note": "read with these existing rules; a consequence is quoted from one of them (PROPOSED, a person decides whether it applies), never invented",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/hdr-en",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/hdr-en",
+  "status": "not promotable: ADD-03/p4-image/hdr-en insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/hdr-ar",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/hdr-ar",
+  "status": "not promotable: ADD-03/p4-image/hdr-ar insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/date",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/date",
+  "status": "not promotable: ADD-03/p4-image/date insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.; I did not find the ADD-03 issue date, so I could not check whether the l…)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/ref",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/ref",
+  "status": "not promotable: ADD-03/p4-image/ref insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/subject",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/subject",
+  "status": "not promotable: ADD-03/p4-image/subject insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/tender-ref",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/tender-ref",
+  "status": "not promotable: ADD-03/p4-image/tender-ref insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/table-title",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/table-title",
+  "status": "not promotable: ADD-03/p4-image/table-title insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval.)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/table-intro",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/table-intro",
+  "status": "not promotable: ADD-03/p4-image/table-intro insufficient_evidence (missing_information: the proposer declares missing: The reading of ADD-03-p4-r1 is still pending approval. The reading flags as uncertain whether the first word is active يُحدِّد o…)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p4-image/note2",
+  "kind": "escalation",
+  "provision": "ADD-03:p4-image/note2",
+  "status": "not promotable: ADD-03/p4-image/note2 conflicting (declared_conflicts: the proposer declares: ADD-03:T5-1/note(2)); ADD-03/p4-image/note2-issue conflicting (declared_conflicts: the proposer declares: ADD-03:T5-1/note(2))",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T5-1/note(1)",
+  "kind": "escalation",
+  "provision": "ADD-03:T5-1/note(1)",
+  "status": "not promotable: ADD-03/T5-1/note(1) conflicting (declared_conflicts: the proposer declares: ADD-03:p4-image/note1); ADD-03/T5-1/note(1)/issue interpretation_pending (dropped: ); ADD-03/T5-1/note(1)/clar interpretation_pending (dropped: )",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T5-1/note(2)",
+  "kind": "escalation",
+  "provision": "ADD-03:T5-1/note(2)",
+  "status": "not promotable: ADD-03/T5-1/note(2) conflicting (declared_conflicts: the proposer declares: ADD-03:p4-image/note2; ADD-03:p4-image/th-left); ADD-03/T5-1/note(2)/issue interpretation_pending (dropped: ); ADD-03/T5-1/note(2)/clar interpretation_pending (dropped: )",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T5-1/note(3)",
+  "kind": "escalation",
+  "provision": "ADD-03:T5-1/note(3)",
+  "status": "not promotable: ADD-03/T5-1/note(3) insufficient_evidence (dependencies: unknown ids ['ADD-03/T5-1/note(3)/row']); ADD-03/T5-1/note(3)/row interpretation_pending (dropped: )",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "reread:ADD-01:Q1",
+  "kind": "escalation",
+  "provision": "ADD-01:Q1",
+  "status": "earlier answer ADD-01:Q1 (ADD-01): cites VOL-II:3.1, changed by ADD-03/4.1; to be re-read against the new text of VOL-II:3.1 (ADD-03/4.1); a person decides whether the answer still holds",
+  "scope": {
+   "units": [
+    "ADD-01:Q1",
+    "VOL-II:3.1"
+   ],
+   "rows": [
+    "VOL-II-3.1-01"
+   ],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "reread:ADD-01:Q6",
+  "kind": "escalation",
+  "provision": "ADD-01:Q6",
+  "status": "earlier answer ADD-01:Q6 (ADD-01): its annotation ADD-01/Q6 targets VOL-V:29.2, changed by ADD-03/3.3; to be re-read against the new text of VOL-V:29.2 (ADD-03/3.3); a person decides whether the answer still holds",
+  "scope": {
+   "units": [
+    "ADD-01:Q6",
+    "VOL-V:29.2"
+   ],
+   "rows": [
+    "VOL-V-29.2-01"
+   ],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [
+   {
+    "row": "VOL-I-9.6-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:9.6",
+    "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-10.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:10.5",
+    "quote": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   }
+  ],
+  "consequence_note": "read with these existing rules; a consequence is quoted from one of them (PROPOSED, a person decides whether it applies), never invented",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "reading:ADD-03-p4-r1",
+  "kind": "reading_rows",
+  "reading": "ADD-03-p4-r1",
+  "status": "pending",
+  "subject_sha256": "aee881db425d195f765eeffc4f0f54afd1b1e39910bb838a25d841346a0a9490",
+  "pages": [
+   4
+  ],
+  "conditional_on": {
+   "reading": "ADD-03-p4-r1",
+   "until": "approval"
+  },
+  "units": [
+   {
+    "unit": "ADD-03:p4-image",
+    "kind": "image_text",
+    "label": "Appendix A (image, Arabic with English header): Northern Region Airspace Safeguarding Office letter reproducing Table 5-1, Maximum height of structures and equipment on site",
+    "role": null,
+    "lang": null,
+    "pages": [
+     4
+    ],
+    "text": "Appendix A (image, Arabic with English header): Northern Region Airspace Safeguarding Office letter reproducing Table 5-1, Maximum height of structures and equipment on site",
+    "translation": null,
+    "crops": [
+     "regions/ADD-03-p4-r1/crop.png"
+    ],
+    "bands": []
+   },
+   {
+    "unit": "ADD-03:p4-image/hdr-en",
+    "kind": "reading_block",
+    "label": "hdr-en",
+    "role": "header",
+    "lang": "en",
+    "pages": [
+     4
+    ],
+    "text": "Northern Region Airspace Safeguarding Office",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b00-left.png"
+    ],
+    "bands": [
+     [
+      0,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/hdr-ar",
+    "kind": "reading_block",
+    "label": "hdr-ar",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "مكتب حماية المجال الجوي بالمنطقة الشمالية",
+    "translation": "Airspace Protection Office in the Northern Region",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b00-right.png"
+    ],
+    "bands": [
+     [
+      0,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/date",
+    "kind": "reading_block",
+    "label": "date",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "التاريخ: ١٠ نوفمبر ٢٠٢٦م",
+    "translation": "Date: 10 November 2026 AD",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b01-left.png"
+    ],
+    "bands": [
+     [
+      1,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/ref",
+    "kind": "reading_block",
+    "label": "ref",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "الرقم: ٤٧١/٢٠٢٦",
+    "translation": "No.: 471/2026",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b01-right.png"
+    ],
+    "bands": [
+     [
+      1,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/subject",
+    "kind": "reading_block",
+    "label": "subject",
+    "role": "subject",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "الموضوع: اشتراطات الارتفاعات لموقع محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+    "translation": "Subject: Height requirements for the site of the Wadi Al-Sirhan Independent Sewage Treatment Plant",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b02-full.png"
+    ],
+    "bands": [
+     [
+      2,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/tender-ref",
+    "kind": "reading_block",
+    "label": "tender-ref",
+    "role": "header",
+    "lang": "mixed",
+    "pages": [
+     4
+    ],
+    "text": "مناقصة رقم: NUPA/ISTP/2026/014",
+    "translation": "Tender number: NUPA/ISTP/2026/014",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b03-full.png"
+    ],
+    "bands": [
+     [
+      3,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/table-title",
+    "kind": "reading_block",
+    "label": "table-title",
+    "role": "table-title",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "جدول ٥-١: الحدّ الأقصى لارتفاع المنشآت والمعدّات في الموقع",
+    "translation": "Table 5-1: Maximum height of structures and equipment on the site",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b04-full.png"
+    ],
+    "bands": [
+     [
+      4,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/table-intro",
+    "kind": "reading_block",
+    "label": "table-intro",
+    "role": "table-qualifier",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "يُحدِّد الحدّ الأقصى المسموح به للارتفاع في كل منطقة من مناطق الموقع على النحو الآتي:",
+    "translation": "The maximum permitted height in each zone of the site is determined as follows:",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b05-full.png"
+    ],
+    "bands": [
+     [
+      5,
+      "full"
+     ]
+    ],
+    "uncertain": [
+     "the first word appears to carry damma on ya and shadda with kasra on dal (يُحدِّد) as printed; a passive reading يُحدَّد would fit the sentence better grammatically. Reviewer to check the mark under the shadda on native pixels"
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/th-left",
+    "kind": "reading_block",
+    "label": "th-left",
+    "role": "table-header",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "الإنارة التحذيرية الحدّ الأقصى للارتفاع (متر فوق منسوب الأرض الطبيعية)",
+    "translation": "Column headings in the left half: 'Warning lighting'; 'Maximum height (metres above natural ground level)'",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b06-left.png",
+     "review/ADD-03-p4-r1/bands/b06-left.png"
+    ],
+    "bands": [
+     [
+      6,
+      "left"
+     ],
+     [
+      6,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/th-right",
+    "kind": "reading_block",
+    "label": "th-right",
+    "role": "table-header",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "الوصف المنطقة",
+    "translation": "Column headings in the right half: 'Description'; 'Zone'",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b06-right.png",
+     "review/ADD-03-p4-r1/bands/b06-right.png"
+    ],
+    "bands": [
+     [
+      6,
+      "right"
+     ],
+     [
+      6,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/row-a-left",
+    "kind": "reading_block",
+    "label": "row-a-left",
+    "role": "table-cell",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "مطلوبة",
+    "translation": "Zone A, warning lighting: Required",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b07-left.png"
+    ],
+    "bands": [
+     [
+      7,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/row-a-right",
+    "kind": "reading_block",
+    "label": "row-a-right",
+    "role": "table-cell",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "٢٥ الجزء من الموقع الواقع ضمن مسافة ١٬٥٠٠ متر من الحدّ الشرقي للموقع أ",
+    "translation": "Zone A: maximum height 25; description: 'The part of the site lying within a distance of 1,500 metres from the eastern boundary of the site'",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b07-right.png",
+     "review/ADD-03-p4-r1/bands/b07-right.png",
+     "review/ADD-03-p4-r1/bands/b07-right.png"
+    ],
+    "bands": [
+     [
+      7,
+      "right"
+     ],
+     [
+      7,
+      "right"
+     ],
+     [
+      7,
+      "right"
+     ]
+    ],
+    "uncertain": [
+     "the description cell is printed on two lines (break after مسافة); stored here as one line",
+     "numeral '١٬٥٠٠': the separator is a small raised comma-like mark; read as the Arabic thousands separator U+066C, not a decimal separator. Reviewer to confirm."
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/row-b-left",
+    "kind": "reading_block",
+    "label": "row-b-left",
+    "role": "table-cell",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "مطلوبة لأي جزء يزيد ارتفاعه على ٣٠ متراً ٤٠",
+    "translation": "Zone B: warning lighting 'Required for any part whose height exceeds 30 metres'; maximum height 40",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b08-left.png",
+     "review/ADD-03-p4-r1/bands/b08-left.png"
+    ],
+    "bands": [
+     [
+      8,
+      "left"
+     ],
+     [
+      8,
+      "left"
+     ]
+    ],
+    "uncertain": [
+     "the lighting cell is printed on two lines (break after يزيد); stored here as one line"
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/row-b-right",
+    "kind": "reading_block",
+    "label": "row-b-right",
+    "role": "table-cell",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "باقي مساحة الموقع ب",
+    "translation": "Zone B: description 'The remainder of the site area'",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b08-right.png",
+     "review/ADD-03-p4-r1/bands/b08-right.png"
+    ],
+    "bands": [
+     [
+      8,
+      "right"
+     ],
+     [
+      8,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/notes-head",
+    "kind": "reading_block",
+    "label": "notes-head",
+    "role": "notes-heading",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "ملاحظات:",
+    "translation": "Notes:",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b09-full.png"
+    ],
+    "bands": [
+     [
+      9,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/note1",
+    "kind": "reading_block",
+    "label": "note1",
+    "role": "note",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "١. تسري هذه الحدود على جميع المنشآت الدائمة والمؤقتة، بما في ذلك المداخن والرافعات ومعدّات الإنشاء.",
+    "translation": "1. These limits apply to all permanent and temporary structures, including chimneys, cranes and construction equipment.",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b10-full.png"
+    ],
+    "bands": [
+     [
+      10,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/note2",
+    "kind": "reading_block",
+    "label": "note2",
+    "role": "note",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "٢. يُقاس الارتفاع من منسوب الأرض الطبيعية قبل أعمال التسوية والردم.",
+    "translation": "2. Height is measured from natural ground level before grading and filling works.",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b11-full.png"
+    ],
+    "bands": [
+     [
+      11,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/note3",
+    "kind": "reading_block",
+    "label": "note3",
+    "role": "note",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "٣. يجب إخطار المكتب قبل ثلاثين (٣٠) يوماً على الأقل من تركيب أي رافعة في الموقع.",
+    "translation": "3. The Office must be notified at least thirty (30) days before the installation of any crane on the site.",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b12-full.png"
+    ],
+    "bands": [
+     [
+      12,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/signatory",
+    "kind": "reading_block",
+    "label": "signatory",
+    "role": "signature",
+    "lang": "ar",
+    "pages": [
+     4
+    ],
+    "text": "مدير المكتب",
+    "translation": "Director of the Office",
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b13-left.png"
+    ],
+    "bands": [
+     [
+      13,
+      "left"
+     ]
+    ],
+    "uncertain": [
+     "below the title is a drawn signature stroke with no legible name"
+    ]
+   },
+   {
+    "unit": "ADD-03:p4-image/stamp",
+    "kind": "reading_block",
+    "label": "stamp",
+    "role": "stamp",
+    "lang": "en",
+    "pages": [
+     4
+    ],
+    "text": "",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p4-r1/bands/b13-right.png"
+    ],
+    "bands": [
+     [
+      13,
+      "right"
+     ]
+    ],
+    "uncertain": [
+     "the right half of band 13 is an empty oval (stamp outline) with no legible text inside; recorded as empty"
+    ]
+   }
+  ],
+  "expect": "propose the rows (row_new) the reading's table or form states (zones, heights, datum, scope, notices, units: the parameters read from these cells, the quote verbatim from the reading's source text, Arabic as printed; the translation is not evidence), each cites the reading's units and carries `conditional_on: {reading: ADD-03-p4-r1, until: approval}`, and the activities they need carry the same field. They are never in force while the reading is pending: A1 shows them as PENDING READING, A3 and A5 leave them out. Where the reading and another rendering differ (a translation, an English appendix), say so in an issue or an escalation; never choose between them"
+ },
+ {
+  "id": "date:ADD-03:7.3",
+  "kind": "computed_date",
+  "unit": "ADD-03:7.3",
+  "pages": [
+   3
+  ],
+  "words": "three (3) Working Days before the Proposal Due Date",
+  "anchor": "PDD",
+  "anchor_date": "2026-11-26",
+  "computed_from": {
+   "method": "deadline",
+   "inputs": {
+    "offset": {
+     "count": 3,
+     "unit": "working_day",
+     "words": "three (3) Working Days before the Proposal Due Date"
+    },
+    "anchor": {
+     "name": "PDD",
+     "date": "2026-11-26",
+     "source": "VOL-I:6.1"
+    },
+    "direction": "before"
+   },
+   "counting": "working-days-before",
+   "result": "2026-11-23",
+   "fingerprint": "60b780e98a3a27dacdf6fba625e5ba3e239d77d6e14d9c9541ea8ef1f99d2710"
+  },
+  "status": "resolved",
+  "readings": [
+   {
+    "key": "stated_date_excluded",
+    "value": "2026-11-23",
+    "basis": "stated in the pack (VOL-I 2.4)"
+   }
+  ],
+  "conditional": "A Bidder whose Proposal provides for any structure, plant or equipment at the site exceeding thirty (30) metres in height shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of…",
+  "rows": [],
+  "expect": "a milestone proposal: an activity (milestone) whose `computed_from` is this object unchanged, or a row's date rule with these words (the program recomputes either; nothing typed); the obligation is conditional, so the milestone is conditional (say on what)"
+ },
+ {
+  "id": "cond:VOL-II:3.2",
+  "kind": "condition_changed",
+  "unit": "VOL-II:3.2",
+  "op": "ADD-03/4.1",
+  "changed_unit": "VOL-II:3.1",
+  "words": "The treatment process shall include a membrane filtration step, either in the tertiary treatment stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1 µm.",
+  "flag": "condition changed by ADD-03/4.1: re-read (VOL-II:3.2 applies 'Where a membrane process is proposed'; ADD-03/4.1 adds 'membrane' in an obligation of VOL-II:3.1: the condition may now always hold; a person decides)",
+  "condition": "Where a membrane process is proposed",
+  "scope": {
+   "units": [
+    "VOL-II:3.2",
+    "VOL-II:3.1"
+   ],
+   "rows": [
+    "VOL-II-3.2-01",
+    "VOL-II-3.2-02"
+   ],
+   "activities": [],
+   "clarifications": []
+  },
+  "expect": "re-read each row against the changed condition or definition (row_reading at the addendum, or an escalation): whether the clause now always, or never, applies is a person's reading; an earlier answer that relied on it is listed under reread:",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "defn:VOL-V:1.1",
+  "kind": "condition_changed",
+  "unit": "VOL-V:1.1",
+  "op": "ADD-03/3.1",
+  "changed_unit": "VOL-V:1.1",
+  "words": "Availability Payment means the annual payment, expressed at Base Date prices, calculated under Clause 29 and adjusted under Clause 31.",
+  "flag": "definition of 'Availability Payment' changed by ADD-03/3.1: re-read (VOL-V:1.1 as amended: 'Availability Payment means the annual payment, expressed at Base Date prices, calculated under Clause 29 and adjusted u…')",
+  "term": "Availability Payment",
+  "scope": {
+   "units": [
+    "VOL-V:1.1",
+    "VOL-V:1.1"
+   ],
+   "rows": [
+    "VOL-I-10.2-01",
+    "VOL-I-10.6-01",
+    "VOL-I-11.5-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "VOL-V-29.2-01",
+    "VOL-V-29.3-01"
+   ],
+   "activities": [],
+   "clarifications": []
+  },
+  "expect": "re-read each row against the changed condition or definition (row_reading at the addendum, or an escalation): whether the clause now always, or never, applies is a person's reading; an earlier answer that relied on it is listed under reread:",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "cons:VOL-V:29.2",
+  "kind": "derived_consequence",
+  "unit": "VOL-V:29.2",
+  "band": {
+   "words": "not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+   "low": 50,
+   "high": 70,
+   "unit": "%"
+  },
+  "rules": [
+   {
+    "row": "VOL-I-11.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:11.5",
+    "quote": "any response that does so shall render the Proposal non-responsive",
+    "page": 5,
+    "shared": [
+     "Availability Payment"
+    ]
+   }
+  ],
+  "read_with": [
+   {
+    "row": "VOL-IV-F4F-01",
+    "unit": "VOL-IV:cover/T1/4-F",
+    "quote": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+    "shared": [
+     "Availability Payment"
+    ]
+   },
+   {
+    "row": "VOL-IV-F4F-02",
+    "unit": "VOL-IV:F4-F/para1",
+    "quote": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+    "shared": [
+     "Availability Payment"
+    ]
+   }
+  ],
+  "silent": false,
+  "expect": "never invent a consequence the pack does not state. If an existing rule's words cover a value outside the band, a row (row_new) whose consequence quotes that rule (its unit, class and words): PROPOSED, a person decides whether the rule covers the value. If no rule covers it: an escalation saying 'no bid-out consequence stated'. Read the rule with the forms that state the value (read_with)",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "cons:ADD-03:3.3",
+  "kind": "derived_consequence",
+  "unit": "ADD-03:3.3",
+  "band": {
+   "words": "not less than fifty per cent (50%) and not more than seventy per cent (70%)",
+   "low": 50,
+   "high": 70,
+   "unit": "%"
+  },
+  "rules": [
+   {
+    "row": "VOL-I-9.6-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:9.6",
+    "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-10.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:10.5",
+    "quote": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-11.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:11.5",
+    "quote": "any response that does so shall render the Proposal non-responsive",
+    "page": 5,
+    "shared": [
+     "Availability Payment"
+    ]
+   }
+  ],
+  "read_with": [
+   {
+    "row": "VOL-IV-F4F-01",
+    "unit": "VOL-IV:cover/T1/4-F",
+    "quote": "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory",
+    "shared": [
+     "Availability Payment"
+    ]
+   },
+   {
+    "row": "VOL-IV-F4F-02",
+    "unit": "VOL-IV:F4-F/para1",
+    "quote": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+    "shared": [
+     "Availability Payment"
+    ]
+   }
+  ],
+  "silent": false,
+  "expect": "never invent a consequence the pack does not state. If an existing rule's words cover a value outside the band, a row (row_new) whose consequence quotes that rule (its unit, class and words): PROPOSED, a person decides whether the rule covers the value. If no rule covers it: an escalation saying 'no bid-out consequence stated'. Read the rule with the forms that state the value (read_with)",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ }
+]

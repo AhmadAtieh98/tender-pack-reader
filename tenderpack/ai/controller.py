@@ -148,6 +148,9 @@ INSTRUCTIONS = [
     "Read targets as they stand before this addendum: get_unit(unit_id, stage=<previous_stage>); quote that text.",
     "A no_effect disposition on words that amend, oblige or except never verifies: a printed change needs its op; "
     "otherwise quote, in the reason, the words that show it changes nothing (a person confirms it).",
+    "A free-standing provision (an obligation of the addendum's own that amends no volume unit) is answered by a "
+    "row_new whose primary unit is that provision's own unit id (the register holds rows on addendum units), "
+    "introduced at this addendum, with its consequence quoted; it is never escalated for want of a cited unit.",
 ]
 
 
@@ -212,6 +215,195 @@ def cover_issues(ps, texts: dict[str, str], provisions: list[str]) -> dict[str, 
                            "the normal rules, and a person confirms the cover's error."),
                 "owner": "Bid manager", "source": f"AI workflow validation (cover discrepancy on {it.id})", "rows": [],
                 "show_in_a3": False}
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- settled points (s12)
+# Session 12 (blind-06 follow-ups 12 and 6 b). A model's issue or escalation that hands a person a point the documents
+# themselves settle is re-presented with the rule applied and the clause quoted ("<clause> provides: '<words>' (applied,
+# not decided)"): (i) the cover against an operative provision (the cover is the addendum's summary of itself, never an
+# operative provision; VOL-I 3.2 orders the documents), (ii) the addendum's own precedence clause (a provision whose
+# words say govern / prevail / precedence, matched to the point by its number or its own distinctive words), (iii) an
+# answer whose words say "<X> is amended accordingly". It is labelled HUMAN DECISION PENDING only when the human-owned
+# classifier's own words fire outside the settled sentences (a genuine judgment stays a person's); nothing is accepted.
+
+APPLIED_RULE = "applied rule"            # the ValidationRecord.check of a point the documents settle
+HANDOFF = re.compile(r"\b(?:is|are|remains?|stays?)\s+(?:(?:a|an|the)\s+)?(?:person's|human|legal|commercial|Legal's)\s+"
+                     r"(?:decision|question|judgment|matter)\b|\b(?:a\s+)?decision\s+for\s+(?:Legal|a person|the owner|"
+                     r"Commercial|people)\b|\b(?:Legal|Commercial|a person|the Bid manager)(?:\s+counsel)?\s+(?:decides|must "
+                     r"decide|to decide|should decide)\b|\bhuman decision\b|\blegal question\b|\bfor a person to "
+                     r"(?:decide|confirm)\b", re.I)
+_SETTLE_TOPIC = re.compile(r"\b(?:govern(?:s|ed|ing)?|prevail(?:s|ed|ing)?|precedence|which (?:rendering|text|version|"
+                           r"language|translation)|amend(?:s|ed|ing|ment)?)\b", re.I)
+# a precedence clause STATES an outcome ("The Arabic text governs.", "X shall prevail over Y"); a pointer to an order of
+# precedence ("The order of precedence at Volume I Clause 3.2 applies.") leaves its application to a person (the
+# concession-term question, audit A1-1) and settles nothing here
+_PRECEDENCE = re.compile(r"\b(?:governs|shall govern|prevails|shall prevail|takes? precedence over|shall take precedence "
+                         r"over|has precedence over)\b", re.I)
+_UNIT_ID = re.compile(r"\b[A-Z]+(?:-[A-Z0-9]+)+:[^\s,;]+")
+_ACCORDINGLY = re.compile(r"\b(?:is|are)\s+(?:hereby\s+)?amended\s+accordingly\b", re.I)
+_COVER_WORDS = re.compile(r"\b(?:cover|summary)\b", re.I)
+_PLAIN = {"the", "and", "for", "that", "this", "with", "shall", "text", "texts", "provision", "provisions", "clause",
+          "version", "document", "documents", "words", "governs", "govern", "governing", "prevails", "prevail",
+          "prevailing", "precedence", "takes", "take", "over", "any", "all", "other", "which", "where", "between",
+          "event", "conflict", "order", "following", "first", "named", "apply", "applies", "volume", "volumes",
+          "addendum", "addenda", "section", "appendix", "part", "page", "paragraph", "item", "bidder", "bidders",
+          "authority", "proposal", "shall", "will", "must", "rfp", "under", "issued", "these", "those", "such",
+          "into", "from", "same", "each", "both"}
+
+
+_ABBREV = re.compile(r"(?:\bNos?|\bCl|\bArt|\bPara|\be\.g|\bi\.e|\betc|\bvs?)\.$", re.I)
+
+
+def _sentences(text: str) -> list[str]:
+    out: list[str] = []
+    for x in re.split(r"(?<=[.;])\s+|\n+", " ".join(str(text or "").replace("\n", " \n ").split(" "))):
+        x = x.strip()
+        if not x:
+            continue
+        if out and (_ABBREV.search(out[-1]) or re.match(r"^[a-z0-9(]", x)):      # 'Addenda Nos. 1 and 2', '12.3'
+            out[-1] = f"{out[-1]} {x}"
+        else:
+            out.append(x)
+    return out
+
+
+def _ref(pid: str) -> str:
+    return pid.replace(":", " ", 1)
+
+
+def _keys(sentence: str) -> set[str]:
+    return {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z-]{3,}", sentence or "") if w.lower() not in _PLAIN}
+
+
+def _names(sentence: str, pid: str) -> bool:
+    doc, _, local = pid.partition(":")
+    return bool(local) and (pid in sentence or re.search(rf"(?<![\w.]){re.escape(local)}(?![\w]|\.\d)", sentence) is not None)
+
+
+def settled_points(text: str, provision: str | None, texts: dict[str, str], addendum: str, provisions) -> list[dict]:
+    """The sentences of a model's own prose that hand a person a point the documents settle (see above). Each:
+    {kind (cover | precedence | accordingly), sentence, ref, unit, words, keys, line}. [] when none."""
+    provisions = list(provisions or [])
+    prose = " ".join(_UNIT_ID.sub(" ", str(text or "")).split())      # unit ids name places, not the point
+    covers = [p for p in provisions if ":cover/" in p]
+    clauses = []                                           # the addendum's own precedence sentences (not the cover's)
+    for p in provisions:
+        if p in covers:
+            continue
+        for snt in _sentences(texts.get(p) or ""):
+            if _PRECEDENCE.search(snt):
+                clauses.append((p, snt))
+    out = []
+    for snt in _sentences(prose):
+        if not HANDOFF.search(snt) or not _SETTLE_TOPIC.search(snt):
+            continue
+        pt = None
+        if re.search(r"\bamend", snt, re.I):                 # (iii) 'is amended accordingly'
+            for p in [x for x in provisions if x == provision or _names(snt, x)]:
+                m = next((x for x in re.split(r"(?<=[.;])\s+|\s*\|\s*", " ".join((texts.get(p) or "").split()))
+                          if _ACCORDINGLY.search(x)), None)
+                if m:
+                    m = re.sub(r"^Authority response:\s*", "", m.strip())
+                    pt = {"kind": "accordingly", "unit": p, "words": m, "keys": {_ref(p)} | _keys(m)}
+                    break
+        if pt is None and (provision or "").startswith(f"{addendum}:") and (
+                (provision or "") in covers or _COVER_WORDS.search(snt)
+                or (_COVER_WORDS.search(prose) and re.search(r"\bwhich (?:text|one)\b", snt, re.I))):
+            own = next(((p, c) for p, c in clauses if _COVER_WORDS.search(c)), None)      # (i) the cover
+            vol = next((c for c in _sentences(texts.get("VOL-I:3.2") or "")
+                        if re.search(r"\bprecedence\b|\bprevail", c, re.I)), None)          # the order of the documents
+            if own or vol:
+                p, c = own or ("VOL-I:3.2", vol)
+                pt = {"kind": "cover", "unit": p, "words": c, "keys": {"cover", "summary", "operative"},
+                      "tail": " — the cover is the addendum's summary of itself, never an operative provision, so the "
+                              "operative provision applies and a person confirms the cover's error"}
+        if pt is None:                                     # (ii) the addendum's own precedence clause
+            for p, c in clauses:
+                m = _PRECEDENCE.search(c)                  # its subject (and what it prevails over) are its keys
+                k = _keys(c[:m.start()]) | (_keys(c[m.end():]) if "over" in m.group(0).lower() else set())
+                if _names(snt, p) or (k and k & _keys(prose)):
+                    pt = {"kind": "precedence", "unit": p, "words": c, "keys": k | {_ref(p)}}
+                    break
+        if pt is None:
+            continue
+        pt.update(sentence=snt, ref=_ref(pt["unit"]))
+        pt["line"] = f"{pt['ref']} provides: '{pt['words']}'{pt.pop('tail', '')} (applied, not decided)"
+        if all(x["line"] != pt["line"] or x["sentence"] != snt for x in out):
+            out.append(pt)
+    return out
+
+
+def applied_rule_review(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str], addendum: str,
+                        provisions, phase: str = "analysis", existing: dict | None = None) -> dict:
+    """{lines, sentences, points, human}: the applied rules of an item's own prose (settled_points over
+    human_owned.prose, quotations left out) and the human-owned reasons left once the settled sentences are set aside.
+    Without a settled point `human` is the human-owned classifier's usual answer (by type and by content); with one, it
+    is the classifier's own words on the rest of the prose, a precedence word restating the applied clause excepted."""
+    from .. import human_owned as H
+    text = H.prose(payload or {})
+    pts = settled_points(text, provision, texts, addendum, provisions)
+    full = (H.analysis_reasons(statement_type, payload or {}, texts.get(provision or "", "")) if phase == "analysis"
+            else H.downstream_reasons(statement_type, payload or {}, existing))
+    if not pts:
+        return {"lines": [], "sentences": [], "points": [], "human": full}
+    rest = " ".join(str(text or "").split())
+    for p in pts:
+        rest = rest.replace(p["sentence"], " ")
+    skip = {"decides which document prevails (precedence)", "a precedence question", "decides which clause governs"} \
+        if any(p["kind"] in ("cover", "precedence") for p in pts) else set()
+    own = [f"its own words {x}" for x in H.triggers(rest) if x.split(" ('")[0] not in skip]
+    # the classifier's reasons by type are kept (a re-read question, a status, an answer), except an issue's: an issue
+    # whose point the documents settle is re-presented as an applied rule, not kept open as a decision
+    typed = [x for x in full if not x.startswith(("its own words", "the provision it reads", "an annotation that"))
+             and not (statement_type == "issue" and "kept open for people" in x)]
+    return {"lines": list(dict.fromkeys(p["line"] for p in pts)), "sentences": [p["sentence"] for p in pts],
+            "points": pts, "human": list(dict.fromkeys(typed + own))}
+
+
+def re_present_issue(entry: dict, lines: list[str], sentences: list[str]) -> dict:
+    """A PROPOSED issue whose point the documents settle, as promotion writes it: the applied rule first, the sentences
+    that handed the point to a person left out of its text (the model's text kept as `proposed_text`), and an owner who
+    confirms an applied rule (the Bid manager, as for a cover discrepancy) in place of Legal or Commercial (kept as
+    `proposed_owner`). Nothing is decided: the issue stays PROPOSED for a person."""
+    from ..human_owned import JUDGMENT_OWNERS
+    e = dict(entry)
+    for k in ("text", "a3", "short"):
+        if not e.get(k):
+            continue
+        t = " ".join(str(e[k]).split())
+        for snt in sentences:
+            t = t.replace(snt, " ")
+        t = " ".join(t.replace("HUMAN DECISION PENDING", "applied rule, not a pending decision").split())
+        if k == "text":
+            e["proposed_text"] = entry[k]
+            t = " ".join(lines) + (" " + t if t else "")
+        e[k] = t
+    e["applied_rule"] = list(lines)
+    if JUDGMENT_OWNERS.search(str(e.get("owner") or "")):
+        e["proposed_owner"], e["owner"] = e["owner"], "Bid manager"
+    return e
+
+
+def phase_reversals(ds_items, analysis: dict, texts: dict[str, str], addendum: str, provisions) -> dict[int, str]:
+    """Session 12 (blind-06 follow-up 6 b): {downstream item index: why} for a downstream item whose own prose hands a
+    person a point the documents settle (settled_points) that an analysis item concluded by applying the same clause
+    (a sentence of its own, not handing anything over, that names the clause or its distinctive words and applies it).
+    `ds_items`: [(index, provision, prose)]; `analysis`: {item id: (provision, prose)}."""
+    out: dict[int, str] = {}
+    for i, prov, prose in ds_items:
+        for pt in settled_points(prose, prov, texts, addendum, provisions):
+            keys = {k.lower() for k in pt["keys"]}
+            for aid, (aprov, aprose) in analysis.items():
+                hit = next((s for s in _sentences(aprose) if not HANDOFF.search(s) and _SETTLE_TOPIC.search(s)
+                            and (keys & {w.lower() for w in re.findall(r"[A-Za-z][A-Za-z-]{3,}", s)}
+                                 or _names(s, pt["unit"]))), None)
+                if hit:
+                    out[i] = (f"reverses {aid} ({aprov}), which applied {pt['ref']} ('{_short(hit, 160)}'): this item "
+                              f"hands the point back to a person; {pt['line']}")[:600]
+                    break
+            if i in out:
+                break
     return out
 
 
@@ -567,6 +759,26 @@ def _quotes_provision(reason: str, text: str) -> bool:
     return any(found(" ".join(w[i:i + 6]), text) for i in range(len(w) - 5))
 
 
+
+def obligation_without_row(text: str, reason: str, rows) -> str | None:
+    """Session 12 (blind-06 follow-up 6c): a `no_effect` disposition on a provision whose own words OBLIGE ("shall",
+    "must", "is required"), where no row in force carries the obligation and the disposition's reason names no row id
+    or unit that a row cites: the note is being settled by the system. Returns the finding, or None."""
+    from ..trace import OBLIGATION
+    m = OBLIGATION.search(text or "")
+    if not m:
+        return None
+    reason = reason or ""
+    for row in rows:
+        rid = getattr(row, "id", None)
+        if rid and rid in reason:
+            return None
+        if any(u and u in reason for u in (getattr(row, "units", None) or [])):
+            return None
+    return (f"no_effect on an obligation the provision states ('{m.group(0)}' at '{(text or '')[max(0, m.start() - 40):m.end() + 40].strip()}') "
+            "that no row carries, and the reason names no row or unit that does: a person decides whether a row is needed")
+
+
 def _semantic_checks(ws: Workspace, ps: ProposalSet, F: list[dict], sim_ops: list, sim_disps: list,
                      addendum: str) -> list[str]:
     """Semantic resolution of every 'no change' answer (a no_effect disposition; an annotation that changes nothing):
@@ -597,6 +809,10 @@ def _semantic_checks(ws: Workspace, ps: ProposalSet, F: list[dict], sim_ops: lis
             if s["kind"] == "none":
                 rec(True, f"no amendment language in the provision's own words ({s['why']}): no_effect is consistent "
                           "with them")
+                gap = obligation_without_row(text, d.reason, ws.r["rowfile"].rows)   # session 12 (follow-up 6c)
+                if gap:
+                    rec(False, gap)
+                    f["interp"].append("no_effect on an obligation no row carries")
             elif s["kind"] == "substitution":
                 rec(False, f"no_effect contradicts the provision's own words: {s['why']}", "invalid")
                 flagged.append(it.provision)
@@ -697,6 +913,43 @@ def recheck_fresh(ws: Workspace, ps: ProposalSet, report: dict) -> bool:
         provs = _provisions(ws, ps.addendum) if ps.addendum in ws.addenda() else []      # as loaded
         _all_invalid(ps, provs, "stale", f"stale: the inputs changed while the set was validated ({e})")
         return False
+
+
+
+def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, object]]) -> dict[int, str]:
+    """Session 12 (blind-06 follow-up 6a): {item index: why} for items of ONE combined set that treat the same unit in
+    opposite ways across batches: a `no_effect` disposition on a provision while another item's op changes a unit
+    that provision prints or cites (its target), or two ops that set the same target to different texts or statuses.
+    Neither side is promoted silently: each gets a conflict record and the status `conflicting`, and the packet's
+    first section lists them for a person. Items on different units never conflict here."""
+    out: dict[int, str] = {}
+    by_target: dict[str, list[tuple[int, object]]] = {}
+    for i, op in ops:
+        for t in {getattr(op, "target", None), *(getattr(op, "targets", None) or [])} - {None}:
+            if getattr(op, "type", None) == "annotate" and getattr(op, "effect", None) in ("confirms", "interprets", "none"):
+                continue                                    # a confirming annotation changes nothing
+            by_target.setdefault(t, []).append((i, op))
+    no_effect = [(j, d) for j, d in disps if getattr(d, "disposition", None) == "no_effect"]
+    for j, d in no_effect:
+        prov = getattr(d, "provision", None)
+        for t, lst in by_target.items():
+            for i, op in lst:
+                if getattr(op, "provision", None) == prov or t == prov:
+                    why = f"{prov}: a no_effect disposition and {getattr(op, 'id', i)} ({getattr(op, 'type', '?')} on {t}) in the same set"
+                    out[j] = out.get(j) or why
+                    out[i] = out.get(i) or why
+    for t, lst in by_target.items():
+        sigs = {}
+        for i, op in lst:
+            sig = (getattr(op, "type", None), getattr(op, "new", None), getattr(op, "status", None), getattr(op, "old", None))
+            sigs.setdefault(sig, []).append((i, op))
+        if len(sigs) > 1 and any(getattr(op, "type", None) in ("replace_text", "set_status", "replace_unit", "set_value")
+                                  for _, op in lst):
+            ids = ", ".join(str(getattr(op, "id", i)) for i, op in lst)
+            for i, op in lst:
+                if getattr(op, "type", None) in ("replace_text", "set_status", "replace_unit", "set_value"):
+                    out[i] = out.get(i) or f"{t}: {ids} change the same unit in different ways across the set"
+    return out
 
 
 def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expected_addendum: str | None = None,
@@ -905,12 +1158,30 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
     # declares a matter closed; an issue or a question. Never evidence_verified: the evidence is recorded as verified,
     # the conclusion stays a person's.
     from ..human_owned import CHECK as _HO, analysis_reasons, record_detail
+    texts_all = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}       # session 12 (follow-up 12)
+    provs_all = _provisions(ws, addendum)
     for i, it in enumerate(ps.items):
         ptext = (pst[it.provision].text if it.provision in pst else "") or ""
-        why = analysis_reasons(it.statement_type, dict(it.payload or {}), ptext)
+        if it.statement_type in ("issue", "escalation", "clarification"):
+            # a point the documents settle is an applied rule with its clause quoted; only what the rest of the item's
+            # own words judge stays HUMAN DECISION PENDING (controller.applied_rule_review)
+            ar = applied_rule_review(it.statement_type, dict(it.payload or {}), it.provision, texts_all, addendum,
+                                     provs_all)
+            why = ar["human"]
+            if ar["lines"]:
+                F[i]["recs"].append(ValidationRecord(check=APPLIED_RULE, ok=True, detail="; ".join(ar["lines"])[:600],
+                                                     aspect="decision"))
+                if it.statement_type != "escalation":
+                    F[i]["interp"].append(APPLIED_RULE)
+        else:
+            why = analysis_reasons(it.statement_type, dict(it.payload or {}), ptext)
         if why and it.statement_type != "escalation":
             F[i]["recs"].append(ValidationRecord(check=_HO, ok=True, detail=record_detail(why), aspect="decision"))
             F[i]["interp"].append(_HO)
+    for i, why in cross_item_conflicts(sim_ops, sim_disps).items():      # session 12 (blind-06 follow-up 6a)
+        if not F[i]["invalid"]:
+            F[i]["recs"].append(ValidationRecord(check="consistency", ok=False, detail=why))
+            F[i]["conflict"].append("cross-item")
     for i, it in enumerate(ps.items):
         f = F[i]
         if f["invalid"]:

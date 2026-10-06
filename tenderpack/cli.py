@@ -497,9 +497,10 @@ def pin_cmd(evidence: Path, pack_path: Path, refresh: bool, migrate: bool = Fals
     write_pins(rf, pins_path(rows_path),
                "# Written by `python -m tenderpack pin` (machine-generated; do not edit by hand).\n"
                f"# Pin format {PIN_FORMAT}: for each row and interpretation stage, the hash of every dependency (status,\n"
-               "# text, cells, annotations and, for image readings, the review-subject fingerprint) when the\n"
-               "# interpretation was drafted. A later change to any of them makes the row STALE until a person\n"
-               "# re-reviews it. Approving a reading does not change a pin.\n")
+               "# text, cells, annotations other than confirming ones and, for image readings, the review-subject\n"
+               "# fingerprint) when the interpretation was drafted. A later change to any of them makes the row\n"
+               "# STALE until a person re-reviews it; an annotation that confirms a unit unchanged is no change.\n"
+               "# Approving a reading does not change a pin.\n")
     print(f"wrote {pins_path(rows_path)}")
     return 0
 
@@ -593,7 +594,8 @@ def main(argv: list[str] | None = None) -> int:
     f.add_argument("--rows", help="re-pin only these interpretations, as ROW@STAGE[,ROW@STAGE...] (after they were "
                                   "re-drafted or re-reviewed); every other pin is left as it is")
     f.add_argument("--migrate-format", action="store_true",
-                   help="upgrade format-1 pins to format 2 (adds the image review fingerprint) where nothing changed")
+                   help="upgrade format-1 or format-2 pins to the current format (2 added the image review "
+                        "fingerprint; 3 leaves confirming annotations out) where nothing changed")
     g = sub.add_parser("check-register")
     g.add_argument("--evidence", default=str(ROOT / "build"))
     g.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))

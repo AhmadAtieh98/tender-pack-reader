@@ -1,8 +1,9 @@
 # Written by `python -m tenderpack pin` (machine-generated; do not edit by hand).
-# Pin format 2: for each row and interpretation stage, the hash of every dependency (status,
-# text, cells, annotations and, for image readings, the review-subject fingerprint) when the
-# interpretation was drafted. A later change to any of them makes the row STALE until a person
-# re-reviews it. Approving a reading does not change a pin.
+# Pin format 3: for each row and interpretation stage, the hash of every dependency (status,
+# text, cells, annotations other than confirming ones and, for image readings, the review-subject
+# fingerprint) when the interpretation was drafted. A later change to any of them makes the row
+# STALE until a person re-reviews it; an annotation that confirms a unit unchanged is no change.
+# Approving a reading does not change a pin.
 pins:
   VOL-I-6.1-01:
     BASE:
@@ -36,7 +37,7 @@ pins:
     ADD-02:
       ADD-01:Q3: ad4b934176b94e1d
       ADD-02:Q8: 5e3c8952b07523fa
-      VOL-I:6.4: db7c0abdc4fd3e86
+      VOL-I:6.4: 748693916febbc9c
   VOL-I-6.4-02:
     BASE:
       VOL-I:6.4: ff4341dedb0dd1b0
@@ -46,7 +47,7 @@ pins:
     ADD-02:
       ADD-01:Q3: ad4b934176b94e1d
       ADD-02:Q8: 5e3c8952b07523fa
-      VOL-I:6.4: db7c0abdc4fd3e86
+      VOL-I:6.4: 748693916febbc9c
   VOL-I-7.1-01:
     BASE:
       VOL-I:6.1: 8110a42548729886
@@ -102,21 +103,21 @@ pins:
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
       VOL-I:9.4: 7569d67038a63983
-      VOL-IV:F4-C/image: c57ab7e0e532c844
+      VOL-IV:F4-C/image: 362e537158acf924
   VOL-IV-F4C-04:
     BASE:
       VOL-IV:F4-C/image/decl4: 60dc06056ac4ebe3
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/decl4: 9e54563b06adf18c
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/decl4: 60dc06056ac4ebe3
   VOL-IV-F4C-N1:
     BASE:
       VOL-IV:F4-C/image/note: 1099b5f3e277d4cd
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/note: 02cb71395a638468
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/note: 1099b5f3e277d4cd
   ADD-02-7.2-01:
     ADD-02:
       ADD-02:7.2: aff27bbaec3c3b5f
@@ -165,7 +166,7 @@ pins:
       VOL-I:11.3: 2edd05db93d916fc
     ADD-02:
       ADD-02:T1-1-rev/note(1): caa1d77a51d28ce8
-      VOL-I:11.3: c1dee4d7bf38ca69
+      VOL-I:11.3: 2edd05db93d916fc
   VOL-I-T1-1-B:
     BASE:
       VOL-I:T1-1/B: 0e32eaff929f0553
@@ -292,7 +293,7 @@ pins:
       VOL-I:9.1(d): 6928dd25e16159ac
     ADD-02:
       ADD-02:Q10: a5c36e541dffac0f
-      VOL-I:8.7: 6ca6f0ffd0a935d9
+      VOL-I:8.7: b43501f834a8f2f2
       VOL-I:9.1(d): 6928dd25e16159ac
   VOL-I-8.8-01:
     BASE:
@@ -370,13 +371,13 @@ pins:
       VOL-I:10.5: 84f97a69eaf73ba1
     ADD-02:
       ADD-02:Q14: 8e4f02190153859e
-      VOL-I:10.5: 4fcb6dcbbb986013
+      VOL-I:10.5: 84f97a69eaf73ba1
   VOL-I-10.5-02:
     BASE:
       VOL-I:10.5: 84f97a69eaf73ba1
     ADD-02:
       ADD-02:Q14: 8e4f02190153859e
-      VOL-I:10.5: 4fcb6dcbbb986013
+      VOL-I:10.5: 84f97a69eaf73ba1
   VOL-I-10.6-01:
     BASE:
       VOL-I:10.6: 089708d9ad5e0e50
@@ -426,13 +427,13 @@ pins:
       VOL-I:12.2: 96e76cb564edab7d
     ADD-02:
       ADD-02:Q13: 1a8950ccd8c9b9d4
-      VOL-I:12.2: 1b956604cce6db86
+      VOL-I:12.2: 96e76cb564edab7d
   VOL-I-12.2-02:
     BASE:
       VOL-I:12.2: 96e76cb564edab7d
     ADD-02:
       ADD-02:Q13: 1a8950ccd8c9b9d4
-      VOL-I:12.2: 1b956604cce6db86
+      VOL-I:12.2: 96e76cb564edab7d
   VOL-I-13.2-01:
     BASE:
       VOL-I:13.2: 0348d6279113f499
@@ -580,7 +581,7 @@ pins:
       VOL-II:4.2: 6ed8451737648157
     ADD-02:
       ADD-02:Q11: d3a63ac9a38ba205
-      VOL-II:4.2: 2a237c31a47ace52
+      VOL-II:4.2: 6ed8451737648157
   VOL-II-4.3-01:
     BASE:
       VOL-II:4.3: 2c11bcd46344f070
@@ -786,29 +787,29 @@ pins:
       VOL-IV:F4-C/image/decl1: 581e303146c79c92
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/decl1: fbd6fd8b2818a951
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/decl1: 581e303146c79c92
   VOL-IV-F4C-02:
     BASE:
       VOL-IV:F4-C/image/decl2: 96742abdd1455ef7
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/decl2: bc45e300f6ea1da9
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/decl2: 96742abdd1455ef7
   VOL-IV-F4C-03:
     BASE:
       VOL-IV:F4-C/image/decl3: 2274ef21b5c0f276
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/decl3: 126f5f4ba9b72efe
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/decl3: 2274ef21b5c0f276
   VOL-IV-F4C-05:
     BASE:
       VOL-IV:F4-C/image/decl5: cf50caa26d77299b
     ADD-02:
       ADD-02:Q9: 1eb07095e81f1aca
-      VOL-IV:F4-C/image: c57ab7e0e532c844
-      VOL-IV:F4-C/image/decl5: 942748629962e4e3
+      VOL-IV:F4-C/image: 362e537158acf924
+      VOL-IV:F4-C/image/decl5: cf50caa26d77299b
   VOL-IV-F4D-01:
     BASE:
       VOL-IV:F4-D/corporate-authority-reference: 3c09b8924d4a16d6
@@ -957,7 +958,7 @@ pins:
     ADD-02:
       ADD-02:Q12: ef938073bbd1544c
       VOL-V:31.1: 628076bc7761feb3
-      VOL-V:31.2: c852ba97cf1d4f58
+      VOL-V:31.2: 09862e297ec2bb26
   VOL-V-31.1-02:
     BASE:
       VOL-V:31.1: 628076bc7761feb3
@@ -965,7 +966,7 @@ pins:
     ADD-02:
       ADD-02:Q12: ef938073bbd1544c
       VOL-V:31.1: 628076bc7761feb3
-      VOL-V:31.2: c852ba97cf1d4f58
+      VOL-V:31.2: 09862e297ec2bb26
   VOL-V-31.1-03:
     BASE:
       VOL-V:31.1: 628076bc7761feb3
@@ -973,7 +974,7 @@ pins:
     ADD-02:
       ADD-02:Q12: ef938073bbd1544c
       VOL-V:31.1: 628076bc7761feb3
-      VOL-V:31.2: c852ba97cf1d4f58
+      VOL-V:31.2: 09862e297ec2bb26
   VOL-V-31.3-02:
     BASE:
       VOL-V:31.3: d2e899ea4bf8c922

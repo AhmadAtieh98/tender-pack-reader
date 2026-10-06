@@ -87,3 +87,6 @@ Exported from the session transcript in session 11 (4 Oct 2026) and, from brief 
 | 81 | 2026-10-05 18:37 | Panel usability pass: outputs in one place, easy new addendum | `2026-10-05_1837_81_panel-usability-pass-outputs-in-one-place-easy-new.md` | `follow-up` |
 | 82 | 2026-10-05 18:39 | W5 applied in your worktree; one panel test fails on merged tree | `2026-10-05_1839_82_w5-applied-in-your-worktree-one-panel-test-fails-o.md` | `follow-up` |
 | 83 | 2026-10-05 18:49 | F6 blind-06 workflow defects fixer | `2026-10-05_1849_83_f6-blind-06-workflow-defects-fixer.md` | `opus` |
+| 84 | 2026-10-05 21:12 | F6 remaining blind-06 workflow defects | `2026-10-05_2112_84_f6-remaining-blind-06-workflow-defects.md` | `opus` |
+| 85 | 2026-10-05 22:11 | Score the blind-05 post-key regression run | `2026-10-05_2211_85_score-the-blind-05-post-key-regression-run.md` | `follow-up` |
+| 86 | 2026-10-05 23:53 | Resume: write the blind-05 regression scoring | `2026-10-05_2353_86_resume-write-the-blind-05-regression-scoring.md` | `follow-up` |

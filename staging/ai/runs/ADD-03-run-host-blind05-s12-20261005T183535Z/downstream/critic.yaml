@@ -1,0 +1,489 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 7
+    selected_items:
+      P-ADD03-VOL-I-6.1-01: &id001
+      - consequential_interpretation
+      P-ADD03-VOL-I-6.2-02: &id002
+      - consequential_interpretation
+      P-ADD03-ROW-2.1-01: &id003
+      - consequential_interpretation
+      P-ADD03-ISSUE-6.6-SUBSTANCE: &id004
+      - consequential_interpretation
+      P-ADD03-VOL-I-9.6-01: &id005
+      - consequential_interpretation
+      P-ADD03-VOL-II-3.4-01: &id006
+      - conflicting
+      P-ADD03-ISSUE-ODOUR: &id007
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+    route: host
+    reviewed: 7
+    agrees: 7
+    disagrees: 0
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-003:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-004:
+    selected: 3
+    selected_items:
+      DS-ADD03-ESC-51: &id008
+      - conflicting
+      DS-ADD03-ESC-Q19: &id009
+      - conflicting
+      DS-ADD03-ISSUE-AP-BASIS: &id010
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-004-critic
+    route: host
+    reviewed: 3
+    agrees: 3
+    disagrees: 0
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-005:
+    selected: 6
+    selected_items:
+      DS-ESC-P4-NOTE2: &id011
+      - conflicting
+      DS-ESC-T51-NOTE1: &id012
+      - conflicting
+      DS-ESC-T51-NOTE2: &id013
+      - conflicting
+      DS-ROW-P4-03: &id014
+      - conflicting
+      DS-ROW-P4-04: &id015
+      - conflicting
+      DS-ISSUE-RENDERINGS: &id016
+      - conflicting
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+    route: host
+    reviewed: 6
+    agrees: 6
+    disagrees: 0
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-006:
+    selected: 1
+    selected_items:
+      D1: &id017
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-006-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+items:
+  P-ADD03-VOL-I-6.1-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - VOL-I:6.1 text and the ADD-01 amendment of the date are not printed in the units shown; the date 26 November
+          2026 and 14:00 rely on the controller's verbatim check.
+        - The provision text shown (ADD-03:2.1) does not label sub-paragraphs (a) and (b); the note's '2.1(a)' is
+          a label I cannot confirm from the text shown. This does not affect the substance.
+        - 'The rejection consequence does follow: the replaced 6.6 keeps ''A Proposal received after the time stated
+          in Clause 6.1 ... will be rejected unopened and returned to the Bidder.'''
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.6 (text before addendum and as replaced)
+        - controller_validation
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-VOL-I-6.2-02:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading only records the words and does not decide whether the Indexed Proportion is 'other commercial
+          information'. That is appropriate.
+        - VOL-I:6.2 text is not printed in the units shown; it relies on the controller's verbatim check.
+        - Form 4-F is not shown, so whether stating the Indexed Proportion there falls inside Envelope A is not
+          determinable here. The item does not claim it.
+        evidence_checked:
+        - ADD-03:Q20
+        - controller_validation
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-ROW-2.1-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The quoted text, the withdraw and modify cut-offs and the late-modification rejection all match ADD-03:2.1.
+          Deleted 6.7 is shown only in a statement, not in the units.
+        - The date rule ADD03-MODIFY-CUTOFF is validated with a planning value of 2026-11-26 (as_stated). That does
+          not match the 24 November 2026 reading in the payload, which counts back from 26 November. The person
+          should note this inconsistency.
+        - The 24 November calculation relies on the VOL-I 2.4 calendar (Sunday to Thursday), which is not printed
+          here. It is consistent with the stated weekday of the 26th.
+        - The clause says 'the time stated in this Clause' but gives no time of day. This is correctly flagged.
+          Whether 'before the Proposal Due Date' for withdrawal runs to 14:00 is also not stated.
+        - The cover versus clause substance conflict is correctly left to a person.
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.6
+        - controller_validation
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-ISSUE-6.6-SUBSTANCE:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The cover paragraph ('without change of substance') and deleted 6.7 are not in the printed units. Both
+          are relied on through the statements and the controller's verbatim checks.
+        - The contrast between 6.7 ('at any time before') and the new 6.6 (two Working Days before for modification)
+          is real on the words shown. The issue leaves the decision to a person, which is appropriate.
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.6 (as replaced)
+        - statements F-ADD03-COVER-6.6
+        - controller_validation
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-VOL-I-9.6-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Q16 supports the reading that assumptions limiting or qualifying Volume V must be listed in Form 4-E,
+          and that 9.6 applies.
+        - VOL-I:9.6 text is not printed in the units shown; it relies on the controller's verbatim check.
+        - The reading correctly leaves the question of listing the concession-term point to a person.
+        evidence_checked:
+        - ADD-03:Q16
+        - controller_validation
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-VOL-II-3.4-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - ADD-03:5.1 quotes 'not more than 5 OU/m³ at the site boundary', which matches the VOL-II 3.4 text before
+          the addendum. So the substitution is applicable on the words, and the unapplied op is a gap in the pipeline
+          rather than a conflict between provisions.
+        - The statement that no op exists for 5.1 is a pipeline fact I cannot verify from the printed evidence.
+        - ESIA Figure 7-2 is absent, so the limit value cannot be stated. 'none_stated' and the 'insufficient evidence'
+          note are appropriate.
+        - The cover naming Clause 3.5 is not printed in the units shown, so I cannot verify it.
+        - 5.1 confirms that the 98th percentile hourly basis is unchanged.
+        evidence_checked:
+        - ADD-03:5.1
+        - ADD-03:5.2
+        - VOL-II:3.4 text before addendum
+        - controller_validation
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  P-ADD03-ISSUE-ODOUR:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'ADD-03:5.1 and the base VOL-II 3.4 text support the issue: the substitution is stated, and the effective
+          text is reported as unchanged.'
+        - The cover's reference to Clause 3.5 is not in the printed units. The Q18 'data room' quote appears only
+          in the evidence quotation.
+        - The issue appropriately leaves the decision and the odour design basis to a person.
+        evidence_checked:
+        - ADD-03:5.1
+        - ADD-03:5.2
+        - evidence quote ADD-03:Q18
+        - controller_validation
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  DS-ADD03-ESC-51:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'Provision text and target text match the item: 5.1 substitutes the nearest-receptor value for 5 OU/m³
+          at the site boundary, and VOL-II 3.4 still reads 5 OU/m³ at the site boundary in the evidence shown.'
+        - Claims about 5.2, Q18 and the cover's 'Clause 3.5' wording rest on statements whose quotations I could
+          check only as printed. The cover quotation says 'Clause 3.5', which does differ from 5.1's 'Clause 3.4'.
+        - I cannot check from the evidence shown that Figure 7-2 is absent from the build, or that clarifications
+          closed on 2026-11-12 (VOL-I 5.2). The item's own statements assert both. The closure date is also after
+          today's date of 2026-10-05, which is odd but is not a defect in the item.
+        - The 'not promoted' status is consistent with the unit status 'not_issued', but the evidence printed does
+          not show the promotion record itself.
+        - The item correctly leaves the choice of criterion to a person.
+        evidence_checked:
+        - ADD-03:5.1
+        - VOL-II:3.4
+        - VOL-II:9.1 quotation
+        - downstream-004/S-F-51-UNPROMOTED
+        - downstream-004/S-F-51-FIG72
+        - downstream-004/S-F-51-CLAUSEREF
+        selected_because: *id008
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-004-critic
+        model_reported: claude-sonnet-5-5
+  DS-ADD03-ESC-Q19:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - Q19 says year 1 prices with indexation from the first anniversary of PCOD. 3.1 says Base Date prices and
+          3.3 says indexation from the Base Date. These are quoted verbatim and do look like different price bases,
+          so the conflict is plausible.
+        - The conflict is not certain. Year 1 prices could coincide with Base Date prices, or Q19 could be read
+          as a clarification of how the Form 4-F figure is entered. This is an interpretation that a person must
+          confirm, and the item marks it so.
+        - The evidence shown does not include the text of Schedule 9, VOL-V 29.2, or the Base Date definition. These
+          are needed to decide whether the two readings really diverge.
+        - The VOL-I 10.5 / 11.5 non_responsive rules are not in the evidence shown. They are only mentioned as PROPOSED.
+        evidence_checked:
+        - ADD-03:Q19
+        - ADD-03:3.1 quotation
+        - ADD-03:3.3 quotation
+        - VOL-IV:F4-F quotation
+        - downstream-004/S-F-Q19-PRICES
+        - downstream-004/S-F-31-BASEDATE
+        - downstream-004/S-I-Q19-TENSION
+        selected_because: *id009
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-004-critic
+        model_reported: claude-sonnet-5-5
+  DS-ADD03-ISSUE-AP-BASIS:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The issue restates the Q19 versus 3.1/3.3 tension, and its quotations match the verified text.
+        - It is an interpretation that a person must confirm. It states no conclusion and leaves the decision to
+          a person.
+        - Whether VOL-I 10.5 / 11.5 is engaged cannot be checked from the evidence shown, but the issue only raises
+          it as a question.
+        - The 'clarification window is closed' statement relies on VOL-I 5.2, which is not in the printed evidence.
+        evidence_checked:
+        - ADD-03:Q19
+        - ADD-03:3.3
+        - ADD-03:3.1 quotation
+        - downstream-004/S-I-Q19-TENSION
+        selected_because: *id010
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-004-critic
+        model_reported: claude-sonnet-5-5
+  DS-ESC-P4-NOTE2:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The conflict is real: Arabic note 2 says natural ground before grading and filling, and English note
+          (2) says finished ground after grading and filling.'
+        - The claim that the Arabic column heading also says natural ground rests on a statement quote. The item's
+          own evidence list quotes only note 2 and the English note.
+        - The 'clarification window has closed' claim is not shown in the printed evidence. It does not change the
+          conflict.
+        evidence_checked:
+        - ADD-03:p4-image/note2
+        - ADD-03:T5-1/note(2)
+        - ADD-03:7.2
+        - downstream-005/S-F-NOTE2-AR
+        selected_because: *id011
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  DS-ESC-T51-NOTE1:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The conflict is real: Arabic note 1 covers permanent and temporary structures, including cranes and equipment,
+          while English note (1) covers permanent structures including stacks.'
+        - The link to the crane and lifting plan in ADD-03 Q21 is not supported by anything printed in the request.
+          It is context only.
+        - The 'clarification window has closed' claim is likewise not shown in the printed evidence.
+        evidence_checked:
+        - ADD-03:T5-1/note(1)
+        - ADD-03:p4-image/note1
+        - ADD-03:7.2
+        - downstream-005/S-F-NOTE1-AR
+        - downstream-005/S-F-NOTE1-EN
+        selected_because: *id012
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  DS-ESC-T51-NOTE2:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The conflict is real and no datum is chosen.
+        - The th-left quote in this item's evidence reads 'الإنارة التحذيرية الحدّ الأقصى للارتفاع (…)'. It includes
+          extra words, apparently a neighbouring 'warning lighting' column heading. The same unit is quoted without
+          those words in statement S-F-NOTE2-AR. The person should check the crop to confirm which text belongs
+          to the left column heading.
+        - The th-left unit text is not printed in the units section, so I could not check it independently.
+        evidence_checked:
+        - ADD-03:T5-1/note(2)
+        - ADD-03:p4-image/note2
+        - ADD-03:p4-image/th-left (as quoted)
+        - downstream-005/S-F-NOTE2-AR
+        selected_because: *id013
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  DS-ROW-P4-03:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The Arabic quote matches note 1, and the row is marked pending reading and not in force. The conflict
+          with English note (1) is declared and real.
+        - The row's requirement text states the Arabic scope, while the note says no rendering is chosen. A reader
+          could take the row as adopting the Arabic reading. Section 7.2 ('The Arabic text governs') is not addressed
+          in the row itself.
+        - The post_award_evidence text ('Crane, lifting and temporary works planning…') is the proposer's own wording.
+          The only basis cited is note 1.
+        - The row cites units notes-head and p4-image, which are not printed in the request, so I could not check
+          them.
+        evidence_checked:
+        - ADD-03:p4-image/note1
+        - ADD-03:T5-1/note(1)
+        - ADD-03:7.1
+        - ADD-03:7.2
+        - controller_validation conditional_on and stages
+        selected_because: *id014
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  DS-ROW-P4-04:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The row stays neutral on the datum and marks its post-award evidence 'unresolved', which fits the unresolved
+          conflict.
+        - 'The row''s requirement text follows the Arabic reading. This is the same concern as for row 03: Section
+          7.2 is a person''s decision.'
+        - The th-left unit is cited but not printed in the units section.
+        evidence_checked:
+        - ADD-03:p4-image/note2
+        - ADD-03:T5-1/note(2)
+        - ADD-03:7.1
+        - ADD-03:7.2
+        - controller_validation conditional_on
+        selected_because: *id015
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  DS-ISSUE-RENDERINGS:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The differences on scope (note 1) and datum (note 2) follow from the quotes shown. The note 3 difference
+          ('installation' in the Arabic, 'erected' in the English) is described as slight, and both renderings give
+          thirty days. That is consistent with the statement.
+        - The issue refers to the crane and lifting plan (ADD-03 Q21) and to a closed clarification window. Neither
+          appears in the printed evidence.
+        - The wording in 7.2 ('The Arabic text governs') is stated neutrally and the decision is left to a person.
+          That is appropriate.
+        evidence_checked:
+        - ADD-03:p4-image/note1
+        - ADD-03:T5-1/note(1)
+        - ADD-03:p4-image/note2
+        - ADD-03:T5-1/note(2)
+        - ADD-03:7.2
+        - downstream-005/S-F-NOTE3
+        selected_because: *id016
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-005-critic
+        model_reported: claude-sonnet-5-5
+  D1:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The core requirement follows from the text shown. Replaced 29.2(a) says the Indexed Proportion is the
+          percentage the Bidder states in Form 4-F, at least 50% and at most 70%, until the end of year 10. The
+          old VOL-V 29.2 had a fixed 60/40 split.
+        - The second date_note quotes 'from the start of the eleventh (11th) year of operations'. The printed ADD-03:3.3
+          text stops at '(a) ... ; and', so that wording is not in the evidence shown. It is presumably in clause
+          (b), which is not printed. I cannot verify it and it is not tied to any quotation.
+        - The row does not say what applies after year 10. Clause (b) is not shown, so the row may be incomplete
+          for the full clause, and the statement that the band covers only the first ten years rests on part of
+          the text.
+        - The consequence (non_responsive under VOL-I 10.5) is not stated anywhere in the pack. The item itself
+          says so (S2, I-NO-CONSEQUENCE). Whether a value outside the band is 'price subject to adjustment other
+          than as provided in Volume V' is a judgment. The item marks it as human decision pending, which is appropriate.
+          The controller status is insufficient_evidence and the missing_information check failed.
+        - The Form 4-F paragraph shown (para1) only confirms that the Availability Payment is unconditional. It
+          does not show a field for the Indexed Proportion. The evidence therefore does not confirm that Form 4-F
+          has a place to state it. I did not see the form layout.
+        - I did not see VOL-I 9.6 or 11.5, so I cannot check the rationale for excluding them. The 5.2 clarification-window-closed
+          claim (S7) is attributed to a 'task packet' and is not supported by the quotation attached to it.
+        evidence_checked:
+        - ADD-03:3.3
+        - VOL-V:29.2
+        - VOL-I:10.5 quotation
+        - VOL-IV:F4-F/para1
+        - VOL-IV:cover/T1/4-F
+        - controller_validation
+        - statements S1-S7
+        selected_because: *id017
+        route: host
+        critic_run: ADD-03-run-host-blind05-s12-20261005T183535Z-downstream-006-critic
+        model_reported: claude-sonnet-5-5

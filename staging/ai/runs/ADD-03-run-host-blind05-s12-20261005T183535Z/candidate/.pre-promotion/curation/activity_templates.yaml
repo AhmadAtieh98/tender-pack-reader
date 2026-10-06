@@ -1,0 +1,215 @@
+# Evidence item -> activities. PROPOSED (session 04, extended in Stage 4 and session 08); not reviewed.
+# Each activity names: an owner, a `discipline` (Legal, Commercial, Technical, Bid management, Document control), a
+# `resource` role (config/assumptions.yaml resources:), the issuer of what it produces, a lead-time ASSUMPTION key
+# (config/assumptions.yaml lead_times: elapsed value, staff effort, external party waited on), predecessors and/or
+# successors, and optionally `per` (multiplied by the bidder settings: member, foreign_member, signatory = members x
+# signatories_per_member, reference, epc_contractor, om_operator) and `item` (a physical or documentary item for the
+# marshalling plan). Requirement ids are attached at build time from the A1 rows that need each evidence item;
+# nothing here names a requirement. `finish: deadline_of: <rule_id>` makes a pack date a must-finish-by constraint.
+# A duration of 0 Working Days means "done at the end of the day before its successor starts" (occupies no
+# separate Working Day).
+# `gated_by: [issue ids]` (FINALISATION steps only, never preparation): the activity cannot be finalised until a
+# person decides the open issue (curation/register issues). Its preparation predecessors continue; the decision is
+# needed by the gated activity's latest start. A person lifts a gate by removing it here once the issue is decided.
+# `condition:` the activity is needed only if the condition arises; when its window has elapsed at the planning
+# date it is reported as CONDITIONAL (whether the condition arose is not known), never as a missed duty.
+# An activity listed under two evidence items (a YAML alias, e.g. `copies`) is one activity needed by both.
+# `_exceptions: {EV-ID: reason}` lists evidence items that need no activity (C44), each with its reason.
+# `_row_checks: {row id: {activities: [ids], basis}}` (session 11, audit A5-2): a row with no deliverable of its own
+# (`no_deliverable` in the register) whose compliance a step of the programme checks; the row id is attached to those
+# activities' req_ids at build time, only while the row is in force at the stage and only to activities the programme
+# has at that stage. An activity that exists only to carry such a row is defined under `_row_check_activities`.
+# `_row_exceptions: {row id: reason}`: an A3 (bid-out) row in force that no bid-programme step can carry, with the
+# reason. Every A3 row in force is either carried by an activity or listed here, else C48 (schedule.plan).
+# Session 12 (audit A5-4): C48 covers every A1 row in force: carried by an activity, or excepted with a reason, which is
+# `_row_exceptions` here, else the row's own `no_deliverable`, else (assessment contractual_post_award) its
+# post_award_evidence; a row with none of these is NOT CARRIED (C48 problem). A5 lists every row not carried, with the
+# reason (a5/README.md and a5/requirements_not_carried.csv).
+# `_volume_checks: {volume: {activities, basis, review}}` (session 12, audit A5-2): activities that check every clause of
+# a volume (the Form 4-E review of Volume V); every row in force whose units are in that volume is attached to their
+# req_ids at build time, so an amended clause of the volume marks them REWORK at a replan.
+# `_addenda_checks: {activity id: {rows, basis, review}}` (session 12, audit A5-6): an activity whose output names the
+# Addenda issued (Form 4-A 'Addenda acknowledged (numbers)'); each Addendum issued at a later stage changes what it must
+# record, so the replan marks it REWORK with those rows (while in force and carried by it), quoting the rule.
+# `envelope_rules: A|B` on an activity: it carries the rows of its own envelope only; a row whose scope names the other
+# envelope alone (envelope_A / envelope_B) is not attached to it (session 12, audit A5-5).
+# `_discipline_map: {A5 discipline: [A1 disciplines]}` (session 12, audit A5-8): A1's discipline vocabulary is the
+# register's; an A5 discipline that is not an A1 discipline names the A1 disciplines whose rows it plans. Printed in
+# a5/README.md.
+# `finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}`: the activity finishes that many Working Days
+# before the pack date (a PROVISIONAL ASSUMPTION in config/assumptions.yaml); the legal deadline is kept as written.
+#
+# Envelope chain (both envelopes): every Envelope A document -> assemble-envelope-a; every Envelope B document
+# -> assemble-envelope-b; both -> copies (3 hard copies + encrypted USB, Appendix 2 naming) -> seal-and-mark
+# (Appendix 3 marking) -> deliver (by the PDD). Signatures follow the Powers of Attorney.
+#
+# Pack facts are never typed in a name or label (session 09): they are filled at plan time from the stage
+# (tenderpack.schedule.fill; a placeholder that cannot be filled is a C45 problem). In an activity `name` or `item`:
+# {PDD_TIME} {PDD_TZ} {PDD_DATE} {PDD_SOURCE} (the time, timezone words, date and source of the Proposal Due Date
+# in the effective text of VOL-I 6.1 at the stage) and {ROW:<row id>:<parameter>} (that row's interpretation
+# parameter at the stage, e.g. the Appendix 3 marking). In the label of an anchor milestone: {time} {tz} {date} {source}.
+
+_exceptions: {}
+
+# PROPOSED (session 11, audit A5-2); not reviewed. Source words in each `basis`.
+_row_checks:
+  VOL-I-6.2-02:
+    activities: [assemble-envelope-a, form-4b]
+    basis: "VOL-I 6.2 p3: 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' assemble-envelope-a performs that check on every Envelope A document (its name: 'check that no price or commercial information appears (VOL-I 6.2)'); form-4b finalises the one Envelope A form that prints a price field (VOL-IV F4-B p4 'Contract value (SAR equivalent)'; I-VOL-I-ENV-A-PRICES)"
+  VOL-I-8.1-01:
+    activities: [consortium-check]
+    basis: "VOL-I 8.1: 'No change to the composition, shareholding or lead member of a prequalified consortium shall be effective without the prior written consent of the Authority.' / 'An unapproved change shall result in rejection of the Proposal.' The row is a status (no_deliverable), so a step confirms it before Form 4-A names the Bidder and lead member"
+  # PROPOSED (session 12, audit A5-4 and A5-5); not reviewed. Rows an activity discharges by checking them.
+  VOL-IV-FORMS-01:
+    activities: [form-4a, form-4b, form-4c-sign, pcg-wording, form-4e, form-4f, form-4g-sign]
+    basis: "VOL-IV cover para 5: 'Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk.' Each step that finalises a Form (and the PCG wording, which VOL-I 8.7 requires 'substantially in the form' of Form 4-D) checks that its wording is unaltered; the row is a rule on how each Form is reproduced (no_deliverable)"
+    review: proposed
+  VOL-I-4.1-01:
+    activities: [clarifications]
+    basis: "VOL-I 4.1: 'All communications between a Bidder and the Authority shall be made exclusively through the Portal and shall be in the English language, save where this Volume expressly requires Arabic.' The clarification requests are the Bidder's communications to the Authority in this programme (VOL-I 5.1: 'A Bidder may submit requests for clarification of the RFP Documents through the Portal')"
+    review: proposed
+  VOL-I-5.5-01:
+    activities: [ground-dd]
+    basis: "VOL-I 5.5: 'Attendance at the site visit is optional and does not relieve a Bidder of its obligation to satisfy itself as to site conditions.' ground-dd is the step in which the Bidder satisfies itself as to the ground conditions (its name)"
+    review: proposed
+  VOL-I-10.1-01:
+    activities: [assemble-envelope-b]
+    basis: "VOL-I 10.1: 'Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.' assemble-envelope-b assembles Envelope B (its name cites VOL-I 10.1) and so checks that rule; the Envelope A list (VOL-I 9.1) is not its rule (envelope_rules: B)"
+    review: proposed
+  VOL-I-1.4-01:
+    activities: [consortium-check]
+    basis: "VOL-I 1.4: 'A Proposal received from any other person shall be rejected without evaluation.' (only a Bidder prequalified and named in Appendix 1 may submit); the same step confirms the Proposal is made in the prequalified name"
+# PROPOSED (session 12, audit A5-2); not reviewed.
+_volume_checks:
+  VOL-V:
+    activities: [deviations-review, form-4e]
+    basis: "VOL-V Note to Bidders p2: the clauses 'on which the Authority invites comment through Form 4-E'; 'A deviation not listed in Form 4-E will be taken as accepted.' VOL-I 9.6: 'Form 4-E shall list every deviation, qualification or reservation to Volume V.' The deviations review and Form 4-E check every clause of Volume V in force, so an amended clause (e.g. ADD-02 8.1 on VOL-V 36.2) means re-checking the schedule of deviations"
+    review: proposed
+# PROPOSED (session 12, audit A5-6); not reviewed.
+_addenda_checks:
+  form-4a-prep:
+    rows: [ADD-01-AppA-01]
+    basis: "ADD-01 App A: 'Form 4-A is reissued below to add the acknowledgement of Addenda at paragraph 1. Bidders shall use this version.' (field 'Addenda acknowledged (numbers)'); each Addendum's cover: 'Bidders shall acknowledge receipt in Form 4-A.' The numbers to acknowledge grow with every Addendum issued"
+    review: proposed
+  form-4a:
+    rows: [ADD-01-AppA-01]
+    basis: "as form-4a-prep: the signed Form 4-A must acknowledge every Addendum issued ('Bidders shall acknowledge receipt in Form 4-A.')"
+    review: proposed
+# PROPOSED (session 12, audit A5-8); not reviewed. A1's vocabulary is the register's (curation/register/rows): A5 plans
+# finance work under Commercial (roles commercial_manager, financial_modeller), operations, environmental and HSE
+# evidence under Technical (technical_lead), and the envelope chain under Document control (document_controller).
+_discipline_map:
+  Commercial: [Commercial, Finance]
+  Technical: [Technical, Operations, Environmental, HSE]
+  Document control: [Bid management]
+_row_check_activities:
+  - {id: consortium-check, name: "Confirm the Proposal is submitted by the Bidder prequalified and named in VOL-I Appendix 1, with no change to its composition, shareholding or lead member, or that the Authority's prior written consent to any change is held (VOL-I 1.4, 8.1)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: consortium_confirmation, predecessors: [], successors: [form-4a-prep]}
+_row_exceptions:
+  VOL-I-4.2-01: "A conduct rule, not a step: VOL-I 4.2 'Breach of this Clause shall result in the disqualification of the Bidder.' binds the Bidder and anyone acting for it from the date of issue of Volume I until the Preferred Bidder Notification (no_deliverable: 'nothing to submit'); no bid-programme activity discharges it"
+  VOL-I-11.5-01: "Arises only after submission: VOL-I 11.5 'any response that does so shall render the Proposal non-responsive' applies to a response to an Authority clarification request, which can come only after the Proposal Due Date (no_deliverable); outside this bid programme"
+
+# Document counts the evidence vocabulary cannot express (the count used for the document, marshalling and copy
+# totals). None is needed now: since session 08 the vocabulary itself says per foreign_member (EV-INVESTMENT-LICENCE).
+_per_overrides: {}
+
+# Dated pack milestones on the programme and the Gantt. The DATES come from the A1 rows' date rules at each stage
+# (never typed here); this only names them. `derived` milestones have no date rule in the register: their date is
+# computed from a rule as the pack's words say, and labelled as derived.
+_milestones:
+  labels:
+    PRE-BID: {short: "Pre-Bid Conference {time}", label: "Pre-Bid Conference, {time} {tz} (VOL-I 5.4: attendance mandatory; whether the Bidder attended is NOT assumed)"}
+    CLARIFICATION-CUTOFF: {short: "Clarification cut-off", label: "Clarification cut-off: requests no later than ten Working Days before the PDD (VOL-I 5.2, as adjusted by ADD-01 2.2)"}
+    PDD: {short: "PDD {time}", label: "Proposal Due Date, {time} {tz} ({source}; late Proposals rejected unopened, VOL-I 6.6)"}
+    ATTENDANCE-NOTICE: {short: "Attendance-notice window ends (conditional)", conditional: true, label: "End of the window to notify an incorrectly recorded attendance (ADD-01 3.1; only if the Bidder considers its attendance incorrectly recorded)"}
+    BID-BOND-VALIDITY: {short: "Bid bond validity end", label: "Bid Bond validity end: 180 days from the PDD (VOL-I 6.3; extended on demand if the Authority extends Proposal validity)"}
+    PROPOSAL-VALIDITY: {short: "Proposal validity end", label: "Proposal validity end: 150 days from the PDD (VOL-I 7.1)"}
+    ISO-CURRENT-AT: {short: "ISO current as at", label: "EPC Contractor's ISO 9001:2015 certificate must be current as at the PDD (VOL-I 8.3)"}
+    REFERENCE-LOOKBACK: {short: "Reference look-back start", label: "Start of the ten-year look-back for reference plants' commercial operation (VOL-I 8.5 footnote 12)"}
+    MODIFY-CUTOFF: {short: "Withdraw/modify cut-off", label: "Last moment to withdraw or modify the Proposal through the Portal (VOL-I 6.7)"}
+    OMISSION-CLAIM-CUTOFF: {short: "Omission claims cut-off", label: "No claim for an alleged omission after the PDD (VOL-I 3.4)"}
+    BLACKOUT-START: {short: "Blackout start", label: "Start of the communications blackout (VOL-I 4.2)"}
+  derived:
+    SITE-VISIT: {from: PRE-BID, calendar_days_after: 1, short: "Site visit (optional)", source: "VOL-I:5.5; ADD-01:AppB/item-6-site-visit", label: "Site visit offered 'on the day following the Pre-Bid Conference' (VOL-I 5.5; the ADD-01 minutes, item 6: confirmed for the following day, attendance optional); derived date, no date rule in the register"}
+
+# ------------------------------------------------------------------ both envelopes / actions
+EV-DELIVERY:
+  # session 11 (audit A5-7): the delivery buffer before the PDD is an explicit PROVISIONAL ASSUMPTION (0 WD in the baseline)
+  - {id: deliver, name: "Deliver both sealed envelopes to {ROW:VOL-I-App3-01:address} before {PDD_TIME} {PDD_TZ} on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: "Bidder (courier)", duration: delivery, predecessors: [seal-and-mark], item: "Sealed Envelopes A and B delivered to the Appendix 3 address", finish: {deadline_of: PDD, buffer: submission.delivery_buffer_wd}}
+  - {id: seal-and-mark, name: "Seal Envelopes A and B separately and mark each '{ROW:VOL-I-App3-01:marking}' (VOL-I 6.2, Appendix 3)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: seal_and_mark, predecessors: [copies], item: "Envelopes A and B, sealed and marked per Appendix 3"}
+  - &copies {id: copies, name: "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: copies_and_usb, predecessors: [assemble-envelope-a, assemble-envelope-b], item: "3 hard copies per envelope and the encrypted USB copy (Appendix 2 naming)", gated_by: [I-VOL-I-COPIES]}
+  - {id: assemble-envelope-a, name: "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], envelope_rules: A}
+  - {id: assemble-envelope-b, name: "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1); package the model auditor's opinion and the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (both are prepared regardless)", owner: Bid management, discipline: Document control, resource: document_controller, issuer: Bidder, duration: envelope_assembly, predecessors: [], gated_by: [I-VOL-I-ENV-B], envelope_rules: B}
+EV-COPIES:
+  - *copies
+EV-CLARIFICATIONS:
+  - {id: clarifications, name: "Submit clarification requests citing Volume, Clause and page (e.g. Form 4-A printed date; Envelope B contents; one USB per envelope)", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: clarification_drafting, predecessors: [consortium-check], finish: {deadline_of: CLARIFICATION-CUTOFF}}  # session 11 recheck (A5-2): a change of composition needs the Authority's prior written consent (VOL-I 8.1), which must be sought before the clarification cut-off
+EV-ATTENDANCE:
+  - {id: attendance-notice, name: "If the attendance record is wrong, notify the Authority through the Portal", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: clarification_drafting, predecessors: [], finish: {deadline_of: ATTENDANCE-NOTICE}, condition: "the Bidder considers its attendance at the Pre-Bid Conference to have been incorrectly recorded (ADD-01 3.1)"}
+EV-GROUND-DD:
+  - {id: ground-dd, name: "Review the data-room geotechnical report and satisfy the Bidder as to ground conditions (e.g. the wadi crossing; ADD-01 Q4); feed the construction methodology and the price", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: ground_due_diligence, predecessors: [], successors: [fin-model-freeze, assemble-envelope-a]}
+EV-SPOC:
+  - {id: spoc, name: "Confirm the single point of contact to be named in Form 4-A; notify any later change within 2 Working Days (VOL-I 4.3)", owner: Bid management, discipline: Bid management, resource: bid_manager, issuer: Bidder, duration: spoc_confirmation, predecessors: [], successors: [form-4a]}
+
+# ------------------------------------------------------------------ Envelope A
+EV-POA:
+  - {id: poa-resolutions, name: "Obtain the board resolutions of each member authorising its signatories", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Each member's board", duration: poa_board_resolutions, per: member, predecessors: []}
+  - {id: poa, name: "Notarise the Power of Attorney of each signatory (Form 4-A signatory of the lead member; Form 4-C signatory of each member)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Notary", duration: poa_notarisation, per: signatory, predecessors: [poa-resolutions], successors: [assemble-envelope-a], item: "Notarised Power of Attorney (one per signatory)"}
+EV-FORM-4A:
+  - {id: form-4a-prep, name: "Prepare Form 4-A on the version reissued by ADD-01 Appendix A: Bidder and lead member, Addenda acknowledged, single point of contact (preparation; not gated)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: form_4a_preparation, predecessors: [], successors: [form-4a]}
+  - {id: form-4a, name: "Finalise Form 4-A (which form version and fields, and how its stale printed Proposal Due Date is corrected, as decided on I-F4A-FIELDS) and sign by the lead member's PoA holder", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "PoA holder of the lead member", duration: form_4a_signature, predecessors: [poa, form-4a-prep], successors: [assemble-envelope-a], item: "Form 4-A (signed)", gated_by: [I-F4A-FIELDS]}
+EV-FORM-4B:
+  - {id: form-4b-prep, name: "Prepare one Form 4-B for each reference project from the reference evidence, every printed field drafted (preparation; not gated)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4b_preparation, per: reference, predecessors: [references]}
+  # session 11 (audit A5-3, PROPOSED): after completion-certs: VOL-IV F4-B p4 'Attach the client completion certificate to
+  # each Form.' and the field 'Completion certificate attached?: Yes / No'
+  - {id: form-4b, name: "Finalise each Form 4-B: the 'Contract value (SAR equivalent)' field is kept (not deleted or relocated) and completed as the decision on I-VOL-I-ENV-A-PRICES directs (VOL-I 6.2: no commercial information in Envelope A)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4b_finalise, per: reference, predecessors: [form-4b-prep, completion-certs], successors: [assemble-envelope-a], item: "Form 4-B (one per reference project)", gated_by: [I-VOL-I-ENV-A-PRICES]}
+EV-COMPLETION-CERT:
+  - {id: completion-certs, name: "Obtain the client completion certificate for each reference project (a reference without one is disregarded, VOL-I 9.5)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: "Client of each reference plant", duration: completion_certificate, per: reference, predecessors: [], successors: [assemble-envelope-a], item: "Client completion certificate (one per reference project)"}
+EV-REFERENCES:
+  - {id: references, name: "Collect commercial-operation evidence for the reference plants (capacity, commercial operation within the look-back window)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: "Reference plant owners", duration: reference_evidence, per: reference, predecessors: [], successors: [assemble-envelope-a], item: "Evidence of commercial operation (one per reference plant)"}
+EV-FORM-4C:
+  - {id: form-4c-prep, name: "Prepare Form 4-C in Arabic for each member", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: form_4c_arabic_prep, predecessors: []}
+  - {id: form-4c-sign, name: "Sign and stamp Form 4-C at each member (Arabic governs; a translation may be attached)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Each member's authorised signatory", duration: form_4c_member_sign, per: member, predecessors: [form-4c-prep, poa], successors: [assemble-envelope-a], item: "Form 4-C (Arabic, one per member)"}
+EV-FORM-4D:
+  - {id: pcg-wording, name: "Agree the Parent Company Guarantee wording (substantially Form 4-D; unconditional for the construction period) with the EPC Contractor's ultimate parent", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Ultimate parent of the EPC Contractor", duration: pcg_wording, predecessors: []}
+  - {id: pcg-execution, name: "Obtain the executed Parent Company Guarantee from the ultimate parent", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Ultimate parent of the EPC Contractor", duration: pcg_execution, per: epc_contractor, predecessors: [pcg-wording], successors: [assemble-envelope-a], item: "Form 4-D Parent Company Guarantee (executed original)"}
+EV-FORM-4E:
+  - {id: deviations-review, name: "Review Volume V and list every deviation, qualification or reservation", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: deviations_review, predecessors: []}
+  # session 12 (audit A5-3, PROPOSED): after technical-proposal: the cross-check needs the narrative it checks. Whether the
+  # commercial documents (Form 4-F, the financing schedule) also gate it is for the owner (not added)
+  - {id: form-4e, name: "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: Bidder, duration: form_4e_finalise, predecessors: [deviations-review, poa, technical-proposal], successors: [assemble-envelope-a], item: "Form 4-E Schedule of Deviations (signed)", basis: "VOL-I 9.6 p5: 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' Form 4-E is finalised against the Technical Proposal narrative, so it follows technical-proposal", review: proposed}
+EV-FORM-4G:
+  - {id: form-4g-review, name: "Review the six Form 4-G undertakings with the O&M and OT security leads", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4g_review, predecessors: []}
+  - {id: form-4g-sign, name: "Complete and sign Form 4-G", owner: Technical, discipline: Technical, resource: technical_lead, issuer: Bidder, duration: form_4g_signature, predecessors: [form-4g-review, poa], successors: [assemble-envelope-a], item: "Form 4-G (signed)"}
+EV-TECH-PROPOSAL:
+  - {id: technical-proposal, name: "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration; page limit as amended)", owner: Technical, discipline: Technical, resource: proposal_writers, issuer: Bidder, duration: technical_proposal, predecessors: [], successors: [assemble-envelope-a], item: "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)"}
+EV-BID-BOND:
+  - {id: bond-approval, name: "Obtain bank approval for the Bid Bond", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Bank licensed in the Kingdom, rated A- or better", duration: bid_bond_bank_approval, predecessors: []}
+  - {id: bond-issue, name: "Issue the Bid Bond (validity per VOL-I 6.3)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Issuing bank", duration: bid_bond_issue, predecessors: [bond-approval], successors: [assemble-envelope-a], item: "Bid Bond (original)"}
+EV-ISO:
+  - {id: iso-copy, name: "Obtain a copy of the EPC Contractor's ISO 9001:2015 certificate and check it is current at the PDD", owner: Technical, discipline: Technical, resource: technical_lead, issuer: "EPC Contractor (accredited certification body)", duration: iso_certificate_copy, per: epc_contractor, predecessors: [], successors: [assemble-envelope-a], item: "ISO 9001:2015 certificate copy"}
+EV-FIN-STANDING:
+  - {id: fin-statements, name: "Collect each member's most recent audited financial statements (three financial years)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Each member (audited accounts)", duration: fin_statements_collection, per: member, predecessors: []}
+  - {id: fin-standing, name: "Compute and evidence combined tangible net worth and three-year average turnover, weighted by shareholding (VOL-I 8.4)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: fin_standing_calc, predecessors: [fin-statements], successors: [assemble-envelope-a], item: "Financial standing evidence (audited accounts of each member and the combined calculation)"}
+EV-LCC:
+  - {id: lcc-ratio, name: "Compute the construction-phase local content ratio", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: lcc_ratio_calc, predecessors: []}
+  - {id: lcc-certificate, name: "Obtain the Local Content Certificate from the competent authority", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Competent authority (not named in the pack)", duration: lcc_certificate, predecessors: [lcc-ratio], successors: [assemble-envelope-a], item: "Local Content Certificate"}
+EV-OM-EXPERIENCE:
+  - {id: om-evidence, name: "Obtain evidence of the O&M Operator's continuous operation of a qualifying facility (VOL-I 8.8)", owner: Technical, discipline: Technical, resource: technical_lead, issuer: "O&M Operator", duration: om_experience_evidence, per: om_operator, predecessors: [], successors: [assemble-envelope-a], item: "O&M Operator experience evidence"}
+EV-INVESTMENT-LICENCE:
+  - {id: investment-licence, name: "For each foreign member: evidence of a current investment licence, or a signed undertaking to obtain it before Financial Close (VOL-I 8.9)", owner: Legal, discipline: Legal, resource: legal_counsel, issuer: "Licensing authority / each foreign member", duration: investment_licence, per: foreign_member, predecessors: [poa], successors: [assemble-envelope-a], item: "Investment licence evidence or signed undertaking (one per foreign member)"}
+
+# ------------------------------------------------------------------ Envelope B
+EV-FIN-MODEL:
+  - {id: fin-model-build, name: "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells)", owner: Commercial, discipline: Commercial, resource: financial_modeller, issuer: Bidder, duration: fin_model_build, predecessors: []}
+  - {id: fin-model-freeze, name: "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F", owner: Commercial, discipline: Commercial, resource: financial_modeller, issuer: Bidder, duration: fin_model_freeze, predecessors: [fin-model-build], successors: [assemble-envelope-b], item: "Financial Model (unlocked Excel, frozen version)"}
+EV-FIN-ASSUMPTIONS:
+  - {id: lender-terms, name: "Obtain indicative financing terms (debt tenor, margin, gearing) for the model", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Lenders", duration: lender_terms, predecessors: [], successors: [fin-model-freeze]}
+  - {id: fin-assumptions, name: "Prepare the schedule of principal financing assumptions to accompany Form 4-F (VOL-I 10.6)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: fin_assumptions_schedule, predecessors: [fin-model-freeze], successors: [assemble-envelope-b], item: "Schedule of principal financing assumptions"}
+EV-MODEL-AUDIT:
+  - {id: model-auditor-appoint, name: "Appoint the independent model auditor (opinion to be addressed to the Authority)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: model_auditor_appointment, predecessors: []}
+  - {id: model-audit-review, name: "Rolling review of the draft Financial Model by the model auditor", owner: Commercial, discipline: Commercial, resource: financial_modeller, issuer: "Independent model auditor", duration: model_audit_review, predecessors: [model-auditor-appoint]}
+  - {id: model-audit-opinion, name: "Audit of the frozen Financial Model and issue of the opinion addressed to the Authority (VOL-I 10.3)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: "Independent model auditor", duration: model_audit_opinion, predecessors: [model-audit-review, fin-model-freeze], successors: [assemble-envelope-b], item: "Independent model auditor's opinion (original)"}
+EV-FORM-4F:
+  # session 11 (audit A5-3, PROPOSED): after model-audit-opinion: VOL-IV F4-F p9 prints the fields 'Model auditor:' and
+  # 'Date of model audit opinion:', so the form cannot be completed before the opinion is dated
+  - {id: form-4f, name: "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)", owner: Commercial, discipline: Commercial, resource: commercial_manager, issuer: Bidder, duration: form_4f_preparation, predecessors: [fin-model-freeze, poa, model-audit-opinion], successors: [assemble-envelope-b], item: "Form 4-F Financial Proposal Schedule (signed)"}

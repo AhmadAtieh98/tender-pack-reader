@@ -346,57 +346,136 @@ rows:
   # ---------------------------------------------------------------- Section 3: process requirements
   - id: VOL-II-3.1-01
     group: VOL-II:3.1
-    scope: [technical_design, process]
-    requirement: "Treatment process able to achieve the Table 2-4 effluent quality under all Table 2-2 design influent conditions"
-    units: ["VOL-II:3.1", "VOL-II:H:S3", "VOL-II:T2-2/bod5", "VOL-II:T2-2/cod", "VOL-II:T2-2/total-suspended-solids", "VOL-II:T2-2/total-nitrogen", "VOL-II:T2-2/total-phosphorus", "VOL-II:T2-2/temperature"]
+    scope:
+    - technical_design
+    - process
+    requirement: Treatment process able to achieve the Table 2-4 effluent quality under all Table 2-2 design influent
+      conditions, including a membrane filtration step (tertiary stage or membrane bioreactor) with a nominal pore
+      size not exceeding 0.1 µm
+    units:
+    - VOL-II:3.1
+    - VOL-II:H:S3
+    - VOL-II:T2-2/bod5
+    - VOL-II:T2-2/cod
+    - VOL-II:T2-2/total-suspended-solids
+    - VOL-II:T2-2/total-nitrogen
+    - VOL-II:T2-2/total-phosphorus
+    - VOL-II:T2-2/temperature
     discipline: Technical
     owner: Process engineer
     assessment: scored
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
-        note: "The Authority does not mandate a particular process train (second sentence). Limits: rows VOL-II-T2-4-*. The Section 3 heading is a unit because ADD-02 5.2 attaches to it."
-      - stage: ADD-01
-        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
-        note: "ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable."
-      - stage: ADD-02
-        quote: "The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design influent conditions in Table 2-2."
-        note: "ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the process design submitted under Volume II Section 3."
+    - stage: BASE
+      quote: The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design
+        influent conditions in Table 2-2.
+      note: 'The Authority does not mandate a particular process train (second sentence). Limits: rows VOL-II-T2-4-*.
+        The Section 3 heading is a unit because ADD-02 5.2 attaches to it.'
+    - stage: ADD-01
+      quote: The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design
+        influent conditions in Table 2-2.
+      note: 'ADD-01 Q1: no process train is mandated (a membrane bioreactor is not required); any process capable
+        of meeting Table 2-4 under the Table 2-2 influent conditions is acceptable.'
+    - stage: ADD-02
+      quote: The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design
+        influent conditions in Table 2-2.
+      note: 'ADD-02 5.2: Bidders shall reflect the amended TN limit (ADD-02 5.1: 3 mg/l, row VOL-II-T2-4-TN) in the
+        process design submitted under Volume II Section 3.'
+    - stage: ADD-03
+      quote: The treatment process shall be capable of achieving the effluent quality in Table 2-4 under all design
+        influent conditions in Table 2-2. The treatment process shall include a membrane filtration step, either in
+        the tertiary treatment stage or as part of a membrane bioreactor, with a nominal pore size not exceeding 0.1
+        µm.
+      parameters:
+        membrane_filtration_required: true
+        membrane_location:
+        - tertiary treatment stage
+        - membrane bioreactor
+        nominal_pore_size_um_max: 0.1
+      consequence: none_stated
+      note: ADD-03 4.1 replaces 'The Authority does not mandate a particular process train.' with a required membrane
+        filtration step (nominal pore size no more than 0.1 µm), followed by 'Subject to the preceding sentence, the
+        Authority does not mandate a particular process train.' ADD-03 4.2 says Bidders must reflect Section 4 in
+        the process design under VOL-II Section 3. The earlier ADD-01 Q1 note (an MBR is not required) and this new
+        requirement are to be read together by a person. Using a membrane bioreactor is one option, not a requirement.
+        The ADD-02 5.2 TN note (3 mg/l) still applies. No consequence is stated. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]
     confidence: medium
-    confidence_reason: "verbatim; the effluent quality it refers to is an image reading (transcription confirmed by the owner, 3 Oct 2026) and the Permit that prevails is not supplied"
-    issues: [I-READING-T24, I-PERMIT]
+    confidence_reason: verbatim; the effluent quality it refers to is an image reading (transcription confirmed by
+      the owner, 3 Oct 2026) and the Permit that prevails is not supplied
+    issues:
+    - I-READING-T24
+    - I-PERMIT
   - id: VOL-II-3.2-01
     group: VOL-II:3.2
-    scope: [technical_design, process, membrane, lifecycle]
-    requirement: "If a membrane process is proposed: show membrane replacement provisions in the lifecycle plan"
-    units: ["VOL-II:3.2"]
+    scope:
+    - technical_design
+    - process
+    - membrane
+    - lifecycle
+    requirement: 'If a membrane process is proposed: show membrane replacement provisions in the lifecycle plan'
+    units:
+    - VOL-II:3.2
     discipline: Technical
     owner: Process engineer
     assessment: scored
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions in the lifecycle plan"
-        note: "Applies only where a membrane process is proposed."
+    - stage: BASE
+      quote: Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions
+        in the lifecycle plan
+      note: Applies only where a membrane process is proposed.
+    - stage: ADD-03
+      quote: Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions
+        in the lifecycle plan
+      parameters:
+        condition: Where a membrane process is proposed
+        deliverable: membrane replacement provisions in the lifecycle plan
+        condition_note: VOL-II 3.1 as amended now requires a membrane filtration step; whether the condition now always
+          holds is a person's reading
+      consequence: none_stated
+      note: Re-made because ADD-03/4.1 changed VOL-II 3.1, which now requires a membrane filtration step. The condition
+        is kept as printed and is not treated as satisfied. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]
     confidence: high
-    confidence_reason: "verbatim text-layer clause"
+    confidence_reason: verbatim text-layer clause
   - id: VOL-II-3.2-02
     group: VOL-II:3.2
-    scope: [technical_design, process, membrane, warranty]
-    requirement: "If a membrane process is proposed: warrant a membrane life of at least 7 years"
-    units: ["VOL-II:3.2"]
+    scope:
+    - technical_design
+    - process
+    - membrane
+    - warranty
+    requirement: 'If a membrane process is proposed: warrant a membrane life of at least 7 years'
+    units:
+    - VOL-II:3.2
     discipline: Technical
     owner: Process engineer
     assessment: scored
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "shall warrant a membrane life of not less than seven (7) years"
-        parameters: {membrane_life_years_min: 7}
-        note: "Applies only where a membrane process is proposed."
+    - stage: BASE
+      quote: shall warrant a membrane life of not less than seven (7) years
+      parameters:
+        membrane_life_years_min: 7
+      note: Applies only where a membrane process is proposed.
+    - stage: ADD-03
+      quote: Where a membrane process is proposed, the Project Company shall demonstrate membrane replacement provisions
+        in the lifecycle plan and shall warrant a membrane life of not less than seven (7) years.
+      parameters:
+        condition: Where a membrane process is proposed
+        membrane_life_min_years: 7
+        condition_note: VOL-II 3.1 as amended now requires a membrane filtration step; whether the condition now always
+          holds is a person's reading
+      consequence: none_stated
+      note: Re-made because ADD-03/4.1 changed VOL-II 3.1. The condition is kept as printed. The warranty term is
+        unchanged. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code headless
+        (opus)); PROPOSED; not reviewed]
     confidence: high
-    confidence_reason: "verbatim text-layer clause"
+    confidence_reason: verbatim text-layer clause
   - id: VOL-II-3.3-01
     group: VOL-II:3.3
     scope: [technical_design, process, disinfection]
@@ -867,33 +946,60 @@ rows:
     confidence_reason: "verbatim text-layer clause"
   - id: VOL-II-6.4-01
     group: VOL-II:6.4
-    scope: [operations, data_retention]
-    requirement: "Retain all process data for at least seven years"
-    units: ["VOL-II:6.4"]
+    scope:
+    - operations
+    - data_retention
+    requirement: Retain all process data for at least seven years
+    units:
+    - VOL-II:6.4
     discipline: Technical
     owner: Technical lead
     assessment: scored
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "All process data shall be retained for not less than seven (7) years"
-        parameters: {retention_years_min: 7}
+    - stage: BASE
+      quote: All process data shall be retained for not less than seven (7) years
+      parameters:
+        retention_years_min: 7
+    - stage: ADD-03
+      quote: All process data shall be retained for not less than seven (7) years
+      parameters:
+        retention_years_min: 7
+      consequence: none_stated
+      note: 'Words of VOL-II 6.4 unchanged at ADD-03. ADD-03 Q15: ''Volume II Clause 6.4 states a minimum period.
+        A Bidder may propose a longer period but is not required to do so.'' The clause also requires data to be ''made
+        available to the Authority on demand in a non-proprietary format'' (not part of this row''s requirement).
+        [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code headless (opus));
+        PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim text-layer clause"
+    confidence_reason: verbatim text-layer clause
   - id: VOL-II-6.4-02
     group: VOL-II:6.4
-    scope: [operations, data_access]
-    requirement: "Make process data available to the Authority on demand in a non-proprietary format"
-    units: ["VOL-II:6.4"]
+    scope:
+    - operations
+    - data_access
+    requirement: Make process data available to the Authority on demand in a non-proprietary format
+    units:
+    - VOL-II:6.4
     discipline: Technical
     owner: Technical lead
     assessment: scored
-    evidence: [EV-TECH-PROPOSAL]
+    evidence:
+    - EV-TECH-PROPOSAL
     interpretations:
-      - stage: BASE
-        quote: "shall be made available to the Authority on demand in a non-proprietary format"
+    - stage: BASE
+      quote: shall be made available to the Authority on demand in a non-proprietary format
+    - stage: ADD-03
+      quote: shall be made available to the Authority on demand in a non-proprietary format
+      parameters: {}
+      consequence: none_stated
+      note: Re-made at ADD-03. The data-availability words are unchanged. ADD-03 Q15 (annotation, 'interprets') addresses
+        only the retention period in the same clause ('states a minimum period'), which is not this row's requirement.
+        No consequence is stated. [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model
+        claude-code headless (opus)); PROPOSED; not reviewed]
     confidence: high
-    confidence_reason: "verbatim text-layer clause"
+    confidence_reason: verbatim text-layer clause
   # ---------------------------------------------------------------- Section 7: testing, commissioning and PCOD
   - id: VOL-II-7.1-01
     group: VOL-II:7.1

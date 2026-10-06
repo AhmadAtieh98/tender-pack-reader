@@ -423,17 +423,20 @@ def inserted_ref(state: dict[str, "UState"], u: "UState", pages: bool = True) ->
                                                  and a.pages and not a.printed_in else "") + ")"
 
 
-def unit_pin(state: dict[str, "UState"], uid: str, evidence: dict | None = None) -> str:
+def unit_pin(state: dict[str, "UState"], uid: str, evidence: dict | None = None, ignore=frozenset()) -> str:
     """A unit as it stands: status, text and cells, the annotations on it and, for an image reading, the
     reading's review-subject fingerprint. 'absent' when the unit does not exist.
     With `evidence` ({unit id: unit_evidence(...)}), the pin also binds the unit's SOURCE: its document identity,
     pages, anchor boxes and spans, and its image region (decision bindings: Engine.subject, review.row_binding). A
     unit created by an op has no printed place of its own; its document, pages and creating op stand in for it.
-    Without `evidence` the pin is the content-only value interpretations are pinned to (register.pin_value)."""
+    Without `evidence` the pin is the content-only value interpretations are pinned to (register.pin_value).
+    `ignore` (session 12, blind-06 follow-up 9): annotating op ids left out of the hash. register.pin_value passes the
+    ops that annotate a unit as `confirms` (they change nothing, so they never make a reading STALE); the decision
+    bindings (with `evidence`) pass nothing and keep hashing every annotation."""
     u = state.get(uid)
     if u is None:
         return "absent"
-    content = u.sha() + "|" + ",".join(sorted(u.annotations)) + "|" + (u.reading_subject or "")
+    content = u.sha() + "|" + ",".join(sorted(a for a in u.annotations if a not in ignore)) + "|" + (u.reading_subject or "")
     if evidence is None:
         return sha256_text(content)[:16]
     # a unit an op inserted is printed in the addendum, on the provision's pages, at its insertion point (A1-5)
@@ -456,6 +459,7 @@ class StageResult:
     opfile: str | None = None
     prepared_by: str | None = None
     non_working_days: list[str] = field(default_factory=list)   # days notified under VOL-I 2.4 at or before this stage
+    issued_from: str | None = None      # session 12: the unit whose text holds the issue date (the '<stage>-issue' anchor)
     conditions: list[dict] = field(default_factory=list)        # session 11: conditional ops stated at or before this
                                                                  # stage, with their state (conditions_of)
 
@@ -512,6 +516,7 @@ class Engine:
             res = StageResult(f.addendum, f.addendum, None, "APPLIED", st, opfile=f.addendum, prepared_by=f.prepared_by)
             issued = parse_date(st[f.issued_from].text) if f.issued_from in st else None
             res.issued = issued[0].isoformat() if issued else None
+            res.issued_from = f.issued_from
             if res.issued is None:
                 res.problems.append(f"issue date not found in {f.issued_from}")
             elif prev_issued and res.issued < prev_issued:

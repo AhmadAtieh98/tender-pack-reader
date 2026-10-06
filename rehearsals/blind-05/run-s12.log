@@ -268,3 +268,98 @@ run ADD-03-run-host-blind05-s12-20261005T183535Z: deferred (rate limit: analysis
  "approval": "none"
 }
 exit 5 (ADD-03-run-host-blind05-s12-20261005T183535Z)
+[ADD-03-run-host-blind05-s12-20261005T183535Z] analysis ...
+  analysis-004: done (8 item(s); run ADD-03-host-20261005T211711Z-1204)
+  analysis-004 critic: done (8 reviewed, 1 disagree)
+  analysis-005: done (8 item(s); run ADD-03-host-20261005T212318Z-d982)
+  analysis-005 critic: done (7 reviewed, 1 disagree)
+  analysis-006: done (8 item(s); run ADD-03-host-20261005T212315Z-f6fd)
+  analysis-006 critic: done (8 reviewed, 0 disagree)
+  analysis-007: done (14 item(s); run ADD-03-host-20261005T213419Z-aa78)
+  analysis-007 critic: done (14 reviewed, 0 disagree)
+  analysis-008: done (7 item(s); run ADD-03-host-20261005T213335Z-6eeb)
+  analysis-008 critic: done (3 reviewed, 0 disagree)
+  analysis-009: done (11 item(s); run ADD-03-host-20261005T214606Z-2338)
+  analysis-009 critic: done (11 reviewed, 1 disagree)
+[ADD-03-run-host-blind05-s12-20261005T183535Z] validation ...
+  combined set: 77 item(s); 53/57 provisions accounted for; {'evidence_verified': 11, 'interpretation_pending': 49, 'conflicting': 7, 'insufficient_evidence': 10}
+[ADD-03-run-host-blind05-s12-20261005T183535Z] downstream ...
+  downstream-001: done (17 item(s))
+  downstream-002: done (13 item(s))
+  downstream-003: done (12 item(s))
+  downstream-004: done (14 item(s))
+  downstream-005: done (21 item(s))
+  downstream-006: done (2 item(s))
+  downstream: 62 task(s) {'row_reading': 19, 'row_new': 3, 'clarification_item': 1, 'activity': 17, 'escalation': 16, 'reading_rows': 1, 'computed_date': 1, 'condition_changed': 2, 'derived_consequence': 2}
+[ADD-03-run-host-blind05-s12-20261005T183535Z] downstream_validation ...
+  downstream items: {'interpretation_pending': 37, 'insufficient_evidence': 13, 'conflicting': 9, 'escalated': 14, 'invalid': 6}; held back 5
+[ADD-03-run-host-blind05-s12-20261005T183535Z] critic ...
+  downstream-001 critic: done (7 reviewed, 0 disagree)
+  downstream-004 critic: done (3 reviewed, 0 disagree)
+  downstream-005 critic: done (6 reviewed, 0 disagree)
+  downstream-006 critic: done (1 reviewed, 1 disagree)
+[ADD-03-run-host-blind05-s12-20261005T183535Z] promotion ...
+  promoted into the candidate: 19 op(s), 21 disposition(s), 17 unresolved, 1 new row(s), 19 reading(s), 3 issue(s), 4 activit(y/ies), 0 clarification(s), 0 relationship(s)
+[ADD-03-run-host-blind05-s12-20261005T183535Z] pin ...
+[ADD-03-run-host-blind05-s12-20261005T183535Z] check_register ...
+  check-register: exit 1, 4 finding(s) {'disposition': 1, 'assessment': 1, 'C46': 2}
+[ADD-03-run-host-blind05-s12-20261005T183535Z] outputs ...
+  candidate outputs published to /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z/candidate/out (exit 0; 105 file(s) carry the banner)
+[ADD-03-run-host-blind05-s12-20261005T183535Z] diff ...
+[ADD-03-run-host-blind05-s12-20261005T183535Z] review ...
+timings (wall clock per step):
+  ingest                     16.1 s  done
+  readings                  186.8 s  done
+  analysis                 2529.0 s  done
+  validation                  5.6 s  done
+  downstream               1315.8 s  done
+  downstream_validation       0.9 s  done
+  critic                     67.8 s  done
+  promotion                  22.8 s  done
+  pin                         1.4 s  done
+  check_register              4.3 s  done
+  outputs                    13.7 s  done
+  diff                        3.0 s  done
+  review                      4.0 s  done
+  total (steps)            4171.2 s  (69.5 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-blind05-s12-20261005T183535Z: partial (17 provision(s) unresolved in the candidate (listed first in the review packet); 27 downstream task(s) answered only by items that cannot be promoted: row:VOL-I-8.3-01, c46:ADD-03/2.1(a), c46:ADD-03/3.2, c46:ADD-03/7.1, clar:CQ-VOL-V-SCHEDULES, act:iso-copy, act:technical-proposal, act:form-4f …; check-register on the candidate: exit 1, 4 finding(s) {'disposition': 1, 'assessment': 1, 'C46': 2}; C46: [C46] ADD-03/3.2: [A1] ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:1.1; a r…; [C46] ADD-03/7.1: [A1] ADD-03/7.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-II:5.5; a …)
+review packet: /home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z/review/index.md
+{
+ "run_id": "ADD-03-run-host-blind05-s12-20261005T183535Z",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "17 provision(s) unresolved in the candidate (listed first in the review packet); 27 downstream task(s) answered only by items that cannot be promoted: row:VOL-I-8.3-01, c46:ADD-03/2.1(a), c46:ADD-03/3.2, c46:ADD-03/7.1, clar:CQ-VOL-V-SCHEDULES, act:iso-copy, act:technical-proposal, act:form-4f …; check-register on the candidate: exit 1, 4 finding(s) {'disposition': 1, 'assessment': 1, 'C46': 2}; C46: [C46] ADD-03/3.2: [A1] ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:1.1; a r…; [C46] ADD-03/7.1: [A1] ADD-03/7.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-II:5.5; a …",
+ "exit_code": 0,
+ "run_dir": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z",
+ "provisions": {
+  "validated": 57
+ },
+ "timings": {
+  "ingest": 16.1,
+  "readings": 186.8,
+  "analysis": 2529.0,
+  "validation": 5.6,
+  "downstream": 1315.8,
+  "downstream_validation": 0.9,
+  "critic": 67.8,
+  "promotion": 22.8,
+  "pin": 1.4,
+  "check_register": 4.3,
+  "outputs": 13.7,
+  "diff": 3.0,
+  "review": 4.0
+ },
+ "total_seconds": 4171.2,
+ "review": "/home/user/tender-pack-reader/staging/ai/runs/ADD-03-run-host-blind05-s12-20261005T183535Z/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "17 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "27 downstream task(s) answered only by items that cannot be promoted: row:VOL-I-8.3-01, c46:ADD-03/2.1(a), c46:ADD-03/3.2, c46:ADD-03/7.1, clar:CQ-VOL-V-SCHEDULES, act:iso-copy, act:technical-proposal, act:form-4f …",
+   "check-register on the candidate: exit 1, 4 finding(s) {'disposition': 1, 'assessment': 1, 'C46': 2}; C46: [C46] ADD-03/3.2: [A1] ADD-03/3.2 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:1.1; a r…; [C46] ADD-03/7.1: [A1] ADD-03/7.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-II:5.5; a …"
+  ]
+ },
+ "approval": "none"
+}
+exit 0 (ADD-03-run-host-blind05-s12-20261005T183535Z)

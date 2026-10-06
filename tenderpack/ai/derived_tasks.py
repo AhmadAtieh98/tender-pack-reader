@@ -11,7 +11,12 @@ Called from tenderpack.ai.downstream (tasks(), packet(), validate()); the findin
                                           fingerprint) that no row task covers: a milestone proposal (a row's date rule,
                                           or an activity with `computed_from`), conditional where the obligation is;
                                           ambiguous -> escalate. A deadline in a unit a row task (row_new, row_reading)
-                                          already covers goes with that task (`computed_dates`), not as a task of its own
+                                          already covers goes with that task (`computed_dates`), not as a task of its own.
+                                          Session 12 (blind-06 follow-up 5): the task carries the register's `date_rule`
+                                          (kind 'relative' with anchor, offset, unit, direction; 'unresolved' with the
+                                          words and a "not computed: ..." note for a forward period the counting rules
+                                          do not settle or an event anchor), and an activity's `computed_from` is matched
+                                          by its fingerprint or recomputed from its inputs (derived.match_computed_from)
   condition_changed    cond:<unit> / defn:<unit>   a clause whose condition an op switched, or a definition an op
                                           changed, with the rows that need a re-read (a person decides; nothing applies)
   derived_consequence  cons:<unit>        a band the addendum sets, with the existing bid-out rules that share a term
@@ -64,20 +69,31 @@ def tasks(ws, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
         if d["unit"] in covered:
             covered[d["unit"]].setdefault("computed_dates", []).append({
                 "unit": d["unit"], "words": d["words"], "computed_from": d["computed_from"], "status": res.get("status"),
+                "date_rule": d["date_rule"], **({"note": d["note"]} if d.get("note") else {}),
                 "conditional": d["conditional"],
                 "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows the "
                           "derivation and any disagreement)"})
             continue
-        out.append({"id": f"date:{d['unit']}", "kind": "computed_date", "unit": d["unit"], "pages": d["pages"],
+        tid = f"date:{d['unit']}" + ("" if not any(t["id"] == f"date:{d['unit']}" for t in out) else f":{d['words']}")
+        rule_txt = ("`date_rule` (kind 'relative': its anchor, offset, unit and direction; dates.KINDS has no kind "
+                    "'deadline', which is a purpose) copied unchanged into the row's `date_rules` with a rule_id of its "
+                    "own" if d["date_rule"]["kind"] == "relative" else
+                    "`date_rule` (kind 'unresolved': the words and the note) copied unchanged into the row's "
+                    "`date_rules`, or the words as a date note")
+        out.append({"id": tid, "kind": "computed_date", "unit": d["unit"], "pages": d["pages"],
                     "words": d["words"], "anchor": d["anchor"], "anchor_date": d["anchor_date"],
-                    "computed_from": d["computed_from"], "status": res.get("status"), "readings": res.get("readings"),
+                    "computed_from": d["computed_from"], "date_rule": d["date_rule"], "status": res.get("status"),
+                    "readings": res.get("readings"), **({"note": d["note"]} if d.get("note") else {}),
                     "conditional": d["conditional"], "rows": d["rows"],
-                    "expect": ("a milestone proposal: an activity (milestone) whose `computed_from` is this object "
-                               "unchanged, or a row's date rule with these words (the program recomputes either; "
-                               "nothing typed)" + ("; the obligation is conditional, so the milestone is conditional "
-                                                   "(say on what)" if d["conditional"] else "")
-                               + ("; AMBIGUOUS under the counting rules: escalate, never choose a reading"
-                                  if res.get("escalate") else ""))})
+                    "expect": (("a milestone proposal: an activity (milestone) whose `computed_from` is this object "
+                                "unchanged, or a row whose date rule is this task's " + rule_txt + " (the program "
+                                "recomputes either; nothing typed)") if res.get("status") == "resolved" else
+                               (f"{d.get('note') or 'not computed'}: a row carries the words as this task's "
+                                + rule_txt + "; never a typed date"))
+                    + ("; the obligation is conditional, so the milestone is conditional (say on what)"
+                       if d["conditional"] else "")
+                    + ("; AMBIGUOUS under the counting rules: escalate, never choose a reading"
+                       if res.get("escalate") else "")})
     for x in derived.switched(r2, addendum):
         rows = sorted(rid for rid, e in evals.items() if x["flag"] in (e["stages"].get(addendum) or {}).get("flags", []))
         out.append({"id": f"{'cond' if x['kind'] == 'condition' else 'defn'}:{x['unit']}", "kind": "condition_changed",
@@ -243,8 +259,10 @@ def validate_items(ws, ds, F: list, r2: dict, addendum: str, rec, rows_existing:
         if cf:
             if deadlines is None:
                 deadlines = derived.computed_deadlines(r2, addendum)
-            known = next((d for d in deadlines if d["computed_from"]["fingerprint"] == (cf or {}).get("fingerprint")),
-                         None)
+            # session 12 (blind-06 follow-up 5): matched by its fingerprint or, failing that, recomputed from the
+            # claimed inputs by the function the program used (derived.compute_deadline)
+            known = derived.match_computed_from(cf, deadlines, r2["register"].cal_by_stage[addendum],
+                                                r2["register"].rf.anchors)
             if known is None:
                 rec(i, "computed_from", False, "computed_from matches no deadline the program computed for "
                                                f"{addendum} (its fingerprint; computed: "
@@ -254,7 +272,7 @@ def validate_items(ws, ds, F: list, r2: dict, addendum: str, rec, rows_existing:
                 rec(i, "computed_from", False, f"{known['unit']}: '{known['words']}' is {known['result'].get('status')} "
                                                f"under the counting rules ({known['result'].get('reason')}): escalated, "
                                                "never chosen", "insufficient")
-            elif cf.get("result") != known["computed_from"]["result"]:
+            elif cf.get("result") not in (None, known["computed_from"]["result"]):     # inputs only: the result is ours
                 rec(i, "computed_from", False, f"the claimed result {cf.get('result')} is not the computed "
                                                f"{known['computed_from']['result']} ({known['unit']}: '{known['words']}')",
                     "invalid")

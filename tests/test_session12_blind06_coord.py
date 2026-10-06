@@ -157,3 +157,71 @@ def test_an_image_region_whose_blocks_are_provisions_is_an_acceptable_cited_unit
     provisions = ["ADD-03:p4-image/1", "ADD-03:p4-image/2", "ADD-03:3.1"]
     assert region_parents(units, provisions) == {"ADD-03:p4-image"}      # the cover's parent: no provision under it
     assert region_parents(units, ["ADD-03:3.1"]) == set()
+
+
+def test_opposite_treatments_of_one_unit_across_a_set_are_conflicts_for_both_items():
+    """Follow-up 6 (a): the same Table 1-3 cells were unresolved in one batch and settled as no effect in two others;
+    nothing checked the combined set for that. A no_effect disposition on a provision whose unit another item's op
+    changes, or two ops setting one target differently, now mark both items conflicting with the reason."""
+    from types import SimpleNamespace as NS
+    from tenderpack.ai.controller import cross_item_conflicts
+    rep = NS(id="ADD-03/4.1", type="replace_text", provision="ADD-03:4.1", target="VOL-II:T1-3/n2", targets=[], old="a", new="b", status=None, effect=None)
+    ne = NS(provision="ADD-03:4.1", disposition="no_effect")
+    other = NS(provision="ADD-03:9.9", disposition="no_effect")
+    conf = NS(id="ADD-03/Q3", type="annotate", provision="ADD-03:Q3", target=None, targets=["VOL-II:T1-3/n2"], old=None, new=None, status=None, effect="confirms")
+    got = cross_item_conflicts([(0, rep), (3, conf)], [(1, ne), (2, other)])
+    assert set(got) == {0, 1} and "no_effect" in got[0] and got[0] == got[1]      # the confirming annotation is no conflict
+    a = NS(id="ADD-03/2.1", type="replace_text", provision="ADD-03:2.1", target="VOL-I:6.6", targets=[], old="x", new="y", status=None, effect=None)
+    b = NS(id="ADD-03/2.2", type="replace_text", provision="ADD-03:2.2", target="VOL-I:6.6", targets=[], old="x", new="z", status=None, effect=None)
+    got2 = cross_item_conflicts([(0, a), (1, b)], [])
+    assert set(got2) == {0, 1} and "different ways" in got2[0]
+    same = NS(id="ADD-03/2.3", type="replace_text", provision="ADD-03:2.3", target="VOL-I:6.6", targets=[], old="x", new="y", status=None, effect=None)
+    assert cross_item_conflicts([(0, a), (1, same)], []) == {}                     # the same change twice: not a conflict
+    assert cross_item_conflicts([(0, a)], [(1, other)]) == {}                       # different units: nothing
+
+
+def test_a_no_effect_on_an_obligation_no_row_carries_is_a_decision_for_a_person():
+    """Follow-up 6 (c): two promoted no_effect dispositions settled Table 1-3 notes (one shutdown per tie-in point;
+    portal requests) whose obligations reached no row because a check had rejected the rows; nothing said so."""
+    from types import SimpleNamespace as NS
+    from tenderpack.ai.controller import obligation_without_row
+    rows = [NS(id="VOL-I-6.3-01", units=["VOL-I:6.3"]), NS(id="VOL-II-7.2-01", units=["VOL-II:7.2", "VOL-II:T1-3/n1"])]
+    note = "Note 2: The Bidder shall allow one shutdown per tie-in point and shall request each through the Portal."
+    gap = obligation_without_row(note, "repeats the general rule; no register effect", rows)
+    assert gap and "no row carries" in gap and "shall" in gap
+    assert obligation_without_row(note, "already carried by row VOL-I-6.3-01", rows) is None
+    assert obligation_without_row(note, "restates VOL-II:7.2, which the register holds", rows) is None
+    assert obligation_without_row("Note 3: For information only.", "nothing to carry", rows) is None
+
+
+def test_an_answer_that_restates_an_exclusion_the_clause_already_makes_confirms_it():
+    """Follow-up 10: the semantic check read a confirming answer as "adds" because its first sentence excluded a
+    method in other words than the clause ("shall not be used as the sole means" for "alone is not acceptable"):
+    an exclusion the targets already state confirms; one they never state still adds."""
+    from tenderpack.summary import classify_answer
+    clause = ("Treatment shall be by membrane filtration with a validated pore size, or by sand filtration with "
+              "coagulation, or by a combination. Lagooning alone is not acceptable.")
+    answer = ("Bidder question: May lagooning be used as the treatment process? | Authority response: Lagooning shall "
+              "not be used as the sole means of treatment. Treatment shall be by membrane filtration with a validated "
+              "pore size, or by sand filtration with coagulation, or by a combination. Volume II Clause 3.3 applies.")
+    c = classify_answer(answer, {"VOL-II:3.3": clause})
+    assert c["class"] == "confirms", c
+    assert [x["kind"] for x in c["sentences"]] == ["confirms", "confirms", "none"] or \
+        [x["kind"] for x in c["sentences"]][:2] == ["confirms", "confirms"]
+    adds = ("Authority response: Chlorination shall not be used as the sole means of treatment. Treatment shall be by "
+            "membrane filtration with a validated pore size, or by sand filtration with coagulation, or by a combination.")
+    assert classify_answer(adds, {"VOL-II:3.3": clause})["class"] == "adds"      # an exclusion the clause never makes
+
+
+def test_the_analysis_instructions_give_free_standing_provisions_a_row_path():
+    """Follow-up 13: free-standing addendum provisions (2.4-2.7, 3.2(a) on blind-06) were escalated "for want of a
+    cited unit" although the register holds rows on addendum units (ADD-02-5.2-01): the packet's instructions now say
+    so, and a row_new on an addendum unit is a well-formed payload."""
+    from tenderpack.ai.controller import INSTRUCTIONS
+    from tenderpack.ai.contract import RowNewPayload
+    rule = [x for x in INSTRUCTIONS if "free-standing provision" in x]
+    assert len(rule) == 1 and "row_new" in rule[0] and "own unit id" in rule[0] and "never escalated" in rule[0]
+    row = {"id": "ADD-03-2.4-01", "group": "Submission", "scope": "all", "requirement": "The Bidder shall submit X.",
+           "units": ["ADD-03:2.4"], "discipline": "Bid management", "assessment": "pass/fail", "evidence": [],
+           "interpretations": [], "confidence": "medium", "confidence_reason": "the addendum's own words"}
+    assert RowNewPayload(row=row).row["units"] == ["ADD-03:2.4"]

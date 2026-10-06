@@ -17,27 +17,52 @@ rows:
   # ---------------------------------------------------------------- submission and deadline dependants
   - id: VOL-I-6.1-01
     group: VOL-I:6.1
-    scope: [bid_submission, deadline]
-    requirement: "Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address"
-    units: ["VOL-I:6.1"]
+    scope:
+    - bid_submission
+    - deadline
+    requirement: Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address
+    units:
+    - VOL-I:6.1
     discipline: Bid management
     owner: Bid manager
     assessment: pass_fail
-    evidence: [EV-DELIVERY]
+    evidence:
+    - EV-DELIVERY
     date_rules:
-      - {rule_id: PDD, kind: anchor, purpose: deadline, anchor: PDD, source_unit: "VOL-I:6.1", text: "not later than 14:00 hours Riyadh time on <date>"}
+    - rule_id: PDD
+      kind: anchor
+      purpose: deadline
+      anchor: PDD
+      source_unit: VOL-I:6.1
+      text: not later than 14:00 hours Riyadh time on <date>
     interpretations:
-      - stage: BASE
-        quote: "not later than 14:00 hours Riyadh time on Thursday 12 November 2026"
-        consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
-      - stage: ADD-01
-        # session 12 (F1; audit A1-3): the quoted words are verbatim on one page (ADD-01 2.1 p1); the assembled
-        # sentence is the effective text column ('not later than 14:00 hours ... on Thursday 26 November 2026')
-        quote: "Thursday 26 November 2026"
-        consequence: {class: rejection, unit: "VOL-I:6.6", quote: "will be rejected unopened and returned to the Bidder"}
-        note: "ADD-01 §2.1 amends the date; the time is unchanged."
+    - stage: BASE
+      quote: not later than 14:00 hours Riyadh time on Thursday 12 November 2026
+      consequence:
+        class: rejection
+        unit: VOL-I:6.6
+        quote: will be rejected unopened and returned to the Bidder
+    - stage: ADD-01
+      quote: Thursday 26 November 2026
+      consequence:
+        class: rejection
+        unit: VOL-I:6.6
+        quote: will be rejected unopened and returned to the Bidder
+      note: ADD-01 §2.1 amends the date; the time is unchanged.
+    - stage: ADD-03
+      quote: Thursday 26 November 2026
+      parameters: {}
+      consequence:
+        class: rejection
+        unit: VOL-I:6.6
+        quote: will be rejected unopened and returned to the Bidder
+      note: 'The VOL-I 6.1 date and time are unchanged by ADD-03 (as amended by ADD-01 2.1). ADD-03 2.1(a) replaced
+        the text of VOL-I 6.6. The rejection consequence for a Proposal received after the 6.1 time still appears
+        there: ''A Proposal received after the time stated in Clause 6.1 ... will be rejected unopened and returned
+        to the Bidder.'' [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code
+        headless (opus)); PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim text-layer clause; the consequence is stated in VOL-I 6.6"
+    confidence_reason: verbatim text-layer clause; the consequence is stated in VOL-I 6.6
   - id: VOL-I-5.2-01
     group: VOL-I:5.2
     scope: [clarification, deadline]
@@ -290,23 +315,39 @@ rows:
     issues: [I-F4A-FIELDS]
   - id: VOL-IV-F4A-01
     group: VOL-IV:F4-A
-    scope: [forms, printed_date]
-    requirement: "Use the Form 4-A as issued (reissued by ADD-01 App A: 'Bidders shall use this version'); its printed Proposal Due Date"
-    units: ["VOL-IV:F4-A/proposal-due-date"]
+    scope:
+    - forms
+    - printed_date
+    requirement: 'Use the Form 4-A as issued (reissued by ADD-01 App A: ''Bidders shall use this version''); its printed
+      Proposal Due Date'
+    units:
+    - VOL-IV:F4-A/proposal-due-date
     follows_replacement: true
     discipline: Legal
     owner: Legal counsel
     assessment: procedural
-    evidence: [EV-FORM-4A]
+    evidence:
+    - EV-FORM-4A
     interpretations:
-      - stage: BASE
-        quote: "Proposal Due Date: 12 November 2026, 14:00 Riyadh time"
-      - stage: ADD-01
-        quote: "Proposal Due Date: 12 November 2026, 14:00 Riyadh time"
-        note: "The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision for a person."
+    - stage: BASE
+      quote: 'Proposal Due Date: 12 November 2026, 14:00 Riyadh time'
+    - stage: ADD-01
+      quote: 'Proposal Due Date: 12 November 2026, 14:00 Riyadh time'
+      note: 'The reissued form still prints 12 November 2026; the PDD is 26 November 2026. Not corrected: a decision
+        for a person.'
+    - stage: ADD-03
+      quote: 'Proposal Due Date: 12 November 2026, 14:00 Riyadh time'
+      parameters: {}
+      consequence: none_stated
+      note: 'Re-made at ADD-03. ADD-03 does not change the printed field: the form, as reissued by ADD-01 App A (''Bidders
+        shall use this version''), still prints 12 November 2026, while the PDD anchor is 26 November 2026. ADD-03
+        cover para3 adds that Bidders shall acknowledge receipt of ADD-03 in Form 4-A. Not corrected here; the conflict
+        stays a decision for a person (I-F4A-FIELDS). [AI workflow run ADD-03-run-host-blind05-s12-20261005T183535Z
+        (route host, model claude-code headless (opus)); PROPOSED; not reviewed]'
     confidence: high
-    confidence_reason: "verbatim printed field; the conflict with the amended PDD is shown, not resolved"
-    issues: [I-F4A-FIELDS]
+    confidence_reason: verbatim printed field; the conflict with the amended PDD is shown, not resolved
+    issues:
+    - I-F4A-FIELDS
   - id: VOL-I-9.4-01
     group: VOL-I:9.4
     scope: [envelope_A, forms, arabic]
@@ -539,9 +580,16 @@ rows:
     confidence_reason: "the amendment is in a small-print table note and does not quote the words it replaces"
   - id: VOL-V-29.2-01
     group: VOL-V:29.2
-    scope: [contract, payment, repeated_wording]
-    requirement: "Availability Payment indexation: 60% indexed to CPI, 40% fixed (unchanged by the addenda)"
-    units: ["VOL-V:29.2"]
+    scope:
+    - contract
+    - payment
+    - repeated_wording
+    requirement: 'Availability Payment indexation (as amended by ADD-03 3.3): indexed annually from the Base Date
+      under Schedule 9; the Indexed Proportion (CPI) is the percentage stated by the Bidder in Form 4-F, not less
+      than 50% and not more than 70%, until the end of operating year 10, and 75% from the start of operating year
+      11; the balance fixed'
+    units:
+    - VOL-V:29.2
     discipline: Commercial
     owner: Commercial lead
     assessment: contractual_post_award
@@ -555,22 +603,51 @@ rows:
         page: 3
         words: The Availability Payment shall be indexed annually in accordance with Schedule 9, with sixty per cent
           (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed.
-      reason: The clause states how the Availability Payment is indexed ('shall be indexed annually in accordance with
-        Schedule 9'); it gives the Project Company nothing to do. Any indexed amount would appear in the monthly invoices
-        proposed under row VOL-V-29.4-01. Schedule 9, under which the indexation is applied, is not supplied (I-VOL-V-MISSING).
+      reason: The clause states how the Availability Payment is indexed ('shall be indexed annually in accordance
+        with Schedule 9'); it gives the Project Company nothing to do. Any indexed amount would appear in the monthly
+        invoices proposed under row VOL-V-29.4-01. Schedule 9, under which the indexation is applied, is not supplied
+        (I-VOL-V-MISSING).
       bid_stage_note: 'Price assumption: Form 4-F states ''Indexation basis assumed: Per Volume V Clause 29.2'', so
-        the Financial Model should apply the 60/40 split, but Schedule 9 is not supplied; VOL-I 10.5 makes a price subject
-        to adjustment other than as provided in Volume V non-responsive.'
+        the Financial Model should apply the 60/40 split, but Schedule 9 is not supplied; VOL-I 10.5 makes a price
+        subject to adjustment other than as provided in Volume V non-responsive.'
     interpretations:
-      - stage: BASE
-        quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
-        parameters: {indexed_pct: 60, fixed_pct: 40}
-      - stage: ADD-01
-        quote: "sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent (40%) remaining fixed"
-        parameters: {indexed_pct: 60, fixed_pct: 40}
-        note: "ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed for this row: the indexation split is unchanged."
+    - stage: BASE
+      quote: sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent
+        (40%) remaining fixed
+      parameters:
+        indexed_pct: 60
+        fixed_pct: 40
+    - stage: ADD-01
+      quote: sixty per cent (60%) of the payment indexed to the published consumer price index and forty per cent
+        (40%) remaining fixed
+      parameters:
+        indexed_pct: 60
+        fixed_pct: 40
+      note: 'ADD-01 Q6 (offtake volume not guaranteed; the payment mechanism at Clause 29 is availability based) reviewed
+        for this row: the indexation split is unchanged.'
+    - stage: ADD-03
+      quote: 'The Availability Payment shall be indexed annually from the Base Date in accordance with Schedule 9.
+        The proportion of the payment indexed to the published consumer price index (the Indexed Proportion) shall
+        be: (a) until the end of the tenth (10th) year of operations, the percentage stated by the Bidder in Form
+        4-F, which shall be not less than fifty per cent (50%) and not more than seventy per cent (70%); and (b) from
+        the start of the eleventh (11th) year of operations, seventy-five per cent (75%). The balance of the payment
+        shall remain fixed.'
+      parameters:
+        indexation_start: Base Date
+        schedule: Schedule 9
+        indexed_proportion_years_1_10_min_pct: 50
+        indexed_proportion_years_1_10_max_pct: 70
+        indexed_proportion_stated_in: Form 4-F
+        indexed_proportion_from_year_11_pct: 75
+        balance: fixed
+      consequence: none_stated
+      note: Re-made after ADD-03/3.3 replaced VOL-V 29.2 and ADD-03/3.1 changed the definition of Availability Payment
+        (Base Date prices). Existing rules VOL-I-9.6-01 and VOL-I-10.5-01 refer to Volume V. Whether either applies
+        to a departure from this clause is a person's decision, so no consequence is attached here. [AI workflow run
+        ADD-03-run-host-blind05-s12-20261005T183535Z (route host, model claude-code headless (opus)); PROPOSED; not
+        reviewed]
     confidence: high
-    confidence_reason: "verbatim; must not change when VOL-I 11.2's similar words do"
+    confidence_reason: verbatim; must not change when VOL-I 11.2's similar words do
   - id: VOL-I-11.3-01
     group: VOL-I:11.3
     scope: [evaluation, threshold]

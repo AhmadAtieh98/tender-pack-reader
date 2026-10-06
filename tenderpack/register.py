@@ -418,15 +418,19 @@ def dependencies(row: Row, interp: Interp, state: dict[str, UState], anchors: di
     return sorted(set(deps))
 
 
-PIN_FORMAT = 2       # 2: the image reading's review fingerprint is part of the pin (session 05)
+PIN_FORMAT = 3       # 2: the image reading's review fingerprint is part of the pin (session 05)
+#                      3: an annotation whose effect is `confirms` is not (session 12, blind-06 follow-up 9)
 
 
-def pin_value(state: dict[str, UState], uid: str) -> str:
+def pin_value(state: dict[str, UState], uid: str, confirming=frozenset()) -> str:
     """What an interpretation is pinned to for one dependency: the unit's status, text and cells, the
     annotations on it, and, for a unit read from an image, the reading's review-subject fingerprint
     (content, uncertainties and evidence). A changed reading therefore keeps dependent interpretations
-    STALE even after its new transcription is approved; the approval status itself is not pinned."""
-    return unit_pin(state, uid)
+    STALE even after its new transcription is approved; the approval status itself is not pinned.
+    `confirming` (Register.confirming: the ids of the annotate ops whose effect is `confirms`) are left out: a
+    confirmation changes nothing, so it never makes a reading STALE nor appears among the ops that changed a
+    dependency (session 12, pin format 3). The confirming provision itself stays a dependency (dependencies())."""
+    return unit_pin(state, uid, ignore=confirming)
 
 
 # ---------------------------------------------------------------------------------------------- evaluation
@@ -443,6 +447,9 @@ class Register:
         self.op_stage = {r.op.id: s.stage for s in stages for r in s.ops}
         self.op_review = {r.op.id: r.op.review for s in stages for r in s.ops}
         self.op_result = {r.op.id: r for s in stages for r in s.ops}
+        # session 12 (blind-06 follow-up 9): the annotations that confirm a unit unchanged are not part of its pin
+        self.confirming = frozenset(r.op.id for s in stages for r in s.ops
+                                    if r.op.type == "annotate" and r.op.effect == "confirms")
         self.issued = {s.stage: s.issued for s in stages}
         # session 11 audit (A1-2): every list item an applied insert_unit op put into a volume unit: a row whose primary
         # unit is the list the item is inserted into is AMENDED by that op at its stage
@@ -522,9 +529,18 @@ class Register:
         cands = [i for i in row.interpretations if i.stage in self.order and self.order.index(i.stage) <= idx]
         return cands[-1] if cands else None
 
+    def _legacy_pin_holds(self, it: Interp, d: str, now: str) -> bool:
+        """Session 12 (pin format 3): a pin written under format 2 (every annotation hashed, confirming ones included)
+        still holds when it is the format-2 value of the dependency at the interpretation's own stage and the format-3
+        value there equals the value now: nothing but a confirmation lies between. A pack whose pins.yaml predates
+        format 3 (a rehearsal, a candidate) is therefore read right without re-pinning; anything else stays STALE."""
+        xs = next((s for s in self.stages if s.stage == it.stage), None)
+        return xs is not None and it.pins.get(d) == unit_pin(xs.state, d) and \
+            pin_value(xs.state, d, self.confirming) == now
+
     def pins_for(self, row: Row, interp: Interp, stage: StageResult) -> dict[str, str]:
         deps = dependencies(row, interp, stage.state, self.rf.anchors, self.op_provision)
-        return {d: pin_value(stage.state, d) for d in deps}
+        return {d: pin_value(stage.state, d, self.confirming) for d in deps}
 
     # ------------------------------------------------------------------ introduction (session 11)
     def introduction(self, row: Row) -> dict:
@@ -710,10 +726,15 @@ class Register:
                 stale.append("never pinned")
             for d, v in now.items():
                 if d not in it.pins:
-                    stale.append(f"new dependency {d}")
-                elif it.pins[d] != v:
+                    conf = sorted(h for u in (st.values() if d in self.op_provision.values() else [])
+                                  for h in u.annotations if h in self.confirming and self.op_provision.get(h) == d
+                                  and self.order.index(self.op_stage.get(h, BASE)) > self.order.index(it.stage))
+                    stale.append(f"new dependency {d}" + (f" (the provision of {', '.join(conf)}, which confirms a "
+                                                          "unit of the row unchanged)" if conf else ""))
+                elif it.pins[d] != v and not self._legacy_pin_holds(it, d, v):
                     by = [h for h in (st[d].history + st[d].annotations if d in st else [])
-                          if self.order.index(self.op_stage.get(h, BASE)) > self.order.index(it.stage)]
+                          if self.order.index(self.op_stage.get(h, BASE)) > self.order.index(it.stage)
+                          and h not in self.confirming]           # session 12: a confirmation changes nothing
                     stale.append(f"{d} changed since {it.stage}" + (f" (by {', '.join(by)})" if by else ""))
             for d in it.pins:
                 if d not in now:
@@ -1231,11 +1252,16 @@ def _pin_value_v1(state: dict[str, UState], uid: str) -> str:
     return "absent" if u is None else sha256_text(u.sha() + "|" + ",".join(sorted(u.annotations)))[:16]
 
 
+def _pin_value_v2(state: dict[str, UState], uid: str) -> str:
+    return unit_pin(state, uid)                 # format 2: every annotation hashed, confirming ones included
+
+
 def migrate_pins(rowfile: RowFile, stages: list[StageResult]) -> tuple[int, list[str]]:
-    """Format 1 -> 2: upgrade a pin only where every dependency still has the value it was pinned to under
-    format 1 (nothing changed since pinning); anything else is left as it is and stays STALE for a person.
-    The fingerprint added in format 2 is taken from the current reading, so run this only when the
-    readings have not changed since the pins were made (recorded in the work log)."""
+    """Format 1 or 2 -> PIN_FORMAT: upgrade a pin only where every dependency still has the value it was pinned to
+    under format 1 or under format 2 (nothing changed since pinning); anything else is left as it is and stays STALE
+    for a person. The fingerprint added in format 2 is taken from the current reading, so run this only when the
+    readings have not changed since the pins were made (recorded in the work log). Format 3 (session 12) differs from
+    format 2 only for a unit that carries a `confirms` annotation."""
     by_stage = {s.stage: s for s in stages}
     reg = Register(rowfile, stages, Calendar())
     n, kept = 0, []
@@ -1245,7 +1271,8 @@ def migrate_pins(rowfile: RowFile, stages: list[StageResult]) -> tuple[int, list
                 continue
             st = by_stage[it.stage].state
             now = reg.pins_for(row, it, by_stage[it.stage])
-            if set(now) == set(it.pins) and all(_pin_value_v1(st, d) == v for d, v in it.pins.items()):
+            if set(now) == set(it.pins) and any(all(f(st, d) == v for d, v in it.pins.items())
+                                                for f in (_pin_value_v1, _pin_value_v2)):
                 if now != it.pins:
                     it.pins = now
                     n += 1
