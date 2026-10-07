@@ -299,7 +299,10 @@ def prepare_scope(pdf: Path, d: Path, addendum: str, qr_id: str) -> dict:
     review starts into <qr dir>/addendum-pages/: every page at most PAGE_MAX_PX on its longest side; every image region
     (the regions read_pdf finds) as a crop at up to 300 dpi, at most CROP_MAX_PX, and its native embedded image when it
     is a PNG or JPEG of at most NATIVE_MAX_BYTES. Each file's sha256 is recorded in <qr dir>/addendum_scope.json, which
-    the tool re-checks on every call; the tool itself writes nothing and reads nothing else."""
+    the tool re-checks on every call; the tool itself writes nothing and reads nothing else. Session 14 (F4; R4-5): the
+    returned record also carries `file_sha256`, the sha256 of the scope file as written here (not in the file: a file
+    cannot carry its own hash); the session hands it to its MCP server (--addendum-scope-sha256), which re-checks the
+    scope file against it on every call."""
     import pymupdf
     pdf, d = Path(pdf), Path(d)
     doc = pymupdf.open(pdf)
@@ -340,15 +343,19 @@ def prepare_scope(pdf: Path, d: Path, addendum: str, qr_id: str) -> dict:
           "pdf": {"path": str(pdf.resolve()), "sha256": hashlib.sha256(pdf.read_bytes()).hexdigest()},
           "limits": {"page_max_px": PAGE_MAX_PX, "crop_max_px": CROP_MAX_PX, "native_max_bytes": NATIVE_MAX_BYTES},
           "pages": pages}
-    _write(d / SCOPE_FILE, _jdump(sc))
-    return sc
+    text = _jdump(sc)
+    _write(d / SCOPE_FILE, text)
+    return dict(sc, file_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest())      # session 14 (F4; R4-5)
 
 
 def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
     """get_addendum_page (tools.py): one page of the quick review's NEW addendum (text, regions, the page image) or,
     with `region`, that region's crop and native image. Refused without a scope (any session but a quick review's), for a
     scope file outside a quick review's folder, for a page or region the addendum does not have, and for any file whose
-    bytes are not the ones recorded (integrity failure)."""
+    bytes are not the ones recorded (integrity failure). Session 14 (F4; R4-5): the scope file itself is checked on every
+    call against the sha256 prepare_scope recorded (ws.addendum_scope_sha256, from the server's start arguments; a
+    scope without it, or changed since, refuses every call), and a file is served only from the quick review's own
+    addendum-pages/ folder once resolved (a scope entry naming a path outside it, or a symlink out of it, is refused)."""
     from .tools import ToolError
     sp = getattr(ws, "addendum_scope", None)
     if not sp:
@@ -357,7 +364,14 @@ def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
     sp = Path(sp)
     if sp.name != SCOPE_FILE or sp.parent.parent.name != SUBDIR or not sp.is_file():
         raise ToolError(f"{sp}: not the addendum scope of a quick review (<staging>/{SUBDIR}/<id>/{SCOPE_FILE})")
-    sc = json.loads(sp.read_text(encoding="utf-8"))
+    want = getattr(ws, "addendum_scope_sha256", None)          # session 14 (F4; R4-5): the scope file's own anchor
+    if not want:
+        raise ToolError(f"{sp}: no recorded sha256 of the scope file (the server was started without "
+                        "--addendum-scope-sha256): get_addendum_page serves nothing")
+    raw = sp.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != want:
+        raise ToolError(f"integrity failure: the scope file is not the one recorded when the quick review started ({sp})")
+    sc = json.loads(raw.decode("utf-8"))
     pdf = Path(sc["pdf"]["path"])
     if not pdf.is_file() or hashlib.sha256(pdf.read_bytes()).hexdigest() != sc["pdf"]["sha256"]:
         raise ToolError(f"integrity failure: the addendum PDF is not the one the quick review started on ({pdf})")
@@ -365,9 +379,12 @@ def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
     if pg is None:
         raise ToolError(f"page {page} is not a page of {sc['addendum']} (pages 1-{len(sc['pages'])})")
     base = sp.parent / SCOPE_DIR
+    allowed = sp.parent.resolve() / SCOPE_DIR
 
     def served(rec: dict, kind: str) -> dict:
-        f = base / rec["file"]
+        f = (base / str(rec["file"])).resolve()
+        if not f.is_relative_to(allowed):                       # session 14 (F4; R4-5): a path or symlink out of it
+            raise ToolError(f"refused: {rec['file']} is outside the quick review's folder ({allowed})")
         if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != rec["sha256"]:
             raise ToolError(f"integrity failure: {rec['file']} is not the image recorded when the quick review started")
         return {"kind": kind, "path": str(f), "path_in_build": f"{sc['addendum']}/{rec['file']}", "sha256": rec["sha256"],
@@ -614,11 +631,13 @@ def _session_class(HS):
     phase's get_addendum_page serves this addendum's pages (and nothing else)."""
     class QuickReviewSession(HS.AnswerSession):
         scope: Path | None = None
+        scope_sha256: str | None = None            # session 14 (F4; R4-5): the scope file's sha256 from prepare_scope
 
         def mcp_config(self) -> dict:
             c = super().mcp_config()
             if self.scope is not None:
-                c["mcpServers"]["tenderpack"]["args"] += ["--addendum-scope", str(Path(self.scope).resolve())]
+                c["mcpServers"]["tenderpack"]["args"] += ["--addendum-scope", str(Path(self.scope).resolve())] + (
+                    ["--addendum-scope-sha256", self.scope_sha256] if self.scope_sha256 else [])
             return c
     return QuickReviewSession
 
@@ -694,6 +713,7 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
                **({"addendum_scope": {"file": str(d / SCOPE_FILE), "tool": "get_addendum_page",
                                       "pages": len(scope["pages"]),
                                       "regions": sum(len(p["regions"]) for p in scope["pages"]),
+                                      "sha256": scope["file_sha256"],      # session 14 (F4; R4-5)
                                       "note": "the NEW addendum's own pages only; read-only; checked by sha256"}}
                   if scope else {}),
                "session": {"sessions": 1, "batches": 0, "critic": False}}
@@ -718,6 +738,7 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
             sess = _session_class(HS)(ws, cfg, phase=PHASE, model=model, max_turns=MAX_TURNS,
                                       timeout_s=budget_minutes * 60, claude_bin=claude_bin, run_lock=True, **kw)
             sess.scope = (d / SCOPE_FILE) if scope else None        # session 14 (W5): serve-mcp --addendum-scope
+            sess.scope_sha256 = scope["file_sha256"] if scope else None     # session 14 (F4; R4-5)
             pol.repairs = 0                                         # one session at most: no repair session
             sp = R.spec(PHASE, system=sess.system_prompt(), cfg=cfg)
             out = R.ask_host(sp, sess, packet, cfg=cfg, policy=pol, log=log, fields=fields, cwd=d,

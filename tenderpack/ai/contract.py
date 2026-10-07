@@ -710,13 +710,20 @@ def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, di
     """Session 14 (W1): the set after a bounded repair of the items named by `ids` (item ids, or statement ids): every
     item of `first` NOT named is kept exactly as first given (a valid sibling is never re-asked and never changed by the
     repair); a named item is replaced by the repaired item of the same id when the repair gives one (otherwise the first
-    stands, and is rated as it is). Statements: a repaired statement replaces the first of the same id; a new one is
-    added; the others are kept. Returns (merged set, notes {replaced, kept, missing, ignored})."""
+    stands, and is rated as it is). Returns (merged set, notes {replaced, kept, missing, refused, why_refused}).
+    Session 14 (F4; R4-4): the repair replaces ONLY what it names. Any other item it carries is refused (named in
+    `refused`, why in `why_refused`; the first stands as first given). A statement is replaced only when named; a NEW
+    statement is added only when a replaced item cites it and no kept item does (it cannot change a sibling's basis);
+    every other statement of the repair is refused the same way."""
     ids = {str(x) for x in ids if x is not None}
     indices = {int(x) for x in indices if x is not None}
     rep_list = [it for it in (repaired or {}).get("items") or []]
     rep_items = {it.get("id"): it for it in rep_list if isinstance(it, dict) and it.get("id") is not None}
-    items, notes = [], {"replaced": [], "kept": [], "missing": [], "ignored": []}
+    items, notes = [], {"replaced": [], "kept": [], "missing": [], "refused": [], "why_refused": {}}
+
+    def refuse(key, why: str) -> None:
+        notes["refused"].append(key)
+        notes["why_refused"][key] = why
     for n, it in enumerate(first.get("items") or []):
         iid = it.get("id") if isinstance(it, dict) else None
         named = (iid is not None and str(iid) in ids) or n in indices
@@ -729,15 +736,29 @@ def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, di
             items.append(it)
             (notes["missing"] if named else notes["kept"]).append(iid if iid is not None else f"#{n}")
     named_ids = {x for x in notes["replaced"] + notes["missing"]}
-    notes["ignored"] = [k for k in rep_items if k not in named_ids]    # a sibling resent unasked: the first stands
+    for k in rep_items:                                    # a sibling resent unasked: the first stands
+        if k not in named_ids:
+            refuse(k, "item not named in the repair request: the first submission's item stands as first given"
+                   if any(isinstance(i, dict) and i.get("id") == k for i in first.get("items") or []) else
+                   "item not named in the repair request (a repair adds no item)")
+    cited_new = {str(c) for it in items for c in ((it.get("statements") or []) if isinstance(it, dict) else [])
+                 if isinstance(it, dict) and it.get("id") in notes["replaced"]}
+    cited_kept = {str(c) for it in items if isinstance(it, dict) and it.get("id") not in notes["replaced"]
+                  for c in it.get("statements") or []}
     sts = [dict(s) if isinstance(s, dict) else s for s in first.get("statements") or []]
     pos = {s.get("id"): n for n, s in enumerate(sts) if isinstance(s, dict)}
     for s in (repaired or {}).get("statements") or []:
         if not isinstance(s, dict):
             continue
-        if s.get("id") in pos:
-            sts[pos[s.get("id")]] = s
-        else:
-            pos[s.get("id")] = len(sts)
+        sid = s.get("id")
+        if sid in pos and str(sid) in ids:
+            sts[pos[sid]] = s
+        elif sid in pos:
+            refuse(sid, "statement not named in the repair request: the first submission's statement stands")
+        elif str(sid) in cited_new and str(sid) not in cited_kept:
+            pos[sid] = len(sts)
             sts.append(s)
+        else:
+            refuse(sid, "new statement not cited by a repaired item alone (it would change the basis of an item "
+                        "kept as first given, or nothing repaired cites it)")
     return {**first, "statements": sts, "items": items}, notes

@@ -1,0 +1,39 @@
+....................................................................s... [ 50%]
+.....F................................................................   [100%]
+=================================== FAILURES ===================================
+_ test_every_provider_and_host_session_construction_goes_through_the_offline_guard _
+
+    def test_every_provider_and_host_session_construction_goes_through_the_offline_guard():
+        adapters = {"AnthropicProvider", "OpenRouterProvider", "OllamaProvider", "HostProvider", "RecordedProvider"}
+        sites, direct, procs = set(), set(), set()
+        for f in sorted((ROOT / "tenderpack").rglob("*.py")):
+            rel = f.relative_to(ROOT).as_posix()
+            text = f.read_text(encoding="utf-8")
+            # session 14: a subclass of a session class (W5's QuickReviewSession(HS.AnswerSession)) is constructed under its
+            # own name; its constructor is the parent's, which runs the guard first, so the site is counted under that name
+            session_names = {"HostSession", "AnswerSession", "PlainSession"} | set(
+                re.findall(r"^\s*class (\w+)\((?:HS\.|hostsession\.)?(?:HostSession|AnswerSession|PlainSession)\)", text, re.M))
+            for name, line in _calls(f):
+                if name in session_names:
+                    sites.add((rel, name))
+                elif name == "make" and re.search(r"from \.?\.?(providers|\.providers) import [^\n]*\bmake\b|"
+                                                   r"from \.providers import make|from \. import make", text) \
+                        and "schedule.py" not in rel:
+                    sites.add((rel, "make"))
+>               elif name in adapters:
+E               AssertionError: ('a provider or host-session construction site appeared or moved: check it passes the offline guard, then add it here', {('tenderpack/ai/quick_review.py', 'AnswerSession')})
+E               assert {('tenderpack... 'make'), ...} == {('tenderpack...ession'), ...}
+E                 
+E                 Extra items in the right set:
+E                 ('tenderpack/ai/quick_review.py', 'AnswerSession')
+E                 Use -v to get more diff
+
+tests/test_session13_mac_scripts.py:518: AssertionError
+rehearsal fixtures (disposable, this session): blind-02 ingest 13.0 s; total 13.0 s
+=========================== short test summary info ============================
+FAILED tests/test_session13_mac_scripts.py::test_every_provider_and_host_session_construction_goes_through_the_offline_guard
+1 failed, 140 passed, 1 skipped in 510.31s (0:08:30)
+
+real	8m31.831s
+user	8m12.490s
+sys	0m10.420s

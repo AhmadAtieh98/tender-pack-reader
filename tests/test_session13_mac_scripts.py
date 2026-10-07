@@ -473,7 +473,7 @@ KNOWN_SITES = {
     # session 13, part 4 (implementer E): the AI quick review builds its provider through providers.make (the offline
     # check inside make, and offline.check_route before it) and its ONE host session as an AnswerSession (whose
     # HostSession constructor runs check_host_session first)
-    ("tenderpack/ai/quick_review.py", "make"), ("tenderpack/ai/quick_review.py", "AnswerSession"),
+    ("tenderpack/ai/quick_review.py", "make"), ("tenderpack/ai/quick_review.py", "_session_class"),
 }
 PROCESS_SITES = {   # subprocess users in tenderpack/: none of them may start the host CLI except the guarded sessions
     "tenderpack/cli.py": "git log (read only)",
@@ -493,9 +493,33 @@ def _calls(path: Path):
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             fn = node.func
+            if isinstance(fn, ast.Call) and isinstance(fn.func, ast.Name):   # session 14: a factory call, f(...)(...)
+                fn = fn.func
             name = fn.attr if isinstance(fn, ast.Attribute) else fn.id if isinstance(fn, ast.Name) else None
             if name:
                 yield name, node.lineno
+
+
+SESSION_CLASSES = ("HostSession", "AnswerSession", "PlainSession")
+
+
+def _session_names(path: Path) -> set[str]:
+    """Session 14: the names under which a guarded session is constructed in `path`: the session classes themselves, a
+    subclass of one of them (its constructor is the parent's, which runs the guard first), and a factory function that
+    defines such a subclass and returns it (W5's `_session_class(HS)(...)` in quick_review.py)."""
+    names = set(SESSION_CLASSES)
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+
+    def is_session_base(b) -> bool:
+        return (isinstance(b, ast.Name) and b.id in SESSION_CLASSES) or \
+               (isinstance(b, ast.Attribute) and b.attr in SESSION_CLASSES)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef) and any(is_session_base(b) for b in node.bases):
+            names.add(node.name)
+        if isinstance(node, ast.FunctionDef) and any(isinstance(c, ast.ClassDef) and any(is_session_base(b) for b in c.bases)
+                                                     for c in ast.walk(node)):
+            names.add(node.name)
+    return names
 
 
 def test_every_provider_and_host_session_construction_goes_through_the_offline_guard():
@@ -504,8 +528,9 @@ def test_every_provider_and_host_session_construction_goes_through_the_offline_g
     for f in sorted((ROOT / "tenderpack").rglob("*.py")):
         rel = f.relative_to(ROOT).as_posix()
         text = f.read_text(encoding="utf-8")
+        session_names = _session_names(f)            # session 14: subclasses and factories count under their own names
         for name, line in _calls(f):
-            if name in ("HostSession", "AnswerSession", "PlainSession"):
+            if name in session_names:
                 sites.add((rel, name))
             elif name == "make" and re.search(r"from \.?\.?(providers|\.providers) import [^\n]*\bmake\b|"
                                                r"from \.providers import make|from \. import make", text) \

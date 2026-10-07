@@ -1587,13 +1587,14 @@ class Engine:
         if not check("C22", table, f"{group} is a table of {addendum} ({len(members)} units)" if table else
                      f"{group!r} is not a table printed in {addendum}"):
             return r
-        into, number = op.into or "", op.number or ""
+        # session 14 (F4; R4-11): the number compared in ASCII digits (textnorm's digit folding), however it is written
+        into, number = op.into or "", normalize_arabic(op.number or "")
         vol = not into.startswith("ADD-") and any(u.doc == into for u in st.values())
         if not check("C22", vol and bool(re.fullmatch(r"\d+-\d+[A-Za-z]?", number)),
                      f"into {into} as Table {number}" if vol else
                      f"`into` must be a volume of the pack and `number` a table number such as '42-1' ({into!r}, {number!r})"):
             return r
-        names = re.search(r"(?<![\w-])Table\s+" + re.escape(number) + r"(?![\w-])", normalize_latin(ptext))
+        names = _names_table(ptext, number)                 # session 14 (F4; R4-11): digits in any script
         said = bool(names) and _names_volume(ptext, into) and INCORPORATE_WORDS.search(ptext)
         if not check("C21", said, f"the provision makes Table {number} part of {_volume_words(into)}" if said else
                      f"the provision does not print that Table {number} forms part of {_volume_words(into)} (the table "
@@ -1869,12 +1870,28 @@ def _group_title(st: dict[str, UState], group: str) -> str:
     return ""
 
 
+# session 14 (F4; R4-11): the word that names a table before its number, in English or in Arabic ('جدول', with the
+# article or a joined preposition, optionally followed by 'رقم' "number")
+TABLE_WORD = r"(?:Table|(?:[وفبكل]?ال|لل)?جدول(?:\s+رقم)?)"
+
+
+def _names_table(text: str, number: str) -> bool:
+    """Session 14 (F4; R4-11): `text` names Table `number` ('Table 42-1', 'جدول ٤٢-١', 'الجدول رقم ٤٢-١'): the digits
+    are compared in ASCII whatever script prints them (textnorm.normalize_arabic folds Arabic-Indic and Extended
+    Arabic-Indic digits and otherwise leaves Latin text as normalize_latin does), so a table whose number is printed in
+    Arabic-Indic digits is the same table named in Latin digits, and no other number matches."""
+    n = normalize_arabic(number or "")
+    return bool(n) and re.search(r"(?<![\w-])" + TABLE_WORD + r"\s+" + re.escape(n) + r"(?![\w-])",
+                                 normalize_arabic(text or ""), re.I) is not None
+
+
 def _names_target(title: str, target: str) -> bool:
-    """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A."""
+    """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A. Session 14 (F4;
+    R4-11): a table's number may be printed in Arabic-Indic digits, and its word in Arabic (_names_table)."""
     local = target.partition(":")[2]
     if re.fullmatch(r"T\d+-\d+(?:-[A-Za-z0-9]+)?", local):
         # an addendum's issue of a table carries a suffix (ADD-02:T1-1-rev); its title still names "Table 1-1"
-        phrase = "Table " + re.match(r"T(\d+-\d+)", local).group(1)
+        return _names_table(title, re.match(r"T(\d+-\d+)", local).group(1))
     elif re.fullmatch(r"F\d-[A-Z]", local):
         phrase = "Form " + local[1:]
     else:

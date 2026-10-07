@@ -77,6 +77,7 @@ def test_the_page_tool_serves_the_addendums_page_and_region_images_over_mcp_and_
     from tenderpack.mcp_server import Server
     d, sc = _scope(tmp_path)
     ws.addendum_scope = str(d / QR.SCOPE_FILE)
+    ws.addendum_scope_sha256 = sc["file_sha256"]          # session 14 (F4; R4-5): the scope file's recorded sha256
     try:
         srv = Server(ws, tools=list(TOOLS5) + ["get_addendum_page"])
         listed = srv.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/list"})["result"]["tools"]
@@ -107,7 +108,7 @@ def test_the_page_tool_serves_the_addendums_page_and_region_images_over_mcp_and_
                         "params": {"name": "get_addendum_page", "arguments": {"page": 1}}})["result"]
         assert r["isError"] is True and "integrity" in r["content"][0]["text"]
     finally:
-        ws.addendum_scope = None
+        ws.addendum_scope = ws.addendum_scope_sha256 = None
     # with no addendum in scope (any other session) the tool serves nothing
     srv = Server(ws, tools=None)
     r = srv.handle({"jsonrpc": "2.0", "id": 6, "method": "tools/call",
@@ -140,7 +141,7 @@ def test_serve_mcp_takes_the_addendum_scope_and_serves_the_page_over_stdio(tmp_p
     r = subprocess.run([sys.executable, "-m", "tenderpack", "ai", "serve-mcp", "--evidence", str(ws.evidence),
                         "--pack", str(ws.pack), "--out", str(tmp_path / "st"), "--worklog", str(tmp_path / "wl"),
                         "--tools", ",".join(TOOLS5) + ",get_addendum_page", "--addendum-scope",
-                        str(d / QR.SCOPE_FILE)], input="\n".join(json.dumps(m) for m in msgs) + "\n",
+                        str(d / QR.SCOPE_FILE), "--addendum-scope-sha256", sc["file_sha256"]], input="\n".join(json.dumps(m) for m in msgs) + "\n",
                        capture_output=True, text=True, cwd=ROOT, env=env, timeout=120)
     assert r.returncode == 0, r.stderr[-2000:]
     out = [json.loads(x) for x in r.stdout.splitlines() if x.strip()]
@@ -176,12 +177,16 @@ def test_the_host_quick_review_offers_the_page_tool_and_records_the_pages_it_rea
     args = mcp["mcpServers"]["tenderpack"]["args"]
     d = Path(res["dir"])
     assert args[args.index("--addendum-scope") + 1] == str((d / QR.SCOPE_FILE).resolve())
+    # session 14 (F4; R4-5): the scope file's sha256 as written, handed to the server and recorded in the request
+    sha = args[args.index("--addendum-scope-sha256") + 1]
+    assert sha == QR.hashlib.sha256((d / QR.SCOPE_FILE).read_bytes()).hexdigest()
     assert "--submit-once" not in args
     from tenderpack.ai.providers.recorded import PACKET_MARK
     packet = json.loads(seen[0]["input"].split(PACKET_MARK, 1)[1])
     assert packet["page_images"]["tool"] == "get_addendum_page" and packet["page_images"]["image_pages"] == [4]
     req = json.loads((d / "request.json").read_text(encoding="utf-8"))
     assert req["images_not_attached"] == [] and req["addendum_scope"]["pages"] == 5
+    assert req["addendum_scope"]["sha256"] == sha
     assert req["main_run_inputs_read"] == [] and req["kind"] == KIND
     b = json.loads((d / "briefing.json").read_text(encoding="utf-8"))
     assert b["kind"] == KIND

@@ -177,6 +177,23 @@ def unresolved_rows(r: dict) -> dict[str, list[str]]:
     return {k: v for k, v in sorted(out.items())}
 
 
+IN_QUESTION = "UNRESOLVED (value in question): "
+
+
+def in_question(r: dict, unres: dict | None = None) -> dict[str, str]:
+    """Session 14 (F4; R4-2): {row id: reason} for the rows whose VALUE an unresolved provision of a pending stage puts
+    in question (unresolved_rows without its STALE lines), the reason worded as the candidate status words it
+    ('<provision> unresolved: <why>', at most three, cut where the status is cut), so the Value column and the cards
+    say "value in question (unresolved: <reason>)" beside that status and never "unchanged since <stage>"."""
+    unres = unresolved_rows(r) if unres is None else unres
+    out = {}
+    for rid, why in unres.items():
+        w = [x for x in why if not x.startswith("STALE")]
+        if w:
+            out[rid] = "; ".join(x.replace(" UNRESOLVED: ", " unresolved: ", 1) for x in w[:3])[:400 - len(IN_QUESTION)]
+    return out
+
+
 def row_sources(r: dict, rid: str) -> dict:
     """What changed a row between the validated and the working stage: the op ids (on its units, on any other unit it
     cites, the ops issuing its units, annotations) and the reasons, from live._secondary and the register."""

@@ -417,6 +417,11 @@ def test_every_route_applies_the_same_validation_to_the_same_answer(ws, tmp_path
         results["ollama"] = ([it.id for it in ds.items], outcome(ctx))
     finally:
         f.stop()
+        # session 14 (F4; R4-6): offline mode now switches the whole process (offline.switch_process); this test runs
+        # four routes in one process, so the offline segment's switch is put back before the host segment (a real
+        # process that went offline never starts a host session)
+        OFF._PROCESS = None
+        monkeypatch.delenv(OFF.ENV, raising=False)
     # host (Claude Code or Codex: a stand-in CLI that answers the same text, then the same repair)
     from tenderpack.ai.hostsession import SessionResult, declared_capabilities
 

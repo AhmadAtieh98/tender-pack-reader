@@ -34,7 +34,10 @@ Session 14 (W1): the submission gate's bounded repair. A submit_proposals whose 
 and answered with `repair` (the exact errors and the full schemas); ONE re-submission of the named items only is then
 accepted (even with --submit-once) and merged into the first (contract.merge_repair: every other item stands as first
 submitted). It is staged as a new run that supersedes the first (`superseded.json` in the first's folder; the
-submission record points at it). An item still failing after it is invalid with its errors.
+submission record points at it). An item still failing after it is invalid with its errors. Session 14 (F4; R4-4): any
+other item or statement the re-submission carries is refused with its id named (repair_merge.refused), and the
+re-submission uses the one repair whatever its outcome: after one the controller refused, a further submission is
+refused as "repair already used".
 """
 from __future__ import annotations
 
@@ -86,6 +89,9 @@ class Server:
         # exactly as first submitted. The bound is the failure policy's (config/ai.yaml failures.malformed.repairs, <= 1).
         self.repairs_left: int | None = None
         self._repair: dict | None = None
+        # session 14 (F4; R4-4): why the one re-submission was refused (it used the repair); None until then
+        self.repair_refused: str | None = None
+        self._repair_attempt: str | None = None        # the first run a re-submission in flight answers
 
     def _offered(self, name: str) -> bool:
         return self.tools is None or name in self.tools
@@ -93,6 +99,10 @@ class Server:
     def _guard(self, name: str, args: dict) -> str | None:
         """Why this call is refused by the session's permissions (session 13), or None."""
         if name in ("submit_proposals", "request_review"):
+            if name == "submit_proposals" and self.repair_refused is not None:      # session 14 (F4; R4-4)
+                return (f"refused: repair already used: the one re-submission was refused ({self.repair_refused}); the "
+                        f"first submission ({self.submitted or 'staged'}) stands as staged and an item still failing "
+                        "its schema is invalid with its errors")
             if self.submit_once and self.submitted and not (name == "submit_proposals" and self._repair is not None):
                 return (f"refused: this session already submitted ({self.submitted}); a session submits ONCE and the "
                         "first submission stands")
@@ -166,6 +176,8 @@ class Server:
                 res = T.call_tool(self.ws, name, args, caller="mcp")
             if gate is not None and isinstance(res, dict) and res.get("run_id"):
                 res = self._after_submission(res, gate)
+            elif gate is not None and gate.get("repair_of") is not None:          # session 14 (F4; R4-4)
+                self.repair_refused = "nothing was staged"
             text, is_error = json.dumps(res, ensure_ascii=False, default=str), False
             if name in ("submit_proposals", "request_review") and isinstance(res, dict) and res.get("run_id"):
                 self.submitted = str(res["run_id"])
@@ -173,7 +185,9 @@ class Server:
                     self._record_submission(res)
         except (ToolError, Refused) as e:
             text, is_error = json.dumps({"error": str(e)}, ensure_ascii=False), True
+            self._repair_refused(name, e)
         except Exception as e:                                    # noqa: BLE001
+            self._repair_refused(name, e)
             self._log(tool=name, arguments=args, internal_error=f"{type(e).__name__}: {e}")
             return _err(id_, -32603, f"internal error in {name}: {type(e).__name__}: {str(e)[:300]}")
         images, sent = [], []
@@ -197,14 +211,25 @@ class Server:
                 self.repairs_left = 1
         return self.repairs_left
 
+    def _repair_refused(self, name: str, e: Exception) -> None:
+        """Session 14 (F4; R4-4): a re-submission answering the repair request that was refused (by the gate or the
+        controller) has used the one repair: later submissions are refused as 'repair already used'."""
+        if name == "submit_proposals" and self._repair_attempt is not None and self.repair_refused is None:
+            self.repair_refused = f"{type(e).__name__}: {str(e)[:300]}"
+            self._log(tool="submission_repair", repair_of=self._repair_attempt, refused=self.repair_refused)
+
     def _submission_gate(self, args: dict) -> tuple[dict, dict]:
         """(the arguments to submit, the gate's record). The re-submission that answers a repair request is merged
-        into the first submission (contract.merge_repair): only the named items and statements are taken from it."""
+        into the first submission (contract.merge_repair): only the named items and statements are taken from it.
+        Session 14 (F4; R4-4): the repair request is used by the attempt itself (before anything can refuse it)."""
         from .ai.contract import merge_repair, submission_problems
         from .ai.controller import _load_set_data
+        self._repair_attempt = None
+        rep = self._repair
+        if rep is not None:
+            self._repair, self._repair_attempt = None, str(rep["run_id"])
         raw = _load_set_data(args.get("proposal_set"))
-        if self._repair is not None:
-            rep = self._repair
+        if rep is not None:
             merged, notes = merge_repair(rep["raw"], raw if isinstance(raw, dict) else {}, rep["ids"], rep["indices"])
             self._log(tool="submission_repair", repair_of=rep["run_id"], merge=notes)
             return {**args, "proposal_set": merged}, {"repair_of": rep, "merge": notes, "raw": merged}
@@ -241,9 +266,11 @@ class Server:
             "how": ("Your submission is staged as it is (" + str(res.get("run_id")) + "); the items and statements "
                     "listed fail their FULL schema (given here). Correct ONLY those and call submit_proposals ONCE "
                     "more with proposal_set {addendum, state, statements: the corrected statements only, items: the "
-                    "corrected items only, with the same ids}. Every other item stands exactly as first submitted (a "
-                    "resent sibling is ignored). This is the one repair: an item still failing after it stays invalid "
-                    "with its errors.")}}
+                    "corrected items only, with the same ids}. Every other item stands exactly as first submitted: "
+                    "any other item or statement in the re-submission is refused and named (a new statement is taken "
+                    "only when a corrected item alone cites it). This is the one repair, used by the re-submission "
+                    "whatever its outcome (refused or staged): an item still failing after it stays invalid with its "
+                    "errors.")}}
 
     def _mark_superseded(self, first: dict, res: dict) -> None:
         try:
@@ -298,17 +325,19 @@ class Server:
 
 
 def serve(ws, stdin=None, stdout=None, *, tools=None, submit_once: bool = False, require_crops=(),
-          submission_record=None, addendum_scope=None) -> int:
+          submission_record=None, addendum_scope=None, addendum_scope_sha256=None) -> int:
     from .ai.runlog import RunLog
     stdin = stdin or sys.stdin
     out = stdout or sys.stdout
     # session 14 (W5): a quick review's server serves its NEW addendum's pages (get_addendum_page) from this scope file
     ws.addendum_scope = str(addendum_scope) if addendum_scope else None
+    # session 14 (F4; R4-5): the scope file's sha256 recorded when the quick review prepared it, re-checked per call
+    ws.addendum_scope_sha256 = str(addendum_scope_sha256) if addendum_scope_sha256 else None
     session = f"mcp-{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}"
     log = RunLog(session, [Path(ws.worklog) / f"{session}.jsonl"])
     log.event("mcp_start", evidence=str(ws.evidence), pack=str(ws.pack), staging=str(ws.staging),
               tools=tools if tools is not None else "all", submit_once=submit_once, require_crops=list(require_crops),
-              addendum_scope=ws.addendum_scope)
+              addendum_scope=ws.addendum_scope, addendum_scope_sha256=ws.addendum_scope_sha256)
     srv = Server(ws, log, tools=tools, submit_once=submit_once, require_crops=require_crops,
                  submission_record=submission_record)
     for line in stdin:

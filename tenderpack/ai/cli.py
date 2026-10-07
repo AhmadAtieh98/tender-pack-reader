@@ -115,6 +115,9 @@ def add_parser(sub) -> None:
                                                "submission survives the orchestrator's interruption)")
     m.add_argument("--addendum-scope", help="session 14: a quick review's addendum_scope.json; get_addendum_page then "
                                             "serves that NEW addendum's pages and image regions (and nothing else)")
+    m.add_argument("--addendum-scope-sha256", help="session 14 (F4; R4-5): the scope file's sha256 recorded when the "
+                                                   "quick review wrote it; get_addendum_page re-checks the file against "
+                                                   "it on every call and serves nothing without it")
     common(m)
     c = s.add_parser("capabilities")
     c.add_argument("--route", required=True, choices=["recorded", "anthropic", "openrouter", "ollama", "host"])
@@ -252,11 +255,28 @@ def _print(obj) -> None:
     print(json.dumps(obj, ensure_ascii=False, indent=1, default=str))
 
 
+def _switch_offline(a) -> None:
+    """Session 14 (F4; R4-6): before any command, the process is switched offline when any switch says so (the flag,
+    the config file's `offline: true`, TENDERPACK_OFFLINE): offline.is_offline then holds for every guard in this process
+    (a hosted adapter built directly, an HTTP request to a hosted address), whichever command runs. A configuration that
+    does not load is the command's own refusal (the flag and the variable still hold)."""
+    from . import config as C
+    from .offline import requested, switch_process
+    cfg = None
+    if getattr(a, "config", None):
+        try:
+            cfg = C.load(Path(a.config))
+        except Exception:                               # noqa: BLE001  the command reports it itself
+            cfg = None
+    switch_process(requested(cfg, bool(getattr(a, "offline", False))))
+
+
 def run(a) -> int:
     from . import budget as B
     from . import config as C
     from . import controller
     from .tools import ToolError, call_tool
+    _switch_offline(a)                                  # session 14 (F4; R4-6): one switch for the whole process
     routes = _routes()
     if routes is not None and a.ai_cmd in getattr(routes, "COMMANDS", ()):
         return routes.handle(a)
@@ -344,7 +364,8 @@ def run(a) -> int:
             return serve(ws, tools=names, submit_once=a.submit_once,
                          require_crops=[x for x in (a.require_crops or "").split(",") if x],
                          submission_record=a.submission_record,
-                         addendum_scope=a.addendum_scope)          # session 14 (W5)
+                         addendum_scope=a.addendum_scope,          # session 14 (W5)
+                         addendum_scope_sha256=a.addendum_scope_sha256)   # session 14 (F4; R4-5)
         if a.ai_cmd == "promote":
             code, msgs = controller.promote(ws, a.run_id, a.by, Path(a.amendments_dir) if a.amendments_dir else None,
                                             Path(a.proposals_dir) if a.proposals_dir else None)

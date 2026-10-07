@@ -955,7 +955,9 @@ def linked_issue_cells(own: list[str], links: list[dict]) -> list[str]:
 # the three apart, at the validated stage, for A1's columns and the review cards:
 #   value           what the row's words and cells did across the stages: 'unchanged since <stage>' (with the ops that
 #                   re-read it, named, never as a confirmation), 'changed at <stage> by <ops>', 'new at <stage>', or
-#                   'not in force at <stage>'; and the value as read (the quote)
+#                   'not in force at <stage>'; and the value as read (the quote). Session 14 (F4; R4-2): with a
+#                   PARTIAL stage, a row an unresolved provision of it names reads 'value in question (unresolved:
+#                   <reason>)' (partial.in_question; the candidate status's reason), never 'unchanged since <stage>'
 #   interpretation  the issues that bear on the reading (row_issues, the set A1's Issues cell shows): those that are a
 #                   person's decision not yet recorded (HUMAN DECISION PENDING), then the other open ones
 #   approval        what a person has recorded: the image transcription (an approval of the transcription and the
@@ -1024,6 +1026,14 @@ def row_states(r: dict) -> dict[str, dict]:
     rv = r.get("reviews") or {}
     reg = r["register"]
     ann = {s: programme.answers_by_row(r, s) for s in order[1:]}
+    # session 14 (F4; R4-2): a value an unresolved provision of a pending (PARTIAL) stage puts in question is never
+    # 'unchanged since <stage>': it reads 'value in question (unresolved: <reason>)', the candidate status's reason
+    wk = r["working"].stage if r.get("working") is not None else None
+    if wk:
+        from .partial import in_question
+        questioned = in_question(r)
+    else:
+        questioned = {}
     out: dict[str, dict] = {}
     for e in r["evals"]:
         row, stg = e["row"], e["stages"]
@@ -1078,8 +1088,12 @@ def row_states(r: dict) -> dict[str, dict]:
                 reread.append(f"{c['op']} ({kind}; revoked by {gone_by}; no longer in force)" if gone_by else
                               f"{c['op']} ({kind}; " + ("accepted by a person" if c.get("accepted")
                                                         else "proposed, not accepted") + "; not counted as a confirmation)")
+        q = questioned.get(row.id)
         if not v["active"]:
-            value = f"not in force at {val} ({v['status']})"
+            value = f"not in force at {val} ({v['status']})" + (f"; value in question (unresolved: {q})" if q else "")
+        elif q:                                       # session 14 (F4; R4-2): what happened before, never 'unchanged'
+            before = changed + kept if changed else ([f"new at {first}"] if first and first != order[0] else []) + kept
+            value = f"value in question (unresolved: {q})" + (f"; before {wk}: {'; '.join(before)}" if before else "")
         elif changed:
             value = "; ".join(changed + kept)
         elif first and first != order[0]:
@@ -1089,7 +1103,8 @@ def row_states(r: dict) -> dict[str, dict]:
         if v["active"] and reread:                    # session 14 (F1; R1-6): each op says what it is, never a confirmation
             value += "; re-read by " + ", ".join(dict.fromkeys(reread))
         if v["active"] and quote:
-            value += f"; value as read: '{_short(quote, 120)}'"
+            value += (f"; value as read at {val}, in question at {wk}: '{_short(quote, 120)}'" if q else
+                      f"; value as read: '{_short(quote, 120)}'")
         pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
         ids = [i for i in by_row.get(row.id) or [] if pos(since.get(i, order[0])) <= pos(val) or since.get(i) not in order]
         pending = [i for i in ids if i in pend]
@@ -1313,7 +1328,11 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                    # session 14 (F1; R1-6): the three state columns defined where they are read
                    "The three state columns: 'Value at the validated stage' says what the row's own quoted words, "
                    "cells and consequence did across the stages (unchanged, changed, amended with the quoted words "
-                   "unchanged, new, not in force; a deletion and a later reinstatement are both named), with each op "
+                   "unchanged, new, not in force; a deletion and a later reinstatement are both named"
+                   # session 14 (F4; R4-2): the value-in-question state defined where it can be read
+                   + (f"; at a PARTIAL working state, a row an unresolved provision of {working} names reads 'value in "
+                      "question (unresolved: <provision and reason>)', never 'unchanged'" if working else "")
+                   + "), with each op "
                    "that re-reads the row named with its kind and review ('proposed, not accepted'), never counted as a "
                    "confirmation; 'Interpretation' lists the open issues on the reading (HUMAN DECISION PENDING where a "
                    "person decides; an applied rule awaiting a person's confirmation; other open issues); 'Approval' "

@@ -17,6 +17,11 @@ What it forces:
     any non-loopback address in an offline process (`check_http`), so an adapter built directly cannot reach a hosted
     endpoint either. There is no silent fallback anywhere: a phase that cannot run locally is refused, escalated or recorded
     as skipped with its reason.
+  * session 14 (F4; R4-6): ONE resolver, `is_offline`, answers "is this process offline" for every guard (check_route,
+    check_host_session, check_adapter, check_http, the Ollama adapter): the flag, the config key and the variable each
+    switch the whole PROCESS offline. `activate` (every command that loads its configuration) and the `ai` command
+    line itself (before any command runs) latch the process (`switch_process`; it also sets TENDERPACK_OFFLINE=1 for
+    the process's children); a process never switches back.
   * the Ollama base URL must be a loopback address (127.0.0.1, ::1, localhost); another host is refused.
   * the critic uses `routes.ollama.models.critic` (it may be the same model as `propose`); when none is configured,
     or the model is not installed or cannot hold the request, the review is recorded SKIPPED with the reason ("independent
@@ -67,17 +72,50 @@ def requested(cfg: dict | None = None, flag: bool = False, env=None) -> str | No
     return None
 
 
+# session 14 (F4; R4-6): the source that switched THIS process offline (the flag, the config key or the variable), or
+# None. Set once by switch_process (activate, the `ai` command line); never cleared in a running process.
+_PROCESS: str | None = None
+
+
+def switch_process(source: str | None) -> str | None:
+    """Session 14 (F4; R4-6): switch this whole process offline (and its children: TENDERPACK_OFFLINE=1), whatever the
+    switch was, so the last-line guards (check_adapter, check_http) hold under each one. Returns the process's source."""
+    global _PROCESS
+    if source:
+        _PROCESS = _PROCESS or str(source)
+        os.environ[ENV] = "1"
+    return _PROCESS
+
+
+def is_offline(cfg: dict | None = None, env=None) -> str | None:
+    """Session 14 (F4; R4-6): THE resolver of offline mode, used by every guard: the source when offline mode holds for
+    this config or this process, else None. A config marked by activate, or with ai.yaml's `offline: true`; this
+    process switched offline (by --offline, the config key or the variable: switch_process); TENDERPACK_OFFLINE."""
+    env = os.environ if env is None else env
+    c = cfg or {}
+    if c.get(OFFLINE_KEY):
+        return str(c[OFFLINE_KEY])
+    if c.get("offline") is True:
+        return "config/ai.yaml offline: true"
+    if _PROCESS:
+        return _PROCESS
+    if _truthy(env.get(ENV, "")):
+        return f"{ENV}={env.get(ENV)}"
+    return None
+
+
 def activate(cfg: dict, source: str | None) -> dict:
-    """Mark a loaded config dict as offline (returns it). Checks the Ollama URL is local."""
+    """Mark a loaded config dict as offline (returns it). Checks the Ollama URL is local. Session 14 (F4; R4-6): the
+    whole process is switched offline too (switch_process), before the URL check (a refused URL leaves it offline)."""
     if source:
         cfg[OFFLINE_KEY] = source
+        switch_process(source)
         check_local_url(ollama_url(cfg))
     return cfg
 
 
 def active(cfg: dict | None) -> bool:
-    c = cfg or {}
-    return bool(c.get(OFFLINE_KEY) or c.get("offline") is True or _truthy(os.environ.get(ENV, "")))
+    return is_offline(cfg) is not None                  # session 14 (F4; R4-6): the one resolver
 
 
 def ollama_url(cfg: dict, env=None) -> str:
@@ -105,35 +143,40 @@ def check_local_url(url: str) -> None:
 
 def check_route(cfg: dict | None, route: str, what: str = "this step") -> None:
     """Raise OfflineError when offline mode is active and `route` is hosted (before any process or network call)."""
-    if not active(cfg) or route not in HOSTED_ROUTES:
+    src = is_offline(cfg)                               # session 14 (F4; R4-6): the one resolver
+    if not src or route not in HOSTED_ROUTES:
         return
-    raise OfflineError(f"offline mode ({(cfg or {}).get(OFFLINE_KEY) or 'on'}): {what} would use the {route} route "
+    raise OfflineError(f"offline mode ({src}): {what} would use the {route} route "
                        f"({KINDS[route]}); no hosted call is made. Use the ollama route (local inference) or leave "
                        "offline mode")
 
 
 def check_host_session(cfg: dict | None, what: str) -> None:
     """The guard of every `claude -p` session (host sessions, the host critic, the host repair)."""
-    if not active(cfg):
+    src = is_offline(cfg)                               # session 14 (F4; R4-6): the one resolver
+    if not src:
         return
     if what == "critic":
         raise OfflineError(CRITIC_REFUSAL)
-    raise OfflineError(f"offline mode ({(cfg or {}).get(OFFLINE_KEY) or 'on'}): {what} would start a host session "
+    raise OfflineError(f"offline mode ({src}): {what} would start a host session "
                        "(claude -p, a connected coding host); no host process is started")
 
 
 def check_adapter(route: str) -> None:
     """Session 14 (W6): the guard in every hosted adapter's constructor (AnthropicProvider, OpenRouterProvider,
     HostProvider). providers.make checks the loaded config first; this one holds when an adapter is built directly in
-    a process where offline mode is switched on by TENDERPACK_OFFLINE (the launcher, checks.sh, the panel's jobs)."""
+    a process switched offline. Session 14 (F4; R4-6): by any switch (is_offline: --offline, the config key, the
+    variable), not by TENDERPACK_OFFLINE alone."""
     check_route(None, route, f"building a {route} adapter")
 
 
 def check_http(url: str) -> None:
     """Session 14 (W6): the last line, in the HTTP layer every adapter shares (providers.base.http_json): in an offline
-    process a request to anything but a loopback address is refused BEFORE the name is resolved or a connection made."""
-    if active(None) and not is_loopback(url):
-        raise OfflineError(f"offline mode ({ENV}={os.environ.get(ENV)}): {urlparse(url).scheme}://"
+    process a request to anything but a loopback address is refused BEFORE the name is resolved or a connection made.
+    Session 14 (F4; R4-6): an offline process by any switch (is_offline), not by TENDERPACK_OFFLINE alone."""
+    src = is_offline(None)
+    if src and not is_loopback(url):
+        raise OfflineError(f"offline mode ({src}): {urlparse(url).scheme}://"
                            f"{urlparse(url).hostname} is not a loopback address; no request leaves this machine")
 
 

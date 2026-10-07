@@ -171,12 +171,12 @@ def test_the_submission_gate_asks_one_repair_of_the_failing_items_only_and_merge
     assert [p["id"] for p in a["repair"]["problems"]] == ["ADD-03/2.4/row"]
     assert "Row" in a["repair"]["schemas"]["row_new"]["$defs"]
     assert json.loads((tmp_path / "rec.json").read_text())["run_id"] == a["run_id"]      # never lost
-    # the one repair: only the failing item (a resent, changed sibling is ignored)
+    # the one repair: only the failing item (a resent, changed sibling is refused and named; session 14 F4, R4-4)
     b, err = _call(srv, 2, "submit_proposals", {"proposal_set": _set(st, [_row(st, GOOD_ROW),
                                                                           _op(st, "one hundred and ninety (190) days")]),
                                                 "host_model": "test-host"})
     assert not err and b["repair_of"] == a["run_id"] and b["run_id"] != a["run_id"], b
-    assert b["repair_merge"]["replaced"] == ["ADD-03/2.4/row"] and b["repair_merge"]["ignored"] == ["ADD-03/3.1"]
+    assert b["repair_merge"]["replaced"] == ["ADD-03/2.4/row"] and b["repair_merge"]["refused"] == ["ADD-03/3.1"]
     assert json.loads((tmp_path / "rec.json").read_text())["run_id"] == b["run_id"]
     assert json.loads((Path(a["staging"]) / "superseded.json").read_text())["superseded_by"] == b["run_id"]
     ps = yaml.safe_load((Path(b["staging"]) / "proposals.yaml").read_text())["proposal_set"]

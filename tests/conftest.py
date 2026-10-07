@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 import time
 from pathlib import Path
@@ -160,6 +161,30 @@ def _rehearsal_builds_for_helpers(rehearsal_builds):
     ai_fixture.BUILDS = rehearsal_builds
     yield
     ai_fixture.BUILDS = None
+
+
+# session 14 (F4; R4-6): TENDERPACK_OFFLINE as the test session found it (a run under it stays under it)
+_OFFLINE_ENV0 = os.environ.get("TENDERPACK_OFFLINE")
+
+
+def _offline_as_found() -> None:
+    from tenderpack.ai import offline as OFF
+    OFF._PROCESS = None
+    if _OFFLINE_ENV0 is None:
+        os.environ.pop(OFF.ENV, None)
+    else:
+        os.environ[OFF.ENV] = _OFFLINE_ENV0
+
+
+@pytest.fixture(autouse=True)
+def _offline_switch_is_per_test():
+    """Session 14 (F4; R4-6): offline mode switches the whole PROCESS (offline.switch_process: a latch and
+    TENDERPACK_OFFLINE=1 for its children) and a process never switches back. In the one pytest process, an offline
+    command run in-process by a test or by a module fixture must not leave later tests offline: each test starts and
+    ends with the switch as the test session found it."""
+    _offline_as_found()
+    yield
+    _offline_as_found()
 
 
 def pytest_terminal_summary(terminalreporter):

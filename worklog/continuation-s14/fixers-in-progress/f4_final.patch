@@ -1,0 +1,1055 @@
+diff --git a/tenderpack/ai/cli.py b/tenderpack/ai/cli.py
+index e15dc81..c09954a 100644
+--- a/tenderpack/ai/cli.py
++++ b/tenderpack/ai/cli.py
+@@ -115,6 +115,9 @@ def add_parser(sub) -> None:
+                                                "submission survives the orchestrator's interruption)")
+     m.add_argument("--addendum-scope", help="session 14: a quick review's addendum_scope.json; get_addendum_page then "
+                                             "serves that NEW addendum's pages and image regions (and nothing else)")
++    m.add_argument("--addendum-scope-sha256", help="session 14 (F4; R4-5): the scope file's sha256 recorded when the "
++                                                   "quick review wrote it; get_addendum_page re-checks the file against "
++                                                   "it on every call and serves nothing without it")
+     common(m)
+     c = s.add_parser("capabilities")
+     c.add_argument("--route", required=True, choices=["recorded", "anthropic", "openrouter", "ollama", "host"])
+@@ -252,11 +255,28 @@ def _print(obj) -> None:
+     print(json.dumps(obj, ensure_ascii=False, indent=1, default=str))
+ 
+ 
++def _switch_offline(a) -> None:
++    """Session 14 (F4; R4-6): before any command, the process is switched offline when any switch says so (the flag,
++    the config file's `offline: true`, TENDERPACK_OFFLINE): offline.is_offline then holds for every guard in this process
++    (a hosted adapter built directly, an HTTP request to a hosted address), whichever command runs. A configuration that
++    does not load is the command's own refusal (the flag and the variable still hold)."""
++    from . import config as C
++    from .offline import requested, switch_process
++    cfg = None
++    if getattr(a, "config", None):
++        try:
++            cfg = C.load(Path(a.config))
++        except Exception:                               # noqa: BLE001  the command reports it itself
++            cfg = None
++    switch_process(requested(cfg, bool(getattr(a, "offline", False))))
++
++
+ def run(a) -> int:
+     from . import budget as B
+     from . import config as C
+     from . import controller
+     from .tools import ToolError, call_tool
++    _switch_offline(a)                                  # session 14 (F4; R4-6): one switch for the whole process
+     routes = _routes()
+     if routes is not None and a.ai_cmd in getattr(routes, "COMMANDS", ()):
+         return routes.handle(a)
+@@ -344,7 +364,8 @@ def run(a) -> int:
+             return serve(ws, tools=names, submit_once=a.submit_once,
+                          require_crops=[x for x in (a.require_crops or "").split(",") if x],
+                          submission_record=a.submission_record,
+-                         addendum_scope=a.addendum_scope)          # session 14 (W5)
++                         addendum_scope=a.addendum_scope,          # session 14 (W5)
++                         addendum_scope_sha256=a.addendum_scope_sha256)   # session 14 (F4; R4-5)
+         if a.ai_cmd == "promote":
+             code, msgs = controller.promote(ws, a.run_id, a.by, Path(a.amendments_dir) if a.amendments_dir else None,
+                                             Path(a.proposals_dir) if a.proposals_dir else None)
+diff --git a/tenderpack/ai/contract.py b/tenderpack/ai/contract.py
+index b40e80f..a6b5bb2 100644
+--- a/tenderpack/ai/contract.py
++++ b/tenderpack/ai/contract.py
+@@ -710,13 +710,20 @@ def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, di
+     """Session 14 (W1): the set after a bounded repair of the items named by `ids` (item ids, or statement ids): every
+     item of `first` NOT named is kept exactly as first given (a valid sibling is never re-asked and never changed by the
+     repair); a named item is replaced by the repaired item of the same id when the repair gives one (otherwise the first
+-    stands, and is rated as it is). Statements: a repaired statement replaces the first of the same id; a new one is
+-    added; the others are kept. Returns (merged set, notes {replaced, kept, missing, ignored})."""
++    stands, and is rated as it is). Returns (merged set, notes {replaced, kept, missing, refused, why_refused}).
++    Session 14 (F4; R4-4): the repair replaces ONLY what it names. Any other item it carries is refused (named in
++    `refused`, why in `why_refused`; the first stands as first given). A statement is replaced only when named; a NEW
++    statement is added only when a replaced item cites it and no kept item does (it cannot change a sibling's basis);
++    every other statement of the repair is refused the same way."""
+     ids = {str(x) for x in ids if x is not None}
+     indices = {int(x) for x in indices if x is not None}
+     rep_list = [it for it in (repaired or {}).get("items") or []]
+     rep_items = {it.get("id"): it for it in rep_list if isinstance(it, dict) and it.get("id") is not None}
+-    items, notes = [], {"replaced": [], "kept": [], "missing": [], "ignored": []}
++    items, notes = [], {"replaced": [], "kept": [], "missing": [], "refused": [], "why_refused": {}}
++
++    def refuse(key, why: str) -> None:
++        notes["refused"].append(key)
++        notes["why_refused"][key] = why
+     for n, it in enumerate(first.get("items") or []):
+         iid = it.get("id") if isinstance(it, dict) else None
+         named = (iid is not None and str(iid) in ids) or n in indices
+@@ -729,15 +736,29 @@ def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, di
+             items.append(it)
+             (notes["missing"] if named else notes["kept"]).append(iid if iid is not None else f"#{n}")
+     named_ids = {x for x in notes["replaced"] + notes["missing"]}
+-    notes["ignored"] = [k for k in rep_items if k not in named_ids]    # a sibling resent unasked: the first stands
++    for k in rep_items:                                    # a sibling resent unasked: the first stands
++        if k not in named_ids:
++            refuse(k, "item not named in the repair request: the first submission's item stands as first given"
++                   if any(isinstance(i, dict) and i.get("id") == k for i in first.get("items") or []) else
++                   "item not named in the repair request (a repair adds no item)")
++    cited_new = {str(c) for it in items for c in ((it.get("statements") or []) if isinstance(it, dict) else [])
++                 if isinstance(it, dict) and it.get("id") in notes["replaced"]}
++    cited_kept = {str(c) for it in items if isinstance(it, dict) and it.get("id") not in notes["replaced"]
++                  for c in it.get("statements") or []}
+     sts = [dict(s) if isinstance(s, dict) else s for s in first.get("statements") or []]
+     pos = {s.get("id"): n for n, s in enumerate(sts) if isinstance(s, dict)}
+     for s in (repaired or {}).get("statements") or []:
+         if not isinstance(s, dict):
+             continue
+-        if s.get("id") in pos:
+-            sts[pos[s.get("id")]] = s
+-        else:
+-            pos[s.get("id")] = len(sts)
++        sid = s.get("id")
++        if sid in pos and str(sid) in ids:
++            sts[pos[sid]] = s
++        elif sid in pos:
++            refuse(sid, "statement not named in the repair request: the first submission's statement stands")
++        elif str(sid) in cited_new and str(sid) not in cited_kept:
++            pos[sid] = len(sts)
+             sts.append(s)
++        else:
++            refuse(sid, "new statement not cited by a repaired item alone (it would change the basis of an item "
++                        "kept as first given, or nothing repaired cites it)")
+     return {**first, "statements": sts, "items": items}, notes
+diff --git a/tenderpack/ai/offline.py b/tenderpack/ai/offline.py
+index 7b0e5b5..dc7a62d 100644
+--- a/tenderpack/ai/offline.py
++++ b/tenderpack/ai/offline.py
+@@ -17,6 +17,11 @@ What it forces:
+     any non-loopback address in an offline process (`check_http`), so an adapter built directly cannot reach a hosted
+     endpoint either. There is no silent fallback anywhere: a phase that cannot run locally is refused, escalated or recorded
+     as skipped with its reason.
++  * session 14 (F4; R4-6): ONE resolver, `is_offline`, answers "is this process offline" for every guard (check_route,
++    check_host_session, check_adapter, check_http, the Ollama adapter): the flag, the config key and the variable each
++    switch the whole PROCESS offline. `activate` (every command that loads its configuration) and the `ai` command
++    line itself (before any command runs) latch the process (`switch_process`; it also sets TENDERPACK_OFFLINE=1 for
++    the process's children); a process never switches back.
+   * the Ollama base URL must be a loopback address (127.0.0.1, ::1, localhost); another host is refused.
+   * the critic uses `routes.ollama.models.critic` (it may be the same model as `propose`); when none is configured,
+     or the model is not installed or cannot hold the request, the review is recorded SKIPPED with the reason ("independent
+@@ -67,17 +72,50 @@ def requested(cfg: dict | None = None, flag: bool = False, env=None) -> str | No
+     return None
+ 
+ 
++# session 14 (F4; R4-6): the source that switched THIS process offline (the flag, the config key or the variable), or
++# None. Set once by switch_process (activate, the `ai` command line); never cleared in a running process.
++_PROCESS: str | None = None
++
++
++def switch_process(source: str | None) -> str | None:
++    """Session 14 (F4; R4-6): switch this whole process offline (and its children: TENDERPACK_OFFLINE=1), whatever the
++    switch was, so the last-line guards (check_adapter, check_http) hold under each one. Returns the process's source."""
++    global _PROCESS
++    if source:
++        _PROCESS = _PROCESS or str(source)
++        os.environ[ENV] = "1"
++    return _PROCESS
++
++
++def is_offline(cfg: dict | None = None, env=None) -> str | None:
++    """Session 14 (F4; R4-6): THE resolver of offline mode, used by every guard: the source when offline mode holds for
++    this config or this process, else None. A config marked by activate, or with ai.yaml's `offline: true`; this
++    process switched offline (by --offline, the config key or the variable: switch_process); TENDERPACK_OFFLINE."""
++    env = os.environ if env is None else env
++    c = cfg or {}
++    if c.get(OFFLINE_KEY):
++        return str(c[OFFLINE_KEY])
++    if c.get("offline") is True:
++        return "config/ai.yaml offline: true"
++    if _PROCESS:
++        return _PROCESS
++    if _truthy(env.get(ENV, "")):
++        return f"{ENV}={env.get(ENV)}"
++    return None
++
++
+ def activate(cfg: dict, source: str | None) -> dict:
+-    """Mark a loaded config dict as offline (returns it). Checks the Ollama URL is local."""
++    """Mark a loaded config dict as offline (returns it). Checks the Ollama URL is local. Session 14 (F4; R4-6): the
++    whole process is switched offline too (switch_process), before the URL check (a refused URL leaves it offline)."""
+     if source:
+         cfg[OFFLINE_KEY] = source
++        switch_process(source)
+         check_local_url(ollama_url(cfg))
+     return cfg
+ 
+ 
+ def active(cfg: dict | None) -> bool:
+-    c = cfg or {}
+-    return bool(c.get(OFFLINE_KEY) or c.get("offline") is True or _truthy(os.environ.get(ENV, "")))
++    return is_offline(cfg) is not None                  # session 14 (F4; R4-6): the one resolver
+ 
+ 
+ def ollama_url(cfg: dict, env=None) -> str:
+@@ -105,35 +143,40 @@ def check_local_url(url: str) -> None:
+ 
+ def check_route(cfg: dict | None, route: str, what: str = "this step") -> None:
+     """Raise OfflineError when offline mode is active and `route` is hosted (before any process or network call)."""
+-    if not active(cfg) or route not in HOSTED_ROUTES:
++    src = is_offline(cfg)                               # session 14 (F4; R4-6): the one resolver
++    if not src or route not in HOSTED_ROUTES:
+         return
+-    raise OfflineError(f"offline mode ({(cfg or {}).get(OFFLINE_KEY) or 'on'}): {what} would use the {route} route "
++    raise OfflineError(f"offline mode ({src}): {what} would use the {route} route "
+                        f"({KINDS[route]}); no hosted call is made. Use the ollama route (local inference) or leave "
+                        "offline mode")
+ 
+ 
+ def check_host_session(cfg: dict | None, what: str) -> None:
+     """The guard of every `claude -p` session (host sessions, the host critic, the host repair)."""
+-    if not active(cfg):
++    src = is_offline(cfg)                               # session 14 (F4; R4-6): the one resolver
++    if not src:
+         return
+     if what == "critic":
+         raise OfflineError(CRITIC_REFUSAL)
+-    raise OfflineError(f"offline mode ({(cfg or {}).get(OFFLINE_KEY) or 'on'}): {what} would start a host session "
++    raise OfflineError(f"offline mode ({src}): {what} would start a host session "
+                        "(claude -p, a connected coding host); no host process is started")
+ 
+ 
+ def check_adapter(route: str) -> None:
+     """Session 14 (W6): the guard in every hosted adapter's constructor (AnthropicProvider, OpenRouterProvider,
+     HostProvider). providers.make checks the loaded config first; this one holds when an adapter is built directly in
+-    a process where offline mode is switched on by TENDERPACK_OFFLINE (the launcher, checks.sh, the panel's jobs)."""
++    a process switched offline. Session 14 (F4; R4-6): by any switch (is_offline: --offline, the config key, the
++    variable), not by TENDERPACK_OFFLINE alone."""
+     check_route(None, route, f"building a {route} adapter")
+ 
+ 
+ def check_http(url: str) -> None:
+     """Session 14 (W6): the last line, in the HTTP layer every adapter shares (providers.base.http_json): in an offline
+-    process a request to anything but a loopback address is refused BEFORE the name is resolved or a connection made."""
+-    if active(None) and not is_loopback(url):
+-        raise OfflineError(f"offline mode ({ENV}={os.environ.get(ENV)}): {urlparse(url).scheme}://"
++    process a request to anything but a loopback address is refused BEFORE the name is resolved or a connection made.
++    Session 14 (F4; R4-6): an offline process by any switch (is_offline), not by TENDERPACK_OFFLINE alone."""
++    src = is_offline(None)
++    if src and not is_loopback(url):
++        raise OfflineError(f"offline mode ({src}): {urlparse(url).scheme}://"
+                            f"{urlparse(url).hostname} is not a loopback address; no request leaves this machine")
+ 
+ 
+diff --git a/tenderpack/ai/quick_review.py b/tenderpack/ai/quick_review.py
+index 942c18f..1cf5310 100644
+--- a/tenderpack/ai/quick_review.py
++++ b/tenderpack/ai/quick_review.py
+@@ -299,7 +299,10 @@ def prepare_scope(pdf: Path, d: Path, addendum: str, qr_id: str) -> dict:
+     review starts into <qr dir>/addendum-pages/: every page at most PAGE_MAX_PX on its longest side; every image region
+     (the regions read_pdf finds) as a crop at up to 300 dpi, at most CROP_MAX_PX, and its native embedded image when it
+     is a PNG or JPEG of at most NATIVE_MAX_BYTES. Each file's sha256 is recorded in <qr dir>/addendum_scope.json, which
+-    the tool re-checks on every call; the tool itself writes nothing and reads nothing else."""
++    the tool re-checks on every call; the tool itself writes nothing and reads nothing else. Session 14 (F4; R4-5): the
++    returned record also carries `file_sha256`, the sha256 of the scope file as written here (not in the file: a file
++    cannot carry its own hash); the session hands it to its MCP server (--addendum-scope-sha256), which re-checks the
++    scope file against it on every call."""
+     import pymupdf
+     pdf, d = Path(pdf), Path(d)
+     doc = pymupdf.open(pdf)
+@@ -340,15 +343,19 @@ def prepare_scope(pdf: Path, d: Path, addendum: str, qr_id: str) -> dict:
+           "pdf": {"path": str(pdf.resolve()), "sha256": hashlib.sha256(pdf.read_bytes()).hexdigest()},
+           "limits": {"page_max_px": PAGE_MAX_PX, "crop_max_px": CROP_MAX_PX, "native_max_bytes": NATIVE_MAX_BYTES},
+           "pages": pages}
+-    _write(d / SCOPE_FILE, _jdump(sc))
+-    return sc
++    text = _jdump(sc)
++    _write(d / SCOPE_FILE, text)
++    return dict(sc, file_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest())      # session 14 (F4; R4-5)
+ 
+ 
+ def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
+     """get_addendum_page (tools.py): one page of the quick review's NEW addendum (text, regions, the page image) or,
+     with `region`, that region's crop and native image. Refused without a scope (any session but a quick review's), for a
+     scope file outside a quick review's folder, for a page or region the addendum does not have, and for any file whose
+-    bytes are not the ones recorded (integrity failure)."""
++    bytes are not the ones recorded (integrity failure). Session 14 (F4; R4-5): the scope file itself is checked on every
++    call against the sha256 prepare_scope recorded (ws.addendum_scope_sha256, from the server's start arguments; a
++    scope without it, or changed since, refuses every call), and a file is served only from the quick review's own
++    addendum-pages/ folder once resolved (a scope entry naming a path outside it, or a symlink out of it, is refused)."""
+     from .tools import ToolError
+     sp = getattr(ws, "addendum_scope", None)
+     if not sp:
+@@ -357,7 +364,14 @@ def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
+     sp = Path(sp)
+     if sp.name != SCOPE_FILE or sp.parent.parent.name != SUBDIR or not sp.is_file():
+         raise ToolError(f"{sp}: not the addendum scope of a quick review (<staging>/{SUBDIR}/<id>/{SCOPE_FILE})")
+-    sc = json.loads(sp.read_text(encoding="utf-8"))
++    want = getattr(ws, "addendum_scope_sha256", None)          # session 14 (F4; R4-5): the scope file's own anchor
++    if not want:
++        raise ToolError(f"{sp}: no recorded sha256 of the scope file (the server was started without "
++                        "--addendum-scope-sha256): get_addendum_page serves nothing")
++    raw = sp.read_bytes()
++    if hashlib.sha256(raw).hexdigest() != want:
++        raise ToolError(f"integrity failure: the scope file is not the one recorded when the quick review started ({sp})")
++    sc = json.loads(raw.decode("utf-8"))
+     pdf = Path(sc["pdf"]["path"])
+     if not pdf.is_file() or hashlib.sha256(pdf.read_bytes()).hexdigest() != sc["pdf"]["sha256"]:
+         raise ToolError(f"integrity failure: the addendum PDF is not the one the quick review started on ({pdf})")
+@@ -365,9 +379,12 @@ def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
+     if pg is None:
+         raise ToolError(f"page {page} is not a page of {sc['addendum']} (pages 1-{len(sc['pages'])})")
+     base = sp.parent / SCOPE_DIR
++    allowed = sp.parent.resolve() / SCOPE_DIR
+ 
+     def served(rec: dict, kind: str) -> dict:
+-        f = base / rec["file"]
++        f = (base / str(rec["file"])).resolve()
++        if not f.is_relative_to(allowed):                       # session 14 (F4; R4-5): a path or symlink out of it
++            raise ToolError(f"refused: {rec['file']} is outside the quick review's folder ({allowed})")
+         if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != rec["sha256"]:
+             raise ToolError(f"integrity failure: {rec['file']} is not the image recorded when the quick review started")
+         return {"kind": kind, "path": str(f), "path_in_build": f"{sc['addendum']}/{rec['file']}", "sha256": rec["sha256"],
+@@ -614,11 +631,13 @@ def _session_class(HS):
+     phase's get_addendum_page serves this addendum's pages (and nothing else)."""
+     class QuickReviewSession(HS.AnswerSession):
+         scope: Path | None = None
++        scope_sha256: str | None = None            # session 14 (F4; R4-5): the scope file's sha256 from prepare_scope
+ 
+         def mcp_config(self) -> dict:
+             c = super().mcp_config()
+             if self.scope is not None:
+-                c["mcpServers"]["tenderpack"]["args"] += ["--addendum-scope", str(Path(self.scope).resolve())]
++                c["mcpServers"]["tenderpack"]["args"] += ["--addendum-scope", str(Path(self.scope).resolve())] + (
++                    ["--addendum-scope-sha256", self.scope_sha256] if self.scope_sha256 else [])
+             return c
+     return QuickReviewSession
+ 
+@@ -694,6 +713,7 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
+                **({"addendum_scope": {"file": str(d / SCOPE_FILE), "tool": "get_addendum_page",
+                                       "pages": len(scope["pages"]),
+                                       "regions": sum(len(p["regions"]) for p in scope["pages"]),
++                                      "sha256": scope["file_sha256"],      # session 14 (F4; R4-5)
+                                       "note": "the NEW addendum's own pages only; read-only; checked by sha256"}}
+                   if scope else {}),
+                "session": {"sessions": 1, "batches": 0, "critic": False}}
+@@ -718,6 +738,7 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
+             sess = _session_class(HS)(ws, cfg, phase=PHASE, model=model, max_turns=MAX_TURNS,
+                                       timeout_s=budget_minutes * 60, claude_bin=claude_bin, run_lock=True, **kw)
+             sess.scope = (d / SCOPE_FILE) if scope else None        # session 14 (W5): serve-mcp --addendum-scope
++            sess.scope_sha256 = scope["file_sha256"] if scope else None     # session 14 (F4; R4-5)
+             pol.repairs = 0                                         # one session at most: no repair session
+             sp = R.spec(PHASE, system=sess.system_prompt(), cfg=cfg)
+             out = R.ask_host(sp, sess, packet, cfg=cfg, policy=pol, log=log, fields=fields, cwd=d,
+diff --git a/tenderpack/amend.py b/tenderpack/amend.py
+index 2a20601..78b65ca 100644
+--- a/tenderpack/amend.py
++++ b/tenderpack/amend.py
+@@ -1587,13 +1587,14 @@ class Engine:
+         if not check("C22", table, f"{group} is a table of {addendum} ({len(members)} units)" if table else
+                      f"{group!r} is not a table printed in {addendum}"):
+             return r
+-        into, number = op.into or "", op.number or ""
++        # session 14 (F4; R4-11): the number compared in ASCII digits (textnorm's digit folding), however it is written
++        into, number = op.into or "", normalize_arabic(op.number or "")
+         vol = not into.startswith("ADD-") and any(u.doc == into for u in st.values())
+         if not check("C22", vol and bool(re.fullmatch(r"\d+-\d+[A-Za-z]?", number)),
+                      f"into {into} as Table {number}" if vol else
+                      f"`into` must be a volume of the pack and `number` a table number such as '42-1' ({into!r}, {number!r})"):
+             return r
+-        names = re.search(r"(?<![\w-])Table\s+" + re.escape(number) + r"(?![\w-])", normalize_latin(ptext))
++        names = _names_table(ptext, number)                 # session 14 (F4; R4-11): digits in any script
+         said = bool(names) and _names_volume(ptext, into) and INCORPORATE_WORDS.search(ptext)
+         if not check("C21", said, f"the provision makes Table {number} part of {_volume_words(into)}" if said else
+                      f"the provision does not print that Table {number} forms part of {_volume_words(into)} (the table "
+@@ -1869,12 +1870,28 @@ def _group_title(st: dict[str, UState], group: str) -> str:
+     return ""
+ 
+ 
++# session 14 (F4; R4-11): the word that names a table before its number, in English or in Arabic ('جدول', with the
++# article or a joined preposition, optionally followed by 'رقم' "number")
++TABLE_WORD = r"(?:Table|(?:[وفبكل]?ال|لل)?جدول(?:\s+رقم)?)"
++
++
++def _names_table(text: str, number: str) -> bool:
++    """Session 14 (F4; R4-11): `text` names Table `number` ('Table 42-1', 'جدول ٤٢-١', 'الجدول رقم ٤٢-١'): the digits
++    are compared in ASCII whatever script prints them (textnorm.normalize_arabic folds Arabic-Indic and Extended
++    Arabic-Indic digits and otherwise leaves Latin text as normalize_latin does), so a table whose number is printed in
++    Arabic-Indic digits is the same table named in Latin digits, and no other number matches."""
++    n = normalize_arabic(number or "")
++    return bool(n) and re.search(r"(?<![\w-])" + TABLE_WORD + r"\s+" + re.escape(n) + r"(?![\w-])",
++                                 normalize_arabic(text or ""), re.I) is not None
++
++
+ def _names_target(title: str, target: str) -> bool:
+-    """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A."""
++    """'Table 1-1 (revised) ...' names VOL-I:T1-1; 'APPENDIX A — REVISED FORM 4-A' names VOL-IV:F4-A. Session 14 (F4;
++    R4-11): a table's number may be printed in Arabic-Indic digits, and its word in Arabic (_names_table)."""
+     local = target.partition(":")[2]
+     if re.fullmatch(r"T\d+-\d+(?:-[A-Za-z0-9]+)?", local):
+         # an addendum's issue of a table carries a suffix (ADD-02:T1-1-rev); its title still names "Table 1-1"
+-        phrase = "Table " + re.match(r"T(\d+-\d+)", local).group(1)
++        return _names_table(title, re.match(r"T(\d+-\d+)", local).group(1))
+     elif re.fullmatch(r"F\d-[A-Z]", local):
+         phrase = "Form " + local[1:]
+     else:
+diff --git a/tenderpack/mcp_server.py b/tenderpack/mcp_server.py
+index b3d524c..422ed26 100644
+--- a/tenderpack/mcp_server.py
++++ b/tenderpack/mcp_server.py
+@@ -34,7 +34,10 @@ Session 14 (W1): the submission gate's bounded repair. A submit_proposals whose
+ and answered with `repair` (the exact errors and the full schemas); ONE re-submission of the named items only is then
+ accepted (even with --submit-once) and merged into the first (contract.merge_repair: every other item stands as first
+ submitted). It is staged as a new run that supersedes the first (`superseded.json` in the first's folder; the
+-submission record points at it). An item still failing after it is invalid with its errors.
++submission record points at it). An item still failing after it is invalid with its errors. Session 14 (F4; R4-4): any
++other item or statement the re-submission carries is refused with its id named (repair_merge.refused), and the
++re-submission uses the one repair whatever its outcome: after one the controller refused, a further submission is
++refused as "repair already used".
+ """
+ from __future__ import annotations
+ 
+@@ -86,6 +89,9 @@ class Server:
+         # exactly as first submitted. The bound is the failure policy's (config/ai.yaml failures.malformed.repairs, <= 1).
+         self.repairs_left: int | None = None
+         self._repair: dict | None = None
++        # session 14 (F4; R4-4): why the one re-submission was refused (it used the repair); None until then
++        self.repair_refused: str | None = None
++        self._repair_attempt: str | None = None        # the first run a re-submission in flight answers
+ 
+     def _offered(self, name: str) -> bool:
+         return self.tools is None or name in self.tools
+@@ -93,6 +99,10 @@ class Server:
+     def _guard(self, name: str, args: dict) -> str | None:
+         """Why this call is refused by the session's permissions (session 13), or None."""
+         if name in ("submit_proposals", "request_review"):
++            if name == "submit_proposals" and self.repair_refused is not None:      # session 14 (F4; R4-4)
++                return (f"refused: repair already used: the one re-submission was refused ({self.repair_refused}); the "
++                        f"first submission ({self.submitted or 'staged'}) stands as staged and an item still failing "
++                        "its schema is invalid with its errors")
+             if self.submit_once and self.submitted and not (name == "submit_proposals" and self._repair is not None):
+                 return (f"refused: this session already submitted ({self.submitted}); a session submits ONCE and the "
+                         "first submission stands")
+@@ -166,6 +176,8 @@ class Server:
+                 res = T.call_tool(self.ws, name, args, caller="mcp")
+             if gate is not None and isinstance(res, dict) and res.get("run_id"):
+                 res = self._after_submission(res, gate)
++            elif gate is not None and gate.get("repair_of") is not None:          # session 14 (F4; R4-4)
++                self.repair_refused = "nothing was staged"
+             text, is_error = json.dumps(res, ensure_ascii=False, default=str), False
+             if name in ("submit_proposals", "request_review") and isinstance(res, dict) and res.get("run_id"):
+                 self.submitted = str(res["run_id"])
+@@ -173,7 +185,9 @@ class Server:
+                     self._record_submission(res)
+         except (ToolError, Refused) as e:
+             text, is_error = json.dumps({"error": str(e)}, ensure_ascii=False), True
++            self._repair_refused(name, e)
+         except Exception as e:                                    # noqa: BLE001
++            self._repair_refused(name, e)
+             self._log(tool=name, arguments=args, internal_error=f"{type(e).__name__}: {e}")
+             return _err(id_, -32603, f"internal error in {name}: {type(e).__name__}: {str(e)[:300]}")
+         images, sent = [], []
+@@ -197,14 +211,25 @@ class Server:
+                 self.repairs_left = 1
+         return self.repairs_left
+ 
++    def _repair_refused(self, name: str, e: Exception) -> None:
++        """Session 14 (F4; R4-4): a re-submission answering the repair request that was refused (by the gate or the
++        controller) has used the one repair: later submissions are refused as 'repair already used'."""
++        if name == "submit_proposals" and self._repair_attempt is not None and self.repair_refused is None:
++            self.repair_refused = f"{type(e).__name__}: {str(e)[:300]}"
++            self._log(tool="submission_repair", repair_of=self._repair_attempt, refused=self.repair_refused)
++
+     def _submission_gate(self, args: dict) -> tuple[dict, dict]:
+         """(the arguments to submit, the gate's record). The re-submission that answers a repair request is merged
+-        into the first submission (contract.merge_repair): only the named items and statements are taken from it."""
++        into the first submission (contract.merge_repair): only the named items and statements are taken from it.
++        Session 14 (F4; R4-4): the repair request is used by the attempt itself (before anything can refuse it)."""
+         from .ai.contract import merge_repair, submission_problems
+         from .ai.controller import _load_set_data
++        self._repair_attempt = None
++        rep = self._repair
++        if rep is not None:
++            self._repair, self._repair_attempt = None, str(rep["run_id"])
+         raw = _load_set_data(args.get("proposal_set"))
+-        if self._repair is not None:
+-            rep = self._repair
++        if rep is not None:
+             merged, notes = merge_repair(rep["raw"], raw if isinstance(raw, dict) else {}, rep["ids"], rep["indices"])
+             self._log(tool="submission_repair", repair_of=rep["run_id"], merge=notes)
+             return {**args, "proposal_set": merged}, {"repair_of": rep, "merge": notes, "raw": merged}
+@@ -241,9 +266,11 @@ class Server:
+             "how": ("Your submission is staged as it is (" + str(res.get("run_id")) + "); the items and statements "
+                     "listed fail their FULL schema (given here). Correct ONLY those and call submit_proposals ONCE "
+                     "more with proposal_set {addendum, state, statements: the corrected statements only, items: the "
+-                    "corrected items only, with the same ids}. Every other item stands exactly as first submitted (a "
+-                    "resent sibling is ignored). This is the one repair: an item still failing after it stays invalid "
+-                    "with its errors.")}}
++                    "corrected items only, with the same ids}. Every other item stands exactly as first submitted: "
++                    "any other item or statement in the re-submission is refused and named (a new statement is taken "
++                    "only when a corrected item alone cites it). This is the one repair, used by the re-submission "
++                    "whatever its outcome (refused or staged): an item still failing after it stays invalid with its "
++                    "errors.")}}
+ 
+     def _mark_superseded(self, first: dict, res: dict) -> None:
+         try:
+@@ -298,17 +325,19 @@ class Server:
+ 
+ 
+ def serve(ws, stdin=None, stdout=None, *, tools=None, submit_once: bool = False, require_crops=(),
+-          submission_record=None, addendum_scope=None) -> int:
++          submission_record=None, addendum_scope=None, addendum_scope_sha256=None) -> int:
+     from .ai.runlog import RunLog
+     stdin = stdin or sys.stdin
+     out = stdout or sys.stdout
+     # session 14 (W5): a quick review's server serves its NEW addendum's pages (get_addendum_page) from this scope file
+     ws.addendum_scope = str(addendum_scope) if addendum_scope else None
++    # session 14 (F4; R4-5): the scope file's sha256 recorded when the quick review prepared it, re-checked per call
++    ws.addendum_scope_sha256 = str(addendum_scope_sha256) if addendum_scope_sha256 else None
+     session = f"mcp-{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}"
+     log = RunLog(session, [Path(ws.worklog) / f"{session}.jsonl"])
+     log.event("mcp_start", evidence=str(ws.evidence), pack=str(ws.pack), staging=str(ws.staging),
+               tools=tools if tools is not None else "all", submit_once=submit_once, require_crops=list(require_crops),
+-              addendum_scope=ws.addendum_scope)
++              addendum_scope=ws.addendum_scope, addendum_scope_sha256=ws.addendum_scope_sha256)
+     srv = Server(ws, log, tools=tools, submit_once=submit_once, require_crops=require_crops,
+                  submission_record=submission_record)
+     for line in stdin:
+diff --git a/tenderpack/partial.py b/tenderpack/partial.py
+index fa834db..45ba850 100644
+--- a/tenderpack/partial.py
++++ b/tenderpack/partial.py
+@@ -177,6 +177,23 @@ def unresolved_rows(r: dict) -> dict[str, list[str]]:
+     return {k: v for k, v in sorted(out.items())}
+ 
+ 
++IN_QUESTION = "UNRESOLVED (value in question): "
++
++
++def in_question(r: dict, unres: dict | None = None) -> dict[str, str]:
++    """Session 14 (F4; R4-2): {row id: reason} for the rows whose VALUE an unresolved provision of a pending stage puts
++    in question (unresolved_rows without its STALE lines), the reason worded as the candidate status words it
++    ('<provision> unresolved: <why>', at most three, cut where the status is cut), so the Value column and the cards
++    say "value in question (unresolved: <reason>)" beside that status and never "unchanged since <stage>"."""
++    unres = unresolved_rows(r) if unres is None else unres
++    out = {}
++    for rid, why in unres.items():
++        w = [x for x in why if not x.startswith("STALE")]
++        if w:
++            out[rid] = "; ".join(x.replace(" UNRESOLVED: ", " unresolved: ", 1) for x in w[:3])[:400 - len(IN_QUESTION)]
++    return out
++
++
+ def row_sources(r: dict, rid: str) -> dict:
+     """What changed a row between the validated and the working stage: the op ids (on its units, on any other unit it
+     cites, the ops issuing its units, annotations) and the reasons, from live._secondary and the register."""
+diff --git a/tenderpack/stage2.py b/tenderpack/stage2.py
+index 7579491..d306bde 100644
+--- a/tenderpack/stage2.py
++++ b/tenderpack/stage2.py
+@@ -955,7 +955,9 @@ def linked_issue_cells(own: list[str], links: list[dict]) -> list[str]:
+ # the three apart, at the validated stage, for A1's columns and the review cards:
+ #   value           what the row's words and cells did across the stages: 'unchanged since <stage>' (with the ops that
+ #                   re-read it, named, never as a confirmation), 'changed at <stage> by <ops>', 'new at <stage>', or
+-#                   'not in force at <stage>'; and the value as read (the quote)
++#                   'not in force at <stage>'; and the value as read (the quote). Session 14 (F4; R4-2): with a
++#                   PARTIAL stage, a row an unresolved provision of it names reads 'value in question (unresolved:
++#                   <reason>)' (partial.in_question; the candidate status's reason), never 'unchanged since <stage>'
+ #   interpretation  the issues that bear on the reading (row_issues, the set A1's Issues cell shows): those that are a
+ #                   person's decision not yet recorded (HUMAN DECISION PENDING), then the other open ones
+ #   approval        what a person has recorded: the image transcription (an approval of the transcription and the
+@@ -1024,6 +1026,14 @@ def row_states(r: dict) -> dict[str, dict]:
+     rv = r.get("reviews") or {}
+     reg = r["register"]
+     ann = {s: programme.answers_by_row(r, s) for s in order[1:]}
++    # session 14 (F4; R4-2): a value an unresolved provision of a pending (PARTIAL) stage puts in question is never
++    # 'unchanged since <stage>': it reads 'value in question (unresolved: <reason>)', the candidate status's reason
++    wk = r["working"].stage if r.get("working") is not None else None
++    if wk:
++        from .partial import in_question
++        questioned = in_question(r)
++    else:
++        questioned = {}
+     out: dict[str, dict] = {}
+     for e in r["evals"]:
+         row, stg = e["row"], e["stages"]
+@@ -1078,8 +1088,12 @@ def row_states(r: dict) -> dict[str, dict]:
+                 reread.append(f"{c['op']} ({kind}; revoked by {gone_by}; no longer in force)" if gone_by else
+                               f"{c['op']} ({kind}; " + ("accepted by a person" if c.get("accepted")
+                                                         else "proposed, not accepted") + "; not counted as a confirmation)")
++        q = questioned.get(row.id)
+         if not v["active"]:
+-            value = f"not in force at {val} ({v['status']})"
++            value = f"not in force at {val} ({v['status']})" + (f"; value in question (unresolved: {q})" if q else "")
++        elif q:                                       # session 14 (F4; R4-2): what happened before, never 'unchanged'
++            before = changed + kept if changed else ([f"new at {first}"] if first and first != order[0] else []) + kept
++            value = f"value in question (unresolved: {q})" + (f"; before {wk}: {'; '.join(before)}" if before else "")
+         elif changed:
+             value = "; ".join(changed + kept)
+         elif first and first != order[0]:
+@@ -1089,7 +1103,8 @@ def row_states(r: dict) -> dict[str, dict]:
+         if v["active"] and reread:                    # session 14 (F1; R1-6): each op says what it is, never a confirmation
+             value += "; re-read by " + ", ".join(dict.fromkeys(reread))
+         if v["active"] and quote:
+-            value += f"; value as read: '{_short(quote, 120)}'"
++            value += (f"; value as read at {val}, in question at {wk}: '{_short(quote, 120)}'" if q else
++                      f"; value as read: '{_short(quote, 120)}'")
+         pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
+         ids = [i for i in by_row.get(row.id) or [] if pos(since.get(i, order[0])) <= pos(val) or since.get(i) not in order]
+         pending = [i for i in ids if i in pend]
+@@ -1313,7 +1328,11 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
+                    # session 14 (F1; R1-6): the three state columns defined where they are read
+                    "The three state columns: 'Value at the validated stage' says what the row's own quoted words, "
+                    "cells and consequence did across the stages (unchanged, changed, amended with the quoted words "
+-                   "unchanged, new, not in force; a deletion and a later reinstatement are both named), with each op "
++                   "unchanged, new, not in force; a deletion and a later reinstatement are both named"
++                   # session 14 (F4; R4-2): the value-in-question state defined where it can be read
++                   + (f"; at a PARTIAL working state, a row an unresolved provision of {working} names reads 'value in "
++                      "question (unresolved: <provision and reason>)', never 'unchanged'" if working else "")
++                   + "), with each op "
+                    "that re-reads the row named with its kind and review ('proposed, not accepted'), never counted as a "
+                    "confirmation; 'Interpretation' lists the open issues on the reading (HUMAN DECISION PENDING where a "
+                    "person decides; an applied rule awaiting a person's confirmation; other open issues); 'Approval' "
+diff --git a/tests/conftest.py b/tests/conftest.py
+index 3899886..f16911b 100644
+--- a/tests/conftest.py
++++ b/tests/conftest.py
+@@ -1,5 +1,6 @@
+ from __future__ import annotations
+ 
++import os
+ import sys
+ import time
+ from pathlib import Path
+@@ -162,6 +163,30 @@ def _rehearsal_builds_for_helpers(rehearsal_builds):
+     ai_fixture.BUILDS = None
+ 
+ 
++# session 14 (F4; R4-6): TENDERPACK_OFFLINE as the test session found it (a run under it stays under it)
++_OFFLINE_ENV0 = os.environ.get("TENDERPACK_OFFLINE")
++
++
++def _offline_as_found() -> None:
++    from tenderpack.ai import offline as OFF
++    OFF._PROCESS = None
++    if _OFFLINE_ENV0 is None:
++        os.environ.pop(OFF.ENV, None)
++    else:
++        os.environ[OFF.ENV] = _OFFLINE_ENV0
++
++
++@pytest.fixture(autouse=True)
++def _offline_switch_is_per_test():
++    """Session 14 (F4; R4-6): offline mode switches the whole PROCESS (offline.switch_process: a latch and
++    TENDERPACK_OFFLINE=1 for its children) and a process never switches back. In the one pytest process, an offline
++    command run in-process by a test or by a module fixture must not leave later tests offline: each test starts and
++    ends with the switch as the test session found it."""
++    _offline_as_found()
++    yield
++    _offline_as_found()
++
++
+ def pytest_terminal_summary(terminalreporter):
+     spent = {k: v for b in _SESSION_BUILDS for k, v in b.seconds.items()}
+     if spent:
+diff --git a/tests/test_session12_offline.py b/tests/test_session12_offline.py
+index f8b07ef..ac6d79b 100644
+--- a/tests/test_session12_offline.py
++++ b/tests/test_session12_offline.py
+@@ -417,6 +417,11 @@ def test_every_route_applies_the_same_validation_to_the_same_answer(ws, tmp_path
+         results["ollama"] = ([it.id for it in ds.items], outcome(ctx))
+     finally:
+         f.stop()
++        # session 14 (F4; R4-6): offline mode now switches the whole process (offline.switch_process); this test runs
++        # four routes in one process, so the offline segment's switch is put back before the host segment (a real
++        # process that went offline never starts a host session)
++        OFF._PROCESS = None
++        monkeypatch.delenv(OFF.ENV, raising=False)
+     # host (Claude Code or Codex: a stand-in CLI that answers the same text, then the same repair)
+     from tenderpack.ai.hostsession import SessionResult, declared_capabilities
+ 
+diff --git a/tests/test_session14_payload_repair.py b/tests/test_session14_payload_repair.py
+index 3a1656a..9592f94 100644
+--- a/tests/test_session14_payload_repair.py
++++ b/tests/test_session14_payload_repair.py
+@@ -171,12 +171,12 @@ def test_the_submission_gate_asks_one_repair_of_the_failing_items_only_and_merge
+     assert [p["id"] for p in a["repair"]["problems"]] == ["ADD-03/2.4/row"]
+     assert "Row" in a["repair"]["schemas"]["row_new"]["$defs"]
+     assert json.loads((tmp_path / "rec.json").read_text())["run_id"] == a["run_id"]      # never lost
+-    # the one repair: only the failing item (a resent, changed sibling is ignored)
++    # the one repair: only the failing item (a resent, changed sibling is refused and named; session 14 F4, R4-4)
+     b, err = _call(srv, 2, "submit_proposals", {"proposal_set": _set(st, [_row(st, GOOD_ROW),
+                                                                           _op(st, "one hundred and ninety (190) days")]),
+                                                 "host_model": "test-host"})
+     assert not err and b["repair_of"] == a["run_id"] and b["run_id"] != a["run_id"], b
+-    assert b["repair_merge"]["replaced"] == ["ADD-03/2.4/row"] and b["repair_merge"]["ignored"] == ["ADD-03/3.1"]
++    assert b["repair_merge"]["replaced"] == ["ADD-03/2.4/row"] and b["repair_merge"]["refused"] == ["ADD-03/3.1"]
+     assert json.loads((tmp_path / "rec.json").read_text())["run_id"] == b["run_id"]
+     assert json.loads((Path(a["staging"]) / "superseded.json").read_text())["superseded_by"] == b["run_id"]
+     ps = yaml.safe_load((Path(b["staging"]) / "proposals.yaml").read_text())["proposal_set"]
+diff --git a/tests/test_session14_quick_review_pages.py b/tests/test_session14_quick_review_pages.py
+index c220a9b..aaa3234 100644
+--- a/tests/test_session14_quick_review_pages.py
++++ b/tests/test_session14_quick_review_pages.py
+@@ -77,6 +77,7 @@ def test_the_page_tool_serves_the_addendums_page_and_region_images_over_mcp_and_
+     from tenderpack.mcp_server import Server
+     d, sc = _scope(tmp_path)
+     ws.addendum_scope = str(d / QR.SCOPE_FILE)
++    ws.addendum_scope_sha256 = sc["file_sha256"]          # session 14 (F4; R4-5): the scope file's recorded sha256
+     try:
+         srv = Server(ws, tools=list(TOOLS5) + ["get_addendum_page"])
+         listed = srv.handle({"jsonrpc": "2.0", "id": 1, "method": "tools/list"})["result"]["tools"]
+@@ -107,7 +108,7 @@ def test_the_page_tool_serves_the_addendums_page_and_region_images_over_mcp_and_
+                         "params": {"name": "get_addendum_page", "arguments": {"page": 1}}})["result"]
+         assert r["isError"] is True and "integrity" in r["content"][0]["text"]
+     finally:
+-        ws.addendum_scope = None
++        ws.addendum_scope = ws.addendum_scope_sha256 = None
+     # with no addendum in scope (any other session) the tool serves nothing
+     srv = Server(ws, tools=None)
+     r = srv.handle({"jsonrpc": "2.0", "id": 6, "method": "tools/call",
+@@ -140,7 +141,7 @@ def test_serve_mcp_takes_the_addendum_scope_and_serves_the_page_over_stdio(tmp_p
+     r = subprocess.run([sys.executable, "-m", "tenderpack", "ai", "serve-mcp", "--evidence", str(ws.evidence),
+                         "--pack", str(ws.pack), "--out", str(tmp_path / "st"), "--worklog", str(tmp_path / "wl"),
+                         "--tools", ",".join(TOOLS5) + ",get_addendum_page", "--addendum-scope",
+-                        str(d / QR.SCOPE_FILE)], input="\n".join(json.dumps(m) for m in msgs) + "\n",
++                        str(d / QR.SCOPE_FILE), "--addendum-scope-sha256", sc["file_sha256"]], input="\n".join(json.dumps(m) for m in msgs) + "\n",
+                        capture_output=True, text=True, cwd=ROOT, env=env, timeout=120)
+     assert r.returncode == 0, r.stderr[-2000:]
+     out = [json.loads(x) for x in r.stdout.splitlines() if x.strip()]
+@@ -176,12 +177,16 @@ def test_the_host_quick_review_offers_the_page_tool_and_records_the_pages_it_rea
+     args = mcp["mcpServers"]["tenderpack"]["args"]
+     d = Path(res["dir"])
+     assert args[args.index("--addendum-scope") + 1] == str((d / QR.SCOPE_FILE).resolve())
++    # session 14 (F4; R4-5): the scope file's sha256 as written, handed to the server and recorded in the request
++    sha = args[args.index("--addendum-scope-sha256") + 1]
++    assert sha == QR.hashlib.sha256((d / QR.SCOPE_FILE).read_bytes()).hexdigest()
+     assert "--submit-once" not in args
+     from tenderpack.ai.providers.recorded import PACKET_MARK
+     packet = json.loads(seen[0]["input"].split(PACKET_MARK, 1)[1])
+     assert packet["page_images"]["tool"] == "get_addendum_page" and packet["page_images"]["image_pages"] == [4]
+     req = json.loads((d / "request.json").read_text(encoding="utf-8"))
+     assert req["images_not_attached"] == [] and req["addendum_scope"]["pages"] == 5
++    assert req["addendum_scope"]["sha256"] == sha
+     assert req["main_run_inputs_read"] == [] and req["kind"] == KIND
+     b = json.loads((d / "briefing.json").read_text(encoding="utf-8"))
+     assert b["kind"] == KIND
+diff --git a/tests/test_session14_f4_recheck_fixes.py b/tests/test_session14_f4_recheck_fixes.py
+new file mode 100644
+index 0000000..b9c6074
+--- /dev/null
++++ b/tests/test_session14_f4_recheck_fixes.py
+@@ -0,0 +1,321 @@
++"""Session 14 (F4): the fixes for the final reviewer's findings outside the workflow files (R4-2, R4-4, R4-5, R4-6,
++R4-11). Each test reproduced its finding before the fix.
++
++R4-2   the owner's rule "an unresolved change must not show the old value as unchanged": in a candidate A1 a row whose
++       candidate status is "UNRESOLVED (value in question)" never reads "unchanged since <stage>" in the Value column;
++       the value state says "value in question (unresolved: <reason>)" with the status's own reason, and the review
++       cards say the same (stage2.row_states, partial.in_question)
++R4-5   get_addendum_page checks its own scope file (the hash recorded at prepare_scope, re-checked on every call; a
++       changed scope file refuses every call) and serves no path outside the review's own folder (a scope entry naming
++       a path outside it, or a symlink out of it, is refused)
++R4-4   the MCP repair re-submission replaces ONLY the named failing items (any other item is refused with its id named;
++       the first submission's valid items stay as first given) and a refused re-submission uses the one repair
++R4-6   offline under every switch: offline.check_adapter and offline.check_http hold whether offline comes from
++       TENDERPACK_OFFLINE, from --offline or from ai.yaml's offline key (one resolver, offline.is_offline)
++R4-11  insert_table finds a table whose number is printed in Arabic-Indic digits when the op names it in Latin digits
++
++The candidate of R4-2 is blind rehearsal 05's committed candidate (tests/fixtures/s12_blind05.py: synthetic material,
++never the truth about the tender), whose op file leaves provisions on rows' units unresolved."""
++from __future__ import annotations
++
++from types import SimpleNamespace
++
++import pytest
++
++import s12_blind05 as F
++from tenderpack import partial as P
++from tenderpack import stage2
++from tenderpack.batches import states_block_html
++
++# ---------------------------------------------------------------------------------------------- R4-2
++
++
++@pytest.fixture(scope="module")
++def cand(tmp_path_factory):
++    return F.run(tmp_path_factory)["r"]
++
++
++def test_r4_2_a_value_in_question_never_reads_unchanged_in_the_candidate_a1_or_on_its_card(cand, tmp_path_factory):
++    from tenderpack.ai import workflow as WF
++    r = cand
++    unres = {k: [w for w in v if not w.startswith("STALE")] for k, v in P.unresolved_rows(r).items()}
++    unres = {k: v for k, v in unres.items() if v}
++    assert unres, "the candidate names rows through unresolved provisions on their units"
++    ctx = SimpleNamespace(addendum=r["working"].stage, dir=tmp_path_factory.mktemp("f4-r4-2"), ws=None)
++    status, default, _ = WF._row_statuses(ctx, r)
++    states = stage2.row_states(r)
++    a1 = {x["id"]: x for x in stage2.a1_table(r, stage2.collect_issues(r, None))["rows"]}
++    head = "UNRESOLVED (value in question): "
++    checked = 0
++    for rid in unres:
++        st = status.get(rid, default)
++        if not st.startswith(head):
++            continue                                # a row the run re-read or a person decided: its own status
++        checked += 1
++        reason = st[len(head):]
++        for where, val in (("row_states", states[rid]["value"]), ("A1 Value column", a1[rid]["value_state"]),
++                           ("review card", states_block_html(states[rid]))):
++            assert "unchanged since" not in val, (where, rid, val)
++            assert f"value in question (unresolved: {reason}" in val, (where, rid, st, val)
++    assert checked, "rows with the status 'UNRESOLVED (value in question)'"
++    # a row no unresolved provision names keeps its value state as it was
++    other = next(rid for rid, s in states.items() if rid not in P.unresolved_rows(r) and
++                 s["value"].startswith("unchanged since"))
++    assert "value in question" not in states[other]["value"]
++
++
++# ---------------------------------------------------------------------------------------------- R4-5
++
++PDF06 = F.ROOT / "rehearsals/blind-06/input/ADD-03_Addendum_No_3.pdf"          # synthetic rehearsal input (test data)
++
++
++def _sha(b: bytes) -> str:
++    import hashlib
++    return hashlib.sha256(b).hexdigest()
++
++
++def _scope(tmp_path, qid="ADD-03-qr-f4"):
++    from tenderpack.ai import quick_review as QR
++    d = tmp_path / "staging" / "ai" / "quick-review" / qid
++    d.mkdir(parents=True)
++    return d, QR.prepare_scope(PDF06, d, "ADD-03", qid)
++
++
++def test_r4_5_the_page_tool_checks_its_own_scope_file_and_a_changed_one_refuses_every_call(tmp_path):
++    import json
++    from tenderpack.ai import quick_review as QR
++    from tenderpack.ai.tools import ToolError
++    d, sc = _scope(tmp_path)
++    sp = d / QR.SCOPE_FILE
++    rec = sc.get("file_sha256")
++    assert rec == _sha(sp.read_bytes()), "prepare_scope records the scope file's own sha256"
++    ws = SimpleNamespace(addendum_scope=str(sp), addendum_scope_sha256=rec)
++    assert QR.tool_get_addendum_page(ws, 4)["page"] == 4
++    j = json.loads(sp.read_text(encoding="utf-8"))
++    j["pages"][0]["text"] = "words the addendum does not print (session 14 test data)"
++    sp.write_text(json.dumps(j), encoding="utf-8")                  # the scope changed after it was recorded
++    for page, region in ((1, None), (2, None), (4, None), (4, 1)):
++        with pytest.raises(ToolError, match="integrity failure: the scope file"):
++            QR.tool_get_addendum_page(ws, page, region)
++    # a server given a scope without its recorded hash serves nothing
++    d2, sc2 = _scope(tmp_path, "ADD-03-qr-f4-b")
++    with pytest.raises(ToolError, match="no recorded sha256"):
++        QR.tool_get_addendum_page(SimpleNamespace(addendum_scope=str(d2 / QR.SCOPE_FILE), addendum_scope_sha256=None), 1)
++
++
++def test_r4_5_the_page_tool_serves_no_path_outside_the_review_folder(tmp_path):
++    import json
++    import os
++    from tenderpack.ai import quick_review as QR
++    from tenderpack.ai.tools import ToolError
++    d, sc = _scope(tmp_path)
++    sp, base = d / QR.SCOPE_FILE, d / QR.SCOPE_DIR
++    page1 = base / sc["pages"][0]["image"]["file"]
++    outside = tmp_path / "outside.png"
++    outside.write_bytes(page1.read_bytes())                         # the recorded bytes, outside the review's folder
++    original = sp.read_text(encoding="utf-8")
++    # (a) a scope entry naming a path outside the folder (relative or absolute), the scope re-anchored as if written so
++    for name in (os.path.relpath(outside, base), str(outside)):
++        j = json.loads(original)
++        j["pages"][0]["image"]["file"] = name
++        sp.write_text(json.dumps(j), encoding="utf-8")
++        ws = SimpleNamespace(addendum_scope=str(sp), addendum_scope_sha256=_sha(sp.read_bytes()))
++        with pytest.raises(ToolError, match="outside the quick review's folder"):
++            QR.tool_get_addendum_page(ws, 1)
++    # (b) a symlink inside the folder pointing out of it (the bytes are the recorded ones)
++    sp.write_text(original, encoding="utf-8")
++    ws = SimpleNamespace(addendum_scope=str(sp), addendum_scope_sha256=_sha(sp.read_bytes()))
++    assert QR.tool_get_addendum_page(ws, 1)["page"] == 1
++    page1.unlink()
++    page1.symlink_to(outside)
++    with pytest.raises(ToolError, match="outside the quick review's folder"):
++        QR.tool_get_addendum_page(ws, 1)
++
++
++# ---------------------------------------------------------------------------------------------- R4-4
++
++
++@pytest.fixture(scope="module")
++def rws(request, tmp_path_factory):
++    from ai_fixture import workspace
++    return workspace(tmp_path_factory.mktemp("f4-repair"), evidence=request.getfixturevalue("blind02_build"))
++
++
++def _mcp(srv, n, args):
++    import json
++    r = srv.handle({"jsonrpc": "2.0", "id": n, "method": "tools/call",
++                    "params": {"name": "submit_proposals", "arguments": args}})
++    return json.loads(r["result"]["content"][0]["text"]), r["result"]["isError"]
++
++
++def test_r4_4_the_repair_takes_only_the_named_items_and_refuses_every_other_item_and_statement(rws):
++    from pathlib import Path
++
++    import yaml
++
++    import test_session14_payload_repair as PR
++    from tenderpack.mcp_server import Server
++    st = rws.identity().model_dump()
++    s1 = {"id": "S1", "kind": "assumption", "text": "the period counts calendar days (session 14 test data)"}
++    srv = Server(rws, None, tools=["submit_proposals"], submit_once=True)
++    a, err = _mcp(srv, 1, {"proposal_set": PR._set(st, [{**PR._op(st), "statements": ["S1"]}, PR._row(st, PR.BAD_ROW)],
++                                                   [s1]), "host_model": "test-host"})
++    assert not err and [p["id"] for p in a["repair"]["problems"]] == ["ADD-03/2.4/row"], a
++    # the re-submission: the named row repaired (citing a new statement S3), plus a sibling op resent changed citing a
++    # new statement S2, and the sibling's statement S1 changed: only the row and S3 are taken
++    s1x = {**s1, "text": "the period counts working days (session 14 test data)"}
++    s2 = {"id": "S2", "kind": "assumption", "text": "a basis the first op never cited (session 14 test data)"}
++    s3 = {"id": "S3", "kind": "assumption", "text": "the new clause is procedural (session 14 test data)"}
++    b, err = _mcp(srv, 2, {"proposal_set": PR._set(st, [{**PR._row(st, PR.GOOD_ROW), "statements": ["S3"]},
++                                                        {**PR._op(st, "one hundred and ninety (190) days"),
++                                                         "statements": ["S1", "S2"]}], [s1x, s2, s3]),
++                           "host_model": "test-host"})
++    assert not err and b["repair_of"] == a["run_id"], b
++    m = b["repair_merge"]
++    assert m["replaced"] == ["ADD-03/2.4/row"], m
++    assert set(m["refused"]) == {"ADD-03/3.1", "S1", "S2"}, m              # each named, with why
++    assert all(k in m["why_refused"] for k in ("ADD-03/3.1", "S1", "S2")), m
++    ps = yaml.safe_load((Path(b["staging"]) / "proposals.yaml").read_text())["proposal_set"]
++    by = {it["id"]: it for it in ps["items"]}
++    assert by["ADD-03/3.1"]["payload"]["new"] == "one hundred and eighty (180) days"        # as first given
++    assert by["ADD-03/3.1"]["statements"] == ["S1"]
++    sts = {s["id"]: s for s in ps["statements"]}
++    assert sts["S1"]["text"] == s1["text"] and "S2" not in sts and sts["S3"]["text"] == s3["text"], sts
++
++
++def test_r4_4_a_refused_re_submission_uses_the_one_repair(rws, monkeypatch):
++    import test_session14_payload_repair as PR
++    from tenderpack.ai import tools as T
++    from tenderpack.mcp_server import Server
++    st = rws.identity().model_dump()
++    for once in (False, True):
++        srv = Server(rws, None, tools=["submit_proposals"], submit_once=once)
++        a, err = _mcp(srv, 1, {"proposal_set": PR._set(st, [PR._op(st), PR._row(st, PR.BAD_ROW)]),
++                               "host_model": "test-host"})
++        assert not err and a["repair"]["tries_left"] == 1, a
++        real = T.call_tool
++
++        def refusing(ws, name, args, caller="cli"):
++            raise T.ToolError("refused by the controller (session 14 test)")
++        monkeypatch.setattr(T, "call_tool", refusing)
++        b, err = _mcp(srv, 2, {"proposal_set": PR._set(st, [PR._row(st, PR.GOOD_ROW)]), "host_model": "test-host"})
++        assert err and "refused by the controller" in b["error"], b
++        monkeypatch.setattr(T, "call_tool", real)
++        c, err = _mcp(srv, 3, {"proposal_set": PR._set(st, [PR._row(st, PR.GOOD_ROW)]), "host_model": "test-host"})
++        assert err and "repair already used" in c["error"], (once, c)
++
++
++# ---------------------------------------------------------------------------------------------- R4-6
++
++
++def _direct_builds_refused(OFF) -> None:
++    """The session-14 last-line guards: a hosted adapter built directly, and an HTTP request to a hosted address."""
++    from tenderpack.ai import config as C
++    from tenderpack.ai.providers import base
++    from tenderpack.ai.providers.anthropic import AnthropicProvider
++    from tenderpack.ai.providers.host import HostProvider
++    from tenderpack.ai.providers.openrouter import OpenRouterProvider
++    cfg = C.load()
++    with pytest.raises(OFF.OfflineError, match="offline mode"):
++        AnthropicProvider("test-model", cfg["routes"]["anthropic"], {})
++    with pytest.raises(OFF.OfflineError, match="offline mode"):
++        OpenRouterProvider("vendor/m", cfg["routes"]["openrouter"], {})
++    with pytest.raises(OFF.OfflineError, match="offline mode"):
++        HostProvider("declared-model")
++    with pytest.raises(OFF.OfflineError, match="not a loopback address"):
++        base.http_json("GET", "https://api.anthropic.com/v1/models", {}, None, 5)
++
++
++@pytest.mark.parametrize("switch", ["env", "flag", "config"])
++def test_r4_6_the_last_line_guards_hold_under_each_offline_switch_alone(switch, monkeypatch):
++    import copy
++
++    from fake_ollama import NetGuard
++    from tenderpack.ai import config as C
++    from tenderpack.ai import offline as OFF
++    guard = NetGuard(monkeypatch, allow_port=1)                     # nothing at all may be reached
++    monkeypatch.delenv(OFF.ENV, raising=False)
++    assert OFF.is_offline() is None                                 # connected: nothing switched on
++    cfg = copy.deepcopy(C.load())
++    if switch == "env":
++        monkeypatch.setenv(OFF.ENV, "1")
++    elif switch == "flag":
++        OFF.activate(cfg, OFF.requested(cfg, flag=True))            # what every command does with --offline
++    else:
++        cfg["offline"] = True                                        # ai.yaml's key, nothing else
++        OFF.activate(cfg, OFF.requested(cfg))
++    assert OFF.is_offline(), switch
++    _direct_builds_refused(OFF)
++    assert guard.non_local() == [] and guard.processes == []
++
++
++@pytest.mark.parametrize("switch", ["flag", "config"])
++def test_r4_6_the_command_line_switches_the_whole_process_offline_before_any_command(switch, monkeypatch, tmp_path,
++                                                                                      capsys):
++    import copy
++
++    import yaml
++
++    from tenderpack.ai import config as C
++    from tenderpack.ai import offline as OFF
++    from tenderpack.cli import main
++    monkeypatch.delenv(OFF.ENV, raising=False)
++    cfg = copy.deepcopy(C.load())
++    cfg["offline"] = switch == "config"
++    cfgp = tmp_path / "ai.yaml"
++    cfgp.write_text(yaml.safe_dump({k: v for k, v in cfg.items() if not k.startswith("_")}, sort_keys=False),
++                    encoding="utf-8")
++    # a command refused before it loads its configuration (an addendum id that is not ADD-NN)
++    main(["ai", "quick-review", "not-an-addendum", "--config", str(cfgp)] + (["--offline"] if switch == "flag" else []))
++    capsys.readouterr()
++    assert OFF.is_offline(), switch
++    _direct_builds_refused(OFF)
++
++
++# ---------------------------------------------------------------------------------------------- R4-11
++
++
++def _image_table(title: str, gid: str = "ADD-02:p2-image"):
++    """A synthetic addendum table read from an image (its id is not 'T<number>'), its title as printed."""
++    from test_session14_add03_ops import U
++    return [U(gid, title, kind="table", page=2),
++            U(f"{gid}/r1", "م: ١ | الفئة: مدني | السنوات: ٢٠", kind="table_row", page=2, parent=gid,
++              cells={"م": "١", "السنوات": "٢٠"}),
++            U(f"{gid}/r2", "م: ٢ | الفئة: ميكانيكي | السنوات: ٥", kind="table_row", page=2, parent=gid,
++              cells={"م": "٢", "السنوات": "٥"})]
++
++
++@pytest.mark.parametrize("title", [
++    "Table 50-1: Minimum residual life (session 14 test data)",                    # Latin words, Latin digits
++    "Table ٥٠-١: Minimum residual life (session 14 test data)",                    # Latin words, Arabic-Indic digits
++    "جدول ٥٠-١: الحد الأدنى للعمر المتبقي",                                         # Arabic words, Arabic-Indic digits
++    "الجدول رقم ٥٠-١ - الحد الأدنى للعمر المتبقي",                                  # with the article and 'رقم'
++    "جدول 50-1: الحد الأدنى للعمر المتبقي",                                          # Arabic words, Latin digits
++    "جدول ۵۰-۱: الحد الأدنى للعمر المتبقي",                                          # Extended Arabic-Indic digits
++])
++def test_r4_11_insert_table_finds_its_table_whichever_digits_print_the_number(title):
++    from test_session14_add03_ops import P_TABLE, failed, res, run
++
++    from tenderpack.amend import Op
++    for number in ("50-1", "٥٠-١"):                         # the op names it in Latin digits (or as printed)
++        op = Op(id="ADD-02/4.1", provision="ADD-02:4.1", type="insert_table", new_group="ADD-02:p2-image",
++                into="VOL-V", number=number)
++        by, _ = run([P_TABLE] + _image_table(title), [op])
++        x = res(by, "ADD-02/4.1")
++        assert x.applied, (title, number, failed(x))
++        assert x.details["inserted_as"] == "VOL-V:T50-1" and x.details["number"] == "50-1", x.details
++        assert all(by["ADD-02"].state[k].part_of == "VOL-V" for k in ("ADD-02:p2-image", "ADD-02:p2-image/r1"))
++
++
++@pytest.mark.parametrize("title", ["جدول ٥٠-٢: الحد الأدنى للعمر المتبقي", "Table ٥٠-١٢: Minimum residual life",
++                                   "جدول ١٥٠-١: الحد الأدنى للعمر المتبقي", "الحد الأدنى للعمر المتبقي ٥٠-١"])
++def test_r4_11_insert_table_still_refuses_a_table_titled_with_another_number_or_no_table_word(title):
++    from test_session14_add03_ops import P_TABLE, failed, res, run
++
++    from tenderpack.amend import Op
++    op = Op(id="ADD-02/4.1", provision="ADD-02:4.1", type="insert_table", new_group="ADD-02:p2-image", into="VOL-V",
++            number="50-1")
++    by, _ = run([P_TABLE] + _image_table(title), [op])
++    x = res(by, "ADD-02/4.1")
++    assert not x.valid and any("is not Table 50-1" in c["detail"] for c in failed(x)), (title, failed(x))
++    assert by["ADD-02"].state["ADD-02:p2-image"].part_of is None
