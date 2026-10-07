@@ -15,7 +15,8 @@ Session 12 names four kinds. `tenderpack ai routes` prints each route's kind, wh
 pending on the Mac:
 
 - **Connected coding host** (`host`): Claude Code or Codex, working with its own model over MCP or the CLI.
-  - Claude Code headless sessions are started by the workflow and have run for real.
+  - Claude Code headless sessions are started by the workflow and have run for real in the cloud container (sessions
+    10–13; the sealed blind-07 run from a twin of the interview folder). On the Mac: pending.
   - For Codex, the MCP interface is tested; automated Codex execution is unverified. The workflow starts Claude Code
     only; Codex is the manual MCP / `submit-batch` path.
 - **Hosted API** (`anthropic`, `openrouter`): the application makes paid calls.
@@ -28,11 +29,17 @@ availability on this machine and why it is not usable (`--brief`: one line each,
 
 | Route | Status (config/routes_status.yaml) | Usable now when |
 |---|---|---|
-| `host` (Claude Code; the first route to rehearse) | tested: the cloud container, sessions 10–12 (never on the Mac) | connected, and `claude` on PATH |
-| `codex` (Codex over MCP) | built, unverified: the MCP server is tested, no Codex session has run | never automatically (the workflow starts Claude Code only); by hand, §3 |
-| `anthropic` (API key) | untested: recorded responses only | connected, a key through the secure configuration (§11), the paid caps set |
-| `openrouter` (API key) | blocked here, unverified | as `anthropic` |
-| `ollama` (offline) | pending on the Mac: a fake local server in tests | a configured model installed and usable (`tenderpack ai ollama-models`) |
+| `host` (Claude Code; the first route to rehearse) | tested: the cloud container, sessions 10–13, the last time the sealed blind-07 run from a twin of the interview folder; pending on the Mac | connected, and `claude` on PATH |
+| `codex` (Codex over MCP) | built, unverified: the MCP server and the manual host path are tested, no Codex session has run | never automatically (the workflow starts Claude Code only); by hand, §3 |
+| `anthropic` (API key) | untested: recorded responses only; ready: the dry run in §4 | connected, a key through the secure configuration (§11), the paid caps set |
+| `openrouter` (API key) | blocked here, unverified; ready for a later key: the configuration and dry run in §5 | as `anthropic` |
+| `ollama` (offline) | pending on the Mac: prepared for local use (§6), tested against a fake local server | a configured model installed and usable (`tenderpack ai ollama-models`) |
+
+Session 14: each route's record also says what **works** (and where that was shown), what was **never run**, and
+what is **ready** to try (the exact commands; tenderpack runs none of them by itself). `tenderpack ai routes` prints the
+three; the launcher (its route list and option 5), the panel's addendum box, `docs/MAC_CHECKLIST.md` and the interview
+folder's README read the same file, and `tests/test_session14_routes_status.py` holds them to it. Nothing in the cloud
+container is a Mac result: every Mac step is pending until it is run there.
 
 The launcher asks first: **connected** (Claude Code first) or **offline** (`TENDERPACK_OFFLINE=1`: every phase on the
 local Ollama, a hosted route refused before any call, §17). `tenderpack ai ollama-models` discovers the INSTALLED
@@ -148,11 +155,15 @@ args = ["-m", "tenderpack", "ai", "serve-mcp"]
 # args = ["-m", "tenderpack", "ai", "serve-mcp", "--evidence", "/abs/rehearsals/blind-02/build", "--pack", "/abs/rehearsals/blind-02/work/pack.yaml"]
 ```
 
-**Status (session 12): MCP interface tested; automated Codex execution unverified.**
+**Status: built, unverified (MCP interface tested; automated Codex execution unverified).**
 
-- Tested: the MCP server Codex would use, over stdio JSON-RPC (`tests/test_session09_ai_mcp.py`).
-- Never run: a Codex session against it. The workflow's automatic host sessions start Claude Code (`claude -p`) only;
-  Codex is the manual path (MCP tools, then `tenderpack ai submit` or `submit-batch`).
+- Works (tested in the cloud container): the MCP server Codex would use, over stdio JSON-RPC
+  (`tests/test_session09_ai_mcp.py`), and the manual host path: `ai run ... --route host --host-manual` stops with
+  exit 4 at the first batch and names its task packet; `ai submit-batch RUN FILE --by NAME --host-model MODEL`
+  validates the answer exactly as any route's and continues (`tests/test_session10_workflow.py`).
+- Never run: a Codex session of any kind, the `~/.codex/config.toml` registration, Codex reading the runtime prompt.
+  The workflow's automatic host sessions start Claude Code (`claude -p`) only; Codex is the manual path (MCP tools,
+  then `tenderpack ai submit` or `submit-batch`), never chosen automatically.
 
 Then follow the same steps as in §2. The package is installed in editable mode, so the server finds the repository from any working directory (in the interview folder, where nothing is installed, the `.pth` link that `scripts/mac/pathlink.py` writes does the same; session 13, E159).
 
@@ -176,19 +187,23 @@ client is offered every tool (the writers write to staging only); program-run se
 
 ## 4. Application route: Anthropic Messages API (paid)
 
-**Credential.** It is read from the environment only. Set it in your own shell, never in a file, a chat or Git:
+**Status: untested** (recorded responses only; no API-key call has been made from this project). Ready: the dry run
+below.
+
+**Credential.** From the environment, or (session 13, `tenderpack/ai/keys.py`) from a chmod-600
+`~/.config/tenderpack/keys.env` OUTSIDE the folder; never in a file inside the folder, a chat, a log or Git:
 
 ```
 read -rs ANTHROPIC_API_KEY && export ANTHROPIC_API_KEY
 ```
 
-**Dry run.** This makes no paid call: it checks the key and `GET /v1/models/{id}`, which gives the context window, the output cap, image input and structured outputs. If there is no key, the call fails, the model is not listed, or the reply omits `max_input_tokens` or `max_tokens`, the answer is `REFUSED: ... capabilities unverified` (§12).
+**Dry run.** This makes no paid call (one `GET` of the model's description): it checks the key and `GET /v1/models/{id}`, which gives the context window, the output cap, image input and structured outputs. If there is no key, the call fails, the model is not listed, or the reply omits `max_input_tokens` or `max_tokens`, the answer is `REFUSED: ... capabilities unverified` (§12).
 
 ```
 .venv/bin/python -m tenderpack ai capabilities --route anthropic --model claude-opus-5-5
 ```
 
-**A run.** It refuses to start until you set limits. With the list prices in `config/ai.yaml` (to confirm against your console), `--max-usd` is enforced from the usage the endpoint reports; `--max-calls` is always required. The numbers below are examples: the limits are yours to choose.
+**A run.** It refuses to start until you set limits (`routes.anthropic.caps` in `config/ai.yaml` are null). The prices in `config/ai.yaml` are **provisional** list prices (to confirm against your console); `--max-usd` is enforced from the usage the endpoint reports, so any cost figure is an estimate until a real run reports its usage. `--max-calls` is always required. The numbers below are examples: the limits are yours to choose.
 
 ```
 .venv/bin/python -m tenderpack ai propose ADD-03 --route anthropic --model claude-opus-5-5 \
@@ -210,6 +225,11 @@ read -rs ANTHROPIC_API_KEY && export ANTHROPIC_API_KEY
 
 ## 5. Application route: OpenRouter (paid)
 
+**Status: blocked here, unverified** (`openrouter.ai` is blocked from the cloud container; recorded responses only).
+Ready for a later key: `OPENROUTER_API_KEY` in the environment (or the chmod-600 `keys.env`), the model in
+`config/ai.yaml` `routes.openrouter.models.propose` (`anthropic/claude-opus-5.5`, an unverified slug), the caps in
+`routes.openrouter.caps` (null until you set them), then the dry run (the `capabilities` line below; no paid call).
+
 ```
 read -rs OPENROUTER_API_KEY && export OPENROUTER_API_KEY
 .venv/bin/python -m tenderpack ai capabilities --route openrouter --model anthropic/claude-opus-5.5
@@ -225,7 +245,16 @@ read -rs OPENROUTER_API_KEY && export OPENROUTER_API_KEY
 
 ## 6. Application route: Ollama on the owner's Mac (local)
 
-This route runs **on the Mac only** (M5 Pro, 48 GB). The cloud session cannot reach the Mac's `localhost`, and nothing assumes it can. The setup, the launcher and the offline checks are in `docs/MAC_SETUP.md`. Offline mode is §17.
+This route runs **on the Mac only** (M5 Pro, 48 GB). The cloud session cannot reach the Mac's `localhost`, and nothing assumes it can. The setup, the launcher and the offline checks are in `docs/MAC_SETUP.md`; the one-page order of the Mac steps is `docs/MAC_CHECKLIST.md`. Offline mode is §17.
+
+**Status: pending on the Mac; prepared for local use.** Prepared and tested against a fake local server: the model roles
+in `config/ai.yaml` (`routes.ollama.models`: `text`, `vision`, `critic`), the discovery of the installed models with
+their capabilities and context (`tenderpack ai ollama-models`), the memory estimate against 48 GB, offline mode, and the
+three check levels of `scripts/mac/checks.sh` (session 14): **level 1** connectivity (Ollama answers, the model is
+installed, `/api/show` reports vision, tools and context), **level 2** valid content (one batch whose proposal set
+passed the controller's validation, read from `proposals.yaml`, never from the exit code) and **level 3** complete
+workflow (a whole `ai run --offline` to the candidate outputs and the review packet, read from the checkpoint; a
+partial run that exits 0 is reported PARTIAL). Never run: a real local model, on any machine.
 
 The pull commands below are a person's choice. tenderpack never pulls a model; a missing one is reported with the command.
 

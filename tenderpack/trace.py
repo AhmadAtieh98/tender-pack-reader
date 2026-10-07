@@ -113,7 +113,8 @@ def obligation_trace(r: dict) -> list[dict]:
                 keys |= set(op.targets or [])
                 needs = [("it", keys)]
             # obligation-bearing? and which consequence words the op brings in
-            bearing, brought = op.type in ("annotate", "insert_unit", "insert_row", "replace_unit") or op.status == "reinstated", set()
+            bearing, brought = op.type in ("annotate", "insert_unit", "insert_row", "replace_unit", "insert_table",
+                                           "relocate_unit") or op.status == "reinstated", set()   # s14 (W3): the last two
             for k in carriers:
                 new = st[k].text or ""
                 old = prev[k].text if k in prev and prev[k].status == "active" and op.type != "annotate" else ""

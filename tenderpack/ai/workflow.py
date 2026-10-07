@@ -127,6 +127,7 @@ import yaml
 
 from .. import human_owned as HO
 from ..util import ROOT, load_yaml, sha256_file
+from . import answers as ANS               # session 14 (W5): the owner's answers, taken at safe checkpoints
 from . import budget as B
 from . import candidate as CAND
 from . import config as C
@@ -570,8 +571,15 @@ class Prefetch:
         # stopped; a submission already made is reused on resume); otherwise the workers finish first
         self.pool.shutdown(wait=not interrupted, cancel_futures=True)
         conc = self.ctx.cp.data.setdefault("concurrency", {})
-        for phase, rec in self.record().items():
+        recs = self.record()
+        for phase, rec in recs.items():
             conc[phase] = {**rec, "drive": now_iso()}
+        # session 14 (W2; blind-07 defect 15): `concurrency` keeps the last drive (as before); every drive (segment) is
+        # kept in `concurrency_drives`, so a resumed run's first segment is not lost
+        if recs:
+            drives = self.ctx.cp.data.setdefault("concurrency_drives", [])
+            drives.append({"drive": now_iso(), "segment": len(drives) + 1, "interrupted": bool(interrupted),
+                           "phases": recs})
         # session 13 (blind-07 scorer, defect 15): a batch answered through its staged submission (_reuse_submission)
         # is never take()n, so its record stays here although the batch is done; only the batches still pending are
         # "not taken"
@@ -816,7 +824,7 @@ def load(run_id: str, staging=None) -> Checkpoint:
 
 def resume(run_id: str, staging=None, stop_after: str | None = None, retry_failed: bool = True, echo=print,
            sleep=time.sleep, from_step: str | None = None, offline: bool = False, base_run: str | None = None,
-           allow_code_change: str | None = None) -> dict:
+           allow_code_change: str | None = None, by_person: bool = True) -> dict:
     """Continue a stopped, interrupted, failed or waiting run from its checkpoint. Done steps and batches are skipped;
     a batch that failed is asked again (`retry_failed`), and the steps after it are recomputed from the candidate as it
     was before any promotion.
@@ -846,6 +854,10 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
     check_code_identity(cp, allow_code_change)                  # session 13: refused on changed code unless allowed
     cp.event("resumed", by_pid=os.getpid(), status_before=cp.data["status"],
              **({"from_step": from_step} if from_step else {}))
+    if by_person:                                # session 14 (W2): defect 15 (a submit-batch continues on its own record)
+        cp.intervention(kind="resume (the person's action)", by="a person (tenderpack ai resume, or the panel's Resume)",
+                        note=f"process {os.getpid()}; status before: {cp.data['status']}"
+                             + (f"; from step {from_step}" if from_step else ""))
     if from_step:
         _reset_from(cp, from_step)
     bad = reclassify_errored_batches(cp.data["batches"])
@@ -963,6 +975,7 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
         for step in STEPS:
             if cp.done(step):
                 continue
+            ANS.at_checkpoint(ctx, step)     # session 14 (W5): a safe checkpoint (before analysis, downstream, promotion)
             ctx.say(f"[{ctx.run_id}] {step} ...")
             with cp.timed(step) as st:
                 STEP_FUNCS[step](ctx, st)
@@ -980,10 +993,24 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
         ctx.say(f"{s.status.upper()}: {s.reason}")
     except KeyboardInterrupt as e:
         interrupted = True
+        # session 14 (W2; blind-07 defect 15): the batches whose exchanges the stop cuts (this thread's and the workers')
+        in_flight = sorted({k for k, b in cp.data["batches"].items() if b.get("status") == "running"}
+                           | ({k for k, r_ in ctx.prefetch.recs.items() if not r_["future"].done()}
+                              if ctx.prefetch is not None else set()))
         stopped = _stop_live_sessions()
         _interrupted(cp)
-        cp.event("interrupted", step=step, signal=("SIGTERM" if isinstance(e, Terminated) else "SIGINT"),
-                 host_sessions_stopped=stopped)
+        sig = "SIGTERM" if isinstance(e, Terminated) else "SIGINT"
+        cp.event("interrupted", step=step, signal=sig, host_sessions_stopped=stopped)
+        cp.data["interventions"].append({"ts": now_iso(), "kind": "stop (the person's action)",
+                                         "by": "a person (a signal from outside the run: the panel's Stop, Ctrl-C or a "
+                                               "kill)", "note": f"{sig} during step {step}; {stopped} host session "
+                                                                f"process(es) stopped"})
+        for k in in_flight:
+            cp.data["interventions"].append({"ts": now_iso(), "kind": "host session stopped by the person's stop",
+                                             "batch": k, "by": "tenderpack.ai.workflow (automatic)",
+                                             "note": "its exchange was cut before its answer was taken; on resume its "
+                                                     "staged submission is reused if it made one, else it is asked again"})
+        cp.save()
         cp.set_status("stopped", f"interrupted during {step}; resume with `tenderpack ai resume {ctx.run_id}`")
         raise
     except Exception as e:                                       # noqa: BLE001 (recorded with its traceback; resumable)
@@ -1118,8 +1145,12 @@ def completeness(cp: Checkpoint) -> dict:
     if cr.get("status") != "done":
         reasons.append(f"check-register did not run on the candidate (step {cr.get('status')})")
     elif cr.get("exit_code") != 0 or cr.get("findings"):
+        cl = cr.get("classified") or {}
         reasons.append(f"check-register on the candidate: exit {cr.get('exit_code')}, {cr.get('findings')} finding(s) "
-                       f"{cr.get('by_kind')}" + (f"; C46: {'; '.join(_short(x, 160) for x in c46[:3])}" if c46 else ""))
+                       f"{cr.get('by_kind')}" + (f" ({len(cl.get('not_proposed') or [])} missing because the downstream "
+                                                 f"phase did not propose them, {len(cl.get('defects') or [])} defect(s))"
+                                                 if cl else "")
+                       + (f"; C46: {'; '.join(_short(x, 160) for x in c46[:3])}" if c46 else ""))
     outs = cp.step("outputs")
     published = outs.get("status") == "done" and not outs.get("refused") and outs.get("exit_code") == 0
     if outs.get("status") != "done":
@@ -1166,13 +1197,198 @@ def approval(cp: Checkpoint) -> dict:
 
 
 def _record_outcome(cp: Checkpoint) -> None:
-    """The three records, kept apart in the checkpoint (and the review packet): execution, completeness, approval."""
+    """The three records, kept apart in the checkpoint (and the review packet): execution, completeness, approval.
+    Session 14 (W2): and the host's own usage per session (host_usage), rewritten at the end of every drive."""
+    try:
+        cp.data["host_usage"] = host_usage(cp.path.parent, cp.data)
+    except Exception as e:                                       # noqa: BLE001 (a record; never breaks a run)
+        cp.data["host_usage"] = {"sessions": [], "error": f"{type(e).__name__}: {_short(str(e), 200)}"}
     try:
         cp.data["execution"], cp.data["completeness"], cp.data["approval"] = execution(cp), completeness(cp), approval(cp)
         cp.save()
     except Exception as e:                                       # noqa: BLE001 (the records never break a run)
         cp.data["completeness"] = {"status": "unknown", "reasons": [f"not computed: {type(e).__name__}: {e}"]}
         cp.save()
+
+
+# ---------------------------------------------------------------------------------------------- session 14 (W2): records
+# The blind-07 scorer's defects 15 and 18 (rehearsals/blind-07/COMPARISON.md §6, §8): the packet's usage line said
+# "0 call(s), 0 input / 0 output tokens" although 10 host sessions and 6 critic requests ran (the host's own usage was
+# only in the session records scripts/bench_workflow.py reads); the `concurrency` record kept the last drive only; and
+# `interventions` named neither the sessions the person's stop killed, nor the answers reused, nor the stop and resume.
+# Unknown usage is never printed as 0.
+_TOKEN_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
+
+
+def _session_batch_index(data: dict) -> dict[str, str]:
+    """{host session run id: batch (or '<batch> critic')} from the checkpoint's batch and critic records."""
+    out: dict[str, str] = {}
+    for k, b in (data.get("batches") or {}).items():
+        hs = b.get("host_session") or {}
+        if hs.get("run_id"):
+            out[hs["run_id"]] = k
+        for x in ((b.get("request") or {}).get("host_sessions") or []):
+            if isinstance(x, dict) and x.get("run_id"):
+                out.setdefault(x["run_id"], k)
+        cr = b.get("critic") or {}
+        for x in (((cr.get("request") or {}) if isinstance(cr.get("request"), dict) else {}).get("host_sessions") or []):
+            if isinstance(x, dict) and x.get("run_id"):
+                out.setdefault(x["run_id"], f"{k} critic")
+        if cr.get("critic_run"):
+            out.setdefault(cr["critic_run"], f"{k} critic")
+    return out
+
+
+def _known_usage(u) -> dict | None:
+    if not isinstance(u, dict) or not any(isinstance(u.get(k), (int, float)) for k in _TOKEN_KEYS):
+        return None
+    return {k: int(u.get(k) or 0) for k in _TOKEN_KEYS}
+
+
+def host_usage(run_dir: Path, data: dict) -> dict:
+    """The host's own usage per session, from the session records next to the run (what scripts/bench_workflow.py reads):
+    every <run>/ai/*/session.json (a host session: reading, analysis, downstream answer) and every `plain_session` event
+    of <run>/ai/*/log.jsonl (a plain host session: the critic, a repair). A session without usage (killed, failed before
+    its result) is `unknown`, never 0. {sessions: [{session, batch, kind, elapsed_s, error, usage | None}], known,
+    unknown, totals (over the known ones), source}."""
+    run_dir = Path(run_dir)
+    roots = [run_dir / "ai"]
+    cand = (data.get("candidate") or {}).get("dir")
+    if cand:
+        roots.append(Path(cand).parent / "ai")
+    idx = _session_batch_index(data)
+    sessions: list[dict] = []
+    seen: set = set()
+    for root in roots:
+        if not root.is_dir():
+            continue
+        for f in sorted(root.glob("*/session.json")):
+            try:
+                sj = json.loads(f.read_text(encoding="utf-8")) or {}
+            except (OSError, ValueError):
+                sj = {}
+            sid = sj.get("run_id") or f.parent.name
+            if sid in seen:
+                continue
+            seen.add(sid)
+            batch = idx.get(sid) or next((k for k, b in (data.get("batches") or {}).items() if sj.get("provisions")
+                                          and list(b.get("provisions") or []) == list(sj["provisions"])), None)
+            kind = ("analysis" if sj.get("provisions") else str(batch).split("-")[0] if batch else "host session")
+            sessions.append({"session": sid, "batch": batch, "kind": kind, "elapsed_s": sj.get("elapsed_s"),
+                             "error": _short(sj.get("error"), 160) if sj.get("error") else None,
+                             "usage": _known_usage(sj.get("usage"))})
+        for f in sorted(root.glob("*/log.jsonl")):
+            try:
+                lines = f.read_text(encoding="utf-8").splitlines()
+            except OSError:
+                continue
+            for n, line in enumerate(lines):
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                if e.get("event") != "plain_session":
+                    continue
+                sid = f"{f.parent.name}#{n}"
+                if sid in seen:
+                    continue
+                seen.add(sid)
+                b = idx.get(f.parent.name) or next((v for k, v in idx.items() if f.parent.name.startswith(str(k))), None)
+                sessions.append({"session": sid, "batch": b or f.parent.name.replace(str(data.get("run_id") or ""), "")
+                                 .strip("-") or None, "kind": e.get("label") or "plain session",
+                                 "elapsed_s": e.get("elapsed_s"), "error": _short(e.get("error"), 160) if e.get("error")
+                                 else None, "usage": _known_usage(e.get("usage"))})
+    known = [x for x in sessions if x["usage"] is not None]
+    totals = {k: sum(x["usage"][k] for x in known) for k in _TOKEN_KEYS}
+    return {"sessions": sessions, "known": len(known), "unknown": len(sessions) - len(known), "totals": totals,
+            "source": "the host's own session records under the run's ai/ folder (session.json, plain_session events)"}
+
+
+def usage_lines(cp: Checkpoint) -> list[str]:
+    """The review packet's usage lines (session 14): the application routes' calls and tokens, and the host's own usage
+    per session; a usage nobody reported is 'unknown', never 0."""
+    d = cp.data
+    u = d.get("usage") or {}
+    route = (d.get("settings") or {}).get("route")
+    hu = d.get("host_usage") or host_usage(cp.path.parent, d)
+    host_batches = [k for k, b in (d.get("batches") or {}).items() if b.get("host_session")
+                    or ((b.get("request") or {}).get("host_sessions"))]
+    critic_runs = [k for k, b in (d.get("batches") or {}).items() if (b.get("critic") or {}).get("critic_run")]
+    L = []
+    if u.get("calls") or route not in ("host",):
+        L.append(f"- usage (application routes): {u.get('calls', 0)} call(s), {u.get('input_tokens', 0)} input / "
+                 f"{u.get('output_tokens', 0)} output tokens; cost "
+                 f"{u['cost_usd'] if u.get('cost_usd') is not None else 'not computed'}")
+    else:
+        L.append("- usage (application routes): none: the run's route is host, every exchange ran in a host session "
+                 "(below)")
+    ss = hu.get("sessions") or []
+    if ss:
+        t = hu.get("totals") or {}
+        L.append(f"- host sessions: {len(ss)} (their own records); usage of the {hu.get('known', 0)} that reported it: "
+                 f"input {t.get('input_tokens', 0)}, cache write {t.get('cache_creation_input_tokens', 0)}, cache read "
+                 f"{t.get('cache_read_input_tokens', 0)} / output {t.get('output_tokens', 0)} tokens"
+                 + (f"; usage **unknown** for {hu.get('unknown')} session(s): "
+                    + ", ".join(f"{x['session']} ({x.get('batch') or 'batch not recorded'})"
+                                for x in ss if x["usage"] is None)[:600] if hu.get("unknown") else ""))
+    elif host_batches or critic_runs or route == "host":
+        L.append(f"- host sessions: {len(host_batches)} batch(es) and {len(critic_runs)} critic request(s) recorded a "
+                 "host session; their usage: **unknown** (no session record was found next to this run)")
+    return L
+
+
+def _events(data: dict, name: str) -> list[dict]:
+    return [e for e in data.get("events") or [] if (e.get("event") or e.get("name")) == name]
+
+
+PERSON_KINDS = ("stop (the person's action)", "resume (the person's action)", "submit-batch")
+
+
+def intervention_lines(cp: Checkpoint) -> list[str]:
+    """The packet's interventions (session 14): the person's own actions (stop, resume, a submitted batch) first, then
+    what the run did with them (sessions the stop killed, answers reused), then the automatic host sessions. A run
+    recorded before session 14 has its stop and resume in its events only: they are listed from there, so said."""
+    d = cp.data
+    xs = list(d.get("interventions") or [])
+
+    def line(x: dict) -> str:
+        return (f"- {x.get('ts')}: {x.get('kind')}" + (f" — batch {x.get('batch')}" if x.get("batch") else "")
+                + (f" by {x.get('by')}" if x.get("by") else "")
+                + (f"; host model {x.get('host_model')}" if x.get("host_model") else "")
+                + (f"; file {x.get('file')} (sha256 {str(x.get('sha256'))[:16]}…)" if x.get("file") else "")
+                + (f"; {x.get('note')}" if x.get("note") else ""))
+    person = [x for x in xs if str(x.get("kind") or "").startswith(PERSON_KINDS)]
+    if not any(str(x.get("kind")).startswith(("stop (", "resume (")) for x in person):
+        for e in _events(d, "interrupted"):
+            person.append({"ts": e.get("ts"), "kind": "stop (the person's action)",
+                           "note": f"{e.get('signal')} during step {e.get('step')}; host sessions stopped "
+                                   f"{e.get('host_sessions_stopped', 'unknown')} (from the run's events)"})
+        for e in _events(d, "resumed"):
+            person.append({"ts": e.get("ts"), "kind": "resume (the person's action)",
+                           "note": f"process {e.get('by_pid')}; status before: {e.get('status_before')} "
+                                   "(from the run's events)"})
+        if not any(str(x.get("kind")).startswith("submission reused") for x in xs):
+            xs += [{"ts": e.get("ts"), "kind": "submission reused (automatic)", "batch": e.get("batch"),
+                    "note": f"staged set {e.get('run_id')}, submitted {e.get('submitted') or 'earlier'} "
+                            "(from the run's events)"} for e in _events(d, "submission_reused")]
+    person.sort(key=lambda x: str(x.get("ts")))
+    rest = [x for x in xs if x not in person and not str(x.get("kind") or "").startswith(PERSON_KINDS)]
+    L = ["## Manual interventions (the person's actions)", ""]
+    L += [line(x) for x in person] or ["- none"]
+    L += ["", "### What the run did with them, and its automatic host sessions (not a person)", ""]
+    L += [line(x) for x in sorted(rest, key=lambda x: str(x.get("ts")))] or ["- none"]
+    return L + [""]
+
+
+def _made_when(data: dict, ts) -> str:
+    """Whether a submission at `ts` was made before an interruption or after a resume (from the run's events)."""
+    if not ts:
+        return "made earlier (time not recorded)"
+    stops = [e.get("ts") for e in _events(data, "interrupted") if str(e.get("ts")) > str(ts)]
+    if stops:
+        return f"made before the interruption at {min(stops)}"
+    res = [e.get("ts") for e in _events(data, "resumed") if str(e.get("ts")) < str(ts)]
+    return f"made after the resume at {max(res)}" if res else "made in this drive"
 
 
 def summary(cp: Checkpoint) -> dict:
@@ -1920,6 +2136,11 @@ def _reuse_submission(ctx: Ctx, bid: str, todo: list[str]) -> ProposalSet | None
     b["submission"] = _submission_entry(ctx, ps, reused=True, revalidated=now_iso(), submitted=rec.get("ts"),
                                         statuses_at_submission=before)
     cp.event("submission_reused", batch=bid, run_id=rid, set_status=ps.status, submitted=rec.get("ts"))
+    # session 14 (W2; blind-07 defect 15): the reused answer is an intervention record too, with when it was made
+    cp.data["interventions"].append({"ts": now_iso(), "kind": "submission reused (automatic)", "batch": bid,
+                                     "by": "tenderpack.ai.workflow", "run_id": rid, "submitted": rec.get("ts"),
+                                     "note": f"the host session's staged set {rid} ({_made_when(cp.data, rec.get('ts'))})"
+                                             " was revalidated and taken instead of asking the batch again"})
     cp.save()
     ctx.say(f"  {bid}: the submission {rid} (submitted {rec.get('ts') or 'earlier'}) is reused after revalidation "
             f"({ps.status})")                   # session 13 (blind-07 scorer): it may have been made after a resume
@@ -2146,7 +2367,7 @@ def _host_analysis_packet(ctx: Ctx, hs, bid: str, todo: list[str]) -> dict:
     ws = ctx.ws
     packet = (hs.host_packet(ws, ctx.addendum, todo) if hs and hasattr(hs, "host_packet")
               else controller.host_task(ws, ctx.addendum, claim=False, provisions=todo))
-    packet = R.compact_analysis(packet)
+    packet = ANS.with_answers(ctx, R.compact_analysis(packet), "analysis", bid)     # session 14 (W5): owner's answers
     packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "analysis", "answer_only": todo,
                           "note": "answer the provisions in answer_only; any other provision in the packet belongs to "
                                   "another batch",
@@ -2207,8 +2428,8 @@ def _prep_analysis(ctx: Ctx, bid: str) -> dict | None:
     raw = controller.task_packet(ws, ctx.addendum, todo)
     images = [{"type": "image", "path": c["_path"], "sha256": c["sha256"], "media_type": c["media_type"]}
               for c in raw["crops"]]
-    packet = R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
-                                                 for c in raw["crops"]]))
+    packet = ANS.with_answers(ctx, R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
+                                                                      for c in raw["crops"]])), "analysis", bid)   # s14 (W5)
     prov, sess = ctx.cassette.provider("analysis", todo, ctx.used_sessions())
     if prov is None:
         return None
@@ -2451,8 +2672,8 @@ def _analysis_request(ctx: Ctx, bid: str, todo: list[str], prov) -> ProposalSet:
     raw = controller.task_packet(ws, ctx.addendum, todo)
     images = [{"type": "image", "path": c["_path"], "sha256": c["sha256"], "media_type": c["media_type"]}
               for c in raw["crops"]]
-    packet = R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
-                                                 for c in raw["crops"]]))
+    packet = ANS.with_answers(ctx, R.compact_analysis(dict(raw, crops=[{k: v for k, v in c.items() if not k.startswith("_")}
+                                                                      for c in raw["crops"]])), "analysis", bid)   # s14 (W5)
     staging = B.safe_staging(ws.staging, ws.root, ws.evidence)
     pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
     if pre is None and ctx.prefetch is not None and bid in ctx.prefetch.discarded and s["route"] == "recorded":
@@ -2606,7 +2827,7 @@ def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) -> 
                    "disposition"}
 
 
-def carried_lines(cps, pops: dict, tasks, ds, held: dict | None = None) -> list[str]:
+def carried_lines(cps, pops: dict, tasks, ds, held: dict | None = None, win: dict | None = None) -> list[str]:
     """Session 13: the review packet's own heading for the analysis items not promoted from the analysis set (rows
     carried to downstream tasks, and every other item with its reason): never "(dropped: )"."""
     dropped = (pops or {}).get("dropped") or {}
@@ -2617,9 +2838,12 @@ def carried_lines(cps, pops: dict, tasks, ds, held: dict | None = None) -> list[
     L = ["## Analysis rows carried to downstream tasks (and other analysis items not promoted)", ""]
     for it in items:
         a = carried_answer([it.id], tasks, ds, held) if it.statement_type in DS.CARRIED else None
+        route = DS.window_route(HO.prose(dict(it.payload or {})), win)   # session 14 (W2; blind-07 defect 13)
         L.append(f"- `{it.id}` {it.statement_type} ({it.provision}, {it.verification_status}): "
                  + _short(dropped.get(it.id) or DS.not_promoted_reason(it), 300)
-                 + (f" — {_short(a['why'], 300)}" if a else ""))
+                 + (f" — {_short(a['why'], 300)}" if a else "")
+                 + (f" — clarification route: {route} (its suggestion of a clarification is a bid decision now)"
+                    if route else ""))
     return L + [""]
 
 
@@ -2635,8 +2859,13 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) ->
                                                                           ).exists() else {}
         held = ((staged or {}).get("controller") or {}).get("held_back") or {}
     content = {c for o in promoted["sim"]["ops"] if o["valid"] for c in o.get("content") or []}
-    ok = ({o.provision for o in promoted["ops"].values()} | {c for o in promoted["ops"].values() for c in o.covers}
-          | {d.provision for d in promoted["dispositions"].values()} | content)
+    applied = {o.provision for o in promoted["ops"].values()} | {c for o in promoted["ops"].values() for c in o.covers} \
+        | content
+    no_eff = {d.provision for d in promoted["dispositions"].values() if d.disposition == "no_effect"}
+    # session 14 (W2; blind-07 defect 7): a promoted `unresolved` disposition ACCOUNTS FOR its provision but applies
+    # nothing: the provision is unresolved (never "answered"), with the disposition's reason
+    unres_disp = {d.provision: (k, d) for k, d in promoted["dispositions"].items() if d.disposition == "unresolved"}
+    ok = applied | no_eff
     out = {}
     for p, v in ctx.cp.data["provisions"].items():
         mine = [it for it in cps.items if it.provision == p]
@@ -2645,11 +2874,21 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) ->
             state = answer_state([it.id for it in mine if it.id in promoted["ops"] or it.id in promoted["dispositions"]],
                                  [_short(it.payload.get("why"), 200) for it in esc])
             out[p] = state if state["answered"] else {**state, "needs_person": True}
+            out[p].update(state=("applied" if p in applied else "no_effect") if state["answered"] else "partly applied",
+                          accounted=True, approved=False)
+            continue
+        if p in unres_disp:
+            k, d = unres_disp[p]
+            out[p] = {"answered": False, "state": "unresolved", "accounted": True, "approved": False,
+                      "needs_person": True, "accounted_by": k,
+                      "why": f"unresolved (accounted for by the promoted `unresolved` disposition {k}; nothing applied): "
+                             + _short(d.reason, 400)
+                             + ("; escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc) if esc else "")}
             continue
         carried = carried_answer([it.id for it in mine if it.statement_type in DS.CARRIED
                                   and it.verification_status in DS.PROMOTABLE], tasks, ds, held) if not esc else None
         if carried is not None and not any(it.verification_status not in DS.PROMOTABLE for it in mine):
-            out[p] = carried
+            out[p] = {**carried, "state": "unresolved", "accounted": True, "approved": False}
             continue
         if esc:
             why = "escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc)
@@ -2668,11 +2907,31 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) ->
         gap = cites_missing(ctx, p, mine)               # session 12: it cites an addendum this state does not hold
         if gap:
             why = f"{missing_reason(gap)} (the provision cites {', '.join(gap)}); {why}"
-        out[p] = {"answered": False, "why": why,
+        out[p] = {"answered": False, "why": why, "approved": False,
+                  "state": "unresolved" if any(it.verification_status in DS.PROMOTABLE for it in mine) or esc
+                  else "unaccounted",
+                  "accounted": any(it.verification_status in DS.PROMOTABLE for it in mine),
                   "needs_person": bool(esc) or bool(gap) or any(it.verification_status in ("conflicting",
                                                                                           "insufficient_evidence")
                                                                 for it in mine)}
     return out
+
+
+# session 14 (W2; blind-07 defect 7): the four states, kept distinct in every output
+#   accounted for  the provision has a promotable item (an op, a disposition, a carried row, an escalation)
+#   applied        a promoted op applied to the candidate (or a promoted `no_effect`: nothing to apply)
+#   unresolved     named but not applied, with the reason (a promoted `unresolved` disposition, a failed or escalated item)
+#   approved       a person's recorded decision only (never the workflow's; `approval` in the checkpoint)
+STATE_LABEL = {"applied": "applied (PROPOSED; not approved)", "no_effect": "no effect (PROPOSED; not approved)",
+               "partly applied": "PARTLY APPLIED (an escalated sibling stays unresolved)",
+               "unresolved": "UNRESOLVED (accounted for, not applied)", "unaccounted": "UNRESOLVED (unaccounted)"}
+
+
+def state_of(a: dict | None) -> str:
+    """The state label of a provision's answer record (answers.json / promotion.json), for the review packet."""
+    a = a or {}
+    st = a.get("state") or ("applied" if a.get("answered") else "unresolved" if a.get("accounted") else "unaccounted")
+    return STATE_LABEL.get(st, st)
 
 
 def step_downstream(ctx: Ctx, st: dict) -> None:
@@ -2751,6 +3010,7 @@ def _downstream_packet(ctx: Ctx, batch: list[dict], promoted: dict, total: int, 
     text; a packet that does not fit is split by task instead). The restored units are listed in the packet."""
     ws = ctx.ws
     pk = DS.packet(ws, ctx.addendum, batch, promoted, total, state or ws.identity().model_dump())
+    pk = ANS.with_answers(ctx, pk, "downstream")                  # session 14 (W5): the owner's answers it concerns
     try:
         st2 = DS._stage(promoted["r2"], ctx.addendum).state
     except (KeyError, StopIteration):
@@ -3354,7 +3614,29 @@ def step_check_register(ctx: Ctx, st: dict) -> None:
     found = [m.groups() for m in re.finditer(r"(?m)^  \[([^\]]+)\] ([^:]*): (.*)$", buf.getvalue())]
     st.update(exit_code=code, findings=len(found), by_kind=dict(Counter(k for k, _, _ in found)),
               first=[f"[{k}] {w}: {_short(d, 200)}" for k, w, d in found[:40]])
+    prom = _js(ctx.dir / "promotion.json") or {}
+    st["classified"] = classify_register_findings(found, set(prom.get("rows_new") or []))   # session 14 (W2)
     ctx.say(f"  check-register: exit {code}, {len(found)} finding(s) {dict(Counter(k for k, _, _ in found))}")
+
+
+# session 14 (W2; blind-07 defect 16): which check-register findings are the downstream phase's gap (the run's own new
+# rows without the evidence item, activity or reason it should have proposed) and which are real defects
+_DELIVERABLE_GAP = ("deliverable",)
+
+
+def classify_register_findings(found: list, new_rows: set) -> dict:
+    """{not_proposed: ["[kind] where: detail" ...], defects: [...]} for check-register's findings `found` ([(kind,
+    where, detail)]): a `deliverable` finding on a row this run proposed (`new_rows`) is "missing because downstream
+    did not propose" its evidence item, activity or no_deliverable reason; every other finding is a defect."""
+    out = {"not_proposed": [], "defects": []}
+    for k, w, d in found:
+        line = f"[{k}] {w}: {_short(d, 200)}"
+        if k in _DELIVERABLE_GAP and w.strip() in new_rows:
+            out["not_proposed"].append(line + " (missing because the downstream phase did not propose the row's "
+                                              "evidence item, activity or reason)")
+        else:
+            out["defects"].append(line)
+    return out
 
 
 def step_outputs(ctx: Ctx, st: dict) -> None:
@@ -3457,16 +3739,25 @@ def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
     new, readings = set(prom.get("rows_new") or []), set(prom.get("readings") or [])
     answers = json.loads((ctx.dir / "downstream" / "answers.json").read_text(encoding="utf-8")) \
         if (ctx.dir / "downstream" / "answers.json").exists() else {}
-    scope_rows = set()
+    scope_rows: dict[str, list[str]] = {}
     ws = ctx.ws
+    if r.get("working") is not None:
+        # session 14 (W2; blind-07 defect 7): the candidate A3's own list (partial.unresolved_rows: the op file's
+        # unresolved provisions, promoted `unresolved` dispositions included, and the rows they name), so A1, A3 and
+        # the packet agree and a superseded value is never shown as "not changed by this run"
+        from ..partial import unresolved_rows
+        scope_rows = {k: [w for w in v if not w.startswith("STALE")] for k, v in unresolved_rows(r).items()}
     for p, a in answers.items():
         if not a.get("answered"):
             u = ws.units_by_id.get(p) or {}
             pst = ws.stage(ws.prev_stage(add)).state
             from ..citations import citations, resolve
             t = set(resolve(citations(u.get("text") or ""), set(pst)))
-            scope_rows |= {e["row"].id for e in r["evals"] if any(x in t or any(x.startswith(y + "/") for y in t)
-                                                                   for x in e["row"].units)}
+            for e in r["evals"]:
+                if any(x in t or any(x.startswith(y + "/") for y in t) for x in e["row"].units):
+                    lst = scope_rows.setdefault(e["row"].id, [])
+                    if not any(w.startswith(p + " ") for w in lst):
+                        lst.append(f"{p} UNRESOLVED: {_short(a.get('why'), 160)}")
     out = {}
     for e in r["evals"]:
         rid = e["row"].id
@@ -3480,8 +3771,9 @@ def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
             out[rid] = f"PROPOSED BY THE AI WORKFLOW: reading re-made at {add} ({vstat.get(rid, 'interpretation_pending')})"
         elif ev.get("stale"):
             out[rid] = f"UNRESOLVED: STALE at {add} (its reading was not re-made: " + _short("; ".join(ev["stale"]), 120) + ")"
-        elif rid in scope_rows:
-            out[rid] = f"UNRESOLVED: cites a unit an unresolved provision of {add} names"
+        elif scope_rows.get(rid):
+            out[rid] = ("UNRESOLVED (value in question): " + "; ".join(
+                w.replace(" UNRESOLVED: ", " unresolved: ", 1) for w in scope_rows[rid][:3]))[:400]
         elif rv.get("status") == "changed":
             out[rid] = "DECIDED BEFORE, CHANGED SINCE: review again"
     default = "proposed (existing row; not changed by this run; not reviewed)"
@@ -3490,7 +3782,9 @@ def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
                "meaning": f"a new row or a reading re-made at {add} by this run, validated by the controller; a person "
                           "decides it (accept / reject)"},
               {"status": "UNRESOLVED", "rows": cnt.get("UNRESOLVED", 0),
-               "meaning": f"STALE at {add} with no re-made reading, or citing a unit an unresolved provision names"},
+               "meaning": f"STALE at {add} with no re-made reading, or (value in question) citing a unit an unresolved "
+                          f"provision of {add} names: the value shown may be superseded by that provision, which is "
+                          "named with its reason (never 'not changed by this run')"},
               {"status": "DECIDED", "rows": cnt.get("DECIDED", 0),
                "meaning": "a named person's decision in the copied decisions file (none means nobody has decided yet)"},
               {"status": "proposed (existing row)", "rows": cnt.get("proposed", 0),
@@ -3604,9 +3898,8 @@ def review_markdown(ctx: Ctx) -> str:
          + (("; host sessions report: " + ", ".join(sorted({m for b in d["batches"].values()
                                                             for m in (b.get("host_session") or {}).get("model_reported") or []})))
             if any((b.get("host_session") or {}).get("model_reported") for b in d["batches"].values()) else ""),
-         "- status **{}**".format(*(_final_status(cp)[:1])) + (": " + _final_status(cp)[1] if _final_status(cp)[1] else ""),
-         f"- usage: {d['usage']['calls']} call(s), {d['usage']['input_tokens']} input / {d['usage']['output_tokens']} output "
-         f"tokens; cost {d['usage']['cost_usd'] if d['usage']['cost_usd'] is not None else 'not computed'}"]
+         "- status **{}**".format(*(_final_status(cp)[:1])) + (": " + _final_status(cp)[1] if _final_status(cp)[1] else "")]
+    L += usage_lines(cp)                            # session 14 (W2): the host's own usage; unknown is never 0
     L += code_lines(cp)                             # session 13: the code identity; DIFFERENT_CODE when it changed
     L += base_lines(ctx) + [""]                     # session 12: the base run, the missing addenda
     # ---- session 11: three separate records (checkpoint keys execution, completeness, approval)
@@ -3717,16 +4010,25 @@ def review_markdown(ctx: Ctx) -> str:
     # ---- needs a person first
     unres = [p for p, a in answers.items() if not a.get("answered")]
     esc = [it for it in (cps.items if cps else []) if it.statement_type == "escalation"]
+    st_n = Counter((answers.get(p) or {}).get("state") or ("applied" if (answers.get(p) or {}).get("answered")
+                                                             else "unresolved") for p in answers)
     L += ["## First: unresolved provisions and escalations", "",
-          f"{len(unres)} of {len(d['provisions'])} provisions are not answered by a promoted item (each is `unresolved` in "
-          f"the candidate op file with the reason); {len(esc)} escalation(s).", ""]
+          f"{len(unres)} of {len(d['provisions'])} provisions are not applied or settled by a promoted item (each is "
+          f"`unresolved` in the candidate op file with the reason); {len(esc)} escalation(s).",
+          f"- states (session 14: kept distinct): applied {st_n.get('applied', 0)}, no effect {st_n.get('no_effect', 0)}, "
+          f"partly applied {st_n.get('partly applied', 0)}, unresolved but accounted for {st_n.get('unresolved', 0)}, "
+          f"unaccounted {st_n.get('unaccounted', 0)}; approved by a person: none (only a person's recorded decision "
+          "approves; see Human approval above)", ""]
     from ..clarify import route_lines                   # session 12 (W3a): the closed clarification route, one wording
     win = diff.get("clarification_window") or {}
     L += route_lines(win) + ([""] if win.get("closed") else [])
     for it in esc:
         sc = ((tasks.get(f"esc:{it.provision}") or {}).get("scope")) or _scope(ctx, it.provision)
         L += [f"- **ESCALATED {it.id}** ({it.provision}): {_short(it.payload.get('why'), 300)}"]
-        L += [f"  - clarification route: {win['note']}"] if win.get("closed") else []
+        # session 14 (W2; blind-07 defect 13): the closed-window note only where a clarification would have been the
+        # route, never on a software limitation or a schema failure
+        L += [f"  - clarification route: {win['note']}"] if win.get("closed") and DS.route_class(
+            f"{it.payload.get('why')} {it.payload.get('what_is_unsupported')}") != "software" else []
         L += [
               f"  - unsupported: {_short(it.payload.get('what_is_unsupported'), 300)}",
               "  - evidence: " + ("; ".join(f"{x.unit_id} p{x.page}: “{_short(x.words, 160)}”" for x in it.evidence) or "none"),
@@ -3738,7 +4040,8 @@ def review_markdown(ctx: Ctx) -> str:
             continue
         v = d["provisions"].get(p, {})
         L.append(f"- **UNRESOLVED {p}** ({v.get('kind')}, p{','.join(map(str, v.get('pages') or []))}): {answers[p].get('why')}"
-                 + (f" — {win['note']}" if win.get("closed") else ""))
+                 + (f" — {win['note']}" if win.get("closed") and DS.route_class(answers[p].get("why")) !=
+                    "software" else ""))
     L.append("")
     rr = diff.get("answers_to_reread") or []            # session 12 (W3a): superseded answers, for a person
     if rr:
@@ -3758,7 +4061,7 @@ def review_markdown(ctx: Ctx) -> str:
         mine = [it for it in (cps.items if cps else []) if it.provision == p]
         u = units.get(p) or {}
         L.append(f"### {p} ({v.get('kind')}, p{','.join(map(str, v.get('pages') or []))}) — "
-                 + ("answered" if (answers.get(p) or {}).get("answered") else "UNRESOLVED"))
+                 + state_of(answers.get(p)))                # session 14 (W2): the four states, never "answered" alone
         L.append(f"- source: “{_short(u.get('text'), 360)}”")
         if not mine:
             via = v.get("accounted_by")
@@ -3805,7 +4108,9 @@ def review_markdown(ctx: Ctx) -> str:
             bad = next((x for x in it.validation if not x.ok), None)
             note = next((x.detail for x in it.validation if x.ok and x.check == HO.CHECK), "") or \
                 next((x.detail for x in it.validation if x.ok and x.check in ("interpretation", "duration", "relationship")), "")
-            if it.statement_type in ("clarification_item", "escalation") and win.get("closed"):
+            if win.get("closed") and (it.statement_type == "clarification_item" or (
+                    it.statement_type == "escalation" and DS.route_class(" ".join(
+                        str(v) for v in (it.payload or {}).values())) != "software")):
                 note = (note + "; " if note else "") + win["note"]          # session 12: never suggested as sendable
             L.append(f"| {it.id} | {it.statement_type} | {it.task} | {_shown_status(it)} | "
                      f"{_short((bad.check + ': ' + bad.detail) if bad else note, 200).replace('|', '/')} |")
@@ -3815,14 +4120,19 @@ def review_markdown(ctx: Ctx) -> str:
                   if dreport.get("interactions") else "- interactions: none",
                   "- A5 problems the proposals would add: " + ("; ".join(_short(x, 200) for x in dreport.get("schedule_problems")[:10])
                                                               if dreport.get("schedule_problems") else "none"), ""]
+        if dreport.get("deliverable_gaps"):         # session 14 (W2; blind-07 defect 16)
+            L += ["- new rows without the deliverables the downstream phase should have proposed (check-register "
+                  "reports them as a downstream gap): " + "; ".join(f"{k}: {v}" for k, v in
+                                                                    dreport["deliverable_gaps"].items())[:1500], ""]
     elif tasks:
         L += ["## Downstream proposals", "", f"- {len(tasks)} task(s); no downstream set was produced "
               "(batches: " + ", ".join(k + " " + cp.batch(k)["status"] for k in cp.batches("downstream")) + ")", ""]
     # ---- promotion
     if prom:
         L += ["## Promoted into the candidate (PROPOSED; nothing accepted)", ""]
-        for k in ("ops", "dispositions", "rows_new", "readings", "issues", "evidence_items", "activities", "lead_times",
-                  "clarifications", "relationships", "no_change"):
+        for k in ("ops", "dispositions", "accounted_unresolved", "rows_new", "readings", "issues", "analysis_issues",
+                  "evidence_items", "activities", "lead_times", "clarifications", "relationships",
+                  "referenced_documents", "no_change"):
             if prom.get(k):
                 L.append(f"- {k.replace('_', ' ')}: {', '.join(map(str, prom[k][:40]))}" + (f" (+{len(prom[k]) - 40})" if len(prom[k]) > 40 else ""))
         L += [f"- unresolved provisions: {len(prom.get('unresolved') or [])}"] + [f"- note: {x}" for x in prom.get("notes") or []] + [""]
@@ -3833,9 +4143,16 @@ def review_markdown(ctx: Ctx) -> str:
     cr = cp.step("check_register")
     if cr.get("status") == "done":
         L += ["## check-register on the candidate", "", f"- exit {cr.get('exit_code')}; {cr.get('findings')} finding(s) "
-              f"{cr.get('by_kind')}"] + [f"  - {x}" for x in (cr.get("first") or [])[:25]] + [""]
+              f"{cr.get('by_kind')}"]
+        cl = cr.get("classified")
+        if cl:                                   # session 14 (W2): a downstream gap is not a register defect
+            L += [f"- missing because the downstream phase did not propose them (the run's own new rows): "
+                  f"{len(cl['not_proposed'])}"] + [f"  - {x}" for x in cl["not_proposed"][:20]]
+            L += [f"- defects: {len(cl['defects'])}"] + [f"  - {x}" for x in cl["defects"][:25]] + [""]
+        else:
+            L += [f"  - {x}" for x in (cr.get("first") or [])[:25]] + [""]
     # ---- session 13: the analysis items not promoted from the analysis set, under their own heading
-    L += carried_lines(cps, pops, tasks, ds, dreport.get("held_back") or {})
+    L += carried_lines(cps, pops, tasks, ds, dreport.get("held_back") or {}, win)
     # ---- coverage
     cov = (cps.coverage.model_dump() if cps else {})
     L += ["## Coverage", "", f"- provisions: {len(d['provisions'])}; accounted for by the combined set: {cov.get('accounted')}; "
@@ -3847,8 +4164,9 @@ def review_markdown(ctx: Ctx) -> str:
                                                        else "") for p, t in via.items()))
     res = cp.step("validation").get("resolution")
     if res:
-        L.append(f"- resolution (controller): resolved {res.get('resolved')}, pending {res.get('pending')}, invalid "
-                 f"{res.get('invalid')}, unaccounted {res.get('unaccounted')}; approved {res.get('approved')}")
+        L.append(f"- the analysis ITEMS' resolution by the controller (items, not provisions; session 14): resolved "
+                 f"{res.get('resolved')}, pending {res.get('pending')}, invalid {res.get('invalid')}, unaccounted "
+                 f"{res.get('unaccounted')}; approved {res.get('approved')}")
     L.append(f"- structural units of {add} that are not provisions (listed so nothing is dropped): "
              + ", ".join(f"{x['unit_id']} ({x['kind']})" for x in d.get("structure") or []))
     L += ["- batches: " + ", ".join(f"{k} {b['status']}" + (f" ({_short(b.get('error'), 80)})" if b.get("error") else "")
@@ -3856,12 +4174,7 @@ def review_markdown(ctx: Ctx) -> str:
     # ---- session 11: the critic, and what the request layer did (failure classes, deferrals, repairs, notices)
     L += critic_section(ctx, cps, ds) + requests_section(cp)
     # ---- interventions
-    L += ["## Manual interventions (and automatic host sessions, named as such: not a person)", ""]
-    L += [f"- {x['ts']}: {x.get('kind')} — batch {x.get('batch')} by {x.get('by')}"
-          + (f"; host model {x.get('host_model')}" if x.get("host_model") else "")
-          + (f"; file {x.get('file')} (sha256 {str(x.get('sha256'))[:16]}…)" if x.get("file") else "")
-          + (f"; {x.get('note')}" if x.get("note") else "") for x in d.get("interventions") or []] or ["- none"]
-    L.append("")
+    L += intervention_lines(cp)                     # session 14 (W2): the person's stop and resume, killed and reused
     # ---- diff
     dm = rd / "diff.md"
     if dm.exists():
@@ -4158,5 +4471,5 @@ def submit_batch(run_id: str, file, by: str, host_model: str | None = None, batc
     finally:
         lock.release()
     if cont:
-        return resume(run_id, staging, retry_failed=False, echo=echo, sleep=sleep)
+        return resume(run_id, staging, retry_failed=False, echo=echo, sleep=sleep, by_person=False)
     return summary(cp)

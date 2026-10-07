@@ -82,13 +82,34 @@ _TRIGGERS = tuple((re.compile(p, re.I), why, kind) for p, why, kind in TRIGGERS)
 QUOTE_KEYS = ("words", "quote", "sources", "evidence", "answer", "recorded_answer", "referenced_in", "source")
 
 
+# session 14 (W4; blind-07 COMPARISON section 8 item 14): a closure word under a negation in its own clause ("unit not
+# resolved", "has not been settled", "whether it resolves") declares nothing closed. NEGATION: the words that negate or
+# make conditional what follows them; the window is the clause before the match (cut at . ; : ! ? , | or a line break)
+# and at most NEGATION_WINDOW words. Topic words are not affected: a negated precedence statement ("Volume I does not
+# prevail") still puts the judgment in play.
+NEGATION = re.compile(r"^(?:not|never|no|nor|neither|without|cannot|whether|if|until|unless|yet|\w+n't)$", re.I)
+NEGATION_WINDOW = 5
+_CLAUSE_CUT = re.compile(r"[.;:!?,|\n]")
+
+
+def negated(text: str, start: int, window: int = NEGATION_WINDOW) -> bool:
+    """Whether the word at `start` in `text` stands under a negation (NEGATION) among the `window` words before it in
+    its own clause. Session 14 (W4)."""
+    head = str(text or "")[:start]
+    cuts = [m.end() for m in _CLAUSE_CUT.finditer(head)]
+    clause = head[cuts[-1]:] if cuts else head
+    return any(NEGATION.match(w) for w in re.findall(r"[A-Za-z']+", clause)[-window:])
+
+
 def triggers(text: str, kinds: tuple[str, ...] = ("closure", "topic")) -> list[str]:
-    """What the words signal ([] when nothing). `text` is the model's own prose; `kinds` limits the triggers."""
+    """What the words signal ([] when nothing). `text` is the model's own prose; `kinds` limits the triggers. Session 14
+    (W4): a closure word counts only where it is asserted (the first occurrence not negated: negated())."""
     out = []
+    t = str(text or "")
     for rx, why, kind in _TRIGGERS:
         if kind not in kinds:
             continue
-        m = rx.search(str(text or ""))
+        m = next((x for x in rx.finditer(t) if kind != "closure" or not negated(t, x.start())), None)
         if m:
             out.append(f"{why} ('{m.group(0)}')")
     return out
@@ -287,6 +308,31 @@ def pending_links(register: dict | None) -> dict[str, list[str]]:
     return out
 
 
+# session 14 (W4; report section 9 L27, blind-07 COMPARISON section 5): an issue whose point an explicit and unambiguous
+# document rule settles (the controller's re_present_issue writes `applied_rule` and `confirm`: "applied rule: <clause
+# words>; a person confirms the application") is a PROPOSED basis for a person to confirm, with its owner kept; it is
+# not shown as HUMAN DECISION PENDING unless a genuine judgment remains: a proposed status or resolution, a pending
+# decision of the clarification register naming it, or its own remaining words asserting a judgment. Its rows stay NOT
+# SETTLED ("applied rule awaiting a person's confirmation", signals.awaiting_note) until a person accepts the issue.
+PROPOSED_BASIS = "PROPOSED BASIS (applied rule; a person confirms the application)"
+
+
+def applied_basis(issue: dict | None) -> list[str]:
+    """The confirmation lines of an issue the controller re-presented as an applied rule ([] when it is not one)."""
+    issue = issue or {}
+    return [str(x) for x in issue.get("confirm") or []] if issue.get("applied_rule") and issue.get("confirm") else []
+
+
+def awaiting_confirmation(iid: str, issue: dict, decisions: list[dict] | None,
+                          linked: list[str] | None = None) -> list[str]:
+    """The applied-rule confirmation lines of an issue no person has decided and that holds no genuine judgment
+    (pending_reasons is empty); [] otherwise. Session 14 (W4)."""
+    basis = applied_basis(issue)
+    if not basis or decision(decisions, "issue", iid, issue or {}) is not None:
+        return []
+    return [] if pending_reasons(iid, issue, decisions, linked) else basis
+
+
 def pending_reasons(iid: str, issue: dict, decisions: list[dict] | None, linked: list[str] | None = None) -> list[str]:
     """Why an open issue is a person's decision not yet recorded ([] when it is not, or when a person's decision is bound
     to it as it now reads). The ONE rule every output uses (A1's Issues sheet, the A3 page's marker and a3_detail.html,
@@ -298,7 +344,8 @@ def pending_reasons(iid: str, issue: dict, decisions: list[dict] | None, linked:
     if decision(decisions, "issue", iid, issue) is not None:
         return []
     out = []
-    if issue.get(MARKER):
+    basis = applied_basis(issue)                 # session 14 (W4): an applied rule is a basis to confirm, not a judgment
+    if issue.get(MARKER) and not basis:
         out.append("proposed by the AI workflow")
     if issue.get("status") not in (None, "", "open") or issue.get("resolution"):
         out.append(f"a proposed {'resolution' if issue.get('resolution') else 'status'}")
@@ -306,7 +353,7 @@ def pending_reasons(iid: str, issue: dict, decisions: list[dict] | None, linked:
     if linked:
         out.append("a pending decision of the clarification register names it (" + "; ".join(linked) + ")")
     ow = owner_judgment(issue)
-    if ow:
+    if ow and not basis:
         out.append(ow)
     return out
 
@@ -318,13 +365,17 @@ def issue_label(iid: str, issue: dict, decisions: list[dict] | None, linked: lis
     a pending decision of the clarification register links (`linked`) or whose owner is Legal or Commercial
     (owner_judgment), without a person's decision bound to it; and the decision when one is."""
     closing = issue.get("status") not in (None, "", "open") or bool(issue.get("resolution"))
-    judged = bool(asserted_judgment(issue)) or bool(linked) or bool(owner_judgment(issue))
-    d = decision(decisions, "issue", iid, issue) if (closing or issue.get(MARKER) or judged) else None
+    basis = applied_basis(issue)                 # session 14 (W4): an applied rule's owner confirms; not a judgment
+    judged = bool(asserted_judgment(issue)) or bool(linked) or (bool(owner_judgment(issue)) and not basis)
+    d = decision(decisions, "issue", iid, issue) if (closing or issue.get(MARKER) or judged or basis) else None
     if closing and d is not None:
         return f"{str(issue.get('status') or 'resolved').upper()} (decision recorded: {d.get('reviewer')}, {d.get('date')})"
     if closing:
         return (f"{HUMAN_DECISION_PENDING} (a proposed {'resolution' if issue.get('resolution') else 'status'}; the "
                 "issue stays open)")
+    if basis and not judged:
+        return (f"APPLIED RULE CONFIRMED (decision recorded: {d.get('reviewer')}, {d.get('date')})" if d is not None
+                else PROPOSED_BASIS)
     if issue.get(MARKER) and d is None:
         return f"{HUMAN_DECISION_PENDING} (proposed by the AI workflow)"
     if judged and d is not None:

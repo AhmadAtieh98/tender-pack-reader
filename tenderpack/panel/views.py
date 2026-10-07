@@ -1150,6 +1150,12 @@ def _qr_label() -> str:
     return LABEL
 
 
+def _qr_kind() -> str:
+    """Session 14 (W5): what a briefing is, shown beside its label everywhere it is rendered."""
+    from ..ai.quick_review import KIND
+    return KIND
+
+
 def quick_reviews(staging: Path) -> list[tuple[str, Path]]:
     d = Path(staging) / "quick-review"
     return [(p.name, p) for p in sorted(d.iterdir(), reverse=True) if p.is_dir() and not p.name.startswith(".")] \
@@ -1180,11 +1186,16 @@ def quick_review_box(base: str, rid: str, run_dir: Path, cp: dict) -> str:
         except (OSError, ValueError):
             continue
     if notes:
+        from ..ai.answers import state_line                     # session 14 (W5): what the run did with each answer
         rows += ("<h3>Your answers offered to this run (PROPOSED notes; never a decision)</h3>" + table(
-            ["Note", "Question", "Answer (by, when)", "Offered after step", "Revalidation"],
-            [[esc(n.get("id")), esc(n.get("question")), esc(f"{n.get('answer')} ({n.get('by')}, {n.get('recorded')})"),
-              esc(n.get("offered_after")), esc((n.get("revalidation") or {}).get("state"))] for n in notes]))
-    return (f'<section class="box"><h2>AI quick review (preliminary, lower priority)</h2><p class="note">A separate, '
+            ["Note", "Question", "Answer (kind; by, when)", "Offered after step", "Revalidation", "Taken by the run"],
+            [[esc(n.get("id")), esc(n.get("question")),
+              esc(f"{n.get('answer')} ({n.get('answer_kind') or 'judgment'}; {n.get('by')}, {n.get('recorded')})"),
+              esc(n.get("offered_after")), esc((n.get("revalidation") or {}).get("state")),
+              esc(state_line({"handoff": n.get("handoff") or {"state": "offered"},
+                              "offers": [{"run": rid, "result": "offered"}]}))] for n in notes]))
+    return (f'<section class="box"><h2>AI quick review (preliminary, lower priority)</h2>'
+            f'<p class="banner">{esc(_qr_kind())}</p><p class="note">A separate, '
             "bounded AI reading of this run's PDF (ONE session, the read-only retrieval tools on the published "
             "workspace, never this run's proposals): a PRELIMINARY AI BRIEFING, unverified, to compare with this run "
             f"later. It never changes the run.</p><form method=\"post\" action=\"{base}runs/{esc(rid)}/quickreview\">"
@@ -1193,7 +1204,8 @@ def quick_review_box(base: str, rid: str, run_dir: Path, cp: dict) -> str:
 
 def quickreview_list(base: str, staging: Path) -> str:
     rows = [_qr_row(base, q, d) for q, d in quick_reviews(staging)]
-    return page(base, "Quick reviews", f'<p class="banner">{esc(_qr_label())}</p><p class="note">Start one from the '
+    return page(base, "Quick reviews", f'<p class="banner">{esc(_qr_label())}</p><p class="banner">{esc(_qr_kind())}'
+                '</p><p class="note">Start one from the '
                 "New addendum box (HOME) or from a run's page.</p>" + table(QR_HEAD, rows))
 
 
@@ -1209,7 +1221,7 @@ def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]],
     t = read_json(d / "timing.json") or {}
     b = read_json(d / "briefing.json")
     cmp = read_json(d / "comparison.json")
-    L = [f'<p class="banner">{esc(label)}</p>']
+    L = [f'<p class="banner">{esc(label)}</p>', f'<p class="banner">{esc(_qr_kind())}</p>']     # session 14 (W5)
     L.append(f"<p>Addendum {esc(req.get('addendum'))} · route {esc(req.get('route'))} · started "
              f"{esc(req.get('created'))} · status <b>{esc(stt.get('status') or ('running' if running_job else 'unknown'))}"
              f"</b>" + (f" · {esc(stt.get('error'))}" if stt.get("error") else "") + "</p>")
@@ -1262,13 +1274,18 @@ def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]],
         pass
     L.append("<h2>Questions for you</h2><p class=\"note\">Your answer is recorded with your name and the time against "
              "the exact question and the evidence it cites (answers.yaml beside the briefing); it never changes "
-             "curation/. It reaches a run only between phases, as a PROPOSED note (Offer, below).</p>")
+             "curation/. It reaches a run only at a safe checkpoint (before analysis, downstream or promotion), as a "
+             "PROPOSED item: a fact only with evidence the program finds (else it is refused, with the reason), a "
+             "judgment as your proposed judgment; never an approval (approvals stay in accept/reject).</p>")
+    from ..ai.answers import state_line                         # session 14 (W5): each answer's state
     for q in b.get("questions") or []:
         ev = "".join(f"<li>page {esc(e.get('page'))}" + (f", {esc(e.get('unit_id'))}" if e.get("unit_id") else "")
                      + f": “{esc(e.get('quotation'))}” <span class=\"note\">({esc(c)})</span></li>"
                      for e, c in zip(q.get("evidence") or [], q.get("checks") or [""] * 99))
-        done = "".join(f"<li><b>{esc(a.get('by'))}</b> at {esc(a.get('recorded'))}: {esc(a.get('answer'))} "
-                       f"<span class=\"note\">({esc(a.get('status'))})</span></li>" for a in ans.get(q["id"], []))
+        done = "".join(f"<li><b>{esc(a.get('by'))}</b> at {esc(a.get('recorded'))} ({esc(a.get('kind') or 'judgment')}"
+                       f"{', ' + str(len(a.get('answer_evidence') or [])) + ' cite(s)' if a.get('answer_evidence') else ''}"
+                       f"): {esc(a.get('answer'))} <span class=\"note\">({esc(a.get('id'))}: {esc(state_line(a))})"
+                       "</span></li>" for a in ans.get(q["id"], []))
         L.append(f'<fieldset><legend><b>{esc(q["id"])}</b> {esc(q["question"])}'
                  + (f' <span class="note">(decision owner: {esc(q.get("decision_owner"))})</span>'
                     if q.get("decision_owner") else "") + f"</legend><ul>{ev}</ul>"
@@ -1276,7 +1293,13 @@ def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]],
                  + f'<form method="post" action="{base}quickreview/{esc(qid)}/answer">'
                  f'<input type="hidden" name="question" value="{esc(q["id"])}">'
                  f'<div class="line"><label>Your answer <textarea name="answer" rows="3" cols="80" required>'
-                 f'</textarea></label></div><div class="line"><label>Your name <input name="name" size="30" '
+                 f'</textarea></label></div>'
+                 '<div class="line"><label>It is <select name="kind"><option value="judgment">my judgment (a proposal; '
+                 'never an approval)</option><option value="fact">a fact (cite its evidence below)</option></select>'
+                 '</label></div><div class="line"><label>Evidence, one per line: <code>page 3: the words</code> '
+                 '(this addendum) or <code>VOL-I:6.1: the words</code> (the pack) <textarea name="evidence" rows="2" '
+                 'cols="80"></textarea></label></div>'
+                 f'<div class="line"><label>Your name <input name="name" size="30" '
                  f'required></label> <button>Record my answer</button></div></form></fieldset>')
     if not b.get("questions"):
         L.append('<p class="note">no question in this briefing</p>')
@@ -1296,8 +1319,9 @@ def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]],
                  " <button>Compare with this run</button></form>"
                  f'<form method="post" action="{base}quickreview/{esc(qid)}/offer"><select name="run">{opts}</select>'
                  ' <button>Offer my answers to this run</button> <span class="note">(only between phases: while a step '
-                 "or batch runs, the answers are held; each becomes a PROPOSED note, checked against the run's "
-                 "addendum and guarded against staleness; never a decision)</span></form>")
+                 "or batch runs, the answers are held; each becomes a PROPOSED note that the run takes at its next safe "
+                 "checkpoint after the evidence checks and the staleness guard, re-asking the batches it concerns; "
+                 "never a decision)</span></form>")
     if cmp:
         c = cmp.get("counts") or {}
         L.append(f"<p>Compared with run <b>{esc(cmp['run']['run_id'])}</b> on {esc(cmp.get('created'))}: "

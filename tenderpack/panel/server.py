@@ -673,8 +673,13 @@ def _handler(panel: Panel):
                 if errors:
                     return self._html(400, V.page(panel.base, "Not recorded", "<ul>" + "".join(
                         f'<li class="bad">refused: {V.esc(e)}</li>' for e in errors) + "</ul>"))
+                # session 14 (W5): the answer's kind and its evidence (one cite per line), checked at the run's checkpoint
+                kind = f.get("kind") if f.get("kind") in ("judgment", "fact") else "judgment"
+                cites = [x.strip() for x in (f.get("evidence") or "").splitlines() if x.strip()][:20]
                 j = panel.jobs.start("qr-answer", ["ai", "quick-review", "answer", qid, "--question", q, "--answer",
-                                                   answer, "--by", name, *common], {"qr": qid, "question": q, "by": name})
+                                                   answer, "--by", name, "--kind", kind,
+                                                   *[a for c in cites for a in ("--cite", c)], *common],
+                                     {"qr": qid, "question": q, "by": name, "kind": kind})
                 return self._redirect(f"jobs/{j['id']}")
             rid = f.get("run", "")
             if not RUN_ID.match(rid) or not (cfg.staging / "runs" / rid / "checkpoint.json").is_file():

@@ -64,8 +64,13 @@ def test_r1_1_relationship_impact_carries_the_relationships_issues(a2d, real):
     pend = real["pending_issues"]
     assert T24 in pend, "I-VOL-II-T24-TENSIONS is a person's decision not yet recorded"
     seen = set()
+    scope = stage2.issue_scope_args(real)
     for x in a2d["relationships"]:
-        want = [i for rid in x["path"] for i in (by_id.get(rid) or {}).get("issues") or []]
+        # session 14 (W4; report section 9 A4): an issue travels along a relationship only within its scope
+        # (relationships.issue_reaches); this test expected every issue of every entry on the path before the rule, so
+        # the maxima/range issue was noted on VOL-V-29.3-01 through the rolling-average ramp-up link
+        want = [i for rid in x["path"] for i in (by_id.get(rid) or {}).get("issues") or []
+                if relationships.issue_reaches(by_id.get(rid) or {}, i, *scope)[0]]
         for i in want:
             assert any(n.startswith(signals.issue_note(i, pend)) for n in x["open_issues"]), (x["target"], i, x)
         if x["stage"] == "ADD-02" and T24 in want:
@@ -125,12 +130,20 @@ def test_r1_2_every_target_row_of_a_relationship_lists_its_issues(real, a1):
     rows = _rows(a1)
     sheet = {i["id"]: i for i in a1["sheets"]["Issues"]["rows"]}
     n = 0
+    scope = stage2.issue_scope_args(real)
     for e in real["relationships"]:
         for t in relationships.ends(e, "to"):
             if t not in rows:
                 continue
             for i in e.get("issues") or []:
                 cell = rows[t]["issues"]
+                # session 14 (W4; report section 9 A4, R1's weak ramp-up link): an issue reaches a row through a
+                # relationship only when the relationship's scope includes the issue's subject
+                # (relationships.issue_reaches); a link outside the scope is said on the row's Relationships cell
+                # instead of listing the issue (this test asserted every link before the rule)
+                if not relationships.issue_reaches(e, i, *scope)[0]:
+                    assert any(f"issue {i} not carried by {e['id']}" in x for x in rows[t]["relationships"]), t
+                    continue
                 assert i in cell or any(c.startswith(f"{i} (via ") and e["id"] in c and f"({e['status']})" in c
                                         for c in cell), (t, i, cell)
                 assert any(str(x).split(" ")[0] == t for x in sheet[i]["rows"]), (i, t, sheet[i]["rows"])

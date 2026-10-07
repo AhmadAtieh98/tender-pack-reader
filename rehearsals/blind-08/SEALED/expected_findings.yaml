@@ -1,0 +1,526 @@
+# SEALED answer key: blind rehearsal 08. SYNTHETIC: not tender content.
+# Every ADD-03 quote below (a mapping with "quote" and "page" and no "doc", or doc "ADD-03") is
+# verified by `build_addendum.py --check <pack> --verify-key expected_findings.yaml` to occur on the
+# stated page of the built PDF (watermark removed, whitespace normalised). Every pack quote (a mapping
+# with "doc" naming a pack file) is verified verbatim on the stated page. Every "quote_ar" is verified
+# against the Arabic source dictionary that the Appendix A image is rendered from.
+
+meta:
+  rehearsal: blind-08
+  label: "SYNTHETIC: not tender content"
+  addendum: ADD-03_Addendum_No_3.pdf
+  pages: 4
+  printed_issue_date: {quote: "Issued 18 November 2026", page: 1}
+  issue_weekday: Wednesday
+  stands_on: "Volumes I, II, IV, V as amended by ADD-01 (8 Oct 2026) and ADD-02 (22 Oct 2026) only. Volume III never supplied."
+  planning_date: "Wednesday 18 November 2026 (latest addendum date; correspondence 2026-10-01 / 2026-10-02 reply item 5)"
+  proposal_due_date: "Thursday 26 November 2026, 14:00 Riyadh time (VOL-I 6.1 as amended by ADD-01 2.1; not changed by ADD-03)"
+  working_days_issue_to_pdd: 6   # 18, 19, 22, 23, 24, 25 Nov (issue day inclusive, PDD exclusive)
+  external_assumptions:
+    - "No public holiday in the Kingdom falls between 22 October and 30 November 2026 (VOL-I 2.4 depends on it; the pack gives no calendar)."
+    - "A Certificate must be in hand by close of Wednesday 25 November to be marshalled into Envelope A; issue on the PDD day itself before 14:00 is not assured."
+  image:
+    page: 3
+    description: "Appendix A: raster image (1750 x 1750 px, RGB with equal channels, FlateDecode) of the Office letter No. 228/2026 dated 16 November 2026 carrying Table 8-1 in Arabic. No text layer, no OCR layer; the Arabic exists only as pixels."
+  required_elements_map:
+    "1_image": [IMG1]
+    "2_calculations": [C1, C2, C3, C4]
+    "3_new_obligations": [N1, N2, N3, N4, N5, N6]
+    "4_indirect_effects": [IE1, IE2, IE3, IE4, IE5, IE6, IE7, IE8]
+    "5_genuine_ambiguity": [GA1]
+    "5_looks_ambiguous_but_settled": [S1, S2, S3, S4, S5]
+    "6_inserted_exception_table_into_volume": [ST1, ST2, ST3]
+    "7_cover_errors": [E1, E2, E3]
+    "8_decoys_and_must_not_report": [DC1, DC2, DC3, DC4, DC5, DC6, DC7, DC8, DC9, "MNR01-MNR22"]
+
+# ---------------------------------------------------------------------------------------------
+# Provisions of ADD-03, in order, with their expected effect on A1 / A2 / A3 / A5
+# ---------------------------------------------------------------------------------------------
+provisions:
+  - id: P-COVER
+    section: cover summary
+    page: 1
+    quote: "This Addendum replaces Volume I Clause 8.9 so that a member of a Bidder incorporated outside the Kingdom must submit either its investment licence or a Certificate of Investment Registration"
+    effect: "Summary only; not operative. Contains three planted errors E1-E3. Nothing in A1/A3/A5 may be sourced from the cover."
+  - id: P-PREC
+    section: precedence paragraph
+    page: 1
+    quote: "Bidders shall acknowledge receipt in Form 4-A."
+    effect:
+      A1: "Form 4-A acknowledgement row: Addenda acknowledged now 1 to 3 (status updated by ADD-03)."
+      A5: "Form 4-A completion lists Addendum No. 3."
+  - id: P1.1
+    section: "1.1"
+    page: 1
+    quote: "This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2."
+    effect: "Precedence recital (decoy DC9). ADD-03 ranks first under VOL-I 3.2(a). No A1 row."
+  - id: P1.2
+    section: "1.2"
+    page: 1
+    quote: "A reference in this Addendum to a Clause, Table or Form is to that Clause, Table or Form as amended by Addenda Nos. 1 and 2, unless otherwise stated."
+    effect: "Interpretive. Relevant to S2 ('as issued' is an express 'otherwise stated'). No clause referenced by ADD-03 was amended by ADD-01/02 except Table 1-1 (criterion B now 15) used in IE7."
+  - id: P1.3
+    section: "1.3"
+    page: 1
+    quote: "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2."
+    effect: "Informational (decoy DC1). Confirms five requests (15-19), contradicting the cover (E2)."
+  - id: P2.1
+    section: "2.1"
+    page: 1
+    quote: "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A either (a) a copy of its current investment licence or (b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1. A Proposal that does not include the evidence required by this Clause for each such member shall be rejected."
+    operation: "VOL-I 8.9 deleted and replaced"
+    state_before: {doc: VOL-I_Instructions_to_Bidders.pdf, page: 4, quote: "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close."}
+    effect:
+      A1: "Row VOL-I 8.9: status 'replaced by ADD-03 2.1'; new verbatim text; pass/fail; evidence = licence copy or Certificate per foreign-incorporated member; placed in Envelope A. The undertaking alternative is gone (except P2.4 members)."
+      A2: "Chain VOL-I 8.9 (base, p.4) -> ADD-03 2.1 replaced -> qualified by ADD-03 2.4 (exception), 2.5 (notification), Q15 (undertaking not accepted), Q16 (row 2 period)."
+      A3: "NEW disqualifier: 'shall be rejected' if, for any member incorporated outside the Kingdom (other than a 2.4 member), neither a current investment licence copy nor a Certificate is in Envelope A. Before ADD-03, 8.9 stated no consequence and was not an A3 item."
+      A5: "Activities N1/N2 (see new_obligations); drop-dead dates D4-D7."
+    labels: [N1, IE2]
+  - id: P2.2
+    section: "2.2"
+    page: 1
+    quote: "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I. Table 8-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only."
+    effect:
+      A1: "New source table VOL-I Table 8-1 (Arabic, image-only, ADD-03 p.3). Values read from the image govern (row 2 = 5 Working Days, not the English 3)."
+      A2: "New item: VOL-I Table 8-1 created by ADD-03 2.2 / Appendix A; modified by ADD-03 Q16 (row 2)."
+    labels: [ST3, IMG1, S1]
+  - id: P2.3
+    section: "2.3"
+    page: 1
+    quote: "Applications for a Certificate of Investment Registration shall be made by the member to the Office. The Office has undertaken to the Authority to issue a Certificate within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1."
+    effect:
+      A1: "Process row: application by the member to the Office; issue period per class (Arabic Table 8-1) counted per Note (1)."
+      A5: "Lead times: row 1 = 3 WD, row 2 = 5 WD (3 WD if lodged by Sun 22 Nov, Q16), row 3 = 8 WD; counted from the Working Day after receipt of a complete application."
+    labels: [N2, S4]
+  - id: P2.4
+    section: "2.4"
+    page: 1
+    quote: "Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility. Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued."
+    effect:
+      A1: "Scoped exception row: a passive member (<=10% of Project Company shares AND no design/construction/operation role) submits the base 8.9 undertaking (to obtain an investment licence prior to Financial Close) in Envelope A instead."
+      A3: "Not a stated rejection ground (2.1's rejection sentence does not apply to these members). Must not be listed as a stated disqualifier; may be flagged as a risk (AIR4)."
+      A5: "Activity: obtain signed undertaking from each such member for Envelope A."
+    labels: [ST2, N4, S2]
+  - id: P2.5
+    section: "2.5"
+    page: 1
+    quote: "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office."
+    effect:
+      A1: "New obligation (shall), pass/fail in nature but with NO stated consequence."
+      A3: "NOT an A3 item. The cover's 'failing which the Proposal will be rejected' (E3) is wrong."
+      A5: "Milestone: Portal notification by Monday 23 November 2026 (VOL-I 2.4 backward count, PDD not counted). Depends on N2 lodging (application reference needed)."
+    labels: [N3, S3]
+  - id: P2.6
+    section: "2.6"
+    page: 1
+    quote: "The periods in Volume I Clause 12.2 for Commercial Close and Financial Close are unchanged."
+    effect: "Restatement, no effect (decoy DC2)."
+  - id: P3.1
+    section: "3.1"
+    page: 2
+    quote: "The treated effluent storage reservoir referred to in Clause 1.2 shall provide a working volume of not less than six (6) hours of the design flow and shall be divided into not fewer than two (2) compartments, each capable of being isolated for cleaning while the other remains in service."
+    operation: "new VOL-II Clause 4.6 inserted after 4.5"
+    state_before: {doc: VOL-II_Technical_Requirements.pdf, page: 2, quote: "the treated effluent storage reservoir; and all associated electrical, control and civil works."}
+    effect:
+      A1: "New row(s) VOL-II 4.6: (i) working volume >= 6 h of 'the design flow' (GA1: 30,000 m3 or 45,000 m3, unresolved); (ii) >= 2 compartments, each isolatable for cleaning with the other in service. Technical requirement, evidenced in the process design (criterion A)."
+      A2: "Chain: VOL-II 1.2 (reservoir in the Works, no capacity) -> ADD-03 3.1 inserts 4.6; ADD-03 Q18 points to it."
+      A3: "Not a disqualifier. GA1 belongs in A3's list of things that could not be resolved."
+      A5: "Process design update activity (reservoir sizing on BOTH readings until a person decides)."
+    labels: [ST1, N5, GA1, C4]
+  - id: P3.2
+    section: "3.2"
+    page: 2
+    quote: "The insertion of Clause 4.6 does not renumber any other Clause of Volume II."
+    effect: "Numbering note, no effect (decoy DC3)."
+  - id: P3.3
+    section: "3.3"
+    page: 2
+    quote: "In Volume V Clause 12.1, the period of thirty-six (36) months is increased by six (6) months."
+    state_before: {doc: VOL-V_Draft_Project_Agreement.pdf, page: 2, quote: "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)."}
+    effect:
+      A1: "Row VOL-V 12.1: Scheduled PCOD = forty-two (42) months after the Notice to Proceed (computed, C2)."
+      A2: "Chain VOL-V 12.1 (base, 36 months) -> ADD-03 3.3 (+6 months) = 42 months."
+      A5: "Construction programme in the Technical Proposal must show PCOD within 42 months (via 3.4)."
+    labels: [C2, IE5, IE6]
+  - id: P3.4
+    section: "3.4"
+    page: 2
+    quote: "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model."
+    effect:
+      A1: "Rows VOL-I 9.7 (process design; construction programme) and VOL-I 10.3 / Form 4-F (Financial Model) gain an ADD-03 status note."
+      A5: "Activities: update process design (4.6) and construction programme (42 months) for Envelope A; update Financial Model and the Form 4-F figures derived from it for Envelope B."
+    labels: [N6, IE7]
+  - id: P4.1
+    section: "4.1"
+    page: 2
+    quote: "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%)."
+    state_before: {doc: VOL-V_Draft_Project_Agreement.pdf, page: 4, quote: "The Project Company may terminate for an Authority Event of Default, being a failure to pay an undisputed sum exceeding SAR 20,000,000 that continues for sixty (60) days after notice."}
+    effect:
+      A1: "Row VOL-V 39.4: threshold SAR 12,000,000 (computed, C1); period 60 days unchanged."
+      A2: "Chain VOL-V 39.4 (base SAR 20,000,000) -> ADD-03 4.1 (-40%) = SAR 12,000,000."
+      A3: "None."
+    labels: [C1, IE8]
+  - id: P4.2
+    section: "4.2"
+    page: 2
+    quote: "The period of sixty (60) days in Volume V Clause 39.4 is unchanged."
+    effect: "Restatement, no effect (decoy DC4)."
+
+# ---------------------------------------------------------------------------------------------
+# Responses to clarification requests (ADD-03 Section 5, page 2)
+# ---------------------------------------------------------------------------------------------
+responses:
+  - id: Q15
+    page: 2
+    question: {quote: "May the undertaking required by Volume I Clause 8.9 be given by the lead member on behalf of a foreign consortium member?", page: 2}
+    answer: {quote: "No. Volume I Clause 8.9 is replaced by Section 2.1 of this Addendum and an undertaking is no longer accepted, save from a member described in Section 2.4, which shall give its own undertaking.", page: 2}
+    type: changing/confirming
+    effect: "Confirms the undertaking route is closed except for 2.4 members, and that a 2.4 member gives its OWN undertaking (not the lead member). A1: 2.4 row evidence = member's own signed undertaking."
+  - id: Q16
+    page: 2
+    question: {quote: "Will the Authority assist foreign consortium members that have not obtained an investment licence before the Proposal Due Date?", page: 2}
+    answer: {quote: "for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days. The other issue periods in Table 8-1 are unchanged.", page: 2}
+    type: changing
+    effect: "Relative change to a value held only in the governing Arabic image (C3): row 2 = 5 - 2 = 3 Working Days for applications lodged on or before Sun 22 Nov. Rows 1 and 3 unchanged. A2: Table 8-1 row 2 modified by ADD-03 Q16."
+    labels: [C3, IE4]
+  - id: Q17
+    page: 2
+    question: {quote: "Will the arbitration under Volume V Clause 44.2 be conducted in English?", page: 2}
+    answer: {quote: "Yes. Volume V Clause 44.2 applies.", page: 2}
+    type: decoy (restatement)
+    pack_basis: {doc: VOL-V_Draft_Project_Agreement.pdf, page: 4, quote: "failing resolution to arbitration seated in Riyadh conducted in the English language before three arbitrators"}
+    effect: "None (DC5)."
+  - id: Q18
+    page: 2
+    question: {quote: "Volume II Clause 1.2 includes a treated effluent storage reservoir, but no capacity is stated. What capacity is required?", page: 2}
+    answer: {quote: "See new Volume II Clause 4.6, inserted by Section 3.1 of this Addendum.", page: 2}
+    type: pointer
+    effect: "No separate change (DC7). Does NOT resolve GA1: it points back to the ambiguous text."
+  - id: Q19
+    page: 2
+    question: {quote: "Will the Authority reconsider the threshold for an Authority Event of Default in Volume V Clause 39.4?", page: 2}
+    answer: {quote: "Yes. See Section 4 of this Addendum.", page: 2}
+    type: pointer
+    effect: "No separate change (DC6)."
+
+# ---------------------------------------------------------------------------------------------
+# (1) Image
+# ---------------------------------------------------------------------------------------------
+image_items:
+  - id: IMG1
+    where: "Appendix A, page 3 (image only)"
+    intro: {quote: "The following letter and table are reproduced as issued by the Northern Region Investment Services Office under its reference No. 228/2026 dated 16 November 2026. The Arabic text governs in accordance with Section 2.2 of this Addendum.", page: 3}
+    arabic:
+      - {doc: ADD-03-image, page: 3, quote_ar: "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار", en: "Table 8-1: Issue periods of the Certificate of Investment Registration"}
+      - {doc: ADD-03-image, page: 3, quote_ar: "مدة الإصدار (أيام عمل)", en: "Issue period (Working Days)"}
+      - {doc: ADD-03-image, page: 3, row: 1, quote_ar: "شركة مؤسسة في إحدى دول مجلس التعاون الخليجي", period_ar: "٣", period: 3, docs_ar: "السجل التجاري مصدقاً"}
+      - {doc: ADD-03-image, page: 3, row: 2, quote_ar: "شركة مؤسسة خارج دول مجلس التعاون الخليجي", period_ar: "٥", period: 5, docs_ar: "السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة"}
+      - {doc: ADD-03-image, page: 3, row: 3, quote_ar: "فرع مسجل في المملكة لشركة أجنبية", period_ar: "٨", period: 8, docs_ar: "شهادة تسجيل الفرع وقرار مجلس إدارة الشركة الأم بتفويض الفرع"}
+      - {doc: ADD-03-image, page: 3, note: 1, quote_ar: "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.", en: "The issue period is counted in Working Days from the Working Day following the day of receipt of the complete application."}
+      - {doc: ADD-03-image, page: 3, note: 2, quote_ar: "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.", en: "The Certificate is valid for ninety (90) days from its date of issue."}
+      - {doc: ADD-03-image, page: 3, note: 3, quote_ar: "٣. تُقدَّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيَّنة أعلاه.", en: "Applications are submitted electronically through the Office's portal only; an application is complete only when all documents listed above are attached."}
+      - {doc: ADD-03-image, page: 3, quote_ar: "الرقم: ٢٢٨/٢٠٢٦", en: "Ref. 228/2026"}
+      - {doc: ADD-03-image, page: 3, quote_ar: "التاريخ: ١٦ نوفمبر ٢٠٢٦م", en: "Date: 16 November 2026"}
+    english_translation_discrepancy:
+      id: AR1
+      english_row_2: {quote: "2 Company incorporated outside the GCC states Commercial registration and audited financial statements for the last financial year, certified 3", page: 4}
+      governing_value: "٥ (5) Working Days"
+      translation_value: "3"
+      resolution: "Arabic governs (S1). Correct row 2 period = 5 WD (3 WD only for applications lodged by Sun 22 Nov under Q16)."
+    values_that_matter: "Issue periods 3 / 5 / 8 Working Days drive A5 drop-dead dates; the documents column drives the application pack; Note (1) fixes the counting rule; Note (2) validity 90 days."
+
+# ---------------------------------------------------------------------------------------------
+# (2) Calculations
+# ---------------------------------------------------------------------------------------------
+computed_values:
+  - id: C1
+    provision: P4.1
+    quote: {quote: "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).", page: 2}
+    previous_effective_value: "SAR 20,000,000 (VOL-V 39.4 base; not amended by ADD-01/ADD-02)"
+    arithmetic: "20,000,000 x (1 - 0.40) = 12,000,000"
+    result: "SAR 12,000,000"
+    wrong_results: ["SAR 8,000,000 (40% OF the base, as the cover says: E1)", "SAR 19,999,960 or similar literal readings"]
+  - id: C2
+    provision: P3.3
+    quote: {quote: "In Volume V Clause 12.1, the period of thirty-six (36) months is increased by six (6) months.", page: 2}
+    previous_effective_value: "36 months after the Notice to Proceed"
+    arithmetic: "36 + 6 = 42"
+    result: "Scheduled PCOD = 42 months after the Notice to Proceed; long-stop for termination under 18.3/39.2 = Scheduled PCOD + 365 days (42 months + 365 days after NTP)"
+  - id: C3
+    provision: Q16
+    quote: {quote: "the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days", page: 2}
+    previous_effective_value: "5 Working Days: the governing Arabic value ٥ in the image (NOT the English translation's 3)"
+    arithmetic: "5 - 2 = 3 Working Days, only for applications lodged on or before Sunday 22 November 2026"
+    result: "3 Working Days (row 2, lodged by 22 Nov); 5 Working Days otherwise; rows 1 and 3 unchanged (3 and 8)"
+    wrong_results: ["1 Working Day (3 - 2, from the English translation)", "reduction applied to rows 1 or 3", "reduction applied to applications lodged after 22 Nov"]
+  - id: C4
+    provision: P3.1
+    quote: {quote: "not less than six (6) hours of the design flow", page: 2}
+    arithmetic:
+      reading_A: "average daily flow 120,000 m3/day / 24 = 5,000 m3/h; x 6 h = 30,000 m3"
+      reading_B: "peak hourly flow (design) 7,500 m3/h x 6 h = 45,000 m3"
+    result: "UNRESOLVED (GA1): 30,000 m3 or 45,000 m3. Both must be shown; neither may be asserted as the requirement."
+    pack_basis:
+      - {doc: VOL-II_Technical_Requirements.pdf, page: 3, quote: "2-6.1 Average daily flow 120,000 m3/day 2-6.2 Peak hourly flow (design) 7,500 m3/h"}
+      - {doc: VOL-II_Technical_Requirements.pdf, page: 2, quote: "The Facility shall be designed for a nominal treatment capacity of 120,000 m3/day average daily flow"}
+
+# ---------------------------------------------------------------------------------------------
+# Derived dates (Working Day = Sunday-Thursday, VOL-I 2.4; external assumption: no public holiday)
+# ---------------------------------------------------------------------------------------------
+derived_dates:
+  - id: D0
+    what: "Clarification cut-off (VOL-I 5.2 as adjusted by ADD-01 2.2): 10 WD before the PDD, PDD not counted"
+    date: "Thursday 12 November 2026"
+    pack_basis: {doc: ADD-01_Addendum_No_1.pdf, page: 1, quote: "including without limitation the period in Volume I Clause 5.2 (clarification cut-off)"}
+    note: "ADD-03 (18 Nov) is issued AFTER the cut-off. It is still valid (5.2 limits requests, not Addenda; 5.3). No clarification of ADD-03 can be sought."
+  - id: D1
+    what: "Planning date = ADD-03 issue date"
+    date: "Wednesday 18 November 2026"
+  - id: D2
+    what: "Lodging limit for the reduced row 2 period (Q16, stated)"
+    date: "Sunday 22 November 2026"
+  - id: D3
+    what: "Portal notification under 2.5: 3 WD before the PDD, PDD not counted (VOL-I 2.4)"
+    date: "Monday 23 November 2026"
+    arithmetic: "Thu 26 -> Wed 25 (1), Tue 24 (2), Mon 23 (3)"
+  - id: D4
+    what: "Row 1 (GCC company, 3 WD): latest lodging for issue by close of Wed 25 Nov"
+    date: "Sunday 22 November 2026"
+    arithmetic: "lodged Sun 22 -> Mon 23 (1), Tue 24 (2), Wed 25 (3). Lodged Mon 23 -> Thu 26 (PDD day; not assured before 14:00)"
+  - id: D5
+    what: "Row 2 (non-GCC company): latest lodging"
+    date: "Sunday 22 November 2026"
+    arithmetic: "lodged Sun 22 with 3 WD (Q16) -> Wed 25. Lodged Mon 23 loses the reduction: 5 WD -> Mon 30 Nov, after the PDD. (Without Q16, lodging on Wed 18 Nov would be needed: 5 WD -> Wed 25.)"
+  - id: D6
+    what: "Row 3 (Kingdom branch of a foreign company, 8 WD): latest lodging"
+    date: "Sunday 15 November 2026 (before ADD-03 was issued): INFEASIBLE"
+    arithmetic: "Wed 25 back 8 WD = Sun 15 Nov. Lodged on the issue day Wed 18 -> Mon 30 Nov, after the PDD."
+    expected_handling: "Flag: a row-3 member can comply only through route (a), a current investment licence, or the 2.4 exception. Escalate to a person; do not plan an application that cannot complete."
+  - id: D7
+    what: "Certificate in hand / Envelope A marshalling"
+    date: "Wednesday 25 November 2026 (planning assumption); hard limit 14:00 Thursday 26 November 2026"
+  - id: D8
+    what: "Working Days from the issue date (inclusive) to the PDD (exclusive)"
+    value: 6
+
+# ---------------------------------------------------------------------------------------------
+# (3) New obligations reaching A1 / A3 / A5
+# ---------------------------------------------------------------------------------------------
+new_obligations:
+  - {id: N1, provision: P2.1, reaches: [A1, A3, A5], what: "Licence copy or Certificate in Envelope A for each member incorporated outside the Kingdom (rejection)."}
+  - {id: N2, provision: P2.3, reaches: [A1, A5], what: "Application to the Office with the class documents; lodging drop-dates D4-D6; issue by D7."}
+  - {id: N3, provision: P2.5, reaches: [A1, A5], what: "Portal notification of member name and application reference by Mon 23 Nov (no stated consequence; not A3)."}
+  - {id: N4, provision: P2.4, reaches: [A1, A5], what: "Signed undertaking (8.9 as issued) from each passive <=10% member, in Envelope A, given by that member (Q15)."}
+  - {id: N5, provision: P3.1, reaches: [A1, A5], what: "Reservoir working volume and two isolatable compartments in the process design."}
+  - {id: N6, provision: P3.4, reaches: [A1, A5], what: "Reflect 4.6 and the 42-month Scheduled PCOD in the process design, construction programme and Financial Model."}
+
+# ---------------------------------------------------------------------------------------------
+# (4) Indirect effects (land elsewhere than the provision names)
+# ---------------------------------------------------------------------------------------------
+indirect_effects:
+  - id: IE1
+    from: P2.1
+    lands_on: "VOL-I 9.1 item (i) and VOL-I 10.1"
+    via: {doc: VOL-I_Instructions_to_Bidders.pdf, page: 4, quote: "(i) the certificates and evidence required under Section 8."}
+    effect: "The licence copy / Certificate / undertaking are Envelope A items under 9.1(i) (marshalling list), never Envelope B (10.1)."
+  - id: IE2
+    from: P2.1
+    lands_on: "A3 and the old 8.9 undertaking row/activity"
+    effect: "Modality change: base 8.9 had no stated consequence; new 8.9 'shall be rejected' -> new A3 entry. Any A1/A5 item for the 'undertaking to obtain such licence prior to Financial Close' is superseded except for 2.4 members."
+  - id: IE3
+    from: [P2.2, P2.3, IMG1]
+    lands_on: "A5 marshalling drop-dead dates"
+    effect: "Values held only in the Arabic image set the lead times: D4 Sun 22 Nov, D5 Sun 22 Nov, D6 infeasible."
+  - id: IE4
+    from: Q16
+    lands_on: "Table 8-1 row 2 (inside the image)"
+    effect: "A response modifies a value that exists only in the governing Arabic table: 5 -> 3 WD for lodging by 22 Nov (C3)."
+  - id: IE5
+    from: P3.3
+    lands_on: "VOL-V 18.1, 18.3, 39.2"
+    via:
+      - {doc: VOL-V_Draft_Project_Agreement.pdf, page: 2, quote: "If PCOD is not achieved by the Scheduled PCOD, the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay."}
+      - {doc: VOL-V_Draft_Project_Agreement.pdf, page: 2, quote: "If PCOD has not been achieved within three hundred and sixty-five (365) days after the Scheduled PCOD, the Authority may terminate under Clause 39.2."}
+      - {doc: VOL-V_Draft_Project_Agreement.pdf, page: 4, quote: "The Authority may terminate where PCOD is not achieved within the period stated in Clause 18.3."}
+    effect: "Delay LDs start 42 (not 36) months after NTP; the termination long-stop moves to 42 months + 365 days after NTP. The texts of 18.1, 18.3 and 39.2 are unchanged."
+  - id: IE6
+    from: P3.3
+    lands_on: "Form 4-D (Parent Company Guarantee) and VOL-I 8.7"
+    via:
+      - {doc: VOL-IV_Form_Sheets.pdf, page: 7, quote: "All obligations of the EPC Contractor under the EPC Contract during the construction period, including the payment of liquidated damages."}
+      - {doc: VOL-IV_Form_Sheets.pdf, page: 2, quote: "Forms shall be reproduced without alteration to their wording."}
+    effect: "The guarantee's exposure follows a construction period six months longer, including LDs from the later Scheduled PCOD. The Form is NOT reissued and must not be altered; the effect lies in the guarantor's approvals (A5: PCG approval may need re-confirmation)."
+  - id: IE7
+    from: [P3.1, P3.3, P3.4]
+    lands_on: "Technical evaluation criteria A and B (Table 1-1 as revised by ADD-02), Form 4-F price items"
+    via:
+      - {doc: ADD-02_Addendum_No_2.pdf, page: 1, quote: "B Construction methodology, programme and interface management 15"}
+      - {doc: VOL-IV_Form_Sheets.pdf, page: 9, quote: "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form."}
+    effect: "The programme (42 months) is scored under criterion B (15 marks as amended by ADD-02, not 20). The reservoir and longer construction flow through the Financial Model into the Form 4-F Availability Payment and Estimated Project Cost."
+  - id: IE8
+    from: P4.1
+    lands_on: "VOL-V 40.1 and Form 4-E deemed acceptance"
+    via:
+      - {doc: VOL-V_Draft_Project_Agreement.pdf, page: 4, quote: "On termination for Authority default or for prolonged force majeure, compensation shall equal outstanding senior debt, breakage costs, and equity subscribed together with the equity return to the date of termination, calculated under Schedule 12."}
+      - {doc: VOL-V_Draft_Project_Agreement.pdf, page: 2, quote: "A deviation not listed in Form 4-E will be taken as accepted."}
+    effect: "The Project Company's termination right, and with it 40.1 compensation, is reached at an unpaid sum over SAR 12,000,000. Amended 39.4 and 12.1 are deemed accepted unless a deviation is listed in Form 4-E."
+
+# ---------------------------------------------------------------------------------------------
+# (5) Genuine ambiguity and the points that only look ambiguous
+# ---------------------------------------------------------------------------------------------
+genuine_ambiguity:
+  - id: GA1
+    provision: P3.1
+    quote: {quote: "not less than six (6) hours of the design flow", page: 2}
+    reading_A: "'design flow' = the flow the Facility is designed for: 120,000 m3/day average daily flow (VOL-II 2.1; Table 2-6 row 2-6.1) -> 30,000 m3."
+    reading_B: "'design flow' = the flow labelled '(design)' in Table 2-6: peak hourly flow (design) 7,500 m3/h, which also sizes the transmission main (VOL-II 5.2) -> 45,000 m3."
+    why_unsettled: "The expression 'design flow' appears nowhere else in the pack (builder --check asserts its absence). No precedence rule, definition or translation decides it. ADD-02 response 11 ('design to the figures stated in Volume II') fits both. VOL-II 4.2 and VOL-I 3.3 point to a clarification, but the 5.2 cut-off (Thu 12 Nov) has passed. Q18 only points back to 4.6."
+    pack_basis:
+      - {doc: VOL-II_Technical_Requirements.pdf, page: 4, quote: "The main shall be sized for the peak hourly flow in Table 2-6 with a maximum velocity of 2.0 m/s"}
+      - {doc: VOL-I_Instructions_to_Bidders.pdf, page: 2, quote: "A Bidder that resolves such a conflict unilaterally does so at its own risk, and the Authority shall not be bound by the Bidder's interpretation."}
+      - {doc: ADD-02_Addendum_No_2.pdf, page: 2, quote: "Bidders shall design to the figures stated in Volume II. Volume II Clause 4.2 applies."}
+    expected_handling: "Surface both readings with both volumes (C4) in A3's 'could not resolve' list and route to a person (commercial/technical decision: cost difference of 50% of reservoir volume). A confident single answer is wrong."
+settled_points:
+  - id: S1
+    looks_like: "Table 8-1 row 2 issue period is 5 in the image but 3 in the English translation."
+    settled_by: {quote: "The Arabic text governs. The English translation at Appendix B is provided for convenience only.", page: 1}
+    also: {quote: "This translation is provided for convenience only. The Arabic text of Table 8-1 at Appendix A governs.", page: 3}
+    answer: "5 Working Days (3 only under Q16 for lodging by 22 Nov)."
+  - id: S2
+    looks_like: "2.4 refers to 'the signed undertaking described in Volume I Clause 8.9', but 8.9 has just been replaced and no longer describes any undertaking."
+    settled_by: {quote: "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.", page: 1}
+    also: {quote: "as amended by Addenda Nos. 1 and 2, unless otherwise stated.", page: 1}
+    answer: "'As issued' is the express 'otherwise stated' of recital 1.2: the undertaking is the base 8.9 one, 'to obtain such licence prior to Financial Close', given by the member itself (Q15)."
+  - id: S3
+    looks_like: "'not later than three (3) Working Days before the Proposal Due Date': is the PDD counted (Tue 24 or Mon 23)?"
+    settled_by: {doc: VOL-I_Instructions_to_Bidders.pdf, page: 2, quote: "Where a period expressed in Working Days is to be counted backwards from a stated date, the stated date itself shall not be counted."}
+    answer: "Monday 23 November 2026."
+  - id: S4
+    looks_like: "Forward counting of the Office issue periods (does the day of receipt count?). The pack has no forward-counting rule."
+    settled_by: {doc: ADD-03-image, page: 3, quote_ar: "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل."}
+    also: {quote: "(1) The issue period is counted in Working Days from the Working Day following the day of receipt of a complete application.", page: 4}
+    answer: "The day of receipt is not counted; counting starts on the next Working Day."
+  - id: S5
+    looks_like: "ADD-03 is issued after the clarification cut-off: is it valid, and are responses 15-19 late?"
+    settled_by: {quote: "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.", page: 1}
+    also: {doc: VOL-I_Instructions_to_Bidders.pdf, page: 3, quote: "The Authority will publish its responses to clarification requests in the form of Addenda issued to all Bidders."}
+    answer: "Valid. 5.2 limits requests, not Addenda, and the requests were in time."
+
+# ---------------------------------------------------------------------------------------------
+# (6) Structural changes
+# ---------------------------------------------------------------------------------------------
+structural:
+  - {id: ST1, kind: "clause inserted", what: "new VOL-II Clause 4.6 after 4.5, with no renumbering", quote: "The following new Clause 4.6 is inserted in Volume II after Clause 4.5:", page: 2}
+  - {id: ST2, kind: "scoped exception", what: "2.4 disapplies new 8.9 for passive members holding 10% or less and substitutes the 'as issued' undertaking", quote: "Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company", page: 1}
+  - {id: ST3, kind: "table made part of a volume", what: "Table 8-1 (Arabic image) forms part of Volume I, so ranks (b) under VOL-I 3.2, not (e) or (a)", quote: "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I.", page: 1}
+  - {id: ST4, kind: "clause replaced", what: "VOL-I 8.9 deleted and replaced", quote: "Volume I Clause 8.9 is deleted and replaced by the following:", page: 1}
+
+# ---------------------------------------------------------------------------------------------
+# (7) Planted cover-summary errors (cover, page 1)
+# ---------------------------------------------------------------------------------------------
+cover_errors:
+  - id: E1
+    kind: figure
+    cover_says: {quote: "reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000", page: 1}
+    operative: {quote: "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).", page: 2}
+    truth: "SAR 12,000,000 (the cover took 40% OF the base instead of reducing BY 40%)."
+  - id: E2
+    kind: count
+    cover_says: {quote: "responds to clarification requests 15 to 20", page: 1}
+    operative: {quote: "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.", page: 1}
+    truth: "Five requests (15 to 19) are answered; there is no request 20."
+  - id: E3
+    kind: modality
+    cover_says: {quote: "requires a Bidder relying on a Certificate to notify the Authority of its applications, failing which the Proposal will be rejected", page: 1}
+    operative: {quote: "not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.", page: 1}
+    truth: "2.5 is a 'shall' with no stated consequence. It is not a rejection ground and not an A3 item."
+cover_correct_statements:   # true statements on the cover; not errors
+  - {quote: "extends the Scheduled PCOD in Volume V Clause 12.1 to forty-two (42) months", page: 1, note: "Correct (36 + 6); do not flag as an error."}
+  - {quote: "subject to a limited exception", page: 1, note: "Correct (2.4)."}
+
+# ---------------------------------------------------------------------------------------------
+# (8) Decoys and must-not-report
+# ---------------------------------------------------------------------------------------------
+decoys:
+  - {id: DC1, quote: "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.", page: 1, why: "informational recital"}
+  - {id: DC2, quote: "The periods in Volume I Clause 12.2 for Commercial Close and Financial Close are unchanged.", page: 1, why: "restatement, no effect"}
+  - {id: DC3, quote: "The insertion of Clause 4.6 does not renumber any other Clause of Volume II.", page: 2, why: "numbering note"}
+  - {id: DC4, quote: "The period of sixty (60) days in Volume V Clause 39.4 is unchanged.", page: 2, why: "restatement, no effect"}
+  - {id: DC5, quote: "Yes. Volume V Clause 44.2 applies.", page: 2, why: "response 17 restates 44.2"}
+  - {id: DC6, quote: "Yes. See Section 4 of this Addendum.", page: 2, why: "response 19 is a pointer"}
+  - {id: DC7, quote: "See new Volume II Clause 4.6, inserted by Section 3.1 of this Addendum.", page: 2, why: "response 18 is a pointer (and does not settle GA1)"}
+  - {id: DC8, quote: "SYNTHETIC: not tender content. Test material for blind rehearsal 08; not issued by any authority.", page: 1, why: "test label, not a provision"}
+  - {id: DC9, quote: "This Addendum is issued under Volume I Clause 5.3 and takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.", page: 1, why: "standard precedence recital"}
+must_not_report:
+  - {id: MNR01, claim: "VOL-V 39.4 threshold is SAR 8,000,000 (cover E1)"}
+  - {id: MNR02, claim: "a clarification request 20 exists or six responses were given (cover E2)"}
+  - {id: MNR03, claim: "the 2.5 Portal notification is a rejection or disqualification ground / an A3 item (cover E3)"}
+  - {id: MNR04, claim: "Table 8-1 row 2 issue period is 3 WD as the governing value (English), or 1 WD after response 16"}
+  - {id: MNR05, claim: "the reservoir volume is settled at a single value (30,000 or 45,000 m3) with no ambiguity flag"}
+  - {id: MNR06, claim: "ADD-03 is invalid or late because it was issued after the clarification cut-off"}
+  - {id: MNR07, claim: "Volume II Clauses are renumbered (e.g. 4.5 -> 4.6)"}
+  - {id: MNR08, claim: "the 60-day period in VOL-V 39.4 changed"}
+  - {id: MNR09, claim: "VOL-I 12.2 periods changed"}
+  - {id: MNR10, claim: "new 8.9 applies to members incorporated in the Kingdom"}
+  - {id: MNR11, claim: "Form 4-D must be amended, reissued or its wording altered"}
+  - {id: MNR12, claim: "the texts of VOL-V 18.1, 18.3 or 18.4 changed (only the Scheduled PCOD anchor moved)"}
+  - {id: MNR13, claim: "the Proposal Due Date changed or was extended"}
+  - {id: MNR14, claim: "Table 8-1 is a Form of Volume IV or carries Addendum-level precedence (it forms part of Volume I)"}
+  - {id: MNR15, claim: "response 17 changes the arbitration terms"}
+  - {id: MNR16, claim: "the undertaking route remains open to all foreign members, or may be given by the lead member"}
+  - {id: MNR17, claim: "2.4 members need submit nothing"}
+  - {id: MNR18, claim: "the Q16 reduction applies to rows 1 or 3, or to applications lodged after Sunday 22 November"}
+  - {id: MNR19, claim: "the 2.5 deadline is Sunday 22 or Tuesday 24 November"}
+  - {id: MNR20, claim: "the Office letter date (16 Nov) is the planning date or an addendum date"}
+  - {id: MNR21, claim: "any ADD-01 or ADD-02 response is superseded or made wrong by ADD-03"}
+  - {id: MNR22, claim: "the reservoir ambiguity is resolved by response 18 or by ADD-02 response 11"}
+acceptable_if_raised:
+  - {id: AIR1, point: "The Certificate is valid 90 days (to about 23 Feb 2027 if issued 25 Nov) while Proposals stay valid 150 days from the PDD (to 25 Apr 2027). The pack does not require continuing validity."}
+  - {id: AIR2, point: "Under VOL-V 3.1 (term from the Effective Date), a longer construction period shortens operations by six months. VOL-I 12.1 (from PCOD) prevails under 3.2(b) (ADD-02 response 7), so this need not be escalated, but it may be noted."}
+  - {id: AIR3, point: "The reservoir is a permanent civil structure, so VOL-II 5.5 return periods apply to it."}
+  - {id: AIR4, point: "The consequence of omitting a 2.4 undertaking is not stated. Flag it as a risk under the VOL-I 11.1 stage (i) pass/fail check."}
+  - {id: AIR5, point: "Member classification edge cases (e.g. a GCC company acting through a Kingdom branch: row 1 or row 3) depend on bidder facts; flag them."}
+  - {id: AIR6, point: "The 2.4 test ('to hold not more than 10% of the shares in the Project Company') is applied to the proposed shareholding, since the Project Company is not yet incorporated."}
+  - {id: AIR7, point: "The time needed to certify the documents for the Office application is not stated (external assumption)."}
+  - {id: AIR8, point: "The 39.4 change may affect lenders' terms and the financing assumptions in Form 4-F."}
+  - {id: AIR9, point: "The PCG approval may need re-confirmation because of the longer construction exposure (IE6)."}
+
+A3_expected:
+  add: ["VOL-I 8.9 as replaced by ADD-03 2.1: for each member incorporated outside the Kingdom (other than a 2.4 member), a current investment licence copy or a Certificate of Investment Registration in Envelope A, or the Proposal is rejected. Confidence high on the rule; applicability depends on consortium facts."]
+  do_not_add: ["2.5 notification", "2.4 undertaking (as a stated ground)", "VOL-II 4.6"]
+  could_not_resolve_add:
+    - "GA1 reservoir 'design flow' (30,000 vs 45,000 m3): needs a person; clarification closed."
+    - "Which members are foreign-incorporated, their Table 8-1 class and licence status (bidder facts)."
+    - "Row 3 members cannot obtain a Certificate before the PDD (D6): licence or exception only; escalate."
+A5_expected:
+  planning_date: "2026-11-18"
+  activities:
+    - {what: "Confirm each member's place of incorporation, licence status, Table 8-1 class and 2.4 eligibility", by: "Wed 18 Nov", discharges: "VOL-I 8.9 (ADD-03 2.1, 2.4)"}
+    - {what: "Assemble the class documents (certified CR; plus audited FS for row 2; branch certificate and board resolution for row 3)", by: "before lodging", discharges: "Table 8-1"}
+    - {what: "Lodge Office applications (rows 1 and 2)", by: "Sun 22 Nov (drop-dead)", discharges: "ADD-03 2.3, Q16"}
+    - {what: "Row 3 members: no feasible application; escalate (licence or 2.4 only)", by: "Wed 18 Nov", discharges: "ADD-03 2.1"}
+    - {what: "Portal notification of member names and application references", by: "Mon 23 Nov", discharges: "ADD-03 2.5"}
+    - {what: "Receive Certificates", by: "Wed 25 Nov", discharges: "ADD-03 2.3"}
+    - {what: "Signed undertakings from 2.4 members", by: "Wed 25 Nov", discharges: "ADD-03 2.4, Q15"}
+    - {what: "Place licence copies, Certificates and undertakings in Envelope A, item (i)", by: "Thu 26 Nov 14:00", discharges: "VOL-I 9.1(i)"}
+    - {what: "Update process design for reservoir 4.6 (both readings pending a decision on GA1)", discharges: "VOL-II 4.6, ADD-03 3.4"}
+    - {what: "Update construction programme to a 42-month Scheduled PCOD", discharges: "VOL-V 12.1, ADD-03 3.4, VOL-I 9.7"}
+    - {what: "Update Financial Model and Form 4-F figures", discharges: "ADD-03 3.4, VOL-I 10.3, Form 4-F"}
+    - {what: "Review Form 4-E for 12.1 / 39.4", discharges: "VOL-I 9.6"}
+    - {what: "Acknowledge Addendum No. 3 in Form 4-A", discharges: "ADD-03 precedence paragraph"}
+
+counts:
+  provisions: 17          # P-COVER, P-PREC, P1.1-1.3, P2.1-2.6, P3.1-3.4, P4.1-4.2
+  responses: 5
+  image_items: 1
+  computed_values: 4
+  derived_dates: 9
+  new_obligations: 6
+  indirect_effects: 8
+  genuine_ambiguities: 1
+  settled_points: 5
+  structural: 4
+  cover_errors: 3
+  decoys: 9
+  must_not_report: 22
+  acceptable_if_raised: 9

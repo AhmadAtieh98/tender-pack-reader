@@ -729,11 +729,215 @@ def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None) 
     acts, by_row, pending = prog.get("activities") or [], row_open_issues(r), open_decision_index(r)
     route = (prog.get("gate_route") or {}).get("activity")
     prog["open_decision_index"] = pending              # session 13 (F4): the words the Gantt's notes print
-    inherit_open_decisions(acts, by_row, pending,
-                           gate_on_open_decisions(assumptions if assumptions is not None else r.get("assumptions")),
+    gate = gate_on_open_decisions(assumptions if assumptions is not None else r.get("assumptions"))
+    inherit_open_decisions(acts, by_row, pending, gate,
                            gate_questions(r), (prog.get("gate_route") or {}).get("ask_by"),
                            open_decision_reach(acts, by_row, pending, route), route)
+    attach_readiness(prog, gate)                       # session 14 (W4): preparation apart from finalisation
+    try:                                               # session 14 (W4): Form 4-E against the whole Proposal
+        prog["form_4e_checks"] = form_4e_checks_for(r, prog)
+    except (KeyError, ValueError, TypeError) as exc:   # a pack without the Form 4-E step or the envelope chain
+        prog["form_4e_checks"] = {"activity": None, "checks": [], "what_if": {}, "findings": [],
+                                  "error": f"not computed: {exc}"}
     return prog
+
+
+# ---------------------------------------------------------------------------------------------- readiness (session 14)
+# Session 14 (W4; part 4, report section 9 G7): an activity can be PREPARED (its inputs are known: its predecessors and
+# its earliest start; its work can start) while its FINALISATION needs a person's decision that is not recorded. The two
+# are stated apart on every activity (`preparation`, `finalisation`: programme.csv/json, gantt.html, the Gantt's amber
+# tick, the review cards of the rows it carries). Nothing is approved here; whether an open decision holds the
+# finalisation stays the owner's pending choice (OPEN_DECISION_RULE, off by default); durations are not touched.
+NOT_SCHEDULED_TIMING = ("CONDITIONAL", "DEADLINE PASSED", "NOT NEEDED")
+
+
+def readiness(a: dict, gate: bool = False) -> tuple[str, str]:
+    """(preparation, finalisation) of one planned activity (see above)."""
+    st = str(a.get("status") or a.get("timing_status") or "OK")
+    preds = list(a.get("predecessors") or [])
+    if st.startswith(NOT_SCHEDULED_TIMING):
+        prep = f"NOT SCHEDULED ({st})"
+    else:
+        prep = (f"PREPARATION READY: can start {a.get('earliest_start')} "
+                + (f"(after {', '.join(preds)})" if preds else "(inputs known; no predecessor)")
+                + (f"; timing {st}" if st != "OK" else ""))
+    by = a.get("decision_needed_by") or a.get("finalise_by") or a.get("latest_start")
+    if a.get("gated_by"):
+        fin = (f"FINALISATION GATED: needs a person's decision on {', '.join(a['gated_by'])} by {by}; no decision "
+               "recorded (preparation continues)")
+    elif a.get("open_decisions"):
+        words = a.get("open_decision_words") or {}
+        fin = ("FINALISATION NEEDS A DECISION: " + "; ".join(f"{i}: {words.get(i, i)}" for i in a["open_decisions"])
+               + f" by {by} (HUMAN DECISION PENDING; no decision recorded; "
+               + (f"{OPEN_DECISION_RULE} is on: held" if gate else
+                  f"not a gate while {OPEN_DECISION_RULE} is off, the owner's pending choice") + ")")
+    else:
+        fin = "FINALISATION: no pending decision on the rows it carries"
+    return prep, fin
+
+
+def attach_readiness(prog: dict, gate: bool = False) -> None:
+    """readiness() on every activity, in place."""
+    for a in prog.get("activities") or []:
+        a["preparation"], a["finalisation"] = readiness(a, gate)
+
+
+def readiness_by_row(prog: dict | None) -> dict[str, list[str]]:
+    """Row id -> '<activity>: <preparation>; <finalisation>' for every activity that carries the row (the review cards)."""
+    out: dict[str, list[str]] = {}
+    for a in (prog or {}).get("activities") or []:
+        if not a.get("preparation"):
+            continue
+        for rid in a.get("req_ids") or []:
+            out.setdefault(rid, []).append(f"{a['id']}: {a['preparation']}; {a['finalisation']}")
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- Form 4-E (session 14)
+# Session 14 (W4; the owner's part 4): VOL-I 9.6 "A Proposal that states 'no deviations' in Form 4-E while containing
+# a qualification elsewhere in the Proposal shall be treated as non-responsive." Form 4-E is checked against EVERY
+# document of the Proposal, not against Volume V and the Technical Proposal only: the documents placed in Envelope A or
+# B (the direct inputs of the envelope assembly steps, ENVELOPE_ASSEMBLY), each with the clause that places it in the
+# Proposal. A document final only after Form 4-E starts cannot be cross-checked; the what-if that makes Form 4-E wait for
+# every document is computed on the same network, durations unchanged, and its feasibility is reported for a person.
+FORM_4E_ACTIVITY = "form-4e"
+ENVELOPE_ASSEMBLY = ("assemble-envelope-a", "assemble-envelope-b")
+RULE_9_6 = "VOL-I 9.6"
+
+
+def _ancestors(acts: dict, aid: str) -> set[str]:
+    out, todo = set(), list((acts.get(aid) or {}).get("predecessors") or [])
+    while todo:
+        p = todo.pop()
+        if p not in out and p in acts:
+            out.add(p)
+            todo += list(acts[p].get("predecessors") or [])
+    return out
+
+
+def form_4e_checks(prog: dict, cal: Calendar, clause_of, issues_of, activity: str = FORM_4E_ACTIVITY,
+                   rule_words: str = "") -> dict:
+    """{activity, rule, checks, what_if, findings} (see above). `clause_of(activity) -> str` names the clause that
+    places the activity's document in the Proposal; `issues_of(activity) -> [issue ids]` the open issues of the rows it
+    carries. Pure; nothing is planned differently and nothing is decided."""
+    acts = {a["id"]: a for a in prog.get("activities") or []}
+    f = acts.get(activity)
+    if f is None:
+        return {"activity": None, "rule": RULE_9_6, "checks": [], "what_if": {}, "findings": []}
+    before = _ancestors(acts, activity)
+    docs = []
+    for asm in ENVELOPE_ASSEMBLY:
+        for p in (acts.get(asm) or {}).get("predecessors") or []:
+            if p != activity and p not in docs and str((acts.get(p) or {}).get("envelope") or "") in ("A", "B"):
+                docs.append(p)
+    rule = f"{RULE_9_6}" + (f" ('{rule_words}')" if rule_words else "")
+    checks = []
+    for d in docs:
+        a = acts[d]
+        ef, es = a.get("earliest_finish"), f.get("earliest_start")
+        if d in before:
+            st = "checked (finalised before Form 4-E)"
+        elif ef and es and str(ef) < str(es):
+            st = (f"final on {ef}, before Form 4-E starts on {es}, but not linked: a later change to it would not "
+                  "reach Form 4-E")
+        else:
+            st = f"NOT CHECKABLE: final on {ef}, after Form 4-E starts on {es}"
+        checks.append({"document_activity": d, "document": a.get("item") or a.get("name"), "envelope": a.get("envelope"),
+                       "finish": ef, "status": st, "clause": f"{rule}; {clause_of(a)}",
+                       "open_issues": list(issues_of(a) or [])})
+    missing = [c["document_activity"] for c in checks if not c["status"].startswith("checked")]
+    what_if: dict = {"added_predecessors": missing}
+    if missing:
+        g = _graph(prog)
+        h = {k: dict(v, predecessors=list(v["predecessors"])) for k, v in g.items()}
+        h[activity]["predecessors"] = list(dict.fromkeys(h[activity]["predecessors"] + missing))
+        start = _d(prog.get("planning_date") or prog.get("status_date"))
+        try:
+            base, alt = network(g, cal, start), network(h, cal, start)
+        except ValueError as exc:
+            what_if.update(error=f"the links would make a cycle ({exc})", feasible=None)
+        else:
+            t = alt[activity]
+            worse = sorted(k for k in alt if alt[k]["float_wd"] is not None and alt[k]["float_wd"] < 0
+                           and (base[k]["float_wd"] is None or alt[k]["float_wd"] < base[k]["float_wd"]))
+            what_if.update(form_4e_earliest_start=t["es"].isoformat(), form_4e_earliest_finish=t["ef"].isoformat(),
+                           form_4e_latest_finish=t["lf"].isoformat() if t["lf"] else None,
+                           float_wd=t["float_wd"], made_worse=worse, feasible=not worse,
+                           shortfall_wd=max([0] + [-alt[k]["float_wd"] for k in worse]))
+    findings = []
+    late = [c for c in checks if c["status"].startswith("NOT CHECKABLE")]
+    if late:
+        wi = what_if
+        how = ("the links would make a cycle" if wi.get("error") else
+               f"it would finish on {wi.get('form_4e_earliest_finish')} against its latest finish "
+               f"{wi.get('form_4e_latest_finish')}: " + ("feasible on the assumed durations" if wi.get("feasible") else
+                                                         f"INFEASIBLE by {wi.get('shortfall_wd')} WD on the assumed "
+                                                         f"durations ({', '.join(wi.get('made_worse') or [])} made late)"))
+        findings.append(f"Form 4-E ({activity}) is finalised before {len(late)} Proposal document(s) are final ("
+                        + ", ".join(c["document_activity"] for c in late) + f"), so a qualification in them cannot be "
+                        f"checked against its declaration ({rule}). If Form 4-E waited for all of them, {how}. How "
+                        "the cross-check is done (a later final read of every document, a different order, or a "
+                        "change of a lead time) is for a person (Legal, Bid manager); no duration, setting or "
+                        "dependency was changed.")
+    return {"activity": activity, "rule": rule, "checks": checks, "what_if": what_if, "findings": findings}
+
+
+_STOP = {"the", "of", "and", "for", "each", "per", "or", "a", "an", "in", "to", "on", "by", "with", "form", "its",
+         "one", "shall", "be", "vol-i", "sar"}
+
+
+def _tokens(t: str) -> set[str]:
+    return {w.lower() for w in re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*", str(t or "")) if w.lower() not in _STOP
+            and len(w) > 1}
+
+
+def proposal_clause(name: str, envelope: str, state: dict) -> str:
+    """The clause that places a document in the Proposal: for Envelope A the item of VOL-I 9.1 (as amended: an item an
+    addendum inserted counts) sharing most words with the document's name (two words at least, or a form number),
+    else 9.1(i) (certificates and evidence); for Envelope B the clause of VOL-I 10 chosen the same way, else 10.1.
+    '<unit> ('<words>')'."""
+    pre, fallback = ("VOL-I:9.1(", "VOL-I:9.1(i)") if envelope == "A" else ("VOL-I:10.", "VOL-I:10.1")
+    cands = [(k, getattr(u, "text", "") or "") for k, u in state.items()
+             if k.startswith(pre) and getattr(u, "status", "active") == "active"]
+    mine = _tokens(name)
+    best = max(cands, key=lambda kv: (len(mine & _tokens(kv[1])), -cands.index(kv)), default=None)
+    shared = (mine & _tokens(best[1])) if best else set()
+    # two shared words, or a form number ('4-g'), name the item; one ordinary word is not enough
+    if best is None or not (len(shared) >= 2 or any(re.fullmatch(r"\d+-[a-z]", w) for w in shared)):
+        best = (fallback, getattr(state.get(fallback), "text", "") or "")
+    k, t = best
+    return f"{k.replace(':', ' ', 1)} ('{' '.join(t.split())[:140]}')"
+
+
+def form_4e_checks_for(r: dict, prog: dict) -> dict:
+    """form_4e_checks on a stage's programme from a stage2.run result: the clauses from the stage's effective units,
+    the open issues of the rows each activity carries (row_open_issues; those not decided), and, from the same
+    effective units, the commercial-qualification tension (VOL-I 9.6 with 6.2 and 10.5) as a finding for a person."""
+    st = next((s.state for s in r["stages"] if s.stage == prog.get("stage")), r["validated"].state)
+    ev = r.get("evidence_items") or {}
+    by_row = row_open_issues(r)
+    from .human_owned import decision
+    decided = {i for i, it in (r.get("curated_issues") or {}).items() if decision(r.get("decisions"), "issue", i, it)}
+    name = lambda a: getattr(ev.get(a.get("evidence")), "name", None) or a.get("item") or a.get("name")  # noqa: E731
+    issues_of = lambda a: [i for i in dict.fromkeys(i for rid in a.get("req_ids") or []  # noqa: E731
+                                                     for i in by_row.get(rid) or []) if i not in decided]
+    words = lambda uid, rx: next((x.strip() for x in re.split(r"(?<=\.)\s+", " ".join(  # noqa: E731
+        (getattr(st.get(uid), "text", "") or "").split())) if re.search(rx, x, re.I)), "")
+    w96 = words("VOL-I:9.6", r"elsewhere in the Proposal")
+    cal = (r["register"].cal_by_stage.get(prog.get("stage"))
+           or calendar_from_config((r.get("assumptions") or {}).get("calendar")))
+    res = form_4e_checks(prog, cal, lambda a: proposal_clause(name(a), str(a.get("envelope") or ""), st), issues_of,
+                         rule_words=w96)
+    w62, w105 = words("VOL-I:6.2", r"commercial information"), words("VOL-I:10.5", r"conditional price")
+    if w96 and w62 and w105 and any(c["envelope"] == "B" for c in res["checks"]):
+        res["findings"].append(
+            "A qualification of a commercial term of Volume V would have to be listed in Form 4-E (VOL-I 9.6: "
+            f"'{w96}'), which is placed in Envelope A (VOL-I 9.1(e)), where commercial information renders the Proposal "
+            f"non-responsive (VOL-I 6.2: '{w62}'); stated in Envelope B instead, it would be a conditional price "
+            f"(VOL-I 10.5: '{w105}'). Whether such a qualification can be made at all, and how Form 4-E words a "
+            "deviation from a commercial term without commercial information, is for a person (Legal and "
+            "Commercial); nothing is decided here.")
+    return res
 
 
 def question_units(r: dict) -> dict[str, list[str]]:
@@ -816,7 +1020,9 @@ PROGRAMME_COLS = ("id", "name", "discipline", "evidence", "envelope", "req_ids",
                   "multiplicity", "duration_wd", "duration_assumption", "duration_basis", "effort_wd", "effort_total_wd",
                   "effort_basis", "waiting_on", "work_type", "predecessors", "earliest_start", "earliest_finish",
                   "es_driven_by", "latest_start", "latest_finish", "driven_by", "float_wd", "deadline", "timing_status",
-                  "decision_status", "gated_by", "decision_needed_by", "decision_needed_by_basis", "clarification_questions",
+                  "decision_status",
+                  "preparation", "finalisation",     # session 14 (W4): preparation readiness apart from finalisation
+                  "gated_by", "decision_needed_by", "decision_needed_by_basis", "clarification_questions",
                   "ask_by", "finalise_by",
                   "condition", "resource_status", "status", "flags")
 MARSHALLING_COLS = ("evidence", "item", "name", "kind", "envelope", "issuer", "per", "count", "count_basis",
@@ -827,6 +1033,7 @@ MARSHALLING_COLS = ("evidence", "item", "name", "kind", "envelope", "issuer", "p
                     "flags")
 # session 12 (audit A5-4): every A1 row in force that no activity carries, with the reason A1 (or the templates) holds
 NOT_CARRIED_COLS = ("row", "status", "assessment", "discipline", "a3", "reason", "source")
+FORM_4E_COLS = ("document_activity", "document", "envelope", "finish", "status", "clause", "open_issues")  # session 14
 DOCUMENT_COLS = ("evidence", "name", "envelope", "kind", "issuer", "per", "multiplicity", "multiplicity_basis",
                  "marked_originals", "hard_copies", "physical_count", "electronic_copy", "usb", "req_ids",
                  "activities", "source", "flags")
@@ -1063,6 +1270,25 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
               f"{'on' if any(str(a.get('decision_status', '')).startswith('REVIEW (open decision)') for a in acts) else 'off'}"
               "; off: the activity stays READY; on: a READY activity reads REVIEW (open decision)).", ""]
         L += [f"- `{i}` {words.get(i, '')}: {', '.join(f'`{x}`' for x in xs)}" for i, xs in opened.items()]
+    # session 14 (W4; report section 9 G7): preparation readiness apart from a finalisation that needs a decision
+    if any(a.get("preparation") for a in acts):
+        prep_fin = [a for a in acts if str(a.get("finalisation", "")).startswith(("FINALISATION GATED",
+                                                                                  "FINALISATION NEEDS A DECISION"))]
+        L += ["", "## Preparation readiness and finalisation (two states; nothing approved)", "",
+              "Every activity says apart whether its preparation can start (its inputs: predecessors and earliest start) "
+              "and what its finalisation needs (columns `preparation` and `finalisation` in programme.csv/json and "
+              "gantt.html; an amber tick on the Gantt row marks the date the decision is needed by). "
+              f"{len(prep_fin)} activities can be prepared now or on their earliest start while their finalisation needs "
+              "a person's decision that is not recorded:", ""]
+        L += [f"- `{a['id']}`: {_md(a['preparation'])}; {_md(a['finalisation'])}" for a in prep_fin]
+    f4 = p.get("form_4e_checks") or {}
+    if f4.get("checks"):                         # session 14 (W4): Form 4-E against the whole Proposal (VOL-I 9.6)
+        L += ["", f"## Form 4-E against the whole Proposal ({len(f4['checks'])} documents; {f4.get('rule')})", "",
+              "Every document placed in Envelope A or B is checked against Form 4-E's finalisation (form_4e_checks.csv/"
+              "json: the clause that places it in the Proposal, its status, the open issues of the rows it carries).", ""]
+        L += [f"- `{c['document_activity']}` ({c['envelope']}): {_md(c['status'])}" for c in f4["checks"]]
+        L += ["", "Findings for a person (nothing resolved; no duration, setting or dependency changed):", ""]
+        L += [f"- {_md(x)}" for x in f4.get("findings") or []] or ["- none"]
     res = p.get("resources") or {}
     L += ["", f"## Overloads ({len(res.get('overloads', []))}; reported, not resolved)", ""]
     L += [f"- {o['resource']}: {date_span(o['from'], o['to'])} ({o['days']} WD), peak {o['peak_load']:g} vs capacity "
@@ -1119,6 +1345,8 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
           "| resources.csv/json, overloads.csv/json | staff load per role per Working Day; overload runs |",
           "| disciplines.csv/json | totals per discipline |", "| milestones.csv/json | dated pack milestones |",
           "| drivers.csv/json | what drives each infeasible activity and what would make it feasible |",
+          "| form_4e_checks.csv/json | every Proposal document against Form 4-E's finalisation (VOL-I 9.6), the what-if "
+          "and the findings for a person |",
           "| requirements_not_carried.csv/json | every A1 row in force no activity carries, with the reason |",
           "| requirements_coverage.csv/json | every A1 row in force and how it is carried (`carried_how`: discharged, "
           "reviewed for deviations under a volume check, excepted) |",
@@ -1152,6 +1380,10 @@ def write(prog_ext: dict, scenarios_result: dict | None, out_dir: Path) -> list[
     paths += write_csv_json(_table(DISCIPLINE_COLS, prog_ext["disciplines"], **meta), a5, "disciplines")
     paths += write_csv_json(_table(MILESTONE_COLS, prog_ext.get("milestones", []), **meta), a5, "milestones")
     paths += write_csv_json(_table(DRIVER_COLS, prog_ext["drivers"], **meta), a5, "drivers")
+    f4 = prog_ext.get("form_4e_checks") or {}
+    if f4.get("checks"):                         # session 14 (W4): Form 4-E against the whole Proposal (VOL-I 9.6)
+        paths += write_csv_json(_table(FORM_4E_COLS, f4["checks"], **meta, rule=f4.get("rule"), what_if=f4.get("what_if"),
+                                       findings=f4.get("findings")), a5, "form_4e_checks")
     if prog_ext.get("row_coverage") is not None:     # session 12 (audit A5-4)
         paths += write_csv_json(_table(NOT_CARRIED_COLS, not_carried(prog_ext), **meta,
                                        check=coverage_check(prog_ext)["detail"]), a5, "requirements_not_carried")

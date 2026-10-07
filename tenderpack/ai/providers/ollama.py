@@ -52,6 +52,9 @@ class OllamaProvider:
         self.model, self.rcfg, self.mcfg = model, rcfg, model_cfg or {}
         url_env = rcfg.get("base_url_env") or "TENDERPACK_OLLAMA_URL"
         self.base_url = (env.get(url_env) or rcfg.get("base_url") or "http://127.0.0.1:11434").rstrip("/")
+        from ..offline import active, check_local_url
+        if active(None):                            # session 14 (W6): offline: the local Ollama only, also when the
+            check_local_url(self.base_url)          # adapter is built directly (a remote "ollama" is a hosted model)
         self._fetch = fetch
         self._caps: Capabilities | None = None
         self.num_ctx: int | None = self.mcfg.get("num_ctx") or rcfg.get("num_ctx")

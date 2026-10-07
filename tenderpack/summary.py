@@ -21,6 +21,12 @@ reports what a person should look at:
   unknown verb               (session 12) the summary's verb is not one C28 knows ("consolidates" in blind rehearsal
                              05): the claim is matched by its targets only and the finding says that a person reads
                              what the verb claims; never "no summary"
+  figure differs | count differs | modality differs
+                             (session 14) the claim's figure ("to SAR 4,000,000", numbers read whole), its count of a
+                             table's rows ("four asset classes set out in Table 42-1") or its modal word ("invites",
+                             "requires") differs from the operative provision it points to (the provision of its op, or
+                             the one citing its target or naming its words, unresolved ones included); both texts quoted,
+                             an arithmetic result labelled for a person to check
   scope (governing language) (session 12) a scope word of a claim ("permanent", "temporary", "all", "only" ...) is
                              printed in a rendering that an op's `precedence` says does not govern (an English
                              translation of an Arabic table): unchecked against the governing rendering; a person compares
@@ -92,6 +98,13 @@ VERBS = {
     "renumbers": "renumber", "re-numbers": "renumber", "re-letters": "renumber", "reletters": "renumber",
     "responds to": "answers", "answers": "answers",
     "publishes": "info", "confirms": "info", "clarifies": "info", "notes": "info", "records": "info", "explains": "info",
+    # session 14 (W2; blind-07 scorer defect 12): verbs a cover uses mid-sentence ("..., relocates ..., invites Bidders to
+    # describe ..., provides for ..."); unknown there, they glued two claims into one segment reported "not found". An
+    # invitation or a permission claims no obligation ("info"), so an op adding one is reported, and the modality of the
+    # operative provision is compared (_compare_operative)
+    "relocates": "change", "moves": "change", "transfers": "change",
+    "provides for": "add", "provides": "add", "sets out": "add", "establishes": "add",
+    "invites": "info", "encourages": "info", "permits": "info", "allows": "info",
 }
 ALLOWS = {
     "change": {"change", "add", "replace", "delete", "reinstate", "revoke", "renumber", "obligation", "interpretation"},
@@ -357,11 +370,17 @@ def _expand(obj: str) -> str:
     return "".join(out)
 
 
+# session 14 (W2): a comma that separates (not the thousands separator of "4,000,000" or "4, 000, 000")
+_COMMA = r"(?:(?<!\d),|,(?!\s?\d{3}(?!\d)))\s*"
+
+
 def parse_claims(sentence: str) -> list[dict]:
     body = re.sub(r"^This Addendum\s+", "", sentence.strip().rstrip("."), flags=re.I)
     verb_at = re.compile(r"(?:and\s+)?(" + _VERB_RE + r")\b\s*(.*)", re.I)
     claims: list[dict] = []
-    for piece in re.split(r",\s*|\s+and\s+(?=(?:" + _VERB_RE + r")\b)", body):
+    # session 14 (W2; blind-07 defect 12): never split inside a number ("SAR 4,000,000"): a comma between a digit and a
+    # group of exactly three digits belongs to the number
+    for piece in re.split(_COMMA + r"|\s+and\s+(?=(?:" + _VERB_RE + r")\b)", body):
         piece = piece.strip()
         if not piece:
             continue
@@ -385,7 +404,7 @@ def _items(obj: str) -> list[str]:
     ('the Bid Bond amount and the number of copies'; 'Volume II Table 2-4 and Volume II Table 2-6'), never inside
     one descriptive phrase ('terms and conditions')."""
     t = _expand(obj)
-    parts = re.split(r",\s*(?:and\s+)?|\s+and\s+(?=(?:the|a|an|Volume|Form|Table|Clause|footnote|Footnote|Appendix)\b)", t)
+    parts = re.split(_COMMA + r"(?:and\s+)?|\s+and\s+(?=(?:the|a|an|Volume|Form|Table|Clause|footnote|Footnote|Appendix)\b)", t)
     return [x.strip() for x in parts if x.strip()]
 
 
@@ -617,10 +636,26 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                     hit += [x for x in ih if x not in hit]
                     hit_prov += [q for q in ip if q not in hit_prov]
             c.update({"targets": all_targets, "matched": [x.op.id for x in hit], "matched_provisions": hit_prov})
+            # session 14 (W2; blind-07 defect 12): the operative provision(s) the claim points to (its ops' provisions,
+            # else the provisions citing its targets or naming most of its words, unresolved ones included), and its
+            # figures, counts and modal words compared with theirs item by item (findings quoting both texts)
+            oper = _operative(c, s, add, prev, hit, hit_prov, anchors or {})
+            c["operative"] = oper
+            _compare_operative(rec, c, oper, s, add, prev, [x.state for x in stages[:i]])
+            unres_ids = {u["provision"] for u in unresolved}
+            if not hit and not hit_prov and oper and any(p in unres_ids for p in oper):
+                c["status"] = "unchecked"            # never "not found" for a provision that exists but has no op yet
+                rec["findings"].append({"kind": "unchecked", "claim": c["n"], "provision": oper[0], "detail":
+                                        f"'{c['text']}' points to {', '.join(oper)}, unresolved (no op yet): its effect "
+                                        "cannot be compared with the summary (its figures, counts and modal words are)"})
+                _operative_status(rec, c)
+                rec["claims"].append(c)
+                continue
             if not hit and not hit_prov:
                 c["status"] = "not found"
                 rec["findings"].append({"kind": "not found", "claim": c["n"], "detail":
                                         f"'{c['text']}': no provision of {add} does this"})
+                _operative_status(rec, c)
                 rec["claims"].append(c)
                 continue
             for item in missing:
@@ -685,6 +720,7 @@ def summary_check(stages: list, units: list[dict], anchors: dict | None = None, 
                                             f"{o.provision} states '{cons}'; the summary says only '{c['text']}'"})
             for p in hit_prov:
                 covered_sections.add(section(p))
+            _operative_status(rec, c)
             rec["claims"].append(c)
         for x in ops:
             o, kind = x.op, cls(x)
@@ -744,6 +780,10 @@ def _rangetext(rng: set[int]) -> str:
 
 def _does(o) -> str:
     tgt = o.target or o.new_group or ", ".join(o.targets)
+    if o.type in ("relocate_unit", "insert_table", "adjust_value") or o.effect == "disapplies":   # session 14 (W3)
+        return {"relocate_unit": f"relocates {tgt} to {o.to}", "insert_table": f"inserts a table into {o.into} "
+                f"(Table {o.number}: {tgt})", "adjust_value": f"changes an amount in {tgt} ({o.change}; computed)"}.get(
+            o.type) or f"disapplies {tgt} to: {o.scope}"
     return {"replace_text": f"amends {tgt}" if o.new or o.old is None else f"deletes words from {tgt}", "set_value": f"changes a value in {tgt}", "append_text": f"adds text to {tgt}",
             "replace_unit": f"replaces {tgt}",
             "insert_row": f"adds a row to {tgt}" + (f" after {o.after}" if o.after else ""),
@@ -779,6 +819,170 @@ def _gist(t: str) -> str:
     """The words a person needs: an answer's response rather than the question; up to 240 characters."""
     m = re.search(r"Authority response:\s*(.*)", t or "", re.S)
     return _short(m.group(1) if m else t, 240)
+
+
+# ---------------------------------------------------------------------------------------------- session 14 (W2)
+# The cover against the operative provisions, item by item (blind-07 defect 12: the planted errors were a stale-base
+# figure "to SAR 4,000,000" against "reduced by SAR 1,000,000" of an ADD-02 value, a modality downgrade "invites Bidders to
+# describe" against "shall demonstrate", and a count "four asset classes" against a five-row table). Reported, never
+# applied or resolved: each finding quotes both texts; an arithmetic result is labelled as one for a person to check.
+OPERATIVE_KINDS = ("figure differs", "count differs", "modality differs")
+_CUR = r"(?:SAR|USD|US\$|EUR|AED|QAR|KWD|OMR|BHD|GBP|£|\$|€)"
+_NUMBER = r"\d{1,3}(?:,\s?\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?"
+_FIG_RE = re.compile(r"(?P<cur>" + _CUR + r")\s*(?P<n>" + _NUMBER + r")(?:\s*(?P<mult>million|billion|bn)\b)?"
+                     r"|\(?(?P<n2>" + _NUMBER + r")\)?\s*(?P<unit>%|per\s?cent\b|percent\b|days?\b|months?\b|"
+                     r"years?\b|weeks?\b|hours?\b)", re.I)
+_RELATIVE_RE = re.compile(r"\b(?P<dir>reduced|decreased|lowered|cut|increased|raised|extended|shortened)\s+by\s+", re.I)
+_NUMWORD = r"one|two|three|four|five|six|seven|eight|nine|ten|\d+"
+_COUNT_TABLE_RE = re.compile(r"\b(?P<n>" + _NUMWORD + r")\s+(?P<what>(?:[A-Za-z\-]+\s+){0,3}?[A-Za-z\-]+)\s+"
+                             r"(?:(?:set out|listed|shown|given|stated)\s+)?(?:in|at)\s+Table\s+(?P<t>\d+(?:-\d+)?)\b", re.I)
+_MODAL = (("prohibition", re.compile(r"\b(?:shall not|must not|may not|is not permitted|are not permitted|prohibit\w*)\b",
+                                     re.I)),
+          ("obligation", re.compile(r"\b(?:shall|must|is required to|are required to|required to|obliged to|"
+                                    r"undertakes? to)\b", re.I)),
+          ("permission", re.compile(r"\b(?:may|is invited to|are invited to|invites?|encourag\w*|is entitled to|"
+                                    r"are entitled to|at (?:its|their) (?:option|discretion)|optional(?:ly)?)\b", re.I)))
+_VERB_MODALITY = {"requires": "obligation", "invites": "permission", "encourages": "permission",
+                  "permits": "permission", "allows": "permission"}
+
+
+def figures(text: str) -> list[dict]:
+    """The amounts, percentages and periods a text states, numbers read whole ("SAR 4,000,000" is one figure):
+    [{value, unit, words, start}]. Clause, table and request numbers are not figures."""
+    out = []
+    for m in _FIG_RE.finditer(normalize_latin(text or "")):
+        n = m.group("n") or m.group("n2")
+        try:
+            v = float(re.sub(r"[,\s]", "", n))
+        except ValueError:
+            continue
+        if m.group("cur"):
+            unit = m.group("cur").upper().replace("US$", "USD")
+            v *= {"million": 1e6, "billion": 1e9, "bn": 1e9}.get((m.group("mult") or "").lower(), 1)
+        else:
+            u = re.sub(r"\s+", " ", m.group("unit").lower())
+            unit = "%" if u in ("%", "per cent", "percent", "percent") else u.rstrip("s")
+        out.append({"value": v, "unit": unit, "words": re.sub(r"[()]", "", m.group(0)).strip(), "start": m.start()})
+    return out
+
+
+def _fmt(v: float, unit: str) -> str:
+    n = f"{v:,.0f}" if float(v).is_integer() else f"{v:,.2f}"
+    return f"{unit} {n}" if unit.isupper() or unit in ("£", "$", "€") else f"{n} {unit}"
+
+
+def modalities(text: str) -> set[str]:
+    """The modal classes a text states: prohibition (shall not, must not, may not ...), obligation (shall, must, is
+    required to ...), permission (may, invites, is entitled to ...). A prohibition's 'shall' is not also an obligation."""
+    t, out = normalize_latin(text or ""), set()
+    for name, rx in _MODAL:
+        if rx.search(t):
+            out.add(name)
+            t = rx.sub(" ", t)
+    return out
+
+
+def _cover_provisions(s, add: str) -> list[str]:
+    return [c["provision"] for c in s.coverage if ":cover/" not in c["provision"] and c["provision"] in s.state]
+
+
+def _operative(c: dict, s, add: str, prev, hit: list, hit_prov: list, anchors: dict) -> list[str]:
+    """The provisions a claim points to: those of the ops it matched (and the no-effect provisions it matched); else the
+    provisions whose text cites a target the claim cites; else the provision naming most of the claim's words (at least
+    two thirds of them). Unresolved provisions are included: the comparison reads their words, not an op."""
+    out = list(dict.fromkeys([x.op.provision for x in hit if ":cover/" not in x.op.provision] + list(hit_prov)))
+    if out or c.get("kind") == "answers":
+        return out
+    provs = _cover_provisions(s, add)
+    targets, rest = _claim_targets(c.get("object") or "", anchors)
+    if targets:
+        from .citations import resolve
+        ids = set(prev) | set(s.state)
+        by_t = [p for p in provs if any(t == x or x.startswith(t + "/") or t.startswith(x + "/")
+                                        for x in resolve(citations(s.state[p].text or ""), ids) for t in targets)]
+        if by_t:
+            return by_t
+    words = set(_words(rest if targets else c.get("object") or ""))
+    if not words:
+        return []
+    need = len(words) if len(words) <= 2 else max(2, math.ceil(len(words) / 2))      # a pointer, not a match of ops
+    scored = sorted(((len(words & set(_words(s.state[p].text or ""))), p) for p in provs), key=lambda x: -x[0])
+    best = scored[0][0] if scored else 0
+    return [p for n, p in scored if n == best and n >= need][:2]
+
+
+def _compare_operative(rec: dict, c: dict, oper: list[str], s, add: str, prev, earlier: list) -> None:
+    """Figures, counts and modality of a claim against the operative provisions it points to (session 14)."""
+    texts = {p: s.state[p].text or "" for p in oper if p in s.state}
+    claim = c.get("text") or ""
+    # ---- figures
+    for f in (figures(claim) if texts else []):
+        same = [(p, g) for p, t in texts.items() for g in figures(t) if g["unit"] == f["unit"]]
+        if any(abs(g["value"] - f["value"]) < 1e-9 for _, g in same):
+            continue
+        computed, notes = None, []
+        for p, t in texts.items():
+            for m in _RELATIVE_RE.finditer(normalize_latin(t)):
+                d = next((g for g in figures(normalize_latin(t)[m.end():m.end() + 40]) if g["unit"] == f["unit"]), None)
+                if d is None:
+                    continue
+                sign = -1 if m.group("dir").lower() in ("reduced", "decreased", "lowered", "cut", "shortened") else 1
+                from .citations import resolve
+                for tgt in resolve(citations(t), set(prev)):
+                    base = [g for g in figures(prev[tgt].text if tgt in prev else "") if g["unit"] == f["unit"]]
+                    if len(base) != 1:
+                        continue
+                    computed = base[0]["value"] + sign * d["value"]
+                    notes.append(f"{_ref(tgt)} before {add} states '{base[0]['words']}'; {m.group('dir').lower()} by "
+                                 f"{d['words']} gives {_fmt(computed, f['unit'])} (arithmetic for a person to check)")
+                    for st in earlier[:-1]:              # the summary's figure from an earlier, superseded base
+                        old = [g for g in figures(st[tgt].text if tgt in st else "") if g["unit"] == f["unit"]]
+                        if len(old) == 1 and abs(old[0]["value"] + sign * d["value"] - f["value"]) < 1e-9 \
+                                and abs(old[0]["value"] - base[0]["value"]) > 1e-9:
+                            notes.append(f"{f['words']} is the earlier figure '{old[0]['words']}' {m.group('dir').lower()} "
+                                         f"by {d['words']}: a superseded base")
+                            break
+        if computed is not None and abs(computed - f["value"]) < 1e-9:
+            continue
+        p0 = next(iter(texts))
+        rec["findings"].append({"kind": "figure differs", "claim": c["n"], "provision": p0, "detail":
+                                f"the summary says '{_short(claim, 200)}' ({f['words']}); "
+                                + "; ".join(f"{p} says '{_short(t, 220)}'" for p, t in texts.items())
+                                + (f" ({'; '.join(notes)})" if notes else
+                                   f" (no figure {f['words']} is stated there)")})
+    # ---- counts of a table's rows
+    for m in _COUNT_TABLE_RE.finditer(normalize_latin(claim)):
+        w = m.group("n").lower()
+        n = int(w) if w.isdigit() else _NUM.get(w)
+        if not n:
+            continue
+        num = m.group("t")
+        tables: dict[str, int] = {}
+        for k, u in s.state.items():
+            if u.kind == "table_row" and u.status == "active" and re.search(r"(?:^|:)T" + re.escape(num) + r"(?:/|$)", k) \
+                    and re.search(r"/r?\d+$", k):
+                tables[k.rsplit("/", 1)[0]] = tables.get(k.rsplit("/", 1)[0], 0) + 1
+        said = [int(x) if x.isdigit() else _NUM[x.lower()] for x in re.findall(
+            r"\b(" + _NUMWORD + r")\s+" + re.escape(m.group("what")), " ".join(texts.values()), re.I)]
+        if tables and n not in tables.values() and n not in said:
+            rec["findings"].append({"kind": "count differs", "claim": c["n"], "provision": next(iter(texts), None),
+                                    "detail": f"the summary says '{m.group(0)}'; "
+                                    + "; ".join(f"{t} has {k} row(s)" for t, k in sorted(tables.items()))
+                                    + "".join(f"; {p} says '{_short(t, 160)}'" for p, t in texts.items())})
+    # ---- modality
+    cm = _VERB_MODALITY.get(c.get("verb") or "") or next(iter(sorted(modalities(c.get("object") or ""))), None)
+    if cm and texts:
+        found = {p: modalities(t) for p, t in texts.items()}
+        if any(found.values()) and not any(cm in v for v in found.values()):
+            rec["findings"].append({"kind": "modality differs", "claim": c["n"], "provision": next(iter(texts)),
+                                    "detail": f"the summary says '{_short(claim, 200)}' ({cm}); "
+                                              + "; ".join(f"{p} says '{_short(texts[p], 220)}' ({', '.join(sorted(v))})"
+                                                          for p, v in found.items() if v)})
+
+
+def _operative_status(rec: dict, c: dict) -> None:
+    if any(f.get("claim") == c["n"] and f["kind"] in OPERATIVE_KINDS for f in rec["findings"]):
+        c["status"] = "contradicted"
 
 
 # ---------------------------------------------------------------------------------------------- direction words (s11)

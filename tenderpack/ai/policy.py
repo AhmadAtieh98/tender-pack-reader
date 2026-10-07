@@ -76,6 +76,9 @@ READING_TOOLS = ("get_region", "validate_reading")
 # session 13, part 4: the quick review retrieves at the previous validated stage and nothing else (no dry run, no
 # calculation, no validation, no submission), the same list on every route
 QUICK_REVIEW_TOOLS = ("search_evidence", "get_unit", "get_group", "get_crop", "compare_state")
+# session 14 (W5): on the host route (its packet is text, so no page image is attached) the quick review also reads the
+# NEW addendum's own pages and image regions through ONE read-only tool scoped to that addendum (quick_review.SCOPE_FILE)
+QUICK_REVIEW_HOST_TOOLS = ("get_addendum_page",)
 LINE = "POLICY "
 
 
@@ -177,7 +180,7 @@ def tools(phase: str, route: str = "api") -> tuple[str, ...]:
     elif phase == "reading":
         base = READING_TOOLS
     elif phase == "quick_review":
-        base = QUICK_REVIEW_TOOLS
+        base = QUICK_REVIEW_TOOLS + (QUICK_REVIEW_HOST_TOOLS if family(route) == "host" else ())   # session 14 (W5)
     else:
         base = ()
     if family(route) == "host" and phase in SUBMISSION_TOOL:

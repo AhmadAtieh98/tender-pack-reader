@@ -1,0 +1,986 @@
+diff --git a/tenderpack/batches.py b/tenderpack/batches.py
+index 84fa3e0..5214d6a 100644
+--- a/tenderpack/batches.py
++++ b/tenderpack/batches.py
+@@ -161,8 +161,9 @@ def states_block_html(st: dict | None) -> str:
+     interpretation. '' without states."""
+     if not st:
+         return ""
+-    return ('<div class="issues"><p><b>Value:</b> ' + _e(st.get("value")) + "</p><p><b>Interpretation:</b> "
+-            + _e(st.get("interpretation")) + "</p><p><b>Approval:</b> " + _e(st.get("approval")) + "</p></div>")
++    return ('<div class="issues"><p><b>Value:</b> ' + bidi_html(st.get("value")) + "</p><p><b>Interpretation:</b> "
++            + bidi_html(st.get("interpretation")) + "</p><p><b>Approval:</b> " + bidi_html(st.get("approval"))
++            + "</p></div>")                                                          # session 14 (F2; R3 m8): Arabic rtl
+ 
+ 
+ def readiness_block_html(lines: list[str] | None) -> str:
+@@ -209,6 +210,22 @@ _ARABIC = re.compile(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
+ _LATIN = re.compile(r"[A-Za-z]")
+ 
+ 
++# session 14 (F2; R3 m8): an Arabic run inside a card's line (letters, with the spaces, digits and punctuation between
++# Arabic letters), wrapped so it renders right to left whatever the line's direction
++_ARABIC_RUN = re.compile(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]+"
++                         r"(?:[\s\d.,:;\-\u060c\u061b]+[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]+)*")
++
++
++def bidi_html(t) -> str:
++    """Session 14 (F2; R3 m8): HTML-escaped text whose Arabic runs are marked right to left (<bdi dir="rtl">, the
++    direction text_dir gives an Arabic line), so a quote or a value line mixing Arabic and Latin reads in order."""
++    out, pos, t = [], 0, str(t if t is not None else "")
++    for m in _ARABIC_RUN.finditer(t):
++        out.append(_e(t[pos:m.start()]) + f'<bdi dir="{text_dir({"lang": "ar", "text": m.group(0)})}">{_e(m.group(0))}</bdi>')
++        pos = m.end()
++    return "".join(out) + _e(t[pos:])
++
++
+ def text_dir(u: dict) -> str:
+     """The direction a reading's line renders in (session 13, F2; audit R2-10): 'rtl' for Arabic, and for a mixed
+     Arabic/Latin line (`lang: mixed`) whose first letter is Arabic (the printed line runs right to left, its label at
+@@ -334,7 +351,7 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
+                    "criterion_zero": "zero marks under one scoring criterion (scored, not a disqualification)"}
+         es = row_es(row.id)                    # session 13 (R3-2): the row's open issues, beside the decision
+         decide = (f"Accept that <b>{_e(row.requirement)}</b> is required as quoted, and that failing it is "
+-                  f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{_e(c.quote)}” "
++                  f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{bidi_html(c.quote)}” "
+                   f"({_e((ev.get('consequence_source') or {}).get('latest', c.unit))}){_e(with_open_issues(es))}. "
+                   "Otherwise reject it with what is wrong.")
+         extra = []
+@@ -344,8 +361,9 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
+             extra.append("relies on an image reading pending your review (batch 1)")
+         body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)}<div class="grid"><div>'
+                     + "".join(_fig(x, f"{x['unit']} (page {x['page']})") for x in cs)
+-                    + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{_e(it.quote if it else '')}”</p>"
+-                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”"            # gloss label: the approval state
++                    # session 14 (F2; R3 m8): the quotes' Arabic runs marked right to left (bidi_html)
++                    + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{bidi_html(it.quote if it else '')}”</p>"
++                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{bidi_html(c.quote)}”"     # gloss label: the approval state
+                     + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
+                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
+                     f"{_e(_confidence_reason(r, row))}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
+@@ -462,8 +480,9 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
+             es = row_es(row.id)
+             body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)} <small>{_e(ev["status"])}'
+                         f"{' — STALE' if ev['stale'] else ''}</small><p>{_e(row.requirement)}</p>"
+-                        f"<p>Quote: “{_e(it.quote if it else '')}” — {_e((ev.get('source') or {}).get('latest', ''))}</p>"
+-                        + (f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”</p>" if isinstance(c, Consequence) else "")
++                        # session 14 (F2; R3 m8): the quotes' Arabic runs marked right to left (bidi_html)
++                        f"<p>Quote: “{bidi_html(it.quote if it else '')}” — {_e((ev.get('source') or {}).get('latest', ''))}</p>"
++                        + (f"<p>Consequence: <i>{_e(c.cls)}</i> “{bidi_html(c.quote)}”</p>" if isinstance(c, Consequence) else "")
+                         + f"<p><small>{_e(row.assessment)}; owner {_e(row.owner_role)}; evidence {_e(', '.join(row.evidence) or row.no_deliverable)}"
+                         # session 13 (R3-2): the confidence reason as A1 and batch 2 print it, and the row's open issues
+                         f"; confidence {_e(row.confidence)}: {_e(_confidence_reason(r, row))}</small></p>"
+diff --git a/tenderpack/clarify.py b/tenderpack/clarify.py
+index d5bd8a0..e3a4d47 100644
+--- a/tenderpack/clarify.py
++++ b/tenderpack/clarify.py
+@@ -330,14 +330,18 @@ def _meets(u: str, v: str) -> bool:
+ 
+ 
+ def question_rows(units: list[str], issues: set[str], rows: dict[str, tuple[list[str], list[str]]],
+-                  curated: list[str] | None = None) -> list[str]:
++                  curated: list[str] | None = None, mirrored: set[str] | None = None) -> list[str]:
+     """The rows a question's answer would change (session 12, F5, audit A5 N2: the rule A5 uses for `ask_by`; session
+     13, F2, audit R2-7: the register's column): of the rows carrying one of its linked `issues`, those whose units meet
+     the question's own `units`; when none does, every row carrying a linked issue; plus the entry's curated `rows`
+-    (proposed links for a question tied to no issue). `rows`: row id -> (its units, its issues)."""
++    (proposed links for a question tied to no issue). `rows`: row id -> (its units, its issues). Session 14 (F2; R2 m7):
++    `mirrored`: the linked issues the question asks the Authority about that are a person's decision not yet recorded
++    (the pending decision it mirrors); its answer would change every row of such an issue, so those rows are all
++    included (the units narrow only the rows of the other linked issues)."""
+     mine = [k for k, (_, iss) in rows.items() if set(iss or []) & set(issues or [])]
+     meet = [k for k in mine if any(_meets(u, v) for u in rows[k][0] for v in units or [])]
+-    return list(dict.fromkeys((meet or mine) + [x for x in curated or [] if x in rows]))
++    own = [k for k in mine if set(rows[k][1] or []) & set(issues or []) & set(mirrored or ())]
++    return list(dict.fromkeys((meet or mine) + own + [x for x in curated or [] if x in rows]))
+ 
+ 
+ def entry_units(c: dict) -> list[str]:
+@@ -362,7 +366,8 @@ def presented(reg: dict, decisions: list[dict] | None = None, pending_issues: li
+         if set(c.get("linked_issues") or []) & pend and ih and not ih.startswith(INTERIM_PENDING.split(",")[0]):
+             e["interim_handling"] = INTERIM_PENDING.format(owner=owner) + ih[:1].upper() + ih[1:]
+         if rows is not None:
+-            e["answer_rows"] = question_rows(entry_units(c), set(c.get("linked_issues") or []), rows, c.get("rows"))
++            e["answer_rows"] = question_rows(entry_units(c), set(c.get("linked_issues") or []), rows, c.get("rows"),
++                                             set(c.get("linked_issues") or []) & pend)       # session 14 (F2; R2 m7)
+         out.append(e)
+     return out
+ 
+diff --git a/tenderpack/gantt.py b/tenderpack/gantt.py
+index 24849a1..f2693d8 100644
+--- a/tenderpack/gantt.py
++++ b/tenderpack/gantt.py
+@@ -218,6 +218,8 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
+     elif _route_shown(a):                                   # session 12 (audit A5-1): the route on a late chain
+         ask = _d(a["ask_by"])
+         out.append((f"question drafted: ask by {ask.day} {ask:%b}", WARN, "diamond"))
++    if a.get("check_tag"):                                  # session 14 (F2; R3-14-2): the Form 4-E check, in full in the notes
++        out.append((a["check_tag"], WARN, "diamond"))
+     if a.get("open_decisions"):                             # session 13 (F2; audit R2-2, R3-1): as the Permit is shown
+         ask = _d(a.get("ask_by")) if (a.get("ask_by") and not a.get("gated_by") and not _route_shown(a)) else None
+         out.append((f"OPEN DECISION ({len(a['open_decisions'])})"                 # the ids: notes below the chart
+@@ -520,7 +522,7 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
+                 L.diamond(x(ls), y + rh * 0.75, min(3.4, rh * 0.32), WARN, INK2)
+             dn = _d(a.get("decision_needed_by"))
+             if a.get("open_decisions") and not a.get("gated_by") and dn and ls and lf:
+-                # session 14 (W4; report section 9 G7): the bar is the preparation; this amber tick on the late window
++                # session 14 (W4; report section 9 G7; F2, R3 m2: the bar is the whole activity); this amber tick on the late window
+                 # is the day the finalisation needs the person's decision by (no gate unless the owner turns one on)
+                 L.line(x(dn) + dw / 2, y + rh * 0.58, x(dn) + dw / 2, y + rh * 0.92, WARN, 1.4)
+             ask = _d(a.get("ask_by"))
+@@ -543,7 +545,7 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
+              ("crit", "INFEASIBLE: negative float, shortfall in WD (never compressed)"),
+              ("gate", "GATED: finalise by (latest start)"),
+              ("ask", "ask by: last day to decide whether to raise a clarification request"),
+-             ("decide", "OPEN DECISION: finalisation needs it by (bar = preparation)"),     # session 14 (W4)
++             ("decide", "OPEN DECISION: finalisation needs it by (bar = the activity)"),   # session 14 (W4; F2 R3 m2)
+              ("over", "OVERLOAD: role over capacity that day"),
+              ("cond", "CONDITIONAL / not scheduled (late window only)"), ("nonwork", "non-working day"),
+              ("today", "planning date"), ("mile", "pack milestone")]
+@@ -620,6 +622,9 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
+                           f"Only on {route}") + ": " + "; ".join(f"{i}" + (f" ({_ltr(words[i])})" if words.get(i) else "")
+                                                                 for i in ids) + "."
+                          for k, ids in _by_activities(opened).items()))
++    from .programme import CHECK_FLAG                 # session 14 (F2; R3-14-2): the Form 4-E check's finding, in words
++    notes += [f"{a['id']}: {f}" for a in prog.get("activities") or [] for f in a.get("flags") or []
++              if f.startswith(CHECK_FLAG)]
+     for s in notes:                                   # wrapped, never cut (session 11)
+         line = ""
+         for wd in s.split(" "):
+@@ -778,7 +783,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
+               "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
+               "questions column lists every activity's).",
+               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
+-              "Preparation and finalisation are two states (session 14): the bar is the preparation, which can start on "
++              "Preparation and finalisation are two states (session 14): the bar is the whole activity, which can start on "
+               "its earliest start once its inputs are done; an amber tick on the late window of an OPEN DECISION row "
+               "marks the date its finalisation needs the person's decision by (decision_needed_by). Both are in full in "
+               "the Preparation and Finalisation columns below and in programme.csv.",
+diff --git a/tenderpack/programme.py b/tenderpack/programme.py
+index d7e1666..d273882 100644
+--- a/tenderpack/programme.py
++++ b/tenderpack/programme.py
+@@ -224,7 +224,11 @@ def marshalling(prog: dict, docs: dict) -> list[dict]:
+                     "needed_by": (f"{prod['latest_finish']} {prod['latest_finish_time']}" if prod.get("latest_finish_time")
+                                   else prod["latest_finish"]), "earliest_finish": prod.get("earliest_finish"),
+                     "float_wd": prod.get("float_wd"), "status": prod["status"], "timing_status": prod["status"],
+-                    "decision_status": "; ".join(f"{a['id']}: {a['decision_status']}" for a in gated) or "READY",
++                    # session 14 (F2; R3 m2): one decision state: a gated activity and one whose finalisation needs a
++                    # decision (NOT GATED while the gate rule is off) are both named; READY only when neither
++                    "decision_status": "; ".join(f"{a['id']}: {a['decision_status']}" for a in order
++                                                 if a in gated or str(a.get("decision_status") or "READY") != "READY")
++                                       or "READY",
+                     "resource_status": "; ".join(sorted({f"{a['id']}: {a['resource_status']}" for a in mine
+                                                          if a.get("resource_status", "OK").startswith("OVERLOAD")})) or "OK",
+                     "owner": prod["owner"], "resource": prod.get("resource", ""), "flags": flags})
+@@ -663,7 +667,49 @@ def open_decision_date(a: dict, ids: list[str], questions: dict | None, route_as
+     return None, None
+ 
+ 
+-def open_decision_reach(acts: list[dict], by_row: dict[str, list[str]], pending: dict, route: str | None = None) -> dict:
++def _head(name: str) -> str:
++    """An evidence item's name as a document names it: the words before its first bracket, comma or semicolon."""
++    return re.split(r"\s*[(,;]", str(name or ""), maxsplit=1)[0].strip()
++
++
++def named_deliverable_reach(acts: list[dict], pending: dict, deliverables: dict | None, issue_words: dict | None,
++                            route: str | None = None) -> dict[str, dict[str, str]]:
++    """Session 14 (F2; R3-14-3): issue id -> {activity: the deliverable its words name}. An open decision whose own words
++    name a deliverable of the Proposal (an evidence item's name as `deliverables` gives it, two words at least, matched
++    whole and regardless of case) bears on the activities that produce that deliverable and on the Proposal documents
++    built from it (their successors in the network placed in Envelope A or B, through Proposal documents only). The row
++    rule (open_decision_reach) reaches only activities that carry one of the issue's rows; an issue whose row on the
++    deliverable is carried by no activity (a post-award row) was lost there. Nothing is decided."""
++    if not deliverables or not issue_words:
++        return {}
++    by = {a["id"]: a for a in acts if a["id"] != route}
++    ev = {k: set(a.get("evidence_items") or [a.get("evidence")]) - {None, ""} for k, a in by.items()}
++    succ: dict[str, list[str]] = {}
++    for k, a in by.items():
++        for p in a.get("predecessors") or []:
++            succ.setdefault(p, []).append(k)
++    doc = lambda k: str(by[k].get("envelope") or "") in ("A", "B")  # noqa: E731
++    out: dict[str, dict[str, str]] = {}
++    for i in pending or {}:
++        words = str((issue_words or {}).get(i) or "")
++        for e, name in deliverables.items():
++            h = _head(name)
++            if len(h.split()) < 2 or not re.search(r"(?<![\w-])" + re.escape(h) + r"(?![\w-])", words, re.I):
++                continue
++            todo = [k for k in by if e in ev[k]]
++            seen = set(todo)
++            while todo:
++                k = todo.pop()
++                out.setdefault(i, {}).setdefault(k, h)
++                for n in succ.get(k) or []:
++                    if n not in seen and doc(n):
++                        seen.add(n)
++                        todo.append(n)
++    return out
++
++
++def open_decision_reach(acts: list[dict], by_row: dict[str, list[str]], pending: dict, route: str | None = None,
++                        deliverables: dict | None = None, issue_words: dict | None = None) -> dict:
+     """Session 13 (F4; audit R3 recheck N-1): issue id -> the activities whose own work the open decision bears on, by
+     session 12's rule for questions (schedule.question_reach): the issue's rows that an activity carries; the
+     deliverables (evidence items) shared by the activities carrying each of those rows (the intersection over the rows;
+@@ -686,12 +732,15 @@ def open_decision_reach(acts: list[dict], by_row: dict[str, list[str]], pending:
+         deliv = set.intersection(*sets) if sets else set()
+         deliv = deliv or (set().union(*sets) if sets else set())
+         out[i] = {aid for k in rows for aid in carriers[k] if ev[aid] & deliv}
++    # session 14 (F2; R3-14-3): and the activities a deliverable the issue's words name reaches (named_deliverable_reach)
++    for i, named in named_deliverable_reach(acts, pending, deliverables, issue_words, route).items():
++        out.setdefault(i, set()).update(named)
+     return out
+ 
+ 
+ def inherit_open_decisions(acts: list[dict], by_row: dict[str, list[str]], pending: dict[str, dict],
+                            gate: bool = False, questions: dict | None = None, route_ask_by: str | None = None,
+-                           reach: dict | None = None, route: str | None = None) -> None:
++                           reach: dict | None = None, route: str | None = None, named: dict | None = None) -> None:
+     """Put on every activity the open decisions of the rows it carries (`open_decisions`: issue ids; one flag
+     OPEN_DECISION_FLAG naming each with its wording, owner and rows). With `gate` (OPEN_DECISION_RULE on), a READY
+     activity becomes 'REVIEW (open decision): ...'; a GATED one keeps its gate. In place."""
+@@ -706,21 +755,48 @@ def inherit_open_decisions(acts: list[dict], by_row: dict[str, list[str]], pendi
+             for i in by_row.get(rid) or []:
+                 if i in pending and (reach is None or a["id"] == route or a["id"] in (reach.get(i) or ())):
+                     rows.setdefault(i, []).append(rid)
++        # session 14 (F2; R3-14-3): an issue whose words name a deliverable this activity produces or builds on
++        # (named_deliverable_reach) is an open decision here too, though the activity carries none of its rows
++        for i, acts_named in (named or {}).items():
++            if i in pending and a["id"] in acts_named and a["id"] != route:
++                rows.setdefault(i, [])
+         a["open_decisions"] = list(rows)
+         a["open_decision_words"] = {i: f"{pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'})"
+                                     for i in rows}
+         a["flags"] = [f for f in a.get("flags") or [] if not f.startswith(OPEN_DECISION_FLAG)]
++        if str(a.get("decision_status") or "").startswith(NOT_GATED):      # session 14 (F2): recomputed below
++            a["decision_status"] = "READY"
+         if not a.get("gated_by"):                # a gate's own date stays (schedule.plan); else the open decisions'
+             a["decision_needed_by"], a["decision_needed_by_basis"] = open_decision_date(a, list(rows), questions,
+                                                                                        route_ask_by)
+         if not rows:
+             continue
+         a["flags"].append(OPEN_DECISION_FLAG + ": " + "; ".join(
+-            f"{i}: {pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'}; rows "
+-            + ", ".join(rs[:3]) + (f" +{len(rs) - 3} more" if len(rs) > 3 else "") + ")" for i, rs in rows.items()))
+-        if gate and str(a.get("decision_status") or "READY") == "READY":
+-            a["decision_status"] = (f"REVIEW (open decision): finalisation waits on a person's decision on "
+-                                    f"{', '.join(rows)} ({OPEN_DECISION_RULE} is on)")
++            f"{i}: {pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'}; "
++            + (("rows " + ", ".join(rs[:3]) + (f" +{len(rs) - 3} more" if len(rs) > 3 else "")) if rs else
++               f"its words name the {(named or {}).get(i, {}).get(a['id'], 'deliverable')}, which this activity "
++               "produces or is built from") + ")" for i, rs in rows.items()))
++        set_decision_status(a, gate)
++
++
++# Session 14 (F2; R3 m2): one decision state. An activity no gate holds whose finalisation needs a person's decision
++# reads NOT GATED (with what it needs), never READY beside a finalisation column that says NEEDS A DECISION.
++NOT_GATED = "NOT GATED"
++
++
++def set_decision_status(a: dict, gate: bool = False) -> None:
++    """decision_status from the activity's gate and open decisions (and the Form 4-E check's judgments no issue mirrors,
++    `check_judgments`), in place: GATED stays; READY becomes 'REVIEW (open decision) ...' with the gate rule on, else
++    'NOT GATED (...): finalisation NEEDS A DECISION: ...'; READY without any."""
++    st = str(a.get("decision_status") or "READY")
++    if st.startswith(NOT_GATED):
++        st = "READY"
++    need = list(a.get("open_decisions") or []) + [f"the {RULE_9_6} check" for _ in a.get("check_judgments") or []][:1]
++    if need and st == "READY":
++        st = (f"REVIEW (open decision): finalisation waits on a person's decision on {', '.join(need)} "
++              f"({OPEN_DECISION_RULE} is on)" if gate else
++              f"{NOT_GATED} ({OPEN_DECISION_RULE} is off): finalisation NEEDS A DECISION: {', '.join(need)}")
++    a["decision_status"] = st
+ 
+ 
+ def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None) -> dict:
+@@ -730,15 +806,24 @@ def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None)
+     route = (prog.get("gate_route") or {}).get("activity")
+     prog["open_decision_index"] = pending              # session 13 (F4): the words the Gantt's notes print
+     gate = gate_on_open_decisions(assumptions if assumptions is not None else r.get("assumptions"))
++    # session 14 (F2; R3-14-3): the deliverables an issue's own words name (named_deliverable_reach)
++    deliverables = {k: getattr(v, "name", None) or (v.get("name") if isinstance(v, dict) else "")
++                    for k, v in (r.get("evidence_items") or {}).items()}
++    words = {i: " ".join(str((r.get("curated_issues") or {}).get(i, {}).get(k) or "") for k in ("text", "a3", "short"))
++             for i in pending}
++    named = named_deliverable_reach(acts, pending, deliverables, words, route)
+     inherit_open_decisions(acts, by_row, pending, gate,
+                            gate_questions(r), (prog.get("gate_route") or {}).get("ask_by"),
+-                           open_decision_reach(acts, by_row, pending, route), route)
++                           open_decision_reach(acts, by_row, pending, route, deliverables, words), route, named)
+     attach_readiness(prog, gate)                       # session 14 (W4): preparation apart from finalisation
+     try:                                               # session 14 (W4): Form 4-E against the whole Proposal
+         prog["form_4e_checks"] = form_4e_checks_for(r, prog)
+     except (KeyError, ValueError, TypeError) as exc:   # a pack without the Form 4-E step or the envelope chain
+-        prog["form_4e_checks"] = {"activity": None, "checks": [], "what_if": {}, "findings": [],
++        prog["form_4e_checks"] = {"activity": None, "checks": [], "what_if": {}, "findings": [], "judgments": [],
+                                   "error": f"not computed: {exc}"}
++    # session 14 (F2; R3-14-2, R2-M1): a check finding that names a judgment is an open decision on its activity
++    attach_check_findings(prog, prog["form_4e_checks"], r.get("curated_issues") or {}, pending, gate,
++                          gate_questions(r), (prog.get("gate_route") or {}).get("ask_by"))
+     return prog
+ 
+ 
+@@ -751,8 +836,21 @@ def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None)
+ NOT_SCHEDULED_TIMING = ("CONDITIONAL", "DEADLINE PASSED", "NOT NEEDED")
+ 
+ 
+-def readiness(a: dict, gate: bool = False) -> tuple[str, str]:
+-    """(preparation, finalisation) of one planned activity (see above)."""
++def _by_words(a: dict, by, planning_date: str | None = None) -> str:
++    """Session 14 (F2; R3 m3): what the decide-by date is (the activity's latest start, or the clarification route's
++    ask-by), and 'ALREADY PASSED' when it falls before the planning date."""
++    basis = str(a.get("decision_needed_by_basis") or "")
++    what = ("the activity's latest start: the decision conditions its preparation" if basis.startswith("by the activity")
++            else "the clarification route's ask-by" if "ask-by" in basis else "")
++    passed = bool(by and planning_date and str(by) < str(planning_date))
++    return (f" ({what})" if what else "") + (f" — ALREADY PASSED (before the planning date {planning_date})"
++                                             if passed else "")
++
++
++def readiness(a: dict, gate: bool = False, planning_date: str | None = None) -> tuple[str, str]:
++    """(preparation, finalisation) of one planned activity (see above). Session 14 (F2): the decide-by date says what it
++    is (R3 m3); a judgment of the Form 4-E check that no curated issue mirrors (`check_judgments`) is a decision the
++    finalisation needs too (R3-14-2)."""
+     st = str(a.get("status") or a.get("timing_status") or "OK")
+     preds = list(a.get("predecessors") or [])
+     if st.startswith(NOT_SCHEDULED_TIMING):
+@@ -765,10 +863,12 @@ def readiness(a: dict, gate: bool = False) -> tuple[str, str]:
+     if a.get("gated_by"):
+         fin = (f"FINALISATION GATED: needs a person's decision on {', '.join(a['gated_by'])} by {by}; no decision "
+                "recorded (preparation continues)")
+-    elif a.get("open_decisions"):
++    elif a.get("open_decisions") or a.get("check_judgments"):
+         words = a.get("open_decision_words") or {}
+-        fin = ("FINALISATION NEEDS A DECISION: " + "; ".join(f"{i}: {words.get(i, i)}" for i in a["open_decisions"])
+-               + f" by {by} (HUMAN DECISION PENDING; no decision recorded; "
++        fin = ("FINALISATION NEEDS A DECISION: " + "; ".join(
++            [f"{i}: {words.get(i, i)}" for i in a.get("open_decisions") or []]
++            + [f"{CHECK_FLAG}: {j} (no curated issue mirrors it)" for j in a.get("check_judgments") or []])
++               + f" by {by}{_by_words(a, by, planning_date)} (HUMAN DECISION PENDING; no decision recorded; "
+                + (f"{OPEN_DECISION_RULE} is on: held" if gate else
+                   f"not a gate while {OPEN_DECISION_RULE} is off, the owner's pending choice") + ")")
+     else:
+@@ -779,7 +879,7 @@ def readiness(a: dict, gate: bool = False) -> tuple[str, str]:
+ def attach_readiness(prog: dict, gate: bool = False) -> None:
+     """readiness() on every activity, in place."""
+     for a in prog.get("activities") or []:
+-        a["preparation"], a["finalisation"] = readiness(a, gate)
++        a["preparation"], a["finalisation"] = readiness(a, gate, prog.get("planning_date") or prog.get("status_date"))
+ 
+ 
+ def readiness_by_row(prog: dict | None) -> dict[str, list[str]]:
+@@ -803,6 +903,13 @@ def readiness_by_row(prog: dict | None) -> dict[str, list[str]]:
+ FORM_4E_ACTIVITY = "form-4e"
+ ENVELOPE_ASSEMBLY = ("assemble-envelope-a", "assemble-envelope-b")
+ RULE_9_6 = "VOL-I 9.6"
++# Session 14 (F2; R3-14-2, R2-M1): the judgments the check leaves to a person, each with a key; a curated issue mirrors
++# one when its `check` names '<FORM_4E_CHECK>/<key>' (a subject-style link: no issue id is written in code), and the
++# check's record (`judgments`) then names the issue. CHECK_FLAG heads the flag that carries the check on its activity.
++FORM_4E_CHECK = "form_4e_checks"
++CHECK_CROSS = "cross-check"
++CHECK_COMMERCIAL = "commercial-qualification"
++CHECK_FLAG = f"{RULE_9_6} CHECK"
+ 
+ 
+ def _ancestors(acts: dict, aid: str) -> set[str]:
+@@ -832,20 +939,36 @@ def form_4e_checks(prog: dict, cal: Calendar, clause_of, issues_of, activity: st
+                 docs.append(p)
+     rule = f"{RULE_9_6}" + (f" ('{rule_words}')" if rule_words else "")
+     checks = []
++    es = f.get("earliest_start")
+     for d in docs:
+         a = acts[d]
+-        ef, es = a.get("earliest_finish"), f.get("earliest_start")
+-        if d in before:
+-            st = "checked (finalised before Form 4-E)"
+-        elif ef and es and str(ef) < str(es):
+-            st = (f"final on {ef}, before Form 4-E starts on {es}, but not linked: a later change to it would not "
+-                  "reach Form 4-E")
++        ef = a.get("earliest_finish")
++        # session 14 (F2; R3-14-4): the document's finalisation state as A5 gives it (prepared / GATED / NEEDS A
++        # DECISION), its finalise-by date and whether that falls after Form 4-E starts; an earliest finish is not 'final'
++        if a.get("gated_by"):
++            fb = a.get("finalise_by") or a.get("decision_needed_by") or a.get("latest_start")
++            fin = f"GATED by {', '.join(a['gated_by'])}, finalise by {fb}"
++        elif a.get("open_decisions") or a.get("check_judgments"):
++            fb = a.get("decision_needed_by") or a.get("latest_start")
++            fin = f"NEEDS A DECISION: {', '.join(a.get('open_decisions') or ['its check'])}, decide by {fb}"
++        else:
++            fb, fin = None, "prepared (no pending decision on the rows it carries)"
++        linked = d in before
++        after = bool(es and ((fb and str(fb) >= str(es)) or (ef and str(ef) >= str(es))))
++        pend = "" if fb is None else f"; finalisation {fin}"
++        if after:
++            st = (f"NOT CHECKABLE: {fin}, after Form 4-E starts on {es} (earliest finish {ef})" if fb and str(fb) >= str(es)
++                  else f"NOT CHECKABLE: earliest finish {ef}, after Form 4-E starts on {es}{pend}")
++        elif linked:
++            st = "linked (an input of Form 4-E" + (f"{pend})" if pend else ", final before it starts)")
+         else:
+-            st = f"NOT CHECKABLE: final on {ef}, after Form 4-E starts on {es}"
++            st = (f"earliest finish {ef}, before Form 4-E starts on {es}, but not linked: a later change to it would not "
++                  f"reach Form 4-E{pend}")
+         checks.append({"document_activity": d, "document": a.get("item") or a.get("name"), "envelope": a.get("envelope"),
+-                       "finish": ef, "status": st, "clause": f"{rule}; {clause_of(a)}",
++                       "earliest_finish": ef, "finalisation": fin, "finalise_by": fb, "after_form_4e_start": after,
++                       "linked": linked, "status": st, "clause": f"{rule}; {clause_of(a)}",
+                        "open_issues": list(issues_of(a) or [])})
+-    missing = [c["document_activity"] for c in checks if not c["status"].startswith("checked")]
++    missing = [c["document_activity"] for c in checks if not c["linked"]]
+     what_if: dict = {"added_predecessors": missing}
+     if missing:
+         g = _graph(prog)
+@@ -860,11 +983,25 @@ def form_4e_checks(prog: dict, cal: Calendar, clause_of, issues_of, activity: st
+             t = alt[activity]
+             worse = sorted(k for k in alt if alt[k]["float_wd"] is not None and alt[k]["float_wd"] < 0
+                            and (base[k]["float_wd"] is None or alt[k]["float_wd"] < base[k]["float_wd"]))
++            # session 14 (F2; R3 m1): the shortfall that existed before the ordering apart from what the ordering adds
++            # (the ordering's own cost: Form 4-E waiting only for the documents not already late)
++            bf = lambda k: base[k]["float_wd"] if base[k]["float_wd"] is not None else 0  # noqa: E731
++            existing = max([0] + [-bf(k) for k in worse if bf(k) < 0])
++            h2 = {k: dict(v, predecessors=list(v["predecessors"])) for k, v in g.items()}
++            h2[activity]["predecessors"] = list(dict.fromkeys(h2[activity]["predecessors"]
++                                                              + [m for m in missing if bf(m) >= 0]))
++            alt2 = network(h2, cal, start)
++            worse2 = [k for k in alt2 if alt2[k]["float_wd"] is not None and alt2[k]["float_wd"] < 0
++                      and alt2[k]["float_wd"] < bf(k)]
+             what_if.update(form_4e_earliest_start=t["es"].isoformat(), form_4e_earliest_finish=t["ef"].isoformat(),
+                            form_4e_latest_finish=t["lf"].isoformat() if t["lf"] else None,
+                            float_wd=t["float_wd"], made_worse=worse, feasible=not worse,
+-                           shortfall_wd=max([0] + [-alt[k]["float_wd"] for k in worse]))
+-    findings = []
++                           shortfall_wd=max([0] + [-alt[k]["float_wd"] for k in worse]),
++                           existing_shortfall_wd=existing,
++                           already_late=[k for k in worse if bf(k) < 0],
++                           ordering_cost_wd=max([0] + [bf(k) - alt2[k]["float_wd"] for k in worse2]),
++                           newly_late=sorted(k for k in worse2 if bf(k) >= 0))
++    findings, judgments = [], []
+     late = [c for c in checks if c["status"].startswith("NOT CHECKABLE")]
+     if late:
+         wi = what_if
+@@ -872,14 +1009,30 @@ def form_4e_checks(prog: dict, cal: Calendar, clause_of, issues_of, activity: st
+                f"it would finish on {wi.get('form_4e_earliest_finish')} against its latest finish "
+                f"{wi.get('form_4e_latest_finish')}: " + ("feasible on the assumed durations" if wi.get("feasible") else
+                                                          f"INFEASIBLE by {wi.get('shortfall_wd')} WD on the assumed "
+-                                                         f"durations ({', '.join(wi.get('made_worse') or [])} made late)"))
++                                                         f"durations ({', '.join(wi.get('made_worse') or [])} made late)"
++                                                         + _cost_words(wi)))
+         findings.append(f"Form 4-E ({activity}) is finalised before {len(late)} Proposal document(s) are final ("
+                         + ", ".join(c["document_activity"] for c in late) + f"), so a qualification in them cannot be "
+                         f"checked against its declaration ({rule}). If Form 4-E waited for all of them, {how}. How "
+                         "the cross-check is done (a later final read of every document, a different order, or a "
+                         "change of a lead time) is for a person (Legal, Bid manager); no duration, setting or "
+                         "dependency was changed.")
+-    return {"activity": activity, "rule": rule, "checks": checks, "what_if": what_if, "findings": findings}
++        judgments.append({"key": CHECK_CROSS, "activity": activity, "owner": "Legal, Bid manager",
++                          "finding": findings[-1],
++                          "words": "how Form 4-E is cross-checked against the documents final after it starts"})
++    return {"activity": activity, "rule": rule, "checks": checks, "what_if": what_if, "findings": findings,
++            "judgments": judgments}
++
++
++def _cost_words(wi: dict) -> str:
++    """Session 14 (F2; R3 m1): '; <n> WD of it existed before the ordering (...); the ordering itself adds <m> WD
++    (newly late: ...)'."""
++    if not wi.get("made_worse"):
++        return ""
++    return ((f"; {wi.get('existing_shortfall_wd')} WD of it existed before the ordering "
++             f"({', '.join(wi.get('already_late') or [])} already late)" if wi.get("existing_shortfall_wd") else "")
++            + f"; the ordering itself adds {wi.get('ordering_cost_wd')} WD"
++            + (f" and makes late {', '.join(wi.get('newly_late') or [])}" if wi.get("newly_late") else ""))
+ 
+ 
+ _STOP = {"the", "of", "and", "for", "each", "per", "or", "a", "an", "in", "to", "on", "by", "with", "form", "its",
+@@ -906,7 +1059,20 @@ def proposal_clause(name: str, envelope: str, state: dict) -> str:
+     if best is None or not (len(shared) >= 2 or any(re.fullmatch(r"\d+-[a-z]", w) for w in shared)):
+         best = (fallback, getattr(state.get(fallback), "text", "") or "")
+     k, t = best
+-    return f"{k.replace(':', ' ', 1)} ('{' '.join(t.split())[:140]}')"
++    out = f"{k.replace(':', ' ', 1)} ('{' '.join(t.split())[:140]}')"
++    # session 14 (F2; R3 m7): an item an addendum inserted is put in the Proposal by the addendum's own clause (the op
++    # that inserted it) and by any clause of that section placing the document in an envelope: cite them, not the
++    # form's heading alone
++    u = state.get(k)
++    if getattr(u, "printed_in", None) and getattr(u, "history", None):
++        src = str(u.history[0]).replace("/", ":", 1)
++        sec = src.rsplit(".", 1)[0] + "." if "." in src else src
++        forms = {w for w in _tokens(name) if re.fullmatch(r"\d+-[a-z]", w)}
++        sibs = [x for x, v in state.items() if x != src and x.startswith(sec) and "envelope" in (getattr(v, "text", "") or "").lower()
++                and (not forms or forms & _tokens(getattr(v, "text", "") or ""))]
++        out += "".join(f"; {x.replace(':', ' ', 1)} ('{' '.join((getattr(state.get(x), 'text', '') or '').split())[:140]}')"
++                       for x in [src] + sorted(sibs) if x in state)
++    return out
+ 
+ 
+ def form_4e_checks_for(r: dict, prog: dict) -> dict:
+@@ -937,9 +1103,105 @@ def form_4e_checks_for(r: dict, prog: dict) -> dict:
+             f"(VOL-I 10.5: '{w105}'). Whether such a qualification can be made at all, and how Form 4-E words a "
+             "deviation from a commercial term without commercial information, is for a person (Legal and "
+             "Commercial); nothing is decided here.")
++        # session 14 (F2; R2-M1): the judgment this finding names, on the Form 4-E activity (attach_check_findings)
++        res.setdefault("judgments", []).append(
++            {"key": CHECK_COMMERCIAL, "activity": res.get("activity") or FORM_4E_ACTIVITY, "owner": "Legal and Commercial",
++             "finding": res["findings"][-1], "words": "whether and how Form 4-E can list a qualification of a commercial "
++                                                      "term without commercial information (VOL-I 9.6, 6.2, 10.5)"})
+     return res
+ 
+ 
++def check_issues(curated: dict | None, link: str) -> list[str]:
++    """Session 14 (F2; R3-14-2): the curated issues that mirror a check's judgment: those whose `check` (a string or a
++    list) names `link` ('<FORM_4E_CHECK>/<key>')."""
++    out = []
++    for iid, it in (curated or {}).items():
++        c = (it or {}).get("check") if isinstance(it, dict) else None
++        if link in ([c] if isinstance(c, str) else list(c or [])):
++            out.append(iid)
++    return out
++
++
++def attach_check_findings(prog: dict, res: dict | None, curated: dict | None, pending: dict | None,
++                          gate: bool = False, questions: dict | None = None, route_ask_by: str | None = None) -> None:
++    """Session 14 (F2; R3-14-2, R2-M1): ONE rule: a check finding that names a judgment is an open decision on the
++    activity it concerns. Each judgment of the Form 4-E check (res["judgments"]) names the issues that mirror it (its own
++    `issues`, else check_issues); on its activity: a flag CHECK_FLAG with the check's facts (the documents final after
++    Form 4-E starts, the strict order's feasibility with the shortfall that existed and what the ordering adds) and the
++    judgments (HUMAN DECISION PENDING, their owners); each mirroring issue that is a person's decision not yet recorded
++    joins the activity's open decisions (so programme.csv, the Gantt's OPEN DECISION tag and notes, marshalling, the
++    README and the cards show it); a judgment no issue mirrors stays on the activity as `check_judgments`. In place;
++    nothing is decided."""
++    res, pending = res or {}, pending or {}
++    acts = {a["id"]: a for a in prog.get("activities") or []}
++    for a in acts.values():
++        a["flags"] = [f for f in a.get("flags") or [] if not f.startswith(CHECK_FLAG)]
++        a.pop("check_judgments", None), a.pop("check_tag", None)
++    by_act: dict[str, list[dict]] = {}
++    for j in res.get("judgments") or []:
++        j["issues"] = list(j.get("issues") or []) or check_issues(curated, f"{FORM_4E_CHECK}/{j['key']}")
++        by_act.setdefault(str(j.get("activity")), []).append(j)
++    late = [c["document_activity"] for c in res.get("checks") or [] if str(c.get("status")).startswith("NOT CHECKABLE")]
++    wi = res.get("what_if") or {}
++    for aid, js in by_act.items():
++        a = acts.get(aid)
++        if a is None:
++            continue
++        facts = []
++        if late:
++            facts.append(f"{', '.join(late)} final after Form 4-E starts on {a.get('earliest_start')}")
++        if wi.get("feasible") is False:
++            facts.append(f"a strict order (Form 4-E after every Proposal document) INFEASIBLE by {wi.get('shortfall_wd')} "
++                         f"WD on the assumed durations" + _cost_words(wi))
++        elif wi.get("feasible"):
++            facts.append("a strict order (Form 4-E after every Proposal document) feasible on the assumed durations")
++        owners = lambda j: [f"{i} ({(pending.get(i) or {}).get('owner') or (curated or {}).get(i, {}).get('owner') or j['owner']})"  # noqa: E731
++                            for i in j["issues"] if i in pending]
++        judged = [w for j in js for w in owners(j)] + [f"{j['words']} ({j['owner']}; no curated issue mirrors it)"
++                                                       for j in js if not owners(j)]
++        a["flags"].append(f"{CHECK_FLAG} (Form 4-E against the whole Proposal; form_4e_checks.csv): " + "; ".join(facts)
++                          + ". HUMAN DECISION PENDING: " + "; ".join(judged) + "; no duration, setting or dependency "
++                          "was changed")
++        a["check_tag"] = (f"9.6 CHECK: {len(late)} final after start" if late else "9.6 CHECK") + (
++            f"; strict order INFEASIBLE by {wi.get('shortfall_wd')} WD" if wi.get("feasible") is False else "")
++        a["check_judgments"] = [j["words"] + f" ({j['owner']})" for j in js if not owners(j)]
++        new = [i for j in js for i in j["issues"] if i in pending and i not in (a.get("open_decisions") or [])]
++        if new:
++            idx = prog.setdefault("open_decision_index", {})
++            for i in new:
++                idx.setdefault(i, pending[i])
++            a["open_decisions"] = list(a.get("open_decisions") or []) + new
++            a["open_decision_words"] = {**(a.get("open_decision_words") or {}), **{
++                i: f"{pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'})" for i in new}}
++            extra = "; ".join(f"{i}: {pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'}; "
++                              f"the {RULE_9_6} check of this activity)" for i in new)
++            od = [f for f in a["flags"] if f.startswith(OPEN_DECISION_FLAG)]
++            a["flags"] = [f for f in a["flags"] if not f.startswith(OPEN_DECISION_FLAG)] + [
++                (od[0] + "; " + extra) if od else f"{OPEN_DECISION_FLAG}: {extra}"]
++            if not a.get("gated_by"):
++                a["decision_needed_by"], a["decision_needed_by_basis"] = open_decision_date(
++                    a, list(a["open_decisions"]), questions, route_ask_by)
++        set_decision_status(a, gate)
++        a["preparation"], a["finalisation"] = readiness(a, gate, prog.get("planning_date") or prog.get("status_date"))
++
++
++def decide_by(prog: dict | None) -> dict[str, tuple[str, str]]:
++    """Session 14 (F2; R2 m1): issue id -> (date, activity): the earliest date by which an A5 activity's finalisation
++    needs a person's decision on the issue (its gate's or its open decision's decision_needed_by), the clarification
++    route activity aside (it lists every open decision once). The ONE source of the decide-by date the A3 page's mark
++    (decide before submission) and A5 share."""
++    route = ((prog or {}).get("gate_route") or {}).get("activity")
++    out: dict[str, tuple[str, str]] = {}
++    for a in (prog or {}).get("activities") or []:
++        d = a.get("decision_needed_by")
++        if a["id"] == route or not d:
++            continue
++        for i in list(a.get("gated_by") or []) + list(a.get("open_decisions") or []):
++            if i not in out or (str(d), a["id"]) < out[i]:
++                out[i] = (str(d), a["id"])
++    return out
++
++
+ def question_units(r: dict) -> dict[str, list[str]]:
+     """Question id -> its own units (the clarification register's `units`, else the units its sources quote), for the
+     open questions (session 12, F5; audit A5 N2: schedule.question_reach)."""
+=== NEW FILE tests/test_session14_f2_a5_a3_fixes.py ===
+"""Session 14 (F2): the fixes for the independent rechecks R3 (A5, the rendered files, the review cards) and R2 (the A3
+page, A4), failing tests first, each general (no row, issue or rehearsal named in the code).
+
+- R3-14-2 / R2-M1: a Form 4-E check finding that names a judgment is an open decision on the activity it concerns: the
+  check (the documents final after Form 4-E starts, the strict order's feasibility) and the judgments (each by the issue
+  that mirrors it: the curated issue's `check` names the check and the judgment) are on the form-4e activity wherever it
+  appears (programme, Gantt status cell and notes, marshalling).
+- R3-14-4: the checks print the finalisation state of each document (prepared / GATED by / NEEDS A DECISION), its
+  finalise-by date and whether that is after Form 4-E starts; 'linked' (an input of Form 4-E), never 'final on' for a
+  document whose finalisation awaits a person.
+- R3-14-3: an open decision whose own words name a deliverable reaches the activities producing it and the Proposal
+  documents built from it (the rule followed only the issue's rows; the row that sets the model's term is post-award).
+- R3 m1 (the ordering's own cost beside the existing shortfall), m2 (one decision state), m3 (what the decide-by date
+  is; a passed date marked), m7 (the clause that puts an inserted form in the Proposal), m8 (Arabic in the cards).
+- R2 m1 (A3's dagger from A5's decide-by dates), m2 (one count on the A3 heading), m5 (a high-confidence A3 line names
+  its pending judgments), m7 (a question's rows include every row of the pending issue it asks about).
+"""
+from __future__ import annotations
+
+import copy
+from datetime import date
+
+import pytest
+
+from tenderpack import batches, clarify, gantt, programme, stage2
+from tenderpack.dates import Calendar
+from tenderpack.util import ROOT
+
+
+def _act(i, preds=(), dur=1, **kw):
+    return {"id": i, "name": i, "predecessors": list(preds), "duration_wd": dur, "duration_assumption": f"k_{i}",
+            "earliest_start": "2026-11-01", "status": "OK", "decision_status": "READY", "req_ids": [], "flags": [],
+            "gated_by": [], **kw}
+
+
+def _planned(acts, deadline=date(2026, 11, 20), start=date(2026, 11, 1)):
+    cal = Calendar()
+    net = programme.network({a["id"]: {"duration_wd": a["duration_wd"], "predecessors": a["predecessors"],
+                                       "deadline_date": deadline if a["id"] == "deliver" else None, "buffer_wd": 0}
+                             for a in acts}, cal, start)
+    for a in acts:
+        t = net[a["id"]]
+        a.update(earliest_start=t["es"].isoformat(), earliest_finish=t["ef"].isoformat(),
+                 latest_start=t["ls"].isoformat() if t["ls"] else None,
+                 latest_finish=t["lf"].isoformat() if t["lf"] else None, float_wd=t["float_wd"])
+    return cal
+
+
+def _synthetic_prog():
+    acts = [_act("dev", [], 3), _act("tp", [], 5), _act("bond", [], 8), _act("f4f", [], 12), _act("f4a", [], 1),
+            _act("form-4e", ["dev", "tp"], 2), _act("assemble-envelope-a", ["form-4e", "tp", "bond", "f4a"], 1),
+            _act("assemble-envelope-b", ["f4f"], 1),
+            _act("deliver", ["assemble-envelope-a", "assemble-envelope-b"], 1, deadline_date="2026-11-20")]
+    for a in acts:
+        a["envelope"] = {"bond": "A", "tp": "A", "f4f": "B", "dev": "A", "form-4e": "A", "f4a": "A"}.get(a["id"], "A+B")
+    cal = _planned(acts)
+    by = {a["id"]: a for a in acts}
+    by["f4a"].update(gated_by=["I-F"], finalise_by="2026-11-18", decision_needed_by="2026-11-10")
+    by["bond"].update(open_decisions=["I-B"], open_decision_words={"I-B": "the bond (Legal)"},
+                      decision_needed_by="2026-11-03")
+    by["tp"].update(open_decisions=["I-T"], open_decision_words={"I-T": "the ranges (Process engineer)"},
+                    decision_needed_by="2026-11-02")
+    for a in acts:
+        a["preparation"], a["finalisation"] = programme.readiness(a)
+    return {"activities": acts, "status_date": "2026-11-01", "planning_date": "2026-11-01"}, cal
+
+
+def _checks(prog, cal):
+    return programme.form_4e_checks(prog, cal, clause_of=lambda a: "VOL-I 9.1",
+                                    issues_of=lambda a: list(a.get("open_decisions") or []))
+
+
+# ---------------------------------------------------------------------------------------------- R3-14-4
+
+def test_r3_14_4_checks_state_the_finalisation_not_final_on_synthetic():
+    prog, cal = _synthetic_prog()
+    res = _checks(prog, cal)
+    by = {c["document_activity"]: c for c in res["checks"]}
+    es = next(a for a in prog["activities"] if a["id"] == "form-4e")["earliest_start"]
+    # an input of Form 4-E is 'linked' (never 'checked'), and its pending finalisation is said
+    assert by["tp"]["status"].startswith("linked"), by["tp"]["status"]
+    assert "NEEDS A DECISION" in by["tp"]["status"] and "I-T" in by["tp"]["status"]
+    # a gated document whose finalise-by falls after Form 4-E starts cannot be cross-checked
+    assert by["f4a"]["status"].startswith("NOT CHECKABLE"), by["f4a"]["status"]
+    assert "GATED by I-F" in by["f4a"]["status"] and "finalise by 2026-11-18" in by["f4a"]["status"]
+    assert f"after Form 4-E starts on {es}" in by["f4a"]["status"]
+    assert by["f4a"]["after_form_4e_start"] is True and by["f4a"]["finalise_by"] == "2026-11-18"
+    # an unlinked document awaiting a decision: its earliest finish is not 'final'
+    assert "final on" not in by["bond"]["status"] and "earliest finish" in by["bond"]["status"]
+    assert "NEEDS A DECISION" in by["bond"]["status"] and "I-B" in by["bond"]["status"]
+    assert by["bond"]["finalisation"].startswith("NEEDS A DECISION")
+    assert all("earliest_finish" in c and "finish" not in c for c in res["checks"])
+    assert "f4a" in res["what_if"]["added_predecessors"] and "tp" not in res["what_if"]["added_predecessors"]
+
+
+# ---------------------------------------------------------------------------------------------- R3 m1
+
+def test_r3_m1_the_ordering_cost_is_said_beside_the_existing_shortfall_synthetic():
+    acts = [_act("late", [], 30), _act("doc", ["late"], 1), _act("tp", [], 2), _act("f4f", [], 12),
+            _act("form-4e", ["tp"], 2), _act("assemble-envelope-a", ["form-4e", "doc"], 1),
+            _act("assemble-envelope-b", ["f4f"], 1),
+            _act("deliver", ["assemble-envelope-a", "assemble-envelope-b"], 1, deadline_date="2026-11-20")]
+    for a in acts:
+        a["envelope"] = {"doc": "A", "tp": "A", "f4f": "B", "late": "A", "form-4e": "A"}.get(a["id"], "A+B")
+    cal = _planned(acts)
+    prog = {"activities": acts, "status_date": "2026-11-01", "planning_date": "2026-11-01"}
+    w = _checks(prog, cal)["what_if"]
+    assert w["feasible"] is False
+    assert w["existing_shortfall_wd"] > 0 and w["ordering_cost_wd"] > 0
+    assert w["shortfall_wd"] == w["existing_shortfall_wd"] + w["ordering_cost_wd"]
+    assert "f4f" in w["newly_late"] and "late" not in w["newly_late"]
+    f = _checks(prog, cal)["findings"][0]
+    assert f"INFEASIBLE by {w['shortfall_wd']} WD" in f and f"{w['existing_shortfall_wd']} WD" in f
+    assert f"the ordering itself adds {w['ordering_cost_wd']} WD" in f
+
+
+# ---------------------------------------------------------------------------------------------- R3-14-2 / R2-M1
+
+def _curated_with_check_issues():
+    return {
+        "I-SYN-CROSS": {"text": "how Form 4-E is cross-checked (synthetic)", "owner": "Bid manager",
+                        "short": "Form 4-E cross-check against later documents",
+                        "check": [f"{programme.FORM_4E_CHECK}/{programme.CHECK_CROSS}"]},
+        "I-SYN-COMM": {"text": "commercial qualification in Form 4-E (synthetic)", "owner": "Legal counsel",
+                       "short": "commercial qualification in Form 4-E",
+                       "check": f"{programme.FORM_4E_CHECK}/{programme.CHECK_COMMERCIAL}"},
+    }
+
+
+def test_r3_14_2_check_judgments_are_open_decisions_on_form_4e_synthetic():
+    prog, cal = _synthetic_prog()
+    res = _checks(prog, cal)
+    res["judgments"].append({"key": programme.CHECK_COMMERCIAL, "activity": "form-4e",
+                             "owner": "Legal and Commercial", "finding": "the 9.6 / 6.2 / 10.5 tension"})
+    cur = _curated_with_check_issues()
+    pending = {"I-SYN-CROSS": {"short": "Form 4-E cross-check", "owner": "Bid manager", "brief": "cross-check"},
+               "I-SYN-COMM": {"short": "commercial qualification", "owner": "Legal counsel", "brief": "qualification"}}
+    prog["open_decision_index"] = {}
+    programme.attach_check_findings(prog, res, cur, pending)
+    f4e = next(a for a in prog["activities"] if a["id"] == "form-4e")
+    assert {"I-SYN-CROSS", "I-SYN-COMM"} <= set(f4e["open_decisions"])
+    assert f4e["finalisation"].startswith("FINALISATION NEEDS A DECISION") and "I-SYN-CROSS" in f4e["finalisation"]
+    assert f4e["decision_needed_by"]
+    chk = [x for x in f4e["flags"] if x.startswith(programme.CHECK_FLAG)]
+    assert chk and "bond" in chk[0] and "f4f" in chk[0] and "INFEASIBLE" in chk[0], chk
+    assert "HUMAN DECISION PENDING" in chk[0] and "I-SYN-CROSS (Bid manager)" in chk[0]
+    assert "I-SYN-COMM (Legal counsel)" in chk[0]
+    od = [x for x in f4e["flags"] if x.startswith(programme.OPEN_DECISION_FLAG)]
+    assert od and "I-SYN-CROSS" in od[0]
+    assert set(prog["open_decision_index"]) >= {"I-SYN-CROSS", "I-SYN-COMM"}
+    assert [c["issues"] for c in res["judgments"]] == [["I-SYN-CROSS"], ["I-SYN-COMM"]]
+    # the Gantt's status cell carries the check (the notes print it in full)
+    tags = [t[0] for t in gantt._tags(f4e)]
+    assert any(t.startswith("9.6 CHECK") for t in tags), tags
+    assert any(t.startswith("OPEN DECISION (") for t in tags)
+
+
+def test_r3_14_2_an_unmirrored_judgment_still_shows_on_the_activity_synthetic():
+    prog, cal = _synthetic_prog()
+    res = _checks(prog, cal)
+    programme.attach_check_findings(prog, res, {}, {})
+    f4e = next(a for a in prog["activities"] if a["id"] == "form-4e")
+    chk = [x for x in f4e["flags"] if x.startswith(programme.CHECK_FLAG)]
+    assert chk and "HUMAN DECISION PENDING" in chk[0] and "no curated issue mirrors it" in chk[0], chk
+    assert "VOL-I 9.6 CHECK" in f4e["finalisation"]
+
+
+@pytest.fixture(scope="module")
+def real():
+    r = stage2.run(ROOT / "build", ROOT / "config/pack.yaml", ROOT)
+    progs = stage2.a5_all(r)
+    return r, progs[r["validated"].stage]
+
+
+@pytest.fixture(scope="module")
+def real_with_check_issues():
+    """The real pack with two synthetic curated issues mirroring the Form 4-E judgments (the ids F1 creates are not in
+    this worktree): the coordinator's merge gives the real ones."""
+    r = stage2.run(ROOT / "build", ROOT / "config/pack.yaml", ROOT)
+    r = dict(r, curated_issues={**r["curated_issues"], **_curated_with_check_issues()},
+             pending_issues={**r["pending_issues"], "I-SYN-CROSS": ["synthetic"], "I-SYN-COMM": ["synthetic"]})
+    return r, programme.stage_planner(r)(r["assumptions"])          # extended: marshalling as A5 writes it
+
+
+def test_r3_14_2_real_form_4e_carries_the_check_and_its_judgments(real_with_check_issues, tmp_path):
+    r, prog = real_with_check_issues
+    acts = {a["id"]: a for a in prog["activities"]}
+    f4e = acts["form-4e"]
+    assert {"I-SYN-CROSS", "I-SYN-COMM"} <= set(f4e["open_decisions"]), f4e["open_decisions"]
+    chk = " ".join(x for x in f4e["flags"] if x.startswith(programme.CHECK_FLAG))
+    for d in ("lcc-certificate", "form-4f", "model-audit-opinion"):
+        assert d in chk, d
+    assert "INFEASIBLE by" in chk and "WD" in chk
+    assert "I-SYN-CROSS" in f4e["finalisation"] and "I-SYN-COMM" in f4e["finalisation"]
+    m = next(x for x in prog["marshalling"] if x["evidence"] == "EV-FORM-4E")
+    assert any(programme.CHECK_FLAG in f for f in m["flags"]), m["flags"]
+    s = gantt.svg(prog)
+    assert "9.6 CHECK" in s and "I-SYN-CROSS" in s and "I-SYN-COMM" in s
+    readme = programme.readme(prog)
+    assert "I-SYN-CROSS" in readme
+
+
+def test_r3_14_2_real_without_mirroring_issue_still_on_form_4e(real):
+    r, prog = real
+    f4e = next(a for a in prog["activities"] if a["id"] == "form-4e")
+    chk = " ".join(x for x in f4e["flags"] if x.startswith(programme.CHECK_FLAG))
+    assert "lcc-certificate" in chk and "INFEASIBLE" in chk and "HUMAN DECISION PENDING" in chk
+    assert "9.6 CHECK" in gantt.svg(prog)
+
+
+# ---------------------------------------------------------------------------------------------- R3-14-4 (real)
+
+def test_r3_14_4_real_checks_follow_the_gates(real):
+    r, prog = real
+    docs = {c["document_activity"]: c for c in prog["form_4e_checks"]["checks"]}
+    for d in ("form-4a", "form-4b"):                              # GATED, finalise by after Form 4-E starts
+        assert docs[d]["status"].startswith("NOT CHECKABLE") and "GATED by" in docs[d]["status"], docs[d]["status"]
+    for d in ("form-4c-sign", "form-4g-sign", "pcg-execution", "fin-model-freeze", "fin-assumptions"):
+        assert "final on" not in docs[d]["status"] and "NEEDS A DECISION" in docs[d]["status"], (d, docs[d]["status"])
+    assert docs["technical-proposal"]["status"].startswith("linked")
+
+
+# ---------------------------------------------------------------------------------------------- R3-14-3
+
+def test_r3_14_3_an_issue_naming_a_deliverable_reaches_its_producers_and_what_is_built_from_it_synthetic():
+    acts = [{"id": "model", "req_ids": [], "evidence": "EV-M", "envelope": "B", "predecessors": []},
+            {"id": "audit", "req_ids": [], "evidence": "EV-AUD", "envelope": "B", "predecessors": ["model"]},
+            {"id": "f4f", "req_ids": ["R-F"], "evidence": "EV-F", "envelope": "B", "predecessors": ["model", "audit"]},
+            {"id": "asm-b", "req_ids": [], "evidence": "EV-DEL", "envelope": "A+B", "predecessors": ["f4f"]},
+            {"id": "dev", "req_ids": ["R-T"], "evidence": "EV-E", "envelope": "A", "predecessors": []},
+            {"id": "other", "req_ids": [], "evidence": "EV-O", "envelope": "A", "predecessors": []}]
+    by_row = {"R-T": ["I-TERM"], "R-POST": ["I-TERM"]}
+    pending = {"I-TERM": {"short": "term", "owner": "Legal"}}
+    names = {"EV-M": "Financial Model (unlocked)", "EV-AUD": "Auditor's opinion", "EV-F": "Form 4-F",
+             "EV-E": "Form 4-E", "EV-DEL": "Delivery", "EV-O": "Other"}
+    words = {"I-TERM": "Which clause governs the term. It sets the term start in the Financial Model."}
+    reach = programme.open_decision_reach(acts, by_row, pending, deliverables=names, issue_words=words)
+    assert reach["I-TERM"] == {"dev", "model", "audit", "f4f"}, reach
+    assert programme.open_decision_reach(acts, by_row, pending)["I-TERM"] == {"dev"}       # rows only: as before
+
+
+def test_r3_14_3_real_concession_reaches_the_model_chain_and_form_4f(real):
+    r, prog = real
+    acts = {a["id"]: a for a in prog["activities"]}
+    for aid in ("fin-model-build", "fin-model-freeze", "model-audit-opinion", "fin-assumptions", "form-4f"):
+        assert "I-CONCESSION" in (acts[aid].get("open_decisions") or []), (aid, acts[aid].get("open_decisions"))
+        assert "I-CONCESSION" in acts[aid]["finalisation"]
+    assert "I-CONCESSION" not in (acts["lcc-certificate"].get("open_decisions") or [])
+
+
+# ---------------------------------------------------------------------------------------------- R3 m2, m3
+
+def test_r3_m2_one_decision_state_and_m3_the_decide_by_date_is_said_synthetic():
+    acts = [_act("a", req_ids=["R1"], latest_start="2026-10-06"), _act("b", req_ids=["R2"], latest_start="2026-11-20")]
+    programme.inherit_open_decisions(acts, {"R1": ["I-P"], "R2": []}, {"I-P": {"short": "p", "owner": "Commercial"}})
+    assert acts[0]["decision_status"].startswith("NOT GATED"), acts[0]["decision_status"]
+    assert "NEEDS A DECISION" in acts[0]["decision_status"] and acts[1]["decision_status"] == "READY"
+    prog = {"activities": acts, "planning_date": "2026-10-22"}
+    programme.attach_readiness(prog)
+    fin = acts[0]["finalisation"]
+    assert "by 2026-10-06 (the activity's latest start" in fin, fin
+    assert "ALREADY PASSED" in fin and "2026-10-22" in fin, fin
+    m = programme.marshalling({"activities": [dict(acts[0], evidence="EV-X", evidence_items=["EV-X"], owner="o",
+                                                   latest_finish="2026-10-07", earliest_finish="2026-10-23")],
+                               "evidence_needed": {"EV-X": ["R1"]}},
+                              {"items": [{"evidence": "EV-X", "name": "x", "kind": "action"}], "totals": []})
+    assert m[0]["decision_status"].startswith("a: NOT GATED"), m[0]["decision_status"]
+
+
+def test_r3_m2_legend_says_the_bar_is_the_activity():
+    s = gantt.svg({"activities": [_act("a", earliest_finish="2026-11-01", latest_start="2026-11-02",
+                                       latest_finish="2026-11-02", open_decisions=["I-P"],
+                                       decision_needed_by="2026-11-02", float_wd=1, owner="o", resource="r",
+                                       resource_status="OK", discipline="d")],
+                   "planning_date": "2026-11-01", "status_date": "2026-11-01", "stage": "S", "milestones": []})
+    assert "bar = preparation" not in s and "bar = the activity" in s
+
+
+def test_r3_m2_m3_real(real):
+    r, prog = real
+    acts = {a["id"]: a for a in prog["activities"]}
+    assert acts["form-4e"]["decision_status"].startswith("NOT GATED")
+    assert "ALREADY PASSED" in acts["lcc-ratio"]["finalisation"], acts["lcc-ratio"]["finalisation"]
+    assert "the activity's latest start" in acts["technical-proposal"]["finalisation"]
+
+
+# ---------------------------------------------------------------------------------------------- R3 m7
+
+def test_r3_m7_an_inserted_form_cites_the_clause_that_inserted_it(real):
+    r, prog = real
+    docs = {c["document_activity"]: c for c in prog["form_4e_checks"]["checks"]}
+    cl = docs["form-4g-sign"]["clause"]
+    assert "ADD-02 7.1" in cl and "inserted after item (e)" in cl, cl
+    assert "ADD-02 7.2" in cl and "Envelope A" in cl, cl
+
+
+# ---------------------------------------------------------------------------------------------- R2 m1, m2, m5
+
+@pytest.fixture(scope="module")
+def a3page(real):
+    r, prog = real
+    return stage2.a3(r, stage2.collect_issues(r, prog), prog)
+
+
+def _items(a3d):
+    return {i["id"]: i for g in a3d["groups"]["groups"] for i in g["items"]}
+
+
+def test_r2_m1_dagger_agrees_with_a5_decide_by(real, a3page):
+    r, prog = real
+    by = programme.decide_by(prog)
+    pdd = "2026-11-26"
+    items = _items(a3page)
+    folded = stage2.fold_issues(r, stage2.collect_issues(r, prog), prog, {})["folded"]
+    for iid, (d, _) in by.items():
+        if d < pdd:
+            listed = folded.get(iid, iid)
+            if listed in items:
+                assert items[listed]["decide"], (iid, listed, d)
+    for i in ("I-FLOWS", "I-VOL-V-PERSISTENT-BREACH"):
+        assert i in by and items[i]["decide"], i
+    assert items["I-FLOWS"]["decide_by"] == by["I-FLOWS"][0], items["I-FLOWS"]
+
+
+def test_r2_m2_one_count_on_the_a3_heading(a3page):
+    g = a3page["groups"]
+    n_all = g["counts"]["all"]
+    assert g["heading"].startswith(f"Unresolved matters, grouped — {n_all} open issues ({g['counts']['listed']} listed")
+    assert g["note"].startswith(f"{n_all} open issues")
+
+
+def test_r2_m5_a_high_confidence_line_names_its_pending_judgments(real, a3page):
+    lines = {x["id"]: x for x in a3page["explicit"]}
+    assert "I-F4A-FIELDS" in lines["VOL-I-9.3-01"]["confidence"], lines["VOL-I-9.3-01"]["confidence"]
+    assert "I-CONCESSION" in lines["VOL-I-9.6-01"]["confidence"], lines["VOL-I-9.6-01"]["confidence"]
+
+
+# ---------------------------------------------------------------------------------------------- R2 m7
+
+def test_r2_m7_question_rows_take_every_row_of_the_pending_issue_it_asks_about():
+    rows = {"R-T1": (["V:T/a"], ["I-P", "I-R"]), "R-T2": (["V:T/b"], ["I-P"]), "R-H": (["V:2.4"], ["I-P"]),
+            "R-X": (["V:9"], ["I-R"])}
+    assert clarify.question_rows(["V:2.4"], {"I-P", "I-R"}, rows) == ["R-H"]                  # as before
+    got = clarify.question_rows(["V:2.4"], {"I-P", "I-R"}, rows, mirrored={"I-P"})
+    assert set(got) == {"R-H", "R-T1", "R-T2"}, got                                          # not R-X (I-R: narrowed)
+
+
+def test_r2_m7_real_permit_question_rows(real):
+    r, prog = real
+    qs = {q["id"]: q for q in clarify.presented(r["clarifications"], r.get("decisions"), r.get("pending_issues"),
+                                                 r.get("curated_issues"), stage2.answer_row_index(r))}
+    rows = set(qs["CQ-ENV-PERMIT"]["answer_rows"])
+    assert {"VOL-II-T2-4-BOD5", "VOL-II-3.1-01", "VOL-II-7.2-01", "VOL-V-31.1-02"} <= rows, sorted(rows)
+
+
+# ---------------------------------------------------------------------------------------------- R3 m8
+
+def test_r3_m8_arabic_runs_in_the_cards_are_marked_rtl():
+    h = batches.bidi_html("Quote: “البند ٤-٢ x” & more")
+    assert '<bdi dir="rtl">البند ٤-٢</bdi>' in h and "&amp;" in h
+    s = batches.states_block_html({"value": "value as read: 'يؤدي إلى استبعاد العرض'", "interpretation": "i",
+                                   "approval": "a"})
+    assert '<bdi dir="rtl">يؤدي إلى استبعاد العرض</bdi>' in s

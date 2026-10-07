@@ -35,7 +35,15 @@ Derived consequences (follow-up 9). consequence_candidates(r, stage): a band an 
 and not more than Y", "between X and Y") with the EXISTING bid-out rules (rows whose consequence is a rejection,
 disqualification, non-responsiveness or exclusion) that share a defined term with it, and the rows of the forms it
 names (read with). The downstream phase may propose a row whose consequence quotes such a rule (PROPOSED; human-owned
-unless the rule's own words name the value); when no rule shares a term the finding says NO_CONSEQUENCE."""
+unless the rule's own words name the value); when no rule shares a term the finding says NO_CONSEQUENCE.
+
+Session 14 (W3; the owner's part 2). Conditional impacts: conditional_impacts(r, stage) lists, in amend.conditional_impacts'
+one shape ({id, stage, provision, conditional_on {kind, ref, state, why}, units, investigate, accepted: False}), every op
+that could not be applied, every unresolved disposition or unaccounted provision and every pending image reading of the
+stage: each is an investigation CONDITIONAL on that ref (the downstream phase maps its units to rows, activities and
+prices), never an accepted fact. Computed amounts: computed_amounts(r, stage) lists each adjust_value op with the value the
+engine computed (calc relative_change), its operands and their quoted sources, and its steps: a PROPOSAL with its
+derivation, never typed."""
 from __future__ import annotations
 
 import re
@@ -636,11 +644,67 @@ def consequence_check(row, rules: list[dict], st_text: dict[str, str], addendum_
 
 # ---------------------------------------------------------------------------------------------- summary and lines
 
+# ---------------------------------------------------------------------------------------------- session 14 (W3)
+
+def computed_amounts(r: dict, stage: str) -> list[dict]:
+    """Each adjust_value op of the stage: the value the engine computed from the previous effective one, with its
+    derivation (PROPOSED: a person accepts or rejects the op; the figure is never typed)."""
+    out = []
+    for x in _stage(r, stage).ops:
+        c = x.details.get("computed")
+        if x.op.type != "adjust_value" or not c:
+            continue
+        out.append({"op": x.op.id, "provision": x.op.provision, "target": x.op.target, "change": x.op.change,
+                    "valid": x.valid, "applied": x.applied, "previous_value": x.details.get("previous_value"),
+                    "new_value": x.details.get("new_value"), "derivation": x.details.get("derivation"),
+                    "status": c.get("status"), "reason": c.get("reason"), "steps": list(c.get("steps") or []),
+                    "operands": list(c.get("operands") or [])})
+    return out
+
+
+def conditional_impacts(r: dict, stage: str) -> list[dict]:
+    """The stage's conditional investigations (amend.conditional_impacts), with every pending reading of the stage that
+    the engine's list does not already name (pending_readings: units changed there as well as the addendum's own)."""
+    from .amend import _impact
+    s = _stage(r, stage)
+    out = [dict(x) for x in (getattr(s, "impacts", None) or [])]
+    seen = {x["id"] for x in out}
+    for region, e in pending_readings(r, stage).items():
+        if f"impact:{region}" not in seen:
+            out.append(_impact(stage, e["units"][0], "reading", region, "pending_reading",
+                               f"the reading {region} is pending a person's approval: its values are not in force",
+                               list(e["units"])))
+    return out
+
+
+def impact_lines(sm: dict | None) -> list[str]:
+    """The conditional investigations and computed amounts, for a person (review packet, candidate A3)."""
+    if not sm:
+        return []
+    L = []
+    imps = sm.get("conditional_impacts") or []
+    if imps:
+        L += ["## Conditional impact investigations (CONDITIONAL; never accepted facts)", ""]
+        L += [f"- `{x['id']}` {x['investigate']}" for x in imps] + [""]
+    amts = sm.get("computed_amounts") or []
+    if amts:
+        L += ["## Computed amounts (PROPOSED; computed by the engine from the previous effective value, never typed)", ""]
+        for a in amts:
+            L.append(f"- `{a['op']}` ({a['provision']}, '{a['change']}') on `{a['target']}`: "
+                     + (f"{a['previous_value']} -> **{a['new_value']}** — {a['derivation']}" if a["status"] == "resolved"
+                        else f"not computed: {a['reason']}")
+                     + ("" if a["applied"] else " (op not applied: CONDITIONAL)"))
+        L.append("")
+    return L
+
+
 def summary(r: dict, stage: str) -> dict:
     rows = pending_reading_rows(r, stage)
     return {"stage": stage, "pending_reading_rows": rows, "pending_reading_activities": pending_reading_activities(r, rows),
             "computed_deadlines": computed_deadlines(r, stage), "working_days_left": working_days_left(r, stage),
-            "switched": switched(r, stage), "consequences": consequence_candidates(r, stage)}
+            "switched": switched(r, stage), "consequences": consequence_candidates(r, stage),
+            # session 14 (W3): conditional investigations and computed amounts
+            "conditional_impacts": conditional_impacts(r, stage), "computed_amounts": computed_amounts(r, stage)}
 
 
 def _deadline_line(d: dict) -> str:
@@ -679,7 +743,7 @@ def a3_lines(sm: dict | None) -> list[str]:
                  + ", ".join(f"{k}: {v}" for k, v in x["parameters"].items()) + " (never shown as in force)")
     for x in sm.get("switched") or []:
         L.append(f"- {x['flag']}")
-    return L + [""]
+    return L + [""] + impact_lines(sm)                         # session 14 (W3)
 
 
 def review_lines(sm: dict | None) -> list[str]:
@@ -687,6 +751,7 @@ def review_lines(sm: dict | None) -> list[str]:
         return []
     L = ["## Derived effects (session 12: pending readings, computed deadlines, conditions, consequences)", ""]
     L += a5_lines(sm)
+    L += impact_lines(sm)                                      # session 14 (W3)
     sw = sm.get("switched") or []
     if sw:
         L += ["## Conditions switched and definitions changed (rows flagged: re-read; nothing decided)", ""]

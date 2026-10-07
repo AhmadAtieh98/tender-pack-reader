@@ -876,9 +876,9 @@ def get_state(ws: Workspace) -> dict:
 
 # ---------------------------------------------------------------------------------------------- controller-backed tools
 
-def validate_proposal(ws: Workspace, proposal: dict) -> dict:
+def validate_proposal(ws: Workspace, proposal: dict | None = None, schemas: list[str] | None = None) -> dict:
     from . import controller
-    return controller.validate_payload(ws, proposal)
+    return controller.validate_payload(ws, proposal, schemas)
 
 
 def get_task_packet(ws: Workspace, addendum: str, claim: bool = False, provisions: list[str] | None = None,
@@ -957,8 +957,13 @@ TOOLS: dict[str, Tool] = {t.name: t for t in [
     Tool("simulate_programme", "The A5 programme at a stage, read-only: milestones and infeasible chains.",
          _obj({"stage": STAGE}), simulate_programme),
     Tool("validate_proposal", "The controller's validation of one ChangeProposal (or a whole ProposalSet) against the "
-         "current state; returns the controller's verification statuses. Writes nothing.",
-         _obj({"proposal": {"type": "object"}}, ["proposal"]), validate_proposal),
+         "current state; returns the controller's verification statuses, readiness and, for a payload that fails its "
+         "schema, the exact errors and the FULL schema. `schemas` (statement types, e.g. ['row_new']) returns the full "
+         "payload schemas (register.Row with its nested models, ...), with or without a proposal. Writes nothing.",
+         _obj({"proposal": {"type": "object"},
+               "schemas": {"type": "array", "items": {"type": "string"},
+                           "description": "statement types whose full payload schema to return (session 14)"}}),
+         validate_proposal),
     Tool("get_state", "The state identity to copy into proposals, the stages and the addenda statuses.",
          _obj({}), get_state, model=False),
     Tool("get_task_packet", "The task packet for an addendum (provisions, candidate targets, the pattern drafter's "
@@ -1053,3 +1058,22 @@ TOOLS["validate_reading"] = Tool(
     "the findings; writes nothing; nothing is approved.",
     _obj({"reading": {"type": "object"}}, ["reading"]), _validate_reading, model=False)
 
+
+
+# ---------------------------------------------------------------------------------------------- session 14 (W5)
+# The quick review's read-only view of the NEW addendum's own pages and image regions (tenderpack/ai/quick_review.py:
+# prepare_scope, tool_get_addendum_page). Offered only to the quick-review phase on the host route (policy.tools), and
+# only by a server started with --addendum-scope (it sets ws.addendum_scope); never to the application routes' models.
+
+def _get_addendum_page(ws: Workspace, page: int, region: int | None = None) -> dict:
+    from .quick_review import tool_get_addendum_page
+    return tool_get_addendum_page(ws, page, region)
+
+
+STATELESS.add("get_addendum_page")                # reads the quick review's scope files only, never the build
+TOOLS["get_addendum_page"] = Tool(
+    "get_addendum_page", "The NEW addendum of this quick review only (nothing else of the pack): one page's text, its "
+    "image regions and the rendered page image (bounded size); with `region` (1, 2, ... on that page) the region's crop "
+    "at a higher resolution and its native image (Arabic and image tables included). Read-only; every file is checked "
+    "against the sha256 recorded when the quick review started.",
+    _obj({"page": I, "region": I}, ["page"]), _get_addendum_page, model=False)

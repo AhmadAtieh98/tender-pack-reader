@@ -55,8 +55,13 @@ evidence; it never changes curation/. offer_answers() offers the recorded answer
 step or a batch of the run is running, every answer is HELD (the reason recorded); between steps each becomes a PROPOSED
 note in <run>/owner_answers/<qr id>.yaml (review pending a person), its evidence checked verbatim against the run's
 addendum PDF and its staleness fingerprint recorded (the run's combined set, downstream set and candidate curation);
-revalidate_offers() marks a note STALE when the run changed after it was offered. A note is never a decision; the
-workflow does not read these notes by itself (a person carries one into the review).
+revalidate_offers() marks a note STALE when the run changed after it was offered. A note is never a decision.
+Session 14 (W5): the workflow now TAKES the offered notes at its safe checkpoints (tenderpack/ai/answers.py: evidence
+checks, the staleness guard, approved readings kept pending, the batches concerned re-asked); an answer has a kind
+(judgment | fact) and, for a fact, its own evidence (record_answer kind=, evidence=). The host route's session is
+offered get_addendum_page, scoped to this addendum's own pages and image regions (prepare_scope, written to
+<qr dir>/addendum_scope.json and addendum-pages/; tool_get_addendum_page), and every rendering carries KIND
+("preliminary; model output; not a tool result").
 """
 from __future__ import annotations
 
@@ -82,6 +87,17 @@ SUBDIR = "quick-review"
 LABEL = ("PRELIMINARY AI BRIEFING — unverified: not a decision, not a validation; calculations and interpretations "
          "unchecked")
 NOT_PROOF = "model agreement is not proof: every item is verified only by the validators and a person"
+# session 14 (W5): what the briefing is, in every rendering (briefing.json/.md, comparison, panel, command line)
+KIND = "preliminary; model output; not a tool result"
+# session 14 (W5): the host route's scoped, read-only view of the NEW addendum's own pages (get_addendum_page)
+SCOPE_FILE = "addendum_scope.json"
+SCOPE_DIR = "addendum-pages"
+PAGE_MAX_PX = 1600              # a page image's longest side
+CROP_MAX_PX = 2000              # an image region's crop, longest side (up to 300 dpi)
+NATIVE_MAX_BYTES = 3_750_000    # a native embedded image is served only up to this size (the MCP image limit)
+SCOPE_MAX_PAGES = 60
+TOOL_LABEL = ("a tool result: the new addendum's own page or image, read-only (served from the quick review's scope; "
+              "nothing else of the pack)")
 ROUTES = ("recorded", "host", "anthropic", "openrouter", "ollama")
 DEFAULT_BUDGET_MIN = 10.0
 DEFAULT_MAX_TOKENS = 60000
@@ -270,6 +286,109 @@ def quote_check(quote: str, pages: list[dict], page: int | None) -> str:
     return f"NOT FOUND on page {page} of the addendum's text layer: treat the quotation as unverified"
 
 
+# ---------------------------------------------------------------------------------------------- session 14 (W5): scope
+
+def _png(pix, f: Path) -> dict:
+    pix.save(str(f))
+    return {"file": f.name, "sha256": hashlib.sha256(f.read_bytes()).hexdigest(), "width": pix.width,
+            "height": pix.height, "media_type": "image/png"}
+
+
+def prepare_scope(pdf: Path, d: Path, addendum: str, qr_id: str) -> dict:
+    """The NEW addendum's pages and image regions for get_addendum_page (the host route), rendered ONCE when the quick
+    review starts into <qr dir>/addendum-pages/: every page at most PAGE_MAX_PX on its longest side; every image region
+    (the regions read_pdf finds) as a crop at up to 300 dpi, at most CROP_MAX_PX, and its native embedded image when it
+    is a PNG or JPEG of at most NATIVE_MAX_BYTES. Each file's sha256 is recorded in <qr dir>/addendum_scope.json, which
+    the tool re-checks on every call; the tool itself writes nothing and reads nothing else."""
+    import pymupdf
+    pdf, d = Path(pdf), Path(d)
+    doc = pymupdf.open(pdf)
+    if doc.page_count > SCOPE_MAX_PAGES:
+        raise QuickReviewError(f"{pdf.name}: {doc.page_count} pages; a quick review's page scope is at most "
+                               f"{SCOPE_MAX_PAGES}")
+    out = d / SCOPE_DIR
+    out.mkdir(parents=True, exist_ok=True)
+    pages = []
+    for p in doc:
+        n, w, h = p.number + 1, p.rect.width, p.rect.height
+        z = min(110 / 72, (PAGE_MAX_PX - 2) / max(w, h))     # - 2: the pixel grid rounds a clip outward
+        page = {"page": n, "text": (p.get_text("text") or "").strip(),
+                "image": _png(p.get_pixmap(matrix=pymupdf.Matrix(z, z)), out / f"page-{n}.png"), "regions": []}
+        for img in p.get_images(full=True):
+            xref = img[0]
+            for r in p.get_image_rects(xref):
+                if r.width * r.height < 0.01 * w * h:                 # a logo or a dot is not a region (read_pdf)
+                    continue
+                k = len(page["regions"]) + 1
+                zc = min(300 / 72, (CROP_MAX_PX - 2) / max(r.width, r.height))
+                reg = {"region": k, "bbox": [round(r.x0, 1), round(r.y0, 1), round(r.x1, 1), round(r.y1, 1)],
+                       "crop": _png(p.get_pixmap(matrix=pymupdf.Matrix(zc, zc), clip=r), out / f"page-{n}-region-{k}.png"),
+                       "native": None}
+                try:
+                    x = doc.extract_image(xref)
+                except (RuntimeError, ValueError):
+                    x = None
+                ext = {"png": "png", "jpeg": "jpeg", "jpg": "jpeg"}.get(str((x or {}).get("ext")).lower())
+                if x and ext and len(x["image"]) <= NATIVE_MAX_BYTES:
+                    f = out / f"page-{n}-region-{k}-native.{'png' if ext == 'png' else 'jpg'}"
+                    f.write_bytes(x["image"])
+                    reg["native"] = {"file": f.name, "sha256": hashlib.sha256(x["image"]).hexdigest(),
+                                     "width": x.get("width"), "height": x.get("height"), "media_type": f"image/{ext}"}
+                page["regions"].append(reg)
+        pages.append(page)
+    sc = {"label": TOOL_LABEL, "qr_id": qr_id, "addendum": addendum, "created": _now(),
+          "pdf": {"path": str(pdf.resolve()), "sha256": hashlib.sha256(pdf.read_bytes()).hexdigest()},
+          "limits": {"page_max_px": PAGE_MAX_PX, "crop_max_px": CROP_MAX_PX, "native_max_bytes": NATIVE_MAX_BYTES},
+          "pages": pages}
+    _write(d / SCOPE_FILE, _jdump(sc))
+    return sc
+
+
+def tool_get_addendum_page(ws, page: int, region: int | None = None) -> dict:
+    """get_addendum_page (tools.py): one page of the quick review's NEW addendum (text, regions, the page image) or,
+    with `region`, that region's crop and native image. Refused without a scope (any session but a quick review's), for a
+    scope file outside a quick review's folder, for a page or region the addendum does not have, and for any file whose
+    bytes are not the ones recorded (integrity failure)."""
+    from .tools import ToolError
+    sp = getattr(ws, "addendum_scope", None)
+    if not sp:
+        raise ToolError("no new addendum is in scope for this session: get_addendum_page serves only the addendum of a "
+                        "quick review session")
+    sp = Path(sp)
+    if sp.name != SCOPE_FILE or sp.parent.parent.name != SUBDIR or not sp.is_file():
+        raise ToolError(f"{sp}: not the addendum scope of a quick review (<staging>/{SUBDIR}/<id>/{SCOPE_FILE})")
+    sc = json.loads(sp.read_text(encoding="utf-8"))
+    pdf = Path(sc["pdf"]["path"])
+    if not pdf.is_file() or hashlib.sha256(pdf.read_bytes()).hexdigest() != sc["pdf"]["sha256"]:
+        raise ToolError(f"integrity failure: the addendum PDF is not the one the quick review started on ({pdf})")
+    pg = next((p for p in sc["pages"] if p["page"] == page), None)
+    if pg is None:
+        raise ToolError(f"page {page} is not a page of {sc['addendum']} (pages 1-{len(sc['pages'])})")
+    base = sp.parent / SCOPE_DIR
+
+    def served(rec: dict, kind: str) -> dict:
+        f = base / rec["file"]
+        if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != rec["sha256"]:
+            raise ToolError(f"integrity failure: {rec['file']} is not the image recorded when the quick review started")
+        return {"kind": kind, "path": str(f), "path_in_build": f"{sc['addendum']}/{rec['file']}", "sha256": rec["sha256"],
+                "media_type": rec.get("media_type") or "image/png", "width": rec.get("width"), "height": rec.get("height")}
+    if region is None:
+        crops = [served(pg["image"], "page")]
+    else:
+        reg = next((r for r in pg["regions"] if r["region"] == region), None)
+        if reg is None:
+            raise ToolError(f"page {page} of {sc['addendum']} has no image region {region} "
+                            f"({len(pg['regions'])} region(s))")
+        crops = [served(reg["crop"], "region_crop")] + ([served(reg["native"], "native")] if reg.get("native") else [])
+    return {"label": TOOL_LABEL, "addendum": sc["addendum"], "qr_id": sc.get("qr_id"), "page": page,
+            "pages_total": len(sc["pages"]), "region": region, "text": pg["text"],
+            "image_regions": [{"region": r["region"], "bbox": r["bbox"], "native_image": bool(r.get("native"))}
+                              for r in pg["regions"]],
+            "crops": crops,
+            "note": ("the addendum's own page as printed: the text layer and the rendered image (an image region's "
+                     "words are only in the image; Arabic is read from the image itself)")}
+
+
 # ---------------------------------------------------------------------------------------------- locks and files
 
 class SessionLock:
@@ -393,7 +512,7 @@ def _program_checks(b: dict, pages: list[dict], ws, stage: str) -> dict:
 
 
 def render_md(b: dict) -> str:
-    L = [f"# {LABEL}", "",
+    L = [f"# {LABEL}", "", f"**{KIND}**", "",                    # session 14 (W5): in every rendering
          f"Quick review `{b['qr_id']}` of {b['addendum']} (PDF sha256 `{b['pdf']['sha256'][:16]}…`), read against the "
          f"published {b['workspace']['stage']} workspace; route {b['route']}, model {b.get('model_reported') or b.get('model_requested') or 'as the route reports'}; "
          f"written {b['created']}.",
@@ -490,6 +609,32 @@ def run(addendum: str, pdf: Path, *, route: str = "host", evidence: Path | None 
         lock.release()
 
 
+def _session_class(HS):
+    """Session 14 (W5): the quick review's ONE host answer session; its MCP server also gets --addendum-scope, so the
+    phase's get_addendum_page serves this addendum's pages (and nothing else)."""
+    class QuickReviewSession(HS.AnswerSession):
+        scope: Path | None = None
+
+        def mcp_config(self) -> dict:
+            c = super().mcp_config()
+            if self.scope is not None:
+                c["mcpServers"]["tenderpack"]["args"] += ["--addendum-scope", str(Path(self.scope).resolve())]
+            return c
+    return QuickReviewSession
+
+
+def _pages_read(sess) -> list[dict]:
+    """The pages and regions the host session requested with get_addendum_page (from its transcript's tool calls)."""
+    out = []
+    for c in (getattr(getattr(sess, "last", None), "tool_calls", None) or []):
+        a = c.get("arguments") if isinstance(c, dict) else None
+        if c.get("name") == "get_addendum_page" and isinstance(a, dict) and isinstance(a.get("page"), int):
+            e = {"page": a["page"], "region": a.get("region") if isinstance(a.get("region"), int) else None}
+            if e not in out:
+                out.append(e)
+    return out
+
+
 def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_config, model, cassette, budget_minutes,
          max_tokens, runner, claude_bin, for_run, say, B, C, R, RunLog, Workspace) -> dict:
     from . import policy as P
@@ -499,8 +644,11 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
     ident = ws.identity()
     stage = ident.validated_stage
     rd = read_pdf(pdf, d / "pages")
-    tools = list(P.tools(PHASE, "api"))
     host = route == "host"
+    tools = list(P.tools(PHASE, "host" if host else "api"))
+    # session 14 (W5): the host route's packet is text, so its page images are served by the ONE read-only tool scoped to
+    # this addendum (get_addendum_page), from files rendered here and checked by sha256 on every call
+    scope = prepare_scope(pdf, d, addendum, qr_id) if host and "get_addendum_page" in tools else None
     rcfg = C.route(cfg, route)
     model_req = None if host else C.phase_model(rcfg, route, PHASE, model)
     prov = None
@@ -514,7 +662,7 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
         except ProviderError:
             images_ok = False                                       # the request layer refuses it with the reason
     attached = rd["images"] if images_ok else []
-    not_attached = [] if images_ok else [
+    not_attached = [] if images_ok or scope is not None else [
         {"page": i["page"], "reason": ("software limitation: the host route receives its packet as text; the page "
                                        "images of a new addendum are not attached there" if host else
                                        "software limitation: the route does not report image input")}
@@ -527,10 +675,15 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
                        f"workspace at {stage}."),
               "pages": [{"page": p["page"], "text": p["text"], "image_regions": p["image_regions"]} for p in rd["pages"]],
               "images_attached": [i["page"] for i in attached], "images_not_attached": not_attached,
+              **({"page_images": {
+                  "tool": "get_addendum_page", "pages": len(scope["pages"]), "image_pages": [i["page"] for i in rd["images"]],
+                  "note": ("the page images are not attached on this route: call get_addendum_page {page} for a page's "
+                           "image and {page, region} for an image region's crop and native image (Arabic and image "
+                           "tables are read from these images); it serves this addendum only")}} if scope else {}),
               "tools": tools, "budget": {k: budget[k] for k in ("minutes", "max_tokens", "max_turns")},
               "state": ident.model_dump(mode="json"), "schema": answer_schema()}
     request = {"qr_id": qr_id, "addendum": addendum, "route": route, "model_requested": model_req, "created": start,
-               "label": LABEL, "for_run": for_run,
+               "label": LABEL, "kind": KIND, "for_run": for_run,
                "pdf": {"path": str(pdf), "sha256": rd["sha256"], "pages": rd["page_count"]},
                "workspace": {"evidence": str(evidence), "pack": str(pack), "stage": stage,
                              "identity": ident.model_dump(mode="json"),
@@ -538,6 +691,11 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
                "tools": tools, "budget": budget,
                "images": [{k: i[k] for k in ("page", "sha256", "why")} for i in attached],
                "images_not_attached": not_attached, "main_run_inputs_read": [],
+               **({"addendum_scope": {"file": str(d / SCOPE_FILE), "tool": "get_addendum_page",
+                                      "pages": len(scope["pages"]),
+                                      "regions": sum(len(p["regions"]) for p in scope["pages"]),
+                                      "note": "the NEW addendum's own pages only; read-only; checked by sha256"}}
+                  if scope else {}),
                "session": {"sessions": 1, "batches": 0, "critic": False}}
     _write(d / "request.json", _jdump(request))
     log = RunLog(qr_id, [Path(worklog) / f"{qr_id}.jsonl", d / "log.jsonl"])
@@ -557,8 +715,9 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
             kw = {"runner": runner} if runner is not None else {}
             # no addendum lock (run_lock=True: never taken here): the main run holds it, and the quick review writes
             # nothing it protects; the session's MCP server offers exactly the retrieval tools over the published build
-            sess = HS.AnswerSession(ws, cfg, phase=PHASE, model=model, max_turns=MAX_TURNS,
-                                    timeout_s=budget_minutes * 60, claude_bin=claude_bin, run_lock=True, **kw)
+            sess = _session_class(HS)(ws, cfg, phase=PHASE, model=model, max_turns=MAX_TURNS,
+                                      timeout_s=budget_minutes * 60, claude_bin=claude_bin, run_lock=True, **kw)
+            sess.scope = (d / SCOPE_FILE) if scope else None        # session 14 (W5): serve-mcp --addendum-scope
             pol.repairs = 0                                         # one session at most: no repair session
             sp = R.spec(PHASE, system=sess.system_prompt(), cfg=cfg)
             out = R.ask_host(sp, sess, packet, cfg=cfg, policy=pol, log=log, fields=fields, cwd=d,
@@ -595,14 +754,23 @@ def _run(addendum, pdf, route, cfg, d, qr_id, evidence, pack, st, worklog, ai_co
             {"what": f"the image of page {x['page']}", "page": x["page"], "uncertainty_class": "software limitation",
              "reason": x["reason"]} for x in not_attached]
         b = _program_checks(b, rd["pages"], ws, stage)
+        read_tool = _pages_read(sess) if host and scope else None    # session 14 (W5)
+        if read_tool is not None:
+            seen_pages = {e["page"] for e in read_tool}
+            b["not_read"] += [
+                {"what": f"the image of page {i['page']}", "page": i["page"], "uncertainty_class": "missing evidence",
+                 "reason": (f"offered through the read-only tool get_addendum_page ({i['why']}); the session did not "
+                            "request it, so the briefing has no reading of that image")}
+                for i in rd["images"] if i["page"] not in seen_pages]
         hs = (out.host_sessions or [{}])[0] if host else {}
-        rec = {"label": LABEL, "qr_id": qr_id, "created": _now(), "addendum": addendum, "route": route,
+        rec = {"label": LABEL, "kind": KIND, "qr_id": qr_id, "created": _now(), "addendum": addendum, "route": route,
                "model_requested": model_req if not host else (model or "the host CLI's default"),
                "model_reported": out.model_reported, "pdf": request["pdf"],
                "workspace": {k: request["workspace"][k] for k in ("evidence", "pack", "stage")},
                "tools_offered": tools, "main_run_inputs_read": [], "session": request["session"],
                "malformed_items_set_aside": out.malformed_items, "notices": out.notices,
                "host_session": hs or None, **b,
+               **({"page_images_read_through_tool": read_tool} if read_tool is not None else {}),
                "status_of_everything_here": "PRELIMINARY: unverified; nothing approved, accepted, validated or complete"}
         _write(d / "briefing.json", _jdump(rec))
         if rec["items"] or rec["questions"]:
@@ -810,7 +978,7 @@ def _side(r: dict) -> str:
 
 def render_comparison(c: dict) -> str:
     t = c["timings"]
-    L = [f"# {NOT_PROOF}", "", f"{LABEL}", "",
+    L = [f"# {NOT_PROOF}", "", f"{LABEL}", "", f"**{KIND}**", "",
          f"Quick review `{c['qr_id']}` compared with run `{c['run']['run_id']}` ({c['run']['status']}) on "
          f"{c['created']}. Briefing preserved as written: {'yes' if c['briefing_preserved'] else 'NO'}.", "",
          "Counts: " + ", ".join(f"{k.replace('_', ' ')} {v}" for k, v in c["counts"].items()), "",
@@ -851,9 +1019,13 @@ def _save_answers(d: Path, data: dict) -> None:
     _write(Path(d) / "answers.yaml", yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=110))
 
 
-def record_answer(d: Path, question_id: str, answer: str, by: str, *, now: str | None = None) -> dict:
+def record_answer(d: Path, question_id: str, answer: str, by: str, *, kind: str = "judgment", evidence=None,
+                  now: str | None = None) -> dict:
     """The owner's answer (name, time) against the exact question text and the evidence it cites. Never touches
-    curation/ and never edits the briefing."""
+    curation/ and never edits the briefing. Session 14 (W5): `kind` is `judgment` (the owner's proposed judgment; the
+    default) or `fact` (a fact the run may take only with `evidence`: cites `page N: words` on the addendum or
+    `UNIT_ID: words` in the pack, checked at the run's safe checkpoint by answers.evidence_check)."""
+    from .answers import KINDS, parse_cite
     d = Path(d)
     pres = preserved(d)
     if not pres["ok"]:
@@ -864,6 +1036,9 @@ def record_answer(d: Path, question_id: str, answer: str, by: str, *, now: str |
         raise QuickReviewError("type your name (the person answering)")
     if not answer or len(answer) > 4000:
         raise QuickReviewError("type the answer (at most 4000 characters)")
+    if kind not in KINDS:
+        raise QuickReviewError(f"the kind of an answer is {' or '.join(KINDS)}, not {kind!r}")
+    cites = [parse_cite(c) for c in (evidence or []) if (str(c).strip() if not isinstance(c, dict) else c)]
     b = load(d)
     q = next((q for q in b.get("questions") or [] if q.get("id") == question_id), None)
     if q is None:
@@ -873,8 +1048,9 @@ def record_answer(d: Path, question_id: str, answer: str, by: str, *, now: str |
     rows = data.setdefault("answers", [])
     e = {"id": f"A{len(rows) + 1}", "question_id": question_id, "question": q["question"],
          "evidence": q["evidence"], "answer": answer, "by": by, "recorded": now or _now(),
+         "kind": kind, "answer_evidence": cites,                                      # session 14 (W5)
          "briefing_sha256": hashlib.sha256((d / "briefing.json").read_bytes()).hexdigest(),
-         "status": "recorded (not incorporated)", "offers": []}
+         "status": "recorded (not incorporated)", "offers": [], "handoff": {"state": "recorded"}}
     rows.append(e)
     _save_answers(d, data)
     return e
@@ -921,7 +1097,9 @@ def offer_answers(d: Path, rd: Path) -> dict:
     out = {"offered": [], "held": [], "already": []}
     nf = rd / "owner_answers" / f"{d.name}.yaml"
     notes = (yaml.safe_load(nf.read_text(encoding="utf-8")) or {}).get("notes", []) if nf.is_file() else []
-    have = {n.get("answer_id") for n in notes}
+    # session 14 (W5): a STALE note is offered again (checked against the run's state now); any other stands
+    stale = {n.get("answer_id") for n in notes if (n.get("handoff") or {}).get("state") == "stale"}
+    have = {n.get("answer_id") for n in notes} - stale
     pdf = ((cp.get("inputs") or {}).get("pdf") or {}).get("path")
     pages = read_pdf(Path(pdf))["pages"] if pdf and Path(pdf).is_file() else []
     now = _now()
@@ -938,13 +1116,16 @@ def offer_answers(d: Path, rd: Path) -> dict:
         n = {"id": f"{d.name}/{a['id']}", "answer_id": a["id"], "status": "PROPOSED", "review": "pending a person",
              "kind": "an owner's answer to a question of a PRELIMINARY AI BRIEFING",
              "question_id": a["question_id"], "question": a["question"], "evidence": a["evidence"],
+             "answer_kind": a.get("kind") or "judgment", "answer_evidence": a.get("answer_evidence") or [],
+             "handoff": {"state": "offered", "run": cp.get("run_id"), "at": now},             # session 14 (W5)
              "answer": a["answer"], "by": a["by"], "recorded": a["recorded"], "offered": now,
              "offered_after": last, "before": nxt, "evidence_checks": checks,
              "revalidation": {"state": "current", "fingerprint": fingerprint(rd), "checked": now,
                               "guard": "the run's combined set, downstream set and candidate curation; a change "
                                        "after this offer makes the note STALE until it is offered again"},
              "what_it_is": "a note for the run's review, never a decision: a person still decides every item"}
-        notes.append(n)
+        notes = [x for x in notes if x.get("answer_id") != a["id"]] + [n]        # a stale note is replaced
+        a["handoff"] = n["handoff"]
         a.setdefault("offers", []).append({"run": cp.get("run_id"), "at": now, "result": "offered as a PROPOSED note",
                                            "between": [last, nxt]})
         a["status"] = f"offered to run {cp.get('run_id')} as a PROPOSED note (not incorporated as a decision)"
@@ -971,6 +1152,10 @@ def revalidate_offers(rd: Path) -> dict:
                 continue
             rv["state"] = (f"STALE since {now}: the run's proposals or candidate changed after the note was offered; "
                            "offer it again so its evidence is checked against the new state")
+            if (n.get("handoff") or {}).get("state") in (None, "offered"):     # session 14 (W5): never consumed stale
+                n["handoff"] = {"state": "stale", "run": rd.name, "at": now, "reason": rv["state"]}
+                from .answers import _mark_answer
+                _mark_answer(rd, n, n["handoff"])
             out["stale"].append(n["id"])
         _write(nf, yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=110))
     return out
@@ -996,6 +1181,10 @@ def add_parser(s, common) -> None:
     q.add_argument("--question")
     q.add_argument("--answer")
     q.add_argument("--by")
+    q.add_argument("--kind", choices=["judgment", "fact"], default="judgment",
+                   help="session 14: a fact needs --cite; a judgment is your proposed judgment (never an approval)")
+    q.add_argument("--cite", action="append", default=[],
+                   help="session 14: the evidence of the answer: 'page N: words' (the addendum) or 'UNIT_ID: words'")
     common(q)
 
 
@@ -1009,6 +1198,7 @@ def cli(a) -> int:
                 raise QuickReviewError("usage: tenderpack ai quick-review compare QR_ID RUN_ID|RUN_DIR")
             c = compare(a.rest[0], a.rest[1], staging=st)
             print(NOT_PROOF)
+            print(KIND)                                             # session 14 (W5)
             print(f"{LABEL}\nquick review {c['qr_id']} vs run {c['run']['run_id']}: " + ", ".join(
                 f"{k.replace('_', ' ')} {v}" for k, v in c["counts"].items()))
             t = c["timings"]
@@ -1021,9 +1211,10 @@ def cli(a) -> int:
             if len(a.rest) != 1 or not a.question:
                 raise QuickReviewError("usage: tenderpack ai quick-review answer QR_ID --question ID --answer TEXT --by "
                                        "NAME")
-            e = record_answer(qr_dir(st, a.rest[0]), a.question, a.answer, a.by)
-            print(f"recorded {e['id']} by {e['by']} at {e['recorded']} against question {e['question_id']} "
-                  f"(“{e['question']}”); curation/ is not changed")
+            e = record_answer(qr_dir(st, a.rest[0]), a.question, a.answer, a.by, kind=a.kind, evidence=a.cite)
+            print(f"recorded {e['id']} ({e['kind']}, {len(e['answer_evidence'])} cite(s)) by {e['by']} at "
+                  f"{e['recorded']} against question {e['question_id']} (“{e['question']}”); curation/ is not changed; "
+                  "a run takes it only at a safe checkpoint, as a PROPOSED item")
             return 0
         if a.what == "offer":
             if len(a.rest) != 2:
@@ -1048,6 +1239,7 @@ def cli(a) -> int:
         except OSError:
             pass
         print(LABEL, flush=True)
+        print(KIND, flush=True)                                     # session 14 (W5)
         res = run(a.what, Path(a.pdf), route=a.route, evidence=Path(a.evidence), pack=Path(a.pack), staging=st,
                   worklog=Path(a.worklog), ai_config=Path(a.config), model=a.model,
                   cassette=Path(a.cassette) if a.cassette else None, budget_minutes=a.budget_minutes,

@@ -12,6 +12,11 @@ for the wrong line in the `outputs` log; that was fixed and the run repeated.) T
 fake local server that replays recorded answers. Every item marked **PENDING ON THE MAC** below has not been run on your machine.
 A recorded answer is a test. It is not proof that a live local model works.
 
+**Session 14 (7 Oct 2026).** The AI checks now have three levels, each printed on its own line (§3), and the launcher's
+option 6 reads the run's checkpoint instead of its exit code. The one-page order of everything to run on the Mac,
+each step with its command and the line to expect, is `docs/MAC_CHECKLIST.md`. Everything below was run in the cloud
+container only (cloud-tested); every Mac step is **PENDING ON THE MAC**.
+
 ## 1. One-time setup (needs the network once, unless you bring a wheelhouse)
 
 ```
@@ -86,7 +91,11 @@ it: right-click it, choose Open, then confirm. Session 13:
 | 9 | The smoke test | `bash smoke-test/run_smoke.sh` (interview folder; synthetic, no model call) |
 
 After each command the launcher prints its exit code and what it means (3 approvals pending, 4 waiting for a host
-submission, 5 deferred by a rate limit, 6 stopped for a person; `RECOVERY.md`).
+submission, 5 deferred by a rate limit, 6 stopped for a person; `RECOVERY.md`). After option 6 (session 14) it reads the
+run's checkpoint instead (`scripts/mac/levels.py workflow`): `level 3 (complete workflow) PASS` only when the run is
+complete, its candidate outputs published and its review packet written; a run that exits 0 but is partial prints
+`level 3 (complete workflow) PARTIAL: exit 0; run ... ended PARTIAL, not a success: <the first reason>`; a run that
+stopped or waits prints PENDING with what it needs.
 
 PENDING ON THE MAC: the double-click (Gatekeeper prompt) and each menu item on your machine. The error paths were
 tested in the container by a bash harness (`tests/test_session13_mac_scripts.py`).
@@ -97,6 +106,7 @@ Turn Wi-Fi off, then run:
 
 ```
 bash scripts/mac/checks.sh            # --plan lists the checks; --no-ai skips the two Ollama checks
+bash scripts/mac/checks.sh --only 6,7 # (session 14) only the Ollama checks; --no-workflow skips level 3
 ```
 
 Everything is written to a scratch folder, `$TMPDIR/tenderpack-checks-<time>`. Your `build/`, `out/` and `staging/` are
@@ -108,6 +118,19 @@ the human-approval ones (`RELEASE BLOCKER [approval] ...`). Any other blocker (c
 a structural `FAIL` line fails the check and is printed under it. Before, check 2 passed on exit 0 and "published"
 whatever the blockers said, and check 3 passed on any exit 3.
 
+**The three levels of the AI checks (session 14).** Before, check 7 printed "answered and validated" for any exit 0 of
+`ai propose`, which also exits 0 for a set whose items all failed the validation. Now `scripts/mac/levels.py` reads the
+records and each level has its own line:
+
+| Level | Line | PASS only when |
+|---|---|---|
+| 1 connectivity (check 6) | `PASS 6 level 1 (connectivity) PASS: ...` | Ollama answers `/api/tags`, the models are installed and `/api/show` reports their vision, tools and context for every phase (PENDING when Ollama does not answer or a phase has no model; the model the level-2 request will use is named) |
+| 2 valid content (check 7) | `PASS 7 level 2 (valid content) PASS: N item(s) passed the controller's validation, none failed [model; the request's exit 0 after Ns]` | the one-batch request's proposal set (`proposals.yaml`) holds items and every one passed the validation (`evidence_verified` or `interpretation_pending`); `PARTIAL` when some did and some did not (each failed item is listed), `FAIL` when none did or the set is malformed |
+| 3 complete workflow (check 7) | `PASS 7 level 3 (complete workflow) PASS: ...` | a whole `ai run --offline` of the smoke-test addendum is complete in its checkpoint (completeness complete, the candidate outputs published, the review packet written); a partial run that exits 0 is `PARTIAL ... not a success`; it runs only after levels 1 and 2 PASS and can take long with a local model (`--no-workflow` skips it) |
+
+The summary line counts the four kinds: `offline checks: N PASS, N PARTIAL, N PENDING, N FAIL`; only a FAIL makes the
+script exit non-zero.
+
 | # | Check | Pass when | Where it stands |
 |---|---|---|---|
 | 0 | Network off | no default route (checked locally, nothing contacted) | Passed in the cloud (it has no default route; it reaches the internet only through a proxy). **PENDING ON THE MAC** with Wi-Fi off |
@@ -116,8 +139,8 @@ whatever the blockers said, and check 3 passed on any exit 3.
 | 3 | `outputs --strict` | exit 3 with only the two human-approval blockers (205 rows, 37 ops) | Passed in the cloud container. **PENDING ON THE MAC** |
 | 4 | The A1 xlsx opens | openpyxl loads it; then look at it in Numbers or Excel yourself | openpyxl passed in the cloud; the visual look is **PENDING ON THE MAC** |
 | 5 | The HTML opens | every `.html` parses; then open one in a browser yourself (Arabic, links) | Parsing passed in the cloud (14 files); the browser view is **PENDING ON THE MAC** |
-| 6 | `ai ollama-models --offline` | Ollama answers; every INSTALLED model (`/api/tags`) with its reported capabilities and context (`/api/show`) and its estimated memory against this Mac's memory (read with sysctl/sysconf); which model can serve each phase (reading: vision + tools; analysis, downstream: tools; critic: none; each at its configured context). Exit 0 PASS (every phase served), 1 PENDING (some phase without an installed model), 3 PENDING (Ollama not answering). Never pulls | Tested with a fake local server only. **PENDING ON THE MAC** |
-| 7 | One-batch offline run | `ai run --offline --stop-after ingest` on the smoke-test's synthetic Addendum No. 3 (`smoke-test/`, or made by `tests/fixtures/make_drill.py`), run only when check 6 passed, then one `ai propose --route ollama --offline` request for one provision against the installed model, answered and validated (the time is printed) | **PENDING ON THE MAC** (no Ollama in the cloud) |
+| 6 | Level 1: `ai ollama-models --offline` | Ollama answers; every INSTALLED model (`/api/tags`) with its reported capabilities and context (`/api/show`) and its estimated memory against this Mac's memory (read with sysctl/sysconf); which model can serve each phase (reading: vision + tools; analysis, downstream: tools; critic: none; each at its configured context). Exit 0 PASS (every phase served), 1 PENDING (some phase without an installed model), 3 PENDING (Ollama not answering). Never pulls | Tested with a fake local server only. **PENDING ON THE MAC** |
+| 7 | Levels 2 and 3 | level 2: `ai run --offline --stop-after ingest` on the smoke-test's synthetic Addendum No. 3 (`smoke-test/`, or made by `tests/fixtures/make_drill.py`), then one `ai propose --route ollama --offline --model <the model level 1 named>` request for one provision; PASS only when its `proposals.yaml` shows every item passed the validation (the exit code and the time are printed, not believed). Level 3: a whole `ai run --offline` of the same addendum, read from its checkpoint | Cloud-tested against a fake local server (`tests/test_session14_mac_levels.py`). **PENDING ON THE MAC** (no Ollama in the cloud) |
 | 8 | The panel | `tenderpack panel --help` works; the pages open in the browser at the printed address | `--help` and every page tested in the container by HTTP (`tests/test_session12_panel.py`, 11 tests); the browser, `--open` and launcher item 7 **PENDING ON THE MAC** (`docs/PANEL.md`) |
 | 9 | The locked set | `scripts/mac/lockcheck.py requirements.lock.txt`: every installed version equals the lock | Passed in the cloud container (the main `.venv` and an interview folder's). **PENDING ON THE MAC** |
 | 10 | The folder link | `scripts/mac/pathlink.py --root <folder>`: `import tenderpack` from outside the folder resolves to the folder's package (the host route's MCP server starts in the session folder) | Passed in the cloud container (the rebuilt interview folders; session 13, E159). **PENDING ON THE MAC** |
@@ -179,6 +202,9 @@ and any `claude` or `codex` process. PENDING ON THE MAC: the same with your real
 - **`setup.sh` FAIL on python:** install Python 3.12 (`brew install python@3.12`) and run the script again.
 - **Install FAIL without network:** bring a `wheels/` folder (see step 4 above), or connect once.
 - **`checks.sh` 6 or 7 PENDING with "could not be reached":** start the Ollama app, or run `ollama serve`.
+- **Check 7 level 2 PARTIAL or FAIL:** the local model answered, but not every item passed the validation; the failed
+  items are listed under the line, and `$TMPDIR/tenderpack-checks-<time>/staging-propose/<run>/review_request.md` says
+  why. That is a fact about the model's answer, not about the installation.
 - **"model X is not installed":** either install it yourself (`ollama pull X`), or point `routes.ollama.models.<role>.id`
   in `config/ai.yaml` at a model you have. `tenderpack ai routes --offline` lists them.
 - **"estimated memory … exceeds":** lower that model's `num_ctx` in `config/ai.yaml`, or choose a smaller model.

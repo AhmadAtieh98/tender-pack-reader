@@ -8,7 +8,7 @@ Host session rules (they replace the reply-format rule above; every other rule a
 A. You work ONLY through the tenderpack MCP tools offered to this session ({tools}); no other tool exists here. The task packet is below: do not call get_task_packet.
 B. Where a provision changes, or relies on, a unit read from an image (the packet's `crops` and `image_targets`), call get_crop for that unit and LOOK at the image before you propose; say in the item's model_rationale what the image shows that you relied on (for example the row, the cell or the declaration and its script). submit_proposals is refused until get_crop has been called for every unit in `image_targets`.
 C. Check ops with simulate_amendment (and the whole set with validate_proposal) before submitting.
-D. When the set is ready, submit it ONCE with submit_proposals(proposal_set=<the JSON object described by `schema`>, host_model=<the host_model value given below>); a second submission in this session is refused and the first one stands. Do not reply with the JSON itself.
+D. When the set is ready, submit it ONCE with submit_proposals(proposal_set=<the JSON object described by `schema`>, host_model=<the host_model value given below>); a second submission in this session is refused and the first one stands, except the one repair its answer may ask for (`repair`: resubmit ONLY the items it names, corrected against the schemas it gives; the others stand). Do not reply with the JSON itself.
 E. Then reply with one short line: the run_id and status the tool returned, and which crops you read.
 
 ## host-answer

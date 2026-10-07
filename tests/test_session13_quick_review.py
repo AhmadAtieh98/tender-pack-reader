@@ -118,7 +118,10 @@ def test_the_quick_review_phase_is_composed_by_the_policy_with_only_the_retrieva
     assert "# Phase: quick review" in text
     assert "You PROPOSE; you decide nothing." in text                     # the shared sections come first
     assert "PRELIMINARY AI BRIEFING" in text and "never decide" in text.lower()
-    assert P.tools("quick_review", route) == TOOLS5                         # no simulate, no calculate, no submission
+    # session 14 (W5): this asserted the defect "host route without page images" (report s13 §6); the host route now
+    # also has the ONE read-only tool scoped to the new addendum's own pages (tests/test_session14_quick_review_pages.py)
+    assert P.tools("quick_review", route) == TOOLS5 + (("get_addendum_page",) if route == "host" else ())
+    assert not {"simulate_amendment", "calculate", "validate_proposal"} & set(P.tools("quick_review", route))
     assert "submit_proposals" not in P.tools("quick_review", route)
     if route == "host":
         assert "reply with ONLY the JSON" in text and "read-only" in text  # host-answer mechanics
@@ -247,11 +250,12 @@ def test_the_host_route_runs_one_answer_session_with_exactly_the_retrieval_tools
     assert len(seen) == 1                                                  # ONE session, no repair needed
     cmd = seen[0]["cmd"]
     allowed = cmd[cmd.index("--allowedTools") + 1].split(",")
-    assert allowed == ["mcp__tenderpack__" + t for t in TOOLS5]
+    # session 14 (W5): + get_addendum_page (the defect "host route without page images", report s13 §6)
+    assert allowed == ["mcp__tenderpack__" + t for t in TOOLS5 + ("get_addendum_page",)]
     assert cmd[cmd.index("--system-prompt") + 1] == P.compose("quick_review", "host")
     mcp = json.loads(Path(cmd[cmd.index("--mcp-config") + 1]).read_text(encoding="utf-8"))
     args = mcp["mcpServers"]["tenderpack"]["args"]
-    assert args[args.index("--tools") + 1] == ",".join(TOOLS5) and "--submit-once" not in args
+    assert args[args.index("--tools") + 1] == ",".join(TOOLS5 + ("get_addendum_page",)) and "--submit-once" not in args
     assert args[args.index("--evidence") + 1] == str(Path(ws.evidence).resolve())
     assert args[args.index("--pack") + 1] == str(Path(ws.pack).resolve())
     b = json.loads((Path(res["dir"]) / "briefing.json").read_text(encoding="utf-8"))

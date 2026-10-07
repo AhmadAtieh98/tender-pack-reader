@@ -37,6 +37,11 @@ the same safeguards on every route (recorded, anthropic, openrouter, ollama: the
                                     references (an item's `statements` are ids of the set's statements, never free
                                     text; a downstream item answers a task of its packet; a review names a requested
                                     item)
+Session 14 (W1): an analysis item's inner payload is checked against its FULL schema (contract.payload_errors; an op
+is the engine's to check): a failure is a `payload` problem, re-asked once with the exact errors and the schema, and
+only the items (and statements) with problems are taken from the repair (merge_after_repair: the valid siblings stand as
+first given); a payload still failing is kept for the controller (invalid, errors visible). A fact with no evidence is a
+`statement` problem, re-asked the same way.
 Nothing here assigns a verification status: the controller (analysis), downstream.validate, regionread.validate and
 the critic's guard do, exactly as before.
 
@@ -694,10 +699,25 @@ def check(sp: TaskSpec, answer, packet: dict | None = None, fields: dict | None 
                 refs.append(f"`task` {it.get('task')!r} is not a task of this packet ({sorted(tasks)[:12]})")
             if sp.phase == "critic" and asked and it.get("item") not in asked:
                 errs.append(f"`item` {it.get('item')!r} is not an item of this request ({sorted(asked)[:12]})")
-        if errs or refs:
+        # session 14 (W1, blind-07 defect 1): an analysis item whose envelope is well formed is checked against its
+        # payload's FULL schema (register.Row for a row_new, ...): a failure is re-asked once with the exact errors and
+        # the schema (repair_message); after the bound the item is KEPT and the controller marks it invalid with them
+        perrs = []
+        if sp.phase == "analysis" and not errs and isinstance(it, dict):
+            from .contract import REPAIRABLE, payload_errors
+            if it.get("statement_type") in REPAIRABLE:      # an op is the engine's to check (contract.REPAIRABLE)
+                perrs = payload_errors(it.get("statement_type"), it.get("payload"), it.get("provision"), it.get("id"))
+        if errs or refs or perrs:
             problems.append({"index": i, "id": it.get("id") or it.get("item") if isinstance(it, dict) else None,
-                             sp.item_key: it.get(sp.item_key) if isinstance(it, dict) else None, "errors": errs + refs,
-                             "kind": "schema" if errs else "reference"})
+                             sp.item_key: it.get(sp.item_key) if isinstance(it, dict) else None,
+                             "errors": errs + perrs + refs,
+                             "kind": "schema" if errs else "payload" if perrs else "reference",
+                             **({"statement_type": it.get("statement_type")} if perrs else {})})
+    if sp.phase == "analysis":                    # session 14 (W1, defect 5): a fact with no evidence is refused
+        from .contract import statement_errors
+        for x in statement_errors(data.get("statements")):
+            problems.append({"index": None, "id": x["id"], sp.item_key: None, "errors": x["errors"],
+                             "kind": "statement", "statement_type": "statement"})
     return data, env, problems
 
 
@@ -727,9 +747,34 @@ def repair_message(sp: TaskSpec, env: list[str], problems: list[dict]) -> str:
                      f"{sp.item_key} {p.get(sp.item_key)!r}): " + " | ".join(p["errors"]))
     if len(problems) > 40:
         lines.append(f"- … {len(problems) - 40} more item(s) with problems")
+    # session 14 (W1): the full schema of every payload (or statement) that failed it, so that nothing is guessed
+    from .contract import repair_schemas
+    for t, sc in repair_schemas(problems).items():
+        lines.append(f"FULL SCHEMA of the {t} {'shape' if t == 'statement' else 'payload'} (correct the listed fields "
+                     f"against it): " + json.dumps(_untitled(sc), ensure_ascii=False, separators=(",", ":")))
     from . import policy
     lines.append(policy.reask())                    # session 13: the repair turn's instruction, from the runtime policy
     return "\n".join(lines)
+
+
+def repair_targets(problems: list[dict]) -> tuple[set[str], set[int]]:
+    """Session 14 (W1): (item and statement ids, item indices) a repair asks again; everything else is a sibling."""
+    ids = {str(p["id"]) for p in problems if p.get("id") is not None}
+    return ids, {p["index"] for p in problems if p.get("index") is not None and p.get("id") is None}
+
+
+def merge_after_repair(sp: TaskSpec, first, repaired, problems: list[dict]):
+    """Session 14 (W1, blind-07 defect 1): the answer after the bounded repair with the VALID siblings of the first
+    answer kept exactly as first given (contract.merge_repair): only the items (and statements) with problems are taken
+    from the repair. Returns (data, notes); the repaired answer as it is when the first had no usable envelope."""
+    if sp.items_field is None or not isinstance(first, dict) or not isinstance(repaired, dict):
+        return repaired, None
+    from .contract import merge_repair
+    if sp.phase != "analysis":                   # the analysis set (the downstream phase keeps its own repair)
+        return repaired, None
+    ids, idx = repair_targets(problems)
+    merged, notes = merge_repair(first, repaired, ids, idx)
+    return {**repaired, **{k: v for k, v in merged.items() if k in ("items", "statements")}}, notes
 
 
 def finish(sp: TaskSpec, data: dict, env: list[str], problems: list[dict], fields: dict, overwrites: list):
@@ -741,6 +786,8 @@ def finish(sp: TaskSpec, data: dict, env: list[str], problems: list[dict], field
         raise Malformed(f"the {sp.phase} answer is malformed after the bounded repair: " + "; ".join(env)[:1500], env)
     clean = data
     if sp.items_field is not None and problems:
+        # session 14 (W1): only SCHEMA failures are set aside; an item whose payload still fails after the bound is
+        # kept (the controller marks it invalid with the errors, visible), as a reference problem is
         bad = {p["index"] for p in problems if p.get("kind", "schema") == "schema"}
         clean = {**data, sp.items_field: [it for i, it in enumerate(data.get(sp.items_field) or []) if i not in bad]}
     try:
@@ -951,6 +998,12 @@ def converse(sp: TaskSpec, prov, packet: dict, *, ws, route: str, caps_: dict, p
                     messages.append({"role": "user", "content": [{"type": "text",
                                                                   "text": repair_message(sp, env, probs)}]})
                     continue
+                if repaired and first is not None and not first[1] and not env and first[2]:
+                    # session 14 (W1): the valid siblings of the first answer are kept as first given
+                    merged, notes_m = merge_after_repair(sp, first[0], data, first[2])
+                    if notes_m is not None:
+                        log.event("repair_merged", **notes_m)
+                        data, env, probs = check(sp, merged, packet, fields)
                 final = (data, env, probs)
                 break
         except B.BudgetExhausted as e:
@@ -980,7 +1033,7 @@ def converse(sp: TaskSpec, prov, packet: dict, *, ws, route: str, caps_: dict, p
             e.outcome = out
             raise
         out.malformed_items = [x for x in probs if x.get("kind") == "schema"]
-        out.reference_problems = [x for x in probs if x.get("kind") == "reference"]
+        out.reference_problems = [x for x in probs if x.get("kind") != "schema"]   # s14: + payload, statement
         if probs:
             log.event("malformed_items", items=out.malformed_items, left_to_the_controller=out.reference_problems)
         if out.overwrites:
@@ -1079,6 +1132,12 @@ def ask_host(sp: TaskSpec, session, packet: dict, *, cfg: dict, policy: FailureP
                 data, env, probs = check(sp, text2, packet, fields)
                 if env and not first[1]:
                     data, env, probs = first
+                elif not env and not first[1] and first[2]:
+                    # session 14 (W1): the valid siblings of the first answer are kept as first given
+                    merged, notes_m = merge_after_repair(sp, first[0], data, first[2])
+                    if notes_m is not None:
+                        log.event("repair_merged", **notes_m)
+                        data, env, probs = check(sp, merged, packet, fields)
         except (RateLimited, ProviderFailed) as e:
             out.notices = list(notes)
             e.outcome = out
@@ -1092,7 +1151,7 @@ def ask_host(sp: TaskSpec, session, packet: dict, *, cfg: dict, policy: FailureP
             e.outcome = out
             raise
         out.malformed_items = [x for x in probs if x.get("kind") == "schema"]
-        out.reference_problems = [x for x in probs if x.get("kind") == "reference"]
+        out.reference_problems = [x for x in probs if x.get("kind") != "schema"]   # s14: + payload, statement
         if probs:
             log.event("malformed_items", items=out.malformed_items, left_to_the_controller=out.reference_problems)
         out.notices = list(notes)

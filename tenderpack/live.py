@@ -34,6 +34,7 @@ from pathlib import Path
 import pymupdf
 
 from . import programme, relationships, review
+from .amend import describe_op as _describe_op            # session 14 (W3)
 from .register import Consequence
 from .schedule import deltas
 
@@ -158,7 +159,8 @@ def show_row(r: dict, row_id: str, to: Path, build_dir: Path) -> tuple[str, Path
                 "set_status": lambda: o.status, "replace_unit": lambda: f"replaced by {o.replacement}",
                 "insert_unit": lambda: f"inserted {o.new_group or ''} after {o.anchor or ''}".strip(),
                 "insert_row": lambda: f"row {o.cells} inserted in {o.target} after {o.after or 'the last row'}",
-                "append_text": lambda: f"+ '{o.new}'", "annotate": lambda: f"{o.effect}: {o.note or ''}"}[o.type]()
+                "append_text": lambda: f"+ '{o.new}'", "annotate": lambda: f"{o.effect}: {o.note or ''}"}.get(
+                    o.type, lambda: _describe_op(x) or o.type)()       # session 14 (W3): the ADD-03 kinds
         lines.append(f"    {oid} [{s.stage}] {o.type}: {what}  ({_ref(r, o.provision)}; "
                      f"{('applied' if x.applied else _held(x)) if x.valid else 'INVALID'}; "
                      f"{r['reviews'][('op', oid)]['status']})")

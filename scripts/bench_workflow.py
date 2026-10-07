@@ -177,6 +177,9 @@ def from_run(run: str, staging: str | None = None) -> dict:
             "steps_sum_s": round(sum(float(v["seconds"] or 0) for v in steps.values()), 1), "wall_s": wall,
             "segments": [{"start": s["start"], "end": s["end"], "seconds": x} for s, x in zip(segs, seg_s)],
             "batches": batches, "sessions": sessions, "concurrency": cp.get("concurrency"),
+            # session 14 (W2): every drive's concurrency, and the host usage the run itself recorded (a frozen copy
+            # whose session folders were not kept still has it)
+            "concurrency_drives": cp.get("concurrency_drives") or [], "host_usage": cp.get("host_usage"),
             "rate_gate": cp.get("rate_gate")}
 
 
@@ -207,6 +210,12 @@ def print_run(r: dict) -> None:
               f"{_fmt(b['input_tokens_est'])} {'yes' if b['reused'] else ''}")
     ss = r["sessions"]
     print(f"\nhost sessions started: {len(ss)}" + ("" if ss else " (no session records found next to this checkpoint)"))
+    hu = r.get("host_usage") or {}
+    if not ss and hu.get("sessions"):             # session 14 (W2): the run's own record of its sessions' usage
+        t = hu.get("totals") or {}
+        print(f"  from the run's record (host_usage): {len(hu['sessions'])} session(s); usage known for {hu.get('known')}"
+              f" (input {t.get('input_tokens')}, cache write {t.get('cache_creation_input_tokens')}, cache read "
+              f"{t.get('cache_read_input_tokens')}, output {t.get('output_tokens')}); unknown for {hu.get('unknown')}")
     if ss:
         print(f"  {'session':<44}{'kind':>9}{'provs':>6}{'elapsed':>9}{'turns':>6}{'tools':>6}{'cache_wr':>10}"
               f"{'cache_rd':>10}{'out':>8}{'to_mcp':>7}{'1st_tool':>9}{'tail':>7}")
@@ -222,8 +231,14 @@ def print_run(r: dict) -> None:
             print(f"  analysis sessions: {len(an)}, {el:.0f} s in all; fixed overhead per session (start -> MCP server "
                   f"-> first tool call, submission -> end) {min(ov):.0f}-{max(ov):.0f} s, {sum(ov):.0f} s in all "
                   f"({100 * sum(ov) / el:.1f}% of the session time)")
-    if r.get("concurrency"):
-        print("\nconcurrency (this drive):")
+    if r.get("concurrency_drives"):               # session 14 (W2): every drive, not only the last
+        print("\nconcurrency (every drive):")
+        for dr in r["concurrency_drives"]:
+            for ph, c in (dr.get("phases") or {}).items():
+                print(f"  segment {dr.get('segment')} ({dr.get('drive')}{', interrupted' if dr.get('interrupted') else ''})"
+                      f" {ph}: " + ", ".join(f"{k} {v}" for k, v in c.items()))
+    elif r.get("concurrency"):
+        print("\nconcurrency (the last drive only: this run was recorded before session 14):")
         for ph, c in r["concurrency"].items():
             print(f"  {ph}: " + ", ".join(f"{k} {v}" for k, v in c.items()))
     if r.get("rate_gate"):

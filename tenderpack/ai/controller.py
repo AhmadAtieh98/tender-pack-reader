@@ -210,9 +210,21 @@ HANDOFF = re.compile(r"\b(?:is|are|remains?|stays?)\s+(?:(?:a|an|the)\s+)?(?:per
                      r"(?:decision|question|judgment|matter)\b|\b(?:a\s+)?decision\s+for\s+(?:Legal|a person|the owner|"
                      r"Commercial|people)\b|\b(?:Legal|Commercial|a person|the Bid manager)(?:\s+counsel)?\s+(?:decides|must "
                      r"decide|to decide|should decide)\b|\bhuman decision\b|\blegal question\b|\bfor a person to "
-                     r"(?:decide|confirm)\b", re.I)
+                     r"(?:decide|confirm)\b"
+                     # session 14 (W1): "which value applies is for a person (Legal/Technical)"
+                     r"|\b(?:is|are|remains?)\s+for\s+(?:a person|Legal|the owner|people|Commercial)\b", re.I)
 _SETTLE_TOPIC = re.compile(r"\b(?:govern(?:s|ed|ing)?|prevail(?:s|ed|ing)?|precedence|which (?:rendering|text|version|"
-                           r"language|translation)|amend(?:s|ed|ing|ment)?)\b", re.I)
+                           r"language|translation)|amend(?:s|ed|ing|ment)?"
+                           # session 14 (W1): which of two printed values applies (a rendering's value)
+                           r"|which (?:value|figure|amount|number)s? (?:applies|apply|is used|governs|prevails))\b", re.I)
+# session 14 (W1, blind-07 defect 11): an "as amended by" recital ("A reference in this Addendum to a Clause ... is to
+# that Clause ... as amended by Addenda Nos. 1 and 2") states which version a reference means; a point that hands over
+# which version (the base, the text as issued or as amended) is applied with it, unless the item's own words invoke
+# the recital's exception (then closing it is a person's judgment)
+_RECITAL = re.compile(r"\b(?:is|are)\s+to\s+(?:that|the|those|such)\b.{0,120}?\bas amended by\b", re.I)
+_BASE_TOPIC = re.compile(r"\bas (?:issued|amended)\b|\bwhich (?:version|base|stage)\b|\bthe base\b|"
+                         r"\b(?:earlier|previous|current) (?:text|figure|amount|version)\b", re.I)
+_EXCEPTION_WORDS = re.compile(r"\bexception\b|\botherwise stated\b|\bunless\b", re.I)
 # a precedence clause STATES an outcome ("The Arabic text governs.", "X shall prevail over Y"); a pointer to an order of
 # precedence ("The order of precedence at Volume I Clause 3.2 applies.") leaves its application to a person (the
 # concession-term question, audit A1-1) and settles nothing here
@@ -294,9 +306,12 @@ def _names(sentence: str, pid: str) -> bool:
     return bool(local) and (pid in sentence or re.search(rf"(?<![\w.]){re.escape(local)}(?![\w]|\.\d)", sentence) is not None)
 
 
-def settled_points(text: str, provision: str | None, texts: dict[str, str], addendum: str, provisions) -> list[dict]:
+def settled_points(text: str, provision: str | None, texts: dict[str, str], addendum: str, provisions,
+                   handoff: bool = False) -> list[dict]:
     """The sentences of a model's own prose that hand a person a point the documents settle (see above). Each:
-    {kind (cover | precedence | accordingly), sentence, ref, unit, words, keys, line}. [] when none."""
+    {kind (cover | precedence | accordingly | recital), sentence, ref, unit, words, keys, line}. [] when none.
+    `handoff` (session 14, W1): the text is itself a hand-over (an item's declared missing information or conflict),
+    so a sentence needs no hand-over words of its own."""
     provisions = list(provisions or [])
     prose = " ".join(_UNIT_ID.sub(" ", str(text or "")).split())      # unit ids name places, not the point
     covers = [p for p in provisions if ":cover/" in p]
@@ -307,12 +322,22 @@ def settled_points(text: str, provision: str | None, texts: dict[str, str], adde
         for snt in _sentences(texts.get(p) or ""):
             if _PRECEDENCE.search(snt) and not snt.rstrip().endswith("?"):    # session 13: a question states nothing
                 clauses.append((p, snt))
+    recitals = [(p, c) for p in provisions if p not in covers for c in _sentences(texts.get(p) or "")
+                if _RECITAL.search(c)]                    # session 14 (W1): (iv) an "as amended by" recital
     out = []
     for snt in _sentences(prose):
-        if not HANDOFF.search(snt) or not _SETTLE_TOPIC.search(snt):
+        if not (handoff or HANDOFF.search(snt)):
+            continue
+        if not _SETTLE_TOPIC.search(snt) and not (recitals and _BASE_TOPIC.search(snt)):
             continue
         pt = None
-        if re.search(r"\bamend", snt, re.I):                 # (iii) 'is amended accordingly'
+        from ..human_owned import own_words as _own_words
+        if recitals and (provision or "").startswith(f"{addendum}:") and _BASE_TOPIC.search(snt) \
+                and not _EXCEPTION_WORDS.search(_own_words(prose)):
+            p, c = recitals[0]
+            pt = {"kind": "recital", "unit": p, "words": c, "keys": {_ref(p)} | _keys(c),
+                  "tail": " — a reference is to the clause as the earlier addenda left it"}
+        if pt is None and re.search(r"\bamend", snt, re.I):     # (iii) 'is amended accordingly'
             for p in [x for x in provisions if x == provision or _names(snt, x)]:
                 m = next((x for x in re.split(r"(?<=[.;])\s+|\s*\|\s*", " ".join((texts.get(p) or "").split()))
                           if _ACCORDINGLY.search(x)), None)
@@ -351,6 +376,39 @@ def settled_points(text: str, provision: str | None, texts: dict[str, str], adde
     return out
 
 
+def settled_handoff(entry: str, provision: str | None, texts: dict[str, str], addendum: str, provisions) -> str | None:
+    """Session 14 (W1): the applied-rule line when an item's declared missing information or conflict (`entry`, itself a
+    hand-over) is a point a STATED document rule settles; None otherwise, and always None for a genuine ambiguity (two
+    readings of the same words named, or the human-owned classifier firing on the entry's own words outside the rule):
+    a quotation alone never settles an ambiguous point."""
+    from .. import human_owned as H
+    text = " ".join(str(entry or "").split())
+    if not text or _TWO_READINGS.search(text):
+        return None
+    pts = settled_points(text, provision, texts, addendum, provisions, handoff=True)
+    if not pts:
+        return None
+    skip = {"decides which document prevails (precedence)", "a precedence question", "decides which clause governs"}
+    if any(x.split(" ('")[0] not in skip for p in pts for x in H.triggers(text.replace(p["words"], " "))):
+        return None
+    return "; ".join(dict.fromkeys(p["line"] for p in pts))
+
+
+def _settled_handoffs(entries: list[str], it, texts: dict, addendum: str, provisions, f: dict, what: str) -> list[str]:
+    """The entries that stay (a genuine conflict or a genuine gap); each settled one is recorded as an applied rule
+    (interpretation_pending at most: a person confirms the application)."""
+    keep = []
+    for e in entries:
+        line = settled_handoff(e, it.provision, texts, addendum, provisions)
+        if line is None:
+            keep.append(e)
+            continue
+        f["recs"].append(ValidationRecord(check=APPLIED_RULE, ok=True, aspect="decision", detail=(
+            f"the {what} '{_short(e, 200)}' is a point a stated document rule settles: {line}; {CONFIRM}")[:600]))
+        f["interp"].append(APPLIED_RULE)
+    return keep
+
+
 def applied_rule_review(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str], addendum: str,
                         provisions, phase: str = "analysis", existing: dict | None = None) -> dict:
     """{lines, sentences, points, human}: the applied rules of an item's own prose (settled_points over
@@ -369,7 +427,10 @@ def applied_rule_review(statement_type: str, payload: dict, provision: str | Non
         rest = rest.replace(p["sentence"], " ")
     skip = {"decides which document prevails (precedence)", "a precedence question", "decides which clause governs"} \
         if any(p["kind"] in ("cover", "precedence") for p in pts) else set()
-    own = [f"its own words {x}" for x in H.triggers(rest) if x.split(" ('")[0] not in skip]
+    # session 14 (W1): a disposition's reason is read with the closure words only, as human_owned reads it
+    own = [f"its reason {x}" for x in H.triggers(rest, ("closure",)) if x.split(" ('")[0] not in skip] \
+        if statement_type == "disposition" else \
+        [f"its own words {x}" for x in H.triggers(rest) if x.split(" ('")[0] not in skip]
     # session 13: a genuine ambiguity is never applied: two readings of the same words named in the item, or the
     # classifier firing on the point's own words outside the quotation. HUMAN DECISION PENDING, the rule as context.
     two = _TWO_READINGS.search(" ".join(str(text or "").split()))
@@ -384,8 +445,15 @@ def applied_rule_review(statement_type: str, payload: dict, provision: str | Non
                                                     f"{ctx}"]))}
     # the classifier's reasons by type are kept (a re-read question, a status, an answer), except an issue's: an issue
     # whose point the documents settle is re-presented as an applied rule, not kept open as a decision
-    typed = [x for x in full if not x.startswith(("its own words", "the provision it reads", "an annotation that"))
+    typed = [x for x in full if not x.startswith(("its own words", "the provision it reads", "an annotation that",
+                                                  "its reason"))
              and not (statement_type == "issue" and "kept open for people" in x)]
+    if statement_type == "amendment_op":
+        # session 14 (W1): an annotation's reading of the PROVISION's own words stays a person's (a precedence answer
+        # such as "the order of precedence at Volume I Clause 3.2 applies" is never settled by the item's prose)
+        pro = [x for x in full if x.startswith("the provision it reads")]
+        if pro or own:
+            typed = [x for x in full if x.startswith("an annotation that")][:1] + typed + pro
     return {"lines": list(dict.fromkeys(p["line"] for p in pts)), "sentences": [p["sentence"] for p in pts],
             "points": pts, "human": list(dict.fromkeys(typed + own)),
             "confirm": list(dict.fromkeys(p["confirm"] for p in pts))}
@@ -692,8 +760,9 @@ def amendment_language(text: str) -> list[str]:
     quoted = re.findall(Q, text)
     if len(quoted) >= 2:
         hits.append(f"a quoted pair ‘{_short(quoted[0], 40)}’ / ‘{_short(quoted[1], 40)}’")
+    from ..human_owned import negated          # session 14 (W4; COMPARISON s8 item 14): 'are not renumbered' is no change
     for rx in (_PASSIVE, _BARE, _IDIOM, _ACTIVE):
-        m = rx.search(plain)
+        m = next((x for x in rx.finditer(plain) if not negated(plain, x.start())), None)
         if m:
             hits.append(f"'{m.group(0)}'")
             break
@@ -945,7 +1014,223 @@ def recheck_fresh(ws: Workspace, ps: ProposalSet, report: dict) -> bool:
 
 
 
-def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, object]]) -> dict[int, str]:
+# ---------------------------------------------------------------------------------------------- dependencies (s14, W1)
+# Session 14 (W1; blind-07 defects 3 and 5). An item's `dependencies` may name any id of the set's typed id space:
+#   unit        a unit or a group (a table, a form) of the state
+#   row         an existing A1 row
+#   op          a recorded op (the register's op ids)
+#   statement   a statement of the set (as if listed in `statements`: a failed fact blocks the item)
+#   item:<type> an item of this set, by its item id (an op also by its payload id, a new row also by its row id)
+# What may depend on what (DEPENDENCY_KINDS): a change (an op or a disposition) may not rest on an open matter or a
+# draft question (item:issue, item:clarification); everything else may rely on anything. A cycle among the set's items
+# is refused (`invalid`, the cycle named). READINESS is computed after the statuses: an item is ready when every item of
+# the set it relies on (dependencies and statements) is promotable and ready itself, and no fact it relies on failed;
+# `blocked_by` names each blocker. Readiness changes no status (promotion reads it). A fact that fails its evidence
+# check still blocks every item citing it (a failed fact supports nothing), and the BLAST RADIUS is reported: per failed
+# statement the items it blocks (report `blast_radius`, the review packet, an unresolved provision's reason).
+
+DEPENDENCY_REFUSED = {"amendment_op": ("item:issue", "item:clarification"),
+                      "disposition": ("item:issue", "item:clarification")}
+DEPENDENCY_KINDS = ("unit", "row", "op", "statement", "item:amendment_op", "item:disposition", "item:escalation",
+                    "item:row_new", "item:row_reading", "item:issue", "item:clarification")
+
+
+def statement_failure(info: dict) -> str:
+    """Why a fact statement failed its evidence check (the first failing quotation, or no evidence at all)."""
+    from .contract import FACT_NEEDS_EVIDENCE
+    if info.get("duplicate"):
+        return "a duplicate statement id"
+    bad = [c for c in info.get("checks") or [] if not c.get("ok")]
+    if not info.get("checks"):
+        return "no evidence: refused (" + FACT_NEEDS_EVIDENCE + ")"
+    return "not supported verbatim: " + _short(bad[0].get("detail") if bad else "", 200)
+
+
+def dependency_graph(ws: Workspace, ps: ProposalSet, F: list[dict], pst: dict, rows: dict, st_info: dict) -> dict:
+    """{items: [{unknown, refused_kinds, statements, kinds, cycle}], edges: {i: [j]}, cycles: [[ids]]}."""
+    item_of: dict[str, int] = {}
+    for i, it in enumerate(ps.items):
+        item_of.setdefault(it.id, i)
+    for i, it in enumerate(ps.items):                      # an op's payload id, a new row's id
+        p = it.payload if isinstance(it.payload, dict) else {}
+        alias = p.get("id") if it.statement_type == "amendment_op" else \
+            (p.get("row") or {}).get("id") if it.statement_type == "row_new" and isinstance(p.get("row"), dict) else None
+        if isinstance(alias, str):
+            item_of.setdefault(alias, i)
+    op_ids = set(ws.r["register"].op_stage)
+    out, edges = [], {}
+    for i, it in enumerate(ps.items):
+        g = {"unknown": [], "refused_kinds": [], "statements": [], "kinds": {}, "cycle": None}
+        edges[i] = []
+        for d in it.dependencies:
+            if d in item_of:
+                k = "item:" + ps.items[item_of[d]].statement_type
+                edges[i].append(item_of[d])
+            elif d in st_info:
+                k = "statement"
+                g["statements"].append(d)
+            elif d in rows:
+                k = "row"
+            elif d in op_ids:
+                k = "op"
+            elif d in pst or d in ws.units_by_id or amend.group_members(pst, d):
+                k = "unit"
+            else:
+                g["unknown"].append(d)
+                continue
+            g["kinds"][d] = k
+            if k in DEPENDENCY_REFUSED.get(it.statement_type, ()):
+                g["refused_kinds"].append((d, k, f"a {it.statement_type} may not depend on {d} ({k}): an open matter "
+                                                 "or a draft question supports no change"))
+        out.append(g)
+    # cycles among the set's items (Tarjan's strongly connected components; a self-dependency is a cycle too)
+    index, low, stack, on, comps, n = {}, {}, [], set(), [], [0]
+
+    def strong(v):
+        index[v] = low[v] = n[0]
+        n[0] += 1
+        stack.append(v)
+        on.add(v)
+        for w in edges[v]:
+            if w not in index:
+                strong(w)
+                low[v] = min(low[v], low[w])
+            elif w in on:
+                low[v] = min(low[v], index[w])
+        if low[v] == index[v]:
+            comp = []
+            while True:
+                w = stack.pop()
+                on.discard(w)
+                comp.append(w)
+                if w == v:
+                    break
+            if len(comp) > 1 or v in edges[v]:
+                comps.append(sorted(comp))
+    import sys
+    lim = sys.getrecursionlimit()
+    sys.setrecursionlimit(max(lim, 4 * len(ps.items) + 100))
+    try:
+        for v in range(len(ps.items)):
+            if v not in index:
+                strong(v)
+    finally:
+        sys.setrecursionlimit(lim)
+    cycles = []
+    for comp in comps:
+        names = [ps.items[c].id for c in comp]
+        path = _cycle_path(comp, edges)
+        shown = [ps.items[c].id for c in path] + [ps.items[path[0]].id]
+        cycles.append(names)
+        for c in comp:
+            out[c]["cycle"] = shown
+    return {"items": out, "edges": edges, "cycles": cycles}
+
+
+def _cycle_path(comp: list[int], edges: dict) -> list[int]:
+    """One cycle through a strongly connected component, as a path from its first member."""
+    members, start = set(comp), comp[0]
+    path, seen, v = [start], {start}, start
+    while True:
+        nxt = next((w for w in edges[v] if w in members), None)
+        if nxt is None or nxt == start or nxt in seen:
+            return path
+        path.append(nxt)
+        seen.add(nxt)
+        v = nxt
+
+
+def readiness(ps: ProposalSet, F: list[dict], graph: dict, st_info: dict, report: dict) -> None:
+    """Session 14 (W1): each item's `ready` and `blocked_by` (see DEPENDENCY_KINDS above), a `readiness` record on an
+    item that is not ready, and report['blast_radius'] / report['readiness']."""
+    n = len(ps.items)
+    ready: dict[int, bool] = {}
+    blocked: dict[int, list[str]] = {i: list(dict.fromkeys(F[i].get("blocked") or [])) for i in range(n)}
+
+    def visit(i, trail=()):
+        if i in ready:
+            return ready[i]
+        if i in trail or graph["items"][i]["cycle"]:
+            ready[i] = False
+            blocked[i].append("in a dependency cycle")
+            return False
+        ok = not blocked[i] and not graph["items"][i]["unknown"] and not graph["items"][i]["refused_kinds"]
+        if graph["items"][i]["unknown"]:
+            blocked[i].append(f"unknown dependencies {graph['items'][i]['unknown']}")
+        blocked[i] += [why for _, _, why in graph["items"][i]["refused_kinds"]]
+        for j in graph["edges"][i]:
+            dj = ps.items[j]
+            if dj.verification_status not in PROMOTABLE:
+                ok = False
+                blocked[i].append(f"depends on {dj.id} ({dj.statement_type}, {dj.verification_status})")
+            elif not visit(j, (*trail, i)):
+                ok = False
+                blocked[i].append(f"depends on {dj.id}, which is not ready")
+        ready[i] = ok
+        return ok
+    for i in range(n):
+        visit(i)
+    radius: dict[str, list[str]] = {}
+    for i, it in enumerate(ps.items):
+        it.ready, it.blocked_by = ready[i], list(dict.fromkeys(blocked[i]))
+        if not it.ready:
+            it.validation.append(ValidationRecord(check="readiness", ok=False, aspect="structure", detail=(
+                "not ready (promotion waits): " + "; ".join(it.blocked_by))[:600]))
+        for sid in [*it.statements, *graph["items"][i]["statements"]]:
+            si = st_info.get(sid)
+            if si and si["kind"] == "fact" and not si["evidence_ok"]:
+                radius.setdefault(sid, [])
+                if it.id not in radius[sid]:
+                    radius[sid].append(it.id)
+    report["blast_radius"] = [{"statement": sid, "why": st_info[sid].get("why"), "blocks": ids, "items": len(ids),
+                               "refused": bool(st_info[sid].get("refused"))}
+                              for sid, ids in sorted(radius.items(), key=lambda kv: (-len(kv[1]), kv[0]))]
+    report["readiness"] = {it.id: {"ready": it.ready, "blocked_by": it.blocked_by} for it in ps.items if not it.ready}
+
+
+def blocked_reasons(ps: ProposalSet) -> dict[str, list[str]]:
+    """Session 14 (W1): {provision: ["blocked by failed statement S: why", ...]} of the set's items that are not ready,
+    for an `unresolved` provision's reason (the op file) and the review packet."""
+    out: dict[str, list[str]] = {}
+    for it in ps.items:
+        for b in it.blocked_by or []:
+            out.setdefault(it.provision, [])
+            if b not in out[it.provision]:
+                out[it.provision].append(b)
+    return out
+
+
+def _span(text: str, old: str | None) -> tuple[int, int] | None:
+    """The one place `old` occurs in `text` (the engine's own matching, register.found, decides only presence); None
+    when it occurs zero or several times (then two edits cannot be proven disjoint)."""
+    if not old or not text:
+        return None
+    t, o = normalize_latin(text), normalize_latin(old)
+    i = t.find(o)
+    if i < 0 or t.find(o, i + 1) >= 0:
+        return None
+    return i, i + len(o)
+
+
+def disjoint_edits(a, b, text: str | None) -> tuple[bool, str]:
+    """Session 14 (W1, blind-07 defect 4): whether two replace_text ops on ONE unit are provably independent of their
+    order: each `old` occurs exactly once in the unit's previous effective text, the two spans do not overlap or touch,
+    and neither op's `new` contains what the other reads (its `old`). (ok, why)."""
+    if getattr(a, "type", None) != "replace_text" or getattr(b, "type", None) != "replace_text":
+        return False, "not two text replacements"
+    sa, sb = _span(text or "", a.old), _span(text or "", b.old)
+    if sa is None or sb is None:
+        return False, "an `old` does not occur exactly once in the unit's previous text"
+    if sa[0] < sb[1] and sb[0] < sa[1] or sa[1] == sb[0] or sb[1] == sa[0]:
+        return False, "the replaced spans overlap or touch"
+    na, nb = normalize_latin(a.new or ""), normalize_latin(b.new or "")
+    if normalize_latin(b.old) in na or normalize_latin(a.old) in nb:
+        return False, "one replacement writes what the other reads"
+    return True, f"disjoint spans {sa} and {sb} of the previous text"
+
+
+def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, object]],
+                         texts: dict[str, str] | None = None) -> dict[int, str]:
     """Session 12 (blind-06 follow-up 6a): {item index: why} for items of ONE combined set that treat the same unit in
     opposite ways across batches: a `no_effect` disposition on a provision while another item's op changes a unit
     that provision prints or cites (its target), or two ops that set the same target to different texts or statuses.
@@ -967,16 +1252,29 @@ def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, o
                     why = f"{prov}: a no_effect disposition and {getattr(op, 'id', i)} ({getattr(op, 'type', '?')} on {t}) in the same set"
                     out[j] = out.get(j) or why
                     out[i] = out.get(i) or why
+    change = ("replace_text", "set_status", "replace_unit", "set_value")
     for t, lst in by_target.items():
         sigs = {}
         for i, op in lst:
             sig = (getattr(op, "type", None), getattr(op, "new", None), getattr(op, "status", None), getattr(op, "old", None))
             sigs.setdefault(sig, []).append((i, op))
-        if len(sigs) > 1 and any(getattr(op, "type", None) in ("replace_text", "set_status", "replace_unit", "set_value")
-                                  for _, op in lst):
-            ids = ", ".join(str(getattr(op, "id", i)) for i, op in lst)
+        if len(sigs) > 1 and any(getattr(op, "type", None) in change for _, op in lst):
+            # session 14 (W1): two text replacements on provably disjoint spans of the unit's previous text are
+            # compatible (blind-07 3.3 and 3.4 on VOL-V 42.1); any other pair of different changes stays a conflict
+            clash: set[int] = set()
+            for x in range(len(lst)):
+                for y in range(x + 1, len(lst)):
+                    (i, a), (j, b) = lst[x], lst[y]
+                    sa = (a.type, a.new, getattr(a, "status", None), a.old) if hasattr(a, "type") else None
+                    sb = (b.type, b.new, getattr(b, "status", None), b.old) if hasattr(b, "type") else None
+                    if sa == sb:
+                        continue
+                    if texts is not None and disjoint_edits(a, b, texts.get(t))[0]:
+                        continue
+                    clash |= {i, j}
+            ids = ", ".join(str(getattr(op, "id", i)) for i, op in lst if i in clash)
             for i, op in lst:
-                if getattr(op, "type", None) in ("replace_text", "set_status", "replace_unit", "set_value"):
+                if i in clash and getattr(op, "type", None) in change:
                     out[i] = out.get(i) or f"{t}: {ids} change the same unit in different ways across the set"
     return out
 
@@ -992,12 +1290,15 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
     report: dict = {"overwrites": list(overwrites or []), "statements": {}, "state_differences": [], "simulation": None,
                     "impact": None, "reference": None, "findings": []}
     for it in ps.items:
-        if it.verification_status != "unverified" or it.validation:
+        if it.verification_status != "unverified" or it.validation or it.ready is not None or it.blocked_by:
             ow = {"item": it.id, "proposer_status": it.verification_status,
                   "proposer_validation": [v.model_dump() for v in it.validation]}
+            if it.ready is not None or it.blocked_by:                    # session 14 (W1): controller-written
+                ow["proposer_readiness"] = {"ready": it.ready, "blocked_by": list(it.blocked_by)}
             report["overwrites"].append(ow)
             ev("overwrite", **ow)
         it.verification_status, it.validation = "unverified", []
+        it.ready, it.blocked_by = None, []
     for ow in overwrites or []:
         ev("overwrite", **ow)
     addendum = ps.addendum
@@ -1030,9 +1331,13 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
         st_info[s.id] = {"kind": s.kind, "duplicate": s.id in st_info,
                          "evidence_ok": bool(recs) and all(x.ok for x in recs) and s.id not in st_info,
                          "checks": [x.model_dump() for x in recs]}
+        if s.kind == "fact" and not st_info[s.id]["evidence_ok"]:      # session 14 (W1): why it failed, once
+            st_info[s.id]["why"] = statement_failure(st_info[s.id])
+            st_info[s.id]["refused"] = not s.evidence                   # a fact with empty evidence is refused
     report["statements"] = st_info
 
     F = [{"invalid": [], "conflict": [], "insufficient": [], "interp": [], "recs": [], "op": None} for _ in ps.items]
+    texts_s14 = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}      # session 14 (W1): settled points
     seen: set[str] = set()
     sim_ops, sim_disps = [], []
     for i, it in enumerate(ps.items):
@@ -1057,8 +1362,8 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
         else:
             rec("provision", True, f"{it.provision} is a provision of {addendum} (p{','.join(map(str, pu.pages))})")
         _check_payload(ws, it, f, rec, rows, addendum, sim_ops, sim_disps, i)
-        if f["op"] is not None:
-            _value_checks(it, f["op"], pst, prev, f)        # before the dry run: an invalid op never shapes another's
+        if f["op"] is not None:                             # before the dry run: an invalid op never shapes another's
+            _value_checks(it, f["op"], pst, prev, f, (ws.units_by_id.get(it.provision) or {}).get("text"))
         # evidence
         if not it.evidence:
             rec("evidence", False, "no evidence given", "insufficient")
@@ -1076,10 +1381,12 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
             elif s["kind"] in ("interpretation", "assumption"):
                 rec("statements", True, f"depends on {s['kind']} {sid}: a person must confirm it")
                 f["interp"].append(f"{s['kind']} {sid}")
-            elif not s["evidence_ok"]:
-                rec("statements", False, f"fact {sid} is not supported verbatim", "insufficient")
+            elif not s["evidence_ok"]:                  # session 14 (W1): the blast radius is reported
+                rec("statements", False, f"blocked by failed statement {sid}: {s.get('why')}", "insufficient")
+                f.setdefault("blocked", []).append(f"blocked by failed statement {sid}: {s.get('why')}")
         if it.conflicts:
             cover_c, genuine = split_cover_conflicts(it.conflicts, addendum, it.provision, provs_all)
+            # session 14 (W1): a declared conflict between two operative texts stays a conflict (never settled here)
             if genuine:
                 rec("declared_conflicts", False, "the proposer declares: " + "; ".join(genuine)[:400], "conflict")
             if cover_c:                                  # session 12: retained, never a hold on the operative op
@@ -1088,21 +1395,46 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
                     "documents; the summary orders nothing): " + "; ".join(cover_c)[:400])
                 report.setdefault("cover_findings", []).append({"item": it.id, "provision": it.provision,
                                                                 "discrepancies": list(cover_c)})
-        if it.missing_information:
-            rec("missing_information", False, "the proposer declares missing: " + "; ".join(it.missing_information)[:400],
+        missing = _settled_handoffs(list(it.missing_information), it, texts_s14, addendum, provs_all, f,
+                                    "missing information")
+        if missing:
+            rec("missing_information", False, "the proposer declares missing: " + "; ".join(missing)[:400],
                 "insufficient")
         if it.statement_type in ("row_reading", "row_new"):
             f["interp"].append("a row's reading is an interpretation")
             rec("interpretation", True, "a row reading is an interpretation: a person decides it")
 
-    # dependencies (after every proposed op id is known)
-    proposed_ids = {op.id for _, op in sim_ops}
-    known = set(pst) | set(ws.units_by_id) | set(rows) | set(ws.r["register"].op_stage) | proposed_ids
+    # dependencies (after every proposed op id is known). Session 14 (W1, blind-07 defect 3): the TYPED id space of
+    # the set (dependency_graph): a dependency may name a unit or group, an A1 row, a recorded op, or an item or a
+    # statement of this set; its kind is checked (DEPENDENCY_KINDS) and a cycle is refused with the cycle named
+    graph = dependency_graph(ws, ps, F, pst, rows, st_info)
+    report["dependencies"] = {"edges": {ps.items[i].id: [ps.items[j].id for j in js] for i, js in graph["edges"].items()
+                                        if js}, "cycles": graph["cycles"]}
     for i, it in enumerate(ps.items):
-        unknown = [d for d in it.dependencies if d not in known and not amend.group_members(pst, d)]
-        if unknown:
-            F[i]["recs"].append(ValidationRecord(check="dependencies", ok=False, detail=f"unknown ids {unknown}"))
-            F[i]["insufficient"].append(f"unknown dependencies {unknown}")
+        g = graph["items"][i]
+        if g["unknown"]:
+            F[i]["recs"].append(ValidationRecord(check="dependencies", ok=False, detail=f"unknown ids {g['unknown']}"))
+            F[i]["insufficient"].append(f"unknown dependencies {g['unknown']}")
+        for d, k, why in g["refused_kinds"]:
+            F[i]["recs"].append(ValidationRecord(check="dependencies", ok=False, detail=why))
+            F[i]["insufficient"].append(why)
+        for sid in g["statements"]:                         # a statement named as a dependency counts as cited
+            if sid in it.statements:
+                continue
+            sinfo = st_info[sid]
+            if sinfo["kind"] in ("interpretation", "assumption"):
+                F[i]["recs"].append(ValidationRecord(check="statements", ok=True, detail=f"depends on {sinfo['kind']} "
+                                                     f"{sid}: a person must confirm it"))
+                F[i]["interp"].append(f"{sinfo['kind']} {sid}")
+            elif not sinfo["evidence_ok"]:
+                why = f"blocked by failed statement {sid}: {sinfo.get('why')}"
+                F[i]["recs"].append(ValidationRecord(check="statements", ok=False, detail=why))
+                F[i]["insufficient"].append(why)
+                F[i].setdefault("blocked", []).append(why)
+        if g["cycle"]:
+            why = "dependency cycle refused: " + " -> ".join(g["cycle"])
+            F[i]["recs"].append(ValidationRecord(check="dependencies", ok=False, detail=why))
+            F[i]["invalid"].append(why)
 
     # semantic resolution of every 'no change' answer, before the dry run (an answer that contradicts the provision's
     # own words is invalid and shapes nothing)
@@ -1191,9 +1523,13 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
     provs_all = _provisions(ws, addendum)
     for i, it in enumerate(ps.items):
         ptext = (pst[it.provision].text if it.provision in pst else "") or ""
-        if it.statement_type in ("issue", "escalation", "clarification"):
+        if it.statement_type in ("issue", "escalation", "clarification", "amendment_op", "disposition", "row_reading",
+                                 "row_new"):
             # a point the documents settle is an applied rule with its clause quoted; only what the rest of the item's
-            # own words judge stays HUMAN DECISION PENDING (controller.applied_rule_review)
+            # own words judge stays HUMAN DECISION PENDING (controller.applied_rule_review). Session 14 (W1, blind-07
+            # defect 11): an op, a disposition or a row that declines a STATED rule (the addendum's own "the Arabic
+            # text governs", the operative text over the cover summary, an "as amended by" recital) is read the same
+            # way: the rule supports the proposed change, applied and not decided, the owner kept, a person confirms
             ar = applied_rule_review(it.statement_type, dict(it.payload or {}), it.provision, texts_all, addendum,
                                      provs_all)
             why = ar["human"]
@@ -1207,7 +1543,8 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
         if why and it.statement_type != "escalation":
             F[i]["recs"].append(ValidationRecord(check=_HO, ok=True, detail=record_detail(why), aspect="decision"))
             F[i]["interp"].append(_HO)
-    for i, why in cross_item_conflicts(sim_ops, sim_disps).items():      # session 12 (blind-06 follow-up 6a)
+    prev_texts = {k: (getattr(u, "text", None) or "") for k, u in pst.items()}     # session 14 (W1): disjoint spans
+    for i, why in cross_item_conflicts(sim_ops, sim_disps, prev_texts).items():   # session 12 (blind-06 follow-up 6a)
         if not F[i]["invalid"]:
             F[i]["recs"].append(ValidationRecord(check="consistency", ok=False, detail=why))
             F[i]["conflict"].append("cross-item")
@@ -1230,6 +1567,9 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
         it.validation, it.verification_status = f["recs"], s
         ev("validation", item=it.id, statement_type=it.statement_type, status=s,
            failed=[v.model_dump() for v in f["recs"] if not v.ok])
+
+    # session 14 (W1): readiness and the blast radius of a failed shared statement (readiness changes no status)
+    readiness(ps, F, graph, st_info, report)
 
     # coverage
     accounted = set()
@@ -1326,45 +1666,74 @@ def _check_payload(ws, it: ChangeProposal, f: dict, rec, rows: dict, addendum: s
     else:
         model = {"escalation": EscalationPayload, "issue": IssuePayload, "clarification": ClarificationPayload,
                  "row_reading": RowReadingPayload, "row_new": RowNewPayload}[t]
+        # session 14 (W1, blind-07 defect 1): the exact errors against the FULL schema (contract.payload_errors), every
+        # one visible (an item still failing after the bounded repair stays invalid with them)
+        from .contract import payload_errors
+        errs = payload_errors(t, p, it.provision, it.id)
+        what = {"row_new": "not a register.Row", "row_reading": "the interpretation is not a register.Interp"}.get(
+            t, f"not a {t} payload")
         try:
             pl = model.model_validate(p)
-        except ValidationError as e:
-            rec("payload", False, f"not a {t} payload: {_short(str(e), 400)}", "invalid")
+        except ValidationError:
+            rec("payload", False, f"not a {t} payload: " + _short("; ".join(errs), 900), "invalid")
             return
         if t == "row_reading":
             if pl.row not in rows:
                 rec("payload", False, f"no A1 row {pl.row} (use row_new for a new row)", "invalid")
                 return
-            try:
-                Interp.model_validate({k: v for k, v in pl.interpretation.items() if k != "pins"})
-            except ValidationError as e:
-                rec("payload", False, f"the interpretation is not a register.Interp: {_short(str(e), 300)}", "invalid")
+            if errs:
+                rec("payload", False, f"{what}: " + _short("; ".join(errs), 900), "invalid")
         elif t == "row_new":
-            try:
-                row = Row.model_validate(pl.row)
-            except ValidationError as e:
-                rec("payload", False, f"not a register.Row: {_short(str(e), 400)}", "invalid")
+            if errs:
+                rec("payload", False, f"{what}: " + _short("; ".join(errs), 900), "invalid")
                 return
+            row = Row.model_validate(pl.row)
             if row.id in rows:
                 rec("payload", False, f"row {row.id} already exists (use row_reading)", "invalid")
         rec("payload", True, f"a well-formed {t} payload")
 
 
-def _value_checks(it: ChangeProposal, op: Op, pst: dict, prev: str, f: dict) -> None:
+def _value_checks(it: ChangeProposal, op: Op, pst: dict, prev: str, f: dict, own_text: str | None = None) -> None:
+    """Session 14 (W1, blind-07 defect 2; the owner's rule): a previous_value is ALWAYS checked against the previous
+    EFFECTIVE target, the target's text at the validated stage before this addendum (after the earlier addenda), never
+    against the new answer's own text. An op with plural targets (an annotation on an answer: `targets`) is checked
+    against each of them, the item's own provision excepted; it matches when one target reads it. A set_status
+    compares the status as well as the text."""
     def rec(check, ok, detail):
         f["recs"].append(ValidationRecord(check=check, ok=ok, detail=detail))
         if not ok:
             f["invalid"].append(detail)
     if it.previous_value is not None:
         pv = str(it.previous_value)
-        t = pst.get(op.target) if op.target else None
-        if t is None:
-            rec("previous_value", False, f"no target to compare the previous value {pv!r} with")
+        names = [op.target] if op.target else list(dict.fromkeys(op.targets or []))
+        names = [n for n in names if n and n != it.provision]          # never the answer's own text
+        found_at, read = None, []
+        for n in names:
+            t = pst.get(n)
+            if t is None or getattr(t, "status", None) == "not_issued":     # no text at the previous stage
+                continue
+            if op.type == "set_value":
+                cur = (t.cells or {}).get(op.column)
+                ok = _same_value(pv, cur)
+            else:
+                cur = t.text
+                ok = _value_in(pv, cur or "") or (op.type == "set_status" and _same_value(pv, t.status))
+            read.append((n, cur))
+            if ok:
+                found_at = n
+                break
+        if found_at:
+            rec("previous_value", True, f"{pv!r} matches {found_at} at {prev} (the previous effective target)")
+        elif not read:
+            own = " (it quotes the answer's own text, which is never the previous value)" if own_text and \
+                _value_in(pv, own_text) else ""
+            rec("previous_value", False, f"no previous effective target at {prev} to compare the previous value "
+                f"{pv!r} with (targets: {names or 'none but the provision itself'}){own}")
         else:
-            cur = (t.cells or {}).get(op.column) if op.type == "set_value" else t.text
-            ok = _same_value(pv, cur) if op.type == "set_value" else _value_in(pv, cur or "")
-            rec("previous_value", ok, f"{pv!r} " + ("matches" if ok else "does not match") + f" {op.target} at {prev}"
-                + ("" if ok else f" (it reads: '{_short(cur, 160)}')"))
+            own = "; it quotes the answer's own text instead, which is never the previous value" if own_text and \
+                _value_in(pv, own_text) else ""
+            rec("previous_value", False, "; ".join(f"{pv!r} does not match {n} at {prev} (it reads: '{_short(c, 160)}')"
+                                                   for n, c in read) + " (the previous effective target)" + own)
     if it.proposed_value is not None:
         nv = str(it.proposed_value)
         if op.type == "set_value":
@@ -1509,6 +1878,15 @@ def review_markdown(ps: ProposalSet, report: dict) -> str:
         L += ["## Cover discrepancies (retained; the cover is a summary, not a conflict between operative provisions)",
               ""] + [f"- {x['item']} ({x['provision']}): " + "; ".join(_short(d, 300) for d in x["discrepancies"])
                      for x in report["cover_findings"]] + [""]
+    if report.get("blast_radius"):                  # session 14 (W1, blind-07 defect 5)
+        L += ["## Blocked by a failed shared statement (a failed fact supports nothing)", ""]
+        L += [f"- **{b['statement']}** ({b['why']}{'; refused' if b.get('refused') else ''}) blocks {b['items']} "
+              f"item(s): {_ids(b['blocks'])}" for b in report["blast_radius"]] + [""]
+    nr = {k: v for k, v in (report.get("readiness") or {}).items()
+          if any(not x.startswith("blocked by failed statement") for x in v.get("blocked_by") or [])}
+    if nr:                                          # session 14 (W1, defect 3): readiness, apart from the status
+        L += ["## Not ready: waiting on another item of the set (status unchanged; promotion waits)", ""]
+        L += [f"- {k}: " + _short("; ".join(v["blocked_by"]), 300) for k, v in nr.items()] + [""]
     if ps.coverage.unaccounted:
         L += ["## Provisions not accounted for (a person treats each)", ""] + [f"- {p}" for p in ps.coverage.unaccounted] + [""]
     order = ("evidence_verified", "interpretation_pending", "insufficient_evidence", "conflicting", "escalated", "invalid",
@@ -1873,9 +2251,14 @@ def submit(ws: Workspace, data, host_model: str, via: str = "cli", clock=None, r
         path.unlink(missing_ok=True)
         log.event("lock_released", addendum=addendum)
     log.event("end", status=ps.status, staging=str(d), statuses={it.id: it.verification_status for it in ps.items})
+    from .contract import submission_problems
+    probs = submission_problems(raw)                 # session 14 (W1): the exact inner errors, visible to the submitter
     return {"run_id": run_id, "status": ps.status, "staging": str(d), "coverage": ps.coverage.model_dump(),
             "resolution": ps.resolution.model_dump(),
-            "items": [{"id": it.id, "status": it.verification_status} for it in ps.items]}
+            "items": [{"id": it.id, "status": it.verification_status, "ready": it.ready,
+                       **({"blocked_by": it.blocked_by} if it.blocked_by else {})} for it in ps.items],
+            **({"payload_problems": probs} if probs else {}),
+            **({"blast_radius": report["blast_radius"]} if report.get("blast_radius") else {})}
 
 
 def _reference_path(ws: Workspace, addendum: str):
@@ -1883,8 +2266,31 @@ def _reference_path(ws: Workspace, addendum: str):
     return p if p.exists() else None
 
 
-def validate_payload(ws: Workspace, proposal: dict) -> dict:
-    """validate_proposal tool: one item or a whole set, against the current state; writes nothing."""
+def validate_payload(ws: Workspace, proposal: dict | None = None, schemas: list[str] | None = None) -> dict:
+    """validate_proposal tool: one item or a whole set, against the current state; writes nothing. Session 14 (W1):
+    `schemas` (statement types) returns their FULL payload schemas (register.Row for row_new, ...), alone or with the
+    validation; an item whose payload fails its schema carries its exact errors and that schema."""
+    from .contract import STATEMENT_TYPES, payload_schema, submission_problems
+    if schemas is not None:
+        bad = [t for t in schemas if t not in STATEMENT_TYPES]
+        if bad:
+            raise ToolError(f"no statement type {bad} ({', '.join(STATEMENT_TYPES)})")
+    if proposal is None:
+        if not schemas:
+            raise ToolError("give `proposal` (an item or a set) and/or `schemas` (statement types)")
+        return {"schemas": {t: payload_schema(t) for t in schemas}, "note": "the full payload schemas; nothing validated"}
+    out = _validate_payload(ws, proposal)
+    probs = submission_problems(proposal if "items" in proposal else {"items": [proposal]})
+    if probs:
+        out["payload_problems"] = probs
+        out["schemas"] = {t: payload_schema(t) for t in dict.fromkeys(
+            [p["statement_type"] for p in probs if p["statement_type"] in STATEMENT_TYPES] + list(schemas or []))}
+    elif schemas:
+        out["schemas"] = {t: payload_schema(t) for t in schemas}
+    return out
+
+
+def _validate_payload(ws: Workspace, proposal: dict) -> dict:
     if not isinstance(proposal, dict):
         raise ToolError("proposal must be an object")
     ws.refresh()
@@ -1904,7 +2310,9 @@ def validate_payload(ws: Workspace, proposal: dict) -> dict:
     return {"parsed": True, "set_status": ps.status, "coverage": ps.coverage.model_dump(),
             "resolution": ps.resolution.model_dump(), "findings": report.get("findings") or [],
             "items": [{"id": it.id, "verification_status": it.verification_status,
-                       "validation": [v.model_dump() for v in it.validation]} for it in ps.items],
+                       "validation": [v.model_dump() for v in it.validation], "ready": it.ready,
+                       "blocked_by": it.blocked_by} for it in ps.items],
+            "blast_radius": report.get("blast_radius") or [],
             "state_differences": report.get("state_differences"),
             "note": "the controller's statuses; nothing was written"}
 
@@ -1932,9 +2340,12 @@ def promote(ws: Workspace, run_id: str, by: str, amendments_dir: Path | None = N
         return 2, [f"refused: {e}. Nothing written."]
     if ps.status == "stale":
         return 2, ["refused: the run was made against another state: " + "; ".join(report["state_differences"])]
-    items = [it for it in ps.items if it.verification_status in PROMOTABLE]
+    # session 14 (W1): an item waiting on another item of the set (not ready) is not promoted: its provision is
+    # unresolved with the blocker named
+    items = [it for it in ps.items if it.verification_status in PROMOTABLE and it.ready is not False]
+    blocked = blocked_reasons(ps)
     if not items:
-        return 1, [f"nothing to promote: no item of {run_id} is {' or '.join(PROMOTABLE)} now"]
+        return 1, [f"nothing to promote: no item of {run_id} is {' or '.join(PROMOTABLE)} and ready now"]
     cfg = ws.r["cfg"]
     amend_dir = Path(amendments_dir) if amendments_dir else ws._p(cfg.get("amendments_dir", "curation/amendments"))
     prop_dir = Path(proposals_dir) if proposals_dir else \
@@ -1975,9 +2386,11 @@ def promote(ws: Workspace, run_id: str, by: str, amendments_dir: Path | None = N
         accounted = {o.provision for o in ops} | {c for o in ops for c in o.covers} | {d.provision for d in disps} | content
         for p in _provisions(ws, ps.addendum):
             if p not in accounted:
+                why = "; ".join(blocked.get(p) or [])
                 disps.append(Disposition(provision=p, disposition="unresolved", origin="assistant",
-                                         reason=f"not treated by a promoted AI item {tag}: a person writes the op or a "
-                                                "disposition"))
+                                         reason=f"not treated by a promoted AI item {tag}: "
+                                                + (f"{_short(why, 400)}; " if why else "")
+                                                + "a person writes the op or a disposition"))
         of = OpFile(addendum=ps.addendum, issued_from=_issued_from_cover(ws, ps.addendum),
                     prepared_by=f"AI proposal run {run_id} (route {ps.route}; model requested {ps.model_requested}, "
                                 f"reported {ps.model_reported}); promoted by {by.strip()} on {day}; every op PROPOSED",

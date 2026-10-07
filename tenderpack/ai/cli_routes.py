@@ -261,15 +261,19 @@ def _plan(a) -> int:
     return 1 if out["too_large"] else 0
 
 
-VERIFIED = {
-    "host": ("Claude Code headless sessions (claude -p over the MCP tools) have run for real on the host's own plan "
-             "(sessions 10-11, blind-04 and blind-05); the MCP server is tested (stdio JSON-RPC); MCP interface "
+VERIFIED = {   # session 14 (W6): the same facts as config/routes_status.yaml (tests/test_session14_routes_status.py)
+    "host": ("Claude Code headless sessions (claude -p over the MCP tools) have run for real on the host's own plan in "
+             "the cloud container (sessions 10-13, blind rehearsals 03-07; the sealed blind-07 run from a twin of the "
+             "interview folder); PENDING ON THE MAC. The MCP server is tested (stdio JSON-RPC); MCP interface "
              "tested; automated Codex execution unverified (no Codex session has run; the workflow starts Claude "
              "Code only, Codex is the manual MCP / submit-batch path)"),
-    "anthropic": "recorded responses only (tests); no API-key call has been made from this project's environment",
-    "openrouter": "recorded responses only (tests); openrouter.ai is blocked from the cloud environment; keys later",
-    "ollama": ("tested here with a fake local server and recorded answers (tests/test_session12_offline.py); a real "
-               "local model: PENDING ON THE MAC (docs/MAC_SETUP.md, scripts/mac/checks.sh)"),
+    "anthropic": "untested: recorded responses only (tests); no API-key call has been made from this project's "
+                 "environment",
+    "openrouter": "blocked here, unverified: recorded responses only (tests); openrouter.ai is blocked from the cloud "
+                  "environment; keys later",
+    "ollama": ("prepared for local use; tested here with a fake local server and recorded answers "
+               "(tests/test_session12_offline.py, tests/test_session14_mac_levels.py); a real local model: PENDING ON "
+               "THE MAC (docs/MAC_CHECKLIST.md, scripts/mac/checks.sh)"),
     "recorded": "test replay of hand-written cassettes; not a live integration",
 }
 
@@ -324,6 +328,9 @@ def _routes(a) -> int:
                                                      "result": "config/routes_status.yaml has no entry", "next": "-"}
         row["available"], row["why"] = availability(row, cfg, off)
         row["quick_review"] = QR_STATUS.get(row["route"], "no record")
+        for k in ("works", "never_run", "ready"):              # session 14 (W6): what works, what never ran, what
+            if row["status"].get(k):                           # is ready to try (config/routes_status.yaml)
+                row[k] = row["status"][k]
     out = {"offline": cfg.get("_offline") if off else None, "routes": rows,
            "note": "kinds: connected coding host (Claude Code / Codex with their own model, over MCP or the CLI) | "
                    "hosted API (the application's paid calls) | local inference (Ollama on this machine) | recorded "
@@ -349,6 +356,12 @@ def _routes(a) -> int:
               f"{' '.join(str(st.get('result')).split())})")
         if not r["available"] and st.get("next") not in (None, "-"):
             print(f"  next:     {' '.join(str(st.get('next')).split())}")
+        if r.get("works"):                                     # session 14 (W6)
+            print(f"  works:    {r['works']}")
+        if r.get("never_run"):
+            print(f"  never run: {r['never_run']}")
+        if r.get("ready"):
+            print(f"  ready:    {r['ready']}")
         print(f"  verified: {r['verified']}")
         print(f"  quick review: {r['quick_review']}")
         print(f"  checked:  {r['checked']}")

@@ -25,6 +25,10 @@ host through MCP or the CLI, and offline recordings).
                     provision resolved / pending / invalid / unaccounted, apart from coverage; approval is never
                     assigned), usage (cost null when no price is configured), status and the controller version.
 
+Session 14 (W1): `payload_schemas()` gives the FULL payload shapes (register.Row / register.Interp inlined); an item's
+`ready` / `blocked_by` are controller-written (controller.readiness); payload_errors / submission_problems /
+merge_repair serve the bounded repair of invalid inner payloads (see the section at the end).
+
 `model_fill_schema()` is the JSON schema given to the model: ProposalSet.model_json_schema() trimmed to the fields
 the model fills (controller-written fields removed). Parsing (controller.parse_model_output) accepts the full item
 model so that a model-supplied status is caught and overwritten rather than silently dropped.
@@ -49,7 +53,8 @@ SET_STATUS = ("complete", "partial", "malformed", "provider_failed", "budget_exh
 # fields of a ProposalSet / ChangeProposal that only the controller writes
 CONTROLLER_SET_FIELDS = ("run_id", "created", "route", "provider", "model_requested", "model_reported", "task",
                          "coverage", "resolution", "usage", "status", "controller_version")
-CONTROLLER_ITEM_FIELDS = ("validation", "verification_status")
+CONTROLLER_ITEM_FIELDS = ("validation", "verification_status",
+                          "ready", "blocked_by")        # session 14 (W1): readiness, controller-written
 
 
 class _Strict(BaseModel):
@@ -186,7 +191,12 @@ class ChangeProposal(_Strict):
     previous_value: str | int | float | None = Field(None, description="the value as it stands in the current state")
     proposed_value: str | int | float | None = None
     evidence: list[EvidenceRef] = Field(default_factory=list)
-    dependencies: list[str] = Field(default_factory=list, description="ids of units, rows or ops this item relies on")
+    # session 14 (W1): the typed id space of the set (blind-07 defect 3): units and groups, A1 rows, recorded ops, and
+    # the ids of this set's own items (ops, dispositions, escalations, rows, issues, questions) and statements
+    dependencies: list[str] = Field(default_factory=list, description=(
+        "ids this item relies on: units or groups, existing A1 rows or ops, or the ids of this set's own items (an op, a "
+        "disposition, an escalation, a row, an issue, a question) or statements. A change (op or disposition) may not "
+        "rely on an issue or a question; a cycle is refused"))
     conflicts: list[str] = Field(default_factory=list)
     missing_information: list[str] = Field(default_factory=list)
     statements: list[str] = Field(default_factory=list, description="ids of the statements this item depends on")
@@ -195,6 +205,11 @@ class ChangeProposal(_Strict):
                                  "escalated", "interpretation_pending"] = Field("unverified",
                                                                                description="controller-written")
     model_rationale: str | None = Field(None, description="free text; never read by code")
+    # session 14 (W1): controller-written readiness. `ready` is true when every item of the set this one relies on
+    # (its dependencies and statements) is promotable and ready itself; `blocked_by` names each blocker with the reason
+    # ("blocked by failed statement S2: ...", "depends on X (escalated)"). Null/empty before validation.
+    ready: bool | None = Field(None, description="controller-written")
+    blocked_by: list[str] = Field(default_factory=list, description="controller-written")
 
 
 class Coverage(_Strict):
@@ -280,12 +295,37 @@ def model_fill_schema() -> dict:
 
 
 def payload_schemas() -> dict:
-    """The payload shapes per statement type (amend.Op and amend.Disposition come from the amendment engine)."""
+    """The payload shapes per statement type (amend.Op and amend.Disposition come from the amendment engine). Session 14
+    (W1, blind-07 defect 1): the FULL shapes, so that a model never guesses: row_new's `row` is the register.Row schema
+    and row_reading's `interpretation` the register.Interp schema, their nested models (Consequence, RuleDef, ...) in
+    `$defs` (one self-contained schema per type: compact_shared lifts the `$defs` once)."""
+    return {t: payload_schema(t) for t in STATEMENT_TYPES}
+
+
+def _inline_model(base: dict, prop: str, model) -> dict:
+    """`base` (a pydantic JSON schema) with property `prop` replaced by a reference to `model`'s full schema."""
+    s = copy.deepcopy(base)
+    m = copy.deepcopy(model.model_json_schema())
+    defs = {**s.pop("$defs", {}), **m.pop("$defs", {}), model.__name__: m}
+    desc = (s.get("properties", {}).get(prop) or {}).get("description")
+    s.setdefault("properties", {})[prop] = {"$ref": f"#/$defs/{model.__name__}",
+                                            **({"description": desc} if desc else {})}
+    s["$defs"] = defs
+    return s
+
+
+def payload_schema(statement_type: str) -> dict:
+    """Session 14 (W1): the full JSON schema of one statement type's payload (what payload_errors checks)."""
     from ..amend import Disposition, Op
-    return {"amendment_op": Op.model_json_schema(), "disposition": Disposition.model_json_schema(),
-            "row_reading": RowReadingPayload.model_json_schema(), "row_new": RowNewPayload.model_json_schema(),
-            "issue": IssuePayload.model_json_schema(), "clarification": ClarificationPayload.model_json_schema(),
-            "escalation": EscalationPayload.model_json_schema()}
+    from ..register import Interp, Row
+    if statement_type not in STATEMENT_TYPES:
+        raise ValueError(f"no statement type {statement_type!r} ({', '.join(STATEMENT_TYPES)})")
+    return {"amendment_op": lambda: Op.model_json_schema(), "disposition": lambda: Disposition.model_json_schema(),
+            "row_reading": lambda: _inline_model(RowReadingPayload.model_json_schema(), "interpretation", Interp),
+            "row_new": lambda: _inline_model(RowNewPayload.model_json_schema(), "row", Row),
+            "issue": lambda: IssuePayload.model_json_schema(),
+            "clarification": lambda: ClarificationPayload.model_json_schema(),
+            "escalation": lambda: EscalationPayload.model_json_schema()}[statement_type]()
 
 
 # ---------------------------------------------------------------------------------------------- critic review (s10, W4)
@@ -545,3 +585,159 @@ def reading_fill_schema() -> dict:
     s["title"] = "RegionReadingProposal (fields the proposer fills)"
     s["description"] = "Return exactly one JSON object of this shape; `reading` follows reading_schema."
     return {"proposal": s, "reading_schema": Reading.model_json_schema()}
+
+
+# ---------------------------------------------------------------------------------------------- inner payloads (s14, W1)
+# Session 14 (W1; blind-07 defects 1 and 5). An item's envelope (ChangeProposal) can be well formed while its inner
+# payload is not: every blind-07 analysis `row_new` failed the register.Row schema (a consequence given as a string,
+# `scope` as a string, `discipline` / `confidence` / `confidence_reason` missing) and none was repaired. These checks
+# give the EXACT errors of an inner payload (the same models the controller validates with), so the request layer
+# (requests.check: the bounded re-ask) and the host route's submission gate (mcp_server: one bounded re-submission of
+# the failing items only) can ask for that item again with its errors and its full schema (payload_schema), while
+# the valid siblings of the set are kept as first given. A payload still invalid after the bound stays in the set and
+# the controller marks it `invalid` with these errors. A `fact` with empty evidence is refused the same way: a summary
+# or a paraphrase is not a fact (one such "fact" sank twelve blind-07 items).
+
+def _errors(e, prefix: str = "") -> list[str]:
+    out = []
+    for x in e.errors():
+        loc = ".".join(str(p) for p in x.get("loc") or ())
+        got = "" if x.get("type") == "missing" else f" (got {json.dumps(x.get('input'), ensure_ascii=False, default=str)[:80]})"
+        out.append(f"{prefix}{loc}: {x.get('msg')}{got}")
+    return list(dict.fromkeys(out))
+
+
+def payload_errors(statement_type: str, payload, provision: str | None = None, item_id: str | None = None) -> list[str]:
+    """The exact validation errors of an analysis item's inner payload ([] when it is well formed): amend.Op,
+    amend.Disposition, the row payloads with the full register.Row / register.Interp models, and the other payloads."""
+    from pydantic import ValidationError
+    if statement_type not in STATEMENT_TYPES:
+        return [f"statement_type: no type {statement_type!r} ({', '.join(STATEMENT_TYPES)})"]
+    if isinstance(payload, str):                  # a payload sent as a JSON-encoded string (structured output)
+        try:
+            payload = json.loads(payload)
+        except ValueError:
+            pass
+    if not isinstance(payload, dict):
+        return ["payload: must be a JSON object"]
+    p = dict(payload)
+    try:
+        if statement_type == "amendment_op":
+            from ..amend import Op
+            if provision:
+                p.setdefault("provision", provision)
+            if item_id:
+                p.setdefault("id", item_id)
+            p.update(origin="assistant", review="proposed", reviewer=None)    # as the controller forces them
+            Op.model_validate(p)
+        elif statement_type == "disposition":
+            from ..amend import Disposition
+            if provision:
+                p.setdefault("provision", provision)
+            p["origin"] = "assistant"
+            Disposition.model_validate(p)
+        elif statement_type == "row_reading":
+            from ..register import Interp
+            pl = RowReadingPayload.model_validate(p)
+            Interp.model_validate({k: v for k, v in pl.interpretation.items() if k != "pins"})
+        elif statement_type == "row_new":
+            from ..register import Row
+            Row.model_validate(RowNewPayload.model_validate(p).row)
+        else:
+            {"issue": IssuePayload, "clarification": ClarificationPayload,
+             "escalation": EscalationPayload}[statement_type].model_validate(p)
+    except ValidationError as e:
+        prefix = {"row_new": "payload.row.", "row_reading": "payload.interpretation."}.get(statement_type, "payload.")
+        if statement_type in ("row_new", "row_reading") and e.title in ("RowNewPayload", "RowReadingPayload"):
+            prefix = "payload."
+        return _errors(e, prefix)
+    return []
+
+
+FACT_NEEDS_EVIDENCE = ("a fact needs at least one verbatim quotation in `evidence` (an EvidenceRef); a summary, a "
+                       "paraphrase or a translation is not a fact: state it as an interpretation (or an assumption)")
+
+
+def statement_errors(statements) -> list[dict]:
+    """[{id, errors}] for the set's statements that are refused at submission: a `fact` with empty evidence."""
+    out = []
+    for s in statements or []:
+        if isinstance(s, dict) and s.get("kind") == "fact" and not s.get("evidence"):
+            out.append({"id": s.get("id"), "errors": [FACT_NEEDS_EVIDENCE]})
+    return out
+
+
+# the payloads re-asked by the bounded repair: an op is checked by the amendment engine itself (simulate_amendment
+# before answering; the controller's dry run after), and an op type the engine lacks is an escalation, never a re-asked
+# guess: its payload errors are rated `invalid` with the errors (visible), as before
+REPAIRABLE = ("disposition", "row_reading", "row_new", "issue", "clarification", "escalation")
+
+
+def submission_problems(data) -> list[dict]:
+    """Session 14 (W1): the inner problems of a submitted set (a dict as given): [{index, id, statement_type, kind,
+    errors}] with kind `payload` (an item's payload fails its full schema) or `statement` (a fact with no evidence; the
+    index is None). The envelope itself is the parser's (controller.parse_set / requests.check)."""
+    if not isinstance(data, dict):
+        return []
+    out = []
+    for i, it in enumerate(data.get("items") or []):
+        if not isinstance(it, dict) or it.get("statement_type") not in REPAIRABLE:
+            continue
+        errs = payload_errors(it.get("statement_type"), it.get("payload"), it.get("provision"), it.get("id"))
+        if errs:
+            out.append({"index": i, "id": it.get("id"), "statement_type": it.get("statement_type"), "kind": "payload",
+                        "errors": errs})
+    for s in statement_errors(data.get("statements")):
+        out.append({"index": None, "id": s["id"], "statement_type": "statement", "kind": "statement",
+                    "errors": s["errors"]})
+    return out
+
+
+def repair_schemas(problems: list[dict]) -> dict:
+    """The full schema of every statement type named by `problems` (payload problems), once each; a statement problem
+    adds the Statement schema."""
+    out = {}
+    for p in problems:
+        t = p.get("statement_type")
+        if p.get("kind") == "payload" and t in STATEMENT_TYPES and t not in out:
+            out[t] = payload_schema(t)
+        elif p.get("kind") == "statement" and "statement" not in out:
+            out["statement"] = Statement.model_json_schema()
+    return out
+
+
+def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, dict]:
+    """Session 14 (W1): the set after a bounded repair of the items named by `ids` (item ids, or statement ids): every
+    item of `first` NOT named is kept exactly as first given (a valid sibling is never re-asked and never changed by the
+    repair); a named item is replaced by the repaired item of the same id when the repair gives one (otherwise the first
+    stands, and is rated as it is). Statements: a repaired statement replaces the first of the same id; a new one is
+    added; the others are kept. Returns (merged set, notes {replaced, kept, missing, ignored})."""
+    ids = {str(x) for x in ids if x is not None}
+    indices = {int(x) for x in indices if x is not None}
+    rep_list = [it for it in (repaired or {}).get("items") or []]
+    rep_items = {it.get("id"): it for it in rep_list if isinstance(it, dict) and it.get("id") is not None}
+    items, notes = [], {"replaced": [], "kept": [], "missing": [], "ignored": []}
+    for n, it in enumerate(first.get("items") or []):
+        iid = it.get("id") if isinstance(it, dict) else None
+        named = (iid is not None and str(iid) in ids) or n in indices
+        # an item without an id (an envelope error) is matched by its position in the repaired answer
+        rep = rep_items.get(iid) if iid is not None else (rep_list[n] if n < len(rep_list) else None)
+        if named and rep is not None:
+            items.append(rep)
+            notes["replaced"].append(iid if iid is not None else f"#{n}")
+        else:
+            items.append(it)
+            (notes["missing"] if named else notes["kept"]).append(iid if iid is not None else f"#{n}")
+    named_ids = {x for x in notes["replaced"] + notes["missing"]}
+    notes["ignored"] = [k for k in rep_items if k not in named_ids]    # a sibling resent unasked: the first stands
+    sts = [dict(s) if isinstance(s, dict) else s for s in first.get("statements") or []]
+    pos = {s.get("id"): n for n, s in enumerate(sts) if isinstance(s, dict)}
+    for s in (repaired or {}).get("statements") or []:
+        if not isinstance(s, dict):
+            continue
+        if s.get("id") in pos:
+            sts[pos[s.get("id")]] = s
+        else:
+            pos[s.get("id")] = len(sts)
+            sts.append(s)
+    return {**first, "statements": sts, "items": items}, notes

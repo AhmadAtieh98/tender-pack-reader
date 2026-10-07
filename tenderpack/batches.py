@@ -155,6 +155,25 @@ def issues_block_html(es: dict) -> str:
     return "".join(out) + "</div>"
 
 
+def states_block_html(st: dict | None) -> str:
+    """Session 14 (W4; part 4): the row's value, interpretation and approval, shown apart (stage2.row_states): an
+    unchanged value is not a settled interpretation, and an image transcription approval is not an approval of the
+    interpretation. '' without states."""
+    if not st:
+        return ""
+    return ('<div class="issues"><p><b>Value:</b> ' + _e(st.get("value")) + "</p><p><b>Interpretation:</b> "
+            + _e(st.get("interpretation")) + "</p><p><b>Approval:</b> " + _e(st.get("approval")) + "</p></div>")
+
+
+def readiness_block_html(lines: list[str] | None) -> str:
+    """Session 14 (W4; part 4, report section 9 G7): the A5 activities that carry the row, each with its preparation
+    readiness and what its finalisation needs (programme.readiness_by_row); '' without."""
+    if not lines:
+        return ""
+    return ('<div class="issues"><p><b>In the programme (A5): preparation and finalisation</b></p><ul>'
+            + "".join(f"<li>{_e(x)}</li>" for x in lines) + "</ul></div>")
+
+
 def _packet_link(build_dir: Path, out: Path, rg: str) -> str:
     """The Stage 1 review packet of a reading (every band, cell and numeral at native resolution, Arabic right to
     left; self-contained HTML) copied next to the batches so the review folder is complete on its own (session 07)."""
@@ -205,7 +224,8 @@ def text_dir(u: dict) -> str:
 
 
 def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None = None,
-                  row_issues: dict | None = None) -> dict:
+                  row_issues: dict | None = None, states: dict | None = None,
+                  readiness: dict | None = None) -> dict:
     """The review folder. `issues`: the open issues as collected for A1 and A3 (stage2.collect_issues); `row_issues`:
     row id -> the row's Issues cell as A1 renders it (stage2.a1_table). Both are computed from `r` when not given (the
     outputs pass the ones A1 was written from, so a card reads exactly what the register shows)."""
@@ -216,6 +236,12 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
                       else row_issues)
     by_issue = {i["id"]: i for i in issues}
     row_es = lambda rid: issue_entries((row_issues or {}).get(rid), by_issue)  # noqa: E731
+    if states is None:                          # session 14 (W4): value / interpretation / approval apart on each card
+        from .stage2 import row_states
+        states = row_states(r)
+    # session 14 (W4; part 4, report section 9 G7): the A5 activities that carry the row, preparation apart from
+    # finalisation (programme.readiness_by_row); none when the programme is not given
+    extra_html = lambda rid: states_block_html(states.get(rid)) + readiness_block_html((readiness or {}).get(rid))  # noqa: E731
     out = Path(out)
     if out.exists():
         shutil.rmtree(out)
@@ -323,7 +349,7 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
                     + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
                     f"{_e(_confidence_reason(r, row))}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
-                    + issues_block_html(es)
+                    + extra_html(row.id) + issues_block_html(es)
                     + f'<div class="decide"><b>Decision needed:</b> {decide}</div>{_cmd_row(row.id)}</div></div></div>')
         items.append({"batch": 2, "kind": "row", "id": row.id, "status": st["status"], "fingerprint": st["fingerprint"],
                       "decision": f"accept {row.id} as quoted with consequence {c.cls}"
@@ -400,7 +426,7 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
                     + ("<p><b>Why it was superseded (exact conflict with the owner's direction):</b></p><ul>"
                        + "".join(f"<li>{_e(x)}</li>" for x in p["superseded_because"]) + "</ul>"
                        if p.get("superseded_because") else "")
-                    + issues_block_html(es)
+                    + extra_html(p["row"]) + issues_block_html(es)
                     + (f'<div class="decide"><b>Superseded, never applied:</b> replaced by {_e(rep)}{where}. '
                        f'Kept for the record; it cannot be applied.</div></div>'
                        if superseded else
@@ -441,7 +467,7 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
                         + f"<p><small>{_e(row.assessment)}; owner {_e(row.owner_role)}; evidence {_e(', '.join(row.evidence) or row.no_deliverable)}"
                         # session 13 (R3-2): the confidence reason as A1 and batch 2 print it, and the row's open issues
                         f"; confidence {_e(row.confidence)}: {_e(_confidence_reason(r, row))}</small></p>"
-                        + issues_block_html(es)
+                        + extra_html(row.id) + issues_block_html(es)
                         + f'<div class="decide"><b>Decision needed:</b> accept {_e(row.id)} as quoted'
                         f"{_e(with_open_issues(es))}{'; or' if with_open_issues(es) else ', or'} reject it with what is "
                         f"wrong.</div>{_cmd_row(row.id)}</div>")

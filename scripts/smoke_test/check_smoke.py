@@ -46,8 +46,12 @@ def main(run_dir: str, expected: str, rc: str, run_log: str) -> int:
     log = rd / "log.jsonl"
     events = [json.loads(x).get("event") for x in log.read_text(encoding="utf-8").splitlines()] if log.is_file() else []
     calls = [e for e in events if re.search(r"request|response|session|call|prompt|capabilit", str(e))]
-    check(not calls and not (rd / "ai").exists(), f"no model, host-session or network event in the run log "
-          f"({len(events)} event(s): {sorted(set(map(str, events)))})")
+    # session 14: a session leaves a record under <run>/ai/ (a session folder, a log, a spend line); the folder itself
+    # may exist empty, because the run-scoped lock of a run allowed two sessions at once lives there and is removed when
+    # the run stops, so an empty folder is not a session
+    records = sorted(str(p.relative_to(rd)) for p in (rd / "ai").rglob("*") if p.is_file()) if (rd / "ai").exists() else []
+    check(not calls and not records, f"no model, host-session or network event in the run log "
+          f"({len(events)} event(s): {sorted(set(map(str, events)))}; session records under ai/: {records or 'none'})")
     cand = Path((cp.get("candidate") or {}).get("dir") or rd / "candidate")
     check(cand.resolve().is_relative_to(rd.resolve()), f"the candidate stayed inside the run folder ({cand})")
     print(f"\nsmoke test: {'PASS' if all(res) else 'FAIL'} ({sum(res)} of {len(res)} checks; the run is in {rd})")

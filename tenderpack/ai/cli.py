@@ -113,6 +113,8 @@ def add_parser(sub) -> None:
     m.add_argument("--submission-record", help="session 13: write a successful submit_proposals' run id, status and "
                                                "staging folder to this file at once (a workflow batch's record, so a "
                                                "submission survives the orchestrator's interruption)")
+    m.add_argument("--addendum-scope", help="session 14: a quick review's addendum_scope.json; get_addendum_page then "
+                                            "serves that NEW addendum's pages and image regions (and nothing else)")
     common(m)
     c = s.add_parser("capabilities")
     c.add_argument("--route", required=True, choices=["recorded", "anthropic", "openrouter", "ollama", "host"])
@@ -341,7 +343,8 @@ def run(a) -> int:
                 return 2
             return serve(ws, tools=names, submit_once=a.submit_once,
                          require_crops=[x for x in (a.require_crops or "").split(",") if x],
-                         submission_record=a.submission_record)
+                         submission_record=a.submission_record,
+                         addendum_scope=a.addendum_scope)          # session 14 (W5)
         if a.ai_cmd == "promote":
             code, msgs = controller.promote(ws, a.run_id, a.by, Path(a.amendments_dir) if a.amendments_dir else None,
                                             Path(a.proposals_dir) if a.proposals_dir else None)

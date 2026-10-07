@@ -217,7 +217,10 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
                     f" (the confirming op(s) do not settle it: {'; '.join(chain_label(c) for c in conf)})" if conf else "")}
     parts = []
     if conf:
-        parts.append("confirmed by " + "; ".join(cause_label(c) for c in conf))
+        # session 14 (W4; part 4): the approval stays apart from the reading: an op no person accepted is named as such
+        # ('(proposed op, awaiting a person's acceptance)'), never as a settled confirmation
+        parts.append("confirmed by " + "; ".join(cause_label(c) + ("" if c.get("accepted") else
+                                                                  f" (proposed op, {AWAITING})") for c in conf))
     if reread:
         note = _short(ib.get("note"), 160)
         parts.append(f"reading re-made at {ib.get('stage')} with the same words, values, parameters, dates and "
@@ -293,6 +296,27 @@ def pending_note(iid: str) -> str:
     return f"open: {iid}, human decision pending"
 
 
+AWAITING_RULE = "applied rule awaiting a person's confirmation"
+
+
+def awaiting_issues(r: dict) -> dict[str, list[str]]:
+    """Session 14 (W4): issue id -> the confirmation lines of an issue the controller re-presented as an applied rule
+    that no person has accepted and that holds no genuine judgment (human_owned.awaiting_confirmation). Such an issue is
+    not a decision pending, but its rows are not settled either (awaiting_note)."""
+    from . import human_owned as HO
+    links = HO.pending_links(r.get("clarifications"))
+    out = {}
+    for iid, it in (r.get("curated_issues") or {}).items():
+        lines = HO.awaiting_confirmation(iid, it, r.get("decisions"), links.get(iid))
+        if lines:
+            out[iid] = lines
+    return out
+
+
+def awaiting_note(iid: str) -> str:
+    return f"open: {iid}, {AWAITING_RULE}"
+
+
 def issue_note(iid: str, pend: dict | None) -> str:
     """Session 13 (audit R1-1): the one note for an open issue wherever an output carries it: "open: <id>, human
     decision pending" when it is a person's decision not yet recorded (pending_issues), else "open: <id>" (an issue is
@@ -300,14 +324,20 @@ def issue_note(iid: str, pend: dict | None) -> str:
     return pending_note(iid) if iid in (pend or {}) else f"open: {iid}"
 
 
-def relationship_issue_notes(entries, rel_ids, pend: dict | None) -> list[str]:
+def relationship_issue_notes(entries, rel_ids, pend: dict | None, issues: dict | None = None,
+                             units: dict | None = None) -> list[str]:
     """Session 13 (audit R1-1): the open issues of the curated relationships `rel_ids` (the entries that carry a change
     to a row, or the path of a reached record), one note per issue (issue_note) naming the relationships it comes
-    through: 'open: I-X, human decision pending (via REL-A, REL-B)'. The same rule for every issue and every entry."""
+    through: 'open: I-X, human decision pending (via REL-A, REL-B)'. The same rule for every issue and every entry.
+    Session 14 (W4): with `issues` and `units`, an issue is noted only where the entry's scope includes the issue's
+    subject (relationships.issue_reaches: the one propagation rule A1, A2 and A5 share)."""
+    from .relationships import issue_reaches
     by_id = {e.get("id"): e for e in entries or [] if isinstance(e, dict)}
     via: dict[str, list[str]] = {}
     for rid in dict.fromkeys(rel_ids or []):
         for i in (by_id.get(rid) or {}).get("issues") or []:
+            if not issue_reaches(by_id.get(rid) or {}, i, issues, units)[0]:
+                continue
             via.setdefault(i, []).append(rid)
     return [f"{issue_note(i, pend)} (via {', '.join(v)})" for i, v in via.items()]
 
@@ -358,6 +388,8 @@ def attach_pending(r: dict, by_row: dict | None = None, since: dict | None = Non
     issue off the stages before its evidence exists."""
     pend = pending_issues(r)
     r["pending_issues"] = pend
+    wait = awaiting_issues(r)                     # session 14 (W4): applied rules awaiting a person's confirmation
+    r["awaiting_issues"] = wait
     order = list(r.get("order") or [])
     pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
     for e in r.get("evals") or []:
@@ -365,7 +397,8 @@ def attach_pending(r: dict, by_row: dict | None = None, since: dict | None = Non
         ids = list(dict.fromkeys(ids if ids is not None else e["row"].issues))
         for st, ev in e["stages"].items():
             if isinstance(ev, dict):
-                ev["pending"] = [pending_note(i) for i in ids if i in pend
+                ev["pending"] = [pending_note(i) if i in pend else awaiting_note(i) for i in ids
+                                 if (i in pend or i in wait)
                                  and pos((since or {}).get(i, order[0] if order else st)) <= pos(st)]
 
 
@@ -699,4 +732,81 @@ def issue_ref_findings(rows, templates: dict, clarifications: dict, known, opfil
             if where != "linked_issues" and broken_issue_refs([i], known):   # linked_issues: clarify.check reports it
                 out.append({"kind": "issue_ref", "where": str(c.get("id")),
                             "detail": f"{BROKEN}: {where} names {i}, which is not an issue of the register"})
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- class scope (session 14)
+# Session 14 (W4; part 3 (b); blind-07 COMPARISON "The deliberate ambiguity", DA1 never raised): a table that assigns
+# different values by class and states no rule for an item that falls in more than one class gives a value whose scope
+# two readings draw differently (a pump set as mechanical equipment, or its motor as electrical equipment). Such a value
+# is a person's judgment, never chosen by the program and never closed by a quotation. Deterministic and general: a
+# column headed class / category / type / asset (Arabic فئة / فئات / صنف / نوع), at least two classes, a value column
+# whose values differ between them, and none of the table's own words (rows, title, qualifier, notes: every unit under
+# the table's id) stating an allocation rule (CLASS_RULE).
+CLASS_HEAD = re.compile(r"\b(?:class(?:es)?|categor(?:y|ies)|types?|assets?)\b|فئة|فئات|صنف|أصناف|نوع|أنواع", re.I)
+INDEX_HEAD = re.compile(r"^\s*(?:no\.?|nos?|ref|item|#|م|رقم|الرقم)\s*$", re.I)
+CLASS_RULE = re.compile(r"more than one (?:class|category|type)|(?:two|both|several) (?:classes|categories)|"
+                        r"falls? (?:with)?in (?:two|both|more)|\bcomposite\b|\beach (?:component|part|element)\b|"
+                        r"\bcomponents?\b|whichever is (?:the )?(?:longer|shorter|greater|higher|lower|stricter|more "
+                        r"onerous)|\bthe (?:longer|stricter|more onerous) (?:of|value|period|life)\b|"
+                        r"أكثر من فئة|فئتين|مكون|مكونات|أيهما أطول|أيهما أكثر", re.I)
+
+
+def _headings(u: dict) -> list[str]:
+    return list((u.get("context") or {}).get("column_headings") or list((u.get("cells") or {}).keys()))
+
+
+def class_scope_findings(units: list[dict]) -> list[dict]:
+    """[{table, class_column, value_columns, classes, rows, conditional_on, text}] for every class table without an
+    allocation rule (see above); [] when none. Pure."""
+    groups: dict[str, list[dict]] = {}
+    for u in units or []:
+        if u.get("kind") == "table_row" and u.get("cells"):
+            groups.setdefault(str(u["unit_id"]).rsplit("/", 1)[0], []).append(u)
+    out = []
+    for tid, rows in groups.items():
+        heads = _headings(rows[0])
+        cls_col = next((h for h in heads if CLASS_HEAD.search(h) and not INDEX_HEAD.match(h)), None)
+        if cls_col is None or len(rows) < 2:
+            continue
+        classes = [str((u.get("cells") or {}).get(cls_col) or "").strip() for u in rows]
+        if len({c for c in classes if c}) < 2:
+            continue
+        vals = [h for h in heads if h != cls_col and not INDEX_HEAD.match(h)
+                and len({str((u.get("cells") or {}).get(h) or "").strip() for u in rows}) > 1]
+        if not vals:
+            continue
+        own = [u for u in units if str(u.get("unit_id")) == tid or str(u.get("unit_id")).startswith(tid + "/")]
+        words = " ".join(str(u.get(k) or "") for u in own for k in ("text", "translation"))
+        words += " " + " ".join(str((u.get("context") or {}).get("table_title") or "") for u in own)
+        if CLASS_RULE.search(words):
+            continue
+        pend = sorted({str((u.get("reading") or {}).get("region")) for u in rows
+                       if (u.get("reading") or {}).get("region") and (u.get("reading") or {}).get("status") != "approved"})
+        out.append({"table": tid, "class_column": cls_col, "value_columns": vals, "classes": classes,
+                    "rows": [u["unit_id"] for u in rows], "conditional_on": pend,
+                    "text": (f"{tid} gives different values ({', '.join(vals)}) by class ('{cls_col}': "
+                             + "; ".join(c for c in classes if c) + "). An item that falls in more than one class (a "
+                             "composite asset, an assembly of parts of two classes) takes different values by the class "
+                             "it is read into, and the table, its title and its notes state no rule for it. Which value "
+                             "applies is a person's judgment (two readings of the same words); the program chooses none")})
+    return out
+
+
+def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = None) -> list[dict]:
+    """The generated issues for class_scope_findings, in collect_issues' shape: id I-AUTO-CLASS-SCOPE-<table>, labelled
+    HUMAN DECISION PENDING, conditional on a pending image reading where the table is one, the register rows citing a
+    unit of the table (`rows`: row id -> its units), not shown on A3 (its one page). Session 14 (W4)."""
+    from .human_owned import HUMAN_DECISION_PENDING as HDP
+    out = []
+    for f in class_scope_findings(units):
+        tid = f["table"]
+        cond = (f" Conditional on the pending reading {', '.join(f['conditional_on'])} (its values are not in force "
+                "until a person approves the reading).") if f["conditional_on"] else ""
+        mine = [rid for rid, us in (rows or {}).items() if any(u == tid or str(u).startswith(tid + "/") for u in us)]
+        text = f"{HDP}: {f['text']}.{cond}"
+        out.append({"id": "I-AUTO-CLASS-SCOPE-" + re.sub(r"[^A-Za-z0-9]+", "-", tid).strip("-"), "text": text,
+                    "owner": "Technical", "source": "class scope check (automatic; session 14)", "rows": mine,
+                    "show_in_a3": False, "a3": text, "theme": "technical", "short": f"{HDP}: class scope of {tid}",
+                    "folds": [], "human_decision": HDP})
     return out

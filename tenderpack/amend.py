@@ -72,6 +72,39 @@ Session 11 (blind rehearsal 04), three attributes of an op rather than new types
                   unit are accounted `conditional`, and a held conditional op does not make the addendum PARTIAL. Nothing
                   assumes a trigger occurred. StageResult.conditions lists the conditions in play (conditions_of).
 
+Session 14 (W3; blind rehearsal 07, COMPARISON.md §8 item 6, report §9 L25): five changes blind-07 had to escalate as
+"software limitation" are written by the same op model (three new types, one extended type, one new annotate effect):
+  relocate_unit   'Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3': `target` the unit,
+                  `to` the id it becomes ('VOL-V:42.3', volume and number printed in the provision with a relocation word),
+                  `anchor` optional (it must then be the position the number implies), `new_text` optional (a reprint,
+                  which must be the unit's text unchanged). Transition: the old unit (and its list items) become
+                  `superseded` with superseded_by = relocated_to = the new unit; the new unit (id `to`, or `to+<addendum>`
+                  if that id was ever used) is active in the destination volume with the same text, `relocated_from` the
+                  old id, placed after the clause its number follows. Rows following replacements reach it; other rows
+                  read the old unit REPLACED (by ...), never unchanged; `details.lineage` {old: new}
+  insert_unit + number   a new clause the provision gives only by its number ('The following new Clause 42.3 is added to
+                  Volume V'): the anchor need not be cited when it is the clause the stated number follows (42.2 for 42.3;
+                  the group heading for N.1), the number is printed and not in use; the unit is labelled with it and later
+                  ops cite it by it (inserted_as)
+  insert_table    'Table 42-1 ... forms part of Volume V': `new_group` (the addendum's table), `into` (the volume),
+                  `number` ('42-1'); the provision prints 'Table <number>', the volume and an incorporation phrase; the
+                  members get `part_of` and later ops cite the table as '<into>:T<number>'. Members read from an image whose
+                  reading is pending keep it: `details.reading_status` pending and `conditional_on_readings` {region: units}
+  annotate, effect disapplies   'Volume I Clause 4.2 does not apply to <class>': `scope` the class, verbatim, with the
+                  disapplication words printed; the clause's text is unchanged; the exception is recorded on the unit
+                  (`exceptions`) and the annotation changes its pin, so every row on it is re-read
+  adjust_value    'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000': `target`, `change` (the words,
+                  printed), `old` (the previous value's words in the target, when it holds more than one figure of that
+                  unit) or `column` (a table cell). The engine reads the previous EFFECTIVE value, computes the new one with
+                  calc.relative_change and writes it in the same form; `new` is refused (never typed). `details.computed`
+                  carries the method, operands with their quoted sources, steps; the value is a PROPOSAL like every op
+Atomicity and rollback are the engine's own: each op is a transaction (an invalid op restores the state, history and unit
+order), a staged addendum is APPLIED only when every op applies, and validated_stage never moves past a PARTIAL one.
+Impacts (session 14): every op that cannot be applied (invalid, or held by a condition), every unresolved disposition or
+unaccounted provision, and every value resting on a pending image reading gives a CONDITIONAL investigation
+(conditional_impacts; StageResult.impacts): {id, stage, provision, conditional_on {kind, ref, state, why}, units,
+investigate, accepted: False}. The downstream phase maps the units to rows, activities and prices; nothing is a fact.
+
 Checks per op (an invalid op is listed and changes NOTHING: the state, including history, annotations and
 the unit order, is restored to what it was before the op; ops are applied as transactions):
   C21 the op's quoted words (old/new/new_text) occur in its provision; a set_value's new value is the figure
@@ -129,7 +162,8 @@ from .util import load_yaml, sha256_text
 
 BASE = "BASE"
 OP_TYPES = ("replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "insert_row",
-            "annotate")
+            "annotate", "relocate_unit", "insert_table", "adjust_value")     # session 14 (W3): the last three
+NEW_OP_FIELDS = ("to", "number", "into", "scope", "change")                     # session 14 (W3): absent unless used
 
 
 class _Strict(BaseModel):
@@ -189,7 +223,7 @@ class Op(_Strict):
     id: str
     provision: str
     type: Literal["replace_text", "set_value", "append_text", "set_status", "replace_unit", "insert_unit", "insert_row",
-                  "annotate"]
+                  "annotate", "relocate_unit", "insert_table", "adjust_value"]    # session 14 (W3): the last three
     target: str | None = None
     targets: list[str] = Field(default_factory=list)          # annotate
     old: str | None = None
@@ -204,7 +238,8 @@ class Op(_Strict):
     anchor: str | None = None                                  # insert_unit list item: insert after this unit
     after: str | None = None                                   # insert_row: the row the new one follows (default: last)
     cells: dict[str, str] | None = None                        # insert_row: the new row, {column: value}
-    effect: Literal["none", "confirms", "interprets", "adds_obligation", "renumbers", "non_working_day"] | None = None
+    effect: Literal["none", "confirms", "interprets", "adds_obligation", "renumbers", "non_working_day",
+                    "disapplies"] | None = None                               # session 14 (W3): disapplies
     date: str | None = None                                    # annotate/non_working_day: the notified day (ISO), as printed
     renumber: dict[str, str] = Field(default_factory=dict)     # annotate/renumbers: unit id -> its new printed number
     subject: str | None = None                                 # annotate rule: phrase whose mentions are listed
@@ -220,6 +255,12 @@ class Op(_Strict):
     effective_from: str | None = None                          # session 11: ISO date the provision prints ('With effect from ...')
     condition: Condition | None = None                         # session 11: applies only if a person records the trigger
     precedence: Literal["unstated"] | Precedence | None = None # session 12: annotate over two renderings issued together
+    # session 14 (W3): the ADD-03 kinds (module docstring)
+    to: str | None = None                                      # relocate_unit: the id it becomes, '<DOC>:<number>'
+    number: str | None = None                                  # insert_unit: the new clause's printed number; insert_table: '42-1'
+    into: str | None = None                                    # insert_table: the volume the table forms part of
+    scope: str | None = None                                   # annotate/disapplies: the class it does not apply to, verbatim
+    change: str | None = None                                  # adjust_value: the change, verbatim ('reduced by SAR 1,000,000')
     origin: Literal["pattern", "assistant", "person"] = "assistant"
     review: Literal["proposed", "accepted", "rejected"] = "proposed"
     reviewer: str | None = None
@@ -234,6 +275,9 @@ class Op(_Strict):
                 d.pop(k, None)
         if not self.restates:                     # session 11 audit: absent unless used (bindings unchanged)
             d.pop("restates", None)
+        for k in NEW_OP_FIELDS:                   # session 14 (W3): likewise
+            if getattr(self, k) is None:
+                d.pop(k, None)
         return d
 
 
@@ -284,6 +328,12 @@ class UState:
     printed_in: str | None = None
     inserted_after: str | None = None
     reading_region: str | None = None   # session 12 (W3b): the image reading (region id) the unit was read from
+    # session 14 (W3): lineage and records of the ADD-03 kinds (none of them is part of sha(): pins are unchanged)
+    relocated_from: str | None = None   # relocate_unit: the unit this one was before the relocation
+    relocated_to: str | None = None     # relocate_unit: the unit this one became (status superseded)
+    part_of: str | None = None          # insert_table: the volume an addendum's table (and its rows) forms part of
+    exceptions: list[dict] = field(default_factory=list)       # annotate/disapplies: [{op, provision, scope, words}]
+    derived_values: list[str] = field(default_factory=list)    # adjust_value: figures the engine computed into it
 
     def sha(self) -> str:
         return sha256_text(json.dumps({"status": self.status, "text": self.text, "cells": self.cells},
@@ -348,6 +398,9 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
         if u.doc == addendum:
             continue
         p = prev.get(k)
+        if p is None and u.relocated_from and u.relocated_from in prev:
+            p = prev[u.relocated_from]   # session 14 (W3): a relocated unit's words are its source unit's (lineage)
+        derived = {_evidence_form(v).strip(" ,;:.") for v in u.derived_values}   # session 14: computed, with derivation
         runs: list[str] = []
         if p is None:
             par = cur.get(u.parent) if u.parent else None
@@ -372,7 +425,7 @@ def unevidenced_additions(prev: dict[str, "UState"], cur: dict[str, "UState"], a
                 runs += [v for c, v in u.cells.items() if v and v != p.cells.get(c)]
         for run in runs:
             w = _evidence_form(run).strip(" ,;:.")
-            if w and w not in evidence:
+            if w and w not in evidence and w not in derived:
                 out.append(f"{k}: '{run[:160]}'")
     return out
 
@@ -477,6 +530,9 @@ class StageResult:
     issued_from: str | None = None      # session 12: the unit whose text holds the issue date (the '<stage>-issue' anchor)
     conditions: list[dict] = field(default_factory=list)        # session 11: conditional ops stated at or before this
                                                                  # stage, with their state (conditions_of)
+    dispositions: list = field(default_factory=list)            # session 14 (W3): the op file's dispositions
+    impacts: list[dict] = field(default_factory=list)           # session 14 (W3): conditional investigations
+                                                                 # (conditional_impacts); never accepted facts
 
 
 # ---------------------------------------------------------------------------------------------- engine
@@ -562,6 +618,8 @@ class Engine:
                 res.ops.append(r)
             self._coverage(res, f)
             self._scope(res, before, f.addendum)
+            res.dispositions = list(f.dispositions)               # session 14 (W3)
+            res.impacts = conditional_impacts(res)
             res.non_working_days = sorted(set(stages[-1].non_working_days)
                                           | {x.details["non_working_day"] for x in res.ops if x.applied and x.details.get("non_working_day")})
             res.conditions = conditions_of(stages[-1], res)
@@ -664,7 +722,9 @@ class Engine:
         with self.evidence), so a member row printed elsewhere with the same words changes the subject (session 09);
         review.op_binding adds the sha256 of each document involved."""
         scope = {op.target, op.anchor, op.new_text_from, getattr(op, "after", None), *op.targets, *op.covers,
-                 *(c.get("unit") for c in op.claims)}
+                 *(c.get("unit") for c in op.claims), op.to}        # session 14 (W3): a relocation's destination id
+        if op.type == "relocate_unit" and op.target:                 # session 14: and the list items that move with it
+            scope |= {k for k, u in st.items() if u.parent == op.target}
         groups = [g for g in (op.replacement, op.new_group) if g]
         if op.type in ("replace_unit", "insert_row") and op.target:   # insert_row reads the table's header and rows
             groups.append(op.target)
@@ -794,7 +854,7 @@ class Engine:
             missing = [t for t in targets if t not in st and not group_members(st, t)]
             if not check("C22", targets and not missing, f"targets exist: {op.targets}" + (f"; missing {missing}" if missing else "")):
                 return r
-            if op.effect in ("confirms", "interprets", "adds_obligation"):
+            if op.effect in ("confirms", "interprets", "adds_obligation", "disapplies"):   # session 14: disapplies
                 # a unit printed in this addendum (inserted by an earlier op of it) is cited as the addendum's own are
                 # session 13 (F1; audit R1-1): or a row of a cited table the provision's words cover in full ('All
                 # other parameters in Table 2-4 are unchanged.'; citations.quantified_row)
@@ -848,9 +908,13 @@ class Engine:
                         if any(x["kind"] == "confirms" for x in c["sentences"]) else
                         f"no sentence of the answer confirms {', '.join(op.restates)}: not a restatement"):
                     return r
+            if op.effect == "disapplies" and not self._disapplies(op, targets, ptext, st, r, check):   # session 14
+                return r
             for t in targets:
                 for k in ([t] if t in st else group_members(st, t)):
                     st[k].annotations.append(op.id)
+                    if op.effect == "disapplies":     # session 14 (W3): the exception, wherever the clause is shown
+                        st[k].exceptions.append(dict(r.details["exception"]["record"]))
             if op.subject:
                 r.details["mentions"] = [k for k, u in st.items() if u.status == "active" and k != op.provision
                                          and u.doc != addendum and _contains(u.text, op.subject)]
@@ -865,6 +929,8 @@ class Engine:
 
         if op.type == "insert_row":
             return self._insert_row(op, st, addendum, prov, cite_text, r, check)
+        if op.type == "insert_table":                                    # session 14 (W3)
+            return self._insert_table(op, st, addendum, ptext, r, check)
 
         # every other op has one declared target that must be the cited one
         target = op.target
@@ -882,6 +948,8 @@ class Engine:
             ok, why, cited = True, f"declared target {target} is {alias} as inserted by {st[target].issued_by}", [target]
         if op.type == "insert_unit" and op.new_group and not op.anchor:
             ok, why = True, "new group from this addendum"
+        if op.type == "insert_unit" and op.number is not None:          # session 14 (W3): the position by the number
+            ok, why = self._insert_by_number(op, st, ptext, ok, why, r)
         r.details["cited"] = cited
         if not check("C22", ok, why):
             return r
@@ -893,6 +961,14 @@ class Engine:
             if not check("C22", hist_ok, f"claim: {c['unit']} is {c.get('status')} by {c['by_provision_prefix']}"):
                 return r
 
+        if op.type == "relocate_unit":                                   # session 14 (W3)
+            if not self._relocate(op, tgt, st, addendum, prov, ptext, r, check):
+                return r
+            return self._finish(op, r, run_on)
+        if op.type == "adjust_value":                                    # session 14 (W3)
+            if not self._adjust(op, tgt, st, prov, ptext, r, check):
+                return r
+            return self._finish(op, r, run_on)
         if op.type in ("replace_text", "append_text", "set_status", "set_value"):
             t = st.get(tgt)
             if not check("C22", t is not None, f"target {op.target} exists"):
@@ -1041,15 +1117,21 @@ class Engine:
                 if not check("C22", new_id not in st, f"{new_id} is a new id"):
                     return r
                 st[new_id] = UState(new_id, a.doc, a.kind, "active", text, None, list(prov.pages), "addendum_op",
-                                    None, parent=a.parent, label=f"after {a.label}", history=[op.id], issued_by=addendum,
-                                    printed_in=addendum, inserted_after=op.anchor)
+                                    None, parent=a.parent, label=op.number or f"after {a.label}", history=[op.id],
+                                    issued_by=addendum, printed_in=addendum, inserted_after=op.anchor)
                 num = re.search(r"\bnew (?:Clause|clause|Section|section|Paragraph|paragraph) (\d+(?:\.\d+)*[A-Z]?)\b"
                                 r"[^.]{0,80}?\binserted\b", ptext)
-                if num:                                  # session 11: the number later addenda cite it by
+                if op.number is not None:                # session 14 (W3): the number the op states (checked printed)
+                    self.inserted_as[new_id] = f"{a.doc}:{op.number}"
+                    r.details["inserted_as"] = op.number
+                elif num:                                # session 11: the number later addenda cite it by
                     self.inserted_as[new_id] = f"{a.doc}:{num.group(1)}"
                     r.details["inserted_as"] = num.group(1)
                 content.append(new_id)
-                self.order.insert(self.order.index(op.anchor) + 1, new_id)
+                if op.number is not None:                # session 14: after the anchor clause and its list items
+                    self.order.insert(self._after_family(op.anchor, st), new_id)
+                else:
+                    self.order.insert(self.order.index(op.anchor) + 1, new_id)
             r.changed, r.details["content"] = content, content
         return self._finish(op, r, run_on)
 
@@ -1064,7 +1146,7 @@ class Engine:
 
     def _inserted_targets(self, targets: list[str], st: dict[str, UState]) -> tuple[list[str], dict[str, str]]:
         """Targets named by the number an earlier op inserted them as ('VOL-II:5.6' -> 'VOL-II:5.5+ADD-03')."""
-        by_number = {v: k for k, v in self.inserted_as.items() if k in st}
+        by_number = {v: k for k, v in self.inserted_as.items() if k in st or group_members(st, k)}   # s14: groups
         out, resolved = [], {}
         for t in targets:
             if t not in st and not group_members(st, t) and t in by_number:
@@ -1252,6 +1334,315 @@ class Engine:
         r.valid = True
         return r
 
+    # ------------------------------------------------------------------ session 14 (W3): the ADD-03 kinds
+    def _number_taken(self, st: dict[str, UState], doc: str, number: str, exclude=frozenset()) -> list[str]:
+        """Units in force in `doc` that already carry the printed number (issued, renumbered or inserted as it)."""
+        out = [k for k, u in st.items() if u.doc == doc and u.status == "active" and k not in exclude
+               and u.kind != "heading" and (k == f"{doc}:{number}" or u.number == number
+                                            or (u.label == number and u.parent is None))]
+        out += [k for k, v in self.inserted_as.items() if v == f"{doc}:{number}" and k in st
+                and st[k].status == "active" and k not in exclude and k not in out]
+        return out
+
+    def _number_place(self, st: dict[str, UState], doc: str, number: str, exclude=frozenset()) -> tuple[str | None, str]:
+        """The unit a new clause numbered `number` follows in `doc`: the clause numbered one before it (42.2 for 42.3),
+        or for N.1 the group's heading (or clause N). (None, why) when the number is in use or the place is not stated."""
+        taken = self._number_taken(st, doc, number, exclude)
+        if taken:
+            return None, f"{doc} already has a unit numbered {number} in force: {taken}"
+        m = re.fullmatch(r"(\d+(?:\.\d+)*)\.(\d+)", number or "")
+        if not m:
+            return None, (f"'{number}' is not a sub-clause number (N.M): its place cannot be derived from it; the anchor "
+                          "must be one the provision cites")
+        prefix, n = m.group(1), int(m.group(2))
+        if n == 1:
+            cands = [f"{doc}:H:C{prefix}", f"{doc}:{prefix}"]
+        else:
+            want = f"{prefix}.{n - 1}"
+            cands = [f"{doc}:{want}"] + [k for k, u in st.items() if u.doc == doc and u.parent is None
+                                          and (u.label == want or u.number == want)]
+            cands += [k for k, v in self.inserted_as.items() if v == f"{doc}:{want}"]
+        for c in cands:
+            if c in st and st[c].status == "active" and c not in exclude:
+                return c, ""
+        return None, (f"{doc} has no unit in force for {number} to follow ({cands[0]}): the position is not stated by "
+                      "the number")
+
+    def _after_family(self, anchor: str, st: dict[str, UState]) -> int:
+        """The order index just after `anchor` and the units under it (its list items)."""
+        def under(k: str) -> bool:
+            p, seen = (st[k].parent if k in st else None), set()
+            while p and p not in seen:
+                if p == anchor:
+                    return True
+                seen.add(p)
+                p = st[p].parent if p in st else None
+            return False
+        j = self.order.index(anchor)
+        while j + 1 < len(self.order) and under(self.order[j + 1]):
+            j += 1
+        return j + 1
+
+    def _insert_by_number(self, op: Op, st: dict[str, UState], ptext: str, ok: bool, why: str,
+                          r: OpResult) -> tuple[bool, str]:
+        """insert_unit with `number`: the number is printed and not in use; an anchor the provision does not cite is
+        accepted only when it is the unit the number follows (the provision is the authority, the number the place)."""
+        a = st.get(op.anchor or "")
+        if a is None:
+            return False, f"an insertion by number names the anchor its number follows; {op.anchor!r} does not exist"
+        if not _number_printed(ptext, op.number):
+            return False, f"the number {op.number} is not printed in {op.provision}"
+        taken = self._number_taken(st, a.doc, op.number)
+        if taken:
+            return False, f"{a.doc} already has a unit numbered {op.number} in force: {taken}"
+        if ok:
+            r.details["position"] = f"after {op.anchor}, as the provision cites; numbered {op.number}"
+            return True, why + f"; the new unit is numbered {op.number}"
+        if not _names_volume(ptext, a.doc):
+            return False, f"{op.anchor} is not cited and the provision does not name {_volume_words(a.doc)}"
+        pred, why_p = self._number_place(st, a.doc, op.number)
+        if pred != op.anchor:
+            return False, (f"{op.anchor} is not the clause the stated number {op.number} follows"
+                           + (f" ({pred})" if pred else f": {why_p}"))
+        r.details["position"] = (f"stated by its number {op.number}: after {pred} in {a.doc} (the provision names no "
+                                 f"target; its authority is {op.provision})")
+        return True, f"{op.provision} adds {_volume_words(a.doc)} {op.number}; its number places it after {pred}"
+
+    def _relocate(self, op: Op, tgt: str, st: dict[str, UState], addendum: str, prov: UState, ptext: str, r: OpResult,
+                  check) -> bool:
+        """relocate_unit (module docstring): one transaction, the old unit superseded by the new one, with lineage."""
+        t = st.get(tgt)
+        if not check("C22", t is not None and t.status == "active" and t.kind in RELOCATABLE and not t.doc.startswith("ADD-"),
+                     f"{tgt} is a clause in force in a volume" if t is not None and t.status == "active" and t.kind in
+                     RELOCATABLE and not t.doc.startswith("ADD-") else
+                     f"{tgt} is not a clause in force in a volume ({t.kind + ', ' + t.status if t else 'absent'}); a "
+                     "table or form is not relocated by this op"):
+            return False
+        doc, _, number = (op.to or "").partition(":")
+        vol = bool(number) and not doc.startswith("ADD-") and any(u.doc == doc for u in st.values())
+        if not check("C22", vol, f"`to` names a volume of the pack and a number: {op.to!r}" if vol else
+                     f"`to` must be '<volume>:<number>' of a volume of the pack (e.g. 'VOL-V:42.3'), not {op.to!r}"):
+            return False
+        said = _names_volume(ptext, doc) and _number_printed(ptext, number) and RELOCATE_WORDS.search(ptext)
+        if not check("C21", said, f"the provision relocates it to {_volume_words(doc)} as {number}" if said else
+                     f"the provision does not print a relocation to {_volume_words(doc)} as {number} (the volume, the "
+                     "number and 'relocated' / 'moved' / 'transferred')"):
+            return False
+        items = [k for k in self.order if k in st and st[k].parent == tgt and st[k].status == "active"]
+        pred, why = self._number_place(st, doc, number, exclude={tgt, *items})
+        ok = pred is not None and op.anchor in (None, pred)
+        if not check("C22", ok, f"its number places it after {pred}" if ok else why or
+                     f"{op.anchor} is not the clause the stated number {number} follows ({pred})"):
+            return False
+        if op.new_text is not None:
+            same = _quoted_in(ptext, op.new_text) and _same_words(op.new_text, t.text, number)
+            if not check("C21", same, "the reprinted text is printed in the provision and is the clause's text unchanged"
+                         if same else "the reprinted text is not the clause's text unchanged (a relocation with changed "
+                                      "words needs its own replace_text op) or is not printed in the provision"):
+                return False
+        new_id = op.to if op.to not in st else f"{op.to}+{addendum}"
+        if not check("C22", new_id not in st, f"{new_id} is a new id" if new_id not in st else f"{new_id} is in use"):
+            return False
+        placed, lineage = [new_id], {tgt: new_id}
+        st[new_id] = UState(new_id, doc, t.kind, "active", t.text, copy.deepcopy(t.cells), list(prov.pages),
+                            "addendum_op", None, parent=None, label=number, history=[op.id], issued_by=addendum,
+                            printed_in=addendum, inserted_after=pred, relocated_from=tgt)
+        prev = new_id
+        for k in items:
+            i = st[k]
+            nk = new_id + (k[len(tgt):] if k.startswith(tgt) else f"({(i.label or '').strip('()') or len(placed)})")
+            if not check("C22", nk not in st, f"{nk} is a new id" if nk not in st else f"{nk} is in use"):
+                return False
+            st[nk] = UState(nk, doc, i.kind, "active", i.text, copy.deepcopy(i.cells), list(prov.pages), "addendum_op",
+                            None, parent=new_id, label=i.label, history=[op.id], issued_by=addendum, printed_in=addendum,
+                            inserted_after=prev, relocated_from=k)
+            placed.append(nk)
+            lineage[k] = nk
+            prev = nk
+        for old, new in lineage.items():
+            st[old].status, st[old].superseded_by, st[old].relocated_to = "superseded", new, new
+            st[old].history.append(op.id)
+        at = self._after_family(pred, st)
+        self.order[at:at] = placed
+        if new_id != op.to:
+            self.inserted_as[new_id] = op.to
+        r.changed = [tgt, *items, *placed]
+        r.details.update({"relocated": {"from": tgt, "to": new_id, "volume": doc, "number": number, "after": pred},
+                          "lineage": lineage, "placed": placed,
+                          "follow": "rows and relationships citing the old ids follow them (follows_replacement) or read "
+                                    "them REPLACED; nothing reads them unchanged"})
+        return True
+
+    def _adjust(self, op: Op, tgt: str, st: dict[str, UState], prov: UState, ptext: str, r: OpResult, check) -> bool:
+        """adjust_value (module docstring): the new value computed from the previous effective one, never typed."""
+        from .calc import _FIG, _is_percent, _num_text, norm_unit, parse_quantity, relative_change
+        t = st.get(tgt)
+        if not check("C22", t is not None and t.status == "active", f"target {tgt} is in force" if t is not None and
+                     t.status == "active" else f"target {tgt} is not in force"):
+            return False
+        if not check("C21", op.new is None and op.new_text is None,
+                     "no new value is typed: the engine computes it" if op.new is None and op.new_text is None else
+                     "an adjust_value op carries no `new`: the value is computed by the engine from the previous "
+                     "effective value (calc relative_change), never typed"):
+            return False
+        printed = bool(op.change) and _quoted_in(ptext, op.change)
+        if not check("C21", printed, f"the change '{op.change}' is printed in {op.provision}" if printed else
+                     f"the change {op.change!r} is not printed in {op.provision}"):
+            return False
+        dec = re.search(r"\b(?:reduc|decreas|lower)\w*", op.change, re.I)
+        inc = re.search(r"\b(?:increas|rais)\w*", op.change, re.I)
+        figs = sorted({f for f in parse_quantity(op.change)})
+        ok = bool(dec) != bool(inc) and len(figs) == 1
+        if not check("C21", ok, "the change states one direction and one figure" if ok else
+                     f"the change '{op.change}' must state one direction (reduced / decreased / lowered, or increased / "
+                     f"raised by) and one figure; it states {len(figs)} figure(s)"):
+            return False
+        cval, cunit = figs[0]
+        direction = "decrease" if dec else "increase"
+        if op.column:
+            ok = t.cells is not None and op.column in t.cells and _names_column(ptext, op.column)
+            if not check("C22", ok, f"{tgt} has the column '{op.column}', which the provision names" if ok else
+                         f"{tgt} is not a table row with the column '{op.column}' named by the provision"):
+                return False
+            cell = (t.cells[op.column] or "").strip()
+            pval = _num_text(cell)
+            row_unit = next((v for c, v in t.cells.items() if c.lower() == "unit" and v and v != "-"), "")
+            punit = norm_unit(row_unit)
+            if not check("C22", pval is not None, f"the cell '{op.column}' holds a figure ({cell})" if pval is not None
+                         else f"the cell '{op.column}' is not a single figure ('{cell}'): a person writes the change"):
+                return False
+            pwords, span, where = cell, None, f"{tgt} {op.column}"
+        else:
+            text = t.text or ""
+            lo, hi = 0, len(text)
+            if op.old:
+                n = _contains(text, op.old)
+                if not check("C23", n == 1, f"'{op.old}' occurs {n} time(s) in {tgt}"):
+                    return False
+                lo = normalize_latin(text).find(normalize_latin(op.old))
+                hi = lo + len(op.old)
+            cands = []
+            for m in _FIG.finditer(text):
+                if m.start("n") < lo or m.end("n") > hi:
+                    continue
+                u = "SAR" if m.group("pre") else norm_unit(m.group("u") or "")
+                if (_is_percent(cunit) and u and not _is_percent(u)) or (not _is_percent(cunit) and u == cunit):
+                    cands.append((m, u))
+            if not check("C23", len(cands) == 1, f"one previous value in {tgt}" if len(cands) == 1 else
+                         f"{tgt} states {len(cands)} figure(s) a change in '{cunit or 'no unit'}' can apply to"
+                         + (f" ({', '.join(text[m.start():m.end()].strip() for m, _ in cands)})" if cands else "")
+                         + "; name the previous value with `old` (its words in the target)"):
+                return False
+            m, punit = cands[0]
+            pval, pwords, span, where = _num_text(m.group("n")), text[m.start():m.end()].strip(), m.span("n"), tgt
+            words = text[:m.start()].rstrip().endswith("(")
+            if not check("C24", not words, "the previous value is written in figures only" if not words else
+                         f"the previous value is also written in words ('{_short_words(text[max(0, m.start() - 60):m.end() + 1], 100)}'):"
+                         " a computed figure cannot rewrite the words; a person writes the op"):
+                return False
+        as_of = (f"as amended by {', '.join(t.history)}" if t.history else "as issued")
+        comp = relative_change({"value": pval, "unit": punit, "source": {"unit": tgt, "words": pwords}},
+                               {"value": cval, "unit": cunit, "source": {"unit": op.provision, "words": op.change,
+                                                                         "page": (prov.pages or [None])[0]}}, direction)
+        if not check("C24", comp["status"] == "resolved", f"computed: {comp['steps'][0]}" if comp["status"] == "resolved"
+                     else f"the new value cannot be computed: {comp['reason']}"):
+            r.details["computed"] = comp
+            return False
+        from decimal import Decimal
+        v = Decimal(str(comp["value"]))
+        prev_num = (cell if op.column else m.group("n"))
+        grouped = "," in prev_num                      # written in the previous value's own form (grouping kept)
+        if v == v.to_integral_value():
+            new_num = f"{int(v):,}" if grouped else str(int(v))
+        else:
+            new_num = f"{v.normalize():,f}" if grouped else f"{v.normalize():f}"
+        r.details["before"] = t.text
+        if op.column:
+            t.cells[op.column] = new_num
+            before, after = f"{op.column}: {cell}", f"{op.column}: {new_num}"
+            t.text = t.text.replace(before, after, 1) if t.text.count(before) == 1 else t.row_text()
+            new_words = new_num
+        else:
+            t.text = t.text[:span[0]] + new_num + t.text[span[1]:]
+            new_words = pwords.replace(m.group("n"), new_num, 1)
+        t.derived_values.append(new_num)
+        t.history.append(op.id)
+        r.changed = [tgt]
+        r.details.update({
+            "computed": comp, "previous_value": pwords, "new_value": new_words, "previous_as_of": f"{where} {as_of}",
+            "derivation": f"{comp['steps'][0]} (the change '{op.change}', {op.provision}; the previous value '{pwords}' "
+                          f"in {where} {as_of})",
+            "proposal": "computed by the engine (calc relative_change) from the previous effective value: PROPOSED, never "
+                        "typed; a person accepts or rejects it with the op",
+            **({"column": op.column, "old_value": cell} if op.column else {}),
+            **({"reading_status": t.reading_status} if t.reading_status else {})})
+        return True
+
+    def _insert_table(self, op: Op, st: dict[str, UState], addendum: str, ptext: str, r: OpResult, check) -> OpResult:
+        """insert_table (module docstring): an addendum's table made part of a volume, as the provision says."""
+        group = op.new_group or ""
+        members = [k for k in group_members(st, group) if st[k].doc == addendum] if group else []
+        table = bool(members) and ((group in st and st[group].kind == "table")
+                                   or any(st[k].kind == "table_row" for k in members))
+        if not check("C22", table, f"{group} is a table of {addendum} ({len(members)} units)" if table else
+                     f"{group!r} is not a table printed in {addendum}"):
+            return r
+        into, number = op.into or "", op.number or ""
+        vol = not into.startswith("ADD-") and any(u.doc == into for u in st.values())
+        if not check("C22", vol and bool(re.fullmatch(r"\d+-\d+[A-Za-z]?", number)),
+                     f"into {into} as Table {number}" if vol else
+                     f"`into` must be a volume of the pack and `number` a table number such as '42-1' ({into!r}, {number!r})"):
+            return r
+        names = re.search(r"(?<![\w-])Table\s+" + re.escape(number) + r"(?![\w-])", normalize_latin(ptext))
+        said = bool(names) and _names_volume(ptext, into) and INCORPORATE_WORDS.search(ptext)
+        if not check("C21", said, f"the provision makes Table {number} part of {_volume_words(into)}" if said else
+                     f"the provision does not print that Table {number} forms part of {_volume_words(into)} (the table "
+                     "number, the volume and 'forms part of' / 'is inserted in' / 'is added to' / 'is incorporated in')"):
+            return r
+        local = group.partition(":")[2]
+        own = local.split("/")[0] == f"T{number}" or _names_target(_group_title(st, group), f"{into}:T{number}")
+        if not check("C22", own, f"{group} is Table {number}" if own else f"{group} is not Table {number} (its id and "
+                     "title name another)"):
+            return r
+        alias = f"{into}:T{number}"
+        clash = [k for k in (alias, *[k for k, v in self.inserted_as.items() if v == alias]) if k in st]
+        clash += [k for k in members if st[k].part_of]
+        if not check("C22", not clash, f"{into} has no Table {number} yet" if not clash else
+                     f"{into} already has Table {number}, or the table is already part of a volume: {clash}"):
+            return r
+        pending: dict[str, list[str]] = {}
+        for k in members:
+            st[k].part_of = into
+            st[k].history.append(op.id)
+            if st[k].reading_status == "pending":
+                pending.setdefault(st[k].reading_region or "?", []).append(k)
+        self.inserted_as[group] = alias
+        r.changed = list(members)
+        r.details.update({"inserted_as": alias, "into": into, "number": number, "content": list(members)})
+        if pending:            # values read from an image no person has approved: the table's content stays conditional
+            r.details.update({"reading_status": "pending", "conditional_on_readings": pending})
+        r.valid = True
+        return r
+
+    def _disapplies(self, op: Op, targets: list[str], ptext: str, st: dict[str, UState], r: OpResult, check) -> bool:
+        """annotate, effect disapplies: the scope and the disapplication words printed; the targets in force."""
+        words = DISAPPLY_WORDS.search(normalize_latin(ptext))
+        ok = bool(op.scope) and _quoted_in(ptext, op.scope or "") and words is not None
+        if not check("C21", ok, f"the provision says '{words.group(0)}' to: '{_short_words(op.scope, 120)}'" if ok else
+                     ("a disapplication needs its `scope` (the class it does not apply to, verbatim); without it the "
+                      "clause would cease to apply as a whole, which is set_status deleted" if not op.scope else
+                      f"the scope is not printed in {op.provision}" if not _quoted_in(ptext, op.scope) else
+                      f"{op.provision} prints no disapplication ('does not apply', 'shall not apply', 'is disapplied')")):
+            return False
+        bad = [t for t in targets if t not in st or st[t].status != "active" or st[t].doc == op.provision.split(":")[0]]
+        if not check("C22", not bad, "every disapplied clause is in force" if not bad else
+                     f"not a clause in force in the pack: {bad}"):
+            return False
+        rec = {"op": op.id, "provision": op.provision, "scope": op.scope, "words": words.group(0)}
+        r.details["exception"] = {"scope": op.scope, "targets": list(targets), "words": words.group(0), "record": rec,
+                                  "text": "the clause's text is unchanged; it does not apply to the scope stated"}
+        return True
+
     def _op_provision(self, op_id: str) -> str:
         for f in self.opfiles:
             for o in f.ops:
@@ -1307,6 +1698,143 @@ class Engine:
                           "nothing flows (a re-targeting of the earlier amendment would need its own op)"), []
         return True, ("the change flows to " + ", ".join(f"{x['unit']} (written by {x['via']})" for x in flowed)
                       + f"; {op.target} itself is amended too"), flowed
+
+
+# ---------------------------------------------------------------------------------------------- session 14 (W3)
+
+RELOCATABLE = {"clause", "paragraph", "numbered_paragraph", "lead_in_paragraph"}
+RELOCATE_WORDS = re.compile(r"\b(?:relocated|moved|transferred)\b", re.I)
+INCORPORATE_WORDS = re.compile(r"\b(?:forms?|shall form) (?:a |an integral )?part of\b|\bis (?:hereby )?(?:inserted|added|"
+                               r"incorporated) (?:in|into|to)\b", re.I)
+DISAPPLY_WORDS = re.compile(r"\b(?:does|do|shall|will) not apply\b|\bis (?:hereby )?disapplied\b|\bis not applicable\b",
+                            re.I)
+_ROMAN = {v: k for k, v in {"I": "VOL-I", "II": "VOL-II", "III": "VOL-III", "IV": "VOL-IV", "V": "VOL-V"}.items()}
+
+
+def _volume_words(doc: str) -> str:
+    return f"Volume {_ROMAN[doc]}" if doc in _ROMAN else doc
+
+
+def _names_volume(text: str, doc: str) -> bool:
+    return re.search(r"\b" + re.escape(_volume_words(doc)) + r"(?![\w-])", normalize_latin(text or "")) is not None
+
+
+def _number_printed(text: str, number: str | None) -> bool:
+    return bool(number) and re.search(r"(?<![\d.])" + re.escape(number) + r"(?!\d|\.\d)", normalize_latin(text or "")) is not None
+
+
+def _same_words(quoted: str, text: str, number: str) -> bool:
+    """A reprint of a relocated clause (its new number first, if printed) has the clause's own words."""
+    norm = lambda x: " ".join(normalize_latin(x or "").replace("'", "").split()).lower().strip(" .")  # noqa: E731
+    q = re.sub(r"^\s*" + re.escape(number) + r"\s+", "", normalize_latin(quoted or ""))
+    return norm(q) == norm(text)
+
+
+def _reach(op: Op, st: dict[str, UState], provision_text: str = "") -> list[str]:
+    """The units a change would reach: its declared targets, anchors and groups that exist, else the units its provision
+    cites (session 14: what a conditional investigation starts from)."""
+    out: list[str] = []
+    for t in (op.target, op.anchor, *op.targets, op.after, op.new_group):
+        if t and (t in st or group_members(st, t)) and t not in out:
+            out.append(t)
+    if not out and provision_text:
+        from .citations import resolve
+        out = [k for k in resolve(citations(provision_text), set(st)) if k in st]
+    return out
+
+
+def _impact(stage: str, provision: str, kind: str, ref: str, state: str, why: str, units: list[str]) -> dict:
+    what = ", ".join(units[:12]) + (f" (+{len(units) - 12})" if len(units) > 12 else "") if units else f"the provision {provision}"
+    return {"id": f"impact:{ref}", "stage": stage, "provision": provision,
+            "conditional_on": {"kind": kind, "ref": ref, "state": state, "why": why},
+            "units": list(units),
+            "investigate": f"conditional on {kind} {ref} ({state}: {_short_words(why, 200)}): investigate the rows, "
+                           f"activities and prices that rest on {what}",
+            "accepted": False}
+
+
+def conditional_impacts(res: "StageResult") -> list[dict]:
+    """Session 14 (W3; owner's part 2, last paragraph): the CONDITIONAL impact investigations of a stage, one shape for
+    the downstream phase (W2) to map to rows, activities and prices. Never accepted facts.
+      kind op           an op that cannot be applied: invalid (the failed checks), or held by its condition
+      kind disposition  an `unresolved` disposition (its candidates, else the units its provision cites)
+      kind provision    a provision nothing accounts for (UNACCOUNTED)
+      kind reading      a value that rests on an image reading no person has approved: an applied op that reads it
+                        (details.reading_status pending) and every pending reading of the addendum's own units
+    A withdrawn op (a person rejected it) makes none: the person decided."""
+    st, out, seen = res.state, [], set()
+
+    def add(x: dict) -> None:
+        if x["id"] not in seen:
+            seen.add(x["id"])
+            out.append(x)
+    for x in res.ops:
+        o = x.op
+        prov = st[o.provision].text if o.provision in st else ""
+        if x.withdrawn:
+            continue
+        if x.applied:
+            if x.details.get("reading_status") != "pending":
+                continue
+            regions = x.details.get("conditional_on_readings") or {
+                (st[o.target].reading_region if o.target in st else None) or "?": [o.target]}
+            for region, units in regions.items():
+                add(_impact(res.stage, o.provision, "reading", region, "pending_reading",
+                            f"{o.id} applied with values read from {region}, which no person has approved",
+                            list(dict.fromkeys(list(units) + list(x.changed) + _reach(o, st)))))
+            continue
+        if x.conditional_pending:
+            cd = x.details.get("conditional") or {}
+            add(_impact(res.stage, o.provision, "condition", o.id, "held",
+                        f"conditional ({cd.get('condition')}): not in effect unless '{_short_words(cd.get('trigger'), 120)}'",
+                        _reach(o, st, prov)))
+            continue
+        why = "; ".join(f"{c['id']}: {c['detail']}" for c in x.checks if not c["ok"]) or "not valid"
+        add(_impact(res.stage, o.provision, "op", o.id, "invalid", why, _reach(o, st, prov)))
+    for d in res.dispositions:
+        if d.disposition != "unresolved" or d.provision not in st:
+            continue
+        units = [c for c in d.candidates if c in st or group_members(st, c)] or _reach(
+            Op(id="-", provision=d.provision, type="annotate"), st, st[d.provision].text)
+        add(_impact(res.stage, d.provision, "disposition", d.provision, "unresolved", d.reason, units))
+    for c in res.coverage:
+        if c["disposition"] == "UNACCOUNTED" and c["provision"] in st:
+            add(_impact(res.stage, c["provision"], "provision", c["provision"], "unaccounted",
+                        "no op or disposition accounts for it", _reach(Op(id="-", provision=c["provision"],
+                                                                         type="annotate"), st, st[c["provision"]].text)))
+    regions: dict[str, list[str]] = {}
+    for k, u in st.items():
+        if u.doc == res.addendum and u.status == "active" and u.reading_status == "pending":
+            regions.setdefault(u.reading_region or "?", []).append(k)
+    for region, units in regions.items():
+        if f"impact:{region}" not in seen:
+            add(_impact(res.stage, units[0], "reading", region, "pending_reading",
+                        f"the reading {region} of {res.addendum} is pending a person's approval: its values are not in "
+                        "force", units))
+    return out
+
+
+def describe_op(x: "OpResult") -> str | None:
+    """What a session 14 kind does, for A2's change list, the review views and the live view (one text, the existing
+    shapes). None for the older kinds, which keep their own wording."""
+    o, d = x.op, x.details
+    if o.type == "relocate_unit":
+        rel = d.get("relocated") or {}
+        return (f"relocated {o.target} -> {rel.get('to') or o.to}" + (f" (after {rel['after']})" if rel.get("after") else "")
+                + "; text unchanged; rows and relationships citing it follow it or read it REPLACED")
+    if o.type == "adjust_value":
+        if d.get("computed", {}).get("status") == "resolved" and x.valid:
+            return (f"{d.get('previous_value')} -> {d.get('new_value')} (computed: {d['computed']['steps'][0]}; from "
+                    f"'{o.change}', {o.provision}; PROPOSED, never typed)")
+        return f"'{o.change}' applied to {o.target}: not computed" + (f" ({d['computed'].get('reason')})"
+                                                                     if d.get("computed") else "")
+    if o.type == "insert_table":
+        return (f"{o.new_group} forms part of {o.into} as Table {o.number}"
+                + (f" (values read from {', '.join(d['conditional_on_readings'])}, pending a person's approval: "
+                   "CONDITIONAL)" if d.get("conditional_on_readings") else ""))
+    if o.type == "annotate" and o.effect == "disapplies":
+        return f"disapplies {', '.join(o.targets)} to: '{o.scope}' (the clause's text is unchanged)"
+    return None
 
 
 def _names_column(provision_text: str, column: str) -> bool:

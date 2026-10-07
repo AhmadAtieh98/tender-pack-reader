@@ -25,6 +25,11 @@ Those links are curated here, once, as data, and followed by the program; nothin
                                        entry names in `to` lists them in A1 ('I-X (via REL-ID (status))', issue_links),
                                        and A2 shows them ('open: I-X[, human decision pending]') wherever the entry
                                        carries a change (signals.relationship_issue_notes)
+          scope_words: <words>         session 14 (W4; report section 9 A4): words verbatim in the entry's own evidence
+                                       that narrow what it links to the members of its `from` table whose own words
+                                       carry them ("as assessed on a rolling average basis" -> the rolling-average
+                                       rows); an issue reaches the entry's rows only when its `subject` (unit ids of
+                                       the curated issue) falls in that scope (issue_reaches; validate checks both)
           context: [{unit, page, words, note}]   session 13 (audit R1-4): words of the pack that bear on the link
                                        without stating it (a non-binding record such as the pre-bid minutes), quoted
                                        verbatim on their page and checked like evidence; shown beside the link
@@ -106,7 +111,8 @@ STATUS_LEGEND = ("Relationship status: confirmed = stated in the documents (the 
                  "weaker inference.")
 _RANK = {s: i for i, s in enumerate(STATUSES)}
 FIELDS = ("id", "from", "to", "kind", "status", "evidence", "basis", "origin", "note", "issues", "document",
-          "document_id", "blocks", "confirmed_by", "review", "reviewer", "context")
+          "document_id", "blocks", "confirmed_by", "review", "reviewer", "context",
+          "scope_words")         # session 14 (W4): the words of its own evidence that narrow its scope (issue_reaches)
 REQUIRED = ("id", "from", "to", "kind", "status", "origin")
 WORDS, CALC = "words:", "calc:"
 MAX_DEPTH = 12            # links per path; a path cut here is `truncated` and says which links it did not follow
@@ -289,6 +295,12 @@ def validate(entries: list, units: list[dict], rows, activities, *, evidence_ite
             bad = [x for x in e.get("issues") or [] if x not in issues]
             if bad:
                 out.append(f"{rid}: linked issues that do not exist: {bad}")
+        if not _blank(e.get("scope_words")):           # session 14 (W4): the narrowing comes from its own evidence
+            sw = str(e["scope_words"])
+            if not any(isinstance(q, dict) and found(sw, str(q.get("words") or "")) for q in ev):
+                out.append(f"{rid}: scope_words '{sw}' are not in the entry's own evidence words")
+            elif not entry_scope(e, by_unit):
+                out.append(f"{rid}: scope_words '{sw}': no member of {ends(e, 'from')} carries them (an empty scope)")
     return out
 
 
@@ -603,10 +615,65 @@ def context_text(e: dict) -> str:
                                                   + (f" ({q['note']})" if q.get("note") else "") for q in ctx)) if ctx else ""
 
 
-def issue_links(entries: list, rows) -> dict[str, list[dict]]:
+# ---------------------------------------------------------------------------------------------- issue scope (session 14)
+# Session 14 (W4; report section 9 A4; R1 found the maxima/range issue's link to VOL-V-29.3-01 weak): an issue reaches a
+# row through a relationship only when the relationship's scope includes the issue's subject. The scope is the whole of
+# what the entry links unless `scope_words` (verbatim in its own evidence) narrow it to the members of its `from`
+# tables whose own words carry them; the subject is the curated issue's `subject` (unit ids; a table id stands for its
+# members). An entry without scope_words, or an issue without a subject, keeps every link (nothing is dropped on a
+# guess). Nothing is resolved: an issue that does not reach a row stays open on its own rows.
+
+def _members(uid: str, units: dict) -> set[str]:
+    """A unit id and, for a table or form id, its members ('VOL-II:T2-4' -> 'VOL-II:T2-4/BOD5', ...)."""
+    kids = {u for u in units if u.startswith(uid + "/")}
+    return kids or {uid}
+
+
+def entry_scope(entry: dict, units: dict) -> set[str] | None:
+    """The unit ids an entry's scope covers when `scope_words` narrow it (the members of its `from` ids whose own text
+    carries the words, case and spacing aside); None when the entry is not narrowed (its whole `from`)."""
+    sw = str((entry or {}).get("scope_words") or "").strip()
+    if not sw:
+        return None
+    out = set()
+    for f in ends(entry, "from"):
+        for m in _members(f, units or {}):
+            if m != f and found(sw, str((units.get(m) or {}).get("text") or "")):
+                out.add(m)
+    return out
+
+
+def issue_subject(issue: dict | None, units: dict) -> set[str] | None:
+    """The unit ids an issue is about (its curated `subject`, a table id standing for its members); None without."""
+    subj = (issue or {}).get("subject")
+    if not subj:
+        return None
+    return set().union(*(_members(str(x), units or {}) for x in ([subj] if isinstance(subj, str) else subj)))
+
+
+def issue_reaches(entry: dict, iid: str, issues: dict | None, units: dict | None) -> tuple[bool, str]:
+    """(reaches, why): whether issue `iid` travels along `entry` (the rule above). `why` names the scope and the subject
+    when it does not ('' when it does and nothing narrows it)."""
+    if issues is None or units is None:
+        return True, ""
+    sc, sub = entry_scope(entry, units), issue_subject(issues.get(iid), units)
+    if sc is None or sub is None:
+        return True, ""
+    if sc & sub:
+        return True, f"in scope: {', '.join(sorted(sc & sub))}"
+    tail = lambda xs: ", ".join(x.rsplit("/", 1)[-1] for x in sorted(xs))  # noqa: E731
+    return False, (f"{iid} not carried by {entry.get('id')}: the relationship's scope is the members of "
+                   f"{', '.join(ends(entry, 'from'))} whose words carry '{entry.get('scope_words')}' (its evidence: "
+                   f"{'; '.join(chr(39) + str(q.get('words')) + chr(39) for q in entry.get('evidence') or [] if isinstance(q, dict))}"
+                   f"): {tail(sc)}; the issue's subject is {tail(sub)}")
+
+
+def issue_links(entries: list, rows, issues: dict | None = None, units: dict | None = None) -> dict[str, list[dict]]:
     """Session 13 (audit R1-2): row id -> [{issue, via, status}] for every entry with `issues` and every row it names in
     `to` (`rows`: the register's row ids; a unit, activity or calculation target is not a row). One rule for every
-    issue and every entry, whatever its kind or status (the status is shown, never used to drop a link)."""
+    issue and every entry, whatever its kind or status (the status is shown, never used to drop a link). Session 14
+    (W4): with `issues` (id -> issue) and `units` (id -> unit), an issue travels only where issue_reaches says it does
+    (out_of_scope_links lists the others with why)."""
     rows = set(rows or ())
     out: dict[str, list[dict]] = {}
     for e in entries or []:
@@ -615,9 +682,29 @@ def issue_links(entries: list, rows) -> dict[str, list[dict]]:
         for t in ends(e, "to"):
             if t in rows:
                 for i in e.get("issues") or []:
+                    if not issue_reaches(e, i, issues, units)[0]:
+                        continue
                     x = {"issue": i, "via": e.get("id"), "status": e.get("status")}
                     if x not in out.setdefault(t, []):
                         out[t].append(x)
+    return out
+
+
+def out_of_scope_links(entries: list, rows, issues: dict, units: dict) -> dict[str, list[dict]]:
+    """Session 14 (W4): row id -> [{issue, via, why}] for the issues an entry names that do not reach its rows
+    (issue_reaches), so an output can say so beside the row instead of dropping the link silently."""
+    rows = set(rows or ())
+    out: dict[str, list[dict]] = {}
+    for e in entries or []:
+        if not isinstance(e, dict) or not e.get("issues"):
+            continue
+        for i in e.get("issues") or []:
+            ok, why = issue_reaches(e, i, issues, units)
+            if ok:
+                continue
+            for t in ends(e, "to"):
+                if t in rows:
+                    out.setdefault(t, []).append({"issue": i, "via": e.get("id"), "why": why})
     return out
 
 

@@ -407,6 +407,9 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
                     "theme": it.get("theme"), "short": pre(it.get("short")), "folds": list(it.get("folds") or [])}
                    | ({"human_decision": lab} if lab else {}))
     out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
+    # session 14 (W4; part 3 (b)): a class table without a rule for an item in more than one class is a genuine
+    # ambiguity (blind-07 DA1), raised as a generated issue, HUMAN DECISION PENDING; nothing is chosen
+    out += signals.class_scope_issues(r.get("units") or [], {e["row"].id: list(e["row"].units) for e in r["evals"]})
     for c in printed_date_conflicts(val, r["rowfile"].anchors):
         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
                     "text": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; "
@@ -830,13 +833,23 @@ def reissued_form_gaps(rows, stages, quote_at) -> dict[str, list[dict]]:
                     if row not in lst:
                         lst.append(row)
     out: dict[str, list[dict]] = {}
+    texts: dict[tuple[int, str], list[tuple[str, str]]] = {}
+    # session 14: a form's text at a stage is scanned once per call, not once per row that cites it; the function stays
+    # pure (the states live in `stages` for the whole call, so id() is a stable key here and nowhere else)
+
+    def form_text(state: dict, f: str) -> list[tuple[str, str]]:
+        key = (id(state), f)
+        if key not in texts:
+            texts[key] = _form_text(state, f)
+        return texts[key]
+
     for row in rows:
         for ev in dict.fromkeys(row.evidence):
             for f, frows in (forms.get(ev) or {}).items():
                 if any(u == f or u.startswith(f + "/") for u in row.units):
                     continue
                 for (ps, pst), (s, st) in zip(stages, stages[1:]):
-                    before, after = _form_text(pst, f), _form_text(st, f)
+                    before, after = form_text(pst, f), form_text(st, f)
                     if before == after:
                         continue
                     q = quote_at(row, ps)
@@ -858,7 +871,8 @@ def row_issue_links(r: dict) -> dict[str, list[dict]]:
     an evidence field the reissued form no longer prints (reissued_form_gaps). One rule for every issue; nothing is
     resolved."""
     rows = [e["row"] for e in r.get("evals") or []]
-    out = relationships.issue_links(r.get("relationships") or [], {x.id for x in rows})
+    # session 14 (W4): an issue travels along a relationship only within its scope (relationships.issue_reaches)
+    out = relationships.issue_links(r.get("relationships") or [], {x.id for x in rows}, *issue_scope_args(r))
     reg = r.get("register")
     quote_at = lambda row, st: getattr(reg.interp_at(row, st), "quote", None) if reg is not None else None  # noqa: E731
     gaps = reissued_form_gaps(rows, [(s.stage, s.state) for s in r.get("stages") or []], quote_at)
@@ -869,6 +883,16 @@ def row_issue_links(r: dict) -> dict[str, list[dict]]:
                 if x not in out.setdefault(rid, []):
                     out[rid].append(x)
     return out
+
+
+def issue_scope_args(r: dict) -> tuple[dict, dict]:
+    """Session 14 (W4): (issues, units) for relationships.issue_reaches: the curated issues by id and the units by id
+    (the evidence build's units and every unit an op made at the last stage)."""
+    units = {u["unit_id"]: u for u in r.get("units") or []}
+    for s in (r.get("stages") or [])[-1:]:
+        for uid, u in s.state.items():
+            units.setdefault(uid, {"unit_id": uid, "text": getattr(u, "text", "") or ""})
+    return dict(r.get("curated_issues") or {}), units
 
 
 def row_issues(r: dict) -> dict[str, list[str]]:
@@ -907,6 +931,107 @@ def linked_issue_cells(own: list[str], links: list[dict]) -> list[str]:
     return out + [f"{i} ({'; '.join(dict.fromkeys(w))})" for i, w in by.items()]
 
 
+# ---------------------------------------------------------------------------------------------- value / interpretation / approval
+# Session 14 (W4; the owner's part 4: "Separate unchanged table values from unresolved interpretation and approval
+# status"): a row's VALUE can be unchanged while its INTERPRETATION is pending and no APPROVAL is given. row_states gives
+# the three apart, at the validated stage, for A1's columns and the review cards:
+#   value           what the row's words and cells did across the stages: 'unchanged since <stage>' (with the ops that
+#                   re-read it, named, never as a confirmation), 'changed at <stage> by <ops>', 'new at <stage>', or
+#                   'not in force at <stage>'; and the value as read (the quote)
+#   interpretation  the issues that bear on the reading (row_issues, the set A1's Issues cell shows): those that are a
+#                   person's decision not yet recorded (HUMAN DECISION PENDING), then the other open ones
+#   approval        what a person has recorded: the image transcription (an approval of the transcription and the
+#                   displayed translation only, never of the interpretation), the row's own review, and the review of
+#                   every op on its units (amending ops and annotations), 'proposed (not reviewed)' until accepted
+STATE_COLS = (("value_state", "Value at the validated stage (the value only: unchanged/changed/new; not a confirmation)", 36),
+              ("interpretation_state", "Interpretation (open judgments on the reading; HUMAN DECISION PENDING where a "
+                                       "person decides)", 36),
+              ("approval_state", "Approval (what a person has recorded; an image transcription approval is not an "
+                                 "approval of the interpretation)", 36))
+TRANSCRIPTION_ONLY = ("image transcription approved by the owner (the transcription and its displayed translation only; "
+                      "not an approval of the interpretation)")
+
+
+def row_states(r: dict) -> dict[str, dict]:
+    """Row id -> {value, interpretation, approval} at the validated stage (see above). Pure; nothing is decided."""
+    val = r["validated"].stage
+    order = list(r["order"])
+    order = order[: order.index(val) + 1] if val in order else order
+    by_row = row_issues(r)
+    pend = r.get("pending_issues") or {}
+    since = r.get("issue_stages") or issue_stages(r)
+    decided = {i for i, it in (r.get("curated_issues") or {}).items()
+               if human_owned.decision(r.get("decisions"), "issue", i, it) is not None}
+    rv = r.get("reviews") or {}
+    ann = {s: programme.answers_by_row(r, s) for s in order[1:]}
+    out: dict[str, dict] = {}
+    for e in r["evals"]:
+        row, stg = e["row"], e["stages"]
+        v = stg[val]
+        it = r["register"].interp_at(row, val)
+        quote = getattr(it, "quote", "") or ""
+        first = next((s for s in order if stg[s]["active"]), None)
+        changed, reread = [], []
+        for i in range(1, len(order)):
+            a, b = stg[order[i - 1]], stg[order[i]]
+            new_ops = [h for h in b.get("ops") or [] if h not in (a.get("ops") or [])]
+            if a["active"] and b["active"] and (a.get("text") != b.get("text") or a.get("cells") != b.get("cells")):
+                changed.append(f"changed at {order[i]}" + (f" by {', '.join(new_ops)}" if new_ops else ""))
+            elif a["active"] and b["active"]:
+                # a unit it cites or depends on changed: the row's own words did not, but its value is not 'unchanged'
+                dw = [w for w in signals.requirement_delta(a, b, ann[order[i]].get(row.id))["what"]
+                      if w not in ("text", "cells", "status", "dates")]
+                if dw:
+                    changed.append(f"own words unchanged at {order[i]}, but what it depends on changed ({', '.join(dw)}; "
+                                   "see A2)")
+            for c in ann[order[i]].get(row.id) or []:
+                reread.append(f"{c['op']} ({c.get('effect') or c.get('class') or 'annotation'}; {order[i]})")
+        if not v["active"]:
+            value = f"not in force at {val} ({v['status']})"
+        elif changed:
+            value = "; ".join(changed)
+        elif first and first != order[0]:
+            value = f"new at {first}"
+        else:
+            value = f"unchanged since {first or order[0]}"
+        if v["active"] and reread:
+            value += "; re-read by " + ", ".join(dict.fromkeys(reread)) + " (an annotation; not a confirmation)"
+        if v["active"] and quote:
+            value += f"; value as read: '{_short(quote, 120)}'"
+        pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
+        ids = [i for i in by_row.get(row.id) or [] if pos(since.get(i, order[0])) <= pos(val) or since.get(i) not in order]
+        pending = [i for i in ids if i in pend]
+        waiting = [i for i in ids if i in (r.get("awaiting_issues") or {}) and i not in pend]
+        other = [i for i in ids if i not in pend and i not in decided and i not in waiting]
+        done = [i for i in ids if i in decided]
+        owner = lambda i: str(((r.get("curated_issues") or {}).get(i) or {}).get("decision_owner")  # noqa: E731
+                              or ((r.get("curated_issues") or {}).get(i) or {}).get("owner") or "")
+        parts = []
+        if pending:
+            parts.append(f"{human_owned.HUMAN_DECISION_PENDING}: " + ", ".join(
+                f"{i} ({owner(i)})" if owner(i) else i for i in pending))
+        if waiting:
+            parts.append(f"{signals.AWAITING_RULE}: " + ", ".join(waiting))
+        if other:
+            parts.append("open: " + ", ".join(other))
+        if done:
+            parts.append("decided (recorded): " + ", ".join(done))
+        interp = "; ".join(parts) or "no open issue on the reading"
+        appr = []
+        if v.get("transcription") == "approved":
+            appr.append(TRANSCRIPTION_ONLY)
+        elif v.get("transcription") == "pending":
+            appr.append("image transcription PENDING (not approved)")
+        appr.append("row: " + review.label(rv[("row", row.id)]) if ("row", row.id) in rv else "row: not reviewed")
+        ops = list(dict.fromkeys(list(v.get("ops") or []) + [c["op"] for s in order[1:]
+                                                             for c in ann[s].get(row.id) or []]))
+        appr += [f"{h}: {review.label(rv[('op', h)])}" for h in ops if ("op", h) in rv]
+        if appr and appr[0] == TRANSCRIPTION_ONLY:
+            appr = appr[1:] + appr[:1]                 # the row's own review first
+        out[row.id] = {"value": value, "interpretation": interp, "approval": "; ".join(appr)}
+    return out
+
+
 def table_title(unit: dict | None) -> str:
     """The printed title of the table a table-row unit was read from ('' when none): the reading's `table_title`, its
     whitespace collapsed (session 13, F2; audit R2-8: 'at the Point of Discharge' is on the Table 2-4 image)."""
@@ -935,6 +1060,7 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
     cols += [("consequence", "Stated consequence (quoted)", 40), ("consequence_source", "Consequence source", 18),
              ("dates", "Dates (planning reading; all readings in Dates sheet)", 30), ("confidence", "Confidence", 30),
              ("note", "Interpretation note (the reading at the validated state)", 40),
+             *STATE_COLS,                              # session 14 (W4): value / interpretation / approval apart
              ("transcription", "Image reading status", 14), ("interpretation", "Interpretation review", 14),
              ("ops_review", "Amendment ops review", 14), ("chain", "Evidence chain (original -> ops)", 50),
              ("issues", "Issues", 20)]
@@ -950,6 +1076,7 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                               lambda row, st: getattr(r["register"].interp_at(row, st), "quote", None))
     computed_by = {s: derived.computed_deadlines(r, s) for s in order[1:]}    # session 12 (W3b): calc deadlines
     computed = computed_by.get(val) or []
+    states = row_states(r)                        # session 14 (W4)
     for e in r["evals"]:
         row, stg = e["row"], e["stages"]
         v = stg[val]
@@ -1009,6 +1136,9 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         if titles:                   # session 13 (F2; audit R2-8): the printed title of the table the row was read from
             rec["note"] = (rec["note"] + " " if rec["note"] else "") + "; ".join(
                 f"Printed table title: '{t}'." for t in titles if t not in rec["note"])
+        rec["value_state"] = states[row.id]["value"]                    # session 14 (W4)
+        rec["interpretation_state"] = states[row.id]["interpretation"]
+        rec["approval_state"] = states[row.id]["approval"]
         rec["transcription"] = v["transcription"]
         rec["interpretation"] = review.label(r["reviews"][("row", row.id)])
         rec["ops_review"] = "; ".join(f"{h}: {r['reviews'][('op', h)]['status']}" for h in v["ops"]
@@ -1206,6 +1336,9 @@ def relationship_lines(r: dict) -> dict[str, list[str]]:
         for f in relationships.ends(e, "from"):
             if f in rows and e.get("kind") != "missing_document":
                 out.setdefault(f, []).append(f"-> {tag} to {', '.join(relationships.ends(e, 'to'))}")
+    # session 14 (W4): an issue a relationship names that does not reach the row (outside its scope) is said, with why
+    for t, xs in relationships.out_of_scope_links(ents, rows, *issue_scope_args(r)).items():
+        out.setdefault(t, []).extend(f"issue {x['why']}" for x in xs)
     val = r["validated"].stage
     for rec in ((r.get("relationship_impact") or {}).get(val) or {}).get("records", []):
         if rec["target"] in rows and rec["kind"] != "missing_document":
@@ -1289,6 +1422,11 @@ def changed_units_for_reread(ops, switched: dict | None = None) -> dict:
                 changed[k] = x
         if o.type in ("append_text", "insert_row"):                     # session 12
             extra.setdefault(o.target, x)
+        if o.type in ("relocate_unit", "adjust_value"):                 # session 14 (W3): moved or recomputed
+            for k in [o.target, *(getattr(x, "changed", None) or [])]:
+                changed.setdefault(k, x)
+        if o.type == "insert_table" and o.new_group:                    # session 14 (W3): a table made part of a volume
+            extra.setdefault(o.new_group, x)
         if o.type == "insert_unit":                                      # session 12 (follow-up 11)
             for k in [*(getattr(x, "changed", None) or []), o.anchor, o.new_group]:
                 if k:
@@ -1473,6 +1611,9 @@ def op_change(x, prev: StageResult, s: StageResult, note_limit: int | None = Non
     Session 13 (audit R1-5): an annotation's note is written in full (a2_changes.json/.csv); only the markdown table
     passes `note_limit`, and a note cut there ends with a pointer to the csv."""
     o = x.op
+    from .amend import describe_op                  # session 14 (W3): relocate_unit, insert_table, adjust_value, disapplies
+    if (said := describe_op(x)) is not None:
+        return said
     if o.type == "replace_text":
         return f"'{o.old}' -> '{o.new}'" if (o.new or "").strip() else f"- '{o.old}'"
     if o.type == "append_text":
@@ -1622,7 +1763,7 @@ def a2(r: dict) -> dict:
                 # session 13 (audit R1-1): the open issues of the relationships the change came through, one note
                 # per issue (signals.issue_note: "open: I-X, human decision pending" for a pending one)
                 why += relationship_issue_notes(r.get("relationships"), cause_relationships(dl["causes"],
-                                                r.get("relationships")), pend_here)
+                                                r.get("relationships")), pend_here, *issue_scope_args(r))
             if label == "CHANGED":
                 # session 13 (F4; audit R1-7, R1-9): a changed row also names the open decisions that bear on it at this
                 # stage (its pending list, the set A1's Issues cell shows), once each
@@ -1670,8 +1811,9 @@ def a2(r: dict) -> dict:
                    "REVIEW with their dates unchanged.", "", relationships.STATUS_LEGEND, ""]
             # session 13 (audit R1-1): each record carries the open issues of the relationships on its path and of
             # the documents not supplied that block it (signals.relationship_issue_notes; the same note for every issue)
+            scope_args = issue_scope_args(r)              # session 14 (W4): the same scope rule on the records
             notes = lambda x: relationship_issue_notes(r["relationships"], list(x["path"]) + [  # noqa: E731
-                b["entry_id"] for b in x.get("blockers") or []], pend_here)
+                b["entry_id"] for b in x.get("blockers") or []], pend_here, *scope_args)
             # session 13 (F4; audit R1 nit): the non-binding context of the entries on the path, as a2.md words it
             ctx = lambda x: "; ".join(dict.fromkeys(  # noqa: E731
                 relationships.context_text(e)[len("context (not binding): "):] for e in r["relationships"]
@@ -2542,7 +2684,9 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
             write_text(out / "a3" / "a3_candidate_FAILED.md", f"# A3/A5 candidate NOT produced\n\n{cand_error}\n")
     from .batches import write_batches
     write_batches(r, out / "review", r["evidence_dir"], issues,       # session 13 (R3-2): the cards read the issues
-                  {x["id"]: x.get("issues") for x in a1d["rows"]})      # as A1 renders them
+                  {x["id"]: x.get("issues") for x in a1d["rows"]},      # as A1 renders them
+                  states=row_states(r),                                # session 14 (W4): value/interpretation/approval
+                  readiness=programme.readiness_by_row(main))          # session 14 (W4): preparation vs finalisation
     for a, f in r["drafted"].items():
         write_text(out / "drafted" / f"{a}.yaml",
                    f"# DRAFTED by tenderpack.draft for this build; every op PROPOSED; not curated.\n"

@@ -50,6 +50,14 @@ at any point (a crash, a kill, Ctrl-C, a wait for a host submission) continues f
     interventions every manual step (a submit-batch: who, when, which batch, the file and its sha256, the host model)
                   and every automatic host session (named as such: not a person)
     usage         calls and tokens across the batches (cost as the providers report it; null when not computed)
+    host_usage    (session 14) the host's own usage per host session, from the session records next to the run
+                  (workflow.host_usage: sessions [{session, batch, kind, usage | null}], known, unknown, totals); a
+                  session without usage is unknown, never 0; rewritten at the end of every drive
+    concurrency_drives
+                  (session 14) every drive's concurrency record ({drive, segment, interrupted, phases}); `concurrency`
+                  keeps the last drive's, as before
+    interventions (session 14) also the person's stop and resume (kinds "stop (the person's action)", "resume (the
+                  person's action)"), the sessions the stop cut and the staged answers reused, each with its time
     events        a short history (started, resumed, stale lock taken over, stopped, code_changed, ...)
     code_identity (session 13) {start, segments [...], differ}: each a code_identity() record (the git HEAD when git
                   is available and whether the tree was dirty, a content hash over CODE_GLOBS computed from the files,

@@ -13,7 +13,9 @@ It lets a coding host (Claude Code, Codex) use ITS OWN model with the same tools
                               (the MCP ImageContent shape), the unit's own crops first, then cell crops, the region crop
                               and the native image; a file over MAX_IMAGE_BYTES is listed but not attached. Each image
                               sent is logged (sha256, bytes). get_region (the workflow's readings step) returns
-                              the region's images the same way, in the order it lists them.
+                              the region's images the same way, in the order it lists them; so does
+                              get_addendum_page (session 14: a quick review's NEW addendum pages and image regions,
+                              served only by a server started with --addendum-scope)
 Errors: parse error -32700, invalid request -32600, unknown method -32601, unknown tool or bad arguments -32602,
 internal error -32603. A tool's own refusal (e.g. no such unit) is a result with isError true, as MCP specifies.
 
@@ -26,6 +28,13 @@ batch's session also passes `--submission-record FILE`: a successful submit_prop
 staging folder there at once (it points at the staged set and decides nothing). Every call is logged to
 worklog/model_calls/mcp-<session>.jsonl (arguments and a truncated result; secrets redacted). Anything the tools print
 goes to stderr, so stdout carries only protocol messages.
+
+Session 14 (W1): the submission gate's bounded repair. A submit_proposals whose inner payloads fail their full schema
+(contract.submission_problems: a row_new that is not a register.Row, ...; a fact with no evidence) is staged as it is
+and answered with `repair` (the exact errors and the full schemas); ONE re-submission of the named items only is then
+accepted (even with --submit-once) and merged into the first (contract.merge_repair: every other item stands as first
+submitted). It is staged as a new run that supersedes the first (`superseded.json` in the first's folder; the
+submission record points at it). An item still failing after it is invalid with its errors.
 """
 from __future__ import annotations
 
@@ -70,6 +79,13 @@ class Server:
         # whose orchestrator is killed after the submission finds its staged set on resume (workflow._reuse_submission)
         self.submission_record = Path(submission_record) if submission_record else None
         self.crops_called: set[str] = set()
+        # session 14 (W1, blind-07 defect 1): the submission gate's bounded repair. A submission whose inner payloads
+        # fail their full schema (or that states a fact with no evidence) is STAGED as it is (never lost) and answered
+        # with a repair request naming the failing items, their exact errors and their full schemas; ONE re-submission
+        # of those items only is then accepted (despite --submit-once) and merged into the first: every other item stands
+        # exactly as first submitted. The bound is the failure policy's (config/ai.yaml failures.malformed.repairs, <= 1).
+        self.repairs_left: int | None = None
+        self._repair: dict | None = None
 
     def _offered(self, name: str) -> bool:
         return self.tools is None or name in self.tools
@@ -77,7 +93,7 @@ class Server:
     def _guard(self, name: str, args: dict) -> str | None:
         """Why this call is refused by the session's permissions (session 13), or None."""
         if name in ("submit_proposals", "request_review"):
-            if self.submit_once and self.submitted:
+            if self.submit_once and self.submitted and not (name == "submit_proposals" and self._repair is not None):
                 return (f"refused: this session already submitted ({self.submitted}); a session submits ONCE and the "
                         "first submission stands")
             missing = [u for u in self.require_crops if u not in self.crops_called]
@@ -142,9 +158,14 @@ class Server:
                 {"error": why}, ensure_ascii=False)}], "isError": True}}
         if name == "get_crop":
             self.crops_called.add(str(args.get("unit_id")))
+        gate = None
         try:
+            if name == "submit_proposals":
+                args, gate = self._submission_gate(args)                     # session 14 (W1)
             with contextlib.redirect_stdout(sys.stderr):
                 res = T.call_tool(self.ws, name, args, caller="mcp")
+            if gate is not None and isinstance(res, dict) and res.get("run_id"):
+                res = self._after_submission(res, gate)
             text, is_error = json.dumps(res, ensure_ascii=False, default=str), False
             if name in ("submit_proposals", "request_review") and isinstance(res, dict) and res.get("run_id"):
                 self.submitted = str(res["run_id"])
@@ -156,13 +177,84 @@ class Server:
             self._log(tool=name, arguments=args, internal_error=f"{type(e).__name__}: {e}")
             return _err(id_, -32603, f"internal error in {name}: {type(e).__name__}: {str(e)[:300]}")
         images, sent = [], []
-        if name in ("get_crop", "get_region") and not is_error:
-            images, sent = self._crop_images(res, keep_order=(name == "get_region"))
+        imaging = ("get_crop", "get_region", "get_addendum_page")     # session 14 (W5): the addendum's own pages too
+        if name in imaging and not is_error:
+            images, sent = self._crop_images(res, keep_order=(name != "get_crop"))
             text = json.dumps({**res, "images_attached": sent}, ensure_ascii=False, default=str)
         self._log(tool=name, arguments=args, is_error=is_error, result=text[:4000],
-                  **({"images_sent": sent} if name in ("get_crop", "get_region") else {}))
+                  **({"images_sent": sent} if name in imaging else {}))
         return {"jsonrpc": "2.0", "id": id_, "result": {"content": [{"type": "text", "text": text}, *images],
                                                          "isError": is_error}}
+
+    # ------------------------------------------------------------------ session 14 (W1): the submission gate's repair
+    def _repairs(self) -> int:
+        if self.repairs_left is None:
+            try:
+                from .ai import config as C
+                from .ai.requests import FailurePolicy
+                self.repairs_left = FailurePolicy.from_cfg(C.load(self.ws.ai_config)).repairs
+            except Exception:                                     # noqa: BLE001 (the default bound)
+                self.repairs_left = 1
+        return self.repairs_left
+
+    def _submission_gate(self, args: dict) -> tuple[dict, dict]:
+        """(the arguments to submit, the gate's record). The re-submission that answers a repair request is merged
+        into the first submission (contract.merge_repair): only the named items and statements are taken from it."""
+        from .ai.contract import merge_repair, submission_problems
+        from .ai.controller import _load_set_data
+        raw = _load_set_data(args.get("proposal_set"))
+        if self._repair is not None:
+            rep = self._repair
+            merged, notes = merge_repair(rep["raw"], raw if isinstance(raw, dict) else {}, rep["ids"], rep["indices"])
+            self._log(tool="submission_repair", repair_of=rep["run_id"], merge=notes)
+            return {**args, "proposal_set": merged}, {"repair_of": rep, "merge": notes, "raw": merged}
+        return args, {"repair_of": None, "raw": raw,
+                      "problems": submission_problems(raw) if isinstance(raw, dict) else []}
+
+    def _after_submission(self, res: dict, gate: dict) -> dict:
+        from .ai.contract import repair_schemas, submission_problems
+        if gate["repair_of"] is not None:                         # the one repair: the merged set is staged
+            first = gate["repair_of"]
+            self._repair = None
+            left = submission_problems(gate["raw"])
+            self._mark_superseded(first, res)
+            return {**res, "repair_of": first["run_id"], "repair_merge": gate["merge"],
+                    "still_failing": left,
+                    "note": ("the repair is merged into the first submission (the other items stand as first "
+                             "submitted) and staged as this run; it supersedes " + first["run_id"]
+                             + (". An item still failing its schema is invalid with its errors: no further repair"
+                                if left else ""))}
+        probs = gate["problems"]
+        if not probs:
+            return res
+        if self._repairs() <= 0:
+            return {**res, "still_failing": probs,
+                    "note": "items whose payload fails its schema are invalid with their errors (no repair left)"}
+        self.repairs_left -= 1
+        ids = {str(p["id"]) for p in probs if p.get("id") is not None}
+        idx = {p["index"] for p in probs if p.get("index") is not None and p.get("id") is None}
+        self._repair = {"run_id": res.get("run_id"), "staging": res.get("staging"), "raw": gate["raw"], "ids": ids,
+                        "indices": idx}
+        self._log(tool="submission_repair_asked", run_id=res.get("run_id"), problems=probs)
+        return {**res, "repair": {
+            "tries_left": 1, "problems": probs, "schemas": repair_schemas(probs),
+            "how": ("Your submission is staged as it is (" + str(res.get("run_id")) + "); the items and statements "
+                    "listed fail their FULL schema (given here). Correct ONLY those and call submit_proposals ONCE "
+                    "more with proposal_set {addendum, state, statements: the corrected statements only, items: the "
+                    "corrected items only, with the same ids}. Every other item stands exactly as first submitted (a "
+                    "resent sibling is ignored). This is the one repair: an item still failing after it stays invalid "
+                    "with its errors.")}}
+
+    def _mark_superseded(self, first: dict, res: dict) -> None:
+        try:
+            d = Path(first.get("staging") or "")
+            if d.is_dir():
+                (d / "superseded.json").write_text(json.dumps(
+                    {"superseded_by": res.get("run_id"), "staging": res.get("staging"),
+                     "why": "the submission gate's one repair of the items whose payload failed its schema; the other "
+                            "items are carried over unchanged"}, ensure_ascii=False, indent=1), encoding="utf-8")
+        except OSError as e:
+            self._log(tool="submission_repair", superseded_marker_error=str(e))
 
     def _record_submission(self, res: dict) -> None:
         """Session 13: the submission's run id, status and staging folder written to `submission_record` (a temporary
@@ -206,14 +298,17 @@ class Server:
 
 
 def serve(ws, stdin=None, stdout=None, *, tools=None, submit_once: bool = False, require_crops=(),
-          submission_record=None) -> int:
+          submission_record=None, addendum_scope=None) -> int:
     from .ai.runlog import RunLog
     stdin = stdin or sys.stdin
     out = stdout or sys.stdout
+    # session 14 (W5): a quick review's server serves its NEW addendum's pages (get_addendum_page) from this scope file
+    ws.addendum_scope = str(addendum_scope) if addendum_scope else None
     session = f"mcp-{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}"
     log = RunLog(session, [Path(ws.worklog) / f"{session}.jsonl"])
     log.event("mcp_start", evidence=str(ws.evidence), pack=str(ws.pack), staging=str(ws.staging),
-              tools=tools if tools is not None else "all", submit_once=submit_once, require_crops=list(require_crops))
+              tools=tools if tools is not None else "all", submit_once=submit_once, require_crops=list(require_crops),
+              addendum_scope=ws.addendum_scope)
     srv = Server(ws, log, tools=tools, submit_once=submit_once, require_crops=require_crops,
                  submission_record=submission_record)
     for line in stdin:

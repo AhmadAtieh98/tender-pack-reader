@@ -18,6 +18,8 @@ class HostProvider:
     paid = False
 
     def __init__(self, model: str | None = None):
+        from ..offline import check_adapter
+        check_adapter("host")                       # session 14 (W6): offline mode, also when built directly
         self.model = model or "undeclared"
 
     def capabilities(self) -> Capabilities:

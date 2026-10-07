@@ -9,3 +9,5 @@
 - Read targets as they stand before this addendum: get_unit(unit_id, stage=<previous_stage>); quote that text.
 - A no_effect disposition on words that amend, oblige or except never verifies: a printed change needs its op; otherwise quote, in the reason, the words that show it changes nothing (a person confirms it).
 - A free-standing provision (an obligation of the addendum's own that amends no volume unit) is answered by a row_new whose primary unit is that provision's own unit id (the register holds rows on addendum units), introduced at this addendum, with its consequence quoted; it is never escalated for want of a cited unit.
+- Every payload follows its full schema in `payload_schemas` (a row_new's `row` is a register.Row: `scope` a list, `discipline`, `confidence` and `confidence_reason` given, a `consequence` an object or "none_stated"); check items with validate_proposal.
+- A fact quotes its evidence verbatim (a fact with empty evidence is refused); dependencies name units, rows, ops or ids of this set's items and statements, never an issue or a question for a change, and never in a cycle.

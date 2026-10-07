@@ -13,7 +13,9 @@ What it forces:
   * every code path that would start a host session (`claude -p`: HostSession, AnswerSession, PlainSession, the host
     critic, the host repair) or build an anthropic / openrouter adapter raises OfflineError (a ConfigError) BEFORE
     the process or the connection: `check_route` is called by providers.make, the host sessions' constructors and the
-    workflow. There is no silent fallback anywhere: a phase that cannot run locally is refused, escalated or recorded
+    workflow. Session 14: also by each hosted adapter's own constructor (`check_adapter`), and the HTTP layer refuses
+    any non-loopback address in an offline process (`check_http`), so an adapter built directly cannot reach a hosted
+    endpoint either. There is no silent fallback anywhere: a phase that cannot run locally is refused, escalated or recorded
     as skipped with its reason.
   * the Ollama base URL must be a loopback address (127.0.0.1, ::1, localhost); another host is refused.
   * the critic uses `routes.ollama.models.critic` (it may be the same model as `propose`); when none is configured,
@@ -118,6 +120,21 @@ def check_host_session(cfg: dict | None, what: str) -> None:
         raise OfflineError(CRITIC_REFUSAL)
     raise OfflineError(f"offline mode ({(cfg or {}).get(OFFLINE_KEY) or 'on'}): {what} would start a host session "
                        "(claude -p, a connected coding host); no host process is started")
+
+
+def check_adapter(route: str) -> None:
+    """Session 14 (W6): the guard in every hosted adapter's constructor (AnthropicProvider, OpenRouterProvider,
+    HostProvider). providers.make checks the loaded config first; this one holds when an adapter is built directly in
+    a process where offline mode is switched on by TENDERPACK_OFFLINE (the launcher, checks.sh, the panel's jobs)."""
+    check_route(None, route, f"building a {route} adapter")
+
+
+def check_http(url: str) -> None:
+    """Session 14 (W6): the last line, in the HTTP layer every adapter shares (providers.base.http_json): in an offline
+    process a request to anything but a loopback address is refused BEFORE the name is resolved or a connection made."""
+    if active(None) and not is_loopback(url):
+        raise OfflineError(f"offline mode ({ENV}={os.environ.get(ENV)}): {urlparse(url).scheme}://"
+                           f"{urlparse(url).hostname} is not a loopback address; no request leaves this machine")
 
 
 def check_run_route(cfg: dict, route: str) -> None:

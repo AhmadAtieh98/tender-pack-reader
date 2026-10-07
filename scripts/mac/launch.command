@@ -86,6 +86,16 @@ said() {   # $1 exit code, $2 what exit 3 / 5 mean for this command
     *) echo "(exit $1: see the messages above; RECOVERY.md says what to do)" ;;
   esac
 }
+run_said() {   # session 14 (W6): $1 exit code, $2 run id. An exit code of 0 is not success: the checkpoint says
+  # whether the run is complete, PARTIAL, waiting or failed (scripts/mac/levels.py, level 3)
+  echo
+  if [ -f "$ROOT/staging/ai/runs/$2/checkpoint.json" ]; then
+    "$PY" scripts/mac/levels.py workflow "$ROOT/staging/ai/runs/$2" "$1"
+    echo "(review packet: $ROOT/staging/ai/runs/$2/review/index.md when written; $PY -m tenderpack ai run-status $2)"
+  else
+    said "$1" "refused before the run started (the message above says why)"
+  fi
+}
 live_run() {   # prints "run_id|route|pid|state" for a live lock on the addendum, or nothing
   "$PY" -c '
 import sys, time
@@ -139,12 +149,16 @@ while true; do
          fi
          echo "note: an earlier run on $ADD ($LRUN) left a stale lock ($LWHY); a new run takes it over if its process is gone, else see RECOVERY.md"
        fi
+       RID="$ADD-run-$MODE-$(date -u +%Y%m%dT%H%M%SZ)"
        if [ "$MODE" = "offline" ]; then
-         "$PY" -m tenderpack ai run "$ADD" --pdf "$PDFP" --offline; said $? "refused"
+         "$PY" -m tenderpack ai run "$ADD" --pdf "$PDFP" --offline --run-id "$RID"
+         RC=$?
        else
          read -r -p "route [host]: " RT || exit 0
-         "$PY" -m tenderpack ai run "$ADD" --pdf "$PDFP" --route "${RT:-host}"; said $? "refused"
-       fi ;;
+         "$PY" -m tenderpack ai run "$ADD" --pdf "$PDFP" --route "${RT:-host}" --run-id "$RID"
+         RC=$?
+       fi
+       run_said "$RC" "$RID" ;;
     7) if ! has_panel; then echo "tenderpack panel is not in this version."; continue; fi
        PORT="${TENDERPACK_PANEL_PORT:-0}"
        if [ "$PORT" != "0" ] && ! "$PY" -c 'import socket, sys; s = socket.socket(); s.bind(("127.0.0.1", int(sys.argv[1])))' "$PORT" >/dev/null 2>&1; then

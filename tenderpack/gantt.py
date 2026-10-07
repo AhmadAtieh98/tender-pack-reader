@@ -518,6 +518,11 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
                     L.text(x(ef) + dw + 2, bt + bh * 0.9, f"{fl} WD", fs - 0.6, CRIT, True)
             if a.get("gated_by") and ls:
                 L.diamond(x(ls), y + rh * 0.75, min(3.4, rh * 0.32), WARN, INK2)
+            dn = _d(a.get("decision_needed_by"))
+            if a.get("open_decisions") and not a.get("gated_by") and dn and ls and lf:
+                # session 14 (W4; report section 9 G7): the bar is the preparation; this amber tick on the late window
+                # is the day the finalisation needs the person's decision by (no gate unless the owner turns one on)
+                L.line(x(dn) + dw / 2, y + rh * 0.58, x(dn) + dw / 2, y + rh * 0.92, WARN, 1.4)
             ask = _d(a.get("ask_by"))
             if (a.get("gated_by") or _route_shown(a)) and ask:   # session 11: the last day to decide whether to ask
                 r_ = min(3.4, rh * 0.32)
@@ -538,6 +543,7 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
              ("crit", "INFEASIBLE: negative float, shortfall in WD (never compressed)"),
              ("gate", "GATED: finalise by (latest start)"),
              ("ask", "ask by: last day to decide whether to raise a clarification request"),
+             ("decide", "OPEN DECISION: finalisation needs it by (bar = preparation)"),     # session 14 (W4)
              ("over", "OVERLOAD: role over capacity that day"),
              ("cond", "CONDITIONAL / not scheduled (late window only)"), ("nonwork", "non-working day"),
              ("today", "planning date"), ("mile", "pack milestone")]
@@ -566,6 +572,8 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
             L.diamond(lx + 8, yy + 2.5, 3.2, WARN, INK2)
         elif kind == "ask":
             L.poly([(lx + 8, yy - 0.7), (lx + 11.2, yy + 2.5), (lx + 8, yy + 5.7), (lx + 4.8, yy + 2.5)], SURFACE, WARN, 0.9)
+        elif kind == "decide":
+            L.line(lx + 8, yy - 0.5, lx + 8, yy + 5.5, WARN, 1.4)
         elif kind == "over":
             L.triangle(lx + 8, yy + 2.5, 2.8, SERIOUS)
         elif kind == "cond":
@@ -737,7 +745,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
     width = int(-(-PAGE_W * HTML_MIN_FONT_PX // smallest)) if smallest < HTML_MIN_FONT_PX else int(PAGE_W)
     rows = []
     for gname, acts in _groups(prog):
-        rows.append(f'<tr class="g"><td colspan="16">{esc(gname)} ({len(acts)})</td></tr>')
+        rows.append(f'<tr class="g"><td colspan="18">{esc(gname)} ({len(acts)})</td></tr>')
         for a in acts:
             rows.append("<tr>" + "".join(f"<td>{v}</td>" for v in (
                 f"<b>{esc(a['id'])}</b>" + (f" x{a['count']}" if a.get("count", 1) != 1 else ""),
@@ -745,6 +753,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
                 esc(a.get("earliest_start")), esc(a.get("earliest_finish")),
                 esc(a.get("latest_start")), esc(a.get("latest_finish")), esc(a.get("float_wd")), esc(a["status"]),
                 esc(a.get("decision_status")),
+                esc(a.get("preparation") or "-"), esc(a.get("finalisation") or "-"),     # session 14 (W4)
                 esc((", ".join(a.get("clarification_questions") or []) + (f" (ask by {a['ask_by']})" if a.get("ask_by")
                                                                          else "")) or "-"),
                 esc(a.get("resource_status")),
@@ -769,6 +778,10 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
               "questions column lists every activity's).",
               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
+              "Preparation and finalisation are two states (session 14): the bar is the preparation, which can start on "
+              "its earliest start once its inputs are done; an amber tick on the late window of an OPEN DECISION row "
+              "marks the date its finalisation needs the person's decision by (decision_needed_by). Both are in full in "
+              "the Preparation and Finalisation columns below and in programme.csv.",
               "OPEN DECISION (n): n open issues of the rows the activity carries are a person's decision with none "
               "recorded (HUMAN DECISION PENDING); each is named with its wording and owner in the Flags column. Not a "
               "gate unless planning.gate_on_open_decisions is on (then the decision status reads REVIEW (open decision)).",
@@ -797,6 +810,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
             "<h2>Rows (every A1 requirement id)</h2><table><tr><th>Activity</th><th>A1 requirement ids</th>"
             "<th>Predecessors</th><th>ES</th>"
             "<th>EF</th><th>LS</th><th>LF</th><th>Float (WD)</th><th>Timing</th><th>Decision</th>"
+            "<th>Preparation (can its work start?)</th><th>Finalisation (does it need a decision?)</th>"
             "<th>Clarification questions (drafted, not sent)</th><th>Resource</th>"
             "<th>Duration / effort</th><th>Waits on</th><th>Role</th><th>Flags</th></tr>" + "".join(rows) + "</table>"
             "<h2>Milestones</h2><table><tr><th>Date</th><th>Milestone</th><th>Source</th><th>Kind</th></tr>"

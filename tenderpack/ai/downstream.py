@@ -67,6 +67,7 @@ import yaml
 from pydantic import ValidationError
 
 from .. import amend, clarify, schedule
+from .. import partial as P
 from .. import human_owned as H
 from ..amend import Disposition, Op, OpFile
 from ..citations import citations, resolve
@@ -115,6 +116,10 @@ def promoted_ops(ws: Workspace, ps) -> dict:
     for it in ps.items:
         if it.verification_status not in PROMOTABLE:
             continue
+        if getattr(it, "ready", None) is False:        # session 14 (W2, consuming W1's controller-written readiness)
+            dropped[it.id] = ("not ready: promotion waits while " + "; ".join(getattr(it, "blocked_by", None) or
+                                                                             ["an item it relies on is not ready"]))[:600]
+            continue
         try:
             if it.statement_type == "amendment_op":
                 p = {**it.payload, "provision": it.provision, "origin": "assistant", "review": "proposed", "reviewer": None}
@@ -158,9 +163,45 @@ def not_promoted_reason(it) -> str:
     if it.statement_type in CARRIED:
         return (f"an analysis {it.statement_type} is not promoted from the analysis set (it promotes ops and "
                 f"dispositions only): carried to the downstream task keyed to {it.provision} as an UNVERIFIED reference")
+    if it.statement_type == "issue":             # session 14 (W2; blind-07 defect 8)
+        return ("an analysis issue is not an op or a disposition: it is written into the candidate's register as a "
+                f"PROPOSED issue ({analysis_issue_id(it)}; HUMAN DECISION PENDING) and its possible effects get a "
+                "conditional downstream task")
     return (f"an analysis {it.statement_type} is not promoted (the analysis set promotes ops and dispositions only): "
             "listed for a person in the review packet with its evidence; the downstream phase proposes issues and "
             "clarification entries against the candidate")
+
+
+def analysis_issue_id(it) -> str:
+    """The register id a promotable analysis issue is written under: its own `id` when it gives one, else
+    I-<ADDENDUM>-<provision>-<item> in capitals (session 14)."""
+    own = str((it.payload or {}).get("id") or "")
+    if re.fullmatch(r"I-[A-Z0-9][A-Z0-9-]*", own):
+        return own
+    loc = str(it.provision or "").split(":", 1)[-1]
+    tail = str(it.id).rsplit("/", 1)[-1] if "/" in str(it.id) else "ISSUE"
+    return "I-" + re.sub(r"[^A-Z0-9]+", "-", f"{it.provision.split(':')[0]} {loc} {tail} ANA".upper()).strip("-")
+
+
+def analysis_issues(ps, win: dict | None = None) -> dict[str, dict]:
+    """Session 14 (W2; blind-07 defect 8): every promotable analysis issue as a PROPOSED register issue: its words, its
+    provision and item, the owner the proposer named (else the Bid manager), never a decision (promotion marks it
+    HUMAN DECISION PENDING: an issue is human-owned by type). After the clarification cut-off (`win` closed), an issue
+    whose words suggest a clarification carries `clarification_route: bid decision (window closed <date>)`."""
+    out: dict[str, dict] = {}
+    for it in ps.items:
+        if it.statement_type != "issue" or it.verification_status not in PROMOTABLE:
+            continue
+        p = dict(it.payload or {})
+        iid = analysis_issue_id(it)
+        route = window_route(H.prose(p), win)
+        out[iid] = {"text": f"PROPOSED by the analysis phase ({it.id}, {it.provision}; {it.verification_status}): "
+                            + str(p.get("text") or "") + (f" [clarification route: {route}]" if route else ""),
+                    "owner": str(p.get("owner") or "Bid manager"), "source": f"AI workflow analysis ({it.id})",
+                    "rows": [], "show_in_a3": False,
+                    **({"short": p["short"]} if p.get("short") else {}), **({"theme": p["theme"]} if p.get("theme") else {}),
+                    **({"clarification_route": route} if route else {})}
+    return out
 
 
 def carry_analysis_rows(ps, out: list[dict], promoted: dict, evals2: dict, prev: str, addendum: str) -> None:
@@ -311,13 +352,253 @@ def tasks(ws: Workspace, ps, promoted: dict, provision_status: dict[str, dict]) 
         if st.get("needs_person"):
             out.append({"id": f"esc:{pid}", "kind": "escalation", "provision": pid, "status": st.get("why"),
                         "scope": scope_of(ws, r2, addendum, pid)})
+    out += conditional_tasks(ws, ps, promoted, provision_status, r2, addendum)       # session 14 (W2): defects 7-9
+    out += obligation_tasks(ws, promoted, r2, addendum, out)                          # session 14 (W2): defect 9
     out += [t_ for t_ in reread_tasks(r2, addendum) if t_["id"] not in {x["id"] for x in out}]   # session 12
     out += DT.tasks(ws, r2, addendum, out)   # session 12 (W3b): pending readings, computed dates, conditions, consequences
+    for t_ in out:                       # session 14 (W2; blind-07 defect 16): a new row comes with its deliverables
+        if t_["kind"] in ROW_MAKING:
+            t_["needs"] = NEEDS
     win = window_fields(r2, addendum)                    # session 12: the closed clarification route, said on each
     for t_ in out:
-        if win and t_["kind"] in ("escalation", "clarification_item"):
+        # session 14 (W2; blind-07 defect 13): only where a clarification would have been the route (an ambiguity, a
+        # missing document, a question to the Authority), never on a software limitation or a schema failure
+        if win and (t_["kind"] == "clarification_item" or (t_["kind"] in ("escalation", "conditional_impact")
+                                                            and route_class(t_.get("status") or t_.get("why")) !=
+                                                            "software")):
             t_.update(win)
     return out, imp
+
+
+# session 14 (W2; blind-07 defect 13): route_class / window_route live in tenderpack.partial (the candidate A3 uses them)
+route_class, window_route = P.route_class, P.window_route
+
+
+# ---------------------------------------------------------------------------------------------- session 14 (W2)
+# Conditional impact investigations (blind-07 defects 7, 8, 9): downstream tasks came only from valid ops, escalations
+# and readings, so when ops failed the indirect analysis disappeared without a warning, an unresolved change suppressed
+# its possible impacts, and analysis issues made no task. Now every change that is NOT applied keeps a downstream task,
+# labelled CONDITIONAL: a provision left unresolved (a promoted `unresolved` disposition, items that failed validation
+# or the dry run, an escalation), every failed op (whatever its siblings did), every item W1's readiness marks blocked
+# (`blocked_by`), and every promotable analysis issue. The ONE data shape (agreed for the coordinator; W3's conditional
+# investigations of blocked ops and pending readings can use it):
+#   {id: "impact:<section or provision>", kind: "conditional_impact", conditional: True, accepted: False,
+#    label: "CONDITIONAL impact investigation: ... never an accepted fact",
+#    provisions: [...], items: [{provision, basis: unresolved | failed op | blocked | analysis issue | escalation |
+#                                "<W3 kind> <state>", why, conditional_on: {kind, ref, state, why} (W3's shape),
+#                                item?, statement_type?, status?, blocked_by?, ready?, units?, payload? (UNVERIFIED)}],
+#    conditional_on: [the items' conditional_on], scope: {cited, units, rows, activities, clarifications, prices}
+#    (scope_of, merged; an engine impact's units add the rows citing them), expect: "..."}
+# W3's derived.conditional_impacts(r, stage) entries {id: impact:<ref>, provision, conditional_on, units, investigate,
+# accepted: false} are read when the tree has that function (_engine_impacts) and join the task of their section.
+# An item answering it is never a row, a reading, an activity or an evidence item (nothing is in force), is at most
+# interpretation_pending, and is promoted as CONDITIONAL (an issue's text says what it rests on; a relationship is
+# `possible`). Obligation tasks (`oblig:<op>`): a unit or obligation an op adds has no curated relationships, so the
+# task names the units, rows and earlier answers that share its defined terms (a hint, nothing decided).
+COND_PREFIX = "impact:"
+# session 14 (W2; blind-07 defect 16): the run's own new rows failed check-register (no evidence item, blank evidence
+# needed, no activity) because downstream proposed neither; every task that makes rows now asks for them
+ROW_MAKING = ("row_new", "computed_date", "reading_rows")
+NEEDS = ("each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new "
+         "`evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new "
+         "`activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; "
+         "a contractual_post_award row states its `post_award_evidence`. A row without them is reported by "
+         "check-register as a downstream gap")
+_COND_EXPECT = ("investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: "
+                "unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through "
+                "relationships, programme and pricing effects. Propose issues, relationships and escalations that say "
+                "CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a "
+                "reading, an activity or an evidence item (nothing here is in force); the items' payloads are "
+                "UNVERIFIED references")
+CONDITIONAL_NOT = ("row_new", "row_reading", "activity", "evidence_item")
+
+
+def _readiness(it) -> tuple[list, object]:
+    """W1's controller-written readiness of an analysis item: (`blocked_by`, `ready`); `ready` is None when the
+    controller did not compute it (a set validated before session 14), False when the item waits on another."""
+    bb = getattr(it, "blocked_by", None) or []
+    rd = getattr(it, "ready", None)
+    return (list(bb) if isinstance(bb, (list, tuple, set)) else [bb]), rd
+
+
+def conditional_tasks(ws: Workspace, ps, promoted: dict, provision_status: dict, r2: dict, addendum: str) -> list[dict]:
+    """The conditional impact investigations (see above), one per section of the addendum."""
+    order = [u["unit_id"] for u in ws.r["units"]]
+    st2 = _stage(r2, addendum).state
+    groups: dict[str, list[dict]] = {}
+
+    def section(pid: str) -> str:
+        try:
+            return amend.heading_of(order, st2, pid) or pid
+        except (KeyError, ValueError):
+            return pid
+
+    def add(pid: str, rec: dict) -> None:
+        g = groups.setdefault(section(pid), [])
+        if rec not in g:
+            g.append(rec)
+    by_prov: dict[str, list] = {}
+    for it in ps.items:
+        by_prov.setdefault(it.provision, []).append(it)
+    for pid, st in provision_status.items():
+        mine = by_prov.get(pid) or []
+        carried_only = bool(mine) and all(it.statement_type in CARRIED and it.verification_status in PROMOTABLE
+                                          for it in mine)          # its row rides on a row task already
+        if not st.get("answered") and not st.get("partly") and not st.get("carried") and not carried_only:
+            kind, ref = ("disposition", st["accounted_by"]) if st.get("accounted_by") else ("provision", pid)
+            add(pid, {"provision": pid, "basis": "unresolved", "why": _short(st.get("why"), 400),
+                      "conditional_on": _cond(kind, ref, st.get("state") or "unresolved", st.get("why"))})
+    dropped = promoted.get("dropped") or {}
+    for it in ps.items:
+        bb, rd = _readiness(it)
+        blocked = bool(bb) or rd is False
+        failed = it.statement_type == "amendment_op" and (it.verification_status not in PROMOTABLE
+                                                         or (it.id in dropped and it.id not in promoted["ops"]))
+        if blocked or failed:
+            why = dropped.get(it.id) or next((f"{x.check}: {_short(x.detail, 200)}" for x in it.validation or []
+                                              if not x.ok), it.verification_status)
+            if blocked:
+                why = "blocked: " + "; ".join(bb or ["an item it relies on is not ready"]) + f" ({_short(why, 160)})"
+            add(it.provision, {"provision": it.provision, "basis": "blocked" if blocked else "failed op", "item": it.id,
+                               "statement_type": it.statement_type, "status": it.verification_status,
+                               "why": _short(why, 300), **({"blocked_by": bb} if bb else {}),
+                               **({"ready": rd} if rd is not None else {}),
+                               "conditional_on": _cond("op" if it.statement_type == "amendment_op" else it.statement_type,
+                                                       it.id, "held" if blocked else "invalid", why),
+                               "payload": copy.deepcopy(dict(it.payload or {})), "reference": UNVERIFIED_REF})
+        elif it.statement_type == "issue" and it.verification_status in PROMOTABLE:
+            add(it.provision, {"provision": it.provision, "basis": "analysis issue", "item": it.id,
+                               "issue": analysis_issue_id(it), "why": _short((it.payload or {}).get("text"), 400),
+                               "conditional_on": _cond("issue", it.id, "proposed", (it.payload or {}).get("text")),
+                               "payload": copy.deepcopy(dict(it.payload or {})), "reference": UNVERIFIED_REF})
+        elif it.statement_type == "escalation":
+            why = f"{(it.payload or {}).get('why')}; unsupported: {(it.payload or {}).get('what_is_unsupported')}"
+            add(it.provision, {"provision": it.provision, "basis": "escalation", "item": it.id, "why": _short(why, 400),
+                               "conditional_on": _cond("escalation", it.id, "escalated", why),
+                               "payload": copy.deepcopy(dict(it.payload or {})), "reference": UNVERIFIED_REF})
+    # W3's engine-side investigations (derived.conditional_impacts, session 14), when the merged tree has them: each
+    # joins the task of its provision's section, its units mapped to rows, activities and prices below
+    have_prov = {rec.get("provision") for g in groups.values() for rec in g}
+    for x in _engine_impacts(r2, addendum):
+        c = x.get("conditional_on") or {}
+        pid = x.get("provision") or c.get("ref") or "?"
+        rec = {"provision": x.get("provision") or c.get("ref"), "basis": _basis_of(c.get("kind"), c.get("state")),
+               "item": x.get("id"), "why": _short(c.get("why") or x.get("investigate"), 400), "units": x.get("units") or [],
+               "conditional_on": _cond(c.get("kind"), c.get("ref"), c.get("state"), c.get("why")),
+               "investigate": x.get("investigate")}
+        if pid in have_prov:
+            # session 14 (merge of W2 and W3): the workflow's own record of this provision stands (its basis in the one
+            # vocabulary); the engine's investigation only adds the units it reaches and its own reason
+            for g in groups.values():
+                for r0 in g:
+                    if r0.get("provision") == pid:
+                        r0["units"] = sorted(set(r0.get("units") or []) | set(rec["units"]))
+                        r0.setdefault("engine", []).append({k: rec[k] for k in ("item", "why", "investigate", "conditional_on")})
+            continue
+        add(pid, rec)
+    out = []
+    rows_by_id = {e["row"].id: e["row"] for e in r2["evals"]}
+    for sec, recs in groups.items():
+        provs = list(dict.fromkeys(x["provision"] for x in recs if x.get("provision")))
+        scopes = [scope_of(ws, r2, addendum, p) for p in provs]
+        extra = sorted({u for x in recs for u in x.get("units") or []})
+        scope = {k: sorted({v for sc in scopes for v in sc.get(k) or []})[:80] for k in
+                 ("cited", "units", "rows", "activities", "clarifications")}
+        if extra:                                   # an engine impact's units: the rows citing them and their work
+            scope["units"] = sorted(set(scope["units"]) | set(extra))[:80]
+            scope["rows"] = sorted(set(scope["rows"]) | {e["row"].id for e in r2["evals"]
+                                                         if set(e["row"].units) & set(extra)})[:80]
+        scope["prices"] = sorted(r_ for r_ in scope["rows"] if _PRICE_RX.search(
+            " ".join([rows_by_id[r_].requirement or "", " ".join(rows_by_id[r_].scope or [])]) if r_ in rows_by_id
+            else ""))
+        bases = sorted({x["basis"] for x in recs})
+        out.append({"id": f"{COND_PREFIX}{sec}", "kind": "conditional_impact", "conditional": True, "accepted": False,
+                    "label": f"CONDITIONAL impact investigation ({', '.join(bases)}): {', '.join(provs[:6])}"
+                             + (" …" if len(provs) > 6 else "") + "; never an accepted fact",
+                    "provisions": provs, "items": recs, "conditional_on": [x["conditional_on"] for x in recs],
+                    "scope": scope, "status": "; ".join(x["why"] for x in recs)[:1200], "expect": _COND_EXPECT})
+    return out
+
+
+_PRICE_RX = re.compile(r"pric|tariff|availability payment|form 4-f|financ|commercial|cost|payment", re.I)
+
+
+_BASIS = {("disposition", "unresolved"): "unresolved", ("op", "invalid"): "failed op", ("op", "held"): "blocked",
+          ("condition", "held"): "blocked", ("provision", "unaccounted"): "unaccounted",
+          ("reading", "pending_reading"): "pending reading"}
+
+
+def _basis_of(kind, state) -> str:
+    """One vocabulary for a task's bases (session 14, the merge of W2 and W3): the engine's (kind, state) pairs read
+    as the workflow's own bases (unresolved | failed op | blocked | unaccounted | pending reading); an unknown pair
+    keeps 'kind state'."""
+    return _BASIS.get((kind, state), f"{kind} {state}")
+
+
+def _cond(kind, ref, state, why) -> dict:
+    """W3's `conditional_on` shape (derived.conditional_impacts): {kind, ref, state, why}; kinds here: op, disposition,
+    provision, issue, escalation (and W3's reading, condition); states: invalid, unresolved, unaccounted, held (blocked),
+    proposed (an issue), escalated, pending_reading."""
+    return {"kind": kind, "ref": ref, "state": state, "why": _short(why, 300)}
+
+
+def _engine_impacts(r2: dict, addendum: str) -> list[dict]:
+    """derived.conditional_impacts(r, stage) when the tree has it (W3, session 14); [] otherwise or on any error (the
+    workflow's own investigations above still stand)."""
+    from .. import derived as DV
+    fn = getattr(DV, "conditional_impacts", None)
+    if fn is None:
+        return []
+    try:
+        return [x for x in fn(r2, addendum) or [] if isinstance(x, dict) and not x.get("accepted")]
+    except Exception:                                            # noqa: BLE001 (a hint source; never breaks the tasks)
+        return []
+
+
+_TERM_RE = re.compile(r"(?<![A-Za-z])((?:[A-Z][a-z]+|[A-Z]{2,})(?:\s+(?:of\s+)?(?:[A-Z][a-z]+|[A-Z]{2,}))+)")
+_ADDS = ("insert_unit", "insert_row", "append_text", "replace_unit", "insert_table", "relocate_unit")   # + W3's types
+
+
+def defined_terms(text: str) -> list[str]:
+    """Capitalised multi-word terms of a text ('Scheduled PCOD', 'Geotechnical Baseline Report'), in order."""
+    return list(dict.fromkeys(m.group(1) for m in _TERM_RE.finditer(text or "")))
+
+
+def obligation_tasks(ws: Workspace, promoted: dict, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
+    """Session 14 (W2; blind-07 defect 9, SU1/SU3): one task per op that adds a unit or an obligation: a new unit has no
+    curated relationships, so nothing followed from it. The task names the units, rows and earlier answers (any stage
+    before) that share its defined terms, as a HINT for the proposer (nothing is decided by the overlap)."""
+    have = {t["id"] for t in existing}
+    prev = ws.prev_stage(addendum)
+    stp = _stage(r2, prev).state
+    sim = {o["id"]: o for o in promoted["sim"]["ops"]}
+    units = [u for u in stp.values() if u.status == "active" and u.text]
+    n_units = max(1, len(units))
+    out = []
+    for o in promoted["ops"].values():
+        if not (o.type in _ADDS or o.effect == "adds_obligation"):
+            continue
+        tid = f"oblig:{o.id}"
+        if tid in have:
+            continue
+        text = " ".join([(ws.units_by_id.get(o.provision) or {}).get("text") or "", o.new_text or "", o.new or ""])
+        terms = []
+        for t in defined_terms(text):
+            n = sum(1 for u in units if t in u.text)
+            if 0 < n <= max(3, n_units // 20):             # a term every other clause uses (the Authority) is no hint
+                terms.append(t)
+        hit = sorted({u.unit_id for u in units for t in terms if t in u.text})[:40]
+        rows = sorted({e["row"].id for e in r2["evals"] if set(e["row"].units) & set(hit)})[:30]
+        answers = [h for h in hit if re.search(r":Q\d+$", h)][:12]
+        out.append({"id": tid, "kind": "obligation_impact", "op": o.id, "provisions": [o.provision],
+                    "units_changed": (sim.get(o.id) or {}).get("changed", []), "terms": terms[:12],
+                    "related": {"units": hit, "rows": rows, "answers": answers},
+                    "expect": ("this op adds a unit or an obligation that no curated relationship reaches: find what it "
+                               "bears on (rows and dates that use its terms, earlier answers it qualifies, programme and "
+                               "pricing effects; `related` lists the units, rows and answers sharing its defined terms, a "
+                               "hint only); propose relationships (proposed), re-made readings, issues or escalations, "
+                               "or `no_change` with a verbatim quotation")})
+    return out
 
 
 def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, total: int, state: dict) -> dict:
@@ -339,6 +620,10 @@ def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, tota
             ids += [t["provision"]] + t["scope"]["units"][:20]
         elif t["kind"] in DT.KINDS:                       # session 12 (W3b)
             ids += DT.packet_units(t)
+        elif t["kind"] == "conditional_impact":           # session 14 (W2)
+            ids += list(t.get("provisions") or []) + list((t.get("scope") or {}).get("units") or [])[:20]
+        elif t["kind"] == "obligation_impact":            # session 14 (W2)
+            ids += list(t.get("units_changed") or []) + list((t.get("related") or {}).get("units") or [])[:20]
         ids += t.get("provisions") or []
     units_after = {}
     for uid in dict.fromkeys(i for i in ids if i):
@@ -664,6 +949,18 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             else:
                 rec(i, "no_change", True, f"{it.task} needs nothing, says the proposer: a person confirms it")
                 F[i]["interp"].append("no change")
+    # session 14 (W2): an item answering a CONDITIONAL impact investigation rests on a change that is not applied (or on
+    # a proposed issue): never a row, a reading, an activity or an evidence item, and at most interpretation_pending
+    for i, it in enumerate(ds.items):
+        if task_kind.get(it.task) == "conditional_impact" or str(it.task or "").startswith(COND_PREFIX):
+            if it.statement_type in CONDITIONAL_NOT:
+                rec(i, "conditional", False, f"{it.task} is a CONDITIONAL impact investigation (the change it reads is "
+                                             f"not applied): a {it.statement_type} would be in force; propose an issue, "
+                                             "a relationship, an escalation or no_change", "invalid")
+            elif it.statement_type != "escalation":
+                rec(i, "conditional", True, f"answers the CONDITIONAL impact investigation {it.task}: promoted as "
+                                            "conditional, never an accepted fact")
+                F[i]["interp"].append("conditional")
     # session 12 (W3b): rows resting on a pending reading (conditional_on), computed milestones, derived consequences
     DT.validate_items(ws, ds, F, r2, addendum, rec, rows, provisions)
     proposed_rows = {F[i]["pl"].row["id"]: i for i, it in enumerate(ds.items)
@@ -933,6 +1230,26 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         it.validation, it.verification_status = f["recs"], s
     held = _closure(ds, F, rows, evidence, issues, acts_existing, templates)
     report["held_back"] = held
+    # session 14 (W2; blind-07 defect 16): a new row with no evidence item, no activity for it and no reason: reported
+    # (the row stays; check-register will name it), so a person sees the downstream gap, not a register defect
+    ev_new = {F[j]["pl"].id for j, x in enumerate(ds.items) if x.statement_type == "evidence_item" and F[j]["pl"] is not None}
+    act_rows = {r_ for j, x in enumerate(ds.items) if x.statement_type == "activity" and F[j]["pl"] is not None
+                for r_ in (F[j]["pl"].rows or [])}
+    report["deliverable_gaps"] = {}
+    for i, it in enumerate(ds.items):
+        if it.statement_type != "row_new" or F[i]["pl"] is None or it.verification_status == "invalid":
+            continue
+        row = F[i]["pl"].row or {}
+        if (row.get("no_deliverable") or "").strip() or row.get("post_award_evidence"):
+            continue
+        evs = list(row.get("evidence") or [])
+        why = [] if evs else ["no evidence item"]
+        if evs and not any(e in ev_new or e in evidence for e in evs):
+            why.append("its evidence items are neither existing nor proposed")
+        if not any(templates.get(e) for e in evs) and row.get("id") not in act_rows:
+            why.append("no activity carries it")
+        if why:
+            report["deliverable_gaps"][row.get("id")] = "; ".join(why) + ": not proposed by the downstream phase"
     ds.status = "complete"
     return report
 
@@ -1406,6 +1723,12 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         elif partly_answered(unresolved_reason.get(p)):      # session 12 (follow-up 1): the promoted item stands,
             summary["unresolved"].append(p)                    # the escalated sibling keeps it unresolved
             summary["notes"].append(f"{p}: {unresolved_reason[p]} (the promoted item stands; the escalation is for a person)")
+    # session 14 (W2; blind-07 defect 7): a promoted `unresolved` disposition accounts for its provision but applies
+    # nothing: it is counted unresolved here too, so the op file, promotion.json, the packet and the candidate A3 agree
+    acc_unres = [d.provision for d in promoted["dispositions"].values() if d.disposition == "unresolved"
+                 and d.provision not in ({o.provision for o in ops} | {c for o in ops for c in o.covers} | content)]
+    summary["accounted_unresolved"] = sorted(set(acc_unres))
+    summary["unresolved"] += [p for p in summary["accounted_unresolved"] if p not in summary["unresolved"]]
     from .tools import _issued_from
     of = OpFile(addendum=addendum, issued_from=_issued_from(ws, addendum),
                 prepared_by=f"{origin}: every op PROPOSED; nothing accepted",
@@ -1484,11 +1807,32 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
     # ---- issues, evidence items
     iss = {it.payload["id"]: {k: v for k, v in it.payload.items() if k != "id" and v not in (None, False)}
            for it in items if it.statement_type == "issue"}
+    for it in items:                             # session 14 (W2): an answer to a conditional investigation says so
+        if it.statement_type == "issue" and str(it.task or "").startswith(COND_PREFIX) and it.payload["id"] in iss:
+            v = iss[it.payload["id"]]
+            if not str(v.get("text") or "").startswith("CONDITIONAL"):
+                v["text"] = (f"CONDITIONAL (rests on {it.task[len(COND_PREFIX):]}: a change not applied or a proposed "
+                             f"issue; not an accepted fact): {v.get('text')}")
+            v["conditional"] = True
     # session 12: the cover discrepancies the analysis validation retained, as PROPOSED issues naming both texts
     texts = {u["unit_id"]: u.get("text") or "" for u in ws.r["units"]}
     for k, v in controller.cover_issues(ps, texts, controller._provisions(ws, addendum)).items():
         iss.setdefault(k, v)
+    # session 14 (W2; blind-07 defect 8): the analysis phase's issues reach the candidate's register as PROPOSED issues
+    # (human-owned by type: HUMAN DECISION PENDING; the owner the proposer named, else the Bid manager; never a
+    # decision); after the clarification cut-off a suggested clarification reads as a bid decision
+    from ..clarify import window as _cwindow
+    try:
+        win_ = _cwindow(ws.r, addendum)
+    except Exception:                                            # noqa: BLE001 (no window: nothing to say)
+        win_ = None
+    summary["analysis_issues"] = []
+    for k, v in analysis_issues(ps, win_).items():
+        if k not in iss:
+            iss[k] = v
+            summary["analysis_issues"].append(k)
     owned = {it.payload["id"] for it in items if it.statement_type == "issue" and H.is_human_owned(it)}
+    owned |= set(summary.get("analysis_issues") or [])          # session 14: an analysis issue is human-owned by type
     for it in items:                             # session 12 (follow-up 12): a settled point, re-presented as applied
         _re_present(it, iss, ws, addendum)
     for k, v in iss.items():
@@ -1571,6 +1915,10 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         for it in deps:
             e = _relationship_entry(it, DependencyPayload.model_validate(it.payload), ws, origin="")
             e.pop("origin", None)
+            if str(it.task or "").startswith(COND_PREFIX):          # session 14 (W2): conditional, never confirmed
+                e["status"] = "possible"
+                e["note"] = (f"CONDITIONAL on {it.task[len(COND_PREFIX):]} (a change not applied): "
+                             + str(e.get("note") or "")).strip()
             entries.append(e)
         relp = rp("relationships", "curation/relationships.yaml")
         res = _append_relationships(relp, entries, f"workflow {run_id}")
@@ -1578,6 +1926,25 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         summary["relationships"] = res.get("appended", [])
         if res.get("skipped"):
             summary["notes"].append(f"relationships skipped: {res['skipped']}")
+    # ---- session 14 (W2; blind-07 defect 19): documents the addendum's own words refer to that the pack does not
+    # supply and no curated entry names: PROPOSED missing_document relationships, with the evidence
+    try:
+        refs = P.referenced_documents(ws.r, [addendum])
+    except Exception as e:                                       # noqa: BLE001 (reported, never blocks promotion)
+        refs = []
+        summary["notes"].append(f"documents referenced in {addendum}: not checked ({type(e).__name__}: {_short(e, 200)})")
+    if refs:
+        entries = [{"id": f"REL-{d['document_id']}", "from": d["from"], "to": d["to"], "kind": "missing_document",
+                    "status": "proposed", "basis": d["basis"], "evidence": d["evidence"], "document": d["document"],
+                    "document_id": d["document_id"], "blocks": d["blocks"]} for d in refs]
+        relp = rp("relationships", "curation/relationships.yaml")
+        try:
+            res = _append_relationships(relp, entries, f"workflow {run_id}")
+            written.append(f"{relp} ({res['how']})")
+            summary["referenced_documents"] = [d["document"] for d in refs]
+            summary["relationships"] = list(summary.get("relationships") or []) + list(res.get("appended") or [])
+        except ValueError as e:
+            summary["notes"].append(f"documents referenced in {addendum} not written: {_short(e, 300)}")
     summary["written"] = written
     return summary
 

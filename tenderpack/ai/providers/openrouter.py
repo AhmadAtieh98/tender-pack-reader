@@ -37,6 +37,8 @@ class OpenRouterProvider:
 
     def __init__(self, model: str, rcfg: dict, model_cfg: dict | None = None, env=os.environ, fetch=http_json,
                  allow_unverified: bool = False):
+        from ..offline import check_adapter
+        check_adapter("openrouter")                  # session 14 (W6): offline mode, before anything (also when built directly)
         self.model, self.rcfg, self.mcfg = model, rcfg, model_cfg or {}
         self.base_url = (rcfg.get("base_url") or "https://openrouter.ai/api/v1").rstrip("/")
         self.key_env = rcfg.get("api_key_env") or "OPENROUTER_API_KEY"

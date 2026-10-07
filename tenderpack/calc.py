@@ -13,6 +13,11 @@ bore a 7,500 m3/h flow needs at 1.5 m/s. Each is one of these methods:
   unit_conversion(value, to_unit, anchor_date, direction)   a fixed, small table only: m3/h <-> m3/s, mm <-> m,
                                              per cent <-> fraction, calendar days <-> Working Days (through the
                                              register's calendar, from an anchor date); nothing outside the table
+  relative_change(previous, change, direction)   session 14 (W3): a stated change of an amount ('reduced by SAR
+                                             1,000,000', 'increased by 10%'): the same unit -> previous +/- change; a
+                                             percentage of a figure in another unit -> previous x (1 +/- p/100); a
+                                             percentage of a percentage (points or relative?) and a result below zero
+                                             are left unresolved for a person
   approved_formula(formula, operands)        a named formula of the registry (config/formulas.yaml): its variables,
                                              units and source; evaluated by a safe evaluator over the registry's own
                                              expressions only (numbers, + - * / **, sqrt, ceil, floor, abs, min, max,
@@ -43,7 +48,8 @@ from pathlib import Path
 
 from .util import ROOT, load_yaml
 
-METHODS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula", "deadline")
+METHODS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula", "deadline",
+           "relative_change")
 REGISTRY = ROOT / "config/formulas.yaml"
 ROUNDING = {"none": "not rounded (exact; the pack states no rounding rule)",
             "up": "rounded up to a whole number", "down": "rounded down to a whole number",
@@ -340,6 +346,49 @@ def cap(cap, rate, resolve_source=None) -> dict:
                        rounding="not rounded; the period in which the cap is reached is ceil(count)")
     except CalcError as e:
         return _result(m, formula=formula, operands=ops, reason=str(e))
+
+
+# session 14 (W3): a relative change of an amount (blind-07 2.1, 'is reduced by SAR 1,000,000'; COMPARISON.md §8 item 6:
+# "not even a computed value is offered"). The previous value is the target's EFFECTIVE value before the op (the amend
+# engine passes it with its quote); the change is the provision's own words. Nothing is evaluated and nothing is typed.
+DIRECTIONS = {"increase": 1, "decrease": -1}
+
+
+def relative_change(previous, change, direction: str, resolve_source=None) -> dict:
+    m = "relative_change"
+    formula = "new = previous +/- change (same unit); new = previous x (1 +/- change / 100) (a percentage)"
+    ops: list[dict] = []
+    try:
+        if direction not in DIRECTIONS:
+            raise CalcError(f"direction must be one of {sorted(DIRECTIONS)}, not {direction!r}")
+        a = _operand("previous", previous, resolve_source)
+        ops.append(a)
+        c = _operand("change", change, resolve_source)
+        ops.append(c)
+        sign, word = DIRECTIONS[direction], ("+" if direction == "increase" else "-")
+        if c["value"] < 0:
+            raise CalcError(f"`{c['name']}` is negative; the direction carries the sign")
+        if c["unit"] == a["unit"] and not _is_percent(a["unit"]):
+            v = a["value"] + sign * c["value"]
+            step = f"{_show(a['value'], a['unit'])} {word} {_show(c['value'], c['unit'])} = {_show(v, a['unit'])}"
+            sym, how = f"{a['name']} {word} {c['name']}", "the change is in the amount's own unit"
+        elif _is_percent(c["unit"]) and not _is_percent(a["unit"]):
+            v = a["value"] * (1 + sign * c["value"] / 100)
+            step = f"{_show(a['value'], a['unit'])} x (1 {word} {_show(c['value'], '%')}) = {_show(v, a['unit'])}"
+            sym, how = f"{a['name']} x (1 {word} {c['name']} / 100)", "a percentage of the amount itself"
+        elif _is_percent(c["unit"]) and _is_percent(a["unit"]):
+            raise CalcError(f"a change of {_show(c['value'], '%')} to a value in % may be percentage points or a "
+                            "relative change; the words do not settle it, so a person decides (nothing is computed)")
+        else:
+            raise CalcError(f"unit mismatch: the amount is in '{a['unit'] or 'no unit'}', the change in "
+                            f"'{c['unit'] or 'no unit'}'")
+        if v < 0:
+            raise CalcError(f"the change takes the amount below zero ({step}); a person reads the provision")
+        return _result(m, value=v, unit=a["unit"], formula=formula, symbolic=sym, operands=ops, steps=[step],
+                       assumptions=[how], rounding="not rounded (exact; the pack states no rounding rule)",
+                       direction=direction)
+    except (CalcError, InvalidOperation) as e:
+        return _result(m, formula=formula, operands=ops, reason=str(e), direction=direction)
 
 
 _FACTORS = {("m3/h", "m3/s"): Decimal(1) / Decimal(3600), ("m3/s", "m3/h"): Decimal(3600),
@@ -649,7 +698,8 @@ _ARGS = {"deadline": ({"offset", "anchor"}, {"direction"}),
          "percentage_of": ({"percent", "of"}, set()), "threshold_of_total": ({"percent", "total"}, {"rounding"}),
          "ratio": ({"numerator", "denominator"}, set()), "cap": ({"cap", "rate"}, set()),
          "unit_conversion": ({"value", "to_unit"}, {"anchor_date", "direction"}),
-         "approved_formula": ({"formula", "operands"}, set())}
+         "approved_formula": ({"formula", "operands"}, set()),
+         "relative_change": ({"previous", "change", "direction"}, set())}       # session 14 (W3)
 
 
 def compute(method: str, args: dict, *, resolve_source=None, calendar=None, registry: dict | None = None) -> dict:
@@ -676,6 +726,8 @@ def compute(method: str, args: dict, *, resolve_source=None, calendar=None, regi
     if method == "deadline":
         return deadline(args["offset"], args["anchor"], args.get("direction", "before"), calendar, registry,
                         resolve_source)
+    if method == "relative_change":                                   # session 14 (W3)
+        return relative_change(args["previous"], args["change"], args["direction"], resolve_source)
     if method == "unit_conversion":
         return unit_conversion(args["value"], args["to_unit"], args.get("anchor_date"), args.get("direction", "after"),
                                calendar, resolve_source)

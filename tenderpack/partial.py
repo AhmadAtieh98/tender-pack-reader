@@ -267,9 +267,47 @@ def a3_changes(r: dict, a3v: dict, a3c: dict, op_status: dict | None = None,
 
 # ---------------------------------------------------------------------------------------------- blockers
 
+# session 14 (W2; blind-07 scorer defect 13): the class of an unresolved item, so that the closed-clarification-window
+# note never goes where a clarification was not the route: a processing failure (a schema or payload error, an unknown
+# id, a quotation that failed its check, a missing op type) is never a question for the Authority ('software'); an
+# ambiguity, a missing document or a question is ('clarification'); a judgment for a person keeps the note ('other').
+_SOFTWARE_RX = re.compile(r"software limitation|tool limitation|\bschema\b|\bpayload\b|not a register\.\w+|validation "
+                          r"errors?|previous_value|unknown ids?|does not load|invalid in the dry run|no op type|op type|"
+                          r"simulate_amendment|not supported verbatim|is not a page of|malformed|does not parse|"
+                          r"provider failure|timed out|budget|batch \S+ (?:failed|interrupted|deferred)|not analysed|"
+                          r"no item proposed|no promotable item", re.I)
+_CLARIFY_RX = re.compile(r"ambigu|unclear|uncertain|not stated|does not (?:say|state|specify|define)|missing document|"
+                         r"missing[_ ]information|"
+                         r"not supplied|not provided|referenced but|question (?:to|for) the Authority|clarif|conflict|"
+                         r"inconsisten|contradict|which (?:\w+ )?(?:governs|prevails|applies)|insufficient evidence|"
+                         r"cannot be established|a person must (?:confirm|decide)", re.I)
+_SUGGESTS_CLARIFICATION = re.compile(r"\b(?:consider|raise|seek|ask|submit|send)\w*\s+(?:a\s+|the\s+)?"
+                                     r"(?:clarification|question)|\bclarification (?:question|request)|"
+                                     r"\bask the Authority\b|\bquestion to the Authority\b", re.I)
+
+
+def route_class(text) -> str:
+    """'software' (a processing failure: never a clarification), 'clarification' (an ambiguity, a missing document, a
+    question to the Authority) or 'other', from the words of an unresolved item's reason."""
+    t = str(text or "")
+    if _SOFTWARE_RX.search(t):
+        return "software"
+    return "clarification" if _CLARIFY_RX.search(t) else "other"
+
+
+def window_route(text, win: dict | None) -> str | None:
+    """After the clarification cut-off, the route of an item whose words suggest a clarification: 'bid decision (window
+    closed <date>)'; None when the window is open or unknown, or the words suggest none."""
+    if not win or not win.get("closed") or not _SUGGESTS_CLARIFICATION.search(str(text or "")):
+        return None
+    return f"bid decision (window closed {win.get('date')})"
+
+
 def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict], window: dict | None = None) -> dict:
     """Everything that stops the candidate from becoming the validated state, or that it cannot establish. `window`
-    (clarify.window at the working stage): when closed, every unresolved provision carries its note in `route`."""
+    (clarify.window at the working stage): when closed, every unresolved provision carries its note in `route`, except
+    one whose reason is a processing failure (session 14: route_class 'software': a software limitation, a schema or
+    payload failure, an unknown id, a quotation that failed its check), where a clarification was never the route."""
     from .clarify import window as clar_window
     w = r["working"].stage
     acts = (prog_c or {}).get("activities") or []
@@ -291,7 +329,9 @@ def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict
             provs.append({"stage": s.stage, "provision": c["provision"], "page": c.get("page"), "kind": kind,
                           "disposition": c["disposition"], "reason": reason, "text": _short(u.text if u else c.get("text"), 300),
                           "rows": rows, "activities": sorted({a["id"] for a in acts if set(a["req_ids"]) & set(rows)}),
-                          "route": (win or {}).get("note") or ""})
+                          # session 14 (W2; blind-07 defect 13): only where a clarification would have been the route
+                          "route": (win or {}).get("note") or "" if route_class(reason) != "software" else "",
+                          "class": route_class(reason)})
             if "conflict" in low:
                 conflicts.append({"stage": s.stage, "what": f"{c['provision']}: {_short(reason, 260)}",
                                   "source": "unresolved provision"})
@@ -366,6 +406,111 @@ def _issue_reached(r: dict, i: dict, reached_rows: dict[str, str]) -> list[str]:
     return list(dict.fromkeys(out))
 
 
+# ---------------------------------------------------------------------------------------------- session 14 (W2)
+# Documents referenced in new or changed text (blind-07 scorer defect 19: a new clause defined "the Geotechnical Baseline
+# Report" as "Revision C of the report of that name issued by the Authority"; the pack does not supply it, and "documents
+# referenced but not supplied" came only from curated entries, so it was never flagged). An addendum prints every word it
+# adds or changes, so its own units are the new or changed text. A reference is a title ending in a document noun (or a
+# drawing number, or "the <noun> of that name" pointing back to one) in a sentence that says where it comes from (issued,
+# published, provided, data room, Revision ...). It is checked against the pack's document list, the headings of the
+# supplied documents and the curated missing_document entries; what is left is PROPOSED as a missing_document
+# relationship with its evidence (never confirmed: a person checks whether the document exists elsewhere).
+_DOC_NOUN = (r"Report|Survey|Study|Specifications?|Manual|Plan|Drawings?|Register|Programme|Permit|Licen[cs]e|Certificate|"
+             r"Guidelines?|Standards?|Code|Policy|Assessment|Memorandum")
+_TITLE_RE = re.compile(r"(?<![A-Za-z’'])((?:[A-Z][A-Za-z\-]*\s+(?:(?:and|of|for|on)\s+)?){1,6}(?:" + _DOC_NOUN + r"))\b"
+                       r"(?:\s*,?\s*\(?(?:Revision|Rev\.)\s+([A-Z0-9]{1,3})\)?)?")
+_THAT_NAME_RE = re.compile(r"\b(?:Revision|Rev\.)\s+([A-Z0-9]{1,3})\s+of\s+the\s+(?:" + _DOC_NOUN.lower() + r"|document)\s+of\s+"
+                           r"that\s+name", re.I)
+_DRAWING_RE = re.compile(r"\bDrawing\s+(?:No\.?\s*)?([A-Z0-9]{1,4}(?:-[A-Z0-9]{1,6})+)\b")
+_PROVENANCE = re.compile(r"issued by|published by|prepared by|provided by|made available|available (?:in|on|from)|data "
+                         r"room|of that name|attached|annexed|appended|set out in|as defined in|\bRevision\b|\bRev\.|"
+                         r"referred to in|on which .{0,80}\bis based|described in|shown on|stated in", re.I)
+_NOT_A_DOC_START = re.compile(r"^(?:Volume|Form|Table|Clause|Section|Appendix|Addendum|Schedule|The|This|Each|Any|All|"
+                              r"Bidders?|Project Company|Authority|Proposal)\b")
+# a document the Bidder or the Project Company makes, obtains or submits is not a document the pack refers to
+_OWN_DOC = re.compile(r"(?:Bidder|Project Company|Contractor|Operator)(?:’|')s\s+$|\b(?:its|their|his|her)\s+$|"
+                      r"\b(?:submit|obtain|provide|furnish|deliver|prepare|produce|maintain|include|attach|agreed)\w*\s+"
+                      r"(?:(?:a|an|the|each|every|any)\s+)?(?:(?:updated|valid|current|copy of the)\s+)?$", re.I)
+
+
+def _words_of(t: str) -> set[str]:
+    return {w.lower().rstrip("s") for w in re.findall(r"[A-Za-z]{3,}", t or "")}
+
+
+def _slug(t: str) -> str:
+    return re.sub(r"[^A-Z0-9]+", "-", (t or "").upper()).strip("-")[:60]
+
+
+def referenced_documents(r: dict, stages: list[str] | None = None) -> list[dict]:
+    """Documents referenced in the new or changed text of `stages` (default: the pending stages) that the pack does not
+    supply and no curated missing_document entry names: [{document, document_id, revision, unit, page, words, stage,
+    from, to, kind 'missing_document', status 'proposed', basis, blocks, evidence}] (session 14; see above)."""
+    if stages is None:
+        stages = [s.stage for s in pending(r)] if r.get("validated") is not None else []
+    docs = (r.get("cfg") or {}).get("documents") or []
+    supplied = [d.get("doc_id", "") for d in docs] + [re.sub(r"[_\-]+", " ", Path(str(d.get("path") or "")).stem)
+                                                       for d in docs]
+    supplied_words = [_words_of(x) for x in supplied if x]
+    headings = [_words_of(u.get("text")) for u in r.get("units") or [] if u.get("kind") == "heading"
+                and not str(u.get("doc", "")).startswith("ADD-")]
+    curated = [g for g in r.get("relationships") or [] if isinstance(g, dict) and g.get("kind") == "missing_document"]
+    cur_words = [_words_of(f"{g.get('document')} {g.get('document_id')}") for g in curated]
+    units = [u for u in r.get("units") or [] if u.get("doc") in set(stages)]
+    out: dict[str, dict] = {}
+
+    def known(title: str) -> bool:
+        w = _words_of(title)
+        if not w:
+            return True
+        if any(w <= x or (x and len(w & x) >= max(2, int(0.8 * len(w)))) for x in supplied_words + headings):
+            return True
+        return any(w <= x or len(w & x) >= max(2, int(0.7 * len(w))) for x in cur_words)
+
+    def add(title: str, rev: str | None, u: dict, sent: str) -> None:
+        title = " ".join(title.split())
+        doc = title + (f" (Revision {rev})" if rev else "")
+        did = "REF-" + _slug(title + (f" REV {rev}" if rev else ""))
+        if did in out or known(title):
+            return
+        out[did] = {"document": doc, "document_id": did, "revision": rev, "unit": u["unit_id"],
+                    "page": (u.get("pages") or [None])[0], "words": sent, "stage": u.get("doc")}
+    for u in units:
+        text = u.get("text") or ""
+        for sent in re.split(r"(?<=[.;:])\s+(?=[A-Z‘'\"(])", text):
+            if not _PROVENANCE.search(sent):
+                continue
+            m = _THAT_NAME_RE.search(sent)
+            if m:                                         # "Revision C of the report of that name": the title before it
+                before = text[:text.find(sent) + m.start()]
+                titles = [t for t in _TITLE_RE.finditer(before) if not _NOT_A_DOC_START.match(t.group(1))]
+                if titles:
+                    add(titles[-1].group(1), m.group(1), u, sent.strip())
+            for t in _TITLE_RE.finditer(sent):
+                title = t.group(1)
+                if _NOT_A_DOC_START.match(title) or _OWN_DOC.search(sent[:t.start()]):
+                    continue
+                add(title, t.group(2), u, sent.strip())
+            for d in _DRAWING_RE.finditer(sent):
+                add(f"Drawing {d.group(1)}", None, u, sent.strip())
+    # a title the same unit also names with a revision is one document (keep the revision)
+    for k in [k for k, v in out.items() if not v["revision"]]:
+        if any(v["revision"] and v["document"].startswith(out[k]["document"] + " (") for v in out.values()):
+            out.pop(k)
+    for v in out.values():
+        state = r["stages"][-1].state if r.get("stages") else {}
+        cited = set(resolve(citations(v["words"]), set(state))) if state else set()
+        rows = sorted({e["row"].id for e in r.get("evals") or [] if v["unit"] in e["row"].units
+                       or cited & set(e["row"].units)})
+        v.update({"kind": "missing_document", "status": "proposed", "from": [v["unit"]], "to": rows or [v["unit"]],
+                  "blocks": f"what {v['unit']} makes depend on it: ‘{_short(v['words'], 200)}’",
+                  "basis": (f"{v['unit']} refers to {v['document']}, which is not among the pack's documents "
+                            f"({', '.join(d.get('doc_id', '') for d in docs)}) nor named by a curated missing_document "
+                            "entry (detected in the addendum's own words; a person checks whether it is supplied "
+                            "elsewhere)"),
+                  "evidence": [{"unit": v["unit"], "page": v["page"], "words": v["words"]}]})
+    return list(out.values())
+
+
 def missing_documents(r: dict, issues: list[dict], unres_rows: dict | None = None) -> list[dict]:
     """Every document the pack refers to but does not supply: the relationships file's missing_document entries (with
     the conclusions they block, and whether what the pending stages changed reaches them) and the open issues that say
@@ -398,6 +543,13 @@ def missing_documents(r: dict, issues: list[dict], unres_rows: dict | None = Non
             out.append({"id": i["id"], "document": "", "issues": [i["id"]], "blocks": _short(i.get("a3") or i["text"], 300),
                         "targets": i.get("rows") or [], "referenced_in": [],
                         "reached_by_this_addendum": _issue_reached(r, i, rr), "linked": i["id"] in named})
+    # session 14 (W2; blind-07 defect 19): a document the pending stages' own words refer to, which neither the pack nor
+    # a curated entry holds, is listed too (PROPOSED: detected from the words, never confirmed)
+    for d in referenced_documents(r):
+        out.append({"id": f"PROPOSED-{d['document_id']}", "document": d["document"], "issues": [],
+                    "blocks": f"PROPOSED (detected in the new text, not curated): {d['blocks']}", "targets": d["to"],
+                    "referenced_in": [d["unit"]], "proposed": True,
+                    "reached_by_this_addendum": [f"{d['unit']} (new text of {d['stage']})"]})
     # one hop: an open issue the words of a reached issue name is reached through it (blind-05: the addendum's own
     # I-ADD03-29.2-NO-OP says 'Schedule 9 is still not supplied (I-VOL-V-MISSING)')
     texts = {i["id"]: " ".join(str(i.get(k) or "") for k in ("text", "a3")) for i in issues}

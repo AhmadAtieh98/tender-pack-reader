@@ -49,18 +49,22 @@ def main(argv=None) -> int:
     ap.add_argument("--site-dir", default=None, help="site-packages to write the .pth into (default: this "
                                                       "interpreter's purelib)")
     ap.add_argument("--python", default=sys.executable, help="the interpreter to verify with (default: this one)")
+    ap.add_argument("--verify-only", action="store_true",
+                    help="session 14 (W6): write nothing, only verify (checks.sh with TENDERPACK_PY: an interpreter "
+                         "that is not this folder's .venv is never changed)")
     a = ap.parse_args(argv)
     root = Path(a.root).resolve()
     if not (root / "tenderpack" / "__init__.py").is_file():
         print(f"FAIL     {root} has no tenderpack/__init__.py: not a tenderpack folder", file=sys.stderr)
         return 1
     site = Path(a.site_dir) if a.site_dir else Path(sysconfig.get_paths()["purelib"])
-    f = write_pth(root, site)
+    f = site / NAME if a.verify_only else write_pth(root, site)
     ok, what = verify(a.python, root)
     if ok:
         print(f"PASS     tenderpack imports from {root} wherever the interpreter starts ({f})")
         return 0
-    print(f"FAIL     outside the folder, {a.python} imports tenderpack from {what}, not from {root} ({f} written)",
+    print(f"FAIL     outside the folder, {a.python} imports tenderpack from {what}, not from {root} ({f} "
+          f"{'not written: --verify-only' if a.verify_only else 'written'})",
           file=sys.stderr)
     return 1
 

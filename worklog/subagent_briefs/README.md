@@ -119,3 +119,21 @@ Exported from the session transcript in session 11 (4 Oct 2026) and, from brief 
 | 113 | 2026-10-06 12:55 | R3: final recheck of F4's follow-ups on merge6/out | `2026-10-06_1255_113_r3-final-recheck-of-f4-s-follow-ups-on-merge6-out.md` | `follow-up` |
 | 114 | 2026-10-06 13:50 | D: two of your tests fail on the merged tree; diagnose and fix | `2026-10-06_1350_114_d-two-of-your-tests-fail-on-the-merged-tree-diagno.md` | `follow-up` |
 | 115 | 2026-10-06 20:35 | Score blind-07 against its key | `2026-10-06_2035_115_score-blind-07-against-its-key.md` | `opus` |
+| 116 | 2026-10-07 07:02 | W1 contract, submission, repair | `2026-10-07_0702_116_w1-contract-submission-repair.md` | `opus` |
+| 117 | 2026-10-07 07:02 | W2 statuses, downstream, records | `2026-10-07_0702_117_w2-statuses-downstream-records.md` | `opus` |
+| 118 | 2026-10-07 07:02 | W3 ADD-03 operations | `2026-10-07_0702_118_w3-add-03-operations.md` | `opus` |
+| 119 | 2026-10-07 07:02 | W4 human ownership, outputs | `2026-10-07_0702_119_w4-human-ownership-outputs.md` | `opus` |
+| 120 | 2026-10-07 07:02 | A8 sealed blind-08 author | `2026-10-07_0702_120_a8-sealed-blind-08-author.md` | `opus` |
+| 121 | 2026-10-07 07:23 | W6 package, Mac checks, routes | `2026-10-07_0723_121_w6-package-mac-checks-routes.md` | `opus` |
+| 122 | 2026-10-07 08:31 | W5 briefing and answer handoff | `2026-10-07_0831_122_w5-briefing-and-answer-handoff.md` | `opus` |
+| 123 | 2026-10-07 08:47 | W1 and W3 interfaces for W2's consumer | `2026-10-07_0847_123_w1-and-w3-interfaces-for-w2-s-consumer.md` | `follow-up` |
+| 124 | 2026-10-07 12:41 | Resume W2 after the plan limit | `2026-10-07_1241_124_resume-w2-after-the-plan-limit.md` | `follow-up` |
+| 125 | 2026-10-07 12:41 | Resume W4 after the plan limit | `2026-10-07_1241_125_resume-w4-after-the-plan-limit.md` | `follow-up` |
+| 126 | 2026-10-07 12:42 | Resume W5 after the plan limit | `2026-10-07_1242_126_resume-w5-after-the-plan-limit.md` | `follow-up` |
+| 127 | 2026-10-07 16:00 | R1 recheck of A1 and A2 | `2026-10-07_1600_127_r1-recheck-of-a1-and-a2.md` | `opus` |
+| 128 | 2026-10-07 16:00 | R2 recheck of A3, decisions, A4 | `2026-10-07_1600_128_r2-recheck-of-a3-decisions-a4.md` | `opus` |
+| 129 | 2026-10-07 16:00 | R3 recheck of A5, rendering, cards | `2026-10-07_1600_129_r3-recheck-of-a5-rendering-cards.md` | `opus` |
+| 130 | 2026-10-07 16:23 | F1 fixes for A1/A2 findings | `2026-10-07_1623_130_f1-fixes-for-a1-a2-findings.md` | `opus` |
+| 131 | 2026-10-07 16:24 | F2 fixes for A5/A3/A4 findings | `2026-10-07_1624_131_f2-fixes-for-a5-a3-a4-findings.md` | `opus` |
+| 132 | 2026-10-07 17:42 | F1 fixes for A1/A2 findings | `2026-10-07_1742_132_f1-fixes-for-a1-a2-findings.md` | `opus` |
+| 133 | 2026-10-07 17:42 | F2 fixes for A5/A3/A4 findings | `2026-10-07_1742_133_f2-fixes-for-a5-a3-a4-findings.md` | `opus` |

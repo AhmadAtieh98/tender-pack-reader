@@ -51,7 +51,8 @@ PREFIX = "LAMAR-PPP-R2-INTERVIEW"
 TREES = ("tenderpack", "sources", "config", "curation", "build", "out", "scripts/mac", "scripts/smoke_test")
 FILES = ("pyproject.toml", "uv.lock", "requirements.lock.txt", "scripts/make_interview_folder.py", "worklog/README.md",
          "worklog/ERROR_INDEX.md")
-DOCS = ["OPERATING_GUIDE.md", "AI_ROUTES.md", "PANEL.md", "MAC_SETUP.md", "VERIFY_ON_MAC.md"]
+DOCS = ["OPERATING_GUIDE.md", "AI_ROUTES.md", "PANEL.md", "MAC_SETUP.md", "VERIFY_ON_MAC.md",
+        "QUICK_REVIEW.md", "MAC_CHECKLIST.md"]           # session 14 (W6): the quick review and the one-page checklist
 OPTIONAL_DOCS = ["RUNTIME_INSTRUCTIONS.md"]
 OPTIONAL_TREES = ("wheels",)
 FOCUSED = ("tests/test_session12_panel.py", "tests/test_session12_mac_checks.py",
@@ -75,7 +76,15 @@ SLOW = tuple(f"tests/test_session12_concurrency.py::{n}" for n in (
         "test_d_the_run_promotes_the_proposals_as_proposals_and_keeps_the_question_open",
         "test_d_the_rendered_register_candidate_a3_and_review_packet_say_human_decision_pending",
         "test_e_deterministic_facts_stay_evidence_verified_and_promotable")) + tuple(
-    f"tests/test_session12_panel.py::{n}" for n in _PANEL_FULL_RUN)
+    f"tests/test_session12_panel.py::{n}" for n in _PANEL_FULL_RUN) + (
+    # session 14 (W6): the session-14 tests that need a whole workflow run or many workspace refreshes (measured in the
+    # cloud container: 250 s and 70 s); every other test_session14_* file runs in the quick command. When a new
+    # session-14 test makes the quick command pass three minutes, scripts/mac/verify_package.sh names the slowest:
+    # list them here (a deselect list, never a time limit).
+    "tests/test_session14_mac_levels.py::test_level3_a_partial_offline_run_that_exits_zero_is_partial_never_success",
+    "tests/test_session14_mac_levels.py::test_level3_complete_only_when_the_checkpoint_the_outputs_and_the_packet_agree",
+    "tests/test_session14_offline_never_hosted.py::test_every_command_refuses_a_hosted_route_offline_before_any_call"
+    "[flag]")
 TEST_SUPPORT_TREES = ("tests/fixtures", "tests/golden")
 # Synthetic regression inputs the focused tests read at fixed paths (tests/fixtures/ai_fixture.py: blind-02's pack and
 # its addendum; tests/fixtures/s12_blind05.py: blind-05's candidate pack and curation). Inputs only: never a SEALED
@@ -131,8 +140,11 @@ def base_revision(repo: Path) -> str:
 
 
 def focused_tests(repo: Path) -> list[str]:
-    s13 = sorted(p.relative_to(repo).as_posix() for p in (repo / "tests").glob("test_session13_*.py"))
-    return s13 + [t for t in FOCUSED if (repo / t).is_file()]
+    """The focused set: every session-13 AND session-14 test file (session 14, W6: all of them, by glob, so a new one
+    cannot be left out), then FOCUSED."""
+    recent = sorted(p.relative_to(repo).as_posix() for pat in ("test_session13_*.py", "test_session14_*.py")
+                    for p in (repo / "tests").glob(pat))
+    return recent + [t for t in FOCUSED if (repo / t).is_file()]
 
 
 def _imported_test_modules(repo: Path, tests: list[str]) -> list[str]:
@@ -344,6 +356,14 @@ the old folder: it is the record of what happened. Move an unwanted run folder a
 """
 
 
+def quick_argv(tests: list[str]) -> list[str]:
+    """Session 14 (W6): the quick command's arguments after the interpreter (INTERVIEW.json quick_tests_argv, which
+    scripts/mac/verify_package.sh runs): the focused tests without the SLOW ones, the ten slowest durations reported."""
+    slow = [s for s in SLOW if s.split("::")[0] in tests]
+    return (["-m", "pytest", "-q", "-p", "no:cacheprovider", "--durations=10", *tests]
+            + [x for s in slow for x in ("--deselect", s)])
+
+
 def commands(tests: list[str]) -> tuple[str, str]:
     """(quick, full): the focused tests without the SLOW ones (under three minutes), and all of them."""
     full = ".venv/bin/python -m pytest -q -p no:cacheprovider " + " ".join(tests)
@@ -351,8 +371,32 @@ def commands(tests: list[str]) -> tuple[str, str]:
     return full + "".join(f" --deselect {s}" for s in slow), full
 
 
-def readme(name: str, base: str, label: str, tests: list[str], support: list[str], n_files: int, smoke: dict) -> str:
+def load_routes(repo: Path) -> dict:
+    """config/routes_status.yaml's routes (session 14, W6: the README quotes it rather than restating it)."""
+    import yaml
+    try:
+        return (yaml.safe_load((Path(repo) / "config/routes_status.yaml").read_text(encoding="utf-8")) or {}).get(
+            "routes") or {}
+    except (OSError, yaml.YAMLError):
+        return {}
+
+
+def route_lines(routes: dict) -> list[str]:
+    """One numbered entry per route: its label and status, where it ran, what works, what never ran, what is ready."""
+    out = []
+    for i, (name, r) in enumerate(routes.items(), 1):
+        f = {k: " ".join(str(r.get(k) or "-").split()) for k in ("label", "status", "where", "works", "never_run",
+                                                                  "ready")}
+        out.append(f"{i}. **{f['label']}** (`{name}`): **{f['status']}**; last exercised: {f['where']}. Works: "
+                   f"{f['works']}. Never run: {f['never_run']}. Ready: {f['ready']}. On this Mac: PENDING until you "
+                   "run it (`docs/MAC_CHECKLIST.md`).")
+    return out
+
+
+def readme(name: str, base: str, label: str, tests: list[str], support: list[str], n_files: int, smoke: dict,
+           routes: dict | None = None) -> str:
     quick, cmd = commands(tests)
+    routes = load_routes(REPO) if routes is None else routes
     return "\n".join([
         f"# {name}", "",
         "**The minimal interview folder: an OPERATING COPY for the owner's Mac, not the submission.** The submitted "
@@ -371,37 +415,14 @@ def readme(name: str, base: str, label: str, tests: list[str], support: list[str
         "The launcher asks first: **connected** (Claude Code first, the host route; Codex, an API key and Ollama when "
         "usable) or **offline** (the local Ollama only; `TENDERPACK_OFFLINE=1`, so every phase refuses a hosted route "
         "before any call). Option 5 (`tenderpack ai routes`) shows each route's live state here and its recorded "
-        "status from `config/routes_status.yaml` (Claude Code: tested in the cloud container, sessions 10-12; Codex: "
-        "built, unverified; the API key: untested; OpenRouter: blocked here, unverified; Ollama: pending on the Mac). "
+        "status from `config/routes_status.yaml` (each route below, quoted from that file). "
         "Keys only through the environment or a chmod-600 `~/.config/tenderpack/keys.env` outside this folder "
         "(`docs/AI_ROUTES.md`), never in chat or a log.", "",
         "## Trying each route (the owner, 6 Oct: the Mac, Codex, the API route, Ollama)", "",
         "Each route runs the same addendum through the same code; only the model exchange differs. Use the smoke-test "
         "PDF first (`smoke-test/ADD-03_Addendum_No_3.pdf`, synthetic), then a real one. Every run is a candidate under "
         "`staging/ai/runs/<run id>/` with its review packet; nothing is approved or accepted by a run.", "",
-        "1. **Claude Code (host route; the plan you are logged in with pays).** `claude` on PATH and logged in. Launcher "
-        "option 1 (connected) then option 6 with the PDF, or option 7 and the panel's *New addendum* form with route "
-        "*host*. Or: `.venv/bin/python -m tenderpack ai run ADD-03 --pdf <pdf> --route host`. Tested from a twin of this "
-        "folder in the cloud container (the sealed blind-07 run, 6 Oct); on your Mac PENDING.",
-        "2. **Codex (manual path; built, unverified: no Codex session has run against it yet).** In `~/.codex/config.toml` "
-        "add the server with THIS folder's interpreter: `[mcp_servers.tenderpack]`, `command = \"<this folder>/.venv/bin/"
-        "python\"`, `args = [\"-m\", \"tenderpack\", \"ai\", \"serve-mcp\"]` (the `.pth` link written by setup.sh makes it "
-        "work from any working directory). Start the run with `--route host --host-manual`: it stops with exit 4 at the "
-        "first batch and prints the task packet's path; have Codex read the packet and the runtime prompt the server names, "
-        "answer with a proposal set (JSON), then `.venv/bin/python -m tenderpack ai submit-batch <run id> answer.json "
-        "--by \"<who>\" --host-model \"<the model>\"` and resume. The submission is validated exactly as any other.",
-        "3. **API key (route `anthropic`; paid, your key).** The key only in the environment (`read -rs ANTHROPIC_API_KEY "
-        "&& export ANTHROPIC_API_KEY`) or in `~/.config/tenderpack/keys.env` (one line `ANTHROPIC_API_KEY=...`, "
-        "`chmod 600`, outside this folder; never in a file here, a log or a chat). Dry run first, no paid call: "
-        "`.venv/bin/python -m tenderpack ai capabilities --route anthropic --model claude-opus-5-5`. Then `.venv/bin/python "
-        "-m tenderpack ai run ADD-03 --pdf <pdf> --route anthropic`; the caps in `config/ai.yaml` (`routes.anthropic.caps`: "
-        "calls, tokens, `max_usd` once a price is set) bound the spend and the run refuses past them. Untested so far "
-        "(no key was ever used); the route's code is exercised by the recorded tests.",
-        "4. **Ollama (local, offline; nothing leaves the Mac).** The Ollama app running with a vision-capable model that "
-        "supports tools (e.g. `ollama pull qwen3-vl:32b`; your choice, nothing is pulled by tenderpack). "
-        "`.venv/bin/python -m tenderpack ai ollama-models` says which installed model can serve each phase. Launcher "
-        "option 2 (offline) then option 6, or `.venv/bin/python -m tenderpack ai run ADD-03 --pdf <pdf> --offline`. "
-        "`bash scripts/mac/checks.sh` without `--no-ai` runs one offline batch as check 7. Pending on the Mac.", "",
+        ] + route_lines(routes) + ["",
         "`.venv/bin/python -m tenderpack ai routes` prints each route's live state on this machine beside its recorded "
         "status; `tenderpack ai run-status <run id>` and the panel show a run's steps, timings and what it waits for.", "",
         "## The smoke test", "",
@@ -424,6 +445,11 @@ def readme(name: str, base: str, label: str, tests: list[str], support: list[str
         "the logs are and what never to delete. New runs go to `staging/ai/runs/` (it holds no run: only the "
         "blind-05 candidate INPUTS the focused tests read, without a checkpoint, so the panel and `ai run-status` do "
         "not list them), model-call logs to `worklog/model_calls/`, your own logs to `logs/` (both empty).", "",
+        "## The Mac checklist and verifying this package", "",
+        "`docs/MAC_CHECKLIST.md`: one page, every step in order with its command and the line to expect, each marked "
+        "PENDING ON THE MAC. `bash scripts/mac/verify_package.sh <this zip>` verifies the packaged copy itself: it "
+        "unzips it into a fresh place, checks the manifest, the executable bits and the contents, then runs the setup, "
+        "the focused quick tests, the checks and the smoke test there.", "",
         "## Checks PENDING on the Mac", "",
         "Nothing here has run on the owner's Mac; a cloud test proves nothing about Mac readiness. "
         "`docs/VERIFY_ON_MAC.md` (section \"The interview folder\") lists each check with its expected output, each "
@@ -455,10 +481,13 @@ def build(dest: Path, label: str = "", repo: Path = REPO, now: datetime | None =
     support = _imported_test_modules(repo, tests)
     (stage / "RECOVERY.md").write_text(recovery_md(), encoding="utf-8")
     n_files = len(_files(stage)) + 3                                   # README, INTERVIEW.json, MANIFEST
-    (stage / "README.md").write_text(readme(name, base, label, tests, support, n_files, smoke), encoding="utf-8")
+    (stage / "README.md").write_text(readme(name, base, label, tests, support, n_files, smoke, load_routes(repo)),
+                                     encoding="utf-8")
     (stage / "INTERVIEW.json").write_text(json.dumps({"base": base, "built_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                                      "label": label, "files": n_files, "name": name}, indent=1) + "\n",
-                                          encoding="utf-8")
+                                                      "label": label, "files": n_files, "name": name,
+                                                      # session 14 (W6): read by scripts/mac/verify_package.sh
+                                                      "focused_tests": tests, "quick_tests_argv": quick_argv(tests)},
+                                                     indent=1) + "\n", encoding="utf-8")
     for p in stage.rglob("*"):
         if p.is_file():
             rel = p.relative_to(stage).as_posix()

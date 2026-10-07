@@ -65,7 +65,11 @@ def test_nothing_changes_when_the_addendum_issues_before_the_cut_off(real):
 def test_the_candidate_a3_unresolved_list_says_it(cand, win):
     assert cand["clarification_window"]["closed"] and cand["clarification_window"]["note"] == win["note"]
     provs = cand["blockers"]["provisions"]
-    assert provs and all(p["route"] == win["note"] for p in provs)
+    # session 14 (W2): this assertion encoded the blind-07 scorer's defect 13 (the note on EVERY unresolved provision,
+    # schema errors and tool limitations included); the note now goes on every one except a processing failure
+    assert provs and all(p["route"] == (win["note"] if partial.route_class(p["reason"]) != "software" else "")
+                         for p in provs)
+    assert any(p["route"] == win["note"] for p in provs)
     md = partial.markdown(cand)
     sec = md.split("### Unresolved provisions")[1].split("\n### ")[0]
     assert win["note"] in sec

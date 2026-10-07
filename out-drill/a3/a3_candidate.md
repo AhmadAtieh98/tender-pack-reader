@@ -32,6 +32,14 @@ ADD-03 is PARTIAL: 4 of 12 provisions unresolved, so A3 and A5 stay validated at
 
 - Working Days left from the issue date (2026-11-05) to the PDD (2026-12-10): 25 (the issue date not counted, the PDD counted; Working Days per VOL-I 2.4 (weekend [4, 5] as date.weekday numbers; holidays none declared))
 
+## Conditional impact investigations (CONDITIONAL; never accepted facts)
+
+- `impact:VOL-II-p3-r1` conditional on reading VOL-II-p3-r1 (pending_reading: ADD-03/5.1 applied with values read from VOL-II-p3-r1, which no person has approved): investigate the rows, activities and prices that rest on VOL-II:T2-4/TP
+- `impact:ADD-03/7.1` conditional on op ADD-03/7.1 (invalid: C23: 'seventy-two (72) hours' occurs 0 time(s) in VOL-II:4.4): investigate the rows, activities and prices that rest on VOL-II:4.4
+- `impact:ADD-03:6.1` conditional on disposition ADD-03:6.1 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on the provision ADD-03:6.1
+- `impact:ADD-03:Q15` conditional on disposition ADD-03:Q15 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on VOL-I:9.2
+- `impact:ADD-03:Q16` conditional on disposition ADD-03:Q16 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on the provision ADD-03:Q16
+
 
 ## The candidate A3 (every section in full)
 

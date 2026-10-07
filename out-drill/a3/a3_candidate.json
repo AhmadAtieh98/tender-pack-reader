@@ -5376,6 +5376,7 @@
   "provisions": [
    {
     "activities": [],
+    "class": "other",
     "disposition": "unresolved",
     "kind": "unresolved",
     "page": 1,
@@ -5390,6 +5391,7 @@
     "activities": [
      "technical-proposal"
     ],
+    "class": "other",
     "disposition": "unresolved",
     "kind": "invalid op",
     "page": 1,
@@ -5407,6 +5409,7 @@
     "activities": [
      "technical-proposal"
     ],
+    "class": "other",
     "disposition": "unresolved",
     "kind": "unresolved",
     "page": 2,
@@ -5421,6 +5424,7 @@
    },
    {
     "activities": [],
+    "class": "other",
     "disposition": "unresolved",
     "kind": "unresolved",
     "page": 2,
@@ -5727,7 +5731,86 @@
   "stage": "ADD-03"
  },
  "derived": {
+  "computed_amounts": [],
   "computed_deadlines": [],
+  "conditional_impacts": [
+   {
+    "accepted": false,
+    "conditional_on": {
+     "kind": "reading",
+     "ref": "VOL-II-p3-r1",
+     "state": "pending_reading",
+     "why": "ADD-03/5.1 applied with values read from VOL-II-p3-r1, which no person has approved"
+    },
+    "id": "impact:VOL-II-p3-r1",
+    "investigate": "conditional on reading VOL-II-p3-r1 (pending_reading: ADD-03/5.1 applied with values read from VOL-II-p3-r1, which no person has approved): investigate the rows, activities and prices that rest on VOL-II:T2-4/TP",
+    "provision": "ADD-03:5.1",
+    "stage": "ADD-03",
+    "units": [
+     "VOL-II:T2-4/TP"
+    ]
+   },
+   {
+    "accepted": false,
+    "conditional_on": {
+     "kind": "op",
+     "ref": "ADD-03/7.1",
+     "state": "invalid",
+     "why": "C23: 'seventy-two (72) hours' occurs 0 time(s) in VOL-II:4.4"
+    },
+    "id": "impact:ADD-03/7.1",
+    "investigate": "conditional on op ADD-03/7.1 (invalid: C23: 'seventy-two (72) hours' occurs 0 time(s) in VOL-II:4.4): investigate the rows, activities and prices that rest on VOL-II:4.4",
+    "provision": "ADD-03:7.1",
+    "stage": "ADD-03",
+    "units": [
+     "VOL-II:4.4"
+    ]
+   },
+   {
+    "accepted": false,
+    "conditional_on": {
+     "kind": "disposition",
+     "ref": "ADD-03:6.1",
+     "state": "unresolved",
+     "why": "no recognised phrasing; a person must write the op or a disposition"
+    },
+    "id": "impact:ADD-03:6.1",
+    "investigate": "conditional on disposition ADD-03:6.1 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on the provision ADD-03:6.1",
+    "provision": "ADD-03:6.1",
+    "stage": "ADD-03",
+    "units": []
+   },
+   {
+    "accepted": false,
+    "conditional_on": {
+     "kind": "disposition",
+     "ref": "ADD-03:Q15",
+     "state": "unresolved",
+     "why": "no recognised phrasing; a person must write the op or a disposition"
+    },
+    "id": "impact:ADD-03:Q15",
+    "investigate": "conditional on disposition ADD-03:Q15 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on VOL-I:9.2",
+    "provision": "ADD-03:Q15",
+    "stage": "ADD-03",
+    "units": [
+     "VOL-I:9.2"
+    ]
+   },
+   {
+    "accepted": false,
+    "conditional_on": {
+     "kind": "disposition",
+     "ref": "ADD-03:Q16",
+     "state": "unresolved",
+     "why": "no recognised phrasing; a person must write the op or a disposition"
+    },
+    "id": "impact:ADD-03:Q16",
+    "investigate": "conditional on disposition ADD-03:Q16 (unresolved: no recognised phrasing; a person must write the op or a disposition): investigate the rows, activities and prices that rest on the provision ADD-03:Q16",
+    "provision": "ADD-03:Q16",
+    "stage": "ADD-03",
+    "units": []
+   }
+  ],
   "consequences": [],
   "pending_reading_activities": [],
   "pending_reading_rows": [],
@@ -6674,7 +6757,6 @@
     "VOL-II-3.1-01 (via REL-T24-PROCESS-DESIGN (confirmed))",
     "VOL-II-7.2-01 (via REL-T24-RELIABILITY-RUN (confirmed))",
     "VOL-V-31.1-02 (via REL-T24-UNAVAILABILITY (confirmed))",
-    "VOL-V-29.3-01 (via REL-T24-RAMP-UP-DEDUCTIONS (confirmed))",
     "VOL-II-2.5-01 (via REL-T24-COMPLIANCE-MONITORING-STREAMS (confirmed))",
     "VOL-II-4.3-02 (via REL-T24-COMPLIANCE-MONITORING-STREAMS (confirmed))"
    ],

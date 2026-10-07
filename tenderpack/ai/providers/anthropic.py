@@ -44,6 +44,8 @@ class AnthropicProvider:
 
     def __init__(self, model: str, rcfg: dict, model_cfg: dict | None = None, env=os.environ,
                  allow_unverified: bool = False, fetch=None):
+        from ..offline import check_adapter
+        check_adapter("anthropic")                  # session 14 (W6): offline mode, before anything (also when built directly)
         self.model, self.rcfg, self.mcfg = model, rcfg, model_cfg or {}
         self.base_url = (rcfg.get("base_url") or "https://api.anthropic.com").rstrip("/")
         self.version = rcfg.get("api_version") or "2023-06-01"
