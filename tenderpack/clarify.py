@@ -330,14 +330,18 @@ def _meets(u: str, v: str) -> bool:
 
 
 def question_rows(units: list[str], issues: set[str], rows: dict[str, tuple[list[str], list[str]]],
-                  curated: list[str] | None = None) -> list[str]:
+                  curated: list[str] | None = None, mirrored: set[str] | None = None) -> list[str]:
     """The rows a question's answer would change (session 12, F5, audit A5 N2: the rule A5 uses for `ask_by`; session
     13, F2, audit R2-7: the register's column): of the rows carrying one of its linked `issues`, those whose units meet
     the question's own `units`; when none does, every row carrying a linked issue; plus the entry's curated `rows`
-    (proposed links for a question tied to no issue). `rows`: row id -> (its units, its issues)."""
+    (proposed links for a question tied to no issue). `rows`: row id -> (its units, its issues). Session 14 (F2; R2 m7):
+    `mirrored`: the linked issues the question asks the Authority about that are a person's decision not yet recorded
+    (the pending decision it mirrors); its answer would change every row of such an issue, so those rows are all
+    included (the units narrow only the rows of the other linked issues)."""
     mine = [k for k, (_, iss) in rows.items() if set(iss or []) & set(issues or [])]
     meet = [k for k in mine if any(_meets(u, v) for u in rows[k][0] for v in units or [])]
-    return list(dict.fromkeys((meet or mine) + [x for x in curated or [] if x in rows]))
+    own = [k for k in mine if set(rows[k][1] or []) & set(issues or []) & set(mirrored or ())]
+    return list(dict.fromkeys((meet or mine) + own + [x for x in curated or [] if x in rows]))
 
 
 def entry_units(c: dict) -> list[str]:
@@ -362,7 +366,8 @@ def presented(reg: dict, decisions: list[dict] | None = None, pending_issues: li
         if set(c.get("linked_issues") or []) & pend and ih and not ih.startswith(INTERIM_PENDING.split(",")[0]):
             e["interim_handling"] = INTERIM_PENDING.format(owner=owner) + ih[:1].upper() + ih[1:]
         if rows is not None:
-            e["answer_rows"] = question_rows(entry_units(c), set(c.get("linked_issues") or []), rows, c.get("rows"))
+            e["answer_rows"] = question_rows(entry_units(c), set(c.get("linked_issues") or []), rows, c.get("rows"),
+                                             set(c.get("linked_issues") or []) & pend)       # session 14 (F2; R2 m7)
         out.append(e)
     return out
 

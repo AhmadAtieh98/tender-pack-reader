@@ -87,9 +87,11 @@ def test_r2_1_every_pending_decision_of_the_real_register_links_a_curated_issue(
     for c in pend:
         assert [i for i in c.get("linked_issues") or [] if i in cur], c["topic"]
     at = next(c for c in pend if "at all times" in c["topic"])
-    pl = next(c for c in pend if c["topic"].startswith("page limit"))
-    new = {i for i in at["linked_issues"] + pl["linked_issues"]} - {"I-VOL-II-T24-TENSIONS"}
-    assert len(new) >= 2, new
+    # session 14 (F1; R1-4): the page-limit point is re-presented as an applied rule (PROPOSED BASIS; its issue stays
+    # open for the Bid manager to confirm) and listed as checked with no question, so it is no pending decision
+    assert not [c for c in pend if c["topic"].startswith("page limit")]
+    new = {i for i in at["linked_issues"]} - {"I-VOL-II-T24-TENSIONS"}
+    assert len(new) >= 1, new
     for i in new:                       # PROPOSED curated issues in the words A4 uses, with A4's owner
         assert cur[i]["owner"] in ("Process engineer", "Bid manager"), (i, cur[i]["owner"])
 
@@ -291,7 +293,8 @@ def test_a5_activity_inherits_the_open_issues_of_the_rows_it_carries_synthetic()
     by_row = {"R1": ["I-P"], "R2": ["I-P", "I-Q"], "R3": ["I-Q"]}
     pending = {"I-P": {"short": "the point", "owner": "Process engineer"}}
     programme.inherit_open_decisions(acts, by_row, pending, gate=False)
-    assert acts[0]["open_decisions"] == ["I-P"] and acts[0]["decision_status"] == "READY"
+    # session 14 (F2; R3 m2): one decision state: not gated, its finalisation needs the decision
+    assert acts[0]["open_decisions"] == ["I-P"] and acts[0]["decision_status"].startswith("NOT GATED (")
     f = [x for x in acts[0]["flags"] if x.startswith("OPEN DECISION")]
     assert f and "I-P: the point (Process engineer; rows R1, R2)" in f[0], f
     assert acts[1].get("open_decisions") in (None, []) and not acts[1]["flags"]
@@ -305,7 +308,8 @@ def test_a5_real_pack_t24_on_the_three_activities_and_the_gantt(built):
         a = prog[aid]
         f = " | ".join(x for x in a["flags"] if x.startswith("OPEN DECISION"))
         assert "I-VOL-II-T24-TENSIONS: " in f and "all values are maxima" in f, (aid, f[:300])
-        assert a["decision_status"] == "READY", a["decision_status"]        # the gate rule is off unless turned on
+        # the gate rule is off unless turned on (session 14, F2; R3 m2: said as NOT GATED, never READY)
+        assert a["decision_status"].startswith("NOT GATED ("), a["decision_status"]
     for name in ("gantt.svg", "gantt.html"):
         assert "OPEN DECISION" in _txt(built / "a5" / name), name
     readme = _txt(built / "a5/README.md")

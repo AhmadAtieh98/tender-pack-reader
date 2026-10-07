@@ -40,8 +40,8 @@
   }
  ],
  "findings": [
-  "Form 4-E (form-4e) is finalised before 3 Proposal document(s) are final (lcc-certificate, form-4f, model-audit-opinion), so a qualification in them cannot be checked against its declaration (VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.')). If Form 4-E waited for all of them, it would finish on 2026-12-13 against its latest finish 2026-11-23: INFEASIBLE by 14 WD on the assumed durations (assemble-envelope-a, copies, deliver, fin-model-build, fin-model-freeze, form-4e, form-4f, lcc-certificate, lcc-ratio, model-audit-opinion, model-audit-review, model-auditor-appoint, seal-and-mark made late). How the cross-check is done (a later final read of every document, a different order, or a change of a lead time) is for a person (Legal, Bid manager); no duration, setting or dependency was changed.",
-  "A qualification of a commercial term of Volume V would have to be listed in Form 4-E (VOL-I 9.6: 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'), which is placed in Envelope A (VOL-I 9.1(e)), where commercial information renders the Proposal non-responsive (VOL-I 6.2: 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.'); stated in Envelope B instead, it would be a conditional price (VOL-I 10.5: 'Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.'). Whether such a qualification can be made at all, and how Form 4-E words a deviation from a commercial term without commercial information, is for a person (Legal and Commercial); nothing is decided here."
+  "Form 4-E (form-4e) is finalised before 5 Proposal document(s) are final (form-4a, form-4b, lcc-certificate, form-4f, model-audit-opinion), so a qualification in them cannot be checked against its declaration (VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.')). If Form 4-E waited for all of them, it would finish on 2026-12-13 against its latest finish 2026-11-23: INFEASIBLE by 14 WD on the assumed durations (assemble-envelope-a, copies, deliver, fin-model-build, fin-model-freeze, form-4e, form-4f, lcc-certificate, lcc-ratio, model-audit-opinion, model-audit-review, model-auditor-appoint, seal-and-mark made late); 12 WD of it existed before the ordering (assemble-envelope-a, copies, deliver, lcc-certificate, lcc-ratio, seal-and-mark already late); the ordering itself adds 2 WD and makes late fin-model-build, fin-model-freeze, form-4e, form-4f, model-audit-opinion, model-audit-review, model-auditor-appoint. How the cross-check is done (a later final read of every document, a different order, or a change of a lead time) is for a person (Legal, Bid manager); no duration, setting or dependency was changed. Issue: I-FORM-4E-CROSS-CHECK (open; Bid manager).",
+  "A qualification of a commercial term of Volume V would have to be listed in Form 4-E (VOL-I 9.6: 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'), which is placed in Envelope A (VOL-I 9.1(e)), where commercial information renders the Proposal non-responsive (VOL-I 6.2: 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.'); stated in Envelope B instead, it would be a conditional price (VOL-I 10.5: 'Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.'). Whether such a qualification can be made at all, and how Form 4-E words a deviation from a commercial term without commercial information, is for a person (Legal and Commercial); nothing is decided here. Issue: I-FORM-4E-COMMERCIAL-QUALIFICATION (open; Legal counsel)."
  ],
  "notice": "PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
  "planning_basis": "Planning date 2026-10-22 = the issue date of ADD-02, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-10-22). Latest dates: a backward pass from the pack deadlines in force at ADD-02 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
@@ -52,68 +52,69 @@
    "document": "Bid Bond (original)",
    "document_activity": "bond-issue",
    "envelope": "A",
-   "finish": "2026-11-09",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE"
    ],
-   "status": "final on 2026-11-09, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-09, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-VOL-I-BOND-LONGSTOP, decide by 2026-11-11"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(b) ('(b) Form 4-B — Reference Projects Schedule (one per reference project);')",
    "document": "Client completion certificate (one per reference project)",
    "document_activity": "completion-certs",
    "envelope": "A",
-   "finish": "2026-11-11",
+   "finish": null,
    "open_issues": [
     "I-VOL-I-ENV-A-PRICES",
     "I-BIDDER-FACTS"
    ],
-   "status": "final on 2026-11-11, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-11, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "Financial standing evidence (audited accounts of each member and the combined calculation)",
    "document_activity": "fin-standing",
    "envelope": "A",
-   "finish": "2026-11-02",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-BIDDER-FACTS"
    ],
-   "status": "final on 2026-11-02, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-02, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(a) ('(a) Form 4-A — Proposal Submission Letter;')",
    "document": "Form 4-A (signed)",
    "document_activity": "form-4a",
    "envelope": "A",
-   "finish": "2026-11-05",
+   "finish": null,
    "open_issues": [
     "I-F4A-FIELDS",
     "I-NO-CONSEQUENCE"
    ],
-   "status": "final on 2026-11-05, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "NOT CHECKABLE: GATED by I-F4A-FIELDS, finalise by 2026-11-23, after Form 4-E starts on 2026-11-19 (earliest finish 2026-11-05)"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(b) ('(b) Form 4-B — Reference Projects Schedule (one per reference project);')",
    "document": "Form 4-B (one per reference project)",
    "document_activity": "form-4b",
    "envelope": "A",
-   "finish": "2026-11-12",
+   "finish": null,
    "open_issues": [
     "I-VOL-I-ENV-A-PRICES",
+    "I-FORM-4E-COMMERCIAL-QUALIFICATION",
     "I-BIDDER-FACTS",
     "I-NO-CONSEQUENCE",
     "I-F4A-FIELDS"
    ],
-   "status": "final on 2026-11-12, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "NOT CHECKABLE: GATED by I-VOL-I-ENV-A-PRICES, finalise by 2026-11-23, after Form 4-E starts on 2026-11-19 (earliest finish 2026-11-12)"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(c) ('(c) Form 4-C — Conflict of Interest and Debarment Declaration;')",
    "document": "Form 4-C (Arabic, one per member)",
    "document_activity": "form-4c-sign",
    "envelope": "A",
-   "finish": "2026-11-09",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-BIDDER-FACTS",
@@ -121,108 +122,108 @@
     "I-F4C-EXCLUSION",
     "I-F4A-FIELDS"
    ],
-   "status": "final on 2026-11-09, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-09, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-F4C-EXCLUSION, decide by 2026-11-11"
   },
   {
-   "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(e)+ADD-02 ('FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING')",
+   "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(e)+ADD-02 ('FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING'); ADD-02 7.1 ('A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e).'); ADD-02 7.2 ('Form 4-G shall be completed and submitted with Envelope A. Failure to submit Form 4-G shall render the Proposal non-responsive.')",
    "document": "Form 4-G (signed)",
    "document_activity": "form-4g-sign",
    "envelope": "A",
-   "finish": "2026-11-05",
+   "finish": null,
    "open_issues": [
     "I-F4G-LETTERING",
     "I-F4G-NO",
     "I-NO-CONSEQUENCE",
     "I-F4A-FIELDS"
    ],
-   "status": "final on 2026-11-05, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-05, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-F4G-NO, decide by 2026-11-11"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "Investment licence evidence or signed undertaking (one per foreign member)",
    "document_activity": "investment-licence",
    "envelope": "A",
-   "finish": "2026-11-11",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-BIDDER-FACTS"
    ],
-   "status": "final on 2026-11-11, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-11, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "ISO 9001:2015 certificate copy",
    "document_activity": "iso-copy",
    "envelope": "A",
-   "finish": "2026-10-25",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE"
    ],
-   "status": "final on 2026-10-25, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-10-25, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "Local Content Certificate",
    "document_activity": "lcc-certificate",
    "envelope": "A",
-   "finish": "2026-12-09",
+   "finish": null,
    "open_issues": [
     "I-LCC-ISSUER"
    ],
-   "status": "NOT CHECKABLE: final on 2026-12-09, after Form 4-E starts on 2026-11-19"
+   "status": "NOT CHECKABLE: earliest finish 2026-12-09, after Form 4-E starts on 2026-11-19; finalisation NEEDS A DECISION: I-LCC-ISSUER, decide by 2026-10-13 (ALREADY PASSED: before the planning date 2026-10-22)"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "O&M Operator experience evidence",
    "document_activity": "om-evidence",
    "envelope": "A",
-   "finish": "2026-11-04",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-BIDDER-FACTS"
    ],
-   "status": "final on 2026-11-04, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-04, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(d) ('(d) Form 4-D — Parent Company Guarantee (executed);')",
    "document": "Form 4-D Parent Company Guarantee (executed original)",
    "document_activity": "pcg-execution",
    "envelope": "A",
-   "finish": "2026-11-18",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-F4D-WORDING"
    ],
-   "status": "final on 2026-11-18, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-18, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-F4D-WORDING, decide by 2026-11-10"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(h) ('(h) notarised Powers of Attorney for each signatory;')",
    "document": "Notarised Power of Attorney (one per signatory)",
    "document_activity": "poa",
    "envelope": "A",
-   "finish": "2026-11-04",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-BIDDER-FACTS",
     "I-F4A-FIELDS"
    ],
-   "status": "checked (finalised before Form 4-E)"
+   "status": "linked (an input of Form 4-E, final before it starts)"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(i) ('(i) the certificates and evidence required under Section 8.')",
    "document": "Evidence of commercial operation (one per reference plant)",
    "document_activity": "references",
    "envelope": "A",
-   "finish": "2026-11-04",
+   "finish": null,
    "open_issues": [],
-   "status": "final on 2026-11-04, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-04, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 9.1(f) ('(f) the Technical Proposal narrative;')",
    "document": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)",
    "document_activity": "technical-proposal",
    "envelope": "A",
-   "finish": "2026-11-18",
+   "finish": null,
    "open_issues": [
     "I-PERMIT",
     "I-READING-T24",
@@ -234,61 +235,63 @@
     "I-VOL-II-MISSING",
     "I-VOL-II-T24-TENSIONS",
     "I-VOL-II-AT-ALL-TIMES",
+    "I-VOL-II-COMPLIANCE-POINT",
     "I-FLOWS",
-    "I-VOL-III",
-    "I-VOL-II-COMPLIANCE-POINT"
+    "I-VOL-III"
    ],
-   "status": "checked (finalised before Form 4-E)"
+   "status": "linked (an input of Form 4-E; finalisation NEEDS A DECISION: I-PERMIT, I-CONCESSION, I-VOL-II-T24-TENSIONS, I-VOL-II-AT-ALL-TIMES, I-VOL-II-COMPLIANCE-POINT, I-FLOWS, decide by 2026-10-25)"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 10.6 ('The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the a')",
    "document": "Schedule of principal financing assumptions",
    "document_activity": "fin-assumptions",
    "envelope": "B",
-   "finish": "2026-11-16",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-VOL-I-ENV-B"
    ],
-   "status": "final on 2026-11-16, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-16, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-VOL-I-ENV-B, I-CONCESSION, decide by 2026-11-11"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 10.3 ('The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded value')",
    "document": "Financial Model (unlocked Excel, frozen version)",
    "document_activity": "fin-model-freeze",
    "envelope": "B",
-   "finish": "2026-11-12",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-VOL-I-ENV-B",
-    "I-VOL-I-FILE-NAMES"
+    "I-VOL-I-FILE-NAMES",
+    "I-FORM-4E-COMMERCIAL-QUALIFICATION"
    ],
-   "status": "final on 2026-11-12, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E"
+   "status": "earliest finish 2026-11-12, before Form 4-E starts on 2026-11-19, but not linked: a later change to it would not reach Form 4-E; finalisation NEEDS A DECISION: I-VOL-I-ENV-B, I-FORM-4E-COMMERCIAL-QUALIFICATION, I-CONCESSION, decide by 2026-11-11"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 10.1 ('Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in E')",
    "document": "Form 4-F Financial Proposal Schedule (signed)",
    "document_activity": "form-4f",
    "envelope": "B",
-   "finish": "2026-11-23",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-VOL-I-ENV-B",
+    "I-FORM-4E-COMMERCIAL-QUALIFICATION",
     "I-F4A-FIELDS"
    ],
-   "status": "NOT CHECKABLE: final on 2026-11-23, after Form 4-E starts on 2026-11-19"
+   "status": "NOT CHECKABLE: earliest finish 2026-11-23, after Form 4-E starts on 2026-11-19; finalisation NEEDS A DECISION: I-VOL-I-ENV-B, I-FORM-4E-COMMERCIAL-QUALIFICATION, I-CONCESSION, decide by 2026-11-11"
   },
   {
    "clause": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.'); VOL-I 10.3 ('The Financial Model shall be submitted in unlocked, fully formula-linked Microsoft Excel format, without macros and without hard-coded value')",
    "document": "Independent model auditor's opinion (original)",
    "document_activity": "model-audit-opinion",
    "envelope": "B",
-   "finish": "2026-11-19",
+   "finish": null,
    "open_issues": [
     "I-NO-CONSEQUENCE",
     "I-VOL-I-ENV-B"
    ],
-   "status": "NOT CHECKABLE: final on 2026-11-19, after Form 4-E starts on 2026-11-19"
+   "status": "NOT CHECKABLE: earliest finish 2026-11-19, after Form 4-E starts on 2026-11-19; finalisation NEEDS A DECISION: I-VOL-I-ENV-B, I-CONCESSION, decide by 2026-11-11"
   }
  ],
  "rule": "VOL-I 9.6 ('A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.')",
@@ -314,6 +317,15 @@
    "form-4f",
    "model-audit-opinion"
   ],
+  "already_late": [
+   "assemble-envelope-a",
+   "copies",
+   "deliver",
+   "lcc-certificate",
+   "lcc-ratio",
+   "seal-and-mark"
+  ],
+  "existing_shortfall_wd": 12,
   "feasible": false,
   "float_wd": -14,
   "form_4e_earliest_finish": "2026-12-13",
@@ -334,6 +346,16 @@
    "model-auditor-appoint",
    "seal-and-mark"
   ],
+  "newly_late": [
+   "fin-model-build",
+   "fin-model-freeze",
+   "form-4e",
+   "form-4f",
+   "model-audit-opinion",
+   "model-audit-review",
+   "model-auditor-appoint"
+  ],
+  "ordering_cost_wd": 2,
   "shortfall_wd": 14
  }
 }

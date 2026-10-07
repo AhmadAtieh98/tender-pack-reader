@@ -162,14 +162,17 @@ def test_r1_9_page_limit_q2_bears_from_add02(real, a2d):
     order = real["order"]
     assert stage2.issue_stages(real)[Q2] == "ADD-02", cur
     e = next(x for x in real["evals"] if x["row"].id == "VOL-I-9.2-01")
-    assert signals.pending_note(Q2) not in e["stages"]["ADD-01"]["pending"]
-    assert signals.pending_note(Q2) in e["stages"]["ADD-02"]["pending"]
+    # session 14 (F1; R1-4): Q2 is re-presented as an applied rule awaiting the Bid manager's confirmation (not a
+    # human decision pending); it still bears from ADD-02 only and its row stays not settled there
+    assert signals.awaiting_note(Q2) not in e["stages"]["ADD-01"]["pending"]
+    assert signals.awaiting_note(Q2) in e["stages"]["ADD-02"]["pending"]
+    assert signals.pending_note(Q2) not in e["stages"]["ADD-02"]["pending"]
     moved = {(m["stage"], m["row"]): m for m in a2d["rows_moved"]}
     assert moved[("ADD-01", "VOL-I-9.2-01")]["change"] == signals.CONFIRMED, moved[("ADD-01", "VOL-I-9.2-01")]
     at2 = moved[("ADD-02", "VOL-I-9.2-01")]
     # ADD-02 amends the row (2.1: 150 pages), so the label is CHANGED, which outranks NOT SETTLED; it is never
     # CONFIRMED, and the open decision is named on the line
-    assert at2["change"] != signals.CONFIRMED and f"open: {Q2}, human decision pending" in " ".join(at2["why"]), at2
+    assert at2["change"] != signals.CONFIRMED and signals.awaiting_note(Q2) in " ".join(at2["why"]), at2  # s14 F1 R1-4
     assert order.index("ADD-02") > order.index("ADD-01")
 
 
@@ -212,11 +215,13 @@ def test_r2_11_page_limit_q2_is_named_with_the_mark_on_its_parent(built):
     assert a3["condensed"] <= 2, a3["condensed"]
     items = {i["id"]: i for g in pg["groups"]["groups"] for i in g["items"]}
     par = next(i for i in items.values() if Q2 in (i.get("folds") or []))
-    assert par["folds_pending"] == [Q2] and par["owner"] == "Bid manager", par     # same owner: on the line
+    # session 14 (F1; R1-4): Q2 is now an applied rule awaiting the Bid manager's confirmation, not a pending decision,
+    # so the parent folds it without the pending mark (the rule for a folded PENDING issue is checked synthetically)
+    assert par["folds_pending"] == [] and par["owner"] == "Bid manager", par
     from tenderpack import render
     html = render._a3_html(pg)
     text = re.sub(r"<[^>]+>", "", html)
-    assert f"(Bid manager) +1: {stage2.A3_PENDING_MARK} {Q2}" in text, re.findall(r"\+\d[^\n]*", text)
+    assert "(Bid manager) +1" in text and f"{stage2.A3_PENDING_MARK} {Q2}" not in text, re.findall(r"\+\d[^\n]*", text)
 
 
 # ---------------------------------------------------------------------------------------------- R2-12

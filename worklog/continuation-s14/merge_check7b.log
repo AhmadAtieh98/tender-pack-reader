@@ -1,0 +1,188 @@
+.................................F...............................F..F.F. [ 40%]
+.....................F........F.............FF.......................... [ 80%]
+....................................                                     [100%]
+=================================== FAILURES ===================================
+_______________ test_r2_m1_m2_m5_the_one_page_keeps_its_reasons ________________
+
+a3page = {'title': 'A3 — What would put this bid out (working draft)', 'subtitle': 'State after ADD-02 (issued 2026-10-22); Pro...': ['VOL-I-6.3-01', 'VOL-I-6.4-01', 'VOL-I-6.4-02', 'VOL-I-7.1-01', 'VOL-I-8.3-01', 'ADD-01-AppA-01', ...], ...}], ...}
+tmp_path = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/test_r2_m1_m2_m5_the_one_page_0')
+
+    def test_r2_m1_m2_m5_the_one_page_keeps_its_reasons(a3page, tmp_path):
+        """The names and counts added to the A3 page do not push it to dropping each issue's reason (level 3)."""
+        from tenderpack import render
+        for level, words, page in stage2.a3_pages(a3page):
+            try:
+                render.write_a3_pdf(page, tmp_path / "a3.pdf")
+                break
+            except render.A3OverflowError:
+                continue
+>       assert level <= 2, (level, words)
+E       AssertionError: (3, None)
+E       assert 3 <= 2
+
+tests/test_session14_f2_a5_a3_fixes.py:406: AssertionError
+__ test_r2_1_one_pending_set_in_a1_a3_page_a3_detail_and_a4_pending_decision ___
+
+built = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/s13-f2-out0/out')
+real = {'cfg': {'pack_id': 'NUPA-ISTP-2026-014', 'manifest': 'sources/manifest.json', 'furniture': 'config/furniture.yaml', '...exists only to test how a candidate's software handles a document set of this shape.", ...}, ...], 'problems': [], ...}
+
+    def test_r2_1_one_pending_set_in_a1_a3_page_a3_detail_and_a4_pending_decision(built, real):
+        a1 = json.loads(_txt(built / "a1/a1.json"))
+        a1_set = {r["id"] for r in a1["sheets"]["Issues"]["rows"]
+                  if str(r.get("text") or "").startswith(H.HUMAN_DECISION_PENDING)}
+        a3, pg = _page(built)
+        page = {i["id"] for g in pg["groups"]["groups"] for i in g["items"] if stage2.A3_PENDING_MARK in i["short"]}
+        page_folded = {f for g in pg["groups"]["groups"] for i in g["items"] for f in i.get("folds") or []}
+        det = set(re.findall(r'<tr id="([^"]+)"><td><b>[^<]+</b>[^<]*' + stage2.A3_PENDING_MARK,
+                             _txt(built / "a3/a3_detail.html")))
+        a4 = json.loads(_txt(built / "a4/clarification_register.json"))
+        per_entry = [set(c.get("linked_issues") or []) for c in a4["pending_decision"]]
+        a4_set = set().union(*per_entry) | {x["id"] for x in a4.get("pending_issues") or []}
+        cur = set(real["curated_issues"])
+        a1_set, a4_set, det = a1_set & cur, a4_set & cur, det & cur
+        # every pending decision of A4 is one of the pending issues of A1, A3 and the detail (none is A4-only)
+        assert all(s & a1_set for s in per_entry), [c["topic"] for c, s in zip(a4["pending_decision"], per_entry)
+                                                     if not s & a1_set]
+        rows = {r["id"]: r.get("rows") for r in a1["sheets"]["Issues"]["rows"]}
+        assert "VOL-II-2.4-01" in str(rows["I-VOL-II-AT-ALL-TIMES"]) and "VOL-I-9.2-01" in str(rows["I-VOL-I-PAGE-LIMIT-Q2"])
+        assert a1_set == a4_set == det, (a1_set ^ a4_set, a1_set ^ det)
+>       assert (page | (page_folded & a1_set)) & cur == a1_set, a1_set ^ (page & cur)
+E       AssertionError: {'I-CONCESSION', 'I-F4A-FIELDS', 'I-F4C-EXCLUSION', 'I-F4D-WORDING', 'I-F4G-NO', 'I-FLOWS', ...}
+E       assert {'I-FORM-4E-C...LIANCE-POINT'} == {'I-CONCESSIO...I-FLOWS', ...}
+E         
+E         Extra items in the right set:
+E         'I-VOL-I-BOND-LONGSTOP'
+E         'I-VOL-V-PERSISTENT-BREACH'
+E         'I-FLOWS'
+E         'I-LCC-ISSUER'
+E         'I-VOL-V-MISSING'...
+E         
+E         ...Full output truncated (11 lines hidden), use '-vv' to show
+
+tests/test_session13_audit_fixes_a3.py:119: AssertionError
+___________ test_r2_5_env_a_prices_and_env_b_carry_the_pending_mark ____________
+
+built = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/s13-f2-out0/out')
+
+    def test_r2_5_env_a_prices_and_env_b_carry_the_pending_mark(built):
+        _, pg = _page(built)
+        items = _items(pg)
+        for iid in ("I-VOL-I-ENV-A-PRICES", "I-VOL-I-ENV-B"):
+>           assert items[iid]["short"].startswith(stage2.A3_PENDING_MARK), items[iid]
+E           AssertionError: {'decide': True, 'decide_by': '2026-11-11', 'decide_by_activity': 'form-4b', 'folds': [], ...}
+E           assert False
+E            +  where False = <built-in method startswith of str object at 0xa314a0>('⚑')
+E            +    where <built-in method startswith of str object at 0xa314a0> = ''.startswith
+E            +    and   '⚑' = stage2.A3_PENDING_MARK
+
+tests/test_session13_audit_fixes_a3.py:149: AssertionError
+______________ test_r2_3_maxima_and_permit_lines_on_the_real_page ______________
+
+built = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/s13-f2-out0/out')
+
+    def test_r2_3_maxima_and_permit_lines_on_the_real_page(built):
+        _, pg = _page(built)
+        items = _items(pg)
+        t24 = items["I-VOL-II-T24-TENSIONS"]
+>       assert "all values are maxima" in t24["short"] and "0.5" in t24["short"] and "6.0" in t24["short"], t24
+E       AssertionError: {'decide': True, 'decide_by': '2026-10-25', 'decide_by_activity': 'technical-proposal', 'folds': ['I-VOL-II-AT-ALL-TIMES', 'I-VOL-II-COMPLIANCE-POINT'], ...}
+E       assert ('all values are maxima' in '')
+
+tests/test_session13_audit_fixes_a3.py:167: AssertionError
+________ test_r2_11_page_limit_q2_is_named_with_the_mark_on_its_parent _________
+
+built = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/s13-f4-out0/out')
+
+    def test_r2_11_page_limit_q2_is_named_with_the_mark_on_its_parent(built):
+        a3 = json.loads(_txt(built / "a3/a3.json"))
+        pg = stage2.condense_a3(a3, max(2, a3["condensed"]))
+>       assert a3["condensed"] <= 2, a3["condensed"]
+E       AssertionError: 3
+E       assert 3 <= 2
+
+tests/test_session13_audit_rechecks.py:215: AssertionError
+_____________ test_r2_8_compliance_point_is_an_open_pending_issue ______________
+
+real = {'cfg': {'pack_id': 'NUPA-ISTP-2026-014', 'manifest': 'sources/manifest.json', 'furniture': 'config/furniture.yaml', '...exists only to test how a candidate's software handles a document set of this shape.", ...}, ...], 'problems': [], ...}
+a1 = {'title': 'A1 Obligations and compliance register — WORKING DRAFT', 'notice': 'WORKING DRAFT, full register: 205 rows ...son decides; possible = a weaker inference.', 'stages': ['BASE', 'ADD-01', 'ADD-02'], 'validated_stage': 'ADD-02', ...}
+built = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt16/s13-f4-out0/out')
+
+    def test_r2_8_compliance_point_is_an_open_pending_issue(real, a1, built):
+        cur = real["curated_issues"]
+        assert CP in cur, "no issue says the compliance point of Table 2-4 is open"
+        it = cur[CP]
+        assert it["owner"] == "Process engineer" and it["theme"] == cur[T24]["theme"]
+        t = it["text"]
+        texts = {u["unit_id"]: u.get("text") or "" for u in real["units"]}
+        for words, unit in (("Minimum Effluent Quality Parameters at the Point of Discharge", "VOL-II:T2-4"),
+                            ("Continuous at outlet", "VOL-II:T2-4/pH"),
+                            ("the delivery point shown on Drawing 03-C-114", "VOL-II:5.1")):
+            assert words in t and words in " ".join(texts[unit].split()), (words, unit)
+        assert "p3" in t and "p4" in t and "Volume III" in t and "not supplied" in t
+        assert "whether to raise it with the Authority" in t and "Process engineer" in t
+        assert CP in real["pending_issues"]
+        assert not any(CP in (c.get("linked_issues") or []) for c in real["clarifications"]["clarifications"])
+        rows = _a1_rows_of(a1, CP)
+        want = {f"VOL-II-T2-4-{p}" for p in NINE + ["TN"]} | {"VOL-II-5.1-01"}
+        assert want <= rows, want - rows
+        a3 = json.loads(_txt(built / "a3/a3.json"))
+>       assert a3["condensed"] <= 2, a3["condensed"]
+E       AssertionError: 3
+E       assert 3 <= 2
+
+tests/test_session13_audit_rechecks.py:382: AssertionError
+___ test_a3_1_every_listed_issue_shows_its_reason_and_owner_on_the_one_page ____
+
+built = {'r': {'cfg': {'pack_id': 'NUPA-ISTP-2026-014', 'manifest': 'sources/manifest.json', 'furniture': 'config/furniture.ya... {'stage': 'ADD-02', 'status_date': '2026-10-22', 'planning_date': '2026-10-22', 'start_date': '2026-10-22', ...}, ...}
+
+    def test_a3_1_every_listed_issue_shows_its_reason_and_owner_on_the_one_page(built):
+        a3, text, fit = built["a3"], built["text"], built["fit"]
+        assert fit and fit["pages"] == 1 and fit["min_text_pt"] >= A3_MIN_TEXT_PT
+        listed = _listed(a3)
+        assert listed and all(i["short"] for i in listed)
+        for i in listed:                                  # id, its reason and its owner, on the page
+            assert i["id"] in text, i["id"]
+            # session 12 (F2 follow-up): at condensation level 2 a leading HUMAN DECISION PENDING label is the marker the
+            # page's legend defines (stage2.pending_mark); the full label stays on a3_detail.html and in A1
+            short = stage2.pending_mark(i["short"]) if built["level"] >= 2 else i["short"]
+>           assert " ".join(short.split())[:40] in text, (i["id"], short)
+E           AssertionError: ('I-F4A-FIELDS', "⚑ Reissued Form 4-A (ADD-01 App A): stale PDD, dropped fields, a missing 'paragraph 1': what to print and sign")
+E           assert '⚑ Reissued Form 4-A (ADD-01 App A): stal' in 'A3 — What would put this bid out (working draft) State after ADD-02 (issued 2026-10-22); Proposal Due Date (PDD) 2026... curation + config/assumptions.yaml. Each id links to a3_detail.html (quotes, sources, flags) and traces to A1 and A2.'
+
+tests/test_session11_audit_a3.py:65: AssertionError
+_ test_a3_5_overlapping_issues_are_folded_and_pipeline_items_stay_on_the_detail_page _
+
+built = {'r': {'cfg': {'pack_id': 'NUPA-ISTP-2026-014', 'manifest': 'sources/manifest.json', 'furniture': 'config/furniture.ya... {'stage': 'ADD-02', 'status_date': '2026-10-22', 'planning_date': '2026-10-22', 'start_date': '2026-10-22', ...}, ...}
+
+    def test_a3_5_overlapping_issues_are_folded_and_pipeline_items_stay_on_the_detail_page(built):
+        a3 = built["a3"]
+        listed = {i["id"]: i for i in _listed(a3)}
+        late = [a["id"] for a in built["a5"]["activities"] if a["status"].startswith("INFEASIBLE")]
+        assert set(late) >= {"lcc-ratio", "lcc-certificate", "assemble-envelope-a", "copies", "seal-and-mark", "deliver"}
+        assert {"I-A5-FEASIBILITY", *[f"I-A5-{a}" for a in late]} <= set(listed["I-LCC-ISSUER"]["folds"])
+        assert "I-AUTO-NOT-SUPPLIED-ENVIRONMENTAL-PERMIT" in listed["I-PERMIT"]["folds"]
+        assert {"I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-7", "I-AUTO-NOT-SUPPLIED-VOL-V-SCHEDULE-11"} <= set(listed["I-VOL-V-MISSING"]["folds"])
+        detail = {i["id"]: i for i in a3["issues_detail"]}
+        for iid in ("I-OP-ADD-02/T1-1-rev/note(2)", "I-AUTO-SUMMARY-ADD-01", "I-AUTO-SUMMARY-ADD-02", "I-READING-F4C"):
+            assert iid not in listed and detail[iid]["detail_only"], iid
+        for iid in listed["I-LCC-ISSUER"]["folds"]:
+            assert detail[iid]["folded_into"] == "I-LCC-ISSUER"
+>       assert len(listed) <= 25 and "A5: 6 INFEASIBLE by 12 WD" in listed["I-LCC-ISSUER"]["short"]
+E       assert (26 <= 25)
+E        +  where 26 = len({'I-F4A-FIELDS': {'id': 'I-F4A-FIELDS', 'short': "HUMAN DECISION PENDING: Reissued Form 4-A (ADD-01 App A): stale PDD,...'No' not stated; undertakings 3-6 add post-award duties not in VOL-II 6", 'owner': 'Technical', 'folds': [], ...}, ...})
+
+tests/test_session11_audit_a3.py:93: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_session14_f2_a5_a3_fixes.py::test_r2_m1_m2_m5_the_one_page_keeps_its_reasons
+FAILED tests/test_session13_audit_fixes_a3.py::test_r2_1_one_pending_set_in_a1_a3_page_a3_detail_and_a4_pending_decision
+FAILED tests/test_session13_audit_fixes_a3.py::test_r2_5_env_a_prices_and_env_b_carry_the_pending_mark
+FAILED tests/test_session13_audit_fixes_a3.py::test_r2_3_maxima_and_permit_lines_on_the_real_page
+FAILED tests/test_session13_audit_rechecks.py::test_r2_11_page_limit_q2_is_named_with_the_mark_on_its_parent
+FAILED tests/test_session13_audit_rechecks.py::test_r2_8_compliance_point_is_an_open_pending_issue
+FAILED tests/test_session11_audit_a3.py::test_a3_1_every_listed_issue_shows_its_reason_and_owner_on_the_one_page
+FAILED tests/test_session11_audit_a3.py::test_a3_5_overlapping_issues_are_folded_and_pipeline_items_stay_on_the_detail_page
+8 failed, 172 passed in 129.07s (0:02:09)
+
+real	2m10.225s
+user	2m7.139s
+sys	0m0.796s

@@ -80,12 +80,12 @@ def test_form_4e_checks_synthetic():
                                    issues_of=lambda a: ["I-BOND"] if a["id"] == "bond" else [])
     by = {c["document_activity"]: c for c in res["checks"]}
     assert set(by) == {"tp", "bond", "f4f"}                              # every Proposal document but Form 4-E
-    assert by["tp"]["status"] == "checked (finalised before Form 4-E)"
+    assert by["tp"]["status"] == "linked (an input of Form 4-E, final before it starts)"     # session 14 (F2; R3-14-4)
     assert by["bond"]["status"].startswith("NOT CHECKABLE") and by["f4f"]["status"].startswith("NOT CHECKABLE")
     assert "VOL-I 9.6" in by["bond"]["clause"] and "VOL-I 9.1" in by["bond"]["clause"]
     assert "VOL-I 10.1" in by["f4f"]["clause"] and by["bond"]["open_issues"] == ["I-BOND"]
     w = res["what_if"]
-    assert w["added_predecessors"] == ["bond", "f4f"] and w["form_4e_earliest_finish"] > by["f4f"]["finish"]
+    assert w["added_predecessors"] == ["bond", "f4f"] and w["form_4e_earliest_finish"] > by["f4f"]["earliest_finish"]
     assert w["feasible"] is False and w["shortfall_wd"] > 0
     assert res["findings"] and "a person" in res["findings"][0] and "INFEASIBLE" in res["findings"][0]
 
@@ -106,8 +106,9 @@ def test_real_programme_states_readiness_apart(real):
     assert f4e["finalisation"].startswith("FINALISATION NEEDS A DECISION") and "I-CONCESSION" in f4e["finalisation"]
     assert acts["form-4a"]["finalisation"].startswith("FINALISATION GATED")
     assert "preparation" in programme.PROGRAMME_COLS and "finalisation" in programme.PROGRAMME_COLS
-    # nothing invented: the decision status keeps READY (the gate rule is the owner's pending choice)
-    assert f4e["decision_status"] == "READY"
+    # nothing invented: no gate (the gate rule is the owner's pending choice); session 14 (F2; R3 m2): one state, the
+    # decision status says NOT GATED with what the finalisation needs, never READY beside NEEDS A DECISION
+    assert f4e["decision_status"].startswith("NOT GATED (") and "I-CONCESSION" in f4e["decision_status"]
     by_row = programme.readiness_by_row(prog)
     assert any(x.startswith("form-4e: PREPARATION READY") for x in by_row["VOL-I-9.6-01"])
 
@@ -120,7 +121,7 @@ def test_real_form_4e_checks(real):
               "form-4f", "fin-model-freeze", "fin-assumptions", "model-audit-opinion"):
         assert a in docs, a
     assert "form-4e" not in docs and "ground-dd" not in docs              # not a Proposal document
-    assert docs["technical-proposal"]["status"].startswith("checked")
+    assert docs["technical-proposal"]["status"].startswith("linked")             # session 14 (F2; R3-14-4)
     assert "VOL-I 9.1(g)" in docs["bond-issue"]["clause"] and "VOL-I 9.6" in docs["bond-issue"]["clause"]
     assert "VOL-I 10.1" in docs["form-4f"]["clause"] and "VOL-I 10.6" in docs["fin-assumptions"]["clause"]
     assert "VOL-I 9.1(d)" in docs["pcg-execution"]["clause"]

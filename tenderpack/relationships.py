@@ -341,7 +341,8 @@ def _blockers(nodes: list[str], gap_by_node: dict[str, list[dict]], skip: str | 
 
 
 def trace(entries: list, changed, words=(), max_depth: int | None = MAX_DEPTH,
-          max_records: int = MAX_RECORDS, inherit: dict | None = None) -> list[dict]:
+          max_records: int = MAX_RECORDS, inherit: dict | None = None, scopes: dict | None = None,
+          whole=None, gap_members: dict | None = None) -> list[dict]:
     """Every target reached from `changed` (row and unit ids, calc: names), as records sorted by status, target and
     path: {target, entry_id (the last entry of the path), kind, status (the path's weakest link), class, path: [entry
     ids], nodes (the source, then each target along the path), source (the first changed id or `words:` phrase that
@@ -354,8 +355,17 @@ def trace(entries: list, changed, words=(), max_depth: int | None = MAX_DEPTH,
     Cycle-safe: a path never visits a node twice; a link back to a node already on it is recorded once as `cyclic`
     and not followed. Bounded only by `max_depth` links per path (None: no depth bound) and `max_records`; a path cut
     by either is `truncated` and names the links it did not follow. Missing-document entries are reported (gaps) and
-    never followed; every node on a path that one blocks puts it on the record's `blockers`."""
+    never followed; every node on a path that one blocks puts it on the record's `blockers`.
+
+    Session 14 (F1; R1-7, R1-2): `scopes` (entry id -> the units its scope_words cover, entry_scope) narrow an entry: it
+    is followed from a changed source only when a changed unit is in its scope or the source itself changed as a whole
+    (`whole`: the ids changed in their own words, not only through a member); and a document-not-supplied block of its
+    source is inherited only when its scope includes a unit the document blocks (`gap_members`: gap entry id -> the
+    units it blocks; inherits_block, the one rule issue_links follows for the issues)."""
     changed = set(changed or ())
+    scopes = scopes or {}
+    whole = set(whole or ())
+    gap_members = gap_members or {}
     texts = [_norm(w) for w in words or () if w]
     good = [e for e in entries or [] if isinstance(e, dict) and e.get("kind") in KINDS and e.get("status") in STATUSES
             and e.get("id")]
@@ -376,7 +386,8 @@ def trace(entries: list, changed, words=(), max_depth: int | None = MAX_DEPTH,
         for k, eid in enumerate(path):
             e = by_id.get(eid)
             if e is not None and e["kind"] == "limit_applies" and k < len(nodes):
-                out += _blockers([nodes[k]], inherit)
+                out += [b for b in _blockers([nodes[k]], inherit)          # session 14 (F1; R1-2): within its scope
+                        if inherits_block(e, gap_members.get(b["entry_id"]), scopes.get(eid))]
         return out
     best: dict[tuple, dict] = {}
 
@@ -412,6 +423,8 @@ def trace(entries: list, changed, words=(), max_depth: int | None = MAX_DEPTH,
     for e in good:
         gap = e["kind"] == "missing_document"           # a blocked conclusion is reported, never followed further
         exact = sorted(f for f in ends(e, "from") if not f.startswith(WORDS) and f in changed)
+        if not gap and e["id"] in scopes and not (changed & scopes[e["id"]]):
+            exact = [f for f in exact if f in whole]      # session 14 (F1; R1-7): a change outside its scope stays
         lexical = sorted(f for f in ends(e, "from") if f.startswith(WORDS) and _norm(f[len(WORDS):])
                          and any(_norm(f[len(WORDS):]) in t for t in texts))
         for srcs, lex in ((exact, False), (lexical, True)):
@@ -545,18 +558,19 @@ def impact_between(r: dict, frm: str, to: str) -> dict:
     # session 11 audit (A2-5): a document not supplied that blocks rows blocks the units they cite and those units'
     # tables or forms, for limit_applies links from them (trace `inherit`): the Environmental Permit blocks every Table
     # 2-4 row, so every row applying a Table 2-4 limit inherits the block
-    inherit: dict[str, list[dict]] = {}
-    for g in entries:
-        if not isinstance(g, dict) or g.get("kind") != "missing_document" or not g.get("id"):
-            continue
-        for t in ends(g, "to"):
-            for u in (rows[t]["row"].units if t in rows else []):
-                n = u
-                while n:
-                    if g not in inherit.setdefault(n, []):
-                        inherit[n].append(g)
-                    n = getattr(s.state.get(n) or sp.state.get(n), "parent", None)
-    recs = trace(entries, raw | parents | direct, words, max_depth=bound, inherit=inherit) if entries else []
+    # session 14 (F1; R1-2, R1-7): the one rule (document_blocks, inherits_block, entry_scope) A1's issue links follow:
+    # a narrowed entry carries a change only from inside its scope, and inherits a block only within it
+    inherit, members = document_blocks(entries, {k: v["row"].units for k, v in rows.items()},
+                                       lambda n: getattr(s.state.get(n) or sp.state.get(n), "parent", None))
+    scopes = {}
+    for e in entries or []:
+        if isinstance(e, dict) and e.get("id") and not _blank(e.get("scope_words")):
+            scopes[e["id"]] = set().union(*(entry_scope(e, {k: {"text": getattr(u, "text", "") or ""}
+                                                            for k, u in st.items()}) or set()
+                                             for st in (sp.state, s.state)))
+    whole = {k for k in raw if not any(m != k and m.startswith(k + "/") for m in raw)}
+    recs = trace(entries, raw | parents | direct, words, max_depth=bound, inherit=inherit, scopes=scopes,
+                 whole=whole | direct, gap_members=members) if entries else []
     for rec in recs:
         t = rec["target"]
         rec["target_type"] = ("row" if t in rows else "calculation" if t.startswith(CALC) else
@@ -638,7 +652,8 @@ def entry_scope(entry: dict, units: dict) -> set[str] | None:
     out = set()
     for f in ends(entry, "from"):
         for m in _members(f, units or {}):
-            if m != f and found(sw, str((units.get(m) or {}).get("text") or "")):
+            # session 14 (F1; R1-7): case aside, as this docstring says ('continuous' basis, 'Continuous at outlet')
+            if m != f and found(sw.casefold(), str((units.get(m) or {}).get("text") or "").casefold()):
                 out.add(m)
     return out
 
@@ -668,26 +683,71 @@ def issue_reaches(entry: dict, iid: str, issues: dict | None, units: dict | None
                    f"): {tail(sc)}; the issue's subject is {tail(sub)}")
 
 
-def issue_links(entries: list, rows, issues: dict | None = None, units: dict | None = None) -> dict[str, list[dict]]:
+def issue_links(entries: list, rows, issues: dict | None = None, units: dict | None = None,
+                row_units: dict | None = None, parent_of=None) -> dict[str, list[dict]]:
     """Session 13 (audit R1-2): row id -> [{issue, via, status}] for every entry with `issues` and every row it names in
     `to` (`rows`: the register's row ids; a unit, activity or calculation target is not a row). One rule for every
     issue and every entry, whatever its kind or status (the status is shown, never used to drop a link). Session 14
     (W4): with `issues` (id -> issue) and `units` (id -> unit), an issue travels only where issue_reaches says it does
-    (out_of_scope_links lists the others with why)."""
+    (out_of_scope_links lists the others with why). Session 14 (F1; R2 m6): an issue whose curated `subject` lies in an
+    entry's `from` travels along it too (subject_in_source). Session 14 (F1; R1-2): with `row_units` (row id -> its
+    units), the issues of a document not supplied reach the rows of a limit_applies entry from what it blocks, within
+    the entry's scope (document_blocks, inherits_block: the rule A2's relationship-impact table follows), 'via' naming
+    both entries ('REL-GAP > REL-LIMIT')."""
     rows = set(rows or ())
     out: dict[str, list[dict]] = {}
-    for e in entries or []:
-        if not isinstance(e, dict) or not e.get("issues"):
-            continue
-        for t in ends(e, "to"):
-            if t in rows:
-                for i in e.get("issues") or []:
-                    if not issue_reaches(e, i, issues, units)[0]:
-                        continue
-                    x = {"issue": i, "via": e.get("id"), "status": e.get("status")}
-                    if x not in out.setdefault(t, []):
-                        out[t].append(x)
+
+    def put(t: str, x: dict) -> None:
+        if t in rows and x not in out.setdefault(t, []):
+            out[t].append(x)
+    good = [e for e in entries or [] if isinstance(e, dict) and e.get("id")]
+    for e in good:
+        own = list(e.get("issues") or [])
+        about = [i for i, it in (issues or {}).items() if i not in own and subject_in_source(e, it, units)]
+        for i in own + about:
+            if not issue_reaches(e, i, issues, units)[0]:
+                continue
+            for t in ends(e, "to"):
+                put(t, {"issue": i, "via": e.get("id"), "status": e.get("status")})
+    if row_units is not None:
+        inherit, members = document_blocks(good, row_units, parent_of)
+        direct = _gap_index(good)
+        for e in good:
+            if e.get("kind") == "missing_document":
+                continue
+            sc = entry_scope(e, units or {}) if units is not None else None
+            for f in ends(e, "from"):
+                gs = [(g, True) for g in direct.get(f, [])]
+                gs += [(g, False) for g in inherit.get(f, []) if inherits_block(e, members.get(g["id"]), sc)
+                       and g not in [h for h, _ in gs]]
+                for g, _ in gs:
+                    for i in g.get("issues") or []:
+                        if not issue_reaches(e, i, issues, units)[0]:
+                            continue
+                        for t in ends(e, "to"):
+                            put(t, {"issue": i, "via": f"{g['id']} > {e['id']}",
+                                    "status": _weakest(g.get("status") or "possible", e.get("status") or "possible")})
     return out
+
+
+# session 14 (F1; R1-8): a scope narrowing that no person has reviewed is labelled where an output states its effect
+SCOPE_PROPOSED = "(scope PROPOSED, not reviewed; the owner may keep the issue on the row)"
+
+
+def scope_label(entry: dict) -> str:
+    """SCOPE_PROPOSED for an entry whose scope_words are a drafting proposal (review: proposed, or no reviewer); ''."""
+    e = entry or {}
+    return SCOPE_PROPOSED if (e.get("review") or "proposed") == "proposed" or not e.get("reviewer") else ""
+
+
+def scope_words_text(entry: dict, units: dict | None = None) -> str:
+    """A1's Relationships 'Scope' cell: "'<scope_words>' (members in scope: A, B; <label>)", or '' (the whole link)."""
+    sw = str((entry or {}).get("scope_words") or "").strip()
+    if not sw:
+        return ""
+    sc = entry_scope(entry, units or {}) if units else None
+    return (f"{sw} (verbatim in its evidence" + (f"; members in scope: {', '.join(x.rsplit('/', 1)[-1] for x in sorted(sc))}"
+                                                 if sc else "") + f") {scope_label(entry)}").strip()
 
 
 def out_of_scope_links(entries: list, rows, issues: dict, units: dict) -> dict[str, list[dict]]:
@@ -696,16 +756,67 @@ def out_of_scope_links(entries: list, rows, issues: dict, units: dict) -> dict[s
     rows = set(rows or ())
     out: dict[str, list[dict]] = {}
     for e in entries or []:
-        if not isinstance(e, dict) or not e.get("issues"):
+        if not isinstance(e, dict):
             continue
-        for i in e.get("issues") or []:
+        own = list(e.get("issues") or [])         # session 14 (F1; R2 m6): and the issues about its source
+        for i in own + [k for k, it in (issues or {}).items() if k not in own and subject_in_source(e, it, units)]:
             ok, why = issue_reaches(e, i, issues, units)
             if ok:
                 continue
             for t in ends(e, "to"):
                 if t in rows:
-                    out.setdefault(t, []).append({"issue": i, "via": e.get("id"), "why": why})
+                    out.setdefault(t, []).append({"issue": i, "via": e.get("id"),
+                                                  "why": (why + " " + scope_label(e)).strip()})   # session 14 (F1; R1-8)
     return out
+
+
+# Session 14 (F1; R1-2): one rule for an issue reached through a document not supplied. A document-not-supplied entry
+# that blocks rows blocks the units they cite and those units' tables or forms (document_blocks); a limit_applies entry
+# from a blocked node applies the blocked limit, so it carries the block (A2's relationship-impact table, trace) and the
+# entry's issues (A1's Issues cell and A2/A5's pending notes, issue_links) to its rows, within its scope: only when its
+# scope (entry_scope; None: the whole source) includes a unit the document blocks (inherits_block). Nothing is decided:
+# the issue reaches the row as the open issue it is.
+
+def document_blocks(entries: list, row_units: dict, parent_of=None) -> tuple[dict[str, list[dict]], dict[str, set]]:
+    """({node: [missing_document entries that block it]}, {entry id: the units it blocks}): the units the rows a
+    missing_document entry names in `to` cite, and their parents (parent_of(unit) -> parent id or None; default: the
+    id before its last '/')."""
+    parent_of = parent_of or (lambda n: n.rsplit("/", 1)[0] if "/" in n else None)
+    inherit: dict[str, list[dict]] = {}
+    members: dict[str, set] = {}
+    for g in entries or []:
+        if not isinstance(g, dict) or g.get("kind") != "missing_document" or not g.get("id"):
+            continue
+        for t in ends(g, "to"):
+            for u in (row_units or {}).get(t) or []:
+                members.setdefault(g["id"], set()).add(u)
+                n, seen = u, set()
+                while n and n not in seen:
+                    seen.add(n)
+                    if g not in inherit.setdefault(n, []):
+                        inherit[n].append(g)
+                    n = parent_of(n)
+    return inherit, members
+
+
+def inherits_block(entry: dict, blocked: set | None, scope: set | None) -> bool:
+    """Whether a limit_applies `entry` carries a document-not-supplied block of its source: its scope (None: the whole
+    source) includes a unit the document blocks (`blocked`; None: not known, carried as before)."""
+    if (entry or {}).get("kind") != "limit_applies":
+        return False
+    return blocked is None or scope is None or bool(scope & blocked)
+
+
+def subject_in_source(entry: dict, issue: dict | None, units: dict | None) -> bool:
+    """Session 14 (F1; R2 m6): whether a curated issue's `subject` (unit ids, a table standing for its members) lies in
+    the entry's `from` (a table or form standing for its members): an issue about the source of a link bears on what the
+    link carries, so it travels along it (issue_links), within the link's scope (issue_reaches)."""
+    sub = issue_subject(issue, units or {})
+    if not sub or (entry or {}).get("kind") == "missing_document":
+        return False
+    src = set().union(*({f} | _members(f, units or {}) for f in ends(entry, "from") if not f.startswith(WORDS))) \
+        if ends(entry, "from") else set()
+    return bool(src & sub)
 
 
 def by_class(records: list[dict]) -> list[tuple[str, list[dict]]]:

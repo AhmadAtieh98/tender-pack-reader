@@ -161,8 +161,9 @@ def states_block_html(st: dict | None) -> str:
     interpretation. '' without states."""
     if not st:
         return ""
-    return ('<div class="issues"><p><b>Value:</b> ' + _e(st.get("value")) + "</p><p><b>Interpretation:</b> "
-            + _e(st.get("interpretation")) + "</p><p><b>Approval:</b> " + _e(st.get("approval")) + "</p></div>")
+    return ('<div class="issues"><p><b>Value:</b> ' + bidi_html(st.get("value")) + "</p><p><b>Interpretation:</b> "
+            + bidi_html(st.get("interpretation")) + "</p><p><b>Approval:</b> " + bidi_html(st.get("approval"))
+            + "</p></div>")                                                          # session 14 (F2; R3 m8): Arabic rtl
 
 
 def readiness_block_html(lines: list[str] | None) -> str:
@@ -207,6 +208,22 @@ def batch4_intro(statuses: list[str], accepted: int) -> str:
 
 _ARABIC = re.compile(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
 _LATIN = re.compile(r"[A-Za-z]")
+
+
+# session 14 (F2; R3 m8): an Arabic run inside a card's line (letters, with the spaces, digits and punctuation between
+# Arabic letters), wrapped so it renders right to left whatever the line's direction
+_ARABIC_RUN = re.compile(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]+"
+                         r"(?:[\s\d.,:;\-\u060c\u061b]+[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]+)*")
+
+
+def bidi_html(t) -> str:
+    """Session 14 (F2; R3 m8): HTML-escaped text whose Arabic runs are marked right to left (<bdi dir="rtl">, the
+    direction text_dir gives an Arabic line), so a quote or a value line mixing Arabic and Latin reads in order."""
+    out, pos, t = [], 0, str(t if t is not None else "")
+    for m in _ARABIC_RUN.finditer(t):
+        out.append(_e(t[pos:m.start()]) + f'<bdi dir="{text_dir({"lang": "ar", "text": m.group(0)})}">{_e(m.group(0))}</bdi>')
+        pos = m.end()
+    return "".join(out) + _e(t[pos:])
 
 
 def text_dir(u: dict) -> str:
@@ -334,7 +351,7 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
                    "criterion_zero": "zero marks under one scoring criterion (scored, not a disqualification)"}
         es = row_es(row.id)                    # session 13 (R3-2): the row's open issues, beside the decision
         decide = (f"Accept that <b>{_e(row.requirement)}</b> is required as quoted, and that failing it is "
-                  f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{_e(c.quote)}” "
+                  f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{bidi_html(c.quote)}” "
                   f"({_e((ev.get('consequence_source') or {}).get('latest', c.unit))}){_e(with_open_issues(es))}. "
                   "Otherwise reject it with what is wrong.")
         extra = []
@@ -344,8 +361,9 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
             extra.append("relies on an image reading pending your review (batch 1)")
         body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)}<div class="grid"><div>'
                     + "".join(_fig(x, f"{x['unit']} (page {x['page']})") for x in cs)
-                    + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{_e(it.quote if it else '')}”</p>"
-                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”"            # gloss label: the approval state
+                    # session 14 (F2; R3 m8): the quotes' Arabic runs marked right to left (bidi_html)
+                    + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{bidi_html(it.quote if it else '')}”</p>"
+                    f"<p>Consequence: <i>{_e(c.cls)}</i> “{bidi_html(c.quote)}”"     # gloss label: the approval state
                     + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
                     f"{_e(_confidence_reason(r, row))}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
@@ -462,8 +480,9 @@ def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None
             es = row_es(row.id)
             body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)} <small>{_e(ev["status"])}'
                         f"{' — STALE' if ev['stale'] else ''}</small><p>{_e(row.requirement)}</p>"
-                        f"<p>Quote: “{_e(it.quote if it else '')}” — {_e((ev.get('source') or {}).get('latest', ''))}</p>"
-                        + (f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”</p>" if isinstance(c, Consequence) else "")
+                        # session 14 (F2; R3 m8): the quotes' Arabic runs marked right to left (bidi_html)
+                        f"<p>Quote: “{bidi_html(it.quote if it else '')}” — {_e((ev.get('source') or {}).get('latest', ''))}</p>"
+                        + (f"<p>Consequence: <i>{_e(c.cls)}</i> “{bidi_html(c.quote)}”</p>" if isinstance(c, Consequence) else "")
                         + f"<p><small>{_e(row.assessment)}; owner {_e(row.owner_role)}; evidence {_e(', '.join(row.evidence) or row.no_deliverable)}"
                         # session 13 (R3-2): the confidence reason as A1 and batch 2 print it, and the row's open issues
                         f"; confidence {_e(row.confidence)}: {_e(_confidence_reason(r, row))}</small></p>"

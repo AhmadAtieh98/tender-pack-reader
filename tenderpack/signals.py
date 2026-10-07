@@ -224,7 +224,9 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
     if reread:
         note = _short(ib.get("note"), 160)
         parts.append(f"reading re-made at {ib.get('stage')} with the same words, values, parameters, dates and "
-                     "consequence" + (f" (note: '{note}')" if note else ""))
+                     "consequence" + (f" (note: '{note}')" if note else "")
+                     # session 14 (F1; R1-6): a proposed reading is named as such, as a proposed op is
+                     + ("" if b.get("reading_accepted", True) else f" (proposed reading, {AWAITING})"))
     parts += recorded
     if other:
         parts.append("other ops on its units (the re-made reading records no change from them; a person checks): "
@@ -586,10 +588,26 @@ def attach_dependencies(r: dict) -> None:
     by = {s.stage: s for s in r.get("stages") or []}
     members: dict[tuple[str, str], list[str]] = {}
 
-    def expand(stage: str, state: dict, src: str) -> list[str]:
+    # session 14 (F1; R1-7): an entry narrowed by scope_words makes the row depend only on the members of its source in
+    # its scope (relationships.entry_scope, over every stage's words), the rule its trace and its issues follow
+    from .relationships import entry_scope
+    by_id = {e.get("id"): e for e in r.get("relationships") or [] if isinstance(e, dict) and e.get("id")}
+    scopes: dict[str, set] = {}
+    for eid, e in by_id.items():
+        if str(e.get("scope_words") or "").strip():
+            scopes[eid] = set().union(*(entry_scope(e, {k: {"text": getattr(u, "text", "") or ""}
+                                                        for k, u in st.state.items()}) or set() for st in by.values()))
+
+    def in_scope(src: str, via: str) -> set | None:
+        ids = [x for x in re.findall(r"(\S+) \(", via) if x in by_id and src in by_id[x].get("from", [])
+               + ([by_id[x]["from"]] if isinstance(by_id[x].get("from"), str) else [])]
+        return scopes.get(ids[-1]) if ids else None
+
+    def expand(stage: str, state: dict, src: str, via: str = "") -> list[str]:
         if (stage, src) not in members:
             members[(stage, src)] = ([src] if src in state else []) + sorted(k for k in state if k.startswith(src + "/"))
-        return members[(stage, src)]
+        sc = in_scope(src, via)
+        return members[(stage, src)] if sc is None else [k for k in members[(stage, src)] if k == src or k in sc]
 
     def snap(state: dict, uid: str, via: str) -> dict:
         u = effective(state, uid, True)
@@ -606,7 +624,7 @@ def attach_dependencies(r: dict) -> None:
                 continue
             state, units = s.state, {}
             for src, via in srcs.get(row.id, []):
-                for uid in expand(st, state, src):
+                for uid in expand(st, state, src, via):
                     if uid in own:
                         continue
                     if uid in units:

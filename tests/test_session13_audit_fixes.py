@@ -75,10 +75,13 @@ def test_r1_1_relationship_impact_carries_the_relationships_issues(a2d, real):
             assert any(n.startswith(signals.issue_note(i, pend)) for n in x["open_issues"]), (x["target"], i, x)
         if x["stage"] == "ADD-02" and T24 in want:
             seen.add(x["target"])
-    # R2-2: the four rows the reviewer names, all REL-T24-* targets
-    assert {"VOL-V-31.1-02", "VOL-II-2.5-01", "VOL-II-7.2-01", "VOL-II-3.1-01"} <= seen, seen
+    # R2-2: the rows the reviewer names, all REL-T24-* targets. Session 14 (F1; R1-7): VOL-II-2.5-01 monitors only the
+    # parameters assessed on a continuous basis (REL-T24-CONTINUOUS-MONITORING, scope_words PROPOSED), so the ADD-02
+    # change to the rolling-average TN limit no longer reaches it
+    assert {"VOL-V-31.1-02", "VOL-II-7.2-01", "VOL-II-3.1-01"} <= seen, seen
+    assert "VOL-II-2.5-01" not in seen, seen
     md = a2d["markdown"]
-    for row in ("VOL-V-31.1-02", "VOL-II-2.5-01", "VOL-II-7.2-01", "VOL-II-3.1-01"):
+    for row in ("VOL-V-31.1-02", "VOL-II-7.2-01", "VOL-II-3.1-01"):
         line = next(ln for ln in md.splitlines() if ln.startswith(f"- {row} (row;") and "REL-T24" in ln)
         assert f"open: {T24}, {PENDING}" in line, line
 
@@ -89,7 +92,7 @@ def test_r1_1_rows_moved_why_carries_the_issue_where_the_relationship_carries_th
         if m["change"] == "CHANGED" and any("depends on it: REL-T24" in w for w in m["why"]):
             assert any(w.startswith(f"open: {T24}, {PENDING}") for w in m["why"]), m
             hit += 1
-    assert hit >= 6, hit
+    assert hit >= 5, hit          # session 14 (F1; R1-7): VOL-II-2.5-01 is outside the TN change's scope
 
 
 def test_r1_1_add02_5_1_second_sentence_confirms_the_other_nine_rows(real, a2d):

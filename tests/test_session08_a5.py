@@ -266,7 +266,8 @@ def test_gates_hold_finalisation_only_and_name_the_decision_date(r, base):
         assert all(i in r["curated_issues"] for i in issues)                         # open issues in the register
     for prep in ("form-4a-prep", "poa", "spoc", "form-4b-prep", "references", "completion-certs", "model-audit-opinion",
                  "fin-assumptions", "fin-model-freeze", "form-4f", "assemble-envelope-a", "deliver"):
-        assert x[prep]["decision_status"] == "READY", prep
+        # session 14 (F2; R3 m2): not gated: READY, or NOT GATED with the decision its finalisation needs (one state)
+        assert x[prep]["decision_status"] == "READY" or x[prep]["decision_status"].startswith("NOT GATED ("), prep
     assert "form-4a-prep" in x["form-4a"]["predecessors"] and "form-4b-prep" in x["form-4b"]["predecessors"]
     for a in base["activities"]:
         assert {"timing_status", "decision_status", "resource_status", "status", "flags"} <= set(a), a["id"]

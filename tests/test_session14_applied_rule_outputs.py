@@ -86,8 +86,12 @@ def test_the_owners_open_decisions_stay_pending_in_the_real_pack(real):
     labels = {x["id"]: x.get("human_decision") for x in stage2.collect_issues(real, None)}
     for i in ("I-VOL-II-AT-ALL-TIMES", "I-VOL-II-T24-TENSIONS", "I-PERMIT", "I-CONCESSION"):
         assert labels.get(i) == H.HUMAN_DECISION_PENDING, (i, labels.get(i))
-    # no curated issue is re-presented as an applied rule in the real pack (nothing of the owner's is settled here)
-    assert not any(it.get("applied_rule") for it in real["curated_issues"].values())
+    # no curated issue is re-presented as an applied rule in the real pack (nothing of the owner's is settled here),
+    # except (session 14, F1; R1-4) the page-limit point, whose clause as amended prints the words ADD-01 Q2 restates:
+    # a PROPOSED BASIS still awaiting the Bid manager's confirmation, never settled
+    applied = {i for i, it in real["curated_issues"].items() if it.get("applied_rule")}
+    assert applied <= {"I-VOL-I-PAGE-LIMIT-Q2"}, applied
+    assert all(i in (real.get("awaiting_issues") or {}) for i in applied), applied
 
 
 def test_an_approved_transcription_is_never_an_interpretation_approval(real):

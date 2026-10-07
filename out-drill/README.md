@@ -37,7 +37,7 @@ Structurally checked does not mean reviewed or approved by a person. Interpretat
 | C40 | pass | every A5 activity cites an A1 row in force |
 | C44 | pass | every deliverable needed by a row in force has activities or a justified exception |
 | C45 | pass | every dependency and lead time is defined |
-| C43 | pass | A3 fits one page; smallest text 8.35 pt (scale 0.983) |
+| C43 | pass | A3 fits one page; smallest text 8.29 pt (scale 0.976) |
 | C52 | pass | 0 confirmed translation(s) of approved readings; none called 'not reviewed' in the outputs |
 | C20 ADD-01 | ok | 36 provisions; unresolved or unaccounted: none |
 | C21-C27 ADD-01 | ok | 15 ops; invalid: none |

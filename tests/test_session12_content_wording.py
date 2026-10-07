@@ -170,8 +170,13 @@ def test_checked_no_question_holds_no_judgment_and_pending_readings_are_labelled
     assert not bad, bad                       # no decision can be recorded on these entries: none may assert one
     assert clarify.judgment_findings(reg) == []
     pend = {c["topic"]: c for c in reg.get("pending_decision") or []}
-    for t in ("concession term (which clause governs)", "Form 4-G 'No' answers", "page limit: ADD-01 Q2 after ADD-02 2.1"):
+    for t in ("concession term (which clause governs)", "Form 4-G 'No' answers"):
         assert t in pend and pend[t]["decision_owner"].strip(), t
+    # session 14 (F1; R1-4): the page-limit point is re-presented as an applied rule (PROPOSED BASIS, its issue kept open
+    # for the Bid manager to confirm), so it is listed as checked with no question, not as a pending decision
+    chk = {c["topic"]: c for c in reg.get("checked_no_question") or []}
+    assert "page limit: ADD-01 Q2 after ADD-02 2.1" not in pend
+    assert H.PROPOSED_BASIS in chk["page limit: ADD-01 Q2 after ADD-02 2.1"]["finding"]
     assert clarify.check(reg, real["units"], set(real["curated_issues"])) == []
     md = clarify.markdown(reg)
     sec = md.split("## Proposed readings")[1].split("\n## ")[0]

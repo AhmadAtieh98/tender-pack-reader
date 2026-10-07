@@ -1,0 +1,23 @@
+........................................................................ [ 57%]
+.............F.......................................                    [100%]
+=================================== FAILURES ===================================
+___________ test_the_real_page_keeps_every_reason_at_a_readable_size ___________
+
+built = {'a3': {'title': 'A3 — What would put this bid out (working draft)', 'subtitle': 'State after ADD-02 (issued 2026-10-2...[], 'ids': [], ...}], ...}, 'fit': {'pages': 1, 'scale': 0.897, 'spare_pt': 0.0, 'min_text_pt': 7.62}, 'level': 2, ...}
+
+    def test_the_real_page_keeps_every_reason_at_a_readable_size(built):
+        fit, level = built["fit"], built["level"]
+        assert fit and fit["pages"] == 1, fit
+        assert level <= 2, (level, fit)                         # level 3 drops the reasons: a last resort only
+>       assert fit["scale"] >= 0.9 and fit["min_text_pt"] >= A3_MIN_TEXT_PT, fit
+E       AssertionError: {'pages': 1, 'scale': 0.897, 'spare_pt': 0.0, 'min_text_pt': 7.62}
+E       assert (0.897 >= 0.9)
+
+tests/test_session12_a3_fit.py:46: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_session12_a3_fit.py::test_the_real_page_keeps_every_reason_at_a_readable_size
+1 failed, 124 passed in 334.34s (0:05:34)
+
+real	5m35.430s
+user	5m17.619s
+sys	0m5.676s

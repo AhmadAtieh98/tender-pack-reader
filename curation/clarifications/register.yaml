@@ -824,10 +824,12 @@ clarifications:
     the lifecycle plan, the whole-life cost comparison under VOL-II 5.3 / ADD-01 5.1, or ESMP material under VOL-II
     9.1) falls outside the limit.
   # session 12 (F1; R-1): ADD-01 Q2's survival after ADD-02 2.1 is listed for review in A2, not settled here
+  # session 14 (F1; R1-4; PROPOSED, not reviewed): the Q2 point is re-presented as an applied rule (I-VOL-I-PAGE-LIMIT-Q2)
   already_settled: 'ADD-02 2.1 sets the limit at 150 A4 pages (replacing 120); VOL-I 9.2 as amended still prints
     ''excluding the Form Sheets and the appendices expressly permitted by Volume II''. ADD-01 Q2 (asked about the
-    ''120-page limit''; ''The limit applies to the Technical Proposal narrative only.'') is listed for review after
-    ADD-02 2.1 (A2): whether it still holds is a decision for a person (Bid manager); no decision recorded.'
+    ''120-page limit''; ''The limit applies to the Technical Proposal narrative only.'') restates those words and is
+    listed for review after ADD-02 2.1 (A2): PROPOSED BASIS (applied rule; a person confirms the application) on
+    I-VOL-I-PAGE-LIMIT-Q2, which the Bid manager confirms; no decision recorded.'
   practical_impact: Pages over the limit are removed and not scored (9.2), and the technical score must reach 70
     marks to proceed (VOL-I 11.3; ADD-02 note (1)); page planning of the Technical Proposal depends on it.
   proposed_question: 'Volume I, Clause 9.2, page 5 (as amended by Addendum No. 2, Section 2.1): Which appendices
@@ -1221,6 +1223,26 @@ checked_no_question:
   - unit: VOL-II:8.3
     page: 5
     words: a minimum of two (2) certified operators on shift at all times
+# session 14 (F1; R1-4, R2-M4, R3; PROPOSED, not reviewed): the page-limit point moved here from pending_decision. VOL-I 9.2
+# as amended by ADD-02 2.1 still prints the words ADD-01 Q2 restates, so no question is raised; its issue
+# I-VOL-I-PAGE-LIMIT-Q2 is re-presented as a PROPOSED BASIS (applied rule; a person confirms the application) and stays
+# open, with its owner, until the Bid manager confirms the application. Nothing is decided here
+- topic: 'page limit: ADD-01 Q2 after ADD-02 2.1'
+  finding: 'ADD-02 2.1 substitutes 150 pages and leaves the other words of VOL-I 9.2 as printed; 9.2 as amended still reads
+    ''excluding the Form Sheets and the appendices expressly permitted by Volume II'', which ADD-01 Q2 restates (''The limit
+    applies to the Technical Proposal narrative only.''). No question. PROPOSED BASIS (applied rule; a person confirms the
+    application): the Bid manager confirms it on I-VOL-I-PAGE-LIMIT-Q2, which stays open until then; the undefined permitted
+    appendices are raised (CQ-PAGE-LIMIT-APPENDICES).'
+  sources:
+  - unit: ADD-02:2.1
+    page: 1
+    words: one hundred and fifty (150) pages
+  - unit: ADD-01:Q2
+    page: 1
+    words: The limit applies to the Technical Proposal narrative only.
+  - unit: VOL-I:9.2
+    page: 5
+    words: excluding the Form Sheets and the appendices expressly permitted by Volume II
 pending_decision:
 - topic: concession term (which clause governs)
   decision_owner: Legal
@@ -1289,24 +1311,6 @@ pending_decision:
     page: 3
     words: An independent penetration test of the operational technology environment will be carried out annually and the
       report provided to the Authority.
-- topic: 'page limit: ADD-01 Q2 after ADD-02 2.1'
-  decision_owner: Bid manager
-  linked_issues:   # session 13 (F2; audit R2-1/R2-5): the issue that shows it in A1 and A3 (PROPOSED)
-  - I-VOL-I-PAGE-LIMIT-Q2
-  finding: 'ADD-02 2.1 sets 150 pages; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered
-    about the ''120-page limit'' that the limit applies to the narrative only; A2 lists it for review after ADD-02 2.1 (REVIEW:
-    whether the answer still holds is a decision for a person). No decision recorded; the undefined permitted appendices
-    are raised (CQ-PAGE-LIMIT-APPENDICES).'
-  sources:
-  - unit: ADD-02:2.1
-    page: 1
-    words: one hundred and fifty (150) pages
-  - unit: ADD-01:Q2
-    page: 1
-    words: The limit applies to the Technical Proposal narrative only.
-  - unit: VOL-I:9.2
-    page: 5
-    words: excluding the Form Sheets and the appendices expressly permitted by Volume II
 - topic: '''at all times'' (VOL-II 2.4) vs Table 2-4 assessment bases'
   decision_owner: Process engineer
   linked_issues:   # session 13 (F2; audit R2-1): its own issue first (PROPOSED); the maxima/range issue stays linked
@@ -1357,6 +1361,21 @@ pending_decision:
   - unit: VOL-II:5.1
     page: 4
     words: the delivery point shown on Drawing 03-C-114
+# session 14 (F1; R1-3, R2 M1; PROPOSED, not reviewed): the second judgment the Form 4-E checks leave to a person (A5
+# form_4e_checks), mirrored by its issue so A1, the A3 page and A4 name it; no question is drafted
+- topic: 'Form 4-E cross-check against documents final after it starts'
+  decision_owner: Bid manager
+  linked_issues:
+  - I-FORM-4E-CROSS-CHECK
+  finding: 'VOL-I 9.6 makes a Proposal that states ''no deviations'' in Form 4-E while containing a qualification elsewhere
+    non-responsive. The Form 4-E check (A5 form_4e_checks) lists the Proposal documents final only after Form 4-E starts
+    and finds the strict ordering (Form 4-E after all of them) INFEASIBLE on the assumed durations. How the cross-check is
+    done (a later final read of every document, a different order, or a change of a lead time) is for the Bid manager,
+    with Legal; no decision recorded and no question drafted.'
+  sources:
+  - unit: VOL-I:9.6
+    page: 5
+    words: "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."
 unavailable_material:
 - item: Volume III (Drawings), including Drawing 03-C-114
   referenced_in:

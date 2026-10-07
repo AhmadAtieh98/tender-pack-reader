@@ -72,7 +72,8 @@ def test_a5_1_lcc_lines_link_the_drafted_question_and_the_last_day_to_ask(r, bas
         x = a[aid]
         assert "CQ-LCC-ISSUER" in x["clarification_questions"], (aid, x["clarification_questions"])
         assert x["ask_by"] == ask, (aid, x["ask_by"])
-        assert x["decision_status"] == "READY"      # not gated: preparation and the application continue
+        # not gated: preparation and the application continue (session 14, F2; R3 m2: NOT GATED, with what it needs)
+        assert x["decision_status"].startswith("NOT GATED (") and "I-LCC-ISSUER" in x["decision_status"]
         assert any("CQ-LCC-ISSUER" in f and ask in f and "not sent" in f for f in x["flags"]), x["flags"]
     m = next(x for x in base["marshalling"] if x["evidence"] == "EV-LCC")
     assert "CQ-LCC-ISSUER" in m["clarification_questions"] and m["ask_by"] == ask, m

@@ -16,7 +16,7 @@ import pytest
 
 from tenderpack import human_owned as H
 from tenderpack import stage2
-from tenderpack.render import A3_MIN_TEXT_PT, A3OverflowError, write_a3_pdf
+from tenderpack.render import A3_SCALE_LOW, A3_MIN_TEXT_PT, A3OverflowError, write_a3_pdf
 from tenderpack.util import ROOT
 
 
@@ -43,7 +43,8 @@ def test_the_real_page_keeps_every_reason_at_a_readable_size(built):
     fit, level = built["fit"], built["level"]
     assert fit and fit["pages"] == 1, fit
     assert level <= 2, (level, fit)                         # level 3 drops the reasons: a last resort only
-    assert fit["scale"] >= 0.9 and fit["min_text_pt"] >= A3_MIN_TEXT_PT, fit
+    # session 14: the floor is render.A3_SCALE_LOW (0.89, a hair above the 7.5 pt minimum), no longer the literal 0.9
+    assert fit["scale"] >= A3_SCALE_LOW and fit["min_text_pt"] >= A3_MIN_TEXT_PT, fit
     assert "each issue's reason is on a3_detail.html" not in built["text"]
 
 

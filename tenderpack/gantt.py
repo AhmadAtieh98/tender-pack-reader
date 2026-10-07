@@ -218,6 +218,8 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
     elif _route_shown(a):                                   # session 12 (audit A5-1): the route on a late chain
         ask = _d(a["ask_by"])
         out.append((f"question drafted: ask by {ask.day} {ask:%b}", WARN, "diamond"))
+    if a.get("check_tag"):                                  # session 14 (F2; R3-14-2): the Form 4-E check, in full in the notes
+        out.append((a["check_tag"], WARN, "diamond"))
     if a.get("open_decisions"):                             # session 13 (F2; audit R2-2, R3-1): as the Permit is shown
         ask = _d(a.get("ask_by")) if (a.get("ask_by") and not a.get("gated_by") and not _route_shown(a)) else None
         out.append((f"OPEN DECISION ({len(a['open_decisions'])})"                 # the ids: notes below the chart
@@ -520,7 +522,7 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
                 L.diamond(x(ls), y + rh * 0.75, min(3.4, rh * 0.32), WARN, INK2)
             dn = _d(a.get("decision_needed_by"))
             if a.get("open_decisions") and not a.get("gated_by") and dn and ls and lf:
-                # session 14 (W4; report section 9 G7): the bar is the preparation; this amber tick on the late window
+                # session 14 (W4; report section 9 G7; F2, R3 m2: the bar is the whole activity); this amber tick on the late window
                 # is the day the finalisation needs the person's decision by (no gate unless the owner turns one on)
                 L.line(x(dn) + dw / 2, y + rh * 0.58, x(dn) + dw / 2, y + rh * 0.92, WARN, 1.4)
             ask = _d(a.get("ask_by"))
@@ -543,7 +545,7 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
              ("crit", "INFEASIBLE: negative float, shortfall in WD (never compressed)"),
              ("gate", "GATED: finalise by (latest start)"),
              ("ask", "ask by: last day to decide whether to raise a clarification request"),
-             ("decide", "OPEN DECISION: finalisation needs it by (bar = preparation)"),     # session 14 (W4)
+             ("decide", "OPEN DECISION: finalisation needs it by (bar = the activity)"),   # session 14 (W4; F2 R3 m2)
              ("over", "OVERLOAD: role over capacity that day"),
              ("cond", "CONDITIONAL / not scheduled (late window only)"), ("nonwork", "non-working day"),
              ("today", "planning date"), ("mile", "pack milestone")]
@@ -620,6 +622,9 @@ def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
                           f"Only on {route}") + ": " + "; ".join(f"{i}" + (f" ({_ltr(words[i])})" if words.get(i) else "")
                                                                 for i in ids) + "."
                          for k, ids in _by_activities(opened).items()))
+    from .programme import CHECK_FLAG                 # session 14 (F2; R3-14-2): the Form 4-E check's finding, in words
+    notes += [f"{a['id']}: {f}" for a in prog.get("activities") or [] for f in a.get("flags") or []
+              if f.startswith(CHECK_FLAG)]
     for s in notes:                                   # wrapped, never cut (session 11)
         line = ""
         for wd in s.split(" "):
@@ -778,7 +783,7 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
               "questions column lists every activity's).",
               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
-              "Preparation and finalisation are two states (session 14): the bar is the preparation, which can start on "
+              "Preparation and finalisation are two states (session 14): the bar is the whole activity, which can start on "
               "its earliest start once its inputs are done; an amber tick on the late window of an OPEN DECISION row "
               "marks the date its finalisation needs the person's decision by (decision_needed_by). Both are in full in "
               "the Preparation and Finalisation columns below and in programme.csv.",

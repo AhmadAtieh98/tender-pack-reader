@@ -99,7 +99,7 @@ def test_a3_8_counts_and_lists_agree_across_pdf_html_and_json(built):
     a3, text, detail = built["a3"], built["text"], built["detail"]
     c = a3["groups"]["counts"]
     assert c["all"] == len(a3["issues_detail"]) == c["listed"] + c["folded"] + c["detail_only"] + len(c["gate_note"])
-    assert c["listed"] == len(_listed(a3)) and f"— {c['listed']} open issues" in a3["groups"]["heading"]
+    assert c["listed"] == len(_listed(a3)) and f"— {c['all']} open issues ({c['listed']} listed)" in a3["groups"]["heading"]  # s14 F2 R2 m2
     assert " ".join(a3["groups"]["heading"].split()) in text and a3["issue_counts"] in " ".join(text.split())
     assert a3["issue_counts"] in detail and f"{c['all']} open issues: {c['listed']} listed, {c['folded']} folded" in detail
     for key in ("unresolved", "missing"):                 # rendered on the detail page too (grep 'Could not resolve')

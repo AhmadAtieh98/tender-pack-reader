@@ -51,7 +51,8 @@ def test_issue_links_follow_the_rule_synthetic():
     by = {u["unit_id"]: u for u in UNITS}
     links = relationships.issue_links([NARROW, WHOLE], {"ROW-W", "ROW-X"}, issues=ISSUES, units=by)
     assert [x["issue"] for x in links["ROW-W"]] == ["I-A", "I-ANY"]
-    assert [x["issue"] for x in links["ROW-X"]] == ["I-B"]
+    # session 14 (F1; R2 m6): an issue whose subject is the link's whole source (I-A: V:T1) travels along it too
+    assert [x["issue"] for x in links["ROW-X"]] == ["I-B", "I-A"]
     # without the issues and units the links are as before (a caller that cannot apply the rule drops nothing)
     assert [x["issue"] for x in relationships.issue_links([NARROW], {"ROW-W"})["ROW-W"]] == ["I-B", "I-A", "I-ANY"]
     out = relationships.out_of_scope_links([NARROW, WHOLE], {"ROW-W", "ROW-X"}, ISSUES, by)

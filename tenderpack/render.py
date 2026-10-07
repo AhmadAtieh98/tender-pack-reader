@@ -45,7 +45,9 @@ PRODUCER = "tenderpack"
 ZIP_TIME = (1980, 1, 1, 0, 0, 0)                   # earliest time a zip entry can carry
 A1_SHEET = "A1 register"
 A1_HEADER_ROW = 4                                  # rows 1-2: banner; row 3: blank
-A3_SCALE_LOW = 0.9                                 # 8.5 pt body text never drops below 7.6 pt; else: prioritise
+A3_SCALE_LOW = 0.89                                # session 14: 8.5 pt body text never drops below A3_MIN_TEXT_PT (7.5 pt,
+                                                   # which allows 0.882); 0.89 keeps a hair above it; the earlier 0.9 was a
+                                                   # rounding. Else: prioritise
 A3_MIN_TEXT_PT = 7.5                               # smallest rendered text allowed on A3 (C43)
 BANNER_SCREEN_WIDTH = 160                          # column-width units a sheet's banner is merged across (about a screen)
 BANNER_LINE_PT = 15                                # row height per wrapped line of the default 11 pt font

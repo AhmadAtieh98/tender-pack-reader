@@ -126,15 +126,31 @@ relationships:
     issues: [I-VOL-II-T24-TENSIONS]
     origin: curator
     review: proposed
+  # session 14 (F1; R1-7; PROPOSED, not reviewed): the bundled link is split. VOL-II 2.5 monitors only "those
+  # parameters identified in Table 2-4 as assessed on a continuous basis" (Residual Chlorine and pH, "Continuous at
+  # outlet" on the p3 image), so its link is narrowed by its own evidence words (REL-T24-CONTINUOUS-MONITORING,
+  # scope_words): a change to a rolling-average limit (the TN limit, ADD-02 5.1) does not move VOL-II-2.5-01. 2.4 and
+  # 4.3 apply the whole table and keep the link as it was
   - id: REL-T24-COMPLIANCE-MONITORING-STREAMS
     from: ["VOL-II:T2-4"]
-    to: [VOL-II-2.4-01, VOL-II-2.5-01, VOL-II-4.3-02]
+    to: [VOL-II-2.4-01, VOL-II-4.3-02]
     kind: limit_applies
     status: confirmed
     evidence:
       - {unit: "VOL-II:2.4", page: 2, words: "The treated effluent shall at all times comply with the parameters set out in Table 2-4."}
-      - {unit: "VOL-II:2.5", page: 2, words: "continuous online monitoring for those parameters identified in Table 2-4 as assessed on a continuous basis"}
       - {unit: "VOL-II:4.3", page: 4, words: "such that the Facility can meet Table 2-4 with any one stream out of service"}
+    issues: [I-VOL-II-T24-TENSIONS]
+    origin: curator
+    review: proposed
+  - id: REL-T24-CONTINUOUS-MONITORING
+    from: ["VOL-II:T2-4"]
+    to: [VOL-II-2.5-01]
+    kind: limit_applies
+    status: confirmed
+    evidence:
+      - {unit: "VOL-II:2.5", page: 2, words: "continuous online monitoring for those parameters identified in Table 2-4 as assessed on a continuous basis"}
+    note: "VOL-II 2.5 monitors the parameters Table 2-4 assesses on a continuous basis: a changed basis of assessment, or a changed limit of a continuously assessed parameter, changes what is monitored online."
+    scope_words: "continuous"
     issues: [I-VOL-II-T24-TENSIONS]
     origin: curator
     review: proposed

@@ -1,8 +1,122 @@
+diff --git a/curation/clarifications/register.yaml b/curation/clarifications/register.yaml
+index 3036f81..41527d5 100644
+--- a/curation/clarifications/register.yaml
++++ b/curation/clarifications/register.yaml
+@@ -824,10 +824,12 @@ clarifications:
+     the lifecycle plan, the whole-life cost comparison under VOL-II 5.3 / ADD-01 5.1, or ESMP material under VOL-II
+     9.1) falls outside the limit.
+   # session 12 (F1; R-1): ADD-01 Q2's survival after ADD-02 2.1 is listed for review in A2, not settled here
++  # session 14 (F1; R1-4; PROPOSED, not reviewed): the Q2 point is re-presented as an applied rule (I-VOL-I-PAGE-LIMIT-Q2)
+   already_settled: 'ADD-02 2.1 sets the limit at 150 A4 pages (replacing 120); VOL-I 9.2 as amended still prints
+     ''excluding the Form Sheets and the appendices expressly permitted by Volume II''. ADD-01 Q2 (asked about the
+-    ''120-page limit''; ''The limit applies to the Technical Proposal narrative only.'') is listed for review after
+-    ADD-02 2.1 (A2): whether it still holds is a decision for a person (Bid manager); no decision recorded.'
++    ''120-page limit''; ''The limit applies to the Technical Proposal narrative only.'') restates those words and is
++    listed for review after ADD-02 2.1 (A2): PROPOSED BASIS (applied rule; a person confirms the application) on
++    I-VOL-I-PAGE-LIMIT-Q2, which the Bid manager confirms; no decision recorded.'
+   practical_impact: Pages over the limit are removed and not scored (9.2), and the technical score must reach 70
+     marks to proceed (VOL-I 11.3; ADD-02 note (1)); page planning of the Technical Proposal depends on it.
+   proposed_question: 'Volume I, Clause 9.2, page 5 (as amended by Addendum No. 2, Section 2.1): Which appendices
+@@ -1221,6 +1223,26 @@ checked_no_question:
+   - unit: VOL-II:8.3
+     page: 5
+     words: a minimum of two (2) certified operators on shift at all times
++# session 14 (F1; R1-4, R2-M4, R3; PROPOSED, not reviewed): the page-limit point moved here from pending_decision. VOL-I 9.2
++# as amended by ADD-02 2.1 still prints the words ADD-01 Q2 restates, so no question is raised; its issue
++# I-VOL-I-PAGE-LIMIT-Q2 is re-presented as a PROPOSED BASIS (applied rule; a person confirms the application) and stays
++# open, with its owner, until the Bid manager confirms the application. Nothing is decided here
++- topic: 'page limit: ADD-01 Q2 after ADD-02 2.1'
++  finding: 'ADD-02 2.1 substitutes 150 pages and leaves the other words of VOL-I 9.2 as printed; 9.2 as amended still reads
++    ''excluding the Form Sheets and the appendices expressly permitted by Volume II'', which ADD-01 Q2 restates (''The limit
++    applies to the Technical Proposal narrative only.''). No question. PROPOSED BASIS (applied rule; a person confirms the
++    application): the Bid manager confirms it on I-VOL-I-PAGE-LIMIT-Q2, which stays open until then; the undefined permitted
++    appendices are raised (CQ-PAGE-LIMIT-APPENDICES).'
++  sources:
++  - unit: ADD-02:2.1
++    page: 1
++    words: one hundred and fifty (150) pages
++  - unit: ADD-01:Q2
++    page: 1
++    words: The limit applies to the Technical Proposal narrative only.
++  - unit: VOL-I:9.2
++    page: 5
++    words: excluding the Form Sheets and the appendices expressly permitted by Volume II
+ pending_decision:
+ - topic: concession term (which clause governs)
+   decision_owner: Legal
+@@ -1289,24 +1311,6 @@ pending_decision:
+     page: 3
+     words: An independent penetration test of the operational technology environment will be carried out annually and the
+       report provided to the Authority.
+-- topic: 'page limit: ADD-01 Q2 after ADD-02 2.1'
+-  decision_owner: Bid manager
+-  linked_issues:   # session 13 (F2; audit R2-1/R2-5): the issue that shows it in A1 and A3 (PROPOSED)
+-  - I-VOL-I-PAGE-LIMIT-Q2
+-  finding: 'ADD-02 2.1 sets 150 pages; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered
+-    about the ''120-page limit'' that the limit applies to the narrative only; A2 lists it for review after ADD-02 2.1 (REVIEW:
+-    whether the answer still holds is a decision for a person). No decision recorded; the undefined permitted appendices
+-    are raised (CQ-PAGE-LIMIT-APPENDICES).'
+-  sources:
+-  - unit: ADD-02:2.1
+-    page: 1
+-    words: one hundred and fifty (150) pages
+-  - unit: ADD-01:Q2
+-    page: 1
+-    words: The limit applies to the Technical Proposal narrative only.
+-  - unit: VOL-I:9.2
+-    page: 5
+-    words: excluding the Form Sheets and the appendices expressly permitted by Volume II
+ - topic: '''at all times'' (VOL-II 2.4) vs Table 2-4 assessment bases'
+   decision_owner: Process engineer
+   linked_issues:   # session 13 (F2; audit R2-1): its own issue first (PROPOSED); the maxima/range issue stays linked
+@@ -1357,6 +1361,21 @@ pending_decision:
+   - unit: VOL-II:5.1
+     page: 4
+     words: the delivery point shown on Drawing 03-C-114
++# session 14 (F1; R1-3, R2 M1; PROPOSED, not reviewed): the second judgment the Form 4-E checks leave to a person (A5
++# form_4e_checks), mirrored by its issue so A1, the A3 page and A4 name it; no question is drafted
++- topic: 'Form 4-E cross-check against documents final after it starts'
++  decision_owner: Bid manager
++  linked_issues:
++  - I-FORM-4E-CROSS-CHECK
++  finding: 'VOL-I 9.6 makes a Proposal that states ''no deviations'' in Form 4-E while containing a qualification elsewhere
++    non-responsive. The Form 4-E check (A5 form_4e_checks) lists the Proposal documents final only after Form 4-E starts
++    and finds the strict ordering (Form 4-E after all of them) INFEASIBLE on the assumed durations. How the cross-check is
++    done (a later final read of every document, a different order, or a change of a lead time) is for the Bid manager,
++    with Legal; no decision recorded and no question drafted.'
++  sources:
++  - unit: VOL-I:9.6
++    page: 5
++    words: "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."
+ unavailable_material:
+ - item: Volume III (Drawings), including Drawing 03-C-114
+   referenced_in:
 diff --git a/curation/register/issues/VOL-I.yaml b/curation/register/issues/VOL-I.yaml
-index 48b600f..5df58fe 100644
+index 48b600f..13e7736 100644
 --- a/curation/register/issues/VOL-I.yaml
 +++ b/curation/register/issues/VOL-I.yaml
-@@ -49,3 +49,29 @@ issues:
+@@ -40,12 +40,48 @@ issues:
+     short: "page-limit appendices not identified"
+     folds: ["I-VOL-I-PAGE-LIMIT-Q2"]
+   # session 13 (F2; audit R2-1): the page-limit decision of the clarification register's pending_decision, as an issue
+-  # so A1 and A3 show it (PROPOSED by the assistant, in the register's words; not reviewed)
++  # so A1 and A3 show it (PROPOSED by the assistant, in the register's words; not reviewed).
++  # Session 14 (F1; R1-4, R2-M4, R3): re-presented by W4's applied-rule mechanism (controller.re_present_issue's
++  # fields: `applied_rule`, `confirm`, the earlier wording kept as `proposed_text`): VOL-I 9.2 as amended by ADD-02 2.1
++  # still prints the words ADD-01 Q2 restates, so the point is a PROPOSED BASIS (applied rule; a person confirms the
++  # application), not an open-ended escalation. NOT closed, NOT decided: its owner is kept, its rows stay NOT SETTLED
++  # until a person accepts it (signals.awaiting_issues). The clarification register's pending decision moved to
++  # checked_no_question with the same words (no question is raised; the appendices stay on CQ-PAGE-LIMIT-APPENDICES)
+   I-VOL-I-PAGE-LIMIT-Q2:
+-    text: "Page limit: ADD-02 2.1 sets 'one hundred and fifty (150) pages'; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered about the '120-page limit' that 'The limit applies to the Technical Proposal narrative only.' Whether that answer still holds after ADD-02 2.1 is a decision for a person (Bid manager); no decision recorded (A2 lists it for review after ADD-02 2.1; the undefined permitted appendices are raised as CQ-PAGE-LIMIT-APPENDICES)"
++    text: "applied rule: VOL-I 9.2 as amended by ADD-02 2.1 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.'; a person confirms the application VOL-I 9.2 as amended by ADD-02 2.1 provides: 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.' (applied, not decided) Page limit: ADD-02 2.1 (p1) substitutes 'one hundred and fifty (150) pages' and leaves the other words of VOL-I 9.2 (p5) as printed (ADD-02 p1: 'All other terms of the RFP Documents remain unchanged.'). ADD-01 Q2 (p1), asked about the '120-page limit', answered 'The limit applies to the Technical Proposal narrative only. Form Sheets and the appendices permitted by Volume II are excluded.', words VOL-I 9.2 as amended still prints. Proposed basis: Q2's answer restates the clause's unchanged words, so it still holds at 150 pages; the Bid manager confirms the application (no decision recorded; A2 lists 9.2 for review after ADD-02 2.1; the undefined permitted appendices stay raised as CQ-PAGE-LIMIT-APPENDICES)"
++    proposed_text: "Page limit: ADD-02 2.1 sets 'one hundred and fifty (150) pages'; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered about the '120-page limit' that 'The limit applies to the Technical Proposal narrative only.' Whether that answer still holds after ADD-02 2.1 is a decision for a person (Bid manager); no decision recorded (A2 lists it for review after ADD-02 2.1; the undefined permitted appendices are raised as CQ-PAGE-LIMIT-APPENDICES)"
++    applied_rule: ["VOL-I 9.2 as amended by ADD-02 2.1 provides: 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.' (applied, not decided)"]
++    confirm: ["applied rule: VOL-I 9.2 as amended by ADD-02 2.1 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.'; a person confirms the application"]
+     owner: Bid manager
+     theme: envelopes
+-    short: "page limit: whether ADD-01 Q2 (narrative only) still holds after ADD-02 2.1 (150 pages)"
++    short: "page limit: ADD-01 Q2 (narrative only) restates VOL-I 9.2 as amended by ADD-02 2.1 (150 pages): proposed basis, the Bid manager confirms"
      # session 13 (F4; audit R1-9): the units its evidence cites; it bears from ADD-02, the stage 2.1 is issued
      # (signals.issue_since), so ADD-01 Q2 still confirms 9.2 at ADD-01 (PROPOSED)
      units: ["VOL-I:9.2", "ADD-01:Q2", "ADD-02:2.1"]
@@ -16,8 +130,10 @@ index 48b600f..5df58fe 100644
 +    owner: Legal counsel
 +    theme: envelopes
 +    short: "Form 4-E: a commercial qualification to VOL-V vs no commercial information in Envelope A (VOL-I 9.6, 6.2, 10.5)"
-+    human_decision: pending
 +    raised_by_check: "form-4e: commercial-qualification"
++    # session 14 (F1; R1-3; PROPOSED): both are VOL-I 9.6 Form 4-E judgments; the A3 page names the cross-check on this
++    # line with its mark and owner ('+1: ⚑ I-FORM-4E-CROSS-CHECK (Bid manager)'), not on a line of its own
++    folds: ["I-FORM-4E-CROSS-CHECK"]
 +    rows: [VOL-I-9.6-01, VOL-I-10.5-01, VOL-I-6.2-02, VOL-IV-F4F-02, VOL-IV-F4E-01]
 +    units: ["VOL-I:9.6", "VOL-I:6.2", "VOL-I:10.5", "VOL-IV:F4-F/para1"]
 +    show_in_a3: true
@@ -27,7 +143,6 @@ index 48b600f..5df58fe 100644
 +    owner: Bid manager
 +    theme: programme
 +    short: "Form 4-E: how it is cross-checked against Proposal documents final after it starts (VOL-I 9.6)"
-+    human_decision: pending
 +    raised_by_check: "form-4e: cross-check"
 +    rows: [VOL-I-9.6-01, VOL-IV-F4E-01]
 +    units: ["VOL-I:9.6"]
@@ -724,239 +839,145 @@ index e900539..8389385 100644
      return out
  
  
-=== NEW FILE tests/test_session14_f1_recheck_fixes.py ===
-"""Session 14 (F1): the fixes for the independent recheck's findings on A1 and A2 (R1-1 .. R1-8; R2 m6).
-
-R1-1  the value column sees a row deleted at one stage and reinstated at a later one as CHANGED at the reinstating
-      stage (value and consequence); an annotation of a provision a later addendum revokes is named as revoked.
-R1-5  the value state comes from the row's OWN quote and cells: a row whose status says 'the row's words unchanged'
-      never reads 'changed at <stage>'; an amended list or form says what was amended.
-R1-6  a re-reading op reads '<op> (<kind>; proposed, not accepted; not counted as a confirmation)'; the A1 notice
-      defines the three state columns; every A2 CONFIRMED line resting on something proposed says it awaits a person.
-R1-2  one rule for an open issue's reach through a relationship (relationships.inherited_issue_links): A1's Issues
-      cell, A2's relationship-impact table and A2's rows-moved table agree on the rows a document-not-supplied issue
-      (the Environmental Permit) reaches through a limit_applies link, within the link's scope.
-R1-3  the Form 4-E checks' judgments are mirrored by PROPOSED issues (I-FORM-4E-COMMERCIAL-QUALIFICATION,
-      I-FORM-4E-CROSS-CHECK); a judgment without a mirror is a check-register finding.
-R1-7  a relationship narrowed by scope_words carries a change only from inside its scope (VOL-II 2.5's continuous
-      monitoring is not moved by the TN limit).
-R1-8  A1's Relationships sheet shows each relationship's scope words; the scope-limited lines say the scope is
-      PROPOSED and that the owner may keep the issue on the row.
-R2 m6 an issue whose curated subject lies in a relationship's `from` travels along it within its scope (the 'at all
-      times' and compliance-point issues reach VOL-V-31.1-02 and VOL-II-7.2-01)."""
-from __future__ import annotations
-
-import pytest
-
-from tenderpack import human_owned as H
-from tenderpack import programme, relationships, signals, stage2
-from tenderpack.util import ROOT
-
-
-@pytest.fixture(scope="module")
-def real():
-    return stage2.run(ROOT / "build", ROOT / "config/pack.yaml", ROOT)
-
-
-@pytest.fixture(scope="module")
-def states(real):
-    return stage2.row_states(real)
-
-
-@pytest.fixture(scope="module")
-def a1(real):
-    return stage2.a1_table(real, stage2.collect_issues(real, None))
-
-
-@pytest.fixture(scope="module")
-def a2(real):
-    return stage2.a2(real)
-
-
-# ------------------------------------------------------------------------------------------------- R1-1
-def test_r1_1_deleted_then_reinstated_reads_changed_at_the_reinstating_stage(real, states):
-    order = real["order"]
-    seen = 0
-    for e in real["evals"]:
-        stg = e["stages"]
-        act = [stg[s]["active"] for s in order]
-        gaps = [i for i in range(1, len(order)) if act[i] and not act[i - 1] and any(act[:i - 1] + act[i - 1:i] or [False])
-                and any(act[:i])]
-        if not gaps:
-            continue
-        seen += 1
-        v = states[e["row"].id]["value"]
-        assert not v.startswith("unchanged"), (e["row"].id, v)
-        for i in gaps:
-            assert f"at {order[i]}" in v and ("changed at" in v or "reinstated at" in v), (e["row"].id, v)
-            gone = next(order[k] for k in range(i - 1, -1, -1) if act[k] and not act[k + 1])
-            assert f"at {order[order.index(gone) + 1]}" in v, (e["row"].id, v)
-    assert seen, "the real pack has a deleted-then-reinstated row"
-    v = states["VOL-I-8.6-01"]["value"]
-    assert "changed at ADD-02 by ADD-02/9.1" in v and "deleted at ADD-01 by ADD-01/4.1" in v, v
-    assert "consequence" in v, v
-    # an annotation of a provision a later addendum revokes is never listed as a live re-reading
-    assert "ADD-01/4.2" not in v.split("re-read by")[-1] or "revoked" in v, v
-
-
-# ------------------------------------------------------------------------------------------------- R1-5
-def test_r1_5_value_state_follows_the_rows_own_words(real, states):
-    order = real["order"]
-    for e in real["evals"]:
-        v = states[e["row"].id]["value"]
-        for s in order[1:]:
-            st = e["stages"][s]["status"]
-            if "the row's words unchanged" in st or "reissued by" in st and "unchanged" in st:
-                assert f"changed at {s}" not in v.replace("unchanged at", ""), (e["row"].id, s, st, v)
-            if st.startswith("AMENDED"):
-                assert f"amended at {s}" in v or f"changed at {s}" in v, (e["row"].id, s, st, v)
-    v = states["VOL-I-9.1-01"]["value"]
-    assert "amended at ADD-02 by ADD-02/7.1" in v and "quoted words unchanged" in v, v
-    assert "amended at ADD-01 by ADD-01/AppA/para1" in states["VOL-IV-F4A-02"]["value"]
-    for rid in ("VOL-II-4.4-02", "VOL-II-5.3-02"):
-        v = states[rid]["value"]
-        assert v.startswith("unchanged since BASE") and "the row's words unchanged" in v, (rid, v)
-
-
-# ------------------------------------------------------------------------------------------------- R1-6
-def test_r1_6_reread_wording_and_the_notice(states, a1, a2):
-    for rid, s in states.items():
-        assert "(an annotation; not a confirmation)" not in s["value"], (rid, s["value"])
-        if "re-read by" in s["value"]:
-            assert "not counted as a confirmation" in s["value"] or "no longer in force" in s["value"], (rid, s["value"])
-            assert "(confirms; ADD-02) (an annotation" not in s["value"]
-    assert "(confirms; proposed, not accepted; not counted as a confirmation)" in states["VOL-II-T2-4-BOD5"]["value"]
-    n = a1["notice"]
-    for w in ("'Value at the validated stage'", "'Interpretation'", "'Approval'"):
-        assert w in n, w
-    for m in a2["rows_moved"]:
-        if m["change"] == signals.CONFIRMED:
-            assert signals.AWAITING in " ".join(m["why"]), m
-
-
-# ------------------------------------------------------------------------------------------------- R1-2
-def test_r1_2_one_rule_for_an_issue_reached_through_a_blocked_limit(real, a1, a2):
-    by_row = stage2.row_issues(real)
-    ents = {e["id"]: e for e in real["relationships"] if isinstance(e, dict) and e.get("id")}
-    rows = {e["row"].id for e in real["evals"]}
-    for st, d in (real.get("relationship_impact") or {}).items():
-        for rec in d.get("records") or []:
-            if rec["target"] not in rows or rec["kind"] == "missing_document":
-                continue
-            for b in rec.get("blockers") or []:
-                for i in ents[b["entry_id"]].get("issues") or []:
-                    assert i in by_row[rec["target"]], (st, rec["target"], b["entry_id"], i)
-    for rid in ("VOL-V-29.3-01", "VOL-II-2.5-01", "VOL-II-4.3-02"):
-        assert "I-PERMIT" in by_row[rid], rid
-    row = next(x for x in a1["rows"] if x["id"] == "VOL-V-29.3-01")
-    assert "I-PERMIT" in " ".join(row["issues"]) and H.HUMAN_DECISION_PENDING in row["interpretation_state"]
-    assert "I-PERMIT" in row["interpretation_state"]
-    sheet = {x["id"]: x for x in a1["sheets"]["Issues"]["rows"]}
-    assert any(x.startswith("VOL-V-29.3-01") for x in sheet["I-PERMIT"]["rows"])
-    for m in a2["rows_moved"]:
-        if m["row"] == "VOL-V-29.3-01":
-            assert m["change"] != signals.CONFIRMED, m
-
-
-def test_r1_2_inherited_issue_links_synthetic():
-    units = {"V:T1": {"text": "t"}, "V:T1/A": {"text": "A | 30-day rolling average"},
-             "V:T1/B": {"text": "B | Continuous at outlet"}}
-    gap = {"id": "REL-GAP", "from": ["V:2"], "to": ["ROW-A", "ROW-B"], "kind": "missing_document",
-           "status": "confirmed", "issues": ["I-DOC"], "document": "d", "origin": "curator"}
-    nar = {"id": "REL-N", "from": ["V:T1"], "to": ["ROW-N"], "kind": "limit_applies", "status": "confirmed",
-           "scope_words": "rolling average", "origin": "curator"}
-    off = dict(nar, id="REL-OFF", to=["ROW-OFF"], scope_words="Continuous")
-    other = dict(nar, id="REL-DEP", kind="depends_on", to=["ROW-DEP"], scope_words=None)
-    row_units = {"ROW-A": ["V:T1/A"], "ROW-B": ["V:T1/A"]}
-    links = relationships.issue_links([gap, nar, off, other], {"ROW-A", "ROW-B", "ROW-N", "ROW-OFF", "ROW-DEP"},
-                                      issues={"I-DOC": {"text": "x"}}, units=units, row_units=row_units)
-    assert [(x["issue"], x["via"]) for x in links["ROW-N"]] == [("I-DOC", "REL-GAP > REL-N")]
-    assert "ROW-OFF" not in links                       # the blocked members are outside the link's scope
-    assert "ROW-DEP" not in links                       # only a limit applied from the blocked source inherits
-    assert [x["issue"] for x in links["ROW-A"]] == ["I-DOC"]
-
-
-# ------------------------------------------------------------------------------------------------- R2 m6
-def test_r2_m6_subject_issues_travel_along_the_whole_table_links(real):
-    by_row = stage2.row_issues(real)
-    for i in ("I-VOL-II-AT-ALL-TIMES", "I-VOL-II-COMPLIANCE-POINT"):
-        for rid in ("VOL-V-31.1-02", "VOL-II-7.2-01"):
-            assert i in by_row[rid], (i, rid)
-
-
-def test_r2_m6_subject_rule_synthetic():
-    units = {"V:T1": {"text": "t"}, "V:T1/A": {"text": "A | rolling average"}, "V:T1/B": {"text": "B | Continuous"}}
-    whole = {"id": "REL-W", "from": ["V:T1"], "to": ["ROW-W"], "kind": "limit_applies", "status": "confirmed",
-             "origin": "curator"}
-    nar = dict(whole, id="REL-N", to=["ROW-N"], scope_words="rolling average")
-    issues = {"I-B": {"text": "b", "subject": ["V:T1/B"]}, "I-ALL": {"text": "all", "subject": ["V:T1"]},
-              "I-ELSE": {"text": "else", "subject": ["V:9"]}}
-    links = relationships.issue_links([whole, nar], {"ROW-W", "ROW-N"}, issues=issues, units=units)
-    assert sorted(x["issue"] for x in links["ROW-W"]) == ["I-ALL", "I-B"]
-    assert [x["issue"] for x in links["ROW-N"]] == ["I-ALL"]
-
-
-# ------------------------------------------------------------------------------------------------- R1-3
-F4E_ROWS = ("VOL-I-9.6-01", "VOL-I-10.5-01", "VOL-I-6.2-02", "VOL-IV-F4F-02")
-
-
-def test_r1_3_form_4e_judgments_are_issues(real, a1):
-    iss = real["curated_issues"]
-    com, cc = iss["I-FORM-4E-COMMERCIAL-QUALIFICATION"], iss["I-FORM-4E-CROSS-CHECK"]
-    assert com["owner"].startswith("Legal") and "Commercial" in com["text"]
-    assert cc["owner"] == "Bid manager"
-    assert "while containing a qualification elsewhere in the Proposal shall be treated as non-responsive" in com["text"]
-    for iid, it in (("I-FORM-4E-COMMERCIAL-QUALIFICATION", com), ("I-FORM-4E-CROSS-CHECK", cc)):
-        assert H.issue_label(iid, it, []).startswith(H.HUMAN_DECISION_PENDING), iid
-        assert "Form 4-E check" in it["text"], iid
-    by_row = stage2.row_issues(real)
-    for rid in F4E_ROWS:
-        assert "I-FORM-4E-COMMERCIAL-QUALIFICATION" in by_row[rid], rid
-        row = next(x for x in a1["rows"] if x["id"] == rid)
-        assert "I-FORM-4E-COMMERCIAL-QUALIFICATION" in row["interpretation_state"], rid
-    sheet = {x["id"]: x for x in a1["sheets"]["Issues"]["rows"]}
-    assert sheet["I-FORM-4E-COMMERCIAL-QUALIFICATION"]["rows"]
-
-
-def test_r1_3_the_check_names_its_issue_and_an_unmirrored_judgment_is_a_finding(real):
-    prog = stage2.a5_all(real)[real["validated"].stage]
-    res = programme.form_4e_checks_for(real, prog)
-    said = " ".join(res["findings"])
-    assert "I-FORM-4E-COMMERCIAL-QUALIFICATION" in said and "I-FORM-4E-CROSS-CHECK" in said, said
-    assert programme.form_4e_mirror_findings(real["curated_issues"]) == []
-    less = {k: v for k, v in real["curated_issues"].items() if k != "I-FORM-4E-CROSS-CHECK"}
-    f = programme.form_4e_mirror_findings(less)
-    assert f and "cross-check" in f[0], f
-    assert not [x for x in stage2.register_findings(real) if "form-4e" in x["detail"].lower()]
-
-
-# ------------------------------------------------------------------------------------------------- R1-7
-def test_r1_7_a_scoped_link_carries_only_changes_inside_its_scope(real, a2):
-    imp = (real.get("relationship_impact") or {}).get("ADD-02") or {}
-    assert not [x for x in imp.get("records") or [] if x["target"] == "VOL-II-2.5-01"]
-    for m in a2["rows_moved"]:
-        if m["row"] == "VOL-II-2.5-01" and m["stage"] == "ADD-02":
-            assert "T2-4/TN" not in " ".join(m["why"]), m
-    assert "I-VOL-II-T24-TENSIONS" in stage2.row_issues(real)["VOL-II-2.5-01"]
-    assert not stage2.relationship_findings(real)
-
-
-def test_r1_7_trace_respects_scope_synthetic():
-    nar = {"id": "REL-N", "from": ["V:T1"], "to": ["ROW-N"], "kind": "limit_applies", "status": "confirmed",
-           "scope_words": "Continuous", "origin": "curator"}
-    scopes = {"REL-N": {"V:T1/B"}}
-    assert not relationships.trace([nar], {"V:T1", "V:T1/A"}, scopes=scopes)
-    assert [x["target"] for x in relationships.trace([nar], {"V:T1", "V:T1/B"}, scopes=scopes)] == ["ROW-N"]
-    assert [x["target"] for x in relationships.trace([nar], {"V:T1"}, scopes=scopes, whole={"V:T1"})] == ["ROW-N"]
-
-
-# ------------------------------------------------------------------------------------------------- R1-8
-def test_r1_8_scope_shown_and_labelled_proposed(a1, a2):
-    sheet = {x["id"]: x for x in a1["sheets"]["Relationships"]["rows"]}
-    assert sheet["REL-T24-RAMP-UP-DEDUCTIONS"]["scope"].startswith("rolling average")
-    assert "scope" in [c["key"] for c in a1["sheets"]["Relationships"]["columns"]]
-    row = next(x for x in a1["rows"] if x["id"] == "VOL-V-29.3-01")
-    line = next(x for x in row["relationships"] if "not carried" in x)
-    assert "(scope PROPOSED, not reviewed; the owner may keep the issue on the row)" in line, line
-    md = [ln for ln in a2["markdown"].splitlines() if ln.startswith("- VOL-V-29.3-01 ")]
-    assert md and all("(scope PROPOSED, not reviewed; the owner may keep the issue on the row)" in ln for ln in md), md
+diff --git a/tests/test_session12_content_wording.py b/tests/test_session12_content_wording.py
+index d70bed0..9062563 100644
+--- a/tests/test_session12_content_wording.py
++++ b/tests/test_session12_content_wording.py
+@@ -170,8 +170,13 @@ def test_checked_no_question_holds_no_judgment_and_pending_readings_are_labelled
+     assert not bad, bad                       # no decision can be recorded on these entries: none may assert one
+     assert clarify.judgment_findings(reg) == []
+     pend = {c["topic"]: c for c in reg.get("pending_decision") or []}
+-    for t in ("concession term (which clause governs)", "Form 4-G 'No' answers", "page limit: ADD-01 Q2 after ADD-02 2.1"):
++    for t in ("concession term (which clause governs)", "Form 4-G 'No' answers"):
+         assert t in pend and pend[t]["decision_owner"].strip(), t
++    # session 14 (F1; R1-4): the page-limit point is re-presented as an applied rule (PROPOSED BASIS, its issue kept open
++    # for the Bid manager to confirm), so it is listed as checked with no question, not as a pending decision
++    chk = {c["topic"]: c for c in reg.get("checked_no_question") or []}
++    assert "page limit: ADD-01 Q2 after ADD-02 2.1" not in pend
++    assert H.PROPOSED_BASIS in chk["page limit: ADD-01 Q2 after ADD-02 2.1"]["finding"]
+     assert clarify.check(reg, real["units"], set(real["curated_issues"])) == []
+     md = clarify.markdown(reg)
+     sec = md.split("## Proposed readings")[1].split("\n## ")[0]
+diff --git a/tests/test_session13_audit_fixes.py b/tests/test_session13_audit_fixes.py
+index f91df49..0e91620 100644
+--- a/tests/test_session13_audit_fixes.py
++++ b/tests/test_session13_audit_fixes.py
+@@ -75,10 +75,13 @@ def test_r1_1_relationship_impact_carries_the_relationships_issues(a2d, real):
+             assert any(n.startswith(signals.issue_note(i, pend)) for n in x["open_issues"]), (x["target"], i, x)
+         if x["stage"] == "ADD-02" and T24 in want:
+             seen.add(x["target"])
+-    # R2-2: the four rows the reviewer names, all REL-T24-* targets
+-    assert {"VOL-V-31.1-02", "VOL-II-2.5-01", "VOL-II-7.2-01", "VOL-II-3.1-01"} <= seen, seen
++    # R2-2: the rows the reviewer names, all REL-T24-* targets. Session 14 (F1; R1-7): VOL-II-2.5-01 monitors only the
++    # parameters assessed on a continuous basis (REL-T24-CONTINUOUS-MONITORING, scope_words PROPOSED), so the ADD-02
++    # change to the rolling-average TN limit no longer reaches it
++    assert {"VOL-V-31.1-02", "VOL-II-7.2-01", "VOL-II-3.1-01"} <= seen, seen
++    assert "VOL-II-2.5-01" not in seen, seen
+     md = a2d["markdown"]
+-    for row in ("VOL-V-31.1-02", "VOL-II-2.5-01", "VOL-II-7.2-01", "VOL-II-3.1-01"):
++    for row in ("VOL-V-31.1-02", "VOL-II-7.2-01", "VOL-II-3.1-01"):
+         line = next(ln for ln in md.splitlines() if ln.startswith(f"- {row} (row;") and "REL-T24" in ln)
+         assert f"open: {T24}, {PENDING}" in line, line
+ 
+@@ -89,7 +92,7 @@ def test_r1_1_rows_moved_why_carries_the_issue_where_the_relationship_carries_th
+         if m["change"] == "CHANGED" and any("depends on it: REL-T24" in w for w in m["why"]):
+             assert any(w.startswith(f"open: {T24}, {PENDING}") for w in m["why"]), m
+             hit += 1
+-    assert hit >= 6, hit
++    assert hit >= 5, hit          # session 14 (F1; R1-7): VOL-II-2.5-01 is outside the TN change's scope
+ 
+ 
+ def test_r1_1_add02_5_1_second_sentence_confirms_the_other_nine_rows(real, a2d):
+diff --git a/tests/test_session13_audit_fixes_a3.py b/tests/test_session13_audit_fixes_a3.py
+index 17e2537..49b5968 100644
+--- a/tests/test_session13_audit_fixes_a3.py
++++ b/tests/test_session13_audit_fixes_a3.py
+@@ -87,9 +87,11 @@ def test_r2_1_every_pending_decision_of_the_real_register_links_a_curated_issue(
+     for c in pend:
+         assert [i for i in c.get("linked_issues") or [] if i in cur], c["topic"]
+     at = next(c for c in pend if "at all times" in c["topic"])
+-    pl = next(c for c in pend if c["topic"].startswith("page limit"))
+-    new = {i for i in at["linked_issues"] + pl["linked_issues"]} - {"I-VOL-II-T24-TENSIONS"}
+-    assert len(new) >= 2, new
++    # session 14 (F1; R1-4): the page-limit point is re-presented as an applied rule (PROPOSED BASIS; its issue stays
++    # open for the Bid manager to confirm) and listed as checked with no question, so it is no pending decision
++    assert not [c for c in pend if c["topic"].startswith("page limit")]
++    new = {i for i in at["linked_issues"]} - {"I-VOL-II-T24-TENSIONS"}
++    assert len(new) >= 1, new
+     for i in new:                       # PROPOSED curated issues in the words A4 uses, with A4's owner
+         assert cur[i]["owner"] in ("Process engineer", "Bid manager"), (i, cur[i]["owner"])
+ 
+diff --git a/tests/test_session13_audit_rechecks.py b/tests/test_session13_audit_rechecks.py
+index 05ccfa4..6a002dc 100644
+--- a/tests/test_session13_audit_rechecks.py
++++ b/tests/test_session13_audit_rechecks.py
+@@ -162,14 +162,17 @@ def test_r1_9_page_limit_q2_bears_from_add02(real, a2d):
+     order = real["order"]
+     assert stage2.issue_stages(real)[Q2] == "ADD-02", cur
+     e = next(x for x in real["evals"] if x["row"].id == "VOL-I-9.2-01")
+-    assert signals.pending_note(Q2) not in e["stages"]["ADD-01"]["pending"]
+-    assert signals.pending_note(Q2) in e["stages"]["ADD-02"]["pending"]
++    # session 14 (F1; R1-4): Q2 is re-presented as an applied rule awaiting the Bid manager's confirmation (not a
++    # human decision pending); it still bears from ADD-02 only and its row stays not settled there
++    assert signals.awaiting_note(Q2) not in e["stages"]["ADD-01"]["pending"]
++    assert signals.awaiting_note(Q2) in e["stages"]["ADD-02"]["pending"]
++    assert signals.pending_note(Q2) not in e["stages"]["ADD-02"]["pending"]
+     moved = {(m["stage"], m["row"]): m for m in a2d["rows_moved"]}
+     assert moved[("ADD-01", "VOL-I-9.2-01")]["change"] == signals.CONFIRMED, moved[("ADD-01", "VOL-I-9.2-01")]
+     at2 = moved[("ADD-02", "VOL-I-9.2-01")]
+     # ADD-02 amends the row (2.1: 150 pages), so the label is CHANGED, which outranks NOT SETTLED; it is never
+     # CONFIRMED, and the open decision is named on the line
+-    assert at2["change"] != signals.CONFIRMED and f"open: {Q2}, human decision pending" in " ".join(at2["why"]), at2
++    assert at2["change"] != signals.CONFIRMED and signals.awaiting_note(Q2) in " ".join(at2["why"]), at2  # s14 F1 R1-4
+     assert order.index("ADD-02") > order.index("ADD-01")
+ 
+ 
+@@ -212,11 +215,13 @@ def test_r2_11_page_limit_q2_is_named_with_the_mark_on_its_parent(built):
+     assert a3["condensed"] <= 2, a3["condensed"]
+     items = {i["id"]: i for g in pg["groups"]["groups"] for i in g["items"]}
+     par = next(i for i in items.values() if Q2 in (i.get("folds") or []))
+-    assert par["folds_pending"] == [Q2] and par["owner"] == "Bid manager", par     # same owner: on the line
++    # session 14 (F1; R1-4): Q2 is now an applied rule awaiting the Bid manager's confirmation, not a pending decision,
++    # so the parent folds it without the pending mark (the rule for a folded PENDING issue is checked synthetically)
++    assert par["folds_pending"] == [] and par["owner"] == "Bid manager", par
+     from tenderpack import render
+     html = render._a3_html(pg)
+     text = re.sub(r"<[^>]+>", "", html)
+-    assert f"(Bid manager) +1: {stage2.A3_PENDING_MARK} {Q2}" in text, re.findall(r"\+\d[^\n]*", text)
++    assert "(Bid manager) +1" in text and f"{stage2.A3_PENDING_MARK} {Q2}" not in text, re.findall(r"\+\d[^\n]*", text)
+ 
+ 
+ # ---------------------------------------------------------------------------------------------- R2-12
+diff --git a/tests/test_session14_applied_rule_outputs.py b/tests/test_session14_applied_rule_outputs.py
+index ceb8a88..9eb18bb 100644
+--- a/tests/test_session14_applied_rule_outputs.py
++++ b/tests/test_session14_applied_rule_outputs.py
+@@ -86,8 +86,12 @@ def test_the_owners_open_decisions_stay_pending_in_the_real_pack(real):
+     labels = {x["id"]: x.get("human_decision") for x in stage2.collect_issues(real, None)}
+     for i in ("I-VOL-II-AT-ALL-TIMES", "I-VOL-II-T24-TENSIONS", "I-PERMIT", "I-CONCESSION"):
+         assert labels.get(i) == H.HUMAN_DECISION_PENDING, (i, labels.get(i))
+-    # no curated issue is re-presented as an applied rule in the real pack (nothing of the owner's is settled here)
+-    assert not any(it.get("applied_rule") for it in real["curated_issues"].values())
++    # no curated issue is re-presented as an applied rule in the real pack (nothing of the owner's is settled here),
++    # except (session 14, F1; R1-4) the page-limit point, whose clause as amended prints the words ADD-01 Q2 restates:
++    # a PROPOSED BASIS still awaiting the Bid manager's confirmation, never settled
++    applied = {i for i, it in real["curated_issues"].items() if it.get("applied_rule")}
++    assert applied <= {"I-VOL-I-PAGE-LIMIT-Q2"}, applied
++    assert all(i in (real.get("awaiting_issues") or {}) for i in applied), applied
+ 
+ 
+ def test_an_approved_transcription_is_never_an_interpretation_approval(real):
+diff --git a/tests/test_session14_issue_propagation.py b/tests/test_session14_issue_propagation.py
+index b0fa8d3..e75ca99 100644
+--- a/tests/test_session14_issue_propagation.py
++++ b/tests/test_session14_issue_propagation.py
+@@ -51,7 +51,8 @@ def test_issue_links_follow_the_rule_synthetic():
+     by = {u["unit_id"]: u for u in UNITS}
+     links = relationships.issue_links([NARROW, WHOLE], {"ROW-W", "ROW-X"}, issues=ISSUES, units=by)
+     assert [x["issue"] for x in links["ROW-W"]] == ["I-A", "I-ANY"]
+-    assert [x["issue"] for x in links["ROW-X"]] == ["I-B"]
++    # session 14 (F1; R2 m6): an issue whose subject is the link's whole source (I-A: V:T1) travels along it too
++    assert [x["issue"] for x in links["ROW-X"]] == ["I-B", "I-A"]
+     # without the issues and units the links are as before (a caller that cannot apply the rule drops nothing)
+     assert [x["issue"] for x in relationships.issue_links([NARROW], {"ROW-W"})["ROW-W"]] == ["I-B", "I-A", "I-ANY"]
+     out = relationships.out_of_scope_links([NARROW, WHOLE], {"ROW-W", "ROW-X"}, ISSUES, by)

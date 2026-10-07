@@ -223,6 +223,27 @@
     }
    ],
    "topic": "SCADA unattended operation vs manned control room"
+  },
+  {
+   "finding": "ADD-02 2.1 substitutes 150 pages and leaves the other words of VOL-I 9.2 as printed; 9.2 as amended still reads 'excluding the Form Sheets and the appendices expressly permitted by Volume II', which ADD-01 Q2 restates ('The limit applies to the Technical Proposal narrative only.'). No question. PROPOSED BASIS (applied rule; a person confirms the application): the Bid manager confirms it on I-VOL-I-PAGE-LIMIT-Q2, which stays open until then; the undefined permitted appendices are raised (CQ-PAGE-LIMIT-APPENDICES).",
+   "sources": [
+    {
+     "page": 1,
+     "unit": "ADD-02:2.1",
+     "words": "one hundred and fifty (150) pages"
+    },
+    {
+     "page": 1,
+     "unit": "ADD-01:Q2",
+     "words": "The limit applies to the Technical Proposal narrative only."
+    },
+    {
+     "page": 5,
+     "unit": "VOL-I:9.2",
+     "words": "excluding the Form Sheets and the appendices expressly permitted by Volume II"
+    }
+   ],
+   "topic": "page limit: ADD-01 Q2 after ADD-02 2.1"
   }
  ],
  "columns": [
@@ -403,32 +424,6 @@
    "topic": "Form 4-G 'No' answers"
   },
   {
-   "decision_owner": "Bid manager",
-   "finding": "ADD-02 2.1 sets 150 pages; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered about the '120-page limit' that the limit applies to the narrative only; A2 lists it for review after ADD-02 2.1 (REVIEW: whether the answer still holds is a decision for a person). No decision recorded; the undefined permitted appendices are raised (CQ-PAGE-LIMIT-APPENDICES).",
-   "linked_issues": [
-    "I-VOL-I-PAGE-LIMIT-Q2"
-   ],
-   "sources": [
-    {
-     "page": 1,
-     "unit": "ADD-02:2.1",
-     "words": "one hundred and fifty (150) pages"
-    },
-    {
-     "page": 1,
-     "unit": "ADD-01:Q2",
-     "words": "The limit applies to the Technical Proposal narrative only."
-    },
-    {
-     "page": 5,
-     "unit": "VOL-I:9.2",
-     "words": "excluding the Form Sheets and the appendices expressly permitted by Volume II"
-    }
-   ],
-   "status": "HUMAN DECISION PENDING: no decision recorded",
-   "topic": "page limit: ADD-01 Q2 after ADD-02 2.1"
-  },
-  {
    "decision_owner": "Process engineer",
    "finding": "Proposed reading (not decided): Table 2-4 gives a basis of assessment for each parameter and a general qualifier, and VOL-II 2.4 requires compliance 'at all times' with 'the parameters set out in Table 2-4'; the assistant reads the two together as continuous compliance on each parameter's printed basis. The process engineer decides whether that reading holds; the ranges and the reliability run are raised separately (CQ-T24-RANGES, CQ-PCOD-RELIABILITY-RUN).",
    "linked_issues": [
@@ -496,6 +491,22 @@
    ],
    "status": "HUMAN DECISION PENDING: no decision recorded",
    "topic": "Table 2-4 compliance point (Point of Discharge, outlet or delivery point)"
+  },
+  {
+   "decision_owner": "Bid manager",
+   "finding": "VOL-I 9.6 makes a Proposal that states 'no deviations' in Form 4-E while containing a qualification elsewhere non-responsive. The Form 4-E check (A5 form_4e_checks) lists the Proposal documents final only after Form 4-E starts and finds the strict ordering (Form 4-E after all of them) INFEASIBLE on the assumed durations. How the cross-check is done (a later final read of every document, a different order, or a change of a lead time) is for the Bid manager, with Legal; no decision recorded and no question drafted.",
+   "linked_issues": [
+    "I-FORM-4E-CROSS-CHECK"
+   ],
+   "sources": [
+    {
+     "page": 5,
+     "unit": "VOL-I:9.6",
+     "words": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive."
+    }
+   ],
+   "status": "HUMAN DECISION PENDING: no decision recorded",
+   "topic": "Form 4-E cross-check against documents final after it starts"
   }
  ],
  "pending_issues": [
@@ -564,6 +575,15 @@
    "text": "The VOL-I 12.2 periods (Commercial Close 120 days, Financial Close 270 days from the Preferred Bidder Notification) are unchanged: settled by ADD-02 Q13. Open: the Bid Bond's 180-day validity from the PDD (VOL-I 6.3) may end before the Financial Close long-stop, on which 12.2 lets the Authority call it; whether it must be extended to cover that period, and 'long-stop date' is undefined (draft question CQ-BOND-FC-COVERAGE)"
   },
   {
+   "id": "I-FORM-4E-COMMERCIAL-QUALIFICATION",
+   "owner": "Legal counsel",
+   "reasons": [
+    "a legal or commercial judgment by its owner (Legal counsel)"
+   ],
+   "status": "HUMAN DECISION PENDING: no decision recorded",
+   "text": "Form 4-E and a qualification of a commercial term of Volume V. VOL-I 9.6 (p5): 'Form 4-E shall list every deviation, qualification or reservation to Volume V. A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' Form 4-E is in Envelope A (VOL-I 9.1, p4: '(e) Form 4-E — Schedule of Deviations;'), and VOL-I 6.2 (p3): 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Stated in Envelope B instead, a qualification of a price meets VOL-I 10.5 (p5): 'Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.' and Form 4-F (VOL-IV p9): 'is not subject to any qualification'. Whether a qualification of a commercial term of Volume V can be made at all, and how Form 4-E words it without commercial information, is a decision for Legal counsel, with Commercial; no decision recorded and no question drafted. Raised by the Form 4-E check (A5 form_4e_checks, its commercial-qualification finding)"
+  },
+  {
    "id": "I-VOL-V-MISSING",
    "owner": "Legal counsel",
    "reasons": [
@@ -591,7 +611,11 @@
     "ADD-01-AppA-01",
     "VOL-IV-FORMS-01",
     "VOL-IV-F4A-02",
-    "VOL-IV-F4A-03"
+    "VOL-IV-F4A-03",
+    "VOL-IV-F4A-04",
+    "VOL-IV-F4A-05",
+    "VOL-IV-F4A-06",
+    "VOL-IV-F4A-07"
    ],
    "clause": "Appendix A (Revised Form 4-A)",
    "decision_owner": "Legal",
@@ -615,7 +639,8 @@
    "answer_rows": [
     "VOL-I-6.2-02",
     "VOL-I-9.5-01",
-    "VOL-IV-F4B-01"
+    "VOL-IV-F4B-01",
+    "VOL-I-3.3-01"
    ],
    "clause": "Form 4-B (field 'Contract value (SAR equivalent)'), with Volume I Clause 6.2",
    "decision_owner": "Legal",
@@ -639,7 +664,9 @@
    "answer_rows": [
     "VOL-I-10.1-01",
     "VOL-I-10.3-02",
-    "VOL-I-10.6-01"
+    "VOL-I-10.6-01",
+    "VOL-I-3.3-01",
+    "VOL-IV-F4F-01"
    ],
    "clause": "10.1 (with 10.3 and 10.6)",
    "decision_owner": "Legal",
@@ -729,7 +756,10 @@
    "already_settled": "ADD-02 Q12 refers Bidders to 31.2, under which deductions are uncapped; ADD-01 Q6 confirms the payment is availability based. Neither supplies the missing Schedules.",
    "answer_rows": [
     "VOL-V-NOTE-01",
-    "VOL-V-39.1-01"
+    "VOL-V-39.1-01",
+    "VOL-V-31.1-01",
+    "VOL-V-31.1-02",
+    "VOL-V-31.1-03"
    ],
    "clause": "Note to Bidders (with Clauses 29.2, 31.2, 39.1, 39.5 and 40.1)",
    "decision_owner": "Legal counsel",
@@ -755,7 +785,13 @@
     "VOL-V-NOTE-01",
     "VOL-V-3.1-01",
     "VOL-V-3.2-01",
-    "VOL-V-42.2-01"
+    "VOL-V-42.2-01",
+    "VOL-I-3.3-01",
+    "VOL-I-9.6-01",
+    "VOL-II-1.1-01",
+    "VOL-II-8.5-01",
+    "VOL-II-8.5-02",
+    "VOL-V-42.1-01"
    ],
    "clause": "Section 6, response to question 7 (Volume I Clause 12.1; Volume V Clauses 3.1 and 42.2)",
    "decision_owner": "Legal",
@@ -782,7 +818,8 @@
     "VOL-II-T2-6-2",
     "VOL-II-T2-6-4",
     "VOL-II-4.2-01",
-    "VOL-II-5.2-01"
+    "VOL-II-5.2-01",
+    "VOL-V-31.1-01"
    ],
    "clause": "Table 2-6, row 2-6.4 (with Clauses 4.1 and 5.2)",
    "decision_owner": "Process engineer",
@@ -806,7 +843,20 @@
    "answer_rows": [
     "ADD-02-5.2-01",
     "VOL-II-2.4-01",
-    "VOL-II-T2-4-NOTE1"
+    "VOL-II-T2-4-NOTE1",
+    "VOL-II-T2-4-TN",
+    "VOL-II-T2-4-BOD5",
+    "VOL-II-T2-4-COD",
+    "VOL-II-T2-4-TSS",
+    "VOL-II-T2-4-TP",
+    "VOL-II-T2-4-Turbidity",
+    "VOL-II-T2-4-FaecalColiforms",
+    "VOL-II-T2-4-ResidualChlorine",
+    "VOL-II-T2-4-pH",
+    "VOL-II-T2-4-OilGrease",
+    "VOL-II-3.1-01",
+    "VOL-II-7.2-01",
+    "VOL-V-31.1-02"
    ],
    "clause": "2.4 and Table 2-4 (reproduction preamble and Note 1)",
    "decision_owner": "Technical",
@@ -831,7 +881,8 @@
    "answer_rows": [
     "VOL-II-T2-4-ResidualChlorine",
     "VOL-II-T2-4-pH",
-    "VOL-II-3.3-01"
+    "VOL-II-3.3-01",
+    "VOL-II-2.4-01"
    ],
    "clause": "Table 2-4 (Residual Chlorine and pH rows), with Clause 3.3",
    "decision_owner": "Process engineer",
@@ -942,7 +993,7 @@
    "volume": "Volume II"
   },
   {
-   "already_settled": "ADD-02 2.1 sets the limit at 150 A4 pages (replacing 120); VOL-I 9.2 as amended still prints 'excluding the Form Sheets and the appendices expressly permitted by Volume II'. ADD-01 Q2 (asked about the '120-page limit'; 'The limit applies to the Technical Proposal narrative only.') is listed for review after ADD-02 2.1 (A2): whether it still holds is a decision for a person (Bid manager); no decision recorded.",
+   "already_settled": "ADD-02 2.1 sets the limit at 150 A4 pages (replacing 120); VOL-I 9.2 as amended still prints 'excluding the Form Sheets and the appendices expressly permitted by Volume II'. ADD-01 Q2 (asked about the '120-page limit'; 'The limit applies to the Technical Proposal narrative only.') restates those words and is listed for review after ADD-02 2.1 (A2): PROPOSED BASIS (applied rule; a person confirms the application) on I-VOL-I-PAGE-LIMIT-Q2, which the Bid manager confirms; no decision recorded.",
    "answer_rows": [
     "VOL-I-9.2-01"
    ],
