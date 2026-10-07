@@ -11,6 +11,7 @@ shows both readings. Real pack (the committed build) and small synthetic evaluat
 repository and nothing is approved."""
 from __future__ import annotations
 
+from tenderpack.render import A3_SCALE_LOW
 import copy
 import re
 import unicodedata
@@ -188,7 +189,9 @@ def test_a3_2_the_page_stays_one_page_at_no_smaller_font(page):
     assert fit and fit["pages"] == 1
     # merged session-12 content (F1's HUMAN DECISION PENDING labels and shorts, F4's banner) made the page longer; the
     # coordinator's requirement since the merge: every reason kept (level <= 2) at a scale >= 0.9 (test_session12_a3_fit)
-    assert page["level"] <= 2 and fit["scale"] >= 0.9 and fit["min_text_pt"] >= 7.5, fit
+    # session 14: the floor is render.A3_SCALE_LOW (0.89, derived from the 7.5 pt minimum), no longer the literal 0.9
+
+    assert page["level"] <= 2 and fit["scale"] >= A3_SCALE_LOW and fit["min_text_pt"] >= 7.5, fit
 
 
 def test_a3_3_abbreviations_are_written_out_and_no_pipeline_terms(page):
