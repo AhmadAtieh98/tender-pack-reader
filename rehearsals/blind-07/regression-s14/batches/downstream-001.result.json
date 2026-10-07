@@ -1,0 +1,1415 @@
+{
+ "run_id": "ADD-03-run-host-20261007T161946Z-e884-downstream-001-a2",
+ "created": "2026-10-07T18:27:04Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+  "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-36.2-AFTER",
+   "kind": "fact",
+   "text": "After op ADD-03/2.1 (adjust_value, engine-computed from the ADD-02 effective value), VOL-V 36.2 reads SAR 1,500,000; the ADD-03 cover summary states SAR 4,000,000.",
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:36.2",
+     "page": 4,
+     "kind": "span",
+     "words": "only to the extent that such expenditure exceeds SAR 1,500,000 in aggregate over the term",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-36.2-WHICH",
+   "kind": "interpretation",
+   "text": "ambiguous: the cover summary (SAR 4,000,000) and the operative Section 2.1 read against the ADD-02 text (SAR 1,500,000) differ. Reading 1: Section 2.1 applies to the amount as amended by ADD-02 (ADD-03 1.2), giving SAR 1,500,000. Reading 2: the Authority meant SAR 4,000,000 (the BASE SAR 5,000,000 less SAR 1,000,000). Which one governs is for a person to decide (Commercial / Legal).",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "to SAR 4,000,000",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "is reduced by SAR 1,000,000",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q17",
+   "kind": "fact",
+   "text": "The ADD-03 response to Q17 says that the VOL-I 10.6 schedule forms part of Form 4-F and is attached to it in Envelope B, and that the schedule also states the assumed minimum annual DSCR.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "cell",
+     "words": "The schedule required by Volume I Clause 10.6 forms part of Form 4-F and shall be attached to it in Envelope B. The schedule shall also state the minimum annual debt service cover ratio assumed.",
+     "cell": {
+      "row_key": "17",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q17-OPEN",
+   "kind": "interpretation",
+   "text": "Whether the Q17 response settles I-VOL-I-ENV-B (VOL-I 10.1 'only' against 10.6) is a person's decision; the issue stays open. The Q17 response does not cover the VOL-I 10.3 model auditor's opinion.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.1",
+     "page": 5,
+     "kind": "span",
+     "words": "No other document shall be placed in Envelope B.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-4.4",
+   "kind": "fact",
+   "text": "ADD-03 4.4 disapplies VOL-I 4.2 for the communications it names; the text of VOL-I 4.2 is unchanged.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.4",
+     "page": 2,
+     "kind": "span",
+     "words": "Volume I Clause 4.2 does not apply to communications with the Authority's geotechnical consultant during an appointment under Section 4.3, to the extent that they concern the identification and handling of cores and records.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q16",
+   "kind": "fact",
+   "text": "The ADD-03 response to Q16 restates VOL-II 9.3 and confirms that it applies; it changes no text.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "Volume II Clause 9.3 applies.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-3.1",
+   "kind": "fact",
+   "text": "ADD-03 3.1 moves VOL-II 8.5 to VOL-V as Clause 42.3 with its text unchanged; VOL-II 8.5 is superseded.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3. Its text is unchanged",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-3.1-ASSESS",
+   "kind": "interpretation",
+   "text": "The relocated obligation now sits in Volume V (the contract), so the new rows are proposed as contractual_post_award, still listing EV-TECH-PROPOSAL (the cover invites Bidders to describe lifecycle plans in their Technical Proposals). Whether the handback survey is still scored is a person's decision (Technical).",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "invites Bidders to describe in their Technical Proposals how their lifecycle plans address Table 42-1",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-T42-1",
+   "kind": "fact",
+   "text": "VOL-V 42.1 now requires a residual service life for each asset class at least equal to Table 42-1. ADD-03 3.4 says Table 42-1 is in Appendix A, the cover says it is issued in Arabic, and op ADD-03/3.5 records that the Arabic text governs. No value from Table 42-1 is quoted or relied on in this set.",
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.1",
+     "page": 4,
+     "kind": "span",
+     "words": "with a residual service life, for each asset class, of not less than that stated in Table 42-1",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-PAE-STALE",
+   "kind": "interpretation",
+   "text": "The existing post_award_evidence of rows VOL-V-36.2-01 (which cites SAR 2,500,000) and VOL-V-42.1-02 (which cites 'major assets' and five years) uses words no longer in force at ADD-03. A row_reading cannot change post_award_evidence, so updating it is left to a person.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 1,
+     "kind": "span",
+     "words": "‘with a remaining design life of not less than five (5) years for all major assets’ is deleted",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-I-10.1-01",
+   "provision": "ADD-03:Q17",
+   "target": "VOL-I:10.1",
+   "payload": {
+    "row": "VOL-I-10.1-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The text is unchanged at ADD-03. ADD-03 Q17 (op ADD-03/Q17(a)) says the VOL-I 10.6 schedule 'forms part of Form 4-F and shall be attached to it in Envelope B'. Whether that settles I-VOL-I-ENV-B is a person's decision. The VOL-I 10.3 model auditor's opinion is not addressed by Q17."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.1",
+     "page": 5,
+     "kind": "span",
+     "words": "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "cell",
+     "words": "The schedule required by Volume I Clause 10.6 forms part of Form 4-F and shall be attached to it in Envelope B.",
+     "cell": {
+      "row_key": "17",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-10.6-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q17",
+    "S-Q17-OPEN"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:Q17 with get_unit. It is an annotation, so the VOL-I 10.1 text in units_after is unchanged. The reading is re-made at ADD-03 and the issues stay open."
+  },
+  {
+   "id": "DS-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-I-10.6-01",
+   "provision": "ADD-03:Q17",
+   "target": "VOL-I:10.6",
+   "payload": {
+    "row": "VOL-I-10.6-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The text is unchanged at ADD-03. ADD-03 Q17 states that the schedule 'forms part of Form 4-F and shall be attached to it in Envelope B' (ADD-03/Q17(a)) and adds 'The schedule shall also state the minimum annual debt service cover ratio assumed.' (ADD-03/Q17(b), adds_obligation; its row is a separate task). Q17 also says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2'; that consequence is not quoted here because VOL-I 6.2 was not re-read in this batch. Follow-on: the EV-FIN-ASSUMPTIONS description (tenor, margin, gearing) and the fin-assumptions activity should add DSCR; left for a person. Whether Q17 settles I-VOL-I-ENV-B is a person's decision."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.6",
+     "page": 5,
+     "kind": "span",
+     "words": "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "cell",
+     "words": "The schedule shall also state the minimum annual debt service cover ratio assumed.",
+     "cell": {
+      "row_key": "17",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-10.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q17",
+    "S-Q17-OPEN"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:Q17. The quote is from units_after VOL-I:10.6, which is unchanged."
+  },
+  {
+   "id": "DS-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-I-4.2-01",
+   "provision": "ADD-03:4.4",
+   "target": "VOL-I:4.2",
+   "payload": {
+    "row": "VOL-I-4.2-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "no Bidder, and no person acting for a Bidder, shall contact any board member, officer, employee, consultant or advisor of the Authority in relation to the Project other than through the Portal",
+     "parameters": {},
+     "consequence": {
+      "class": "disqualification",
+      "unit": "VOL-I:4.2",
+      "quote": "Breach of this Clause shall result in the disqualification of the Bidder."
+     },
+     "note": "The text is unchanged at ADD-03. ADD-03 4.4 (op ADD-03/4.4, disapplies) excludes from the clause 'communications with the Authority's geotechnical consultant during an appointment under Section 4.3, to the extent that they concern the identification and handling of cores and records'. Any other contact with that consultant stays within the clause. Whether a given communication falls inside the exception is a person's reading (Legal / Bid management)."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:4.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Breach of this Clause shall result in the disqualification of the Bidder.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.4",
+     "page": 2,
+     "kind": "span",
+     "words": "Volume I Clause 4.2 does not apply to communications with the Authority's geotechnical consultant during an appointment under Section 4.3, to the extent that they concern the identification and handling of cores and records.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-4.4"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:4.4. The date rules (BLACKOUT-START, BLACKOUT-END) carry over unchanged."
+  },
+  {
+   "id": "DS-04",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "row:VOL-II-8.5-01",
+   "provision": "ADD-03:3.1",
+   "target": "VOL-II:8.5",
+   "payload": {
+    "from": "VOL-II-8.5-01",
+    "to": "ADD-03-3.1-01",
+    "kind": "depends_on",
+    "basis": "ADD-03 3.1 relocates VOL-II 8.5 to VOL-V as Clause 42.3 with its text unchanged. VOL-II 8.5 is superseded at ADD-03, so this row is replaced by the proposed row ADD-03-3.1-01 on VOL-V:42.3 (survey).",
+    "note": "No reading is needed: the unit is superseded and no words were deleted from a unit that stays in force.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3. Its text is unchanged",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-03-3.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-3.1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-05",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "row:VOL-II-8.5-02",
+   "provision": "ADD-03:3.1",
+   "target": "VOL-II:8.5",
+   "payload": {
+    "from": "VOL-II-8.5-02",
+    "to": "ADD-03-3.1-02",
+    "kind": "depends_on",
+    "basis": "ADD-03 3.1 relocates VOL-II 8.5 to VOL-V as Clause 42.3 with its text unchanged. VOL-II 8.5 is superseded at ADD-03, so this row is replaced by the proposed row ADD-03-3.1-02 on VOL-V:42.3 (remedial works).",
+    "note": "No reading is needed: the unit is superseded and no words were deleted from a unit that stays in force.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "and any remedial works identified shall be completed before transfer.’",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-03-3.1-02"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-3.1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-06",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-II-9.3-01",
+   "provision": "ADD-03:Q16",
+   "target": "VOL-II:9.3",
+   "payload": {
+    "row": "VOL-II-9.3-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "A grievance mechanism accessible to the affected community shall be established before construction and maintained for the concession period.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "The text is unchanged. ADD-03 Q16 (op ADD-03/Q16, confirms) restates the clause and says 'Volume II Clause 9.3 applies.'"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:9.3",
+     "page": 5,
+     "kind": "span",
+     "words": "A grievance mechanism accessible to the affected community shall be established before construction and maintained for the concession period.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "Volume II Clause 9.3 applies.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q16"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-07",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-V-36.2-01",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-V:36.2",
+   "payload": {
+    "row": "VOL-V-36.2-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "only to the extent that such expenditure exceeds SAR 1,500,000 in aggregate over the term",
+     "parameters": {
+      "threshold_sar": 1500000
+     },
+     "consequence": "none_stated",
+     "note": "The figure is the effective text after op ADD-03/2.1 (adjust_value, 'is reduced by SAR 1,000,000'). The engine computed it from the ADD-02 effective value and the derivation is carried unchanged. The ADD-03 cover states 'to SAR 4,000,000'; the difference is raised in I-ADD03-CIL-THRESHOLD and is pending a person. The row's post_award_evidence still cites SAR 2,500,000; updating it is a person's decision."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:36.2",
+     "page": 4,
+     "kind": "span",
+     "words": "only to the extent that such expenditure exceeds SAR 1,500,000 in aggregate over the term",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [
+    "I-ADD03-CIL-THRESHOLD"
+   ],
+   "missing_information": [],
+   "statements": [
+    "S-36.2-AFTER",
+    "S-36.2-WHICH",
+    "S-PAE-STALE"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-08",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "row:VOL-V-36.2-01",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-V:36.2",
+   "payload": {
+    "id": "I-ADD03-CIL-THRESHOLD",
+    "text": "ambiguous: the ADD-03 cover says the VOL-V 36.2 General Change in Law threshold is reduced 'to SAR 4,000,000'. Operative Section 2.1 says the amount 'is reduced by SAR 1,000,000', and ADD-03 1.2 reads references as amended by Addenda Nos. 1 and 2. Applied to the ADD-02 figure of SAR 2,500,000, that gives SAR 1,500,000. Reading 1: SAR 1,500,000 (the operative text as applied). Reading 2: SAR 4,000,000 (as the cover states). The cover summarises and does not amend; which figure governs is for a person to decide. The answer affects the price assumption in the Availability Payment (ADD-03 2.2, Form 4-F) and the post-award register in row VOL-V-36.2-01. Candidate for a clarification request.",
+    "owner": "Commercial",
+    "theme": "change_in_law",
+    "short": "ADD-03 cover (SAR 4,000,000) and Section 2.1 (reduced by SAR 1,000,000, giving SAR 1,500,000) differ",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:36.2",
+     "page": 4,
+     "kind": "span",
+     "words": "exceeds SAR 1,500,000 in aggregate over the term",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-36.2-AFTER",
+    "S-36.2-WHICH"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-09",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-V-42.1-01",
+   "provision": "ADD-03:3.3",
+   "target": "VOL-V:42.1",
+   "payload": {
+    "row": "VOL-V-42.1-01",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "shall transfer the Facility to the Authority on expiry in the condition required by Clause 42.3, free of encumbrance",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Op ADD-03/3.3 substitutes 'Clause 42.3' for 'Volume II Clause 8.5'. Clause 42.3 is the relocated handback survey clause (ADD-03/3.1); see the proposed rows ADD-03-3.1-01 and ADD-03-3.1-02. The post_award_evidence basis still cites VOL-II 8.5; the words are unchanged at VOL-V 42.3."
+    },
+    "replace_requirement": {
+     "old": "On expiry, transfer the Facility in the condition required by VOL-II 8.5, free of encumbrance",
+     "new": "On expiry, transfer the Facility in the condition required by VOL-V 42.3, free of encumbrance"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.1",
+     "page": 4,
+     "kind": "span",
+     "words": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Clause 42.3, free of encumbrance",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume V Clause 42.1, ‘Volume II Clause 8.5’ is deleted and ‘Clause 42.3’ is substituted.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-03-3.1-01",
+    "ADD-03-3.1-02"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-3.1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-10",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_reading",
+   "task": "row:VOL-V-42.1-02",
+   "provision": "ADD-03:3.4",
+   "target": "VOL-V:42.1",
+   "payload": {
+    "row": "VOL-V-42.1-02",
+    "interpretation": {
+     "stage": "ADD-03",
+     "quote": "with a residual service life, for each asset class, of not less than that stated in Table 42-1",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Op ADD-03/3.4(a) deletes the five-year remaining design life for 'all major assets' and substitutes a minimum residual service life per asset class from Table 42-1 (ADD-03 Appendix A, issued in Arabic; op ADD-03/3.5 records 'The Arabic text governs.'). No Table 42-1 value is put in parameters because the values come from an image reading not approved in this set; they belong to the reading's own task. The post_award_evidence (which cites 'major assets' and five years) is out of date and left to a person."
+    },
+    "replace_requirement": {
+     "old": "At handback, at least 5 years of remaining design life for all major assets",
+     "new": "At handback, a residual service life for each asset class of not less than that stated in VOL-V Table 42-1"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.1",
+     "page": 4,
+     "kind": "span",
+     "words": "with a residual service life, for each asset class, of not less than that stated in Table 42-1",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-T42-1",
+    "S-PAE-STALE"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Did not look at the Table 42-1 crop: no value from it is relied on, so the reading quotes only the clause words in units_after."
+  },
+  {
+   "id": "DS-11",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "row:VOL-V-42.1-02",
+   "provision": "ADD-03:3.4",
+   "target": "VOL-V:42.1",
+   "payload": {
+    "id": "I-ADD03-HANDBACK-LIFE",
+    "text": "VOL-V 42.1 now requires 'a residual service life, for each asset class, of not less than that stated in Table 42-1'. Table 42-1 is in ADD-03 Appendix A, issued in Arabic, and the Arabic governs (op ADD-03/3.5). Open points for people: (1) the Table 42-1 values rest on an image reading pending approval; (2) the post-award evidence of row VOL-V-42.1-02 still describes the deleted five-year 'major assets' test and needs re-writing; (3) the lifecycle strategy and the Financial Model allowances should be checked against Table 42-1 once the reading is approved.",
+    "owner": "Technical",
+    "theme": "handback",
+    "short": "Handback residual service life per Table 42-1 (Arabic governs); row evidence out of date",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.1",
+     "page": 4,
+     "kind": "span",
+     "words": "with a residual service life, for each asset class, of not less than that stated in Table 42-1",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 1,
+     "kind": "span",
+     "words": "‘with a remaining design life of not less than five (5) years for all major assets’ is deleted",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-T42-1",
+    "S-PAE-STALE"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-12",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "c46:ADD-03/cover/para3",
+   "provision": "ADD-03:cover/para3",
+   "target": "ADD-03:cover/para3",
+   "payload": {
+    "row": {
+     "id": "ADD-03-cover-para3-01",
+     "group": "ADD-03:cover/para3",
+     "scope": [
+      "submission",
+      "addenda_acknowledgement"
+     ],
+     "requirement": "Acknowledge receipt of Addendum No. 3 in Form 4-A",
+     "units": [
+      "ADD-03:cover/para3"
+     ],
+     "discipline": "Bid management",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-FORM-4A"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "Bidders shall acknowledge receipt in Form 4-A.",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Form 4-A paragraph 1 (as reissued by ADD-01 Appendix A) holds the acknowledgement of Addenda by number. This unit states no consequence."
+      }
+     ],
+     "confidence": "high",
+     "confidence_reason": "verbatim text-layer sentence; no consequence stated",
+     "owner": "Bid manager",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/cover/para3",
+      "evidence": {
+       "unit": "ADD-03:cover/para3",
+       "page": 1,
+       "words": "Bidders shall acknowledge receipt in Form 4-A."
+      }
+     },
+     "review": "proposed"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall acknowledge receipt in Form 4-A.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Searched for the Form 4-A acknowledgement field and found VOL-IV:F4-A/item1 ('including Addenda numbered ______ to ______'). The existing activities form-4a-prep and form-4a produce EV-FORM-4A."
+  },
+  {
+   "id": "DS-13",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "c46:ADD-03/2.2",
+   "provision": "ADD-03:2.2",
+   "target": "ADD-03:2.2",
+   "payload": {
+    "row": {
+     "id": "ADD-03-2.2-01",
+     "group": "ADD-03:2.2",
+     "scope": [
+      "envelope_B",
+      "commercial",
+      "change_in_law",
+      "pricing"
+     ],
+     "requirement": "Reflect the ADD-03 Section 2.1 change to the VOL-V 36.2 General Change in Law threshold in the Availability Payment quoted in Form 4-F",
+     "units": [
+      "ADD-03:2.2"
+     ],
+     "discipline": "Commercial",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-FORM-4F"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Section 2.1 gives SAR 1,500,000 in the effective VOL-V 36.2 text; the cover states SAR 4,000,000 (I-ADD03-CIL-THRESHOLD, pending a person). The pricing basis depends on that decision. No consequence is stated in this unit."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "verbatim; the threshold to be priced is subject to the cover/operative discrepancy",
+     "issues": [
+      "I-ADD03-CIL-THRESHOLD"
+     ],
+     "owner": "Commercial lead",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F."
+      }
+     },
+     "review": "proposed"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:36.2",
+     "page": 4,
+     "kind": "span",
+     "words": "exceeds SAR 1,500,000 in aggregate over the term",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-V-36.2-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-36.2-AFTER",
+    "S-36.2-WHICH"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "The existing form-4f activity produces EV-FORM-4F. Follow-on (listed, not decided here): the financial model input for the Change in Law allowance (fin-model-build)."
+  },
+  {
+   "id": "DS-14",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "c46:ADD-03/3.1",
+   "provision": "ADD-03:3.1",
+   "target": "VOL-V:42.3",
+   "payload": {
+    "row": {
+     "id": "ADD-03-3.1-01",
+     "group": "VOL-V:42.3",
+     "scope": [
+      "contract",
+      "post_award",
+      "handback",
+      "survey"
+     ],
+     "requirement": "Carry out a handback condition survey in the final two years of the concession (VOL-V 42.3, relocated from VOL-II 8.5)",
+     "units": [
+      "VOL-V:42.3"
+     ],
+     "discipline": "Operations",
+     "assessment": "contractual_post_award",
+     "evidence": [
+      "EV-TECH-PROPOSAL"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "A handback condition survey shall be carried out in the final two (2) years of the concession",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Relocated unchanged from VOL-II 8.5 by ADD-03 3.1; replaces row VOL-II-8.5-01. VOL-V 42.1 refers to Clause 42.3."
+      }
+     ],
+     "date_rules": [
+      {
+       "rule_id": "VOL-V-42.3-HANDBACK-SURVEY-WINDOW",
+       "kind": "external",
+       "purpose": "window_start",
+       "anchor": "End of the concession period",
+       "offset": 2,
+       "unit": "year",
+       "direction": "before",
+       "source_unit": "VOL-V:42.3",
+       "text": "in the final two (2) years of the concession",
+       "note": ""
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "verbatim; when the concession ends depends on whether the term runs from the Effective Date or PCOD",
+     "issues": [
+      "I-CONCESSION"
+     ],
+     "owner": "O&M lead",
+     "post_award_evidence": {
+      "kind": "proposed",
+      "text": "Post-award (proposed requirement): the handback condition survey report, produced in the final two years of the concession (VOL-V 42.3).",
+      "basis": [
+       {
+        "unit": "VOL-V:42.3",
+        "page": 1,
+        "words": "A handback condition survey shall be carried out in the final two (2) years of the concession"
+       }
+      ],
+      "when": "in the final two years of the concession (the date depends on the term start, I-CONCESSION)",
+      "bid_stage_note": "The cover invites Bidders to describe in their Technical Proposals how their lifecycle plans address Table 42-1."
+     },
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/3.1",
+      "evidence": {
+       "unit": "ADD-03:3.1",
+       "page": 1,
+       "words": "Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3."
+      }
+     },
+     "review": "proposed"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.3",
+     "page": 1,
+     "kind": "span",
+     "words": "A handback condition survey shall be carried out in the final two (2) years of the concession",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-8.5-01",
+    "VOL-V-42.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-3.1",
+    "S-3.1-ASSESS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "The existing technical-proposal activity produces EV-TECH-PROPOSAL."
+  },
+  {
+   "id": "DS-15",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "ce05281148b24f78eaebe5e1afc2dc283a035d4a1ba151e40ee05774298f1ab0",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "ad4d583194922c8090d900db593d9b87864f924027a1fdb336ce208458bc037d",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "67a786c87d9fcea3cefea9e721ad9e1b84ae5cd9106f987f13b9e6791bb2f9bb",
+    "curation_sha256": "5ec6f40d2e92ee9a6426049af38d15780a20c8baf1361d5f9b9316a47fb46827",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "c46:ADD-03/3.1",
+   "provision": "ADD-03:3.1",
+   "target": "VOL-V:42.3",
+   "payload": {
+    "row": {
+     "id": "ADD-03-3.1-02",
+     "group": "VOL-V:42.3",
+     "scope": [
+      "contract",
+      "post_award",
+      "handback",
+      "remedial_works"
+     ],
+     "requirement": "Complete the remedial works the handback survey identifies before transfer (VOL-V 42.3, relocated from VOL-II 8.5)",
+     "units": [
+      "VOL-V:42.3"
+     ],
+     "discipline": "Operations",
+     "assessment": "contractual_post_award",
+     "evidence": [
+      "EV-TECH-PROPOSAL"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "any remedial works identified shall be completed before transfer",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Relocated unchanged from VOL-II 8.5 by ADD-03 3.1; replaces row VOL-II-8.5-02."
+      }
+     ],
+     "date_rules": [
+      {
+       "rule_id": "VOL-V-42.3-HANDBACK-REMEDIALS-DUE",
+       "kind": "external",
+       "purpose": "deadline",
+       "anchor": "Transfer of the Facility",
+       "offset": 0,
+       "unit": "calendar_day",
+       "direction": "before",
+       "source_unit": "VOL-V:42.3",
+       "text": "completed before transfer",
+       "note": ""
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "verbatim; the transfer date depends on the concession term start",
+     "issues": [
+      "I-CONCESSION"
+     ],
+     "owner": "O&M lead",
+     "post_award_evidence": {
+      "kind": "proposed",
+      "text": "Post-award (proposed requirement): records of completion of the remedial works identified by the handback condition survey, produced before transfer (VOL-V 42.3).",
+      "basis": [
+       {
+        "unit": "VOL-V:42.3",
+        "page": 1,
+        "words": "any remedial works identified shall be completed before transfer"
+       }
+      ],
+      "when": "before transfer on expiry (the date depends on the term start, I-CONCESSION)"
+     },
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/3.1",
+      "evidence": {
+       "unit": "ADD-03:3.1",
+       "page": 1,
+       "words": "Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3."
+      }
+     },
+     "review": "proposed"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:42.3",
+     "page": 1,
+     "kind": "span",
+     "words": "any remedial works identified shall be completed before transfer",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Its text is unchanged",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-8.5-02",
+    "VOL-V-42.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-3.1",
+    "S-3.1-ASSESS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

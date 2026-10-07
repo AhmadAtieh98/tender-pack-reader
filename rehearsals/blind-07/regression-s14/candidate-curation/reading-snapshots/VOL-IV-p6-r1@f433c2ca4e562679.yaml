@@ -1,0 +1,190 @@
+# PROPOSED READING — PENDING HUMAN REVIEW. Not approved.
+# `source` is the text as printed, Arabic stored in logical (reading) order.
+# `translation` is separate and is not evidence. Matching text is computed by the program.
+# For tokens containing digits, `visual_ltr_expected` is the glyph order seen in the crop,
+# left to right; the build renders `source` and checks that it reproduces that order.
+region_id: VOL-IV-p6-r1
+unit_id: "VOL-IV:F4-C/image"
+title: "Form 4-C (image, Arabic with English labels): Conflict of Interest and Debarment Declaration"
+source:
+  doc: VOL-IV
+  page: 6
+  bbox_pt: [66.6, 68.4, 528.7, 721.8]
+  native_sha256: 521e024a9cc624d8669d12300f97f1b653375029b1af5963ea39f922a673f6ff
+content_type: form
+languages: [ar, en]
+prepared_by: "AI-assisted: Claude Code session 02 (2026-10-02), read visually from the native 1654x2339 px image; disputed marks re-checked on native pixels"
+method: >-
+  Visual reading of the embedded image. No OCR. Text bands, rule bands and left/right splits
+  measured from pixels by tenderpack.regions.text_bands. Digit glyphs in the clause reference
+  compared against Noto Naskh Arabic renders (advisory only).
+blocks:
+  - key: hdr-en
+    lang: en
+    role: header
+    lines: [{band: 1, side: left, source: "NORTHERN UTILITIES PROCUREMENT AUTHORITY"}]
+  - key: hdr-ar
+    lang: ar
+    role: header
+    translation: "Northern Utilities Procurement Authority"
+    lines: [{band: 1, side: right, source: "الهيئة الشمالية للمشتريات المرفقية"}]
+  - key: ref-en
+    lang: en
+    role: header
+    lines: [{band: 2, side: left, source: "Tender Ref: NUPA/ISTP/2026/014"}]
+  - key: ref-ar
+    lang: mixed
+    role: header
+    translation: "Tender number: NUPA/ISTP/2026/014"
+    lines:
+      - band: 2
+        side: right
+        source: "مناقصة رقم: NUPA/ISTP/2026/014"
+        numerals:
+          - {text: "2026/014", visual_ltr_expected: "2026/014", meaning: "digits of the tender reference (Latin script run inside Arabic text)"}
+  - key: form-en
+    lang: en
+    role: form-number
+    lines: [{band: 4, side: left, source: "FORM 4-C"}]
+  - key: form-ar
+    lang: ar
+    role: form-number
+    translation: "Form 4-C"
+    lines:
+      - band: 4
+        side: right
+        source: "النموذج ٤-ج"
+        numerals:
+          - text: "٤-ج"
+            visual_ltr_expected: "ج-٤"
+            meaning: "Form 4-C (the Arabic letter ج is used for C)"
+            crop_bbox_pt: [430.0, 150.0, 470.0, 172.0]
+  - key: title
+    lang: ar
+    role: form-title
+    translation: "Declaration of no conflict of interest and of non-inclusion in debarment lists"
+    lines: [{band: 5, source: "إقرار عدم تضارب المصالح وعدم الإدراج في قوائم الحظر"}]
+  - key: intro
+    lang: ar
+    role: preamble
+    translation: "We, the undersigned, in our capacity as authorised representatives of the member named below in the Bidder's consortium, declare and undertake the following:"
+    lines:
+      - {band: 6, source: "نحن الموقعون أدناه، وبصفتنا ممثلين مفوضين عن العضو المذكور أدناه في ائتلاف مقدم العرض،"}
+      - {band: 7, source: "نقر ونتعهد بما يلي:"}
+  - key: decl1
+    lang: ar
+    role: declaration
+    translation: "First: that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project."
+    lines:
+      - {band: 8, source: "أولاً: أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من"}
+      - {band: 9, source: "مستشاريها فيما يتعلق بهذا المشروع."}
+  - key: decl2
+    lang: ar
+    role: declaration
+    translation: "Second: that the company has not participated, directly or indirectly, in more than one proposal for this tender."
+    lines:
+      - {band: 10, source: "ثانياً: أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة."}
+  - key: decl3
+    lang: ar
+    role: declaration
+    translation: "Third: that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom."
+    lines:
+      - {band: 11, source: "ثالثاً: أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر"}
+      - {band: 12, source: "صادرة عن جهة حكومية في المملكة."}
+  - key: decl4
+    lang: ar
+    role: declaration
+    translation: "Fourth: that all information submitted in this proposal is true and complete, and we acknowledge that any incorrect statement leads to the exclusion of the proposal."
+    lines:
+      - {band: 13, source: "رابعاً: أن جميع المعلومات المقدمة في هذا العرض صحيحة وكاملة، وندرك أن أي بيان غير صحيح"}
+      - {band: 14, source: "يؤدي إلى استبعاد العرض."}
+    uncertain:
+      - "translation of استبعاد العرض as 'exclusion of the proposal': the English text of the pack never uses 'exclusion'; how it maps to the pack's rejection / disqualification / non-responsiveness categories is for a person to decide"
+  - key: decl5
+    lang: ar
+    role: declaration
+    translation: "Fifth: we undertake to comply with the communication rules set out in Clause 4-2 of Volume I."
+    lines:
+      - band: 15
+        source: "خامساً: نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول."
+        numerals:
+          - text: "٤-٢"
+            visual_ltr_expected: "٢-٤"
+            meaning: "Clause 4-2 of Volume I, i.e. VOL-I §4.2 (blackout; 'Communications and Blackout' section)"
+            crop_bbox_pt: [293.0, 410.0, 310.0, 433.0]
+            uncertain: true
+            alternatives: ["٤-٣, i.e. VOL-I §4.3 (single point of contact), if the left glyph is ٣ rather than ٢"]
+            note: >-
+              Order is settled: the crop shows the hyphenated pair left to right as [digit]-[٤], which is
+              what logical 4-x renders as. Identity of the left digit is not settled by machine: shape
+              (chamfer) comparison favours ٢ over ٣ at three thresholds, a template-overlap score favoured ٣,
+              and the preparer's visual comparison favours ٢. Reviewer to read the crop.
+  - key: field-member-en
+    lang: en
+    role: field-label
+    lines: [{band: 17, side: left, source: "Name of consortium member"}]
+  - key: field-member-ar
+    lang: ar
+    role: field-label
+    translation: "Name of the member of the consortium:"
+    lines: [{band: 17, side: right, source: "اسم العضو في الائتلاف :"}]
+  - key: field-cr-en
+    lang: en
+    role: field-label
+    lines: [{band: 19, side: left, source: "Commercial registration number"}]
+  - key: field-cr-ar
+    lang: ar
+    role: field-label
+    translation: "Commercial registration number:"
+    lines: [{band: 19, side: right, source: "رقم السجل التجاري :"}]
+  - key: field-signatory-en
+    lang: en
+    role: field-label
+    lines: [{band: 21, side: left, source: "Name of authorised signatory"}]
+  - key: field-signatory-ar
+    lang: ar
+    role: field-label
+    translation: "Name of the person authorised to sign:"
+    lines: [{band: 21, side: right, source: "اسم المفوض بالتوقيع :"}]
+  - key: field-capacity-en
+    lang: en
+    role: field-label
+    lines: [{band: 23, side: left, source: "Capacity"}]
+  - key: field-capacity-ar
+    lang: ar
+    role: field-label
+    translation: "Capacity:"
+    lines: [{band: 23, side: right, source: "الصفة :"}]
+  - key: field-date-en
+    lang: en
+    role: field-label
+    lines: [{band: 25, side: left, source: "Date"}]
+  - key: field-date-ar
+    lang: ar
+    role: field-label
+    translation: "Date:"
+    lines: [{band: 25, side: right, source: "التاريخ :"}]
+  - key: field-signature-en
+    lang: en
+    role: field-label
+    lines: [{band: 27, side: left, source: "Signature and company seal"}]
+  - key: field-signature-ar
+    lang: ar
+    role: field-label
+    translation: "Signature and seal:"
+    lines: [{band: 27, side: right, source: "التوقيع والختم :"}]
+  - key: note
+    lang: ar
+    role: note
+    translation: "Note: this form must be submitted in Arabic for each member of the consortium. Failure to submit it complete renders the proposal non-responsive."
+    lines:
+      - {band: 29, source: "ملاحظة: يجب تقديم هذا النموذج باللغة العربية عن كل عضو من أعضاء الائتلاف."}
+      - {band: 30, source: "عدم تقديمه كاملاً يجعل العرض غير مستجيب."}
+  - key: image-footer
+    lang: en
+    role: image-footer
+    lines: [{band: 31, source: "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."}]
+uncertainties:
+  - "Diacritics (tanween on أولاً, ثانياً, ثالثاً, رابعاً, خامساً, كاملاً; hamza forms) were checked on native pixels; at reduced zoom they disappear, so review the native crops, not a scaled view."
+  - "Where printed tanween sits relative to the final alef is not visible; it is stored after the alef. Matching text removes tashkeel, so this does not affect matching."
+  - "Blank fill-in lines under each field label are rule bands (structure), not text."

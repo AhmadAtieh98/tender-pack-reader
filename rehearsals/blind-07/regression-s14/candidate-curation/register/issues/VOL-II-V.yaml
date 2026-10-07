@@ -1,0 +1,58 @@
+# Open issues raised while drafting the VOL-II and VOL-V rows. PROPOSED wording (register agent, session 05); not reviewed.
+# Issues are never resolved by the program. show_in_a3: true only where a person must decide before submission.
+issues:
+  I-VOL-II-MISSING:
+    text: "Not in the pack: the Environmental and Social Impact Assessment (ESIA; VOL-II 9.1) and the geotechnical report (ADD-01 Q4), both 'in the data room'; tie-in points (1.3); asset register format (7.4). ESIA compliance and ground risk unverifiable"
+    owner: Technical lead
+    theme: missing
+    short: "Environmental and Social Impact Assessment, geotechnical report, other data-room items not supplied"
+    folds: ["I-OP-ADD-01/Q4"]
+    show_in_a3: false
+  I-VOL-II-T24-TENSIONS:
+    # session 13 (F4; audit R1 recheck nit): the 'at all times' limb is kept in I-VOL-II-AT-ALL-TIMES only (it was in
+    # both); this text cross-refers to it (PROPOSED wording, not reviewed)
+    # session 13 (F1; audit R1-3, R2-1): the last sentence settled one limb ("... means continuous compliance ..., which
+    # is not treated as a conflict") while the clarification register's pending_decision lists that reading as not
+    # decided; reworded as the proposed reading, not decided, for the Process engineer (PROPOSED wording, not reviewed)
+    text: "The printed qualifier is confirmed (owner, 3 Oct 2026): 'all values are maxima; compliance assessed as a 30-day rolling average unless stated'. Unresolved: how it interacts with the chlorine (0.5-1.0 mg/l) and pH (6.0-9.0) ranges, and a chlorine residual 'continuous at outlet' vs UV-only disinfection or dechlorination allowed by VOL-II 3.3 (draft question CQ-T24-RANGES). Each parameter keeps its own printed basis of assessment; the 'at all times' reading is I-VOL-II-AT-ALL-TIMES, and the point at which compliance is assessed is I-VOL-II-COMPLIANCE-POINT"
+    owner: Process engineer
+    theme: technical
+    short: "Table 2-4 'all values are maxima' vs the chlorine and pH ranges"   # session 13 (F4; audit R3-1): the qualifier's words (PROPOSED)
+    # session 13 (F2; audit R2-3, PROPOSED): the page names the qualifier; decide before submission (Envelope A design;
+    # the 12 Nov cut-off for CQ-T24-RANGES); the 'at all times' reading is its own pending issue, listed with it
+    a3: "Table 2-4 'all values are maxima' vs the chlorine 0.5-1.0 and pH 6.0-9.0 ranges; UV-only? (VOL-II 3.3)"
+    folds: ["I-VOL-II-AT-ALL-TIMES", "I-VOL-II-COMPLIANCE-POINT"]   # session 13 (F4; audit R2-8, R2-11): named on its line
+    # session 14 (W4; report section 9 A4; PROPOSED, not reviewed): what the issue is about, for the propagation rule
+    # (relationships.issue_reaches): the two range rows of Table 2-4. A relationship narrowed to other rows of the table
+    # (REL-T24-RAMP-UP-DEDUCTIONS: the rolling-average rows) does not carry it; nothing is decided
+    subject: ["VOL-II:T2-4/ResidualChlorine", "VOL-II:T2-4/pH"]
+    show_in_a3: true
+  I-VOL-V-MISSING:
+    a3: "VOL-V extract: Schedules 7, 9, 11, 12, Direct Agreement missing; unlisted deviations count as accepted"
+    text: "VOL-V is an extract: omitted clauses, Schedules 7 (deductions), 9 (indexation), 11 (defaults), 12 (termination sums) and the Direct Agreement are not supplied, yet unlisted deviations are accepted"
+    owner: Legal counsel
+    theme: missing
+    short: "VOL-V extract: Schedules 7, 9, 11, 12 and Direct Agreement missing"
+    show_in_a3: true
+  I-VOL-V-PERSISTENT-BREACH:
+    text: "VOL-V 31.4: 'on a second occurrence' is not defined (a second persistent breach, or a further event after the remediation plan); the termination right in 39.3 turns on it"
+    owner: Legal counsel
+    theme: contract
+    short: "'second occurrence' of a persistent breach undefined"
+    show_in_a3: false
+  # session 13 (F2; audit R2-1): the 'at all times' reading of the clarification register's pending_decision, as its own
+  # issue so A1 and A3 show it pending (PROPOSED by the assistant, in the register's words; not reviewed)
+  I-VOL-II-AT-ALL-TIMES:
+    text: "'at all times' (VOL-II 2.4) vs Table 2-4 assessment bases. Proposed reading (not decided): Table 2-4 gives a basis of assessment for each parameter and a general qualifier, and VOL-II 2.4 requires that the treated effluent 'shall at all times comply with the parameters set out in Table 2-4'; the assistant reads the two together as continuous compliance on each parameter's printed basis. Whether that reading holds is for the Process engineer; no decision recorded (the ranges and the reliability run are raised separately: CQ-T24-RANGES, CQ-PCOD-RELIABILITY-RUN)"
+    owner: Process engineer
+    theme: technical
+    short: "'at all times' (VOL-II 2.4) with each parameter's printed basis: proposed reading, not decided"
+  # session 13 (F4; audit R2-8): where Table 2-4 compliance is assessed is not stated in one place; the three printed
+  # candidates, quoted with their pages (PROPOSED by the assistant; not reviewed). No clarification question is drafted:
+  # whether to raise it with the Authority is the owner's decision (Process engineer)
+  I-VOL-II-COMPLIANCE-POINT:
+    text: "The point at which Table 2-4 compliance is assessed. The pack prints three candidates: the table title 'Minimum Effluent Quality Parameters at the Point of Discharge' (VOL-II p3, the Table 2-4 image); 'Continuous at outlet' (the basis of assessment of Residual Chlorine and pH, VOL-II p3); and 'the delivery point shown on Drawing 03-C-114' (VOL-II 5.1, p4; the end of the 18 km treated effluent main), on a drawing of Volume III, which is not supplied. Which point governs, and whether to raise it with the Authority before the clarification cut-off, is for the Process engineer; no decision recorded and no question drafted"
+    owner: Process engineer
+    theme: technical
+    short: "Table 2-4 compliance point: 'Point of Discharge', 'at outlet' or the delivery point (Drawing 03-C-114)?"
+    units: ["VOL-II:T2-4", "VOL-II:T2-4/ResidualChlorine", "VOL-II:T2-4/pH", "VOL-II:5.1"]

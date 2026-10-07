@@ -1,0 +1,983 @@
+# A1 register rows for VOL-V (Draft Project Agreement, extract). PROPOSED: drafted by the assistant; no row has been reviewed.
+# Existing rows on VOL-V units stay in curation/register/rows.yaml (VOL-V-31.3-01, VOL-V-29.2-01) and are not repeated.
+doc: VOL-V
+prepared_by: "AI-assisted draft (register agent, session 05); not reviewed"
+method: >-
+  One row per independently testable term the Project Company must perform or bear after award (assessment
+  contractual_post_award, no bid-stage deliverable), plus the one bid-stage obligation in the Note to Bidders
+  (deviations in Form 4-E). Consequences of the Project Company's obligations (delay liquidated damages,
+  availability deductions, termination, loss of relief) are quoted verbatim as class contractual from the unit that
+  states them. Entitlements of the Project Company, duties and rights of the Authority, and definitions are
+  dispositioned with a reason; where they contain a consequence word, a consequence_note says which row carries it.
+  Events outside the pack (Effective Date, Notice to Proceed, PCOD, awareness of a Relief Event) are external date
+  rules; deviations from Volume V must be listed in Form 4-E (VOL-I 9.6, row VOL-I-9.6-01).
+rows:
+  # ---------------------------------------------------------------- Note to Bidders (bid stage)
+  - id: VOL-V-NOTE-01
+    group: VOL-V:cover/note-to-bidders
+    scope: [contract, deviations, bid_submission]
+    requirement: "List every deviation from the Volume V clauses in Form 4-E; a deviation not listed is taken as accepted"
+    units: ["VOL-V:cover/note-to-bidders"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: procedural
+    evidence: [EV-FORM-4E]
+    interpretations:
+      - stage: BASE
+        quote: "This extract contains the clauses of the draft Project Agreement on which the Authority invites comment through Form 4-E."
+        consequence: {class: lesser, unit: "VOL-V:cover/note-to-bidders", quote: "A deviation not listed in Form 4-E will be taken as accepted."}
+        note: "VOL-I 9.6 (row VOL-I-9.6-01) requires Form 4-E to list every deviation, qualification or reservation to Volume V, and treats 'no deviations' with a qualification elsewhere as non-responsive. 'Omitted clauses are not reproduced' (I-VOL-V-MISSING). The concession-term conflict (I-CONCESSION) turns on this Note."
+    confidence: high
+    confidence_reason: "verbatim text-layer note"
+    issues: [I-VOL-V-MISSING, I-CONCESSION]
+  # ---------------------------------------------------------------- Clause 3: term
+  - id: VOL-V-3.1-01
+    group: VOL-V:3.1
+    scope: [contract, post_award, term]
+    requirement: "Agreement in force from the Effective Date for 25 years from the Effective Date, unless terminated earlier"
+    units: ["VOL-V:3.1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be obtained on execution, the Project Agreement executed by both
+        parties, whose date of execution is the Effective Date (VOL-V 1.2) from which VOL-V 3.1 runs the 25-year term.'
+      basis:
+      - unit: VOL-V:3.1
+        page: 2
+        words: This Agreement shall come into force on the Effective Date and shall continue for a period of twenty-five
+          (25) years from the Effective Date, unless terminated earlier in accordance with its terms.
+      - unit: VOL-V:1.2
+        page: 2
+        words: Effective Date means the date of execution of this Agreement by both parties.
+      when: on execution of the Project Agreement by both parties (the Effective Date)
+      bid_stage_note: 'Decide now (I-CONCESSION): VOL-I 12.1 runs the 25-year concession from the Project Commercial
+        Operation Date instead, and ADD-02 Q7 refers Bidders to the order of precedence at VOL-I 3.2 without amending
+        either clause; Legal to decide the term start assumed in the Financial Model and whether to list it in Form
+        4-E (VOL-I 9.6), since a deviation not listed is taken as accepted (VOL-V Note to Bidders).'
+    date_rules:
+      - {rule_id: VOL-V-TERM-END, kind: external, purpose: event, anchor: "Effective Date", offset: 25, unit: year, direction: after, source_unit: "VOL-V:3.1", text: "twenty-five (25) years from the Effective Date"}
+    interpretations:
+      - stage: BASE
+        quote: "shall continue for a period of twenty-five (25) years from the Effective Date"
+        parameters: {term_years: 25, from: "Effective Date"}
+        note: "Effective Date: execution of the Agreement by both parties (VOL-V 1.2). VOL-I 12.1 states twenty-five years commencing on PCOD (I-CONCESSION)."
+      - stage: ADD-02
+        quote: "shall continue for a period of twenty-five (25) years from the Effective Date"
+        parameters: {term_years: 25, from: "Effective Date"}
+        # session 12 (F1; audit A1-1/A2-1/A3-1, PROPOSED wording): the session 11 wording (audit A1-3) made this clause
+        # subordinate to VOL-I 12.1; Q7 does not say which clause applies and no person has decided
+        note: "ADD-02 Q7 (p2) was asked 'Which applies?' and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither. Two readings: this clause, 'twenty-five (25) years from the Effective Date'; VOL-I 12.1 (p6), 'twenty-five (25) years commencing on the Project Commercial Operation Date' (row VOL-I-12.1-01). VOL-I 3.2 (p2) orders the RFP Documents '(a) the Addenda, a later Addendum prevailing over an earlier one;' '(b) Volume I (Instructions to Bidders);' '(c) Volume V (Draft Project Agreement);' 'the first named prevailing'; VOL-I 3.3 (p2): 'A Bidder that resolves such a conflict unilaterally does so at its own risk'; and 'A deviation not listed in Form 4-E will be taken as accepted.' (VOL-V Note to Bidders, p2). Which clause governs the term, what to record in Form 4-E and which term start the Financial Model assumes are a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded."
+    confidence: medium
+    confidence_reason: "verbatim; conflicts with VOL-I 12.1 (from PCOD); ADD-02 Q7 refers to the order of precedence at VOL-I 3.2 without saying which clause applies; which clause governs is a decision for a person (Legal, I-CONCESSION); no decision recorded; the Effective Date is not a pack event"
+    issues: [I-CONCESSION]
+  - id: VOL-V-3.2-01
+    group: VOL-V:3.2
+    scope: [contract, post_award, handback]
+    requirement: "On expiry, transfer the Facility to the Authority under Clause 42 for nil consideration"
+    units: ["VOL-V:3.2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced on expiry, a record of the transfer of the Facility to
+        the Authority for nil consideration in accordance with Clause 42 (the extract prescribes no form of transfer
+        document), supported by the handback records proposed under row VOL-V-42.1-01.'
+      basis:
+      - unit: VOL-V:3.2
+        page: 2
+        words: On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration.
+      when: on expiry of the term (the expiry date depends on the term start, VOL-I 12.1 from PCOD or VOL-V 3.1 from the Effective Date; which clause governs is a decision for a person, none recorded, I-CONCESSION)
+      bid_stage_note: 'Price assumption: nothing is received for the Facility at expiry (''for nil consideration''),
+        and the expiry date depends on the term start: VOL-I 12.1 (from PCOD) or VOL-V 3.1 (from the Effective Date);
+        ADD-02 Q7 refers to VOL-I 3.2 without saying which applies, and which clause governs is a decision for a person
+        (Legal, I-CONCESSION); no decision recorded.'
+    interpretations:
+      - stage: BASE
+        quote: "On expiry, the Facility shall transfer to the Authority in accordance with Clause 42 for nil consideration."
+    confidence: high
+    confidence_reason: "verbatim; the expiry date depends on the term start (I-CONCESSION)"
+    issues: [I-CONCESSION]
+  # ---------------------------------------------------------------- Clauses 12 and 18: construction and delay
+  - id: VOL-V-12.1-01
+    group: VOL-V:12.1
+    scope: [contract, post_award, programme, pcod]
+    requirement: "Achieve PCOD within 36 months of the Notice to Proceed (the Scheduled PCOD)"
+    units: ["VOL-V:12.1"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be obtained at PCOD, the Independent Engineer''s certification that
+        the Facility has satisfied Volume II Clause 7.2 (which fixes PCOD under VOL-V 1.5), dated within 36 months of
+        the Notice to Proceed, with the Notice to Proceed itself kept to fix the Scheduled PCOD.'
+      basis:
+      - unit: VOL-V:12.1
+        page: 2
+        words: The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled
+          PCOD).
+      - unit: VOL-V:1.5
+        page: 2
+        words: PCOD means the date on which the Independent Engineer certifies that the Facility has satisfied the requirements
+          of Volume II Clause 7.2.
+      when: at PCOD; the Scheduled PCOD is 36 months after the Notice to Proceed (not a pack event)
+      bid_stage_note: The construction programme in the Technical Proposal (Table 1-1 criterion B) needs to reach PCOD
+        within 36 months of the Notice to Proceed; delay liquidated damages of SAR 180,000 for each day of delay, capped
+        at 10% of the Estimated Project Cost (VOL-V 18.1, 18.4), are a pricing assumption.
+    date_rules:
+      - {rule_id: VOL-V-SCHEDULED-PCOD, kind: external, purpose: deadline, anchor: "Notice to Proceed", offset: 36, unit: month, direction: after, source_unit: "VOL-V:12.1", text: "within thirty-six (36) months of the Notice to Proceed"}
+    interpretations:
+      - stage: BASE
+        quote: "shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD)"
+        parameters: {months_from_notice_to_proceed: 36}
+        consequence: {class: contractual, unit: "VOL-V:18.1", quote: "the Project Company shall pay to the Authority delay liquidated damages at the rate of SAR 180,000 for each day of delay"}
+        # provenance: the 18.4 cap quoted here by the session 11 audit fix A1-6 (PROPOSED); not printed in A1 (session 12, F1, audit A1-6)
+        note: "Delay liquidated damages are the Authority's sole financial remedy for late completion, without prejudice to termination (18.2). Cap: their aggregate 'shall not exceed ten per cent (10%) of the Estimated Project Cost' (VOL-V 18.4, p2). PCOD: certified by the Independent Engineer against VOL-II 7.2 (VOL-V 1.5). The date rule records 36 months as 3 years (date rules have no month unit)."
+    confidence: high
+    confidence_reason: "verbatim; the Notice to Proceed is not a pack event, so the Scheduled PCOD cannot be dated"
+  - id: VOL-V-18.3-01
+    group: VOL-V:18.3
+    scope: [contract, post_award, programme, pcod, termination]
+    requirement: "Achieve PCOD within 365 days after the Scheduled PCOD, failing which the Authority may terminate under Clause 39.2"
+    units: ["VOL-V:18.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be obtained, the Independent Engineer''s PCOD certification (VOL-V
+        1.5) dated within 365 days after the Scheduled PCOD, the same record as row VOL-V-12.1-01, showing that the
+        Authority''s termination right under Clause 39.2 has not arisen.'
+      basis:
+      - unit: VOL-V:18.3
+        page: 2
+        words: If PCOD has not been achieved within three hundred and sixty-five (365) days after the Scheduled PCOD,
+          the Authority may terminate under Clause 39.2.
+      - unit: VOL-V:39.2
+        page: 4
+        words: The Authority may terminate where PCOD is not achieved within the period stated in Clause 18.3.
+      - unit: VOL-V:1.5
+        page: 2
+        words: PCOD means the date on which the Independent Engineer certifies that the Facility has satisfied the requirements
+          of Volume II Clause 7.2.
+      when: at PCOD, and no later than 365 days after the Scheduled PCOD
+    date_rules:
+      - {rule_id: VOL-V-PCOD-LONG-STOP, kind: external, purpose: deadline, anchor: "Scheduled PCOD", offset: 365, unit: calendar_day, direction: after, source_unit: "VOL-V:18.3", text: "within three hundred and sixty-five (365) days after the Scheduled PCOD"}
+    interpretations:
+      - stage: BASE
+        quote: "If PCOD has not been achieved within three hundred and sixty-five (365) days after the Scheduled PCOD"
+        parameters: {days_after_scheduled_pcod: 365}
+        consequence: {class: contractual, unit: "VOL-V:18.3", quote: "the Authority may terminate under Clause 39.2"}
+        note: "Restated as an Authority termination right in 39.2."
+    confidence: high
+    confidence_reason: "verbatim; the Scheduled PCOD depends on the Notice to Proceed, not a pack event"
+  - id: VOL-V-12.2-01
+    group: VOL-V:12.2
+    scope: [contract, post_award, epc]
+    requirement: "Have the EPC Contractor build on a fixed price, lump sum, date certain, turnkey basis with single point responsibility"
+    units: ["VOL-V:12.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced, the executed EPC Contract, showing that the construction
+        works are let on a fixed price, lump sum, date certain, turnkey basis with single point responsibility (VOL-V
+        12.2).'
+      basis:
+      - unit: VOL-V:12.2
+        page: 2
+        words: The Project Company shall procure that the EPC Contractor performs the construction works on a fixed
+          price, lump sum, date certain, turnkey basis with single point responsibility.
+      when: on execution of the EPC Contract; applies throughout the construction works
+      bid_stage_note: Any departure from a single fixed price, lump sum, date certain, turnkey EPC contract (for example
+        a split contract) would be a deviation to list in Form 4-E (VOL-I 9.6).
+    interpretations:
+      - stage: BASE
+        quote: "shall procure that the EPC Contractor performs the construction works on a fixed price, lump sum, date certain, turnkey basis with single point responsibility"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-12.3-01
+    group: VOL-V:12.3
+    scope: [contract, post_award, independent_engineer, cost]
+    requirement: "Bear half of the Independent Engineer's reasonable costs (the Authority appoints the Independent Engineer)"
+    units: ["VOL-V:12.3"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced for each period in which Independent Engineer costs are
+        incurred, a record of those reasonable costs and of payment of the Project Company''s equal share (VOL-V 12.3);
+        the extract does not say how the costs are invoiced or shared between the parties.'
+      basis:
+      - unit: VOL-V:12.3
+        page: 2
+        words: The Authority shall appoint an Independent Engineer whose reasonable costs shall be borne equally by
+          the parties.
+      when: from the Authority's appointment of the Independent Engineer, as costs are incurred
+      bid_stage_note: 'Price assumption: half of the Independent Engineer''s reasonable costs is a Project Company cost
+        for the Financial Model; the pack gives no amount or estimate.'
+    interpretations:
+      - stage: BASE
+        quote: "whose reasonable costs shall be borne equally by the parties"
+        parameters: {project_company_share: "equal (half)"}
+        note: "The appointment itself is an Authority duty."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-12.4-01
+    group: VOL-V:12.4
+    scope: [contract, post_award, reporting]
+    requirement: "Submit monthly progress reports"
+    units: ["VOL-V:12.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced each month, the monthly progress report that VOL-V 12.4
+        requires, with a record of the date it was submitted; the extract does not state the report''s content, its
+        recipient, or when reporting starts and ends.'
+      basis:
+      - unit: VOL-V:12.4
+        page: 2
+        words: The Project Company shall submit monthly progress reports
+      when: monthly (the clause sits under Clause 12, Construction; start and end are not stated)
+    interpretations:
+      - stage: BASE
+        quote: "shall submit monthly progress reports"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-12.4-02
+    group: VOL-V:12.4
+    scope: [contract, post_award, site_access]
+    requirement: "Permit the Authority access to the site at all reasonable times"
+    units: ["VOL-V:12.4"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept, a site access log recording each Authority request for access
+        and each visit, with the time and the access given, to show that access was permitted at all reasonable times
+        (VOL-V 12.4); the clause itself prescribes no record.'
+      basis:
+      - unit: VOL-V:12.4
+        page: 2
+        words: shall permit the Authority access to the site at all reasonable times
+      when: whenever the Authority seeks access (the clause sits under Clause 12, Construction; no end is stated)
+    interpretations:
+      - stage: BASE
+        quote: "shall permit the Authority access to the site at all reasonable times"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Clause 24: project accounts and reserves
+  - id: VOL-V-24.1-01
+    group: VOL-V:24.1
+    scope: [contract, post_award, finance, accounts]
+    requirement: "Open and keep the project accounts the Financing Documents require, with an account bank acceptable to the Senior Lenders"
+    units: ["VOL-V:24.1"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced when the Financing Documents require the project accounts,
+        the account bank''s confirmation that each required project account is open and the Senior Lenders'' acceptance
+        of the account bank, with continued maintenance shown by the quarterly statements under VOL-V 24.4 (row VOL-V-24.4-01).'
+      basis:
+      - unit: VOL-V:24.1
+        page: 2
+        words: The Project Company shall open and maintain the project accounts required by the Financing Documents
+          with an account bank acceptable to the Senior Lenders.
+      - unit: VOL-V:1.4
+        page: 2
+        words: Financing Documents means the common terms agreement, the facility agreements, the security documents
+          and every other document designated as such by the Senior Lenders.
+      when: when the Financing Documents require the accounts to be opened, then for as long as they require them to
+        be maintained
+    interpretations:
+      - stage: BASE
+        quote: "shall open and maintain the project accounts required by the Financing Documents with an account bank acceptable to the Senior Lenders"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-24.2-01
+    group: VOL-V:24.2
+    scope: [contract, post_award, finance, reserves]
+    requirement: "Establish, maintain and fund the reserve accounts the Financing Documents require"
+    units: ["VOL-V:24.2"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced, account statements showing each reserve account required
+        by the Financing Documents established and funded to the level and at the time they require, cross-referenced
+        to the Financing Documents'' requirement (VOL-V 24.2).'
+      basis:
+      - unit: VOL-V:24.2
+        page: 3
+        words: The Project Company shall establish and maintain such reserve accounts, and shall fund them to such levels
+          and at such times, as are required under the Financing Documents.
+      when: at the times the Financing Documents require; the levels and times are set by the Financing Documents, not
+        by the Agreement
+      bid_stage_note: Reserve sizing is left to the Financing Documents ('The Authority takes no position on the sizing
+        of any reserve account.'), so reserve funding in the Financial Model is a financing assumption, not an Authority
+        requirement.
+    interpretations:
+      - stage: BASE
+        quote: "shall establish and maintain such reserve accounts, and shall fund them to such levels and at such times, as are required under the Financing Documents"
+        note: "'The Authority takes no position on the sizing of any reserve account.'"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-24.3-01
+    group: VOL-V:24.3
+    scope: [contract, post_award, finance, distributions]
+    requirement: "No shareholder distribution unless the Financing Documents' conditions are met and no Unavailability Event is continuing"
+    units: ["VOL-V:24.3"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced before each shareholder distribution, a record showing
+        that the conditions to distribution in the Financing Documents are satisfied and that no Unavailability Event
+        is continuing at the time (VOL-V 24.3).'
+      basis:
+      - unit: VOL-V:24.3
+        page: 3
+        words: The Project Company shall not make a distribution to its shareholders unless the conditions to distribution
+          in the Financing Documents are satisfied and no Unavailability Event is continuing.
+      when: before each distribution to shareholders
+      bid_stage_note: 'Equity distribution timing in the Financial Model: distributions are also blocked while any Unavailability
+        Event is continuing, in addition to the lenders'' conditions.'
+    interpretations:
+      - stage: BASE
+        quote: "shall not make a distribution to its shareholders unless the conditions to distribution in the Financing Documents are satisfied and no Unavailability Event is continuing"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-24.4-01
+    group: VOL-V:24.4
+    scope: [contract, post_award, finance, reporting]
+    requirement: "Give the Authority quarterly statements of each project account"
+    units: ["VOL-V:24.4"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced each quarter, a statement of each project account provided
+        to the Authority, as VOL-V 24.4 requires, with a record of when it was provided.'
+      basis:
+      - unit: VOL-V:24.4
+        page: 3
+        words: The Project Company shall provide the Authority with quarterly statements of each project account.
+      when: quarterly, once the project accounts are open
+    interpretations:
+      - stage: BASE
+        quote: "shall provide the Authority with quarterly statements of each project account"
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Clause 29: payment mechanism
+  - id: VOL-V-29.3-01
+    group: VOL-V:29.3
+    scope: [contract, post_award, payment, ramp_up, image]
+    requirement: "Ramp-Up Period (12 months after PCOD): payment at 90%; no availability deduction for Table 2-4 parameters assessed on a rolling average (a payment exception only: not an exemption from technical compliance or commissioning requirements)"
+    units: ["VOL-V:29.3", "VOL-II:T2-4/BOD5", "VOL-II:T2-4/COD", "VOL-II:T2-4/TSS", "VOL-II:T2-4/TN", "VOL-II:T2-4/TP"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: not_applicable
+      text: 'Not applicable: the Ramp-Up Period terms (payment at 90% of the full rate and no availability deduction
+        for Table 2-4 parameters assessed on a rolling average) are a payment term and a limit on the Authority''s deductions,
+        not an act the Project Company evidences, and they do not exempt the Facility from Table 2-4 compliance or the
+        commissioning requirements, which are evidenced under their own rows.'
+      basis:
+      - unit: VOL-V:29.3
+        page: 3
+        words: During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be
+          paid at ninety per cent (90%) of the full rate, and no availability deduction shall apply to a parameter listed
+          in Table 2-4 as assessed on a rolling average basis.
+      - unit: VOL-II:2.4
+        page: 2
+        words: The treated effluent shall at all times comply with the parameters set out in Table 2-4.
+      - unit: VOL-II:T2-4
+        page: 3
+        words: compliance assessed as a 30-day rolling average unless stated
+      reason: VOL-V 29.3 sets how much the Authority pays in the first twelve months after PCOD and which deductions
+        it does not apply; the Project Company performs nothing under it. The effluent must still comply 'at all times'
+        with Table 2-4 (VOL-II 2.4), and PCOD still requires the VOL-II 7.2 reliability run; those obligations carry
+        their own evidence (rows VOL-V-31.1-02, VOL-II-2.4-01, VOL-II-7.2-01). Which parameters are assessed on a rolling
+        average comes from the Table 2-4 basis column (BOD5, COD, TSS, TN, TP as read; I-READING-T24).
+      bid_stage_note: 'Price assumption: the Financial Model should reflect payment at 90% of the full rate for the
+        first twelve months after PCOD; on the Table 2-4 reading, deductions can still apply in that period to parameters
+        with another stated basis (turbidity, faecal coliforms, oil and grease, and residual chlorine and pH, whose
+        interaction with the table''s rolling-average qualifier is unresolved).'
+    date_rules:
+      - {rule_id: VOL-V-RAMP-UP-END, kind: external, purpose: event, anchor: "PCOD", offset: 12, unit: month, direction: after, source_unit: "VOL-V:29.3", text: "the first twelve (12) months after PCOD"}
+    interpretations:
+      - stage: BASE
+        quote: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at ninety per cent (90%) of the full rate"
+        parameters: {ramp_up_months: 12, payment_pct_of_full_rate: 90, rolling_average_parameters_as_read: [BOD5, COD, TSS, TN, TP]}
+        note: "The exception is to availability deductions only: the effluent must still comply 'at all times' with Table 2-4 (VOL-II 2.4, row VOL-II-2.4-01) and the commissioning and performance requirements still apply; nothing here exempts the plant from them. 'no availability deduction shall apply to a parameter listed in Table 2-4 as assessed on a rolling average basis': which parameters that is comes from the Table 2-4 basis column (image reading, transcription confirmed by the owner, 3 Oct 2026); those five table rows are listed as units."
+      - stage: ADD-01
+        quote: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at ninety per cent (90%) of the full rate"
+        parameters: {ramp_up_months: 12, payment_pct_of_full_rate: 90, rolling_average_parameters_as_read: [BOD5, COD, TSS, TN, TP]}
+        note: "ADD-01 Q6: offtake volume is not guaranteed; the payment mechanism is availability based and does not depend on volume delivered. No change to this row."
+      - stage: ADD-02
+        quote: "During the first twelve (12) months after PCOD (the Ramp-Up Period) the Availability Payment shall be paid at ninety per cent (90%) of the full rate"
+        parameters: {ramp_up_months: 12, payment_pct_of_full_rate: 90, rolling_average_parameters_as_read: [BOD5, COD, TSS, TN, TP]}
+        # session 13 (F1; audit R1-1): note re-drafted for ADD-02 5.1's second sentence (op ADD-02/5.1/unchanged); PROPOSED
+        note: "ADD-02 5.1 amends the TN limit to 3 mg/l 'assessed on the same basis' (30-day rolling average as read) and states 'All other parameters in Table 2-4 are unchanged.' (ADD-02 5.1, p1; op ADD-02/5.1/unchanged, confirms, PROPOSED), so the rolling-average parameters as read stay BOD5, COD, TSS, TN and TP; the payment terms of this clause are unchanged."
+    confidence: medium
+    confidence_reason: "verbatim clause; the parameters exempt from Ramp-Up deductions come from an image reading (transcription confirmed by the owner, 3 Oct 2026); PCOD is not a pack event"
+    issues: [I-READING-T24]
+  - id: VOL-V-29.4-01
+    group: VOL-V:29.4
+    scope: [contract, post_award, payment, invoicing]
+    requirement: "Submit invoices within 10 Working Days of each month end (the Authority pays within 30 days of receipt)"
+    units: ["VOL-V:29.4"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced each month from PCOD, an invoice submitted within ten
+        Working Days of the month end, as VOL-V 29.4 requires, with proof of the submission and receipt dates (receipt
+        starts the Authority''s 30-day payment period).'
+      basis:
+      - unit: VOL-V:29.4
+        page: 3
+        words: Invoices shall be submitted within ten (10) Working Days of each month end and shall be paid within thirty
+          (30) days of receipt.
+      - unit: VOL-V:29.1
+        page: 3
+        words: From PCOD the Authority shall pay the Project Company the Availability Payment in equal monthly instalments
+          in arrears, subject to the deductions in Clause 31.
+      when: monthly after PCOD, within ten Working Days of each month end (forward Working Day counting is not defined
+        in the pack)
+    date_rules:
+      - {rule_id: VOL-V-INVOICE-DUE, kind: external, purpose: deadline, anchor: "Each month end", offset: 10, unit: working_day, direction: after, source_unit: "VOL-V:29.4", text: "within ten (10) Working Days of each month end"}
+    interpretations:
+      - stage: BASE
+        quote: "Invoices shall be submitted within ten (10) Working Days of each month end"
+        parameters: {invoice_working_days: 10, payment_days_after_receipt: 30}
+        note: "Recurring. Forward Working Day counting is not defined in the pack (VOL-I 2.4 covers backward counting)."
+      - stage: ADD-01
+        quote: "Invoices shall be submitted within ten (10) Working Days of each month end"
+        parameters: {invoice_working_days: 10, payment_days_after_receipt: 30}
+        note: "ADD-01 Q6 (payment availability based, volume not guaranteed) reviewed for this row: no change."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  # ---------------------------------------------------------------- Clause 31: availability and deductions
+  - id: VOL-V-31.1-01
+    group: VOL-V:31.1
+    scope: [contract, post_award, availability, deductions]
+    requirement: "Treat the flow delivered to the Facility (failure is an Unavailability Event under 31.1(a))"
+    units: ["VOL-V:31.1"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept continuously from PCOD, metered records of the flow delivered
+        to the Facility and the flow treated, with a timestamped log of any period in which delivered flow was not treated,
+        so that any Unavailability Event under VOL-V 31.1(a) can be established; the extract prescribes no monitoring
+        or reporting format.'
+      basis:
+      - unit: VOL-V:31.1
+        page: 3
+        words: (a) the Facility is unable to treat the flow delivered to it
+      - unit: VOL-V:29.1
+        page: 3
+        words: From PCOD the Authority shall pay the Project Company the Availability Payment in equal monthly instalments
+          in arrears, subject to the deductions in Clause 31.
+      when: 'continuously from PCOD (the Availability Payment, from which deductions are made, is paid from PCOD: VOL-V
+        29.1)'
+      bid_stage_note: '''The flow delivered to it'' is not limited to the Volume II design flows (I-FLOWS), and deductions
+        are not subject to any cap (VOL-V 31.2) and are calculated under Schedule 7, which is not supplied: a capacity
+        and pricing risk for Legal and Commercial to weigh for Form 4-E (VOL-I 9.6).'
+    interpretations:
+      - stage: BASE
+        quote: "(a) the Facility is unable to treat the flow delivered to it"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "Cure period 24 hours (31.3, row VOL-V-31.3-02). Deductions are not capped (31.2) and do not apply to the extent the event is caused by a Relief Event or Force Majeure Event (31.5). Schedule 7 is not supplied. The words are not limited to the Volume II design flows."
+      - stage: ADD-02
+        quote: "(a) the Facility is unable to treat the flow delivered to it"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "ADD-02 Q12 (are the deductions capped?) refers Bidders to the wording of 31.2: deductions are not subject to any cap."
+    confidence: medium
+    confidence_reason: "verbatim; the deduction amounts are in Schedule 7, not supplied; how 'the flow delivered' relates to the design flows is open"
+    issues: [I-VOL-V-MISSING, I-FLOWS]
+  - id: VOL-V-31.1-02
+    group: VOL-V:31.1
+    scope: [contract, post_award, availability, deductions, effluent]
+    requirement: "Treated effluent to meet every parameter in VOL-II Table 2-4 (failure is an Unavailability Event under 31.1(b))"
+    units: ["VOL-V:31.1"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept continuously from PCOD, treated-effluent sampling and analysis
+        records for every Table 2-4 parameter, each on its stated basis of assessment and against the limits as amended
+        (TN 3 mg/l, ADD-02 5.1), so that any Unavailability Event under VOL-V 31.1(b) can be established; these records
+        would not show compliance with the Environmental Permit, which is not supplied.'
+      basis:
+      - unit: VOL-V:31.1
+        page: 3
+        words: (b) the treated effluent fails any parameter in Volume II Table 2-4
+      - unit: VOL-II:T2-4
+        page: 3
+        words: compliance assessed as a 30-day rolling average unless stated
+      - unit: ADD-02:5.1
+        page: 1
+        words: In Volume II Table 2-4, the limit for Total Nitrogen (TN) is amended from the value shown to 3 mg/l,
+          assessed on the same basis.
+      - unit: VOL-II:T2-4-heading/para1
+        page: 3
+        words: In the event of any discrepancy between this reproduction and the Environmental Permit, the Environmental
+          Permit shall prevail.
+      when: continuously from PCOD (before PCOD, Table 2-4 compliance during the reliability run is evidenced under
+        VOL-II 7.2)
+      bid_stage_note: No cure period applies to a 31.1(b) event (VOL-V 31.3), deductions are not subject to any cap
+        (VOL-V 31.2) and are calculated under Schedule 7, which is not supplied, and the process design must reflect
+        TN 3 mg/l (ADD-02 5.2); Permit compliance is not claimed, because the Environmental Permit that prevails over
+        the Table 2-4 reproduction is not supplied (I-PERMIT).
+    interpretations:
+      - stage: BASE
+        quote: "(b) the treated effluent fails any parameter in Volume II Table 2-4"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "No cure period (31.3, row VOL-V-31.3-03). During the Ramp-Up Period no availability deduction applies to rolling-average parameters (29.3, row VOL-V-29.3-01). Limits: rows VOL-II-T2-4-*."
+      - stage: ADD-02
+        quote: "(b) the treated effluent fails any parameter in Volume II Table 2-4"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap. ADD-02 5.1 tightens the TN limit to 3 mg/l (row VOL-II-T2-4-TN), which this event applies to."
+    confidence: medium
+    confidence_reason: "verbatim; Table 2-4 is an image reading (transcription confirmed by the owner, 3 Oct 2026), the Permit that prevails over it in VOL-II is not supplied, and Schedule 7 is not supplied"
+    issues: [I-READING-T24, I-PERMIT, I-VOL-V-MISSING]
+  - id: VOL-V-31.1-03
+    group: VOL-V:31.1
+    scope: [contract, post_award, availability, deductions, transmission_main]
+    requirement: "Deliver treated effluent to the delivery point at the required residual head (failure is an Unavailability Event under 31.1(c))"
+    units: ["VOL-V:31.1"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept continuously from PCOD, residual head records at the delivery
+        point, with a timestamped log of any period below the required residual head (VOL-II 5.2 states a minimum of
+        15 m at the delivery point), so that any Unavailability Event under VOL-V 31.1(c) can be established; the delivery
+        point is shown only on Drawing 03-C-114, which is not supplied.'
+      basis:
+      - unit: VOL-V:31.1
+        page: 3
+        words: (c) the Facility fails to deliver treated effluent to the delivery point at the required residual head
+      - unit: VOL-II:5.2
+        page: 4
+        words: a minimum residual head of 15 m at the delivery point
+      - unit: VOL-II:5.1
+        page: 4
+        words: between the Facility outlet chamber and the delivery point shown on Drawing 03-C-114
+      when: continuously from PCOD
+      bid_stage_note: The delivery point is shown only on Drawing 03-C-114 (Volume III, not supplied; I-VOL-III), so
+        where the residual head is measured cannot be confirmed from the pack, and deductions are not subject to any
+        cap (VOL-V 31.2).
+    interpretations:
+      - stage: BASE
+        quote: "(c) the Facility fails to deliver treated effluent to the delivery point at the required residual head"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "Cure period 72 hours (31.3, row VOL-V-31.3-01). Residual head: 15 m at the delivery point (VOL-II 5.2, row VOL-II-5.2-02); the delivery point is shown only on Drawing 03-C-114."
+      - stage: ADD-02
+        quote: "(c) the Facility fails to deliver treated effluent to the delivery point at the required residual head"
+        consequence: {class: contractual, unit: "VOL-V:31.2", quote: "the Authority shall deduct from the Availability Payment the amounts calculated under Schedule 7"}
+        note: "ADD-02 Q12 refers Bidders to the wording of 31.2: deductions are not subject to any cap."
+    confidence: medium
+    confidence_reason: "verbatim; the delivery point (Drawing 03-C-114) and the deduction amounts (Schedule 7) are not supplied"
+    issues: [I-VOL-III, I-VOL-V-MISSING]
+  - id: VOL-V-31.3-02
+    group: VOL-V:31.3
+    scope: [contract, post_award, availability, cure_period]
+    requirement: "Cure period of 24 hours for an Unavailability Event under VOL-V 31.1(a)"
+    units: ["VOL-V:31.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the record that would show a VOL-V 31.1(a) event was cured within the 24-hour cure period cannot
+        be specified from the extract, which states the length of the period but not when it starts or what a cure changes,
+        and the deductions are calculated under Schedule 7 (VOL-V 31.2), which is not supplied.'
+      basis:
+      - unit: VOL-V:31.3
+        page: 3
+        words: A cure period of twenty-four (24) hours applies to an Unavailability Event under Clause 31.1(a)
+      - unit: VOL-V:31.2
+        page: 3
+        words: On the occurrence of an Unavailability Event the Authority shall deduct from the Availability Payment
+          the amounts calculated under Schedule 7.
+      missing: 'When the 24-hour cure period starts (occurrence, detection or notice), whether any notice is needed,
+        and whether a cure within it removes or reduces the deduction: VOL-V 31.3 gives only the length, and the deduction
+        calculation is in Schedule 7, referenced in VOL-V 31.2 and not supplied (I-VOL-V-MISSING); once known, a timestamped
+        record of each 31.1(a) event''s start and of the restoration of treatment of the flow delivered is the likely
+        evidence.'
+    interpretations:
+      - stage: BASE
+        quote: "A cure period of twenty-four (24) hours applies to an Unavailability Event under Clause 31.1(a)"
+        parameters: {cure_hours_31_1_a: 24}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-31.3-03
+    group: VOL-V:31.3
+    scope: [contract, post_award, availability, cure_period, effluent]
+    requirement: "No cure period for an Unavailability Event under VOL-V 31.1(b) (a Table 2-4 failure)"
+    units: ["VOL-V:31.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: not_applicable
+      text: 'Not applicable: VOL-V 31.3 states that no cure period applies to a 31.1(b) event (a Table 2-4 failure),
+        which gives the Project Company no period to use and requires no act of it; effluent compliance itself is to
+        be evidenced under row VOL-V-31.1-02.'
+      basis:
+      - unit: VOL-V:31.3
+        page: 3
+        words: No cure period applies to an event under Clause 31.1(b).
+      reason: The words withhold a cure period from 31.1(b) events within the Authority's deduction regime (VOL-V 31.2);
+        they impose no performance on the Project Company that a record could demonstrate. The underlying obligation,
+        treated effluent meeting every Table 2-4 parameter, carries its own proposed evidence under row VOL-V-31.1-02.
+    interpretations:
+      - stage: BASE
+        quote: "No cure period applies to an event under Clause 31.1(b)."
+        parameters: {cure_hours_31_1_b: "none"}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-31.4-01
+    group: VOL-V:31.4
+    scope: [contract, post_award, availability, persistent_breach, termination]
+    requirement: "Persistent breach (3+ Unavailability Events in a rolling 90 days): remediation plan on request; a second occurrence allows termination"
+    units: ["VOL-V:31.4"]
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept continuously from PCOD, a rolling 90-day count of Unavailability
+        Events, and to be produced when the Authority requires one after a persistent breach, a remediation plan (VOL-V
+        31.4); the extract states no content or deadline for the plan.'
+      basis:
+      - unit: VOL-V:31.4
+        page: 3
+        words: Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period,
+          entitles the Authority to require a remediation plan and, on a second occurrence, to terminate under Clause
+          39.3.
+      - unit: VOL-V:39.3
+        page: 4
+        words: The Authority may terminate for persistent breach in the circumstances described in Clause 31.4.
+      when: rolling count continuously from PCOD; remediation plan when the Authority requires it after three or more
+        Unavailability Events in a rolling 90-day period
+      bid_stage_note: '''On a second occurrence'' is not defined (a second persistent breach, or a further event after
+        the remediation plan), yet the Authority''s termination right under VOL-V 39.3 turns on it (I-VOL-V-PERSISTENT-BREACH):
+        a candidate for a clarification request (VOL-I Section 5) or a Form 4-E entry (VOL-I 9.6).'
+    interpretations:
+      - stage: BASE
+        quote: "Persistent breach, being three (3) or more Unavailability Events in any rolling ninety (90) day period, entitles the Authority to require a remediation plan"
+        parameters: {events_min: 3, rolling_window_days: 90}
+        consequence: {class: contractual, unit: "VOL-V:31.4", quote: "on a second occurrence, to terminate under Clause 39.3"}
+        note: "Restated as an Authority termination right in 39.3. What 'a second occurrence' refers to is not stated."
+    confidence: medium
+    confidence_reason: "verbatim; the trigger for termination ('a second occurrence') is not defined"
+    issues: [I-VOL-V-PERSISTENT-BREACH]
+  # ---------------------------------------------------------------- Clauses 34 and 36: relief events, change in law
+  - id: VOL-V-34.3-01
+    group: VOL-V:34.3
+    scope: [contract, post_award, relief_events, notice]
+    requirement: "Notify a Relief Event within 5 Working Days of becoming aware of it, or no relief is granted"
+    units: ["VOL-V:34.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced for each Relief Event, a written notification given within
+        five Working Days of becoming aware of it, as VOL-V 34.3 requires, with a record of the date of awareness and
+        proof of the date of notice; the extract prescribes no form of notice or recipient.'
+      basis:
+      - unit: VOL-V:34.3
+        page: 3
+        words: The Project Company shall notify a Relief Event within five (5) Working Days of becoming aware of it,
+          failing which no relief shall be granted.
+      when: within five Working Days of becoming aware of each Relief Event (forward Working Day counting is not defined
+        in the pack)
+    date_rules:
+      - {rule_id: VOL-V-RELIEF-EVENT-NOTICE, kind: external, purpose: deadline, anchor: "Becoming aware of a Relief Event", offset: 5, unit: working_day, direction: after, source_unit: "VOL-V:34.3", text: "within five (5) Working Days of becoming aware of it"}
+    interpretations:
+      - stage: BASE
+        quote: "shall notify a Relief Event within five (5) Working Days of becoming aware of it"
+        parameters: {notice_working_days: 5}
+        consequence: {class: contractual, unit: "VOL-V:34.3", quote: "failing which no relief shall be granted"}
+        note: "A Relief Event gives an extension of time but no compensation (34.1). Forward Working Day counting is not defined in the pack."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-36.2-01
+    group: VOL-V:36.2
+    scope: [contract, post_award, change_in_law, threshold]
+    requirement: "General Change in Law: compensation only for the capital expenditure it requires, and only above the stated aggregate threshold"
+    units: ["VOL-V:36.2"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be kept over the term, a cumulative register of the capital expenditure
+        required by each General Change in Law, showing when the aggregate exceeds SAR 2,500,000 (VOL-V 36.2 as amended
+        by ADD-02 8.1), as support for any compensation claim; the extract states no claim procedure.'
+      basis:
+      - unit: VOL-V:36.2
+        page: 4
+        words: A General Change in Law entitles the Project Company to compensation only in respect of capital expenditure
+          required by that change and only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over
+          the term.
+      - unit: ADD-02:8.1
+        page: 3
+        words: In Volume V Clause 36.2, ‘SAR 5,000,000’ is deleted and ‘SAR 2,500,000’ is substituted.
+      when: from the first General Change in Law, updated for each one over the term
+      bid_stage_note: 'Price assumption: capital expenditure required by General Change in Law up to SAR 2,500,000 in
+        aggregate over the term is uncompensated, other costs of such a change are outside 36.2, and a change in the
+        rate of any tax on profits is not a Change in Law (VOL-V 36.3).'
+    interpretations:
+      - stage: BASE
+        quote: "only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over the term"
+        parameters: {threshold_sar: 5000000}
+      - stage: ADD-02
+        quote: "SAR 2,500,000"          # session 12 (F1; audit A1-3): verbatim on ADD-02 8.1 p3
+        parameters: {threshold_sar: 2500000}
+        note: "ADD-02 8.1 deletes 'SAR 5,000,000' and substitutes 'SAR 2,500,000'."
+    confidence: high
+    confidence_reason: "verbatim at each stage"
+  # ---------------------------------------------------------------- Clause 39: termination
+  - id: VOL-V-39.1-01
+    group: VOL-V:39.1
+    scope: [contract, post_award, termination, events_of_default]
+    requirement: "Avoid the Project Company Events of Default listed in Schedule 11 (not supplied); the Authority may terminate for them"
+    units: ["VOL-V:39.1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the evidence of avoiding the Project Company Events of Default cannot be specified, because
+        they are listed in Schedule 11, which is not supplied; the Senior Lenders'' notice and cure period before termination
+        is in the Direct Agreement, also not supplied.'
+      basis:
+      - unit: VOL-V:39.1
+        page: 4
+        words: The Authority may terminate for a Project Company Event of Default, being the events listed in Schedule
+          11.
+      - unit: VOL-V:39.5
+        page: 4
+        words: the Authority shall not terminate under Clause 39.1 without first giving the Senior Lenders the notice
+          and cure period stated in the Direct Agreement
+      missing: Schedule 11 (Project Company Events of Default), referenced in VOL-V 39.1, and the Direct Agreement (the
+        Senior Lenders' notice and cure period), referenced in VOL-V 39.5; neither is in the pack (I-VOL-V-MISSING).
+      bid_stage_note: The Events of Default cannot be reviewed, yet a deviation not listed in Form 4-E is taken as accepted
+        (VOL-V Note to Bidders); Legal to decide whether and how to reserve the position on Schedule 11 in Form 4-E
+        (VOL-I 9.6).
+    interpretations:
+      - stage: BASE
+        quote: "being the events listed in Schedule 11"
+        consequence: {class: contractual, unit: "VOL-V:39.1", quote: "The Authority may terminate for a Project Company Event of Default"}
+        note: "Schedule 11 is not supplied. Before terminating under 39.1 the Authority must give the Senior Lenders the notice and cure period of the Direct Agreement (39.5; not supplied). Compensation on termination for Project Company default: 40.2."
+    confidence: low
+    confidence_reason: "the events of default themselves (Schedule 11) are not in the pack"
+    issues: [I-VOL-V-MISSING]
+  # ---------------------------------------------------------------- Clause 42: handback
+  - id: VOL-V-42.1-01
+    group: VOL-V:42.1
+    scope:
+    - contract
+    - post_award
+    - handback
+    requirement: On expiry, transfer the Facility in the condition required by VOL-V 42.3, free of encumbrance
+    units:
+    - VOL-V:42.1
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced before transfer on expiry, the handback condition survey
+        report from the final two years of the concession and records of completion of the remedial works it identifies
+        (VOL-II 8.5), with releases of any security or other encumbrance over the Facility (VOL-V 42.1).'
+      basis:
+      - unit: VOL-V:42.1
+        page: 4
+        words: The Project Company shall transfer the Facility to the Authority on expiry in the condition required
+          by Volume II Clause 8.5, free of encumbrance
+      - unit: VOL-II:8.5
+        page: 5
+        words: A handback condition survey shall be carried out in the final two (2) years of the concession, and
+          any remedial works identified shall be completed before transfer.
+      when: survey in the final two years of the concession; remedial works and releases before transfer on expiry
+        (dates depend on the term start, I-CONCESSION)
+    interpretations:
+    - stage: BASE
+      quote: shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause
+        8.5, free of encumbrance
+      note: 'VOL-II 8.5: handback survey and remedial works (rows VOL-II-8.5-01, VOL-II-8.5-02).'
+    - stage: ADD-03
+      quote: shall transfer the Facility to the Authority on expiry in the condition required by Clause 42.3, free
+        of encumbrance
+      parameters: {}
+      consequence: none_stated
+      note: Op ADD-03/3.3 substitutes 'Clause 42.3' for 'Volume II Clause 8.5'. Clause 42.3 is the relocated handback
+        survey clause (ADD-03/3.1); see the proposed rows ADD-03-3.1-01 and ADD-03-3.1-02. The post_award_evidence
+        basis still cites VOL-II 8.5; the words are unchanged at VOL-V 42.3. [AI workflow run ADD-03-run-host-20261007T161946Z-e884
+        (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+    confidence: high
+    confidence_reason: verbatim; the expiry date depends on the term start (I-CONCESSION)
+    issues:
+    - I-CONCESSION
+  - id: VOL-V-42.1-02
+    group: VOL-V:42.1
+    scope:
+    - contract
+    - post_award
+    - handback
+    - design_life
+    requirement: At handback, a residual service life for each asset class of not less than that stated in VOL-V Table
+      42-1
+    units:
+    - VOL-V:42.1
+    discipline: Operations
+    owner: O&M lead
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: unresolved
+      text: 'Unresolved: the evidence of at least five years'' remaining design life for all major assets at handback
+        cannot be fully specified, because the extract does not define ''major assets'' or say how, or by whom, remaining
+        design life is assessed; a remaining-life assessment per major asset, drawn from the VOL-II 7.4 asset register,
+        is the likely record once that is settled.'
+      basis:
+      - unit: VOL-V:42.1
+        page: 4
+        words: with a remaining design life of not less than five (5) years for all major assets
+      - unit: VOL-II:7.4
+        page: 5
+        words: an asset register in the Authority's standard format
+      missing: 'A definition or list of ''major assets'' and the method and assessor for remaining design life: neither
+        is in the VOL-V extract, which states that ''omitted clauses are not reproduced'' (VOL-V Note to Bidders).'
+      bid_stage_note: Lifecycle replacement in the O&M lifecycle strategy (Table 1-1 criterion C) and in the Financial
+        Model should allow for five years' remaining design life of major assets at handback; what counts as a major
+        asset is undefined, a candidate for a clarification request (VOL-I Section 5).
+    interpretations:
+    - stage: BASE
+      quote: with a remaining design life of not less than five (5) years for all major assets
+      parameters:
+        remaining_design_life_years_min: 5
+      note: '''major assets'' is not defined in the extract.'
+    - stage: ADD-03
+      quote: with a residual service life, for each asset class, of not less than that stated in Table 42-1
+      parameters: {}
+      consequence: none_stated
+      note: Op ADD-03/3.4(a) deletes the five-year remaining design life for 'all major assets' and substitutes a
+        minimum residual service life per asset class from Table 42-1 (ADD-03 Appendix A, issued in Arabic; op ADD-03/3.5
+        records 'The Arabic text governs.'). No Table 42-1 value is put in parameters because the values come from
+        an image reading not approved in this set; they belong to the reading's own task. The post_award_evidence
+        (which cites 'major assets' and five years) is out of date and left to a person. [AI workflow run ADD-03-run-host-20261007T161946Z-e884
+        (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+    confidence: medium
+    confidence_reason: verbatim; 'major assets' is not defined
+  - id: VOL-V-42.2-01
+    group: VOL-V:42.2
+    scope: [contract, post_award, handback, reserves]
+    requirement: "Fund a handback reserve from the start of year 20 of the term, in the amount the Independent Engineer certifies"
+    units: ["VOL-V:42.2"]
+    discipline: Finance
+    owner: Financial modeller
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced from the start of year 20 of the term, the Independent
+        Engineer''s certification of the handback reserve amount and account statements showing the reserve funded to
+        that amount (VOL-V 42.2).'
+      basis:
+      - unit: VOL-V:42.2
+        page: 4
+        words: A handback reserve shall be funded from the start of year twenty (20) of the term in an amount certified
+          by the Independent Engineer.
+      when: from the start of year 20 of the term (which year that is depends on the term start, I-CONCESSION)
+      bid_stage_note: The reserve amount is certified later by the Independent Engineer, so any amount in the Financial
+        Model is an assumption, and the year funding starts moves by the time between the Effective Date and PCOD depending
+        on whether the term runs from the Effective Date (VOL-V 3.1) or PCOD (VOL-I 12.1) (I-CONCESSION).
+    date_rules:
+      - {rule_id: VOL-V-HANDBACK-RESERVE-START, kind: external, purpose: window_start, anchor: "Start of the term", offset: 19, unit: year, direction: after, source_unit: "VOL-V:42.2", text: "from the start of year twenty (20) of the term"}
+    interpretations:
+      - stage: BASE
+        quote: "A handback reserve shall be funded from the start of year twenty (20) of the term in an amount certified by the Independent Engineer."
+        parameters: {from_term_year: 20}
+        note: "The term runs from the Effective Date under VOL-V 3.1 but from PCOD under VOL-I 12.1. The date rule records the start of year 20 as 19 years after the term starts."
+      # session 12 (F5; audit A1 recheck A1-1 remainder): Q7 quoted, as on VOL-I-12.1-01 and VOL-V-3.1-01 (PROPOSED)
+      - stage: ADD-02
+        quote: "A handback reserve shall be funded from the start of year twenty (20) of the term in an amount certified by the Independent Engineer."
+        parameters: {from_term_year: 20}
+        note: "ADD-02 Q7 (p2) was asked 'Which applies?' (VOL-I 12.1: from PCOD; VOL-V 3.1: from the Effective Date) and answers: 'The Authority notes the question. The order of precedence at Volume I Clause 3.2 applies. The Authority does not consider further amendment necessary at this stage.' It does not say which clause applies, and it amends neither, so when year 20 of the term starts is not settled: a decision for a person (Legal; I-CONCESSION, CQ-CONCESSION-TERM); no decision recorded. The date rule records the start of year 20 as 19 years after the term starts."
+    confidence: medium
+    confidence_reason: "verbatim; when year 20 starts depends on the term start: VOL-I 12.1 (from PCOD) or VOL-V 3.1 (from the Effective Date); ADD-02 Q7 answers 'The order of precedence at Volume I Clause 3.2 applies.' without saying which applies; which clause governs is a decision for a person (Legal, I-CONCESSION); no decision recorded"
+    issues: [I-CONCESSION]
+  # ---------------------------------------------------------------- Clause 44: disputes
+  - id: VOL-V-44.2-01
+    group: VOL-V:44.2
+    scope: [contract, post_award, disputes]
+    requirement: "Refer disputes first to senior representatives, then an expert if technical, then arbitration seated in Riyadh in English"
+    units: ["VOL-V:44.2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): to be produced for each dispute, written records of its referral first
+        to senior representatives, then to an expert where the dispute is technical, before any reference to arbitration
+        (VOL-V 44.2); the extract states no time limit for any stage.'
+      basis:
+      - unit: VOL-V:44.2
+        page: 4
+        words: The parties shall first refer a dispute to senior representatives, then to an expert where the dispute
+          is technical, and failing resolution to arbitration seated in Riyadh conducted in the English language before
+          three arbitrators
+      when: on any dispute, at each stage of the procedure
+    interpretations:
+      - stage: BASE
+        quote: "The parties shall first refer a dispute to senior representatives, then to an expert where the dispute is technical, and failing resolution to arbitration seated in Riyadh conducted in the English language before three arbitrators"
+        parameters: {seat: "Riyadh", language: "English", arbitrators: 3}
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"
+  - id: VOL-V-44.3-01
+    group: VOL-V:44.3
+    scope: [contract, post_award, disputes]
+    requirement: "Continue performing the Agreement during any dispute"
+    units: ["VOL-V:44.3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    post_award_evidence:
+      kind: proposed
+      text: 'Post-award (proposed requirement): for the period of any dispute, the routine performance records proposed
+        under the other VOL-V rows (for example monthly progress reports, operating records and invoices) to be kept
+        up without interruption, showing that performance continued (VOL-V 44.3); the clause requires no separate document.'
+      basis:
+      - unit: VOL-V:44.3
+        page: 4
+        words: Performance of this Agreement shall continue during any dispute.
+      when: throughout any dispute
+    interpretations:
+      - stage: BASE
+        quote: "Performance of this Agreement shall continue during any dispute."
+    confidence: high
+    confidence_reason: "verbatim text-layer clause"

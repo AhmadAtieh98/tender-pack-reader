@@ -58,7 +58,7 @@ E166 the plan's session limit (3 h 50 min lost, no work lost); E167 the slowdown
 
 ## 9. Decisions that need you
 
-PENDING: one consolidated packet, `docs/session-14_review_packet.md`, with the software failures, the missing evidence and the human approvals separated (the raw list the agents raised is in the work log).
+`docs/session-14_review_packet.md` (in progress: the software failures, the missing evidence and the human approvals in three groups; the rehearsal rows are completed from the scorers' reports; the raw list the agents raised is `worklog/continuation-s14/decisions_raw.md`).
 
 ## 10. Models and settings that actually ran
 

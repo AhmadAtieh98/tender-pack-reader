@@ -1,0 +1,120 @@
+== run job 20261007T161946Z-ai-run-bbe08f (killed by the container restart after the limit's 429 deferred its batches)
+[ADD-03-run-host-20261007T161946Z-e884] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p3-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-20261007T161946Z-e884] readings ...
+  reading-ADD-03-p3-r1: done (interpretation_pending; /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/reg07b/unzipped/LAMAR-PPP-R2-INTERVIEW_a918d5e+wt_20261007T1619Z/staging/ai/runs/ADD-03-run-host-20261007T161946Z-e884/candidate/curation/readings/ADD-03-p3-r1.yaml)
+  ingest with the proposed readings: ok (594 units; readings PENDING HUMAN REVIEW: ['ADD-03-p3-r1'])
+  candidate built: 57 provisions of ADD-03 (+13 structural units listed)
+[ADD-03-run-host-20261007T161946Z-e884] analysis ...
+  57 provisions in 6 batch(es), planned by structure (up to 8 per batch; one structure kept whole when it fits the token budget)
+  analysis-001: deferred (deferred: host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 5:40pm (UTC)); the host names a reset in 4527.1 s, beyond 300 s)
+  analysis-002: deferred (deferred: host rate limit (the host ended with an error (success: 429) You've hit your session limit · resets 5:40pm (UTC)); the host names a reset in 4527.7 s, beyond 300 s)
+
+== resume job 20261007T182650Z-ai-resume-5d30bf
+note: the run lock of process 1143 (no longer running) was taken over
+[ADD-03-run-host-20261007T161946Z-e884] downstream ...
+  downstream-001: done (15 item(s))
+  downstream-002: done (20 item(s))
+  downstream-003: done (20 item(s))
+  downstream-004: done (23 item(s))
+  downstream: 44 task(s) {'row_reading': 9, 'row_new': 8, 'clarification_item': 1, 'activity': 6, 'escalation': 6, 'conditional_impact': 6, 'obligation_impact': 5, 'reading_rows': 1, 'computed_date': 2}
+[ADD-03-run-host-20261007T161946Z-e884] downstream_validation ...
+  downstream items: {'interpretation_pending': 42, 'insufficient_evidence': 6, 'conflicting': 3, 'invalid': 13, 'evidence_verified': 1, 'escalated': 13}; held back 6
+[ADD-03-run-host-20261007T161946Z-e884] critic ...
+  downstream-001 critic: done (3 reviewed, 1 disagree)
+  downstream-002 critic: done (2 reviewed, 1 disagree)
+  downstream-003 critic: done (1 reviewed, 1 disagree)
+  downstream-004 critic: done (1 reviewed, 1 disagree)
+[ADD-03-run-host-20261007T161946Z-e884] promotion ...
+  promoted into the candidate: 15 op(s), 35 disposition(s), 9 unresolved, 8 new row(s), 6 reading(s), 23 issue(s), 4 activit(y/ies), 0 clarification(s), 10 relationship(s)
+[ADD-03-run-host-20261007T161946Z-e884] pin ...
+[ADD-03-run-host-20261007T161946Z-e884] check_register ...
+  check-register: exit 1, 2 finding(s) {'C46': 2}
+[ADD-03-run-host-20261007T161946Z-e884] outputs ...
+  candidate outputs published to /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/reg07b/unzipped/LAMAR-PPP-R2-INTERVIEW_a918d5e+wt_20261007T1619Z/staging/ai/runs/ADD-03-run-host-20261007T161946Z-e884/candidate/out (exit 0; 107 file(s) carry the banner)
+[ADD-03-run-host-20261007T161946Z-e884] diff ...
+[ADD-03-run-host-20261007T161946Z-e884] review ...
+timings (wall clock per step):
+  ingest                     23.6 s  done
+  readings                  243.7 s  done
+  analysis                 1724.6 s  done
+  validation                 10.5 s  done
+  downstream               1210.8 s  done
+  downstream_validation       2.1 s  done
+  critic                    118.8 s  done
+  promotion                  25.3 s  done
+  pin                         2.5 s  done
+  check_register              7.3 s  done
+  outputs                    34.9 s  done
+  diff                        7.0 s  done
+  review                      5.9 s  done
+  total (steps)            3417.0 s  (57.0 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-20261007T161946Z-e884: partial (9 provision(s) unresolved in the candidate (listed first in the review packet); 15 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-8.5-01, row:VOL-II-8.5-02, row:VOL-V-36.2-01, c46:ADD-03/2.2, c46:ADD-03/3.1, clar:CQ-HANDBACK-CONDITION, esc:ADD-03:p3-image/r4, esc:ADD-03:p3-image/r5 …; check-register on the candidate: exit 1, 2 finding(s) {'C46': 2} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/2.2: [A1] ADD-03/2.2 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Bidders shall take Section 2.1 into acco…; [C46] ADD-03/3.1: [A1] ADD-03/3.1 (relocate_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Volume II Clause 8.5 is relocated t…)
+review packet: /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/reg07b/unzipped/LAMAR-PPP-R2-INTERVIEW_a918d5e+wt_20261007T1619Z/staging/ai/runs/ADD-03-run-host-20261007T161946Z-e884/review/index.md
+{
+ "run_id": "ADD-03-run-host-20261007T161946Z-e884",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "9 provision(s) unresolved in the candidate (listed first in the review packet); 15 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-8.5-01, row:VOL-II-8.5-02, row:VOL-V-36.2-01, c46:ADD-03/2.2, c46:ADD-03/3.1, clar:CQ-HANDBACK-CONDITION, esc:ADD-03:p3-image/r4, esc:ADD-03:p3-image/r5 …; check-register on the candidate: exit 1, 2 finding(s) {'C46': 2} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/2.2: [A1] ADD-03/2.2 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Bidders shall take Section 2.1 into acco…; [C46] ADD-03/3.1: [A1] ADD-03/3.1 (relocate_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Volume II Clause 8.5 is relocated t…",
+ "exit_code": 0,
+ "run_dir": "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/reg07b/unzipped/LAMAR-PPP-R2-INTERVIEW_a918d5e+wt_20261007T1619Z/staging/ai/runs/ADD-03-run-host-20261007T161946Z-e884",
+ "provisions": {
+  "validated": 57
+ },
+ "timings": {
+  "ingest": 23.6,
+  "readings": 243.7,
+  "analysis": 1724.6,
+  "validation": 10.5,
+  "downstream": 1210.8,
+  "downstream_validation": 2.1,
+  "critic": 118.8,
+  "promotion": 25.3,
+  "pin": 2.5,
+  "check_register": 7.3,
+  "outputs": 34.9,
+  "diff": 7.0,
+  "review": 5.9
+ },
+ "total_seconds": 3417.0,
+ "review": "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/reg07b/unzipped/LAMAR-PPP-R2-INTERVIEW_a918d5e+wt_20261007T1619Z/staging/ai/runs/ADD-03-run-host-20261007T161946Z-e884/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "9 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "15 downstream task(s) answered only by items that cannot be promoted: row:VOL-II-8.5-01, row:VOL-II-8.5-02, row:VOL-V-36.2-01, c46:ADD-03/2.2, c46:ADD-03/3.1, clar:CQ-HANDBACK-CONDITION, esc:ADD-03:p3-image/r4, esc:ADD-03:p3-image/r5 …",
+   "check-register on the candidate: exit 1, 2 finding(s) {'C46': 2} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/2.2: [A1] ADD-03/2.2 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Bidders shall take Section 2.1 into acco…; [C46] ADD-03/3.1: [A1] ADD-03/3.1 (relocate_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Volume II Clause 8.5 is relocated t…"
+  ]
+ },
+ "approval": "none",
+ "code": {
+  "start": {
+   "content_sha256": "64dbc541896c4ac1c780ac69b51df7b154603b0bd15e529892eaa8f9d01b9702",
+   "files": 99,
+   "git_head": null,
+   "git_dirty": null,
+   "policy": {
+    "sha256": "02236955dadd7a8ae36ae37e1c2800ff40367f30c30c8b811415ef0882e8b686",
+    "files": [
+     "00_shared.md",
+     "10_reading.md",
+     "20_analysis.md",
+     "21_analysis_checklist.md",
+     "30_downstream.md",
+     "40_critic.md",
+     "41_critic_item.md",
+     "42_critic_batch.md",
+     "50_repair.md",
+     "51_repair_reask.md",
+     "60_derived.md",
+     "70_quick_review.md",
+     "80_routes.md",
+     "90_host_entry.md"
+    ]
+   },
+   "recorded": "2026-10-07T16:19:47Z"
+  },
+  "segments": 3
+ }
+}

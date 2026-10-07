@@ -1,0 +1,3923 @@
+[
+ {
+  "id": "row:VOL-I-10.1-01",
+  "kind": "row_reading",
+  "row": "VOL-I-10.1-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q17",
+   "VOL-I:10.1 changed since BASE (by ADD-03/Q17(a))"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-10.1-01",
+   "group": "VOL-I:10.1",
+   "scope": [
+    "envelope_B",
+    "commercial"
+   ],
+   "requirement": "Envelope B contains only Form 4-F and the Financial Model; no other document",
+   "units": [
+    "VOL-I:10.1"
+   ],
+   "discipline": "Commercial",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FORM-4F",
+    "EV-FIN-MODEL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "VOL-I 10.3 (model auditor's opinion) and 10.6 (financing assumptions schedule) require further documents; not resolved here."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; conflicts with VOL-I 10.3 and 10.6; no consequence stated",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-VOL-I-ENV-B"
+   ],
+   "owner": "Commercial lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "VOL-I 10.3 (model auditor's opinion) and 10.6 (financing assumptions schedule) require further documents; not resolved here."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-10.6-01",
+  "kind": "row_reading",
+  "row": "VOL-I-10.6-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q17",
+   "VOL-I:10.6 changed since BASE (by ADD-03/Q17(a), ADD-03/Q17(b))"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-10.6-01",
+   "group": "VOL-I:10.6",
+   "scope": [
+    "envelope_B",
+    "financing"
+   ],
+   "requirement": "With Form 4-F, a schedule of the principal financing assumptions (debt tenor, margin, gearing)",
+   "units": [
+    "VOL-I:10.6"
+   ],
+   "discipline": "Finance",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-FIN-ASSUMPTIONS"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing.",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; whether this schedule is part of Form 4-F is not stated."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; conflicts with VOL-I 10.1; no consequence stated",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-VOL-I-ENV-B"
+   ],
+   "owner": "Financial modeller",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "VOL-I 10.1 allows only Form 4-F and the Financial Model in Envelope B; whether this schedule is part of Form 4-F is not stated."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-4.2-01",
+  "kind": "row_reading",
+  "row": "VOL-I-4.2-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:4.4",
+   "VOL-I:4.2 changed since BASE (by ADD-03/4.4)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-4.2-01",
+   "group": "VOL-I:4.2",
+   "scope": [
+    "communications",
+    "conduct",
+    "blackout"
+   ],
+   "requirement": "Blackout: no contact with the Authority's board, staff, consultants or advisors about the Project other than through the Portal, until the PBN",
+   "units": [
+    "VOL-I:4.2"
+   ],
+   "discipline": "Bid management",
+   "assessment": "pass_fail",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "no Bidder, and no person acting for a Bidder, shall contact any board member, officer, employee, consultant or advisor of the Authority in relation to the Project other than through the Portal",
+     "parameters": {},
+     "consequence": {
+      "class": "disqualification",
+      "unit": "VOL-I:4.2",
+      "quote": "Breach of this Clause shall result in the disqualification of the Bidder."
+     },
+     "note": "The issue date (14 September 2026) is printed on the Volume I cover. The window ends at the Preferred Bidder Notification, an event not in the pack."
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "BLACKOUT-START",
+     "kind": "fixed",
+     "purpose": "window_start",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "fixed": "2026-09-14",
+     "source_unit": "VOL-I:4.2",
+     "text": "From the date of issue of this Volume",
+     "note": ""
+    },
+    {
+     "rule_id": "BLACKOUT-END",
+     "kind": "external",
+     "purpose": "event",
+     "anchor": "PBN",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:4.2",
+     "text": "until the issue of the Preferred Bidder Notification",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; the window's end date depends on an event not yet known",
+   "owner": "Bid manager",
+   "no_deliverable": "a conduct rule binding the Bidder and anyone acting for it; nothing to submit",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "no Bidder, and no person acting for a Bidder, shall contact any board member, officer, employee, consultant or advisor of the Authority in relation to the Project other than through the Portal",
+   "parameters": {},
+   "consequence": {
+    "class": "disqualification",
+    "unit": "VOL-I:4.2",
+    "quote": "Breach of this Clause shall result in the disqualification of the Bidder.",
+    "gloss": null
+   },
+   "note": "The issue date (14 September 2026) is printed on the Volume I cover. The window ends at the Preferred Bidder Notification, an event not in the pack."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-II-8.5-01",
+  "kind": "row_reading",
+  "row": "VOL-II-8.5-01",
+  "provisions": [
+   "ADD-03:3.1"
+  ],
+  "status_at_addendum": "REPLACED (by VOL-V:42.3)",
+  "stale": [],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-8.5-01",
+   "group": "VOL-II:8.5",
+   "scope": [
+    "handback",
+    "survey"
+   ],
+   "requirement": "Carry out a handback condition survey in the final two years of the concession",
+   "units": [
+    "VOL-II:8.5"
+   ],
+   "discipline": "Operations",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "A handback condition survey shall be carried out in the final two (2) years of the concession",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "Handback condition: VOL-V 42.1 refers to this clause."
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "VOL-II-HANDBACK-SURVEY-WINDOW",
+     "kind": "external",
+     "purpose": "window_start",
+     "anchor": "End of the concession period",
+     "offset": 2,
+     "unit": "year",
+     "direction": "before",
+     "source_unit": "VOL-II:8.5",
+     "text": "in the final two (2) years of the concession",
+     "note": ""
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; when the concession ends depends on whether the term runs from the Effective Date or PCOD",
+   "issues": [
+    "I-CONCESSION"
+   ],
+   "owner": "O&M lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "A handback condition survey shall be carried out in the final two (2) years of the concession",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "Handback condition: VOL-V 42.1 refers to this clause."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-II:8.5",
+    "effective_unit": "VOL-II:8.5",
+    "status_after": "superseded",
+    "before": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer.",
+    "after": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer.",
+    "ops": [
+     "ADD-03/3.1"
+    ]
+   }
+  ],
+  "expect": "the row's unit is no longer in force: no reading is needed unless the obligation's words were deleted from a unit that stays in force (then a reading with `removed: {by: <op>}`)"
+ },
+ {
+  "id": "row:VOL-II-8.5-02",
+  "kind": "row_reading",
+  "row": "VOL-II-8.5-02",
+  "provisions": [
+   "ADD-03:3.1"
+  ],
+  "status_at_addendum": "REPLACED (by VOL-V:42.3)",
+  "stale": [],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-8.5-02",
+   "group": "VOL-II:8.5",
+   "scope": [
+    "handback",
+    "remedial_works"
+   ],
+   "requirement": "Complete the remedial works the handback survey identifies before transfer",
+   "units": [
+    "VOL-II:8.5"
+   ],
+   "discipline": "Operations",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "any remedial works identified shall be completed before transfer",
+     "parameters": {},
+     "consequence": "none_stated"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "VOL-II-HANDBACK-REMEDIALS-DUE",
+     "kind": "external",
+     "purpose": "deadline",
+     "anchor": "Transfer of the Facility",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "before",
+     "source_unit": "VOL-II:8.5",
+     "text": "completed before transfer",
+     "note": ""
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; the transfer date depends on the concession term start",
+   "issues": [
+    "I-CONCESSION"
+   ],
+   "owner": "O&M lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "any remedial works identified shall be completed before transfer",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-II:8.5",
+    "effective_unit": "VOL-II:8.5",
+    "status_after": "superseded",
+    "before": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer.",
+    "after": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer.",
+    "ops": [
+     "ADD-03/3.1"
+    ]
+   }
+  ],
+  "expect": "the row's unit is no longer in force: no reading is needed unless the obligation's words were deleted from a unit that stays in force (then a reading with `removed: {by: <op>}`)"
+ },
+ {
+  "id": "row:VOL-II-9.3-01",
+  "kind": "row_reading",
+  "row": "VOL-II-9.3-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q16 (the provision of ADD-03/Q16, which confirms a unit of the row unchanged)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-II-9.3-01",
+   "group": "VOL-II:9.3",
+   "scope": [
+    "environmental_social",
+    "grievance"
+   ],
+   "requirement": "Set up a grievance mechanism for the affected community before construction and keep it for the concession period",
+   "units": [
+    "VOL-II:9.3"
+   ],
+   "discipline": "Environmental",
+   "assessment": "scored",
+   "evidence": [
+    "EV-TECH-PROPOSAL"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "A grievance mechanism accessible to the affected community shall be established before construction and maintained for the concession period.",
+     "parameters": {},
+     "consequence": "none_stated"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "VOL-II-GRIEVANCE-DUE",
+     "kind": "external",
+     "purpose": "deadline",
+     "anchor": "Commencement of construction",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "before",
+     "source_unit": "VOL-II:9.3",
+     "text": "established before construction",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause",
+   "owner": "Environmental lead",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "A grievance mechanism accessible to the affected community shall be established before construction and maintained for the concession period.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-V-36.2-01",
+  "kind": "row_reading",
+  "row": "VOL-V-36.2-01",
+  "provisions": [
+   "ADD-03:2.1"
+  ],
+  "status_at_addendum": "AMENDED (ADD-03/2.1)",
+  "stale": [
+   "VOL-V:36.2 changed since ADD-02 (by ADD-03/2.1)",
+   "quote not found in the effective text at ADD-03: 'SAR 2,500,000' (expected: the interpretation predates the change)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-V-36.2-01",
+   "group": "VOL-V:36.2",
+   "scope": [
+    "contract",
+    "post_award",
+    "change_in_law",
+    "threshold"
+   ],
+   "requirement": "General Change in Law: compensation only for the capital expenditure it requires, and only above the stated aggregate threshold",
+   "units": [
+    "VOL-V:36.2"
+   ],
+   "discipline": "Commercial",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over the term",
+     "parameters": {
+      "threshold_sar": 5000000
+     },
+     "consequence": "none_stated"
+    },
+    {
+     "stage": "ADD-02",
+     "quote": "SAR 2,500,000",
+     "parameters": {
+      "threshold_sar": 2500000
+     },
+     "consequence": "none_stated",
+     "note": "ADD-02 8.1 deletes 'SAR 5,000,000' and substitutes 'SAR 2,500,000'."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim at each stage",
+   "owner": "Commercial lead",
+   "post_award_evidence": {
+    "kind": "proposed",
+    "text": "Post-award (proposed requirement): to be kept over the term, a cumulative register of the capital expenditure required by each General Change in Law, showing when the aggregate exceeds SAR 2,500,000 (VOL-V 36.2 as amended by ADD-02 8.1), as support for any compensation claim; the extract states no claim procedure.",
+    "basis": [
+     {
+      "unit": "VOL-V:36.2",
+      "page": 4,
+      "words": "A General Change in Law entitles the Project Company to compensation only in respect of capital expenditure required by that change and only to the extent that such expenditure exceeds SAR 5,000,000 in aggregate over the term."
+     },
+     {
+      "unit": "ADD-02:8.1",
+      "page": 3,
+      "words": "In Volume V Clause 36.2, ‘SAR 5,000,000’ is deleted and ‘SAR 2,500,000’ is substituted."
+     }
+    ],
+    "when": "from the first General Change in Law, updated for each one over the term",
+    "bid_stage_note": "Price assumption: capital expenditure required by General Change in Law up to SAR 2,500,000 in aggregate over the term is uncompensated, other costs of such a change are outside 36.2, and a change in the rate of any tax on profits is not a Change in Law (VOL-V 36.3)."
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-02",
+   "quote": "SAR 2,500,000",
+   "parameters": {
+    "threshold_sar": 2500000
+   },
+   "consequence": "none_stated",
+   "note": "ADD-02 8.1 deletes 'SAR 5,000,000' and substitutes 'SAR 2,500,000'."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-V:36.2",
+    "effective_unit": "VOL-V:36.2",
+    "status_after": "active",
+    "before": "A General Change in Law entitles the Project Company to compensation only in respect of capital expenditure required by that change and only to the extent that such expenditure exceeds SAR 2,500,000 in aggregate over the term.",
+    "after": "A General Change in Law entitles the Project Company to compensation only in respect of capital expenditure required by that change and only to the extent that such expenditure exceeds SAR 1,500,000 in aggregate over the term.",
+    "ops": [
+     "ADD-03/2.1"
+    ]
+   }
+  ],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-V-42.1-01",
+  "kind": "row_reading",
+  "row": "VOL-V-42.1-01",
+  "provisions": [
+   "ADD-03:3.3",
+   "ADD-03:3.4"
+  ],
+  "status_at_addendum": "AMENDED (ADD-03/3.3, ADD-03/3.4(a))",
+  "stale": [
+   "VOL-V:42.1 changed since BASE (by ADD-03/3.3, ADD-03/3.4(a))",
+   "quote not found in the effective text at ADD-03: 'shall transfer the Facility to the Authority on expiry in th' (expected: the interpretation predates the change)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-V-42.1-01",
+   "group": "VOL-V:42.1",
+   "scope": [
+    "contract",
+    "post_award",
+    "handback"
+   ],
+   "requirement": "On expiry, transfer the Facility in the condition required by VOL-II 8.5, free of encumbrance",
+   "units": [
+    "VOL-V:42.1"
+   ],
+   "discipline": "Operations",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance",
+     "parameters": {},
+     "consequence": "none_stated",
+     "note": "VOL-II 8.5: handback survey and remedial works (rows VOL-II-8.5-01, VOL-II-8.5-02)."
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; the expiry date depends on the term start (I-CONCESSION)",
+   "issues": [
+    "I-CONCESSION"
+   ],
+   "owner": "O&M lead",
+   "post_award_evidence": {
+    "kind": "proposed",
+    "text": "Post-award (proposed requirement): to be produced before transfer on expiry, the handback condition survey report from the final two years of the concession and records of completion of the remedial works it identifies (VOL-II 8.5), with releases of any security or other encumbrance over the Facility (VOL-V 42.1).",
+    "basis": [
+     {
+      "unit": "VOL-V:42.1",
+      "page": 4,
+      "words": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance"
+     },
+     {
+      "unit": "VOL-II:8.5",
+      "page": 5,
+      "words": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer."
+     }
+    ],
+    "when": "survey in the final two years of the concession; remedial works and releases before transfer on expiry (dates depend on the term start, I-CONCESSION)"
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": "VOL-II 8.5: handback survey and remedial works (rows VOL-II-8.5-01, VOL-II-8.5-02)."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-V:42.1",
+    "effective_unit": "VOL-V:42.1",
+    "status_after": "active",
+    "before": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance and with a remaining design life of not less than five (5) years for all major assets.",
+    "after": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Clause 42.3, free of encumbrance and with a residual service life, for each asset class, of not less than that stated in Table 42-1.",
+    "ops": [
+     "ADD-03/3.3",
+     "ADD-03/3.4(a)"
+    ]
+   }
+  ],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-V-42.1-02",
+  "kind": "row_reading",
+  "row": "VOL-V-42.1-02",
+  "provisions": [
+   "ADD-03:3.3",
+   "ADD-03:3.4"
+  ],
+  "status_at_addendum": "AMENDED (ADD-03/3.3, ADD-03/3.4(a))",
+  "stale": [
+   "VOL-V:42.1 changed since BASE (by ADD-03/3.3, ADD-03/3.4(a))",
+   "quote not found in the effective text at ADD-03: 'with a remaining design life of not less than five (5) years' (expected: the interpretation predates the change)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-V-42.1-02",
+   "group": "VOL-V:42.1",
+   "scope": [
+    "contract",
+    "post_award",
+    "handback",
+    "design_life"
+   ],
+   "requirement": "At handback, at least 5 years of remaining design life for all major assets",
+   "units": [
+    "VOL-V:42.1"
+   ],
+   "discipline": "Operations",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "with a remaining design life of not less than five (5) years for all major assets",
+     "parameters": {
+      "remaining_design_life_years_min": 5
+     },
+     "consequence": "none_stated",
+     "note": "'major assets' is not defined in the extract."
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; 'major assets' is not defined",
+   "owner": "O&M lead",
+   "post_award_evidence": {
+    "kind": "unresolved",
+    "text": "Unresolved: the evidence of at least five years' remaining design life for all major assets at handback cannot be fully specified, because the extract does not define 'major assets' or say how, or by whom, remaining design life is assessed; a remaining-life assessment per major asset, drawn from the VOL-II 7.4 asset register, is the likely record once that is settled.",
+    "basis": [
+     {
+      "unit": "VOL-V:42.1",
+      "page": 4,
+      "words": "with a remaining design life of not less than five (5) years for all major assets"
+     },
+     {
+      "unit": "VOL-II:7.4",
+      "page": 5,
+      "words": "an asset register in the Authority's standard format"
+     }
+    ],
+    "missing": "A definition or list of 'major assets' and the method and assessor for remaining design life: neither is in the VOL-V extract, which states that 'omitted clauses are not reproduced' (VOL-V Note to Bidders).",
+    "bid_stage_note": "Lifecycle replacement in the O&M lifecycle strategy (Table 1-1 criterion C) and in the Financial Model should allow for five years' remaining design life of major assets at handback; what counts as a major asset is undefined, a candidate for a clarification request (VOL-I Section 5)."
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "with a remaining design life of not less than five (5) years for all major assets",
+   "parameters": {
+    "remaining_design_life_years_min": 5
+   },
+   "consequence": "none_stated",
+   "note": "'major assets' is not defined in the extract."
+  },
+  "changed_units": [
+   {
+    "unit": "VOL-V:42.1",
+    "effective_unit": "VOL-V:42.1",
+    "status_after": "active",
+    "before": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Volume II Clause 8.5, free of encumbrance and with a remaining design life of not less than five (5) years for all major assets.",
+    "after": "The Project Company shall transfer the Facility to the Authority on expiry in the condition required by Clause 42.3, free of encumbrance and with a residual service life, for each asset class, of not less than that stated in Table 42-1.",
+    "ops": [
+     "ADD-03/3.3",
+     "ADD-03/3.4(a)"
+    ]
+   }
+  ],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "c46:ADD-03/cover/para3",
+  "kind": "row_new",
+  "op": "ADD-03/cover/para3",
+  "provisions": [
+   "ADD-03:cover/para3"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000, relocates the handback condition survey from Volume II to Volume V, repl…"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/cover/para3",
+   "provision": "ADD-03:cover/para3",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "analysis_items": [
+   {
+    "item": "ADD03-ACK",
+    "statement_type": "row_new",
+    "provision": "ADD-03:cover/para3",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD03-ACK",
+      "group": "Submission formalities",
+      "scope": [
+       "Bidder"
+      ],
+      "requirement": "Bidders shall acknowledge receipt in Form 4-A.",
+      "units": [
+       "ADD-03:cover/para3"
+      ],
+      "discipline": "Bid management",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Bidders shall acknowledge receipt in Form 4-A.",
+        "consequence": "none_stated",
+        "note": "Receipt of Addendum No. 3 is to be acknowledged in Form 4-A; no consequence for failing to acknowledge is stated in this unit."
+       }
+      ],
+      "confidence": "high",
+      "confidence_reason": "The obligation is printed verbatim in the cover text; no consequence is stated with it.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:cover/para3",
+       "evidence": {
+        "unit": "ADD-03:cover/para3",
+        "page": 1,
+        "words": "Bidders shall acknowledge receipt in Form 4-A."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:cover/para3",
+      "page": 1,
+      "kind": "span",
+      "words": "Bidders shall acknowledge receipt in Form 4-A.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "c46:ADD-03/2.2",
+  "kind": "row_new",
+  "op": "ADD-03/2.2",
+  "provisions": [
+   "ADD-03:2.2"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/2.2 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.'"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/2.2",
+   "provision": "ADD-03:2.2",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "analysis_items": [
+   {
+    "item": "ADD03-2.2",
+    "statement_type": "row_new",
+    "provision": "ADD-03:2.2",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD03-2.2",
+      "group": "Financial Proposal",
+      "scope": [
+       "Bidder"
+      ],
+      "requirement": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.",
+      "units": [
+       "ADD-03:2.2"
+      ],
+      "discipline": "Commercial",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.",
+        "consequence": "none_stated",
+        "note": "Section 2.1 reduces the Change in Law compensation threshold in VOL-V:36.2 (op ADD-03/2.1); no bid-out consequence is stated in ADD-03:2.2."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "The obligation is printed verbatim; the threshold Section 2.1 produces is subject to the cover/operative discrepancy raised as an issue.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03/2.2",
+       "evidence": {
+        "unit": "ADD-03:2.2",
+        "page": 1,
+        "words": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:2.2",
+      "page": 1,
+      "kind": "span",
+      "words": "Bidders shall take Section 2.1 into account in the Availability Payment quoted in Form 4-F.",
+      "cell": null,
+      "crop_sha256": null
+     },
+     {
+      "doc": "VOL-IV",
+      "unit_id": "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+      "page": 9,
+      "kind": "span",
+      "words": "Availability Payment (SAR per annum, year 1 of operations):",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "c46:ADD-03/3.1",
+  "kind": "row_new",
+  "op": "ADD-03/3.1",
+  "provisions": [
+   "ADD-03:3.1"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/3.1 (relocate_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3. Its text is unchanged and reads as follows: ‘42.3 A handback condition survey shall be carried out in the final two (2…"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-II:8.5",
+   "VOL-V:42.3"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/3.1",
+   "provision": "ADD-03:3.1",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "c46:ADD-03/4.1",
+  "kind": "row_new",
+  "op": "ADD-03/4.1",
+  "provisions": [
+   "ADD-03:4.1"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/4.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-V:12.4; a row of the anchor VOL-V:12.4 does not count): 'The following new Clause 12.5 is inserted in Volume V after Clause 12.4: ‘12.5 If the Project Company encounters at …"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-V:12.4+ADD-03"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/4.1",
+   "provision": "ADD-03:4.1",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "analysis_items": [
+   {
+    "item": "ADD-03/4.1/row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:4.1",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-VOLV-12.5",
+      "group": "project_agreement",
+      "scope": [
+       "Project Company"
+      ],
+      "requirement": "If the Project Company encounters at the site ground conditions that are materially more adverse than those described in the Geotechnical Baseline Report, it shall be entitled to an extension of the Scheduled PCOD and to payment of its reasonable additional costs, provided that it notifies the Authority within five (5) Working Days of encountering them.",
+      "units": [
+       "VOL-V:12.4+ADD-03"
+      ],
+      "discipline": "Legal",
+      "assessment": "contractual_post_award",
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "provided that it notifies the Authority within five (5) Working Days of encountering them",
+        "consequence": "none_stated",
+        "note": "a condition of the entitlement; no bid-out consequence is stated"
+       }
+      ],
+      "date_notes": [
+       {
+        "text": "within five (5) Working Days of encountering them",
+        "treatment": "post_award",
+        "reason": "a notice period during construction under the Project Agreement; it plans no bid-stage date"
+       }
+      ],
+      "confidence": "high",
+      "confidence_reason": "the obligation and its notice period are printed verbatim in the inserted clause",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03/4.1",
+       "evidence": {
+        "unit": "ADD-03:4.1",
+        "page": 2,
+        "words": "The following new Clause 12.5 is inserted in Volume V after Clause 12.4"
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:4.1",
+      "page": 2,
+      "kind": "span",
+      "words": "provided that it notifies the Authority within five (5) Working Days of encountering them",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "computed_dates": [
+   {
+    "unit": "VOL-V:12.4+ADD-03",
+    "words": "within five (5) Working Days of encountering them",
+    "computed_from": {
+     "method": "deadline",
+     "inputs": null,
+     "counting": null,
+     "result": null,
+     "fingerprint": null
+    },
+    "status": "unresolved",
+    "date_rule": {
+     "kind": "unresolved",
+     "purpose": "deadline",
+     "source_unit": "VOL-V:12.4+ADD-03",
+     "text": "within five (5) Working Days of encountering them",
+     "note": "not computed: no rule in the counting registry (config/formulas.yaml `counting`) for Working Days counted after a date (VOL-I 2.4 covers Working Days counted backwards); its anchor 'encountering them' is an event, not a date the register holds"
+    },
+    "note": "not computed: no rule in the counting registry (config/formulas.yaml `counting`) for Working Days counted after a date (VOL-I 2.4 covers Working Days counted backwards); its anchor 'encountering them' is an event, not a date the register holds",
+    "conditional": "If the Project Company encounters at the site ground conditions that are materially more adverse than those described in the Geotechnical Baseline Report, it shall be entitled to an extension of the Scheduled PCOD and to payment of its rea…",
+    "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows the derivation and any disagreement)"
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/row/3.6",
+  "provisions": [
+   "ADD-03:3.6"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:3.6",
+   "provision": "ADD-03:3.6",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/row/3.6",
+    "statement_type": "row_new",
+    "provision": "ADD-03:3.6",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-ADD03-3.6",
+      "group": "Technical Proposal",
+      "scope": [
+       "Technical Proposal"
+      ],
+      "requirement": "The Bidder shall demonstrate in the Technical Proposal how its lifecycle plan achieves the residual service lives in Table 42-1.",
+      "units": [
+       "ADD-03:3.6"
+      ],
+      "discipline": "Technical",
+      "assessment": "pass_fail",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "The Bidder shall demonstrate in the Technical Proposal how its lifecycle plan achieves the residual service lives in Table 42-1.",
+        "consequence": "none_stated",
+        "note": "No consequence is printed in ADD-03:3.6. The residual service lives are those of Table 42-1, whose Arabic text governs (ADD-03:3.5); the Arabic and English renderings differ (see issue ADD-03/issue/3.5)."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "The obligation is quoted verbatim; the values it refers to depend on Table 42-1, whose governing Arabic text differs from the English translation, and whether it is pass/fail or scored is not stated in ADD-03:3.6.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:3.6",
+       "evidence": {
+        "unit": "ADD-03:3.6",
+        "page": 1,
+        "words": "The Bidder shall demonstrate in the Technical Proposal how its lifecycle plan achieves the residual service lives in Table 42-1."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:3.6",
+      "page": 1,
+      "kind": "span",
+      "words": "The Bidder shall demonstrate in the Technical Proposal how its lifecycle plan achieves the residual service lives in Table 42-1.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/4.2/row",
+  "provisions": [
+   "ADD-03:4.2"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:4.2",
+   "provision": "ADD-03:4.2",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/4.2/row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:4.2",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-ADD03-4.2",
+      "group": "technical_proposal",
+      "scope": [
+       "Bidder"
+      ],
+      "requirement": "Each Bidder shall state in the Technical Proposal the ground conditions assumed for the design of foundations, by reference to the Geotechnical Baseline Report.",
+      "units": [
+       "ADD-03:4.2"
+      ],
+      "discipline": "Technical",
+      "assessment": "procedural",
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Each Bidder shall state in the Technical Proposal the ground conditions assumed for the design of foundations, by reference to the Geotechnical Baseline Report.",
+        "consequence": "none_stated",
+        "note": "how the statement is evaluated is not stated in ADD-03:4.2"
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation is printed verbatim; its evaluation treatment is not stated and the referenced report (Revision C) is not in the pack",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:4.2",
+       "evidence": {
+        "unit": "ADD-03:4.2",
+        "page": 2,
+        "words": "Each Bidder shall state in the Technical Proposal the ground conditions assumed for the design of foundations"
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:4.2",
+      "page": 2,
+      "kind": "span",
+      "words": "Each Bidder shall state in the Technical Proposal the ground conditions assumed for the design of foundations, by reference to the Geotechnical Baseline Report.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/4.3/row",
+  "provisions": [
+   "ADD-03:4.3"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:4.3",
+   "provision": "ADD-03:4.3",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/4.3/row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:4.3",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-ADD03-4.3",
+      "group": "procedure",
+      "scope": [
+       "Bidder"
+      ],
+      "requirement": "A Bidder that wishes to inspect the borehole cores and laboratory records on which the Geotechnical Baseline Report is based shall request an appointment through the Portal within three (3) Working Days of the date of this Addendum.",
+      "units": [
+       "ADD-03:4.3",
+       "ADD-03:Q19"
+      ],
+      "discipline": "Bid management",
+      "assessment": "procedural",
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "A Bidder that wishes to inspect the borehole cores and laboratory records on which the Geotechnical Baseline Report is based shall request an appointment through the Portal within three (3) Working Days of the date of this Addendum.",
+        "consequence": {
+         "class": "lesser",
+         "unit": "ADD-03:Q19",
+         "quote": "Requests made after the period stated in that Section will not be accommodated."
+        },
+        "note": "Appointments 'will be held ... not later than three (3) Working Days before the Proposal Due Date' (Authority's undertaking, ADD-03:4.3)."
+       }
+      ],
+      "date_rules": [
+       {
+        "rule_id": "ADD03-4.3-request",
+        "kind": "relative",
+        "purpose": "deadline",
+        "anchor": "ADD-03",
+        "offset": 3,
+        "unit": "working_day",
+        "direction": "after",
+        "source_unit": "ADD-03:4.3",
+        "text": "within three (3) Working Days of the date of this Addendum",
+        "note": "ambiguous counting: calculate gives 2026-11-19 (issue day counted, conservative planning) or 2026-11-22 (excluded); see ADD-03/4.3/q-count"
+       },
+       {
+        "rule_id": "ADD03-4.3-appointment",
+        "kind": "relative",
+        "purpose": "deadline",
+        "anchor": "PDD",
+        "offset": 3,
+        "unit": "working_day",
+        "direction": "before",
+        "source_unit": "ADD-03:4.3",
+        "text": "not later than three (3) Working Days before the Proposal Due Date",
+        "note": "calculate at the ADD-02 PDD (26 November 2026): Monday 23 November 2026, single reading"
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation and periods are printed verbatim; forward counting from the addendum date has two readings",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:4.3",
+       "evidence": {
+        "unit": "ADD-03:4.3",
+        "page": 2,
+        "words": "shall request an appointment through the Portal within three (3) Working Days of the date of this Addendum"
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:4.3",
+      "page": 2,
+      "kind": "span",
+      "words": "shall request an appointment through the Portal within three (3) Working Days of the date of this Addendum",
+      "cell": null,
+      "crop_sha256": null
+     },
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:Q19",
+      "page": 2,
+      "kind": "cell",
+      "words": "Requests made after the period stated in that Section will not be accommodated.",
+      "cell": {
+       "row_key": "19",
+       "column": "Authority response"
+      },
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/Q17/row-dscr",
+  "provisions": [
+   "ADD-03:Q17"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:Q17",
+   "provision": "ADD-03:Q17",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/Q17/row-dscr",
+    "statement_type": "row_new",
+    "provision": "ADD-03:Q17",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD-03-Q17-1",
+      "group": "Commercial",
+      "scope": [
+       "Envelope B",
+       "Form 4-F"
+      ],
+      "requirement": "The schedule required by Volume I Clause 10.6 forms part of Form 4-F and shall be attached to it in Envelope B. The schedule shall also state the minimum annual debt service cover ratio assumed.",
+      "units": [
+       "ADD-03:Q17",
+       "VOL-I:10.6"
+      ],
+      "discipline": "Commercial",
+      "assessment": "pass_fail",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "The schedule required by Volume I Clause 10.6 forms part of Form 4-F and shall be attached to it in Envelope B. The schedule shall also state the minimum annual debt service cover ratio assumed.",
+        "consequence": "none_stated",
+        "note": "Q17 also says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 states 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Whether that consequence attaches to the schedule is left to a person (issue ADD-03/Q17/issue)."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "Obligation words are printed verbatim in the Authority response to clarification 17; the bid-out consequence is by cross-reference only and is not stated on this row.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:Q17",
+       "evidence": {
+        "unit": "ADD-03:Q17",
+        "page": 2,
+        "words": "The schedule shall also state the minimum annual debt service cover ratio assumed."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:Q17",
+      "page": 2,
+      "kind": "cell",
+      "words": "The schedule required by Volume I Clause 10.6 forms part of Form 4-F and shall be attached to it in Envelope B. The schedule shall also state the minimum annual debt service cover ratio assumed.",
+      "cell": {
+       "row_key": "17",
+       "column": "Authority response"
+      },
+      "crop_sha256": null
+     },
+     {
+      "doc": "VOL-I",
+      "unit_id": "VOL-I:10.6",
+      "page": 5,
+      "kind": "span",
+      "words": "The Bidder shall submit with Form 4-F a schedule of the principal financing assumptions underlying the Availability Payment, including the assumed debt tenor, margin and gearing.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "clar:CQ-HANDBACK-CONDITION",
+  "kind": "clarification_item",
+  "entry": {
+   "id": "CQ-HANDBACK-CONDITION",
+   "topic": "handback",
+   "kind": "ambiguity",
+   "volume": "Volume V",
+   "clause": "42.1 (with Volume II Clauses 1.1 and 8.5)",
+   "page": 4,
+   "units": [
+    "VOL-V:42.1",
+    "VOL-V:42.2",
+    "VOL-II:8.5",
+    "VOL-II:1.1",
+    "VOL-II:2.2"
+   ],
+   "sources": [
+    {
+     "unit": "VOL-V:42.1",
+     "page": 4,
+     "words": "in the condition required by Volume II Clause 8.5, free of encumbrance and with a remaining design life of not less than five (5) years for all major assets"
+    },
+    {
+     "unit": "VOL-II:8.5",
+     "page": 5,
+     "words": "A handback condition survey shall be carried out in the final two (2) years of the concession, and any remedial works identified shall be completed before transfer."
+    },
+    {
+     "unit": "VOL-II:1.1",
+     "page": 2,
+     "words": "shall transfer the Facility to the Authority at the end of the concession period in the condition required by Volume V"
+    }
+   ],
+   "gap": "VOL-V 42.1 takes the handback condition from VOL-II 8.5, which provides only for a survey and remedial works and states no condition standard or who identifies the works, while VOL-II 1.1 points back to Volume V. 'Major assets', to which the five-year remaining design life applies, is not defined.",
+   "already_settled": "",
+   "practical_impact": "Sets the lifecycle replacement profile in the final concession years, the handback reserve funded from year 20 (VOL-V 42.2) and the lifecycle cost in the Availability Payment; criterion C (lifecycle strategy, 20 marks) also depends on it.",
+   "proposed_question": "Volume V, Clause 42.1, page 4: Clause 42.1 requires transfer 'in the condition required by Volume II Clause 8.5' with a remaining design life of not less than five years for all major assets, but Volume II Clause 8.5 (page 5) provides for a condition survey and remedial works without stating a condition standard, and Volume II Clause 1.1 (page 2) refers back to Volume V. Against what condition standard will the handback survey and remedial works be assessed, and what are the 'major assets' for the purposes of Clause 42.1?",
+   "interim_handling": "Plan lifecycle replacements so that civil structures and all significant mechanical and electrical assets have at least five years' remaining design life at handback (a labelled planning assumption), and fund the reserve from year 20 of the term on the term reading used in the Financial Model.",
+   "decision_owner": "Technical",
+   "response_status": "draft, not sent",
+   "linked_issues": [],
+   "rows": [
+    "VOL-V-42.1-02"
+   ],
+   "theme": "contract"
+  },
+  "changed_units": [
+   "VOL-II:8.5",
+   "VOL-V:42.1"
+  ],
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "act:form-4f",
+  "kind": "activity",
+  "evidence_item": "EV-FORM-4F",
+  "activity": {
+   "id": "form-4f",
+   "name": "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Bidder",
+   "duration": "form_4f_preparation",
+   "predecessors": [
+    "fin-model-freeze",
+    "poa",
+    "model-audit-opinion"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Form 4-F Financial Proposal Schedule (signed)"
+  },
+  "rows": [
+   "VOL-I-10.1-01"
+  ]
+ },
+ {
+  "id": "act:fin-model-build",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-MODEL",
+  "activity": {
+   "id": "fin-model-build",
+   "name": "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "financial_modeller",
+   "issuer": "Bidder",
+   "duration": "fin_model_build",
+   "predecessors": []
+  },
+  "rows": [
+   "VOL-I-10.1-01"
+  ]
+ },
+ {
+  "id": "act:fin-model-freeze",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-MODEL",
+  "activity": {
+   "id": "fin-model-freeze",
+   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "financial_modeller",
+   "issuer": "Bidder",
+   "duration": "fin_model_freeze",
+   "predecessors": [
+    "fin-model-build"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Financial Model (unlocked Excel, frozen version)"
+  },
+  "rows": [
+   "VOL-I-10.1-01"
+  ]
+ },
+ {
+  "id": "act:lender-terms",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-ASSUMPTIONS",
+  "activity": {
+   "id": "lender-terms",
+   "name": "Obtain indicative financing terms (debt tenor, margin, gearing) for the model",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Lenders",
+   "duration": "lender_terms",
+   "predecessors": [],
+   "successors": [
+    "fin-model-freeze"
+   ]
+  },
+  "rows": [
+   "VOL-I-10.6-01"
+  ]
+ },
+ {
+  "id": "act:fin-assumptions",
+  "kind": "activity",
+  "evidence_item": "EV-FIN-ASSUMPTIONS",
+  "activity": {
+   "id": "fin-assumptions",
+   "name": "Prepare the schedule of principal financing assumptions to accompany Form 4-F (VOL-I 10.6)",
+   "owner": "Commercial",
+   "discipline": "Commercial",
+   "resource": "commercial_manager",
+   "issuer": "Bidder",
+   "duration": "fin_assumptions_schedule",
+   "predecessors": [
+    "fin-model-freeze"
+   ],
+   "successors": [
+    "assemble-envelope-b"
+   ],
+   "item": "Schedule of principal financing assumptions"
+  },
+  "rows": [
+   "VOL-I-10.6-01"
+  ]
+ },
+ {
+  "id": "act:technical-proposal",
+  "kind": "activity",
+  "evidence_item": "EV-TECH-PROPOSAL",
+  "activity": {
+   "id": "technical-proposal",
+   "name": "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration; page limit as amended)",
+   "owner": "Technical",
+   "discipline": "Technical",
+   "resource": "proposal_writers",
+   "issuer": "Bidder",
+   "duration": "technical_proposal",
+   "predecessors": [],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)"
+  },
+  "rows": [
+   "VOL-II-8.5-01",
+   "VOL-II-8.5-02",
+   "VOL-II-9.3-01"
+  ]
+ },
+ {
+  "id": "esc:ADD-03:3.4",
+  "kind": "escalation",
+  "provision": "ADD-03:3.4",
+  "status": "partly answered by ADD-03/3.4(a); escalated: software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر ال…",
+  "scope": {
+   "cited": [
+    "VOL-V:42.1"
+   ],
+   "units": [
+    "VOL-V:42.1"
+   ],
+   "rows": [
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "activities": [],
+   "clarifications": [
+    "CQ-HANDBACK-CONDITION"
+   ]
+  },
+  "bid_out_rules": [
+   {
+    "row": "VOL-I-9.6-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:9.6",
+    "quote": "A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   },
+   {
+    "row": "VOL-I-10.5-01",
+    "class": "non_responsive",
+    "unit": "VOL-I:10.5",
+    "quote": "Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.",
+    "page": 5,
+    "shared": [
+     "Volume V"
+    ]
+   }
+  ],
+  "consequence_note": "read with these existing rules; a consequence is quoted from one of them (PROPOSED, a person decides whether it applies), never invented"
+ },
+ {
+  "id": "esc:ADD-03:p3-image/r4",
+  "kind": "escalation",
+  "provision": "ADD-03:p3-image/r4",
+  "status": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r4; nothing applied): ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' Reading B: 5 years, as the translation states, with the Arabic being an error. Applying the precedence and…",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:p3-image/r5",
+  "kind": "escalation",
+  "provision": "ADD-03:p3-image/r5",
+  "status": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r5; nothing applied): ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Reading B: 24 years, from the column's unit and the translation. Reading C: the cell's own unit override…",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T42-1/4",
+  "kind": "escalation",
+  "provision": "ADD-03:T42-1/4",
+  "status": "not promotable: D-T42-1-4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r4); ISS-T42-row4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T42-1/5",
+  "kind": "escalation",
+  "provision": "ADD-03:T42-1/5",
+  "status": "not promotable: D-T42-1-5 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r5); ISS-T42-row5 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-5-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task); Q-T42-row5 interpretation_pending (dropped: an analysis clarification is not promoted (the analysis set promotes ops and dispositions only): listed for a person in the review packet with its evidence; the downstream phase proposes issues and clarification entries against the candidate)",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:T42-1/note(4)",
+  "kind": "escalation",
+  "provision": "ADD-03:T42-1/note(4)",
+  "status": "not promotable: D-T42-1-note4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image); ISS-T42-note4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-NOTE-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task)",
+  "scope": {
+   "cited": [
+    "VOL-II:2.2"
+   ],
+   "units": [
+    "VOL-II:2.2"
+   ],
+   "rows": [
+    "VOL-II-2.2-01",
+    "VOL-II-2.2-02"
+   ],
+   "activities": [
+    "technical-proposal"
+   ],
+   "clarifications": [
+    "CQ-HANDBACK-CONDITION"
+   ]
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:4. GROUND CONDITIONS",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue, unaccounted, unresolved): ADD-03:4.3, ADD-03:4.1, ADD-03:4.2; never an accepted fact",
+  "provisions": [
+   "ADD-03:4.3",
+   "ADD-03:4.1",
+   "ADD-03:4.2"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:4.3",
+    "basis": "unresolved",
+    "why": "not promotable: ADD-03/4.3/row interpretation_pending (dropped: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to the downstream task keyed to ADD-03:4.3 as an UNVERIFIED reference); ADD-03/4.3/q-count interpretation_pending (dropped: an analysis clarification is not promoted (the analysis set promotes ops and dispositions only): listed …",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:4.3",
+     "state": "unresolved",
+     "why": "not promotable: ADD-03/4.3/row interpretation_pending (dropped: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to the downstream task keyed to ADD-03:4.3 as an UNVERIFIED reference); ADD-03/4.3/q-count interpretation_pending (dropped: an a…"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:4.3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:4.3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:4.3",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:4.3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:4.1",
+    "basis": "analysis issue",
+    "item": "ADD-03/4.1/issue-q4",
+    "issue": "I-ADD-03-4-1-ISSUE-Q4-ANA",
+    "why": "ambiguous: new Volume V Clause 12.5 (ADD-03:4.1) gives an extension of the Scheduled PCOD and additional costs for ground conditions 'materially more adverse than those described in the Geotechnical Baseline Report'. ADD-01:Q4 (earlier answer) says 'The geotechnical report in the data room is provided for information. Bidders shall satisfy themselves as to ground conditions.' VOL-V:3.3 says 'The …",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/4.1/issue-q4",
+     "state": "proposed",
+     "why": "ambiguous: new Volume V Clause 12.5 (ADD-03:4.1) gives an extension of the Scheduled PCOD and additional costs for ground conditions 'materially more adverse than those described in the Geotechnical Baseline Report'. ADD-01:Q4 (earlier answer) says 'The geotechnical report in the data room is provi…"
+    },
+    "payload": {
+     "text": "ambiguous: new Volume V Clause 12.5 (ADD-03:4.1) gives an extension of the Scheduled PCOD and additional costs for ground conditions 'materially more adverse than those described in the Geotechnical Baseline Report'. ADD-01:Q4 (earlier answer) says 'The geotechnical report in the data room is provided for information. Bidders shall satisfy themselves as to ground conditions.' VOL-V:3.3 says 'The Project Company shall have no right to an extension of the term save as expressly provided in Clause 34 (Relief Events) and Clause 36 (Change in Law).' Reading 1: ADD-03 (which takes precedence under ADD-03:1.1) supersedes the ADD-01:Q4 risk position for ground conditions within Clause 12.5, and VOL-V:3.3 (the 'term') does not touch the Scheduled PCOD. Reading 2: ADD-01:Q4 still stands for matters outside Clause 12.5 and VOL-V:3.3 needs a conforming change. Which governs and whether ADD-01:Q4 is superseded is a person's decision; the earlier answer is not re-decided here.",
+     "owner": "Legal",
+     "short": "Clause 12.5 vs ADD-01 Q4 and VOL-V 3.3 on ground risk",
+     "theme": "ground conditions"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   },
+   {
+    "provision": "ADD-03:4.2",
+    "basis": "unaccounted",
+    "item": "impact:ADD-03:4.2",
+    "why": "no op or disposition accounts for it",
+    "units": [],
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:4.2",
+     "state": "unaccounted",
+     "why": "no op or disposition accounts for it"
+    },
+    "investigate": "conditional on provision ADD-03:4.2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:4.2"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:4.3",
+    "state": "unresolved",
+    "why": "not promotable: ADD-03/4.3/row interpretation_pending (dropped: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to the downstream task keyed to ADD-03:4.3 as an UNVERIFIED reference); ADD-03/4.3/q-count interpretation_pending (dropped: an a…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/4.1/issue-q4",
+    "state": "proposed",
+    "why": "ambiguous: new Volume V Clause 12.5 (ADD-03:4.1) gives an extension of the Scheduled PCOD and additional costs for ground conditions 'materially more adverse than those described in the Geotechnical Baseline Report'. ADD-01:Q4 (earlier answer) says 'The geotechnical report in the data room is provi…"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:4.2",
+    "state": "unaccounted",
+    "why": "no op or disposition accounts for it"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-V:12.4"
+   ],
+   "units": [
+    "VOL-V:12.4"
+   ],
+   "rows": [
+    "VOL-V-12.4-01",
+    "VOL-V-12.4-02"
+   ],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "not promotable: ADD-03/4.3/row interpretation_pending (dropped: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to the downstream task keyed to ADD-03:4.3 as an UNVERIFIED reference); ADD-03/4.3/q-count interpretation_pending (dropped: an analysis clarification is not promoted (the analysis set promotes ops and dispositions only): listed …; ambiguous: new Volume V Clause 12.5 (ADD-03:4.1) gives an extension of the Scheduled PCOD and additional costs for ground conditions 'materially more adverse than those described in the Geotechnical Baseline Report'. ADD-01:Q4 (earlier answer) says 'The geotechnical report in the data room is provided for information. Bidders shall satisfy themselves as to ground conditions.' VOL-V:3.3 says 'The …; no op or disposition accounts for it",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:APPENDIX A — TABLE 42-1 (ARABIC)",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue, pending reading, unresolved): ADD-03:p3-image/r4, ADD-03:p3-image/r5, ADD-03:p3-image/note3, ADD-03:region:ADD-03-p3-r1, ADD-03:p3-image; never an accepted fact",
+  "provisions": [
+   "ADD-03:p3-image/r4",
+   "ADD-03:p3-image/r5",
+   "ADD-03:p3-image/note3",
+   "ADD-03:region:ADD-03-p3-r1",
+   "ADD-03:p3-image"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:p3-image/r4",
+    "basis": "unresolved",
+    "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r4; nothing applied): ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' R…",
+    "conditional_on": {
+     "kind": "disposition",
+     "ref": "ADD-03/p3-image/r4",
+     "state": "unresolved",
+     "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r4; nothing applied): ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints '…"
+    },
+    "units": [
+     "ADD-03:3.4",
+     "ADD-03:T42-1/4"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r4",
+      "why": "ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' Reading B: 5 years, as the translation states, with the Arabic being an error. Applying the precedence and…",
+      "investigate": "conditional on disposition ADD-03:p3-image/r4 (unresolved: ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minim…): investigate the rows, activities and prices that rest on ADD-03:3.4, ADD-03:T42-1/4",
+      "conditional_on": {
+       "kind": "disposition",
+       "ref": "ADD-03:p3-image/r4",
+       "state": "unresolved",
+       "why": "ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' Readin…"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/r5",
+    "basis": "unresolved",
+    "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r5; nothing applied): ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words.…",
+    "conditional_on": {
+     "kind": "disposition",
+     "ref": "ADD-03/p3-image/r5",
+     "state": "unresolved",
+     "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r5; nothing applied): ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Min…"
+    },
+    "units": [
+     "ADD-03:3.4",
+     "ADD-03:T42-1/5"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r5",
+      "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Reading B: 24 years, from the column's unit and the translation. Reading C: the cell's own unit override…",
+      "investigate": "conditional on disposition ADD-03:p3-image/r5 (unresolved: ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum …): investigate the rows, activities and prices that rest on ADD-03:3.4, ADD-03:T42-1/5",
+      "conditional_on": {
+       "kind": "disposition",
+       "ref": "ADD-03:p3-image/r5",
+       "state": "unresolved",
+       "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Read…"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/r4",
+    "basis": "analysis issue",
+    "item": "ISS-ADD03-T42-1-r4",
+    "issue": "I-ADD-03-P3-IMAGE-R4-ISSUE-ANA",
+    "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment). The governing Arabic prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (7 years); the Appendix B translation prints 'Minimum residual life (years): 5'. ADD-03:3.5 says 'The Arabic text governs.' Open question: is the binding minimum residual life 7 years (Arabic) or 5 years (translation), and should the Authority be asked …",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-ADD03-T42-1-r4",
+     "state": "proposed",
+     "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment). The governing Arabic prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (7 years); the Appendix B translation prints 'Minimum residual life (years): 5'. ADD-03:3.5 says 'The Arabic text governs.' Open question: is the binding…"
+    },
+    "payload": {
+     "text": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment). The governing Arabic prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (7 years); the Appendix B translation prints 'Minimum residual life (years): 5'. ADD-03:3.5 says 'The Arabic text governs.' Open question: is the binding minimum residual life 7 years (Arabic) or 5 years (translation), and should the Authority be asked to confirm? Dependants: the lifecycle plan the Technical Proposal must describe under ADD-03:3.6, the replacement obligation in Arabic note ٣, and any A1 row on VOL-V Clause 42.1 as amended by 3.4. HUMAN DECISION PENDING.",
+     "owner": "Technical",
+     "short": "T42-1 row 4: Arabic 7 years vs English 5 years",
+     "theme": "Arabic/English discrepancy"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "ADD-03:3.4",
+     "ADD-03:T42-1/4"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r4",
+      "why": "ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' Reading B: 5 years, as the translation states, with the Arabic being an error. Applying the precedence and…",
+      "investigate": "conditional on disposition ADD-03:p3-image/r4 (unresolved: ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minim…): investigate the rows, activities and prices that rest on ADD-03:3.4, ADD-03:T42-1/4",
+      "conditional_on": {
+       "kind": "disposition",
+       "ref": "ADD-03:p3-image/r4",
+       "state": "unresolved",
+       "why": "ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' Readin…"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/r5",
+    "basis": "analysis issue",
+    "item": "ISS-ADD03-T42-1-r5",
+    "issue": "I-ADD-03-P3-IMAGE-R5-ISSUE-ANA",
+    "why": "ambiguous: Table 42-1 row 5 (membranes, where provided). The governing Arabic cell prints '٢٤ شهراً' (24 months) in the column headed 'الحد الأدنى للعمر المتبقي (سنة)' (years); the Appendix B translation prints 'Minimum residual life (years): 24'. Readings: 24 months (the cell's own words, Arabic governing under ADD-03:3.5) or 24 years (the column unit and the translation). Open question: which m…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-ADD03-T42-1-r5",
+     "state": "proposed",
+     "why": "ambiguous: Table 42-1 row 5 (membranes, where provided). The governing Arabic cell prints '٢٤ شهراً' (24 months) in the column headed 'الحد الأدنى للعمر المتبقي (سنة)' (years); the Appendix B translation prints 'Minimum residual life (years): 24'. Readings: 24 months (the cell's own words, Arabic g…"
+    },
+    "payload": {
+     "text": "ambiguous: Table 42-1 row 5 (membranes, where provided). The governing Arabic cell prints '٢٤ شهراً' (24 months) in the column headed 'الحد الأدنى للعمر المتبقي (سنة)' (years); the Appendix B translation prints 'Minimum residual life (years): 24'. Readings: 24 months (the cell's own words, Arabic governing under ADD-03:3.5) or 24 years (the column unit and the translation). Open question: which minimum residual life applies to membranes at transfer? HUMAN DECISION PENDING.",
+     "owner": "Technical",
+     "short": "T42-1 row 5: '24 months' (Arabic) vs 24 years (English/column unit)",
+     "theme": "Arabic/English discrepancy"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "ADD-03:3.4",
+     "ADD-03:T42-1/5"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r5",
+      "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Reading B: 24 years, from the column's unit and the translation. Reading C: the cell's own unit override…",
+      "investigate": "conditional on disposition ADD-03:p3-image/r5 (unresolved: ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum …): investigate the rows, activities and prices that rest on ADD-03:3.4, ADD-03:T42-1/5",
+      "conditional_on": {
+       "kind": "disposition",
+       "ref": "ADD-03:p3-image/r5",
+       "state": "unresolved",
+       "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Read…"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/note3",
+    "basis": "analysis issue",
+    "item": "ISS-ADD03-T42-1-note4",
+    "issue": "I-ADD-03-P3-IMAGE-NOTE3-ISSUE-ANA",
+    "why": "ambiguous: the governing Arabic Table 42-1 prints three notes, the last being '٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.' The English translation prints a fourth note with no Arabic counterpart: '(4) The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.' Readings: (a) note (4) has no effect, be…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-ADD03-T42-1-note4",
+     "state": "proposed",
+     "why": "ambiguous: the governing Arabic Table 42-1 prints three notes, the last being '٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.' The English translation prints a fourth note with no Arabic counterpart: '(4) The design life of electrical equipment stated in Vo…"
+    },
+    "payload": {
+     "text": "ambiguous: the governing Arabic Table 42-1 prints three notes, the last being '٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.' The English translation prints a fourth note with no Arabic counterpart: '(4)  The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.' Readings: (a) note (4) has no effect, because the translation is 'for convenience only' (ADD-03:3.5) and the governing Arabic omits it; (b) note (4) amends Volume II Clause 2.2 as printed amendment language in the Addendum. Which applies, and whether Volume II Clause 2.2 changes, is for a person (Legal, with Technical). HUMAN DECISION PENDING. The note (4) provision belongs to another batch.",
+     "owner": "Legal",
+     "short": "English note (4) (electrical design life 25 years) absent from governing Arabic",
+     "theme": "Arabic/English discrepancy"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   },
+   {
+    "provision": "ADD-03:p3-image/r5",
+    "basis": "analysis issue",
+    "item": "ISS-ADD03-cover-four-classes",
+    "issue": "I-ADD-03-P3-IMAGE-R5-ISSUE-ANA",
+    "why": "The cover text and the operative table differ. The cover says 'minimum residual service lives for four asset classes set out in Table 42-1 (issued in Arabic)'; the Arabic Table 42-1 prints five numbered rows (١ to ٥), the fifth being 'الأغشية (إن وُجدت)'. The cover summarises and does not amend; the difference is reported, not resolved. Open question for a person: whether the cover's count matter…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-ADD03-cover-four-classes",
+     "state": "proposed",
+     "why": "The cover text and the operative table differ. The cover says 'minimum residual service lives for four asset classes set out in Table 42-1 (issued in Arabic)'; the Arabic Table 42-1 prints five numbered rows (١ to ٥), the fifth being 'الأغشية (إن وُجدت)'. The cover summarises and does not amend; th…"
+    },
+    "payload": {
+     "text": "The cover text and the operative table differ. The cover says 'minimum residual service lives for four asset classes set out in Table 42-1 (issued in Arabic)'; the Arabic Table 42-1 prints five numbered rows (١ to ٥), the fifth being 'الأغشية (إن وُجدت)'. The cover summarises and does not amend; the difference is reported, not resolved. Open question for a person: whether the cover's count matters, e.g. if row 5 applies only 'where provided'.",
+     "owner": "Document control",
+     "short": "Cover says four asset classes; Table 42-1 has five rows",
+     "theme": "cover vs operative text"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "ADD-03:3.4",
+     "ADD-03:T42-1/5"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r5",
+      "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Reading B: 24 years, from the column's unit and the translation. Reading C: the cell's own unit override…",
+      "investigate": "conditional on disposition ADD-03:p3-image/r5 (unresolved: ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum …): investigate the rows, activities and prices that rest on ADD-03:3.4, ADD-03:T42-1/5",
+      "conditional_on": {
+       "kind": "disposition",
+       "ref": "ADD-03:p3-image/r5",
+       "state": "unresolved",
+       "why": "ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words. Read…"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:region:ADD-03-p3-r1",
+    "basis": "pending reading",
+    "item": "impact:?",
+    "why": "the reading ? of ADD-03 is pending a person's approval: its values are not in force",
+    "units": [
+     "ADD-03:region:ADD-03-p3-r1"
+    ],
+    "conditional_on": {
+     "kind": "reading",
+     "ref": "?",
+     "state": "pending_reading",
+     "why": "the reading ? of ADD-03 is pending a person's approval: its values are not in force"
+    },
+    "investigate": "conditional on reading ? (pending_reading: the reading ? of ADD-03 is pending a person's approval: its values are not in force): investigate the rows, activities and prices that rest on ADD-03:region:ADD-03-p3-r1"
+   },
+   {
+    "provision": "ADD-03:p3-image",
+    "basis": "pending reading",
+    "item": "impact:ADD-03-p3-r1",
+    "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force",
+    "units": [
+     "ADD-03:p3-image",
+     "ADD-03:p3-image/r1",
+     "ADD-03:p3-image/r2",
+     "ADD-03:p3-image/r3",
+     "ADD-03:p3-image/r4",
+     "ADD-03:p3-image/r5",
+     "ADD-03:p3-image/hdr-en",
+     "ADD-03:p3-image/hdr-ar",
+     "ADD-03:p3-image/committee-ar",
+     "ADD-03:p3-image/date-ar",
+     "ADD-03:p3-image/ref-ar",
+     "ADD-03:p3-image/subject",
+     "ADD-03:p3-image/tender-ref",
+     "ADD-03:p3-image/notes-heading",
+     "ADD-03:p3-image/note1",
+     "ADD-03:p3-image/note2",
+     "ADD-03:p3-image/note3",
+     "ADD-03:p3-image/signatory",
+     "ADD-03:p3-image/seal",
+     "ADD-03:p3-image/image-footer"
+    ],
+    "conditional_on": {
+     "kind": "reading",
+     "ref": "ADD-03-p3-r1",
+     "state": "pending_reading",
+     "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force"
+    },
+    "investigate": "conditional on reading ADD-03-p3-r1 (pending_reading: the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force): investigate the rows, activities and prices that rest on ADD-03:p3-image, ADD-03:p3-image/r1, ADD-03:p3-image/r2, ADD-03:p3-image/r3, ADD-03:p3-image/r4, ADD-03:p3-image/r5, ADD-03:p3-image/hdr-en, ADD-03:p3-image/hdr-ar, ADD-03:p3-image/committee-ar, ADD-03:p3-image/date-ar, ADD-03:p3-image/ref-ar, ADD-03:p3-image/subject (+8)"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "disposition",
+    "ref": "ADD-03/p3-image/r4",
+    "state": "unresolved",
+    "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r4; nothing applied): ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints '…"
+   },
+   {
+    "kind": "disposition",
+    "ref": "ADD-03/p3-image/r5",
+    "state": "unresolved",
+    "why": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r5; nothing applied): ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Min…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-ADD03-T42-1-r4",
+    "state": "proposed",
+    "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment). The governing Arabic prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (7 years); the Appendix B translation prints 'Minimum residual life (years): 5'. ADD-03:3.5 says 'The Arabic text governs.' Open question: is the binding…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-ADD03-T42-1-r5",
+    "state": "proposed",
+    "why": "ambiguous: Table 42-1 row 5 (membranes, where provided). The governing Arabic cell prints '٢٤ شهراً' (24 months) in the column headed 'الحد الأدنى للعمر المتبقي (سنة)' (years); the Appendix B translation prints 'Minimum residual life (years): 24'. Readings: 24 months (the cell's own words, Arabic g…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-ADD03-T42-1-note4",
+    "state": "proposed",
+    "why": "ambiguous: the governing Arabic Table 42-1 prints three notes, the last being '٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.' The English translation prints a fourth note with no Arabic counterpart: '(4) The design life of electrical equipment stated in Vo…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-ADD03-cover-four-classes",
+    "state": "proposed",
+    "why": "The cover text and the operative table differ. The cover says 'minimum residual service lives for four asset classes set out in Table 42-1 (issued in Arabic)'; the Arabic Table 42-1 prints five numbered rows (١ to ٥), the fifth being 'الأغشية (إن وُجدت)'. The cover summarises and does not amend; th…"
+   },
+   {
+    "kind": "reading",
+    "ref": "?",
+    "state": "pending_reading",
+    "why": "the reading ? of ADD-03 is pending a person's approval: its values are not in force"
+   },
+   {
+    "kind": "reading",
+    "ref": "ADD-03-p3-r1",
+    "state": "pending_reading",
+    "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force"
+   }
+  ],
+  "scope": {
+   "cited": [],
+   "units": [
+    "ADD-03:3.4",
+    "ADD-03:T42-1/4",
+    "ADD-03:T42-1/5",
+    "ADD-03:p3-image",
+    "ADD-03:p3-image/committee-ar",
+    "ADD-03:p3-image/date-ar",
+    "ADD-03:p3-image/hdr-ar",
+    "ADD-03:p3-image/hdr-en",
+    "ADD-03:p3-image/image-footer",
+    "ADD-03:p3-image/note1",
+    "ADD-03:p3-image/note2",
+    "ADD-03:p3-image/note3",
+    "ADD-03:p3-image/notes-heading",
+    "ADD-03:p3-image/r1",
+    "ADD-03:p3-image/r2",
+    "ADD-03:p3-image/r3",
+    "ADD-03:p3-image/r4",
+    "ADD-03:p3-image/r5",
+    "ADD-03:p3-image/ref-ar",
+    "ADD-03:p3-image/seal",
+    "ADD-03:p3-image/signatory",
+    "ADD-03:p3-image/subject",
+    "ADD-03:p3-image/tender-ref",
+    "ADD-03:region:ADD-03-p3-r1"
+   ],
+   "rows": [],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r4; nothing applied): ambiguous: the Arabic row 4 prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (seven years) for 'المعدات الكهربائية وأجهزة القياس والتحكم', while the Appendix B translation row ADD-03:T42-1/4 prints 'Minimum residual life (years): 5'. Reading A: 7 years, under ADD-03:3.5 'The Arabic text governs.' R…; unresolved (accounted for by the promoted `unresolved` disposition ADD-03/p3-image/r5; nothing applied): ambiguous: the Arabic row 5 cell prints '٢٤ شهراً' (24 months) under the column heading 'الحد الأدنى للعمر المتبقي (سنة)' (years), while the Appendix B translation row ADD-03:T42-1/5 prints 'Minimum residual life (years): 24'. Reading A: 24 months, as the governing Arabic cell states in words.…; ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment). The governing Arabic prints 'الحد الأدنى للعمر المتبقي (سنة): ٧' (7 years); the Appendix B translation prints 'Minimum residual life (years): 5'. ADD-03:3.5 says 'The Arabic text governs.' Open question: is the binding minimum residual life 7 years (Arabic) or 5 years (translation), and should the Authority be ask",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 42-1",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue, unresolved): ADD-03:T42-1/4, ADD-03:T42-1/5, ADD-03:T42-1/note(4); never an accepted fact",
+  "provisions": [
+   "ADD-03:T42-1/4",
+   "ADD-03:T42-1/5",
+   "ADD-03:T42-1/note(4)"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:T42-1/4",
+    "basis": "unresolved",
+    "why": "not promotable: D-T42-1-4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r4); ISS-T42-row4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task)",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:T42-1/4",
+     "state": "unresolved",
+     "why": "not promotable: D-T42-1-4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r4); ISS-T42-row4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-4-ISSUE-ANA; HUMAN DE…"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:T42-1/4",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:T42-1/5",
+    "basis": "unresolved",
+    "why": "not promotable: D-T42-1-5 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r5); ISS-T42-row5 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-5-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task); Q-T42-row5 interpretati…",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:T42-1/5",
+     "state": "unresolved",
+     "why": "not promotable: D-T42-1-5 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r5); ISS-T42-row5 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-5-ISSUE-ANA; HUMAN DE…"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/5",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/5 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:T42-1/5",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/5",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:T42-1/note(4)",
+    "basis": "unresolved",
+    "why": "not promotable: D-T42-1-note4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image); ISS-T42-note4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-NOTE-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task)",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:T42-1/note(4)",
+     "state": "unresolved",
+     "why": "not promotable: D-T42-1-note4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image); ISS-T42-note4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-NOTE-4-ISSUE-ANA; H…"
+    },
+    "units": [
+     "VOL-II:2.2"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/note(4)",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/note(4) (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-II:2.2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/note(4)",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:T42-1/4",
+    "basis": "analysis issue",
+    "item": "ISS-T42-row4",
+    "issue": "I-ADD-03-T42-1-4-ISSUE-ANA",
+    "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment): the English translation prints \"Minimum residual life (years): 5\"; the governing Arabic row as read prints \"الحد الأدنى للعمر المتبقي (سنة): ٧\". ADD-03:3.5 states \"The Arabic text governs.\" Open question: confirm that 7 years is the figure for lifecycle planning and the Technical Proposal (ADD-03:3.6), or seek correc…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-T42-row4",
+     "state": "proposed",
+     "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment): the English translation prints \"Minimum residual life (years): 5\"; the governing Arabic row as read prints \"الحد الأدنى للعمر المتبقي (سنة): ٧\". ADD-03:3.5 states \"The Arabic text governs.\" Open question: confirm that …"
+    },
+    "payload": {
+     "text": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment): the English translation prints \"Minimum residual life (years): 5\"; the governing Arabic row as read prints \"الحد الأدنى للعمر المتبقي (سنة): ٧\". ADD-03:3.5 states \"The Arabic text governs.\" Open question: confirm that 7 years is the figure for lifecycle planning and the Technical Proposal (ADD-03:3.6), or seek correction from the Authority. Pending a human decision.",
+     "owner": "Legal",
+     "short": "T42-1 row 4: translation 5 years vs Arabic ٧",
+     "theme": "handback / Table 42-1 translation conflict"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:T42-1/4",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:T42-1/5",
+    "basis": "analysis issue",
+    "item": "ISS-T42-row5",
+    "issue": "I-ADD-03-T42-1-5-ISSUE-ANA",
+    "why": "ambiguous: Table 42-1 row 5 (membranes): the governing Arabic cell as read prints \"٢٤ شهراً\" (months) under a column headed \"(سنة)\" (years); the English translation prints \"Minimum residual life (years): 24\". Separately the cover (ADD-03:cover/para3) refers to \"four asset classes\" while both renderings print five rows. Open question: which minimum residual life applies to membranes, and whether m…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-T42-row5",
+     "state": "proposed",
+     "why": "ambiguous: Table 42-1 row 5 (membranes): the governing Arabic cell as read prints \"٢٤ شهراً\" (months) under a column headed \"(سنة)\" (years); the English translation prints \"Minimum residual life (years): 24\". Separately the cover (ADD-03:cover/para3) refers to \"four asset classes\" while both render…"
+    },
+    "payload": {
+     "text": "ambiguous: Table 42-1 row 5 (membranes): the governing Arabic cell as read prints \"٢٤ شهراً\" (months) under a column headed \"(سنة)\" (years); the English translation prints \"Minimum residual life (years): 24\". Separately the cover (ADD-03:cover/para3) refers to \"four asset classes\" while both renderings print five rows. Open question: which minimum residual life applies to membranes, and whether membranes form a fifth class. Pending a human decision.",
+     "owner": "Technical",
+     "short": "T42-1 row 5: 24 months (Arabic) vs 24 years (translation); four vs five classes",
+     "theme": "handback / Table 42-1 translation conflict"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/5",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/5 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:T42-1/5",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/5",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:T42-1/note(4)",
+    "basis": "analysis issue",
+    "item": "ISS-T42-note4",
+    "issue": "I-ADD-03-T42-1-NOTE-4-ISSUE-ANA",
+    "why": "ambiguous: translation note (4) reads \"The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.\" The governing Arabic Table 42-1 (crop 796202bc…) prints only notes ١ to ٣ and no counterpart; ADD-03:3.5 states \"The Arabic text governs. The English translation at Appendix B is provided for convenience only.\" VOL-II:2.2 (ADD-02) reads \"The design…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ISS-T42-note4",
+     "state": "proposed",
+     "why": "ambiguous: translation note (4) reads \"The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.\" The governing Arabic Table 42-1 (crop 796202bc…) prints only notes ١ to ٣ and no counterpart; ADD-03:3.5 states \"The Arabic text governs. The Englis…"
+    },
+    "payload": {
+     "text": "ambiguous: translation note (4) reads \"The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.\" The governing Arabic Table 42-1 (crop 796202bc…) prints only notes ١ to ٣ and no counterpart; ADD-03:3.5 states \"The Arabic text governs. The English translation at Appendix B is provided for convenience only.\" VOL-II:2.2 (ADD-02) reads \"The design life of mechanical and electrical equipment shall be not less than twenty (20) years or the manufacturer's rated life, whichever is the shorter\". Open question: does note (4) amend VOL-II:2.2, and if so how it combines with the manufacturer's-rated-life alternative and with mechanical equipment. Pending a human decision.",
+     "owner": "Legal",
+     "short": "T42-1 note (4) amends VOL-II 2.2 only in the convenience translation",
+     "theme": "handback / Table 42-1 translation conflict"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-II:2.2"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:T42-1/note(4)",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:T42-1/note(4) (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-II:2.2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:T42-1/note(4)",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:T42-1/4",
+    "state": "unresolved",
+    "why": "not promotable: D-T42-1-4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r4); ISS-T42-row4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-4-ISSUE-ANA; HUMAN DE…"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:T42-1/5",
+    "state": "unresolved",
+    "why": "not promotable: D-T42-1-5 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r5); ISS-T42-row5 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-5-ISSUE-ANA; HUMAN DE…"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:T42-1/note(4)",
+    "state": "unresolved",
+    "why": "not promotable: D-T42-1-note4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image); ISS-T42-note4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-NOTE-4-ISSUE-ANA; H…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-T42-row4",
+    "state": "proposed",
+    "why": "ambiguous: Table 42-1 row 4 (electrical, instrumentation and control equipment): the English translation prints \"Minimum residual life (years): 5\"; the governing Arabic row as read prints \"الحد الأدنى للعمر المتبقي (سنة): ٧\". ADD-03:3.5 states \"The Arabic text governs.\" Open question: confirm that …"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-T42-row5",
+    "state": "proposed",
+    "why": "ambiguous: Table 42-1 row 5 (membranes): the governing Arabic cell as read prints \"٢٤ شهراً\" (months) under a column headed \"(سنة)\" (years); the English translation prints \"Minimum residual life (years): 24\". Separately the cover (ADD-03:cover/para3) refers to \"four asset classes\" while both render…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ISS-T42-note4",
+    "state": "proposed",
+    "why": "ambiguous: translation note (4) reads \"The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.\" The governing Arabic Table 42-1 (crop 796202bc…) prints only notes ١ to ٣ and no counterpart; ADD-03:3.5 states \"The Arabic text governs. The Englis…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-II:2.2"
+   ],
+   "units": [
+    "VOL-II:2.2"
+   ],
+   "rows": [
+    "VOL-II-2.2-01",
+    "VOL-II-2.2-02"
+   ],
+   "activities": [
+    "technical-proposal"
+   ],
+   "clarifications": [
+    "CQ-HANDBACK-CONDITION"
+   ],
+   "prices": []
+  },
+  "status": "not promotable: D-T42-1-4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r4); ISS-T42-row4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task); not promotable: D-T42-1-5 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image/r5); ISS-T42-row5 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-5-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task); Q-T42-row5 interpretati…; not promotable: D-T42-1-note4 conflicting (declared_conflicts: the proposer declares: ADD-03:p3-image); ISS-T42-note4 interpretation_pending (dropped: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-T42-1-NOTE-4-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task); ambiguous: Table 42-1 row 4 (electrical",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:Wadi Sirhan Independent Sewage Treatment Plant",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue): ADD-03:cover/para3; never an accepted fact",
+  "provisions": [
+   "ADD-03:cover/para3"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:cover/para3",
+    "basis": "analysis issue",
+    "item": "ADD-03/cover/para3/issue",
+    "issue": "I-ADD-03-COVER-PARA3-ISSUE-ANA",
+    "why": "ambiguous: the cover (ADD-03:cover/para3) says 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000', while operative Section 2.1 (ADD-03:2.1) says 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.' and Section 1.2 says references are to Clauses 'as amended by Addenda Nos. 1 and 2, unless otherwise stated'…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/cover/para3/issue",
+     "state": "proposed",
+     "why": "ambiguous: the cover (ADD-03:cover/para3) says 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000', while operative Section 2.1 (ADD-03:2.1) says 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.' and Sect…"
+    },
+    "payload": {
+     "text": "ambiguous: the cover (ADD-03:cover/para3) says 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000', while operative Section 2.1 (ADD-03:2.1) says 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.' and Section 1.2 says references are to Clauses 'as amended by Addenda Nos. 1 and 2, unless otherwise stated'. VOL-V:36.2 at ADD-02 reads 'exceeds SAR 2,500,000 in aggregate over the term'; the engine computes SAR 1,500,000 from Section 2.1, not SAR 4,000,000. Reading A: the operative provision governs (threshold reduced from SAR 2,500,000). Reading B: the cover's SAR 4,000,000 is the intended threshold. Open question: which threshold applies for pricing the Availability Payment (ADD-03:2.2, Form 4-F)? A clarification to the Authority may be needed. HUMAN DECISION PENDING.",
+     "owner": "Commercial",
+     "short": "Clause 36.2 threshold: cover SAR 4,000,000 vs operative reduction by SAR 1,000,000 from SAR 2,500,000",
+     "theme": "Change in Law"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "issue",
+    "ref": "ADD-03/cover/para3/issue",
+    "state": "proposed",
+    "why": "ambiguous: the cover (ADD-03:cover/para3) says 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000', while operative Section 2.1 (ADD-03:2.1) says 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.' and Sect…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-I:3.2",
+    "VOL-I:4.2",
+    "VOL-IV:F4-A",
+    "VOL-V:36.2"
+   ],
+   "units": [
+    "VOL-I:3.2",
+    "VOL-I:4.2",
+    "VOL-IV:F4-A/T1",
+    "VOL-IV:F4-A/T2",
+    "VOL-IV:F4-A/capacity",
+    "VOL-IV:F4-A/commercial-registration-number",
+    "VOL-IV:F4-A/company-seal",
+    "VOL-IV:F4-A/contact-email-and-telephone",
+    "VOL-IV:F4-A/date",
+    "VOL-IV:F4-A/item1",
+    "VOL-IV:F4-A/item2",
+    "VOL-IV:F4-A/item3",
+    "VOL-IV:F4-A/item4",
+    "VOL-IV:F4-A/item5",
+    "VOL-IV:F4-A/item6",
+    "VOL-IV:F4-A/name-of-bidder-lead-member",
+    "VOL-IV:F4-A/name-of-signatory",
+    "VOL-IV:F4-A/para1",
+    "VOL-IV:F4-A/power-of-attorney-reference-and-date",
+    "VOL-IV:F4-A/project",
+    "VOL-IV:F4-A/proposal-due-date",
+    "VOL-IV:F4-A/registered-address",
+    "VOL-IV:F4-A/signature",
+    "VOL-IV:F4-A/single-point-of-contact-name-title",
+    "VOL-IV:F4-A/tender-reference",
+    "VOL-IV:H:F4-A",
+    "VOL-V:36.2"
+   ],
+   "rows": [
+    "VOL-I-4.2-01",
+    "VOL-IV-F4A-01",
+    "VOL-IV-F4A-02",
+    "VOL-IV-F4A-03",
+    "VOL-IV-F4A-04",
+    "VOL-IV-F4A-05",
+    "VOL-IV-F4A-06",
+    "VOL-IV-F4A-07",
+    "VOL-V-36.2-01"
+   ],
+   "activities": [
+    "form-4a",
+    "form-4a-prep"
+   ],
+   "clarifications": [
+    "CQ-F4A-REISSUE"
+   ],
+   "prices": []
+  },
+  "status": "ambiguous: the cover (ADD-03:cover/para3) says 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a General Change in Law to SAR 4,000,000', while operative Section 2.1 (ADD-03:2.1) says 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.' and Section 1.2 says references are to Clauses 'as amended by Addenda Nos. 1 and 2, unless otherwise stated'…",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:3. HANDBACK",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue, escalation, unaccounted): ADD-03:3.4, ADD-03:3.5, ADD-03:3.6; never an accepted fact",
+  "provisions": [
+   "ADD-03:3.4",
+   "ADD-03:3.5",
+   "ADD-03:3.6"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:3.4",
+    "basis": "escalation",
+    "item": "ADD-03/3.4(b)",
+    "why": "software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل'). insert_table {new_group: ADD-03:p3-image, into: VOL-V, number: 42-1} was refused by the engine (C22: 'ADD-03:p3-image is not Table 42-1 (its id and title name another)'): it …",
+    "conditional_on": {
+     "kind": "escalation",
+     "ref": "ADD-03/3.4(b)",
+     "state": "escalated",
+     "why": "software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل'). insert_table {new_group: ADD-03:p3-image, into: VOL-V, number: 42-1} was r…"
+    },
+    "payload": {
+     "why": "software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل'). insert_table {new_group: ADD-03:p3-image, into: VOL-V, number: 42-1} was refused by the engine (C22: 'ADD-03:p3-image is not Table 42-1 (its id and title name another)'): it does not match the Arabic-Indic numerals '٤٢-١' to the printed number 42-1. Inserting the English group ADD-03:T42-1 instead would make the convenience translation part of Volume V, contrary to ADD-03:3.5, and its rows 4 and 5 differ from the Arabic, so that was not proposed.",
+     "what_is_unsupported": "insert_table of a table read from an image whose number is printed in Arabic-Indic digits (ADD-03:p3-image as Volume V Table 42-1); Document control to record the insertion by hand, the reading staying pending approval."
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   },
+   {
+    "provision": "ADD-03:3.5",
+    "basis": "analysis issue",
+    "item": "ADD-03/issue/3.5",
+    "issue": "I-ADD-03-3-5-3-5-ANA",
+    "why": "ambiguous: Table 42-1 is printed twice and the renderings differ. Section 3.5: 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' (1) Row 4 (electrical, instrumentation and control equipment): Arabic '٧' vs English '5' (years). (2) Row 5 (membranes): Arabic '٢٤ شهراً' (24 months) under the heading 'الحد الأدنى للعمر المتبقي (سنة)' (years) vs English…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/issue/3.5",
+     "state": "proposed",
+     "why": "ambiguous: Table 42-1 is printed twice and the renderings differ. Section 3.5: 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' (1) Row 4 (electrical, instrumentation and control equipment): Arabic '٧' vs English '5' (years). (2) Row 5 (membranes): …"
+    },
+    "payload": {
+     "text": "ambiguous: Table 42-1 is printed twice and the renderings differ. Section 3.5: 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' (1) Row 4 (electrical, instrumentation and control equipment): Arabic '٧' vs English '5' (years). (2) Row 5 (membranes): Arabic '٢٤ شهراً' (24 months) under the heading 'الحد الأدنى للعمر المتبقي (سنة)' (years) vs English '24' in years; readings: 24 months, or 24 years with 'شهراً' an error. (3) English note (4) 'The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.' has no Arabic counterpart (Arabic notes ١-٣ only); readings: no effect because the governing text omits it, or an amendment of Volume II Clause 2.2. (4) The cover says 'four asset classes' and 'invites Bidders to describe', while the table prints five rows and Section 3.6 says 'shall demonstrate'; the cover summarises and does not amend. Open questions: which values bind for rows 4 and 5, and whether note (4) amends Volume II Clause 2.2. Pending a human decision; a clarification to the Authority may be warranted.",
+     "owner": "Technical",
+     "short": "Table 42-1 Arabic vs English differ (rows 4, 5, note 4; cover 'four')",
+     "theme": "handback"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   },
+   {
+    "provision": "ADD-03:3.6",
+    "basis": "unaccounted",
+    "item": "impact:ADD-03:3.6",
+    "why": "no op or disposition accounts for it",
+    "units": [],
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:3.6",
+     "state": "unaccounted",
+     "why": "no op or disposition accounts for it"
+    },
+    "investigate": "conditional on provision ADD-03:3.6 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:3.6"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "escalation",
+    "ref": "ADD-03/3.4(b)",
+    "state": "escalated",
+    "why": "software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل'). insert_table {new_group: ADD-03:p3-image, into: VOL-V, number: 42-1} was r…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/issue/3.5",
+    "state": "proposed",
+    "why": "ambiguous: Table 42-1 is printed twice and the renderings differ. Section 3.5: 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' (1) Row 4 (electrical, instrumentation and control equipment): Arabic '٧' vs English '5' (years). (2) Row 5 (membranes): …"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:3.6",
+    "state": "unaccounted",
+    "why": "no op or disposition accounts for it"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-V:42.1"
+   ],
+   "units": [
+    "VOL-V:42.1"
+   ],
+   "rows": [
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "activities": [],
+   "clarifications": [
+    "CQ-HANDBACK-CONDITION"
+   ],
+   "prices": []
+  },
+  "status": "software limitation: 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' Appendix A is the Arabic image table ADD-03:p3-image (title 'جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل'). insert_table {new_group: ADD-03:p3-image, into: VOL-V, number: 42-1} was refused by the engine (C22: 'ADD-03:p3-image is not Table 42-1 (its id and title name another)'): it …; ambiguous: Table 42-1 is printed twice and the renderings differ. Section 3.5: 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' (1) Row 4 (electrical, instrumentation and control equipment): Arabic '٧' vs English '5' (years). (2) Row 5 (membranes): Arabic '٢٤ شهراً' (24 months) under the heading 'الحد الأدنى للعمر المتبقي (سنة)' (years) vs English…; no op or disposition accounts for it",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references"
+ },
+ {
+  "id": "impact:5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue): ADD-03:Q17, ADD-03:Q18; never an accepted fact",
+  "provisions": [
+   "ADD-03:Q17",
+   "ADD-03:Q18"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:Q17",
+    "basis": "analysis issue",
+    "item": "ADD-03/Q17/issue",
+    "issue": "I-ADD-03-Q17-ISSUE-ANA",
+    "why": "ambiguous: ADD-03:Q17 says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 says 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Reading 1: a financing-assumptions schedule in Envelope A is always 'other commercial information', so the Proposal is non-responsive. Rea…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/Q17/issue",
+     "state": "proposed",
+     "why": "ambiguous: ADD-03:Q17 says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 says 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Reading 1: a financing-assumptions sch…"
+    },
+    "payload": {
+     "text": "ambiguous: ADD-03:Q17 says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 says 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Reading 1: a financing-assumptions schedule in Envelope A is always 'other commercial information', so the Proposal is non-responsive. Reading 2: 6.2 applies only if the schedule's content is price, rate or commercial information. Open question: does the non-responsive consequence of VOL-I:6.2 attach to row ADD-03-Q17-1 (A3)? Pending a human decision.",
+     "owner": "Commercial",
+     "short": "Q17: does the VOL-I:6.2 non-responsive consequence apply to a schedule placed in Envelope A?",
+     "theme": "envelope separation"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   },
+   {
+    "provision": "ADD-03:Q18",
+    "basis": "analysis issue",
+    "item": "ADD-03/Q18/issue",
+    "issue": "I-ADD-03-Q18-ISSUE-ANA",
+    "why": "ambiguous: the bidder asked whether a Direct Agreement term on compensation for termination for Project Company default prevails over VOL-V:40.2. The response says only 'The order of precedence at Volume I Clause 3.2 applies. The Direct Agreement will be negotiated with the Senior Lenders after the Preferred Bidder Notification.' VOL-I:3.1 lists the RFP Documents ('Volume I ... Volume V (Draft Pr…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/Q18/issue",
+     "state": "proposed",
+     "why": "ambiguous: the bidder asked whether a Direct Agreement term on compensation for termination for Project Company default prevails over VOL-V:40.2. The response says only 'The order of precedence at Volume I Clause 3.2 applies. The Direct Agreement will be negotiated with the Senior Lenders after the…"
+    },
+    "payload": {
+     "text": "ambiguous: the bidder asked whether a Direct Agreement term on compensation for termination for Project Company default prevails over VOL-V:40.2. The response says only 'The order of precedence at Volume I Clause 3.2 applies. The Direct Agreement will be negotiated with the Senior Lenders after the Preferred Bidder Notification.' VOL-I:3.1 lists the RFP Documents ('Volume I ... Volume V (Draft Project Agreement); and every Addendum issued') and names no Direct Agreement. Reading 1: VOL-V:40.2 prevails. Reading 2: the point is left open until post-award negotiation. Open question: which prevails, and what is the risk to pricing compensation on termination? Pending a human decision.",
+     "owner": "Legal",
+     "short": "Q18: Direct Agreement vs VOL-V:40.2 precedence left unanswered",
+     "theme": "order of precedence"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "issue",
+    "ref": "ADD-03/Q17/issue",
+    "state": "proposed",
+    "why": "ambiguous: ADD-03:Q17 says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 says 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Reading 1: a financing-assumptions sch…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/Q18/issue",
+    "state": "proposed",
+    "why": "ambiguous: the bidder asked whether a Direct Agreement term on compensation for termination for Project Company default prevails over VOL-V:40.2. The response says only 'The order of precedence at Volume I Clause 3.2 applies. The Direct Agreement will be negotiated with the Senior Lenders after the…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-I:10.1",
+    "VOL-I:10.6",
+    "VOL-I:3.2",
+    "VOL-I:6.2",
+    "VOL-IV:F4-F",
+    "VOL-V:39.5",
+    "VOL-V:40.2"
+   ],
+   "units": [
+    "VOL-I:10.1",
+    "VOL-I:10.6",
+    "VOL-I:3.2",
+    "VOL-I:6.2",
+    "VOL-IV:F4-F/T1",
+    "VOL-IV:F4-F/T2",
+    "VOL-IV:F4-F/assumed-gearing-debt-equity",
+    "VOL-IV:F4-F/assumed-senior-debt-margin-bps",
+    "VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close",
+    "VOL-IV:F4-F/availability-payment-in-words",
+    "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+    "VOL-IV:F4-F/bidder",
+    "VOL-IV:F4-F/date",
+    "VOL-IV:F4-F/date-of-model-audit-opinion",
+    "VOL-IV:F4-F/envelope-b-only",
+    "VOL-IV:F4-F/equity-irr-nominal-post-tax",
+    "VOL-IV:F4-F/estimated-project-cost-sar",
+    "VOL-IV:F4-F/indexation-basis-assumed",
+    "VOL-IV:F4-F/model-auditor",
+    "VOL-IV:F4-F/name-and-capacity",
+    "VOL-IV:F4-F/para1",
+    "VOL-IV:F4-F/project-irr-nominal-post-tax",
+    "VOL-IV:F4-F/signature",
+    "VOL-IV:H:F4-F",
+    "VOL-V:39.5",
+    "VOL-V:40.2"
+   ],
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-I-10.6-01",
+    "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ],
+   "activities": [
+    "assemble-envelope-a",
+    "assemble-envelope-b",
+    "copies",
+    "deliver",
+    "fin-assumptions",
+    "fin-model-build",
+    "fin-model-freeze",
+    "form-4f",
+    "lender-terms",
+    "seal-and-mark"
+   ],
+   "clarifications": [
+    "CQ-ENV-B-CONTENTS",
+    "CQ-F4B-CONTRACT-VALUE",
+    "CQ-USB-PACKAGING",
+    "CQ-VOL-V-SCHEDULES"
+   ],
+   "prices": [
+    "VOL-I-10.1-01",
+    "VOL-I-10.6-01",
+    "VOL-I-6.2-01",
+    "VOL-I-6.2-02",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ]
+  },
+  "status": "ambiguous: ADD-03:Q17 says 'A schedule placed in Envelope A will be treated in accordance with Volume I Clause 6.2.' VOL-I:6.2 says 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Reading 1: a financing-assumptions schedule in Envelope A is always 'other commercial information', so the Proposal is non-responsive. Rea…; ambiguous: the bidder asked whether a Direct Agreement term on compensation for termination for Project Company default prevails over VOL-V:40.2. The response says only 'The order of precedence at Volume I Clause 3.2 applies. The Direct Agreement will be negotiated with the Senior Lenders after the Preferred Bidder Notification.' VOL-I:3.1 lists the RFP Documents ('Volume I ... Volume V (Draft Pr…",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "oblig:ADD-03/cover/para3",
+  "kind": "obligation_impact",
+  "op": "ADD-03/cover/para3",
+  "provisions": [
+   "ADD-03:cover/para3"
+  ],
+  "units_changed": [],
+  "terms": [
+   "This Addendum",
+   "General Change",
+   "Volume II",
+   "RFP Documents"
+  ],
+  "related": {
+   "units": [
+    "ADD-01:2.2",
+    "ADD-01:5.1",
+    "ADD-01:Q1",
+    "ADD-01:Q2",
+    "ADD-01:cover/para3",
+    "ADD-02:1.1",
+    "ADD-02:4.1",
+    "ADD-02:5.1",
+    "ADD-02:5.2",
+    "ADD-02:F4-G/T1/1",
+    "ADD-02:Q11",
+    "ADD-02:T1-1-rev/A",
+    "ADD-02:cover/para3",
+    "VOL-I:1.3",
+    "VOL-I:13.2",
+    "VOL-I:2.1",
+    "VOL-I:3.1",
+    "VOL-I:3.2",
+    "VOL-I:3.2(d)",
+    "VOL-I:3.2(f)",
+    "VOL-I:3.4",
+    "VOL-I:5.1",
+    "VOL-I:9.2",
+    "VOL-V:1.5",
+    "VOL-V:31.1",
+    "VOL-V:36.2",
+    "VOL-V:42.1"
+   ],
+   "rows": [
+    "ADD-01-AppA-01",
+    "ADD-02-5.2-01",
+    "ADD-02-F4G-02",
+    "VOL-I-13.2-01",
+    "VOL-I-3.4-01",
+    "VOL-I-5.1-01",
+    "VOL-I-9.2-01",
+    "VOL-V-31.1-01",
+    "VOL-V-31.1-02",
+    "VOL-V-31.1-03",
+    "VOL-V-36.2-01",
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "answers": [
+    "ADD-01:Q1",
+    "ADD-01:Q2",
+    "ADD-02:Q11"
+   ]
+  },
+  "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+ },
+ {
+  "id": "oblig:ADD-03/2.2",
+  "kind": "obligation_impact",
+  "op": "ADD-03/2.2",
+  "provisions": [
+   "ADD-03:2.2"
+  ],
+  "units_changed": [],
+  "terms": [
+   "Availability Payment"
+  ],
+  "related": {
+   "units": [
+    "VOL-I:10.2",
+    "VOL-I:10.6",
+    "VOL-I:11.5",
+    "VOL-IV:F4-F/availability-payment-in-words",
+    "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+    "VOL-IV:F4-F/para1",
+    "VOL-V:1.1",
+    "VOL-V:29.1",
+    "VOL-V:29.2",
+    "VOL-V:29.3",
+    "VOL-V:29.5",
+    "VOL-V:31.2"
+   ],
+   "rows": [
+    "VOL-I-10.2-01",
+    "VOL-I-10.6-01",
+    "VOL-I-11.5-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "VOL-V-29.2-01",
+    "VOL-V-29.3-01"
+   ],
+   "answers": []
+  },
+  "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+ },
+ {
+  "id": "oblig:ADD-03/3.1",
+  "kind": "obligation_impact",
+  "op": "ADD-03/3.1",
+  "provisions": [
+   "ADD-03:3.1"
+  ],
+  "units_changed": [
+   "VOL-II:8.5",
+   "VOL-V:42.3"
+  ],
+  "terms": [
+   "Volume II Clause"
+  ],
+  "related": {
+   "units": [
+    "ADD-01:5.1",
+    "ADD-01:Q1",
+    "ADD-01:cover/para3",
+    "ADD-02:4.1",
+    "ADD-02:F4-G/T1/1",
+    "ADD-02:Q11",
+    "ADD-02:cover/para3",
+    "VOL-V:1.5",
+    "VOL-V:42.1"
+   ],
+   "rows": [
+    "ADD-01-AppA-01",
+    "ADD-02-F4G-02",
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "answers": [
+    "ADD-01:Q1",
+    "ADD-02:Q11"
+   ]
+  },
+  "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+ },
+ {
+  "id": "oblig:ADD-03/4.1",
+  "kind": "obligation_impact",
+  "op": "ADD-03/4.1",
+  "provisions": [
+   "ADD-03:4.1"
+  ],
+  "units_changed": [
+   "VOL-V:12.4+ADD-03"
+  ],
+  "terms": [
+   "Scheduled PCOD",
+   "Working Days"
+  ],
+  "related": {
+   "units": [
+    "ADD-01:3.1",
+    "VOL-I:12.3",
+    "VOL-I:12.4",
+    "VOL-I:2.4",
+    "VOL-I:4.3",
+    "VOL-I:5.2",
+    "VOL-V:12.1",
+    "VOL-V:18.1",
+    "VOL-V:18.3",
+    "VOL-V:29.4",
+    "VOL-V:34.3"
+   ],
+   "rows": [
+    "ADD-01-3.1-01",
+    "VOL-I-4.3-01",
+    "VOL-I-5.2-01",
+    "VOL-V-12.1-01",
+    "VOL-V-18.3-01",
+    "VOL-V-29.4-01",
+    "VOL-V-34.3-01"
+   ],
+   "answers": []
+  },
+  "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+ },
+ {
+  "id": "oblig:ADD-03/Q17(b)",
+  "kind": "obligation_impact",
+  "op": "ADD-03/Q17(b)",
+  "provisions": [
+   "ADD-03:Q17"
+  ],
+  "units_changed": [],
+  "terms": [
+   "Financial Model"
+  ],
+  "related": {
+   "units": [
+    "VOL-I:10.1",
+    "VOL-I:10.3",
+    "VOL-IV:F4-F/envelope-b-only",
+    "VOL-IV:F4-F/para1",
+    "VOL-V:1.3"
+   ],
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-I-10.3-01",
+    "VOL-I-10.3-02",
+    "VOL-IV-F4F-02"
+   ],
+   "answers": []
+  },
+  "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+ },
+ {
+  "id": "reading:ADD-03-p3-r1",
+  "kind": "reading_rows",
+  "reading": "ADD-03-p3-r1",
+  "status": "pending",
+  "subject_sha256": "890c074da45ed63d43adc1e6789331430fd909b25bfd9ccf4f6e1fdd398ce6e9",
+  "pages": [
+   3
+  ],
+  "conditional_on": {
+   "reading": "ADD-03-p3-r1",
+   "until": "approval"
+  },
+  "units": [
+   {
+    "unit": "ADD-03:p3-image",
+    "kind": "table",
+    "label": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+    "translation": null,
+    "crops": [
+     "regions/ADD-03-p3-r1/crop.png"
+    ],
+    "bands": [],
+    "table": {
+     "column_lang": {
+      "أقصى درجة للحالة": "ar",
+      "الحد الأدنى للعمر المتبقي (سنة)": "ar",
+      "فئة الأصول": "ar",
+      "م": "ar"
+     },
+     "columns": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "direction": "rtl",
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r1",
+    "kind": "table_row",
+    "label": "r1",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ١ | فئة الأصول: المنشآت المدنية والخرسانية | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة للحالة: ٢",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r01.png",
+     "review/ADD-03-p3-r1/cells/r01c0.png",
+     "review/ADD-03-p3-r1/cells/r01c1.png",
+     "review/ADD-03-p3-r1/cells/r01c2.png",
+     "review/ADD-03-p3-r1/cells/r01c3.png"
+    ],
+    "bands": [
+     1
+    ],
+    "cells": {
+     "أقصى درجة للحالة": "٢",
+     "الحد الأدنى للعمر المتبقي (سنة)": "٢٠",
+     "فئة الأصول": "المنشآت المدنية والخرسانية",
+     "م": "١"
+    },
+    "numeric": {
+     "أقصى درجة للحالة": {
+      "form": "single",
+      "text": "٢",
+      "values": [
+       2.0
+      ]
+     },
+     "الحد الأدنى للعمر المتبقي (سنة)": {
+      "form": "single",
+      "text": "٢٠",
+      "values": [
+       20.0
+      ]
+     },
+     "م": {
+      "form": "single",
+      "text": "١",
+      "values": [
+       1.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "max_grade",
+      "meaning": "maximum condition grade 2",
+      "text": "٢",
+      "uncertain": false,
+      "visual_ltr_expected": "٢"
+     },
+     {
+      "alternatives": [],
+      "column": "min_life",
+      "meaning": "20 years minimum remaining life",
+      "text": "٢٠",
+      "uncertain": false,
+      "visual_ltr_expected": "٢٠"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "item 1",
+      "text": "١",
+      "uncertain": false,
+      "visual_ltr_expected": "١"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Utilities Procurement Authority - Asset Transfer Committee",
+      "الهيئة الشمالية للمشتريات المرفقية",
+      "لجنة نقل الأصول",
+      "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+      "الرقم: ٤١٧/٢٠٢٦",
+      "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+      "مناقصة رقم: NUPA/ISTP/2026/014",
+      "ملاحظات:",
+      "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+      "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+      "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+      "رئيس لجنة نقل الأصول",
+      "",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+     ],
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "table_title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r2",
+    "kind": "table_row",
+    "label": "r2",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٢ | فئة الأصول: خط نقل المياه المعالجة | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة للحالة: ٢",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r02.png",
+     "review/ADD-03-p3-r1/cells/r02c0.png",
+     "review/ADD-03-p3-r1/cells/r02c1.png",
+     "review/ADD-03-p3-r1/cells/r02c2.png",
+     "review/ADD-03-p3-r1/cells/r02c3.png"
+    ],
+    "bands": [
+     2
+    ],
+    "cells": {
+     "أقصى درجة للحالة": "٢",
+     "الحد الأدنى للعمر المتبقي (سنة)": "٢٠",
+     "فئة الأصول": "خط نقل المياه المعالجة",
+     "م": "٢"
+    },
+    "numeric": {
+     "أقصى درجة للحالة": {
+      "form": "single",
+      "text": "٢",
+      "values": [
+       2.0
+      ]
+     },
+     "الحد الأدنى للعمر المتبقي (سنة)": {
+      "form": "single",
+      "text": "٢٠",
+      "values": [
+       20.0
+      ]
+     },
+     "م": {
+      "form": "single",
+      "text": "٢",
+      "values": [
+       2.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "max_grade",
+      "meaning": "maximum condition grade 2",
+      "text": "٢",
+      "uncertain": false,
+      "visual_ltr_expected": "٢"
+     },
+     {
+      "alternatives": [],
+      "column": "min_life",
+      "meaning": "20 years minimum remaining life",
+      "text": "٢٠",
+      "uncertain": false,
+      "visual_ltr_expected": "٢٠"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "item 2",
+      "text": "٢",
+      "uncertain": false,
+      "visual_ltr_expected": "٢"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Utilities Procurement Authority - Asset Transfer Committee",
+      "الهيئة الشمالية للمشتريات المرفقية",
+      "لجنة نقل الأصول",
+      "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+      "الرقم: ٤١٧/٢٠٢٦",
+      "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+      "مناقصة رقم: NUPA/ISTP/2026/014",
+      "ملاحظات:",
+      "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+      "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+      "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+      "رئيس لجنة نقل الأصول",
+      "",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+     ],
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "table_title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r3",
+    "kind": "table_row",
+    "label": "r3",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٣ | فئة الأصول: المعدات الميكانيكية | الحد الأدنى للعمر المتبقي (سنة): ٥ | أقصى درجة للحالة: ٣",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r03.png",
+     "review/ADD-03-p3-r1/cells/r03c0.png",
+     "review/ADD-03-p3-r1/cells/r03c1.png",
+     "review/ADD-03-p3-r1/cells/r03c2.png",
+     "review/ADD-03-p3-r1/cells/r03c3.png"
+    ],
+    "bands": [
+     3
+    ],
+    "cells": {
+     "أقصى درجة للحالة": "٣",
+     "الحد الأدنى للعمر المتبقي (سنة)": "٥",
+     "فئة الأصول": "المعدات الميكانيكية",
+     "م": "٣"
+    },
+    "numeric": {
+     "أقصى درجة للحالة": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     },
+     "الحد الأدنى للعمر المتبقي (سنة)": {
+      "form": "single",
+      "text": "٥",
+      "values": [
+       5.0
+      ]
+     },
+     "م": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "max_grade",
+      "meaning": "maximum condition grade 3",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     },
+     {
+      "alternatives": [],
+      "column": "min_life",
+      "meaning": "5 years minimum remaining life",
+      "text": "٥",
+      "uncertain": false,
+      "visual_ltr_expected": "٥"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "item 3",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Utilities Procurement Authority - Asset Transfer Committee",
+      "الهيئة الشمالية للمشتريات المرفقية",
+      "لجنة نقل الأصول",
+      "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+      "الرقم: ٤١٧/٢٠٢٦",
+      "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+      "مناقصة رقم: NUPA/ISTP/2026/014",
+      "ملاحظات:",
+      "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+      "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+      "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+      "رئيس لجنة نقل الأصول",
+      "",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+     ],
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "table_title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r4",
+    "kind": "table_row",
+    "label": "r4",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٤ | فئة الأصول: المعدات الكهربائية وأجهزة القياس والتحكم | الحد الأدنى للعمر المتبقي (سنة): ٧ | أقصى درجة للحالة: ٣",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r04.png",
+     "review/ADD-03-p3-r1/cells/r04c0.png",
+     "review/ADD-03-p3-r1/cells/r04c1.png",
+     "review/ADD-03-p3-r1/cells/r04c2.png",
+     "review/ADD-03-p3-r1/cells/r04c3.png"
+    ],
+    "bands": [
+     4
+    ],
+    "cells": {
+     "أقصى درجة للحالة": "٣",
+     "الحد الأدنى للعمر المتبقي (سنة)": "٧",
+     "فئة الأصول": "المعدات الكهربائية وأجهزة القياس والتحكم",
+     "م": "٤"
+    },
+    "numeric": {
+     "أقصى درجة للحالة": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     },
+     "الحد الأدنى للعمر المتبقي (سنة)": {
+      "form": "single",
+      "text": "٧",
+      "values": [
+       7.0
+      ]
+     },
+     "م": {
+      "form": "single",
+      "text": "٤",
+      "values": [
+       4.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "max_grade",
+      "meaning": "maximum condition grade 3",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     },
+     {
+      "alternatives": [],
+      "column": "min_life",
+      "meaning": "7 years minimum remaining life",
+      "text": "٧",
+      "uncertain": false,
+      "visual_ltr_expected": "٧"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "item 4",
+      "text": "٤",
+      "uncertain": false,
+      "visual_ltr_expected": "٤"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Utilities Procurement Authority - Asset Transfer Committee",
+      "الهيئة الشمالية للمشتريات المرفقية",
+      "لجنة نقل الأصول",
+      "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+      "الرقم: ٤١٧/٢٠٢٦",
+      "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+      "مناقصة رقم: NUPA/ISTP/2026/014",
+      "ملاحظات:",
+      "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+      "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+      "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+      "رئيس لجنة نقل الأصول",
+      "",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+     ],
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "table_title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r5",
+    "kind": "table_row",
+    "label": "r5",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٥ | فئة الأصول: الأغشية (إن وُجدت) | الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً | أقصى درجة للحالة: ٣",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r05.png",
+     "review/ADD-03-p3-r1/cells/r05c0.png",
+     "review/ADD-03-p3-r1/cells/r05c1.png",
+     "review/ADD-03-p3-r1/cells/r05c2.png",
+     "review/ADD-03-p3-r1/cells/r05c3.png"
+    ],
+    "bands": [
+     5
+    ],
+    "cells": {
+     "أقصى درجة للحالة": "٣",
+     "الحد الأدنى للعمر المتبقي (سنة)": "٢٤ شهراً",
+     "فئة الأصول": "الأغشية (إن وُجدت)",
+     "م": "٥"
+    },
+    "numeric": {
+     "أقصى درجة للحالة": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     },
+     "م": {
+      "form": "single",
+      "text": "٥",
+      "values": [
+       5.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "max_grade",
+      "meaning": "maximum condition grade 3",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     },
+     {
+      "alternatives": [],
+      "column": "min_life",
+      "meaning": "24 (months, per the cell's own word شهراً)",
+      "text": "٢٤",
+      "uncertain": false,
+      "visual_ltr_expected": "٢٤"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "item 5",
+      "text": "٥",
+      "uncertain": false,
+      "visual_ltr_expected": "٥"
+     }
+    ],
+    "uncertain": [
+     "the cell prints '٢٤ شهراً' (24 months) while the column heading states the unit as (سنة) (year); recorded as printed; how the unit applies is for a person"
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة الأصول",
+      "الحد الأدنى للعمر المتبقي (سنة)",
+      "أقصى درجة للحالة"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Utilities Procurement Authority - Asset Transfer Committee",
+      "الهيئة الشمالية للمشتريات المرفقية",
+      "لجنة نقل الأصول",
+      "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+      "الرقم: ٤١٧/٢٠٢٦",
+      "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+      "مناقصة رقم: NUPA/ISTP/2026/014",
+      "ملاحظات:",
+      "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+      "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+      "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+      "رئيس لجنة نقل الأصول",
+      "",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender."
+     ],
+     "qualifier": "يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن أدناه:",
+     "table_title": "جدول ٤٢-١: الحد الأدنى للعمر المتبقي للأصول عند النقل"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/hdr-en",
+    "kind": "reading_block",
+    "label": "hdr-en",
+    "role": "header",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "Northern Utilities Procurement Authority - Asset Transfer Committee",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b00-left.png"
+    ],
+    "bands": [
+     [
+      0,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/hdr-ar",
+    "kind": "reading_block",
+    "label": "hdr-ar",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "الهيئة الشمالية للمشتريات المرفقية",
+    "translation": "Northern Utilities Procurement Authority",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b00-right.png"
+    ],
+    "bands": [
+     [
+      0,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/committee-ar",
+    "kind": "reading_block",
+    "label": "committee-ar",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "لجنة نقل الأصول",
+    "translation": "Asset Transfer Committee",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b01-full.png"
+    ],
+    "bands": [
+     [
+      1,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/date-ar",
+    "kind": "reading_block",
+    "label": "date-ar",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "التاريخ: ١٥ نوفمبر ٢٠٢٦م",
+    "translation": "Date: 15 November 2026 AD",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b02-left.png"
+    ],
+    "bands": [
+     [
+      2,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/ref-ar",
+    "kind": "reading_block",
+    "label": "ref-ar",
+    "role": "header",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "الرقم: ٤١٧/٢٠٢٦",
+    "translation": "No.: 417/2026",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b02-right.png"
+    ],
+    "bands": [
+     [
+      2,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/subject",
+    "kind": "reading_block",
+    "label": "subject",
+    "role": "subject",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "الموضوع: متطلبات حالة الأصول عند نقل محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان",
+    "translation": "Subject: Asset condition requirements on transfer of the Wadi Al-Sirhan Independent Sewage Treatment Plant",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b03-full.png"
+    ],
+    "bands": [
+     [
+      3,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/tender-ref",
+    "kind": "reading_block",
+    "label": "tender-ref",
+    "role": "header",
+    "lang": "mixed",
+    "pages": [
+     3
+    ],
+    "text": "مناقصة رقم: NUPA/ISTP/2026/014",
+    "translation": "Tender number: NUPA/ISTP/2026/014",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b04-full.png"
+    ],
+    "bands": [
+     [
+      4,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/notes-heading",
+    "kind": "reading_block",
+    "label": "notes-heading",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "ملاحظات:",
+    "translation": "Notes:",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b13-full.png"
+    ],
+    "bands": [
+     [
+      13,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note1",
+    "kind": "reading_block",
+    "label": "note1",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "١. تُقيِّم درجة الحالة وفق مقياس الهيئة لتصنيف حالة الأصول المكوَّن من خمس درجات، وتعني الدرجة ١ أن الأصل بحالة جديدة.",
+    "translation": "1. The condition grade is assessed according to the Authority's five-grade asset condition classification scale; grade 1 means the asset is in new condition.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b14-full.png"
+    ],
+    "bands": [
+     [
+      14,
+      "full"
+     ]
+    ],
+    "uncertain": [
+     "vowel marks on تُقيِّم and المكوَّن read from the native crop; reviewer to confirm the shadda/kasra/fatha forms (matching text removes tashkeel)"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note2",
+    "kind": "reading_block",
+    "label": "note2",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "٢. يحدِّد المهندس المستقل العمر المتبقي لكل أصل في مسح الحالة الذي يُجرى قبل النقل.",
+    "translation": "2. The Independent Engineer determines the remaining life of each asset in the condition survey carried out before transfer.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b15-full.png"
+    ],
+    "bands": [
+     [
+      15,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note3",
+    "kind": "reading_block",
+    "label": "note3",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.",
+    "translation": "3. Every asset that does not meet the requirements of this table is replaced at the Project Company's expense before the transfer date.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b16-full.png"
+    ],
+    "bands": [
+     [
+      16,
+      "full"
+     ]
+    ],
+    "uncertain": [
+     "كلَّ is printed with fatha over the shadda (as read from the crop) although the passive verb would take كلُّ; recorded as printed"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/signatory",
+    "kind": "reading_block",
+    "label": "signatory",
+    "role": "signature",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "رئيس لجنة نقل الأصول",
+    "translation": "Chairman of the Asset Transfer Committee",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b17-left.png"
+    ],
+    "bands": [
+     [
+      17,
+      "left"
+     ]
+    ],
+    "uncertain": [
+     "a handwritten-style signature stroke sits under the title; it carries no legible text and is not transcribed"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/seal",
+    "kind": "reading_block",
+    "label": "seal",
+    "role": "seal",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b17-right.png"
+    ],
+    "bands": [
+     [
+      17,
+      "right"
+     ]
+    ],
+    "uncertain": [
+     "no text printed: the right half of band 17 is an empty oval seal outline; source left empty, nothing transcribed"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/image-footer",
+    "kind": "reading_block",
+    "label": "image-footer",
+    "role": "image-footer",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender.",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b18-full.png"
+    ],
+    "bands": [
+     [
+      18,
+      "full"
+     ]
+    ]
+   }
+  ],
+  "expect": "propose the rows (row_new) the reading's table or form states (zones, heights, datum, scope, notices, units: the parameters read from these cells, the quote verbatim from the reading's source text, Arabic as printed; the translation is not evidence), each cites the reading's units and carries `conditional_on: {reading: ADD-03-p3-r1, until: approval}`, and the activities they need carry the same field. They are never in force while the reading is pending: A1 shows them as PENDING READING, A3 and A5 leave them out. Where the reading and another rendering differ (a translation, an English appendix), say so in an issue or an escalation; never choose between them",
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "date:ADD-03:4.3",
+  "kind": "computed_date",
+  "unit": "ADD-03:4.3",
+  "pages": [
+   2
+  ],
+  "words": "three (3) Working Days before the Proposal Due Date",
+  "anchor": "PDD",
+  "anchor_date": "2026-11-26",
+  "computed_from": {
+   "method": "deadline",
+   "inputs": {
+    "offset": {
+     "count": 3,
+     "unit": "working_day",
+     "words": "three (3) Working Days before the Proposal Due Date"
+    },
+    "anchor": {
+     "name": "PDD",
+     "date": "2026-11-26",
+     "source": "VOL-I:6.1"
+    },
+    "direction": "before"
+   },
+   "counting": "working-days-before",
+   "result": "2026-11-23",
+   "fingerprint": "60b780e98a3a27dacdf6fba625e5ba3e239d77d6e14d9c9541ea8ef1f99d2710"
+  },
+  "date_rule": {
+   "kind": "relative",
+   "purpose": "deadline",
+   "anchor": "PDD",
+   "offset": 3,
+   "unit": "working_day",
+   "direction": "before",
+   "source_unit": "ADD-03:4.3",
+   "text": "three (3) Working Days before the Proposal Due Date"
+  },
+  "status": "resolved",
+  "readings": [
+   {
+    "key": "stated_date_excluded",
+    "value": "2026-11-23",
+    "basis": "stated in the pack (VOL-I 2.4)"
+   }
+  ],
+  "conditional": null,
+  "rows": [],
+  "expect": "a milestone proposal: an activity (milestone) whose `computed_from` is this object unchanged, or a row whose date rule is this task's `date_rule` (kind 'relative': its anchor, offset, unit and direction; dates.KINDS has no kind 'deadline', which is a purpose) copied unchanged into the row's `date_rules` with a rule_id of its own (the program recomputes either; nothing typed)",
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "date:ADD-03:4.3:within three (3) Working Days of the date of this Addendum",
+  "kind": "computed_date",
+  "unit": "ADD-03:4.3",
+  "pages": [
+   2
+  ],
+  "words": "within three (3) Working Days of the date of this Addendum",
+  "anchor": "ADD-03-issue",
+  "anchor_date": "2026-11-17",
+  "computed_from": {
+   "method": "deadline",
+   "inputs": {
+    "offset": {
+     "count": 3,
+     "unit": "working_day",
+     "words": "within three (3) Working Days of the date of this Addendum"
+    },
+    "anchor": {
+     "name": "ADD-03-issue",
+     "date": "2026-11-17",
+     "source": "ADD-03:cover/para1"
+    },
+    "direction": "after"
+   },
+   "counting": null,
+   "result": null,
+   "fingerprint": "4981e03149532c8f2be62397ebc1315301568fa246a4537673f32409789bcfae"
+  },
+  "date_rule": {
+   "kind": "relative",
+   "purpose": "deadline",
+   "anchor": "ADD-03-issue",
+   "offset": 3,
+   "unit": "working_day",
+   "direction": "after",
+   "source_unit": "ADD-03:4.3",
+   "text": "within three (3) Working Days of the date of this Addendum"
+  },
+  "status": "ambiguous",
+  "readings": [
+   {
+    "key": "event_day_excluded",
+    "value": "2026-11-22",
+    "basis": "not stated in the pack (VOL-I §2.4 covers backward counting only)",
+    "label": "Counting 3 Working Days forward from X (Tuesday 17 November 2026), not counting X itself, gives Sunday 22 November 2026."
+   },
+   {
+    "key": "event_day_counted",
+    "value": "2026-11-19",
+    "basis": "not stated in the pack (VOL-I §2.4 covers backward counting only)",
+    "label": "Counting X (Tuesday 17 November 2026) as the first of 3 Working Days, the last is Thursday 19 November 2026."
+   }
+  ],
+  "note": "not computed: no rule in the counting registry (config/formulas.yaml `counting`) for Working Days counted after a date (VOL-I 2.4 covers Working Days counted backwards): every reading is listed and a person decides",
+  "conditional": null,
+  "rows": [],
+  "expect": "not computed: no rule in the counting registry (config/formulas.yaml `counting`) for Working Days counted after a date (VOL-I 2.4 covers Working Days counted backwards): every reading is listed and a person decides: a row carries the words as this task's `date_rule` (kind 'relative': its anchor, offset, unit and direction; dates.KINDS has no kind 'deadline', which is a purpose) copied unchanged into the row's `date_rules` with a rule_id of its own; never a typed date; AMBIGUOUS under the counting rules: escalate, never choose a reading",
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ }
+]

@@ -1,0 +1,337 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 3
+    selected_items:
+      DS-03: &id001
+      - consequential_interpretation
+      DS-07: &id002
+      - conflicting
+      DS-08: &id003
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-001-critic
+    route: host
+    reviewed: 3
+    agrees: 2
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    selected: 2
+    selected_items:
+      DS-ADD03-4.3-row: &id004
+      - consequential_interpretation
+      DS-ADD03-Q17-issue: &id005
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-002-critic
+    route: host
+    reviewed: 2
+    agrees: 1
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-003:
+    selected: 1
+    selected_items:
+      DS-APPB-ESC: &id006
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-003-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-004:
+    selected: 1
+    selected_items:
+      DS-READ-ROW: &id007
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-004-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+items:
+  DS-03:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The interpretation's `quote` gives the prohibition with no qualification. The ADD-03:4.4 exception appears
+          only in the free-text `note`. A1 or A3 output that uses just the quote and the disqualification consequence
+          would overstate the prohibition at ADD-03. The exception should travel with the row reading.
+        - The exception only applies 'during an appointment under Section 4.3'. Section 4.3 (presumably ADD-03 Section
+          4.3) is not printed here, and `dependencies` is empty. The window and the appointment it depends on should
+          be listed as a dependency, as change propagation requires.
+        - The rationale says the date rules BLACKOUT-START and BLACKOUT-END 'carry over unchanged'. No evidence
+          for those rules is shown here, so I could not check that statement.
+        - The note correctly leaves to a person (Legal / Bid management) whether a particular communication falls
+          inside the exception. It also correctly keeps the text of VOL-I:4.2 unchanged and does not widen the carve-out
+          beyond 'identification and handling of cores and records'.
+        evidence_checked:
+        - VOL-I:4.2 text_before_addendum
+        - ADD-03:4.4 text
+        - '''Breach of this Clause shall result in the disqualification of the Bidder.'''
+        - statement downstream-001/S-4.4
+        - controller_validation (verbatim, C16, stages)
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-001-critic
+        model_reported: claude-opus-5-5
+  DS-07:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The parameter `threshold_sar: 1500000` and the quote ''exceeds SAR 1,500,000'' record Reading 1 as the
+          row''s value. The proposer''s own declared ambiguity (I-ADD03-CIL-THRESHOLD, S-36.2-WHICH) is still pending
+          a person. The figure should be marked as provisional on that issue, or left unresolved, rather than carried
+          as the effective threshold.'
+        - S-36.2-WHICH's Reading 2 relies on a BASE figure of 'SAR 5,000,000'. That figure is not in any evidence
+          printed here. Only the ADD-02 effective text (SAR 2,500,000) is shown, so Reading 2's basis cannot be
+          checked.
+        - The cover says the threshold is reduced 'to SAR 4,000,000', but the ADD-02 effective figure is SAR 2,500,000.
+          Measured against that text, 4,000,000 would be an increase, so the cover's wording is also inconsistent
+          with its own word 'reduces'. Neither the item nor S-36.2-WHICH says this, and it is relevant to the person
+          deciding.
+        - S-PAE-STALE says row VOL-V-36.2-01 still cites SAR 2,500,000. Its only evidence is ADD-03:3.4, which concerns
+          a different clause and row (VOL-V-42.1-02). No evidence is shown for the claim about the 36.2 row.
+        - The consequence 'none_stated' fits VOL-V:36.2 as shown, which states no rejection or disqualification.
+        evidence_checked:
+        - VOL-V:36.2 text_before_addendum (SAR 2,500,000)
+        - ADD-03:2.1 'is reduced by SAR 1,000,000'
+        - ADD-03:cover/para3 'to SAR 4,000,000'
+        - statements downstream-001/S-36.2-AFTER, S-36.2-WHICH, S-PAE-STALE
+        - controller_validation (declared_conflicts, stages AMENDED ADD-02/8.1, ADD-03/2.1)
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-001-critic
+        model_reported: claude-opus-5-5
+  DS-08:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The issue is correctly framed as an ambiguity. It quotes both the cover and Section 2.1, states both readings,
+          names an owner and leaves the decision to a person. That matches the rule that the cover summarises and
+          the difference is reported, not resolved. Since the point turns on which figure governs, Legal could also
+          be named as a co-owner alongside Commercial.
+        - The controller's 'applied rule' and 'consistency (phases)' records treat VOL-I 3.2 as settling the point
+          in favour of the operative provision. The only part of VOL-I 3.2 shown is its lead-in ('the following
+          order of precedence shall apply, the first named prevailing:'); the order itself is not printed, so it
+          cannot be checked whether it covers a cover-versus-operative difference inside one addendum. The 'consistency'
+          record also attributes to VOL-I 3.2 a quotation that appears to be cover text ('Bidders shall acknowledge
+          receipt in Form 4-A ...'). Which clause governs is for a person to decide; handing the point back to a
+          person is not a fault in this item.
+        - The issue cites ADD-03 1.2 (references read as amended by Addenda Nos. 1 and 2) and ADD-03 2.2 / Form
+          4-F (Availability Payment price assumption). Neither is printed in this request, so those dependency claims
+          could not be checked.
+        - The issue should also say that, against the ADD-02 figure of SAR 2,500,000, the cover's 'reduces ... to
+          SAR 4,000,000' would be an increase.
+        - 'show_in_a3 false is consistent: neither unit states a bid-out consequence.'
+        evidence_checked:
+        - ADD-03:cover/para3 'This Addendum reduces the threshold in Volume V Clause 36.2 for compensation for a
+          General Change in Law to SAR 4,000,000'
+        - ADD-03:2.1 'The amount stated in Volume V Clause 36.2 is reduced by SAR 1,000,000.'
+        - VOL-V:36.2 text_before_addendum (SAR 2,500,000) and effective 'exceeds SAR 1,500,000 in aggregate over
+          the term'
+        - controller_validation (applied rule, consistency (phases))
+        - statement downstream-001/S-36.2-WHICH
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-001-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-4.3-row:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The consequence comes from ADD-03:Q19, quoted as 'Requests made after the period stated in that Section
+          will not be accommodated.' Q19 is not printed under `units`. That means I cannot check from the evidence
+          shown that 'that Section' refers to ADD-03 Section 4.3, or that the quotation is complete. The controller's
+          verbatim check covers the words but not which section they refer to. Because this cannot be told from
+          the evidence shown, I do not agree.
+        - The interpretation note says 'VOL-I 4.2 is disapplied for the communications described in ADD-03 4.4.'
+          Neither VOL-I 4.2 nor ADD-03 4.4 is printed. The point does not come from ADD-03:4.3, and it brings another
+          clause into this row. That widens the row beyond what its provision names. It should be its own statement
+          with its own evidence, or be removed from this row.
+        - The forward-counting date rule is marked 'ambiguous counting' and also 'Escalated'. The stated reason
+          is that 'VOL-I 2.4 covers backward counting only', meaning no approved method covers forward counting.
+          That reason points to a software limitation (no approved method) or a gap in the pack's counting rule,
+          not to an ambiguity in the words of 4.3. One point should have one class. The reason should begin with
+          'ambiguous:' or 'software limitation:', not mix the two.
+        - The note calls the reading that counts the issue day 'conservative planning'. That leans toward one reading.
+          If the planning tools or A5 use 2026-11-19, it should be labelled 'PROVISIONAL ASSUMPTION:' with its basis.
+          Otherwise the reading is in effect being chosen.
+        - The anchor 'Issued 17 November 2026' (ADD-03 cover) and the Proposal Due Date of 2026-11-26 (VOL-I:6.1
+          at ADD-03) are not printed in this request. The computed values rest only on statement downstream-002/S-F-4.3-DATES.
+        - The 'requirement' quotes only the first sentence of 4.3, which is right for the Bidder's obligation. The
+          second sentence, about when appointments are held, is the Authority's undertaking. It is kept only as
+          a date rule and in the note. I see no problem with that, provided it is never presented as a Bidder obligation.
+        evidence_checked:
+        - ADD-03:4.3 text_before_addendum (both sentences)
+        - quotation 'shall request an appointment through the Portal within three (3) Working Days of the date of
+          this Addendum'
+        - quotation from ADD-03:Q19 'Requests made after the period stated in that Section will not be accommodated.'
+          (unit not printed)
+        - statement downstream-002/S-F-4.3-DATES
+        - 'controller_validation: date rule ADD03-4.3-request unresolved; ADD03-4.3-appointment 2026-11-23'
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-002-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-Q17-issue:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The issue's owner is 'Commercial', but statement S-I-Q17-6.2 says 'Commercial/Legal'. Whether VOL-I 6.2
+          applies to the schedule is partly about what 'other commercial information' means. Legal should probably
+          be named as a co-owner, or the difference should be reconciled.
+        - 'Q17 also adds an obligation: ''The schedule shall also state the minimum annual debt service cover ratio
+          assumed.'' It also says the schedule ''forms part of Form 4-F and shall be attached to it in Envelope
+          B.'' This issue does not cover either point. Check that each is captured as its own register row or amendment.
+          They are outside this item''s scope, but they must not be lost.'
+        - The bidder's question points to a tension between VOL-I 10.1 ('no document other than Form 4-F and the
+          Financial Model') and VOL-I 10.6. Whether Q17's answer settles that tension is for a person to decide.
+          No item shown here records it. Neither VOL-I 10.1 nor 10.6 is printed.
+        - Only the quoted span of VOL-I:6.2 is printed, not the full clause. I relied on the controller's verbatim
+          check for it.
+        - Both readings are fairly drawn from the words quoted, and no reading is chosen. 'show_in_a3' is false,
+          which is right while the reading is still pending.
+        evidence_checked:
+        - ADD-03:Q17 cells 'Bidder question' and 'Authority response'
+        - VOL-I:6.2 span 'The appearance of any price, rate, or other commercial information within Envelope A shall
+          render the Proposal non-responsive.'
+        - statement downstream-002/S-I-Q17-6.2
+        - 'controller_validation: verbatim checks for ADD-03:Q17 p2 and VOL-I:6.2 p3; human-owned decision'
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-002-critic
+        model_reported: claude-opus-5-5
+  DS-APPB-ESC:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The item calls this an ambiguity, but the words it relies on are not unclear about which text binds.
+          The statement it relies on (downstream-003/S-F-3.5) quotes ADD-03:3.5 in full: ''The Arabic text governs.
+          The English translation at Appendix B is provided for convenience only.'' The item''s own evidence quotes
+          only the second sentence and leaves out ''The Arabic text governs.'' That is selective quotation, and
+          it is what lets the item present the question as open.'
+        - 'The controller''s consistency check failed: this item reverses ADD-03/issue/3.5, which applied ''The
+          Arabic text governs.'' The shared rules allow an earlier reading to be reopened only when its evidence
+          or a dependency changes, and then the change must be quoted. The item quotes no such change. A person
+          may still be asked to confirm how 3.5 applies. But the question ''which rendering binds'' is not shown
+          to be ambiguous on the words printed, and the item does not say why the earlier application is being handed
+          back.'
+        - 'The Arabic values the item cites (row 4 ''٧'', row 5 ''٢٤ شهراً'') and the claim that note (4) ''has
+          no Arabic counterpart'' have no supporting evidence. No Arabic unit is cited and every crop_sha256 is
+          null. The rationale does not say what any image showed. The units printed for this review include only
+          the English row ADD-03:T42-1/4 (''Minimum residual life (years): 5''), so I cannot verify the claimed
+          differences from the evidence shown.'
+        - The scope is wider than the named provision. The item names ADD-03:T42-1/4 as its provision, but it also
+          covers T42-1/5 and note (4). Its evidence has nothing for row 4's Arabic value and no record for note
+          (4) beyond a statement it relies on.
+        - 'Note (4) appears only in the English text, yet it reads as a change: ''The design life of electrical
+          equipment stated in Volume II Clause 2.2 is increased to twenty-five (25) years.'' If the Arabic text
+          really has no counterpart, the point is a separate one: does the translation amend anything? It should
+          be its own issue for a person, not folded into a general ''which rendering binds'' escalation.'
+        - The classes are mixed. The reason begins 'ambiguous:', but the escalation's what_is_unsupported field
+          says 'nothing is unsupported by the software'. By the item's own account this is an interpretation pending
+          a person, which belongs in an issue, not a software-limitation escalation.
+        - 'The item states several things that the evidence shown does not support: ''now that the window has closed''
+          (no evidence about a clarification window is cited), ''No price row is reached directly'', and that VOL-V:42.1
+          and VOL-II-2.2-01/-02 are affected. These should be quoted or listed as dependencies to be checked, not
+          stated as facts.'
+        - The downstream effects (the lifecycle plan under ADD-03:3.6, CQ-HANDBACK-CONDITION) rest on downstream-003/S-I-CONDITIONAL,
+          an interpretation with no evidence that a person must still confirm.
+        evidence_checked:
+        - 'ADD-03:T42-1/4 (row text: ''Minimum residual life (years): 5'', status not_issued)'
+        - 'ADD-03:3.5 as quoted in the item: ''The English translation at Appendix B is provided for convenience
+          only.'''
+        - 'ADD-03:3.5 as quoted in downstream-003/S-F-3.5: ''The Arabic text governs. The English translation at
+          Appendix B is provided for convenience only.'''
+        - 'ADD-03:T42-1/5: ''Minimum residual life (years): 24'''
+        - 'ADD-03:T42-1/note(4): ''(4) The design life of electrical equipment stated in Volume II Clause 2.2 is
+          increased to twenty-five (25) years.'''
+        - 'controller_validation: consistency (phases) failed, reverses ADD-03/issue/3.5'
+        - downstream-003/S-I-CONDITIONAL (interpretation, no evidence)
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-003-critic
+        model_reported: claude-opus-5-5
+  DS-READ-ROW:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'insufficient evidence: the request does not print the reading for rows r1, r2 and r3 or for note1. Only
+          r4, r5, note2, note3 and the intro sentence are quoted. So I cannot check the life values ٢٠, ٢٠ and ٥,
+          the grades ٢, ٢ and ٣, or the grade-scale note against the evidence. The crop sha is cited, but the crop''s
+          content is not shown.'
+        - 'Who decides: Legal. The row takes the Arabic values as the operative ones: row 4 is ٧ rather than 5,
+          and row 5 is ٢٤ شهراً rather than 24 years. It also calls Appendix B ''the translation'' and ''not evidence''.
+          The only support shown is the three words ''The Arabic text governs.'' from ADD-03:3.5. That clause''s
+          full text and scope are not printed, so the request does not show whether it covers Table 42-1 or Appendix
+          B. Deciding which text governs belongs to a person. The divergence should stay open in I-ADD03-T42-1-RENDERINGS,
+          and the row should not settle it by labelling Appendix B.'
+        - Possible mismatch over which appendix holds the table. Provision ADD-03:3.4 says 'Table 42-1 is reproduced
+          at Appendix A to this Addendum and forms part of Volume V.' The row reads the table from the Arabic image
+          on p3 and calls the English version on p4 'Appendix B'. The request does not show whether the p3 image
+          is Appendix A. That needs confirming, because only the table at Appendix A is named as forming part of
+          Volume V.
+        - The 'requirement' field is an English paraphrase of the Arabic. It adds content, such as 'condition grade
+          not worse than the maximum stated', that is not in the quoted intro sentence. That content comes from
+          the column heading 'أقصى درجة للحالة', which needs the r1–r5 crops to check. The paraphrase should be
+          marked as a working rendering, not as the pack's words.
+        - Follow-on work is not listed, and 'dependencies' is empty. 3.4 deletes 'with a remaining design life of
+          not less than five (5) years for all major assets', so any existing A1 row built on that wording is superseded
+          and should be named. ADD-03:3.6 (lifecycle plan in the Technical Proposal) depends on this table. English
+          note (4), which raises the design life in VOL-II Clause 2.2 to 25 years and has no Arabic counterpart,
+          touches VOL-II:2.2. Neither is named as a dependency.
+        - 'Minor: the row''s scope is [''proposal''] but its assessment is contractual_post_award, and it is off
+          A3 and A5. The scope and the assessment do not match.'
+        evidence_checked:
+        - 'ADD-03:3.4 text: ''with a residual service life, for each asset class, of not less than that stated in
+          Table 42-1'' / ''reproduced at Appendix A'''
+        - ADD-03:p3-image intro quote 'يجب ألا يقل العمر المتبقي لكل فئة ...'
+        - ADD-03:p3-image/note3 'يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل ...'
+        - ADD-03:p3-image/note2 'يحدِّد المهندس المستقل العمر المتبقي ...'
+        - ADD-03:p3-image/r4 (٧) vs ADD-03:T42-1/4 (5)
+        - ADD-03:p3-image/r5 '٢٤ شهراً' under '(سنة)' vs ADD-03:T42-1/5 (24 years)
+        - ADD-03:T42-1/note(4)
+        - ADD-03:3.5 'The Arabic text governs.'
+        - 'controller_validation: conditional_on, stages, introduction checks'
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-20261007T161946Z-e884-downstream-004-critic
+        model_reported: claude-opus-5-5
