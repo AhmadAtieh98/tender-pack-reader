@@ -42,7 +42,21 @@ PENDING: R1 (A1/A2), R2 (A3, the decisions, A4) and R3 (A5, the rendered files, 
 
 ## 5. The rehearsals (part 6)
 
-PENDING: blind-07 as a labelled regression (the open key; the session-13 scorer's 19 defects marked fixed / not exercised / still present / regressed from the run's own files) and the sealed blind-08 (A8's key sealed in scratch, unread; the code frozen in the package, the runtime model pinned to `claude-opus-5-5`; the outputs frozen by hash before the key is opened; scored independently; the honest 30-minute verdict).
+**Blind-07 as a labelled regression (an open key; scored after the run; `rehearsals/blind-07/regression-s14/COMPARISON-S14.md`).** The same addendum through a fresh package built from the merged tree (code identity `64dbc541896c4ac1`, the host and critic models pinned to `claude-opus-5-5`, two sessions in flight). The run suffered two unplanned interruptions (the plan's 429 at 16:24, which the workflow's own handling deferred, then two container restarts), and was resumed twice from the package's panel; the planned SIGTERM-after-submission was therefore not exercised here (it is blind-08's).
+
+| Measure (33 key items) | Session 13 (before) | Session 14 (after) |
+|---|---|---|
+| Hit / partial / missed | 11 / 17 / 5 | 18 / 14 / 1 |
+| Usable: as is / in part / detection only / wrong | 6 / 5 / 17 / 0 | 17 / 9 / 6 / 0 |
+| False positives / false signals | 5 / 10 | 5 / 13 |
+| Provisions listed unresolved | 19 | 9 |
+| Pending decisions in the packet / promoted issues | 9 / 1 | 35 (about 26 over-escalated) / 23 |
+| The 19 workflow defects | — | 13 fixed, 1 not exercised, 5 still present, 0 regressed |
+| Active time (steps kept + destroyed) | 19.6 min | about 69 min (57.0 kept + about 12 destroyed); dead or deferred about 82 min; wall 2 h 31 min |
+
+The 30-minute target is missed on every measure. The scorer's reasons: Opus-pinned sessions (the session-13 run's sessions ran on the CLI's default model), 44 downstream tasks against 17, 26 sessions started against 16. Fifteen valid ops were promoted (the engine-computed SAR 1,500,000, the relocation, the scoped disapplication among them); one regression against session 13 (the 4.3 request deadline lost its planned date, N1) and 12 new general defects (N1–N12) are listed in §9 of the comparison; the fixer F3 takes the ones that can be fixed before blind-08 (its brief: `worklog/continuation-s14/briefs/F3.md`), the rest go to the review packet.
+
+PENDING (the sealed run): blind-08 (the open key; the session-13 scorer's 19 defects marked fixed / not exercised / still present / regressed from the run's own files) and the sealed blind-08 (A8's key sealed in scratch, unread; the code frozen in the package, the runtime model pinned to `claude-opus-5-5`; the outputs frozen by hash before the key is opened; scored independently; the honest 30-minute verdict).
 
 ## 6. Verification
 
