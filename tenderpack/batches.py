@@ -15,11 +15,17 @@
   out/review/batch-05..                       the remaining rows, by document, ~40 per batch (text only)
   out/review/items.csv / items.json           every item: batch, kind, id, status, fingerprint, decision, command
 Nothing here decides anything. Each item shows its current review status and the fingerprint a decision binds to.
+Session 13 (audit R3-2): every card that asks for a decision on a row (batches 2, 4 and 5..) shows the row's open issues
+beside the decision, as the register gives them (A1's Issues cell: issue_entries), each with its one-line text (A3's
+reason line, stage2.issue_short), its owner and HUMAN DECISION PENDING where it is a person's decision not yet recorded
+(the rule of A3's detail); the decision sentence and items.json say "with these open issues: ..."; accepting the row
+records nothing about them.
 """
 from __future__ import annotations
 
 import html
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -37,6 +43,7 @@ CSS = ("body{font-family:system-ui,sans-serif;margin:16px;max-width:1200px;color
        "img{max-width:100%;border:1px solid #bbb}figure{margin:6px 0}figcaption{font-size:12px;color:#444}"
        "code,pre{background:#f4f4f4;padding:2px 4px;border-radius:3px;white-space:pre-wrap;word-break:break-word}"
        ".decide{background:#fff7d6;padding:6px 8px;border-left:3px solid #c90}"
+       ".issues{background:#eef3fb;padding:4px 8px;border-left:3px solid #36c;margin:6px 0}.issues ul{margin:4px 0}"
        ".st{font-size:12px;padding:1px 6px;border-radius:9px;background:#eee}.st.accepted{background:#d7f5d7}"
        ".st.changed,.st.rejected{background:#fde0e0}td,th{border:1px solid #ccc;padding:3px 6px;font-size:13px;"
        "vertical-align:top;text-align:left}table{border-collapse:collapse}[dir=rtl]{font-size:16px}")
@@ -63,6 +70,89 @@ def _status(st: dict) -> str:
 def _cmd_row(rid: str) -> str:
     return (f'<pre>python -m tenderpack accept {rid} --reviewer "Your Name" [--note "..."]\n'
             f'python -m tenderpack reject {rid} --reviewer "Your Name" --note "what is wrong"</pre>')
+
+
+def issue_entries(cell, by_id: dict[str, dict]) -> dict:
+    """The row's issues as the register gives them (session 13, audit R3-2): A1's Issues cell (a list of entries, or
+    one text), read entry by entry. Each issue id an entry names (signals.issue_refs) becomes one item with what the
+    entry says beside the id (a relationship's route, when the register propagates one: "via REL-... (confirmed)") as
+    a note; an id named twice is one item with every note. From the open issues as collected for A1 and A3 (`by_id`):
+    its one-line text (stage2.issue_short: A3's reason line), its owner, `pending` (HUMAN DECISION PENDING: a person's
+    decision not yet recorded, human_owned.issue_label) and `open` (False only when a person's decision is recorded).
+    An id the issues list does not hold is kept and said to be so. An entry that names no issue (a flag such as
+    'SUMMARY OUT OF DATE') is kept as a flag. Returns {"issues": [...], "flags": [...]}."""
+    from .human_owned import HUMAN_DECISION_PENDING
+    from .signals import issue_refs
+    from .stage2 import issue_short
+    entries = [cell] if isinstance(cell, str) else list(cell or [])
+    items: dict[str, dict] = {}
+    flags: list[str] = []
+    for x in entries:
+        x = str(x or "").strip()
+        ids = issue_refs(x)
+        if not ids:
+            if x:
+                flags.append(x)
+            continue
+        rest = x
+        for i in ids:
+            rest = rest.replace(i, " ")
+        note = " ".join(rest.split()).strip(" ,;:")
+        if note.startswith("(") and note.endswith(")") and _closes_at_end(note):
+            note = note[1:-1].strip()                       # "(via REL-X (confirmed))" -> "via REL-X (confirmed)"
+        for i in ids:
+            it = items.get(i)
+            if it is None:
+                src = by_id.get(i)
+                lab = str((src or {}).get("human_decision") or "")
+                pending = lab.startswith(HUMAN_DECISION_PENDING)
+                short = issue_short(src) if src else "not in the issues list of this build (check-register: issue_ref)"
+                if pending and not short.startswith(HUMAN_DECISION_PENDING):
+                    short = f"{HUMAN_DECISION_PENDING}: {short}"
+                it = items[i] = {"id": i, "short": short, "owner": (src or {}).get("owner") or "not stated",
+                                 "pending": pending, "open": not (lab and not pending), "notes": []}
+            if note and note not in it["notes"]:
+                it["notes"].append(note)
+    return {"issues": list(items.values()), "flags": flags}
+
+
+def _closes_at_end(t: str) -> bool:
+    """True when the bracket opened by t[0] is the one closed by t[-1]."""
+    depth = 0
+    for j, ch in enumerate(t):
+        depth += (ch == "(") - (ch == ")")
+        if depth == 0:
+            return j == len(t) - 1
+    return False
+
+
+def with_open_issues(es: dict) -> str:
+    """', with these open issues: I-A, I-B' for the decision sentence; '' when the row has none."""
+    ids = [i["id"] for i in es["issues"] if i["open"]]
+    return f", with these open issues: {', '.join(ids)}" if ids else ""
+
+
+def issues_block_html(es: dict) -> str:
+    """The row's issues beside the decision block: id, one-line text, owner (and the route an entry gives), the open
+    ones first; '' when the row has none."""
+    if not es["issues"] and not es["flags"]:
+        return ""
+    def li(i: dict) -> str:
+        return (f"<li><b>{_e(i['id'])}</b> — {_e(i['short'])} (owner {_e(i['owner'])}"
+                + "".join(f"; {_e(n)}" for n in i["notes"]) + ")</li>")
+    opn = [i for i in es["issues"] if i["open"]]
+    done = [i for i in es["issues"] if not i["open"]]
+    out = ['<div class="issues">']
+    if opn:
+        out.append(f"<p><b>Open issues on this row ({len(opn)}):</b></p><ul>" + "".join(li(i) for i in opn) + "</ul>"
+                   "<p><small>Accepting the row records your decision on the row as quoted; it records nothing about "
+                   "these issues: each stays open until a person's decision on it is recorded.</small></p>")
+    if done:
+        out.append("<p><b>Issues on this row with a person's decision recorded:</b></p><ul>"
+                   + "".join(li(i) for i in done) + "</ul>")
+    if es["flags"]:
+        out.append("<p><b>Register flags:</b> " + "; ".join(_e(f) for f in es["flags"]) + "</p>")
+    return "".join(out) + "</div>"
 
 
 def _packet_link(build_dir: Path, out: Path, rg: str) -> str:
@@ -96,7 +186,36 @@ def batch4_intro(statuses: list[str], accepted: int) -> str:
             "not accepted.")
 
 
-def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
+_ARABIC = re.compile(r"[\u0600-\u06ff\u0750-\u077f\ufb50-\ufdff\ufe70-\ufeff]")
+_LATIN = re.compile(r"[A-Za-z]")
+
+
+def text_dir(u: dict) -> str:
+    """The direction a reading's line renders in (session 13, F2; audit R2-10): 'rtl' for Arabic, and for a mixed
+    Arabic/Latin line (`lang: mixed`) whose first letter is Arabic (the printed line runs right to left, its label at
+    the right); 'auto' for a mixed line that starts with a Latin letter (the browser takes the first strong letter);
+    'ltr' otherwise."""
+    lang, text = u.get("lang"), str(u.get("text") or "")
+    if lang == "ar":
+        return "rtl"
+    if lang == "mixed" or (_ARABIC.search(text) and _LATIN.search(text)):
+        a, l_ = _ARABIC.search(text), _LATIN.search(text)
+        return "rtl" if a and (not l_ or a.start() < l_.start()) else "auto"
+    return "ltr"
+
+
+def write_batches(r: dict, out: Path, build_dir: Path, issues: list[dict] | None = None,
+                  row_issues: dict | None = None) -> dict:
+    """The review folder. `issues`: the open issues as collected for A1 and A3 (stage2.collect_issues); `row_issues`:
+    row id -> the row's Issues cell as A1 renders it (stage2.a1_table). Both are computed from `r` when not given (the
+    outputs pass the ones A1 was written from, so a card reads exactly what the register shows)."""
+    if issues is None or row_issues is None:
+        from .stage2 import a1_table, collect_issues
+        issues = collect_issues(r, None) if issues is None else issues
+        row_issues = ({x["id"]: x.get("issues") for x in a1_table(r, issues)["rows"]} if row_issues is None
+                      else row_issues)
+    by_issue = {i["id"]: i for i in issues}
+    row_es = lambda rid: issue_entries((row_issues or {}).get(rid), by_issue)  # noqa: E731
     out = Path(out)
     if out.exists():
         shutil.rmtree(out)
@@ -132,7 +251,7 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                 order = (u.get("context") or {}).get("column_headings") or list(cells)
                 cells = {k: cells[k] for k in [*order, *[c for c in cells if c not in order]] if k in cells}
             read = ("<table>" + "".join(f"<tr><th>{_e(k)}</th><td>{_e(v)}</td></tr>" for k, v in cells.items()) + "</table>") \
-                if cells else (f'<p dir="{"rtl" if u.get("lang") == "ar" else "ltr"}">{_e(u.get("text"))}</p>'
+                if cells else (f'<p dir="{text_dir(u)}">{_e(u.get("text"))}</p>'
                                + (f"<p><i>translation ({tr_label}):</i> {_e(u['translation'])}</p>" if u.get("translation") else ""))
             unc = "".join(f"<li>{_e(_tagged(x, appr))}</li>" for x in (u.get("uncertain") or []))   # R-8: settled points
             rows.append(f'<div class="item"><b>{_e(u["unit_id"])}</b><div class="grid"><div>'
@@ -187,16 +306,16 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         failing = {"document_refusal": "a refusal of the document (what then follows for the Proposal is not stated: "
                                        "the row stays in the VOL-I 11.1(i) pass or fail check)",
                    "criterion_zero": "zero marks under one scoring criterion (scored, not a disqualification)"}
+        es = row_es(row.id)                    # session 13 (R3-2): the row's open issues, beside the decision
         decide = (f"Accept that <b>{_e(row.requirement)}</b> is required as quoted, and that failing it is "
                   f"<b>{_e(failing.get(c.cls, c.cls.replace('_', '-')))}</b> under the words “{_e(c.quote)}” "
-                  f"({_e((ev.get('consequence_source') or {}).get('latest', c.unit))}). Otherwise reject it with what is wrong.")
+                  f"({_e((ev.get('consequence_source') or {}).get('latest', c.unit))}){_e(with_open_issues(es))}. "
+                  "Otherwise reject it with what is wrong.")
         extra = []
         if ev["stale"]:
             extra.append("STALE: " + "; ".join(ev["stale"]))
         if ev["transcription"] == "pending":
             extra.append("relies on an image reading pending your review (batch 1)")
-        if row.issues:
-            extra.append("issues: " + ", ".join(row.issues))
         body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)}<div class="grid"><div>'
                     + "".join(_fig(x, f"{x['unit']} (page {x['page']})") for x in cs)
                     + f"</div><div><p>{_e(row.requirement)}</p><p>Quote at {val}: “{_e(it.quote if it else '')}”</p>"
@@ -204,13 +323,18 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                     + (f" ({_e(consequence_gloss(r, row, c))}: ‘{_e(c.gloss)}’)" if c.gloss else "")
                     + f"</p><p>Latest source: {_e((ev.get('source') or {}).get('latest', ''))}; confidence {_e(row.confidence)}: "
                     f"{_e(_confidence_reason(r, row))}</p>" + "".join(f"<p><small>{_e(x)}</small></p>" for x in extra)
+                    + issues_block_html(es)
                     + f'<div class="decide"><b>Decision needed:</b> {decide}</div>{_cmd_row(row.id)}</div></div></div>')
         items.append({"batch": 2, "kind": "row", "id": row.id, "status": st["status"], "fingerprint": st["fingerprint"],
-                      "decision": f"accept {row.id} as quoted with consequence {c.cls}, or reject",
+                      "decision": f"accept {row.id} as quoted with consequence {c.cls}"
+                      + (f"{with_open_issues(es)}; or reject" if with_open_issues(es) else ", or reject"),
                       "command": f'python -m tenderpack accept {row.id} --reviewer "Your Name"'})
+    # session 13 (F2; audit R2-9): the count A3 prints (stage2.a3_count_words, from schedule.a3_rows), then the classes
+    count = (f"{r['a3_count_words']} (by class: " if r.get("a3_count_words")
+             else f"{len(done)} rows with an explicit consequence at {val} (")
     (out / "batch-02-disqualifiers.html").write_text(_page(
-        "Batch 2 — what puts the bid out (A3 rows)", f"{len(done)} rows with an explicit consequence at {val} ("
-        + ", ".join(f"{n} {k.replace('_', '-')}" for k, n in sorted(classes.items())) + "). "
+        "Batch 2 — what puts the bid out (A3 rows)", count
+        + ", ".join(f"{n} {k.replace('_', '-')}" for k, n in sorted(classes.items())) + f"; at {val}). "
         "A decision binds to the row, its evidence items and its dependencies; any later change voids it.", body), encoding="utf-8")
 
     # ------------------------------------------------------------------ batch 3: amendment ops
@@ -261,6 +385,7 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
         applied = is_applied(p, rows)
         superseded = p.get("status") == "superseded"
         ai = p.get("add_interpretation") or {}
+        es = row_es(p["row"])                  # session 13 (R3-2): the row's open issues, beside the decision
         body.append(f'<div class="item" id="{_e(pid)}"><b>{_e(pid)}</b> for {_e(p["row"])} {_status(st)}'
                     f"<p>Why it is STALE: {_e('; '.join(e['stages'][val]['stale']) or 'not stale now')}</p>"
                     f"<p>Changed: {_e(p.get('changed_dependency'))}</p><p>Proposed {_e(ai.get('stage'))} interpretation: "
@@ -275,10 +400,12 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                     + ("<p><b>Why it was superseded (exact conflict with the owner's direction):</b></p><ul>"
                        + "".join(f"<li>{_e(x)}</li>" for x in p["superseded_because"]) + "</ul>"
                        if p.get("superseded_because") else "")
+                    + issues_block_html(es)
                     + (f'<div class="decide"><b>Superseded, never applied:</b> replaced by {_e(rep)}{where}. '
                        f'Kept for the record; it cannot be applied.</div></div>'
                        if superseded else
-                       f'<div class="decide"><b>Decision needed:</b> {_e(p.get("decision_needed"))}</div>'
+                       f'<div class="decide"><b>Decision needed:</b> {_e(p.get("decision_needed"))}'
+                       + (f" (Decide it{_e(with_open_issues(es))}.)" if with_open_issues(es) else "") + "</div>"
                        f"<p>{'Applied.' if applied else 'Not applied.'}</p>"
                        # an applied proposal needs no apply command (it is done); the row's accept stays a person's
                        + ("<pre>" if applied else f'<pre>python -m tenderpack apply-proposal {_e(pid)} --by "Your Name"\n')
@@ -287,7 +414,8 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
                       "status": "superseded" if superseded else "applied" if applied else "not applied",
                       "fingerprint": st["fingerprint"],
                       "decision": f"none: superseded by {p.get('superseded_by')}" if superseded
-                      else p.get("decision_needed", ""),
+                      else p.get("decision_needed", "") + (f" (Decide it{with_open_issues(es)}.)"
+                                                           if with_open_issues(es) else ""),
                       "command": "" if superseded or applied else f'python -m tenderpack apply-proposal {pid} --by "Your Name"'})
     b4 = [x for x in items if x["batch"] == 4]
     accepted = sum(1 for p in props.values() if p.get("row") in rows and rv.get(("row", p["row"]), {}).get("status") == "accepted")
@@ -305,14 +433,21 @@ def write_batches(r: dict, out: Path, build_dir: Path) -> dict:
             it = r["register"].interp_at(row, val)
             st = rv[("row", row.id)]
             c = getattr(it, "consequence", None)
+            es = row_es(row.id)
             body.append(f'<div class="item" id="{_e(row.id)}"><b>{_e(row.id)}</b> {_status(st)} <small>{_e(ev["status"])}'
                         f"{' — STALE' if ev['stale'] else ''}</small><p>{_e(row.requirement)}</p>"
                         f"<p>Quote: “{_e(it.quote if it else '')}” — {_e((ev.get('source') or {}).get('latest', ''))}</p>"
                         + (f"<p>Consequence: <i>{_e(c.cls)}</i> “{_e(c.quote)}”</p>" if isinstance(c, Consequence) else "")
                         + f"<p><small>{_e(row.assessment)}; owner {_e(row.owner_role)}; evidence {_e(', '.join(row.evidence) or row.no_deliverable)}"
-                        f"; confidence {_e(row.confidence)}</small></p>{_cmd_row(row.id)}</div>")
+                        # session 13 (R3-2): the confidence reason as A1 and batch 2 print it, and the row's open issues
+                        f"; confidence {_e(row.confidence)}: {_e(_confidence_reason(r, row))}</small></p>"
+                        + issues_block_html(es)
+                        + f'<div class="decide"><b>Decision needed:</b> accept {_e(row.id)} as quoted'
+                        f"{_e(with_open_issues(es))}{'; or' if with_open_issues(es) else ', or'} reject it with what is "
+                        f"wrong.</div>{_cmd_row(row.id)}</div>")
             items.append({"batch": n, "kind": "row", "id": row.id, "status": st["status"], "fingerprint": st["fingerprint"],
-                          "decision": f"accept {row.id} as quoted, or reject",
+                          "decision": f"accept {row.id} as quoted"
+                          + (f"{with_open_issues(es)}; or reject" if with_open_issues(es) else ", or reject"),
                           "command": f'python -m tenderpack accept {row.id} --reviewer "Your Name"'})
         first, last = chunk[0]["row"].id, chunk[-1]["row"].id
         (out / f"batch-{n:02d}-rows.html").write_text(_page(

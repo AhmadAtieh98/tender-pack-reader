@@ -1,0 +1,8 @@
+# Subagent brief 93: Fixer F2: R2's A3/decisions findings
+
+Launched 2026-10-06 06:22:35 UTC; model option requested: `opus`; subagent type: `general-purpose`.
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 6 Oct 2026, session 13).
+
+---
+
+Read and carry out the brief at `/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s13/briefs/F2.md` in full (it names COMMON.md to read first, R2's report to read, your worktree `/home/user/wt-s13-f2`, the findings you take and the ones fixer F1 takes, the tests to run and the report format). Start by stating which model you are running as and the reasoning-effort setting your runtime shows. Never write in `/home/user/tender-pack-reader` and never run git write commands anywhere.

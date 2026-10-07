@@ -51,7 +51,8 @@ def test_the_pins_come_from_pyproject():
 def test_the_offline_checks_and_the_launcher_menu():
     r = subprocess.run(["bash", str(MAC / "checks.sh"), "--plan"], capture_output=True, text=True, timeout=60)
     plan = [x for x in r.stdout.splitlines() if x.strip()]
-    assert r.returncode == 0 and [x.split()[0] for x in plan] == [str(i) for i in range(9)], plan
+    # session 13: check 9 added (the installed versions against requirements.lock.txt, the locked set)
+    assert r.returncode == 0 and [x.split()[0] for x in plan] == [str(i) for i in range(11)], plan    # session 13 (E159): check 10, the folder link
     menu = (MAC / "launch.command").read_text()
     for item in ("rebuild the evidence", "build the outputs", "strict check", "check-register", "AI routes",
                  "run an addendum offline", "local panel"):

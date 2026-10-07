@@ -1,0 +1,258 @@
+{
+ "_candidate": "CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted",
+ "anchors": {
+  "PDD": "2026-11-26"
+ },
+ "columns": [
+  {
+   "header": "activity",
+   "key": "activity",
+   "width": 20
+  },
+  {
+   "header": "name",
+   "key": "name",
+   "width": 20
+  },
+  {
+   "header": "rows",
+   "key": "rows",
+   "width": 20
+  },
+  {
+   "header": "why",
+   "key": "why",
+   "width": 20
+  },
+  {
+   "header": "latest_start",
+   "key": "latest_start",
+   "width": 20
+  },
+  {
+   "header": "latest_finish",
+   "key": "latest_finish",
+   "width": 20
+  },
+  {
+   "header": "status",
+   "key": "status",
+   "width": 20
+  }
+ ],
+ "notice": "CANDIDATE — NOT VALIDATED. The programme replanned at the working stage of a PARTIAL addendum: every op valid there stands as a proposal, none is accepted, and the validated A5 (the a5/ folder above this one) is unchanged. PROPOSAL, not reviewed. Every lead time, staff effort, external party waited on, multiplicity and resource capacity is a PROVISIONAL ASSUMPTION (config/assumptions.yaml: value, basis, owner); none is stated in the tender pack. Earliest dates come from a forward pass from the planning date (the latest addendum's issue date), latest dates from a backward pass in Working Days (VOL-I 2.4) from the pack's dates; negative float is INFEASIBLE, never compressed. Timing, decision readiness and resource feasibility are separate statuses; resource levelling is NOT implemented; overloads are reported, not resolved. No bidder references, certificates, attendance or financial standing are assumed to exist.",
+ "planning_basis": "Planning date 2026-11-17 = the issue date of ADD-03, the latest addendum at this stage (owner's instruction: the latest addendum date is the planning date). Earliest dates: a forward pass in Working Days (VOL-I 2.4: Sunday to Thursday, declared holidays excluded; holidays configured: none) from the first Working Day on or after the planning date (2026-11-17). Latest dates: a backward pass from the pack deadlines in force at ADD-03 (ATTENDANCE-NOTICE 2026-10-14; CLARIFICATION-CUTOFF 2026-11-12; PDD 2026-11-26 14:00). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that many Working Days (never compressed). Proposal Due Date at this stage: 2026-11-26. Buffer before the pack date: submission.delivery_buffer_wd = 0 WD (PROVISIONAL ASSUMPTION, owner Bid manager).",
+ "planning_date": "2026-11-17",
+ "rows": [
+  {
+   "activity": "fin-model-build",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-22",
+   "name": "Complete the Financial Model (unlocked, fully formula-linked Excel, no macros, no hard-coded values in calculation cells)",
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 18 WD",
+   "why": [
+    "ADD-03:2.2 UNRESOLVED: not promotable: ADD-03/2.2/row invalid (payload: not a register.Row: 2 validation errors for Row interpretations.0.consequence.Consequence Input should be a va…",
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "technical-proposal",
+   "latest_finish": "2026-11-19",
+   "latest_start": "2026-10-25",
+   "name": "Write the Technical Proposal narrative (process design to the effective TN limit; standby power duration; page limit as amended)",
+   "rows": [
+    "VOL-II-2.2-01",
+    "VOL-II-2.2-02",
+    "VOL-II-8.5-01",
+    "VOL-II-8.5-02",
+    "VOL-II-9.3-01"
+   ],
+   "status": "INFEASIBLE by 17 WD",
+   "why": [
+    "ADD-03:3.1 UNRESOLVED: escalated: software limitation: ADD-03:3.1 inserts a new Volume V Clause 42.3 ('42.3 A handback condition survey shall be carried out in the final two (2) year…",
+    "ADD-03:3.3 UNRESOLVED: not promotable: ADD-03/3.3 conflicting (dependencies: unknown ids ['ADD-03/3.1(a)']) [AI workflow run ADD-03-run-host-20261006T201359Z-2503 (route host, model …",
+    "ADD-03:Q16 UNRESOLVED: not promotable: ADD-03/Q16 invalid (previous_value: no target to compare the previous value 'A grievance mechanism accessible to the affected community shall b…",
+    "ADD-03:T42-1/note(4) UNRESOLVED: not promotable: ADD-03/T42-1/note(4)/disp insufficient_evidence (statements: fact analysis-003/S2 is not supported verbatim) [AI workflow run ADD-03-run-host-2…"
+   ]
+  },
+  {
+   "activity": "lender-terms",
+   "latest_finish": "2026-11-11",
+   "latest_start": "2026-10-29",
+   "name": "Obtain indicative financing terms (debt tenor, margin, gearing) for the model",
+   "rows": [
+    "VOL-I-10.6-01"
+   ],
+   "status": "INFEASIBLE by 13 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "deviations-review",
+   "latest_finish": "2026-11-19",
+   "latest_start": "2026-11-08",
+   "name": "Review Volume V and list every deviation, qualification or reservation",
+   "rows": [
+    "VOL-V-36.2-01",
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "status": "INFEASIBLE by 7 WD",
+   "why": [
+    "ADD-03:2.1 UNRESOLVED: ambiguous: 2.1 prints a change ('is reduced by SAR 1,000,000') to VOL-V:36.2, whose ADD-02 text states SAR 2,500,000, but the cover states the threshold become…",
+    "ADD-03:3.3 UNRESOLVED: not promotable: ADD-03/3.3 conflicting (dependencies: unknown ids ['ADD-03/3.1(a)']) [AI workflow run ADD-03-run-host-20261006T201359Z-2503 (route host, model …",
+    "ADD-03:3.4 UNRESOLVED: escalated: software limitation: the sentence 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' makes the table part of Volu…"
+   ]
+  },
+  {
+   "activity": "fin-model-freeze",
+   "latest_finish": "2026-11-12",
+   "latest_start": "2026-11-12",
+   "name": "Freeze the Financial Model (final inputs and version) for the audit opinion and Form 4-F",
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 18 WD",
+   "why": [
+    "ADD-03:2.2 UNRESOLVED: not promotable: ADD-03/2.2/row invalid (payload: not a register.Row: 2 validation errors for Row interpretations.0.consequence.Consequence Input should be a va…",
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "fin-assumptions",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Prepare the schedule of principal financing assumptions to accompany Form 4-F (VOL-I 10.6)",
+   "rows": [
+    "VOL-I-10.6-01"
+   ],
+   "status": "INFEASIBLE by 13 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "form-4e",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Finalise and sign Form 4-E; check that no qualification appears elsewhere in the Proposal (VOL-I 9.6)",
+   "rows": [
+    "VOL-V-36.2-01",
+    "VOL-V-42.1-01",
+    "VOL-V-42.1-02"
+   ],
+   "status": "INFEASIBLE by 17 WD",
+   "why": [
+    "ADD-03:2.1 UNRESOLVED: ambiguous: 2.1 prints a change ('is reduced by SAR 1,000,000') to VOL-V:36.2, whose ADD-02 text states SAR 2,500,000, but the cover states the threshold become…",
+    "ADD-03:3.3 UNRESOLVED: not promotable: ADD-03/3.3 conflicting (dependencies: unknown ids ['ADD-03/3.1(a)']) [AI workflow run ADD-03-run-host-20261006T201359Z-2503 (route host, model …",
+    "ADD-03:3.4 UNRESOLVED: escalated: software limitation: the sentence 'Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.' makes the table part of Volu…"
+   ]
+  },
+  {
+   "activity": "form-4f",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-22",
+   "name": "Complete and sign Form 4-F from the frozen Financial Model (single Availability Payment, SAR per annum, excluding VAT)",
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02"
+   ],
+   "status": "INFEASIBLE by 18 WD",
+   "why": [
+    "ADD-03:2.2 UNRESOLVED: not promotable: ADD-03/2.2/row invalid (payload: not a register.Row: 2 validation errors for Row interpretations.0.consequence.Consequence Input should be a va…",
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "form-4b",
+   "latest_finish": "2026-11-23",
+   "latest_start": "2026-11-23",
+   "name": "Finalise each Form 4-B: the 'Contract value (SAR equivalent)' field is kept (not deleted or relocated) and completed as the decision on I-VOL-I-ENV-A-PRICES directs (VOL-I 6.2: no commercial information in Envelope A)",
+   "rows": [
+    "VOL-I-6.2-02"
+   ],
+   "status": "INFEASIBLE by 11 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "assemble-envelope-a",
+   "latest_finish": "2026-11-24",
+   "latest_start": "2026-11-24",
+   "name": "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers (Form 4-G after item (e)); check that no price or commercial information appears (VOL-I 6.2)",
+   "rows": [
+    "VOL-I-6.2-01",
+    "VOL-I-6.2-02"
+   ],
+   "status": "INFEASIBLE by 30 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "assemble-envelope-b",
+   "latest_finish": "2026-11-24",
+   "latest_start": "2026-11-24",
+   "name": "Assemble the marked original of Envelope B: Form 4-F and the Financial Model (VOL-I 10.1); package the model auditor's opinion and the financing-assumptions schedule as the decision on I-VOL-I-ENV-B directs (both are prepared regardless)",
+   "rows": [
+    "VOL-I-10.1-01",
+    "VOL-I-6.2-01"
+   ],
+   "status": "INFEASIBLE by 18 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "copies",
+   "latest_finish": "2026-11-25",
+   "latest_start": "2026-11-25",
+   "name": "Make three hard copies of each envelope and the searchable electronic copy on encrypted USB, files named ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf (max 120 characters, folders max 3 levels); check the electronic copy against the marked original (VOL-I 6.5, Appendix 2); the USB split between the envelopes follows the decision on I-VOL-I-COPIES",
+   "rows": [
+    "VOL-I-6.2-01"
+   ],
+   "status": "INFEASIBLE by 30 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "seal-and-mark",
+   "latest_finish": "2026-11-25",
+   "latest_start": "2026-11-25",
+   "name": "Seal Envelopes A and B separately and mark each 'NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE' (VOL-I 6.2, Appendix 3)",
+   "rows": [
+    "VOL-I-6.2-01"
+   ],
+   "status": "INFEASIBLE by 30 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  },
+  {
+   "activity": "deliver",
+   "latest_finish": "2026-11-26",
+   "latest_start": "2026-11-26",
+   "name": "Deliver both sealed envelopes to Tender Box 4, Ground Floor, Northern Utilities Procurement Authority, Administrative Building C, Sakaka before 14:00 Riyadh time on the PDD (VOL-I 6.1, Appendix 3; late Proposals are rejected unopened, VOL-I 6.6)",
+   "rows": [
+    "VOL-I-6.2-01"
+   ],
+   "status": "INFEASIBLE by 30 WD",
+   "why": [
+    "ADD-03:Q17 UNRESOLVED: not promotable: ADD-03/Q17 invalid (previous_value: no target to compare the previous value 'The Bidder shall submit with Form 4-F a schedule of the principal …"
+   ]
+  }
+ ],
+ "stage": "ADD-03 [CANDIDATE — NOT VALIDATED]",
+ "status_date": "2026-11-17",
+ "validated_stage": "ADD-02",
+ "validated_status_date": "2026-10-22"
+}

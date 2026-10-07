@@ -53,7 +53,7 @@ from .register import (BID_OUT, GLOSS_NOT_REVIEWED, Consequence, Register, conse
 from .readings import approval_covers
 from .render import A3OverflowError, write_a1, write_a3_pdf, write_csv_json
 from . import programme
-from .schedule import deltas, in_force, plan
+from .schedule import a3_rows, deltas, in_force, plan
 from .trace import obligation_trace
 from .summary import date_changes_by_stage, rule_index, summary_check
 from .datecover import counting_conventions, date_coverage
@@ -209,7 +209,8 @@ def evaluate(r: dict) -> dict:
     from .signals import attach_dependencies  # session 12 (F2): what each row depends on, for the one change predicate
     attach_dependencies(r)
     from .signals import attach_pending       # session 12 (F5): a row under an undecided human-owned issue: NOT SETTLED
-    attach_pending(r)
+    r["issue_stages"] = issue_stages(r)        # session 13 (F4; audit R1-7, R1-9): A1's set, from its stage
+    attach_pending(r, row_issues(r), r["issue_stages"])
     r["reviews"] = review.compute(r, r["decisions"])
     r["trace"] = obligation_trace(r)
     r["summary_check"] = summary_check(r["stages"], units, r["rowfile"].anchors,    # C28: report only, never applied
@@ -257,7 +258,8 @@ def structural_checks(r: dict, a3_fit: dict | None, a5_by_stage: dict) -> list[d
     a3_ids = (a3_fit or {}).get("explicit_ids", [])
     bad13 = [i for i in a3_ids if not any(e["row"].id == i and isinstance(r["register"].interp_at(e["row"], val).consequence, Consequence)
                                           and e["row"].id for e in r["evals"])]
-    checks.append({"id": "C13", "ok": not bad13, "detail": f"{len(a3_ids)} A3 items, each with an explicit quoted consequence"
+    n13 = (a3_fit or {}).get("count_words") or f"{len(a3_ids)} A3 items"   # session 13 (F2; audit R2-9): one count
+    checks.append({"id": "C13", "ok": not bad13, "detail": f"{n13}, each row with an explicit quoted consequence"
                    + (f"; without: {bad13}" if bad13 else "")})
     bad40 = []
     for st, prog in a5_by_stage.items():
@@ -382,6 +384,13 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
     for iid, it in r["curated_issues"].items():
         if it.get("theme") == "gate":
             rows_by_issue[iid] = list(gate)
+    # session 13 (audit R1-2, R1-6): the rows an issue reaches through a curated relationship or a reissued form, with
+    # why ('VOL-II-3.1-01 (via REL-T24-PROCESS-DESIGN (confirmed))'), listed after the rows that list it themselves
+    linked_rows: dict[str, dict[str, list[str]]] = {}
+    for rid, xs in row_issue_links(r).items():
+        for x in xs:
+            if rid not in rows_by_issue.get(x["issue"], []):
+                linked_rows.setdefault(x["issue"], {}).setdefault(rid, []).append(_link_words(x))
     out = []
     links = human_owned.pending_links(r.get("clarifications"))   # session 12 (F5, audit R1-1): a pending decision's issues
     for iid, it in r["curated_issues"].items():
@@ -392,7 +401,9 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
         lab = human_owned.issue_label(iid, it, r.get("decisions"), links.get(iid))
         pre = (lambda t: f"{lab}: {t}" if t else t) if lab else (lambda t: t)  # noqa: E731
         out.append({"id": iid, "text": pre(it["text"]), "owner": it["owner"], "source": "curated (proposed wording)",
-                    "rows": rows_by_issue.get(iid, []), "show_in_a3": bool(it.get("show_in_a3")), "a3": pre(it.get("a3")),
+                    "rows": rows_by_issue.get(iid, []),
+                    "rows_linked": [f"{k} ({'; '.join(dict.fromkeys(w))})" for k, w in (linked_rows.get(iid) or {}).items()],
+                    "show_in_a3": bool(it.get("show_in_a3")), "a3": pre(it.get("a3")),
                     "theme": it.get("theme"), "short": pre(it.get("short")), "folds": list(it.get("folds") or [])}
                    | ({"human_decision": lab} if lab else {}))
     out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
@@ -562,7 +573,8 @@ def missing_document_issues(r: dict) -> list[dict]:
         linked = sorted({i for e in d["entries"] for i in e.get("issues") or []})
         owner = next((curated[i]["owner"] for i in linked if i in curated and curated[i].get("owner")), "Bid manager")
         blocks = "; ".join(f"{', '.join(relationships.ends(e, 'to'))} ({e['id']}, link {e.get('status')}): "
-                           f"{e.get('blocks')}" for e in d["entries"])
+                           f"{e.get('blocks')}" + (f" [{relationships.context_text(e)}]" if e.get("context") else "")
+                           for e in d["entries"])                   # session 13 (audit R1-4): the context travels
         rows = sorted({t for e in d["entries"] for t in relationships.ends(e, "to") if ":" not in t})
         targets = list(d["targets"])
         out.append({"id": f"I-AUTO-NOT-SUPPLIED-{did}", "owner": owner, "source": "relationships (automatic)",
@@ -685,9 +697,40 @@ _LABEL = re.compile(r"^((?:" + re.escape(human_owned.HUMAN_DECISION_PENDING) + r
                     r"(?: \([^()]*\))?): ")
 
 
+def folded_pending(folds: list[str], issues: list[dict], parent_owner: str | None = None) -> list[str]:
+    """Session 13 (F4; audit R2-11): the issues folded under a line on the A3 page that are a person's decision not yet
+    recorded (label HUMAN DECISION PENDING: human_owned.issue_label), so the parent line names them with the mark instead
+    of hiding them in '+n': 'I-X, I-Y' per owner, with '(Owner)' when it is not the parent line's own owner (shown
+    on the line already)."""
+    by = {i["id"]: i for i in issues}
+    groups: dict[str, list[str]] = {}
+    for f in folds or []:
+        if f in by and str(by[f].get("human_decision") or "").startswith(human_owned.HUMAN_DECISION_PENDING):
+            groups.setdefault(str(by[f].get("owner") or "owner not named"), []).append(f)
+    return [", ".join(ids) + (f" ({o})" if o != parent_owner else "") for o, ids in groups.items()]
+
+
+def question_subject(q: dict) -> str:
+    """Session 13 (F4; audit R2-12): the A3 page's label for a drafted question, from the entry's own subject words:
+    the subject its topic states in brackets ('permit/table interpretation (ranges under ...)' -> 'ranges under ...';
+    after a 'kind: ' prefix, the words after it), else the words of its id without the 'CQ' prefix and the reference
+    codes (tokens with a digit: F4D, T24): 'CQ-F4D-GUARANTEE-SCOPE' -> 'guarantee scope'. A topic without brackets is
+    a category (e.g. 'guarantee wording'), never a subject."""
+    t = str(q.get("topic") or "")
+    m = re.match(r"^[^()]*\((.+)\)$", t)
+    if m:
+        return m.group(1).split(": ")[-1]
+    words = [w for w in str(q.get("id") or "").split("-")[1:] if w and not re.search(r"\d", w)]
+    return " ".join(words).lower() or t or str(q.get("id"))
+
+
 def issue_short(i: dict) -> str:
-    """The reason of an open issue on its A3 line: the curated `short` (or one made from the generated text), always
-    with the clause of the issue text that states the gap (gap_clause; session 12, audit A3-2): never an id alone."""
+    """The reason of an open issue on its A3 line: the curated `a3` wording when the issue has one (session 13, F2;
+    audit R2-3: the curator's page wording before any generated summary); else the curated `short` (or one made from
+    the generated text), always with the clause of the issue text that states the gap (gap_clause; session 12, audit
+    A3-2): never an id alone. An automatic issue's `a3` is itself generated and keeps the rule below."""
+    if i.get("a3") and not str(i.get("source") or "").endswith("(automatic)"):
+        return str(i["a3"])
     short, text = _issue_short(i), str(i.get("text") or "")
     m = _LABEL.match(short)
     if m and text.startswith(m.group(0)):               # the label prefixes both: the reason is read without it
@@ -749,6 +792,129 @@ def summary_currency(r: dict) -> list[dict]:
     return out
 
 
+# ---------------------------------------------------------------------------------------------- linked issues (s13)
+
+def _form_units(state: dict, form: str) -> list[str]:
+    """The units that make up `form` (a form or table id) in `state` as in force: the form and its members, each followed
+    to the unit that supersedes it (a reissue), with that unit's members."""
+    out: list[str] = []
+    for k in [k for k in state if k == form or k.startswith(form + "/")]:
+        kk, seen = k, set()
+        while state[kk].status == "superseded" and state[kk].superseded_by in state and kk not in seen:
+            seen.add(kk)
+            kk = state[kk].superseded_by
+        for m in [kk] + [x for x in state if x.startswith(kk + "/")]:
+            if m not in out:
+                out.append(m)
+    return out
+
+
+def _form_text(state: dict, form: str) -> list[tuple[str, str]]:
+    return [(k, state[k].text or "") for k in _form_units(state, form) if state[k].status == "active"]
+
+
+def reissued_form_gaps(rows, stages, quote_at) -> dict[str, list[dict]]:
+    """Session 13 (audit R1-6): row id -> [{stage, evidence, form, unit, form_row, flag, issues}] for a row whose evidence
+    item is a form (or table) that a stage reissues or changes, when the words the row relies on (its quote at the
+    earlier stage, `quote_at(row, stage)`) were printed in the form as it stood and are not in the form in force at the
+    stage. An evidence item's forms are the parts (the unit id before '/') of the rows that list it and cite a member;
+    those rows are the form's own rows and are not checked against themselves. `issues`: the open issues of the form row
+    that printed the words which the row does not already list. `stages`: [(stage, state)] in order. Flags only; nothing
+    is decided or rewritten."""
+    forms: dict[str, dict[str, list]] = {}
+    for row in rows:
+        for u in row.units:
+            if "/" in u:
+                for ev in row.evidence:
+                    lst = forms.setdefault(ev, {}).setdefault(u.split("/", 1)[0], [])
+                    if row not in lst:
+                        lst.append(row)
+    out: dict[str, list[dict]] = {}
+    for row in rows:
+        for ev in dict.fromkeys(row.evidence):
+            for f, frows in (forms.get(ev) or {}).items():
+                if any(u == f or u.startswith(f + "/") for u in row.units):
+                    continue
+                for (ps, pst), (s, st) in zip(stages, stages[1:]):
+                    before, after = _form_text(pst, f), _form_text(st, f)
+                    if before == after:
+                        continue
+                    q = quote_at(row, ps)
+                    hit = next((k for k, t in before if q and found(q, t)), None)
+                    if hit is None or any(found(q, t) for _, t in after):
+                        continue
+                    frow = next((x for x in frows if hit in x.units), None)
+                    rid = frow.id if frow is not None else hit
+                    out.setdefault(row.id, []).append({
+                        "stage": s, "evidence": ev, "form": f, "unit": hit, "form_row": rid,
+                        "flag": f"evidence field not on the reissued form ({rid})",
+                        "issues": [i for i in (frow.issues if frow is not None else []) if i not in row.issues]})
+    return out
+
+
+def row_issue_links(r: dict) -> dict[str, list[dict]]:
+    """Session 13 (audit R1-2, R1-6): row id -> the issues linked to the row besides its own `issues`, each with why:
+    {issue, via, status} for a curated relationship naming the row in `to` (relationships.issue_links), {issue, why} for
+    an evidence field the reissued form no longer prints (reissued_form_gaps). One rule for every issue; nothing is
+    resolved."""
+    rows = [e["row"] for e in r.get("evals") or []]
+    out = relationships.issue_links(r.get("relationships") or [], {x.id for x in rows})
+    reg = r.get("register")
+    quote_at = lambda row, st: getattr(reg.interp_at(row, st), "quote", None) if reg is not None else None  # noqa: E731
+    gaps = reissued_form_gaps(rows, [(s.stage, s.state) for s in r.get("stages") or []], quote_at)
+    for rid, gs in gaps.items():
+        for g in gs:
+            for i in g["issues"]:
+                x = {"issue": i, "why": g["flag"]}
+                if x not in out.setdefault(rid, []):
+                    out[rid].append(x)
+    return out
+
+
+def row_issues(r: dict) -> dict[str, list[str]]:
+    """Session 13 (F4; audit R1-7): row id -> the issues that bear on the row, ONE set for A1 (the Issues cell,
+    linked_issue_cells) and A2/A5 (signals.attach_pending): its own `issues`, then those the curated relationships that
+    reach it carry and those of a reissued form's dropped field (row_issue_links). An issue an op's note names is context
+    for the op, never a link to the op's targets."""
+    links = row_issue_links(r)
+    return {e["row"].id: signals.issue_ids_of(e["row"].issues, links.get(e["row"].id)) for e in r.get("evals") or []}
+
+
+def issue_stages(r: dict) -> dict[str, str]:
+    """Session 13 (F4; audit R1-9): issue id -> the stage from which it bears on its rows (signals.issue_since: its
+    `since`, else the latest first-issue stage of the `units` it cites, else the first stage), for every curated issue."""
+    order = list(r.get("order") or [s.stage for s in r.get("stages") or []])
+    first: dict[str, str] = {}
+    for s in r.get("stages") or []:
+        for uid, u in s.state.items():
+            if uid not in first and getattr(u, "status", "active") != "not_issued":
+                first[uid] = s.stage
+    return {iid: signals.issue_since(it, order, first.get) for iid, it in (r.get("curated_issues") or {}).items()}
+
+
+def _link_words(x: dict) -> str:
+    return f"via {x['via']} ({x['status']})" if x.get("via") else str(x.get("why") or "")
+
+
+def linked_issue_cells(own: list[str], links: list[dict]) -> list[str]:
+    """A1's Issues cell (session 13, audit R1-2): the row's own issues, then each issue linked only through `links`
+    (row_issue_links) with why: 'I-X (via REL-A (confirmed); via REL-B (proposed))'. An issue the row lists itself is
+    listed once, as it is."""
+    out, by = list(own), {}
+    for x in links or []:
+        if x["issue"] not in own:
+            by.setdefault(x["issue"], []).append(_link_words(x))
+    return out + [f"{i} ({'; '.join(dict.fromkeys(w))})" for i, w in by.items()]
+
+
+def table_title(unit: dict | None) -> str:
+    """The printed title of the table a table-row unit was read from ('' when none): the reading's `table_title`, its
+    whitespace collapsed (session 13, F2; audit R2-8: 'at the Point of Discharge' is on the Table 2-4 image)."""
+    if not unit or unit.get("kind") != "table_row":
+        return ""
+    return " ".join(str((unit.get("context") or {}).get("table_title") or "").split())
+
+
 def a1_table(r: dict, issues: list[dict]) -> dict:
     val, order = r["validated"].stage, r["order"]
     working = r["working"].stage if r["working"] else None
@@ -776,8 +942,12 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         cols.append(("relationships", "Relationships (curated links, their status; reached at the validated stage; "
                                       "documents not supplied)", 50))
     rows = []
+    units_by_id = {u["unit_id"]: u for u in r.get("units") or []}
     summary_stale = summary_currency(r)
     row_rel = relationship_lines(r)
+    links = row_issue_links(r)                    # session 13 (audit R1-2, R1-6)
+    gaps = reissued_form_gaps([e["row"] for e in r["evals"]], [(s.stage, s.state) for s in r["stages"]],
+                              lambda row, st: getattr(r["register"].interp_at(row, st), "quote", None))
     computed_by = {s: derived.computed_deadlines(r, s) for s in order[1:]}    # session 12 (W3b): calc deadlines
     computed = computed_by.get(val) or []
     for e in r["evals"]:
@@ -819,6 +989,10 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
                 sw = [f for f in ev.get("flags") or [] if derived.is_switch_flag(f)]      # session 12 (W3b)
                 if sw:
                     rec[f"change:{s}"] = "; ".join([x for x in [rec[f"change:{s}"]] if x] + sw)
+                fg = [f"{g['evidence']}: {g['flag']}" + (f" ({', '.join(g['issues'])})" if g["issues"] else "")
+                      for g in gaps.get(row.id, []) if g["stage"] == s]     # session 13 (audit R1-6)
+                if fg:
+                    rec[f"change:{s}"] = "; ".join([x for x in [rec[f"change:{s}"]] if x] + fg)
             rec[f"source:{s}"] = ("" if ev["status"] == "NOT ISSUED" or ev["status"].startswith("NOT IN FORCE")
                                   else (ev.get("source") or {}).get("latest", ""))
         rec["consequence"] = ((f"{CLASS_WORDS[cons.cls]}: \"{cons.quote}\""      # gloss label from the approval state
@@ -831,12 +1005,17 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
             if v["active"] else []                    # session 11 audit (A1-9): no dates where the row is not in force
         rec["confidence"] = f"{row.confidence}: {confidence_reason(r, row)}"
         rec["note"] = (it.note or "") if it else ""
+        titles = list(dict.fromkeys(t for t in (table_title(units_by_id.get(u)) for u in row.units) if t))
+        if titles:                   # session 13 (F2; audit R2-8): the printed title of the table the row was read from
+            rec["note"] = (rec["note"] + " " if rec["note"] else "") + "; ".join(
+                f"Printed table title: '{t}'." for t in titles if t not in rec["note"])
         rec["transcription"] = v["transcription"]
         rec["interpretation"] = review.label(r["reviews"][("row", row.id)])
         rec["ops_review"] = "; ".join(f"{h}: {r['reviews'][('op', h)]['status']}" for h in v["ops"]
                                       if ("op", h) in r["reviews"]) or "n/a"
         rec["chain"] = stg[order[-1]]["chain"]                 # every unit and every op, through the last stage
-        rec["issues"] = row.issues + [f"SUMMARY OUT OF DATE: '{x['figure']}'" for x in summary_stale if x["row"] == row.id]
+        rec["issues"] = (linked_issue_cells(row.issues, links.get(row.id))      # session 13 (audit R1-2, R1-6)
+                         + [f"SUMMARY OUT OF DATE: '{x['figure']}'" for x in summary_stale if x["row"] == row.id])
         if r.get("relationships"):
             rec["relationships"] = row_rel.get(row.id, [])
         rows.append(rec)
@@ -916,7 +1095,8 @@ def a1_table(r: dict, issues: list[dict]) -> dict:
         "sheets": {
             "Dates": sheet(dates_rows, [("row", 16), ("stage", 9), ("rule", 22), ("text", 40), ("anchor", 22),
                                         ("readings", 60), ("planning", 34), ("readings_differ", 10)]),
-            "Issues": sheet([{**{k: i[k] for k in ("id", "text", "owner", "source", "rows")},
+            "Issues": sheet([{**{k: i[k] for k in ("id", "text", "owner", "source")},
+                              "rows": list(i["rows"]) + list(i.get("rows_linked") or []),   # session 13 (R1-2)
                               "clarification": [q["id"] for q in (r.get("clarifications") or {}).get("clarifications", [])
                                                 if i["id"] in (q.get("linked_issues") or [])]} for i in issues],
                             [("id", 26), ("text", 90), ("owner", 16), ("source", 22), ("rows", 30),
@@ -1050,7 +1230,8 @@ def relationship_sheet(r: dict) -> list[dict]:
         out.append({"id": e.get("id"), "kind": e.get("kind"), "status": e.get("status"),
                     "class": relationships.CLASSES.get(e.get("status"), ""),
                     "from": relationships.ends(e, "from"), "to": relationships.ends(e, "to"),
-                    "evidence": relationships.evidence_text(e), "basis": e.get("basis") or "", "note": e.get("note") or "",
+                    "evidence": relationships.evidence_text(e), "basis": e.get("basis") or "",
+                    "note": "; ".join(x for x in (e.get("note") or "", relationships.context_text(e)) if x),  # s13 R1-4
                     "document": e.get("document") or "", "blocks": e.get("blocks") or "", "issues": e.get("issues") or [],
                     "origin": e.get("origin") or "", "review": e.get("review") or "proposed",
                     "reached": [s for s in r["order"] if s in used.get(e.get("id"), [])]})
@@ -1285,10 +1466,12 @@ def _word_diff(old: str, new: str) -> str:
     return "; ".join(out)
 
 
-def op_change(x, prev: StageResult, s: StageResult) -> str:
+def op_change(x, prev: StageResult, s: StageResult, note_limit: int | None = None) -> str:
     """What an op does, with the words the addendum adds or removes in full (session 11 audit, A2-1), for every op
     type: replace_text 'old' -> 'new'; append_text + 'new'; set_status with the words deleted, revoked or reinstated
-    (a reinstatement in an amended form also gives the words that differ); insert_unit with the inserted text."""
+    (a reinstatement in an amended form also gives the words that differ); insert_unit with the inserted text.
+    Session 13 (audit R1-5): an annotation's note is written in full (a2_changes.json/.csv); only the markdown table
+    passes `note_limit`, and a note cut there ends with a pointer to the csv."""
     o = x.op
     if o.type == "replace_text":
         return f"'{o.old}' -> '{o.new}'" if (o.new or "").strip() else f"- '{o.old}'"
@@ -1316,9 +1499,18 @@ def op_change(x, prev: StageResult, s: StageResult) -> str:
     ac = x.details.get("answer_class") or {}
     return (f"{o.effect}" + (", with open question" if o.issue else "")
             + (f"; mentions of '{o.subject}': {x.details.get('mentions')}" if o.subject else "")
-            + (f" — {_short(o.note, 90)}" if o.note else "")
+            + (f" — {_note_cut(o.note, note_limit)}" if o.note else "")
             + (f" [answer read against {', '.join(ac.get('restates') or []) or 'its targets'}: {ac['class']}; "
                + "; ".join(f"'{y['text']}' {y['kind']}" for y in ac.get("sentences") or []) + "]" if ac else ""))
+
+
+FULL_CHANGE_POINTER = "(full text in a2_changes.csv)"
+
+
+def _note_cut(note: str, limit: int | None) -> str:
+    """The note in full (one line), or cut at `limit` characters with the pointer to the full text."""
+    t = " ".join(str(note or "").split())
+    return t if limit is None or len(t) <= limit else f"{_short(t, limit)} {FULL_CHANGE_POINTER}"
 
 
 def op_issue_ids(r: dict, o) -> list[str]:
@@ -1367,15 +1559,17 @@ def a2(r: dict) -> dict:
             o = x.op
             tgt = o.target or o.new_group or ", ".join(o.targets)
             ch = op_change(x, prev, s)                 # session 11 audit (A2-1): the words in full, every op type
+            ch_md = op_change(x, prev, s, note_limit=90)   # session 13 (audit R1-5): only the markdown table is cut
             ids = op_issue_ids(r, o) if o.issue else []
             iss = f"OPEN QUESTION ({'; '.join(ids) or 'no id'}): {o.issue}" if o.issue else ""
             if o.issue and any(w in o.issue for w in MISSING_DOC_WORDS):
                 op_missing.append(x)
             if x.details.get("also_in"):
                 ch += f" [same words also in {', '.join(x.details['also_in'])}: not targeted]"
+                ch_md += f" [same words also in {', '.join(x.details['also_in'])}: not targeted]"
             pu = s.state.get(o.provision)
             bad = "; ".join(c["id"] + ": " + c["detail"] for c in x.checks if not c["ok"])
-            md.append(f"| {o.id} | {o.type} | {tgt} | {ch.replace('|', '/')} | {o.provision} p{pu.pages[0] if pu and pu.pages else '?'} | "
+            md.append(f"| {o.id} | {o.type} | {tgt} | {ch_md.replace('|', '/')} | {o.provision} p{pu.pages[0] if pu and pu.pages else '?'} | "
                       f"{('yes' if x.applied else 'no: ' + _held(r, x)) if x.valid else 'NO — ' + bad.replace('|', '/')} | "
                       f"{review.label(r['reviews'][('op', o.id)])} ({o.origin}) | {iss.replace('|', '/')} |")
             changes.append({"stage": s.stage, "op": o.id, "type": o.type, "target": tgt, "change": ch, "provision": o.provision,
@@ -1385,8 +1579,12 @@ def a2(r: dict) -> dict:
         # session 12 (W3a): one predicate with A5, the diff and the candidate (signals.requirement_delta): a row that a
         # confirming op or a re-made reading with the same words, values, parameters, dates and consequence touches is
         # CONFIRMED (unchanged), listed apart with the op and provision it rests on, never as a row that moves
-        from .signals import CONFIRMED, acknowledgement_rows, row_label
+        from .signals import (CONFIRMED, acknowledgement_rows, cause_relationships, in_force_pending,
+                              relationship_issue_notes, row_label)
         causes = programme.answers_by_row(r, s.stage)
+        # session 13 (F4; audit R1-9): an issue's notes on this stage's lines only from the stage its evidence exists
+        pend_here = in_force_pending(r.get("pending_issues"), r.get("issue_stages") or issue_stages(r), r["order"],
+                                     s.stage)
         unsettled = {}
         if r.get("working") is not None and s.stage in {x.stage for x in r["stages"]
                                                         if r["order"].index(x.stage) > r["order"].index(r["validated"].stage)}:
@@ -1421,6 +1619,15 @@ def a2(r: dict) -> dict:
             label = (dl or {}).get("label")
             if label == "CHANGED" and dl.get("causes"):
                 why.append("changed through: " + "; ".join(x["text"] for x in dl["causes"]))
+                # session 13 (audit R1-1): the open issues of the relationships the change came through, one note
+                # per issue (signals.issue_note: "open: I-X, human decision pending" for a pending one)
+                why += relationship_issue_notes(r.get("relationships"), cause_relationships(dl["causes"],
+                                                r.get("relationships")), pend_here)
+            if label == "CHANGED":
+                # session 13 (F4; audit R1-7, R1-9): a changed row also names the open decisions that bear on it at this
+                # stage (its pending list, the set A1's Issues cell shows), once each
+                said = " ".join(why)
+                why += [n for n in b.get("pending") or [] if n.split(",")[0] + "," not in said]
             if why or label:
                 da = "; ".join(_date_readings(d) for d in a["dates"]) if a["active"] else ""
                 db = "; ".join(_date_readings(d) for d in b["dates"]) if b["active"] else ""
@@ -1461,14 +1668,24 @@ def a2(r: dict) -> dict:
                    "Curated links (relationships file) followed from what this addendum changed. The rows above cite a "
                    "changed unit; these are reached through another provision. A5 marks the activities that serve them "
                    "REVIEW with their dates unchanged.", "", relationships.STATUS_LEGEND, ""]
+            # session 13 (audit R1-1): each record carries the open issues of the relationships on its path and of
+            # the documents not supplied that block it (signals.relationship_issue_notes; the same note for every issue)
+            notes = lambda x: relationship_issue_notes(r["relationships"], list(x["path"]) + [  # noqa: E731
+                b["entry_id"] for b in x.get("blockers") or []], pend_here)
+            # session 13 (F4; audit R1 nit): the non-binding context of the entries on the path, as a2.md words it
+            ctx = lambda x: "; ".join(dict.fromkeys(  # noqa: E731
+                relationships.context_text(e)[len("context (not binding): "):] for e in r["relationships"]
+                if isinstance(e, dict) and e.get("id") in set(x["path"]) | {b["entry_id"] for b in x.get("blockers") or []}
+                and e.get("context")))
+            with_notes = lambda line, x: line + "".join(f"; {n}" for n in notes(x))  # noqa: E731
             for cls, items in relationships.by_class(recs):
                 md.append(f"**{cls[0].upper() + cls[1:]}** ({len(items)})")
-                md += [f"- {relationships.label(x)}".replace("|", "/") for x in items] or ["- none"]
+                md += [with_notes(f"- {relationships.label(x)}", x).replace("|", "/") for x in items] or ["- none"]
                 md.append("")
             gp = relationships.gaps(recs)
             md.append(f"**Referenced but not supplied: conclusions in play that cannot be established** "
                       f"({len(gp) + len(op_missing)})")
-            md += ([f"- {relationships.label(x, r['relationships'])}".replace("|", "/") for x in gp]
+            md += ([with_notes(f"- {relationships.label(x, r['relationships'])}", x).replace("|", "/") for x in gp]
                    + [f"- {x.op.id} ({x.op.provision} p{(s.state[x.op.provision].pages or ['?'])[0] if x.op.provision in s.state else '?'}; "
                       f"op issue): {x.op.issue}".replace("|", "/") for x in op_missing]) or ["- none"]
             rel_rows += [{"stage": s.stage, "class": "not supplied" if x["kind"] == "missing_document" else x["class"],
@@ -1476,12 +1693,15 @@ def a2(r: dict) -> dict:
                           "target_status": x.get("target_status", ""), "kind": x["kind"], "link_status": x["status"],
                           "path": x["path"], "sources": x["sources"], "lexical": x["lexical"],
                           "via_target": x["via_target"], "direct": x.get("direct", False),
-                          "blocked_by": [f"{b['entry_id']}: {b['document']}" for b in x.get("blockers") or []]}
+                          "blocked_by": [f"{b['entry_id']}: {b['document']}" for b in x.get("blockers") or []],
+                          "open_issues": notes(x), "context (not binding)": ctx(x)}
                          for x in recs]
             rel_rows += [{"stage": s.stage, "class": "not supplied", "target": x.op.target or ", ".join(x.op.targets),
                           "target_type": "op", "target_status": "", "kind": "missing_document (op issue)",
                           "link_status": "", "path": [x.op.id], "sources": [x.op.provision], "lexical": False,
-                          "via_target": False, "direct": True, "blocked_by": [x.op.issue]} for x in op_missing]
+                          "via_target": False, "direct": True, "blocked_by": [x.op.issue], "open_issues": [],
+                          "context (not binding)": ""}
+                         for x in op_missing]
         ans = answers_to_review(r, s) + reversed_ops(r, s, prev)     # session 11 audit (A2-10): ops reversed too
         md += ["", "### Earlier answers to review (never revoked automatically)", ""]
         md += [f"- `{x['answer']}` ({x['issued_by']}): {x['why']}. {x['status']}"
@@ -1697,6 +1917,38 @@ def fold_issues(r: dict, issues: list[dict], a5: dict | None, basis: dict[str, d
     return {"roots": {k: sorted(v) for k, v in roots.items()}, "folded": folded, "detail": detail, "a5_note": a5_note}
 
 
+# session 13 (F2; audit R2-6): the brief's A4 is the work log; the register is a supporting record
+REGISTER_LABEL = "clarification register (supporting record, out/a4/clarification_register.*)"
+
+
+def trigger_count(explicit: list[dict]) -> str:
+    """The count of the explicit bid-out triggers as every output prints it (session 13, F2; audit R2-9): the distinct
+    triggers, and each row listed on another's line (it restates that row's consequence) named beside the count:
+    '16 (+ VOL-IV-F4C-N1, which restates VOL-I-9.4-01)'."""
+    n = sum(1 for x in explicit if not x.get("corroborates"))
+    extra = [f"+ {x['id']}, which restates {x['corroborates']}" for x in explicit if x.get("corroborates")]
+    return f"{n}" + (f" ({'; '.join(extra)})" if extra else "")
+
+
+def a3_count_words(explicit: list[dict], score: list[dict], members: dict | list) -> str:
+    """The A3 set in one phrase, from the one set (schedule.a3_rows, F3) and the page's lines (session 13, F2; audit
+    R2-9, R3-5): '16 (+ VOL-IV-F4C-N1, which restates VOL-I-9.4-01) explicit bid-out triggers + 1 below the score
+    threshold = 18 A3 rows'. The page, a3_detail.html, review batch 2 and checks.json C13 print it."""
+    return (f"{trigger_count(explicit)} explicit bid-out triggers + {len(score)} below the score threshold = "
+            f"{len(members)} A3 rows")
+
+
+def answer_row_index(r: dict) -> dict[str, tuple[list[str], list[str]]]:
+    """Row id -> (its units and effective units at the validated stage, its issues), for clarify.question_rows."""
+    v = r["validated"].stage
+    out = {}
+    for e in r.get("evals") or []:
+        ud = (e["stages"].get(v) or {}).get("units_detail") or []
+        out[e["row"].id] = (list(e["row"].units) + [d.get("effective_unit") for d in ud if d.get("effective_unit")],
+                            list(e["row"].issues or []))
+    return out
+
+
 def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     """A3: one readable page. One line per requirement, grouped by the consequence the documents state; the
     quotations, sources and flags of every line are in a3_detail.html (linked by row id)."""
@@ -1716,6 +1968,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
     refused, zero, gate = [], [], []          # session 09: document_refusal and criterion_zero; the gate's row ids
     summary_currency_cache = summary_currency(r)
     rel_recs = ((r.get("relationship_impact") or {}).get(v) or {}).get("records", []) if r.get("relationships") else []
+    members = a3_rows(r["evals"], v)          # session 13 (R3-5): the A3 rows, one set (and one function) with A5's
     rel_flags: dict[str, list[str]] = {}      # session 10: shown on a3_detail.html only (the one page keeps its fit)
     for x in rel_recs:
         if x["kind"] != "missing_document":
@@ -1773,12 +2026,13 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         if csrc and rsrc.get("latest") and (rsrc.get("from_amendment") or " as amended by " in rsrc["latest"]) \
                 and rsrc["latest"] != csrc:
             csrc = f"{csrc}; the requirement as amended: {rsrc['latest']}"   # e.g. the deadline amendment beside 6.6
-        if isinstance(cons, Consequence) and cons.cls in BID_OUT:
+        cls = (members.get(row.id) or {}).get("class")
+        if cls in BID_OUT and isinstance(cons, Consequence):
             cu = val.state.get(cons.unit)
             explicit.append({**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote,
                              "gloss": cons.gloss, **({"gloss_label": consequence_gloss(r, row, cons)} if cons.gloss else {}),
                              "source": csrc or _doc_ref(cons.unit, cu.pages if cu else [], cu.number if cu else None)})
-        elif isinstance(cons, Consequence) and cons.cls == "score_elimination":
+        elif cls == "score_elimination" and isinstance(cons, Consequence):
             score.append({**base, "cls": cons.cls, "class": CLASS_WORDS[cons.cls], "consequence": cons.quote,
                           "source": csrc or _doc_ref(cons.unit, val.state[cons.unit].pages, val.state[cons.unit].number)})
         elif isinstance(cons, Consequence) and cons.cls in ("document_refusal", "criterion_zero"):
@@ -1827,6 +2081,23 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                 x["confidence"] = f"{x['confidence']} (see {', '.join(see[:2])})"
     decide = {listed_as(i["id"]) for i in shown}
     clar = r.get("clarifications") or {}
+    # session 13 (F2; audit R2-4/R2-5/R2-7): the questions as A4 shows them (owner, interim label, rows), one function
+    shown_qs = clarify.presented(clar, r.get("decisions"), r.get("pending_issues"), r.get("curated_issues"),
+                                 answer_row_index(r))
+    # session 13 (F2; audit R2-7): a drafted question tied to no issue listed on the page is named, with its subject, on
+    # its group's line, and whether its answer changes a bid-out row (an explicit trigger or the score threshold) is said
+    bid_out = {x["id"] for x in explicit} | {x["id"] for x in score}
+
+    subject = question_subject                  # session 13 (F4; audit R2-12): the entry's own subject words
+    unlisted: dict[str, list[str]] = {}
+    for q in shown_qs:
+        if {listed_as(i) for i in q.get("linked_issues") or []} & on_page:
+            continue
+        hit = sorted(set(q.get("answer_rows") or []) & bid_out)
+        unlisted.setdefault(str(q.get("theme")), []).append(
+            f"{q['id']} ({subject(q)}" + (f"; changes bid-out row {', '.join(hit)})" if hit else ")"))
+    unlisted_words = {k: "on no listed issue: " + "; ".join(v) + (
+        "; no bid-out row" if not any("bid-out row" in x for x in v) else "") for k, v in unlisted.items()}
     groups = []
     for key, title in ISSUE_THEMES:
         members = [i for i in issues if issue_theme(i) == key and i["id"] not in folded and i["id"] not in detail_only]
@@ -1835,12 +2106,17 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
             continue
         groups.append({"key": key, "title": title, "items": [
             {"id": i["id"], "short": issue_short(i) + (f"; {fo['a5_note'][i['id']]}" if i["id"] in fo["a5_note"] else ""),
-             "owner": i["owner"], "folds": fo["roots"].get(i["id"], []), "decide": i["id"] in decide} for i in members],
-            "questions": qs})
+             "owner": i["owner"], "folds": fo["roots"].get(i["id"], []), "decide": i["id"] in decide,
+             # session 13 (F4; audit R2-11): a folded issue that is a person's decision not yet recorded is named on
+             # its parent's line with the mark ('+1: ⚑ I-X (Owner)'), never hidden in the count
+             "folds_pending": folded_pending(fo["roots"].get(i["id"], []), issues, i["owner"])} for i in members],
+            "questions": qs, **({"unlisted": unlisted_words[key]} if key in unlisted_words else {})})
     n_listed = sum(len(g["items"]) for g in groups)
     gate_issues = sorted(i["id"] for i in issues if issue_theme(i) not in dict(ISSUE_THEMES))
     # session 12 (audit A3-2/A3-3): the same counts in fewer words, so the reasons on the lines keep the page's size
-    issue_counts = (f"{len(issues)} open issues: {n_listed} listed, {len(folded)} folded into the issue they restate (+n), "
+    # session 13 (F4; audit R2-11): a fold is not always a restatement (PAGE-LIMIT-Q2 under APPENDICES); the count says
+    # 'folded (+n)' only, and a folded issue that is a person's decision not yet recorded is named on its line with ⚑
+    issue_counts = (f"{len(issues)} open issues: {n_listed} listed, {len(folded)} folded (+n), "
                     f"{len(detail_only)} on a3_detail.html only"
                     + (f", {', '.join(gate_issues)} in the gate note" if gate_issues else "") + ".")
     n_marked = sum(1 for g in groups for it in g["items"] if it.get("decide"))
@@ -1908,14 +2184,15 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                     + (" ".join(str(x) for x in map((r["anchor_details"][v].get("PDD") or {}).get, ("date", "time", "tz")) if x)
                        or "not stated in the effective text")
                     + (f". Working state {working.stage} is PARTIAL and NOT used here" if working else "")
-                    + f". {n_distinct} explicit bid-out triggers"   # (A3-3: a row restating another is shown on that
-                    + f" + {len(score)} below the score threshold.",  # row's line; the row count is in the banner)
+                    + f". {a3_count_words(explicit, score, a3_rows(r['evals'], v))}.",   # (A3-3: a row restating another is shown on that
+                                                                           # row's line; R2-9: and named in the count)
         "banner": banner,
         "sections": sections,
         "groups": {"heading": f"Unresolved matters, grouped — {n_listed} open issues"
-                              + (f", {len(clar.get('clarifications', []))} clarification questions drafted (not sent; A4)"
+                              + (f", {len(clar.get('clarifications', []))} clarification questions drafted (not sent)"
                                  if clar.get("clarifications") else ""),
-                   "note": issue_counts + f" Line: id, reason (owner); {decide_note}. Unknown answers stay unknown.",
+                   "note": issue_counts + f" Line: id, reason (owner); {decide_note}. Unknown answers stay unknown."
+                           + (f" Questions: {REGISTER_LABEL}." if clar.get("clarifications") else ""),
                    "counts": {"all": len(issues), "listed": n_listed, "folded": len(folded), "detail_only": len(detail_only),
                               "gate_note": gate_issues, "decide": len(shown)},
                    "groups": groups},
@@ -1931,6 +2208,8 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
         "explicit": explicit, "score": score, "none_stated": none_stated,
         "none_stated_ids": [x["id"] for x in none_stated],
         "explicit_ids": [x["id"] for x in explicit],
+        "trigger_count": trigger_count(explicit),          # session 13 (F2; audit R2-9): one count, everywhere
+        "a3_count_words": a3_count_words(explicit, score, a3_rows(r["evals"], v)),
         **({"refused": refused, "gate_ids": gate} if refused else {}), **({"criterion_zero": zero} if zero else {}),
         "issues_detail": [{"id": i["id"], "text": i["text"], "owner": i["owner"], "rows": i["rows"],
                            "theme": dict(ISSUE_THEMES).get(issue_theme(i), ""), "folded_into": folded.get(i["id"], ""),
@@ -1940,8 +2219,7 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                           for i in issues],
         "issue_counts": issue_counts,
         # session 12: the status as presented (never answered/withdrawn without a person's recorded decision)
-        "clarifications": [dict(q, response_status=human_owned.clarification_status(q, r.get("decisions")))
-                           for q in clar.get("clarifications", [])],
+        "clarifications": shown_qs,
         **({"relationships": {
             "stage": v, "from": ((r.get("relationship_impact") or {}).get(v) or {}).get("from"),
             "note": "Rows, activities and calculations reached through the curated relationships from what the addendum "
@@ -1952,7 +2230,8 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                        "kind": x["kind"], "link_status": x["status"], "sources": x["sources"], "path": x["path"],
                        "direct": x.get("direct", False)} for x in rel_recs]}} if r.get("relationships") else {}),
     }
-    page["legend"] = a3_legend(page, A3_MARKS[:1] if n_marked else ())   # session 12 (A3-3, F5): abbreviations, †
+    fp = any(it.get("folds_pending") for g in groups for it in g["items"])  # session 13 (F4; R2-11): ⚑ on a fold
+    page["legend"] = a3_legend(page, (A3_MARKS[:1] if n_marked else ()) + (A3_MARKS[1:] if fp else ()))   # session 12 (A3-3, F5): abbreviations, †
     if page["legend"]:
         page["subtitle"] += " " + page["legend"]
     return page
@@ -2038,7 +2317,8 @@ def condense_a3(a3d: dict, level: int, reason_words: int | None = None) -> dict:
         page["groups"] = {**g, "groups": [{**x, "questions": [], "n_questions": len(x.get("questions") or []),
                                            "items": [{**i, "short": pending_mark(i.get("short"))} for i in x["items"]]}
                                           for x in g["groups"]]}
-        used = any(i["short"].startswith(A3_PENDING_MARK) for x in page["groups"]["groups"] for i in x["items"])
+        used = any(i["short"].startswith(A3_PENDING_MARK) or i.get("folds_pending")
+                   for x in page["groups"]["groups"] for i in x["items"])
         dag = any(i.get("decide") for x in page["groups"]["groups"] for i in x["items"])
         legend = a3_legend(a3d, (A3_MARKS[:1] if dag else ()) + (A3_MARKS[1:] if used else ()))
         if a3d.get("legend") and legend:
@@ -2093,6 +2373,7 @@ def a3_detail_html(a3d: dict) -> str:
         return f'<span dir="rtl" lang="ar">{esc(t)}</span>' if rtl else esc(t)
     rows = []
     tables = [("Explicit consequences", a3d["explicit"]), ("Envelope B returned unopened", a3d["score"])]
+    counts = {"Explicit consequences": a3d.get("trigger_count")}          # session 13 (F2; audit R2-9)
     if a3d.get("criterion_zero"):                                     # session 09: only when there are such rows
         tables.append(("Criterion-level zero marks (scored; not a disqualification)", a3d["criterion_zero"]))
     if a3d.get("refused"):
@@ -2100,7 +2381,7 @@ def a3_detail_html(a3d: dict) -> str:
     tables.append(("Pass/fail with no bid-out consequence stated (VOL-I 11.1(i) general check; the pack does not say "
                    "which clause is checked at which stage)", a3d["none_stated"]))
     for title, items in tables:
-        rows.append(f"<h2>{esc(title)} ({len(items)})</h2><table><tr><th>Row</th><th>Requirement</th><th>Consequence "
+        rows.append(f"<h2>{esc(title)} ({esc(counts.get(title) or str(len(items)))})</h2><table><tr><th>Row</th><th>Requirement</th><th>Consequence "
                     "(quoted)</th><th>Latest source</th><th>Confidence</th><th>Flags</th></tr>")
         for x in items:
             q = (f"<i>{esc(x.get('class', ''))}</i>: “{quote(x['consequence'])}”" if x.get("consequence") else "none stated")
@@ -2149,7 +2430,7 @@ def a3_detail_html(a3d: dict) -> str:
     rows.append("</table>")
     if a3d.get("clarifications"):
         rows.append(f"<h2>Clarification questions drafted, not sent ({len(a3d['clarifications'])})</h2><p>Full register "
-                    "(sources, impact, interim handling): A4 clarification register.</p><table><tr><th>Id</th><th>Clause</th>"
+                    + "(sources, impact, interim handling, the rows each answer would change): " + esc(REGISTER_LABEL) + ".</p><table><tr><th>Id</th><th>Clause</th>"
                     "<th>Gap</th><th>Proposed question</th><th>Interim handling</th><th>Status</th></tr>")
         rows += [f'<tr id="{esc(q["id"])}"><td><b>{esc(q["id"])}</b></td><td>{esc(q.get("volume", ""))} {esc(str(q.get("clause", "")))} '
                  f'p{esc(str(q.get("page", "")))}</td><td>{esc(q.get("gap", ""))}</td><td>{esc(q.get("proposed_question", ""))}</td>'
@@ -2182,6 +2463,7 @@ def a5_all(r: dict) -> dict:
                               anchor_details=r["anchor_details"][s.stage], notified_days=r["non_working_days"].get(s.stage),
                               reached=((r.get("relationship_impact") or {}).get(s.stage) or {}).get("records"),
                               questions=questions, question_units=programme.question_units(r))   # F5 (A5 N2)
+        programme.attach_open_decisions(progs[s.stage], r)       # session 13 (F2; audit R2-2, R3-1)
     return progs
 
 
@@ -2200,12 +2482,14 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
     for level, words, page in a3_pages(a3d):        # session 12 (F2): level 2 abbreviates reasons before level 3
         try:
             fit = write_a3_pdf(page, out / "a3" / "a3.pdf")
-            a3_fit = dict(fit, explicit_ids=a3d["explicit_ids"], condensed=level, **({"reason_words": words} if words else {}))
+            a3_fit = dict(fit, explicit_ids=a3d["explicit_ids"], condensed=level, count_words=a3d.get("a3_count_words"),
+                          **({"reason_words": words} if words else {}))
             a3d["condensed"] = level
             break
         except A3OverflowError as e:
             a3_fit = {"pages": 0, "error": str(e), "explicit_ids": a3d["explicit_ids"], "condensed": level}
     dump_json(a3d, out / "a3" / "a3.json")
+    r["a3_count_words"] = a3d.get("a3_count_words")      # session 13 (F2; audit R2-9): batch 2 prints the same count
     write_text(out / "a3" / "a3_detail.html", a3_detail_html(a3d))
     a1d = a1_table(r, issues)
     write_a1(a1d, out / "a1")
@@ -2223,7 +2507,8 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
         clarify.write(r["clarifications"], out / "a4", r.get("decisions"),   # the detailed register sits with A4
                       [{"id": k, "owner": (r["curated_issues"].get(k) or {}).get("owner"),
                         "text": (r["curated_issues"].get(k) or {}).get("text"), "reasons": v}
-                       for k, v in (r.get("pending_issues") or {}).items()])
+                       for k, v in (r.get("pending_issues") or {}).items()],
+                      r.get("curated_issues"), answer_row_index(r))   # session 13 (F2; audit R2-4/R2-5/R2-7)
     if main:
         # A5 at the validated stage: programme, marshalling with document counts, resources, infeasibility drivers,
         # and the scenarios (consortium size, lead times, working calendar) run through the same planner
@@ -2256,7 +2541,8 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
             cand_error = f"{type(e).__name__}: {e}"  # its failure is written down and listed in README.md
             write_text(out / "a3" / "a3_candidate_FAILED.md", f"# A3/A5 candidate NOT produced\n\n{cand_error}\n")
     from .batches import write_batches
-    write_batches(r, out / "review", r["evidence_dir"])
+    write_batches(r, out / "review", r["evidence_dir"], issues,       # session 13 (R3-2): the cards read the issues
+                  {x["id"]: x.get("issues") for x in a1d["rows"]})      # as A1 renders them
     for a, f in r["drafted"].items():
         write_text(out / "drafted" / f"{a}.yaml",
                    f"# DRAFTED by tenderpack.draft for this build; every op PROPOSED; not curated.\n"
@@ -2290,7 +2576,11 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
               "| A2 reconciliation: changes, rows that move, answers to review, provision coverage, evidence chains | a2/a2.md, a2/*.csv, a2/*.json |",
               "| A3 one-page disqualification sheet, with linked detail | a3/a3.pdf, a3/a3_detail.html, a3/a3.json |",
               "| A5 programme, marshalling plan, documents, resources, infeasibility drivers, scenarios, replan deltas, Gantt | a5/*.csv, a5/*.json, a5/gantt.*, a5/scenarios/, a5/stages/ |",
-              "| A4 supporting record: tender clarification register (DRAFT questions, NOT SENT) | a4/clarification_register.md, .csv, .json |",
+              # session 13 (audit R3-4): A4 is the work log (the brief's A4), kept in the repository's worklog/; the
+              # clarification register is a supporting record under a4/
+              a4_work_log_row(r["root"]),
+              "| Supporting record: tender clarification register (DRAFT questions, NOT SENT; not the A4 work log) | "
+              "a4/clarification_register.md, .csv, .json |",
               "| Engine results per stage | stages.json |", "| Checks | checks.json |", ""]
     if cand_files:                                  # session 11: only when a PARTIAL addendum gives a candidate
         readme[-1:-1] = [f"| A3 and A5 CANDIDATE: {r['working'].stage} as proposed, NOT VALIDATED (the rows and dates it "
@@ -2307,6 +2597,23 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
     return {"status": status, "checks": checks, "reported": rep, "a3_fit": a3_fit, "issues": issues, "a1": a1d, "a2": a2d,
             "a3": a3d, "a5": progs, "release": release, "blockers": blockers,
             "candidate": [p.relative_to(out).as_posix() for p in cand_files], "candidate_error": cand_error}
+
+
+def a4_work_log_row(root: Path) -> str:
+    """The outputs index's A4 row (session 13, audit R3-4): A4 is the work log in the repository's worklog/ (the
+    session logs, the error index, the model calls, the subagent briefs) and the commit history; each part is named as
+    it is found under `root`, and one that is absent is said to be absent (never implied)."""
+    wl = Path(root) / "worklog"
+    parts = [("the session logs (worklog/<date>_session-NN_*.md)", any(wl.glob("*_session-*.md"))),
+             ("the work log index (worklog/README.md)", (wl / "README.md").is_file()),
+             ("the note of every place the system was wrong (worklog/ERROR_INDEX.md)", (wl / "ERROR_INDEX.md").is_file()),
+             ("the prompts and model calls (worklog/model_calls/)", (wl / "model_calls").is_dir()),
+             ("the subagent briefs (worklog/subagent_briefs/)", (wl / "subagent_briefs").is_dir())]
+    have = [k for k, ok in parts if ok]
+    gone = [k for k, ok in parts if not ok]
+    return ("| A4 work log: " + "; ".join(have or ["no worklog/ folder in this repository"])
+            + (f"; not present: {'; '.join(gone)}" if have and gone else "")
+            + "; and the commit history (`git log`) | worklog/ at the repository root (not under out/); `git log` |")
 
 
 def readings_status_sentence(cov: dict) -> str:
@@ -2554,13 +2861,15 @@ def register_findings(r: dict) -> list[dict]:
         out.append({"kind": "C12", "where": i, "detail": "row id not yet recorded in the id ledger (check-register --update-ids)"})
     for p in clarify.check(r.get("clarifications") or {}, r["units"], set(r["curated_issues"]),
                            cutoff=clarify.effective_cutoff(r),            # the effective cut-off (session 09)
-                           state=(r["stages"][-1].state if r.get("stages") else None)):   # session 12: amended words
+                           state=(r["stages"][-1].state if r.get("stages") else None),   # session 12: amended words
+                           row_ids={e["row"].id for e in r["evals"]}):    # session 13 (F2; R2-7): curated rows exist
         out.append({"kind": "clarification", "where": p.split(":")[0], "detail": p})
     for p in relationship_findings(r):                                    # session 10: every quote, target and status
         out.append({"kind": "relationship", "where": p.split(":")[0], "detail": p})
     from .signals import issue_ref_findings                               # session 12: issue ids must exist
     out += issue_ref_findings(r["rowfile"].rows, r.get("templates") or {}, r.get("clarifications") or {},
                               set(r["curated_issues"]), r.get("opfiles") or [])
+    out += pending_wording_findings(r)                                     # session 13 (audit R1-3)
     return out
 
 
@@ -2604,6 +2913,26 @@ def basis_found(b: dict, units: dict, state: dict) -> bool:
             return False
         text, pages = su.text or "", list(su.pages or [])
     return found(b.get("words", ""), text) and b.get("page") in pages
+
+
+def pending_wording_findings(r: dict) -> list[dict]:
+    """Session 13 (audit R1-3): an issue labelled HUMAN DECISION PENDING (signals.pending_issues) whose own words settle
+    one of its limbs (human_owned.settled_wording: 'is not treated as', 'is read as', 'means', 'therefore', ...) is
+    reported for a person (check-register, kind `pending_settled`). Report only: the wording is a person's to change."""
+    out = []
+    pend = r.get("pending_issues")
+    if pend is None:
+        pend = signals.pending_issues(r)
+    for iid, it in (r.get("curated_issues") or {}).items():
+        if iid not in pend:
+            continue
+        hit = human_owned.settled_wording(it)
+        if hit:
+            out.append({"kind": "pending_settled", "where": iid,
+                        "detail": f"labelled {human_owned.HUMAN_DECISION_PENDING}, yet its own words settle a limb of it "
+                                  f"({', '.join(hit)}): reword it as open (the proposed reading, 'not decided', and who "
+                                  "decides) or record a person's decision"})
+    return out
 
 
 def check_register(evidence_dir: Path, pack_path: Path, root: Path, doc: str | None = None, update: bool = False) -> int:

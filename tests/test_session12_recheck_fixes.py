@@ -148,7 +148,14 @@ def test_no_confirmed_label_names_a_row_under_a_pending_issue(real, a2, replan, 
     assert {"I-CONCESSION", "I-FLOWS", "I-F4G-NO"} <= pending, pending
     rows = {e["row"].id: e["row"] for e in real["evals"]}
     under = {k for k, row in rows.items() if set(row.issues) & pending}
-    bad = [(m["stage"], m["row"]) for m in a2["rows_moved"] if m["change"] == signals.CONFIRMED and m["row"] in under]
+    # session 13 (F4; audit R1-9, deliberate): an issue bears on its rows from the stage its evidence first exists
+    # (stage2.issue_stages: I-VOL-I-PAGE-LIMIT-Q2 from ADD-02, which raises it), so VOL-I-9.2-01 stays CONFIRMED at
+    # ADD-01; the rule checked is the same, at the stages each issue bears
+    since, order = stage2.issue_stages(real), real["order"]
+    bears = lambda k, st: any(i in pending and order.index(since.get(i, order[0])) <= order.index(st)  # noqa: E731
+                              for i in rows[k].issues)
+    bad = [(m["stage"], m["row"]) for m in a2["rows_moved"] if m["change"] == signals.CONFIRMED and m["row"] in under
+           and bears(m["row"], m["stage"])]
     assert not bad, bad
     bad5 = [(d["activity"], r) for d in replan if d["change"] == signals.CONFIRMED for r in d.get("rows") or []
             if r in under]

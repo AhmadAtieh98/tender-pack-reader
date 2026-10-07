@@ -507,7 +507,9 @@ def test_home_lists_every_output_and_evidence_file_that_exists(panel, built_out)
     assert st == 200
     top = t[:t.index("New addendum")]
     assert re.search(r"BASE\s*→\s*ADD-01.*→\s*ADD-02", top)              # the stage, in one line, at the top
-    assert "205 of 205 register rows not accepted" in top and "37 of 37 amendment op(s) not accepted" in top
+    # session 13: the op count follows the curated ops (38 since fixer F1 added the PROPOSED op ADD-02/5.1/unchanged), so
+    # the test reads the two counts as "N of N", not a fixed number
+    assert re.search(r"205 of 205 register rows not accepted", top) and re.search(r"(\d+) of \1 amendment op\(s\) not accepted", top)
     listed = 0
     for area, base in (("out", panel.cfg.out), ("evidence-review", panel.cfg.evidence / "review")):
         for root, _, files in os.walk(base):
@@ -521,8 +523,12 @@ def test_home_lists_every_output_and_evidence_file_that_exists(panel, built_out)
                      ("A4 ", "clarification_register.md"), ("A5 ", "gantt.svg")):
         assert g in t and words in t, g
     full = t.index("Outputs in")                                      # the full listing (the deliverables strip above it
-    a4 = t[t.index("A4 Clarification register and work log", full):t.index("A5 Bid programme", full)]
+    # session 13 (the owner: "the work log is A4"; reviewer R3-3): A4 is the work log, the clarification register a
+    # supporting record of its own; the A4 block now links the index, the error note, the model calls and the history
+    a4 = t[t.index("A4 Work log", full):t.index("A5 Bid programme", full)]
     assert f"/t/{panel.token}/file/worklog/README.md" in a4 and f"/t/{panel.token}/file/out/README.md" in a4
+    assert f"/t/{panel.token}/file/worklog/ERROR_INDEX.md" in a4 and f"/t/{panel.token}/history" in a4
+    assert "Clarification register (supporting record, drafts not sent)" in a4
     assert _get(panel, "file/worklog/README.md")[0] == 200
     assert _get(panel, "file/worklog/../config/ai.yaml")[0] == 404
     assert f'href="/t/{panel.token}/file/out/a3/a3.pdf">a3.pdf</a>' in t   # the link is the file's name
@@ -614,8 +620,9 @@ def test_home_puts_the_deliverables_first_with_open_and_download_links(panel, bu
     assert i < t.index("New addendum") < t.index("Outputs in")
     strip = t[i:t.index("New addendum")]
     for label, rel in (("A1 Compliance register", "a1/a1.xlsx"), ("A2 Amendment reconciliation", "a2/a2.md"),
-                       ("A3 Bid-out consequences", "a3/a3.pdf"), ("A4 Clarification register and work log",
-                                                                   "a4/clarification_register.md"),
+                       ("A3 Bid-out consequences", "a3/a3.pdf"),
+                       # session 13 (the owner: "the work log is A4"; R3-3): the register is its own supporting line
+                       ("Clarification register (supporting record, drafts not sent)", "a4/clarification_register.md"),
                        ("A5 Bid programme", "a5/gantt.html"), ("Review batches", "review/index.html")):
         assert label in strip, label
         if (panel.cfg.out / rel).is_file():
@@ -623,6 +630,7 @@ def test_home_puts_the_deliverables_first_with_open_and_download_links(panel, bu
             if not rel.endswith(".xlsx"):
                 assert f"/t/{panel.token}/file/out/{rel}" in strip, rel          # ... and open, where a browser can
     assert f"/t/{panel.token}/file/worklog/README.md" in strip                    # A4 proper: the work log index
+    assert "A4 Work log (the repository history, prompts, model calls, errors)" in strip    # session 13 (R3-3)
     assert "(missing)" not in strip or not (panel.cfg.out / "a5/gantt.html").is_file()
 
 

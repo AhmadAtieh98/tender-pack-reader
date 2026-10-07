@@ -22,6 +22,25 @@ pending on the Mac:
 - **Local inference** (`ollama`): a model on this machine. Offline mode (§17) runs every phase here and nothing hosted.
 - **Recorded**: tests only.
 
+**Session 13: the status of each route, and the connected/offline choice.** `config/routes_status.yaml` records where
+and when each route was last exercised and with what result; `tenderpack ai routes` prints it beside the route's live
+availability on this machine and why it is not usable (`--brief`: one line each, as the launcher shows it):
+
+| Route | Status (config/routes_status.yaml) | Usable now when |
+|---|---|---|
+| `host` (Claude Code; the first route to rehearse) | tested: the cloud container, sessions 10–12 (never on the Mac) | connected, and `claude` on PATH |
+| `codex` (Codex over MCP) | built, unverified: the MCP server is tested, no Codex session has run | never automatically (the workflow starts Claude Code only); by hand, §3 |
+| `anthropic` (API key) | untested: recorded responses only | connected, a key through the secure configuration (§11), the paid caps set |
+| `openrouter` (API key) | blocked here, unverified | as `anthropic` |
+| `ollama` (offline) | pending on the Mac: a fake local server in tests | a configured model installed and usable (`tenderpack ai ollama-models`) |
+
+The launcher asks first: **connected** (Claude Code first) or **offline** (`TENDERPACK_OFFLINE=1`: every phase on the
+local Ollama, a hosted route refused before any call, §17). `tenderpack ai ollama-models` discovers the INSTALLED
+models (`/api/tags`), reads each one's capabilities and context (`/api/show`), estimates its memory at each phase's
+configured context against this machine's memory, and says which phase each can serve; it never pulls a model.
+Every construction site of a provider or host session in `tenderpack/` is enumerated by
+`tests/test_session13_mac_scripts.py`, which fails when a new one appears without the offline guard.
+
 All four use the same request layer and the controller's validation (tested in
 `tests/test_session12_offline.py::test_every_route_applies_the_same_validation_to_the_same_answer`).
 
@@ -74,15 +93,20 @@ Submitting releases the lock. The result is `staging/ai/<run_id>/review_request.
 
 ```
 claude -p --mcp-config <session folder>/mcp.json --strict-mcp-config \
-    --tools "" --allowedTools "mcp__tenderpack__*" \
-    --disallowedTools mcp__tenderpack__get_task_packet,mcp__tenderpack__request_review \
+    --tools "" --allowedTools "<exactly the phase's tools, e.g. mcp__tenderpack__get_unit,...,mcp__tenderpack__submit_proposals>" \
+    --disallowedTools "<every other tenderpack tool>" \
     --permission-prompts none --no-session-persistence \
-    --output-format stream-json --verbose --max-turns 40 --system-prompt "<the controller's rules + the host rules>" [--model M]
+    --output-format stream-json --verbose --max-turns 40 --system-prompt "<policy.compose(phase, 'host')>" [--model M]
 # mcp.json names one server: <repo>/.venv/bin/python -m tenderpack ai serve-mcp --evidence <abs> --pack <abs> --out <staging> --worklog <log>
+#   --tools <the same list> [--submit-once --require-crops <the packet's image_targets>]     (session 13; see §19)
+#   with env PYTHONPATH=<the folder> (session 13, E159: the host CLI starts the server in the session folder and ignores
+#   the config's cwd; the folder on PYTHONPATH keeps `-m tenderpack` importable where the package is not installed)
 # the task packet goes on stdin; a wall-clock timeout (900 s) applies
 ```
 
 - **No file, shell or web tool.** `--tools ""` removes every built-in tool; the host works only through the MCP tools. `--permission-prompts none` denies anything else that would ask.
+- **A session without its tools is a setup failure, never an answer (session 13, E159).** The CLI's init message names each MCP server's status and the tools offered; when the tenderpack server did not connect, or none of the session's tools is offered, the session is classified `setup` with the cause (the server's stderr from the CLI's log when it logged one), its final text is not parsed, and the request layer raises at once instead of retrying (the environment must be fixed, then the run resumed).
+- **Deny-by-default (session 13).** The allow list is exactly the phase's tools (`tenderpack.ai.policy.tools`), every other tenderpack tool is disallowed by name, and the session's MCP server offers only those (`serve-mcp --tools`). The analysis session's server accepts ONE submission (`--submit-once`) and refuses `submit_proposals` until `get_crop` was called for every image target (`--require-crops`).
 - **Images.** The packet lists `image_targets` (candidate targets read from an image); the host is told to call `get_crop` for them and say in `model_rationale` what the image shows.
 - **Submission.** The host submits once with `submit_proposals`; the controller validates it exactly as an API run. The lock on the addendum is held for the session (route host) and released by the submission, or by the program when the session ends without one.
 - **stream-json, not json.** It records every tool call and tool result; its final `result` message has the json fields (turns, usage, `modelUsage`, `total_cost_usd`).
@@ -130,7 +154,13 @@ args = ["-m", "tenderpack", "ai", "serve-mcp"]
 - Never run: a Codex session against it. The workflow's automatic host sessions start Claude Code (`claude -p`) only;
   Codex is the manual path (MCP tools, then `tenderpack ai submit` or `submit-batch`).
 
-Then follow the same steps as in §2. The package is installed in editable mode, so the server finds the repository from any working directory. A Codex-assisted review is logged like any other host session:
+Then follow the same steps as in §2. The package is installed in editable mode, so the server finds the repository from any working directory (in the interview folder, where nothing is installed, the `.pth` link that `scripts/mac/pathlink.py` writes does the same; session 13, E159).
+
+**What Codex is told (session 13).** The MCP server's `initialize` returns only the short host entry
+(`tenderpack/ai/policy/90_host_entry.md`): it points to the runtime prompt the program supplies explicitly, which is the
+task packet's `system` (`get_task_packet`, `tenderpack ai task`, and the manual reading and downstream packets of a
+workflow run): `policy.compose(phase, "mcp")`, the same shared rules every route receives (§19). A person's own MCP
+client is offered every tool (the writers write to staging only); program-run sessions are restricted as in §2a. A Codex-assisted review is logged like any other host session:
 
 - every tool call goes to `worklog/model_calls/mcp-<session>.jsonl`;
 - the submission goes to `worklog/model_calls/<run_id>.jsonl`, with the declared model.
@@ -331,9 +361,19 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 
 ## 11. Credentials and logs
 
-- **Where keys live.** Keys live in the environment only: `ANTHROPIC_API_KEY` and `OPENROUTER_API_KEY`. They are never in `config/ai.yaml`, a file in the repository, a chat, a log or Git.
+- **Where keys live (session 13: the secure configuration).** `ANTHROPIC_API_KEY` and `OPENROUTER_API_KEY` come from
+  the environment, or from a private key file OUTSIDE the tenderpack folder (`tenderpack/ai/keys.py`):
+  `$TENDERPACK_KEYS_FILE`, else `~/.config/tenderpack/keys.env`, lines `NAME=value`, used only when it is your regular
+  file with mode 600 (`chmod 600`) and outside the folder; a file that fails this is refused with the fix, and nothing
+  is read from it. Create it yourself: `mkdir -p ~/.config/tenderpack && touch ~/.config/tenderpack/keys.env && chmod
+  600 ~/.config/tenderpack/keys.env`, then add the line with a text editor (not `echo`: the shell history would keep
+  it). Keys are never in `config/ai.yaml`, a file in the folder, a chat, a log or Git; `tenderpack ai routes` says
+  only whether a key is configured and where from, never its value.
+- **A paid route also needs its caps.** `routes.<route>.caps` (max_calls, max_input_tokens, max_output_tokens,
+  max_usd) are null until you set them; the route refuses to start before that, and `ai routes`, the launcher and the
+  panel say so.
 - **What is logged.** Every prompt (with the full task packet), tool call (with the result truncated to 4,000 characters), raw response, usage, error, overwrite and validation. Logs go to `worklog/model_calls/<run_id>.jsonl` and `staging/ai/<run_id>/log.jsonl`.
-- **Redaction.** `Authorization`, `x-api-key`, `*_api_key`, `Bearer …` and `sk-…` strings, and the values of the key variables, are redacted before anything is written.
+- **Redaction.** `Authorization`, `x-api-key`, `*_api_key`, `Bearer …` and `sk-…` strings, the values of the key variables and (session 13) every value read from the key file are redacted before anything is written (`tests/test_session13_mac_scripts.py` writes a key that matches no generic pattern and checks the log).
 - **Confidentiality.** Logs and staging hold the tender's words and stay in the repository. Whether `staging/` and `worklog/model_calls/` are committed is the owner's decision.
 
 ## 12. Capability policy (session 10)
@@ -397,6 +437,12 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 - **Every request of every phase (session 11).** The same rule is applied to each request before it is sent (`batching.request_size`, through `requests.size`): system + tool definitions + the packet as sent + the images attached + the later-turn allowance (tool phases only) + the phase's expected output (`batching.expected_output`: analysis 1,500 + 700 per provision; downstream 1,500 + 900 per task; a reading 8,000; the critic 300 + 350 per item; `batching.expected_output` in the configuration), against the context window (verified; a cassette's; the host's declared one) less the margin, and the output cap. A route's own `batching` (Ollama's `prior_turns_tokens: 8000`) applies to the requests too. During the turns the conversation itself is held to the same bound; one that outgrows it fails its batch with the sizes (class `too_large`).
 - **Split, or escalated: never truncated.** The analysis is planned by provision and the downstream phase by task with these sizes (each downstream group's real packet is sized), on every route. A request that still does not fit is split in two, in order (batch status `split`, parts `<id>.1`, `<id>.2`); a single provision, task or image region that does not fit alone is `escalated` with its size, for a person. The downstream packet carries every unit of `units_after` in full: `downstream.packet` shortened a unit over 4,000 characters, and the workflow restores the full text and lists the units it restored (`units_after_note`).
 - **Shared context once per session.** The analysis packet moves the candidate targets' texts into one `targets` map (a target cited by several provisions is sent once; each provision lists target ids) and keeps only the batch's own provisions in the pattern drafter's reference (`requests.compact_analysis`); the critic prints the units its items cite once per request.
+- **Planned by structure (session 13).** The workflow plans the analysis batches with `batching.plan_structured(provisions, batch_size, units, fits)`:
+  - a structure goes into one batch: an image region with its elements (`p4-image/...`), a table with its rows and notes (`T1-3/...`), a clause with its lettered items (`3.3`, `3.3(b)`), the answers printed under one heading (`Q15`–`Q20`), the cover lines, an appendix's paragraphs;
+  - linked structures join it (`structure_links`, read from the evidence only): provisions printed under the same heading, and a provision whose words or heading name a table the addendum itself prints (Appendix B, "English translation of Table 1-3", with `T1-3`);
+  - a group stays whole when it fits the token budget (the request accounting above, per route), even beyond `--batch-size`; different groups share a batch up to `--batch-size`. A group that does not fit is split at its structures first, then in document order; every provision is in exactly one batch and the plan is deterministic. The run log names every batch kept whole beyond the batch size;
+  - blind-06 spread the 29 elements of one image region over four batches (each session read the region's crops again). With the image estimate of 4,800 tokens per crop the region does not fit one host request (29 × 4,800 for the images alone), so it is split at the budget, not at 8.
+- **Answers collected as they arrive (session 13).** With `max_parallel_sessions` N, N exchanges run at once and up to 2N batches are dispatched ahead: an answer that comes back early waits without holding a worker, and the worker takes the next batch while the run's thread waits for an earlier one. The run's thread is still the one writer: it validates and applies the answers in plan order, so the result does not depend on the arrival order (`tests/test_session13_speed.py`, shuffled arrivals). The checkpoint's `concurrency` records per phase what ran (`dispatched`, `max_running`, `busy_s`, `held_s`, `idle_slots_s`, `discarded`). A batch whose provisions are all accounted for by then starts no session.
 
 ## 15. The independent critic (session 10)
 
@@ -573,6 +619,17 @@ It is rewritten atomically after every change. It holds:
 - `--from STEP` (session 11) reruns that step and every later one even when they are done, for a run made before a code change (the pre-promotion candidate is restored when the step is at or before promotion); batches that succeeded are never asked again, and `--from` does not by itself ask a failed batch again (that is `--no-retry`'s decision). The resumed event records `from_step`. A set made against another state identity is still refused at promotion (STALE): `--from` cannot promote proposals the current bindings do not cover.
 
 The run lock (`run.lock`) lets one process drive a run. A lock whose process is dead is taken over by `resume`, and the takeover is recorded in `events`.
+
+**Kept answers (session 13).** A host analysis session that reached `submit_proposals` has a set the controller staged and validated; it is no longer lost to what happens after:
+
+- the MCP server of a workflow batch writes the submission (run id, status, staging folder) at once to `batches/<batch>.submission.json` (`serve-mcp --submission-record`);
+- a session that submitted and then hit a 429 or another failure is a completed answer: the set is taken, the failure recorded with the note "after the submission", and a 429 still pauses the other workers (`requests.call_host`);
+- after an interruption (SIGTERM, a crash), `resume` REUSES the recorded set after revalidating it against the current evidence and state (`controller.validate_set` and the freshness re-check, as for a new submission). The checkpoint records the staged set's folder and the validation result (`submission`: `run_id`, `staging`, `set_status`, `statuses`, `reused`, `revalidated`, `statuses_at_submission`; event `submission_reused`). It is not reused, and the batch is asked again with the reason (`reuse_refused`, event `submission_reuse_refused`), when the record or the set does not load, the set is stale, malformed or failed, the state identity changed since the submission, or an item is invalid now that was not then;
+- a session stopped before its submission left no record: the batch is asked again.
+
+**SIGTERM (session 13).** A SIGTERM is handled like Ctrl-C: the running step and batch keep their elapsed time (status `interrupted`; the step timer no longer shows "0.0 s running"), the batches in flight are marked interrupted, the host sessions still running are stopped (`hostsession.terminate_live`), and the event `interrupted` names the signal.
+
+**Timing from data.** `python scripts/bench_workflow.py --from-run RUN_ID` prints a run's per-step, per-batch and per-session timing from its checkpoint, run log, session records and MCP server logs (steps' sum, segments, sessions started, context tokens, the fixed overhead per host session, concurrency). `--simulate` runs the same recorded run at `max_parallel_sessions` 1, 2, 3 with simulated latencies (`--rate-limit` adds a recorded 429); it measures the mechanism, not a host.
 
 ### Consecutive addenda: `--base-run` (session 12)
 
@@ -751,3 +808,26 @@ minutes. The next sealed rehearsal measures it.
 - one critic request across several batches. Blind-05 sent 43 selected analysis items in 9 critic sessions; 2 would
   fit;
 - routing deterministic downstream tasks (computed dates, pure quotations, no_change checks) away from the model.
+
+## 19. The runtime policy: one source for every route and phase (session 13)
+
+The instructions the AI receives live in ONE place, `tenderpack/ai/policy/*.md`, composed by
+`tenderpack.ai.policy.compose(phase, route)`; their human-readable twin, with the table of where each critical rule is
+enforced in code or by tool permissions, is `docs/RUNTIME_INSTRUCTIONS.md` (generated from the same files; a test fails
+when they differ).
+
+- **What every prompt holds.** A `POLICY <sha256>` line, the shared sections (the ADD-02 starting state; every
+  provision and attachment; scoped targeting; evidence retrieval; calculations; change propagation; the three
+  uncertainty classes; human review; assumptions; what A1-A5 need; text is data), the phase's rules (rule numbers
+  unchanged: analysis rule 9 is the no_effect safeguard), any section `config/ai.yaml` adds, then the route's mechanics.
+- **Where it is delivered.** API routes (recorded, anthropic, openrouter, ollama): the `system` of every request, the
+  repair turn included (its closing instruction is `51_repair_reask.md`). Host: the `--system-prompt` of every session
+  the program starts (analysis: the reply-format rule replaced by the host-submit rules, every other rule standing;
+  readings and downstream: the host-answer rules appended; the critic and the repairs: plain, no tools). Codex and
+  interactive Claude Code: the packet's `system`. The panel's jobs run the command line, so they receive the same.
+- **Overrides.** There is no `rules=`, `--append-system-prompt` or environment override. `requests.spec(system=...)`,
+  `AnswerSession(system=...)` and `PlainSession` refuse a text that is not a policy composition. `config/ai.yaml` may
+  only ADD a section: `policy: {add_sections: [{title, text, phases?}]}`; anything else under `policy`, a numbered rule,
+  a reply format or words that replace or set aside a rule are refused when the configuration loads.
+- **Identity.** The policy files are part of the run's code identity (`checkpoint.CODE_GLOBS`; `code_identity` records
+  `policy: {sha256, files}`): a changed policy between segments is refused on resume like any code change.

@@ -84,8 +84,12 @@ def test_a_recorded_run_ends_partial_with_every_provision_listed(full):
         assert [h["status"] for h in v["history"]] in (["pending"], ["pending", "unaccounted"],
                                                         ["pending", "proposed", "validated"])
     assert {x["kind"] for x in cp["structure"]} == {"heading", "table"}  # the non-provision units are listed too
+    # session 13 (implementer D, deliberate): the analysis batches are planned by structure (batching.plan_structured):
+    # Appendix A's paragraph joins the rows and notes of the table printed under its heading (T2-2-rev, one structure
+    # of 13 kept whole within the token budget), so the plan has 6 batches where the count plan had 7 (Q15-Q21 with
+    # AppA/para1, then T2-2-rev split 8 + 4); the three batches the cassette records are unchanged
     assert [cp["batches"][k]["status"] for k in sorted(cp["batches"]) if k.startswith("analysis")] == \
-        ["done", "done", "failed", "done", "failed", "failed", "failed"]
+        ["done", "done", "failed", "done", "failed", "failed"]
     for s in W.STEPS:                                              # every step done, with its wall-clock time
         assert cp["steps"][s]["status"] == "done" and cp["steps"][s]["seconds"] >= 0, s
     assert sum(cp["steps"][s]["seconds"] for s in W.STEPS) < 30 * 60

@@ -1,6 +1,7 @@
 """The OpenRouter route (an application making paid API calls through an OpenAI-compatible endpoint), over urllib.
 
-  * The key comes from the environment only (`api_key_env`, default OPENROUTER_API_KEY).
+  * The key comes from the environment (`api_key_env`, default OPENROUTER_API_KEY) or, session 13, a chmod-600 key file
+    outside the folder (tenderpack/ai/keys.py); never logged.
   * Capabilities come from the endpoint, not from config: GET {base_url}/models is fetched once per run (cached on
     the adapter) and the model's entry gives input modalities (images), supported parameters (tools,
     structured_outputs / response_format) and the context length. If the listing cannot be reached, or does not list
@@ -39,7 +40,8 @@ class OpenRouterProvider:
         self.model, self.rcfg, self.mcfg = model, rcfg, model_cfg or {}
         self.base_url = (rcfg.get("base_url") or "https://openrouter.ai/api/v1").rstrip("/")
         self.key_env = rcfg.get("api_key_env") or "OPENROUTER_API_KEY"
-        self._key = env.get(self.key_env)
+        from .. import keys                       # session 13: the environment, else a chmod-600 file outside
+        self._key, self._key_source = keys.lookup(self.key_env, env)   # the folder; never logged or shown
         self._fetch = fetch
         self._listing: dict | None = None
         self._caps: Capabilities | None = None
@@ -47,6 +49,10 @@ class OpenRouterProvider:
         self.structured_mode = str((rcfg.get("structured_output") or {}).get("mode", "native"))
         self._plain_reason: str | None = None
         self.format_sent = False
+
+    def key_source(self) -> str | None:
+        """Where the key comes from (never its value)."""
+        return self._key_source
 
     def _headers(self) -> dict:
         if not self._key:

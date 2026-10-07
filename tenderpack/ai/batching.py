@@ -1,6 +1,7 @@
 """Bounded batches for an addendum too large for one request (session 10, routes layer).
 
     plan_batches(provisions, capabilities, overhead) -> list[Batch]
+    plan_structured(provisions, size, units, fits) -> list[list[str]]     (session 13: by structure, see below)
 
 splits an addendum's provisions, in their order, into batches whose request fits the model's VERIFIED context window and
 output cap, accounting for everything else the request carries:
@@ -30,6 +31,7 @@ The capabilities must come from the endpoint (or a cassette): a plan is refused 
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import asdict, dataclass, field
 
 CHARS_PER_TOKEN = 3.5
@@ -330,3 +332,147 @@ def plan_units(units: list[dict], fits) -> list[list[dict]]:
     if [id(u) for g in groups for u in g] != [id(u) for u in units]:
         raise BatchPlanError("the plan lost or reordered a unit")
     return groups
+
+
+# ---------------------------------------------------------------------------------------------- session 13: structure
+
+_TABLE_REF = re.compile(r"\bTable\s+([0-9]+(?:[.\-][0-9]+)*)", re.I)
+
+
+def structure_key(pid: str, unit: dict | None = None) -> str:
+    """The structure a provision is printed in, from its id (session 13, implementer D): the part before '/' (an image
+    region's elements `p4-image/...`, a table's rows and notes `T1-3/...`, the cover lines, an appendix's paragraphs),
+    the clause number for a clause and its lettered items (`3.3`, `3.3(b)` -> `3`), and for numbered answers (`Q15`)
+    their letters with the heading they are printed under (the answers of one subject)."""
+    local = pid.split(":", 1)[1] if ":" in pid else pid
+    if "/" in local:
+        return local.split("/")[0]
+    m = re.match(r"^(\d+)[.(]", local)
+    if m:
+        return m.group(1)
+    m = re.match(r"^([A-Za-z]+)\d+$", local)
+    if m:
+        head = str((unit or {}).get("heading") or "").strip()
+        return m.group(1) + (f"|{head}" if head else "")
+    return local
+
+
+def structure_keys(provisions: list[str], units: dict | None = None) -> dict[str, str]:
+    """structure_key for every provision, with a section's own paragraphs attached to the structure printed under the
+    same heading (an appendix's "The table below ..." paragraphs belong to the image region or table it introduces);
+    the cover lines stay the cover's."""
+    units = units or {}
+    keys = {p: structure_key(p, units.get(p)) for p in provisions}
+    heads: dict[str, str] = {}
+    for p in provisions:
+        u = units.get(p) or {}
+        h = str(u.get("heading") or "").strip()
+        if h and u.get("kind") != "paragraph" and not _is_cover(p):
+            heads.setdefault(h, keys[p])
+    for p in provisions:
+        u = units.get(p) or {}
+        h = str(u.get("heading") or "").strip()
+        if h in heads and u.get("kind") == "paragraph" and not _is_cover(p):
+            keys[p] = heads[h]
+    return keys
+
+
+def _is_cover(pid: str) -> bool:
+    return pid.split(":", 1)[-1].startswith("cover/")
+
+
+def structure_links(provisions: list[str], units: dict | None = None) -> list[tuple[str, str, str]]:
+    """Links between structures that belong next to each other (session 13): provisions printed under the same heading
+    (an appendix's paragraphs and the image region they introduce), and an operative provision whose own words or
+    heading name a table this addendum itself prints (`Table 1-3` -> the structure `T1-3`: a translation and the table
+    it renders, an answer that amends the table). The cover is the addendum's summary of itself, never an operative
+    provision (VOL-I 3.2), so its words link nothing. Returns (key, key, why) triples, read from the evidence only."""
+    units = units or {}
+    keys = structure_keys(provisions, units)
+    present = set(keys.values())
+    out: list[tuple[str, str, str]] = []
+    by_head: dict[str, str] = {}
+    for p in provisions:
+        u = units.get(p) or {}
+        head = str(u.get("heading") or "").strip()
+        k = keys[p]
+        if _is_cover(p):
+            continue
+        if head:
+            if head in by_head and by_head[head] != k and (by_head[head], k) not in {(x[0], x[1]) for x in out}:
+                out.append((by_head[head], k, f"the same heading: {head[:80]}"))
+            by_head.setdefault(head, k)
+        for n in _TABLE_REF.findall(f"{head}\n{u.get('text') or ''}"):
+            t = "T" + n.replace(".", "-")
+            if t in present and t != k and (k, t) not in {(x[0], x[1]) for x in out}:
+                out.append((k, t, f"names Table {n}, which this addendum prints"))
+    return out
+
+
+def plan_structured(provisions: list[str], size: int, units: dict | None = None, fits=None,
+                    links: bool = True) -> list[list[str]]:
+    """Session 13 (implementer D; the owner: "grouping related provisions"): batches planned by STRUCTURE, not by
+    count.
+      * a structure (structure_keys: an image region's elements, a table's rows and notes, a clause and its lettered
+        items, the answers under one heading, the cover lines; a section's paragraphs with the structure printed
+        under the same heading) goes into ONE batch whenever it fits the token budget
+        `fits(ids) -> bool` (the request accounting's estimate for the route), even beyond `size`;
+      * linked structures (structure_links) are placed next to each other, so they share a batch when the batch stays
+        within `size` provisions and the budget (a link never makes a batch larger than `size`: a chain of references
+        must not become one long session);
+      * a structure that does not fit is split in document order at the budget;
+      * without `fits` the count bounds every batch, as before.
+    Deterministic (a function of the ids, the units and the budget); every provision in exactly one batch; groups in
+    the order of their first provision."""
+    units = units or {}
+    size = max(1, int(size))
+    budget = fits or (lambda ids: len(ids) <= size)
+    pos = {p: i for i, p in enumerate(provisions)}
+    keys = structure_keys(provisions, units)
+    parent: dict[str, str] = {k: k for k in keys.values()}
+    first: dict[str, int] = {}
+    for p in provisions:
+        first.setdefault(keys[p], pos[p])
+
+    def root(k: str) -> str:
+        while parent[k] != k:
+            parent[k] = parent[parent[k]]
+            k = parent[k]
+        return k
+    if links:
+        for a, b, _ in structure_links(provisions, units):
+            ra, rb = root(a), root(b)
+            if ra != rb:                                       # the earlier structure names the group
+                if first[ra] <= first[rb]:
+                    parent[rb] = ra
+                else:
+                    parent[ra] = rb
+    groups: dict[str, dict[str, list[str]]] = {}
+    for p in provisions:
+        groups.setdefault(root(keys[p]), {}).setdefault(keys[p], []).append(p)
+    out: list[list[str]] = []
+    cur: list[str] = []
+    for g in groups.values():
+        for sub in g.values():
+            if cur and len(cur) + len(sub) <= size and budget(cur + sub):
+                cur += sub
+                continue
+            if cur:
+                out.append(cur)
+                cur = []
+            if budget(sub):
+                cur = list(sub)                                # a whole structure, beyond `size` when it fits
+                continue
+            for p in sub:                                      # split at the budget, in document order
+                if cur and budget(cur + [p]):
+                    cur.append(p)
+                else:
+                    if cur:
+                        out.append(cur)
+                    cur = [p]                                  # alone; the request layer escalates it if too large
+    if cur:
+        out.append(cur)
+    flat = [p for b in out for p in b]
+    if sorted(flat, key=pos.__getitem__) != list(provisions) or len(flat) != len(set(flat)):
+        raise BatchPlanError("the structured plan lost or repeated a provision")
+    return out

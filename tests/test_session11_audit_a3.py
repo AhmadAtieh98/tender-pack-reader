@@ -106,7 +106,10 @@ def test_a3_8_counts_and_lists_agree_across_pdf_html_and_json(built):
         assert a3[key]["heading"] in detail
     # session 12 (F2, audit A3-3): '(17 rows, 1 corroborating)' was a pipeline term; the corroborating row is shown on
     # the line of the row it restates ('also stated in ...'), so the subtitle counts the triggers only
-    assert "16 explicit bid-out triggers + 1 below the score threshold" in a3["subtitle"]
+    # session 13 (F2; audit R2-9, deliberate change): the count names the row folded into another's line, so the page,
+    # a3_detail.html, review batch 2 and checks.json C13 print one count for the set (stage2.trigger_count)
+    assert ("16 (+ VOL-IV-F4C-N1, which restates VOL-I-9.4-01) explicit bid-out triggers + 1 below the score threshold"
+            in a3["subtitle"])
     assert sum(int(s["heading"].rsplit(": ", 1)[1]) for s in a3["sections"] if s["heading"].startswith("Explicit")) == 16 + 1
 
 
@@ -185,7 +188,9 @@ def test_a3_6_form_4c_trigger_is_listed_once_with_its_corroborating_sources(buil
     nr = next(s for s in a3["sections"] if s["heading"].startswith("Explicit — Non-responsive"))
     assert nr["heading"].endswith(": 8")
     assert "also stated in VOL-IV-F4C-N1" in text and "English with an Arabic translation is not acceptable" in text
-    assert text.count("VOL-IV-F4C-N1") == 1                                   # one line, not two
+    # one line, not two; session 13 (F2; audit R2-9, deliberate): the subtitle's count also names it ('16 (+
+    # VOL-IV-F4C-N1, which restates VOL-I-9.4-01) explicit ...'), so a reader meets one count for the set
+    assert text.count("VOL-IV-F4C-N1") == 1 + a3["subtitle"].count("VOL-IV-F4C-N1") == 2
 
 
 def test_a3_6_unverified_corroboration_is_flagged_not_folded(built):

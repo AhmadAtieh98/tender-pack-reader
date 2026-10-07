@@ -23,6 +23,17 @@
           ollama only, their capabilities checked now against the LOCAL endpoint (installed, vision, tools, context,
           estimated memory). It never calls a hosted endpoint, never starts a host process and never pulls a model.
 Session 12: --offline on critic and plan-batches (offline mode, tenderpack/ai/offline.py): a hosted route is refused.
+Session 13: `routes` also prints, for each route (host = Claude Code, codex, anthropic, openrouter, ollama), the record of
+          where and when it was last exercised and with what result (config/routes_status.yaml) beside its LIVE
+          availability here (a command on PATH, a key configured through tenderpack/ai/keys.py, the paid caps set, the
+          local Ollama answering) and why it is not usable; `--brief` gives one line per route (the launcher's menu).
+          Nothing is called: no hosted endpoint, no host process, no key value shown.
+          Session 13, part 4: each row also says where the AI quick review (`ai quick-review`) has been exercised on
+          that route (`quick_review`, from tenderpack/ai/quick_review.py ROUTE_STATUS).
+  ollama-models [--json] [--offline]   (session 13) the INSTALLED Ollama models (/api/tags), each one's reported
+          capabilities and context (/api/show) and its estimated memory against this machine's, and which phase
+          (reading, analysis, downstream, critic) each can serve. Never pulls. Exit 0 every phase has a model, 1 Ollama
+          answers but some phase has none, 3 Ollama does not answer (checks.sh checks 6 and 7 read these).
 Exit codes: 0 done, 1 done with failures (an item the critic could not review; a host session without a submission;
 a provision too large), 2 refused before anything ran.
 """
@@ -34,7 +45,7 @@ from pathlib import Path
 
 from ..util import ROOT
 
-COMMANDS = ("critic", "host-session", "plan-batches", "routes")
+COMMANDS = ("critic", "host-session", "plan-batches", "routes", "ollama-models")
 
 
 def _common(p) -> None:
@@ -85,8 +96,13 @@ def add_subcommands(sub) -> None:
     _common(b)
     r = sub.add_parser("routes", help="every route: kind, what is verified vs pending on the Mac, models, local checks")
     r.add_argument("--json", action="store_true")
+    r.add_argument("--brief", action="store_true", help="one line per route: usable now or why not, and its status")
     r.add_argument("--offline", action="store_true")
     r.add_argument("--config", default=str(ROOT / "config/ai.yaml"))
+    o = sub.add_parser("ollama-models", help="the installed Ollama models and which phase each can serve (no pull)")
+    o.add_argument("--json", action="store_true")
+    o.add_argument("--offline", action="store_true")
+    o.add_argument("--config", default=str(ROOT / "config/ai.yaml"))
 
 
 def _ws(a):
@@ -123,6 +139,8 @@ def handle(a) -> int:
             return _plan(a)
         if a.ai_cmd == "routes":
             return _routes(a)
+        if a.ai_cmd == "ollama-models":
+            return _ollama_models(a)
     except (B.Refused, C.ConfigError, ToolError) as e:
         print(f"REFUSED: {e}", file=sys.stdout)
         return 2
@@ -296,6 +314,16 @@ def _routes(a) -> int:
         else:
             row["checked"] = "nothing to check (a cassette per test)"
         rows.append(row)
+    rows.insert(1, {"route": "codex", "kind": "connected coding host (manual path over MCP)", "paid": False,
+                    "verified": "MCP interface tested; no Codex session has run (docs/AI_ROUTES.md section 3)",
+                    "checked": "not checked by this command (it would start a process); `codex` looked up on PATH"})
+    status = route_status(Path(a.config).parent / "routes_status.yaml")
+    from .quick_review import ROUTE_STATUS as QR_STATUS     # session 13, part 4: where the quick review has run
+    for row in rows:
+        row["status"] = status.get(row["route"]) or {"status": "no record", "where": "-", "when": "-",
+                                                     "result": "config/routes_status.yaml has no entry", "next": "-"}
+        row["available"], row["why"] = availability(row, cfg, off)
+        row["quick_review"] = QR_STATUS.get(row["route"], "no record")
     out = {"offline": cfg.get("_offline") if off else None, "routes": rows,
            "note": "kinds: connected coding host (Claude Code / Codex with their own model, over MCP or the CLI) | "
                    "hosted API (the application's paid calls) | local inference (Ollama on this machine) | recorded "
@@ -303,10 +331,26 @@ def _routes(a) -> int:
     if a.json:
         _print(out)
         return 0
+    if getattr(a, "brief", False):
+        print(f"AI routes ({'offline mode: only the local ollama route' if off else 'connected: Claude Code first'}):")
+        for r in rows:
+            if r["route"] == "recorded":
+                continue
+            st = r["status"]
+            print(f"  {r['route']:<11} {'usable now' if r['available'] else 'not usable now: ' + r['why']}")
+            print(f"  {'':<11} [{st.get('status')}; last exercised: {st.get('where')}, {st.get('when')}]")
+        return 0
     print(f"AI routes ({'offline mode: ' + str(out['offline']) if off else 'offline mode off'})")
     for r in rows:
+        st = r["status"]
         print(f"\n{r['route']}: {r['kind']}{' (paid)' if r.get('paid') else ''}")
+        print(f"  usable now: {'yes' if r['available'] else 'no: ' + r['why']}")
+        print(f"  status:   {st.get('status')} (last exercised: {st.get('where')}, {st.get('when')}: "
+              f"{' '.join(str(st.get('result')).split())})")
+        if not r["available"] and st.get("next") not in (None, "-"):
+            print(f"  next:     {' '.join(str(st.get('next')).split())}")
         print(f"  verified: {r['verified']}")
+        print(f"  quick review: {r['quick_review']}")
         print(f"  checked:  {r['checked']}")
         if r.get("error"):
             print(f"  error:    {r['error']}")
@@ -330,6 +374,96 @@ def _routes(a) -> int:
                   f"context={c.get('context_tokens')}")
     print("\n" + out["note"])
     return 0
+
+
+def route_status(path: Path) -> dict:
+    """config/routes_status.yaml (session 13): {route: {status, where, when, result, next, label}}; {} when absent."""
+    import yaml
+    try:
+        data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return {}
+    return {k: {kk: (" ".join(str(vv).split()) if isinstance(vv, str) else vv) for kk, vv in (v or {}).items()}
+            for k, v in (data.get("routes") or {}).items()}
+
+
+def availability(row: dict, cfg: dict, offline: bool) -> tuple[bool, str]:
+    """(usable now, why not) for a routes row, from local facts only: offline mode, a command on PATH, a key configured
+    (tenderpack/ai/keys.py, never its value), the paid caps set, the local Ollama's answer. Nothing is called."""
+    import shutil
+    from . import config as C
+    from . import keys
+    name = row["route"]
+    if name == "recorded":
+        return False, "tests only (a cassette replay, not a live model)"
+    if offline and name in ("host", "codex", "anthropic", "openrouter"):
+        return False, "offline mode is on: only the local ollama route (switch to connected to use it)"
+    if name == "host":
+        binary = (cfg.get("host_session") or {}).get("claude_bin") or "claude"
+        found = shutil.which(binary)
+        return (True, f"{binary} found at {found}") if found else (
+            False, f"the {binary} command is not on PATH: install Claude Code and sign in (or use the manual path, "
+                   "tenderpack ai submit-batch)")
+    if name == "codex":
+        found = shutil.which("codex")
+        return False, ("the workflow starts Claude Code only; Codex is used by hand over the MCP server "
+                       "(docs/AI_ROUTES.md section 3) and has never run here" + (f"; codex found at {found}" if found
+                                                                                 else "; codex is not on PATH"))
+    if name in ("anthropic", "openrouter"):
+        rc = C.route(cfg, name)
+        ok, why = keys.status(rc.get("api_key_env") or ("ANTHROPIC_API_KEY" if name == "anthropic"
+                                                        else "OPENROUTER_API_KEY"))
+        if not ok:
+            return False, why
+        caps = rc.get("caps") or {}
+        unset = [k for k in ("max_calls", "max_input_tokens", "max_output_tokens", "max_usd") if caps.get(k) is None]
+        if rc.get("paid") and unset:
+            return False, (f"{why}; but the paid caps routes.{name}.caps {', '.join(unset)} are not set in "
+                           "config/ai.yaml (a paid route refuses to start until the owner sets them)")
+        return True, why
+    if name == "ollama":
+        usable = [m.get("id") for m in row.get("models") or [] if m.get("ok")]
+        if usable:
+            return True, f"usable configured model(s): {', '.join(usable)}"
+        return False, (row.get("error") or "no configured model is installed and usable") + \
+            " (tenderpack ai ollama-models lists what is installed; nothing is pulled)"
+    return False, "unknown route"
+
+
+def _ollama_models(a) -> int:
+    """`tenderpack ai ollama-models` (session 13): see the module docstring."""
+    from .providers.ollama import PHASE_NEEDS, discover
+    cfg = _cfg(a)
+    rep = discover(cfg)
+    code = 3 if not rep["reachable"] else (0 if all(rep["phases"][p] for p in PHASE_NEEDS) else 1)
+    rep["exit_code"] = code
+    if a.json:
+        _print(rep)
+        return code
+    m = rep["machine"]
+    print(f"Ollama at {rep['base_url']}: {'answers' if rep['reachable'] else 'does not answer'}; machine memory "
+          f"{m.get('memory_gb')} GB x {m.get('usable_fraction')} usable = {m.get('budget_gb')} GB ({m.get('source')})")
+    if not rep["reachable"]:
+        print(f"  {rep['error']}")
+        print("  start the Ollama app (or `ollama serve`) and run again; nothing is downloaded by tenderpack")
+        return code
+    if not rep["models"]:
+        print("  no model is installed (tenderpack never pulls one; `ollama pull <model>` is your decision)")
+    for x in rep["models"]:
+        roles = f" (configured as {', '.join(x['roles'])})" if x.get("roles") else ""
+        mem = x.get("memory") or {}
+        print(f"\n{x['id']}{roles}: {x.get('size_gb')} GB on disk; capabilities {', '.join(x.get('capabilities') or [])}"
+              f"; context {x.get('context_tokens')}; memory ~{mem.get('total_gb')} GB "
+              f"({'fits' if mem.get('fits') else 'does NOT fit' if mem.get('fits') is False else 'not estimated'})")
+        if x.get("problem"):
+            print(f"  {x['problem']}")
+        for ph, v in (x.get("phases") or {}).items():
+            print(f"  {ph:<11} {'can serve' if v['ok'] else 'cannot'}: {v['why']}")
+    print("\nper phase: " + "; ".join(f"{p}: {', '.join(v) or 'NO installed model'}" for p, v in rep["phases"].items()))
+    print("configured (config/ai.yaml routes.ollama.models): " +
+          ", ".join(f"{r} = {i}" for r, i in rep["configured"].items()))
+    print(rep["note"])
+    return code
 
 
 def main(argv=None) -> int:

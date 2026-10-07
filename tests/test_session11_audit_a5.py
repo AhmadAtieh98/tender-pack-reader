@@ -90,6 +90,10 @@ def test_a5_2_every_a3_row_in_force_is_carried_or_excepted(r, base, written):
     a3 = {e["row"].id for e in r["evals"] if schedule.in_force(e["stages"][stage]["status"])
           and isinstance((e["stages"][stage]["interpretation"] or {}).get("consequence"), dict)
           and e["stages"][stage]["interpretation"]["consequence"]["class"] in BID_OUT}
+    # session 13 (F3, audit R3-5, deliberate): A5's A3 rows are the rows the A3 page lists (schedule.a3_rows, one set
+    # for both): the BID_OUT rows above and the row whose Envelope B is returned unopened (score_elimination)
+    assert a3 < set(schedule.a3_rows(r["evals"], stage))
+    a3 = set(schedule.a3_rows(r["evals"], stage))
     cov = base["a3_coverage"]
     assert set(cov["carried"]) | set(cov["excepted"]) == a3 and cov["uncarried"] == []
     assert all(cov["excepted"].values())

@@ -1368,7 +1368,8 @@
    },
    {
     "accounted_by": [
-     "ADD-02/5.1"
+     "ADD-02/5.1",
+     "ADD-02/5.1/unchanged"
     ],
     "disposition": "op",
     "page": 1,
@@ -2093,6 +2094,66 @@
      "target": "VOL-II:T2-4/TN",
      "targets": [],
      "type": "set_value"
+    },
+    "stage": "ADD-02",
+    "valid": true,
+    "withdrawn": false
+   },
+   {
+    "applied": true,
+    "changed": [],
+    "checks": [
+     {
+      "detail": "provision ADD-02:5.1 belongs to ADD-02",
+      "id": "C21",
+      "ok": true
+     },
+     {
+      "detail": "targets exist: ['VOL-II:T2-4/BOD5', 'VOL-II:T2-4/COD', 'VOL-II:T2-4/TSS', 'VOL-II:T2-4/TP', 'VOL-II:T2-4/Turbidity', 'VOL-II:T2-4/FaecalColiforms', 'VOL-II:T2-4/ResidualChlorine', 'VOL-II:T2-4/pH', 'VOL-II:T2-4/OilGrease']",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "every annotated target is cited by the provision",
+      "id": "C22",
+      "ok": true
+     },
+     {
+      "detail": "ADD-02:5.1 still says 'All other parameters in Table 2-4 are unchanged.'",
+      "id": "C27",
+      "ok": true
+     }
+    ],
+    "details": {},
+    "op": {
+     "claims": [],
+     "covers": [],
+     "effect": "confirms",
+     "expect": [
+      {
+       "contains": "All other parameters in Table 2-4 are unchanged.",
+       "unit": "ADD-02:5.1"
+      }
+     ],
+     "id": "ADD-02/5.1/unchanged",
+     "note": "\"All other parameters in Table 2-4 are unchanged.\" (ADD-02 5.1, p1): the nine other rows of Table 2-4 keep their printed limits and bases of assessment. It does not say how the qualifier \"(all values are maxima; compliance assessed as a 30-day rolling average unless stated)\" applies to the Residual Chlorine (0.5 - 1.0) and pH (6.0 - 9.0) ranges: that question stays open (I-VOL-II-T24-TENSIONS, CQ-T24-RANGES; Process engineer), HUMAN DECISION PENDING. The Environmental Permit, which prevails over the reproduction, is not supplied (I-PERMIT).",
+     "old_resolved": "quoted",
+     "origin": "assistant",
+     "provision": "ADD-02:5.1",
+     "renumber": {},
+     "review": "proposed",
+     "targets": [
+      "VOL-II:T2-4/BOD5",
+      "VOL-II:T2-4/COD",
+      "VOL-II:T2-4/TSS",
+      "VOL-II:T2-4/TP",
+      "VOL-II:T2-4/Turbidity",
+      "VOL-II:T2-4/FaecalColiforms",
+      "VOL-II:T2-4/ResidualChlorine",
+      "VOL-II:T2-4/pH",
+      "VOL-II:T2-4/OilGrease"
+     ],
+     "type": "annotate"
     },
     "stage": "ADD-02",
     "valid": true,

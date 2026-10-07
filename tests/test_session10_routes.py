@@ -390,7 +390,10 @@ def test_a_host_session_works_only_through_mcp_reads_a_crop_and_submits(ws):
     pk["image_targets"] = ["VOL-II:T2-4/BOD5"]
     hs = HostSession(ws, C.load(), claude_bin=str(FAKE_CLAUDE), timeout_s=240)
     cmd = hs.command(ws.staging / "mcp.json")
-    assert cmd[cmd.index("--tools") + 1] == "" and cmd[cmd.index("--allowedTools") + 1] == "mcp__tenderpack__*"
+    # session 13 (implementer C, deliberate): deny-by-default, the allow list is exactly the analysis tools plus
+    # submit_proposals (tenderpack.ai.policy.tools), no longer the wildcard "mcp__tenderpack__*"
+    assert cmd[cmd.index("--tools") + 1] == "" and cmd[cmd.index("--allowedTools") + 1] == ",".join(
+        "mcp__tenderpack__" + t for t in hs.allowed_tools()) and "submit_proposals" in hs.allowed_tools()
     assert "--strict-mcp-config" in cmd and cmd[cmd.index("--max-turns") + 1] == "40"
     assert "mcp__tenderpack__get_task_packet" in cmd[cmd.index("--disallowedTools") + 1]
     ps = hs.run_batch(pk)

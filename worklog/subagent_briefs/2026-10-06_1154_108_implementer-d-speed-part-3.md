@@ -1,0 +1,8 @@
+# Subagent brief 108: Implementer D: speed part 3
+
+Launched 2026-10-06 11:54:02 UTC; model option requested: `opus`; subagent type: `general-purpose`.
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 6 Oct 2026, session 13).
+
+---
+
+Read and carry out the brief at `/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s13/briefs/D.md` in full (it names COMMON.md to read first, your worktree `/home/user/wt-s13-d`, which the coordinator built at 11:53 UTC as `0a63e3a` plus every merged change of the session: implementers A, B and C, fixers F1, F2 and F3; the six items, the tests to run and the report format). Two facts since the brief was written: (1) implementer C's policy module (`tenderpack/ai/policy.py`, `tenderpack/ai/policy/*.md`, `docs/RUNTIME_INSTRUCTIONS.md`) now composes every system prompt and adds about 2,200–2,900 tokens per request (C's decision (a) asks you to measure that effect and, if you change what each phase receives, to keep every critical rule and the POLICY line and to keep `tests/test_session13_policy.py` green); (2) implementer A's run identity (`checkpoint.code_identity`, `workflow.record_code_identity`/`check_code_identity`, exit 7 on a changed tree unless `--allow-code-change`) and B's offline-guard enumeration test (`tests/test_session13_mac_scripts.py`, `KNOWN_SITES`/`PROCESS_SITES`) must stay green: if you add a session constructor or a subprocess user, add it there with a comment. Start by stating which model you are running as and the reasoning-effort setting your runtime shows. Never write in `/home/user/tender-pack-reader` and never run git write commands anywhere.

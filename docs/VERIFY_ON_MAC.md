@@ -1,4 +1,4 @@
-# Verify the draft archive on a Mac
+# Verify the draft archive and the interview folder on a Mac
 
 ## Tested here vs. what you still need to check
 
@@ -59,3 +59,25 @@ make test PY=.venv/bin/python                      # about 6 minutes; expected: 
 ```
 
 Nothing here approves or accepts anything. Your decisions are recorded only by the commands in `OPERATING_GUIDE.md` §4.
+
+## 5. The interview folder (session 13): the checks still PENDING on your Mac
+
+The interview folder (`LAMAR-PPP-R2-INTERVIEW_<base>+wt_<stamp>.zip`, built by `scripts/make_interview_folder.py`) is
+the operating copy for the Mac; the submitted repository is preserved separately. Everything below was prepared in a
+Linux cloud container, which cannot reach your Mac: **every check is PENDING until you run it there**, and a pass in the
+container proves nothing about the Mac. Run them in order; each says what you should see. Keep the folder where it
+will stay before step B: the environment is built in place.
+
+| # | Check | Command (in Terminal) | Expected | State |
+|---|---|---|---|---|
+| A | Unzip; the executable bits; the manifest | `cd ~/Documents && unzip -q ~/Downloads/LAMAR-PPP-R2-INTERVIEW_*.zip && cd LAMAR-PPP-R2-INTERVIEW_*/ && ls -l scripts/mac/launch.command scripts/mac/*.sh smoke-test/run_smoke.sh && shasum -a 256 -c MANIFEST.sha256 \| grep -v ': OK$'; echo done` | `-rwxr-xr-x` on `launch.command`, `setup.sh`, `checks.sh` and `run_smoke.sh`; nothing printed before `done`. (Finder's Archive Utility should keep the same bits: double-click the zip and check `launch.command` opens) | PENDING |
+| B | Setup from the lock | `bash scripts/mac/setup.sh` | `PASS uv.lock and requirements.lock.txt present`, `PASS locked set installed from ...`, `PASS installed versions match requirements.lock.txt (all 15 applicable pins match the lock ...)` (14 on Python 3.12+ where numpy has one pin; the count is the lock's lines for your Python), the imports and the pymupdf pin PASS, then `PASS tenderpack imports from <this folder> wherever the interpreter starts (... tenderpack-folder.pth)` (session 13, E159: the folder linked into `.venv`); `0 FAIL`. Network once unless uv's cache or a wheelhouse holds the wheels | PENDING |
+| C | The offline checks | Wi-Fi off; `bash scripts/mac/checks.sh --no-ai` | `PASS 1 ingest: exit 0, STRUCTURE OK (units: 524 ...)`; `PASS 2 outputs: exit 0, 2 approval blocker(s) only` followed by the two lines `RELEASE BLOCKER [approval] 205 of 205 register rows ...` and `... 37 of 37 amendment op(s) ...`; `PASS 3 outputs --strict: exit 3, 2 approval blocker(s) only`; 4, 5, 8 PASS with their PENDING looks; `PASS 9 installed versions match requirements.lock.txt`; `PASS 10 tenderpack imports from <this folder> wherever the interpreter starts` (the host route's MCP server starts in the session folder, not here); `0 FAIL`. Any other blocker is a FAIL printed under its check: report it | PENDING |
+| D | The smoke test | `bash smoke-test/run_smoke.sh` | the label `SMOKE TEST: synthetic, not tender content`, then PASS lines (exit 0; status stopped after ingest; 12 provisions of ADD-03, all pending; approval none; no model, host-session or network event; the candidate inside its run folder) and `smoke test: PASS (9 of 9 checks ...)` in about 20 to 60 s | PENDING |
+| E | The panel in Safari | double-click `scripts/mac/launch.command`, choose `1` (connected) or `2` (offline), then `7` | Safari opens `http://127.0.0.1:<port>/t/<token>/`; Home shows the Deliverables strip with **A4 Work log (the repository history, prompts, model calls, errors)** and, separately, **Clarification register (supporting record, drafts not sent)**; the New addendum box lists host, codex, anthropic, openrouter and ollama, each with its status in brackets and, when it cannot be chosen, why; the A4 "commit history" link says the operating copy has no .git (the submitted repository has it); Stages, Runs, Jobs and Decisions open; Ctrl-C in Terminal stops it | PENDING |
+| F | The connected route with Claude Code (first route to rehearse) | launcher `1` (connected), option `5`, then option `6` with `smoke-test/ADD-03_Addendum_No_3.pdf`, id `ADD-03`, route `host` (Enter) | option 5: `host usable now` (`claude` found) and `[tested; last exercised: the cloud container of sessions 10-12 ...]`; option 6: `[run] ingest ...`, the batches asked through headless `claude -p` sessions on your plan, a candidate and a review packet under `staging/ai/runs/<run>/`, every item PROPOSED, nothing accepted; exit 0, or 5 if a rate limit defers it (then `tenderpack ai resume <run>` later) | PENDING |
+| G | The offline route with Ollama | Ollama running; `bash scripts/mac/checks.sh` (without `--no-ai`), then launcher `2` (offline), option `6` with the smoke-test PDF | check 6: `ai ollama-models` lists your installed models with capabilities, context, memory against 48 GB, and per phase which can serve it; PASS only if every phase has one (else PENDING with what is missing; nothing is pulled); check 7: one offline request answered and validated, with its time. Option 6: the run uses only `ollama`; no `claude` process starts (Activity Monitor), no hosted call | PENDING |
+
+Report each row's result (PASS, or the exact lines that differ). Until then, `config/routes_status.yaml` keeps Claude
+Code at "tested" in the cloud container only and Ollama at "pending on the Mac"; update it by hand with the date and
+the result once a row has run on the Mac.

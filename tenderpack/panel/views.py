@@ -44,6 +44,10 @@ CSS = ("body{font-family:system-ui,sans-serif;margin:12px auto;max-width:1200px;
        "summary{cursor:pointer}.group{margin:10px 0 16px}.grouphead{font-weight:600;font-size:16px}"
        ".scroll{overflow-x:auto}")
 # the folders of out/ as groups (a folder not named here is still listed, under "Other files")
+# Session 13 (the owner: "the work log is A4"): A4 is the work log (the repository history, the prompts and model
+# calls, the note of every error), under worklog/; out/a4 holds the clarification register, a supporting record.
+A4_LABEL = "A4 Work log (the repository history, prompts, model calls, errors)"
+REGISTER_LABEL = "Clarification register (supporting record, drafts not sent)"
 CSS += ("th{white-space:nowrap}button{font:inherit;font-size:14px;padding:5px 12px;cursor:pointer}"
         ".box button,.primary{background:#246;color:#fff;border:1px solid #135;border-radius:4px;font-weight:600;"
         "text-decoration:none;padding:6px 14px}.deliv{border:2px solid #286;background:#f1faf4;padding:8px 14px;"
@@ -53,8 +57,9 @@ GROUPS = (
     ("a2", "A2 Amendment reconciliation", "what each addendum changed, and the C28 check of each cover summary "
                                           "against its provisions"),
     ("a3", "A3 Bid-out consequences", "the one-page sheet of what puts the bid out, and its detail page"),
-    ("a4", "A4 Clarification register and work log", "draft questions to the Authority (not sent) and the record of "
-                                                     "the work"),
+    ("_a4", A4_LABEL, ""),           # session 13: A4 is the work log (worklog/; not a folder of out/), linked here
+    ("a4", REGISTER_LABEL, "draft questions to the Authority (NOT SENT): a supporting record of what the system "
+                           "could not resolve, cited by A2 and A4; it is not the A4 deliverable"),
     ("a5", "A5 Bid programme", "the Gantt chart, programme, marshalling, documents, resources, drivers, replan deltas "
                                "and scenarios"),
     ("review", "Review batches (your decisions)", "the items waiting for a person's decision, in the order to review "
@@ -95,7 +100,8 @@ def page(base: str, heading: str, body: str, refresh: int | None = None) -> str:
     nav = " ".join(f'<a href="{base}{p}">{n}</a>' for p, n in (("", "Home: outputs and new addendum"),
                                                                 ("runs", "Runs"), ("jobs", "Jobs"),
                                                                 ("stages", "Stages and sources"),
-                                                                ("decisions", "Decisions")))
+                                                                ("decisions", "Decisions"),
+                                                                ("quickreview", "Quick reviews")))
     meta = f'<meta http-equiv="refresh" content="{int(refresh)}">' if refresh else ""
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" '
             f'content="width=device-width, initial-scale=1">{meta}<title>{TITLE}</title><style>{CSS}</style></head>'
@@ -204,6 +210,10 @@ def listing(base: str, area: str, root: Path, state: str, extra: dict | None = N
     for key, heading, what in order:
         items = by.get(key, [])
         more = (extra or {}).get(key, "")
+        if key.startswith("_"):                          # not a folder of out/ (the A4 work log): its block only
+            if more:
+                L.append(f'<section class="group"><div class="grouphead">{esc(heading)}</div>{more}</section>')
+            continue
         if not items and not more and key not in KEY_FILES:
             continue
         newest = max((st.st_mtime for _, st in items), default=None)
@@ -275,8 +285,10 @@ DELIVERABLES = (
     ("A1 Compliance register", (("out", "a1/a1.xlsx", "download"), ("out", "a1/a1.csv", "open"))),
     ("A2 Amendment reconciliation", (("out", "a2/a2.md", "open"),)),
     ("A3 Bid-out consequences", (("out", "a3/a3.pdf", "open"), ("out", "a3/a3_detail.html", "open"))),
-    ("A4 Clarification register and work log", (("out", "a4/clarification_register.md", "open"),
-                                                ("worklog", "README.md", "open"))),
+    (A4_LABEL, (("worklog", "README.md", "open"), ("worklog", "ERROR_INDEX.md", "open"),
+                ("page", "worklog", "model calls and subagent briefs"), ("page", "history", "commit history"))),
+    (REGISTER_LABEL, (("out", "a4/clarification_register.md", "open"), ("out", "a4/clarification_register.csv", "open"),
+                      ("out", "a4/clarification_register.json", "open"))),
     ("A5 Bid programme", (("out", "a5/gantt.html", "open"), ("out", "a5/gantt.pdf", "open"),
                           ("out", "a5/README.md", "open"))),
     ("Review batches (your decisions)", (("out", "review/index.html", "open"),)),
@@ -291,6 +303,9 @@ def deliverables(base: str, cfg) -> str:
     for label, files in DELIVERABLES:
         parts = []
         for area, rel, how in files:
+            if area == "page":                           # a panel page (the work log's listing, the history)
+                parts.append(f'<a href="{base}{rel}">{esc(how)}</a>')
+                continue
             path = roots[area] / rel
             name = rel.rsplit("/", 1)[-1]
             if not path.is_file():
@@ -334,9 +349,10 @@ def home(base: str, cfg, jobs: list[dict], addendum_box: str) -> str:
     else:
         L.append('<p class="note">Every file that exists, grouped. The file name opens it in the browser (a '
                  'spreadsheet downloads); "download" saves it. A1-A5 here are the deliverables.</p>')
-        a4_more = (f'<div class="line">Also: the work log index {_one(base, "worklog", "README.md", cfg.root / "worklog")}'
-                   f' and the outputs README {_one(base, "out", "README.md", out)}.</div>')
-        L.append(listing(base, "out", out, validated_state(checks), {"a4": a4_more}))
+        L.append(listing(base, "out", out, validated_state(checks), {"_a4": worklog_block(base, cfg.root / "worklog"),
+                                                                       "a4": f'<div class="line">The outputs README: '
+                                                                             f'{_one(base, "out", "README.md", out)}.'
+                                                                             "</div>"}))
     L.append(f"<h2>Evidence packets in {esc(cfg.evidence / 'review')}</h2>")
     L.append(evidence_listing(base, cfg.evidence / "review"))
     L.append("<h2>Execution: rebuild and check</h2>")
@@ -364,6 +380,60 @@ def home(base: str, cfg, jobs: list[dict], addendum_box: str) -> str:
     return page(base, "Home: outputs and new addendum", "".join(L))
 
 
+def worklog_block(base: str, wl: Path) -> str:
+    """The A4 work log's lines on Home (session 13): the index, the error note, the model calls and briefs, the
+    history."""
+    n_calls = len(walk(Path(wl) / "model_calls"))
+    n_briefs = len(walk(Path(wl) / "subagent_briefs"))
+    return ('<div class="line">the brief\'s A4: the repository with its real commit history, the prompts and model '
+            "calls, and the note of every place the system was wrong.</div>"
+            f'<div class="line">{_one(base, "worklog", "README.md", wl)} (the index: every session, where each part '
+            f'is) · {_one(base, "worklog", "ERROR_INDEX.md", wl)} (every error and how it was caught) · '
+            f'<a href="{base}worklog">the session logs, {n_calls} model-call log(s) and {n_briefs} subagent brief(s)'
+            f'</a> · <a href="{base}history">the commit history</a></div>')
+
+
+def worklog_page(base: str, wl: Path) -> str:
+    """The A4 work log, read-only: worklog/ grouped (index and errors, session logs, model_calls/, subagent_briefs/,
+    anything else), each file opening in the browser or downloading."""
+    files = walk(Path(wl))
+    groups: dict[str, list] = {}
+    for rel, st in files:
+        top = rel.split("/", 1)[0] if "/" in rel else ""
+        groups.setdefault(top, []).append((rel, st))
+    L = ['<p class="note">A4, the work log: the repository with its real commit history '
+         f'(<a href="{base}history">the commit history</a>), the prompts and model calls, and the note of every place '
+         "the system was wrong. Read-only.</p>"]
+    top = groups.pop("", [])
+    first = [x for x in top if x[0] in ("README.md", "ERROR_INDEX.md")]
+    rest = [x for x in top if x[0] not in ("README.md", "ERROR_INDEX.md")]
+    L.append("<h2>The index and the error note</h2>" + table(FILE_HEAD, [file_row(base, "worklog", r, s)
+                                                                          for r, s in first]))
+    L.append("<h2>Session logs and the owner's prompts</h2>" + table(FILE_HEAD, [file_row(base, "worklog", r, s)
+                                                                                for r, s in rest]))
+    for folder in ("model_calls", "subagent_briefs", *sorted(k for k in groups if k not in ("model_calls",
+                                                                                              "subagent_briefs"))):
+        fs = groups.get(folder) or []
+        L.append(f"<h2>{esc(folder)}/ ({len(fs)} file(s))</h2>")
+        if fs:
+            L.append(f"<details><summary>{esc(folder)}/: {len(fs)} file(s)</summary>"
+                     + table(FILE_HEAD, [file_row(base, "worklog", r, s, r[len(folder) + 1:]) for r, s in fs])
+                     + "</details>")
+    return page(base, "A4 Work log", "".join(L))
+
+
+def history_page(base: str, lines: list[str] | None, why_not: str | None) -> str:
+    """The commit history (`git log`, read-only), or why it is not available here."""
+    if lines is None:
+        body = (f'<p class="bad">The commit history is not available here: {esc(why_not)}.</p><p class="note">An '
+                "operating copy (the interview folder) holds no .git: the submitted repository is preserved "
+                "separately and carries the history (<code>git log --stat</code> there).</p>")
+    else:
+        body = (f'<p class="note">git log, read-only ({len(lines)} commit(s), newest first). Nothing here can change '
+                "the history.</p><pre>" + esc("\n".join(lines)) + "</pre>")
+    return page(base, "A4 Work log: the commit history", body)
+
+
 def _one(base: str, area: str, rel: str, root: Path) -> str:
     if not (Path(root) / rel).is_file():
         return f"<code>{esc(rel)}</code> (missing)"
@@ -374,11 +444,21 @@ def _one(base: str, area: str, rel: str, root: Path) -> str:
 
 def route_choices(routes: dict | None, host_found: bool, cassette: bool) -> tuple[list[dict], str | None, str]:
     """[{value, label, available, why}], the default route, and the offline state (the engine's own reading of
-    TENDERPACK_OFFLINE / config `offline`, from `tenderpack ai routes --json`)."""
+    TENDERPACK_OFFLINE / config `offline`, from `tenderpack ai routes --json`). Session 13: every route is listed
+    (host = Claude Code, codex, anthropic, openrouter, ollama) with its recorded status (config/routes_status.yaml:
+    tested / built, unverified / untested / ...) in the label and, when it cannot be chosen now, why and what the owner
+    must do (the engine's own `available` / `why`; a key is never shown, only whether one is configured)."""
     rows = {r.get("route"): r for r in (routes or {}).get("routes") or []}
     off = (routes or {}).get("offline")
     out = []
-    host_label = "host: Claude Code on this machine (your plan pays)"
+
+    def status(name):
+        # session 13 (F4; audit R3 recheck N-3): a route recorded as tested says where (routes_status.yaml `where`), so
+        # the panel on the owner's Mac never reads 'tested' as tested there
+        rec = (rows.get(name) or {}).get("status") or {}
+        st, where = rec.get("status"), rec.get("where")
+        return (f" [{st} in {where}]" if st == "tested" and where and where != "-" else f" [{st}]") if st else ""
+    host_label = "host: Claude Code on this machine (your plan pays)" + status("host")
     if off:
         out.append({"value": "host", "label": host_label, "available": False,
                     "why": f"offline mode is on ({off}): only the local ollama route"})
@@ -386,11 +466,23 @@ def route_choices(routes: dict | None, host_found: bool, cassette: bool) -> tupl
         out.append({"value": "host", "label": host_label, "available": True, "why": "" if host_found else
                     "the claude command is not found here: the run will stop and wait for each batch to be submitted "
                     "by hand (tenderpack ai submit-batch)"})
+    if "codex" in rows:
+        out.append({"value": "codex", "label": "codex: Codex over MCP (manual path)" + status("codex"),
+                    "available": False, "why": rows["codex"].get("why") or "the workflow starts Claude Code only"})
+    for name, label in (("anthropic", "anthropic: the Messages API with your key (paid)"),
+                        ("openrouter", "openrouter: OpenRouter with your key (paid)")):
+        if name not in rows:
+            continue
+        ok = bool(rows[name].get("available")) and not off
+        why = "" if ok else (f"offline mode is on ({off}): only the local ollama route" if off else
+                             rows[name].get("why") or "not configured")
+        out.append({"value": name, "label": label + status(name), "available": ok, "why": why})
     oll = rows.get("ollama")
     usable = [m for m in (oll or {}).get("models") or [] if m.get("ok")]
-    out.append({"value": "ollama", "label": "ollama: a local model on this machine (offline, free)",
+    out.append({"value": "ollama", "label": "ollama: a local model on this machine (offline, free)" + status("ollama"),
                 "available": bool(usable), "why": "" if usable else
-                f"not usable now: {(oll or {}).get('error') or 'no configured model is installed and usable'}"})
+                f"not usable now: {(oll or {}).get('error') or 'no configured model is installed and usable'}"
+                " (tenderpack ai ollama-models lists the installed models; nothing is pulled)"})
     if cassette:
         out.append({"value": "recorded", "label": "test replay (a cassette; not a live model)", "available": True,
                     "why": "configured for tests only"})
@@ -448,7 +540,11 @@ def addendum_box(base: str, routes: dict | None, routes_error: str | None, next_
             f'</div><div class="line"><label><input type="checkbox" name="offline" value="yes"'
             f'{" checked" if off else ""}> 5. Offline (only the local ollama route; '
             f'{"pre-set: " + esc(off) if off else "TENDERPACK_OFFLINE is not set"})</label></div>{adv}'
-            f'<div class="line"><button>Start the run</button></div></form></section>')
+            f'<div class="line"><button>Start the run</button> <button formaction="{base}quickreview/start" '
+            f'class="secondary">Start AI quick review (preliminary briefing)</button> <span class="note">(a separate, bounded AI reading of '
+            "the same PDF on the route chosen above: ONE session, a short budget, lower priority than the run; it "
+            "writes a PRELIMINARY AI BRIEFING, unverified, and changes nothing; the quick review itself has run on the "
+            "test replay only so far: `tenderpack ai routes` says so per route)</span></div></form></section>")
 
 
 def addendum_page(base: str, box: str, routes: dict | None) -> str:
@@ -522,7 +618,7 @@ def run_file_href(base: str, rid: str, run_dir: Path, p: Path | None) -> str | N
     return f"{base}file/runs/{esc(rid)}/{esc(urllib.parse.quote(rel))}"
 
 
-def stages_page(base: str, cfg, runs: list[tuple[str, dict]], pre: dict) -> str:
+def stages_page(base: str, cfg, runs: list[tuple[str, dict]], pre: dict, run_jobs: dict | None = None) -> str:
     stages = read_json(cfg.out / "stages.json") or []
     docs = {d.get("doc_id"): d for d in pack_docs(cfg.pack)}
     opts = [(s["stage"], f"{s['stage']} (validated state: {s.get('status')})") for s in stages] or \
@@ -561,7 +657,10 @@ def stages_page(base: str, cfg, runs: list[tuple[str, dict]], pre: dict) -> str:
         if (Path(cpath["build"]) / "units.json").is_file():
             src += (f' · <a href="{base}units?doc={esc(cp["addendum"])}&amp;run={esc(rid)}">units of '
                     f'{esc(cp["addendum"])}</a>')
-        rows.append([esc(cp["addendum"]) + " <b>CANDIDATE</b>", esc(cp.get("status")) + f' (<a href="{base}runs/'
+        syn = synthetic_label(cp, (run_jobs or {}).get(rid))        # session 13 (R3-6): as on the Runs page
+        rows.append([esc(cp["addendum"]) + " <b>CANDIDATE</b>" + (f' <span class="note nw">{esc(syn)}</span>' if syn
+                                                                  else ""),
+                     esc(cp.get("status")) + f' (<a href="{base}runs/'
                      f'{esc(rid)}">run {esc(rid)}</a>)', "", src or '<span class="note">no candidate yet</span>'])
     L.append(table(["Stage", "Status", "Issued", "Sources"], rows))
     L.append(f"<h2>Image region renders ({esc(Path(cfg.evidence) / 'review')})</h2>")
@@ -770,6 +869,7 @@ def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, r
         L.append(f'<form method="post" action="{base}runs/{esc(rid)}/resume"><select name="from_step">{opts}</select>'
                  f' <button>Resume</button> <span class="note">runs <code>tenderpack ai resume {esc(rid)}</code>; done '
                  "batches are never asked again</span></form>")
+    L.append(quick_review_box(base, rid, run_dir, cp))               # session 13, part 4
     # ---- execution
     L.append("<h2>Execution</h2>")
     L.append(f"<p>Run status: <b>{esc('running' if running_job else state)}</b>"
@@ -995,12 +1095,12 @@ def decisions_page(base: str, pending: list[dict], decided: Counter, latest: dic
     rows = []
     for it in pending:
         lt = latest.get(it["id"])
-        rows.append([esc(it["kind"]), f"<code>{esc(it['id'])}</code>", esc(it.get("status")),
+        rows.append([esc(it["kind"]), f"<code>{esc(it['id'])}</code>", f'<span class="nw">{esc(it.get("status"))}</span>',
                      esc(_short(it.get("prompt") or "", 300)),
                      "<br>".join(f"<code>{esc(c)}</code>" for c in decision_commands(it["id"], it["kind"])),
                      esc(f"{lt.get('decision')} by {lt.get('reviewer')} ({lt.get('date') or lt.get('at') or ''})"
                          if lt else "none recorded"),
-                     f'<a href="{base}decisions/form?item={esc(it["id"])}">decide…</a>'])
+                     f'<a class="nw" href="{base}decisions/form?item={esc(it["id"])}">decide…</a>'])
     L.append(table(["Kind", "Item", "Status", "What is decided", "Commands", "Latest recorded decision", ""], rows))
     return page(base, "Decisions", "".join(L))
 
@@ -1034,3 +1134,186 @@ def decision_confirm(base: str, it: dict, decision: str, name: str, reason: str,
 
 def message(base: str, heading: str, text: str, status_class: str = "bad") -> str:
     return page(base, heading, f'<p class="{status_class}">{esc(text)}</p>')
+
+
+# ---------------------------------------------------------------------------------------------- quick review (s13)
+# Session 13, part 4: the AI quick review (tenderpack/ai/quick_review.py). Its pages show the briefing under its label,
+# the questions as a form (each answer recorded by a job against the exact question and evidence), the comparison
+# with a run when one was made (headed "model agreement is not proof"), and the two timings side by side. Nothing on
+# them approves, accepts or edits anything.
+
+QR_HEAD = ["Quick review", "Addendum", "Route", "Status", "Started", "First briefing after", "Beside run"]
+
+
+def _qr_label() -> str:
+    from ..ai.quick_review import LABEL
+    return LABEL
+
+
+def quick_reviews(staging: Path) -> list[tuple[str, Path]]:
+    d = Path(staging) / "quick-review"
+    return [(p.name, p) for p in sorted(d.iterdir(), reverse=True) if p.is_dir() and not p.name.startswith(".")] \
+        if d.is_dir() else []
+
+
+def _qr_row(base: str, qid: str, d: Path) -> list[str]:
+    req = read_json(d / "request.json") or {}
+    stt = read_json(d / "status.json") or {}
+    t = read_json(d / "timing.json") or {}
+    s = t.get("seconds_to_first_briefing")
+    return [f'<a href="{base}quickreview/{esc(qid)}">{esc(qid)}</a>', esc(req.get("addendum")), esc(req.get("route")),
+            esc(stt.get("status") or "running"), esc(req.get("created")), esc(f"{s} s" if s is not None else "-"),
+            esc(req.get("for_run") or "-")]
+
+
+def quick_review_box(base: str, rid: str, run_dir: Path, cp: dict) -> str:
+    """The run page's quick-review box: start one on the run's PDF; the quick reviews started beside this run."""
+    staging = Path(run_dir).parent.parent
+    mine = [(q, d) for q, d in quick_reviews(staging) if (read_json(d / "request.json") or {}).get("for_run") == rid]
+    rows = table(QR_HEAD, [_qr_row(base, q, d) for q, d in mine]) if mine else ""
+    notes = []
+    for nf in sorted((Path(run_dir) / "owner_answers").glob("*.yaml")) if (Path(run_dir) / "owner_answers").is_dir() \
+            else []:
+        try:
+            import yaml
+            notes += (yaml.safe_load(nf.read_text(encoding="utf-8")) or {}).get("notes") or []
+        except (OSError, ValueError):
+            continue
+    if notes:
+        rows += ("<h3>Your answers offered to this run (PROPOSED notes; never a decision)</h3>" + table(
+            ["Note", "Question", "Answer (by, when)", "Offered after step", "Revalidation"],
+            [[esc(n.get("id")), esc(n.get("question")), esc(f"{n.get('answer')} ({n.get('by')}, {n.get('recorded')})"),
+              esc(n.get("offered_after")), esc((n.get("revalidation") or {}).get("state"))] for n in notes]))
+    return (f'<section class="box"><h2>AI quick review (preliminary, lower priority)</h2><p class="note">A separate, '
+            "bounded AI reading of this run's PDF (ONE session, the read-only retrieval tools on the published "
+            "workspace, never this run's proposals): a PRELIMINARY AI BRIEFING, unverified, to compare with this run "
+            f"later. It never changes the run.</p><form method=\"post\" action=\"{base}runs/{esc(rid)}/quickreview\">"
+            "<button>Start AI quick review (preliminary briefing)</button></form>" + rows + "</section>")
+
+
+def quickreview_list(base: str, staging: Path) -> str:
+    rows = [_qr_row(base, q, d) for q, d in quick_reviews(staging)]
+    return page(base, "Quick reviews", f'<p class="banner">{esc(_qr_label())}</p><p class="note">Start one from the '
+                "New addendum box (HOME) or from a run's page.</p>" + table(QR_HEAD, rows))
+
+
+def _tim(s) -> str:
+    return "-" if s is None else f"{float(s):.1f} s ({float(s) / 60:.1f} min)"
+
+
+def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]], running_job: dict | None) -> str:
+    from ..ai.quick_review import NOT_PROOF, preserved, run_timing
+    label = _qr_label()
+    req = read_json(d / "request.json") or {}
+    stt = read_json(d / "status.json") or {}
+    t = read_json(d / "timing.json") or {}
+    b = read_json(d / "briefing.json")
+    cmp = read_json(d / "comparison.json")
+    L = [f'<p class="banner">{esc(label)}</p>']
+    L.append(f"<p>Addendum {esc(req.get('addendum'))} · route {esc(req.get('route'))} · started "
+             f"{esc(req.get('created'))} · status <b>{esc(stt.get('status') or ('running' if running_job else 'unknown'))}"
+             f"</b>" + (f" · {esc(stt.get('error'))}" if stt.get("error") else "") + "</p>")
+    if running_job:
+        L.append(f'<p class="lead">Running (lower priority, under nice): <a href="{base}jobs/{esc(running_job["id"])}">'
+                 "the job and its output</a></p>")
+    # ---- the two timings side by side
+    rid = (cmp or {}).get("run", {}).get("run_id") or req.get("for_run")
+    rcp = next((cp for r, cp in runs if r == rid), None) if rid else None
+    rt = run_timing(rcp) if rcp else (cmp or {}).get("timings") or {
+        "run_updated_a1_a5_s": None, "note": "no run linked yet (start it from a run's page, or compare with a run)"}
+    L.append("<h2>Timings (measured separately)</h2>" + table(
+        ["Time to the first briefing (this quick review)", "Time to the run's updated A1-A5 candidate"
+         + (f" ({rid})" if rid else "")],
+        [[esc(_tim(t.get("seconds_to_first_briefing"))) + f'<div class="note">{esc(t.get("first_useful_briefing") or t.get("note") or "")}</div>',
+          esc(_tim(rt.get("run_updated_a1_a5_s"))) + f'<div class="note">{esc(rt.get("note"))}</div>']]))
+    tok = t.get("tokens") or {}
+    if tok:
+        L.append(f'<p class="note">Tokens: {esc(tok.get("input_tokens"))} in / {esc(tok.get("output_tokens"))} out in '
+                 f"{esc(tok.get('calls'))} call(s); budget {esc((t.get('budget') or {}).get('minutes'))} min, "
+                 f"{esc((t.get('budget') or {}).get('max_tokens'))} tokens.</p>")
+    links = [f'<a href="{base}file/quick-review/{esc(qid)}/{f}">{f}</a>' for f in
+             ("briefing.md", "briefing.json", "timing.json", "comparison.md", "answers.yaml", "log.jsonl")
+             if (d / f).is_file()]
+    L.append("<p>Files: " + " · ".join(links) + "</p>")
+    if b is None:
+        L.append('<p class="note">No briefing yet (or none was written: see the status above).</p>')
+        return page(base, f"Quick review {qid}", "".join(L), refresh=10 if running_job else None)
+    pres = preserved(d)
+    L.append(f"<p>Initial findings preserved as written (briefing.sha256): "
+             f"{_okcell(pres['ok'], 'yes' if pres['ok'] else 'NO: ' + pres['why'])}</p>")
+    # ---- the briefing
+    L.append("<h2>Predicted changes (preliminary, unverified)</h2>" + table(
+        ["Id", "Provision (page)", "Quotation (check)", "Target guess (check)", "Kind", "Deliverables", "Confidence",
+         "Uncertainty"],
+        [[f'<span class="nw">{esc(i["id"])}</span>', esc(f"{i['provision']} (p{i['page']})"),
+          esc(f"“{i['quotation']}”") + f'<div class="note">{esc((i.get("checks") or {}).get("quotation"))}</div>',
+          esc(i.get("target_unit_guess") or "none") + f'<div class="note">{esc((i.get("checks") or {}).get("target"))}'
+          "</div>", f'<span class="nw">{esc(i["kind"])}</span>', esc(", ".join(i.get("deliverables") or [])),
+          esc(i["confidence"]),
+          esc(i["uncertainty_class"] + (f": {i['uncertainty']}" if i.get("uncertainty") else ""))]
+         for i in b.get("items") or []]))
+    # ---- questions as a form
+    ans = {}
+    try:
+        import yaml
+        for a in (yaml.safe_load((d / "answers.yaml").read_text(encoding="utf-8")) or {}).get("answers") or []:
+            ans.setdefault(a.get("question_id"), []).append(a)
+    except (OSError, ValueError, AttributeError):
+        pass
+    L.append("<h2>Questions for you</h2><p class=\"note\">Your answer is recorded with your name and the time against "
+             "the exact question and the evidence it cites (answers.yaml beside the briefing); it never changes "
+             "curation/. It reaches a run only between phases, as a PROPOSED note (Offer, below).</p>")
+    for q in b.get("questions") or []:
+        ev = "".join(f"<li>page {esc(e.get('page'))}" + (f", {esc(e.get('unit_id'))}" if e.get("unit_id") else "")
+                     + f": “{esc(e.get('quotation'))}” <span class=\"note\">({esc(c)})</span></li>"
+                     for e, c in zip(q.get("evidence") or [], q.get("checks") or [""] * 99))
+        done = "".join(f"<li><b>{esc(a.get('by'))}</b> at {esc(a.get('recorded'))}: {esc(a.get('answer'))} "
+                       f"<span class=\"note\">({esc(a.get('status'))})</span></li>" for a in ans.get(q["id"], []))
+        L.append(f'<fieldset><legend><b>{esc(q["id"])}</b> {esc(q["question"])}'
+                 + (f' <span class="note">(decision owner: {esc(q.get("decision_owner"))})</span>'
+                    if q.get("decision_owner") else "") + f"</legend><ul>{ev}</ul>"
+                 + (f"<p>Recorded answers:</p><ul>{done}</ul>" if done else "")
+                 + f'<form method="post" action="{base}quickreview/{esc(qid)}/answer">'
+                 f'<input type="hidden" name="question" value="{esc(q["id"])}">'
+                 f'<div class="line"><label>Your answer <textarea name="answer" rows="3" cols="80" required>'
+                 f'</textarea></label></div><div class="line"><label>Your name <input name="name" size="30" '
+                 f'required></label> <button>Record my answer</button></div></form></fieldset>')
+    if not b.get("questions"):
+        L.append('<p class="note">no question in this briefing</p>')
+    calcs = b.get("unverified_calculations") or []
+    L.append("<h2>Unverified calculations</h2>" + table(["Id", "What", "The model's figure (UNVERIFIED)", "Why unverified"],
+                                                        [[esc(c["id"]), esc(c["what"]),
+                                                          esc(c.get("model_result_unverified") or "none"),
+                                                          esc(c["why_unverified"])] for c in calcs]))
+    L.append("<h2>Not read</h2>" + table(["What", "Page", "Class", "Reason"], [
+        [esc(n["what"]), esc(n.get("page") or ""), esc(n["uncertainty_class"]), esc(n["reason"])]
+        for n in b.get("not_read") or []]))
+    # ---- comparison with a run
+    opts = "".join(f'<option value="{esc(r)}"{" selected" if r == rid else ""}>{esc(r)}</option>' for r, _ in runs)
+    L.append(f"<h2>Comparison with a run</h2><p class=\"lead\">{esc(NOT_PROOF)}</p>")
+    if runs:
+        L.append(f'<form method="post" action="{base}quickreview/{esc(qid)}/compare"><select name="run">{opts}</select>'
+                 " <button>Compare with this run</button></form>"
+                 f'<form method="post" action="{base}quickreview/{esc(qid)}/offer"><select name="run">{opts}</select>'
+                 ' <button>Offer my answers to this run</button> <span class="note">(only between phases: while a step '
+                 "or batch runs, the answers are held; each becomes a PROPOSED note, checked against the run's "
+                 "addendum and guarded against staleness; never a decision)</span></form>")
+    if cmp:
+        c = cmp.get("counts") or {}
+        L.append(f"<p>Compared with run <b>{esc(cmp['run']['run_id'])}</b> on {esc(cmp.get('created'))}: "
+                 + esc(", ".join(f"{k.replace('_', ' ')} {v}" for k, v in c.items())) + "</p>")
+        L.append("<h3>Disagreements (for you to investigate; nothing was edited)</h3>" + table(
+            ["Briefing", "Run", "Differences"],
+            [[esc(f"{x['briefing']['id']} {x['briefing']['provision']} p{x['briefing']['page']} "
+                  f"{x['briefing']['kind']} → {x['briefing']['target_unit_guess']}: “{x['briefing']['quotation']}”"),
+              esc(f"{x['run']['id']} {x['run']['kind']} → {x['run'].get('target')} ({x['run'].get('status')}): "
+                  + "; ".join(f"“{e.get('words')}”" for e in x["run"].get("evidence") or [])),
+              esc("; ".join(x["differences"]))] for x in cmp.get("disagreements") or []]))
+        L.append("<h3>Agreements (not proof)</h3>" + table(["Briefing", "Run", "Matched by"], [
+            [esc(x["briefing"]["id"]), esc(x["run"]["id"]), esc(", ".join(x["matched_by"]))]
+            for x in cmp.get("agreements") or []]))
+        L.append(f"<p>In the briefing only: {esc(', '.join(x['id'] for x in cmp.get('briefing_only') or []) or 'none')}"
+                 f"; in the run only: {len(cmp.get('run_only') or [])} item(s) (see comparison.md).</p>")
+    else:
+        L.append('<p class="note">not compared yet</p>')
+    return page(base, f"Quick review {qid}", "".join(L), refresh=10 if running_job else None)

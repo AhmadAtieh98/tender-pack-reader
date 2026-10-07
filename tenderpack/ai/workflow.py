@@ -48,6 +48,25 @@ Steps (each checkpointed in staging/ai/runs/<run_id>/checkpoint.json; tenderpack
                          unresolved and escalated first, the diff, the links, the timings and every manual step.
 Nothing is approved, accepted, sent or published; the real curation/, config/ and out/ are only read.
 
+Session 13. The run's code and policy identity (checkpoint.code_identity: git HEAD when available and whether the tree
+is dirty, a content hash over tenderpack/**/*.py, config/*.yaml and pyproject.toml, the time) is recorded at start and
+recomputed at every resume (and submit-batch); a different hash is refused (CodeChanged, exit 7) unless
+--allow-code-change "<reason>" records the new segment, and run-status, the run log and the review packet then say
+"segments ran on different code". An analysis row_new / row_reading item is carried to a downstream task keyed to its
+provision (downstream.carry_analysis_rows); its provision is accounted for through that task (carried_answer) and a task
+the downstream phase never answers is "unresolved: <reason>"; the packet lists such items under their own heading.
+
+Session 13 (implementer D: speed without weaker checks; docs/AI_ROUTES.md sections 14 and 16):
+  * kept answers: a host analysis session that reached submit_proposals is a completed answer (a 429 or a failure after
+    it no longer discards it: requests.call_host), its MCP server records the submission at once
+    (batches/<batch>.submission.json), and `resume` reuses it after revalidating it against the current evidence and
+    state (_reuse_submission; the checkpoint's `submission`, or `reuse_refused` with the reason and the batch asked
+    again). A SIGTERM is handled like Ctrl-C (Terminated): the running step and batch keep their elapsed time.
+  * analysis batches planned by structure within the token budget (_plan_analysis, batching.plan_structured).
+  * answers collected as they arrive (Prefetch: N exchanges running, up to 2N dispatched; one writer takes them in
+    plan order) and what concurrency did recorded in the checkpoint's `concurrency`; scripts/bench_workflow.py prints a
+    run's timing from its records (--from-run) or simulates the recorded run at 1, 2, 3 sessions at once.
+
 Requests (session 11; tenderpack/ai/requests.py): every model request of every phase (readings, analysis, downstream,
 the critic) on every route goes through ONE request layer: the phase's schema (native structured output where the
 route supports it; validated locally always), a capability check before any call (the reading phase requires image
@@ -95,11 +114,13 @@ import random
 import re
 import secrets
 import shutil
+import signal
+import threading
 import time
 import traceback
 import typing
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from pathlib import Path
 
 import yaml
@@ -112,9 +133,10 @@ from . import config as C
 from . import controller
 from . import downstream as DS
 from . import offline as OFF
+from . import policy
 from . import regionread as RR
 from . import requests as R
-from .checkpoint import STEPS, Checkpoint, RunLock, RunLockError, now_iso
+from .checkpoint import STEPS, Checkpoint, RunLock, RunLockError, code_identity, now_iso
 from .contract import DOWNSTREAM_TASK, DownstreamSet, ProposalSet
 from .runlog import RunLog
 from .tools import Workspace
@@ -127,11 +149,93 @@ TARGET_MIN = 30.0
 EXIT_CODES = {"complete": 0, "partial": 0, "stopped": 0, "waiting_for_host": 4, "failed": 1, "refused": 2,
               "deferred": 5}
 STOP_FOR_PERSON = 6                                # session 12: `stopped` because the run cannot go on by itself
+CODE_CHANGED_EXIT = 7                              # session 13: a resume refused because the code changed since
+CODE_ROOT = ROOT                                   # session 13: the tree whose identity a run records (tests: a copy)
+DIFFERENT_CODE = "segments ran on different code"
 RUNNABLE = ("pending", "deferred")                 # batch states a drive asks (a deferred batch: a rate limit)
 
 
 class WaitingForHost(Exception):
     pass
+
+
+class CodeChanged(B.Refused):
+    """Session 13: a resume (or a submission that continues a run) on code other than the run's last segment's."""
+    exit_code = CODE_CHANGED_EXIT
+
+
+def _short_id(i: dict | None) -> str:
+    if not i:
+        return "not recorded"
+    g = (f"git {i['git_head'][:12]}" + (" (dirty tree)" if i.get("git_dirty") else "")) if i.get("git_head") \
+        else "git not available"
+    return f"content {i['content_sha256'][:16]}… over {i.get('files')} files; {g}; recorded {i.get('recorded')}"
+
+
+def record_code_identity(cp: Checkpoint) -> dict:
+    """At run start (session 13): the code and policy identity (checkpoint.code_identity of CODE_ROOT) in the
+    checkpoint, as the run's first segment."""
+    ident = code_identity(CODE_ROOT)
+    cp.data["code_identity"] = {"start": ident, "segments": [dict(ident, segment=1, reason="run started")],
+                                "differ": False}
+    cp.save()
+    return ident
+
+
+def check_code_identity(cp: Checkpoint, allow_code_change: str | None = None) -> dict:
+    """At every resume (session 13): recompute the identity and compare its content hash with the last segment's. The
+    same code: the segment is recorded. Different code: refused (CodeChanged, exit CODE_CHANGED_EXIT) unless
+    `allow_code_change` gives a reason; then the new identity, the reason and the time are recorded as a checkpoint
+    event and the run says DIFFERENT_CODE from then on (run-status, the run log, the review packet header). A run
+    started before session 13 has no recorded identity: the current one is recorded and the earlier segments' code is
+    said to be unknown (never assumed equal)."""
+    now = code_identity(CODE_ROOT)
+    ci = cp.data.get("code_identity")
+    if not ci:
+        cp.data["code_identity"] = {"start": None, "segments": [dict(now, segment=1, reason="first recorded on resume: "
+                                                                     "the code of the earlier segments is unknown")],
+                                    "differ": True, "unknown_before": True}
+        cp.event("code_identity_recorded", now=now, note="not recorded when the run started (before session 13)")
+        return now
+    last = ci["segments"][-1] if ci.get("segments") else ci.get("start") or {}
+    reason = (allow_code_change or "").strip()
+    if now["content_sha256"] == last.get("content_sha256"):
+        ci["segments"].append(dict(now, segment=len(ci["segments"]) + 1, reason="resumed on the same code"))
+        cp.save()
+        return now
+    if not reason:
+        raise CodeChanged(
+            f"run {cp.data['run_id']}: the code changed since its last segment ({_short_id(last)} -> {_short_id(now)}). "
+            "A benchmark is not continued silently on changed code: resume with --allow-code-change \"<reason>\" to "
+            "record the change (the run then says that its segments ran on different code), or start a new run")
+    ci["segments"].append(dict(now, segment=len(ci["segments"]) + 1, reason=reason))
+    ci["differ"] = True
+    cp.event("code_changed", before=last, now=now, reason=reason)
+    return now
+
+
+def code_lines(cp: Checkpoint) -> list[str]:
+    """The run's code identity for the review packet header and run-status (session 13)."""
+    ci = cp.data.get("code_identity") or {}
+    if not ci:
+        return ["- code: not recorded (a run started before session 13)"]
+    segs = ci.get("segments") or []
+    L = [f"- code at start: {_short_id(ci.get('start'))}"]
+    if ci.get("differ"):
+        L.append(f"- **{DIFFERENT_CODE}**: " + "; ".join(f"segment {x.get('segment')}: {_short_id(x)} ({x.get('reason')})"
+                                                      for x in segs))
+    return L
+
+
+class Terminated(KeyboardInterrupt):
+    """Session 13 (D; blind-05 regression defect 1): SIGTERM, raised in the run's thread like Ctrl-C, so that the
+    checkpoint records the running step's and batch's elapsed time and the batches in flight as interrupted (the run
+    used to die at once with its analysis step "0.0 s running"). The host sessions in flight are stopped; one that had
+    already submitted is reused on resume after revalidation (_reuse_submission), one that had not is asked again."""
+
+
+def _on_sigterm(signum, frame):
+    raise Terminated(f"signal {signum} (SIGTERM): the run was asked to stop")
 
 
 class StopRun(Exception):
@@ -332,42 +436,108 @@ class Prefetch:
     A worker touches no checkpoint, no candidate input and no other batch's files (its own staging folder and log).
     When the batch's turn comes, its packet is built again; the worker's answer is used only when that packet is the
     one the worker sent (otherwise it is discarded, recorded, and the batch is asked as usual), so the result is the
-    sequential result. A deferral stops new dispatches; the batches already asked are taken, then the run stops."""
+    sequential result. A deferral stops new dispatches; the batches already asked are taken, then the run stops.
+
+    Session 13 (D): answers are COLLECTED as they arrive and wait (at most `lookahead` dispatched batches in all)
+    without holding a worker: `n` bounds the exchanges RUNNING at once, so a worker whose answer came back early takes
+    the next batch while the run's thread still waits for an earlier one (take() dispatches more while it waits). The
+    run's thread stays the ONE writer: it validates and applies the answers in plan order (deterministic whatever the
+    arrival order). `meter` records, per phase, what concurrency did (running at most, busy and held seconds,
+    batches dispatched before the first answer was taken, discards) into the checkpoint's `concurrency`."""
 
     def __init__(self, ctx: "Ctx", n: int):
         self.ctx, self.n = ctx, int(n)
+        self.lookahead = 2 * self.n
         self.pool = ThreadPoolExecutor(max_workers=self.n, thread_name_prefix="tenderpack-batch")
         self.recs: dict[str, dict] = {}
         self.tried: set[str] = set()
         self.discarded: list[str] = []
+        self.refill = None
+        self.meter: dict[str, dict] = {}
+        self._lock = threading.Lock()
 
     @staticmethod
     def key(packet: dict) -> str:
         import hashlib
         return hashlib.sha256(json.dumps(packet, sort_keys=True, ensure_ascii=False, default=str).encode()).hexdigest()
 
+    def running(self) -> int:
+        return sum(1 for r in self.recs.values() if not r["future"].done())
+
+    def full(self) -> bool:
+        return self.running() >= self.n or len(self.recs) >= self.lookahead
+
+    def _m(self, phase: str) -> dict:
+        return self.meter.setdefault(phase, {"dispatched": 0, "taken": 0, "discarded": 0, "max_running": 0,
+                                             "busy_s": 0.0, "held_s": 0.0,
+                                             "dispatched_before_first_take": None, "first_dispatch": None,
+                                             "last_done": None})
+
     def submit(self, bid: str, rec: dict) -> None:
         work = rec.pop("work")
+        phase = self.ctx.cp.data["batches"].get(bid, {}).get("phase", "analysis")
+        rec["phase"] = phase
 
         def run():
+            rec["t_start"] = time.monotonic()
             try:
                 return ("ok", work())
             except BaseException as e:                      # noqa: BLE001 (handed to the run's thread as is)
                 return ("exc", e)
+            finally:
+                rec["t_done"] = time.monotonic()
+                with self._lock:
+                    m = self._m(phase)
+                    m["busy_s"] += rec["t_done"] - rec.get("t_start", rec["t_done"])
+                    m["last_done"] = rec["t_done"]
+        rec["t_dispatch"] = time.monotonic()
         rec["future"] = self.pool.submit(run)
         self.recs[bid] = rec
-        self.ctx.log.event("batch_asked_ahead", batch=bid, in_flight=len(self.recs))
+        with self._lock:
+            m = self._m(phase)
+            m["dispatched"] += 1
+            m["first_dispatch"] = m["first_dispatch"] or rec["t_dispatch"]
+            m["max_running"] = max(m["max_running"], self.running())
+        self.ctx.log.event("batch_asked_ahead", batch=bid, in_flight=len(self.recs), running=self.running())
 
     def peek(self, bid: str) -> dict | None:
         return self.recs.get(bid)
 
     def take(self, bid: str, key: str) -> dict | None:
-        rec = self.recs.pop(bid, None)
+        rec = self.recs.get(bid)
         if rec is None:
             return None
-        kind, val = rec["future"].result()
+        fut = rec["future"]
+        while not fut.done():                    # session 13: the other workers are kept busy meanwhile
+            # refill BEFORE waiting too: an answer that came back while this thread built the batch's packet has
+            # already freed its worker (otherwise that worker idles until this batch is taken)
+            if self.refill is not None and not self.full():
+                try:
+                    self.refill()
+                except Exception as e:                           # noqa: BLE001 (the batches are asked in their turn)
+                    self.ctx.log.event("prefetch_refill_failed", error=f"{type(e).__name__}: {_short(str(e), 300)}")
+            if fut.done():
+                break
+            others = [r["future"] for k, r in self.recs.items() if k != bid and not r["future"].done()]
+            wait([fut, *others], return_when=FIRST_COMPLETED)
+            with self._lock:
+                self._m(rec["phase"])["max_running"] = max(self._m(rec["phase"])["max_running"], self.running())
+        self.recs.pop(bid, None)
+        kind, val = fut.result()
+        now = time.monotonic()
+        with self._lock:
+            m = self._m(rec["phase"])
+            m["taken"] += 1
+            if m["dispatched_before_first_take"] is None:
+                m["dispatched_before_first_take"] = m["dispatched"]
+            m["held_s"] += max(0.0, now - rec.get("t_done", now))
+        b = self.ctx.cp.data["batches"].get(bid)
+        if b is not None and rec.get("t_start") is not None:
+            b["session_seconds"] = round(rec.get("t_done", now) - rec["t_start"], 3)     # the exchange in its worker
         if rec["key"] != key:
             self.discarded.append(bid)
+            with self._lock:
+                self._m(rec["phase"])["discarded"] += 1
             self.ctx.cp.event("prefetch_discarded", batch=bid, reason="the batch's packet changed before its turn "
                                                                       "(an earlier batch answered part of it); asked "
                                                                       "again as usual")
@@ -381,24 +551,50 @@ class Prefetch:
             raise rec["value"]
         return rec["value"]
 
-    def close(self) -> None:
-        self.pool.shutdown(wait=True, cancel_futures=True)
-        left = sorted(self.recs)
+    def record(self) -> dict:
+        """What concurrency did in this drive, per phase (the checkpoint's `concurrency`; scripts/bench_workflow.py)."""
+        out = {}
+        with self._lock:
+            for phase, m in self.meter.items():
+                window = ((m["last_done"] or 0) - (m["first_dispatch"] or 0)) if m["first_dispatch"] else 0.0
+                out[phase] = {"max_parallel_sessions": self.n, "lookahead": self.lookahead,
+                              "dispatched": m["dispatched"], "taken": m["taken"], "discarded": m["discarded"],
+                              "max_running": m["max_running"], "busy_s": round(m["busy_s"], 3),
+                              "held_s": round(m["held_s"], 3), "window_s": round(max(window, 0.0), 3),
+                              "idle_slots_s": round(max(0.0, self.n * max(window, 0.0) - m["busy_s"]), 3),
+                              "dispatched_before_first_take": m["dispatched_before_first_take"]}
+        return out
+
+    def close(self, interrupted: bool = False) -> None:
+        # session 13 (D): an interrupted run does not wait for the exchanges in flight (their host sessions were
+        # stopped; a submission already made is reused on resume); otherwise the workers finish first
+        self.pool.shutdown(wait=not interrupted, cancel_futures=True)
+        conc = self.ctx.cp.data.setdefault("concurrency", {})
+        for phase, rec in self.record().items():
+            conc[phase] = {**rec, "drive": now_iso()}
+        # session 13 (blind-07 scorer, defect 15): a batch answered through its staged submission (_reuse_submission)
+        # is never take()n, so its record stays here although the batch is done; only the batches still pending are
+        # "not taken"
+        batches = self.ctx.cp.data.get("batches") or {}
+        left = sorted(b for b in self.recs if (batches.get(b) or {}).get("status") not in ("done", "skipped"))
         if left:
             self.ctx.cp.event("prefetch_not_taken", batches=left,
                               reason="the run stopped before their answers were taken; they stay pending and are asked "
                                      "again on resume")
-            self.recs.clear()
+        self.recs.clear()
 
 
 def _fill(ctx: "Ctx", phase: str, start: str, **kw) -> None:
-    """Dispatch the batches of `phase` from `start` on (plan order) until `n` are in flight (session 12)."""
+    """Dispatch the batches of `phase` from `start` on (plan order) while fewer than `n` exchanges run and fewer than
+    `lookahead` answers are dispatched and not yet taken (session 12; session 13: answers waiting to be taken no longer
+    hold a worker). While the run's thread waits for a batch's answer, Prefetch.take calls this again (`refill`)."""
     pf = ctx.prefetch
     if pf is None or ctx.stop_batches or ctx.stop_pending is not None:
         return
+    pf.refill = lambda: _fill(ctx, phase, start, **kw)
     keys = ctx.cp.batches(phase)
     for k in keys[keys.index(start):] if start in keys else []:
-        if len(pf.recs) >= pf.n:
+        if pf.full():
             break
         if k in pf.recs or k in pf.tried or ctx.cp.batch(k)["status"] not in ("pending", "deferred"):
             continue
@@ -509,6 +705,7 @@ def start(addendum: str, pdf, route: str = "recorded", pack=None, evidence=None,
                 "base_run": base, "missing_addenda": missing}
     cp = Checkpoint.new(rd / run_id / "checkpoint.json", run_id=run_id, addendum=addendum, settings=settings,
                         inputs={"pack": str(pack), "evidence": str(evidence)}, candidate={})
+    record_code_identity(cp)                       # session 13: the code and policy identity of the run's first segment
     cp.event("started", by_pid=os.getpid(), **({"offline": off_src} if off_src else {}),
              **({"base_run": base["run_id"], "base_fingerprint": base["fingerprint"]} if base else {}))
     if base:
@@ -618,7 +815,8 @@ def load(run_id: str, staging=None) -> Checkpoint:
 
 
 def resume(run_id: str, staging=None, stop_after: str | None = None, retry_failed: bool = True, echo=print,
-           sleep=time.sleep, from_step: str | None = None, offline: bool = False, base_run: str | None = None) -> dict:
+           sleep=time.sleep, from_step: str | None = None, offline: bool = False, base_run: str | None = None,
+           allow_code_change: str | None = None) -> dict:
     """Continue a stopped, interrupted, failed or waiting run from its checkpoint. Done steps and batches are skipped;
     a batch that failed is asked again (`retry_failed`), and the steps after it are recomputed from the candidate as it
     was before any promotion.
@@ -645,6 +843,7 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
         if s_.get("offline") != off_src:
             s_["offline"] = off_src
             cp.event("offline_mode", source=off_src)
+    check_code_identity(cp, allow_code_change)                  # session 13: refused on changed code unless allowed
     cp.event("resumed", by_pid=os.getpid(), status_before=cp.data["status"],
              **({"from_step": from_step} if from_step else {}))
     if from_step:
@@ -733,9 +932,20 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
     if lock.taken_over:
         cp.event("stale_run_lock_taken_over", previous=lock.taken_over)
         ctx.say(f"note: the run lock of process {lock.taken_over.get('pid')} (no longer running) was taken over")
+    if (cp.data.get("code_identity") or {}).get("differ"):   # session 13: in the run log of every later segment
+        ctx.say(f"note: {DIFFERENT_CODE}: " + "; ".join(code_lines(cp))[:600])
     cp.data.pop("stop_code", None)                     # session 12: set again only by this drive's own stop
     cp.set_status("running")
     step = None
+    prev_term, interrupted = None, False
+    hs_mod = _hostsession()
+    if hs_mod is not None and hasattr(hs_mod, "reset_stop"):
+        hs_mod.reset_stop()                                       # session 13 (E161): a new run in this process
+    if threading.current_thread() is threading.main_thread():     # session 13 (D): SIGTERM recorded like Ctrl-C
+        try:
+            prev_term = signal.signal(signal.SIGTERM, _on_sigterm)
+        except (ValueError, OSError):
+            prev_term = None
     n_par = int(cp.data["settings"].get("max_parallel_sessions") or 1)
     if n_par > 1:                                  # session 12: batches at once, under one run-scoped lock
         ctx.gate = R.RateGate()
@@ -768,8 +978,12 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
             cp.data["stop_code"] = STOP_FOR_PERSON if s.code is None else s.code
         cp.set_status(s.status, s.reason)
         ctx.say(f"{s.status.upper()}: {s.reason}")
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as e:
+        interrupted = True
+        stopped = _stop_live_sessions()
         _interrupted(cp)
+        cp.event("interrupted", step=step, signal=("SIGTERM" if isinstance(e, Terminated) else "SIGINT"),
+                 host_sessions_stopped=stopped)
         cp.set_status("stopped", f"interrupted during {step}; resume with `tenderpack ai resume {ctx.run_id}`")
         raise
     except Exception as e:                                       # noqa: BLE001 (recorded with its traceback; resumable)
@@ -782,7 +996,12 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
         ctx.say(f"FAILED in {step}: {type(e).__name__}: {_short(str(e), 300)}")
     finally:
         if ctx.prefetch is not None:
-            ctx.prefetch.close()
+            ctx.prefetch.close(interrupted=interrupted)
+        if prev_term is not None:
+            try:
+                signal.signal(signal.SIGTERM, prev_term)
+            except (ValueError, OSError):
+                pass
         if ctx.gate is not None:
             cp.data["rate_gate"] = ctx.gate.record()
         if ctx.run_lock is not None:
@@ -796,6 +1015,17 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
     if (ctx.dir / "review" / "index.md").exists():
         ctx.echo(f"review packet: {ctx.dir / 'review' / 'index.md'}")
     return out
+
+
+def _stop_live_sessions() -> int:
+    """Session 13 (D): stop the host CLI processes of this process still running (hostsession.run_tracked)."""
+    hs = _hostsession()
+    if hs is None or not hasattr(hs, "terminate_live"):
+        return 0
+    try:
+        return hs.terminate_live()
+    except Exception:                                            # noqa: BLE001 (the interruption proceeds)
+        return 0
 
 
 def _interrupted(cp: Checkpoint) -> None:
@@ -958,6 +1188,11 @@ def summary(cp: Checkpoint) -> dict:
             # session 11: execution, completeness and approval are three separate records
             "completeness": {k: (d.get("completeness") or {}).get(k) for k in ("status", "reasons")},
             "approval": (d.get("approval") or {}).get("status", "none"),
+            # session 13: the code and policy identity of the run's segments
+            "code": {"start": (d.get("code_identity") or {}).get("start"),
+                     "segments": len((d.get("code_identity") or {}).get("segments") or []),
+                     **({"note": DIFFERENT_CODE, "lines": code_lines(cp)} if (d.get("code_identity") or {}).get("differ")
+                        else {})},
             # session 12: consecutive addenda (the run this one starts from, the addenda the state lacks)
             **({"base_run": {k: (d["settings"]["base_run"] or {}).get(k) for k in ("run_id", "addendum", "chain", "dir")}}
                if (d.get("settings") or {}).get("base_run") else {}),
@@ -1214,7 +1449,7 @@ def _reading_batch(ctx: Ctx, st: dict, bid: str, rid: str) -> None:
         path = ctx.dir / "batches" / f"{bid}.packet.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         if s["route"] == "host":
-            packet["system"] = RR.SYSTEM
+            packet["system"] = policy.compose("reading", "mcp", cfg=ctx.cfg)   # session 13: a person's coding host
             packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "reading",
                                   "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL",
                                   "tools": "the MCP tools get_region and validate_reading (serve-mcp --evidence "
@@ -1240,8 +1475,7 @@ def _reading_batch(ctx: Ctx, st: dict, bid: str, rid: str) -> None:
                 from .providers import make
                 rcfg = C.route(ctx.cfg, s["route"])
                 prov = make(s["route"], C.phase_model(rcfg, s["route"], "reading", s.get("model")), ctx.cfg, None)
-            prop = _converse(ctx, prov, packet, bid, system=RR.SYSTEM, parse=RR.parse, task=RR.READING_TASK,
-                             tool_names=["get_region", "validate_reading"], ws=rws)
+            prop = _converse(ctx, prov, packet, bid, parse=RR.parse, task=RR.READING_TASK, ws=rws)
             who = f"{s['route']} route, model {prov.model}"
         _take_reading(ctx, bid, rid, prop, who)
     except Deferred as e:
@@ -1288,12 +1522,10 @@ def _take_reading(ctx: Ctx, bid: str, rid: str, prop, who: str) -> None:
     cp.event("reading_written", region=rid, file=str(f), status=prop.verification_status)
 
 
-READING_HOST_RULES = ("Host session rules: you work ONLY through the tenderpack MCP tools get_region and "
-                      "validate_reading; the packet is below; do not call any other tool. Your final message is ONLY "
-                      "the JSON object {region_id, reading, model_rationale}.")
-DOWNSTREAM_HOST_RULES = ("Host session rules: you work ONLY through the tenderpack MCP tools (read-only use); the packet "
-                         "is below; do not call get_task_packet, request_review or submit_proposals. Your final message "
-                         "is ONLY the JSON object described by `schema`.")
+# session 13: the host-answer mechanics of the runtime policy (tenderpack/ai/policy/80_routes.md), for reference;
+# AnswerSession(phase=...) composes them itself (policy.compose)
+READING_HOST_RULES = policy.mechanics("reading", "host")
+DOWNSTREAM_HOST_RULES = policy.mechanics("downstream", "host")
 
 
 def _reading_host_session(ctx: Ctx, hs, rws: Workspace, bid: str, packet: dict):
@@ -1301,8 +1533,7 @@ def _reading_host_session(ctx: Ctx, hs, rws: Workspace, bid: str, packet: dict):
     draft); the session's final message is the proposal. It writes nothing and submits nothing. Through the request
     layer: the host's declared image input checked (the reading phase requires it), the size, the failure classes and
     one bounded repair of a malformed answer."""
-    sess = hs.AnswerSession(rws, ctx.cfg, system=RR.SYSTEM, rules=READING_HOST_RULES,
-                            tools=["get_region", "validate_reading"], model=ctx.s.get("host_session_model"),
+    sess = hs.AnswerSession(rws, ctx.cfg, phase="reading", model=ctx.s.get("host_session_model"),
                             run_lock=ctx.run_lock is not None)
     pk = dict(packet, addendum=ctx.addendum, provisions=[])
     fields = {"run_id": f"{ctx.run_id}-{bid}", "created": now_iso(), "route": "host", "provider": "host-session",
@@ -1384,20 +1615,15 @@ def _max_out(ctx: Ctx) -> int | None:
     return C.caps(ctx.cfg, ctx.s["route"], ctx.remaining_caps()).get("max_tokens_per_call")
 
 
-def _fit_to_context(ctx: Ctx, batches: list[list[str]]) -> tuple[list[list[str]], list[str]]:
-    """Every route (session 11): split a planned batch whose request would not fit the route's context window or output
-    cap, with the request layer's complete accounting (system, tool definitions, the packet as sent, images, later
-    turns, the expected output). The sizes here are estimates per provision; the request layer checks the exact
-    request again before it is sent and the batch is split further, or a single provision escalated, if needed."""
+def _context_budget(ctx: Ctx):
+    """(fits(ids) -> bool, units {id: packet entry}, source) for planning the analysis batches: the request layer's
+    complete accounting (system, tool definitions, the packet as sent, images, later turns, the expected output) with
+    estimates per provision. Raises when the route's capabilities or the packet cannot be had (the caller reports it)."""
     from . import batching
     from .providers.recorded import PACKET_MARK
-    try:
-        caps = _route_caps(ctx)
-        packet = R.compact_analysis(controller.task_packet(ctx.ws, ctx.addendum))
-    except Exception as e:                                       # noqa: BLE001 (the count plan stands; reported)
-        return batches, [f"context fit not checked at planning: {type(e).__name__}: {_short(str(e), 300)} (each "
-                         "request is still checked before it is sent)"]
-    sp = R.spec("analysis")
+    caps = _route_caps(ctx)
+    packet = R.compact_analysis(controller.task_packet(ctx.ws, ctx.addendum))
+    sp = R.spec("analysis", route=ctx.s["route"], cfg=ctx.cfg)      # session 13: the route's policy composition
     st = R.settings_for(ctx.cfg, ctx.s["route"])
     cpt = float(st.get("chars_per_token", 3.5))
 
@@ -1416,13 +1642,30 @@ def _fit_to_context(ctx: Ctx, batches: list[list[str]]) -> tuple[list[list[str]]
     tools_spec = [controller.TOOLS[n].spec() for n in sp.tools]
     maxout = _max_out(ctx)
 
-    def fits(group: list[dict]) -> bool:
-        ids = [g["unit_id"] for g in group]
+    def fits(ids: list[str]) -> bool:
         sz = batching.request_size("analysis", caps, system=sp.system, tools=tools_spec,
                                    packet_tokens=fixed + sum(per.get(i, (0, 0))[0] for i in ids),
                                    images=sum(per.get(i, (0, 0))[1] for i in ids), units=len(ids),
                                    max_output_tokens=maxout, settings=st)
         return sz.fits
+    units = {p["unit_id"]: p for p in packet.get("provisions") or []}
+    return fits, units, caps.source
+
+
+def _fit_to_context(ctx: Ctx, batches: list[list[str]], budget=None) -> tuple[list[list[str]], list[str]]:
+    """Every route (session 11): split a planned batch whose request would not fit the route's context window or output
+    cap, with the request layer's complete accounting (system, tool definitions, the packet as sent, images, later
+    turns, the expected output). The sizes here are estimates per provision; the request layer checks the exact
+    request again before it is sent and the batch is split further, or a single provision escalated, if needed."""
+    from . import batching
+    try:
+        fits_ids, _, source = budget or _context_budget(ctx)
+    except Exception as e:                                       # noqa: BLE001 (the count plan stands; reported)
+        return batches, [f"context fit not checked at planning: {type(e).__name__}: {_short(str(e), 300)} (each "
+                         "request is still checked before it is sent)"]
+
+    def fits(group: list[dict]) -> bool:
+        return fits_ids([g["unit_id"] for g in group])
     out, notes = [], []
     for b in batches:
         for g in batching.plan_units([{"unit_id": p} for p in b], fits):
@@ -1431,9 +1674,31 @@ def _fit_to_context(ctx: Ctx, batches: list[list[str]]) -> tuple[list[list[str]]
             if len(ids) == 1 and not fits(g):
                 notes.append(f"{ids}: does not fit even alone (estimate); it is escalated with its size at its request")
     if len(out) != len(batches):
-        notes.append(f"{len(batches)} count-planned batch(es) split into {len(out)} to fit the context window and the "
-                     f"output cap ({caps.source})")
+        notes.append(f"{len(batches)} planned batch(es) split into {len(out)} to fit the context window and the "
+                     f"output cap ({source})")
     return out, notes
+
+
+def _plan_analysis(ctx: Ctx, provisions: list[str], size: int) -> tuple[list[list[str]], list[str]]:
+    """Session 13 (D): the analysis batches planned by STRUCTURE within the token budget (batching.plan_structured:
+    an image region with its elements, a table with its rows and notes, a clause with its lettered items, the answers
+    under one heading, provisions a table reference links), then checked against the context as before. Without a
+    budget (the route's capabilities or the packet unavailable at planning) the count plan stands, as before."""
+    from . import batching
+    try:
+        budget = _context_budget(ctx)
+    except Exception as e:                                       # noqa: BLE001 (reported; requests still checked)
+        return plan_batches(provisions, size), [
+            f"context fit not checked at planning: {type(e).__name__}: {_short(str(e), 300)} (each request is still "
+            "checked before it is sent); batches planned by count"]
+    fits_ids, units, _ = budget
+    plan = batching.plan_structured(provisions, size, units=units, fits=fits_ids)
+    plan, notes = _fit_to_context(ctx, plan, budget)
+    groups = [b for b in plan if len(b) > size]
+    if groups:
+        notes.append(f"{len(groups)} batch(es) of one structure kept whole beyond {size} provisions within the token "
+                     f"budget: " + ", ".join(f"{b[0]}..{b[-1]} ({len(b)})" for b in groups))
+    return plan, notes
 
 
 def _defer(ctx: Ctx, bid: str, e: "Deferred") -> None:
@@ -1517,8 +1782,7 @@ def _next_batch(ctx: Ctx, phase: str, seen: set) -> str | None:
 def step_analysis(ctx: Ctx, st: dict) -> None:
     cp = ctx.cp
     if not cp.batches("analysis"):
-        plan = plan_batches(list(cp.data["provisions"]), int(ctx.s["batch_size"]))
-        plan, notes = _fit_to_context(ctx, plan)
+        plan, notes = _plan_analysis(ctx, list(cp.data["provisions"]), int(ctx.s["batch_size"]))
         for n, provs in enumerate(plan, 1):
             bid = f"analysis-{n:03d}"
             cp.data["batches"][bid] = {"phase": "analysis", "provisions": provs, "status": "pending", "attempts": 0,
@@ -1527,7 +1791,8 @@ def step_analysis(ctx: Ctx, st: dict) -> None:
                 cp.provision(p)["batch"] = bid
         st["plan_notes"] = notes
         cp.save()
-        ctx.say(f"  {len(cp.data['provisions'])} provisions in {len(plan)} batch(es) of at most {ctx.s['batch_size']}")
+        ctx.say(f"  {len(cp.data['provisions'])} provisions in {len(plan)} batch(es), planned by structure (up to "
+                f"{ctx.s['batch_size']} per batch; one structure kept whole when it fits the token budget)")
     seen: set = set()
     while (bid := _next_batch(ctx, "analysis", seen)) is not None:
         b = cp.batch(bid)
@@ -1578,6 +1843,89 @@ def _shown(ctx: Ctx, todo: list[str]) -> list[str]:
     return [p for p in ctx.cp.data["provisions"] if any(p == x or p.startswith(x) for x in todo)]
 
 
+# ---------------------------------------------------------------------------------------------- session 13: kept answers
+
+def _submission_file(ctx: Ctx, bid: str) -> Path:
+    """Where the MCP server of a batch's host session records its submission at once (serve-mcp --submission-record)."""
+    return ctx.dir / "batches" / f"{bid}.submission.json"
+
+
+def _submission_entry(ctx: Ctx, ps: ProposalSet, *, reused: bool, **extra) -> dict:
+    """What the checkpoint keeps of a batch's submitted set: where it is staged and its validation result."""
+    staging = B.safe_staging(ctx.ws.staging, ctx.ws.root, ctx.ws.evidence)
+    return {"run_id": ps.run_id, "staging": str(staging / ps.run_id), "set_status": ps.status,
+            "statuses": {it.id: it.verification_status for it in ps.items}, "validated": now_iso(), "reused": reused,
+            **extra}
+
+
+def _reuse_submission(ctx: Ctx, bid: str, todo: list[str]) -> ProposalSet | None:
+    """Session 13 (D; blind-05 regression defect 2): a batch whose host session reached submit_proposals before the
+    run was interrupted (a SIGTERM, a crash) or before a failure ended the session: its staged set is REUSED instead of
+    asking the batch again, after revalidation against the CURRENT evidence and state (controller.validate_set and the
+    freshness re-check, exactly as a new submission). It is not reused, and the batch is asked again with the reason
+    recorded (`reuse_refused`, event submission_reuse_refused), when the record or the set does not load, the set is not
+    usable (stale, malformed, provider_failed, budget_exhausted), the state identity changed since the submission, or an
+    item is invalid now that was not at the submission. A session killed before its submission left no record."""
+    f = _submission_file(ctx, bid)
+    if not f.is_file():
+        return None
+    cp, ws = ctx.cp, ctx.ws
+    b = cp.batch(bid)
+    rec: dict = {}
+
+    def refuse(reason: str) -> None:
+        n = len(b.get("reuse_refused") or []) + 1
+        b.setdefault("reuse_refused", []).append({"ts": now_iso(), "run_id": rec.get("run_id"), "reason": reason})
+        cp.event("submission_reuse_refused", batch=bid, run_id=rec.get("run_id"), reason=_short(reason, 400))
+        try:
+            f.rename(f.with_name(f"{bid}.submission.refused-{n}.json"))       # kept for the record, never reused
+        except OSError:
+            pass
+        cp.save()
+        ctx.say(f"  {bid}: the submission {rec.get('run_id')} is not reused ({_short(reason, 200)}); asked again")
+        return None
+    try:
+        rec = json.loads(f.read_text(encoding="utf-8")) or {}
+        rid = B.check_run_id(str(rec.get("run_id") or ""))
+    except (OSError, ValueError, B.Refused) as e:
+        return refuse(f"the submission record does not read: {_short(str(e), 300)}")
+    try:
+        ps, _ = _load_staged(ws, rid)
+    except Exception as e:                                       # noqa: BLE001 (asked again, with the reason)
+        return refuse(f"the staged set {rid} does not load: {type(e).__name__}: {_short(str(e), 300)}")
+    if ps.addendum != ctx.addendum:
+        return refuse(f"the staged set {rid} is for {ps.addendum}, not {ctx.addendum}")
+    if ps.status in ("malformed", "provider_failed", "budget_exhausted", "stale"):
+        return refuse(f"the staged set {rid} is {ps.status}")
+    before = {it.id: it.verification_status for it in ps.items}
+    set_before = ps.status
+    staging = B.safe_staging(ws.staging, ws.root, ws.evidence)
+    log = RunLog(rid, [staging / rid / "log.jsonl"])
+    report = controller.validate_set(ws, ps, log, expected_addendum=ctx.addendum,
+                                     reference=controller._reference_path(ws, ctx.addendum))
+    fresh = controller.recheck_fresh(ws, ps, report)
+    if report.get("state_differences") or not fresh or ps.status == "stale":
+        return refuse("the evidence or state changed since the submission: "
+                      + "; ".join(report.get("state_differences") or ["the inputs changed while it was validated"]))
+    after = {it.id: it.verification_status for it in ps.items}
+    worse = [i for i, s_ in after.items() if s_ == "invalid" and before.get(i) != "invalid"]
+    if worse:
+        return refuse(f"revalidated against the current evidence and state, {len(worse)} item(s) are invalid now that "
+                      f"were not at the submission: {', '.join(worse[:8])}")
+    report["reused"] = {"workflow_run": ctx.run_id, "batch": bid, "statuses_at_submission": before,
+                        "set_status_at_submission": set_before}
+    controller.write_staging(ws, ps, report)             # the staged set now carries the current validation
+    log.event("revalidated_for_reuse", workflow_run=ctx.run_id, batch=bid, set_status=ps.status, statuses=after,
+              statuses_at_submission=before)
+    b["submission"] = _submission_entry(ctx, ps, reused=True, revalidated=now_iso(), submitted=rec.get("ts"),
+                                        statuses_at_submission=before)
+    cp.event("submission_reused", batch=bid, run_id=rid, set_status=ps.status, submitted=rec.get("ts"))
+    cp.save()
+    ctx.say(f"  {bid}: the submission {rid} (submitted {rec.get('ts') or 'earlier'}) is reused after revalidation "
+            f"({ps.status})")                   # session 13 (blind-07 scorer): it may have been made after a resume
+    return ps
+
+
 def _analysis_batch(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> None:
     """One analysis batch through the request layer (recorded, API and host routes alike; see the module docstring)."""
     cp, s = ctx.cp, ctx.s
@@ -1589,7 +1937,11 @@ def _analysis_batch(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> None:
     t0 = time.perf_counter()
     try:
         if s["route"] == "host":
-            ps = _host_analysis(ctx, st, bid, todo)
+            ps = _reuse_submission(ctx, bid, todo)       # session 13 (D): a submission made before an interruption
+            if ps is None:
+                ps = _host_analysis(ctx, st, bid, todo)
+                if ps.status not in ("provider_failed", "malformed", "budget_exhausted"):
+                    b["submission"] = _submission_entry(ctx, ps, reused=False)
         else:
             if s["route"] == "recorded":
                 pre = ctx.prefetch.peek(bid) if ctx.prefetch else None
@@ -1720,6 +2072,7 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
     pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
     sess = pre["sess"] if pre else hs.HostSession(ws, ctx.cfg, model=ctx.s.get("host_session_model"),
                                                   run_lock=ctx.run_lock is not None)
+    sess.submission_record = _submission_file(ctx, bid)        # session 13 (D): kept through an interruption
     sp = R.spec("analysis", system=sess.system_prompt())
     run_id, log, staging = _batch_log(ctx, bid, ws)
     out = R.Outcome("analysis", run_id=run_id)
@@ -1817,10 +2170,11 @@ def _prep_analysis(ctx: Ctx, bid: str) -> dict | None:
     n = int(b.get("attempts", 0)) + 1
     if s["route"] == "host":
         hs = _host_auto(ctx)
-        if hs is None:
+        if hs is None or _submission_file(ctx, bid).is_file():     # session 13: a kept submission is checked in turn
             return None
         packet = _host_analysis_packet(ctx, hs, bid, todo)
         sess = hs.HostSession(ctx.ws, ctx.cfg, model=s.get("host_session_model"), run_lock=ctx.run_lock is not None)
+        sess.submission_record = _submission_file(ctx, bid)
         sp = R.spec("analysis", system=sess.system_prompt())
         caps = sess.capabilities()
         n_img = R.packet_images(packet)
@@ -1858,7 +2212,8 @@ def _prep_analysis(ctx: Ctx, bid: str) -> dict | None:
     prov, sess = ctx.cassette.provider("analysis", todo, ctx.used_sessions())
     if prov is None:
         return None
-    return _prep_converse(ctx, bid, R.spec("analysis"), prov, sess, packet, n, images=images)
+    return _prep_converse(ctx, bid, R.spec("analysis", route=ctx.s["route"], cfg=ctx.cfg), prov, sess, packet, n,
+                          images=images)
 
 
 def _prep_converse(ctx: Ctx, bid: str, sp, prov, sess, packet: dict, n: int, images=None) -> dict:
@@ -1895,7 +2250,7 @@ def _prep_downstream(ctx: Ctx, bid: str, by_id: dict | None = None, promoted: di
         if hs is None:
             return None
         packet = _host_downstream_packet(ctx, bid, packet)
-        sess = hs.AnswerSession(ctx.ws, ctx.cfg, system=DS.SYSTEM, rules=DOWNSTREAM_HOST_RULES,
+        sess = hs.AnswerSession(ctx.ws, ctx.cfg, phase="downstream",
                                 model=s.get("host_session_model"), run_lock=ctx.run_lock is not None)
         sp = R.spec("downstream", system=sess.system_prompt())
         run_id, log, staging = _batch_log(ctx, bid, n=n)
@@ -1915,7 +2270,7 @@ def _prep_downstream(ctx: Ctx, bid: str, by_id: dict | None = None, promoted: di
     prov, sess = ctx.cassette.provider("downstream", [t["id"] for t in batch], ctx.used_sessions())
     if prov is None:
         return None
-    return _prep_converse(ctx, bid, R.spec("downstream"), prov, sess, packet, n)
+    return _prep_converse(ctx, bid, R.spec("downstream", route=ctx.s["route"], cfg=ctx.cfg), prov, sess, packet, n)
 
 
 def _host_analysis_repair(ctx: Ctx, bid: str, sp, sess, packet: dict, ps: ProposalSet, res, out, log, staging, rec):
@@ -2109,7 +2464,8 @@ def _analysis_request(ctx: Ctx, bid: str, todo: list[str], prov) -> ProposalSet:
         staging, ctx.addendum, {"route": s["route"], "run_id": f"{ctx.run_id}-{bid}", "pid": os.getpid(),
                                 "model": prov.model}, ctx.cfg.get("lock_stale_after_min", 120))
     try:
-        out = _request(ctx, R.spec("analysis"), prov, packet, bid, images=images, account_usage=False, pre=pre)
+        out = _request(ctx, R.spec("analysis", route=ctx.s["route"], cfg=ctx.cfg), prov, packet, bid, images=images,
+                       account_usage=False, pre=pre)
     finally:
         if lock is not None:
             lock.release()
@@ -2207,8 +2563,77 @@ def answer_state(promoted_ids: list[str], escalations: list[str]) -> dict:
                    + "; escalated: " + "; ".join(escalations)}
 
 
-def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict) -> dict[str, dict]:
-    """Per provision: whether a promoted op or disposition answers it, and why not."""
+def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) -> dict | None:
+    """Session 13 (blind-05 regression, defect 3): the state of a provision whose analysis row items were carried to
+    downstream tasks (downstream.carry_analysis_rows), or None when none was. Never `answered` (no op or disposition
+    answers the provision; the op file keeps it `unresolved` with this reason), but never a silent gap: while the
+    downstream phase has not run the provision is accounted for through the open task; afterwards it names the rows
+    proposed for it, or says "unresolved: <reason>" (the task unanswered, or answered only by items that cannot be
+    promoted) and needs a person."""
+    tasks = list(tasks.values()) if isinstance(tasks, dict) else list(tasks or [])
+    tids = [t["id"] for t in tasks if any(a.get("item") in item_ids for a in t.get("analysis_items") or [])]
+    if not tids:
+        return None
+    what = f"analysis {', '.join(item_ids)}, an UNVERIFIED reference"
+    if ds is None:
+        return {"answered": False, "carried": tids, "needs_person": False,
+                "why": f"carried to downstream task(s) {', '.join(tids)} ({what}): open until the downstream phase "
+                       "answers it"}
+    held = held or {}
+    rows, bad = [], []
+    for tid in tids:
+        its = [it for it in ds.items if it.task == tid]
+        ok = [it for it in its if it.verification_status in DS.PROMOTABLE and it.id not in held]
+        if ok:
+            rows += [f"{(it.payload.get('row') or {}).get('id') if it.statement_type == 'row_new' else it.payload.get('row')}"
+                     f" ({it.statement_type}, {it.verification_status})" for it in ok
+                     if it.statement_type in ("row_new", "row_reading")]
+            rows += [f"{it.id} ({it.statement_type}, {it.verification_status})" for it in ok
+                     if it.statement_type not in ("row_new", "row_reading")]
+        elif its:
+            bad.append(f"downstream task {tid} answered only by items that cannot be promoted: " + "; ".join(
+                f"{it.id} {it.verification_status}" + (f" ({held[it.id]})" if it.id in held else (
+                    f" ({next((x.check + ': ' + _short(x.detail, 120) for x in it.validation if not x.ok), '')})"))
+                for it in its))
+        else:
+            bad.append(f"downstream task {tid} was not answered")
+    if bad:
+        return {"answered": False, "carried": tids, "needs_person": True,
+                "why": "unresolved: " + "; ".join(bad) + (f"; proposed downstream: {', '.join(rows)}" if rows else "")}
+    return {"answered": False, "carried": tids, "needs_person": False,
+            "why": f"its obligation is proposed downstream as {', '.join(rows)} (task(s) {', '.join(tids)}; PROPOSED): "
+                   "no op or disposition answers the provision; a person confirms the row and the provision's "
+                   "disposition"}
+
+
+def carried_lines(cps, pops: dict, tasks, ds, held: dict | None = None) -> list[str]:
+    """Session 13: the review packet's own heading for the analysis items not promoted from the analysis set (rows
+    carried to downstream tasks, and every other item with its reason): never "(dropped: )"."""
+    dropped = (pops or {}).get("dropped") or {}
+    items = [it for it in (cps.items if cps else []) if it.verification_status in DS.PROMOTABLE
+             and it.statement_type not in ("amendment_op", "disposition")]
+    if not items:
+        return []
+    L = ["## Analysis rows carried to downstream tasks (and other analysis items not promoted)", ""]
+    for it in items:
+        a = carried_answer([it.id], tasks, ds, held) if it.statement_type in DS.CARRIED else None
+        L.append(f"- `{it.id}` {it.statement_type} ({it.provision}, {it.verification_status}): "
+                 + _short(dropped.get(it.id) or DS.not_promoted_reason(it), 300)
+                 + (f" — {_short(a['why'], 300)}" if a else ""))
+    return L + [""]
+
+
+def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) -> dict[str, dict]:
+    """Per provision: whether a promoted op or disposition answers it, and why not. Session 13: a provision whose
+    analysis rows were carried to downstream tasks says so (carried_answer), with `tasks` (else the run's tasks.json)
+    and, once the downstream phase ran, its set `ds`."""
+    if tasks is None:
+        tasks = _js(ctx.dir / "downstream" / "tasks.json") or []
+    held = {}
+    if ds is not None:
+        staged = load_yaml(ctx.dir / "downstream" / "proposals.yaml") if (ctx.dir / "downstream" / "proposals.yaml"
+                                                                          ).exists() else {}
+        held = ((staged or {}).get("controller") or {}).get("held_back") or {}
     content = {c for o in promoted["sim"]["ops"] if o["valid"] for c in o.get("content") or []}
     ok = ({o.provision for o in promoted["ops"].values()} | {c for o in promoted["ops"].values() for c in o.covers}
           | {d.provision for d in promoted["dispositions"].values()} | content)
@@ -2221,12 +2646,18 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict) -> dict[str, dict]:
                                  [_short(it.payload.get("why"), 200) for it in esc])
             out[p] = state if state["answered"] else {**state, "needs_person": True}
             continue
+        carried = carried_answer([it.id for it in mine if it.statement_type in DS.CARRIED
+                                  and it.verification_status in DS.PROMOTABLE], tasks, ds, held) if not esc else None
+        if carried is not None and not any(it.verification_status not in DS.PROMOTABLE for it in mine):
+            out[p] = carried
+            continue
         if esc:
             why = "escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc)
         elif mine:
             why = "; ".join(f"{it.id} {it.verification_status}" + (
                 f" ({next((x.check + ': ' + _short(x.detail, 160) for x in it.validation if not x.ok), '')})"
-                if it.verification_status not in DS.PROMOTABLE else f" (dropped: {promoted['dropped'].get(it.id, '')})")
+                if it.verification_status not in DS.PROMOTABLE else
+                f" (dropped: {promoted['dropped'].get(it.id) or DS.not_promoted_reason(it)})")
                 for it in mine)
             why = "not promotable: " + why
         elif v["status"] == "pending":
@@ -2248,8 +2679,9 @@ def step_downstream(ctx: Ctx, st: dict) -> None:
     cp, ws = ctx.cp, ctx.ws
     cps, _ = ctx.combined()
     promoted = ctx.promoted()
-    answers = _answers(ctx, cps, promoted)
+    answers = _answers(ctx, cps, promoted, tasks=[])
     tasks, imp = DS.tasks(ws, cps, promoted, answers)
+    answers = _answers(ctx, cps, promoted, tasks=tasks)        # session 13: the analysis rows carried to their tasks
     ddir = ctx.dir / "downstream"
     ddir.mkdir(parents=True, exist_ok=True)
     (ddir / "tasks.json").write_text(json.dumps(tasks, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
@@ -2348,7 +2780,7 @@ def _plan_downstream(ctx: Ctx, tasks: list[dict], promoted: dict) -> tuple[list[
     except Exception as e:                                       # noqa: BLE001 (each request is still checked)
         caps = None
         notes.append(f"context fit not checked at planning: {type(e).__name__}: {_short(str(e), 300)}")
-    sp = R.spec("downstream")
+    sp = R.spec("downstream", route=ctx.s["route"], cfg=ctx.cfg)    # session 13: the route's policy composition
     tools_spec = [controller.TOOLS[t].spec() for t in sp.tools]
     state, maxout, st = ctx.ws.identity().model_dump(), _max_out(ctx), R.settings_for(ctx.cfg, ctx.s["route"])
     cache: dict = {}
@@ -2441,7 +2873,7 @@ def _take_downstream(ctx: Ctx, bid: str, ds: DownstreamSet, res_path: Path) -> N
 
 def _host_downstream_packet(ctx: Ctx, bid: str, packet: dict) -> dict:
     packet = dict(packet)
-    packet["system"] = DS.SYSTEM
+    packet["system"] = policy.compose("downstream", "mcp", cfg=getattr(ctx, "cfg", None))   # session 13: a person's host
     packet["workflow"] = {"run_id": ctx.run_id, "batch": bid, "phase": "downstream",
                           "submit_with": f"tenderpack ai submit-batch {ctx.run_id} FILE --by NAME --host-model MODEL"}
     path = ctx.dir / "batches" / f"{bid}.packet.json"
@@ -2458,7 +2890,7 @@ def _converse(ctx: Ctx, prov, packet: dict, bid: str, system: str | None = None,
     requests.TooLarge: the caller splits by task or escalates), the failure classes (a rate limit -> Deferred) and one
     bounded repair. `parse` and `system` override the phase's own; `tool_names` the tools offered; `ws` the workspace
     the tools read (default: the candidate's). Returns the parsed answer (DownstreamSet / RegionReadingProposal)."""
-    sp = R.spec(R.phase_of_task(task), system=system, parse=parse, tools=tool_names)
+    sp = R.spec(R.phase_of_task(task), system=system, parse=parse, tools=tool_names, route=ctx.s["route"], cfg=ctx.cfg)
     return _request(ctx, sp, prov, packet, bid, ws=ws, pre=pre).answer
 
 
@@ -2472,7 +2904,7 @@ def _downstream_host_session(ctx: Ctx, hs, bid: str, packet: dict) -> Downstream
     bounded repair of a malformed answer (a plain session given the answer and the errors: an item's `statements` are
     ids, never free text); what still fails is set aside item by item."""
     pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
-    sess = pre["sess"] if pre else hs.AnswerSession(ctx.ws, ctx.cfg, system=DS.SYSTEM, rules=DOWNSTREAM_HOST_RULES,
+    sess = pre["sess"] if pre else hs.AnswerSession(ctx.ws, ctx.cfg, phase="downstream",
                                                     model=ctx.s.get("host_session_model"),
                                                     run_lock=ctx.run_lock is not None)
     fields = {"run_id": f"{ctx.run_id}-{bid}", "created": now_iso(), "route": "host", "provider": "host-session",
@@ -2889,13 +3321,15 @@ def step_promotion(ctx: Ctx, st: dict) -> None:
     if snap.exists():
         DS._snapshot(snap.parent, snap)                          # back to the candidate as it was before promotion
     cps, promoted, ds = _revalidate(ctx, st)                     # session 11: the combined set, validated again now
-    answers = _answers(ctx, cps, promoted)
+    tasks = _js(ctx.dir / "downstream" / "tasks.json") or []    # session 13: the analysis rows' downstream tasks
+    answers = _answers(ctx, cps, promoted, tasks=tasks, ds=ds)
     origin = (f"AI workflow run {ctx.run_id} (route {ctx.s['route']}, model {cps.model_requested}"
               + (f", reported {cps.model_reported}" if cps.model_reported else "") + "); PROPOSED; not reviewed")
     summ = DS.promote(ctx.ws, ctx.cp.data["candidate"], ctx.run_id, cps, promoted, ds, origin,
                       {p: a["why"] for p, a in answers.items() if not a["answered"]})
+    summ["answers"] = answers                                    # session 13: after the downstream phase (packet)
     (ctx.dir / "promotion.json").write_text(json.dumps(summ, ensure_ascii=False, indent=1), encoding="utf-8")
-    st.update({k: v for k, v in summ.items() if k != "written"})
+    st.update({k: v for k, v in summ.items() if k not in ("written", "answers")})
     st["files_written"] = len(summ["written"])
     ctx._ws = None                                               # the candidate's inputs changed
     ctx.say(f"  promoted into the candidate: {len(summ['ops'])} op(s), {len(summ['dispositions'])} disposition(s), "
@@ -3151,7 +3585,7 @@ def review_markdown(ctx: Ctx) -> str:
         except (OSError, ValueError):
             return {}
     prom = js(ctx.dir / "promotion.json")
-    answers = js(ctx.dir / "downstream" / "answers.json")
+    answers = prom.get("answers") or js(ctx.dir / "downstream" / "answers.json")   # session 13: after downstream
     tasks = {t["id"]: t for t in (js(ctx.dir / "downstream" / "tasks.json") or [])}
     pops = js(ctx.dir / "downstream" / "promoted_ops.json")
     diff = js(rd / "diff.json")
@@ -3173,6 +3607,7 @@ def review_markdown(ctx: Ctx) -> str:
          "- status **{}**".format(*(_final_status(cp)[:1])) + (": " + _final_status(cp)[1] if _final_status(cp)[1] else ""),
          f"- usage: {d['usage']['calls']} call(s), {d['usage']['input_tokens']} input / {d['usage']['output_tokens']} output "
          f"tokens; cost {d['usage']['cost_usd'] if d['usage']['cost_usd'] is not None else 'not computed'}"]
+    L += code_lines(cp)                             # session 13: the code identity; DIFFERENT_CODE when it changed
     L += base_lines(ctx) + [""]                     # session 12: the base run, the missing addenda
     # ---- session 11: three separate records (checkpoint keys execution, completeness, approval)
     ex, comp, ap = execution(cp), completeness(cp), approval(cp)
@@ -3399,10 +3834,17 @@ def review_markdown(ctx: Ctx) -> str:
     if cr.get("status") == "done":
         L += ["## check-register on the candidate", "", f"- exit {cr.get('exit_code')}; {cr.get('findings')} finding(s) "
               f"{cr.get('by_kind')}"] + [f"  - {x}" for x in (cr.get("first") or [])[:25]] + [""]
+    # ---- session 13: the analysis items not promoted from the analysis set, under their own heading
+    L += carried_lines(cps, pops, tasks, ds, dreport.get("held_back") or {})
     # ---- coverage
     cov = (cps.coverage.model_dump() if cps else {})
     L += ["## Coverage", "", f"- provisions: {len(d['provisions'])}; accounted for by the combined set: {cov.get('accounted')}; "
           f"states {dict(Counter(v['status'] for v in d['provisions'].values()))}"]
+    via = {p: a["carried"] for p, a in answers.items() if a.get("carried")}
+    if via:                                              # session 13: accounted for through a downstream task
+        L.append(f"- accounted for through downstream tasks (analysis rows carried; never a silent gap): {len(via)} "
+                 + "; ".join(f"{p} → {', '.join(t)}" + (" (unresolved)" if answers[p]["why"].startswith("unresolved")
+                                                       else "") for p, t in via.items()))
     res = cp.step("validation").get("resolution")
     if res:
         L.append(f"- resolution (controller): resolved {res.get('resolved')}, pending {res.get('pending')}, invalid "
@@ -3627,13 +4069,14 @@ STEP_FUNCS = {"ingest": step_ingest, "readings": step_readings, "analysis": step
 # ---------------------------------------------------------------------------------------------- submit-batch
 
 def submit_batch(run_id: str, file, by: str, host_model: str | None = None, batch: str | None = None, staging=None,
-                 cont: bool = True, echo=print, sleep=time.sleep) -> dict:
+                 cont: bool = True, echo=print, sleep=time.sleep, allow_code_change: str | None = None) -> dict:
     """The manual host path: a host (a coding assistant without MCP, or a person) answered a batch's task packet with
     a proposal set (analysis) or a downstream set (downstream). The set is validated exactly as an API run's, the
     submission is recorded (who, when, the file and its sha256, the declared host model), and the run continues."""
     if not (by or "").strip():
         raise B.Refused("--by must name who submits the batch (a person, or the host session); it is recorded")
     cp = load(run_id, staging)
+    check_code_identity(cp, allow_code_change)       # session 13: a submission is validated by the code of this segment
     waiting = [k for k, b in cp.data["batches"].items() if b["status"] == "waiting_for_host"]
     bid = batch or (waiting[0] if len(waiting) == 1 else None)
     if bid is None:
@@ -3653,7 +4096,7 @@ def submit_batch(run_id: str, file, by: str, host_model: str | None = None, batc
         data = controller._load_set_data(path)
         # session 11: the request layer's checks of an answer (the envelope, every item, the references); on the manual
         # path the re-ask is the submitter's: a submission with problems is not taken and the batch keeps waiting
-        sp = R.spec(b["phase"])
+        sp = R.spec(b["phase"], route="mcp")             # the manual path: the checks of the phase's answer
         pk = json.loads(Path(b["packet"]).read_text(encoding="utf-8")) if b.get("packet") and Path(b["packet"]).exists() \
             else None
         if sp.phase == "downstream" and isinstance(data, dict) and "downstream_set" in data:

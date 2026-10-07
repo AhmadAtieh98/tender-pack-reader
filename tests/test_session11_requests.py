@@ -546,7 +546,9 @@ def test_host_answer_sessions_go_through_the_same_request_layer(ws, tmp_path, fa
               "model_reported": None, "task": DOWNSTREAM_TASK}
 
     def session():
-        return HS.AnswerSession(ws, cfg, system="SYSTEM", rules="rules")
+        # session 13 (implementer C, deliberate): an answer session is built for its phase (its system prompt and tools
+        # come from tenderpack.ai.policy); the hand-written system="SYSTEM", rules="rules" override path is gone
+        return HS.AnswerSession(ws, cfg, phase="downstream")
     out = R.ask_host(R.spec("downstream"), session(), packet, cfg=cfg, policy=pol, log=log, fields=fields, cwd=tmp_path,
                      sleep=lambda s: None)
     assert [it.id for it in out.answer.items] == ["D1", "D2"] and out.repaired and not out.malformed_items
@@ -573,7 +575,7 @@ def test_host_answer_sessions_go_through_the_same_request_layer(ws, tmp_path, fa
     (fake_dir / "calls.jsonl").unlink()
     cfg_noimg = _host_cfg(images=False)
     with pytest.raises(R.CapabilityRefused, match="REQUIRES image input"):
-        R.ask_host(R.spec("reading"), HS.AnswerSession(ws, cfg_noimg, system="S"), {"task": READING_TASK},
+        R.ask_host(R.spec("reading"), HS.AnswerSession(ws, cfg_noimg, phase="reading"), {"task": READING_TASK},
                    cfg=cfg_noimg, policy=pol, log=log, fields=dict(fields, task=READING_TASK), cwd=tmp_path)
     assert _calls(fake_dir) == []
     # the critic: ONE plain session (no tools, --json-schema) for every selected item of a batch

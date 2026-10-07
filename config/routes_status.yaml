@@ -1,0 +1,63 @@
+# Where and when each AI route was last EXERCISED, and with what result (session 13). A record, not a measurement of
+# quality: `tenderpack ai routes` prints it beside each route's LIVE availability on this machine (a key present, a
+# command on PATH, the local Ollama answering), the launcher (option 5) and the panel's addendum box show both.
+# Update it by hand when a route is exercised somewhere new (date, place, what ran, the result); never from code.
+#
+# status vocabulary: tested | built, unverified | untested | blocked here, unverified | pending on the Mac
+# A cloud-container test proves nothing about the owner's Mac: every Mac check is PENDING until run there
+# (docs/VERIFY_ON_MAC.md).
+version: 1
+first: host            # the route to rehearse first (the owner, session 13: "Claude Code is the first route to rehearse")
+order: [host (connected: Claude Code), codex (connected, manual), anthropic (API key), openrouter (API key), ollama (offline)]
+routes:
+  host:
+    label: Claude Code (connected coding host; the host's own plan pays; no application API call)
+    status: tested
+    where: the cloud container (sessions 10-13), the last time from an unzipped interview folder's own .venv through its panel; not yet on the Mac   # session 13 (F4; audit R3 N-3): the panel prints it
+    when: 2026-10-04 to 2026-10-06
+    result: >-
+      headless `claude -p` sessions over the tenderpack MCP tools ran for real on blind rehearsals 03-07 (readings,
+      analysis, downstream, critic, repairs); a rate limit stopped blind-04 after about seven sessions (deferral exit 5
+      and resume were built from it); blind-07 (6 Oct, from the interview folder's panel, two sessions in flight) ran
+      the sealed addendum PDF to the candidate outputs and review packet in 19.6 minutes of steps with a planned
+      SIGTERM after the second analysis batch and a resume from the panel; three defects found and fixed on the way
+      (E159: the server started where the package was not importable; E160: a letterhead rule counted as a table
+      rule; E161: killed sessions retried after the stop)
+    next: on the Mac, docs/VERIFY_ON_MAC.md "connected route with Claude Code" (PENDING)
+  codex:
+    label: Codex (connected coding host over MCP; manual path)
+    status: built, unverified
+    where: the MCP server Codex would use is tested over stdio JSON-RPC (tests/test_session09_ai_mcp.py)
+    when: 2026-10-04
+    result: >-
+      no Codex session has ever run against tenderpack; the workflow starts Claude Code only, so Codex is the manual
+      path (MCP tools, then `tenderpack ai submit` / `submit-batch`), never chosen automatically
+    next: register the MCP server in ~/.codex/config.toml (docs/AI_ROUTES.md section 3) and run one batch by hand
+  anthropic:
+    label: Anthropic API key (the application's paid Messages API calls)
+    status: untested
+    where: recorded responses in tests only; no API-key call has been made from this project's environment
+    when: never live
+    result: >-
+      the adapter, capability check, structured output and failure classes are tested against recorded responses;
+      a live call needs a key AND the owner's caps (max_calls / tokens / max_usd) in config/ai.yaml
+    next: >-
+      the key through the secure configuration only (ANTHROPIC_API_KEY in the environment, or a chmod-600
+      ~/.config/tenderpack/keys.env outside the folder; never chat or logs), then `tenderpack ai capabilities --route
+      anthropic --model claude-opus-5-5`
+  openrouter:
+    label: OpenRouter API key (paid; another provider's models)
+    status: blocked here, unverified
+    where: openrouter.ai is blocked from the cloud container; recorded responses in tests only
+    when: never live
+    result: the model slugs in config/ai.yaml are unverified; nothing has reached openrouter.ai from this project
+    next: as for the Anthropic key (OPENROUTER_API_KEY), then `tenderpack ai capabilities --route openrouter --model M`
+  ollama:
+    label: Ollama (local inference on this machine; the offline route)
+    status: pending on the Mac
+    where: a fake local server and recorded answers in tests (tests/test_session12_offline.py); no real Ollama here
+    when: 2026-10-05 (tests only)
+    result: >-
+      offline mode refuses every hosted route before any call (tested); no real local model has run; no model is ever
+      pulled by tenderpack
+    next: on the Mac, checks.sh checks 6 and 7 (`tenderpack ai ollama-models`, then one offline batch)

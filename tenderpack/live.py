@@ -34,7 +34,7 @@ from pathlib import Path
 import pymupdf
 
 from . import programme, relationships, review
-from .register import BID_OUT, Consequence
+from .register import Consequence
 from .schedule import deltas
 
 DPI = 110
@@ -405,15 +405,10 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
         data["relationships"]["not supplied"] = sorted({x["target"] for x in gp})
     # ---- A3
     def a3set(st):
-        out = {}
-        for e in r["evals"]:
-            if not _in_force(e["stages"][st]["status"]):
-                continue
-            it = r["register"].interp_at(e["row"], st)
-            c = it.consequence if it else None
-            if isinstance(c, Consequence) and c.cls in BID_OUT:
-                out[e["row"].id] = (c.cls, c.quote)
-        return out
+        # session 13 (F2, after F3; audit R3-5): the A3 rows are the page's and A5's (schedule.a3_rows, one function):
+        # the bid-out classes and the score row
+        from .schedule import a3_rows
+        return {k: (c.get("class"), c.get("quote")) for k, c in a3_rows(r["evals"], st).items()}
     xa, xb = a3set(frm), a3set(to)
     md += ["", "## Disqualifiers (A3)", ""]
     md += [f"- ENTERS {k}: {v[0]} “{v[1]}”" for k, v in xb.items() if k not in xa]
@@ -421,7 +416,8 @@ def diff(r: dict, frm: str | None = None, to: str | None = None) -> tuple[str, d
     md += [f"- CHANGES {k}: {xa[k][0]} -> {v[0]} “{v[1]}”" for k, v in xb.items() if k in xa and xa[k] != v]
     if md[-1] == "":
         md.append("- no change")
-    data["a3"] = {"enters": [k for k in xb if k not in xa], "leaves": [k for k in xa if k not in xb]}
+    data["a3"] = {"enters": [k for k in xb if k not in xa], "leaves": [k for k in xa if k not in xb],
+                  "rows": sorted(xb)}                          # session 13 (F2): the set at `to`, checkable
     # ---- session 12: earlier answers that relied on what this addendum changed, to be re-read by a person
     from .stage2 import answers_to_review
     rr = [dict(x, stage=s.stage) for s in r["stages"] if s.stage in order[order.index(frm) + 1: order.index(to) + 1]

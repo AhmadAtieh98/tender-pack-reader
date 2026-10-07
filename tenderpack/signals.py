@@ -24,8 +24,13 @@ deltas (validated and candidate), the diff and the AI review packet agree:
                   reading was not re-made): never called CONFIRMED (partial.unresolved_rows gives the reasons). Session
                   12 (F5; audit A2-1, A5 N1): nor is a row that would be CONFIRMED while an issue linked to it is a
                   person's decision not yet recorded (human_owned.pending_reasons: the evaluation's `pending`, put by
-                  attach_pending, or a confirming op whose own issue or note names such an issue or carries the HUMAN
-                  DECISION PENDING marker: the cause's `pending`): "open: I-CONCESSION, human decision pending".
+                  attach_pending): "open: I-CONCESSION, human decision pending". Session 13 (F4; audit R1-7, R1-8,
+                  R1-9): the issues linked to a row are ONE set, the set behind A1's Issues cell (issue_ids_of: the
+                  row's own issues, then those of the curated relationships that reach it and of a reissued form,
+                  stage2.row_issues); an issue an op's note names is context for the op, not a link to the rows it
+                  targets; an issue bears on a row from the stage its evidence first exists (issue_since); and an op
+                  is never a pending decision: a confirming op that does not settle a row is named as "proposed op
+                  <id> (awaiting a person's acceptance)" until a person accepts it (an approval blocker).
       neither     no difference and no confirming cause: the row is not listed.
   A confirming label never hides words of change: an answer the deterministic reader classifies as `changes` (words
   such as 'is amended', 'instead of', or a figure the targets do not print) is not a confirmation, whatever its label.
@@ -103,7 +108,9 @@ def cause_label(c: dict) -> str:
     return f"{c.get('op')}" + (f" ({'; '.join(bits)})" if bits else "")
 
 
-_NEW_DEP = re.compile(r"^new dependency (\S+)$")
+# session 13 (F1): register.evaluate writes "new dependency <provision> (the provision of <ops>, which confirms a unit of
+# the row unchanged)" for a confirming op's provision; the suffix was not matched, so such a row read as changed
+_NEW_DEP = re.compile(r"^new dependency (\S+)(?: \(the provision of [^()]*, which confirms a unit of the row unchanged\))?$")
 _BY = re.compile(r"\(by ([^)]*)\)\s*$")
 
 
@@ -200,12 +207,14 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
                 "detail": "NOT SETTLED: " + _short("; ".join(list(unsettled or []) + conflicts), 300)}
     if not (conf or reread or recorded):
         return {"changed": False, "confirmed": False, "unsettled": False, "what": [], "causes": [], "detail": ""}
-    # session 12 (F5; audit A2-1, A5 N1): a row under an issue a person has not decided is never confirmed
-    pend = list(dict.fromkeys(list(b.get("pending") or []) + [p for c in conf for p in c.get("pending") or []]))
+    # session 12 (F5; audit A2-1, A5 N1): a row under an issue a person has not decided is never confirmed. Session 13
+    # (F4; audit R1-7, R1-8): the issues are the row's own set (attach_pending); an op's note is context, and the op
+    # itself is named as an approval blocker, never as a decision pending
+    pend = list(dict.fromkeys(b.get("pending") or []))
     if pend:
         return {"changed": False, "confirmed": False, "unsettled": True, "what": [], "causes": [], "pending": pend,
                 "detail": "NOT SETTLED: " + _short("; ".join(pend), 300) + (
-                    f" (the confirming op(s) {', '.join(cause_label(c) for c in conf)} do not settle it)" if conf else "")}
+                    f" (the confirming op(s) do not settle it: {'; '.join(chain_label(c) for c in conf)})" if conf else "")}
     parts = []
     if conf:
         parts.append("confirmed by " + "; ".join(cause_label(c) for c in conf))
@@ -218,6 +227,19 @@ def requirement_delta(a: dict, b: dict, causes: list[dict] | None = None, unsett
         parts.append("other ops on its units (the re-made reading records no change from them; a person checks): "
                      + "; ".join(cause_label(c) for c in other))
     return {"changed": False, "confirmed": True, "unsettled": False, "what": [], "causes": [], "detail": "; ".join(parts)}
+
+
+AWAITING = "awaiting a person's acceptance"
+
+
+def chain_label(c: dict) -> str:
+    """A confirming op as a NOT SETTLED line names it (session 13, F4; audit R1-8): 'proposed op <id> (awaiting a
+    person's acceptance): <effect>; <provision>' until a person's acceptance is bound to it (the cause's `accepted`,
+    from review.compute); then as cause_label. An op awaiting acceptance is an approval blocker, not a judgment."""
+    if c.get("accepted"):
+        return cause_label(c)
+    rest = cause_label(c)[len(str(c.get("op"))):].strip()
+    return f"proposed op {c.get('op')} ({AWAITING})" + (f": {rest[1:-1]}" if rest.startswith("(") else "")
 
 
 def acknowledgement_detail(ev: dict, stage: str, prev_stage: str) -> str:
@@ -271,28 +293,86 @@ def pending_note(iid: str) -> str:
     return f"open: {iid}, human decision pending"
 
 
-def attach_pending(r: dict) -> None:
+def issue_note(iid: str, pend: dict | None) -> str:
+    """Session 13 (audit R1-1): the one note for an open issue wherever an output carries it: "open: <id>, human
+    decision pending" when it is a person's decision not yet recorded (pending_issues), else "open: <id>" (an issue is
+    open by construction; nothing here resolves it)."""
+    return pending_note(iid) if iid in (pend or {}) else f"open: {iid}"
+
+
+def relationship_issue_notes(entries, rel_ids, pend: dict | None) -> list[str]:
+    """Session 13 (audit R1-1): the open issues of the curated relationships `rel_ids` (the entries that carry a change
+    to a row, or the path of a reached record), one note per issue (issue_note) naming the relationships it comes
+    through: 'open: I-X, human decision pending (via REL-A, REL-B)'. The same rule for every issue and every entry."""
+    by_id = {e.get("id"): e for e in entries or [] if isinstance(e, dict)}
+    via: dict[str, list[str]] = {}
+    for rid in dict.fromkeys(rel_ids or []):
+        for i in (by_id.get(rid) or {}).get("issues") or []:
+            via.setdefault(i, []).append(rid)
+    return [f"{issue_note(i, pend)} (via {', '.join(v)})" for i, v in via.items()]
+
+
+def cause_relationships(causes, entries) -> list[str]:
+    """The curated relationship ids a row's dependency causes ('dependency', dependency_changes) came through."""
+    ids = [e.get("id") for e in entries or [] if isinstance(e, dict) and e.get("id")]
+    out = []
+    for c in causes or []:
+        if c.get("kind") != "dependency":
+            continue
+        for v in c.get("via") or []:
+            out += [i for i in ids if re.search(r"(?:^|< )" + re.escape(i) + r" \(", v)]
+    return list(dict.fromkeys(out))
+
+
+def issue_ids_of(own, links) -> list[str]:
+    """Session 13 (F4; audit R1-7): the issues linked to a row, as ONE ordered set: its own `issues`, then each issue
+    a link adds (stage2.row_issue_links: a curated relationship reaching the row, an evidence field a reissued form
+    drops). A1's Issues cell (stage2.linked_issue_cells) and A2/A5's pending list (attach_pending) both read it."""
+    out = list(dict.fromkeys(own or []))
+    for x in links or []:
+        if x.get("issue") and x["issue"] not in out:
+            out.append(x["issue"])
+    return out
+
+
+def issue_since(issue: dict, order: list[str], first_stage) -> str:
+    """Session 13 (F4; audit R1-9): the stage from which an issue bears on its rows: the stage its evidence first
+    exists. The issue's own `since` when given (a stage of the pack); else the latest stage at which one of the units it
+    cites (`units`) is first issued (`first_stage(unit)` -> stage or None); else the first stage (BASE): an issue that
+    cites nothing bears from the start, as before."""
+    order = list(order or [])
+    s = (issue or {}).get("since")
+    if s in order:
+        return s
+    got = [first_stage(u) for u in (issue or {}).get("units") or []]
+    got = [g for g in got if g in order]
+    return max(got, key=order.index) if got else (order[0] if order else "BASE")
+
+
+def attach_pending(r: dict, by_row: dict | None = None, since: dict | None = None) -> None:
     """Session 12 (F5; audit A2-1, A5 N1): put on every row evaluation at every stage a `pending` list ("open: <issue>,
-    human decision pending") for each issue linked to the row (its `issues`) that is a person's decision not yet
-    recorded (pending_issues). requirement_delta never calls such a row CONFIRMED. Pure data."""
+    human decision pending") for each issue linked to the row that is a person's decision not yet recorded
+    (pending_issues). requirement_delta never calls such a row CONFIRMED. Pure data.
+    Session 13 (F4; audit R1-7, R1-9): `by_row` (row id -> issue ids; stage2.row_issues, the set A1's Issues cell
+    shows) gives the linked issues (default: the row's own `issues`); `since` (issue id -> stage; issue_since) keeps an
+    issue off the stages before its evidence exists."""
     pend = pending_issues(r)
     r["pending_issues"] = pend
+    order = list(r.get("order") or [])
+    pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
     for e in r.get("evals") or []:
-        mine = [pending_note(i) for i in dict.fromkeys(e["row"].issues) if i in pend]
-        for ev in e["stages"].values():
+        ids = (by_row or {}).get(e["row"].id) if by_row is not None else None
+        ids = list(dict.fromkeys(ids if ids is not None else e["row"].issues))
+        for st, ev in e["stages"].items():
             if isinstance(ev, dict):
-                ev["pending"] = list(mine)
+                ev["pending"] = [pending_note(i) for i in ids if i in pend
+                                 and pos((since or {}).get(i, order[0] if order else st)) <= pos(st)]
 
 
-def op_pending(op, pend: dict) -> list[str]:
-    """For a confirming op's cause: the pending issues its own issue or note names, and the op itself when its words
-    carry the HUMAN DECISION PENDING marker."""
-    from .human_owned import HUMAN_DECISION_PENDING
-    text = f"{getattr(op, 'issue', '') or ''} {getattr(op, 'note', '') or ''}"
-    out = [pending_note(i) for i in issue_refs(text) if i in (pend or {})]
-    if HUMAN_DECISION_PENDING in text:
-        out.append(pending_note(getattr(op, "id", "?")))
-    return out
+def in_force_pending(pend: dict | None, since: dict | None, order: list[str], stage: str) -> dict:
+    """The pending issues (pending_issues) that bear at `stage` (issue_since), for the notes a stage's lines carry."""
+    pos = lambda st: order.index(st) if st in order else 0  # noqa: E731
+    return {k: v for k, v in (pend or {}).items() if pos((since or {}).get(k, order[0] if order else stage)) <= pos(stage)}
 
 
 # ---------------------------------------------------------------------------------------------- dependencies (F2)
@@ -364,7 +444,7 @@ def dependency_changes(a: dict, b: dict) -> list[dict]:
     out = []
     for u in _no_parents(changed):
         x, y = ua[u], ub.get(u) or {"status": "absent", "text": "", "cells": None, "ops": []}
-        out.append({"kind": "dependency", "unit": u,
+        out.append({"kind": "dependency", "unit": u, "via": list((y if u in ub else x).get("via") or []),
                     "text": f"{_ref(u, y if u in ub else x)}: {_how(x, y)}"
                             + _by([o for o in y.get("ops") or [] if o not in (x.get("ops") or [])])
                             + f" (depends on it: {'; '.join((y if u in ub else x).get('via') or [])})"})

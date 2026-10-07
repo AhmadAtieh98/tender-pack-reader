@@ -218,6 +218,10 @@ def _tags(a: dict) -> list[tuple[str, str, str]]:
     elif _route_shown(a):                                   # session 12 (audit A5-1): the route on a late chain
         ask = _d(a["ask_by"])
         out.append((f"question drafted: ask by {ask.day} {ask:%b}", WARN, "diamond"))
+    if a.get("open_decisions"):                             # session 13 (F2; audit R2-2, R3-1): as the Permit is shown
+        ask = _d(a.get("ask_by")) if (a.get("ask_by") and not a.get("gated_by") and not _route_shown(a)) else None
+        out.append((f"OPEN DECISION ({len(a['open_decisions'])})"                 # the ids: notes below the chart
+                    + (f"; question drafted: ask by {ask.day} {ask:%b}" if ask else ""), WARN, "diamond"))
     rs = str(a.get("resource_status", ""))
     if rs.startswith("OVERLOAD"):
         out.append((f"OVERLOAD {a.get('resource', '')}", SERIOUS, "triangle"))
@@ -245,6 +249,48 @@ def _route_shown(a: dict) -> bool:
     pack date that makes it late); every other activity has it in its title, gantt.html and programme.csv."""
     st = str(a.get("status") or "OK")
     return bool(a.get("ask_by")) and not a.get("gated_by") and st != "OK" and not st.startswith(("CONDITIONAL", "NOT NEEDED"))
+
+
+def _by_activities(opened: dict[str, list[str]]) -> dict[tuple, list[str]]:
+    """Open decision ids grouped by the activities they are on (one list of activities per group, in first-seen order)."""
+    out: dict[tuple, list[str]] = {}
+    for i, v in opened.items():
+        out.setdefault(tuple(v), []).append(i)
+    return out
+
+
+def tag_variants(tags: list[tuple[str, str, str]]) -> list[list[tuple[str, str, str]]]:
+    """Session 13 (F4; audit R3 recheck R3-1): the status tags of a row, then shorter forms to try in order when they
+    do not fit the cell: the REVIEW tags without their class ('REVIEW'; the classes are in the notes and the row's
+    title), then the OPEN DECISION tag without its 'question drafted' clause, then without the REVIEW tags, then the
+    BLOCKED documents in short ('BLOCKED, not supplied: Environmental Permit issued for the site'), OVERLOAD without its
+    role, BLOCKED as a count (the documents are in the row's title), and only last without the OPEN DECISION tag (its
+    ids and words are in the notes below the chart, the row's title, gantt.html and programme.csv). Timing, gate,
+    BLOCKED and resource tags are never dropped."""
+    review = lambda t: t[0].startswith("REVIEW (")                                   # noqa: E731
+    od = lambda t: t[0].startswith("OPEN DECISION")                                 # noqa: E731
+    blocked = lambda t: t[0].startswith("BLOCKED")                                  # noqa: E731
+    docs = lambda t: [re.sub(r"^(?:cannot be established:\s*)?(?:the\s+)?|\s+not supplied$", "", d.strip())  # noqa: E731
+                      for d in re.sub(r"^BLOCKED(?:, not supplied)?:\s*", "", t[0]).split(";")]
+    v1 = [("REVIEW", t[1], t[2]) if review(t) else t for t in tags]
+    v1 = [t for n, t in enumerate(v1) if not (t[0] == "REVIEW" and any(x[0] == "REVIEW" for x in v1[:n]))]
+    v2 = [(t[0].split(";")[0], t[1], t[2]) if od(t) else t for t in v1]
+    v3 = [t for t in v2 if t[0] != "REVIEW"]
+    v3b = [("BLOCKED, not supplied: " + "; ".join(docs(t)), t[1], t[2]) if blocked(t) else t for t in v3]
+    v3c = [(t[0].split(" ")[0], t[1], t[2]) if t[0].startswith("OVERLOAD ") else t for t in v3b]
+    v3d = [(f"BLOCKED: {len(docs(t))} not supplied (row title)", t[1], t[2]) if blocked(t) else t for t in v3c]
+    v4 = [t for t in v3d if not od(t)]
+    out = []
+    for v in (tags, v1, v2, v3, v3b, v3c, v3d, v4):
+        if v not in out:
+            out.append(v)
+    return out
+
+
+def _fits_uncut(tags: list[tuple[str, str, str]], x0: float, x1: float, size: float, lines: int) -> bool:
+    """Whether the tags fit on `lines` lines when a tag may continue on the next line, with nothing cut."""
+    placed = _status_layout(tags, x0, x1, size, lines, True) or []
+    return "".join(p[2] for p in placed).replace(" ", "") == "".join(t[0] for t in tags).replace(" ", "")
 
 
 def _status_layout(tags: list[tuple[str, str, str]], x0: float, x1: float, size: float, lines: int,
@@ -300,7 +346,7 @@ def _alt(ms: list[dict]) -> str:
             + ")")
 
 
-def layout(prog: dict) -> list[tuple]:
+def layout(prog: dict, legend_extra: float = 0.0) -> list[tuple]:
     L = _L()
     cal = _cal(prog)
     pd = _d(prog.get("planning_date") or prog["status_date"])
@@ -324,7 +370,7 @@ def layout(prog: dict) -> list[tuple]:
     x = lambda d: cx0 + (d - d0).days * dw                            # noqa: E731  (start of day d)
     band_top, axis_y = 56.0, 112.0
     rows_top = 128.0
-    legend_h = 96.0
+    legend_h = 96.0 + legend_extra          # session 13 (F4): grows with the notes (layout re-runs; never cut)
     rows_bot_max = PAGE_H - MARGIN - legend_h
     gh = 10.0
     rh = min(13.0, (rows_bot_max - rows_top - gh * len(groups)) / max(n_rows, 1))
@@ -417,7 +463,12 @@ def layout(prog: dict) -> list[tuple]:
             L.text(hx, y + rh * 0.68, shown, fs - 0.8, INK2)
             # status column: one line when everything fits, else two (R-9); markers centred on their line
             sx0, sx1 = MARGIN + LABEL_W + 4, MARGIN + LABEL_W + STATUS_W - 6
-            tags = _tags(a)
+            # session 13 (F4; audit R3 recheck R3-1): when the cell is full the other tags shorten first and the OPEN
+            # DECISION tag gives way last (tag_variants), so it shows on the activities the open decision conditions
+            for tags in tag_variants(_tags(a)):
+                if _status_layout(tags, sx0, sx1, fs - 1.0, 2, False) is not None or \
+                        _fits_uncut(tags, sx0, sx1, fs - 1.0, 2):
+                    break
             placed = _status_layout(tags, sx0, sx1, fs - 0.6, 1, False)
             if placed is not None:
                 ssize, base = fs - 0.6, (y + rh * 0.68,)
@@ -539,6 +590,28 @@ def layout(prog: dict) -> list[tuple]:
     if any(str(f).startswith("REVIEW (") for a in prog.get("activities") or [] for f in a.get("flags") or []):
         from .relationships import STATUS_LEGEND        # session 12 (F5; audit R-e): what 'REVIEW (confirmed ...)' means
         notes.append(f"REVIEW (<status> ...) tags: {STATUS_LEGEND}")
+    opened: dict[str, list[str]] = {}                 # session 13 (F2; audit R2-2, R3-1): which open decision, where
+    words: dict[str, str] = {}
+    route = (prog.get("gate_route") or {}).get("activity")
+    for a in prog.get("activities") or []:
+        for i in a.get("open_decisions") or []:
+            opened.setdefault(i, [])
+            if a["id"] != route:
+                opened[i].append(a["id"])
+            words.setdefault(i, str(((prog.get("open_decision_index") or {}).get(i) or {}).get("brief")
+                                    or (a.get("open_decision_words") or {}).get(i) or ""))
+    if opened:
+        # session 13 (F4; audit R3 recheck R3-1): each issue with its words and owner, so the printed chart says what
+        # is open; the clarification route activity lists them all once
+        notes.append("OPEN DECISION (n) tags: open issues of the rows an activity's own work rests on, a person's "
+                     "decision with none recorded (HUMAN DECISION PENDING; also in the Flags column, programme.csv and "
+                     "README)" + (f"; {route} lists all {len(opened)}" if route and any(
+                         route == a["id"] and a.get("open_decisions") for a in prog.get("activities") or []) else "")
+                     + ". " + " ".join(
+                         ("On " + ", ".join(k[:4]) + (f" +{len(k) - 4}" if len(k) > 4 else "") if k else
+                          f"Only on {route}") + ": " + "; ".join(f"{i}" + (f" ({_ltr(words[i])})" if words.get(i) else "")
+                                                                for i in ids) + "."
+                         for k, ids in _by_activities(opened).items()))
     for s in notes:                                   # wrapped, never cut (session 11)
         line = ""
         for wd in s.split(" "):
@@ -549,6 +622,11 @@ def layout(prog: dict) -> list[tuple]:
                 line = (line + " " + wd).strip()
         L.text(MARGIN, ny, line, 6.2, INK2)
         ny += 8.6
+    # session 13 (F4; audit R3 recheck R3-1): the notes name each open decision with its words; when they run past the
+    # page, the rows give up the height (the legend area grows) instead of anything being cut
+    over = (ny - 8.6) - (PAGE_H - MARGIN / 2)
+    if over > 0 and legend_extra < 400:
+        return layout(prog, legend_extra + over + 2)
     return L.items
 
 
@@ -691,6 +769,9 @@ def html(prog: dict, svg_text: str | None = None) -> str:
               "ask by' and the hollow diamond show the same date for a question drafted on its rows (the Clarification "
               "questions column lists every activity's).",
               "Status tags REVIEW / BLOCKED / STALE: the row's flags (in full in the Flags column and the row's title).",
+              "OPEN DECISION (n): n open issues of the rows the activity carries are a person's decision with none "
+              "recorded (HUMAN DECISION PENDING); each is named with its wording and owner in the Flags column. Not a "
+              "gate unless planning.gate_on_open_decisions is on (then the decision status reads REVIEW (open decision)).",
               "REVIEW (<status> ...): " + __import__("tenderpack.relationships", fromlist=["STATUS_LEGEND"]).STATUS_LEGEND,
               "Orange triangles: OVERLOAD days of the row's role (load above capacity). Not levelled.",
               "Dotted outline only: CONDITIONAL (window elapsed; whether the condition arose is not known), DEADLINE "

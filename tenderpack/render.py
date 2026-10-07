@@ -379,12 +379,17 @@ def _a3_html(a3: dict) -> str:
             qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
                   if grp.get("questions") else
                   f' <span class="meta">questions drafted: {grp["n_questions"]}</span>' if grp.get("n_questions") else "")
+            if grp.get("unlisted"):                # session 13 (F2; audit R2-7): questions on no issue listed here
+                qs += f' <span class="meta">({_rich(grp["unlisted"])})</span>'
             if "count" in grp:                     # condensed to a count (stage2.condense_a3 level 4): ids on a3_detail.html
                 out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({grp["count"]})' + qs + "</p>")
                 continue
             mark = lambda i: "\u2020\u00a0" if i.get("decide") else ""  # noqa: E731
             own = lambda i: f' <span class="meta">({_rich(i["owner"])})</span>' if i.get("owner") else ""  # noqa: E731
-            fold = lambda i: f' <span class="meta">+{len(i["folds"])}</span>' if i.get("folds") else ""  # noqa: E731
+            # session 13 (F4; audit R2-11): a folded pending issue is named with the mark: '+1: ⚑ I-X (Owner)'
+            fold = lambda i: (f' <span class="meta">+{len(i["folds"])}'  # noqa: E731
+                              + (": \u2691 " + _rich("; ".join(i["folds_pending"])) if i.get("folds_pending") else "")
+                              + "</span>") if i.get("folds") else ""
             if any(i.get("short") for i in grp["items"]):     # session 11 (A3-1, R-3): one line each, reason and owner
                 out.append(f'<p class="grp"><b>{_rich(grp["title"])}</b> ({len(grp["items"])})' + qs + "</p>")
                 out += [f'<p class="it2">{mark(i)}{link(i["id"])} {_rich(i["short"])}{own(i)}{fold(i)}</p>' for i in grp["items"]]

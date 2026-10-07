@@ -34,9 +34,12 @@ if "--json-schema" in argv:                                   # (a) the critic
     sys.exit(0)
 
 # (b) the host session
-if arg("--allowedTools") != "mcp__tenderpack__*" or "--strict-mcp-config" not in argv \
-        or arg("--output-format") != "stream-json":
-    fail("host session: expected --allowedTools mcp__tenderpack__*, --strict-mcp-config, --output-format stream-json")
+# session 13: deny-by-default, an explicit allow list (never the wildcard) naming the tools this stand-in calls
+allowed = (arg("--allowedTools") or "").split(",")
+if "mcp__tenderpack__*" in allowed or not {"mcp__tenderpack__get_crop", "mcp__tenderpack__submit_proposals"} <= \
+        set(allowed) or "--strict-mcp-config" not in argv or arg("--output-format") != "stream-json":
+    fail("host session: expected an explicit --allowedTools list with get_crop and submit_proposals, "
+         "--strict-mcp-config, --output-format stream-json")
 cfg = json.load(open(arg("--mcp-config")))["mcpServers"]["tenderpack"]
 srv = subprocess.Popen([cfg["command"], *cfg["args"]], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True,
                        cwd=cfg.get("cwd"), stderr=subprocess.DEVNULL)

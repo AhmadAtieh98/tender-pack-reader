@@ -292,7 +292,10 @@ def test_an_issue_on_a_settled_point_is_an_applied_rule_not_a_decision_for_legal
     assert r["lines"] == ["ADD-03 2.2 provides: 'The Arabic text governs.' (applied, not decided)"]
     assert r["human"] == []                                   # nothing outside the settled sentence is a judgment
     e = re_present_issue(dict(issue), r["lines"], r["sentences"])
-    assert e["owner"] == "Bid manager" and e["proposed_owner"] == "Legal counsel"
+    # session 13 (changed deliberately, the owner's part 2): an applied rule never removes human ownership: the issue
+    # keeps its owner and carries a confirmation line (session 12 handed it to the Bid manager, `proposed_owner`)
+    assert e["owner"] == "Legal counsel" and "proposed_owner" not in e
+    assert "a person confirms the application" in e["text"]
     assert "decision for Legal" not in e["text"] and "ADD-03 2.2 provides: 'The Arabic text governs.'" in e["text"]
     assert e["proposed_text"] == issue["text"] and e["applied_rule"] == r["lines"]
     # a judgment outside the quotation keeps the label (the human-owned classifier's own words fire)

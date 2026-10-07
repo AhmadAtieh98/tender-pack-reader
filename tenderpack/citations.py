@@ -271,6 +271,36 @@ def resolve_scope(cites: list[Citation], unit_ids: set[str]) -> tuple[list[str],
     return list(dict.fromkeys(out)), list(dict.fromkeys(flags))   # a target named twice (body and heading) is listed once
 
 
+# session 13 (F1; audit R1-1): words that quantify over every row of a cited table ("All other parameters in Table
+# 2-4 are unchanged."): a row of that table is cited by them, except, for "other", a row the provision names itself
+_ALL_ROWS = re.compile(r"\ball\s+(other\s+|remaining\s+)?(?:parameters|rows|items|entries|values|limits)\s+"
+                       r"(?:in|of|listed in|set out in|shown in)\s+(?:the\s+)?(?:Volume\s+[IVX]+\s*,?\s*)?"
+                       r"Table\s+[\w.-]*\w", re.I)
+
+
+def quantified_row(target: str, text: str, unit_ids: set[str], row_label_of=None) -> tuple[bool, str]:
+    """Is `target` a row of a table the provision quantifies over in full ('all parameters in Table 2-4'; 'all OTHER
+    parameters in Table 2-4' leaves out the rows the provision names)? (ok, reason). Used for annotations that confirm
+    or interpret: a row covered by such words is cited by them; no other row is."""
+    for m in _ALL_ROWS.finditer(text or ""):
+        cited, _ = resolve_scope(citations(m.group(0)), unit_ids)
+        if not cited:          # 'Table 2-4' without its volume: the table the provision cites in full by that number
+            num = re.search(r"Table\s+([\w.-]*\w)$", m.group(0)).group(1)
+            cited, _ = resolve_scope([c for c in citations(text) if c.kind == "table"
+                                      and re.search(r"Table\s+" + re.escape(num) + r"$", c.text)], unit_ids)
+        for c in cited:
+            if not target.startswith(c + "/"):
+                continue
+            if m.group(1):
+                names = row_names(text)
+                label = row_label_of(target) if row_label_of else target.rsplit("/", 1)[-1]
+                keys = {_slug(label), _slug(target.rsplit("/", 1)[-1])} - {""}
+                if label in names or keys & {_slug(n) for n in names}:
+                    return False, f"{target} is the row the provision names, not one of '{m.group(0)}'"
+            return True, f"{target} is a row of {c}, covered by '{m.group(0)}'"
+    return False, "no words quantify over the rows of a cited table"
+
+
 def verify_target(target: str, text: str, unit_ids: set[str], row_label_of=None) -> tuple[bool, str, list[str]]:
     """Is `target` the unit the provision text cites? Returns (ok, reason, cited targets).
 

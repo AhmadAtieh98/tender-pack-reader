@@ -22,7 +22,14 @@ Actions. Every button starts a real job (tenderpack/panel/jobs.py): `<python> -m
 job record. A decision runs only from a form a person filled (decision chosen, name and reason typed, confirmation
 ticked); the panel never pre-fills or pre-selects one. The panel writes only under <panel_dir> itself; out/ is written
 only by the outputs job (which keeps the previous build on a structural failure, as the command always does),
-candidate outputs stay in their run folders, rehearsals/ is never written. The panel reads no key and echoes no
+candidate outputs stay in their run folders, rehearsals/ is never written.
+
+Session 13, part 4 (the AI quick review): "Start AI quick review" on the New addendum box (the same upload) and on a run's
+page (the run's PDF) starts `ai quick-review` as a job under `nice -n 10`, one at a time, with a short budget and a token
+cap, refused when offline mode forbids the route; /quickreview/<id> shows the PRELIMINARY AI BRIEFING under its label,
+the questions as a form (each answer a job: `ai quick-review answer`, recorded against the exact question and evidence,
+never in curation/), the comparison with a run (`ai quick-review compare`, headed "model agreement is not proof"), the
+offer of the answers to a run (`ai quick-review offer`: between phases only) and the two timings side by side. The panel reads no key and echoes no
 environment variable; the jobs inherit the environment (the routes read their own keys) and their records hold the
 argv only."""
 from __future__ import annotations
@@ -53,6 +60,7 @@ from . import views as V
 from .jobs import JobError, Jobs
 
 MAX_UPLOAD = 50 * 1024 * 1024
+QR_BUDGET_MIN, QR_MAX_TOKENS = 10, 60000        # session 13, part 4: the panel's quick review is short and capped
 MAX_FORM = 256 * 1024
 ADDENDUM = re.compile(r"^ADD-\d{2}$")
 ITEM = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/()+@-]{0,160}$")
@@ -192,6 +200,19 @@ class Panel:
                 if ((cp.get("steps") or {}).get("promotion") or {}).get("status") == "done"]
         return {"available": self._base_run, "runs": runs}
 
+    def history(self) -> tuple[list[str] | None, str | None]:
+        """The commit history for A4 (session 13): `git log` of the folder, read-only, or (None, why)."""
+        if not (self.cfg.root / ".git").exists():
+            return None, f"{self.cfg.root} has no .git (an operating copy, not the repository)"
+        try:
+            res = subprocess.run(["git", "-C", str(self.cfg.root), "log", "--format=%h %ad %s", "--date=short", "-n",
+                                  "500"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+        except (OSError, subprocess.SubprocessError) as e:
+            return None, f"git log did not run ({type(e).__name__})"
+        if res.returncode != 0:
+            return None, f"git log ended with exit {res.returncode}"
+        return [x for x in res.stdout.splitlines() if x.strip()], None
+
     def host_found(self) -> bool:
         """Whether the host route's command (config host_session.claude_bin, default `claude`) is on this machine."""
         import yaml
@@ -226,6 +247,14 @@ class Panel:
     def running_for(self, rid: str) -> dict | None:
         for j in self.jobs.list():
             if (j.get("meta") or {}).get("run_id") == rid and j["status"] == "running":
+                return j
+        return None
+
+    def qr_job(self, qid: str, running: bool = False) -> dict | None:
+        """The job of a quick review (session 13): its `ai-quick-review` job, the running one when asked."""
+        for j in self.jobs.list():
+            if j.get("kind") == "ai-quick-review" and (j.get("meta") or {}).get("qr_id") == qid and \
+                    (not running or j["status"] == "running"):
                 return j
         return None
 
@@ -286,7 +315,8 @@ class Panel:
     def areas(self) -> dict:
         c = self.cfg
         return {"out": c.out, "evidence-review": c.evidence / "review", "runs": c.staging / "runs",
-                "jobs": c.panel_dir / "jobs", "sources": c.root / "sources", "worklog": c.root / "worklog"}
+                "jobs": c.panel_dir / "jobs", "sources": c.root / "sources", "worklog": c.root / "worklog",
+                "quick-review": c.staging / "quick-review"}          # session 13, part 4: the briefings (read only)
 
     def safe_file(self, area: str, rel: str) -> Path | None:
         base = self.areas().get(area)
@@ -432,7 +462,12 @@ def _handler(panel: Panel):
             if raw == "stages":
                 q = self._query()
                 return self._html(200, V.stages_page(base, cfg, V.candidate_runs(cfg.staging),
-                                                     {"frm": q.get("frm"), "to": q.get("to")}))
+                                                     {"frm": q.get("frm"), "to": q.get("to")}, panel.run_jobs()))
+            if raw == "worklog":                                 # session 13: A4, the work log (read-only)
+                return self._html(200, V.worklog_page(base, cfg.root / "worklog"))
+            if raw == "history":
+                lines, why = panel.history()
+                return self._html(200, V.history_page(base, lines, why))
             if raw == "units":
                 return self._units(self._query())
             if raw == "addendum":
@@ -456,6 +491,21 @@ def _handler(panel: Panel):
                 return self._html(200, V.run_detail(base, rid, rd, cp, panel.run_jobs().get(rid),
                                                     panel.running_for(rid), tuple(STEPS),
                                                     V.candidate_outputs(base, rid, rd, cp)))
+            if raw == "quickreview":                             # session 13, part 4
+                return self._html(200, V.quickreview_list(base, cfg.staging))
+            m = re.match(r"^quickreview/([^/]+)$", raw)
+            if m:
+                qid = m.group(1)
+                d = cfg.staging / "quick-review" / qid
+                if not RUN_ID.match(qid) or not d.is_dir():
+                    j = panel.qr_job(qid) if RUN_ID.match(qid) else None
+                    if j:
+                        return self._html(200, V.page(base, f"Quick review {qid}", f'<p class="banner">'
+                                                      f"{V.esc(V._qr_label())}</p><p>Starting: <a href=\"{base}jobs/"
+                                                      f"{V.esc(j['id'])}\">the job and its output</a></p>", refresh=5))
+                    return self._refuse(404, f"no quick review {qid}")
+                return self._html(200, V.quickreview_page(base, qid, d, V.candidate_runs(cfg.staging),
+                                                          panel.qr_job(qid, running=True)))
             if raw == "jobs":
                 return self._html(200, V.jobs_page(base, panel.jobs.list()))
             m = re.match(r"^jobs/([^/]+)$", raw)
@@ -524,8 +574,8 @@ def _handler(panel: Panel):
         # ---- POST routes
         def _post(self, sub: str):
             raw = urllib.parse.unquote(sub)
-            if raw == "addendum/start":
-                return self._upload()
+            if raw in ("addendum/start", "quickreview/start"):
+                return self._upload(quick=(raw == "quickreview/start"))
             f = self._form()
             if f is None:
                 return self._refuse(413, "refused: the form is too large")
@@ -556,7 +606,81 @@ def _handler(panel: Panel):
                 return self._redirect(f"jobs/{j['id']}")
             if raw in ("decisions/confirm", "decisions/run"):
                 return self._decision(f, run=(raw == "decisions/run"))
+            m = re.match(r"^runs/([^/]+)/quickreview$", raw)
+            if m:
+                return self._qr_from_run(m.group(1), f)
+            m = re.match(r"^quickreview/([^/]+)/(answer|compare|offer)$", raw)
+            if m:
+                return self._qr_note(m.group(1), m.group(2), f)
             return self._refuse(404, "no such action")
+
+        # ---- the AI quick review (session 13, part 4)
+        def _qr_start(self, add: str, pdf: Path, route: str, offline: bool, model: str, meta: dict):
+            from ..ai.workflow import new_run_id
+            qid = new_run_id(add, route).replace("-run-", "-qr-", 1)
+            args = ["ai", "quick-review", add, "--pdf", str(pdf), "--route", route, "--qr-id", qid,
+                    "--budget-minutes", str(QR_BUDGET_MIN), "--max-tokens", str(QR_MAX_TOKENS), *panel.ai_common()]
+            if offline:
+                args.append("--offline")
+            if model:
+                args += ["--model", model]
+            if route == "recorded":
+                args += ["--cassette", str(panel.cfg.cassette)]
+            if meta.get("for_run"):
+                args += ["--for-run", meta["for_run"]]
+            j = panel.jobs.start("ai-quick-review", args, {"qr_id": qid, **meta})
+            return self._redirect(f"jobs/{j['id']}")
+
+        def _qr_from_run(self, rid: str, f: dict):
+            cfg = panel.cfg
+            rd = cfg.staging / "runs" / rid
+            cp = V.read_json(rd / "checkpoint.json") if RUN_ID.match(rid) else None
+            if not isinstance(cp, dict):
+                return self._refuse(404, "no such run")
+            pdf = Path(((cp.get("inputs") or {}).get("pdf") or {}).get("path") or "")
+            if not pdf.is_file():
+                pdf = Path(V.cand_paths(rd, cp).get("pdf") or "")
+            if not pdf.is_file():
+                return self._refuse(404, "the run's PDF is not found (inputs.pdf in its checkpoint)")
+            st = cp.get("settings") or {}
+            route = st.get("route") or "host"
+            offline = bool(st.get("offline")) or bool((panel.routes()[0] or {}).get("offline"))
+            if offline and route in ("host", "anthropic", "openrouter"):
+                return self._refuse(400, f"refused: offline mode allows only the local ollama route ({route} is refused)")
+            if route == "recorded" and not cfg.cassette:
+                return self._refuse(400, "refused: the recorded route needs the panel's test cassette")
+            return self._qr_start(str(cp.get("addendum") or ""), pdf, route, offline, "",
+                                  {"for_run": rid, "pdf_sha256": ((cp.get("inputs") or {}).get("pdf") or {}).get("sha256")})
+
+        def _qr_note(self, qid: str, what: str, f: dict):
+            cfg = panel.cfg
+            d = cfg.staging / "quick-review" / qid
+            if not RUN_ID.match(qid) or not (d / "briefing.json").is_file():
+                return self._refuse(404, "no such quick review (or it has no briefing)")
+            common = [*cfg.flag("staging", "--out"), *cfg.flag("worklog", "--worklog")]
+            if what == "answer":
+                q = f.get("question", "")
+                b = V.read_json(d / "briefing.json") or {}
+                errors = []
+                if q not in {x.get("id") for x in b.get("questions") or []}:
+                    errors.append("no such question in this briefing")
+                name = " ".join((f.get("name") or "").split())
+                answer = (f.get("answer") or "").strip()
+                if not name or len(name) > 100:
+                    errors.append("type your name (the person answering)")
+                if not answer or len(answer) > 4000:
+                    errors.append("type your answer")
+                if errors:
+                    return self._html(400, V.page(panel.base, "Not recorded", "<ul>" + "".join(
+                        f'<li class="bad">refused: {V.esc(e)}</li>' for e in errors) + "</ul>"))
+                j = panel.jobs.start("qr-answer", ["ai", "quick-review", "answer", qid, "--question", q, "--answer",
+                                                   answer, "--by", name, *common], {"qr": qid, "question": q, "by": name})
+                return self._redirect(f"jobs/{j['id']}")
+            rid = f.get("run", "")
+            if not RUN_ID.match(rid) or not (cfg.staging / "runs" / rid / "checkpoint.json").is_file():
+                return self._refuse(400, "refused: choose a run")
+            j = panel.jobs.start(f"qr-{what}", ["ai", "quick-review", what, qid, rid, *common], {"qr": qid, "run": rid})
+            return self._redirect(f"jobs/{j['id']}")
 
         def _diff(self, f: dict):
             cfg = panel.cfg
@@ -594,7 +718,7 @@ def _handler(panel: Panel):
             j = panel.jobs.start("diff", args, meta)
             return self._redirect(f"jobs/{j['id']}")
 
-        def _upload(self):
+        def _upload(self, quick: bool = False):
             cfg = panel.cfg
             ctype = self.headers.get("Content-Type") or ""
             try:
@@ -623,16 +747,20 @@ def _handler(panel: Panel):
             if not ADDENDUM.match(add):
                 errors.append("the addendum id must look like ADD-NN (e.g. ADD-03)")
             route = fields.get("route", "")
-            allowed = ["host", "ollama"] + (["recorded"] if cfg.cassette else [])
+            # session 13: the routes the box offers as available now (an API-key route once its key and caps are set)
+            choices = V.route_choices(panel.routes()[0], panel.host_found(), bool(cfg.cassette))[0]
+            allowed = ["host", "ollama"] + [c["value"] for c in choices
+                                            if c["available"] and c["value"] in ("anthropic", "openrouter")] + \
+                (["recorded"] if cfg.cassette else [])
             if route not in allowed:
                 errors.append(f"choose a route the panel offers ({', '.join(allowed)})")
             offline = fields.get("offline") == "yes"
-            if offline and route == "host":
-                errors.append("offline mode allows only the local ollama route (host is refused)")
+            if offline and route in ("host", "anthropic", "openrouter"):
+                errors.append(f"offline mode allows only the local ollama route ({route} is refused)")
             model = fields.get("model", "")
             if model and (route != "ollama" or not re.match(r"^[A-Za-z0-9._:/-]{1,120}$", model)):
                 errors.append("a model is chosen only for the ollama route, from the models it lists as usable")
-            base_run = fields.get("base_run", "")
+            base_run = fields.get("base_run", "") if not quick else ""
             if base_run:
                 sup = panel.base_run_support()
                 if not sup["available"]:
@@ -661,6 +789,11 @@ def _handler(panel: Panel):
                 tmp = dest.with_name(f".{sha}.{secrets.token_hex(4)}.tmp")
                 tmp.write_bytes(pdf)
                 os.replace(tmp, dest)
+            if quick:                                   # session 13, part 4: the same PDF, a quick review job
+                meta = {"upload_sha256": sha, "original_name": _clean_name(name), "bytes": len(pdf)}
+                if _rehearsal_match(cfg.root, sha):
+                    meta["synthetic"] = _rehearsal_match(cfg.root, sha)
+                return self._qr_start(add, dest, route, offline, model, meta)
             from ..ai.workflow import new_run_id
             rid = new_run_id(add, route)
             args = ["ai", "run", add, "--pdf", str(dest), "--route", route, "--run-id", rid, *panel.ai_common()]

@@ -53,7 +53,8 @@ Session 11 (audit A5-1, A5-2, A5-7, A5-8):
     Authority: the latest start of the activity that must finish by the clarification cut-off, CLARIFICATION_RULE) and
     `finalise_by` (its own latest start); `decision_needed_by` is the earlier. The basis (the rows of that activity that
     say a conflict is raised by clarification, and the cut-off's words) is `gate_route`;
-  A3 coverage: every A3 row in force (a stated consequence of class register.BID_OUT) is carried by an activity (through
+  A3 coverage: every A3 row in force (a3_rows: the rows the A3 page lists, one set for A3 and A5 since session 13,
+    audit R3-5) is carried by an activity (through
     its evidence items, or `_row_checks` in the templates for a row whose compliance is a check, not a deliverable) or
     named with a reason in `_row_exceptions`; otherwise a C48 problem (REPORTED, not structural: a pack whose templates
     predate `_row_checks`, e.g. a rehearsal's, still builds). Reported as `a3_coverage`;
@@ -128,6 +129,27 @@ PER = {
 
 def in_force(status: str) -> bool:
     return status.startswith(IN_FORCE_PREFIXES)
+
+
+A3_SCORE_CLASS = "score_elimination"
+
+
+def a3_rows(evals, stage: str) -> dict[str, dict]:
+    """The A3 rows at `stage`: the rows the A3 page lists as putting the bid out (session 13, audit R3-5: one set,
+    from this one function, for the A3 page (stage2.a3) and A5's A3 coverage and C48, so the two count the same
+    members). A row is in it when it is in force at the stage and its interpretation there states a consequence of a
+    bid-out class (register.BID_OUT: the page's explicit triggers, a row that restates another's included; the page
+    shows it on that row's line) or returns Envelope B unopened (score_elimination: the page's 'below the score
+    threshold'). Row id -> the stated consequence (its class, unit and quote), in register order. A refused document
+    and zero marks under one criterion are not in it (the page lists them apart: neither is a disqualification)."""
+    from .register import BID_OUT
+    out = {}
+    for e in evals:
+        ev = e["stages"].get(stage) or {}
+        c = (ev.get("interpretation") or {}).get("consequence")
+        if in_force(str(ev.get("status") or "")) and isinstance(c, dict) and c.get("class") in (*BID_OUT, A3_SCORE_CLASS):
+            out[e["row"].id] = c
+    return out
 
 
 def multiplicity(per: str | None, bidder: dict) -> tuple[int, str]:
@@ -810,10 +832,11 @@ def question_reach(question_units: dict[str, list[str]], questions: dict[str, li
         return list(getattr(row_obj.get(rid), "units", None) or []) + [
             d.get("effective_unit") for d in ev.get("units_detail") or [] if d.get("effective_unit")]
     out: dict[str, set[str]] = {}
+    from .clarify import question_rows             # session 13 (F2; audit R2-7): one rule for A4's rows column and A5
+    cand = {k: (units_of(k), list(getattr(row, "issues", None) or [])) for k, row in row_obj.items() if k in carriers}
     for q, iss in issue_q.items():
-        mine = [k for k, row in row_obj.items() if set(getattr(row, "issues", None) or []) & iss and k in carriers]
-        meet = [k for k in mine if any(_meets(u, v) for u in units_of(k) for v in question_units.get(q) or [])]
-        rows = meet or mine
+        rows = question_rows(question_units.get(q) or [], iss, cand)
+        meet = [k for k in rows if any(_meets(u, v) for u in cand[k][0] for v in question_units.get(q) or [])]
         sets = [set().union(*(ev_of(x) for x in carriers[k])) for k in rows]
         deliv = set.intersection(*sets) if sets else set()
         deliv = deliv or (set().union(*sets) if sets else set())
@@ -841,7 +864,6 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
     With it, a question reaches an activity through its rows only where its answer would change the activity's
     deliverable (question_reach); the clarification route activity lists every open question once. Without it, as
     before (every question on an issue of a row the activity carries)."""
-    from .register import BID_OUT
     if anchor_details is None:
         anchor_details = details_from_evals(evals, stage, anchors)
     need: dict[str, list[str]] = {}
@@ -1142,31 +1164,27 @@ def plan(stage: str, evals: list[dict], templates: dict, assumptions: dict, cal:
                                                      if (anchor_details.get(k) or {}).get("time") else "") for k in used)
              + f"). Total float = Working Days from earliest start to latest start; negative float = INFEASIBLE by that "
                f"many Working Days (never compressed). Proposal Due Date at this stage: {pdd}.")
-    # session 11 (audit A5-2): every A3 row in force is carried by an activity or excepted with a reason
-    a3_rows = {}
-    for e in evals:
-        ev = e["stages"].get(stage) or {}
-        c = (ev.get("interpretation") or {}).get("consequence")
-        if in_force(str(ev.get("status") or "")) and isinstance(c, dict) and c.get("class") in BID_OUT:
-            a3_rows[e["row"].id] = c
+    # session 11 (audit A5-2): every A3 row in force is carried by an activity or excepted with a reason; session 13
+    # (audit R3-5): the A3 rows are the page's (a3_rows), the score row included
+    a3_set = a3_rows(evals, stage)
     rexc = templates.get("_row_exceptions") or {}
-    carriers = {k: sorted(r["id"] for r in rows if k in r["req_ids"]) for k in sorted(a3_rows)}
-    a3_cov = {"rows": sorted(a3_rows), "carried": {k: v for k, v in carriers.items() if v},
+    carriers = {k: sorted(r["id"] for r in rows if k in r["req_ids"]) for k in sorted(a3_set)}
+    a3_cov = {"rows": sorted(a3_set), "carried": {k: v for k, v in carriers.items() if v},
               "excepted": {k: str(rexc[k]).strip() for k, v in carriers.items() if not v and str(rexc.get(k) or "").strip()},
               "uncarried": [k for k, v in carriers.items() if not v and not str(rexc.get(k) or "").strip()],
               "row_checks": {k: list((s or {}).get("activities") or []) for k, s in
-                             sorted((templates.get("_row_checks") or {}).items()) if k in a3_rows}}
+                             sorted((templates.get("_row_checks") or {}).items()) if k in a3_set}}
     for k, v in sorted(checked_by.items()):         # session 12: a row carried only as a check is not itself infeasible
-        if k in a3_rows:
+        if k in a3_set:
             a3_cov["row_checks"][k] = sorted(set(a3_cov["row_checks"].get(k) or []) | v)
     for k in a3_cov["uncarried"]:
-        problems.append(f"C48: {k} is an A3 row ({a3_rows[k].get('class')}, {a3_rows[k].get('unit')}) in force at {stage}, "
+        problems.append(f"C48: {k} is an A3 row ({a3_set[k].get('class')}, {a3_set[k].get('unit')}) in force at {stage}, "
                         "but no activity carries it and no reason is given (curation/activity_templates.yaml: "
                         "_row_checks for the step that checks it, or _row_exceptions with the reason)")
     # session 12 (audit A5-4): every A1 row in force is carried, or excepted with the reason A1 holds, or NOT CARRIED
-    row_cov = row_coverage(evals, stage, rows, rexc, a3_rows, checked_by)
+    row_cov = row_coverage(evals, stage, rows, rexc, a3_set, checked_by)
     for k in row_cov["uncarried"]:
-        if k not in a3_rows:
+        if k not in a3_set:
             problems.append(f"C48: {k} is an A1 row in force at {stage}, but no activity carries it and no reason is given "
                             "(its no_deliverable or post-award assessment in the register, or _row_checks / "
                             "_row_exceptions in curation/activity_templates.yaml)")

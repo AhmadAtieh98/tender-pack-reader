@@ -317,3 +317,109 @@ def check_models(cfg: dict, roles: list[str] | None = None, env=os.environ, fetc
                     pass
         out["models"].append(rec)
     return out
+
+
+# ---------------------------------------------------------------------------------------------- session 13: discovery
+
+# What each workflow phase asks of a local model (tenderpack/ai/requests.py spec(): the tools it offers, image input)
+PHASE_NEEDS = {"reading": {"vision": True, "tools": True, "role": "vision"},
+               "analysis": {"vision": False, "tools": True, "role": "text"},
+               "downstream": {"vision": False, "tools": True, "role": "text"},
+               "critic": {"vision": False, "tools": False, "role": "critic"}}
+DEFAULT_NUM_CTX = 32768
+
+
+def machine_memory_bytes() -> int | None:
+    """This machine's physical memory (macOS and Linux: sysconf), or None."""
+    try:
+        return int(os.sysconf("SC_PAGE_SIZE")) * int(os.sysconf("SC_PHYS_PAGES"))
+    except (ValueError, OSError, AttributeError):
+        return None
+
+
+def _role_ctx(rcfg: dict, role: str) -> int:
+    v = (rcfg.get("models") or {}).get(role)
+    if role == "text" and not v:
+        v = (rcfg.get("models") or {}).get("propose")
+    return int((v.get("num_ctx") if isinstance(v, dict) else None) or rcfg.get("num_ctx") or DEFAULT_NUM_CTX)
+
+
+def discover(cfg: dict, env=os.environ, fetch=None, memory_bytes: int | None = None) -> dict:
+    """Every INSTALLED Ollama model (GET /api/tags), each one's reported capabilities and context (POST /api/show), its
+    estimated memory at the phase's configured context bound compared with this machine's memory, and which phase it
+    can serve. Never pulls, never chats. Returns {base_url, reachable, error, machine, models: [{id, size_gb,
+    capabilities, context_tokens, memory, phases: {phase: {ok, why}}}], phases: {phase: [model ids that can serve it]},
+    configured: {role: id}}."""
+    from .. import config as C
+    rcfg = C.route(cfg, "ollama")
+    url_env = rcfg.get("base_url_env") or "TENDERPACK_OLLAMA_URL"
+    base = (env.get(url_env) or rcfg.get("base_url") or "http://127.0.0.1:11434").rstrip("/")
+    fetch = fetch or http_json
+    mach = dict(rcfg.get("machine") or {})
+    frac = float(mach.get("usable_fraction", 0.75))
+    mem = memory_bytes if memory_bytes is not None else machine_memory_bytes()
+    if mem:
+        gb = round(mem / GB, 1)
+        machine = {"memory_gb": gb, "usable_fraction": frac, "budget_gb": round(gb * frac, 1),
+                   "source": "detected on this machine (sysconf)" if memory_bytes is None else
+                   "detected (given by the caller)"}
+        mach_for_est = {"unified_memory_gb": gb, "usable_fraction": frac}
+    else:
+        machine = {"memory_gb": mach.get("unified_memory_gb"), "usable_fraction": frac,
+                   "budget_gb": round(float(mach["unified_memory_gb"]) * frac, 1) if mach.get("unified_memory_gb") else None,
+                   "source": "config routes.ollama.machine (this machine's memory could not be read)"}
+        mach_for_est = mach
+    configured = {r: (v.get("id") if isinstance(v, dict) else v) for r, v in (rcfg.get("models") or {}).items()}
+    out = {"base_url": base, "reachable": False, "error": None, "machine": machine, "models": [],
+           "phases": {p: [] for p in PHASE_NEEDS}, "configured": configured,
+           "note": "installed models only; nothing is pulled. Memory is an ESTIMATE from /api/show, not a measurement"}
+    try:
+        _, _, tags = fetch("GET", f"{base}/api/tags", {}, None, 20)
+    except ProviderError as e:
+        out["error"] = f"Ollama at {base} could not be reached ({e.kind}: {str(e.message)[:200]})"
+        return out
+    out["reachable"] = True
+    for t in sorted((tags or {}).get("models") or [], key=lambda m: m.get("name") or m.get("model") or ""):
+        mid = t.get("name") or t.get("model")
+        rec = {"id": mid, "size_gb": round(t["size"] / GB, 1) if isinstance(t.get("size"), (int, float)) else None,
+               "roles": sorted(r for r, v in configured.items() if v == mid)}
+        try:
+            _, _, show = fetch("POST", f"{base}/api/show", {}, {"model": mid}, 20)
+        except ProviderError as e:
+            rec.update(problem=f"/api/show failed ({e.kind}): {str(e.message)[:200]}",
+                       phases={p: {"ok": False, "why": "capabilities could not be read"} for p in PHASE_NEEDS})
+            out["models"].append(rec)
+            continue
+        caps = set(show.get("capabilities") or [])
+        info = show.get("model_info") or {}
+        ctx = next((int(v) for k, v in info.items() if k.endswith(".context_length") and isinstance(v, (int, float))),
+                   None)
+        rec.update(capabilities=sorted(caps), context_tokens=ctx, details=show.get("details"))
+        phases, mems = {}, {}
+        for phase, need in PHASE_NEEDS.items():
+            want = _role_ctx(rcfg, need["role"])
+            bound = min(x for x in (want, ctx) if x) if ctx else want
+            if bound not in mems:
+                mems[bound] = memory_estimate(show, bound, mach_for_est)
+            m = mems[bound]
+            why = []
+            if need["vision"] and "vision" not in caps:
+                why.append("no vision (image input) reported; the reading phase reads images")
+            if need["tools"] and "tools" not in caps:
+                why.append(f"no tool use reported; the {phase} phase offers tools")
+            if ctx is None:
+                why.append("no context length reported (capabilities unverified)")
+            elif ctx < want:
+                why.append(f"context {ctx} < the configured num_ctx {want} for this phase (config/ai.yaml)")
+            if m.get("fits") is False:
+                why.append(f"memory: {m['why']}")
+            ok = not why
+            phases[phase] = {"ok": ok, "why": "; ".join(why) if why else
+                             f"vision={'vision' in caps} tools={'tools' in caps} context {ctx}, num_ctx {bound}; "
+                             f"{m.get('why')}"}
+            if ok:
+                out["phases"][phase].append(mid)
+        rec["memory"] = mems.get(_role_ctx(rcfg, "text")) or next(iter(mems.values()))
+        rec["phases"] = phases
+        out["models"].append(rec)
+    return out

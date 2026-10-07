@@ -8,7 +8,8 @@ has its own folder <panel_dir>/jobs/<job-id>/ with
                original name and sha256, the run id); never the environment, never a key;
   output.log   stdout and stderr of the command as it ran.
 One job runs at a time per group (ingest/outputs/strict/check-register share the evidence build and out/; the AI run
-and resume share the staging folder; a diff; a decision). A job the panel did not see end (the panel was closed) is
+and resume share the staging folder; a diff; a decision; session 13: the AI quick review, started under `nice -n 10`,
+and its notes). A job the panel did not see end (the panel was closed) is
 shown `interrupted` once its process is gone; the AI workflow's own checkpoint says where to resume.
 
 Stopping a job sends SIGINT to its process group (the workflow records the interruption in its checkpoint), then
@@ -29,7 +30,12 @@ import time
 from pathlib import Path
 
 GROUPS = {"ingest": "build", "outputs": "build", "strict": "build", "check-register": "build",
-          "ai-run": "ai", "ai-resume": "ai", "diff": "diff", "decision": "decision"}
+          "ai-run": "ai", "ai-resume": "ai", "diff": "diff", "decision": "decision",
+          # session 13, part 4: the AI quick review has its own group (one at a time, beside the run, never blocking it)
+          # and its notes (compare, an owner's answer, offering answers to a run) another
+          "ai-quick-review": "quick-review", "qr-compare": "quick-review-notes", "qr-answer": "quick-review-notes",
+          "qr-offer": "quick-review-notes"}
+NICE = {"ai-quick-review": 10}     # session 13: started under `nice -n 10` (lower priority than the main run)
 
 AI_EXIT = {0: "finished (complete or partial), or stopped where asked",
            1: "a step failed, or the candidate outputs build was refused (the last validated state is kept)",
@@ -50,6 +56,14 @@ EXIT_MEANING = {
     "check-register": {0: "no findings", 1: "findings listed in the output"},
     "ai-run": AI_EXIT, "ai-resume": AI_EXIT,
     "diff": {0: "the report is the output below"},
+    "ai-quick-review": {0: "the PRELIMINARY AI BRIEFING was written (unverified)", 1: "the session failed: no briefing "
+                        "(the reason is in the output)", 2: "refused before any call (the output says why)",
+                        5: "deferred: a rate limit; the quick review is lower priority, start it again later"},
+    "qr-compare": {0: "the comparison was written (model agreement is not proof)", 2: "refused (the output says why)"},
+    "qr-answer": {0: "the answer was recorded against the question (curation/ is not changed)",
+                  2: "refused (the output says why); nothing recorded"},
+    "qr-offer": {0: "the answers were offered or held (the output lists which, and why)",
+                 2: "refused (the output says why)"},
     "decision": {0: "the engine recorded the decision (its output below)",
                  1: "the engine refused (its output below says why); nothing recorded",
                  2: "the engine refused (its output below says why); nothing recorded"},
@@ -164,6 +178,8 @@ class Jobs:
             d = self.dir / jid
             d.mkdir(parents=True)
             argv = [self.python, "-m", "tenderpack", *args]
+            if kind in NICE:                                      # session 13: a lower-priority job
+                argv = ["nice", "-n", str(NICE[kind]), *argv]
             rec = {"id": jid, "kind": kind, "group": group, "argv": argv, "cwd": str(self.root),
                    "command": f"cd {shlex.quote(str(self.root))} && {shlex.join(argv)}",
                    "started": now_iso(), "finished": None, "status": "running", "exit_code": None, "pid": None,

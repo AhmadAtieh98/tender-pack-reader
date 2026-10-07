@@ -20,7 +20,15 @@ Those links are curated here, once, as data, and followed by the program; nothin
           evidence: [{unit, page, words}]   verbatim, on that page (check-register); REQUIRED for confirmed
           basis: why the link is believed  REQUIRED for proposed and possible
           origin: who drafted it ("curator", "ai:<run or route>" for a model's proposal)
-          note, issues: [I-...]        what to review; open issues it links to (they are linked, never resolved)
+          note, issues: [I-...]        what to review; open issues it links to (they are linked, never resolved).
+                                       Session 13 (audit R1-1/R1-2): the issues travel with the link: every row the
+                                       entry names in `to` lists them in A1 ('I-X (via REL-ID (status))', issue_links),
+                                       and A2 shows them ('open: I-X[, human decision pending]') wherever the entry
+                                       carries a change (signals.relationship_issue_notes)
+          context: [{unit, page, words, note}]   session 13 (audit R1-4): words of the pack that bear on the link
+                                       without stating it (a non-binding record such as the pre-bid minutes), quoted
+                                       verbatim on their page and checked like evidence; shown beside the link
+                                       ('context (not binding)'), never counted as its evidence or as a decision
           document, document_id, blocks   missing_document only: the document not supplied, a short id, and the
                                        conclusion that cannot be established without it
           confirmed_by                 a person, when a model-proposed link (origin ai:...) is marked confirmed
@@ -98,7 +106,7 @@ STATUS_LEGEND = ("Relationship status: confirmed = stated in the documents (the 
                  "weaker inference.")
 _RANK = {s: i for i, s in enumerate(STATUSES)}
 FIELDS = ("id", "from", "to", "kind", "status", "evidence", "basis", "origin", "note", "issues", "document",
-          "document_id", "blocks", "confirmed_by", "review", "reviewer")
+          "document_id", "blocks", "confirmed_by", "review", "reviewer", "context")
 REQUIRED = ("id", "from", "to", "kind", "status", "origin")
 WORDS, CALC = "words:", "calc:"
 MAX_DEPTH = 12            # links per path; a path cut here is `truncated` and says which links it did not follow
@@ -250,6 +258,21 @@ def validate(entries: list, units: list[dict], rows, activities, *, evidence_ite
                 out.append(f"{rid}: evidence not verbatim in {q['unit']}: '{str(q['words'])[:80]}'")
             elif q["page"] not in u.get("pages", []):
                 out.append(f"{rid}: evidence unit {q['unit']} is on page(s) {u.get('pages')}, not p{q['page']}")
+        ctx = e.get("context") or []                    # session 13 (audit R1-4): checked like evidence
+        if not isinstance(ctx, list):
+            out.append(f"{rid}: context must be a list of {{unit, page, words, note}}")
+            ctx = []
+        for q in ctx:
+            if not isinstance(q, dict) or any(_blank(q.get(k)) for k in ("unit", "page", "words")):
+                out.append(f"{rid}: context needs a unit, a page and non-blank words; got {q!r}")
+                continue
+            u = by_unit.get(q["unit"])
+            if u is None:
+                out.append(f"{rid}: context unit {q['unit']} does not exist in the evidence build")
+            elif not found(str(q["words"]), u.get("text", "")):
+                out.append(f"{rid}: context not verbatim in {q['unit']}: '{str(q['words'])[:80]}'")
+            elif q["page"] not in u.get("pages", []):
+                out.append(f"{rid}: context unit {q['unit']} is on page(s) {u.get('pages')}, not p{q['page']}")
         if status == "confirmed":
             if not ev:
                 out.append(f"{rid}: status confirmed needs evidence quoting the documents' own cross-reference; "
@@ -568,7 +591,34 @@ def label(rec: dict, entries: list | None = None) -> str:
     e = next((x for x in entries or [] if isinstance(x, dict) and x.get("id") == rec["entry_id"]), None)
     if e is not None and rec["kind"] == "missing_document":
         line += f". NOT SUPPLIED: {e.get('document')}; cannot be established: {e.get('blocks')}"
+        if e.get("context"):                                     # session 13 (audit R1-4)
+            line += "; " + context_text(e)
     return line
+
+
+def context_text(e: dict) -> str:
+    """'context (not binding): <unit> p<page> '<words>' (<note>)' for an entry's `context` quotations; '' without."""
+    ctx = [q for q in e.get("context") or [] if isinstance(q, dict)]
+    return ("context (not binding): " + "; ".join(f"{q.get('unit')} p{q.get('page')} '{q.get('words')}'"
+                                                  + (f" ({q['note']})" if q.get("note") else "") for q in ctx)) if ctx else ""
+
+
+def issue_links(entries: list, rows) -> dict[str, list[dict]]:
+    """Session 13 (audit R1-2): row id -> [{issue, via, status}] for every entry with `issues` and every row it names in
+    `to` (`rows`: the register's row ids; a unit, activity or calculation target is not a row). One rule for every
+    issue and every entry, whatever its kind or status (the status is shown, never used to drop a link)."""
+    rows = set(rows or ())
+    out: dict[str, list[dict]] = {}
+    for e in entries or []:
+        if not isinstance(e, dict) or not e.get("issues"):
+            continue
+        for t in ends(e, "to"):
+            if t in rows:
+                for i in e.get("issues") or []:
+                    x = {"issue": i, "via": e.get("id"), "status": e.get("status")}
+                    if x not in out.setdefault(t, []):
+                        out[t].append(x)
+    return out
 
 
 def by_class(records: list[dict]) -> list[tuple[str, list[dict]]]:

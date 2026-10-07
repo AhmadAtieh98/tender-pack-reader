@@ -122,7 +122,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_serializer
 
-from .citations import after_row, citations, is_index_table, verify_target
+from .citations import after_row, citations, is_index_table, quantified_row, verify_target
 from .dates import MONTHS, parse_date
 from .textnorm import has_arabic, normalize_arabic, normalize_latin, slug
 from .util import load_yaml, sha256_text
@@ -147,6 +147,21 @@ class DeadlineRule(_Strict):
     direction: Literal["after", "before"] = "after"
     fixed: str | None = None
     text: str
+
+
+def deadline_rule_problem(d: DeadlineRule) -> str | None:
+    """Why a trigger deadline is not a usable date rule, or None (session 13: a kind anchor rule carrying a counted
+    period is refused, dates.counted_period_problem; a relative rule needs its anchor and an offset >= 1; a fixed rule
+    its date)."""
+    from .dates import counted_period_problem
+    why = counted_period_problem(d.kind, d.offset)
+    if why:
+        return why
+    if d.kind == "relative" and not (d.anchor and d.offset >= 1):
+        return "a relative rule needs its anchor and an offset >= 1"
+    if d.kind == "fixed" and not d.fixed:
+        return "a fixed rule needs its date"
+    return None
 
 
 class Condition(_Strict):
@@ -589,10 +604,11 @@ class Engine:
                                                                 f"{c.trigger_unit} or {op.provision}")
         if c.deadline is not None:
             d = c.deadline
-            ok = _quoted_in(ttext, d.text) and (d.kind != "relative" or (bool(d.anchor) and d.offset >= 1)) and \
-                (d.kind != "fixed" or bool(d.fixed))
+            why = deadline_rule_problem(d)                    # session 13: one rule, with its reason
+            ok = _quoted_in(ttext, d.text) and why is None
             check("C21", ok, f"the trigger's deadline is printed in {c.trigger_unit} ('{d.text[:60]}')" if ok else
-                  f"the trigger's deadline is not a usable date rule printed in {c.trigger_unit}: '{d.text[:60]}'")
+                  f"the trigger's deadline is not a usable date rule printed in {c.trigger_unit}: '{d.text[:60]}'"
+                  + (f" ({why})" if why else ""))
         r.details["conditional"] = cd = {
             "condition": c.id, "trigger": c.trigger, "trigger_unit": c.trigger_unit, "applicability": c.applicability,
             "deadline": c.deadline.model_dump() if c.deadline else None, "if_not_triggered": c.if_not_triggered,
@@ -780,8 +796,11 @@ class Engine:
                 return r
             if op.effect in ("confirms", "interprets", "adds_obligation"):
                 # a unit printed in this addendum (inserted by an earlier op of it) is cited as the addendum's own are
+                # session 13 (F1; audit R1-1): or a row of a cited table the provision's words cover in full ('All
+                # other parameters in Table 2-4 are unchanged.'; citations.quantified_row)
                 cited_ok = [verify_target(t, cite_text, ids, label)[0] or t.startswith(addendum)
-                            or (t in st and st[t].printed_in == addendum) for t in targets]
+                            or (t in st and st[t].printed_in == addendum)
+                            or quantified_row(t, cite_text, ids, label)[0] for t in targets]
                 if not check("C22", all(cited_ok), "every annotated target is cited by the provision"
                              if all(cited_ok) else f"not cited: {[t for t, ok in zip(targets, cited_ok) if not ok]}"):
                     return r

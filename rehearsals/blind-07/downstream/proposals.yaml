@@ -1,0 +1,2071 @@
+# Downstream proposals of the AI workflow, validated by tenderpack.ai.downstream in the candidate. STAGING ONLY: nothing here is accepted.
+downstream_set:
+  run_id: ADD-03-run-host-20261006T201359Z-2503-downstream
+  created: '2026-10-06T20:31:53Z'
+  route: host
+  provider: host-session
+  model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+  model_reported: claude-sonnet-5-5
+  task: propose_downstream
+  addendum: ADD-03
+  state:
+    pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+    evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+    validated_stage: ADD-02
+    working_stage: ADD-03
+    decisions_sha256: null
+    assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+    activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+    readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+    amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+    unrecorded_crops_sha256: null
+    register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+    relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+    curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+    base_run: null
+    base_candidate_sha256: null
+  statements:
+  - id: downstream-002/S-T42-5-units
+    kind: fact
+    text: The English-rendering cell for row 5 states the minimum residual life in years (24). The Arabic image
+      reading r5 prints "٢٤ شهراً" (24 months) under a column headed in years (سنة).
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/5
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 24'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: span
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً'
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: downstream-002/S-NOTE4
+    kind: fact
+    text: Note (4) increases the design life of electrical equipment in VOL-II 2.2 to 25 years. VOL-II 2.2 as it
+      stands limits the design life of mechanical and electrical equipment to 20 years or the manufacturer's rated
+      life, whichever is the shorter.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/note(4)
+      page: 4
+      kind: span
+      words: The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five
+        (25) years.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:2.2
+      page: 2
+      kind: span
+      words: or the manufacturer's rated life, whichever is the shorter
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: downstream-002/S-NOTE4-interp
+    kind: interpretation
+    text: 'ambiguous: it is unclear whether 25 years replaces only the 20-year figure, or also displaces the ''manufacturer''s
+      rated life, whichever is the shorter'' limit, and whether it applies to electrical equipment only (the words
+      ''mechanical and electrical equipment'' are one group in 2.2). Not chosen here.'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/note(4)
+      page: 4
+      kind: span
+      words: is increased to twenty-five (25) years
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: downstream-002/S-DATE-AMB
+    kind: fact
+    text: The counting of Working Days after the Addendum date is not covered by VOL-I 2.4 (backward counting only).
+      The program lists two readings and computes none.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: within three (3) Working Days of the date of this Addendum
+      cell: null
+      crop_sha256: null
+    note: null
+  - id: downstream-002/S-READING-DIFF
+    kind: fact
+    text: The reading ADD-03-p3-r1 is pending approval. Row 5 mixes months and years in the Arabic source. The English-rendering
+      cell ADD-03:T42-1/5 gives 24 under a years heading. Neither is chosen here.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: span
+      words: 'م: ٥ | فئة الأصول: الأغشية (إن وُجدت) | الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً | أقصى درجة للحالة:
+        ٣'
+      cell: null
+      crop_sha256: null
+    note: null
+  items:
+  - id: DS-001
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: c46:ADD-03/cover/para3
+    provision: ADD-03:cover/para3
+    target: null
+    payload:
+      row:
+        id: ADD-03-cover-para3-01
+        group: ADD-03
+        scope:
+        - proposal
+        requirement: Bidders shall acknowledge receipt in Form 4-A.
+        units:
+        - ADD-03:cover/para3
+        discipline: Bid management
+        assessment: procedural
+        evidence:
+        - EV-FORM-4A
+        interpretations:
+        - stage: ADD-03
+          quote: Bidders shall acknowledge receipt in Form 4-A.
+          consequence: none_stated
+          note: No consequence is stated in this provision. The cover summarises; other cover statements differ
+            from operative clauses and are for a separate issue.
+        confidence: medium
+        confidence_reason: The obligation is stated only in the cover text, and no operative provision repeats it.
+        introduced:
+          stage: ADD-03
+          by: ADD-03/cover/para3
+          evidence:
+            unit: ADD-03:cover/para3
+            page: 1
+            words: Bidders shall acknowledge receipt in Form 4-A.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:cover/para3
+      page: 1
+      kind: span
+      words: Bidders shall acknowledge receipt in Form 4-A.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:cover/para3 p1
+      ok: true
+      detail: verbatim in ADD-03:cover/para3 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03/cover/para3: ''Bidders shall acknowledge receipt in Form
+        4-A.'' (ADD-03:cover/para3 p1)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03/cover/para3); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03/cover/para3); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03/cover/para3); ADD-03:
+        NEW (introduced by ADD-03/cover/para3)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: DS-002
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: c46:ADD-03/4.1
+    provision: ADD-03:4.1
+    target: null
+    payload:
+      row:
+        id: ADD-03-4.1-01
+        group: ADD-03
+        scope:
+        - project_company
+        requirement: If the Project Company encounters at the site ground conditions that are materially more adverse
+          than those described in the Geotechnical Baseline Report, it shall be entitled to an extension of the
+          Scheduled PCOD and to payment of its reasonable additional costs, provided that it notifies the Authority
+          within five (5) Working Days of encountering them.
+        units:
+        - VOL-V:12.4+ADD-03
+        discipline: Commercial
+        assessment: contractual_post_award
+        evidence: []
+        interpretations:
+        - stage: ADD-03
+          quote: provided that it notifies the Authority within five (5) Working Days of encountering them
+          consequence: none_stated
+          note: 'The entitlement is conditional on notice. The unit states no bid-out consequence. The date is not
+            computed: the anchor is an event and the counting registry has no rule for Working Days counted after
+            a date.'
+        date_notes:
+        - text: within five (5) Working Days of encountering them
+          treatment: unresolved
+          reason: 'not computed: no rule in the counting registry for Working Days counted after a date, and the
+            anchor ''encountering them'' is an event, not a date the register holds'
+        confidence: medium
+        confidence_reason: The obligation is clear, but the notice period cannot be computed and the Geotechnical
+          Baseline Report Revision C is defined by reference only.
+        introduced:
+          stage: ADD-03
+          by: ADD-03/4.1
+          evidence:
+            unit: ADD-03:4.1
+            page: 2
+            words: The following new Clause 12.5 is inserted in Volume V after Clause 12.4
+    evidence:
+    - doc: VOL-V
+      unit_id: VOL-V:12.4+ADD-03
+      page: 2
+      kind: span
+      words: provided that it notifies the Authority within five (5) Working Days of encountering them
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence VOL-V:12.4+ADD-03 p2
+      ok: true
+      detail: verbatim in VOL-V:12.4+ADD-03 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03/4.1: ''The following new Clause 12.5 is inserted in Volume
+        V after Clause 12.4'' (ADD-03:4.1 p2)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03/4.1); ADD-01: NOT IN FORCE (introduced at ADD-03
+        by ADD-03/4.1); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03/4.1); ADD-03: NEW (introduced by ADD-03/4.1)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: DS-003
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:3.1
+    provision: ADD-03:3.1
+    target: null
+    payload:
+      why: 'software limitation: the provision relocates Volume II Clause 8.5 to Volume V as new Clause 42.3, and
+        no op type moves a unit between volumes. The rows VOL-II-8.5-01 and VOL-II-8.5-02, the technical-proposal
+        activity and CQ-HANDBACK-CONDITION cite the old location. Whether the relocation changes any bid-out consequence
+        is for a person. Existing rules VOL-I:9.6 and VOL-I:10.5 (non_responsive) are shared with Volume V, so a
+        person decides whether either covers this. The clarification window closed on 2026-11-12, so this is a bid
+        decision (owner: Legal).'
+      what_is_unsupported: relocating a clause from one volume to another
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.1
+      page: 1
+      kind: span
+      words: Volume II Clause 8.5 is relocated to Volume V, in which it becomes Clause 42.3.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:8.5
+      page: 5
+      kind: span
+      words: A handback condition survey shall be carried out in the final two (2) years of the concession
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:3.1 p1
+      ok: true
+      detail: verbatim in ADD-03:3.1 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-II:8.5 p5
+      ok: true
+      detail: verbatim in VOL-II:8.5 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-004
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:3.3
+    provision: ADD-03:3.3
+    target: null
+    payload:
+      why: 'insufficient evidence: the substitution in Volume V Clause 42.1 depends on ''ADD-03/3.1(a)'', an id
+        the amendment engine does not know, so the op is not promotable. VOL-V:42.1 currently reads ''Volume II
+        Clause 8.5''. The substitution points to 42.3, which exists only through the relocation in 3.1, and that
+        relocation is itself unsupported. No bid-out consequence is stated. Rows VOL-V-42.1-01 and VOL-V-42.1-02
+        and VOL-II-8.5-01 and VOL-II-8.5-02 need a person''s review (owner: Document control).'
+      what_is_unsupported: a dependency on an op id that does not exist, ADD-03/3.1(a), which blocks the op from
+        being promoted
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.3
+      page: 1
+      kind: span
+      words: In Volume V Clause 42.1, ‘Volume II Clause 8.5’ is deleted and ‘Clause 42.3’ is substituted.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:42.1
+      page: 4
+      kind: span
+      words: in the condition required by Volume II Clause 8.5
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:3.3 p1
+      ok: true
+      detail: verbatim in ADD-03:3.3 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-V:42.1 p4
+      ok: true
+      detail: verbatim in VOL-V:42.1 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-005
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:3.4
+    provision: ADD-03:3.4
+    target: null
+    payload:
+      why: 'software limitation: the provision makes Table 42-1 (Appendix A) part of Volume V, and no op type inserts
+        a table into a volume. The table is issued in Arabic, and the English rows should be checked against the
+        Arabic. Rows VOL-V-42.1-01 and VOL-V-42.1-02 cite the replaced design-life words. Existing rules VOL-I:9.6
+        and VOL-I:10.5 (non_responsive) are shared with Volume V, and a person decides whether they apply. The clarification
+        window has closed, so this is a bid decision (owner: Technical).'
+      what_is_unsupported: inserting a table into a volume as part of Volume V
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:3.4
+      page: 1
+      kind: span
+      words: Table 42-1 is reproduced at Appendix A to this Addendum and forms part of Volume V.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:42.1
+      page: 4
+      kind: span
+      words: with a remaining design life of not less than five (5) years for all major assets
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:3.4 p1
+      ok: true
+      detail: verbatim in ADD-03:3.4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-V:42.1 p4
+      ok: true
+      detail: verbatim in VOL-V:42.1 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-006
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:4.4
+    provision: ADD-03:4.4
+    target: null
+    payload:
+      why: 'software limitation: the provision states that Volume I Clause 4.2 ''does not apply'' to a class of
+        communications. That is a partial disapplication of a clause that carries disqualification, and no op type
+        represents it. No bid-out consequence is stated for the exception. Whether and how the exception limits
+        the disqualification rule on VOL-I-4.2-01 is for a person (owner: Legal). The clarification window has closed.'
+      what_is_unsupported: a partial disapplication of a clause that carries a disqualification consequence
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.4
+      page: 2
+      kind: span
+      words: Volume I Clause 4.2 does not apply to communications with the Authority's geotechnical consultant during
+        an appointment under Section 4.3
+      cell: null
+      crop_sha256: null
+    - doc: VOL-I
+      unit_id: VOL-I:4.2
+      page: 3
+      kind: span
+      words: Breach of this Clause shall result in the disqualification of the Bidder.
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:4.4 p2
+      ok: true
+      detail: verbatim in ADD-03:4.4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-I:4.2 p3
+      ok: true
+      detail: verbatim in VOL-I:4.2 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-007
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:Q18
+    provision: ADD-03:Q18
+    target: null
+    payload:
+      why: 'ambiguous: the question asks which prevails if a Direct Agreement differs from Volume V Clause 40.2.
+        The response says ''The order of precedence at Volume I Clause 3.2 applies'', but the quoted words of VOL-I:3.2
+        end at ''the first named prevailing:'', so the order itself is not in this unit. The response does not say
+        that the Direct Agreement, which is not yet negotiated, ranks in that order. Which clause governs is a person''s
+        decision (owner: Legal). The response is recorded and does not resolve CQ-VOL-V-SCHEDULES. Existing rules
+        VOL-I:4.2, VOL-I:9.6 and VOL-I:10.5 are not shown to apply. insufficient evidence: the analysis evidence
+        for VOL-V:39.5 cited page 0, which is not a page of that unit.'
+      what_is_unsupported: deciding which document prevails; the controller has also not promoted the analysis issue
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:Q18
+      page: 2
+      kind: span
+      words: The order of precedence at Volume I Clause 3.2 applies.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-V
+      unit_id: VOL-V:40.2
+      page: 4
+      kind: span
+      words: On termination for Project Company default, compensation shall be the lesser of
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:Q18 p2
+      ok: true
+      detail: verbatim in ADD-03:Q18 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-V:40.2 p4
+      ok: true
+      detail: verbatim in VOL-V:40.2 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-008
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/image/r2
+    provision: ADD-03:T42-1/image/r2
+    target: null
+    payload:
+      why: 'insufficient evidence: the controller did not support the analysis fact for this row. The Arabic row
+        2 (page 3) gives 20 for the minimum residual life. English row 2 (page 4) gives ''Minimum residual life
+        (years): 20''. I did not view the crop. Rows built from this reading are conditional on its approval and
+        are not in force until a person approves it (owner: Technical).'
+      what_is_unsupported: promotion of this row's disposition; the Arabic reading is pending approval
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r2
+      page: 3
+      kind: reading
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٢٠'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:T42-1/image/r2 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r2 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-009
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/image/r4
+    provision: ADD-03:T42-1/image/r4
+    target: null
+    payload:
+      why: 'ambiguous: Arabic row 4 (page 3) gives the minimum residual life as ٧ (7), while English row 4 (page
+        4) gives 5 for the same asset class, electrical, instrumentation and control equipment. The two renderings
+        differ. Which governs is not decided here; a person decides (owner: Technical/Legal). Rows built from the
+        Arabic are conditional on approval of the reading. I did not view the crop.'
+      what_is_unsupported: choosing between the Arabic and English renderings of Table 42-1 row 4
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r4
+      page: 3
+      kind: reading
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٧'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/4
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 5'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: applied rule
+      ok: true
+      detail: 'ADD-03 3.5 provides: ''The Arabic text governs.'' (applied, not decided); a person confirms the application'
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r4 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence ADD-03:T42-1/4 p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: consistency (phases)
+      ok: false
+      detail: 'reverses ADD-03/3.5-issue (ADD-03:3.5), which applied ADD-03 3.5 (''The Arabic text governs.''):
+        this item hands the point back to a person; ADD-03 3.5 provides: ''The Arabic text governs.'' (applied,
+        not decided)'
+      aspect: null
+    verification_status: conflicting
+    model_rationale: null
+  - id: DS-010
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/image/r5
+    provision: ADD-03:T42-1/image/r5
+    target: null
+    payload:
+      why: 'ambiguous: Arabic row 5 (page 3) gives the minimum residual life as ''٢٤ شهراً'' (24 months) under a
+        column headed in years (سنة). No English row 5 is among the units I have, so the two cannot be compared.
+        Whether the figure is 24 months or 24 years, and the effect on the table''s unit, is a person''s decision
+        (owner: Technical). The row stays conditional on approval of the reading. I did not view the crop.'
+      what_is_unsupported: reconciling a months value in a column headed in years
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: reading
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:T42-1/image/r5 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-011
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/2
+    provision: ADD-03:T42-1/2
+    target: null
+    payload:
+      why: 'insufficient evidence: the controller did not support the analysis fact for English row 2. The row reads
+        ''Minimum residual life (years): 20'' and the Arabic row 2 also reads 20, so the figures agree. The Arabic
+        reading is pending approval, and a person confirms the English-Arabic correspondence (owner: Technical).'
+      what_is_unsupported: promotion of the disposition for this row
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/2
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 20'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:T42-1/2 p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/2 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: DS-012
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/4
+    provision: ADD-03:T42-1/4
+    target: null
+    payload:
+      why: 'ambiguous: English row 4 gives ''Minimum residual life (years): 5'', while Arabic row 4 gives ٧ (7).
+        The figures differ for the same asset class. Which governs is not decided here; a person decides (owner:
+        Technical/Legal). Neither rendering is chosen. The controller did not support the analysis fact for this
+        row.'
+      what_is_unsupported: choosing between the English and Arabic renderings of Table 42-1 row 4
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/4
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 5'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r4
+      page: 3
+      kind: reading
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٧'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: applied rule
+      ok: true
+      detail: 'ADD-03 3.5 provides: ''The Arabic text governs.'' (applied, not decided); a person confirms the application'
+      aspect: null
+    - check: evidence ADD-03:T42-1/4 p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r4 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: consistency (phases)
+      ok: false
+      detail: 'reverses ADD-03/3.5-issue (ADD-03:3.5), which applied ADD-03 3.5 (''The Arabic text governs.''):
+        this item hands the point back to a person; ADD-03 3.5 provides: ''The Arabic text governs.'' (applied,
+        not decided)'
+      aspect: null
+    verification_status: conflicting
+    model_rationale: null
+  - id: ESC-T42-5
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/5
+    provision: ADD-03:T42-1/5
+    target: null
+    payload:
+      why: 'ambiguous: the English cell reads "Minimum residual life (years): 24" while the Arabic image row prints
+        "٢٤ شهراً" (24 months) under a heading in years. 24 years and 24 months are both supported by the words.
+        Which unit applies is for Technical to decide, and the bid-decision falls to Bid management, because the
+        clarification window closed on 2026-11-12 (VOL-I 5.2). No bid-out consequence stated.'
+      what_is_unsupported: no tool can choose between the two renderings; no consequence is stated in the pack for
+        this value
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/5
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 24'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: span
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information:
+    - which unit (years or months) governs row 5
+    statements:
+    - downstream-002/S-T42-5-units
+    validation:
+    - check: evidence ADD-03:T42-1/5 p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/5 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r5 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: missing_information
+      ok: false
+      detail: 'the proposer declares missing: which unit (years or months) governs row 5'
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: ESC-NOTE4
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: esc:ADD-03:T42-1/note(4)
+    provision: ADD-03:T42-1/note(4)
+    target: null
+    payload:
+      why: 'ambiguous: note (4) raises the design life of electrical equipment in VOL-II 2.2 to 25 years, but 2.2
+        groups mechanical and electrical equipment and caps the figure by ''the manufacturer''s rated life, whichever
+        is the shorter''. The pack does not say whether the cap survives. Rows VOL-II-2.2-01 and VOL-II-2.2-02,
+        the activity technical-proposal and CQ-HANDBACK-CONDITION may depend on this. Their re-reading, and the
+        bid-decision (the clarification window closed on 2026-11-12), are for Technical and Bid management. No bid-out
+        consequence stated.'
+      what_is_unsupported: no tool decides which reading governs; the target ADD-03:T42-1/note(4) is not an op that
+        rewrites VOL-II:2.2 text, so its effect is left to a person
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/note(4)
+      page: 4
+      kind: span
+      words: The design life of electrical equipment stated in Volume II Clause 2.2 is increased to twenty-five
+        (25) years.
+      cell: null
+      crop_sha256: null
+    - doc: VOL-II
+      unit_id: VOL-II:2.2
+      page: 2
+      kind: span
+      words: The design life of mechanical and electrical equipment shall be not less than twenty (20) years or
+        the manufacturer's rated life, whichever is the shorter
+      cell: null
+      crop_sha256: null
+    dependencies:
+    - VOL-II-2.2-01
+    - VOL-II-2.2-02
+    - technical-proposal
+    - CQ-HANDBACK-CONDITION
+    conflicts: []
+    missing_information: []
+    statements:
+    - downstream-002/S-NOTE4
+    - downstream-002/S-NOTE4-interp
+    validation:
+    - check: evidence ADD-03:T42-1/note(4) p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/note(4) at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence VOL-II:2.2 p2
+      ok: true
+      detail: verbatim in VOL-II:2.2 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: statements
+      ok: true
+      detail: 'depends on interpretation downstream-002/S-NOTE4-interp: a person must confirm it'
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  - id: ADD-03-T42-1-01
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      row:
+        id: ADD-03-T42-1-01
+        group: ADD-03:T42-1
+        scope:
+        - transfer
+        requirement: 'م: ١ | فئة الأصول: المنشآت المدنية والخرسانية | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى
+          درجة للحالة: ٢'
+        units:
+        - ADD-03:T42-1/image/r1
+        - ADD-03:T42-1/image
+        - ADD-03:T42-1/image/note3
+        discipline: Technical
+        assessment: contractual_post_award
+        interpretations:
+        - stage: ADD-03
+          quote: 'م: ١ | فئة الأصول: المنشآت المدنية والخرسانية | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة
+            للحالة: ٢'
+          parameters:
+            asset_class: المنشآت المدنية والخرسانية
+            min_remaining_life_years: 20
+            max_condition_grade: 2
+          consequence:
+            class: contractual
+            unit: ADD-03:T42-1/image/note3
+            quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.
+          note: PROPOSED; pending approval of reading ADD-03-p3-r1.
+        confidence: medium
+        confidence_reason: Image reading pending approval; whether numbers are minimum or maximum is read from headings
+          by a person.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:T42-1/image
+          evidence:
+            unit: ADD-03:T42-1/image
+            page: 3
+            words: 'يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن
+              أدناه:'
+        conditional_on:
+          reading: ADD-03-p3-r1
+          until: approval
+          subject_sha256: 0bdb965f5a3c59c0315660894bc64f609a72605948028cb64b82490286f5dc93
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r1
+      page: 3
+      kind: reading
+      words: 'م: ١ | فئة الأصول: المنشآت المدنية والخرسانية | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة للحالة:
+        ٢'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r1 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r1 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: conditional_on
+      ok: true
+      detail: 'conditional on reading ADD-03-p3-r1 until approval: the reading is pending (no person has approved
+        it); the row is proposed from it and is not in force until a person approves the reading (A1: PENDING READING;
+        off A3 and A5)'
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات
+        الأصول في تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03:T42-1/image); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-03:
+        PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-T42-1-02
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      row:
+        id: ADD-03-T42-1-02
+        group: ADD-03:T42-1
+        scope:
+        - transfer
+        requirement: 'م: ٢ | فئة الأصول: خط نقل المياه المعالجة | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة
+          للحالة: ٢'
+        units:
+        - ADD-03:T42-1/image/r2
+        - ADD-03:T42-1/image
+        - ADD-03:T42-1/image/note3
+        discipline: Technical
+        assessment: contractual_post_award
+        interpretations:
+        - stage: ADD-03
+          quote: 'م: ٢ | فئة الأصول: خط نقل المياه المعالجة | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة للحالة:
+            ٢'
+          parameters:
+            asset_class: خط نقل المياه المعالجة
+            min_remaining_life_years: 20
+            max_condition_grade: 2
+          consequence:
+            class: contractual
+            unit: ADD-03:T42-1/image/note3
+            quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.
+          note: PROPOSED; pending approval of reading ADD-03-p3-r1.
+        confidence: medium
+        confidence_reason: Image reading pending approval.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:T42-1/image
+          evidence:
+            unit: ADD-03:T42-1/image
+            page: 3
+            words: 'يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن
+              أدناه:'
+        conditional_on:
+          reading: ADD-03-p3-r1
+          until: approval
+          subject_sha256: 0bdb965f5a3c59c0315660894bc64f609a72605948028cb64b82490286f5dc93
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r2
+      page: 3
+      kind: reading
+      words: 'م: ٢ | فئة الأصول: خط نقل المياه المعالجة | الحد الأدنى للعمر المتبقي (سنة): ٢٠ | أقصى درجة للحالة:
+        ٢'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r2 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r2 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: conditional_on
+      ok: true
+      detail: 'conditional on reading ADD-03-p3-r1 until approval: the reading is pending (no person has approved
+        it); the row is proposed from it and is not in force until a person approves the reading (A1: PENDING READING;
+        off A3 and A5)'
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات
+        الأصول في تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03:T42-1/image); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-03:
+        PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-T42-1-03
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      row:
+        id: ADD-03-T42-1-03
+        group: ADD-03:T42-1
+        scope:
+        - transfer
+        requirement: 'م: ٣ | فئة الأصول: المعدات الميكانيكية | الحد الأدنى للعمر المتبقي (سنة): ٥ | أقصى درجة للحالة:
+          ٣'
+        units:
+        - ADD-03:T42-1/image/r3
+        - ADD-03:T42-1/image
+        - ADD-03:T42-1/image/note3
+        discipline: Technical
+        assessment: contractual_post_award
+        interpretations:
+        - stage: ADD-03
+          quote: 'م: ٣ | فئة الأصول: المعدات الميكانيكية | الحد الأدنى للعمر المتبقي (سنة): ٥ | أقصى درجة للحالة:
+            ٣'
+          parameters:
+            asset_class: المعدات الميكانيكية
+            min_remaining_life_years: 5
+            max_condition_grade: 3
+          consequence:
+            class: contractual
+            unit: ADD-03:T42-1/image/note3
+            quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.
+          note: PROPOSED; pending approval of reading ADD-03-p3-r1.
+        confidence: medium
+        confidence_reason: Image reading pending approval.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:T42-1/image
+          evidence:
+            unit: ADD-03:T42-1/image
+            page: 3
+            words: 'يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن
+              أدناه:'
+        conditional_on:
+          reading: ADD-03-p3-r1
+          until: approval
+          subject_sha256: 0bdb965f5a3c59c0315660894bc64f609a72605948028cb64b82490286f5dc93
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r3
+      page: 3
+      kind: reading
+      words: 'م: ٣ | فئة الأصول: المعدات الميكانيكية | الحد الأدنى للعمر المتبقي (سنة): ٥ | أقصى درجة للحالة: ٣'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r3 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r3 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: conditional_on
+      ok: true
+      detail: 'conditional on reading ADD-03-p3-r1 until approval: the reading is pending (no person has approved
+        it); the row is proposed from it and is not in force until a person approves the reading (A1: PENDING READING;
+        off A3 and A5)'
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات
+        الأصول في تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03:T42-1/image); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-03:
+        PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-T42-1-04
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      row:
+        id: ADD-03-T42-1-04
+        group: ADD-03:T42-1
+        scope:
+        - transfer
+        requirement: 'م: ٤ | فئة الأصول: المعدات الكهربائية وأجهزة القياس والتحكم | الحد الأدنى للعمر المتبقي (سنة):
+          ٧ | أقصى درجة للحالة: ٣'
+        units:
+        - ADD-03:T42-1/image/r4
+        - ADD-03:T42-1/image
+        - ADD-03:T42-1/image/note3
+        discipline: Technical
+        assessment: contractual_post_award
+        interpretations:
+        - stage: ADD-03
+          quote: 'م: ٤ | فئة الأصول: المعدات الكهربائية وأجهزة القياس والتحكم | الحد الأدنى للعمر المتبقي (سنة):
+            ٧ | أقصى درجة للحالة: ٣'
+          parameters:
+            asset_class: المعدات الكهربائية وأجهزة القياس والتحكم
+            min_remaining_life_years: 7
+            max_condition_grade: 3
+          consequence:
+            class: contractual
+            unit: ADD-03:T42-1/image/note3
+            quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.
+          note: PROPOSED; pending approval of reading ADD-03-p3-r1.
+        confidence: medium
+        confidence_reason: Image reading pending approval.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:T42-1/image
+          evidence:
+            unit: ADD-03:T42-1/image
+            page: 3
+            words: 'يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن
+              أدناه:'
+        conditional_on:
+          reading: ADD-03-p3-r1
+          until: approval
+          subject_sha256: 0bdb965f5a3c59c0315660894bc64f609a72605948028cb64b82490286f5dc93
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r4
+      page: 3
+      kind: reading
+      words: 'م: ٤ | فئة الأصول: المعدات الكهربائية وأجهزة القياس والتحكم | الحد الأدنى للعمر المتبقي (سنة): ٧ |
+        أقصى درجة للحالة: ٣'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r4 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r4 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: conditional_on
+      ok: true
+      detail: 'conditional on reading ADD-03-p3-r1 until approval: the reading is pending (no person has approved
+        it); the row is proposed from it and is not in force until a person approves the reading (A1: PENDING READING;
+        off A3 and A5)'
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات
+        الأصول في تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03:T42-1/image); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-03:
+        PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-T42-1-05
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      row:
+        id: ADD-03-T42-1-05
+        group: ADD-03:T42-1
+        scope:
+        - transfer
+        requirement: 'م: ٥ | فئة الأصول: الأغشية (إن وُجدت) | الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً | أقصى درجة
+          للحالة: ٣'
+        units:
+        - ADD-03:T42-1/image/r5
+        - ADD-03:T42-1/image
+        - ADD-03:T42-1/image/note3
+        discipline: Technical
+        assessment: contractual_post_award
+        interpretations:
+        - stage: ADD-03
+          quote: 'م: ٥ | فئة الأصول: الأغشية (إن وُجدت) | الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً | أقصى درجة
+            للحالة: ٣'
+          parameters:
+            asset_class: الأغشية (إن وُجدت)
+            min_remaining_life_printed: ٢٤ شهراً
+            max_condition_grade: 3
+          consequence:
+            class: contractual
+            unit: ADD-03:T42-1/image/note3
+            quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.
+          note: PROPOSED; pending approval of reading ADD-03-p3-r1. The life is printed in months under a years
+            heading; unit not resolved (see I-ADD-03-T42-5-UNIT).
+        confidence: low
+        confidence_reason: Months printed under a column headed in years; the English-rendering cell says years.
+        issues:
+        - I-ADD-03-T42-5-UNIT
+        introduced:
+          stage: ADD-03
+          by: ADD-03:T42-1/image
+          evidence:
+            unit: ADD-03:T42-1/image
+            page: 3
+            words: 'يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في تاريخ نقل المرفق إلى الهيئة عمّا هو مبيِّن
+              أدناه:'
+        conditional_on:
+          reading: ADD-03-p3-r1
+          until: approval
+          subject_sha256: 0bdb965f5a3c59c0315660894bc64f609a72605948028cb64b82490286f5dc93
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: reading
+      words: 'م: ٥ | فئة الأصول: الأغشية (إن وُجدت) | الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً | أقصى درجة للحالة:
+        ٣'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r5 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: conditional_on
+      ok: true
+      detail: 'conditional on reading ADD-03-p3-r1 until approval: the reading is pending (no person has approved
+        it); the row is proposed from it and is not in force until a person approves the reading (A1: PENDING READING;
+        off A3 and A5)'
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات
+        الأصول في تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-01: NOT IN FORCE (introduced
+        at ADD-03 by ADD-03:T42-1/image); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image); ADD-03:
+        PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    - check: human-owned
+      ok: true
+      detail: 'evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): its own words declares
+        a matter resolved (''resolved'')'
+      aspect: decision
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ISS-T42-5-UNIT
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: issue
+    task: reading:ADD-03-p3-r1
+    provision: ADD-03:T42-1/image
+    target: null
+    payload:
+      id: I-ADD-03-T42-5-UNIT
+      text: 'ambiguous: the Arabic source row 5 prints "٢٤ شهراً" (24 months) under the heading "الحد الأدنى للعمر
+        المتبقي (سنة)" (years), while the English-rendering cell ADD-03:T42-1/5 reads "Minimum residual life (years):
+        24". Both renderings are quoted; neither is chosen. Decision owner: Technical (with Bid management for the
+        bid-decision, as the clarification window closed on 2026-11-12).'
+      owner: Technical
+      theme: ADD-03 Table 42-1 row 5 unit
+      show_in_a3: false
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/image/r5
+      page: 3
+      kind: reading
+      words: 'الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً'
+      cell: null
+      crop_sha256: null
+    - doc: ADD-03
+      unit_id: ADD-03:T42-1/5
+      page: 4
+      kind: span
+      words: 'Minimum residual life (years): 24'
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - downstream-002/S-READING-DIFF
+    validation:
+    - check: provision
+      ok: true
+      detail: ADD-03:T42-1/image is an image region whose blocks are provisions of ADD-03
+      aspect: null
+    - check: evidence ADD-03:T42-1/image/r5 p3
+      ok: true
+      detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: evidence ADD-03:T42-1/5 p4
+      ok: true
+      detail: verbatim in ADD-03:T42-1/5 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: human-owned
+      ok: true
+      detail: 'evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter
+        kept open for people: its framing and conclusion are a person''s'
+      aspect: decision
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-4.3-01
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: date:ADD-03:4.3
+    provision: ADD-03:4.3
+    target: null
+    payload:
+      row:
+        id: ADD-03-4.3-01
+        group: ADD-03:4.3
+        scope:
+        - proposal
+        requirement: Appointments will be held at the Authority's core store in Sakaka not later than three (3)
+          Working Days before the Proposal Due Date.
+        units:
+        - ADD-03:4.3
+        discipline: Bid management
+        assessment: procedural
+        interpretations:
+        - stage: ADD-03
+          quote: Appointments will be held at the Authority's core store in Sakaka not later than three (3) Working
+            Days before the Proposal Due Date.
+          parameters: {}
+          consequence: none_stated
+          note: No bid-out consequence stated.
+        date_rules:
+        - rule_id: ADD-03-4.3-appointments-latest
+          kind: relative
+          purpose: deadline
+          anchor: PDD
+          offset: 3
+          unit: working_day
+          direction: before
+          source_unit: ADD-03:4.3
+          text: three (3) Working Days before the Proposal Due Date
+        confidence: high
+        confidence_reason: The date rule is stated in the unit and computed by the program.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:4.3
+          evidence:
+            unit: ADD-03:4.3
+            page: 2
+            words: Appointments will be held at the Authority's core store in Sakaka not later than three (3) Working
+              Days before the Proposal Due Date.
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: three (3) Working Days before the Proposal Due Date
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:4.3 p2
+      ok: true
+      detail: verbatim in ADD-03:4.3 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:4.3: ''Appointments will be held at the Authority''s core
+        store in Sakaka not later than'' (ADD-03:4.3 p2)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3); ADD-01: NOT IN FORCE (introduced at ADD-03
+        by ADD-03:4.3); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3); ADD-03: NEW (introduced by ADD-03:4.3)'
+      aspect: null
+    - check: date rule
+      ok: true
+      detail: 'ADD-03-4.3-appointments-latest: planning value 2026-11-23 (stated_date_excluded)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ADD-03-4.3-02
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: row_new
+    task: date:ADD-03:4.3:within three (3) Working Days of the date of this Addendum
+    provision: ADD-03:4.3
+    target: null
+    payload:
+      row:
+        id: ADD-03-4.3-02
+        group: ADD-03:4.3
+        scope:
+        - proposal
+        requirement: A Bidder that wishes to inspect the borehole cores and laboratory records on which the Geotechnical
+          Baseline Report is based shall request an appointment through the Portal within three (3) Working Days
+          of the date of this Addendum.
+        units:
+        - ADD-03:4.3
+        discipline: Bid management
+        assessment: procedural
+        interpretations:
+        - stage: ADD-03
+          quote: A Bidder that wishes to inspect the borehole cores and laboratory records on which the Geotechnical
+            Baseline Report is based shall request an appointment through the Portal within three (3) Working Days
+            of the date of this Addendum.
+          parameters: {}
+          consequence: none_stated
+          note: No bid-out consequence stated. The deadline is ambiguous under the counting rules (see escalation);
+            no date is typed.
+        date_rules:
+        - rule_id: ADD-03-4.3-request-within
+          kind: relative
+          purpose: deadline
+          anchor: ADD-03-issue
+          offset: 3
+          unit: working_day
+          direction: after
+          source_unit: ADD-03:4.3
+          text: within three (3) Working Days of the date of this Addendum
+        confidence: medium
+        confidence_reason: The period is stated but the counting of Working Days after a date is not covered by
+          VOL-I 2.4.
+        introduced:
+          stage: ADD-03
+          by: ADD-03:4.3
+          evidence:
+            unit: ADD-03:4.3
+            page: 2
+            words: shall request an appointment through the Portal within three (3) Working Days of the date of
+              this Addendum
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: within three (3) Working Days of the date of this Addendum
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements: []
+    validation:
+    - check: evidence ADD-03:4.3 p2
+      ok: true
+      detail: verbatim in ADD-03:4.3 at ADD-03 (after the proposed ops)
+      aspect: null
+    - check: register (C16)
+      ok: true
+      detail: quote and consequence found in the effective text at ADD-03 after the proposed ops
+      aspect: null
+    - check: introduction
+      ok: true
+      detail: 'explicit: introduced at ADD-03 by ADD-03:4.3: ''shall request an appointment through the Portal within
+        three (3) Working Days of'' (ADD-03:4.3 p2)'
+      aspect: null
+    - check: stages
+      ok: true
+      detail: 'BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3); ADD-01: NOT IN FORCE (introduced at ADD-03
+        by ADD-03:4.3); ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3); ADD-03: NEW (introduced by ADD-03:4.3)'
+      aspect: null
+    - check: date rule
+      ok: true
+      detail: 'ADD-03-4.3-request-within: planning value 2026-11-19 (event_day_counted)'
+      aspect: null
+    - check: interpretation
+      ok: true
+      detail: 'a row reading is an interpretation: a person decides it'
+      aspect: null
+    verification_status: interpretation_pending
+    model_rationale: null
+  - id: ESC-DATE-4.3-WITHIN
+    state:
+      pack_id: NUPA-ISTP-2026-014+ADD-03-CANDIDATE
+      evidence_build_id: 8987c98f5ba445d48382f8dfe85f2fd9bbd6ccb50b4546d9746446ce1df73582
+      validated_stage: ADD-02
+      working_stage: ADD-03
+      decisions_sha256: null
+      assumptions_sha256: 1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d
+      activity_templates_sha256: 8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005
+      readings_sha256: 5fabc7a7b410afa51931616e3954a56ba1933b480343a66f4bfd86649b55c0a0
+      amendments_sha256: 3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91
+      unrecorded_crops_sha256: null
+      register_sha256: 7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1
+      relationships_sha256: 13add9af8306bf534196666e68c36a9973764a70ead56b0dc79806523b982b6e
+      curation_sha256: 016a2c8b1f208df57a5ef3d1043d27773982ec470e480fbfb158127ddad15255
+      base_run: null
+      base_candidate_sha256: null
+    statement_type: escalation
+    task: date:ADD-03:4.3:within three (3) Working Days of the date of this Addendum
+    provision: ADD-03:4.3
+    target: null
+    payload:
+      why: 'ambiguous: "within three (3) Working Days of the date of this Addendum" is counted forward from the
+        Addendum date. VOL-I 2.4 covers backward counting only, so the program lists two readings and computes none:
+        event day excluded gives 2026-11-22 and event day counted gives 2026-11-19. Neither is chosen. Decision
+        owner: Bid management.'
+      what_is_unsupported: 'software limitation: no rule in the counting registry for Working Days counted after
+        a date'
+    evidence:
+    - doc: ADD-03
+      unit_id: ADD-03:4.3
+      page: 2
+      kind: span
+      words: within three (3) Working Days of the date of this Addendum
+      cell: null
+      crop_sha256: null
+    dependencies: []
+    conflicts: []
+    missing_information: []
+    statements:
+    - downstream-002/S-DATE-AMB
+    validation:
+    - check: evidence ADD-03:4.3 p2
+      ok: true
+      detail: verbatim in ADD-03:4.3 at ADD-03 (after the proposed ops)
+      aspect: null
+    verification_status: escalated
+    model_rationale: null
+  usage:
+    calls: 0
+    input_tokens: 0
+    output_tokens: 0
+    cost_usd: null
+    cost_basis: no price configured
+  status: complete
+  controller_version: s10-ai-1
+controller:
+  overwrites: []
+  statements:
+    downstream-002/S-T42-5-units:
+      kind: fact
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T42-1/5 p4
+        ok: true
+        detail: verbatim in ADD-03:T42-1/5 at ADD-03 (after the proposed ops)
+        aspect: null
+      - check: evidence ADD-03:T42-1/image/r5 p3
+        ok: true
+        detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+        aspect: null
+    downstream-002/S-NOTE4:
+      kind: fact
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T42-1/note(4) p4
+        ok: true
+        detail: verbatim in ADD-03:T42-1/note(4) at ADD-03 (after the proposed ops)
+        aspect: null
+      - check: evidence VOL-II:2.2 p2
+        ok: true
+        detail: verbatim in VOL-II:2.2 at ADD-03 (after the proposed ops)
+        aspect: null
+    downstream-002/S-NOTE4-interp:
+      kind: interpretation
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T42-1/note(4) p4
+        ok: true
+        detail: verbatim in ADD-03:T42-1/note(4) at ADD-03 (after the proposed ops)
+        aspect: null
+    downstream-002/S-DATE-AMB:
+      kind: fact
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:4.3 p2
+        ok: true
+        detail: verbatim in ADD-03:4.3 at ADD-03 (after the proposed ops)
+        aspect: null
+    downstream-002/S-READING-DIFF:
+      kind: fact
+      evidence_ok: true
+      checks:
+      - check: evidence ADD-03:T42-1/image/r5 p3
+        ok: true
+        detail: verbatim in ADD-03:T42-1/image/r5 at ADD-03 (after the proposed ops)
+        aspect: null
+  state_differences: []
+  interactions:
+  - 'A5 with the proposals: C48: ADD-03-4.3-01 is an A1 row in force at ADD-03, but no activity carries it and no
+    reason is given (its no_deliverable or post-award assessment in the register, or _row_checks / _row_exceptions
+    in curation/activity_templates.yaml)'
+  - 'A5 with the proposals: C48: ADD-03-4.3-02 is an A1 row in force at ADD-03, but no activity carries it and no
+    reason is given (its no_deliverable or post-award assessment in the register, or _row_checks / _row_exceptions
+    in curation/activity_templates.yaml)'
+  - 'DS-009: reverses ADD-03/3.5-issue (ADD-03:3.5), which applied ADD-03 3.5 (''The Arabic text governs.''): this
+    item hands the point back to a person; ADD-03 3.5 provides: ''The Arabic text governs.'' (applied, not decided)'
+  - 'DS-012: reverses ADD-03/3.5-issue (ADD-03:3.5), which applied ADD-03 3.5 (''The Arabic text governs.''): this
+    item hands the point back to a person; ADD-03 3.5 provides: ''The Arabic text governs.'' (applied, not decided)'
+  held_back: {}
+  schedule_problems:
+  - 'C48: ADD-03-4.3-01 is an A1 row in force at ADD-03, but no activity carries it and no reason is given (its
+    no_deliverable or post-award assessment in the register, or _row_checks / _row_exceptions in curation/activity_templates.yaml)'
+  - 'C48: ADD-03-4.3-02 is an A1 row in force at ADD-03, but no activity carries it and no reason is given (its
+    no_deliverable or post-award assessment in the register, or _row_checks / _row_exceptions in curation/activity_templates.yaml)'
+  register_problems:
+    ADD-03-cover-para3-01: []
+    ADD-03-4.1-01: []
+    ADD-03-T42-1-01: []
+    ADD-03-T42-1-02: []
+    ADD-03-T42-1-03: []
+    ADD-03-T42-1-04: []
+    ADD-03-T42-1-05: []
+    ADD-03-4.3-01: []
+    ADD-03-4.3-02: []
+  stages:
+    ADD-03-cover-para3-01:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03/cover/para3)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03/cover/para3)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03/cover/para3)
+      ADD-03: NEW (introduced by ADD-03/cover/para3)
+    ADD-03-4.1-01:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03/4.1)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03/4.1)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03/4.1)
+      ADD-03: NEW (introduced by ADD-03/4.1)
+    ADD-03-T42-1-01:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-03: PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)
+    ADD-03-T42-1-02:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-03: PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)
+    ADD-03-T42-1-03:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-03: PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)
+    ADD-03-T42-1-04:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-03: PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)
+    ADD-03-T42-1-05:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:T42-1/image)
+      ADD-03: PENDING READING (conditional on reading ADD-03-p3-r1 until approval; not in force)
+    ADD-03-4.3-01:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-03: NEW (introduced by ADD-03:4.3)
+    ADD-03-4.3-02:
+      BASE: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-01: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-02: NOT IN FORCE (introduced at ADD-03 by ADD-03:4.3)
+      ADD-03: NEW (introduced by ADD-03:4.3)
+  introduction:
+    ADD-03-cover-para3-01:
+      stage: ADD-03
+      by: ADD-03/cover/para3
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03/cover/para3: ''Bidders shall acknowledge receipt in Form 4-A.'' (ADD-03:cover/para3
+        p1)'
+    ADD-03-4.1-01:
+      stage: ADD-03
+      by: ADD-03/4.1
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03/4.1: ''The following new Clause 12.5 is inserted in Volume V after
+        Clause 12.4'' (ADD-03:4.1 p2)'
+    ADD-03-T42-1-01:
+      stage: ADD-03
+      by: ADD-03:T42-1/image
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في
+        تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+    ADD-03-T42-1-02:
+      stage: ADD-03
+      by: ADD-03:T42-1/image
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في
+        تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+    ADD-03-T42-1-03:
+      stage: ADD-03
+      by: ADD-03:T42-1/image
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في
+        تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+    ADD-03-T42-1-04:
+      stage: ADD-03
+      by: ADD-03:T42-1/image
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في
+        تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+    ADD-03-T42-1-05:
+      stage: ADD-03
+      by: ADD-03:T42-1/image
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:T42-1/image: ''يجب ألا يقل العمر المتبقي لكل فئة من فئات الأصول في
+        تاريخ نقل المرفق إلى الهيئة '' (ADD-03:T42-1/image p3)'
+    ADD-03-4.3-01:
+      stage: ADD-03
+      by: ADD-03:4.3
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:4.3: ''Appointments will be held at the Authority''s core store in
+        Sakaka not later than'' (ADD-03:4.3 p2)'
+    ADD-03-4.3-02:
+      stage: ADD-03
+      by: ADD-03:4.3
+      explicit: true
+      basis: 'introduced at ADD-03 by ADD-03:4.3: ''shall request an appointment through the Portal within three
+        (3) Working Days of'' (ADD-03:4.3 p2)'
+  planned_at:
+  - ADD-03

@@ -1,6 +1,7 @@
 """The direct Messages API route (an application making paid API calls), over the standard library (urllib).
 
-  * The key comes from the environment only (`api_key_env`, default ANTHROPIC_API_KEY); it is never read from a file,
+  * The key comes from the environment (`api_key_env`, default ANTHROPIC_API_KEY) or, session 13, a chmod-600 key file
+    OUTSIDE the folder (tenderpack/ai/keys.py); it is never read from a file inside the folder,
     never logged and never put into an error message. Without it the route refuses to start.
   * Requests: POST {base_url}/v1/messages with the `anthropic-version` header from config; tools as {name,
     description, input_schema}; images as base64 image blocks; tool results as tool_result blocks in one user
@@ -47,13 +48,18 @@ class AnthropicProvider:
         self.base_url = (rcfg.get("base_url") or "https://api.anthropic.com").rstrip("/")
         self.version = rcfg.get("api_version") or "2023-06-01"
         self.key_env = rcfg.get("api_key_env") or "ANTHROPIC_API_KEY"
-        self._key = env.get(self.key_env)
+        from .. import keys                       # session 13: the environment, else a chmod-600 file outside
+        self._key, self._key_source = keys.lookup(self.key_env, env)   # the folder; never logged or shown
         self._caps: Capabilities | None = None
         self.allow_unverified = bool(allow_unverified or rcfg.get(ALLOW_UNVERIFIED_KEY))
         self._fetch = fetch                     # None: base.http_json, looked up at call time (tests patch the module)
         self.structured_mode = str((rcfg.get("structured_output") or {}).get("mode", "native"))
         self._plain_reason: str | None = None   # set when native structured output is not (or no longer) used
         self.format_sent = False                # the last request body carried output_config.format
+
+    def key_source(self) -> str | None:
+        """Where the key comes from (never its value)."""
+        return self._key_source
 
     def _http(self, *a):
         return (self._fetch or http_json)(*a)

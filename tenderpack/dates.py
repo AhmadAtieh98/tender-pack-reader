@@ -184,6 +184,21 @@ def parse_date(text: str) -> tuple[date, str | None] | None:
 
 # ------------------------------------------------------------------ rules and their readings
 
+POINT_KINDS = ("anchor", "as_at")      # a point in time: the anchor itself, no period counted
+
+
+def counted_period_problem(kind: str | None, offset) -> str | None:
+    """Why a rule of a point kind (anchor, as_at) that carries a counted period is inconsistent, or None (session 13).
+
+    `interpretations` returns the anchor itself for a point kind, so an offset there would be silently ignored (the
+    blind-05 regression planned "two (2) Working Days before the PDD" on the PDD). Such a rule is refused, never
+    converted: the record does not say which of its fields is the mistake (the kind or the offset)."""
+    if kind in POINT_KINDS and offset:
+        return (f"kind {kind} counts no period, but the rule carries offset {offset}: a counted period is kind relative "
+                "with its offset, unit and direction (refused, not converted; a person corrects the record)")
+    return None
+
+
 @dataclass(frozen=True)
 class DateRule:
     rule_id: str
@@ -203,6 +218,9 @@ class DateRule:
                                       ("unit", self.unit, UNITS), ("direction", self.direction, DIRECTIONS)):
             if value not in allowed:
                 raise ValueError(f"rule {self.rule_id}: {field} {value!r} not in {allowed}")
+        why = counted_period_problem(self.kind, self.offset)
+        if why:
+            raise ValueError(f"rule {self.rule_id}: {why}")
         if self.kind in ("anchor", "relative") and not self.anchor:
             raise ValueError(f"rule {self.rule_id}: kind {self.kind} needs an anchor")
         if self.kind == "relative" and self.offset < 1:

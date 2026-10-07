@@ -3,8 +3,9 @@ of a run, one JSON object per line, written to worklog/model_calls/<run_id>.json
 
 Secrets are redacted everywhere before anything is written: values under keys that name a credential
 (authorization, x-api-key, api_key, *_api_key, secret, password, access/refresh tokens), strings that look like keys
-(sk-..., sk-ant-..., 'Bearer ...'), and the current values of the credential environment variables named in
-config/ai.yaml. Token COUNTS (input_tokens, output_tokens) are not secrets and are kept.
+(sk-..., sk-ant-..., 'Bearer ...'), the current values of the credential environment variables named in
+config/ai.yaml, and (session 13) every key value read from the private key file (tenderpack/ai/keys.py). Token
+COUNTS (input_tokens, output_tokens) are not secrets and are kept.
 """
 from __future__ import annotations
 
@@ -23,7 +24,9 @@ REDACTED = "[REDACTED]"
 
 
 def _env_secrets(extra: tuple[str, ...] = ()) -> list[str]:
-    return [v for k in (*SECRET_ENV, *extra) if (v := os.environ.get(k)) and len(v) >= 8]
+    out = [v for k in (*SECRET_ENV, *extra) if (v := os.environ.get(k)) and len(v) >= 8]
+    from .keys import LOADED                 # session 13: values read from the private key file (tenderpack/ai/keys.py)
+    return out + [v for v in LOADED if len(v) >= 8]
 
 
 def redact(obj, extra_env: tuple[str, ...] = ()):

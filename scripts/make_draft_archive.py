@@ -46,11 +46,20 @@ def copytree(src: Path, dst: Path) -> None:
     shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", ".tenderpack-build"))
 
 
+def zip_mode(name: str, src: Path | None = None) -> int:
+    """The entry's external_attr: a regular file, 0755 for a launcher or a shell script (*.command, *.sh) or a file
+    executable on disk, else 0644. Session 13: every entry was written 0644, so the unzipped launch.command and setup.sh
+    lost their executable bit and Finder would not run the launcher."""
+    exe = name.endswith((".command", ".sh")) or bool(src is not None and src.stat().st_mode & 0o100)
+    return (0o100000 | (0o755 if exe else 0o644)) << 16
+
+
 def write_zip(folder: Path, dest: Path, stamp: tuple) -> None:
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for f in sorted(p for p in folder.rglob("*") if p.is_file()):
             info = zipfile.ZipInfo(f"{folder.name}/{f.relative_to(folder).as_posix()}", date_time=stamp)
-            info.compress_type, info.external_attr = zipfile.ZIP_DEFLATED, 0o644 << 16
+            info.compress_type, info.external_attr = zipfile.ZIP_DEFLATED, zip_mode(f.name, f)
+            info.create_system = 3                     # Unix: unzip and Finder apply the mode bits
             z.writestr(info, f.read_bytes())
 
 

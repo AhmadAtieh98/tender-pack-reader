@@ -9,6 +9,8 @@ folder named by the environment variable FAKE_S11_DIR:
                          not an analysis packet), ${state} replaced with the packet's state
     repair.json          the corrected answer a plain REPAIR session prints (prompt "REPAIR REQUEST ...")
     calls.jsonl          appended: one line per invocation (kind, a few flags, the first characters of the prompt)
+    kill_parent_after_submit_n   session 13: an integer: that many analysis sessions send SIGTERM to the process that
+                         started them right after their submission (the orchestrator interrupted after a submission)
 
 Without --mcp-config and with --json-schema and a CRITIC REQUEST: the batched critic; it answers every item key of the
 request (disagreeing, with a recorded concern). An analysis tool session (a packet with `provisions`) starts the MCP
@@ -118,6 +120,13 @@ if packet.get("provisions") and packet.get("task") == "propose_amendment":
                                                   "is_error": res.get("isError", False)}]}})
     srv.stdin.close()
     srv.wait(timeout=60)
+    kp = D / "kill_parent_after_submit_n"           # session 13 (D): the orchestrator stopped right after a submission
+    if kp.exists() and int(kp.read_text().strip() or 0) > 0:
+        kp.write_text(str(int(kp.read_text().strip()) - 1))
+        import signal
+        import time
+        os.kill(os.getppid(), signal.SIGTERM)
+        time.sleep(60)                                # the orchestrator stops this process (or the test times out)
     out({"type": "result", "subtype": "success", "is_error": False, "num_turns": 2, "result": "submitted",
          "usage": {"input_tokens": 100, "output_tokens": 20}, "modelUsage": {"fake-host-model": {}}, "total_cost_usd": 0.0})
     sys.exit(0)

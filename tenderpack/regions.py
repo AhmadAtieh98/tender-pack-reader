@@ -299,10 +299,62 @@ class Grid:
                 min(int(max(xs)) + pad, self.width), min(int(max(ys)) + pad, self.height))
 
 
+def _bounded_by_rules(ink: np.ndarray, skew: float, h: list[float], min_rules: int = 2, cover: float = 0.8,
+                      margin: int = 5) -> list[float]:
+    """Session 13 (E160): the horizontal rules that belong to ONE table: a band between two consecutive rules is a
+    table band when at least `min_rules` vertical rules cross it (ink over >= `cover` of the band's height at one
+    column, measured along the skew); the table is the longest run of consecutive table bands and its rules are
+    returned. A rule nothing connects to the next one (a letterhead separator above the table, a footer line below
+    it) is dropped: blind-07's page 3 counted the letterhead rule as an 8th horizontal rule and refused a correct
+    reading. When no band qualifies the rules are returned unchanged (no table is claimed; the columns decide)."""
+    if len(h) < 2:
+        return h
+    ys, xs = np.nonzero(ink)
+    t = np.tan(np.radians(skew))
+    yl = ys - xs * t                                    # the row of each ink pixel, along the skew
+    xl = xs + ys * t                                    # its column, along the skew
+    flags = []
+    for y0, y1 in zip(h[:-1], h[1:]):
+        a, b = y0 + margin, y1 - margin
+        if b - a < 2 * margin:
+            flags.append(False)
+            continue
+        sel = (yl >= a) & (yl <= b)
+        if not sel.any():
+            flags.append(False)
+            continue
+        col = np.round(xl[sel]).astype(int)
+        prof = np.bincount(col - col.min())
+        cand = np.nonzero(prof >= cover * (b - a))[0]
+        groups = 0
+        last = None
+        for c in cand:
+            if last is None or c - last > 3:
+                groups += 1
+            last = c
+        flags.append(groups >= min_rules)
+    best = (0, 0, 0)                                    # (length, start, end) of the longest run of table bands
+    i = 0
+    while i < len(flags):
+        if flags[i]:
+            j = i
+            while j + 1 < len(flags) and flags[j + 1]:
+                j += 1
+            if j - i + 1 > best[0]:
+                best = (j - i + 1, i, j)
+            i = j + 1
+        else:
+            i += 1
+    if best[0] == 0:
+        return h
+    return h[best[1]:best[2] + 2]
+
+
 def detect_grid(gray: np.ndarray, frac: float = 0.5) -> Grid:
     ink = gray < 140
     skew = estimate_skew(ink)
     h = _lines(ink, skew, "h", frac)                      # rules spanning > frac of the width
+    h = _bounded_by_rules(ink, skew, h)                   # session 13 (E160): only the rules vertical rules connect
     table_h = (h[-1] - h[0]) if len(h) > 1 else ink.shape[0]
     v = _lines(ink, skew, "v", 0.6 * table_h / ink.shape[0])  # rules spanning > 60% of the table height
     return Grid(skew, [r1(x) for x in h], [r1(x) for x in v], ink.shape[1], ink.shape[0])

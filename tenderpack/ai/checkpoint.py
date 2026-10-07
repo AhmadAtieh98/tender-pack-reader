@@ -50,7 +50,12 @@ at any point (a crash, a kill, Ctrl-C, a wait for a host submission) continues f
     interventions every manual step (a submit-batch: who, when, which batch, the file and its sha256, the host model)
                   and every automatic host session (named as such: not a person)
     usage         calls and tokens across the batches (cost as the providers report it; null when not computed)
-    events        a short history (started, resumed, stale lock taken over, stopped, ...)
+    events        a short history (started, resumed, stale lock taken over, stopped, code_changed, ...)
+    code_identity (session 13) {start, segments [...], differ}: each a code_identity() record (the git HEAD when git
+                  is available and whether the tree was dirty, a content hash over CODE_GLOBS computed from the files,
+                  the number of files, the time). `start` is taken when the run starts; every resume recomputes it and
+                  refuses a different hash unless `--allow-code-change "<reason>"` is given, which appends the new
+                  segment (with the reason) and sets `differ`: "segments ran on different code"
 """
 from __future__ import annotations
 
@@ -73,6 +78,41 @@ ITEM_STATES = ("pending", "proposed", "validated")
 
 def now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+# session 13: what a run's behaviour depends on besides its inputs: the code, the configuration and the runtime policy
+# (tenderpack/ai/policy/*.md, composed by tenderpack.ai.policy into every prompt of every route and phase)
+CODE_GLOBS = ("tenderpack/**/*.py", "tenderpack/ai/policy/*.md", "config/*.yaml", "pyproject.toml")
+POLICY_DIR = "tenderpack/ai/policy"
+
+
+def code_identity(root: Path) -> dict:
+    """The code and policy identity of the tree at `root` (session 13): {content_sha256 (over the relative path and
+    the bytes of every file CODE_GLOBS match, sorted; computed from the files, never from git), files, git_head,
+    git_dirty (None when git is not available), policy (session 13: the runtime policy's identity, policy.identity of
+    the tree's tenderpack/ai/policy/; None without it), recorded}. A changed policy file changes content_sha256 too, so
+    a resume over a changed policy is refused like any code change."""
+    import hashlib
+    import subprocess
+    root = Path(root)
+    files = sorted({f for g in CODE_GLOBS for f in root.glob(g) if f.is_file() and "__pycache__" not in f.parts})
+    h = hashlib.sha256()
+    for f in files:
+        h.update(f.relative_to(root).as_posix().encode() + b"\0" + f.read_bytes() + b"\0")
+    head = dirty = None
+    try:
+        r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, timeout=10)
+        if r.returncode == 0:
+            head = r.stdout.strip()
+            st = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=root, capture_output=True,
+                                text=True, timeout=20)
+            dirty = bool(st.stdout.strip()) if st.returncode == 0 else None
+    except (OSError, subprocess.SubprocessError):
+        pass
+    from .policy import identity as policy_identity
+    pol = policy_identity(root / POLICY_DIR) if (root / POLICY_DIR).is_dir() else None
+    return {"content_sha256": h.hexdigest(), "files": len(files), "git_head": head, "git_dirty": dirty,
+            "policy": pol, "recorded": now_iso()}
 
 
 class Checkpoint:

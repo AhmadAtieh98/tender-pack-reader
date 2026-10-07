@@ -247,6 +247,24 @@ def asserted_judgment(issue: dict) -> list[str]:
     return list(dict.fromkeys(x for k in ISSUE_TEXT_KEYS for x in triggers(own_words(issue.get(k)), ("topic",))))
 
 
+# session 13 (audit R1-3): words that settle a limb of a question (a conclusion stated as the reading); in an issue
+# that is a person's decision not yet recorded they are reported for a person (stage2.pending_wording_findings)
+SETTLING = re.compile(r"\b(?:is|are) not treated as\b|\b(?:is|are) treated as\b|\b(?:is|are) (?:to be )?read as\b|"
+                      r"\bmeans\b|\btherefore\b|\bso it follows\b|\bit follows that\b", re.I)
+
+
+def settled_wording(issue: dict) -> list[str]:
+    """The settling words in an issue's own words (text, a3, short; quotations removed: own_words), each quoted once;
+    [] when none."""
+    out = []
+    for k in ISSUE_TEXT_KEYS:
+        for m in SETTLING.finditer(own_words((issue or {}).get(k))):
+            w = f"'{m.group(0)}'"
+            if w not in out:
+                out.append(w)
+    return out
+
+
 # session 12 (F5; audit A3-5, R-a, R1-1): an issue whose owner is Legal or Commercial (the lead, counsel) is a legal or
 # commercial judgment by its owner; the issue file's `decision_owner` (when given) counts before `owner`
 JUDGMENT_OWNERS = re.compile(r"^\s*(?:legal|commercial)\b", re.I)
@@ -314,3 +332,47 @@ def issue_label(iid: str, issue: dict, decisions: list[dict] | None, linked: lis
     if judged:
         return HUMAN_DECISION_PENDING          # short: it prefixes the A3 line too (the reason is the issue's own text)
     return None
+
+
+# ---------------------------------------------------------------------------------------------- one owner per judgment
+# session 13 (F2; audit R2-5): a judgment has one owner in A1, A3 and A4. The owner comes from the issue the judgment is
+# about (a register entry's FIRST linked issue: the issue it asks about; later links are context, e.g. a reading's
+# precision) and the register entry inherits it. Roles compare on their function word ('Legal' = 'Legal counsel',
+# 'Commercial' = 'Commercial lead'); 'Technical' and 'Process engineer' are different owners.
+
+def _role(o) -> str:
+    w = str(o or "").strip().split()
+    return w[0].lower() if w else ""
+
+
+def same_owner(a, b) -> bool:
+    """Whether two owner labels name the same function ('Legal' and 'Legal counsel'; not 'Technical' and 'Process
+    engineer')."""
+    return bool(_role(a)) and _role(a) == _role(b)
+
+
+def judgment_owner(entry: dict, issues: dict | None) -> str:
+    """The owner of a clarification-register entry (a question or a pending decision) as every output shows it: the
+    owner of its first linked issue that exists in `issues` (id -> issue: the issue's decision_owner, else owner), else
+    the entry's own decision_owner. The ONE function A4 uses, so A1/A3 (the issue) and A4 (the entry) agree."""
+    for i in (entry or {}).get("linked_issues") or []:
+        it = (issues or {}).get(i)
+        if it:
+            return str(it.get("decision_owner") or it.get("owner") or "")
+    return str((entry or {}).get("decision_owner") or "")
+
+
+def owner_findings(register: dict | None, issues: dict | None) -> list[str]:
+    """Register entries whose curated decision_owner is not the owner of the issue they are about (judgment_owner):
+    one judgment, two owners. A regression for the curated register (tests/test_session13_audit_fixes_a3.py), not a
+    release gate: the sealed rehearsal registers were written before the rule (as clarify.judgment_findings); the outputs
+    already show judgment_owner, so they never disagree."""
+    out = []
+    for kind, key in (("clarifications", "id"), ("pending_decision", "topic")):
+        for c in (register or {}).get(kind) or []:
+            own = judgment_owner(c, issues)
+            if c.get("decision_owner") and own and not same_owner(c.get("decision_owner"), own):
+                first = next(i for i in c.get("linked_issues") or [] if (issues or {}).get(i))
+                out.append(f"{kind}[{c.get(key)}]: decision owner {c.get('decision_owner')!r} is not the owner of its "
+                           f"issue {first} ({own!r}): one judgment has one owner (the entry inherits the issue's)")
+    return out

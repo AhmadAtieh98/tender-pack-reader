@@ -24,5 +24,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 include = ["tenderpack*"]
 
+[tool.setuptools.package-data]
+# session 13: the runtime policy texts (tenderpack/ai/policy.py composes them into every AI prompt)
+"tenderpack.ai" = ["policy/*.md"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

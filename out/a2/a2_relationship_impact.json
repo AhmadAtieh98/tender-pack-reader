@@ -64,16 +64,28 @@
    "header": "blocked_by",
    "key": "blocked_by",
    "width": 20
+  },
+  {
+   "header": "open_issues",
+   "key": "open_issues",
+   "width": 20
+  },
+  {
+   "header": "context (not binding)",
+   "key": "context (not binding)",
+   "width": 20
   }
  ],
  "rows": [
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "feeds_calculation",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM",
     "REL-PAY-QUOTED-PRICE"
@@ -94,10 +106,14 @@
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "cites",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-LCC-ISSUER, human decision pending (via REL-LCC-ENVELOPE-A)"
+   ],
    "path": [
     "REL-LCC-ENVELOPE-A"
    ],
@@ -113,10 +129,12 @@
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "depends_on",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [],
    "path": [
     "REL-VOL-V-FORM-4E"
    ],
@@ -136,10 +154,12 @@
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "feeds_calculation",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM",
     "REL-PAY-FORM-4F"
@@ -160,10 +180,12 @@
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "feeds_calculation",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM"
    ],
@@ -183,10 +205,12 @@
   {
    "blocked_by": [],
    "class": "proposed relationship",
+   "context (not binding)": "",
    "direct": false,
    "kind": "depends_on",
    "lexical": false,
    "link_status": "proposed",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM",
     "REL-PAY-FINANCIAL-MODEL"
@@ -207,10 +231,12 @@
   {
    "blocked_by": [],
    "class": "proposed relationship",
+   "context (not binding)": "",
    "direct": false,
    "kind": "feeds_calculation",
    "lexical": false,
    "link_status": "proposed",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM",
     "REL-PAY-FINANCIAL-MODEL",
@@ -232,10 +258,12 @@
   {
    "blocked_by": [],
    "class": "possible impact",
+   "context (not binding)": "",
    "direct": false,
    "kind": "depends_on",
    "lexical": false,
    "link_status": "possible",
+   "open_issues": [],
    "path": [
     "REL-PAY-MECHANISM",
     "REL-PAY-FINANCING-ASSUMPTIONS"
@@ -258,10 +286,12 @@
     "the geotechnical report and the wadi-crossing drawing (Volume III) are referenced but not supplied"
    ],
    "class": "not supplied",
+   "context (not binding)": "",
    "direct": true,
    "kind": "missing_document (op issue)",
    "lexical": false,
    "link_status": "",
+   "open_issues": [],
    "path": [
     "ADD-01/Q4"
    ],
@@ -277,10 +307,14 @@
   {
    "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "cites",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-LCC-ISSUER, human decision pending (via REL-LCC-ENVELOPE-A)"
+   ],
    "path": [
     "REL-LCC-ENVELOPE-A"
    ],
@@ -298,10 +332,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": false,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-COMPLIANCE-MONITORING-STREAMS)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-COMPLIANCE-MONITORING-STREAMS"
    ],
@@ -319,10 +358,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
-   "direct": false,
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-COMPLIANCE-MONITORING-STREAMS)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-COMPLIANCE-MONITORING-STREAMS"
    ],
@@ -340,10 +384,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": true,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-PROCESS-DESIGN)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-PROCESS-DESIGN"
    ],
@@ -361,10 +410,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": false,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-COMPLIANCE-MONITORING-STREAMS)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-COMPLIANCE-MONITORING-STREAMS"
    ],
@@ -382,10 +436,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": false,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-RELIABILITY-RUN)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-RELIABILITY-RUN"
    ],
@@ -401,10 +460,129 @@
   {
    "blocked_by": [],
    "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": true,
    "kind": "missing_document",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-BOD5"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-BOD5",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-COD"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-COD",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-FaecalColiforms"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-FaecalColiforms",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-OilGrease"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-OilGrease",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-ResidualChlorine"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-ResidualChlorine",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-MISSING-ENVIRONMENTAL-PERMIT"
    ],
@@ -419,11 +597,105 @@
   },
   {
    "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-TP"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-TP",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-TSS"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-TSS",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-Turbidity"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-Turbidity",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
+   "class": "not supplied",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
+   "direct": true,
+   "kind": "missing_document",
+   "lexical": false,
+   "link_status": "confirmed",
+   "open_issues": [
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
+   "path": [
+    "REL-MISSING-ENVIRONMENTAL-PERMIT"
+   ],
+   "sources": [
+    "VOL-II-T2-4-pH"
+   ],
+   "stage": "ADD-02",
+   "target": "VOL-II-T2-4-pH",
+   "target_status": "ACTIVE",
+   "target_type": "row",
+   "via_target": true
+  },
+  {
+   "blocked_by": [],
    "class": "confirmed dependency",
+   "context (not binding)": "",
    "direct": false,
    "kind": "depends_on",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [],
    "path": [
     "REL-VOL-V-FORM-4E"
    ],
@@ -442,10 +714,15 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": true,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-RAMP-UP-DEDUCTIONS)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-RAMP-UP-DEDUCTIONS"
    ],
@@ -461,10 +738,14 @@
   {
    "blocked_by": [],
    "class": "not supplied",
+   "context (not binding)": "",
    "direct": true,
    "kind": "missing_document",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-V-MISSING, human decision pending (via REL-MISSING-SCHEDULE-7-DEDUCTIONS)"
+   ],
    "path": [
     "REL-MISSING-SCHEDULE-7-DEDUCTIONS"
    ],
@@ -480,10 +761,14 @@
   {
    "blocked_by": [],
    "class": "not supplied",
+   "context (not binding)": "",
    "direct": true,
    "kind": "missing_document",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-V-MISSING, human decision pending (via REL-MISSING-SCHEDULE-7-DEDUCTIONS)"
+   ],
    "path": [
     "REL-MISSING-SCHEDULE-7-DEDUCTIONS"
    ],
@@ -502,10 +787,16 @@
     "REL-MISSING-ENVIRONMENTAL-PERMIT: the Environmental Permit issued for the site"
    ],
    "class": "confirmed dependency",
+   "context (not binding)": "ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))",
    "direct": true,
    "kind": "limit_applies",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-II-T24-TENSIONS, human decision pending (via REL-T24-UNAVAILABILITY)",
+    "open: I-VOL-V-MISSING, human decision pending (via REL-MISSING-SCHEDULE-7-DEDUCTIONS)",
+    "open: I-PERMIT, human decision pending (via REL-MISSING-ENVIRONMENTAL-PERMIT)"
+   ],
    "path": [
     "REL-T24-UNAVAILABILITY"
    ],
@@ -521,10 +812,14 @@
   {
    "blocked_by": [],
    "class": "not supplied",
+   "context (not binding)": "",
    "direct": true,
    "kind": "missing_document",
    "lexical": false,
    "link_status": "confirmed",
+   "open_issues": [
+    "open: I-VOL-V-MISSING, human decision pending (via REL-MISSING-SCHEDULE-7-DEDUCTIONS)"
+   ],
    "path": [
     "REL-MISSING-SCHEDULE-7-DEDUCTIONS"
    ],
@@ -540,10 +835,12 @@
   {
    "blocked_by": [],
    "class": "possible impact",
+   "context (not binding)": "",
    "direct": false,
    "kind": "depends_on",
    "lexical": false,
    "link_status": "possible",
+   "open_issues": [],
    "path": [
     "REL-CHANGE-IN-LAW-FINANCIAL-MODEL"
    ],
@@ -559,10 +856,12 @@
   {
    "blocked_by": [],
    "class": "possible impact",
+   "context (not binding)": "",
    "direct": false,
    "kind": "feeds_calculation",
    "lexical": false,
    "link_status": "possible",
+   "open_issues": [],
    "path": [
     "REL-CHANGE-IN-LAW-FINANCIAL-MODEL",
     "REL-MODEL-FORM-4F"

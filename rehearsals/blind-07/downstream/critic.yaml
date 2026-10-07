@@ -1,0 +1,211 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 2
+    selected_items:
+      DS-009: &id001
+      - conflicting
+      DS-012: &id002
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-001-critic
+    route: host
+    reviewed: 2
+    agrees: 0
+    disagrees: 2
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    selected: 5
+    selected_items:
+      ADD-03-T42-1-01: &id003
+      - consequential_interpretation
+      ADD-03-T42-1-02: &id004
+      - consequential_interpretation
+      ADD-03-T42-1-03: &id005
+      - consequential_interpretation
+      ADD-03-T42-1-04: &id006
+      - consequential_interpretation
+      ADD-03-T42-1-05: &id007
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+    route: host
+    reviewed: 5
+    agrees: 4
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (the CLI's default model; recorded from the CLI output)
+    model_reported: claude-sonnet-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+items:
+  DS-009:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The difference is real: Arabic row 4 (p3) gives ٧ (7) and English row 4 (p4) gives 5 for the same asset
+          class. Both quotations are verbatim.'
+        - The item ignores ADD-03 3.5, 'The Arabic text governs.', which the controller applied to this pair (applied,
+          not decided). The rationale never quotes or mentions it. It calls the point 'ambiguous:' and says which
+          rendering governs is open, without addressing the pack's own rule. A reader cannot tell whether 3.5 covers
+          this table or whether its scope is itself in doubt. If the doubt is about 3.5's scope, the item should
+          quote 3.5 and state that reading.
+        - 'The controller''s consistency check failed: the item reverses the earlier ADD-03/3.5-issue, which applied
+          the Arabic-governs rule. The reversal is not justified by any new evidence.'
+        - '''what_is_unsupported'' says ''choosing between the Arabic and English renderings''. That is a human-decision
+          point, not a software limitation, so the class is mislabelled. Class 1 (software limitation) is the wrong
+          place for it.'
+        - The proposer states 'I did not view the crop', and crop_sha256 is null. The shared rules require looking
+          at the crop before proposing on a unit read from an image (Arabic table row). The digit ٧ is therefore
+          unverified against the image, and the Arabic reading itself could be a misread.
+        - The item does not name dependants, such as any requirement or A5 rows built on the residual-life threshold.
+          It says only that Arabic-based rows are conditional.
+        evidence_checked:
+        - 'ADD-03:T42-1/image/r4: م: ٤ | ... | الحد الأدنى للعمر المتبقي (سنة): ٧ | ... ٣'
+        - 'ADD-03:T42-1/4: Minimum residual life (years): 5'
+        - 'controller_validation: applied rule ADD-03 3.5 ''The Arabic text governs.'''
+        - 'controller_validation: consistency (phases) ok=false, reverses ADD-03/3.5-issue'
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  DS-012:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The figures differ as quoted: English 5 against Arabic ٧ (7). The evidence quotations are verbatim.'
+        - The item does not mention ADD-03 3.5, 'The Arabic text governs.', which the controller applied to this
+          pair. It presents the point as 'ambiguous:' without addressing the pack's own rule, and the stated owner
+          (Technical/Legal) is not tied to any question about 3.5.
+        - It reverses the earlier ADD-03/3.5-issue (consistency check failed) with no new evidence.
+        - '''what_is_unsupported'' is a human-decision matter, not a software limitation, so it is mislabelled.
+          The note ''The controller did not support the analysis fact for this row'' is unexplained and not backed
+          by the evidence shown.'
+        - No crop is cited (crop_sha256 null) for the Arabic row, which is read from an image. Nothing shows the
+          image was checked.
+        - The item duplicates DS-009 from the English side and adds no distinct evidence or dependants.
+        evidence_checked:
+        - 'ADD-03:T42-1/4: Minimum residual life (years): 5'
+        - 'ADD-03:T42-1/image/r4: الحد الأدنى للعمر المتبقي (سنة): ٧'
+        - 'controller_validation: applied rule ADD-03 3.5'
+        - 'controller_validation: consistency (phases) ok=false'
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-001-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-T42-1-01:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The row is an image reading that no person has approved yet. crop_sha256 is null and model_rationale is
+          null, so nothing shows that the crop was inspected.
+        - The text of note 3 (ADD-03:T42-1/image/note3) is not printed in the units shown. I rely on the controller's
+          check that the quote was found.
+        - The consequence is a contractual replacement obligation at the project company's expense, not a rejection
+          or disqualification. It should stay off A3. The controller already keeps it off A3 and A5 while the reading
+          is pending.
+        - Whether the figures are a minimum or a maximum is read from the headings. The row quote carries 'الحد
+          الأدنى للعمر المتبقي' and 'أقصى درجة للحالة', and the preamble says the remaining life 'يجب ألا يقل',
+          so a minimum is consistent. A person still has to approve the reading.
+        evidence_checked:
+        - 'ADD-03:T42-1/image preamble: يجب ألا يقل العمر المتبقي ... عمّا هو مبيِّن أدناه'
+        - ADD-03:T42-1/image/r1 row text
+        - 'note3 quote: ٣. يُستبدَل على نفقة شركة المشروع قبل تاريخ النقل كلَّ أصل لا يستوفي متطلبات هذا الجدول.'
+        - controller validation records
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-T42-1-02:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - It is the same image reading, pending approval. crop_sha256 and model_rationale are null.
+        - The row cites reading ADD-03-p3-r1 while its evidence unit is r2. That matches the single table reading,
+          but a person should confirm it.
+        - The text of note 3 is not printed in the units shown. I rely on the controller's check that the quote
+          was found.
+        evidence_checked:
+        - ADD-03:T42-1/image/r2 row text
+        - note3 quote
+        - controller validation records
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-T42-1-03:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - It is the same image reading, pending approval. crop_sha256 and model_rationale are null.
+        - The text of note 3 is not printed in the units shown. I rely on the controller's check that the quote
+          was found.
+        evidence_checked:
+        - ADD-03:T42-1/image/r3 row text
+        - note3 quote
+        - controller validation records
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-T42-1-04:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - It is the same image reading, pending approval. crop_sha256 and model_rationale are null.
+        - The text of note 3 is not printed in the units shown. I rely on the controller's check that the quote
+          was found.
+        evidence_checked:
+        - ADD-03:T42-1/image/r4 row text
+        - note3 quote
+        - controller validation records
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+        model_reported: claude-sonnet-5-5
+  ADD-03-T42-1-05:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The printed '٢٤ شهراً' sits under a column headed '(سنة)'. That is a genuine ambiguity, but the note does
+          not begin with 'ambiguous:' and does not quote both readings. It says only 'unit not resolved', and the
+          confidence reason is not the required labelled statement.
+        - The confidence reason says 'the English-rendering cell says years'. No such cell appears in the evidence
+          shown, and a translation is not evidence for the source. This claim is unsupported here and should be
+          removed or quoted.
+        - The controller flagged the item as HUMAN DECISION PENDING because the word 'resolved' appears in its own
+          words. The note should be reworded so it does not suggest the point is settled.
+        - min_remaining_life_printed keeps the text as printed, which is correct. But the row still carries the
+          consequence from note 3 as if the threshold were fixed. It needs to state that the threshold (24 months
+          or 24 years) is open, with the decision owner named (Technical). The issue I-ADD-03-T42-5-UNIT is referenced,
+          but its text is not in the evidence shown.
+        - crop_sha256 is null, so nothing shows that the crop was inspected for the heading and unit.
+        evidence_checked:
+        - 'ADD-03:T42-1/image/r5 row text: الحد الأدنى للعمر المتبقي (سنة): ٢٤ شهراً'
+        - the confidence_reason and note text
+        - controller validation (human-owned check)
+        - note3 quote
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-20261006T201359Z-2503-downstream-002-critic
+        model_reported: claude-sonnet-5-5

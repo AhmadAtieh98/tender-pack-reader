@@ -48,10 +48,11 @@ from datetime import date
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_serializer
+from pydantic import BaseModel, ConfigDict, Field, model_serializer, model_validator
 
 from .amend import BASE, StageResult, UState, inserted_ref, unit_pin
-from .dates import Calendar, DateRule, Interpretation, interpretations, parse_date, planning_value
+from .dates import (Calendar, DateRule, Interpretation, counted_period_problem, interpretations, parse_date,
+                    planning_value)
 from .textnorm import normalize_arabic, normalize_latin
 from .util import load_yaml, sha256_text
 
@@ -121,6 +122,29 @@ class RuleDef(_Strict):
     source_unit: str
     text: str
     note: str = ""                               # kind unresolved: why the program does not compute it
+
+    @model_validator(mode="after")
+    def _no_period_on_a_point(self):
+        # session 13: a rule of kind anchor / as_at carrying an offset is refused where it is read (the register loader,
+        # every downstream row proposal), never planned on the anchor (dates.counted_period_problem)
+        why = counted_period_problem(self.kind, self.offset)
+        if why:
+            raise ValueError(f"date rule {self.rule_id}: {why}")
+        return self
+
+
+def trigger_deadline_rule(rule_id: str, dl: dict, source_unit: str) -> tuple[DateRule | None, str | None]:
+    """A condition's trigger deadline (amend.DeadlineRule dict) as a DateRule, or (None, why) when it is not a usable
+    rule (session 13: e.g. kind anchor with a counted period): the deadline is then listed with no date planned and the
+    reason, never on its anchor."""
+    try:
+        return DateRule(rule_id=rule_id, kind=dl.get("kind", "relative"), purpose="deadline", anchor=dl.get("anchor"),
+                        offset=int(dl.get("offset") or 0), unit=dl.get("unit", "calendar_day"),
+                        direction=dl.get("direction", "after"),
+                        fixed=date.fromisoformat(dl["fixed"]) if dl.get("fixed") else None,
+                        source_unit=source_unit or "", text=dl.get("text") or ""), None
+    except ValueError as e:
+        return None, str(e)
 
 
 class DateNote(_Strict):
@@ -916,13 +940,16 @@ class Register:
             dentry = None
             if dl:
                 rid = "TRIGGER-" + re.sub(r"[^A-Za-z0-9]+", "-", str(c["condition"])).strip("-").upper()
-                rule = DateRule(rule_id=rid, kind=dl.get("kind", "relative"), purpose="deadline", anchor=dl.get("anchor"),
-                                offset=int(dl.get("offset") or 0), unit=dl.get("unit", "calendar_day"),
-                                direction=dl.get("direction", "after"),
-                                fixed=date.fromisoformat(dl["fixed"]) if dl.get("fixed") else None,
-                                source_unit=c.get("trigger_unit") or "", text=dl.get("text") or "")
-                ins = interpretations(rule, anchors, self.cal_by_stage[s.stage])
-                plan = planning_value(rule, ins, self.policy)
+                rule, refused = trigger_deadline_rule(rid, dl, c.get("trigger_unit") or "")
+                if rule is None:                     # session 13: no date planned, the reason stated (never the anchor)
+                    ins = [Interpretation("refused", f"not computed: {refused}", None, "not stated in the pack")]
+                    plan = ins[0]
+                    out["flags"].append(f"{rid}: the trigger's deadline is not planned: {refused}")
+                    rule = DateRule(rule_id=rid, kind="unresolved", purpose="deadline", source_unit=c.get("trigger_unit")
+                                    or "", text=dl.get("text") or "(no words)", note=refused, anchor=dl.get("anchor"))
+                else:
+                    ins = interpretations(rule, anchors, self.cal_by_stage[s.stage])
+                    plan = planning_value(rule, ins, self.policy)
                 dentry = {"rule_id": rid, "text": rule.text, "source_unit": rule.source_unit, "purpose": "deadline",
                           "reread": None, "anchor": rule.anchor,
                           "anchor_value": anchors.get(rule.anchor).isoformat() if anchors.get(rule.anchor) else None,

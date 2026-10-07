@@ -147,7 +147,12 @@ def test_concession_issue_op_and_question_present_the_precedence_as_pending(real
     cq = _cq(real, "CQ-CONCESSION-TERM")
     for k in ("gap", "already_settled", "interim_handling", "practical_impact"):
         assert not _ASSERTS_PRECEDENCE.search(_own(cq.get(k))), (k, cq.get(k))
-    assert "no decision recorded" in cq["interim_handling"] and "Legal" in cq["interim_handling"]
+    # session 13 (F2; audit R2-4, deliberate): the 'pending, no decision recorded' label is the register writer's rule
+    # (clarify.presented: every question linked to a pending issue), no longer typed into this one entry by hand
+    from tenderpack import clarify
+    shown = next(c for c in clarify.presented(real["clarifications"], real.get("decisions"), real.get("pending_issues"),
+                                              real["curated_issues"]) if c["id"] == "CQ-CONCESSION-TERM")
+    assert "no decision recorded" in shown["interim_handling"] and "Legal" in shown["interim_handling"]
 
 
 def test_the_a3_concession_line_carries_the_pending_label(real, issues):

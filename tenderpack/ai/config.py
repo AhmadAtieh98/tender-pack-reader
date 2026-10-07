@@ -2,7 +2,8 @@
 retention notes). Model identifiers appear only there, as configuration values.
 
 What is checked on load: the file has `routes` and every route named on the command line exists; a cap is a
-non-negative number or null; prices are {model: {input_per_mtok, output_per_mtok}} numbers. A failure raises
+non-negative number or null; prices are {model: {input_per_mtok, output_per_mtok}} numbers; `policy` (session 13) holds
+only `add_sections` (sections ADDED to the runtime policy, tenderpack.ai.policy.config_sections; never a replacement). A failure raises
 ConfigError (the CLI prints it and exits 2); nothing falls back to a default model or route silently.
 
 Caps are merged in this order (later wins): `defaults.caps`, the route's `caps`, then caps given on the command
@@ -40,6 +41,12 @@ def load(path: Path | None = None) -> dict:
                 raise ConfigError(f"{p}: {where}.caps.{k} is not a known cap ({', '.join(CAP_KEYS)})")
             if v is not None and (not isinstance(v, (int, float)) or v < 0):
                 raise ConfigError(f"{p}: {where}.caps.{k} must be a non-negative number or null, got {v!r}")
+    if "policy" in cfg:                       # session 13: a configuration may only ADD a section to the policy
+        from .policy import PolicyError, config_sections
+        try:
+            config_sections(cfg)
+        except PolicyError as e:
+            raise ConfigError(f"{p}: {e}") from None
     cfg["_path"] = str(p)
     return cfg
 

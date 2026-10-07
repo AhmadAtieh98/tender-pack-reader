@@ -450,7 +450,9 @@ def test_every_route_applies_the_same_validation_to_the_same_answer(ws, tmp_path
     cfg_h["host_session"] = {**cfg_h["host_session"], "claude_bin": str(cli)}
     ctx = _ctx(tmp_path / "ho", ws, cfg_h, route="host")
     batch(ctx)
-    out = W._host_request(ctx, "downstream-001", R.spec("downstream", system="S"), Sess(), packet,
+    # session 13 (implementer C, deliberate): a system prompt is the runtime policy's composition (requests.spec refuses
+    # a hand-written one such as system="S"); the host route's own composition here
+    out = W._host_request(ctx, "downstream-001", R.spec("downstream", route="host"), Sess(), packet,
                           {"run_id": "x", "created": "-", "route": "host", "provider": "host-session",
                            "model_requested": "stand-in host", "model_reported": None, "task": DOWNSTREAM_TASK})
     results["host"] = ([it.id for it in out.answer.items], outcome(ctx))

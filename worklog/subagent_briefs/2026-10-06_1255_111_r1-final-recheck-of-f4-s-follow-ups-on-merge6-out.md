@@ -1,0 +1,8 @@
+# Follow-up message 111: R1: final recheck of F4's follow-ups on merge6/out
+
+Sent 2026-10-06 12:55:07 UTC to agent `a0ca51494349ab27e` (a resume or an added instruction to an agent launched earlier; the agent's brief is the launch file it belongs to).
+The text below is the message exactly as sent (exported from the session transcript on 6 Oct 2026, session 13).
+
+---
+
+Final recheck, R1, short. Fixer F4 addressed your recheck's three new points and two nits: R1-7 one issue set per row in A1 and A2 (`signals.issue_ids_of`; an issue named in an op's note no longer reaches the op's targets; T24 now on ResidualChlorine, pH and the relationship targets in both); R1-8 a confirming op reads "proposed op X (awaiting a person's acceptance)"; R1-9 an issue bears from the stage its evidence exists (`issue_since`/`in_force_pending`; VOL-I-9.2-01 CONFIRMED at ADD-01, NOT SETTLED at ADD-02); the 'at all times' limb in one issue only; a `context (not binding)` column in `a2_relationship_impact`. The FINAL deliverables are the render at `<scratch>/merge6/out/` (`<scratch>` = `/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s13`), the code and curation in the main tree. Same rules: read-only, nothing approved. Say for R1-7, R1-8, R1-9 and the two nits: fixed / partly / not, with evidence; whether anything new is wrong (F4 reports that VOL-V-29.3-01 at ADD-01 is now NOT SETTLED because T24 reaches it through REL-T24, the same set A1 shows, and that CHANGED rows now name their pending issues: judge both against the sources); and the final result of every matrix row in your scope. Write `<scratch>/audit/reports/R1_final.md` and reply in at most 8 lines with your model, effort and elapsed time. Budget 15 minutes.

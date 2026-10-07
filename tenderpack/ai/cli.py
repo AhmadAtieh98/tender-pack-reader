@@ -37,6 +37,10 @@ candidate A1-A5 outputs and a review packet, checkpointed and resumable (staging
           the manual host path: the set answering a waiting batch's packet (batches/<id>.packet.json); recorded
           (who, when, the file's sha256) and validated as an API run's; the run then continues
   run-status RUN_ID                                 the checkpoint summary and the timings
+  quick-review ADD-NN --pdf PATH [--route R] [--budget-minutes N] [--max-tokens N]   (session 13, part 4)
+          a separate, bounded AI quick review (ONE session, the retrieval tools only, the published workspace): a
+          PRELIMINARY AI BRIEFING under staging/ai/quick-review/<qr id>/; `quick-review compare QR RUN`, `answer`,
+          `offer`, `revalidate` (tenderpack/ai/quick_review.py)
 Routes layer (tenderpack/ai/cli_routes.py, when present): critic, host-session, plan-batches, routes.
 Session 12: --offline on run, resume, propose, capabilities, critic, plan-batches and routes (offline mode,
 tenderpack/ai/offline.py): only the local ollama route (the recorded test replay aside); a hosted route is refused
@@ -100,6 +104,15 @@ def add_parser(sub) -> None:
     w.add_argument("--json", default="{}", help="the tool's arguments as a JSON object")
     common(w)
     m = s.add_parser("serve-mcp")
+    m.add_argument("--tools", help="session 13: offer and run only these tools (comma-separated; deny-by-default for a "
+                                   "session the program starts); default every tool")
+    m.add_argument("--submit-once", action="store_true",
+                   help="session 13: refuse a second submission in this session (the first stands)")
+    m.add_argument("--require-crops", help="session 13: refuse submit_proposals until get_crop was called for each of "
+                                           "these units (comma-separated)")
+    m.add_argument("--submission-record", help="session 13: write a successful submit_proposals' run id, status and "
+                                               "staging folder to this file at once (a workflow batch's record, so a "
+                                               "submission survives the orchestrator's interruption)")
     common(m)
     c = s.add_parser("capabilities")
     c.add_argument("--route", required=True, choices=["recorded", "anthropic", "openrouter", "ollama", "host"])
@@ -119,6 +132,8 @@ def add_parser(sub) -> None:
     lk.add_argument("--by")
     common(lk)
     _add_workflow(s, common)
+    from . import quick_review                     # session 13, part 4: `ai quick-review` (tenderpack/ai/quick_review.py)
+    quick_review.add_parser(s, common)
     routes = _routes()
     if routes is not None:
         routes.add_subcommands(s)
@@ -169,6 +184,10 @@ def _add_workflow(s, common) -> None:
     rs.add_argument("--no-retry", action="store_true", help="do not ask failed batches again")
     rs.add_argument("--offline", action="store_true", help="offline mode for this run from now on (ollama runs only)")
     rs.add_argument("--base-run", help="the run's base run, as recorded when it started (checked; another is refused)")
+    rs.add_argument("--allow-code-change", metavar="REASON",
+                    help="session 13: resume although the code changed since the run's last segment; the reason, the "
+                         "new code identity and the time are recorded and the run says its segments ran on different "
+                         "code (without it such a resume is refused, exit 7)")
     rs.add_argument("--from", dest="from_step", choices=list(STEPS),
                     help="rerun this step and the later ones even when done (after a code change); "
                          "batches that succeeded are never asked again")
@@ -180,6 +199,7 @@ def _add_workflow(s, common) -> None:
     sb.add_argument("--host-model", help="the model the host used (analysis batches: required unless the run has it)")
     sb.add_argument("--batch", help="the batch answered (default: the one waiting)")
     sb.add_argument("--no-continue", action="store_true", help="record the submission without continuing the run")
+    sb.add_argument("--allow-code-change", metavar="REASON", help="as for resume (session 13)")
     common(sb)
     st = s.add_parser("run-status", help="a workflow run's checkpoint summary and timings")
     st.add_argument("run_id")
@@ -207,9 +227,11 @@ def _run_workflow(a) -> int:
                       base_run=a.base_run)
     elif a.ai_cmd == "resume":
         res = W.resume(a.run_id, Path(a.out), stop_after=a.stop_after, retry_failed=not a.no_retry,
-                       from_step=a.from_step, offline=a.offline, base_run=a.base_run)
+                       from_step=a.from_step, offline=a.offline, base_run=a.base_run,
+                       allow_code_change=a.allow_code_change)
     elif a.ai_cmd == "submit-batch":
-        res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue)
+        res = W.submit_batch(a.run_id, Path(a.file), a.by, a.host_model, a.batch, Path(a.out), cont=not a.no_continue,
+                             allow_code_change=a.allow_code_change)
     else:
         cp = W.load(a.run_id, Path(a.out))
         res = W.summary(cp)
@@ -236,14 +258,21 @@ def run(a) -> int:
     routes = _routes()
     if routes is not None and a.ai_cmd in getattr(routes, "COMMANDS", ()):
         return routes.handle(a)
+    if a.ai_cmd == "quick-review":
+        from . import quick_review
+        return quick_review.cli(a)
     try:
         if a.ai_cmd in ("run", "resume", "submit-batch", "run-status"):
             from .candidate import CandidateError
+            from .workflow import CodeChanged
             try:
                 return _run_workflow(a)
             except CandidateError as e:
                 print(f"REFUSED: {e}")
                 return 2
+            except CodeChanged as e:                         # session 13: a distinct exit code
+                print(f"REFUSED (code changed): {e}")
+                return CodeChanged.exit_code
         if a.ai_cmd == "capabilities":
             from .providers import make
             from .providers.base import ProviderError
@@ -305,7 +334,14 @@ def run(a) -> int:
             return 0
         if a.ai_cmd == "serve-mcp":
             from ..mcp_server import serve
-            return serve(ws)
+            from .tools import TOOLS
+            names = [x for x in (a.tools or "").split(",") if x] if a.tools is not None else None
+            if names is not None and (not names or [x for x in names if x not in TOOLS]):
+                print(f"refused: --tools names unknown tool(s) {[x for x in names if x not in TOOLS] or names}")
+                return 2
+            return serve(ws, tools=names, submit_once=a.submit_once,
+                         require_crops=[x for x in (a.require_crops or "").split(",") if x],
+                         submission_record=a.submission_record)
         if a.ai_cmd == "promote":
             code, msgs = controller.promote(ws, a.run_id, a.by, Path(a.amendments_dir) if a.amendments_dir else None,
                                             Path(a.proposals_dir) if a.proposals_dir else None)

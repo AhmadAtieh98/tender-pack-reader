@@ -40,6 +40,9 @@ the same safeguards on every route (recorded, anthropic, openrouter, ollama: the
 Nothing here assigns a verification status: the controller (analysis), downstream.validate, regionread.validate and
 the critic's guard do, exactly as before.
 
+Session 13 (part 4): the `quick_review` phase (tenderpack/ai/quick_review.py) is a fifth phase of the same path: ONE
+bounded session per quick review, its policy composed like the others' and its tools the read-only retrieval tools.
+
 Session 12: compact_shared(packet) sends the shared part of a packet smaller (tool names only, schema titles dropped,
 $defs printed once); RateGate is the run's shared rate-limit pause when batches run at once (call_provider and
 call_host wait for it before each call and pause it on a 429); in offline mode host_repair refuses before any process
@@ -61,7 +64,7 @@ from . import budget as B
 from . import config as C
 from .runlog import RunLog, truncate
 
-PHASES = ("analysis", "reading", "downstream", "critic")
+PHASES = ("analysis", "reading", "downstream", "critic", "quick_review")
 FAILURE_CLASSES = ("rate_limit", "provider", "malformed")
 PACKET_NOTE = ("The packet is sent ONCE per session: the state identity, the rules, the schema and the shared targets "
                "are not repeated per item.")
@@ -137,41 +140,51 @@ class TaskSpec:
     parse_errors: tuple = (Exception,)
 
 
-def spec(phase: str, system: str | None = None, parse: Callable | None = None, tools: list | None = None) -> TaskSpec:
-    """The task of a phase (see the module docstring). `system`, `parse` and `tools` override the phase's own."""
+def spec(phase: str, system: str | None = None, parse: Callable | None = None, tools: list | None = None, *,
+         route: str = "api", cfg: dict | None = None) -> TaskSpec:
+    """The task of a phase (see the module docstring). The system prompt is the runtime policy's composition for the
+    phase on `route` (session 13: policy.compose; the routes of a family share it), with any section config/ai.yaml
+    adds (`cfg`). `system` may replace it only by another policy composition (a host session's own,
+    sess.system_prompt()): a hand-written prompt is refused (policy.PolicyError). `tools` may narrow the phase's tools,
+    never add one (policy.check_tools: deny-by-default). `parse` overrides the phase's own."""
     from pydantic import ValidationError
+    from . import policy
     if phase == "analysis":
         from . import controller
         from .contract import ChangeProposal
         from .providers import structured as SO
-        s = TaskSpec("analysis", controller.TASK, controller.SYSTEM, SO.proposal_schema(), controller.parse_set,
-                     tuple(controller.MODEL_TOOLS), False, ChangeProposal, "items", "provision",
+        s = TaskSpec("analysis", controller.TASK, "", SO.proposal_schema(), controller.parse_set,
+                     (), False, ChangeProposal, "items", "provision",
                      (controller.ParseError, ValidationError))
     elif phase == "downstream":
         from . import controller
         from . import downstream as DS
         from .contract import DOWNSTREAM_TASK, DownstreamItem, downstream_fill_schema
-        s = TaskSpec("downstream", DOWNSTREAM_TASK, DS.SYSTEM, downstream_fill_schema(), DS.parse,
-                     tuple(controller.MODEL_TOOLS), False, DownstreamItem, "items", "task",
+        s = TaskSpec("downstream", DOWNSTREAM_TASK, "", downstream_fill_schema(), DS.parse,
+                     (), False, DownstreamItem, "items", "task",
                      (DS.DownstreamParseError, controller.ParseError, ValidationError))
     elif phase == "reading":
         from . import controller
         from . import regionread as RR
         from .contract import READING_TASK
-        s = TaskSpec("reading", READING_TASK, RR.SYSTEM, RR.answer_schema(), RR.parse, ("get_region", "validate_reading"),
+        s = TaskSpec("reading", READING_TASK, "", RR.answer_schema(), RR.parse, (),
                      True, None, None, "region_id", (RR.RegionError, controller.ParseError, ValidationError))
     elif phase == "critic":
         from . import critic as CR
-        s = TaskSpec("critic", CR.CRITIC_TASK, CR.CRITIC_BATCH_SYSTEM, CR.CRITIC_BATCH_SCHEMA, CR.parse_batch, (), False,
+        s = TaskSpec("critic", CR.CRITIC_TASK, "", CR.CRITIC_BATCH_SCHEMA, CR.parse_batch, (), False,
                      CR.ReviewEntry, "reviews", "item", (CR.CriticError, ValidationError))
+    elif phase == "quick_review":                   # session 13, part 4: ONE bounded briefing session (quick_review.py)
+        from . import quick_review as QR
+        s = TaskSpec("quick_review", QR.TASK, "", QR.answer_schema(), QR.parse, (), False,
+                     QR.PredictedChange, "items", "provision", (QR.QuickReviewError, ValidationError))
     else:
         raise ValueError(f"no phase {phase!r} ({', '.join(PHASES)})")
-    if system is not None:
-        s.system = system
+    s.system = policy.compose(phase, route, cfg=cfg) if system is None else \
+        policy.require_composed(system, f"the {phase} request's system prompt")
+    # the API routes are offered the phase's read-only tools (the submission tool exists on the host route only)
+    s.tools = policy.tools(phase, "api") if tools is None else policy.check_tools(phase, tools, "api")
     if parse is not None:
         s.parse = parse
-    if tools is not None:
-        s.tools = tuple(tools)
     return s
 
 
@@ -326,7 +339,7 @@ def call_provider(prov, req, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
             attempts.append(a)
             record and record(a)
             _gate_pause(policy, wait)
-            sleep(wait)
+            _pause(sleep, wait)
             rl += 1
             continue
         if err.retryable and pv < policy.provider_retries:
@@ -334,7 +347,7 @@ def call_provider(prov, req, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
             a = _attempt(cls, err, wait, n)
             attempts.append(a)
             record and record(a)
-            sleep(wait)
+            _pause(sleep, wait)
             pv += 1
             continue
         a = _attempt(cls, err, None, n)
@@ -342,6 +355,27 @@ def call_provider(prov, req, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
         record and record(a)
         raise ProviderFailed(f"provider failure ({err.kind}: {_short(err.message, 300)}) after {pv} retr"
                              f"{'y' if pv == 1 else 'ies'}", attempts)
+
+
+def _stopping() -> bool:
+    try:
+        from . import hostsession as HS
+        return HS.stopping()
+    except Exception:                                    # noqa: BLE001 (never a second failure)
+        return False
+
+
+def _pause(sleep, wait: float) -> None:
+    """Session 13 (E161): the backoff wait wakes at once when the run is told to stop (a worker asleep in a 240-second
+    rate-limit backoff used to delay the exit by that long); a test's own sleep is called as given."""
+    if sleep is time.sleep:
+        try:
+            from . import hostsession as HS
+            HS.STOP.wait(wait)
+            return
+        except Exception:                                # noqa: BLE001 (then the plain sleep)
+            pass
+    sleep(wait)
 
 
 def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: random.Random | None = None,
@@ -352,6 +386,8 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
     attempts: list[dict] = []
     rl = pv = 0
     while True:
+        if _stopping() and attempts:                     # session 13 (E161): woken by the stop; not asked again
+            raise ProviderFailed("the run is stopping: the session is not asked again", attempts)
         _gate_wait(policy, sleep)                        # session 12: a pause another worker's 429 started
         res = run()
         cls = getattr(res, "failure_class", None)
@@ -362,6 +398,36 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
         n = len(attempts) + 1
         err = type("E", (), {"kind": f"host_{cls}", "status": getattr(res, "api_error_status", None),
                              "message": f"{res.error or ''} {_short(res.final_text, 200)}".strip()})()
+        if _stopping():
+            # session 13 (E161): the interruption killed this session (exit 143, no result); the run is ending and
+            # must not be kept alive by a retry that starts another session (blind-07 attempt 3: two sessions started
+            # 3 s after the SIGTERM, the process could not end, and the panel refused the resume)
+            a = _attempt(cls, err, None, n)
+            attempts.append(a)
+            record and record(a)
+            raise ProviderFailed(f"host session ended by the interruption ({err.message}); the run is stopping: not "
+                                 f"asked again", attempts)
+        if cls == "setup":
+            # session 13 (E159): the session had no tools (its MCP server did not connect, or the host offered none of
+            # its tools): the environment must be fixed; asking again would only produce another tool-less text
+            a = _attempt(cls, err, None, n)
+            attempts.append(a)
+            record and record(a)
+            raise ProviderFailed(f"host session setup failure ({err.message}); not retried: the host session had no "
+                                 f"tools (fix the environment, then resume)", attempts)
+        sub = getattr(res, "submission", None)
+        if isinstance(sub, dict) and sub.get("run_id"):
+            # session 13 (blind-05 regression defect 2): the session reached submit_proposals (its set is staged and
+            # validated by the controller) before the limit or the failure ended it: a completed answer, kept. The
+            # failure is recorded; a rate limit still pauses the other workers (the shared gate).
+            a = {**_attempt(cls, err, None, n), "note": f"after the submission ({sub['run_id']}): the submitted set is "
+                                                        "kept; the session is not asked again"}
+            attempts.append(a)
+            record and record(a)
+            if cls == "rate_limit":
+                hint = getattr(res, "reset_in_s", None)
+                _gate_pause(policy, hint if hint is not None else policy.backoff_s[0])
+            return res
         if cls == "rate_limit":
             hint = getattr(res, "reset_in_s", None)
             if policy.after_deferral or rl >= policy.max_tries or (hint is not None and hint > policy.honour_reset_up_to_s):
@@ -380,7 +446,7 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
             attempts.append(a)
             record and record(a)
             _gate_pause(policy, wait)
-            sleep(wait)
+            _pause(sleep, wait)                             # session 13 (E161): wakes at the stop
             rl += 1
             continue
         if pv < policy.host_retries:
@@ -388,7 +454,7 @@ def call_host(run: Callable, policy: FailurePolicy, *, sleep=time.sleep, rng: ra
             a = _attempt(cls, err, wait, n)
             attempts.append(a)
             record and record(a)
-            sleep(wait)
+            _pause(sleep, wait)                             # session 13 (E161): wakes at the stop
             pv += 1
             continue
         a = _attempt(cls, err, None, n)
@@ -661,10 +727,8 @@ def repair_message(sp: TaskSpec, env: list[str], problems: list[dict]) -> str:
                      f"{sp.item_key} {p.get(sp.item_key)!r}): " + " | ".join(p["errors"]))
     if len(problems) > 40:
         lines.append(f"- … {len(problems) - 40} more item(s) with problems")
-    lines.append("Reply again with ONLY the corrected JSON object described by `schema` in the packet: the whole object, "
-                 "every item, fixing what is listed (this is the one re-ask: an item that still fails its schema is set "
-                 "aside as malformed; a reference that still fails is rated by the controller). An item's `statements` "
-                 "lists only ids of entries of the set's `statements`.")
+    from . import policy
+    lines.append(policy.reask())                    # session 13: the repair turn's instruction, from the runtime policy
     return "\n".join(lines)
 
 
@@ -721,11 +785,14 @@ def run_tool(ws, call, log: RunLog, images_ok: bool, maxchars: int, allowed: lis
     """A tool call of a request: only the tools offered; arguments are data; get_crop and get_region attach their images
     when the provider takes images (the phase's capability check already refused a route without them where images
     are needed)."""
-    from .tools import ToolError, call_tool
+    from .tools import TOOLS, ToolError, call_tool
     images: list[dict] = []
     try:
         if call.name not in allowed:
             raise ToolError(f"no tool {call.name!r} is available here; tools: {allowed}")
+        if call.name in TOOLS and TOOLS[call.name].writes:       # session 13: never a writer from a model's request
+            raise ToolError(f"{call.name} writes: an application-route model never calls a writing tool (deny-by-"
+                            "default; the controller validates and stages the answer)")
         res = call_tool(ws, call.name, call.arguments, caller="controller")
         content, err = json.dumps(res, ensure_ascii=False, default=str), False
         if call.name in ("get_crop", "get_region"):
@@ -937,19 +1004,20 @@ def _now() -> str:
 
 # ---------------------------------------------------------------------------------------------- host route
 
-REPAIR_RULES = ("\nRepair rules: you have NO tools now. The evidence you read before is not repeated: correct ONLY what "
-                "the listed problems name, keep every quotation as it was, and reply with ONLY the corrected JSON "
-                "object (no prose, no code fence).")
-
-
 def host_repair(sp: TaskSpec, cfg: dict, previous: str, env: list[str], problems: list[dict], cwd: Path, log: RunLog,
                 policy: FailurePolicy, *, model: str | None = None, sleep=time.sleep, rng=None, record=None,
                 runner=None) -> tuple[str, dict]:
     """The bounded repair on the host route: ONE plain session (no tools) given the previous answer, the schema and the
     errors; returns (its final text, the session's record). The failure policy applies to it too."""
     from . import hostsession as HS
+    from . import policy
+    from .offline import check_host_session
     kw = {"runner": runner} if runner is not None else {}
-    ps = HS.PlainSession(cfg, sp.system + REPAIR_RULES, model=model, label=f"repair-{sp.phase}", **kw)
+    check_host_session(cfg, f"a plain host session (repair-{sp.phase})")     # offline mode, before composing anything
+    # session 13: the repaired phase's rules + the repair rules + the plain mechanics (policy.compose), never the host
+    # session's tool and submission rules beside "you have NO tools now" (the old contradiction)
+    ps = HS.PlainSession(cfg, policy.compose("repair", "host", of=sp.phase, cfg=cfg), model=model,
+                         label=f"repair-{sp.phase}", **kw)
     prompt = (repair_message(sp, env, problems) + "\n\nSCHEMA\n" + json.dumps(sp.schema, ensure_ascii=False)
               + "\n\nYOUR PREVIOUS ANSWER\n" + (previous or "(none: the session ended without an answer)"))
     res = call_host(lambda: ps.run(prompt, cwd, log), policy, sleep=sleep, rng=rng, record=record)

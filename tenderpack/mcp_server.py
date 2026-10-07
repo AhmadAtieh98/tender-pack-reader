@@ -18,7 +18,12 @@ Errors: parse error -32700, invalid request -32600, unknown method -32601, unkno
 internal error -32603. A tool's own refusal (e.g. no such unit) is a result with isError true, as MCP specifies.
 
 Every tool is read-only except get_task_packet with claim=true (the addendum's lock), request_review and
-submit_proposals, which write to staging/ai only (never curation/). Every call is logged to
+submit_proposals, which write to staging/ai only (never curation/). Session 13: a session the program starts runs the
+server with `--tools` (only that session's tools are listed and run; deny-by-default), `--submit-once` (a second
+submission is refused, the first stands) and `--require-crops` (submit_proposals is refused until get_crop was called
+for each image target); `initialize` returns the runtime policy's short host entry (policy.host_entry). A workflow
+batch's session also passes `--submission-record FILE`: a successful submit_proposals writes its run id, status and
+staging folder there at once (it points at the staged set and decides nothing). Every call is logged to
 worklog/model_calls/mcp-<session>.jsonl (arguments and a truncated result; secrets redacted). Anything the tools print
 goes to stderr, so stdout carries only protocol messages.
 """
@@ -36,10 +41,12 @@ SERVER_INFO = {"name": "tenderpack", "version": "s10-ai-1"}
 MAX_IMAGES = 3
 MAX_IMAGE_BYTES = 3_750_000
 _CROP_ORDER = {"unit": 0, "cell": 1, "region_crop": 2, "native": 3}
-INSTRUCTIONS = ("Read-only tools over a confidential tender pack's evidence build, plus staging-only writers. Proposals "
-                "are validated by the controller, which assigns every verification status; nothing is accepted or "
-                "published here; a named person decides. Claim an addendum with get_task_packet(claim=true) before "
-                "working on it, and submit with submit_proposals(proposal_set, host_model).")
+# session 13: the coding hosts' entry text is the runtime policy's short host entry (tenderpack/ai/policy/
+# 90_host_entry.md): it points to the runtime prompt the program supplies explicitly (the task packet's `system`, a
+# session's --system-prompt) and is never a second copy of the rules
+def _entry() -> str:
+    from .ai.policy import host_entry
+    return host_entry()
 
 
 def _err(id_, code: int, message: str) -> dict:
@@ -47,9 +54,37 @@ def _err(id_, code: int, message: str) -> dict:
 
 
 class Server:
-    def __init__(self, ws, log=None):
+    """`tools` (session 13): the only tools this server offers and runs (deny-by-default; None: every tool, for a
+    person's own MCP client). `submit_once`: after one successful submit_proposals or request_review, a later one is
+    refused and the first stands. `require_crops`: submit_proposals is refused until get_crop was called for each of
+    these units (a program-run host session's image targets)."""
+
+    def __init__(self, ws, log=None, *, tools=None, submit_once: bool = False, require_crops=(),
+                 submission_record=None):
         self.ws, self.log = ws, log
         self.initialized = False
+        self.tools = None if tools is None else list(tools)
+        self.submit_once, self.require_crops = bool(submit_once), [str(u) for u in require_crops or ()]
+        self.submitted: str | None = None
+        # session 13: where a successful submit_proposals is recorded at once (atomically), so that a workflow batch
+        # whose orchestrator is killed after the submission finds its staged set on resume (workflow._reuse_submission)
+        self.submission_record = Path(submission_record) if submission_record else None
+        self.crops_called: set[str] = set()
+
+    def _offered(self, name: str) -> bool:
+        return self.tools is None or name in self.tools
+
+    def _guard(self, name: str, args: dict) -> str | None:
+        """Why this call is refused by the session's permissions (session 13), or None."""
+        if name in ("submit_proposals", "request_review"):
+            if self.submit_once and self.submitted:
+                return (f"refused: this session already submitted ({self.submitted}); a session submits ONCE and the "
+                        "first submission stands")
+            missing = [u for u in self.require_crops if u not in self.crops_called]
+            if name == "submit_proposals" and missing:
+                return ("refused: look at the image targets first: call get_crop for " + ", ".join(missing)
+                        + " and say in model_rationale what the image shows, then submit")
+        return None
 
     def _log(self, **kw) -> None:
         if self.log:
@@ -75,32 +110,46 @@ class Server:
             return {"jsonrpc": "2.0", "id": id_, "result": {
                 "protocolVersion": v if v in SUPPORTED else SUPPORTED[0],
                 "capabilities": {"tools": {"listChanged": False}}, "serverInfo": SERVER_INFO,
-                "instructions": INSTRUCTIONS}}
+                "instructions": _entry()}}
         if method == "ping":
             return {"jsonrpc": "2.0", "id": id_, "result": {}}
         if method == "tools/list":
             from .ai.tools import TOOLS
             return {"jsonrpc": "2.0", "id": id_, "result": {"tools": [
                 {"name": t.name, "description": t.description + (" (writes to staging only)" if t.writes else " (read-only)"),
-                 "inputSchema": t.input_schema} for t in TOOLS.values()]}}
+                 "inputSchema": t.input_schema} for t in TOOLS.values() if self._offered(t.name)]}}
         if method == "tools/call":
             return self._call(id_, params)
         return _err(id_, -32601, f"method not found: {method}")
 
     def _call(self, id_, params: dict) -> dict:
         from .ai.budget import Refused
-        from .ai.tools import TOOLS, ToolError, call_tool, check_args
+        from .ai.tools import TOOLS, ToolError, check_args
+        from .ai import tools as T
         name, args = params.get("name"), params.get("arguments") or {}
-        if name not in TOOLS:
-            return _err(id_, -32602, f"unknown tool: {name}")
+        if name not in TOOLS or not self._offered(name):
+            self._log(tool=name, refused="not offered to this session")
+            return _err(id_, -32602, f"unknown tool: {name}" + ("" if name not in TOOLS else
+                                                                " (not offered to this session)"))
         try:
             check_args(TOOLS[name].input_schema, args)
         except ToolError as e:
             return _err(id_, -32602, f"invalid arguments for {name}: {e}")
+        why = self._guard(name, args)
+        if why:
+            self._log(tool=name, arguments=args, is_error=True, refused=why)
+            return {"jsonrpc": "2.0", "id": id_, "result": {"content": [{"type": "text", "text": json.dumps(
+                {"error": why}, ensure_ascii=False)}], "isError": True}}
+        if name == "get_crop":
+            self.crops_called.add(str(args.get("unit_id")))
         try:
             with contextlib.redirect_stdout(sys.stderr):
-                res = call_tool(self.ws, name, args, caller="mcp")
+                res = T.call_tool(self.ws, name, args, caller="mcp")
             text, is_error = json.dumps(res, ensure_ascii=False, default=str), False
+            if name in ("submit_proposals", "request_review") and isinstance(res, dict) and res.get("run_id"):
+                self.submitted = str(res["run_id"])
+                if name == "submit_proposals" and self.submission_record is not None:
+                    self._record_submission(res)
         except (ToolError, Refused) as e:
             text, is_error = json.dumps({"error": str(e)}, ensure_ascii=False), True
         except Exception as e:                                    # noqa: BLE001
@@ -114,6 +163,21 @@ class Server:
                   **({"images_sent": sent} if name in ("get_crop", "get_region") else {}))
         return {"jsonrpc": "2.0", "id": id_, "result": {"content": [{"type": "text", "text": text}, *images],
                                                          "isError": is_error}}
+
+    def _record_submission(self, res: dict) -> None:
+        """Session 13: the submission's run id, status and staging folder written to `submission_record` (a temporary
+        sibling, then os.replace). The record only points at the set the controller staged; it decides nothing."""
+        rec = {"run_id": res.get("run_id"), "status": res.get("status"), "staging": res.get("staging"),
+               "ts": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "pid": os.getpid()}
+        try:
+            p = self.submission_record
+            p.parent.mkdir(parents=True, exist_ok=True)
+            tmp = p.with_name(p.name + f".tmp{os.getpid()}")
+            tmp.write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")
+            os.replace(tmp, p)
+            self._log(tool="submission_record", record=str(p), submission=rec)
+        except OSError as e:                                     # the session's answer stands; only the record failed
+            self._log(tool="submission_record", record=str(self.submission_record), error=str(e))
 
     @staticmethod
     def _crop_images(res: dict, keep_order: bool = False) -> tuple[list[dict], list[dict]]:
@@ -141,14 +205,17 @@ class Server:
         return blocks, sent
 
 
-def serve(ws, stdin=None, stdout=None) -> int:
+def serve(ws, stdin=None, stdout=None, *, tools=None, submit_once: bool = False, require_crops=(),
+          submission_record=None) -> int:
     from .ai.runlog import RunLog
     stdin = stdin or sys.stdin
     out = stdout or sys.stdout
     session = f"mcp-{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}-{os.getpid()}"
     log = RunLog(session, [Path(ws.worklog) / f"{session}.jsonl"])
-    log.event("mcp_start", evidence=str(ws.evidence), pack=str(ws.pack), staging=str(ws.staging))
-    srv = Server(ws, log)
+    log.event("mcp_start", evidence=str(ws.evidence), pack=str(ws.pack), staging=str(ws.staging),
+              tools=tools if tools is not None else "all", submit_once=submit_once, require_crops=list(require_crops))
+    srv = Server(ws, log, tools=tools, submit_once=submit_once, require_crops=require_crops,
+                 submission_record=submission_record)
     for line in stdin:
         line = line.strip()
         if not line:

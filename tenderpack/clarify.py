@@ -161,11 +161,14 @@ def with_window(entry: dict, win: dict | None) -> dict:
 
 
 def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None = None,
-          state: dict | None = None) -> list[str]:
+          state: dict | None = None, row_ids: set[str] | None = None) -> list[str]:
     """Findings (strings, 'where: what'). `cutoff` (effective_cutoff) adds the cut-off checks. `state` (session 12,
     blind-06 follow-up 2): the working stage's unit state; a quotation is then verbatim when it is found in the unit's
     printed text OR in its effective text at that stage (the words as amended), so a question about amended words
-    is not refused for quoting them; a quotation matching neither is still a finding, naming both texts."""
+    is not refused for quoting them; a quotation matching neither is still a finding, naming both texts.
+    Session 13 (F2; audit R2-1): a `pending_decision` entry must link at least one issue (it is mirrored by an issue,
+    so A1's Issues sheet, the A3 page, a3_detail.html and A4 name one pending set); (R2-7) an entry's curated `rows`
+    must exist when `row_ids` is given."""
     by_id = {u["unit_id"]: u for u in units}
 
     def effective_text(uid: str) -> str | None:
@@ -243,6 +246,8 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
         bad = [i for i in c.get("linked_issues") or [] if i not in issue_ids]
         if bad:
             out.append(f"{cid}: linked issues that do not exist: {bad}")
+        if row_ids is not None and [x for x in c.get("rows") or [] if x not in row_ids]:
+            out.append(f"{cid}: rows that do not exist: {[x for x in c.get('rows') or [] if x not in row_ids]}")
         quotes(cid, c.get("sources"))
     for i, c in enumerate(reg.get("checked_no_question") or []):
         quotes(f"checked_no_question[{c.get('topic', i)}]", c.get("sources"))
@@ -254,6 +259,10 @@ def check(reg: dict, units: list[dict], issue_ids: set[str], cutoff: dict | None
         bad = [x for x in c.get("linked_issues") or [] if x not in issue_ids]
         if bad:
             out.append(f"{name}: linked issues that do not exist: {bad}")
+        if not [x for x in c.get("linked_issues") or [] if x in issue_ids]:
+            out.append(f"{name}: not mirrored by an issue: a pending decision links the issue that shows it in A1's "
+                       "Issues sheet and on A3 (add one, PROPOSED, in the register's words), so every deliverable names "
+                       "one pending set")
         if not c.get("sources"):
             out.append(f"{name}: no verbatim source")
         quotes(name, c.get("sources"))
@@ -310,6 +319,58 @@ def _check_cutoff(cut: dict, eff: dict) -> list[str]:
 
 
 PENDING_LABEL = f"{human_owned.HUMAN_DECISION_PENDING}: no decision recorded"
+# session 13 (F2; audit R2-4): the interim handling of a question that is a pending human decision is a proposal
+INTERIM_PENDING = "Proposed interim basis, pending {owner} (no decision recorded): "
+ROWS_HEADER = "Rows/units its answer would change"
+
+
+def _meets(u: str, v: str) -> bool:
+    """Whether two unit ids name the same provision or one contains the other ('VOL-I:9.1' and 'VOL-I:9.1(i)')."""
+    return u == v or u.startswith((v + "/", v + "(", v + "#")) or v.startswith((u + "/", u + "(", u + "#"))
+
+
+def question_rows(units: list[str], issues: set[str], rows: dict[str, tuple[list[str], list[str]]],
+                  curated: list[str] | None = None) -> list[str]:
+    """The rows a question's answer would change (session 12, F5, audit A5 N2: the rule A5 uses for `ask_by`; session
+    13, F2, audit R2-7: the register's column): of the rows carrying one of its linked `issues`, those whose units meet
+    the question's own `units`; when none does, every row carrying a linked issue; plus the entry's curated `rows`
+    (proposed links for a question tied to no issue). `rows`: row id -> (its units, its issues)."""
+    mine = [k for k, (_, iss) in rows.items() if set(iss or []) & set(issues or [])]
+    meet = [k for k in mine if any(_meets(u, v) for u in rows[k][0] for v in units or [])]
+    return list(dict.fromkeys((meet or mine) + [x for x in curated or [] if x in rows]))
+
+
+def entry_units(c: dict) -> list[str]:
+    """A question's own units: the register's `units`, else the units its sources quote."""
+    return list(c.get("units") or [x.get("unit") for x in c.get("sources") or [] if x.get("unit")])
+
+
+def presented(reg: dict, decisions: list[dict] | None = None, pending_issues: list | dict | None = None,
+              issues: dict | None = None, rows: dict | None = None) -> list[dict]:
+    """The register's questions as every output shows them (A4, a3_detail.html): the response status through
+    human_owned.clarification_status (never answered or withdrawn without a person's decision); session 13 (F2): the
+    decision owner through human_owned.judgment_owner (the owner of the issue it is about; audit R2-5); the interim
+    handling of a question linked to an issue that is a person's decision not yet recorded (`pending_issues`: ids, or
+    {id: reasons}, or [{id, ...}]) prefixed INTERIM_PENDING with that owner, once (audit R2-4); and, with `rows`
+    (row id -> (units, issues)), `answer_rows`: the rows its answer would change (question_rows; audit R2-7)."""
+    pend = {x.get("id") if isinstance(x, dict) else x for x in (pending_issues or [])}
+    out = []
+    for c in reg.get("clarifications") or []:
+        owner = human_owned.judgment_owner(c, issues) if issues else str(c.get("decision_owner") or "")
+        e = dict(c, response_status=human_owned.clarification_status(c, decisions), decision_owner=owner)
+        ih = str(c.get("interim_handling") or "")
+        if set(c.get("linked_issues") or []) & pend and ih and not ih.startswith(INTERIM_PENDING.split(",")[0]):
+            e["interim_handling"] = INTERIM_PENDING.format(owner=owner) + ih[:1].upper() + ih[1:]
+        if rows is not None:
+            e["answer_rows"] = question_rows(entry_units(c), set(c.get("linked_issues") or []), rows, c.get("rows"))
+        out.append(e)
+    return out
+
+
+def pending_presented(reg: dict, issues: dict | None = None) -> list[dict]:
+    """The pending decisions as shown: the owner through human_owned.judgment_owner (audit R2-5)."""
+    return [dict(c, decision_owner=human_owned.judgment_owner(c, issues) if issues else c.get("decision_owner"))
+            for c in reg.get("pending_decision") or []]
 
 
 def _src(items) -> str:
@@ -317,35 +378,39 @@ def _src(items) -> str:
 
 
 def write(reg: dict, out_dir: Path, decisions: list[dict] | None = None,
-          pending_issues: list[dict] | None = None) -> list[Path]:
+          pending_issues: list[dict] | None = None, issues: dict | None = None, rows: dict | None = None) -> list[Path]:
     """a4/clarification_register.{md,csv,json}: the questions, the topics closed without one, and the unavailable
     material. Deterministic. The response status is shown through human_owned.clarification_status (session 12): never
     answered or withdrawn without a person's decision bound to the entry (`decisions`, the pack's decisions file).
     `pending_issues` (session 12, F5; audit R-a): the open issues that are a person's decision not yet recorded
     (human_owned.pending_reasons), each {id, owner, text, reasons}; those no pending decision links are listed under the
-    pending readings, so A4 names the same pending set as A1, A3 and a3_detail.html."""
+    pending readings, so A4 names the same pending set as A1, A3 and a3_detail.html. Session 13 (F2): `issues` (id ->
+    curated issue) gives each entry the owner of its issue (audit R2-5) and the interim handling's label (R2-4); `rows`
+    (row id -> (units, issues)) the column ROWS_HEADER (R2-7). Both through `presented`."""
     out_dir = Path(out_dir)
-    qs = [dict(c, response_status=human_owned.clarification_status(c, decisions)) for c in reg.get("clarifications") or []]
+    qs = presented(reg, decisions, pending_issues, issues, rows if rows is not None else {})
+    reg = dict(reg, pending_decision=pending_presented(reg, issues))
     cut = reg.get("cut_off") or {}
     cols = [("id", "Id", 22), ("theme", "Group", 12), ("kind", "Kind", 14), ("volume", "Volume", 16),
             ("clause", "Clause", 12), ("page", "Page", 6), ("gap", "Discrepancy or gap", 60),
             ("already_settled", "Already settled (not re-asked)", 50), ("practical_impact", "Practical impact", 50),
             ("proposed_question", "Proposed question (draft)", 70), ("interim_handling", "Interim handling", 50),
             ("decision_owner", "Decision owner", 14), ("response_status", "Response status", 14),
-            ("linked_issues", "Linked issues", 20), ("sources", "Sources (verbatim)", 70)]
-    rows = [{**{k: c.get(k, "") for k, _, _ in cols}, "linked_issues": c.get("linked_issues") or [],
-             "sources": _src(c.get("sources"))} for c in qs]
+            ("linked_issues", "Linked issues", 20), ("answer_rows", ROWS_HEADER, 24),
+            ("sources", "Sources (verbatim)", 70)]
+    rows_out = [{**{k: c.get(k, "") for k, _, _ in cols}, "linked_issues": c.get("linked_issues") or [],
+                 "answer_rows": c.get("answer_rows") or [], "sources": _src(c.get("sources"))} for c in qs]
     table = {"title": "Tender clarification register — DRAFT questions, NOT SENT",
              "notice": "Draft questions only; nothing has been sent to the Authority, the hiring team or anyone else. "
                        f"Cut-off: {cut.get('rule', 'VOL-I 5.2')} = {cut.get('date', '?')}. Unknown answers stay unknown.",
-             "columns": [{"key": k, "header": h, "width": w} for k, h, w in cols], "rows": rows,
+             "columns": [{"key": k, "header": h, "width": w} for k, h, w in cols], "rows": rows_out,
              "checked_no_question": reg.get("checked_no_question") or [],
              "pending_decision": [dict(c, status=PENDING_LABEL) for c in reg.get("pending_decision") or []],
              "pending_issues": _pending_issues(reg, pending_issues),
              "unavailable_material": reg.get("unavailable_material") or []}
     if any(c.get("clarification_window") for c in qs):        # session 12: only when an entry carries it
         table["columns"].insert(-1, {"key": "clarification_window", "header": "Clarification route", "width": 50})
-        for row, c in zip(rows, qs):
+        for row, c in zip(rows_out, qs):
             row["clarification_window"] = c.get("clarification_window") or ""
     paths = write_csv_json(table, out_dir, "clarification_register")
     path = out_dir / "clarification_register.md"
@@ -386,6 +451,8 @@ def markdown(reg: dict) -> str:
                f"- **Interim handling:** {c.get('interim_handling')}",
                f"- **Response status:** {c.get('response_status')}",
                f"- **Linked issues:** {', '.join(c.get('linked_issues') or []) or 'none'}",
+               f"- **{ROWS_HEADER}:** " + (', '.join(c.get('answer_rows') or []) or
+                                           "no row; units: " + (', '.join(entry_units(c)) or 'none')),
                f"- **Sources:** {_src(c.get('sources'))}"]
         if c.get("clarification_window"):
             md.append(f"- **Clarification route:** {c['clarification_window']}")

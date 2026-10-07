@@ -90,3 +90,32 @@ Exported from the session transcript in session 11 (4 Oct 2026) and, from brief 
 | 84 | 2026-10-05 21:12 | F6 remaining blind-06 workflow defects | `2026-10-05_2112_84_f6-remaining-blind-06-workflow-defects.md` | `opus` |
 | 85 | 2026-10-05 22:11 | Score the blind-05 post-key regression run | `2026-10-05_2211_85_score-the-blind-05-post-key-regression-run.md` | `follow-up` |
 | 86 | 2026-10-05 23:53 | Resume: write the blind-05 regression scoring | `2026-10-05_2353_86_resume-write-the-blind-05-regression-scoring.md` | `follow-up` |
+| 87 | 2026-10-06 06:04 | R1 audit: A1 register, A2 reconciliation | `2026-10-06_0604_87_r1-audit-a1-register-a2-reconciliation.md` | `opus` |
+| 88 | 2026-10-06 06:04 | R2 audit: A3, human decisions, clarifications | `2026-10-06_0604_88_r2-audit-a3-human-decisions-clarifications.md` | `opus` |
+| 89 | 2026-10-06 06:04 | R3 audit: A5, rendering, panel, links | `2026-10-06_0604_89_r3-audit-a5-rendering-panel-links.md` | `opus` |
+| 90 | 2026-10-06 06:10 | Implementer A: correctness gaps part 2 | `2026-10-06_0610_90_implementer-a-correctness-gaps-part-2.md` | `opus` |
+| 91 | 2026-10-06 06:10 | Implementer B: interview folder part 5 | `2026-10-06_0610_91_implementer-b-interview-folder-part-5.md` | `opus` |
+| 92 | 2026-10-06 06:20 | Fixer F1: R1's A1/A2 findings | `2026-10-06_0620_92_fixer-f1-r1-s-a1-a2-findings.md` | `opus` |
+| 93 | 2026-10-06 06:22 | Fixer F2: R2's A3/decisions findings | `2026-10-06_0622_93_fixer-f2-r2-s-a3-decisions-findings.md` | `opus` |
+| 94 | 2026-10-06 06:22 | F1: align R1-3 reword with R2-1; cover R2-2's rows | `2026-10-06_0622_94_f1-align-r1-3-reword-with-r2-1-cover-r2-2-s-rows.md` | `follow-up` |
+| 95 | 2026-10-06 06:23 | Fixer F3: review cards, counts, README | `2026-10-06_0623_95_fixer-f3-review-cards-counts-readme.md` | `opus` |
+| 96 | 2026-10-06 06:23 | F2: extend the A5 part to R3-1 (gate and Gantt) | `2026-10-06_0623_96_f2-extend-the-a5-part-to-r3-1-gate-and-gantt.md` | `follow-up` |
+| 97 | 2026-10-06 06:24 | B: add three panel items from the audit | `2026-10-06_0624_97_b-add-three-panel-items-from-the-audit.md` | `follow-up` |
+| 98 | 2026-10-06 06:24 | A7: author sealed blind-07 addendum | `2026-10-06_0624_98_a7-author-sealed-blind-07-addendum.md` | `opus` |
+| 99 | 2026-10-06 06:42 | F2: two small leftovers from F3 in programme.py and live.py | `2026-10-06_0642_99_f2-two-small-leftovers-from-f3-in-programme-py-and.md` | `follow-up` |
+| 100 | 2026-10-06 06:49 | Implementer C: shared runtime policy | `2026-10-06_0649_100_implementer-c-shared-runtime-policy.md` | `opus` |
+| 101 | 2026-10-06 07:24 | R1: recheck your findings on the merged outputs | `2026-10-06_0724_101_r1-recheck-your-findings-on-the-merged-outputs.md` | `follow-up` |
+| 102 | 2026-10-06 07:24 | R2: recheck your findings on the merged outputs | `2026-10-06_0724_102_r2-recheck-your-findings-on-the-merged-outputs.md` | `follow-up` |
+| 103 | 2026-10-06 07:30 | Fixer F4: recheck follow-ups | `2026-10-06_0730_103_fixer-f4-recheck-follow-ups.md` | `opus` |
+| 104 | 2026-10-06 07:41 | R3: recheck your findings on the merged outputs and panel | `2026-10-06_0741_104_r3-recheck-your-findings-on-the-merged-outputs-and.md` | `follow-up` |
+| 105 | 2026-10-06 11:47 | C: the limit has reset; continue from your last step | `2026-10-06_1147_105_c-the-limit-has-reset-continue-from-your-last-step.md` | `follow-up` |
+| 106 | 2026-10-06 11:47 | F4: the limit has reset; continue from your last step | `2026-10-06_1147_106_f4-the-limit-has-reset-continue-from-your-last-ste.md` | `follow-up` |
+| 107 | 2026-10-06 11:47 | R3: the limit has reset; do the recheck now | `2026-10-06_1147_107_r3-the-limit-has-reset-do-the-recheck-now.md` | `follow-up` |
+| 108 | 2026-10-06 11:54 | Implementer D: speed part 3 | `2026-10-06_1154_108_implementer-d-speed-part-3.md` | `opus` |
+| 109 | 2026-10-06 11:54 | Implementer E: AI quick review part 4 | `2026-10-06_1154_109_implementer-e-ai-quick-review-part-4.md` | `opus` |
+| 110 | 2026-10-06 11:54 | F4: add R3's recheck follow-ups (Gantt tag, noise, dates, panel label) | `2026-10-06_1154_110_f4-add-r3-s-recheck-follow-ups-gantt-tag-noise-dat.md` | `follow-up` |
+| 111 | 2026-10-06 12:55 | R1: final recheck of F4's follow-ups on merge6/out | `2026-10-06_1255_111_r1-final-recheck-of-f4-s-follow-ups-on-merge6-out.md` | `follow-up` |
+| 112 | 2026-10-06 12:55 | R2: final recheck of F4's follow-ups on merge6/out | `2026-10-06_1255_112_r2-final-recheck-of-f4-s-follow-ups-on-merge6-out.md` | `follow-up` |
+| 113 | 2026-10-06 12:55 | R3: final recheck of F4's follow-ups on merge6/out | `2026-10-06_1255_113_r3-final-recheck-of-f4-s-follow-ups-on-merge6-out.md` | `follow-up` |
+| 114 | 2026-10-06 13:50 | D: two of your tests fail on the merged tree; diagnose and fix | `2026-10-06_1350_114_d-two-of-your-tests-fail-on-the-merged-tree-diagno.md` | `follow-up` |
+| 115 | 2026-10-06 20:35 | Score blind-07 against its key | `2026-10-06_2035_115_score-blind-07-against-its-key.md` | `opus` |

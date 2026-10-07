@@ -37,6 +37,7 @@ PROVISIONAL assumption with a basis and an owner; none is a fact from the tender
 from __future__ import annotations
 
 import copy
+import re
 from datetime import date
 from pathlib import Path
 
@@ -589,9 +590,150 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
                 if i not in open_issues:
                     act["flags"].append(f"GATE ISSUE NOT IN THE REGISTER ({i}: decided and removed, or a typo; the gate "
                                         "stays until a person removes it from curation/activity_templates.yaml)")
+        attach_open_decisions(prog, r, a)          # session 13 (F2; audit R2-2, R3-1)
         return extend(prog, r["evidence_items"], a, cal) if extended else prog
 
     return make_plan
+
+
+# ---------------------------------------------------------------------------------------------- open decisions (s13)
+# Session 13 (F2; audit R2-2 A5 part, R3-1): an activity shows the open human-owned issues of the rows it carries (a
+# row's own issues and those of the curated relationships that reach it, as the register renders them; an issue counts
+# when human_owned.pending_reasons says it is a person's decision not yet recorded: r["pending_issues"]), as a readable
+# note (`open_decisions`, a flag 'OPEN DECISION ...', the README and the Gantt). Whether such an issue holds the
+# activity's finalisation is a judgment for the owner, so it is ONE named rule, off unless the assumptions turn it on:
+OPEN_DECISION_RULE = "planning.gate_on_open_decisions"
+OPEN_DECISION_FLAG = "OPEN DECISION, HUMAN DECISION PENDING (an issue of the rows it carries; no decision recorded)"
+
+
+def gate_on_open_decisions(assumptions: dict | None) -> bool:
+    """OPEN_DECISION_RULE: true makes an activity with an open decision 'REVIEW (open decision)' instead of READY.
+    Default false: A5 keeps READY (preparation and finalisation are not held) and shows the note."""
+    return bool(((assumptions or {}).get("planning") or {}).get("gate_on_open_decisions", False))
+
+
+def row_open_issues(r: dict) -> dict[str, list[str]]:
+    """Row id -> the issues it carries: its own `issues`, those of every curated relationship whose `to` names it
+    (relationships.yaml `issues:`) and those of a reissued form's dropped field. Session 13 (F4; audit R1-7): the ONE
+    set A1's Issues cell and A2's pending list read (stage2.row_issues). Ordered, without repeats."""
+    from .stage2 import row_issues
+    return row_issues(r)
+
+
+_LABEL_RX = re.compile(r"^" + re.escape("HUMAN DECISION PENDING") + r"(?: \([^()]*\))?: ")
+
+
+def open_decision_index(r: dict) -> dict[str, dict]:
+    """Issue id -> {short, owner} for the issues that are a person's decision not yet recorded (r["pending_issues"]):
+    the curated `a3` wording, else `short`, else the text's first sentence."""
+    cur = r.get("curated_issues") or {}
+    out = {}
+    for iid in r.get("pending_issues") or {}:
+        it = cur.get(iid) or {}
+        t = str(it.get("a3") or it.get("short") or str(it.get("text") or "").split(". ")[0])
+        out[iid] = {"short": _LABEL_RX.sub("", t), "owner": str(it.get("decision_owner") or it.get("owner") or ""),
+                    # session 13 (F4; audit R3 recheck R3-1): the curated `short` words, for the Gantt's notes line
+                    "brief": _LABEL_RX.sub("", str(it.get("short") or t))}
+    return out
+
+
+NO_QUESTION_BASIS = "by the activity's start (no question drafted)"
+ASK_BY_BASIS = ("the clarification cut-off route's ask-by: whether to ask the Authority is settled before the cut-off "
+                "(VOL-I 5.2, moved by ADD-01 2.2)")
+
+
+def open_decision_date(a: dict, ids: list[str], questions: dict | None, route_ask_by: str | None) -> tuple:
+    """Session 13 (F4; audit R2 recheck note, R3 recheck N-2): (date, basis) by which a person must decide the open
+    decisions of an activity that no gate holds: the earlier of the clarification route's ask-by (the activity's
+    `ask_by`, else `route_ask_by`: whether to ask the Authority must be settled before the cut-off; after it only an
+    internal decision remains) and the activity's own latest start. The basis names the questions drafted on those
+    issues (`questions`: issue -> question ids, gate_questions), or says none is ('by the activity's start (no question
+    drafted)'). (None, None) without a date."""
+    if not ids:
+        return None, None
+    ask, ls = a.get("ask_by") or route_ask_by, a.get("latest_start")
+    qs = list(dict.fromkeys(q for i in ids for q in (questions or {}).get(i) or []))
+    drafted = f"questions drafted: {', '.join(qs)}" if qs else "no question drafted"
+    if ask and (not ls or str(ask) <= str(ls)):
+        return str(ask), f"{ASK_BY_BASIS} ({drafted})"
+    if ls:
+        return str(ls), (NO_QUESTION_BASIS if not qs else
+                         f"by the activity's start ({drafted}; their ask-by {ask} is later)" if ask else
+                         f"by the activity's start ({drafted})")
+    return None, None
+
+
+def open_decision_reach(acts: list[dict], by_row: dict[str, list[str]], pending: dict, route: str | None = None) -> dict:
+    """Session 13 (F4; audit R3 recheck N-1): issue id -> the activities whose own work the open decision bears on, by
+    session 12's rule for questions (schedule.question_reach): the issue's rows that an activity carries; the
+    deliverables (evidence items) shared by the activities carrying each of those rows (the intersection over the rows;
+    the union when they share none), so a generic row (Volume IV's cover note on every form, VOL-I 9.3 on the Power of
+    Attorney too) does not spread it; an activity is reached when it carries one of the rows and produces one of those
+    deliverables. The clarification route activity (`route`) is left out of the computation: it lists every open
+    decision once (inherit_open_decisions)."""
+    carriers: dict[str, set[str]] = {}
+    ev: dict[str, set[str]] = {}
+    for a in acts:
+        if a["id"] == route:
+            continue
+        ev[a["id"]] = set(a.get("evidence_items") or [a.get("evidence")]) - {None, ""}
+        for rid in a.get("req_ids") or []:
+            carriers.setdefault(rid, set()).add(a["id"])
+    out: dict[str, set[str]] = {}
+    for i in pending or {}:
+        rows = [k for k, ids in (by_row or {}).items() if i in ids and k in carriers]
+        sets = [set().union(*(ev[x] for x in carriers[k])) for k in rows]
+        deliv = set.intersection(*sets) if sets else set()
+        deliv = deliv or (set().union(*sets) if sets else set())
+        out[i] = {aid for k in rows for aid in carriers[k] if ev[aid] & deliv}
+    return out
+
+
+def inherit_open_decisions(acts: list[dict], by_row: dict[str, list[str]], pending: dict[str, dict],
+                           gate: bool = False, questions: dict | None = None, route_ask_by: str | None = None,
+                           reach: dict | None = None, route: str | None = None) -> None:
+    """Put on every activity the open decisions of the rows it carries (`open_decisions`: issue ids; one flag
+    OPEN_DECISION_FLAG naming each with its wording, owner and rows). With `gate` (OPEN_DECISION_RULE on), a READY
+    activity becomes 'REVIEW (open decision): ...'; a GATED one keeps its gate. In place."""
+    carried = {rid for x in acts for rid in x.get("req_ids") or []}
+    for a in acts:
+        rows: dict[str, list[str]] = {}
+        # session 13 (F4; audit R3 recheck N-1): with `reach` (open_decision_reach), an activity inherits an issue only
+        # where the issue bears on its own work; the clarification route activity (`route`) lists every open decision
+        # of the rows in force once
+        mine = sorted(carried) if a["id"] == route else a.get("req_ids") or []
+        for rid in mine:
+            for i in by_row.get(rid) or []:
+                if i in pending and (reach is None or a["id"] == route or a["id"] in (reach.get(i) or ())):
+                    rows.setdefault(i, []).append(rid)
+        a["open_decisions"] = list(rows)
+        a["open_decision_words"] = {i: f"{pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'})"
+                                    for i in rows}
+        a["flags"] = [f for f in a.get("flags") or [] if not f.startswith(OPEN_DECISION_FLAG)]
+        if not a.get("gated_by"):                # a gate's own date stays (schedule.plan); else the open decisions'
+            a["decision_needed_by"], a["decision_needed_by_basis"] = open_decision_date(a, list(rows), questions,
+                                                                                       route_ask_by)
+        if not rows:
+            continue
+        a["flags"].append(OPEN_DECISION_FLAG + ": " + "; ".join(
+            f"{i}: {pending[i].get('short') or i} ({pending[i].get('owner') or 'owner not named'}; rows "
+            + ", ".join(rs[:3]) + (f" +{len(rs) - 3} more" if len(rs) > 3 else "") + ")" for i, rs in rows.items()))
+        if gate and str(a.get("decision_status") or "READY") == "READY":
+            a["decision_status"] = (f"REVIEW (open decision): finalisation waits on a person's decision on "
+                                    f"{', '.join(rows)} ({OPEN_DECISION_RULE} is on)")
+
+
+def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None) -> dict:
+    """inherit_open_decisions over a planned programme from a stage2.run result (the one rule A5, its stages and the
+    scenarios use)."""
+    acts, by_row, pending = prog.get("activities") or [], row_open_issues(r), open_decision_index(r)
+    route = (prog.get("gate_route") or {}).get("activity")
+    prog["open_decision_index"] = pending              # session 13 (F4): the words the Gantt's notes print
+    inherit_open_decisions(acts, by_row, pending,
+                           gate_on_open_decisions(assumptions if assumptions is not None else r.get("assumptions")),
+                           gate_questions(r), (prog.get("gate_route") or {}).get("ask_by"),
+                           open_decision_reach(acts, by_row, pending, route), route)
+    return prog
 
 
 def question_units(r: dict) -> dict[str, list[str]]:
@@ -625,7 +767,6 @@ def answers_by_row(r: dict, stage: str) -> dict[str, list[dict]]:
     with answer False (its effect as class). For schedule.deltas(answers=...): a confirming answer never makes a
     requirement change (session 11, audit A5-4)."""
     import re
-    from .signals import op_pending
     from .summary import answer_targets, classify_answer
     order = list(r["order"])
     if stage not in order or order.index(stage) == 0:
@@ -653,8 +794,10 @@ def answers_by_row(r: dict, stage: str) -> dict[str, list[dict]]:
                     # session 12: every record says what the op is (type, effect, provision) for signals.confirming
                     kind = {"type": getattr(op, "type", None), "effect": getattr(op, "effect", None),
                             "provision": getattr(op, "provision", None),
-                            # session 12 (F5): the undecided human-owned issues the op's own words name
-                            "pending": op_pending(op, r.get("pending_issues") or {}) if op is not None else []}
+                            # session 13 (F4; audit R1-7, R1-8): an issue the op's note names is context for the
+                            # op (the rows an issue bears on are its own links: signals.attach_pending); the op is
+                            # named as awaiting a person's acceptance until one is bound to it (signals.chain_label)
+                            "accepted": ((r.get("reviews") or {}).get(("op", oid)) or {}).get("status") == "accepted"}
                     if op is not None and (re.search(r":Q\d+$", op.provision) or "Authority response:" in text):
                         c = classify_answer(text, answer_targets(prev, [t for t in op.targets if t != op.provision]))
                         cache[oid] = {"op": oid, "answer": True, "class": c["class"], "why": c["why"], **kind}
@@ -673,7 +816,8 @@ PROGRAMME_COLS = ("id", "name", "discipline", "evidence", "envelope", "req_ids",
                   "multiplicity", "duration_wd", "duration_assumption", "duration_basis", "effort_wd", "effort_total_wd",
                   "effort_basis", "waiting_on", "work_type", "predecessors", "earliest_start", "earliest_finish",
                   "es_driven_by", "latest_start", "latest_finish", "driven_by", "float_wd", "deadline", "timing_status",
-                  "decision_status", "gated_by", "decision_needed_by", "clarification_questions", "ask_by", "finalise_by",
+                  "decision_status", "gated_by", "decision_needed_by", "decision_needed_by_basis", "clarification_questions",
+                  "ask_by", "finalise_by",
                   "condition", "resource_status", "status", "flags")
 MARSHALLING_COLS = ("evidence", "item", "name", "kind", "envelope", "issuer", "per", "count", "count_basis",
                     "marked_originals", "hard_copies", "physical_count", "electronic_copy", "activity", "activities",
@@ -757,12 +901,25 @@ def coverage_check(p: dict) -> dict:
     (session 12, audit A5-4; session 11 counted the A3 rows only, still shown)."""
     cov, a3 = p.get("row_coverage") or {}, p.get("a3_coverage") or {}
     unc = list(cov.get("uncarried") or []) + [k for k in a3.get("uncarried") or [] if k not in (cov.get("uncarried") or [])]
+    # session 13 (F2, after F3; audit R3-5/R2-9): the A3 rows by id (schedule.a3_rows: the page's own set), so the
+    # count in a5/requirements_*.json and checks.json is checkable against the page's lines
     return {"id": "C48", "ok": not unc,
             "detail": f"{len(cov.get('rows') or [])} A1 rows in force at {p.get('stage')}: {carried_words(cov)}, "
                       f"{len(cov.get('excepted') or {})} excepted with a reason (listed in "
                       f"a5/requirements_not_carried.csv); not carried: {', '.join(unc) or 'none'}. Of these, "
                       f"{len(a3.get('rows') or [])} A3 (bid-out) rows: {len(a3.get('carried') or {})} carried, "
-                      f"{len(a3.get('excepted') or {})} excepted with a reason"}
+                      f"{len(a3.get('excepted') or {})} excepted with a reason" + a3_members_note(a3)}
+
+
+A3_BASIS = "the rows the A3 page lists: explicit plus the score row"
+
+
+def a3_members_note(cov: dict) -> str:
+    """The members of A5's A3 rows where C48 counts them (session 13, F3; audit R3-5; moved here by F2 so the C48 text of
+    checks.json and of a5/requirements_*.json say the same): ' (the rows the A3 page lists: explicit plus the score
+    row: <ids>)' (schedule.a3_rows, the page's own set); '' when none."""
+    ids = list(cov.get("rows") or [])
+    return f" ({A3_BASIS}: {', '.join(ids)})" if ids else ""
 
 
 def _table(cols, rows, **extra) -> dict:
@@ -844,7 +1001,8 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
     if cov is not None:                     # session 11 (audit A5-2)
         L += ["", f"## A3 rows carried by the programme ({len(cov['rows'])} A3 (bid-out) rows in force; "
                   f"{len(cov['carried'])} carried, {len(cov['excepted'])} excepted with a reason, "
-                  f"{len(cov['uncarried'])} not carried)", ""]
+                  f"{len(cov['uncarried'])} not carried)", "",
+              f"Basis: {A3_BASIS} (schedule.a3_rows, one set for A3, A5 and the live diff).", ""]
         L += [f"- `{k}`: carried by {', '.join(v)}" + (" (through `_row_checks`: a check, not a deliverable)"
                                                         if k in cov.get("row_checks", {}) else "")
               for k, v in cov["carried"].items()]
@@ -892,6 +1050,19 @@ def readme(p: dict, scenarios_result: dict | None = None) -> str:
                  "does not establish a missed duty; a person records whether the condition arose.")
     if not cond:
         L.append("- none")
+    # session 13 (F2; audit R2-2, R3-1): the open human-owned issues of the rows each activity carries, readable
+    opened: dict[str, list[str]] = {}
+    for a in acts:
+        for i in a.get("open_decisions") or []:
+            opened.setdefault(i, []).append(a["id"])
+    if opened:
+        words = {i: w for a in acts for i, w in (a.get("open_decision_words") or {}).items()}
+        L += ["", "## Open decisions on the rows carried (HUMAN DECISION PENDING; no decision recorded)", "",
+              "Shown on each activity (flag OPEN DECISION) and in the Gantt. Whether an open decision holds an activity is "
+              f"a judgment for the owner: rule `{OPEN_DECISION_RULE}` in config/assumptions.yaml (now "
+              f"{'on' if any(str(a.get('decision_status', '')).startswith('REVIEW (open decision)') for a in acts) else 'off'}"
+              "; off: the activity stays READY; on: a READY activity reads REVIEW (open decision)).", ""]
+        L += [f"- `{i}` {words.get(i, '')}: {', '.join(f'`{x}`' for x in xs)}" for i, xs in opened.items()]
     res = p.get("resources") or {}
     L += ["", f"## Overloads ({len(res.get('overloads', []))}; reported, not resolved)", ""]
     L += [f"- {o['resource']}: {date_span(o['from'], o['to'])} ({o['days']} WD), peak {o['peak_load']:g} vs capacity "
