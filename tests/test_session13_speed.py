@@ -223,16 +223,22 @@ def test_no_session_starts_for_a_batch_whose_provisions_are_all_accounted_for(tm
     """Provisions accounted for by an earlier batch (an op's `covers`, a reused set) never start a session, also with
     two sessions at once (nothing is asked ahead for such a batch)."""
     cfg = _host_cfg(tmp_path, n=2)
-    real = W._take_analysis
+    real = W._prep_analysis
 
-    def take(ctx, bid, ps, todo):
-        real(ctx, bid, ps, todo)
+    # session 14 (coordinator; merge check 9): the provisions of 003 are accounted for as soon as 001 is prepared, i.e.
+    # BEFORE any slot can reach 003. Marking them at 001's take (as before) raced the scheduler: under load 002 can
+    # finish before 001, its freed slot asks 003 ahead while 001 is still running, and the test failed one run in six.
+    # The promise tested here is the one the code makes: a batch already accounted for when its turn to be asked comes
+    # is never asked. A batch asked ahead before an earlier answer covers it is discarded at its turn
+    # (prefetch_discarded); that session is the known price of asking ahead (the owner's choice C13, defect 17).
+    def prep(ctx, bid):
         if bid == "analysis-001":                                 # as if its ops covered every provision of 003
             for p in ctx.cp.batch("analysis-003")["provisions"]:
                 if ctx.cp.provision(p)["status"] == "pending":
                     ctx.cp.set_provision(p, "proposed", accounted_by=["test"], answered_in=bid)
                     ctx.cp.set_provision(p, "validated", accounted=True, statuses={})
-    monkeypatch.setattr(W, "_take_analysis", take)
+        return real(ctx, bid)
+    monkeypatch.setattr(W, "_prep_analysis", prep)
     monkeypatch.setattr(W, "_prep_analysis_delay", 0.0, raising=False)
     _start_host(tmp_path, pack["out"], "acc", cfg)
     cp = W.load("acc", tmp_path / "st").data

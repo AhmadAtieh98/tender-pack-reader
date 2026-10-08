@@ -467,7 +467,9 @@ def test_ai_routes_states_the_quick_review_status_of_every_route():
 def test_the_offline_guard_test_knows_the_quick_review_construction_sites():
     src = (ROOT / "tests/test_session13_mac_scripts.py").read_text(encoding="utf-8")
     assert '("tenderpack/ai/quick_review.py", "make")' in src
-    assert '("tenderpack/ai/quick_review.py", "AnswerSession")' in src
+    # session 14: W5 builds the quick review's AnswerSession through a factory that subclasses it; the guard test
+    # counts that site under the factory's name (its constructor is still AnswerSession's, which runs the guard)
+    assert '("tenderpack/ai/quick_review.py", "_session_class")' in src
 
 
 # ---------------------------------------------------------------------------------------------- (6) the panel

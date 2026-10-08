@@ -1,0 +1,44 @@
+........................................................................ [ 33%]
+........................................................................ [ 67%]
+.......................................................F............     [100%]
+=================================== FAILURES ===================================
+__ test_no_session_starts_for_a_batch_whose_provisions_are_all_accounted_for ___
+
+tmp_path = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt24/test_no_session_starts_for_a_b0')
+pack = {'pack': PackResult(root=PosixPath('/home/user/tender-pack-reader'), out=PosixPath('/tmp/claude-0/-home-user-tender-pa...: 'image', ...}, 'VOL-IV-p6-r1': {'region_id': 'VOL-IV-p6-r1', 'doc': 'VOL-IV', 'page': 6, 'kind': 'image', ...}}, ...}
+fake = PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt24/test_no_session_starts_for_a_b0/fake')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ff4db7ca9d0>
+
+    def test_no_session_starts_for_a_batch_whose_provisions_are_all_accounted_for(tmp_path, pack, fake, monkeypatch):
+        """Provisions accounted for by an earlier batch (an op's `covers`, a reused set) never start a session, also with
+        two sessions at once (nothing is asked ahead for such a batch)."""
+        cfg = _host_cfg(tmp_path, n=2)
+        real = W._take_analysis
+    
+        def take(ctx, bid, ps, todo):
+            real(ctx, bid, ps, todo)
+            if bid == "analysis-001":                                 # as if its ops covered every provision of 003
+                for p in ctx.cp.batch("analysis-003")["provisions"]:
+                    if ctx.cp.provision(p)["status"] == "pending":
+                        ctx.cp.set_provision(p, "proposed", accounted_by=["test"], answered_in=bid)
+                        ctx.cp.set_provision(p, "validated", accounted=True, statuses={})
+        monkeypatch.setattr(W, "_take_analysis", take)
+        monkeypatch.setattr(W, "_prep_analysis_delay", 0.0, raising=False)
+        _start_host(tmp_path, pack["out"], "acc", cfg)
+        cp = W.load("acc", tmp_path / "st").data
+        assert cp["batches"]["analysis-003"]["status"] == "skipped"
+>       assert len(_analysis_sessions(fake)) == len(cp["batches"]) - 1
+E       AssertionError: assert 6 == (6 - 1)
+E        +  where 6 = len([{'kind': 'tool', 'tools': '', 'json_schema': False, 'allowed': 'mcp__tenderpack__search_evidence,mcp__tenderpack__get...ndment,mcp__tenderpack__simulate_programme,mcp__tenderpack__validate_proposal,mcp__tenderpack__submit_proposals', ...}])
+E        +    where [{'kind': 'tool', 'tools': '', 'json_schema': False, 'allowed': 'mcp__tenderpack__search_evidence,mcp__tenderpack__get...ndment,mcp__tenderpack__simulate_programme,mcp__tenderpack__validate_proposal,mcp__tenderpack__submit_proposals', ...}] = _analysis_sessions(PosixPath('/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/merge/pt24/test_no_session_starts_for_a_b0/fake'))
+E        +  and   6 = len({'analysis-001': {'phase': 'analysis', 'provisions': ['ADD-03:cover/para1', 'ADD-03:cover/para2', 'ADD-03:cover/para3'...sis-004': {'phase': 'analysis', 'provisions': ['ADD-03:7.1', 'ADD-03:7.2'], 'status': 'done', 'attempts': 1, ...}, ...})
+
+tests/test_session13_speed.py:240: AssertionError
+rehearsal fixtures (disposable, this session): blind-02 ingest 9.2 s; total 9.2 s
+=========================== short test summary info ============================
+FAILED tests/test_session13_speed.py::test_no_session_starts_for_a_batch_whose_provisions_are_all_accounted_for
+1 failed, 211 passed in 1558.11s (0:25:58)
+
+real	26m5.156s
+user	24m49.521s
+sys	0m33.725s
