@@ -68,7 +68,26 @@ The extra pending issue pushed the one-page A3 to condense level 3 (reasons off 
 
 The 30-minute target is missed on every measure. The scorer's reasons: Opus-pinned sessions (the session-13 run's sessions ran on the CLI's default model), 44 downstream tasks against 17, 26 sessions started against 16. Fifteen valid ops were promoted (the engine-computed SAR 1,500,000, the relocation, the scoped disapplication among them); one regression against session 13 (the 4.3 request deadline lost its planned date, N1) and 12 new general defects (N1–N12) are listed in §9 of the comparison; the fixer F3 takes the ones that can be fixed before blind-08 (its brief: `worklog/continuation-s14/briefs/F3.md`), the rest go to the review packet.
 
-PENDING (the sealed run): blind-08 (the open key; the session-13 scorer's 19 defects marked fixed / not exercised / still present / regressed from the run's own files) and the sealed blind-08 (A8's key sealed in scratch, unread; the code frozen in the package, the runtime model pinned to `claude-opus-5-5`; the outputs frozen by hash before the key is opened; scored independently; the honest 30-minute verdict).
+**The sealed blind-08 (`rehearsals/blind-08/COMPARISON.md`; frozen by hash before the key was opened, `FROZEN.md`).** A new addendum written by an author agent whose key nobody read before the run (4 pages; 63 scored items, plus 9 decoys, 22 must-not-report items and 9 acceptable-if-raised items), run through a fresh package built from the frozen code `7c721d4` (code identity `a9ebd02ab0cbf8a7`), the host and critic pinned to `claude-opus-5-5`, two sessions, the planned stop right after an analysis submission and the panel's Resume.
+
+| Class | Items | Hit | Partial | Missed |
+|---|---|---|---|---|
+| Provisions | 17 | 11 | 6 | 0 |
+| Clarification responses | 5 | 3 | 2 | 0 |
+| Image | 1 | 1 | 0 | 0 |
+| Computed values | 4 | 1 | 3 | 0 |
+| Derived dates | 9 | 5 | 0 | 4 |
+| New obligations | 6 | 1 | 5 | 0 |
+| Indirect effects | 8 | 1 | 5 | 2 |
+| Genuine ambiguity | 1 | 1 | 0 | 0 |
+| Settled points | 5 | 4 | 1 | 0 |
+| Structural changes | 4 | 1 | 3 | 0 |
+| Cover errors | 3 | 0 | 3 | 0 |
+| **Total** | **63** | **29** | **28** | **6** |
+
+Decoys 8 of 9 clean; must-not-report 0 of 22 asserted; nothing asserted as settled that the key reserves for a person; the image read correctly; the genuine ambiguity surfaced with both readings. **The interruption worked as designed**: the submission made just before the stop was reused after revalidation; both segments ran on the same code. Two batches were asked twice (one stopped before submitting, as designed; one dispatched on resume before the reused submission was folded in, a resume defect). The scorer's three main findings: one controller consistency rule treated two compatible changes to one clause as conflicting and left three provisions unresolved; most of the arithmetic and derived dates the key weighs (a duration, a notice period, volumes, drop-dead dates) were not produced, each recorded by the run as a software limitation; and too much escalation remains (about 49 pending markers for about 5 real decisions; a stated governing-language rule and the cover errors re-opened two to five times).
+
+**The 30-minute verdict, honestly:** not met. 45.0 minutes from the upload to the review packet on an idle machine; analysis alone took 27.3 minutes; the interruption cost at most about 5 minutes. Twelve host sessions, two wasted. The ways to cut it are the owner's choices in the packet (C13): the sessions' model, three or four sessions in flight, splitting large structures, capping downstream work.
 
 ## 6. Verification
 
