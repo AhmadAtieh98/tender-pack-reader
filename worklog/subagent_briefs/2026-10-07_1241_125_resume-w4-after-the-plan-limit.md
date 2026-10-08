@@ -1,7 +1,7 @@
 # Follow-up message 125: Resume W4 after the plan limit
 
 Sent 2026-10-07 12:41:59 UTC to agent `a8dc8ed4c9ca299e9` (a resume or an added instruction to an agent launched earlier; the agent's brief is the launch file it belongs to).
-The text below is the message exactly as sent (exported from the session transcript on 6 Oct 2026, session 13).
+The text below is the message exactly as sent (exported from the session transcript on 8 Oct 2026, session 14).
 
 ---
 

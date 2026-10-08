@@ -1,7 +1,7 @@
 # Subagent brief 132: F1 fixes for A1/A2 findings
 
 Launched 2026-10-07 17:42:39 UTC; model option requested: `opus`; subagent type: `general-purpose`.
-The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 6 Oct 2026, session 13).
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 8 Oct 2026, session 14).
 
 ---
 

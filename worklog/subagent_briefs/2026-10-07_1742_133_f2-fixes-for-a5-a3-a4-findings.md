@@ -1,7 +1,7 @@
 # Subagent brief 133: F2 fixes for A5/A3/A4 findings
 
 Launched 2026-10-07 17:42:43 UTC; model option requested: `opus`; subagent type: `general-purpose`.
-The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 6 Oct 2026, session 13).
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 8 Oct 2026, session 14).
 
 ---
 

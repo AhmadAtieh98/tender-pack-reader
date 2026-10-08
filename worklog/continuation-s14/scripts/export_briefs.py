@@ -61,12 +61,12 @@ def main(dry: bool) -> int:
         if kind == "launch":
             head = (f"# Subagent brief {n}: {desc}\n\nLaunched {when.strftime('%Y-%m-%d %H:%M:%S')} UTC; model option "
                     f"requested: `{model}`; subagent type: `{stype}`.\nThe text below is the prompt exactly as sent by "
-                    f"the coordinator (exported from the session transcript on 6 Oct 2026, session 13).\n\n---\n\n")
+                    f"the coordinator (exported from the session transcript on 8 Oct 2026, session 14).\n\n---\n\n")
         else:
             head = (f"# Follow-up message {n}: {desc}\n\nSent {when.strftime('%Y-%m-%d %H:%M:%S')} UTC to agent "
                     f"`{to}` (a resume or an added instruction to an agent launched earlier; the agent's brief is the "
                     f"launch file it belongs to).\nThe text below is the message exactly as sent (exported from the "
-                    f"session transcript on 6 Oct 2026, session 13).\n\n---\n\n")
+                    f"session transcript on 8 Oct 2026, session 14).\n\n---\n\n")
         (out / fname).write_text(head + text + "\n", encoding="utf-8")
         rows.append(f"| {n} | {when.strftime('%Y-%m-%d %H:%M')} | {desc} | `{fname}` | `{model or 'follow-up'}` |")
     print(f"{len(items)} items -> {out}")

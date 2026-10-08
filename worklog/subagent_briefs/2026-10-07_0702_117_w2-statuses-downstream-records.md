@@ -1,7 +1,7 @@
 # Subagent brief 117: W2 statuses, downstream, records
 
 Launched 2026-10-07 07:02:35 UTC; model option requested: `opus`; subagent type: `(default)`.
-The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 6 Oct 2026, session 13).
+The text below is the prompt exactly as sent by the coordinator (exported from the session transcript on 8 Oct 2026, session 14).
 
 ---
 

@@ -137,3 +137,21 @@ Exported from the session transcript in session 11 (4 Oct 2026) and, from brief 
 | 131 | 2026-10-07 16:24 | F2 fixes for A5/A3/A4 findings | `2026-10-07_1624_131_f2-fixes-for-a5-a3-a4-findings.md` | `opus` |
 | 132 | 2026-10-07 17:42 | F1 fixes for A1/A2 findings | `2026-10-07_1742_132_f1-fixes-for-a1-a2-findings.md` | `opus` |
 | 133 | 2026-10-07 17:42 | F2 fixes for A5/A3/A4 findings | `2026-10-07_1742_133_f2-fixes-for-a5-a3-a4-findings.md` | `opus` |
+| 134 | 2026-10-07 18:26 | F1: continue after the container restart | `2026-10-07_1826_134_f1-continue-after-the-container-restart.md` | `follow-up` |
+| 135 | 2026-10-07 18:26 | F2: continue after the container restart | `2026-10-07_1826_135_f2-continue-after-the-container-restart.md` | `follow-up` |
+| 136 | 2026-10-07 18:27 | F1 fixes for A1/A2, continued | `2026-10-07_1827_136_f1-fixes-for-a1-a2-continued.md` | `opus` |
+| 137 | 2026-10-07 18:27 | F2 fixes for A5/A3/A4, continued | `2026-10-07_1827_137_f2-fixes-for-a5-a3-a4-continued.md` | `opus` |
+| 138 | 2026-10-07 18:47 | F1 status probe from the coordinator | `2026-10-07_1847_138_f1-status-probe-from-the-coordinator.md` | `follow-up` |
+| 139 | 2026-10-07 18:47 | F2 status probe from the coordinator | `2026-10-07_1847_139_f2-status-probe-from-the-coordinator.md` | `follow-up` |
+| 140 | 2026-10-07 18:50 | F1 fixes for A1/A2, continued | `2026-10-07_1850_140_f1-fixes-for-a1-a2-continued.md` | `opus` |
+| 141 | 2026-10-07 18:51 | F2 fixes for A5/A3/A4, continued | `2026-10-07_1851_141_f2-fixes-for-a5-a3-a4-continued.md` | `opus` |
+| 142 | 2026-10-07 18:51 | Score the blind-07 regression | `2026-10-07_1851_142_score-the-blind-07-regression.md` | `opus` |
+| 143 | 2026-10-07 19:51 | F3 workflow fixes from the scorer | `2026-10-07_1951_143_f3-workflow-fixes-from-the-scorer.md` | `opus` |
+| 144 | 2026-10-07 19:54 | R4 final independent review | `2026-10-07_1954_144_r4-final-independent-review.md` | `opus` |
+| 145 | 2026-10-07 20:15 | F3: add R4-1 negation finding | `2026-10-07_2015_145_f3-add-r4-1-negation-finding.md` | `follow-up` |
+| 146 | 2026-10-07 20:15 | F4 fixes for R4's findings | `2026-10-07_2015_146_f4-fixes-for-r4-s-findings.md` | `opus` |
+| 147 | 2026-10-07 20:41 | F4 status probe from the coordinator | `2026-10-07_2041_147_f4-status-probe-from-the-coordinator.md` | `follow-up` |
+| 148 | 2026-10-07 20:43 | F4 fixes for R4's findings, continued | `2026-10-07_2043_148_f4-fixes-for-r4-s-findings-continued.md` | `opus` |
+| 149 | 2026-10-07 20:56 | F3: the a3_fit failure is not yours | `2026-10-07_2056_149_f3-the-a3-fit-failure-is-not-yours.md` | `follow-up` |
+| 150 | 2026-10-07 20:58 | F3 workflow fixes, continued | `2026-10-07_2058_150_f3-workflow-fixes-continued.md` | `opus` |
+| 151 | 2026-10-08 06:23 | Score the sealed blind-08 | `2026-10-08_0623_151_score-the-sealed-blind-08.md` | `opus` |

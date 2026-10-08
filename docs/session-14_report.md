@@ -2,7 +2,7 @@
 
 **Status of this report: in progress.** Sections marked PENDING are filled at the end of the session from the records; nothing below is claimed before it ran. The work is uncommitted on the owner's instruction ("Do not commit or push anything until I explicitly say so"); the base is commit `a918d5e` (the session-13 closing commit).
 
-The owner's message of the morning is kept verbatim in `worklog/2026-10-07_session-14_prompt.md`; the work log is `worklog/2026-10-07_session-14_finalisation.md` (§2 the timeline, §3 the models that actually ran, §4 the runtime model for the rehearsals, §6 the errors); the decisions that need the owner are in one consolidated packet, `docs/session-14_review_packet.md` (PENDING: written last, with software failures, missing evidence and human approvals separated).
+The owner's message of the morning is kept verbatim in `worklog/2026-10-07_session-14_prompt.md`; the work log is `worklog/2026-10-07_session-14_finalisation.md` (§2 the timeline, §3 the models that actually ran, §4 the runtime model for the rehearsals, §6 the errors); the decisions that need the owner are in one consolidated packet, `docs/session-14_review_packet.md` (software failures, missing evidence and human approvals separated).
 
 ## 1. What you asked, what was done
 
@@ -50,7 +50,7 @@ Three reviewers, read-only, expectations from the sources first, on the outputs 
 | The page-limit issue (I-VOL-I-PAGE-LIMIT-Q2), read by all three reviewers as settled by VOL-I 9.2's own words as amended | re-presented as "PROPOSED BASIS (applied rule; a person confirms the application)" with the clause quoted, owner kept, its row NOT SETTLED; never closed by the tool (decision C6) |
 | Minor: the value column against the row's status; "(confirms) … (not a confirmation)"; the A3 heading's two counts; the † against A5's dates; CQ-ENV-PERMIT's rows; Arabic in the cards; the Form 4-G citation; the WD figures; READY against NEEDS A DECISION; the scope words not shown; VOL-II-2.5-01 moved by the TN change | all fixed: one `decide_by` source for A3 and A5; "50 open issues (25 listed)"; `<bdi dir="rtl">` runs; the question's rows from the issue it mirrors; a PROPOSED link REL-T24-CONTINUOUS-MONITORING with `scope_words "continuous"`; the scope words in the Relationships sheet |
 
-The extra pending issue pushed the one-page A3 to condense level 3 (reasons off the page); fixed by folding the two Form 4-E judgments under the Envelope A line and deriving the scale floor from the 7.5 pt minimum the check enforces (`render.A3_SCALE_LOW` 0.9 → 0.89): the page is at level 2 with every reason, 7.62 pt. The final independent review (R4) of the merged result: PENDING.
+The extra pending issue pushed the one-page A3 to condense level 3 (reasons off the page); fixed by folding the two Form 4-E judgments under the Envelope A line and deriving the scale floor from the 7.5 pt minimum the check enforces (`render.A3_SCALE_LOW` 0.9 → 0.89): the page is at level 2 with every reason, 7.62 pt. The final independent review of the merged result (R4; `worklog/continuation-s14/reviews/r4.md`) found 4 major and 13 minor points and judged the tree not yet ready: a test still pinned to the old A3 floor, a negation rule that let "there is no doubt the ambiguity is resolved" settle a pending judgment, the candidate A1 showing an unresolved change's old value as unchanged, and two report claims the regression disproved. All four majors were fixed before the freeze (the coordinator, F3 and F4, each with failing-first tests; F4's 21 tests also cover the minor points on the page tool's scope, the repair bound, offline under every switch and Arabic-Indic table numbers); the report's wording was corrected. The verdict's conditions (F3 merged, the full suite green, `out/` rebuilt, then the package) are tracked in §6 and §7.
 
 ## 5. The rehearsals (part 6)
 
@@ -99,12 +99,20 @@ PENDING: the final package is built from the final code after the reviews and th
 
 ## 8. Errors of this session
 
-E166 the plan's session limit (3 h 50 min lost, no work lost); E167 the slowdown above; E168 the coordinator's rebuild under a running test file (one re-run). Full rows: the work log §6 and `worklog/ERROR_INDEX.md`.
+- **E166 and E169:** the plan's session limit stopped the agents twice (no work lost; about 5 hours of wall clock).
+- **E167:** session 14's own code slowed every model-free step by 25–55 %; fixed by one memo.
+- **E168:** the coordinator rebuilt `out/` under a running test file; one re-run.
+- **E170 and E171:** the container was reclaimed on idle, and an interruption cancelled the running agents; the coordinator now waits inside its turn, and the agents were relaunched from their worktrees.
+- **E172:** the owner's usage limit stopped the session for about 7 h 25 min; the state was committed at once.
+- **E173:** the word-based reach attached a later stage's candidate issues to an earlier stage's programme; found by the full suite and fixed after the blind-08 freeze.
+- **E174:** the request loop reserved the whole output cap, so the fuller contract made the Ollama route refuse every analysis call; found by the full suite and fixed after the freeze.
+
+Full rows: the work log §6 and `worklog/ERROR_INDEX.md`.
 
 ## 9. Decisions that need you
 
-`docs/session-14_review_packet.md` (in progress: the software failures, the missing evidence and the human approvals in three groups; the rehearsal rows are completed from the scorers' reports; the raw list the agents raised is `worklog/continuation-s14/decisions_raw.md`).
+`docs/session-14_review_packet.md`: the software failures, the missing evidence and the human approvals in three groups, with the rehearsal rows from the scorers' reports. The raw list the agents raised is `worklog/continuation-s14/decisions_raw.md`.
 
 ## 10. Models and settings that actually ran
 
-Coordinator: Fable 5.1 (the harness's own line; the effort setting is not shown to it). Every implementer, author, reviewer and scorer: `claude-opus-5-5` by its own report with the runtime effort it showed (15 for A8 and W1–W6 at launch; W2 showed 40 later), recorded as reported in the work log §3. The runtime model of the rehearsal runs: `claude-opus-5-5`, pinned in the package copy's `config/ai.yaml` for the host session and the critic, chosen and recorded separately (the work log §4); the repository's own config keeps `model: null`.
+Coordinator: Fable 5.1 (the harness's own line; the effort setting is not shown to it) until 8 October 04:59 UTC, then Opus 5.5 on the owner's `/model claude-opus-5-5`. Every implementer, author, reviewer and scorer: `claude-opus-5-5` by its own report with the runtime effort it showed (15 for A8 and W1–W6 at launch; W2 showed 40 later), recorded as reported in the work log §3. The runtime model of the rehearsal runs: `claude-opus-5-5`, pinned in the package copy's `config/ai.yaml` for the host session and the critic, chosen and recorded separately (the work log §4); the repository's own config keeps `model: null`.
