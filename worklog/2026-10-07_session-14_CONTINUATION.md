@@ -20,15 +20,16 @@ In progress at the moment of this commit (NOT in the tree; the state is in the c
 - **Fixer F3** (worktree `/home/user/wt-s14-f3`, brief `briefs/F3.md`): the scorer's N1–N12 and the stated-rule application, in progress; its patch arrives in `scratchpad/s14/f3/f3.patch` and must be merged, checked and the outputs rebuilt before blind-08. If lost: relaunch from the brief.
 - **Reviewer R4 is done** (`worklog/continuation-s14/reviews/r4.md`: 4 major, 13 minor; verdict "not yet ready" pending F3, R4-0/1/2 and the full suite). R4-0 fixed by the coordinator (two A3 tests pinned to `render.A3_SCALE_LOW`); the guard-scan test fixed (subclasses and factories counted). **F4 is merged** (`fixers-in-progress/f4_final.patch`; `tests/test_session14_f4_recheck_fixes.py`, 21 tests: R4-2 the candidate A1 value column, the page tool's scope hash and path confinement, the repair bound, offline under every switch, Arabic-Indic table numbers); merge check 8a green (`merge_check8a.log`). R4-1 is with F3. Left from R4: R4-3 (the report wording, done) and the minor text items; F4's noted gap (rows unresolved only through `answers.json`: a one-line change in `candidate.mark`'s value_state, F3's file).
 
-## 2. What is left, in order (updated 8 Oct 08:00 UTC)
+## 2. What is left (updated 8 Oct about 10:20 UTC, at the closing commit)
 
-Done since the first version of this file: F1–F4 merged (each with failing-first tests); the final review R4; merge checks 7–9 green; the closing chain green on the frozen code `7c721d4`; the blind-07 regression scored; **the sealed blind-08 run, frozen by hash before the key was opened, and scored** (`rehearsals/blind-08/COMPARISON.md`: 29 / 28 / 6 of 63; 45.0 min).
+Nothing of the brief is left in the session. Done since the previous version of this section:
 
-Left:
-1. The full suite. On the frozen code it gave 1,563 passed / 5 failed (work log 06:35–07:55); all five are fixed (E173, E174 and three test or record fixes; every fix with a failing test first; E173 and E174 are post-freeze code changes). The re-run started at 07:55 UTC on 8 October (`scratchpad/s14/suite/suite.log`, about 70 minutes); if it is lost, re-run `.venv/bin/python -m pytest -q -p no:cacheprovider tests/` and diagnose any failure (a flake is not a root cause).
-2. The delivered package: `scripts/make_interview_folder.py <dir> --label "..."` then `bash scripts/mac/verify_package.sh <zip> --no-ai` on the packaged copy must be 8 PASS (the builder now carries the run records some focused tests read: `TEST_RECORDS`); send the zip to the owner.
-3. Close the records: `docs/session-14_report.md` §6–§7 and the "in progress" lines, `docs/session-14_review_packet.md` header, `docs/COST_AND_EFFORT.md` row 14 (provisional now), the work log §3 (models) and the final timeline rows, the briefs export (`worklog/continuation-s14/scripts/export_briefs.py`), `worklog/README.md` counts.
-4. The closing commit: its title leads with "(Fixed Control Panel)" (the owner's rule), then the push.
+1. The full suite on the final code: 1,575 passed, 1 skipped, 0 failed (the five failures of the run on the frozen code fixed, each with a failing test first; E173 and E174 are post-freeze code changes).
+2. The closing chain on the final code, all green, with `out/` byte-identical to the frozen chain.
+3. The package `LAMAR-PPP-R2-INTERVIEW_be97bec+wt_20261008T0944Z.zip`: `verify_package.sh --no-ai` 8 PASS; the full focused command in the packaged copy 594 passed. It was sent to the owner.
+4. The records closed, and the closing commit with the owner's title.
+
+What remains is the owner's: the decisions in `docs/session-14_review_packet.md`, and the checks marked PENDING ON THE MAC in `docs/MAC_CHECKLIST.md` (among them the first real Ollama run since E174's fix).
 
 ## 3. Standing constraints (the owner's, in force for any continuation)
 

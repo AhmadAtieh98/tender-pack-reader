@@ -1,6 +1,6 @@
 # Session 14 report: the focused finalisation run (7 October 2026)
 
-**Status of this report: in progress.** Sections marked PENDING are filled at the end of the session from the records; nothing below is claimed before it ran. The work is uncommitted on the owner's instruction ("Do not commit or push anything until I explicitly say so"); the base is commit `a918d5e` (the session-13 closing commit).
+**Status of this report: final** (8 October 2026, about 10:20 UTC). The base is commit `a918d5e` (the session-13 closing commit). The owner first said "Do not commit or push anything until I explicitly say so", then asked for a "codex continuation" progress commit at every major step and for the closing commit's title to lead with "(Fixed Control Panel)"; the progress commits and the closing commit follow those instructions.
 
 The owner's message of the morning is kept verbatim in `worklog/2026-10-07_session-14_prompt.md`; the work log is `worklog/2026-10-07_session-14_finalisation.md` (§2 the timeline, §3 the models that actually ran, §4 the runtime model for the rehearsals, §6 the errors); the decisions that need the owner are in one consolidated packet, `docs/session-14_review_packet.md` (software failures, missing evidence and human approvals separated).
 
@@ -34,7 +34,7 @@ Found and fixed on the way (coordinator): the W2/W3 join overwrote the workflow'
 
 ## 3. The outputs rebuilt on the merged tree
 
-The session-13 closing chain, in the same order, twice: on the merged packages (15:57 UTC: 29 files changed and 2 new against `a918d5e`, A3 and A4 unchanged in bytes; the reviewers worked on that state) and on the tree with the fixers F1 and F2 and the A3 fit (19:52 UTC; `worklog/continuation-s14/rebuild_chain_1952.log`): `ingest` 524 units with C10 no mismatch; `outputs` exit 0 (C13 18 A3 rows, C43 one page at condense level 2 with every reason, 7.62 pt, no STALE row, C48 200 rows in force, the two approval blockers only: 205 rows, 38 ops); the drill PARTIAL with its expected blockers; `outputs --strict` exit 3 with exactly the two approval blockers; `check-register` 0 findings; the Mac checks 9 PASS / 5 PENDING / 0 FAIL. Against `a918d5e`, 39 output files now differ (README, a1 3, a2 5, a3 3, a4 3, a5 14 with the two new Form 4-E check files, checks.json, review 9), the union of the packages' and the fixers' explained changes (§2 and §4). The chain runs once more on the final tree after F3 and F4.
+The session-13 closing chain, in the same order, twice: on the merged packages (15:57 UTC: 29 files changed and 2 new against `a918d5e`, A3 and A4 unchanged in bytes; the reviewers worked on that state) and on the tree with the fixers F1 and F2 and the A3 fit (19:52 UTC; `worklog/continuation-s14/rebuild_chain_1952.log`): `ingest` 524 units with C10 no mismatch; `outputs` exit 0 (C13 18 A3 rows, C43 one page at condense level 2 with every reason, 7.62 pt, no STALE row, C48 200 rows in force, the two approval blockers only: 205 rows, 38 ops); the drill PARTIAL with its expected blockers; `outputs --strict` exit 3 with exactly the two approval blockers; `check-register` 0 findings; the Mac checks 9 PASS / 5 PENDING / 0 FAIL. Against `a918d5e`, 39 output files now differ (README, a1 3, a2 5, a3 3, a4 3, a5 14 with the two new Form 4-E check files, checks.json, review 9), the union of the packages' and the fixers' explained changes (§2 and §4). It ran again on the frozen code after F3 and F4 (05:35) and on the final code (09:09; §6), with the same 39 files and no further change.
 
 ## 4. The independent rechecks (part 4)
 
@@ -91,11 +91,43 @@ Decoys 8 of 9 clean; must-not-report 0 of 22 asserted; nothing asserted as settl
 
 ## 6. Verification
 
-Merge checks 1–5 green on the merged tree (190, 94, 213 … passed per check, the work log §2); the panel file green after E167's fix; merge check 6 PENDING (every session-14 test file with the changed expectations); the final independent review of the merged result PENDING; the full suite on the final code PENDING.
+Merge checks 1–9 were green after each merge (the work log §2). The final review R4 is in §4.
+
+**The full suite on the final code passed: 1,575 passed, 1 skipped, 0 failed** (73 minutes, 8 October 07:55–09:09 UTC).
+
+The first full run, on the frozen code of the blind-08 run, had 5 failures. All five were diagnosed and fixed, each with a failing test first:
+
+- **The interview-folder test and the A5 audit expectation:** test and record fixes. The A5 rows now read NOT SETTLED because F1 opened the Form 4-E commercial-qualification issue on them.
+- **The speed test:** made deterministic (it raced under load).
+- **E173:** the word-based reach attached a later stage's candidate issues to an earlier stage's programme.
+- **E174:** the Ollama route refused every analysis call, because the request loop reserved the whole output cap that the size planner had not counted.
+
+E173 and E174 are code changes made after the blind-08 freeze; the run did not use them.
+
+**The closing chain on the final code** (`worklog/continuation-s14/rebuild_chain_0909.log`):
+
+- `outputs` exit 0, with C13 18 rows, C43 one page at 7.62 pt, no STALE row, C48 ok.
+- The drill exit 0; `outputs --strict` exit 3 with exactly the two approval blockers.
+- `check-register` 0 findings; the Mac checks 9 PASS, 5 PENDING, 0 FAIL.
+- `out/` is byte-identical to the frozen chain, so the post-freeze fixes change no output of the real pack.
 
 ## 7. The package and the Mac (part 7)
 
-PENDING: the final package is built from the final code after the reviews and the rehearsals, verified by `scripts/mac/verify_package.sh` on the packaged copy, and sent as a zip. Cloud-tested vs pending on the Mac: `docs/MAC_CHECKLIST.md`.
+The package `LAMAR-PPP-R2-INTERVIEW_be97bec+wt_20261008T0944Z.zip` (758 files, 21.8 MB) was built from the final code and verified on the packaged copy by `scripts/mac/verify_package.sh --no-ai`: **8 PASS, 0 PENDING, 0 FAIL.**
+
+| Step | Result |
+|---|---|
+| unzip, manifest, executable bits, contents | PASS (757 files match the manifest; no .venv) |
+| setup | 8 PASS, 1 PENDING (Ollama absent in the cloud), 0 FAIL |
+| focused quick tests | 387 passed in 156 s (bound 180 s) |
+| offline checks | 9 PASS, 5 PENDING (for you on the Mac), 0 FAIL |
+| smoke test | 9 of 9 |
+
+The full focused command in the same packaged copy also passed: 594 passed, 3 skipped, 0 failed, in 24 min 26 s.
+
+The quick command first took 491 s against its three-minute bound on an idle machine. It now leaves twelve earlier-session files and the slowest session-14 tests to the full command (`QUICK_SKIP_FILES` and `SLOW` in `scripts/make_interview_folder.py`). Every session-14 file still runs in the quick command.
+
+What was tested in the cloud and what stays pending on your Mac is in `docs/MAC_CHECKLIST.md`. The Ollama route's fix (E174) has not met a real Ollama yet.
 
 ## 8. Errors of this session
 

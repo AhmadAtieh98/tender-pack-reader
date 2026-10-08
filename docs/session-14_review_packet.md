@@ -1,6 +1,6 @@
 # Session 14: the consolidated review packet (decisions that genuinely need the owner)
 
-**Status: in progress** (started 18:34 UTC; completed at the end of the session with the rehearsal results and the final review). Nothing here is decided; every item is PROPOSED or PENDING in the outputs until a person records a decision through the panel's decisions form or `tenderpack approve`. The three groups are the ones the owner asked for. Each item names where it shows in the outputs.
+**Status: final** (8 October 2026). Nothing here is decided; every item is PROPOSED or PENDING in the outputs until a person records a decision through the panel's decisions form or `tenderpack approve`. The three groups are the ones the owner asked for. Each item names where it shows in the outputs.
 
 ## A. Software failures (what the tool got wrong or cannot do; fixed where marked, otherwise known)
 
