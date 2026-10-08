@@ -183,10 +183,11 @@ def test_9_the_engine_s_conditional_impacts_join_the_tasks_in_their_shape(ws, mo
 def test_9_an_op_that_adds_a_unit_gets_an_obligation_task_with_what_shares_its_terms(ws):
     prom = W3.promoted(ws)
     tasks, _ = DS.tasks(ws, SimpleNamespace(addendum="ADD-03", items=[]), prom, {})
-    ob = [t for t in tasks if t["kind"] == "obligation_impact"]
+    # session 14 (F3, N2): an obligation task of an op that also has a row task is merged into that task (`obligation`)
+    ob = [t for t in tasks if t["kind"] == "obligation_impact"] + [t["obligation"] for t in tasks if t.get("obligation")]
     adds = [o.id for o in prom["ops"].values() if o.type in ("insert_unit", "insert_row", "append_text", "replace_unit")
             or o.effect == "adds_obligation"]
-    assert adds and {t["op"] for t in ob} == set(adds), ([t["id"] for t in ob], adds)
+    assert adds and {t["op"] for t in ob} == set(adds), ([t.get("id") or t["op"] for t in ob], adds)
     assert all("related" in t and "terms" in t and "hint" in t["expect"] for t in ob)
 
 

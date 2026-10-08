@@ -162,9 +162,13 @@ def from_run(run: str, staging: str | None = None) -> dict:
         if e.get("event") in ("started", "resumed"):
             cur = {"start": e["ts"], "end": e["ts"]}
             segs.append(cur)
+        elif cur is not None and e.get("event") == "segment_end_recorded":   # session 14 (N6): a killed segment
+            cur["end"], cur["ended"], cur = e.get("at") or cur["end"], e.get("note"), None
         elif cur is not None:
             cur["end"] = e["ts"]
-    if segs:
+            if e.get("event") == "segment_ended":
+                cur = None
+    if segs and "ended" not in segs[-1]:
         segs[-1]["end"] = max(segs[-1]["end"], cp.get("updated") or segs[-1]["end"])
     seg_s = [((_ts(s["end"]) - _ts(s["start"])).total_seconds() if _ts(s["end"]) and _ts(s["start"]) else None)
              for s in segs]
@@ -175,7 +179,9 @@ def from_run(run: str, staging: str | None = None) -> dict:
             "max_parallel_sessions": (cp.get("settings") or {}).get("max_parallel_sessions"),
             "status": cp.get("status"), "steps": steps,
             "steps_sum_s": round(sum(float(v["seconds"] or 0) for v in steps.values()), 1), "wall_s": wall,
-            "segments": [{"start": s["start"], "end": s["end"], "seconds": x} for s, x in zip(segs, seg_s)],
+            "segments": [{"start": s["start"], "end": s["end"], "seconds": x, **({"ended": s["ended"]} if s.get("ended")
+                                                                                 else {})} for s, x in zip(segs, seg_s)],
+            "destroyed_work": cp.get("destroyed_work") or [],              # session 14 (N6)
             "batches": batches, "sessions": sessions, "concurrency": cp.get("concurrency"),
             # session 14 (W2): every drive's concurrency, and the host usage the run itself recorded (a frozen copy
             # whose session folders were not kept still has it)
@@ -201,6 +207,12 @@ def print_run(r: dict) -> None:
     print(f"  {label:<22}{_fmt(r['steps_sum_s'])} s")
     print(f"  wall clock (created -> updated): {_fmt(r['wall_s'], 0)} s; segments: "
           + "; ".join(f"{s['start']} -> {s['end']} ({_fmt(s['seconds'], 0)} s)" for s in r["segments"]))
+    for d in r.get("destroyed_work") or []:        # session 14 (N6): the work a kill destroyed
+        ss_ = d.get("sessions") or []
+        print(f"  destroyed: segment {d.get('segment')} {d.get('note')}: {len(ss_)} session(s), "
+              f"{_fmt(d.get('session_seconds_lost'), 0).strip()} s of session time lost"
+              + (" (" + ", ".join(f"{x['session']} {x['started']} -> {x['last_activity']}" for x in ss_) + ")" if ss_
+                 else ""))
     print("\nbatches (seconds: in the run's thread; session: the exchange in a worker; host: the host session's own)")
     print(f"  {'batch':<26}{'phase':>11}{'status':>12}{'units':>6}{'tries':>6}{'seconds':>9}{'session':>9}"
           f"{'host':>9}{'tokens~':>9} reused")

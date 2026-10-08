@@ -1,0 +1,1221 @@
+diff --git a/docs/RUNTIME_INSTRUCTIONS.md b/docs/RUNTIME_INSTRUCTIONS.md
+index 23cc1ee..2387236 100644
+--- a/docs/RUNTIME_INSTRUCTIONS.md
++++ b/docs/RUNTIME_INSTRUCTIONS.md
+@@ -2,7 +2,7 @@
+ 
+ GENERATED from `tenderpack/ai/policy/*.md` by `python -m tenderpack.ai.policy doc > docs/RUNTIME_INSTRUCTIONS.md`; do not edit by hand (tests/test_session13_policy.py fails when they differ).
+ 
+-Policy identity: `02236955dadd7a8ae36ae37e1c2800ff40367f30c30c8b811415ef0882e8b686` over 14 files.
++Policy identity: `072b3f8e5d7ab77ea2c00b24757287e4f5ef20f0ce62b4e105a10d8856496d10` over 14 files.
+ 
+ ## How every route and phase receives it
+ 
+@@ -206,7 +206,7 @@ Reply again with ONLY the corrected JSON object described by `schema` in the pac
+ 
+ The downstream packet may carry tasks for what an addendum implies beyond the units it changes. The program found them; each task's `expect` describes what it needs, never what the answer is.
+ - reading_rows (`reading:<region>`): a reading still pending a person's approval. Rows and activities proposed from it carry `conditional_on: {reading: <region>, until: approval}` and cite the reading's own units; quotes come from the reading's source text (Arabic as printed; the translation is not evidence). They are never in force while the reading is pending. Where the reading and another rendering of the same content differ (a translation, an appendix in another language), say so in an issue or an escalation; never choose between them.
+-- computed_date (`date:<unit>`): the program computed a deadline. Carry its `computed_from` or `date_rule` unchanged (an activity's milestone or a row's date rule); never type a date. A conditional obligation gives a conditional milestone (say on what). A result the counting rules leave ambiguous is escalated; never pick a reading.
++- computed_date (`date:<unit>`): the program computed a deadline. Carry its `computed_from` or `date_rule` unchanged (an activity's milestone or a row's date rule); never type a date. A conditional obligation gives a conditional milestone (say on what). A result the counting rules leave ambiguous is escalated; never pick a reading. The row still carries the task's relative `date_rule` unchanged, never kind 'unresolved' for words the program counts: the program plans at the earlier reading and keeps the later one listed, which chooses nothing (session 14). A new activity for an obligation the addendum introduces can be done only from the addendum's issue date (or the event its period counts from): never make it a predecessor of an activity that must finish before that day.
+ - condition_changed (`cond:<unit>`, `defn:<unit>`): an op switched a condition or changed a definition. Re-read each row it lists (a row_reading at the addendum, or an escalation); whether the clause now always, or never, applies is a person's reading. Name the earlier answers that relied on it.
+ - derived_consequence (`cons:<unit>`): never invent a consequence the pack does not state. Where an existing rule's words cover a value outside the band, propose a row whose consequence quotes that rule (its unit, class and words), PROPOSED: a person decides whether the rule covers the value. Where no rule covers it, an escalation saying "no bid-out consequence stated". Read the rule with the forms that state the value (`read_with`).
+ - conditional impact (`impact:<ref>`, session 14): an op that could not be applied, an unresolved disposition, an unaccounted provision, or a value read from an image no person has approved. The task says `conditional on <op | disposition | provision | reading> <ref>` and lists the units it would reach. Investigate the rows, activities and prices that rest on them, and label everything you propose conditional on that ref. Never present the change as made or the value as in force.
+diff --git a/scripts/bench_workflow.py b/scripts/bench_workflow.py
+index 60e4ec9..f2a7163 100644
+--- a/scripts/bench_workflow.py
++++ b/scripts/bench_workflow.py
+@@ -162,9 +162,13 @@ def from_run(run: str, staging: str | None = None) -> dict:
+         if e.get("event") in ("started", "resumed"):
+             cur = {"start": e["ts"], "end": e["ts"]}
+             segs.append(cur)
++        elif cur is not None and e.get("event") == "segment_end_recorded":   # session 14 (N6): a killed segment
++            cur["end"], cur["ended"], cur = e.get("at") or cur["end"], e.get("note"), None
+         elif cur is not None:
+             cur["end"] = e["ts"]
+-    if segs:
++            if e.get("event") == "segment_ended":
++                cur = None
++    if segs and "ended" not in segs[-1]:
+         segs[-1]["end"] = max(segs[-1]["end"], cp.get("updated") or segs[-1]["end"])
+     seg_s = [((_ts(s["end"]) - _ts(s["start"])).total_seconds() if _ts(s["end"]) and _ts(s["start"]) else None)
+              for s in segs]
+@@ -175,7 +179,9 @@ def from_run(run: str, staging: str | None = None) -> dict:
+             "max_parallel_sessions": (cp.get("settings") or {}).get("max_parallel_sessions"),
+             "status": cp.get("status"), "steps": steps,
+             "steps_sum_s": round(sum(float(v["seconds"] or 0) for v in steps.values()), 1), "wall_s": wall,
+-            "segments": [{"start": s["start"], "end": s["end"], "seconds": x} for s, x in zip(segs, seg_s)],
++            "segments": [{"start": s["start"], "end": s["end"], "seconds": x, **({"ended": s["ended"]} if s.get("ended")
++                                                                                 else {})} for s, x in zip(segs, seg_s)],
++            "destroyed_work": cp.get("destroyed_work") or [],              # session 14 (N6)
+             "batches": batches, "sessions": sessions, "concurrency": cp.get("concurrency"),
+             # session 14 (W2): every drive's concurrency, and the host usage the run itself recorded (a frozen copy
+             # whose session folders were not kept still has it)
+@@ -201,6 +207,12 @@ def print_run(r: dict) -> None:
+     print(f"  {label:<22}{_fmt(r['steps_sum_s'])} s")
+     print(f"  wall clock (created -> updated): {_fmt(r['wall_s'], 0)} s; segments: "
+           + "; ".join(f"{s['start']} -> {s['end']} ({_fmt(s['seconds'], 0)} s)" for s in r["segments"]))
++    for d in r.get("destroyed_work") or []:        # session 14 (N6): the work a kill destroyed
++        ss_ = d.get("sessions") or []
++        print(f"  destroyed: segment {d.get('segment')} {d.get('note')}: {len(ss_)} session(s), "
++              f"{_fmt(d.get('session_seconds_lost'), 0).strip()} s of session time lost"
++              + (" (" + ", ".join(f"{x['session']} {x['started']} -> {x['last_activity']}" for x in ss_) + ")" if ss_
++                 else ""))
+     print("\nbatches (seconds: in the run's thread; session: the exchange in a worker; host: the host session's own)")
+     print(f"  {'batch':<26}{'phase':>11}{'status':>12}{'units':>6}{'tries':>6}{'seconds':>9}{'session':>9}"
+           f"{'host':>9}{'tokens~':>9} reused")
+diff --git a/tenderpack/ai/controller.py b/tenderpack/ai/controller.py
+index 963cd98..7a432d1 100644
+--- a/tenderpack/ai/controller.py
++++ b/tenderpack/ai/controller.py
+@@ -409,6 +409,80 @@ def _settled_handoffs(entries: list[str], it, texts: dict, addendum: str, provis
+     return keep
+ 
+ 
++# session 14 (defect 11 and §10 of the blind-07 regression): a precedence the addendum STATES between two renderings of
++# the same content ("Table 42-1 is issued in the Arabic language. The Arabic text governs. The English translation at
++# Appendix B is provided for convenience only.") settles every question that is only between those renderings: the op
++# that records it, and each item on one rendering whose conflict or reason names only the other, are APPLIED with the
++# rule quoted ("applied, not decided; a person confirms the application"), never HUMAN DECISION PENDING or UNRESOLVED.
++# A genuine judgment stays pending: two readings of the same words named in the item's own words, a third text in the
++# conflict, or words that are not the provision's own.
++def op_precedence(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str]) -> dict | None:
++    """The stated precedence an op records ({governs, over, words} with the words verbatim in its provision and a
++    precedence word in them), as an applied-rule point; None otherwise."""
++    if statement_type != "amendment_op" or not isinstance(payload, dict):
++        return None
++    pr = payload.get("precedence")
++    if not isinstance(pr, dict):
++        return None
++    g, over = pr.get("governs"), pr.get("over") or []
++    over = [over] if isinstance(over, str) else [x for x in over if isinstance(x, str)]
++    words = " ".join(str(pr.get("words") or "").split())
++    src = " ".join(str(texts.get(provision or "") or "").split())
++    if not (isinstance(g, str) and g and over and words and words in src and _PRECEDENCE.search(words)):
++        return None
++    ref = _ref(provision or "")
++    return {"kind": "precedence", "unit": provision, "words": words, "governs": g, "over": over, "ref": ref,
++            "sentence": "", "keys": {ref}, "line": f"{ref} provides: '{words}' (applied, not decided)",
++            "confirm": f"applied rule: {ref} '{words}'; {CONFIRM}"}
++
++
++def stated_precedences(items, texts: dict[str, str]) -> list[dict]:
++    """The stated precedences recorded by the set's ops (op_precedence), with the item that records each."""
++    out = []
++    for it in items or []:
++        r = op_precedence(it.statement_type, dict(it.payload or {}), it.provision, texts)
++        if r is not None and all(x["line"] != r["line"] or x["governs"] != r["governs"] for x in out):
++            out.append({**r, "item": it.id})
++    return out
++
++
++def named_units(text: str) -> list[str]:
++    return list(dict.fromkeys(m.group(0).rstrip(".,;:)'\"") for m in _UNIT_ID.finditer(str(text or ""))))
++
++
++def _within(u: str, scope: str) -> bool:
++    return u == scope or u.startswith(scope + "/")
++
++
++def rendering_settled(provision: str | None, named: list[str], own_words: str, rules: list[dict]) -> dict | None:
++    """The stated precedence that settles a question between two renderings: the item's provision lies in one of them,
++    the units it names (its declared conflicts, or the ids in its reason) lie in the other (the rule's own clause aside),
++    and its own words name no two readings of the same words. None otherwise (the judgment stays pending)."""
++    if not provision or _TWO_READINGS.search(" ".join(str(own_words or "").split())):
++        return None
++    for r in rules or []:
++        for mine, other, side in (([r["governs"]], r["over"], "governing"), (r["over"], [r["governs"]], "convenience")):
++            if not any(_within(provision, x) for x in mine):
++                continue
++            rest = [u for u in named if u != r["unit"] and not _within(u, provision)]
++            hits = [u for u in rest if any(_within(u, x) for x in other)]
++            if hits and len(hits) == len(rest):
++                return {**r, "side": side, "others": hits}
++    return None
++
++
++RENDERING_RULE = "the stated precedence orders the two renderings"
++
++
++def rendering_record(settled: dict, provision: str) -> ValidationRecord:
++    """The applied-rule record of an item settled by a stated precedence (rendering_settled)."""
++    what = (f"{provision} is the governing rendering: it applies as printed" if settled["side"] == "governing" else
++            f"{provision} is the rendering the rule makes subordinate: {settled['governs']} applies")
++    return ValidationRecord(check=APPLIED_RULE, ok=True, aspect="decision", detail=(
++        f"{RENDERING_RULE} ({', '.join(settled['others'])} against {provision}): {settled['line']}; {what}; "
++        f"{CONFIRM} (session 14, defect 11)")[:600])
++
++
+ def applied_rule_review(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str], addendum: str,
+                         provisions, phase: str = "analysis", existing: dict | None = None) -> dict:
+     """{lines, sentences, points, human}: the applied rules of an item's own prose (settled_points over
+@@ -418,6 +492,19 @@ def applied_rule_review(statement_type: str, payload: dict, provision: str | Non
+     from .. import human_owned as H
+     text = H.prose(payload or {})
+     pts = settled_points(text, provision, texts, addendum, provisions)
++    own_rule = op_precedence(statement_type, payload or {}, provision, texts)
++    if own_rule is not None and not _TWO_READINGS.search(" ".join(str(text or "").split())):
++        # session 14 (defect 11, §10): an op that records the provision's own stated precedence ("The Arabic text
++        # governs.", verbatim in the provision) applies that rule: applied, not decided; a person confirms the
++        # application. The annotation's type and the provision's precedence word are not a judgment left open; any
++        # other reason of the classifier stays.
++        skip = {"decides which document prevails (precedence)", "a precedence question", "decides which clause governs"}
++        full = (H.analysis_reasons(statement_type, payload or {}, texts.get(provision or "", "")) if phase == "analysis"
++                else H.downstream_reasons(statement_type, payload or {}, existing))
++        rest = [x for x in full if not x.startswith("an annotation that")
++                and not (x.startswith("the provision it reads") and any(k in x for k in skip))]
++        return {"lines": [own_rule["line"]], "sentences": [], "points": [own_rule], "human": rest,
++                "confirm": [own_rule["confirm"]]}
+     full = (H.analysis_reasons(statement_type, payload or {}, texts.get(provision or "", "")) if phase == "analysis"
+             else H.downstream_reasons(statement_type, payload or {}, existing))
+     if not pts:
+@@ -756,7 +843,8 @@ def amendment_language(text: str) -> list[str]:
+     required, except, unless, provided, ...). Parenthesised labels ('(revised)') are not read as verbs. Empty: none."""
+     from ..draft import _QUALIFIER, Q
+     hits = []
+-    plain = re.sub(r"\([^)]*\)", " ", text)
++    from ..human_owned import recitals_removed     # session 14 (N4): a reference recital, 'provided for convenience only'
++    plain = recitals_removed(re.sub(r"\([^)]*\)", " ", text))
+     quoted = re.findall(Q, text)
+     if len(quoted) >= 2:
+         hits.append(f"a quoted pair ‘{_short(quoted[0], 40)}’ / ‘{_short(quoted[1], 40)}’")
+@@ -1338,6 +1426,8 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
+ 
+     F = [{"invalid": [], "conflict": [], "insufficient": [], "interp": [], "recs": [], "op": None} for _ in ps.items]
+     texts_s14 = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}      # session 14 (W1): settled points
++    from .. import human_owned as H14
++    precedences = stated_precedences(ps.items, texts_s14)    # session 14 (defect 11): the addendum's stated orders
+     seen: set[str] = set()
+     sim_ops, sim_disps = [], []
+     for i, it in enumerate(ps.items):
+@@ -1384,8 +1474,18 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
+             elif not s["evidence_ok"]:                  # session 14 (W1): the blast radius is reported
+                 rec("statements", False, f"blocked by failed statement {sid}: {s.get('why')}", "insufficient")
+                 f.setdefault("blocked", []).append(f"blocked by failed statement {sid}: {s.get('why')}")
++        own14 = H14.prose(dict(it.payload or {}))
++        rend = None
+         if it.conflicts:
+             cover_c, genuine = split_cover_conflicts(it.conflicts, addendum, it.provision, provs_all)
++            # session 14 (defect 11): a declared conflict only between two renderings whose order the addendum states
++            # is settled by that rule (applied, not decided); any other conflict between operative texts stays
++            rend = rendering_settled(it.provision, [u for e in genuine for u in (named_units(e) or [str(e).strip()])],
++                                     own14, precedences) if genuine else None
++            if rend is not None:
++                f["recs"].append(rendering_record(rend, it.provision))
++                f["interp"].append(APPLIED_RULE)
++                genuine = []
+             # session 14 (W1): a declared conflict between two operative texts stays a conflict (never settled here)
+             if genuine:
+                 rec("declared_conflicts", False, "the proposer declares: " + "; ".join(genuine)[:400], "conflict")
+@@ -1395,6 +1495,12 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
+                     "documents; the summary orders nothing): " + "; ".join(cover_c)[:400])
+                 report.setdefault("cover_findings", []).append({"item": it.id, "provision": it.provision,
+                                                                 "discrepancies": list(cover_c)})
++        if rend is None and it.statement_type == "disposition" and (it.payload or {}).get("disposition") == "unresolved":
++            reason = str((it.payload or {}).get("reason") or "")
++            rend = rendering_settled(it.provision, named_units(reason), own14, precedences)
++            if rend is not None:                 # session 14 (defect 11): promoted as applied (re_present_disposition)
++                f["recs"].append(rendering_record(rend, it.provision))
++                f["interp"].append(APPLIED_RULE)
+         missing = _settled_handoffs(list(it.missing_information), it, texts_s14, addendum, provs_all, f,
+                                     "missing information")
+         if missing:
+diff --git a/tenderpack/ai/derived_tasks.py b/tenderpack/ai/derived_tasks.py
+index 2663505..58584c2 100644
+--- a/tenderpack/ai/derived_tasks.py
++++ b/tenderpack/ai/derived_tasks.py
+@@ -92,7 +92,11 @@ def tasks(ws, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
+                                 + rule_txt + "; never a typed date"))
+                     + ("; the obligation is conditional, so the milestone is conditional (say on what)"
+                        if d["conditional"] else "")
+-                    + ("; AMBIGUOUS under the counting rules: escalate, never choose a reading"
++                    # session 14 (N1): an ambiguous count is still carried as the relative rule (planned at the
++                    # earlier reading, the later kept); the escalation asks the counting question
++                    + ("; AMBIGUOUS under the counting rules: carry the relative `date_rule` unchanged all the same "
++                       "(the program plans at the earlier reading and keeps the later; never kind 'unresolved'), and "
++                       "escalate the counting question; never choose a reading"
+                        if res.get("escalate") else "")})
+     for x in derived.switched(r2, addendum):
+         rows = sorted(rid for rid, e in evals.items() if x["flag"] in (e["stages"].get(addendum) or {}).get("flags", []))
+diff --git a/tenderpack/ai/downstream.py b/tenderpack/ai/downstream.py
+index 16f9924..c276791 100644
+--- a/tenderpack/ai/downstream.py
++++ b/tenderpack/ai/downstream.py
+@@ -108,6 +108,21 @@ def _stage(r: dict, name: str):
+ 
+ # ---------------------------------------------------------------------------------------------- promoted ops
+ 
++def re_present_disposition(d: Disposition, validation) -> Disposition:
++    """session 14 (defect 11): an `unresolved` disposition whose question is only between two renderings the addendum's
++    stated precedence orders (controller.rendering_record) is promoted as applied by that rule: `no_effect` (the
++    rendering amends no unit by itself), the rule quoted, "applied, not decided; a person confirms the application", and
++    the model's own reason kept as the proposed reason. Any other disposition is unchanged."""
++    if d.disposition != "unresolved":
++        return d
++    rec = next((v for v in validation or [] if v.check == controller.APPLIED_RULE
++                and str(v.detail).startswith(controller.RENDERING_RULE)), None)
++    if rec is None:
++        return d
++    return d.model_copy(update={"disposition": "no_effect", "reason": (
++        f"applied rule: {rec.detail} — proposed reason: {d.reason}")})
++
++
+ def promoted_ops(ws: Workspace, ps) -> dict:
+     """See the module docstring. Returns {ops: {item id: Op}, dispositions: {item id: Disposition}, dropped:
+     {item id: reason}, sim, r2}."""
+@@ -126,7 +141,8 @@ def promoted_ops(ws: Workspace, ps) -> dict:
+                 p.setdefault("id", it.id)
+                 ops[it.id] = Op.model_validate(p)
+             elif it.statement_type == "disposition":
+-                disps[it.id] = Disposition.model_validate({**it.payload, "provision": it.provision, "origin": "assistant"})
++                disps[it.id] = re_present_disposition(Disposition.model_validate(
++                    {**it.payload, "provision": it.provision, "origin": "assistant"}), it.validation)
+         except ValidationError as e:
+             dropped[it.id] = f"does not load: {_short(str(e), 200)}"
+     for it in ps.items:                          # session 13: never an empty reason (blind-05 regression, defect 3)
+@@ -204,6 +220,58 @@ def analysis_issues(ps, win: dict | None = None) -> dict[str, dict]:
+     return out
+ 
+ 
++# session 14 (N11): the same question is promoted once. An analysis issue whose subject is a downstream issue's of the
++# same run (they quote the same words of the same unit, that unit being one of the two issues' own provision) is merged
++# into the downstream issue: one issue, its origins recorded, never a second id; references to the analysis id point at
++# the one issue (remap_issue_ids).
++def issue_subject_merges(ps, items) -> dict[str, str]:
++    """{analysis issue id: downstream issue id} (see above). `items` are the promotable downstream items."""
++    def norm(w):
++        return " ".join(str(w or "").split()).lower()
++    down = [it for it in items if it.statement_type == "issue" and (it.payload or {}).get("id")]
++    out: dict[str, str] = {}
++    for a in getattr(ps, "items", None) or []:
++        if a.statement_type != "issue" or a.verification_status not in PROMOTABLE:
++            continue
++        aq = [(e.unit_id, norm(e.words)) for e in a.evidence or [] if norm(e.words)]
++        for d in down:
++            own = {a.provision, d.provision}
++            dq = [(e.unit_id, norm(e.words)) for e in d.evidence or [] if norm(e.words)]
++            if any(ua == ud and ua in own and (wa in wd or wd in wa) for ua, wa in aq for ud, wd in dq):
++                out[analysis_issue_id(a)] = d.payload["id"]
++                break
++    return out
++
++
++def remap_issue_ids(obj, merges: dict[str, str]):
++    """`obj` with every string equal to a merged analysis issue id replaced by the issue it was merged into."""
++    if not merges:
++        return obj
++    if isinstance(obj, str):
++        return merges.get(obj, obj)
++    if isinstance(obj, dict):
++        return {k: remap_issue_ids(v, merges) for k, v in obj.items()}
++    if isinstance(obj, list):
++        return list(dict.fromkeys(remap_issue_ids(v, merges) for v in obj)) if all(isinstance(v, str) for v in obj) \
++            else [remap_issue_ids(v, merges) for v in obj]
++    return obj
++
++
++# session 14 (N12): an issue raised only at output time (the class-scope rule, signals.class_scope_issues: blind-07 DA1)
++# reached the candidate A3 but neither the review packet nor the candidate register. Promotion writes it into the
++# candidate register (PROPOSED, HUMAN DECISION PENDING, the rule's own words), so the packet lists it and the output
++# rule does not raise it a second time.
++def output_time_issues(units: list[dict], rows: dict[str, list[str]], existing: set[str]) -> dict[str, dict]:
++    from .. import signals
++    out = {}
++    for x in signals.class_scope_issues(units, rows, existing=existing):
++        out[x["id"]] = {"text": x["text"], "owner": x["owner"], "rows": list(x.get("rows") or []),
++                        "source": f"{x['source']}: raised at output time, written by the AI workflow (PROPOSED)",
++                        "show_in_a3": False, **({"theme": x["theme"]} if x.get("theme") else {}),
++                        **({"short": x["short"]} if x.get("short") else {})}
++    return out
++
++
+ def carry_analysis_rows(ps, out: list[dict], promoted: dict, evals2: dict, prev: str, addendum: str) -> None:
+     """Session 13: every promotable analysis row_new / row_reading item reaches a downstream task, with the analysis
+     proposal as its UNVERIFIED reference (`analysis_items`): the C46 task already asking for a row of the same
+@@ -356,6 +424,7 @@ def tasks(ws: Workspace, ps, promoted: dict, provision_status: dict[str, dict])
+     out += obligation_tasks(ws, promoted, r2, addendum, out)                          # session 14 (W2): defect 9
+     out += [t_ for t_ in reread_tasks(r2, addendum) if t_["id"] not in {x["id"] for x in out}]   # session 12
+     out += DT.tasks(ws, r2, addendum, out)   # session 12 (W3b): pending readings, computed dates, conditions, consequences
++    out = merge_obligation_tasks(out)        # session 14 (N2): one obligation, one task (its origins recorded)
+     for t_ in out:                       # session 14 (W2; blind-07 defect 16): a new row comes with its deliverables
+         if t_["kind"] in ROW_MAKING:
+             t_["needs"] = NEEDS
+@@ -479,9 +548,17 @@ def conditional_tasks(ws: Workspace, ps, promoted: dict, provision_status: dict,
+     # W3's engine-side investigations (derived.conditional_impacts, session 14), when the merged tree has them: each
+     # joins the task of its provision's section, its units mapped to rows, activities and prices below
+     have_prov = {rec.get("provision") for g in groups.values() for rec in g}
++    provs_ok = set(controller._provisions(ws, addendum))
++    provs_ok |= set(controller.region_parents(ws.r["units"], provs_ok))
+     for x in _engine_impacts(r2, addendum):
+         c = x.get("conditional_on") or {}
+         pid = x.get("provision") or c.get("ref") or "?"
++        # session 14 (N8): a structural unit (an image region's own unit, a reading named "?") is not a provision: it
++        # never gets a conditional task of its own (the reading's own investigation, by its region id, carries it)
++        if str(c.get("ref") or "?") == "?" or not any(
++                u in provs_ok or any(str(u).startswith(q + "/") for q in provs_ok)
++                for u in [pid] + list(x.get("units") or [])):
++            continue
+         rec = {"provision": x.get("provision") or c.get("ref"), "basis": _basis_of(c.get("kind"), c.get("state")),
+                "item": x.get("id"), "why": _short(c.get("why") or x.get("investigate"), 400), "units": x.get("units") or [],
+                "conditional_on": _cond(c.get("kind"), c.get("ref"), c.get("state"), c.get("why")),
+@@ -564,6 +641,89 @@ def defined_terms(text: str) -> list[str]:
+     return list(dict.fromkeys(m.group(1) for m in _TERM_RE.finditer(text or "")))
+ 
+ 
++# session 14 (N2): one obligation gets ONE downstream task. The C46 task of an op (`c46:<op>`), the obligation task of
++# the same op (`oblig:<op>`), the analysis row carried to it (`ana:<item>`) and a computed deadline of the same unit
++# (`date:<unit>`) each asked for the same row, so the second answer was refused on the id ledger. They are merged into
++# the row task (same op, or the same unit): the obligation task's hint goes under `obligation`, the deadline under
++# `computed_dates` (as derived_tasks does for a unit a row task covers), and `origins` lists every task merged.
++def merge_obligation_tasks(out: list[dict]) -> list[dict]:
++    rows_t = [t for t in out if t.get("kind") == "row_new"]
++
++    def owner(op, units) -> dict | None:
++        units = {u for u in units or [] if u}
++        return (next((t for t in rows_t if op and t.get("op") == op), None)
++                or next((t for t in rows_t if units and units <= set((t.get("provisions") or [])
++                                                                     + (t.get("units_changed") or [])
++                                                                     + (t.get("attaches_to") or []))), None))
++
++    def origin(t: dict, oid: str, kind: str | None = None) -> None:
++        o = t.setdefault("origins", [t["id"]])
++        if oid not in o:
++            o.append(oid)
++        if kind:                         # session 14 (N2): an answer by the origin's own id keeps the origin's kind
++            t.setdefault("origin_kinds", {})[oid] = kind
++
++    keep = []
++    for t in out:
++        tgt = None
++        if t.get("kind") == "obligation_impact":
++            tgt = owner(t.get("op"), t.get("provisions"))
++            if tgt is not None:
++                tgt["obligation"] = {k: t[k] for k in ("op", "terms", "related", "expect") if k in t}
++                tgt["units_changed"] = list(dict.fromkeys(list(tgt.get("units_changed") or [])
++                                                          + list(t.get("units_changed") or [])))
++        elif t.get("kind") == "computed_date":
++            tgt = owner(None, [t.get("unit")])
++            if tgt is not None:
++                tgt.setdefault("computed_dates", []).append(
++                    {**{k: t[k] for k in ("unit", "words", "computed_from", "status", "date_rule", "readings", "note",
++                                          "conditional") if k in t},
++                     "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows "
++                               "the derivation and any disagreement)"})
++        if tgt is not None:
++            origin(tgt, t["id"], t.get("kind"))
++            continue
++        keep.append(t)
++    for t in rows_t:
++        for a in t.get("analysis_items") or []:
++            if f"ana:{a.get('item')}" != t["id"]:
++                origin(t, f"ana:{a.get('item')}")
++    return keep
++
++
++def task_kinds(tasks: list[dict]) -> dict[str, str]:
++    """session 14 (N2): {task id: kind} of the packets' tasks, with every merged origin's id (`oblig:<op>`,
++    `date:<unit>:...`, `ana:<item>`) as a task id of its own kind: an answer that names the obligation task by its own
++    id answers the merged task (a `no_change` to the obligation hint stays an answer to the hint, never to the row)."""
++    out = {t["id"]: t.get("kind") for t in tasks or [] if isinstance(t, dict) and t.get("id")}
++    for t in tasks or []:
++        if not isinstance(t, dict):
++            continue
++        for o in t.get("origins") or []:
++            out.setdefault(o, (t.get("origin_kinds") or {}).get(o) or t.get("kind"))
++    return out
++
++
++def task_aliases(tasks: list[dict]) -> dict[str, str]:
++    """session 14 (N2): {merged origin id: the task it was merged into}."""
++    return {o: t["id"] for t in tasks or [] if isinstance(t, dict)
++            for o in t.get("origins") or [] if o != t.get("id")}
++
++
++def row_item_status(items) -> dict[str, str]:
++    """session 14 (N2): {row id: status} of the downstream row items; a row proposed by a promotable item keeps that
++    item's status (a later duplicate refused on the id ledger never makes the promoted row read "(invalid)")."""
++    rank = {"evidence_verified": 0, "interpretation_pending": 1, "conflicting": 2, "insufficient_evidence": 3,
++            "escalated": 4, "invalid": 5, "unverified": 6}
++    out: dict[str, str] = {}
++    for it in items:
++        rid = ((it.payload or {}).get("row") or {}).get("id") if it.statement_type == "row_new" else \
++            (it.payload or {}).get("row") if it.statement_type == "row_reading" else None
++        if rid and (rid not in out or rank.get(it.verification_status, 9) < rank.get(out[rid], 9)):
++            out[rid] = it.verification_status
++    return out
++
++
+ def obligation_tasks(ws: Workspace, promoted: dict, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
+     """Session 14 (W2; blind-07 defect 9, SU1/SU3): one task per op that adds a unit or an obligation: a new unit has no
+     curated relationships, so nothing followed from it. The task names the units, rows and earlier answers (any stage
+@@ -696,6 +856,125 @@ def _ledger(ws: Workspace) -> set[str]:
+     return set(d.get("ids") or {}) | set(d.get("withdrawn") or {})
+ 
+ 
++# session 14 (N1): a forward-counted deadline the program counts ("within three (3) Working Days of the date of this
++# Addendum") is carried as the program's own relative rule, so it is planned at the earlier reading with the later kept
++# (dates.planning_value; A1 and A5 list both): a row that writes such words as kind 'unresolved' loses its planning
++# value and its milestone ("event-dependent (no date: unresolved)"). The counting question stays with a person (the
++# escalation); carrying the rule chooses nothing.
++def program_counted_rules(row: dict, computed: list[dict]) -> list[str]:
++    """Replace, in `row["date_rules"]`, every kind-'unresolved' rule whose words (same source unit, the words within
++    the phrase) are a deadline the program computed as a relative rule (derived.computed_deadlines) by that relative
++    rule (the rule's id, purpose, words and note kept). Returns one note per rule replaced."""
++    notes = []
++    for k, rd in enumerate(row.get("date_rules") or []):
++        if not isinstance(rd, dict) or rd.get("kind") != "unresolved":
++            continue
++        words = " ".join(str(rd.get("text") or "").split()).lower()
++        for c in computed or []:
++            dr = c.get("date_rule") or {}
++            cw = " ".join(str(c.get("words") or "").split()).lower()
++            if dr.get("kind") != "relative" or c.get("unit") != rd.get("source_unit") or not words or not cw \
++                    or not (cw in words or words in cw):
++                continue
++            readings = [x for x in (c.get("result") or {}).get("readings") or [] if x.get("value")]
++            vals = sorted(str(x["value"]) for x in readings)
++            why = (f"{rd.get('rule_id')}: the program counts '{rd.get('text')}' ({dr.get('offset')} {dr.get('unit')} "
++                   f"{dr.get('direction')} {dr.get('anchor')}): carried as the program's relative rule, planned at the "
++                   "earlier reading" + (f" ({vals[0]}) with the later kept ({', '.join(vals[1:])})" if len(vals) > 1
++                                        else "") + "; the counting stays with a person (session 14, N1)")
++            row["date_rules"][k] = {**{f: rd[f] for f in ("rule_id", "purpose", "source_unit", "text") if f in rd},
++                                    **{f: dr[f] for f in ("anchor", "offset", "unit", "direction") if f in dr},
++                                    "kind": "relative",
++                                    "note": " ".join(x for x in (str(rd.get("note") or "").strip(),
++                                                                 "session 14 (N1): " + why) if x)[:900]}
++            notes.append(why)
++            break
++    return notes
++
++
++# session 14 (N7): an activity's fields have the template's shapes (schedule.plan reads them): `finish` an object
++# {deadline_of, buffer}, the links lists of activity ids, `conditional_on` an object. A string where an object is
++# expected ("finish": "milestone") is refused with a named finding, never left for the planner to fail on.
++_ACT_SHAPES = {"finish": dict, "conditional_on": dict, "predecessors": list, "successors": list, "gated_by": list}
++
++
++def activity_shape_problems(a: dict) -> list[str]:
++    out = []
++    for k, t in _ACT_SHAPES.items():
++        v = a.get(k)
++        if v is None:
++            continue
++        if not isinstance(v, t):
++            out.append(f"`{k}` must be {'an object' if t is dict else 'a list of activity ids'}"
++                       + (" {deadline_of: <a date rule id>, buffer: <an assumption key>}" if k == "finish" else "")
++                       + f"; got {type(v).__name__} {_short(repr(v), 80)}")
++        elif t is list and not all(isinstance(x, str) for x in v):
++            out.append(f"`{k}` must list activity ids (strings); got {_short(repr(v), 80)}")
++    return out
++
++
++# session 14 (N1): a new activity can only be done once its obligation exists: a row this set introduces at the addendum
++# exists from the addendum's issue date, and a deadline counted forward from an event opens at that event. Linking it as
++# a predecessor of an activity that must finish before that day would make that activity wait for work that cannot
++# start in time ("INFEASIBLE"): the link is not made, and the record says why (a person may link them).
++def window_opens(rows: list[str], new_rows: dict, addendum: str, issued: str | None,
++                 anchor_dates: dict) -> tuple[date | None, str]:
++    """(the day the activity's window opens, why) from the new rows it carries; (None, '') when any of its rows
++    already exists (no new window)."""
++    best: tuple[date | None, str] = (None, "")
++    for rid in rows:
++        row = new_rows.get(rid)
++        if row is None:
++            return None, ""
++        cand: list[tuple[date, str]] = []
++        intro = row.get("introduced") or {}
++        if issued and (intro.get("stage") == addendum or not intro):
++            cand.append((date.fromisoformat(issued), f"{rid} is a new obligation of {addendum}, issued {issued}"))
++        for rd in row.get("date_rules") or []:
++            if isinstance(rd, dict) and rd.get("kind") == "relative" and rd.get("direction") == "after" \
++                    and anchor_dates.get(rd.get("anchor")):
++                cand.append((anchor_dates[rd["anchor"]], f"{rid}'s rule {rd.get('rule_id')} counts from "
++                                                         f"{rd['anchor']} ({anchor_dates[rd['anchor']].isoformat()})"))
++        if not cand:
++            return None, ""
++        d, why = max(cand)
++        if best[0] is None or d < best[0]:
++            best = (d, why)
++    return best
++
++
++def _computed(r2: dict, addendum: str) -> list[dict]:
++    from .. import derived
++    try:
++        return derived.computed_deadlines(r2, addendum)
++    except Exception:                                    # noqa: BLE001 (no computed deadline: nothing is replaced)
++        return []
++
++
++def _latest_finishes(r2: dict, stage: str, evals: list[dict], templates: dict, assumptions: dict,
++                     evidence: dict) -> dict[str, str]:
++    """{activity id: latest finish} of the programme at `stage` (schedule.plan), {} when it cannot be planned."""
++    s = _stage(r2, stage)
++    if not s.issued:
++        return {}
++    pdd = next((d["anchor_value"] for e in evals for d in e["stages"][stage]["dates"] if d["anchor"] == "PDD"), None)
++    try:
++        p = schedule.plan(stage, evals, templates, assumptions, r2["register"].cal_by_stage[stage],
++                          date.fromisoformat(s.issued), {"PDD": pdd}, evidence_items=evidence,
++                          anchor_details=r2["anchor_details"][stage], notified_days=r2["non_working_days"].get(stage))
++    except Exception:                                    # noqa: BLE001 (the window check is then not made)
++        return {}
++    return {a["id"]: a["latest_finish"] for a in p.get("activities") or [] if a.get("latest_finish")}
++
++
++def unreachable_successors(activity: dict, opens: date | None, latest_finish: dict) -> list[tuple[str, str]]:
++    """[(successor, its latest finish)] of `activity` that must finish before `opens`."""
++    if opens is None:
++        return []
++    return [(s, latest_finish[s]) for s in activity.get("successors") or []
++            if isinstance(s, str) and latest_finish.get(s) and date.fromisoformat(latest_finish[s]) < opens]
++
++
+ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwrites: list | None = None) -> dict:
+     """Assign every downstream item's verification_status (see the module docstring). Mutates `ds`. `task_ids` is the
+     set of the packets' task ids, or {task id: kind} (session 11: the kind decides where a `no_change` answer is
+@@ -759,6 +1038,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+     from .controller import APPLIED_RULE, _provisions, applied_rule_review, phase_reversals
+     texts_all = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}
+     provs = _provisions(ws, addendum)
++    computed: list = [None]                 # session 14 (N1): derived.computed_deadlines at the addendum, once
+     # -------------------------------------------------- pass 1: shape, ids, evidence, statements
+     for i, it in enumerate(ds.items):
+         # session 12: a judgment a person owns, read from the proposer's own payload before any field is reset
+@@ -797,6 +1077,12 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+                 da["basis"] = "PROVISIONAL ASSUMPTION: " + str(da.get("basis", ""))
+                 rec(i, "assumption", True, "the duration's basis is labelled PROVISIONAL ASSUMPTION")
+             p["duration_assumption"] = da
++        if it.statement_type == "row_new" and isinstance(p.get("row"), dict) and p["row"].get("date_rules"):
++            p["row"] = copy.deepcopy(p["row"])               # session 14 (N1): the program's own count, planned
++            if computed[0] is None:
++                computed[0] = _computed(r2, addendum)
++            for n in program_counted_rules(p["row"], computed[0]):
++                rec(i, "date rule (counted)", True, n)
+         try:
+             pl = models[it.statement_type].model_validate(p)
+         except ValidationError as e:
+@@ -804,6 +1090,9 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+             continue
+         it.payload = pl.model_dump(by_alias=True, exclude_none=True)
+         F[i]["pl"] = pl
++        if it.statement_type == "activity":                  # session 14 (N7): the template's shapes, named
++            for prob in activity_shape_problems(pl.activity):
++                rec(i, "activity shape", False, f"activity {pl.activity.get('id')}: {prob}", "invalid")
+         if not it.evidence:
+             rec(i, "evidence", False, "no evidence given", "insufficient")
+         for x in it.evidence:
+@@ -856,7 +1145,14 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+             except ValidationError as e:
+                 rec(i, "payload", False, f"not a register.Row: {_short(str(e), 400)}", "invalid")
+                 continue
+-            if row.id in rows or row.id in ledger or row.id in new_ids["row"]:
++            if row.id in new_ids["row"] and row.id not in rows and row.id not in ledger:
++                # session 14 (N2): the same row id proposed again in this set: a duplicate, never the row's own defect
++                first = next((ds.items[j].id for j in range(i) if ds.items[j].statement_type == "row_new"
++                              and ((ds.items[j].payload or {}).get("row") or {}).get("id") == row.id), "?")
++                rec(i, "duplicate", False, f"row {row.id} is already proposed by {first} in this set: a duplicate, not "
++                                           "promoted twice (the row stands as proposed by that item)", "invalid")
++                report.setdefault("duplicates", {})[it.id] = first
++            elif row.id in rows or row.id in ledger or row.id in new_ids["row"]:
+                 rec(i, "id", False, f"row id {row.id} already exists or was listed before (id ledger)", "invalid")
+             new_ids["row"].add(row.id)
+             if row.review != "proposed" or row.reviewer:
+@@ -1153,6 +1449,34 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+             F[i]["interp"].append("an inferred relationship")
+             rec(i, "relationship", True, f"an inferred relationship stays `{pl.status}`: a person confirms or rejects it")
+     # -------------------------------------------------- pass 4: the A5 checks with the proposals (schedule.plan)
++    # session 14 (N7): only the activities still valid after pass 3 are planned (an invalid one never reaches the planner)
++    proposed_acts = {a: j for a, j in proposed_acts.items() if not F[j]["invalid"]}
++    # session 14 (N1): a new activity is never linked before an activity that must finish before its window opens
++    if reg is not None and s2.issued and proposed_acts:
++        new_rows = {rid: F[j]["pl"].row for rid, j in proposed_rows.items()}
++        anchor_dates = {f"{x.stage}-issue": date.fromisoformat(x.issued) for x in r2["stages"] if x.issued}
++        lf = None
++        for a_id, j in proposed_acts.items():
++            a = F[j]["pl"].activity
++            succ = [x for x in a.get("successors") or [] if x in acts_existing]
++            if not succ:
++                continue
++            opens, why = window_opens(list(F[j]["pl"].rows), new_rows, addendum, s2.issued, anchor_dates)
++            if opens is None:
++                continue
++            if lf is None:
++                lf = _latest_finishes(r2, addendum, r2["evals"], templates, r["assumptions"], evidence)
++            drop = unreachable_successors(a, opens, lf)
++            if drop:
++                gone = {x for x, _ in drop}
++                a["successors"] = [x for x in a.get("successors") or [] if x not in gone]
++                ds.items[j].payload = F[j]["pl"].model_dump(by_alias=True, exclude_none=True)
++                rec(j, "successors (window)", True, (
++                    "not linked as a predecessor of " + "; ".join(f"{x} (it must finish by {d} at {addendum})"
++                                                                  for x, d in drop)
++                    + f": this activity's window opens on {opens.isoformat()} ({why}), so the link would make that "
++                    "work wait for what cannot start in time; a person may link them if the documents say so "
++                    "(session 14, N1)")[:600])
+     templates2 = copy.deepcopy(templates)
+     assumptions2 = copy.deepcopy(r["assumptions"])
+     evidence2 = dict(evidence)
+@@ -1165,6 +1489,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+         if pl.duration_assumption is not None:
+             assumptions2.setdefault("lead_times", {})[pl.duration_assumption.key] = \
+                 pl.duration_assumption.model_dump(exclude_none=True, exclude={"key"})
++    plan_failed = ""
+     if reg is not None:
+         # session 11: the addendum and every earlier stage where a proposed row or re-made reading is in force
+         plan_at = [s.stage for s in r2["stages"] if s.stage == addendum or any(
+@@ -1176,7 +1501,14 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+             full = {p for stg in plan_at for p in _plan_problems(r2, stg, all_evals, templates2, assumptions2,
+                                                                   evidence2)}
+         except Exception as e:                                   # noqa: BLE001 (reported, never hidden)
+-            base, full = set(), {f"C45: the programme cannot be planned with the proposals: {type(e).__name__}: {e}"}
++            # session 14 (N7): an exception is never a programme finding: the check did not run (a software
++            # limitation), the activities are recorded as not checked, and nothing is reported as C45
++            base, full = set(), set()
++            plan_failed = (f"software limitation: the programme check could not run with the proposals "
++                           f"({type(e).__name__}: {_short(str(e), 200)}); the proposals' programme effects are NOT "
++                           "checked (session 14, N7)")
++            report["programme_check"] = plan_failed
++            report["interactions"].append(plan_failed)
+         report["planned_at"] = plan_at
+         new = sorted(full - base)
+         report["schedule_problems"] = new
+@@ -1206,7 +1538,9 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
+             if not hit:
+                 report["interactions"].append(f"A5 with the proposals: {p}")
+         for a_id, j in proposed_acts.items():
+-            if not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
++            if plan_failed:
++                rec(j, "C40/C44/C45", False, f"not checked: {plan_failed}")
++            elif not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
+                 rec(j, "C40/C44/C45", True, f"planned at {', '.join(plan_at)} with the proposals without a new A5 problem")
+     # session 12 (blind-06 follow-up 6 b): an item that hands back to a person a point an analysis item concluded by
+     # applying a clause of the documents is a reversal: conflicting, with the analysis item named (never promoted silently)
+@@ -1401,6 +1735,8 @@ def _closure(ds: DownstreamSet, F: list, rows: dict, evidence: dict, issues: set
+             elif it.statement_type == "dependency":
+                 from ..relationships import ends
+                 out_ids = {_proposed_id(ds.items[j], F[j]["pl"]) for j in range(len(ds.items)) if j not in ok} - {None}
++                # session 14 (N2): an id a promotable item creates is promotable, whatever a duplicate of it became
++                out_ids -= {_proposed_id(ds.items[j], F[j]["pl"]) for j in ok}
+                 d = pl.model_dump(by_alias=True)
+                 missing = [x for x in ends(d, "from") + ends(d, "to") if x in out_ids]
+                 why = f"endpoints not promotable: {missing}" if missing else None
+@@ -1688,8 +2024,15 @@ def candidate_path(cdir: Path, cfg: dict, key: str, default: str) -> Path:
+     return p
+ 
+ 
++def applied_row_disposition(provision: str, rows: list[str], origin: str) -> Disposition:
++    """session 14 (N3): the op-file entry of a provision applied through the new row(s) promoted for its obligation."""
++    return Disposition(provision=provision, disposition="no_effect", origin="assistant", reason=(
++        f"applied as the new row(s) {', '.join(rows)}: the provision changes no unit of the documents; its obligation "
++        f"is that row (PROPOSED; a person confirms the row and this disposition) [{origin}]"))
++
++
+ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: DownstreamSet | None, origin: str,
+-            unresolved_reason: dict[str, str]) -> dict:
++            unresolved_reason: dict[str, str], applied_by_rows: dict[str, list[str]] | None = None) -> dict:
+     """Write the promotable items INTO THE CANDIDATE (see the module docstring). `cand` holds the candidate paths;
+     `unresolved_reason` gives, per provision, why it is not answered by a promoted item. Rows are written and updated
+     by id through the YAML structure (session 11: write_new_rows, find_row, update_row), never by matching text."""
+@@ -1714,7 +2057,14 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
+         d.reason = f"{d.reason} [{origin}]"
+     content = {c for o in promoted["sim"]["ops"] if o["valid"] for c in o.get("content") or []}
+     accounted = {o.provision for o in ops} | {c for o in ops for c in o.covers} | {d.provision for d in disps} | content
++    summary["applied_by_rows"] = {}
+     for p in controller._provisions(ws, addendum):
++        if p not in accounted and (applied_by_rows or {}).get(p):
++            # session 14 (N3): the provision's obligation is a promoted new row: applied through it (the op file's
++            # dispositions are no_effect or unresolved: the provision changes no unit, and the row carries it)
++            disps.append(applied_row_disposition(p, applied_by_rows[p], origin))
++            summary["applied_by_rows"][p] = list(applied_by_rows[p])
++            continue
+         if p not in accounted:
+             why = unresolved_reason.get(p) or "no promotable item answers it"
+             disps.append(Disposition(provision=p, disposition="unresolved", origin="assistant",
+@@ -1744,6 +2094,11 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
+     summary["dispositions"] = [f"{d.provision}: {d.disposition}" for d in disps if d.disposition != "unresolved"]
+     items = [it for it in (ds.items if ds else []) if it.verification_status in PROMOTABLE]
+     tag = f"[{origin}]"
++    merges = issue_subject_merges(ps, items)          # session 14 (N11): one question, one issue
++    for it in items:
++        if merges and it.statement_type != "issue":
++            it.payload = remap_issue_ids(it.payload, merges)
++    summary["issues_merged"] = dict(merges)
+     # ---- rows: new rows in a file of their own, re-made readings inserted into the rows' own files
+     rows_path = rp("register", "curation/register/rows.yaml")
+     new_rows = []
+@@ -1828,10 +2183,29 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
+         win_ = None
+     summary["analysis_issues"] = []
+     for k, v in analysis_issues(ps, win_).items():
++        if k in merges and merges[k] in iss:          # session 14 (N11): merged into the downstream issue, origins kept
++            tgt = iss[merges[k]]
++            src = next((it.id for it in items if it.statement_type == "issue" and it.payload.get("id") == merges[k]), "")
++            tgt.setdefault("origins", [f"downstream {src}".strip()])
++            tgt["origins"].append(str(v.get("source") or k))
++            tgt["text"] = (f"{tgt.get('text')} [the same question was raised by the analysis phase as {k}: "
++                           f"{_short(v.get('text'), 300)}]")
++            continue
+         if k not in iss:
+             iss[k] = v
+             summary["analysis_issues"].append(k)
++    try:                                          # session 14 (N12): the output-time issues, in the register too
++        r_c = ws.require_ok()
++        evs_c = (promoted.get("r2") or {}).get("evals") or r_c.get("evals") or []
++        oti = output_time_issues(r_c.get("units") or [], {e["row"].id: list(e["row"].units) for e in evs_c},
++                                 set(r_c.get("curated_issues") or {}) | set(iss))
++    except Exception as e:                                       # noqa: BLE001 (reported, never hidden)
++        oti = {}
++        summary["notes"].append(f"output-time issues not checked: {type(e).__name__}: {_short(str(e), 200)}")
++    iss.update(oti)
++    summary["output_time_issues"] = sorted(oti)
+     owned = {it.payload["id"] for it in items if it.statement_type == "issue" and H.is_human_owned(it)}
++    owned |= set(oti)
+     owned |= set(summary.get("analysis_issues") or [])          # session 14: an analysis issue is human-owned by type
+     for it in items:                             # session 12 (follow-up 12): a settled point, re-presented as applied
+         _re_present(it, iss, ws, addendum)
+diff --git a/tenderpack/ai/policy/60_derived.md b/tenderpack/ai/policy/60_derived.md
+index ceffe6e..b7e7a0f 100644
+--- a/tenderpack/ai/policy/60_derived.md
++++ b/tenderpack/ai/policy/60_derived.md
+@@ -2,7 +2,7 @@
+ 
+ The downstream packet may carry tasks for what an addendum implies beyond the units it changes. The program found them; each task's `expect` describes what it needs, never what the answer is.
+ - reading_rows (`reading:<region>`): a reading still pending a person's approval. Rows and activities proposed from it carry `conditional_on: {reading: <region>, until: approval}` and cite the reading's own units; quotes come from the reading's source text (Arabic as printed; the translation is not evidence). They are never in force while the reading is pending. Where the reading and another rendering of the same content differ (a translation, an appendix in another language), say so in an issue or an escalation; never choose between them.
+-- computed_date (`date:<unit>`): the program computed a deadline. Carry its `computed_from` or `date_rule` unchanged (an activity's milestone or a row's date rule); never type a date. A conditional obligation gives a conditional milestone (say on what). A result the counting rules leave ambiguous is escalated; never pick a reading.
++- computed_date (`date:<unit>`): the program computed a deadline. Carry its `computed_from` or `date_rule` unchanged (an activity's milestone or a row's date rule); never type a date. A conditional obligation gives a conditional milestone (say on what). A result the counting rules leave ambiguous is escalated; never pick a reading. The row still carries the task's relative `date_rule` unchanged, never kind 'unresolved' for words the program counts: the program plans at the earlier reading and keeps the later one listed, which chooses nothing (session 14). A new activity for an obligation the addendum introduces can be done only from the addendum's issue date (or the event its period counts from): never make it a predecessor of an activity that must finish before that day.
+ - condition_changed (`cond:<unit>`, `defn:<unit>`): an op switched a condition or changed a definition. Re-read each row it lists (a row_reading at the addendum, or an escalation); whether the clause now always, or never, applies is a person's reading. Name the earlier answers that relied on it.
+ - derived_consequence (`cons:<unit>`): never invent a consequence the pack does not state. Where an existing rule's words cover a value outside the band, propose a row whose consequence quotes that rule (its unit, class and words), PROPOSED: a person decides whether the rule covers the value. Where no rule covers it, an escalation saying "no bid-out consequence stated". Read the rule with the forms that state the value (`read_with`).
+ - conditional impact (`impact:<ref>`, session 14): an op that could not be applied, an unresolved disposition, an unaccounted provision, or a value read from an image no person has approved. The task says `conditional on <op | disposition | provision | reading> <ref>` and lists the units it would reach. Investigate the rows, activities and prices that rest on them, and label everything you propose conditional on that ref. Never present the change as made or the value as in force.
+diff --git a/tenderpack/ai/requests.py b/tenderpack/ai/requests.py
+index 2381bbb..95133fa 100644
+--- a/tenderpack/ai/requests.py
++++ b/tenderpack/ai/requests.py
+@@ -276,9 +276,33 @@ class RateGate:
+         return {"pauses": self.pauses, "waits": len(self.waits), "longest_wait_s": max(self.waits, default=0.0)}
+ 
+ 
++def packet_task_ids(packet: dict | None) -> set:
++    """The ids an answer may name as its `task`: each task of the packet and, session 14 (N2), every origin merged into
++    it (`oblig:<op>` merged into the row task of the same op is still a task of this packet)."""
++    out = set()
++    for t in (packet or {}).get("tasks") or []:
++        if isinstance(t, dict):
++            out.add(t.get("id"))
++            out.update(x for x in t.get("origins") or [] if isinstance(x, str))
++    return out
++
++
+ def _gate_wait(policy: "FailurePolicy", sleep) -> None:
+-    if getattr(policy, "gate", None) is not None:
+-        policy.gate.wait(sleep)
++    gate = getattr(policy, "gate", None)
++    if gate is None:
++        return
++    # session 14 (N9, blind-07): with on_deferred: stop, a pause beyond the reset limit (another batch was deferred for
++    # a reset the run does not wait out) is never waited out by a batch asked ahead: it is deferred at once, before
++    # its session starts, so the run stops with the status that says so (it used to sleep until the reset, about
++    # 75 min, "running" with nothing logged)
++    if getattr(policy, "on_deferred", "stop") == "stop":
++        with gate._lock:
++            rem = gate.until - gate.clock()
++        if rem > float(getattr(policy, "honour_reset_up_to_s", 0) or 0):
++            raise RateLimited(f"rate limit: deferred, not started: another batch of this run was deferred for a reset in "
++                              f"about {rem / 60:.0f} min, beyond the {policy.honour_reset_up_to_s:g} s the run waits "
++                              "(on_deferred: stop)", [], rem)
++    gate.wait(sleep)
+ 
+ 
+ def _gate_pause(policy: "FailurePolicy", seconds) -> None:
+@@ -677,7 +701,7 @@ def check(sp: TaskSpec, answer, packet: dict | None = None, fields: dict | None
+     except sp.parse_errors as e:
+         env.append(_short(str(e), 1500))
+     declared = {s.get("id") for s in data.get("statements") or [] if isinstance(s, dict)}
+-    tasks = {t.get("id") for t in (packet or {}).get("tasks") or [] if isinstance(t, dict)}
++    tasks = packet_task_ids(packet)
+     asked = {x.get("key") for x in (packet or {}).get("items") or [] if isinstance(x, dict)}
+     for i, it in enumerate(items):
+         errs, refs = [], []                                  # schema errors (unusable) / reference errors (rated later)
+diff --git a/tenderpack/ai/workflow.py b/tenderpack/ai/workflow.py
+index af7e9c4..fa9c241 100644
+--- a/tenderpack/ai/workflow.py
++++ b/tenderpack/ai/workflow.py
+@@ -578,8 +578,10 @@ class Prefetch:
+         # kept in `concurrency_drives`, so a resumed run's first segment is not lost
+         if recs:
+             drives = self.ctx.cp.data.setdefault("concurrency_drives", [])
+-            drives.append({"drive": now_iso(), "segment": len(drives) + 1, "interrupted": bool(interrupted),
+-                           "phases": recs})
++            seg = segment_number(self.ctx.cp.data)          # session 14 (N6): the segment's own number (its event)
++            if drives and int(drives[-1].get("segment") or 0) >= seg:
++                seg = int(drives[-1]["segment"]) + 1         # a second drive in one segment (no event): the next one
++            drives.append({"drive": now_iso(), "segment": seg, "interrupted": bool(interrupted), "phases": recs})
+         # session 13 (blind-07 scorer, defect 15): a batch answered through its staged submission (_reuse_submission)
+         # is never take()n, so its record stays here although the batch is done; only the batches still pending are
+         # "not taken"
+@@ -852,6 +854,9 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
+             s_["offline"] = off_src
+             cp.event("offline_mode", source=off_src)
+     check_code_identity(cp, allow_code_change)                  # session 13: refused on changed code unless allowed
++    killed = record_killed_segment(cp)                          # session 14 (N6): a segment a kill ended
++    if killed is not None:
++        echo(f"[{cp.data['run_id']}] note: segment {killed['segment']} {killed['note']}")
+     cp.event("resumed", by_pid=os.getpid(), status_before=cp.data["status"],
+              **({"from_step": from_step} if from_step else {}))
+     if by_person:                                # session 14 (W2): defect 15 (a submit-batch continues on its own record)
+@@ -1033,6 +1038,7 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
+             cp.data["rate_gate"] = ctx.gate.record()
+         if ctx.run_lock is not None:
+             ctx.run_lock.release()
++        cp.event(SEGMENT_END, segment=segment_number(cp.data), status=cp.data.get("status"))   # session 14 (N6)
+         _record_outcome(cp)                         # session 11: execution, completeness, approval (kept apart)
+         lock.release()
+     out = summary(cp)
+@@ -1127,9 +1133,10 @@ def completeness(cp: Checkpoint) -> dict:
+                  for k, v in ((d.get("downstream") or {}).get("items") or {}).items()]
+         held = {i["id"]: True for i, v in zip(items, ((d.get("downstream") or {}).get("items") or {}).values())
+                 if v.get("held_back")}
++    alias = DS.task_aliases(tasks or [])          # session 14 (N2): an answer by a merged origin's id answers its task
+     by_task: dict[str, list[dict]] = {}
+     for it in items:
+-        by_task.setdefault(it.get("task"), []).append(it)
++        by_task.setdefault(alias.get(it.get("task"), it.get("task")), []).append(it)
+     unanswered = [{"task": t, "kind": kinds[t]} for t in kinds if t not in by_task]
+     unresolved_tasks = [{"task": t, "kind": kinds[t], "items": {i["id"]: i.get("verification_status") for i in by_task[t]}}
+                         for t in kinds if t in by_task and not any(
+@@ -1196,6 +1203,92 @@ def approval(cp: Checkpoint) -> dict:
+     return out
+ 
+ 
++# session 14 (N6, defect 15): a segment ended by a kill (the process gone, no `segment_ended`) leaves no end and no
++# drive record, and its lost work was invisible (the bench showed segment 2 ending at its last event although the
++# process worked on). On resume the end is recorded ("ended by a stop at <the last event>; sessions without a result:
++# <ids> (killed)"), its `concurrency_drives` entry is kept (phases not recorded: the process was killed), and the
++# destroyed work (the host sessions of that segment that never wrote a result) is counted in `destroyed_work` (and in
++# scripts/bench_workflow.py's "destroyed" line).
++SEGMENT_END = "segment_ended"
++SEGMENT_END_RECORDED = "segment_end_recorded"
++
++
++def segment_number(data: dict) -> int:
++    """The current segment's number: one per `started` / `resumed` event."""
++    return max(1, sum(1 for e in data.get("events") or [] if e.get("event") in ("started", "resumed")))
++
++
++def _killed_sessions(data: dict, run_dir: Path, since: str) -> list[dict]:
++    """The host session folders started at or after `since` that hold a prompt and no result (session.json)."""
++    roots = [Path(run_dir) / "ai"]
++    cand = (data.get("candidate") or {}).get("dir")
++    if cand:
++        roots.append(Path(cand).parent / "ai")
++    known = {x.get("session") for d in data.get("destroyed_work") or [] for x in d.get("sessions") or []}
++    t0 = dt.datetime.strptime(since[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=dt.timezone.utc).timestamp()
++    out, seen = [], set()
++    for root in roots:
++        for f in sorted(root.glob("*/prompt.txt")) if root.is_dir() else []:
++            d = f.parent
++            if d.name in seen or d.name in known or (d / "session.json").exists() or f.stat().st_mtime < t0:
++                continue
++            seen.add(d.name)
++            last = max(x.stat().st_mtime for x in d.iterdir())
++            iso = lambda t: dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")  # noqa: E731
++            out.append({"session": d.name, "started": iso(f.stat().st_mtime), "last_activity": iso(last),
++                        "seconds": round(last - f.stat().st_mtime, 1)})
++    return out
++
++
++def record_killed_segment(cp) -> dict | None:
++    """The end record of the last segment when it has none (see above); None when it ended (or there is none)."""
++    evs = cp.data.get("events") or []
++    starts = [i for i, e in enumerate(evs) if e.get("event") in ("started", "resumed")]
++    if not starts or any(e.get("event") in (SEGMENT_END, SEGMENT_END_RECORDED) for e in evs[starts[-1] + 1:]):
++        return None
++    start = evs[starts[-1]]["ts"]
++    at = max([str(e.get("ts")) for e in evs[starts[-1]:]] + [str(cp.data.get("updated") or "")])
++    seg = segment_number(cp.data)
++    killed = _killed_sessions(cp.data, Path(cp.path).parent, start)
++    note = (f"ended by a stop at {at}; sessions without a result: "
++            + (", ".join(x["session"] for x in killed) + " (killed)" if killed else "none"))
++    rec = {"segment": seg, "start": start, "at": at, "note": note, "sessions": killed,
++           "session_seconds_lost": round(sum(x["seconds"] or 0 for x in killed), 1)}
++    cp.event(SEGMENT_END_RECORDED, segment=seg, at=at, note=note, sessions_without_result=[x["session"] for x in killed])
++    cp.data.setdefault("concurrency_drives", []).append(
++        {"drive": at, "segment": seg, "interrupted": True, "ended_by": "a stop (the process was killed; recorded on "
++                                                                      "resume)", "phases": {}})
++    cp.data.setdefault("destroyed_work", []).append(rec)
++    cp.data.setdefault("interventions", []).append(
++        {"ts": at, "kind": "stop (no end recorded)", "by": "unknown (the process was killed: a kill, the panel's Stop "
++                                                          "or a closed terminal)", "note": note})
++    return rec
++
++
++def promotion_lines(prom: dict, pops: dict) -> list[str]:
++    """The review packet's promotion section (session 14, N12: the output-time issues; N2/N3/N11: the merges)."""
++    L = ["## Promoted into the candidate (PROPOSED; nothing accepted)", ""]
++    for k in ("ops", "dispositions", "accounted_unresolved", "rows_new", "readings", "issues", "analysis_issues",
++              "output_time_issues", "evidence_items", "activities", "lead_times", "clarifications", "relationships",
++              "referenced_documents", "no_change"):
++        if prom.get(k):
++            L.append(f"- {k.replace('_', ' ')}: {', '.join(map(str, prom[k][:40]))}" + (f" (+{len(prom[k]) - 40})" if len(prom[k]) > 40 else ""))
++    if prom.get("output_time_issues"):
++        L.append("  - raised at output time (the class-scope rule): HUMAN DECISION PENDING, written into the candidate "
++                 "register as PROPOSED")
++    if prom.get("issues_merged"):
++        L.append("- the same question promoted once (analysis issue -> the issue it was merged into): " + "; ".join(
++            f"{k} -> {v}" for k, v in prom["issues_merged"].items()))
++    if prom.get("applied_by_rows"):
++        L.append("- applied through a new row (the provision's obligation is the row; PROPOSED): " + "; ".join(
++            f"{k} -> {', '.join(v)}" for k, v in prom["applied_by_rows"].items()))
++    L += [f"- unresolved provisions: {len(prom.get('unresolved') or [])}"] + [f"- note: {x}" for x in prom.get("notes") or []] + [""]
++    dropped = (pops or {}).get("dropped") or {}
++    if dropped:
++        L += ["- left out of the promoted ops: " + "; ".join(f"{k}: {_short(v, 160)}" for k, v in dropped.items()), ""]
++    return L
++
++
+ def _record_outcome(cp: Checkpoint) -> None:
+     """The three records, kept apart in the checkpoint (and the review packet): execution, completeness, approval.
+     Session 14 (W2): and the host's own usage per session (host_usage), rewritten at the end of every drive."""
+@@ -2801,10 +2894,11 @@ def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) ->
+                 "why": f"carried to downstream task(s) {', '.join(tids)} ({what}): open until the downstream phase "
+                        "answers it"}
+     held = held or {}
+-    rows, bad = [], []
++    rows, bad, row_ids = [], [], []
+     for tid in tids:
+         its = [it for it in ds.items if it.task == tid]
+         ok = [it for it in its if it.verification_status in DS.PROMOTABLE and it.id not in held]
++        row_ids += [str((it.payload.get("row") or {}).get("id")) for it in ok if it.statement_type == "row_new"]
+         if ok:
+             rows += [f"{(it.payload.get('row') or {}).get('id') if it.statement_type == 'row_new' else it.payload.get('row')}"
+                      f" ({it.statement_type}, {it.verification_status})" for it in ok
+@@ -2821,6 +2915,14 @@ def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) ->
+     if bad:
+         return {"answered": False, "carried": tids, "needs_person": True,
+                 "why": "unresolved: " + "; ".join(bad) + (f"; proposed downstream: {', '.join(rows)}" if rows else "")}
++    if row_ids:
++        # session 14 (N3): the provision's obligation IS the promoted row: the provision is applied through it (the
++        # row PROPOSED, a person confirms it), never "UNRESOLVED (accounted for, not applied)", so the activities
++        # carrying the row are not blocked by the provision the row answers
++        return {"answered": True, "carried": tids, "needs_person": False, "applied_by_rows": row_ids,
++                "why": f"applied as the new row(s) {', '.join(row_ids)} (proposed downstream: {', '.join(rows)}; task(s) "
++                       f"{', '.join(tids)}; PROPOSED, not approved): the provision's obligation is that row; a person "
++                       "confirms it"}
+     return {"answered": False, "carried": tids, "needs_person": False,
+             "why": f"its obligation is proposed downstream as {', '.join(rows)} (task(s) {', '.join(tids)}; PROPOSED): "
+                    "no op or disposition answers the provision; a person confirms the row and the provision's "
+@@ -2888,7 +2990,8 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) ->
+         carried = carried_answer([it.id for it in mine if it.statement_type in DS.CARRIED
+                                   and it.verification_status in DS.PROMOTABLE], tasks, ds, held) if not esc else None
+         if carried is not None and not any(it.verification_status not in DS.PROMOTABLE for it in mine):
+-            out[p] = {**carried, "state": "unresolved", "accounted": True, "approved": False}
++            out[p] = {**carried, "state": "applied" if carried.get("applied_by_rows") else "unresolved",
++                      "accounted": True, "approved": False}               # session 14 (N3)
+             continue
+         if esc:
+             why = "escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc)
+@@ -3220,7 +3323,7 @@ def step_downstream_validation(ctx: Ctx, st: dict) -> None:
+     ds = _combined_downstream(ctx)
+     promoted = ctx.promoted()
+     tasks = json.loads((ctx.dir / "downstream" / "tasks.json").read_text(encoding="utf-8"))
+-    report = DS.validate(ctx.ws, ds, promoted, {t["id"]: t["kind"] for t in tasks})   # kinds: where no_change may answer
++    report = DS.validate(ctx.ws, ds, promoted, DS.task_kinds(tasks))   # kinds: where no_change may answer (N2: origins)
+     out = ctx.dir / "downstream" / "proposals.yaml"
+     out.write_text("# Downstream proposals of the AI workflow, validated by tenderpack.ai.downstream in the candidate. "
+                    "STAGING ONLY: nothing here is accepted.\n"
+@@ -3548,7 +3651,7 @@ def _revalidate(ctx: Ctx, st: dict) -> tuple[ProposalSet, dict, DownstreamSet |
+     if ds is not None and not stale:
+         dbefore = {it.id: it.verification_status for it in ds.items}
+         tasks = _js(ctx.dir / "downstream" / "tasks.json") or []
+-        drep = DS.validate(ws, ds, promoted, {t["id"]: t["kind"] for t in tasks})
++        drep = DS.validate(ws, ds, promoted, DS.task_kinds(tasks))      # session 14 (N2): merged origins included
+         if ds.status == "stale":
+             stale = list(drep.get("state_differences") or [])
+     if stale:
+@@ -3586,7 +3689,9 @@ def step_promotion(ctx: Ctx, st: dict) -> None:
+     origin = (f"AI workflow run {ctx.run_id} (route {ctx.s['route']}, model {cps.model_requested}"
+               + (f", reported {cps.model_reported}" if cps.model_reported else "") + "); PROPOSED; not reviewed")
+     summ = DS.promote(ctx.ws, ctx.cp.data["candidate"], ctx.run_id, cps, promoted, ds, origin,
+-                      {p: a["why"] for p, a in answers.items() if not a["answered"]})
++                      {p: a["why"] for p, a in answers.items() if not a["answered"]},
++                      applied_by_rows={p: a["applied_by_rows"] for p, a in answers.items()
++                                       if a.get("applied_by_rows")})          # session 14 (N3)
+     summ["answers"] = answers                                    # session 13: after the downstream phase (packet)
+     (ctx.dir / "promotion.json").write_text(json.dumps(summ, ensure_ascii=False, indent=1), encoding="utf-8")
+     st.update({k: v for k, v in summ.items() if k not in ("written", "answers")})
+@@ -3730,12 +3835,8 @@ def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
+     add = ctx.addendum
+     prom = json.loads((ctx.dir / "promotion.json").read_text(encoding="utf-8")) if (ctx.dir / "promotion.json").exists() else {}
+     ds, _ = _load_downstream(ctx)
+-    vstat = {}
+-    for it in (ds.items if ds else []):
+-        if it.statement_type == "row_new":
+-            vstat[(it.payload.get("row") or {}).get("id")] = it.verification_status
+-        elif it.statement_type == "row_reading":
+-            vstat[it.payload.get("row")] = it.verification_status
++    # session 14 (N2): the promoted item's status, never a later duplicate's "(invalid)"
++    vstat = DS.row_item_status(ds.items if ds else [])
+     new, readings = set(prom.get("rows_new") or []), set(prom.get("readings") or [])
+     answers = json.loads((ctx.dir / "downstream" / "answers.json").read_text(encoding="utf-8")) \
+         if (ctx.dir / "downstream" / "answers.json").exists() else {}
+@@ -4129,16 +4230,7 @@ def review_markdown(ctx: Ctx) -> str:
+               "(batches: " + ", ".join(k + " " + cp.batch(k)["status"] for k in cp.batches("downstream")) + ")", ""]
+     # ---- promotion
+     if prom:
+-        L += ["## Promoted into the candidate (PROPOSED; nothing accepted)", ""]
+-        for k in ("ops", "dispositions", "accounted_unresolved", "rows_new", "readings", "issues", "analysis_issues",
+-                  "evidence_items", "activities", "lead_times", "clarifications", "relationships",
+-                  "referenced_documents", "no_change"):
+-            if prom.get(k):
+-                L.append(f"- {k.replace('_', ' ')}: {', '.join(map(str, prom[k][:40]))}" + (f" (+{len(prom[k]) - 40})" if len(prom[k]) > 40 else ""))
+-        L += [f"- unresolved provisions: {len(prom.get('unresolved') or [])}"] + [f"- note: {x}" for x in prom.get("notes") or []] + [""]
+-        dropped = pops.get("dropped") or {}
+-        if dropped:
+-            L += ["- left out of the promoted ops: " + "; ".join(f"{k}: {_short(v, 160)}" for k, v in dropped.items()), ""]
++        L += promotion_lines(prom, pops)
+     # ---- checks
+     cr = cp.step("check_register")
+     if cr.get("status") == "done":
+diff --git a/tenderpack/human_owned.py b/tenderpack/human_owned.py
+index 2102876..c62ccc9 100644
+--- a/tenderpack/human_owned.py
++++ b/tenderpack/human_owned.py
+@@ -92,20 +92,69 @@ NEGATION_WINDOW = 5
+ _CLAUSE_CUT = re.compile(r"[.;:!?,|\n]")
+ 
+ 
+-def negated(text: str, start: int, window: int = NEGATION_WINDOW) -> bool:
+-    """Whether the word at `start` in `text` stands under a negation (NEGATION) among the `window` words before it in
+-    its own clause. Session 14 (W4)."""
++# session 14 (F3, R4-1): a negation counts only when it negates the trigger word itself ("not resolved", "cannot be
++# resolved", "no longer resolved", "has yet to be settled", "whether it is resolved", "No answer has been withdrawn"),
++# never a negation elsewhere in the clause: "There is no doubt the ambiguity is resolved" declares the point resolved.
++# Walking back from the word: auxiliaries and adverbs (_NEG_FILLER) are skipped; a negator or a conditional there
++# negates it; otherwise the word reached is the subject, negated only by its own determiner ("no", "neither") or by a
++# conditional introducing it ("whether the matter is resolved").
++_NEGATOR = re.compile(r"^(?:not|never|no|nor|neither|without|cannot|yet|nothing|none|nobody|\w+n't)$", re.I)
++_CONDITIONAL = re.compile(r"^(?:whether|if|until|unless)$", re.I)
++_NEG_FILLER = {"be", "been", "being", "is", "are", "was", "were", "am", "has", "have", "had", "will", "would", "shall",
++               "should", "may", "might", "must", "can", "could", "do", "does", "did", "to", "it", "this", "that",
++               "they", "there", "longer", "ever", "fully", "entirely", "completely", "properly", "finally", "now",
++               "still", "already", "also", "thereby", "therefore", "thus", "so", "get", "got", "become", "becomes"}
++_DETERMINER = {"the", "a", "an", "this", "that", "these", "those", "its", "their", "each", "every", "any", "such"}
++
++
++def negated(text: str, start: int, window: int = NEGATION_WINDOW + 3) -> bool:
++    """Whether the word at `start` in `text` is itself negated or made conditional (see above), within its own clause
++    and the `window` words before it. Session 14 (W4; F3 R4-1)."""
+     head = str(text or "")[:start]
+     cuts = [m.end() for m in _CLAUSE_CUT.finditer(head)]
+     clause = head[cuts[-1]:] if cuts else head
+-    return any(NEGATION.match(w) for w in re.findall(r"[A-Za-z']+", clause)[-window:])
++    words = re.findall(r"[A-Za-z']+", clause)[-window:]
++    i = len(words) - 1
++    while i >= 0 and words[i].lower() in _NEG_FILLER:
++        i -= 1
++    if i < 0:
++        return False
++    if _NEGATOR.match(words[i]) or _CONDITIONAL.match(words[i]):
++        return True
++    for w in reversed(words[max(0, i - 3):i]):              # the subject's own determiner, or a conditional before it
++        if w.lower() in ("no", "neither", "nor") or _CONDITIONAL.match(w):
++            return True
++        if w.lower() not in _DETERMINER:
++            return False
++    return False
++
++
++# session 14 (N4): negated()'s idea extended. A keyword quoted from the documents ("ADD-03 3.5 states 'The Arabic text
++# governs.'"), a reference recital ("A reference in this Addendum to a Clause ... is to that Clause ... as amended by
++# Addenda Nos. 1 and 2, unless otherwise stated") and "provided for convenience only" (a participle, never a proviso)
++# decide nothing: they are removed before a keyword scan (scan_text; recitals_removed for a provision's own words).
++_REF_RECITAL = re.compile(r"\b(?:is|are)\s+to\s+(?:that|the|those|such)\b.{0,160}?\bas amended by\b", re.I)
++_FOR_CONVENIENCE = re.compile(r"\bprovided\s+(?:for\s+(?:convenience|information|reference)|by\s+way\s+of\s+"
++                              r"(?:information|reference))(?:\s+(?:only|purposes))?\b", re.I)
++
++
++def recitals_removed(text: str) -> str:
++    """`text` without its reference recitals (whole sentences) and its 'provided for convenience only' phrases."""
++    sents = re.split(r"(?<=[.;])\s+(?=[A-Z(\"'‘“])|\n", str(text or ""))     # never inside 'Nos. 1 and 2'
++    return _FOR_CONVENIENCE.sub(" ", " ".join(x for x in sents if not _REF_RECITAL.search(x)))
++
++
++def scan_text(text: str) -> str:
++    """The words a keyword scan reads: the model's own words (quotations removed: own_words), recitals removed."""
++    return recitals_removed(own_words(text))
+ 
+ 
+ def triggers(text: str, kinds: tuple[str, ...] = ("closure", "topic")) -> list[str]:
+     """What the words signal ([] when nothing). `text` is the model's own prose; `kinds` limits the triggers. Session 14
+-    (W4): a closure word counts only where it is asserted (the first occurrence not negated: negated())."""
++    (W4): a closure word counts only where it is asserted (the first occurrence not negated: negated()); (N4) never
++    inside a quotation, a reference recital or 'provided for convenience only' (scan_text)."""
+     out = []
+-    t = str(text or "")
++    t = scan_text(text)
+     for rx, why, kind in _TRIGGERS:
+         if kind not in kinds:
+             continue
+diff --git a/tenderpack/signals.py b/tenderpack/signals.py
+index c427f82..a562358 100644
+--- a/tenderpack/signals.py
++++ b/tenderpack/signals.py
+@@ -811,10 +811,13 @@ def class_scope_findings(units: list[dict]) -> list[dict]:
+     return out
+ 
+ 
+-def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = None) -> list[dict]:
++def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = None,
++                       existing: set[str] | None = None) -> list[dict]:
+     """The generated issues for class_scope_findings, in collect_issues' shape: id I-AUTO-CLASS-SCOPE-<table>, labelled
+     HUMAN DECISION PENDING, conditional on a pending image reading where the table is one, the register rows citing a
+-    unit of the table (`rows`: row id -> its units), not shown on A3 (its one page). Session 14 (W4)."""
++    unit of the table (`rows`: row id -> its units), not shown on A3 (its one page). Session 14 (W4). Session 14 (N12):
++    an id the register already holds (`existing`: the AI workflow wrote it into the candidate register) is not raised
++    again."""
+     from .human_owned import HUMAN_DECISION_PENDING as HDP
+     out = []
+     for f in class_scope_findings(units):
+@@ -823,7 +826,10 @@ def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = No
+                 "until a person approves the reading).") if f["conditional_on"] else ""
+         mine = [rid for rid, us in (rows or {}).items() if any(u == tid or str(u).startswith(tid + "/") for u in us)]
+         text = f"{HDP}: {f['text']}.{cond}"
+-        out.append({"id": "I-AUTO-CLASS-SCOPE-" + re.sub(r"[^A-Za-z0-9]+", "-", tid).strip("-"), "text": text,
++        iid = "I-AUTO-CLASS-SCOPE-" + re.sub(r"[^A-Za-z0-9]+", "-", tid).strip("-")
++        if iid in (existing or ()):
++            continue
++        out.append({"id": iid, "text": text,
+                     "owner": "Technical", "source": "class scope check (automatic; session 14)", "rows": mine,
+                     "show_in_a3": False, "a3": text, "theme": "technical", "short": f"{HDP}: class scope of {tid}",
+                     "folds": [], "human_decision": HDP})
+diff --git a/tenderpack/stage2.py b/tenderpack/stage2.py
+index 7579491..6894f02 100644
+--- a/tenderpack/stage2.py
++++ b/tenderpack/stage2.py
+@@ -414,7 +414,8 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
+     out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
+     # session 14 (W4; part 3 (b)): a class table without a rule for an item in more than one class is a genuine
+     # ambiguity (blind-07 DA1), raised as a generated issue, HUMAN DECISION PENDING; nothing is chosen
+-    out += signals.class_scope_issues(r.get("units") or [], {e["row"].id: list(e["row"].units) for e in r["evals"]})
++    out += signals.class_scope_issues(r.get("units") or [], {e["row"].id: list(e["row"].units) for e in r["evals"]},
++                                      existing=set(r["curated_issues"]))     # session 14 (N12): never twice
+     for c in printed_date_conflicts(val, r["rowfile"].anchors):
+         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
+                     "text": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; "
+diff --git a/tests/test_session14_states_downstream.py b/tests/test_session14_states_downstream.py
+index b5e39b7..d1e57d1 100644
+--- a/tests/test_session14_states_downstream.py
++++ b/tests/test_session14_states_downstream.py
+@@ -183,10 +183,11 @@ def test_9_the_engine_s_conditional_impacts_join_the_tasks_in_their_shape(ws, mo
+ def test_9_an_op_that_adds_a_unit_gets_an_obligation_task_with_what_shares_its_terms(ws):
+     prom = W3.promoted(ws)
+     tasks, _ = DS.tasks(ws, SimpleNamespace(addendum="ADD-03", items=[]), prom, {})
+-    ob = [t for t in tasks if t["kind"] == "obligation_impact"]
++    # session 14 (F3, N2): an obligation task of an op that also has a row task is merged into that task (`obligation`)
++    ob = [t for t in tasks if t["kind"] == "obligation_impact"] + [t["obligation"] for t in tasks if t.get("obligation")]
+     adds = [o.id for o in prom["ops"].values() if o.type in ("insert_unit", "insert_row", "append_text", "replace_unit")
+             or o.effect == "adds_obligation"]
+-    assert adds and {t["op"] for t in ob} == set(adds), ([t["id"] for t in ob], adds)
++    assert adds and {t["op"] for t in ob} == set(adds), ([t.get("id") or t["op"] for t in ob], adds)
+     assert all("related" in t and "terms" in t and "hint" in t["expect"] for t in ob)
+ 
+ 

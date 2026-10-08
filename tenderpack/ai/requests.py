@@ -276,9 +276,33 @@ class RateGate:
         return {"pauses": self.pauses, "waits": len(self.waits), "longest_wait_s": max(self.waits, default=0.0)}
 
 
+def packet_task_ids(packet: dict | None) -> set:
+    """The ids an answer may name as its `task`: each task of the packet and, session 14 (N2), every origin merged into
+    it (`oblig:<op>` merged into the row task of the same op is still a task of this packet)."""
+    out = set()
+    for t in (packet or {}).get("tasks") or []:
+        if isinstance(t, dict):
+            out.add(t.get("id"))
+            out.update(x for x in t.get("origins") or [] if isinstance(x, str))
+    return out
+
+
 def _gate_wait(policy: "FailurePolicy", sleep) -> None:
-    if getattr(policy, "gate", None) is not None:
-        policy.gate.wait(sleep)
+    gate = getattr(policy, "gate", None)
+    if gate is None:
+        return
+    # session 14 (N9, blind-07): with on_deferred: stop, a pause beyond the reset limit (another batch was deferred for
+    # a reset the run does not wait out) is never waited out by a batch asked ahead: it is deferred at once, before
+    # its session starts, so the run stops with the status that says so (it used to sleep until the reset, about
+    # 75 min, "running" with nothing logged)
+    if getattr(policy, "on_deferred", "stop") == "stop":
+        with gate._lock:
+            rem = gate.until - gate.clock()
+        if rem > float(getattr(policy, "honour_reset_up_to_s", 0) or 0):
+            raise RateLimited(f"rate limit: deferred, not started: another batch of this run was deferred for a reset in "
+                              f"about {rem / 60:.0f} min, beyond the {policy.honour_reset_up_to_s:g} s the run waits "
+                              "(on_deferred: stop)", [], rem)
+    gate.wait(sleep)
 
 
 def _gate_pause(policy: "FailurePolicy", seconds) -> None:
@@ -677,7 +701,7 @@ def check(sp: TaskSpec, answer, packet: dict | None = None, fields: dict | None 
     except sp.parse_errors as e:
         env.append(_short(str(e), 1500))
     declared = {s.get("id") for s in data.get("statements") or [] if isinstance(s, dict)}
-    tasks = {t.get("id") for t in (packet or {}).get("tasks") or [] if isinstance(t, dict)}
+    tasks = packet_task_ids(packet)
     asked = {x.get("key") for x in (packet or {}).get("items") or [] if isinstance(x, dict)}
     for i, it in enumerate(items):
         errs, refs = [], []                                  # schema errors (unusable) / reference errors (rated later)

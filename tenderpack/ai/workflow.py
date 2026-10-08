@@ -578,8 +578,10 @@ class Prefetch:
         # kept in `concurrency_drives`, so a resumed run's first segment is not lost
         if recs:
             drives = self.ctx.cp.data.setdefault("concurrency_drives", [])
-            drives.append({"drive": now_iso(), "segment": len(drives) + 1, "interrupted": bool(interrupted),
-                           "phases": recs})
+            seg = segment_number(self.ctx.cp.data)          # session 14 (N6): the segment's own number (its event)
+            if drives and int(drives[-1].get("segment") or 0) >= seg:
+                seg = int(drives[-1]["segment"]) + 1         # a second drive in one segment (no event): the next one
+            drives.append({"drive": now_iso(), "segment": seg, "interrupted": bool(interrupted), "phases": recs})
         # session 13 (blind-07 scorer, defect 15): a batch answered through its staged submission (_reuse_submission)
         # is never take()n, so its record stays here although the batch is done; only the batches still pending are
         # "not taken"
@@ -852,6 +854,9 @@ def resume(run_id: str, staging=None, stop_after: str | None = None, retry_faile
             s_["offline"] = off_src
             cp.event("offline_mode", source=off_src)
     check_code_identity(cp, allow_code_change)                  # session 13: refused on changed code unless allowed
+    killed = record_killed_segment(cp)                          # session 14 (N6): a segment a kill ended
+    if killed is not None:
+        echo(f"[{cp.data['run_id']}] note: segment {killed['segment']} {killed['note']}")
     cp.event("resumed", by_pid=os.getpid(), status_before=cp.data["status"],
              **({"from_step": from_step} if from_step else {}))
     if by_person:                                # session 14 (W2): defect 15 (a submit-batch continues on its own record)
@@ -1033,6 +1038,7 @@ def _drive(cp: Checkpoint, stop_after: str | None, echo, sleep) -> dict:
             cp.data["rate_gate"] = ctx.gate.record()
         if ctx.run_lock is not None:
             ctx.run_lock.release()
+        cp.event(SEGMENT_END, segment=segment_number(cp.data), status=cp.data.get("status"))   # session 14 (N6)
         _record_outcome(cp)                         # session 11: execution, completeness, approval (kept apart)
         lock.release()
     out = summary(cp)
@@ -1127,9 +1133,10 @@ def completeness(cp: Checkpoint) -> dict:
                  for k, v in ((d.get("downstream") or {}).get("items") or {}).items()]
         held = {i["id"]: True for i, v in zip(items, ((d.get("downstream") or {}).get("items") or {}).values())
                 if v.get("held_back")}
+    alias = DS.task_aliases(tasks or [])          # session 14 (N2): an answer by a merged origin's id answers its task
     by_task: dict[str, list[dict]] = {}
     for it in items:
-        by_task.setdefault(it.get("task"), []).append(it)
+        by_task.setdefault(alias.get(it.get("task"), it.get("task")), []).append(it)
     unanswered = [{"task": t, "kind": kinds[t]} for t in kinds if t not in by_task]
     unresolved_tasks = [{"task": t, "kind": kinds[t], "items": {i["id"]: i.get("verification_status") for i in by_task[t]}}
                         for t in kinds if t in by_task and not any(
@@ -1194,6 +1201,92 @@ def approval(cp: Checkpoint) -> dict:
     out["decisions"] = [f"{x.get('decision')} {x.get('kind')} {x.get('id')} by {x.get('reviewer')} ({x.get('date')})"
                         for x in dec if isinstance(x, dict)]
     return out
+
+
+# session 14 (N6, defect 15): a segment ended by a kill (the process gone, no `segment_ended`) leaves no end and no
+# drive record, and its lost work was invisible (the bench showed segment 2 ending at its last event although the
+# process worked on). On resume the end is recorded ("ended by a stop at <the last event>; sessions without a result:
+# <ids> (killed)"), its `concurrency_drives` entry is kept (phases not recorded: the process was killed), and the
+# destroyed work (the host sessions of that segment that never wrote a result) is counted in `destroyed_work` (and in
+# scripts/bench_workflow.py's "destroyed" line).
+SEGMENT_END = "segment_ended"
+SEGMENT_END_RECORDED = "segment_end_recorded"
+
+
+def segment_number(data: dict) -> int:
+    """The current segment's number: one per `started` / `resumed` event."""
+    return max(1, sum(1 for e in data.get("events") or [] if e.get("event") in ("started", "resumed")))
+
+
+def _killed_sessions(data: dict, run_dir: Path, since: str) -> list[dict]:
+    """The host session folders started at or after `since` that hold a prompt and no result (session.json)."""
+    roots = [Path(run_dir) / "ai"]
+    cand = (data.get("candidate") or {}).get("dir")
+    if cand:
+        roots.append(Path(cand).parent / "ai")
+    known = {x.get("session") for d in data.get("destroyed_work") or [] for x in d.get("sessions") or []}
+    t0 = dt.datetime.strptime(since[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=dt.timezone.utc).timestamp()
+    out, seen = [], set()
+    for root in roots:
+        for f in sorted(root.glob("*/prompt.txt")) if root.is_dir() else []:
+            d = f.parent
+            if d.name in seen or d.name in known or (d / "session.json").exists() or f.stat().st_mtime < t0:
+                continue
+            seen.add(d.name)
+            last = max(x.stat().st_mtime for x in d.iterdir())
+            iso = lambda t: dt.datetime.fromtimestamp(t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")  # noqa: E731
+            out.append({"session": d.name, "started": iso(f.stat().st_mtime), "last_activity": iso(last),
+                        "seconds": round(last - f.stat().st_mtime, 1)})
+    return out
+
+
+def record_killed_segment(cp) -> dict | None:
+    """The end record of the last segment when it has none (see above); None when it ended (or there is none)."""
+    evs = cp.data.get("events") or []
+    starts = [i for i, e in enumerate(evs) if e.get("event") in ("started", "resumed")]
+    if not starts or any(e.get("event") in (SEGMENT_END, SEGMENT_END_RECORDED) for e in evs[starts[-1] + 1:]):
+        return None
+    start = evs[starts[-1]]["ts"]
+    at = max([str(e.get("ts")) for e in evs[starts[-1]:]] + [str(cp.data.get("updated") or "")])
+    seg = segment_number(cp.data)
+    killed = _killed_sessions(cp.data, Path(cp.path).parent, start)
+    note = (f"ended by a stop at {at}; sessions without a result: "
+            + (", ".join(x["session"] for x in killed) + " (killed)" if killed else "none"))
+    rec = {"segment": seg, "start": start, "at": at, "note": note, "sessions": killed,
+           "session_seconds_lost": round(sum(x["seconds"] or 0 for x in killed), 1)}
+    cp.event(SEGMENT_END_RECORDED, segment=seg, at=at, note=note, sessions_without_result=[x["session"] for x in killed])
+    cp.data.setdefault("concurrency_drives", []).append(
+        {"drive": at, "segment": seg, "interrupted": True, "ended_by": "a stop (the process was killed; recorded on "
+                                                                      "resume)", "phases": {}})
+    cp.data.setdefault("destroyed_work", []).append(rec)
+    cp.data.setdefault("interventions", []).append(
+        {"ts": at, "kind": "stop (no end recorded)", "by": "unknown (the process was killed: a kill, the panel's Stop "
+                                                          "or a closed terminal)", "note": note})
+    return rec
+
+
+def promotion_lines(prom: dict, pops: dict) -> list[str]:
+    """The review packet's promotion section (session 14, N12: the output-time issues; N2/N3/N11: the merges)."""
+    L = ["## Promoted into the candidate (PROPOSED; nothing accepted)", ""]
+    for k in ("ops", "dispositions", "accounted_unresolved", "rows_new", "readings", "issues", "analysis_issues",
+              "output_time_issues", "evidence_items", "activities", "lead_times", "clarifications", "relationships",
+              "referenced_documents", "no_change"):
+        if prom.get(k):
+            L.append(f"- {k.replace('_', ' ')}: {', '.join(map(str, prom[k][:40]))}" + (f" (+{len(prom[k]) - 40})" if len(prom[k]) > 40 else ""))
+    if prom.get("output_time_issues"):
+        L.append("  - raised at output time (the class-scope rule): HUMAN DECISION PENDING, written into the candidate "
+                 "register as PROPOSED")
+    if prom.get("issues_merged"):
+        L.append("- the same question promoted once (analysis issue -> the issue it was merged into): " + "; ".join(
+            f"{k} -> {v}" for k, v in prom["issues_merged"].items()))
+    if prom.get("applied_by_rows"):
+        L.append("- applied through a new row (the provision's obligation is the row; PROPOSED): " + "; ".join(
+            f"{k} -> {', '.join(v)}" for k, v in prom["applied_by_rows"].items()))
+    L += [f"- unresolved provisions: {len(prom.get('unresolved') or [])}"] + [f"- note: {x}" for x in prom.get("notes") or []] + [""]
+    dropped = (pops or {}).get("dropped") or {}
+    if dropped:
+        L += ["- left out of the promoted ops: " + "; ".join(f"{k}: {_short(v, 160)}" for k, v in dropped.items()), ""]
+    return L
 
 
 def _record_outcome(cp: Checkpoint) -> None:
@@ -2801,10 +2894,11 @@ def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) -> 
                 "why": f"carried to downstream task(s) {', '.join(tids)} ({what}): open until the downstream phase "
                        "answers it"}
     held = held or {}
-    rows, bad = [], []
+    rows, bad, row_ids = [], [], []
     for tid in tids:
         its = [it for it in ds.items if it.task == tid]
         ok = [it for it in its if it.verification_status in DS.PROMOTABLE and it.id not in held]
+        row_ids += [str((it.payload.get("row") or {}).get("id")) for it in ok if it.statement_type == "row_new"]
         if ok:
             rows += [f"{(it.payload.get('row') or {}).get('id') if it.statement_type == 'row_new' else it.payload.get('row')}"
                      f" ({it.statement_type}, {it.verification_status})" for it in ok
@@ -2821,6 +2915,14 @@ def carried_answer(item_ids: list[str], tasks, ds, held: dict | None = None) -> 
     if bad:
         return {"answered": False, "carried": tids, "needs_person": True,
                 "why": "unresolved: " + "; ".join(bad) + (f"; proposed downstream: {', '.join(rows)}" if rows else "")}
+    if row_ids:
+        # session 14 (N3): the provision's obligation IS the promoted row: the provision is applied through it (the
+        # row PROPOSED, a person confirms it), never "UNRESOLVED (accounted for, not applied)", so the activities
+        # carrying the row are not blocked by the provision the row answers
+        return {"answered": True, "carried": tids, "needs_person": False, "applied_by_rows": row_ids,
+                "why": f"applied as the new row(s) {', '.join(row_ids)} (proposed downstream: {', '.join(rows)}; task(s) "
+                       f"{', '.join(tids)}; PROPOSED, not approved): the provision's obligation is that row; a person "
+                       "confirms it"}
     return {"answered": False, "carried": tids, "needs_person": False,
             "why": f"its obligation is proposed downstream as {', '.join(rows)} (task(s) {', '.join(tids)}; PROPOSED): "
                    "no op or disposition answers the provision; a person confirms the row and the provision's "
@@ -2888,7 +2990,8 @@ def _answers(ctx: Ctx, cps: ProposalSet, promoted: dict, tasks=None, ds=None) ->
         carried = carried_answer([it.id for it in mine if it.statement_type in DS.CARRIED
                                   and it.verification_status in DS.PROMOTABLE], tasks, ds, held) if not esc else None
         if carried is not None and not any(it.verification_status not in DS.PROMOTABLE for it in mine):
-            out[p] = {**carried, "state": "unresolved", "accounted": True, "approved": False}
+            out[p] = {**carried, "state": "applied" if carried.get("applied_by_rows") else "unresolved",
+                      "accounted": True, "approved": False}               # session 14 (N3)
             continue
         if esc:
             why = "escalated: " + "; ".join(_short(it.payload.get("why"), 200) for it in esc)
@@ -3220,7 +3323,7 @@ def step_downstream_validation(ctx: Ctx, st: dict) -> None:
     ds = _combined_downstream(ctx)
     promoted = ctx.promoted()
     tasks = json.loads((ctx.dir / "downstream" / "tasks.json").read_text(encoding="utf-8"))
-    report = DS.validate(ctx.ws, ds, promoted, {t["id"]: t["kind"] for t in tasks})   # kinds: where no_change may answer
+    report = DS.validate(ctx.ws, ds, promoted, DS.task_kinds(tasks))   # kinds: where no_change may answer (N2: origins)
     out = ctx.dir / "downstream" / "proposals.yaml"
     out.write_text("# Downstream proposals of the AI workflow, validated by tenderpack.ai.downstream in the candidate. "
                    "STAGING ONLY: nothing here is accepted.\n"
@@ -3548,7 +3651,7 @@ def _revalidate(ctx: Ctx, st: dict) -> tuple[ProposalSet, dict, DownstreamSet | 
     if ds is not None and not stale:
         dbefore = {it.id: it.verification_status for it in ds.items}
         tasks = _js(ctx.dir / "downstream" / "tasks.json") or []
-        drep = DS.validate(ws, ds, promoted, {t["id"]: t["kind"] for t in tasks})
+        drep = DS.validate(ws, ds, promoted, DS.task_kinds(tasks))      # session 14 (N2): merged origins included
         if ds.status == "stale":
             stale = list(drep.get("state_differences") or [])
     if stale:
@@ -3586,7 +3689,9 @@ def step_promotion(ctx: Ctx, st: dict) -> None:
     origin = (f"AI workflow run {ctx.run_id} (route {ctx.s['route']}, model {cps.model_requested}"
               + (f", reported {cps.model_reported}" if cps.model_reported else "") + "); PROPOSED; not reviewed")
     summ = DS.promote(ctx.ws, ctx.cp.data["candidate"], ctx.run_id, cps, promoted, ds, origin,
-                      {p: a["why"] for p, a in answers.items() if not a["answered"]})
+                      {p: a["why"] for p, a in answers.items() if not a["answered"]},
+                      applied_by_rows={p: a["applied_by_rows"] for p, a in answers.items()
+                                       if a.get("applied_by_rows")})          # session 14 (N3)
     summ["answers"] = answers                                    # session 13: after the downstream phase (packet)
     (ctx.dir / "promotion.json").write_text(json.dumps(summ, ensure_ascii=False, indent=1), encoding="utf-8")
     st.update({k: v for k, v in summ.items() if k not in ("written", "answers")})
@@ -3730,12 +3835,8 @@ def _row_statuses(ctx: Ctx, r: dict) -> tuple[dict, str, list]:
     add = ctx.addendum
     prom = json.loads((ctx.dir / "promotion.json").read_text(encoding="utf-8")) if (ctx.dir / "promotion.json").exists() else {}
     ds, _ = _load_downstream(ctx)
-    vstat = {}
-    for it in (ds.items if ds else []):
-        if it.statement_type == "row_new":
-            vstat[(it.payload.get("row") or {}).get("id")] = it.verification_status
-        elif it.statement_type == "row_reading":
-            vstat[it.payload.get("row")] = it.verification_status
+    # session 14 (N2): the promoted item's status, never a later duplicate's "(invalid)"
+    vstat = DS.row_item_status(ds.items if ds else [])
     new, readings = set(prom.get("rows_new") or []), set(prom.get("readings") or [])
     answers = json.loads((ctx.dir / "downstream" / "answers.json").read_text(encoding="utf-8")) \
         if (ctx.dir / "downstream" / "answers.json").exists() else {}
@@ -4129,16 +4230,7 @@ def review_markdown(ctx: Ctx) -> str:
               "(batches: " + ", ".join(k + " " + cp.batch(k)["status"] for k in cp.batches("downstream")) + ")", ""]
     # ---- promotion
     if prom:
-        L += ["## Promoted into the candidate (PROPOSED; nothing accepted)", ""]
-        for k in ("ops", "dispositions", "accounted_unresolved", "rows_new", "readings", "issues", "analysis_issues",
-                  "evidence_items", "activities", "lead_times", "clarifications", "relationships",
-                  "referenced_documents", "no_change"):
-            if prom.get(k):
-                L.append(f"- {k.replace('_', ' ')}: {', '.join(map(str, prom[k][:40]))}" + (f" (+{len(prom[k]) - 40})" if len(prom[k]) > 40 else ""))
-        L += [f"- unresolved provisions: {len(prom.get('unresolved') or [])}"] + [f"- note: {x}" for x in prom.get("notes") or []] + [""]
-        dropped = pops.get("dropped") or {}
-        if dropped:
-            L += ["- left out of the promoted ops: " + "; ".join(f"{k}: {_short(v, 160)}" for k, v in dropped.items()), ""]
+        L += promotion_lines(prom, pops)
     # ---- checks
     cr = cp.step("check_register")
     if cr.get("status") == "done":

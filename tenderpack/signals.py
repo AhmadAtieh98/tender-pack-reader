@@ -811,10 +811,13 @@ def class_scope_findings(units: list[dict]) -> list[dict]:
     return out
 
 
-def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = None) -> list[dict]:
+def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = None,
+                       existing: set[str] | None = None) -> list[dict]:
     """The generated issues for class_scope_findings, in collect_issues' shape: id I-AUTO-CLASS-SCOPE-<table>, labelled
     HUMAN DECISION PENDING, conditional on a pending image reading where the table is one, the register rows citing a
-    unit of the table (`rows`: row id -> its units), not shown on A3 (its one page). Session 14 (W4)."""
+    unit of the table (`rows`: row id -> its units), not shown on A3 (its one page). Session 14 (W4). Session 14 (N12):
+    an id the register already holds (`existing`: the AI workflow wrote it into the candidate register) is not raised
+    again."""
     from .human_owned import HUMAN_DECISION_PENDING as HDP
     out = []
     for f in class_scope_findings(units):
@@ -823,7 +826,10 @@ def class_scope_issues(units: list[dict], rows: dict[str, list[str]] | None = No
                 "until a person approves the reading).") if f["conditional_on"] else ""
         mine = [rid for rid, us in (rows or {}).items() if any(u == tid or str(u).startswith(tid + "/") for u in us)]
         text = f"{HDP}: {f['text']}.{cond}"
-        out.append({"id": "I-AUTO-CLASS-SCOPE-" + re.sub(r"[^A-Za-z0-9]+", "-", tid).strip("-"), "text": text,
+        iid = "I-AUTO-CLASS-SCOPE-" + re.sub(r"[^A-Za-z0-9]+", "-", tid).strip("-")
+        if iid in (existing or ()):
+            continue
+        out.append({"id": iid, "text": text,
                     "owner": "Technical", "source": "class scope check (automatic; session 14)", "rows": mine,
                     "show_in_a3": False, "a3": text, "theme": "technical", "short": f"{HDP}: class scope of {tid}",
                     "folds": [], "human_decision": HDP})

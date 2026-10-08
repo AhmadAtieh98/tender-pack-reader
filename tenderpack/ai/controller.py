@@ -409,6 +409,80 @@ def _settled_handoffs(entries: list[str], it, texts: dict, addendum: str, provis
     return keep
 
 
+# session 14 (defect 11 and §10 of the blind-07 regression): a precedence the addendum STATES between two renderings of
+# the same content ("Table 42-1 is issued in the Arabic language. The Arabic text governs. The English translation at
+# Appendix B is provided for convenience only.") settles every question that is only between those renderings: the op
+# that records it, and each item on one rendering whose conflict or reason names only the other, are APPLIED with the
+# rule quoted ("applied, not decided; a person confirms the application"), never HUMAN DECISION PENDING or UNRESOLVED.
+# A genuine judgment stays pending: two readings of the same words named in the item's own words, a third text in the
+# conflict, or words that are not the provision's own.
+def op_precedence(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str]) -> dict | None:
+    """The stated precedence an op records ({governs, over, words} with the words verbatim in its provision and a
+    precedence word in them), as an applied-rule point; None otherwise."""
+    if statement_type != "amendment_op" or not isinstance(payload, dict):
+        return None
+    pr = payload.get("precedence")
+    if not isinstance(pr, dict):
+        return None
+    g, over = pr.get("governs"), pr.get("over") or []
+    over = [over] if isinstance(over, str) else [x for x in over if isinstance(x, str)]
+    words = " ".join(str(pr.get("words") or "").split())
+    src = " ".join(str(texts.get(provision or "") or "").split())
+    if not (isinstance(g, str) and g and over and words and words in src and _PRECEDENCE.search(words)):
+        return None
+    ref = _ref(provision or "")
+    return {"kind": "precedence", "unit": provision, "words": words, "governs": g, "over": over, "ref": ref,
+            "sentence": "", "keys": {ref}, "line": f"{ref} provides: '{words}' (applied, not decided)",
+            "confirm": f"applied rule: {ref} '{words}'; {CONFIRM}"}
+
+
+def stated_precedences(items, texts: dict[str, str]) -> list[dict]:
+    """The stated precedences recorded by the set's ops (op_precedence), with the item that records each."""
+    out = []
+    for it in items or []:
+        r = op_precedence(it.statement_type, dict(it.payload or {}), it.provision, texts)
+        if r is not None and all(x["line"] != r["line"] or x["governs"] != r["governs"] for x in out):
+            out.append({**r, "item": it.id})
+    return out
+
+
+def named_units(text: str) -> list[str]:
+    return list(dict.fromkeys(m.group(0).rstrip(".,;:)'\"") for m in _UNIT_ID.finditer(str(text or ""))))
+
+
+def _within(u: str, scope: str) -> bool:
+    return u == scope or u.startswith(scope + "/")
+
+
+def rendering_settled(provision: str | None, named: list[str], own_words: str, rules: list[dict]) -> dict | None:
+    """The stated precedence that settles a question between two renderings: the item's provision lies in one of them,
+    the units it names (its declared conflicts, or the ids in its reason) lie in the other (the rule's own clause aside),
+    and its own words name no two readings of the same words. None otherwise (the judgment stays pending)."""
+    if not provision or _TWO_READINGS.search(" ".join(str(own_words or "").split())):
+        return None
+    for r in rules or []:
+        for mine, other, side in (([r["governs"]], r["over"], "governing"), (r["over"], [r["governs"]], "convenience")):
+            if not any(_within(provision, x) for x in mine):
+                continue
+            rest = [u for u in named if u != r["unit"] and not _within(u, provision)]
+            hits = [u for u in rest if any(_within(u, x) for x in other)]
+            if hits and len(hits) == len(rest):
+                return {**r, "side": side, "others": hits}
+    return None
+
+
+RENDERING_RULE = "the stated precedence orders the two renderings"
+
+
+def rendering_record(settled: dict, provision: str) -> ValidationRecord:
+    """The applied-rule record of an item settled by a stated precedence (rendering_settled)."""
+    what = (f"{provision} is the governing rendering: it applies as printed" if settled["side"] == "governing" else
+            f"{provision} is the rendering the rule makes subordinate: {settled['governs']} applies")
+    return ValidationRecord(check=APPLIED_RULE, ok=True, aspect="decision", detail=(
+        f"{RENDERING_RULE} ({', '.join(settled['others'])} against {provision}): {settled['line']}; {what}; "
+        f"{CONFIRM} (session 14, defect 11)")[:600])
+
+
 def applied_rule_review(statement_type: str, payload: dict, provision: str | None, texts: dict[str, str], addendum: str,
                         provisions, phase: str = "analysis", existing: dict | None = None) -> dict:
     """{lines, sentences, points, human}: the applied rules of an item's own prose (settled_points over
@@ -418,6 +492,19 @@ def applied_rule_review(statement_type: str, payload: dict, provision: str | Non
     from .. import human_owned as H
     text = H.prose(payload or {})
     pts = settled_points(text, provision, texts, addendum, provisions)
+    own_rule = op_precedence(statement_type, payload or {}, provision, texts)
+    if own_rule is not None and not _TWO_READINGS.search(" ".join(str(text or "").split())):
+        # session 14 (defect 11, §10): an op that records the provision's own stated precedence ("The Arabic text
+        # governs.", verbatim in the provision) applies that rule: applied, not decided; a person confirms the
+        # application. The annotation's type and the provision's precedence word are not a judgment left open; any
+        # other reason of the classifier stays.
+        skip = {"decides which document prevails (precedence)", "a precedence question", "decides which clause governs"}
+        full = (H.analysis_reasons(statement_type, payload or {}, texts.get(provision or "", "")) if phase == "analysis"
+                else H.downstream_reasons(statement_type, payload or {}, existing))
+        rest = [x for x in full if not x.startswith("an annotation that")
+                and not (x.startswith("the provision it reads") and any(k in x for k in skip))]
+        return {"lines": [own_rule["line"]], "sentences": [], "points": [own_rule], "human": rest,
+                "confirm": [own_rule["confirm"]]}
     full = (H.analysis_reasons(statement_type, payload or {}, texts.get(provision or "", "")) if phase == "analysis"
             else H.downstream_reasons(statement_type, payload or {}, existing))
     if not pts:
@@ -756,7 +843,8 @@ def amendment_language(text: str) -> list[str]:
     required, except, unless, provided, ...). Parenthesised labels ('(revised)') are not read as verbs. Empty: none."""
     from ..draft import _QUALIFIER, Q
     hits = []
-    plain = re.sub(r"\([^)]*\)", " ", text)
+    from ..human_owned import recitals_removed     # session 14 (N4): a reference recital, 'provided for convenience only'
+    plain = recitals_removed(re.sub(r"\([^)]*\)", " ", text))
     quoted = re.findall(Q, text)
     if len(quoted) >= 2:
         hits.append(f"a quoted pair ‘{_short(quoted[0], 40)}’ / ‘{_short(quoted[1], 40)}’")
@@ -1338,6 +1426,8 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
 
     F = [{"invalid": [], "conflict": [], "insufficient": [], "interp": [], "recs": [], "op": None} for _ in ps.items]
     texts_s14 = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}      # session 14 (W1): settled points
+    from .. import human_owned as H14
+    precedences = stated_precedences(ps.items, texts_s14)    # session 14 (defect 11): the addendum's stated orders
     seen: set[str] = set()
     sim_ops, sim_disps = [], []
     for i, it in enumerate(ps.items):
@@ -1384,8 +1474,18 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
             elif not s["evidence_ok"]:                  # session 14 (W1): the blast radius is reported
                 rec("statements", False, f"blocked by failed statement {sid}: {s.get('why')}", "insufficient")
                 f.setdefault("blocked", []).append(f"blocked by failed statement {sid}: {s.get('why')}")
+        own14 = H14.prose(dict(it.payload or {}))
+        rend = None
         if it.conflicts:
             cover_c, genuine = split_cover_conflicts(it.conflicts, addendum, it.provision, provs_all)
+            # session 14 (defect 11): a declared conflict only between two renderings whose order the addendum states
+            # is settled by that rule (applied, not decided); any other conflict between operative texts stays
+            rend = rendering_settled(it.provision, [u for e in genuine for u in (named_units(e) or [str(e).strip()])],
+                                     own14, precedences) if genuine else None
+            if rend is not None:
+                f["recs"].append(rendering_record(rend, it.provision))
+                f["interp"].append(APPLIED_RULE)
+                genuine = []
             # session 14 (W1): a declared conflict between two operative texts stays a conflict (never settled here)
             if genuine:
                 rec("declared_conflicts", False, "the proposer declares: " + "; ".join(genuine)[:400], "conflict")
@@ -1395,6 +1495,12 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
                     "documents; the summary orders nothing): " + "; ".join(cover_c)[:400])
                 report.setdefault("cover_findings", []).append({"item": it.id, "provision": it.provision,
                                                                 "discrepancies": list(cover_c)})
+        if rend is None and it.statement_type == "disposition" and (it.payload or {}).get("disposition") == "unresolved":
+            reason = str((it.payload or {}).get("reason") or "")
+            rend = rendering_settled(it.provision, named_units(reason), own14, precedences)
+            if rend is not None:                 # session 14 (defect 11): promoted as applied (re_present_disposition)
+                f["recs"].append(rendering_record(rend, it.provision))
+                f["interp"].append(APPLIED_RULE)
         missing = _settled_handoffs(list(it.missing_information), it, texts_s14, addendum, provs_all, f,
                                     "missing information")
         if missing:

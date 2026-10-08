@@ -188,5 +188,6 @@ Built in session 11 from the error tables of the session logs; the how-caught co
 | S14-E169 | `2026-10-07_session-14_finalisation.md` (§6) | The plan's session limit a second time this session (HTTP 429, reset 17:40 UTC), minutes after two fixers were launched beside a rehearsal's two host sessions; about 1 h 15 min lost; the host sessions of a rehearsal count as agents. | The agents' 429 notices; the idle check-in. | Resumed at 17:40; one rehearsal or two agents at a time from then on. |
 | S14-E170 | `2026-10-07_session-14_finalisation.md` (§6) | The container was reclaimed on idle twice, killing the regression's resume job and the two fixers without notice, because the coordinator ended its turns while background work ran. | The main process's age; no python process. | Everything on disk survived; the run resumed again; the fixers continued from their worktrees; the coordinator waits inside its turn from then on. |
 | S14-E171 | `2026-10-07_session-14_finalisation.md` (§6) | An interruption of the coordinator's tool call cancels every running background agent; two fixers died silently and one went unnoticed for 25 minutes. | Idle files; a probe answered "stopped by the user". | Relaunched from their worktrees; short waits; the owner told. |
+| S14-E172 | `2026-10-07_session-14_finalisation.md` (§6) | The owner's usage limit stopped the session for about 7 h 25 min; the container restarted and two merge checks died unreported. | Empty logs at resumption. | Committed at once; checks re-run. |
 
-180 entries.
+181 entries.

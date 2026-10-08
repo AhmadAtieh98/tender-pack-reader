@@ -414,7 +414,8 @@ def collect_issues(r: dict, a5: dict | None) -> list[dict]:
     out += missing_document_issues(r)                           # session 10: documents referenced but not supplied
     # session 14 (W4; part 3 (b)): a class table without a rule for an item in more than one class is a genuine
     # ambiguity (blind-07 DA1), raised as a generated issue, HUMAN DECISION PENDING; nothing is chosen
-    out += signals.class_scope_issues(r.get("units") or [], {e["row"].id: list(e["row"].units) for e in r["evals"]})
+    out += signals.class_scope_issues(r.get("units") or [], {e["row"].id: list(e["row"].units) for e in r["evals"]},
+                                      existing=set(r["curated_issues"]))     # session 14 (N12): never twice
     for c in printed_date_conflicts(val, r["rowfile"].anchors):
         out.append({"id": f"I-AUTO-PRINTED-{c['unit'].split(':', 1)[1].replace('/', '-')}",
                     "text": f"{c['unit']} prints the {r['rowfile'].anchors[c['anchor']]['name']} as {c['printed']}; "

@@ -81,7 +81,7 @@ def issue_entries(cell, by_id: dict[str, dict]) -> dict:
     decision not yet recorded, human_owned.issue_label) and `open` (False only when a person's decision is recorded).
     An id the issues list does not hold is kept and said to be so. An entry that names no issue (a flag such as
     'SUMMARY OUT OF DATE') is kept as a flag. Returns {"issues": [...], "flags": [...]}."""
-    from .human_owned import HUMAN_DECISION_PENDING
+    from .human_owned import HUMAN_DECISION_PENDING, PROPOSED_BASIS
     from .signals import issue_refs
     from .stage2 import issue_short
     entries = [cell] if isinstance(cell, str) else list(cell or [])
@@ -109,8 +109,12 @@ def issue_entries(cell, by_id: dict[str, dict]) -> dict:
                 short = issue_short(src) if src else "not in the issues list of this build (check-register: issue_ref)"
                 if pending and not short.startswith(HUMAN_DECISION_PENDING):
                     short = f"{HUMAN_DECISION_PENDING}: {short}"
+                # session 14 (coordinator; F1's R1-4 side effect, R4's r3_2): an issue re-presented as a PROPOSED BASIS
+                # (an applied document rule; a person confirms the application) is still OPEN on the card, like a
+                # pending one; only a recorded decision closes it
+                is_open = (not lab) or pending or lab.startswith(PROPOSED_BASIS)
                 it = items[i] = {"id": i, "short": short, "owner": (src or {}).get("owner") or "not stated",
-                                 "pending": pending, "open": not (lab and not pending), "notes": []}
+                                 "pending": pending, "open": is_open, "notes": []}
             if note and note not in it["notes"]:
                 it["notes"].append(note)
     return {"issues": list(items.values()), "flags": flags}

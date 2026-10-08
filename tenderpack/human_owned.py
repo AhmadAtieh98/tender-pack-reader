@@ -92,20 +92,69 @@ NEGATION_WINDOW = 5
 _CLAUSE_CUT = re.compile(r"[.;:!?,|\n]")
 
 
-def negated(text: str, start: int, window: int = NEGATION_WINDOW) -> bool:
-    """Whether the word at `start` in `text` stands under a negation (NEGATION) among the `window` words before it in
-    its own clause. Session 14 (W4)."""
+# session 14 (F3, R4-1): a negation counts only when it negates the trigger word itself ("not resolved", "cannot be
+# resolved", "no longer resolved", "has yet to be settled", "whether it is resolved", "No answer has been withdrawn"),
+# never a negation elsewhere in the clause: "There is no doubt the ambiguity is resolved" declares the point resolved.
+# Walking back from the word: auxiliaries and adverbs (_NEG_FILLER) are skipped; a negator or a conditional there
+# negates it; otherwise the word reached is the subject, negated only by its own determiner ("no", "neither") or by a
+# conditional introducing it ("whether the matter is resolved").
+_NEGATOR = re.compile(r"^(?:not|never|no|nor|neither|without|cannot|yet|nothing|none|nobody|\w+n't)$", re.I)
+_CONDITIONAL = re.compile(r"^(?:whether|if|until|unless)$", re.I)
+_NEG_FILLER = {"be", "been", "being", "is", "are", "was", "were", "am", "has", "have", "had", "will", "would", "shall",
+               "should", "may", "might", "must", "can", "could", "do", "does", "did", "to", "it", "this", "that",
+               "they", "there", "longer", "ever", "fully", "entirely", "completely", "properly", "finally", "now",
+               "still", "already", "also", "thereby", "therefore", "thus", "so", "get", "got", "become", "becomes"}
+_DETERMINER = {"the", "a", "an", "this", "that", "these", "those", "its", "their", "each", "every", "any", "such"}
+
+
+def negated(text: str, start: int, window: int = NEGATION_WINDOW + 3) -> bool:
+    """Whether the word at `start` in `text` is itself negated or made conditional (see above), within its own clause
+    and the `window` words before it. Session 14 (W4; F3 R4-1)."""
     head = str(text or "")[:start]
     cuts = [m.end() for m in _CLAUSE_CUT.finditer(head)]
     clause = head[cuts[-1]:] if cuts else head
-    return any(NEGATION.match(w) for w in re.findall(r"[A-Za-z']+", clause)[-window:])
+    words = re.findall(r"[A-Za-z']+", clause)[-window:]
+    i = len(words) - 1
+    while i >= 0 and words[i].lower() in _NEG_FILLER:
+        i -= 1
+    if i < 0:
+        return False
+    if _NEGATOR.match(words[i]) or _CONDITIONAL.match(words[i]):
+        return True
+    for w in reversed(words[max(0, i - 3):i]):              # the subject's own determiner, or a conditional before it
+        if w.lower() in ("no", "neither", "nor") or _CONDITIONAL.match(w):
+            return True
+        if w.lower() not in _DETERMINER:
+            return False
+    return False
+
+
+# session 14 (N4): negated()'s idea extended. A keyword quoted from the documents ("ADD-03 3.5 states 'The Arabic text
+# governs.'"), a reference recital ("A reference in this Addendum to a Clause ... is to that Clause ... as amended by
+# Addenda Nos. 1 and 2, unless otherwise stated") and "provided for convenience only" (a participle, never a proviso)
+# decide nothing: they are removed before a keyword scan (scan_text; recitals_removed for a provision's own words).
+_REF_RECITAL = re.compile(r"\b(?:is|are)\s+to\s+(?:that|the|those|such)\b.{0,160}?\bas amended by\b", re.I)
+_FOR_CONVENIENCE = re.compile(r"\bprovided\s+(?:for\s+(?:convenience|information|reference)|by\s+way\s+of\s+"
+                              r"(?:information|reference))(?:\s+(?:only|purposes))?\b", re.I)
+
+
+def recitals_removed(text: str) -> str:
+    """`text` without its reference recitals (whole sentences) and its 'provided for convenience only' phrases."""
+    sents = re.split(r"(?<=[.;])\s+(?=[A-Z(\"'‘“])|\n", str(text or ""))     # never inside 'Nos. 1 and 2'
+    return _FOR_CONVENIENCE.sub(" ", " ".join(x for x in sents if not _REF_RECITAL.search(x)))
+
+
+def scan_text(text: str) -> str:
+    """The words a keyword scan reads: the model's own words (quotations removed: own_words), recitals removed."""
+    return recitals_removed(own_words(text))
 
 
 def triggers(text: str, kinds: tuple[str, ...] = ("closure", "topic")) -> list[str]:
     """What the words signal ([] when nothing). `text` is the model's own prose; `kinds` limits the triggers. Session 14
-    (W4): a closure word counts only where it is asserted (the first occurrence not negated: negated())."""
+    (W4): a closure word counts only where it is asserted (the first occurrence not negated: negated()); (N4) never
+    inside a quotation, a reference recital or 'provided for convenience only' (scan_text)."""
     out = []
-    t = str(text or "")
+    t = scan_text(text)
     for rx, why, kind in _TRIGGERS:
         if kind not in kinds:
             continue

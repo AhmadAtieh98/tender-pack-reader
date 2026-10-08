@@ -92,7 +92,11 @@ def tasks(ws, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
                                 + rule_txt + "; never a typed date"))
                     + ("; the obligation is conditional, so the milestone is conditional (say on what)"
                        if d["conditional"] else "")
-                    + ("; AMBIGUOUS under the counting rules: escalate, never choose a reading"
+                    # session 14 (N1): an ambiguous count is still carried as the relative rule (planned at the
+                    # earlier reading, the later kept); the escalation asks the counting question
+                    + ("; AMBIGUOUS under the counting rules: carry the relative `date_rule` unchanged all the same "
+                       "(the program plans at the earlier reading and keeps the later; never kind 'unresolved'), and "
+                       "escalate the counting question; never choose a reading"
                        if res.get("escalate") else "")})
     for x in derived.switched(r2, addendum):
         rows = sorted(rid for rid, e in evals.items() if x["flag"] in (e["stages"].get(addendum) or {}).get("flags", []))

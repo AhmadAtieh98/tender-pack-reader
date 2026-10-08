@@ -108,6 +108,21 @@ def _stage(r: dict, name: str):
 
 # ---------------------------------------------------------------------------------------------- promoted ops
 
+def re_present_disposition(d: Disposition, validation) -> Disposition:
+    """session 14 (defect 11): an `unresolved` disposition whose question is only between two renderings the addendum's
+    stated precedence orders (controller.rendering_record) is promoted as applied by that rule: `no_effect` (the
+    rendering amends no unit by itself), the rule quoted, "applied, not decided; a person confirms the application", and
+    the model's own reason kept as the proposed reason. Any other disposition is unchanged."""
+    if d.disposition != "unresolved":
+        return d
+    rec = next((v for v in validation or [] if v.check == controller.APPLIED_RULE
+                and str(v.detail).startswith(controller.RENDERING_RULE)), None)
+    if rec is None:
+        return d
+    return d.model_copy(update={"disposition": "no_effect", "reason": (
+        f"applied rule: {rec.detail} — proposed reason: {d.reason}")})
+
+
 def promoted_ops(ws: Workspace, ps) -> dict:
     """See the module docstring. Returns {ops: {item id: Op}, dispositions: {item id: Disposition}, dropped:
     {item id: reason}, sim, r2}."""
@@ -126,7 +141,8 @@ def promoted_ops(ws: Workspace, ps) -> dict:
                 p.setdefault("id", it.id)
                 ops[it.id] = Op.model_validate(p)
             elif it.statement_type == "disposition":
-                disps[it.id] = Disposition.model_validate({**it.payload, "provision": it.provision, "origin": "assistant"})
+                disps[it.id] = re_present_disposition(Disposition.model_validate(
+                    {**it.payload, "provision": it.provision, "origin": "assistant"}), it.validation)
         except ValidationError as e:
             dropped[it.id] = f"does not load: {_short(str(e), 200)}"
     for it in ps.items:                          # session 13: never an empty reason (blind-05 regression, defect 3)
@@ -201,6 +217,58 @@ def analysis_issues(ps, win: dict | None = None) -> dict[str, dict]:
                     "rows": [], "show_in_a3": False,
                     **({"short": p["short"]} if p.get("short") else {}), **({"theme": p["theme"]} if p.get("theme") else {}),
                     **({"clarification_route": route} if route else {})}
+    return out
+
+
+# session 14 (N11): the same question is promoted once. An analysis issue whose subject is a downstream issue's of the
+# same run (they quote the same words of the same unit, that unit being one of the two issues' own provision) is merged
+# into the downstream issue: one issue, its origins recorded, never a second id; references to the analysis id point at
+# the one issue (remap_issue_ids).
+def issue_subject_merges(ps, items) -> dict[str, str]:
+    """{analysis issue id: downstream issue id} (see above). `items` are the promotable downstream items."""
+    def norm(w):
+        return " ".join(str(w or "").split()).lower()
+    down = [it for it in items if it.statement_type == "issue" and (it.payload or {}).get("id")]
+    out: dict[str, str] = {}
+    for a in getattr(ps, "items", None) or []:
+        if a.statement_type != "issue" or a.verification_status not in PROMOTABLE:
+            continue
+        aq = [(e.unit_id, norm(e.words)) for e in a.evidence or [] if norm(e.words)]
+        for d in down:
+            own = {a.provision, d.provision}
+            dq = [(e.unit_id, norm(e.words)) for e in d.evidence or [] if norm(e.words)]
+            if any(ua == ud and ua in own and (wa in wd or wd in wa) for ua, wa in aq for ud, wd in dq):
+                out[analysis_issue_id(a)] = d.payload["id"]
+                break
+    return out
+
+
+def remap_issue_ids(obj, merges: dict[str, str]):
+    """`obj` with every string equal to a merged analysis issue id replaced by the issue it was merged into."""
+    if not merges:
+        return obj
+    if isinstance(obj, str):
+        return merges.get(obj, obj)
+    if isinstance(obj, dict):
+        return {k: remap_issue_ids(v, merges) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return list(dict.fromkeys(remap_issue_ids(v, merges) for v in obj)) if all(isinstance(v, str) for v in obj) \
+            else [remap_issue_ids(v, merges) for v in obj]
+    return obj
+
+
+# session 14 (N12): an issue raised only at output time (the class-scope rule, signals.class_scope_issues: blind-07 DA1)
+# reached the candidate A3 but neither the review packet nor the candidate register. Promotion writes it into the
+# candidate register (PROPOSED, HUMAN DECISION PENDING, the rule's own words), so the packet lists it and the output
+# rule does not raise it a second time.
+def output_time_issues(units: list[dict], rows: dict[str, list[str]], existing: set[str]) -> dict[str, dict]:
+    from .. import signals
+    out = {}
+    for x in signals.class_scope_issues(units, rows, existing=existing):
+        out[x["id"]] = {"text": x["text"], "owner": x["owner"], "rows": list(x.get("rows") or []),
+                        "source": f"{x['source']}: raised at output time, written by the AI workflow (PROPOSED)",
+                        "show_in_a3": False, **({"theme": x["theme"]} if x.get("theme") else {}),
+                        **({"short": x["short"]} if x.get("short") else {})}
     return out
 
 
@@ -356,6 +424,7 @@ def tasks(ws: Workspace, ps, promoted: dict, provision_status: dict[str, dict]) 
     out += obligation_tasks(ws, promoted, r2, addendum, out)                          # session 14 (W2): defect 9
     out += [t_ for t_ in reread_tasks(r2, addendum) if t_["id"] not in {x["id"] for x in out}]   # session 12
     out += DT.tasks(ws, r2, addendum, out)   # session 12 (W3b): pending readings, computed dates, conditions, consequences
+    out = merge_obligation_tasks(out)        # session 14 (N2): one obligation, one task (its origins recorded)
     for t_ in out:                       # session 14 (W2; blind-07 defect 16): a new row comes with its deliverables
         if t_["kind"] in ROW_MAKING:
             t_["needs"] = NEEDS
@@ -479,9 +548,17 @@ def conditional_tasks(ws: Workspace, ps, promoted: dict, provision_status: dict,
     # W3's engine-side investigations (derived.conditional_impacts, session 14), when the merged tree has them: each
     # joins the task of its provision's section, its units mapped to rows, activities and prices below
     have_prov = {rec.get("provision") for g in groups.values() for rec in g}
+    provs_ok = set(controller._provisions(ws, addendum))
+    provs_ok |= set(controller.region_parents(ws.r["units"], provs_ok))
     for x in _engine_impacts(r2, addendum):
         c = x.get("conditional_on") or {}
         pid = x.get("provision") or c.get("ref") or "?"
+        # session 14 (N8): a structural unit (an image region's own unit, a reading named "?") is not a provision: it
+        # never gets a conditional task of its own (the reading's own investigation, by its region id, carries it)
+        if str(c.get("ref") or "?") == "?" or not any(
+                u in provs_ok or any(str(u).startswith(q + "/") for q in provs_ok)
+                for u in [pid] + list(x.get("units") or [])):
+            continue
         rec = {"provision": x.get("provision") or c.get("ref"), "basis": _basis_of(c.get("kind"), c.get("state")),
                "item": x.get("id"), "why": _short(c.get("why") or x.get("investigate"), 400), "units": x.get("units") or [],
                "conditional_on": _cond(c.get("kind"), c.get("ref"), c.get("state"), c.get("why")),
@@ -562,6 +639,89 @@ _ADDS = ("insert_unit", "insert_row", "append_text", "replace_unit", "insert_tab
 def defined_terms(text: str) -> list[str]:
     """Capitalised multi-word terms of a text ('Scheduled PCOD', 'Geotechnical Baseline Report'), in order."""
     return list(dict.fromkeys(m.group(1) for m in _TERM_RE.finditer(text or "")))
+
+
+# session 14 (N2): one obligation gets ONE downstream task. The C46 task of an op (`c46:<op>`), the obligation task of
+# the same op (`oblig:<op>`), the analysis row carried to it (`ana:<item>`) and a computed deadline of the same unit
+# (`date:<unit>`) each asked for the same row, so the second answer was refused on the id ledger. They are merged into
+# the row task (same op, or the same unit): the obligation task's hint goes under `obligation`, the deadline under
+# `computed_dates` (as derived_tasks does for a unit a row task covers), and `origins` lists every task merged.
+def merge_obligation_tasks(out: list[dict]) -> list[dict]:
+    rows_t = [t for t in out if t.get("kind") == "row_new"]
+
+    def owner(op, units) -> dict | None:
+        units = {u for u in units or [] if u}
+        return (next((t for t in rows_t if op and t.get("op") == op), None)
+                or next((t for t in rows_t if units and units <= set((t.get("provisions") or [])
+                                                                     + (t.get("units_changed") or [])
+                                                                     + (t.get("attaches_to") or []))), None))
+
+    def origin(t: dict, oid: str, kind: str | None = None) -> None:
+        o = t.setdefault("origins", [t["id"]])
+        if oid not in o:
+            o.append(oid)
+        if kind:                         # session 14 (N2): an answer by the origin's own id keeps the origin's kind
+            t.setdefault("origin_kinds", {})[oid] = kind
+
+    keep = []
+    for t in out:
+        tgt = None
+        if t.get("kind") == "obligation_impact":
+            tgt = owner(t.get("op"), t.get("provisions"))
+            if tgt is not None:
+                tgt["obligation"] = {k: t[k] for k in ("op", "terms", "related", "expect") if k in t}
+                tgt["units_changed"] = list(dict.fromkeys(list(tgt.get("units_changed") or [])
+                                                          + list(t.get("units_changed") or [])))
+        elif t.get("kind") == "computed_date":
+            tgt = owner(None, [t.get("unit")])
+            if tgt is not None:
+                tgt.setdefault("computed_dates", []).append(
+                    {**{k: t[k] for k in ("unit", "words", "computed_from", "status", "date_rule", "readings", "note",
+                                          "conditional") if k in t},
+                     "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows "
+                               "the derivation and any disagreement)"})
+        if tgt is not None:
+            origin(tgt, t["id"], t.get("kind"))
+            continue
+        keep.append(t)
+    for t in rows_t:
+        for a in t.get("analysis_items") or []:
+            if f"ana:{a.get('item')}" != t["id"]:
+                origin(t, f"ana:{a.get('item')}")
+    return keep
+
+
+def task_kinds(tasks: list[dict]) -> dict[str, str]:
+    """session 14 (N2): {task id: kind} of the packets' tasks, with every merged origin's id (`oblig:<op>`,
+    `date:<unit>:...`, `ana:<item>`) as a task id of its own kind: an answer that names the obligation task by its own
+    id answers the merged task (a `no_change` to the obligation hint stays an answer to the hint, never to the row)."""
+    out = {t["id"]: t.get("kind") for t in tasks or [] if isinstance(t, dict) and t.get("id")}
+    for t in tasks or []:
+        if not isinstance(t, dict):
+            continue
+        for o in t.get("origins") or []:
+            out.setdefault(o, (t.get("origin_kinds") or {}).get(o) or t.get("kind"))
+    return out
+
+
+def task_aliases(tasks: list[dict]) -> dict[str, str]:
+    """session 14 (N2): {merged origin id: the task it was merged into}."""
+    return {o: t["id"] for t in tasks or [] if isinstance(t, dict)
+            for o in t.get("origins") or [] if o != t.get("id")}
+
+
+def row_item_status(items) -> dict[str, str]:
+    """session 14 (N2): {row id: status} of the downstream row items; a row proposed by a promotable item keeps that
+    item's status (a later duplicate refused on the id ledger never makes the promoted row read "(invalid)")."""
+    rank = {"evidence_verified": 0, "interpretation_pending": 1, "conflicting": 2, "insufficient_evidence": 3,
+            "escalated": 4, "invalid": 5, "unverified": 6}
+    out: dict[str, str] = {}
+    for it in items:
+        rid = ((it.payload or {}).get("row") or {}).get("id") if it.statement_type == "row_new" else \
+            (it.payload or {}).get("row") if it.statement_type == "row_reading" else None
+        if rid and (rid not in out or rank.get(it.verification_status, 9) < rank.get(out[rid], 9)):
+            out[rid] = it.verification_status
+    return out
 
 
 def obligation_tasks(ws: Workspace, promoted: dict, r2: dict, addendum: str, existing: list[dict]) -> list[dict]:
@@ -696,6 +856,125 @@ def _ledger(ws: Workspace) -> set[str]:
     return set(d.get("ids") or {}) | set(d.get("withdrawn") or {})
 
 
+# session 14 (N1): a forward-counted deadline the program counts ("within three (3) Working Days of the date of this
+# Addendum") is carried as the program's own relative rule, so it is planned at the earlier reading with the later kept
+# (dates.planning_value; A1 and A5 list both): a row that writes such words as kind 'unresolved' loses its planning
+# value and its milestone ("event-dependent (no date: unresolved)"). The counting question stays with a person (the
+# escalation); carrying the rule chooses nothing.
+def program_counted_rules(row: dict, computed: list[dict]) -> list[str]:
+    """Replace, in `row["date_rules"]`, every kind-'unresolved' rule whose words (same source unit, the words within
+    the phrase) are a deadline the program computed as a relative rule (derived.computed_deadlines) by that relative
+    rule (the rule's id, purpose, words and note kept). Returns one note per rule replaced."""
+    notes = []
+    for k, rd in enumerate(row.get("date_rules") or []):
+        if not isinstance(rd, dict) or rd.get("kind") != "unresolved":
+            continue
+        words = " ".join(str(rd.get("text") or "").split()).lower()
+        for c in computed or []:
+            dr = c.get("date_rule") or {}
+            cw = " ".join(str(c.get("words") or "").split()).lower()
+            if dr.get("kind") != "relative" or c.get("unit") != rd.get("source_unit") or not words or not cw \
+                    or not (cw in words or words in cw):
+                continue
+            readings = [x for x in (c.get("result") or {}).get("readings") or [] if x.get("value")]
+            vals = sorted(str(x["value"]) for x in readings)
+            why = (f"{rd.get('rule_id')}: the program counts '{rd.get('text')}' ({dr.get('offset')} {dr.get('unit')} "
+                   f"{dr.get('direction')} {dr.get('anchor')}): carried as the program's relative rule, planned at the "
+                   "earlier reading" + (f" ({vals[0]}) with the later kept ({', '.join(vals[1:])})" if len(vals) > 1
+                                        else "") + "; the counting stays with a person (session 14, N1)")
+            row["date_rules"][k] = {**{f: rd[f] for f in ("rule_id", "purpose", "source_unit", "text") if f in rd},
+                                    **{f: dr[f] for f in ("anchor", "offset", "unit", "direction") if f in dr},
+                                    "kind": "relative",
+                                    "note": " ".join(x for x in (str(rd.get("note") or "").strip(),
+                                                                 "session 14 (N1): " + why) if x)[:900]}
+            notes.append(why)
+            break
+    return notes
+
+
+# session 14 (N7): an activity's fields have the template's shapes (schedule.plan reads them): `finish` an object
+# {deadline_of, buffer}, the links lists of activity ids, `conditional_on` an object. A string where an object is
+# expected ("finish": "milestone") is refused with a named finding, never left for the planner to fail on.
+_ACT_SHAPES = {"finish": dict, "conditional_on": dict, "predecessors": list, "successors": list, "gated_by": list}
+
+
+def activity_shape_problems(a: dict) -> list[str]:
+    out = []
+    for k, t in _ACT_SHAPES.items():
+        v = a.get(k)
+        if v is None:
+            continue
+        if not isinstance(v, t):
+            out.append(f"`{k}` must be {'an object' if t is dict else 'a list of activity ids'}"
+                       + (" {deadline_of: <a date rule id>, buffer: <an assumption key>}" if k == "finish" else "")
+                       + f"; got {type(v).__name__} {_short(repr(v), 80)}")
+        elif t is list and not all(isinstance(x, str) for x in v):
+            out.append(f"`{k}` must list activity ids (strings); got {_short(repr(v), 80)}")
+    return out
+
+
+# session 14 (N1): a new activity can only be done once its obligation exists: a row this set introduces at the addendum
+# exists from the addendum's issue date, and a deadline counted forward from an event opens at that event. Linking it as
+# a predecessor of an activity that must finish before that day would make that activity wait for work that cannot
+# start in time ("INFEASIBLE"): the link is not made, and the record says why (a person may link them).
+def window_opens(rows: list[str], new_rows: dict, addendum: str, issued: str | None,
+                 anchor_dates: dict) -> tuple[date | None, str]:
+    """(the day the activity's window opens, why) from the new rows it carries; (None, '') when any of its rows
+    already exists (no new window)."""
+    best: tuple[date | None, str] = (None, "")
+    for rid in rows:
+        row = new_rows.get(rid)
+        if row is None:
+            return None, ""
+        cand: list[tuple[date, str]] = []
+        intro = row.get("introduced") or {}
+        if issued and (intro.get("stage") == addendum or not intro):
+            cand.append((date.fromisoformat(issued), f"{rid} is a new obligation of {addendum}, issued {issued}"))
+        for rd in row.get("date_rules") or []:
+            if isinstance(rd, dict) and rd.get("kind") == "relative" and rd.get("direction") == "after" \
+                    and anchor_dates.get(rd.get("anchor")):
+                cand.append((anchor_dates[rd["anchor"]], f"{rid}'s rule {rd.get('rule_id')} counts from "
+                                                         f"{rd['anchor']} ({anchor_dates[rd['anchor']].isoformat()})"))
+        if not cand:
+            return None, ""
+        d, why = max(cand)
+        if best[0] is None or d < best[0]:
+            best = (d, why)
+    return best
+
+
+def _computed(r2: dict, addendum: str) -> list[dict]:
+    from .. import derived
+    try:
+        return derived.computed_deadlines(r2, addendum)
+    except Exception:                                    # noqa: BLE001 (no computed deadline: nothing is replaced)
+        return []
+
+
+def _latest_finishes(r2: dict, stage: str, evals: list[dict], templates: dict, assumptions: dict,
+                     evidence: dict) -> dict[str, str]:
+    """{activity id: latest finish} of the programme at `stage` (schedule.plan), {} when it cannot be planned."""
+    s = _stage(r2, stage)
+    if not s.issued:
+        return {}
+    pdd = next((d["anchor_value"] for e in evals for d in e["stages"][stage]["dates"] if d["anchor"] == "PDD"), None)
+    try:
+        p = schedule.plan(stage, evals, templates, assumptions, r2["register"].cal_by_stage[stage],
+                          date.fromisoformat(s.issued), {"PDD": pdd}, evidence_items=evidence,
+                          anchor_details=r2["anchor_details"][stage], notified_days=r2["non_working_days"].get(stage))
+    except Exception:                                    # noqa: BLE001 (the window check is then not made)
+        return {}
+    return {a["id"]: a["latest_finish"] for a in p.get("activities") or [] if a.get("latest_finish")}
+
+
+def unreachable_successors(activity: dict, opens: date | None, latest_finish: dict) -> list[tuple[str, str]]:
+    """[(successor, its latest finish)] of `activity` that must finish before `opens`."""
+    if opens is None:
+        return []
+    return [(s, latest_finish[s]) for s in activity.get("successors") or []
+            if isinstance(s, str) and latest_finish.get(s) and date.fromisoformat(latest_finish[s]) < opens]
+
+
 def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwrites: list | None = None) -> dict:
     """Assign every downstream item's verification_status (see the module docstring). Mutates `ds`. `task_ids` is the
     set of the packets' task ids, or {task id: kind} (session 11: the kind decides where a `no_change` answer is
@@ -759,6 +1038,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
     from .controller import APPLIED_RULE, _provisions, applied_rule_review, phase_reversals
     texts_all = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}
     provs = _provisions(ws, addendum)
+    computed: list = [None]                 # session 14 (N1): derived.computed_deadlines at the addendum, once
     # -------------------------------------------------- pass 1: shape, ids, evidence, statements
     for i, it in enumerate(ds.items):
         # session 12: a judgment a person owns, read from the proposer's own payload before any field is reset
@@ -797,6 +1077,12 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
                 da["basis"] = "PROVISIONAL ASSUMPTION: " + str(da.get("basis", ""))
                 rec(i, "assumption", True, "the duration's basis is labelled PROVISIONAL ASSUMPTION")
             p["duration_assumption"] = da
+        if it.statement_type == "row_new" and isinstance(p.get("row"), dict) and p["row"].get("date_rules"):
+            p["row"] = copy.deepcopy(p["row"])               # session 14 (N1): the program's own count, planned
+            if computed[0] is None:
+                computed[0] = _computed(r2, addendum)
+            for n in program_counted_rules(p["row"], computed[0]):
+                rec(i, "date rule (counted)", True, n)
         try:
             pl = models[it.statement_type].model_validate(p)
         except ValidationError as e:
@@ -804,6 +1090,9 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             continue
         it.payload = pl.model_dump(by_alias=True, exclude_none=True)
         F[i]["pl"] = pl
+        if it.statement_type == "activity":                  # session 14 (N7): the template's shapes, named
+            for prob in activity_shape_problems(pl.activity):
+                rec(i, "activity shape", False, f"activity {pl.activity.get('id')}: {prob}", "invalid")
         if not it.evidence:
             rec(i, "evidence", False, "no evidence given", "insufficient")
         for x in it.evidence:
@@ -856,7 +1145,14 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             except ValidationError as e:
                 rec(i, "payload", False, f"not a register.Row: {_short(str(e), 400)}", "invalid")
                 continue
-            if row.id in rows or row.id in ledger or row.id in new_ids["row"]:
+            if row.id in new_ids["row"] and row.id not in rows and row.id not in ledger:
+                # session 14 (N2): the same row id proposed again in this set: a duplicate, never the row's own defect
+                first = next((ds.items[j].id for j in range(i) if ds.items[j].statement_type == "row_new"
+                              and ((ds.items[j].payload or {}).get("row") or {}).get("id") == row.id), "?")
+                rec(i, "duplicate", False, f"row {row.id} is already proposed by {first} in this set: a duplicate, not "
+                                           "promoted twice (the row stands as proposed by that item)", "invalid")
+                report.setdefault("duplicates", {})[it.id] = first
+            elif row.id in rows or row.id in ledger or row.id in new_ids["row"]:
                 rec(i, "id", False, f"row id {row.id} already exists or was listed before (id ledger)", "invalid")
             new_ids["row"].add(row.id)
             if row.review != "proposed" or row.reviewer:
@@ -1153,6 +1449,34 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             F[i]["interp"].append("an inferred relationship")
             rec(i, "relationship", True, f"an inferred relationship stays `{pl.status}`: a person confirms or rejects it")
     # -------------------------------------------------- pass 4: the A5 checks with the proposals (schedule.plan)
+    # session 14 (N7): only the activities still valid after pass 3 are planned (an invalid one never reaches the planner)
+    proposed_acts = {a: j for a, j in proposed_acts.items() if not F[j]["invalid"]}
+    # session 14 (N1): a new activity is never linked before an activity that must finish before its window opens
+    if reg is not None and s2.issued and proposed_acts:
+        new_rows = {rid: F[j]["pl"].row for rid, j in proposed_rows.items()}
+        anchor_dates = {f"{x.stage}-issue": date.fromisoformat(x.issued) for x in r2["stages"] if x.issued}
+        lf = None
+        for a_id, j in proposed_acts.items():
+            a = F[j]["pl"].activity
+            succ = [x for x in a.get("successors") or [] if x in acts_existing]
+            if not succ:
+                continue
+            opens, why = window_opens(list(F[j]["pl"].rows), new_rows, addendum, s2.issued, anchor_dates)
+            if opens is None:
+                continue
+            if lf is None:
+                lf = _latest_finishes(r2, addendum, r2["evals"], templates, r["assumptions"], evidence)
+            drop = unreachable_successors(a, opens, lf)
+            if drop:
+                gone = {x for x, _ in drop}
+                a["successors"] = [x for x in a.get("successors") or [] if x not in gone]
+                ds.items[j].payload = F[j]["pl"].model_dump(by_alias=True, exclude_none=True)
+                rec(j, "successors (window)", True, (
+                    "not linked as a predecessor of " + "; ".join(f"{x} (it must finish by {d} at {addendum})"
+                                                                  for x, d in drop)
+                    + f": this activity's window opens on {opens.isoformat()} ({why}), so the link would make that "
+                    "work wait for what cannot start in time; a person may link them if the documents say so "
+                    "(session 14, N1)")[:600])
     templates2 = copy.deepcopy(templates)
     assumptions2 = copy.deepcopy(r["assumptions"])
     evidence2 = dict(evidence)
@@ -1165,6 +1489,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         if pl.duration_assumption is not None:
             assumptions2.setdefault("lead_times", {})[pl.duration_assumption.key] = \
                 pl.duration_assumption.model_dump(exclude_none=True, exclude={"key"})
+    plan_failed = ""
     if reg is not None:
         # session 11: the addendum and every earlier stage where a proposed row or re-made reading is in force
         plan_at = [s.stage for s in r2["stages"] if s.stage == addendum or any(
@@ -1176,7 +1501,14 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             full = {p for stg in plan_at for p in _plan_problems(r2, stg, all_evals, templates2, assumptions2,
                                                                   evidence2)}
         except Exception as e:                                   # noqa: BLE001 (reported, never hidden)
-            base, full = set(), {f"C45: the programme cannot be planned with the proposals: {type(e).__name__}: {e}"}
+            # session 14 (N7): an exception is never a programme finding: the check did not run (a software
+            # limitation), the activities are recorded as not checked, and nothing is reported as C45
+            base, full = set(), set()
+            plan_failed = (f"software limitation: the programme check could not run with the proposals "
+                           f"({type(e).__name__}: {_short(str(e), 200)}); the proposals' programme effects are NOT "
+                           "checked (session 14, N7)")
+            report["programme_check"] = plan_failed
+            report["interactions"].append(plan_failed)
         report["planned_at"] = plan_at
         new = sorted(full - base)
         report["schedule_problems"] = new
@@ -1206,7 +1538,9 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             if not hit:
                 report["interactions"].append(f"A5 with the proposals: {p}")
         for a_id, j in proposed_acts.items():
-            if not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
+            if plan_failed:
+                rec(j, "C40/C44/C45", False, f"not checked: {plan_failed}")
+            elif not any(x == "C45" and not ok for x, ok in ((v.check, v.ok) for v in F[j]["recs"])):
                 rec(j, "C40/C44/C45", True, f"planned at {', '.join(plan_at)} with the proposals without a new A5 problem")
     # session 12 (blind-06 follow-up 6 b): an item that hands back to a person a point an analysis item concluded by
     # applying a clause of the documents is a reversal: conflicting, with the analysis item named (never promoted silently)
@@ -1401,6 +1735,8 @@ def _closure(ds: DownstreamSet, F: list, rows: dict, evidence: dict, issues: set
             elif it.statement_type == "dependency":
                 from ..relationships import ends
                 out_ids = {_proposed_id(ds.items[j], F[j]["pl"]) for j in range(len(ds.items)) if j not in ok} - {None}
+                # session 14 (N2): an id a promotable item creates is promotable, whatever a duplicate of it became
+                out_ids -= {_proposed_id(ds.items[j], F[j]["pl"]) for j in ok}
                 d = pl.model_dump(by_alias=True)
                 missing = [x for x in ends(d, "from") + ends(d, "to") if x in out_ids]
                 why = f"endpoints not promotable: {missing}" if missing else None
@@ -1688,8 +2024,15 @@ def candidate_path(cdir: Path, cfg: dict, key: str, default: str) -> Path:
     return p
 
 
+def applied_row_disposition(provision: str, rows: list[str], origin: str) -> Disposition:
+    """session 14 (N3): the op-file entry of a provision applied through the new row(s) promoted for its obligation."""
+    return Disposition(provision=provision, disposition="no_effect", origin="assistant", reason=(
+        f"applied as the new row(s) {', '.join(rows)}: the provision changes no unit of the documents; its obligation "
+        f"is that row (PROPOSED; a person confirms the row and this disposition) [{origin}]"))
+
+
 def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: DownstreamSet | None, origin: str,
-            unresolved_reason: dict[str, str]) -> dict:
+            unresolved_reason: dict[str, str], applied_by_rows: dict[str, list[str]] | None = None) -> dict:
     """Write the promotable items INTO THE CANDIDATE (see the module docstring). `cand` holds the candidate paths;
     `unresolved_reason` gives, per provision, why it is not answered by a promoted item. Rows are written and updated
     by id through the YAML structure (session 11: write_new_rows, find_row, update_row), never by matching text."""
@@ -1714,7 +2057,14 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         d.reason = f"{d.reason} [{origin}]"
     content = {c for o in promoted["sim"]["ops"] if o["valid"] for c in o.get("content") or []}
     accounted = {o.provision for o in ops} | {c for o in ops for c in o.covers} | {d.provision for d in disps} | content
+    summary["applied_by_rows"] = {}
     for p in controller._provisions(ws, addendum):
+        if p not in accounted and (applied_by_rows or {}).get(p):
+            # session 14 (N3): the provision's obligation is a promoted new row: applied through it (the op file's
+            # dispositions are no_effect or unresolved: the provision changes no unit, and the row carries it)
+            disps.append(applied_row_disposition(p, applied_by_rows[p], origin))
+            summary["applied_by_rows"][p] = list(applied_by_rows[p])
+            continue
         if p not in accounted:
             why = unresolved_reason.get(p) or "no promotable item answers it"
             disps.append(Disposition(provision=p, disposition="unresolved", origin="assistant",
@@ -1744,6 +2094,11 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
     summary["dispositions"] = [f"{d.provision}: {d.disposition}" for d in disps if d.disposition != "unresolved"]
     items = [it for it in (ds.items if ds else []) if it.verification_status in PROMOTABLE]
     tag = f"[{origin}]"
+    merges = issue_subject_merges(ps, items)          # session 14 (N11): one question, one issue
+    for it in items:
+        if merges and it.statement_type != "issue":
+            it.payload = remap_issue_ids(it.payload, merges)
+    summary["issues_merged"] = dict(merges)
     # ---- rows: new rows in a file of their own, re-made readings inserted into the rows' own files
     rows_path = rp("register", "curation/register/rows.yaml")
     new_rows = []
@@ -1828,10 +2183,29 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         win_ = None
     summary["analysis_issues"] = []
     for k, v in analysis_issues(ps, win_).items():
+        if k in merges and merges[k] in iss:          # session 14 (N11): merged into the downstream issue, origins kept
+            tgt = iss[merges[k]]
+            src = next((it.id for it in items if it.statement_type == "issue" and it.payload.get("id") == merges[k]), "")
+            tgt.setdefault("origins", [f"downstream {src}".strip()])
+            tgt["origins"].append(str(v.get("source") or k))
+            tgt["text"] = (f"{tgt.get('text')} [the same question was raised by the analysis phase as {k}: "
+                           f"{_short(v.get('text'), 300)}]")
+            continue
         if k not in iss:
             iss[k] = v
             summary["analysis_issues"].append(k)
+    try:                                          # session 14 (N12): the output-time issues, in the register too
+        r_c = ws.require_ok()
+        evs_c = (promoted.get("r2") or {}).get("evals") or r_c.get("evals") or []
+        oti = output_time_issues(r_c.get("units") or [], {e["row"].id: list(e["row"].units) for e in evs_c},
+                                 set(r_c.get("curated_issues") or {}) | set(iss))
+    except Exception as e:                                       # noqa: BLE001 (reported, never hidden)
+        oti = {}
+        summary["notes"].append(f"output-time issues not checked: {type(e).__name__}: {_short(str(e), 200)}")
+    iss.update(oti)
+    summary["output_time_issues"] = sorted(oti)
     owned = {it.payload["id"] for it in items if it.statement_type == "issue" and H.is_human_owned(it)}
+    owned |= set(oti)
     owned |= set(summary.get("analysis_issues") or [])          # session 14: an analysis issue is human-owned by type
     for it in items:                             # session 12 (follow-up 12): a settled point, re-presented as applied
         _re_present(it, iss, ws, addendum)
