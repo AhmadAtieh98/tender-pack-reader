@@ -97,7 +97,29 @@ SLOW = tuple(f"tests/test_session12_concurrency.py::{n}" for n in (
     "tests/test_session13_speed.py::test_no_worker_idles_while_an_earlier_answer_is_awaited",
     "tests/test_session14_owner_answers.py::test_the_workflow_consumes_an_offered_answer_at_its_checkpoint_and_re_asks_the_batch",
     "tests/test_session12_human_owned.py::test_a_an_issue_declaring_the_concession_conflicts_resolved_is_not_evidence_verified",
-    "tests/test_session13_correctness_analysis_rows.py::test_every_analysis_item_not_promoted_carries_an_explicit_reason")
+    "tests/test_session13_correctness_analysis_rows.py::test_every_analysis_item_not_promoted_carries_an_explicit_reason",
+    # session 14 (coordinator; the same self-verification, measured with --durations=0): the session-14 tests of 6 s or
+    # more apiece in the container (whole workspaces or many refreshes); each file keeps its other tests in the quick run
+    "tests/test_session14_offline_never_hosted.py::test_every_command_refuses_a_hosted_route_offline_before_any_call"
+    "[env]",
+    "tests/test_session14_dependencies.py::test_a_failed_fact_blocks_every_item_citing_it_and_the_blast_radius_is_reported",
+    "tests/test_session14_dependencies.py::test_a_dependency_may_name_an_escalation_a_disposition_or_a_statement_of_the_set",
+    "tests/test_session14_dependencies.py::test_an_item_waiting_on_an_escalation_is_not_promoted_and_says_why",
+    "tests/test_session14_mac_levels.py::test_level2_passes_only_when_every_item_passed_the_controller",
+    "tests/test_session14_mac_levels.py::test_level2_an_exit_zero_answer_with_failed_items_is_not_validated",
+    "tests/test_session14_same_clause_edits.py::test_two_replacements_on_disjoint_spans_of_one_clause_are_both_valid",
+    "tests/test_session14_payload_repair.py::test_the_submission_gate_asks_one_repair_of_the_failing_items_only_and_merges_it",
+    "tests/test_session14_f4_recheck_fixes.py::"
+    "test_r4_4_the_repair_takes_only_the_named_items_and_refuses_every_other_item_and_statement",
+    "tests/test_session14_f4_recheck_fixes.py::test_r4_4_a_refused_re_submission_uses_the_one_repair")
+# Session 14 (coordinator; the package's self-verification of 8 Oct on an idle machine: 566 quick tests took 491 s
+# against the three-minute bound, 270 s of it in these ten earlier-session files, whose shared fixtures build whole
+# packs or runs): the quick command leaves these files out whole; the full command runs them. Never a session-14 file.
+QUICK_SKIP_FILES = ("tests/test_session12_human_owned.py", "tests/test_session13_quick_review.py",
+                    "tests/test_session12_panel.py", "tests/test_session13_correctness_analysis_rows.py",
+                    "tests/test_session13_interview_folder.py", "tests/test_session13_audit_fixes_review.py",
+                    "tests/test_session13_audit_rechecks.py", "tests/test_session13_mac_scripts.py",
+                    "tests/test_session13_audit_fixes_a3.py", "tests/test_session12_computed_dates.py")
 TEST_SUPPORT_TREES = ("tests/fixtures", "tests/golden")
 # Synthetic regression inputs the focused tests read at fixed paths (tests/fixtures/ai_fixture.py: blind-02's pack and
 # its addendum; tests/fixtures/s12_blind05.py: blind-05's candidate pack and curation). Inputs only: never a SEALED
@@ -385,16 +407,19 @@ the old folder: it is the record of what happened. Move an unwanted run folder a
 def quick_argv(tests: list[str]) -> list[str]:
     """Session 14 (W6): the quick command's arguments after the interpreter (INTERVIEW.json quick_tests_argv, which
     scripts/mac/verify_package.sh runs): the focused tests without the SLOW ones, the ten slowest durations reported."""
-    slow = [s for s in SLOW if s.split("::")[0] in tests]
-    return (["-m", "pytest", "-q", "-p", "no:cacheprovider", "--durations=10", *tests]
+    quick = [t for t in tests if t not in QUICK_SKIP_FILES]
+    slow = [s for s in SLOW if s.split("::")[0] in quick]
+    return (["-m", "pytest", "-q", "-p", "no:cacheprovider", "--durations=10", *quick]
             + [x for s in slow for x in ("--deselect", s)])
 
 
 def commands(tests: list[str]) -> tuple[str, str]:
-    """(quick, full): the focused tests without the SLOW ones (under three minutes), and all of them."""
+    """(quick, full): the focused tests without QUICK_SKIP_FILES and the SLOW ones (under three minutes), and all."""
     full = ".venv/bin/python -m pytest -q -p no:cacheprovider " + " ".join(tests)
-    slow = [s for s in SLOW if s.split("::")[0] in tests]
-    return full + "".join(f" --deselect {s}" for s in slow), full
+    quick = [t for t in tests if t not in QUICK_SKIP_FILES]
+    slow = [s for s in SLOW if s.split("::")[0] in quick]
+    return (".venv/bin/python -m pytest -q -p no:cacheprovider " + " ".join(quick)
+            + "".join(f" --deselect {s}" for s in slow), full)
 
 
 def load_routes(repo: Path) -> dict:
@@ -456,10 +481,11 @@ def readme(name: str, base: str, label: str, tests: list[str], support: list[str
         f"deterministic first step (no model call) and checks the result against `smoke-test/expected.yaml`: "
         f"{smoke['provisions']} provisions, all pending, approval none (`smoke-test/EXPECTED.md`).", "",
         "## The focused tests", "",
-        "Quick (under three minutes; the tests that need a whole recorded workflow run, named by `--deselect`, "
-        "left out):", "",
+        "Quick (under three minutes; the tests that need a whole recorded workflow run, named by `--deselect`, and "
+        "ten earlier-session files whose shared fixtures build whole packs or runs ("
+        + ", ".join(f"`{f}`" for f in QUICK_SKIP_FILES if f in tests) + ") left out):", "",
         "```", quick, "```", "",
-        "Full (everything below, about ten minutes in the cloud container):", "",
+        "Full (everything below; several times as long as the quick command):", "",
         "```", cmd, "```", "",
         "Run:"] + [f"- `{t}`" for t in tests] + ["", "Imported for their fixtures (not run): "
         + (", ".join(f"`{s}`" for s in support) or "none") + "; `tests/conftest.py`, `tests/fixtures/`, "

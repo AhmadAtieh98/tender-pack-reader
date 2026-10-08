@@ -52,14 +52,14 @@ def test_every_session14_test_is_focused_and_the_quick_command_deselects_only_re
     s14 = sorted(p.relative_to(ROOT).as_posix() for p in (ROOT / "tests").glob("test_session14_*.py"))
     assert s14 and set(s14) <= set(tests), set(s14) - set(tests)
     argv = mif.quick_argv(tests)
-    assert argv[:2] == ["-m", "pytest"] and all(t in argv for t in tests)
+    assert argv[:2] == ["-m", "pytest"] and all(t in argv for t in tests if t not in mif.QUICK_SKIP_FILES)
     for s in mif.SLOW:                                       # every deselected id names a test that exists
         f, name = s.split("::", 1)
         assert (ROOT / f).is_file(), s
         fn = name.split("[", 1)[0]
         assert fn in {n.name for n in ast.walk(ast.parse((ROOT / f).read_text(encoding="utf-8")))
                       if isinstance(n, ast.FunctionDef)}, s
-        if f in tests:
+        if f in tests and f not in mif.QUICK_SKIP_FILES:
             assert ["--deselect", s] == argv[argv.index(s) - 1:argv.index(s) + 1]
     assert "--durations=10" in argv                           # the verifier names the slowest from it
 
@@ -161,3 +161,18 @@ def test_verify_package_runs_the_quick_tests_times_them_and_runs_the_smoke_test(
     failing = _mini(tmp_path / "f", ["-c", "import sys; print('1 failed'); sys.exit(1)"])
     r = _verify(failing, "--into", tmp_path / "c", "--only", "tests", env={"TENDERPACK_PY": sys.executable})
     assert r.returncode != 0 and "FAIL     tests: the focused quick tests ended with exit 1" in r.stdout, r.stdout
+
+
+def test_the_quick_command_leaves_out_only_whole_session12_and_13_files_that_the_full_command_keeps():
+    """Session 14 (coordinator; the package's self-verification of 8 Oct on an idle machine: 566 quick tests in 491 s
+    against the three-minute bound): the quick command leaves out whole earlier-session files whose shared fixtures
+    dominate (QUICK_SKIP_FILES), never a session-14 file; the full command keeps every focused file."""
+    mif = _mif()
+    tests = mif.focused_tests(ROOT)
+    skip = set(mif.QUICK_SKIP_FILES)
+    assert skip and skip <= set(tests), skip - set(tests)
+    assert not any("test_session14_" in f for f in skip)
+    argv = mif.quick_argv(tests)
+    assert not skip & set(argv) and all(t in argv for t in tests if t not in skip)
+    quick, full = mif.commands(tests)
+    assert all(f in full for f in skip) and not any(f + " " in quick + " " for f in skip)

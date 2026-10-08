@@ -166,7 +166,8 @@ def test_the_readme_lists_the_focused_tests_and_the_command(built):
     assert set(Path(t).name for t in run) <= set(tests)
     assert ".venv/bin/python -m pytest -q -p no:cacheprovider " + " ".join(run) in readme
     quick, full = built["mod"].commands(run)
-    assert quick in readme and quick.count("--deselect") == len(built["mod"].SLOW) and full in readme
+    kept = [s for s in built["mod"].SLOW if s.split("::")[0] in run and s.split("::")[0] not in built["mod"].QUICK_SKIP_FILES]
+    assert quick in readme and quick.count("--deselect") == len(kept) and full in readme
     for word in ("bash scripts/mac/setup.sh", "launch.command", "connected", "offline", "smoke-test/run_smoke.sh",
                  "PENDING", "RECOVERY.md", "SMOKE TEST: synthetic, not tender content", "excluded"):
         assert word in readme, word
