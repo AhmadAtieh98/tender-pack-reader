@@ -111,15 +111,23 @@ SLOW = tuple(f"tests/test_session12_concurrency.py::{n}" for n in (
     "tests/test_session14_payload_repair.py::test_the_submission_gate_asks_one_repair_of_the_failing_items_only_and_merges_it",
     "tests/test_session14_f4_recheck_fixes.py::"
     "test_r4_4_the_repair_takes_only_the_named_items_and_refuses_every_other_item_and_statement",
-    "tests/test_session14_f4_recheck_fixes.py::test_r4_4_a_refused_re_submission_uses_the_one_repair")
+    "tests/test_session14_f4_recheck_fixes.py::test_r4_4_a_refused_re_submission_uses_the_one_repair",
+    # and, at the re-verification of 09:36 (181 s), the next four of 4 s or more
+    "tests/test_session14_stated_rules.py::test_a_stated_rule_supports_the_change_the_item_held_back",
+    "tests/test_session14_f2_a5_a3_fixes.py::test_r3_14_2_real_without_mirroring_issue_still_on_form_4e",
+    "tests/test_session14_states_downstream.py::"
+    "test_promotion_counts_the_unresolved_disposition_writes_the_issue_and_proposes_the_missing_document",
+    "tests/test_session14_same_clause_edits.py::test_overlapping_spans_stay_rejected")
 # Session 14 (coordinator; the package's self-verification of 8 Oct on an idle machine: 566 quick tests took 491 s
-# against the three-minute bound, 270 s of it in these ten earlier-session files, whose shared fixtures build whole
+# against the three-minute bound, about 300 s of it in these earlier-session files, whose shared fixtures build whole
 # packs or runs): the quick command leaves these files out whole; the full command runs them. Never a session-14 file.
 QUICK_SKIP_FILES = ("tests/test_session12_human_owned.py", "tests/test_session13_quick_review.py",
                     "tests/test_session12_panel.py", "tests/test_session13_correctness_analysis_rows.py",
                     "tests/test_session13_interview_folder.py", "tests/test_session13_audit_fixes_review.py",
                     "tests/test_session13_audit_rechecks.py", "tests/test_session13_mac_scripts.py",
-                    "tests/test_session13_audit_fixes_a3.py", "tests/test_session12_computed_dates.py")
+                    "tests/test_session13_audit_fixes_a3.py", "tests/test_session12_computed_dates.py",
+                    # the re-verification at 09:36: 181 s; these two 27 s more
+                    "tests/test_session13_correctness_dates.py", "tests/test_session12_closed_window.py")
 TEST_SUPPORT_TREES = ("tests/fixtures", "tests/golden")
 # Synthetic regression inputs the focused tests read at fixed paths (tests/fixtures/ai_fixture.py: blind-02's pack and
 # its addendum; tests/fixtures/s12_blind05.py: blind-05's candidate pack and curation). Inputs only: never a SEALED
@@ -482,7 +490,7 @@ def readme(name: str, base: str, label: str, tests: list[str], support: list[str
         f"{smoke['provisions']} provisions, all pending, approval none (`smoke-test/EXPECTED.md`).", "",
         "## The focused tests", "",
         "Quick (under three minutes; the tests that need a whole recorded workflow run, named by `--deselect`, and "
-        "ten earlier-session files whose shared fixtures build whole packs or runs ("
+        "the earlier-session files whose shared fixtures build whole packs or runs ("
         + ", ".join(f"`{f}`" for f in QUICK_SKIP_FILES if f in tests) + ") left out):", "",
         "```", quick, "```", "",
         "Full (everything below; several times as long as the quick command):", "",
