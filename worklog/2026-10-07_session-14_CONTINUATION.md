@@ -1,35 +1,58 @@
-# Session 14: continuation instructions (progress commit "codex continuation", 7 October 2026)
+# Session 14: continuation instructions for Codex or any other agent (final, 8 October 2026)
 
-**Purpose.** The owner asked for a partial commit before the plan's session limit can end the session, named "codex continuation", with instructions to pick up exactly where the session stopped, in Codex or any other agent. This file is that handover. It is written at the time of the commit and updated at every later progress commit; the closing commit of the session will carry the owner's title ("(Fixed Control Panel) …") and remove the "in progress" markers.
+**Purpose.** The owner asked that work can continue in Codex, or any other agent, exactly where this session stopped. This file is that handover. `AGENTS.md` at the repository root points here. The session ended at the closing commit `1413457` on branch `claude/hopeful-curie-7oki9q`; this file was last updated by the commit after it.
 
-## 1. Where the session stopped (as of this commit)
+## 1. Where the session stopped
 
-Read first: `worklog/2026-10-07_session-14_prompt.md` (the owner's brief, verbatim, with the later messages), then `worklog/2026-10-07_session-14_finalisation.md` (§1 the packages, §2 the timeline to the minute, §3 the models that ran, §4 the runtime model, §6 the errors E166–E169), then `docs/session-14_report.md` (the before/after table; the PENDING sections are the work left).
+**Every part of the owner's session-14 brief is done.** Nothing is half-finished in the tree, and no background job, worktree or agent is left running.
 
-Done and in this commit:
-- The six implementation packages W1–W6 merged into the tree (schemas and bounded repair; disjoint edits; typed dependencies and readiness; the four states; conditional impact tasks; usage and interruption records; cover numbers; the ADD-03 op kinds with rollback; negated triggers; the A1 value / interpretation / approval columns; Form 4-E against the whole Proposal; scope-limited propagation; readiness fields; the scoped page tool and the owner's answers at checkpoints; the three Mac check levels, offline never hosted, routes_status, the Mac checklist, the package self-verification). Merge checks 1–6 green (the last: 215 passed over every `tests/test_session14_*.py`). The slowdown E167 fixed (`stage2.reissued_form_gaps` memo). The smoke check's empty-`ai/`-folder defect fixed (`tests/test_session14_smoke_check.py`).
-- The outputs under `out/` rebuilt on the merged tree at 15:57 UTC by the closing chain (`worklog/continuation-s14/scripts/rebuild_chain.sh`; its log `worklog/continuation-s14/rebuild_chain_1557.log`): strict exit 3 with only the two approval blockers, check-register 0 findings, Mac checks 9 PASS / 0 FAIL.
-- Three independent rechecks on those outputs: `worklog/continuation-s14/reviews/r1.md` (A1/A2: 4 major, 4 minor), `r2.md` (A3, decisions, A4: 4 major, 7 minor), `r3.md` (A5, rendered files, cards: 5 major, 9 minor). The overlaps and the grouping into two fixers are in the work log at 16:22–16:30.
-- The decisions the agents raised for the owner, raw: `worklog/continuation-s14/decisions_raw.md`, sorted into `docs/session-14_review_packet.md` (software failures / missing evidence / human approvals; its rehearsal rows are completed from the scorers' reports). The final reviewer's brief: `worklog/continuation-s14/briefs/R4.md`.
-- Every agent brief as a file: `worklog/continuation-s14/briefs/` (COMMON, W1–W6, A8, R_COMMON, R1–R3, F_COMMON, F1, F2, S7R) and the launch prompts verbatim in `worklog/subagent_briefs/` (116–133).
-- The sealed blind-08 addendum: `rehearsals/blind-08/input/ADD-03_Addendum_No_3.pdf` (4 pages, "Issued 18 November 2026", sha256 in the work log). **Its key is committed UNREAD under `rehearsals/blind-08/SEALED/`** (`expected_findings.yaml`, `author_notes.md`, `build_addendum.py`, a copy of the PDF, `SHA256SUMS` verified at the copy) so that a continuation elsewhere can score the run; the coordinator has not opened any of them. **Nobody may read them before the blind-08 run's outputs are frozen by hash** (`worklog/continuation-s14/scripts/freeze_blind08.py RID --root <package folder>`, which writes FROZEN-OUTPUTS.sha256 and FROZEN.md). Opening the key earlier voids the rehearsal; say so in the records if it happens.
+| Item | State | Where |
+|---|---|---|
+| The brief, verbatim, with the owner's later messages | read first | `worklog/2026-10-07_session-14_prompt.md` |
+| The report: before/after, rechecks, rehearsals, verification, package | final | `docs/session-14_report.md` |
+| The decisions that need the owner (software failures, missing evidence, human approvals) | final; nothing decided | `docs/session-14_review_packet.md` |
+| The work log: timeline to the minute, models that ran, errors E166–E174 | final | `worklog/2026-10-07_session-14_finalisation.md` |
+| Every error of every session, one line each (183 entries) | final | `worklog/ERROR_INDEX.md` |
+| Every subagent brief, verbatim (116–151 for this session) | exported | `worklog/subagent_briefs/` |
+| Reviews, briefs, decisions raw, patches, logs of this session | kept | `worklog/continuation-s14/` |
+| Blind-07 regression (open key) | scored: 18 hit / 14 partial / 1 missed of 33 | `rehearsals/blind-07/regression-s14/COMPARISON-S14.md` |
+| Sealed blind-08 (frozen by hash before the key was opened) | scored: 29 / 28 / 6 of 63; 45.0 min against 30 | `rehearsals/blind-08/COMPARISON.md`, `FROZEN.md` |
 
-In progress at the moment of this commit (NOT in the tree; the state is in the container and may be lost):
-- **F1 and F2 are merged** (their final patches: `worklog/continuation-s14/fixers-in-progress/f1_final.patch`, `f2_final.patch`; their tests `tests/test_session14_f1_recheck_fixes.py`, `tests/test_session14_f2_a5_a3_fixes.py`), with the coordinator's A3 fit fix; the outputs under `out/` are rebuilt on that tree (19:52 UTC; `worklog/continuation-s14/rebuild_chain_1952.log`).
-- **The blind-07 regression is done and scored** (`rehearsals/blind-07/regression-s14/COMPARISON-S14.md`).
-- **Fixer F3** (worktree `/home/user/wt-s14-f3`, brief `briefs/F3.md`): the scorer's N1–N12 and the stated-rule application, in progress; its patch arrives in `scratchpad/s14/f3/f3.patch` and must be merged, checked and the outputs rebuilt before blind-08. If lost: relaunch from the brief.
-- **Reviewer R4 is done** (`worklog/continuation-s14/reviews/r4.md`: 4 major, 13 minor; verdict "not yet ready" pending F3, R4-0/1/2 and the full suite). R4-0 fixed by the coordinator (two A3 tests pinned to `render.A3_SCALE_LOW`); the guard-scan test fixed (subclasses and factories counted). **F4 is merged** (`fixers-in-progress/f4_final.patch`; `tests/test_session14_f4_recheck_fixes.py`, 21 tests: R4-2 the candidate A1 value column, the page tool's scope hash and path confinement, the repair bound, offline under every switch, Arabic-Indic table numbers); merge check 8a green (`merge_check8a.log`). R4-1 is with F3. Left from R4: R4-3 (the report wording, done) and the minor text items; F4's noted gap (rows unresolved only through `answers.json`: a one-line change in `candidate.mark`'s value_state, F3's file).
+**Verification at the close, on the final code:**
 
-## 2. What is left (updated 8 Oct about 10:20 UTC, at the closing commit)
+- The full suite: 1,575 passed, 1 skipped, 0 failed (73 min in the cloud container).
+- The closing chain: green; `out/` byte-identical to the chain on the frozen code; strict exit 3 with only the two approval blockers (expected until the owner approves).
+- The interview package `LAMAR-PPP-R2-INTERVIEW_be97bec+wt_20261008T0944Z.zip`: `scripts/mac/verify_package.sh --no-ai` 8 PASS on the packaged copy; its full focused tests 594 passed. The zip was sent to the owner. It is not in the repository; rebuild it with the command in §2.
 
-Nothing of the brief is left in the session. Done since the previous version of this section:
+**Post-freeze code changes.** E173 (the word-based reach by stage, `tenderpack/programme.py`) and E174 (the output reservation, `tenderpack/ai/requests.py`) were made after the blind-08 run was frozen; the run did not use them. E174 has not met a real Ollama yet.
 
-1. The full suite on the final code: 1,575 passed, 1 skipped, 0 failed (the five failures of the run on the frozen code fixed, each with a failing test first; E173 and E174 are post-freeze code changes).
-2. The closing chain on the final code, all green, with `out/` byte-identical to the frozen chain.
-3. The package `LAMAR-PPP-R2-INTERVIEW_be97bec+wt_20261008T0944Z.zip`: `verify_package.sh --no-ai` 8 PASS; the full focused command in the packaged copy 594 passed. It was sent to the owner.
-4. The records closed, and the closing commit with the owner's title.
+## 2. How to pick up
 
-What remains is the owner's: the decisions in `docs/session-14_review_packet.md`, and the checks marked PENDING ON THE MAC in `docs/MAC_CHECKLIST.md` (among them the first real Ollama run since E174's fix).
+**Environment in a fresh clone** (Python 3.11 or later):
+
+```
+bash scripts/mac/setup.sh          # builds .venv from the lock (uv if present, else venv + pip)
+.venv/bin/python -m pytest -q -p no:cacheprovider tests/test_session14_*.py     # about 10 min here
+```
+
+**The commands the session closed with** (each writes its temporary files under `$SCRATCH`, default `/tmp/tenderpack-s14`):
+
+```
+bash worklog/continuation-s14/scripts/run_suite.sh > suite.log 2>&1          # the full suite, about 73 min
+bash worklog/continuation-s14/scripts/rebuild_chain_final.sh                 # ingest, outputs, drill, strict, check-register, diff, Mac checks
+.venv/bin/python scripts/make_interview_folder.py <dir> --label "<text>"     # the package (folder + zip)
+bash scripts/mac/verify_package.sh <zip> --into <dir> --no-ai                # its self-verification: expect 8 PASS
+```
+
+Never run `ingest` alone; run the whole chain. Never run `scripts/mac/checks.sh` or `scripts/mac/pathlink.py` from a git worktree (they rewrite the shared `.venv`'s path file). The other scripts in `worklog/continuation-s14/scripts/` are records of how the session ran its rehearsals; several hold the cloud container's absolute paths and need them changed before reuse.
+
+**What is next is the owner's, not an agent's:**
+
+1. The decisions in `docs/session-14_review_packet.md` (groups B and C), recorded by the owner through the panel's decisions form or `tenderpack approve`. An agent never records them.
+2. The checks marked PENDING ON THE MAC in `docs/MAC_CHECKLIST.md`, among them the first real Ollama run since E174.
+3. Known software gaps the owner may ask to fix next: packet group A rows marked KNOWN or found by blind-08 (A10, A12: the clause-level consistency check, derived arithmetic and dates, items lost when batches combine, the resume asking one batch twice, too many pending markers; the 30-minute target, packet C13).
+
+If the owner asks for new work, start a new session log (`worklog/<date>_session-15_<topic>.md`), keep the owner's message verbatim beside it, and follow §3.
 
 ## 3. Standing constraints (the owner's, in force for any continuation)
 
