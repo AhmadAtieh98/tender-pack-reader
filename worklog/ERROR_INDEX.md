@@ -189,5 +189,7 @@ Built in session 11 from the error tables of the session logs; the how-caught co
 | S14-E170 | `2026-10-07_session-14_finalisation.md` (§6) | The container was reclaimed on idle twice, killing the regression's resume job and the two fixers without notice, because the coordinator ended its turns while background work ran. | The main process's age; no python process. | Everything on disk survived; the run resumed again; the fixers continued from their worktrees; the coordinator waits inside its turn from then on. |
 | S14-E171 | `2026-10-07_session-14_finalisation.md` (§6) | An interruption of the coordinator's tool call cancels every running background agent; two fixers died silently and one went unnoticed for 25 minutes. | Idle files; a probe answered "stopped by the user". | Relaunched from their worktrees; short waits; the owner told. |
 | S14-E172 | `2026-10-07_session-14_finalisation.md` (§6) | The owner's usage limit stopped the session for about 7 h 25 min; the container restarted and two merge checks died unreported. | Empty logs at resumption. | Committed at once; checks re-run. |
+| S14-E173 | `2026-10-07_session-14_finalisation.md` (§6) | F2's word-based reach attached a later stage's candidate issues to an earlier stage's programme. | The full suite (the signals test). | Only issues in force at the planned stage reach by words; six failing-first tests; post-freeze. |
+| S14-E174 | `2026-10-07_session-14_finalisation.md` (§6) | The request loop reserved the whole output cap, so the fuller contract made the Ollama route refuse every analysis call the size planner had admitted. | The full suite (the routes test). | The room left is reserved, never less than the estimate; a failing-first test; post-freeze. |
 
-181 entries.
+183 entries.

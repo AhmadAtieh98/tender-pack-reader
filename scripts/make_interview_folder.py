@@ -50,7 +50,8 @@ REPO = Path(__file__).resolve().parents[1]
 PREFIX = "LAMAR-PPP-R2-INTERVIEW"
 TREES = ("tenderpack", "sources", "config", "curation", "build", "out", "scripts/mac", "scripts/smoke_test")
 FILES = ("pyproject.toml", "uv.lock", "requirements.lock.txt", "scripts/make_interview_folder.py", "worklog/README.md",
-         "worklog/ERROR_INDEX.md")
+         "worklog/ERROR_INDEX.md",
+         "scripts/bench_workflow.py")          # session 14: the timing tool two focused tests run (and the owner can)
 DOCS = ["OPERATING_GUIDE.md", "AI_ROUTES.md", "PANEL.md", "MAC_SETUP.md", "VERIFY_ON_MAC.md",
         "QUICK_REVIEW.md", "MAC_CHECKLIST.md"]           # session 14 (W6): the quick review and the one-page checklist
 OPTIONAL_DOCS = ["RUNTIME_INSTRUCTIONS.md"]
@@ -84,7 +85,19 @@ SLOW = tuple(f"tests/test_session12_concurrency.py::{n}" for n in (
     "tests/test_session14_mac_levels.py::test_level3_a_partial_offline_run_that_exits_zero_is_partial_never_success",
     "tests/test_session14_mac_levels.py::test_level3_complete_only_when_the_checkpoint_the_outputs_and_the_packet_agree",
     "tests/test_session14_offline_never_hosted.py::test_every_command_refuses_a_hosted_route_offline_before_any_call"
-    "[flag]")
+    "[flag]",
+    # session 14 (the package's self-verification of 8 Oct: the quick command took 14 min with these; each runs a whole
+    # recorded workflow or more, 24-104 s apiece in the container): still in the full command, never skipped
+    "tests/test_session13_speed.py::test_the_result_does_not_depend_on_the_arrival_order",
+    "tests/test_session13_speed.py::test_sigterm_after_a_submission_keeps_the_step_time_and_the_answer",
+    "tests/test_session13_speed.py::test_a_reused_set_whose_evidence_changed_is_revalidated_and_asked_again_with_the_reason",
+    "tests/test_session13_speed.py::test_kill_before_submission_is_asked_again",
+    "tests/test_session13_speed.py::test_kill_after_submission_resume_reuses_the_staged_set",
+    "tests/test_session13_speed.py::test_no_session_starts_for_a_batch_whose_provisions_are_all_accounted_for",
+    "tests/test_session13_speed.py::test_no_worker_idles_while_an_earlier_answer_is_awaited",
+    "tests/test_session14_owner_answers.py::test_the_workflow_consumes_an_offered_answer_at_its_checkpoint_and_re_asks_the_batch",
+    "tests/test_session12_human_owned.py::test_a_an_issue_declaring_the_concession_conflicts_resolved_is_not_evidence_verified",
+    "tests/test_session13_correctness_analysis_rows.py::test_every_analysis_item_not_promoted_carries_an_explicit_reason")
 TEST_SUPPORT_TREES = ("tests/fixtures", "tests/golden")
 # Synthetic regression inputs the focused tests read at fixed paths (tests/fixtures/ai_fixture.py: blind-02's pack and
 # its addendum; tests/fixtures/s12_blind05.py: blind-05's candidate pack and curation). Inputs only: never a SEALED
@@ -95,6 +108,19 @@ TEST_MATERIAL = ("rehearsals/blind-02/input/", "rehearsals/blind-02/work/",
                  "staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/candidate/curation/",
                  "staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/candidate/input/",
                  "staging/ai/runs/ADD-03-run-host-blind05-20261005T025444Z/candidate/sources/")
+# session 14 (the package's self-verification found 14 failures and 6 errors in the packaged copy): the run RECORDS some
+# session-13/14 focused tests read (a recorded run's checkpoint and log, its review index, a candidate reading, one
+# comparison), the blind-06 input PDF the quick-review page tests render, and the test modules the runtime policy's
+# enforcement table names (read for their test names only; not run). No sealed key, comparison or candidate output is
+# among them (the tests that read those skip without them).
+TEST_RECORDS = ("rehearsals/blind-06/input/", "rehearsals/blind-06/checkpoint.json", "rehearsals/blind-06/log.jsonl",
+                "rehearsals/blind-07/checkpoint.json", "rehearsals/blind-07/log.jsonl",
+                "rehearsals/blind-07/review/index.md", "rehearsals/blind-07/candidate-curation/readings/",
+                "rehearsals/blind-07/downstream/proposals.yaml", "rehearsals/blind-07/promotion.json",
+                "rehearsals/blind-06/proposals/",
+                "tests/test_session09_ai_propose.py", "tests/test_session10_relationships.py",
+                "tests/test_session12_blind06_fixes.py", "tests/test_session13_correctness_enforcement.py",
+                "tests/test_session13_policy.py")
 MATERIAL_LEFT_OUT = ("rehearsals/blind-02/work/amendments/ADD-03.yaml",)
 SKIP_PREFIXES = ("build/drill", "build/fixture")
 SKIP_NAMES = ("__pycache__", ".pytest_cache", ".DS_Store", ".git")
@@ -201,7 +227,7 @@ def select(repo: Path = REPO) -> list[str]:
     paths.update(_imported_test_modules(repo, tests))
     if (repo / "tests/conftest.py").is_file():
         paths.add("tests/conftest.py")
-    for m in TEST_MATERIAL:
+    for m in TEST_MATERIAL + TEST_RECORDS:
         if (repo / m).exists():
             paths.update(_walk(repo, m.rstrip("/")))
     paths -= set(MATERIAL_LEFT_OUT)
@@ -438,8 +464,9 @@ def readme(name: str, base: str, label: str, tests: list[str], support: list[str
         "Run:"] + [f"- `{t}`" for t in tests] + ["", "Imported for their fixtures (not run): "
         + (", ".join(f"`{s}`" for s in support) or "none") + "; `tests/conftest.py`, `tests/fixtures/`, "
         "`tests/golden/`. The synthetic regression inputs those tests read are kept at the paths they read them: "
-        + ", ".join(f"`{m}`" for m in TEST_MATERIAL) + " (inputs only; no sealed key, comparison, run output or "
-        "log; blind-02's curated `ADD-03.yaml` is left out).", "",
+        + ", ".join(f"`{m}`" for m in TEST_MATERIAL) + " (inputs only; blind-02's curated `ADD-03.yaml` is left out); and the run records a few tests read: "
+        + ", ".join(f"`{m}`" for m in TEST_RECORDS) + " (no sealed key; the test modules there are read for their "
+        "names, not run).", "",
         "## What was excluded", ""] + [f"- {x}" for x in EXCLUDED] + ["",
         "## Recovery", "", "`RECOVERY.md`: an interrupted run (run-status, resume, the lock takeover, exit 5), where "
         "the logs are and what never to delete. New runs go to `staging/ai/runs/` (it holds no run: only the "

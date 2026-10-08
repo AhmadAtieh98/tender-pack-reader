@@ -125,7 +125,8 @@ def test_it_holds_what_the_owner_listed(built):
 
 def test_it_excludes_the_history_the_rehearsals_and_any_environment(built):
     files = _files(built["folder"])
-    allowed_material = tuple(built["mod"].TEST_MATERIAL)
+    # session 14: plus the run records a few focused tests read (TEST_RECORDS; still no key, comparison or output)
+    allowed_material = tuple(built["mod"].TEST_MATERIAL) + tuple(getattr(built["mod"], "TEST_RECORDS", ()))
     for p in files:
         assert not p.startswith((".git/", ".venv/", "wt-", "out-drill", "build/drill", "build/fixture")), p
         assert "/.venv/" not in p and "__pycache__" not in p and not p.endswith(".pyc"), p

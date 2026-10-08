@@ -261,7 +261,9 @@ def test_the_new_signals_stay_in_the_candidate_and_approval_is_shown_apart(r, ca
     assert "review proposed" in cand["paragraph"]                      # approval status, apart from the ops' validity
     # the validated A5 (ADD-02) carries no ADD-03 signal: its deltas stop at the validated stage
     prog_v = programme.stage_planner(r, "ADD-02")(r["assumptions"])
-    assert prog_v["stage"] == "ADD-02" and not any("ADD-03" in str(a.get("flags")) for a in prog_v["activities"])
+    _leak = [(a["id"], [f for f in (a.get("flags") or []) if "ADD-03" in str(f)]) for a in prog_v["activities"]
+             if "ADD-03" in str(a.get("flags"))]
+    assert prog_v["stage"] == "ADD-02" and not _leak, _leak
     assert not any("CLARIFICATION ROUTE CLOSED" in str(a.get("flags")) for a in prog_v["activities"])
     assert any("CLARIFICATION ROUTE CLOSED (candidate)" in str(a.get("flags")) for a in cand["a5"]["activities"])
     # A2 is the reconciliation of every stage: the ADD-03 confirmations sit under ADD-03, the ADD-02 section is as before

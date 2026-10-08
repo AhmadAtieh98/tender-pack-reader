@@ -804,6 +804,36 @@ def set_decision_status(a: dict, gate: bool = False) -> None:
     a["decision_status"] = st
 
 
+def issues_in_force(r: dict, stage: str | None, ids=None) -> set:
+    """Session 14 (coordinator; the full suite on the frozen code): the issues (of `ids`, else every issue with a known
+    start) that bear on the programme planned at `stage`: those whose start stage (r["issue_stages"], stage2.issue_stages)
+    is that stage or earlier. An issue with no known start is kept; a stage outside r["order"] filters nothing."""
+    order = list(r.get("order") or [])
+    since = r.get("issue_stages") or {}
+    ids = list(since) if ids is None else list(ids)
+    if stage not in order:
+        return set(ids)
+    k = order.index(stage)
+    return {i for i in ids if since.get(i) not in order or order.index(since[i]) <= k}
+
+
+def issues_cited_in_force(r: dict, by_row: dict | None, stage: str | None) -> set:
+    """Session 14 (coordinator): the issues cited by a row in force at `stage` (its evaluation's stages[stage]
+    `active`). A row not evaluated at that stage, or a stage no row knows, counts as in force."""
+    ev = {e["row"].id: e.get("stages") or {} for e in r.get("evals") or []}
+    return {i for rid, ids in (by_row or {}).items()
+            if stage not in ev.get(rid, {}) or ev[rid][stage].get("active", True)
+            for i in ids or []}
+
+
+def issues_with_known_start(curated: dict, order: list[str]) -> set:
+    """Session 14 (coordinator): the curated issues whose start stage is established: a `since` that is a stage of the
+    pack, cited `units` (signals.issue_since), or curated `rows` (the issue bears where its rows are in force). Others (a candidate's promoted issue with neither) default to the first
+    stage there; the word-based reach (named_deliverable_reach) does not rest on that default."""
+    return {i for i, it in (curated or {}).items()
+            if isinstance(it, dict) and ((it.get("since") in (order or [])) or it.get("units") or it.get("rows"))}
+
+
 def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None) -> dict:
     """inherit_open_decisions over a planned programme from a stage2.run result (the one rule A5, its stages and the
     scenarios use)."""
@@ -814,8 +844,13 @@ def attach_open_decisions(prog: dict, r: dict, assumptions: dict | None = None) 
     # session 14 (F2; R3-14-3): the deliverables an issue's own words name (named_deliverable_reach)
     deliverables = {k: getattr(v, "name", None) or (v.get("name") if isinstance(v, dict) else "")
                     for k, v in (r.get("evidence_items") or {}).items()}
+    # session 14 (coordinator): an issue's words reach this programme only from the stage it bears from (the row rule's
+    # issues are already the stage's own); a later stage's issue never reaches an earlier stage's programme
+    cited = issues_cited_in_force(r, by_row, prog.get("stage"))             # cited by a row in force at this stage
+    in_force = issues_in_force(r, prog.get("stage"), pending) & (issues_with_known_start(
+        r.get("curated_issues") or {}, list(r.get("order") or [])) | cited)
     words = {i: " ".join(str((r.get("curated_issues") or {}).get(i, {}).get(k) or "") for k in ("text", "a3", "short"))
-             for i in pending}
+             for i in pending if i in in_force}
     named = named_deliverable_reach(acts, pending, deliverables, words, route,
                                     open_decision_reach(acts, by_row, pending, route))
     inherit_open_decisions(acts, by_row, pending, gate,

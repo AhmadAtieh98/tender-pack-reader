@@ -547,6 +547,21 @@ def context_fits(sz) -> bool:
     return sz.usable_tokens is not None and sz.input_tokens + out <= sz.usable_tokens
 
 
+def output_reservation(usable: int | None, used: int, cap: int, need: int, where: str = "") -> int:
+    """Session 14 (coordinator): the output tokens a call reserves: the per-call cap, or the room the usable context
+    leaves after the conversation when that is smaller, never less than the planner's output estimate `need` (the
+    estimate context_fits admitted the request on). Less room than that refuses the call (ContextExhausted); the
+    conversation is never truncated."""
+    if not usable or used + cap <= usable:
+        return cap
+    room = usable - used
+    if room >= need:
+        return room
+    raise ContextExhausted(f"context bound{where}: about {used} tokens of conversation (system, tools, turns, images) "
+                           f"leave {max(room, 0)} of the usable context of {usable}, less than the {need} output tokens "
+                           f"the request needs; the batch needs to be smaller")
+
+
 def _loggable(msgs: list[dict]) -> list[dict]:
     out = []
     for m in msgs:
@@ -957,6 +972,7 @@ def converse(sp: TaskSpec, prov, packet: dict, *, ws, route: str, caps_: dict, p
         messages = [{"role": "user", "content": [{"type": "text", "text": text}] + images}]
         maxchars = int(caps_.get("max_tool_result_chars") or 20000)
         usable = sz.usable_tokens
+        need_out = min(sz.output_tokens, sz.output_cap) if sz.output_cap else sz.output_tokens
         cpt = float(st.get("chars_per_token", 3.5))
         image_tokens = int(st.get("image_tokens", 4800))
         overhead = sz.system_tokens + sz.tools_tokens
@@ -974,13 +990,11 @@ def converse(sp: TaskSpec, prov, packet: dict, *, ws, route: str, caps_: dict, p
         try:
             while True:
                 budget.next_turn()
-                req = Request(system=sp.system, messages=messages, tools=tools_spec, response_schema=sp.schema,
-                              max_tokens=budget.max_tokens(), timeout_s=budget.call_timeout())
                 used = overhead + conversation_tokens(messages, cpt) + _images_in(messages) * image_tokens
-                if usable and used + req.max_tokens > usable:
-                    raise ContextExhausted(f"context bound at turn {budget.turns}: about {used} tokens of conversation "
-                                           f"(system, tools, turns, images) plus {req.max_tokens} output tokens exceed "
-                                           f"the usable context of {usable}; the batch needs to be smaller")
+                # session 14 (coordinator): the room left, never less than the output estimate the size admitted
+                mt = output_reservation(usable, used, budget.max_tokens(), need_out, f" at turn {budget.turns}")
+                req = Request(system=sp.system, messages=messages, tools=tools_spec, response_schema=sp.schema,
+                              max_tokens=mt, timeout_s=budget.call_timeout())
                 log.event("request", turn=budget.turns, max_tokens=req.max_tokens, timeout_s=round(req.timeout_s, 1),
                           new_messages=_loggable(messages[logged:]) if budget.turns > 1 else "(the prompt above)")
                 logged = len(messages)
