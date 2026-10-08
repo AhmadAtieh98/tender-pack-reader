@@ -1,0 +1,90 @@
+# Open issues raised while drafting the Volume I rows (Stage 3). PROPOSED wording by the register agent, session 05;
+# not reviewed. Issues are never resolved by the program; each is for the named role to decide.
+issues:
+  I-VOL-I-ENV-B:
+    # session 13 (F2; audit R2-3): page wording (the page now uses `a3` first); PROPOSED, same meaning, shorter
+    a3: "Envelope B holds 'only' Form 4-F and the model (VOL-I 10.1), yet 10.3 and 10.6 need more documents"
+    text: "VOL-I 10.1: Envelope B holds 'only' Form 4-F and the Financial Model, yet 10.3 (model auditor's opinion) and 10.6 (financing assumptions schedule) need more documents; where they go is unstated"
+    owner: Legal   # session 13 (F2; audit R2-5, PROPOSED): a non-responsiveness question (6.2, 10.1) is Legal's, as in CQ-ENV-B-CONTENTS
+    theme: envelopes
+    short: "Envelope B: auditor opinion and financing schedule vs VOL-I 10.1 'only'"
+    show_in_a3: true
+  I-VOL-I-ENV-A-PRICES:
+    a3: "No commercial information in Envelope A (VOL-I 6.2), yet Form 4-B there asks for contract values"
+    # session 14 (coordinator; the A3 fit after F1/F2; PROPOSED): the two VOL-I 9.6 Form 4-E judgments (what Envelope A's
+    # Form 4-E may list, and how it is cross-checked against documents final after it) are named on this Envelope A line
+    # with their marks and owners ('+2: ...'), not on lines of their own: the one page keeps every issue's reason
+    folds: [I-FORM-4E-COMMERCIAL-QUALIFICATION, I-FORM-4E-CROSS-CHECK]
+    text: "VOL-I 6.2 makes any price, rate or other commercial information in Envelope A non-responsive, but Form 4-B (Envelope A) asks for each reference's contract value in SAR"
+    owner: Legal   # session 13 (F2; audit R2-5, PROPOSED): non-responsiveness under VOL-I 6.2 is Legal's (CQ-F4B-CONTRACT-VALUE)
+    theme: envelopes
+    short: "Form 4-B contract values vs no commercial information in Envelope A"
+    show_in_a3: true
+  I-VOL-I-COPIES:
+    text: "Copy quantities are per Proposal (VOL-I 6.5: 'Each Proposal shall be submitted as' one marked original, three hard copies and one encrypted USB copy); settled. Open: how the single USB copy relates to the two separately sealed envelopes and how its means of decryption is given (draft question CQ-USB-PACKAGING)"
+    owner: Bid manager
+    theme: envelopes
+    short: "USB copy vs the two sealed envelopes (copies per Proposal: settled)"
+  I-VOL-I-FILE-NAMES:
+    text: "The Financial Model must be in Microsoft Excel (VOL-I 10.3); settled. Open: how the Appendix 2 naming convention, which ends in '.pdf' and does not define [BIDDER] or the date in [YYYYMMDD], applies to it (draft question CQ-FILENAMES)"
+    owner: Bid manager
+    theme: envelopes
+    short: "file naming of the Excel Financial Model (Excel itself: settled)"
+    # session 13 (F2; audit R2-3): page wording, one line (the page uses `a3` first); PROPOSED
+    a3: "Excel Financial Model vs the Appendix 2 naming convention (ends in '.pdf'; [BIDDER] and [YYYYMMDD] undefined)"
+  I-VOL-I-BOND-LONGSTOP:
+    text: "The VOL-I 12.2 periods (Commercial Close 120 days, Financial Close 270 days from the Preferred Bidder Notification) are unchanged: settled by ADD-02 Q13. Open: the Bid Bond's 180-day validity from the PDD (VOL-I 6.3) may end before the Financial Close long-stop, on which 12.2 lets the Authority call it; whether it must be extended to cover that period, and 'long-stop date' is undefined (draft question CQ-BOND-FC-COVERAGE)"
+    owner: Commercial lead
+    theme: contract
+    short: "bid bond validity vs the Financial Close call (12.2 periods: settled by Q13)"
+  I-VOL-I-APPENDICES:
+    text: "VOL-I 9.2 excludes 'the appendices expressly permitted by Volume II' from the page limit; none was found in the Volume II extract"
+    owner: Bid manager   # session 13 (F2; audit R2-5, PROPOSED): the page limit is the Bid manager's, as in CQ-PAGE-LIMIT-APPENDICES
+    theme: envelopes
+    short: "page-limit appendices not identified"
+    folds: ["I-VOL-I-PAGE-LIMIT-Q2"]
+  # session 13 (F2; audit R2-1): the page-limit decision of the clarification register's pending_decision, as an issue
+  # so A1 and A3 show it (PROPOSED by the assistant, in the register's words; not reviewed).
+  # Session 14 (F1; R1-4, R2-M4, R3): re-presented by W4's applied-rule mechanism (controller.re_present_issue's
+  # fields: `applied_rule`, `confirm`, the earlier wording kept as `proposed_text`): VOL-I 9.2 as amended by ADD-02 2.1
+  # still prints the words ADD-01 Q2 restates, so the point is a PROPOSED BASIS (applied rule; a person confirms the
+  # application), not an open-ended escalation. NOT closed, NOT decided: its owner is kept, its rows stay NOT SETTLED
+  # until a person accepts it (signals.awaiting_issues). The clarification register's pending decision moved to
+  # checked_no_question with the same words (no question is raised; the appendices stay on CQ-PAGE-LIMIT-APPENDICES)
+  I-VOL-I-PAGE-LIMIT-Q2:
+    text: "applied rule: VOL-I 9.2 as amended by ADD-02 2.1 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.'; a person confirms the application VOL-I 9.2 as amended by ADD-02 2.1 provides: 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.' (applied, not decided) Page limit: ADD-02 2.1 (p1) substitutes 'one hundred and fifty (150) pages' and leaves the other words of VOL-I 9.2 (p5) as printed (ADD-02 p1: 'All other terms of the RFP Documents remain unchanged.'). ADD-01 Q2 (p1), asked about the '120-page limit', answered 'The limit applies to the Technical Proposal narrative only. Form Sheets and the appendices permitted by Volume II are excluded.', words VOL-I 9.2 as amended still prints. Proposed basis: Q2's answer restates the clause's unchanged words, so it still holds at 150 pages; the Bid manager confirms the application (no decision recorded; A2 lists 9.2 for review after ADD-02 2.1; the undefined permitted appendices stay raised as CQ-PAGE-LIMIT-APPENDICES)"
+    proposed_text: "Page limit: ADD-02 2.1 sets 'one hundred and fifty (150) pages'; VOL-I 9.2 as amended still prints that the Form Sheets are excluded. ADD-01 Q2 answered about the '120-page limit' that 'The limit applies to the Technical Proposal narrative only.' Whether that answer still holds after ADD-02 2.1 is a decision for a person (Bid manager); no decision recorded (A2 lists it for review after ADD-02 2.1; the undefined permitted appendices are raised as CQ-PAGE-LIMIT-APPENDICES)"
+    applied_rule: ["VOL-I 9.2 as amended by ADD-02 2.1 provides: 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.' (applied, not decided)"]
+    confirm: ["applied rule: VOL-I 9.2 as amended by ADD-02 2.1 'The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.'; a person confirms the application"]
+    owner: Bid manager
+    theme: envelopes
+    short: "page limit: ADD-01 Q2 (narrative only) restates VOL-I 9.2 as amended by ADD-02 2.1 (150 pages): proposed basis, the Bid manager confirms"
+    # session 13 (F4; audit R1-9): the units its evidence cites; it bears from ADD-02, the stage 2.1 is issued
+    # (signals.issue_since), so ADD-01 Q2 still confirms 9.2 at ADD-01 (PROPOSED)
+    units: ["VOL-I:9.2", "ADD-01:Q2", "ADD-02:2.1"]
+  # session 14 (F1; R1-3, R2 M1; PROPOSED by the assistant, in the documents' own words; not reviewed): the two judgments
+  # the Form 4-E checks (A5 form_4e_checks, programme.form_4e_checks_for) leave to a person, each mirrored by an issue so
+  # A1, the A3 page, A4 and the rows they bear on show it (`raised_by_check` names the check's finding; the finding names
+  # the issue). `rows`: the rows each bears on. Nothing is decided; no clarification question is drafted
+  I-FORM-4E-COMMERCIAL-QUALIFICATION:
+    a3: "Form 4-E (Envelope A) must list every qualification to VOL-V, yet commercial information in Envelope A is non-responsive (VOL-I 9.6, 6.2, 10.5; Form 4-F)"
+    text: "Form 4-E and a qualification of a commercial term of Volume V. VOL-I 9.6 (p5): 'Form 4-E shall list every deviation, qualification or reservation to Volume V. A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' Form 4-E is in Envelope A (VOL-I 9.1, p4: '(e) Form 4-E — Schedule of Deviations;'), and VOL-I 6.2 (p3): 'The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.' Stated in Envelope B instead, a qualification of a price meets VOL-I 10.5 (p5): 'Any conditional price, price subject to adjustment other than as provided in Volume V, or alternative price shall render the Proposal non-responsive.' and Form 4-F (VOL-IV p9): 'is not subject to any qualification'. Whether a qualification of a commercial term of Volume V can be made at all, and how Form 4-E words it without commercial information, is a decision for Legal counsel, with Commercial; no decision recorded and no question drafted. Raised by the Form 4-E check (A5 form_4e_checks, its commercial-qualification finding)"
+    owner: Legal counsel
+    theme: envelopes
+    short: "Form 4-E: a commercial qualification to VOL-V vs no commercial information in Envelope A (VOL-I 9.6, 6.2, 10.5)"
+    raised_by_check: "form-4e: commercial-qualification"
+    # session 14 (F1; R1-3; PROPOSED): a VOL-I 9.6 Form 4-E judgment; on the A3 page it is named, with its mark and
+    # owner, on the Envelope A line I-VOL-I-ENV-A-PRICES (its `folds`), together with the cross-check judgment
+    rows: [VOL-I-9.6-01, VOL-I-10.5-01, VOL-I-6.2-02, VOL-IV-F4F-02, VOL-IV-F4E-01]
+    units: ["VOL-I:9.6", "VOL-I:6.2", "VOL-I:10.5", "VOL-IV:F4-F/para1"]
+    show_in_a3: false
+  I-FORM-4E-CROSS-CHECK:
+    a3: "Form 4-E is final before some Proposal documents: how it is cross-checked against them (VOL-I 9.6)"
+    text: "How Form 4-E is cross-checked against the rest of the Proposal. VOL-I 9.6 (p5): 'A Proposal that states ‘no deviations’ in Form 4-E while containing a qualification elsewhere in the Proposal shall be treated as non-responsive.' The Form 4-E check (A5 form_4e_checks, its cross-check finding) lists the Proposal documents that are final only after Form 4-E starts, so a qualification in them cannot be checked against its declaration, and computes whether making Form 4-E wait for all of them is feasible on the assumed durations (INFEASIBLE on the programme of 7 Oct 2026). How the cross-check is done (a later final read of every document, a different order, or a change of a lead time) is a decision for the Bid manager, with Legal; no decision recorded; no duration, setting or dependency is changed"
+    owner: Bid manager
+    theme: programme
+    short: "Form 4-E: how it is cross-checked against Proposal documents final after it starts (VOL-I 9.6)"
+    raised_by_check: "form-4e: cross-check"
+    rows: [VOL-I-9.6-01, VOL-IV-F4E-01]
+    units: ["VOL-I:9.6"]
+    show_in_a3: false

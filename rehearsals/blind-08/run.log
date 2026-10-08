@@ -1,0 +1,174 @@
+== run job 20261008T053735Z-ai-run-373fa9
+[ADD-03-run-host-20261008T053735Z-77b2] ingest ...
+  ingest refused the candidate only for image regions with no reading ['ADD-03-p3-r1']: the readings step proposes readings (PENDING HUMAN REVIEW) and ingests again
+[ADD-03-run-host-20261008T053735Z-77b2] readings ...
+  reading-ADD-03-p3-r1: done (interpretation_pending; /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/staging/ai/runs/ADD-03-run-host-20261008T053735Z-77b2/candidate/curation/readings/ADD-03-p3-r1.yaml)
+  ingest with the proposed readings: ok (589 units; readings PENDING HUMAN REVIEW: ['ADD-03-p3-r1'])
+  candidate built: 52 provisions of ADD-03 (+13 structural units listed)
+[ADD-03-run-host-20261008T053735Z-77b2] analysis ...
+  52 provisions in 6 batch(es), planned by structure (up to 8 per batch; one structure kept whole when it fits the token budget)
+  analysis-001: done (8 item(s); run ADD-03-host-20261008T054501Z-f368)
+  analysis-001 critic: done (4 reviewed, 1 disagree)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/__main__.py", line 5, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/cli.py", line 637, in main
+    return ai_run(args)
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/cli.py", line 291, in run
+    return _run_workflow(a)
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/cli.py", line 225, in _run_workflow
+    res = W.start(a.addendum, Path(a.pdf), route=a.route, pack=own["pack"], evidence=own["evidence"],
+                  staging=Path(a.out), worklog=Path(a.worklog), ai_config=Path(a.config), run_id=a.run_id,
+    ...<4 lines>...
+                  background_before=not a.no_background, cache=not a.no_cache, offline=a.offline,
+                  base_run=a.base_run)
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 727, in start
+    return _drive(cp, stop_after, echo, sleep)
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 986, in _drive
+    STEP_FUNCS[step](ctx, st)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 2131, in step_analysis
+    _analysis_batch(ctx, st, bid, todo)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 2256, in _analysis_batch
+    ps = _host_analysis(ctx, st, bid, todo)
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 2386, in _host_analysis
+    pre = ctx.prefetch.take(bid, Prefetch.key(packet)) if ctx.prefetch else None
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 523, in take
+    wait([fut, *others], return_when=FIRST_COMPLETED)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/concurrent/futures/_base.py", line 306, in wait
+    waiter.event.wait(timeout)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.13/threading.py", line 660, in wait
+    signaled = self._cond.wait(timeout)
+  File "/usr/lib/python3.13/threading.py", line 359, in wait
+    waiter.acquire()
+    ~~~~~~~~~~~~~~^^
+  File "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/tenderpack/ai/workflow.py", line 239, in _on_sigterm
+    raise Terminated(f"signal {signum} (SIGTERM): the run was asked to stop")
+tenderpack.ai.workflow.Terminated: signal 15 (SIGTERM): the run was asked to stop
+
+== resume job 20261008T054801Z-ai-resume-154c15
+[ADD-03-run-host-20261008T053735Z-77b2] analysis ...
+  analysis-002: the submission ADD-03-host-20261008T054750Z-c3d5 (submitted 2026-10-08T05:47:55Z) is reused after revalidation (partial)
+  analysis-002: done (11 item(s); run ADD-03-host-20261008T054750Z-c3d5)
+  analysis-002 critic: done (8 reviewed, 1 disagree)
+  analysis-003: done (7 item(s); run ADD-03-host-20261008T055431Z-a784)
+  analysis-003 critic: done (3 reviewed, 1 disagree)
+  analysis-004: done (2 item(s); run ADD-03-host-20261008T060212Z-0841)
+  analysis-004 critic: done (1 reviewed, 1 disagree)
+  analysis-005: done (12 item(s); run ADD-03-host-20261008T060250Z-a346)
+  analysis-005 critic: done (3 reviewed, 2 disagree)
+  analysis-006: done (8 item(s); run ADD-03-host-20261008T060719Z-9516)
+  analysis-006 critic: done (2 reviewed, 0 disagree)
+[ADD-03-run-host-20261008T053735Z-77b2] validation ...
+  combined set: 48 item(s); 49/52 provisions accounted for; {'evidence_verified': 18, 'interpretation_pending': 23, 'conflicting': 1, 'insufficient_evidence': 4, 'escalated': 2}
+[ADD-03-run-host-20261008T053735Z-77b2] downstream ...
+  downstream-001: done (19 item(s))
+  downstream-002: done (24 item(s))
+  downstream-003: done (12 item(s))
+  downstream: 25 task(s) {'row_reading': 4, 'row_new': 6, 'activity': 1, 'escalation': 6, 'conditional_impact': 7, 'reading_rows': 1}
+[ADD-03-run-host-20261008T053735Z-77b2] downstream_validation ...
+  downstream items: {'interpretation_pending': 38, 'evidence_verified': 1, 'escalated': 9, 'insufficient_evidence': 2, 'conflicting': 5}
+[ADD-03-run-host-20261008T053735Z-77b2] critic ...
+  downstream-001 critic: done (3 reviewed, 2 disagree)
+  downstream-002 critic: done (2 reviewed, 2 disagree)
+  downstream-003 critic: done (3 reviewed, 2 disagree)
+[ADD-03-run-host-20261008T053735Z-77b2] promotion ...
+  promoted into the candidate: 7 op(s), 22 disposition(s), 23 unresolved, 10 new row(s), 4 reading(s), 17 issue(s), 2 activit(y/ies), 0 clarification(s), 8 relationship(s)
+[ADD-03-run-host-20261008T053735Z-77b2] pin ...
+[ADD-03-run-host-20261008T053735Z-77b2] check_register ...
+  check-register: exit 1, 2 finding(s) {'C46': 1, 'pending_settled': 1}
+[ADD-03-run-host-20261008T053735Z-77b2] outputs ...
+  candidate outputs published to /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/staging/ai/runs/ADD-03-run-host-20261008T053735Z-77b2/candidate/out (exit 0; 107 file(s) carry the banner)
+[ADD-03-run-host-20261008T053735Z-77b2] diff ...
+[ADD-03-run-host-20261008T053735Z-77b2] review ...
+timings (wall clock per step):
+  ingest                     14.4 s  done
+  readings                  156.7 s  done
+  analysis                 1638.4 s  done
+  validation                  6.1 s  done
+  downstream                712.4 s  done
+  downstream_validation       0.9 s  done
+  critic                    117.6 s  done
+  promotion                  13.7 s  done
+  pin                         1.4 s  done
+  check_register              4.7 s  done
+  outputs                    25.2 s  done
+  diff                        4.9 s  done
+  review                      2.5 s  done
+  total (steps)            2698.9 s  (45.0 min; target 30 min from the PDF to candidate outputs and review packet, human review excluded)
+run ADD-03-run-host-20261008T053735Z-77b2: partial (23 provision(s) unresolved in the candidate (listed first in the review packet); 4 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:3.3, esc:ADD-03:Q16, impact:APPENDIX A — TABLE 8-1 (ARABIC), impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 8-1; check-register on the candidate: exit 1, 2 finding(s) {'C46': 1, 'pending_settled': 1} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['rejected'] that no row's consequence carries at ADD-03: 'SYNTHETIC: not tender …)
+review packet: /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/staging/ai/runs/ADD-03-run-host-20261008T053735Z-77b2/review/index.md
+{
+ "run_id": "ADD-03-run-host-20261008T053735Z-77b2",
+ "addendum": "ADD-03",
+ "status": "partial",
+ "status_reason": "23 provision(s) unresolved in the candidate (listed first in the review packet); 4 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:3.3, esc:ADD-03:Q16, impact:APPENDIX A — TABLE 8-1 (ARABIC), impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 8-1; check-register on the candidate: exit 1, 2 finding(s) {'C46': 1, 'pending_settled': 1} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['rejected'] that no row's consequence carries at ADD-03: 'SYNTHETIC: not tender …",
+ "exit_code": 0,
+ "run_dir": "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/staging/ai/runs/ADD-03-run-host-20261008T053735Z-77b2",
+ "provisions": {
+  "validated": 52
+ },
+ "timings": {
+  "ingest": 14.4,
+  "readings": 156.7,
+  "analysis": 1638.4,
+  "validation": 6.1,
+  "downstream": 712.4,
+  "downstream_validation": 0.9,
+  "critic": 117.6,
+  "promotion": 13.7,
+  "pin": 1.4,
+  "check_register": 4.7,
+  "outputs": 25.2,
+  "diff": 4.9,
+  "review": 2.5
+ },
+ "total_seconds": 2698.9,
+ "review": "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/pkg/blind08/unzipped/LAMAR-PPP-R2-INTERVIEW_7c721d4+wt_20261008T0536Z/staging/ai/runs/ADD-03-run-host-20261008T053735Z-77b2/review/index.md",
+ "waiting": [],
+ "completeness": {
+  "status": "partial",
+  "reasons": [
+   "23 provision(s) unresolved in the candidate (listed first in the review packet)",
+   "4 downstream task(s) answered only by items that cannot be promoted: esc:ADD-03:3.3, esc:ADD-03:Q16, impact:APPENDIX A — TABLE 8-1 (ARABIC), impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 8-1",
+   "check-register on the candidate: exit 1, 2 finding(s) {'C46': 1, 'pending_settled': 1} (0 missing because the downstream phase did not propose them, 2 defect(s)); C46: [C46] ADD-03/cover/para3: [A3] ADD-03/cover/para3 brings in consequence words ['rejected'] that no row's consequence carries at ADD-03: 'SYNTHETIC: not tender …"
+  ]
+ },
+ "approval": "none",
+ "code": {
+  "start": {
+   "content_sha256": "a9ebd02ab0cbf8a7477af864a605e4e0469d4a1b50cb91561d9474806b1a945a",
+   "files": 99,
+   "git_head": null,
+   "git_dirty": null,
+   "policy": {
+    "sha256": "072b3f8e5d7ab77ea2c00b24757287e4f5ef20f0ce62b4e105a10d8856496d10",
+    "files": [
+     "00_shared.md",
+     "10_reading.md",
+     "20_analysis.md",
+     "21_analysis_checklist.md",
+     "30_downstream.md",
+     "40_critic.md",
+     "41_critic_item.md",
+     "42_critic_batch.md",
+     "50_repair.md",
+     "51_repair_reask.md",
+     "60_derived.md",
+     "70_quick_review.md",
+     "80_routes.md",
+     "90_host_entry.md"
+    ]
+   },
+   "recorded": "2026-10-08T05:37:36Z"
+  },
+  "segments": 2
+ }
+}

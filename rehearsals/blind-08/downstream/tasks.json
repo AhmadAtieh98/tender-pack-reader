@@ -1,0 +1,3764 @@
+[
+ {
+  "id": "row:VOL-I-12.2-01",
+  "kind": "row_reading",
+  "row": "VOL-I-12.2-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:2.6 (the provision of ADD-03/2.6, which confirms a unit of the row unchanged)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-12.2-01",
+   "group": "VOL-I:12.2",
+   "scope": [
+    "award",
+    "commercial_close",
+    "post_award"
+   ],
+   "requirement": "Preferred Bidder to achieve Commercial Close within 120 days of the Preferred Bidder Notification",
+   "units": [
+    "VOL-I:12.2"
+   ],
+   "discipline": "Commercial",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days",
+     "parameters": {
+      "days_after_pbn": 120
+     },
+     "consequence": "none_stated"
+    },
+    {
+     "stage": "ADD-02",
+     "quote": "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days",
+     "parameters": {
+      "days_after_pbn": 120
+     },
+     "consequence": "none_stated",
+     "note": "ADD-02 Q13: the periods in VOL-I 12.2 are unchanged."
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "PB-COMMERCIAL-CLOSE",
+     "kind": "external",
+     "purpose": "deadline",
+     "anchor": "PBN",
+     "offset": 120,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:12.2",
+     "text": "Commercial Close within one hundred and twenty (120) days ... of the date of the Preferred Bidder Notification",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; anchored to the PBN, an event not in the pack; no consequence stated for Commercial Close",
+   "owner": "Commercial lead",
+   "post_award_evidence": {
+    "kind": "unresolved",
+    "text": "Unresolved: the record that would show Commercial Close within 120 days of the Preferred Bidder Notification cannot be specified, because the pack does not define Commercial Close or say what it comprises (VOL-I Section 2 and the VOL-V extract give no definition).",
+    "basis": [
+     {
+      "unit": "VOL-I:12.2",
+      "page": 6,
+      "words": "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days"
+     },
+     {
+      "unit": "ADD-02:Q13",
+      "page": 2,
+      "words": "The periods in Volume I Clause 12.2 are unchanged."
+     }
+    ],
+    "missing": "A definition of Commercial Close (which agreements or steps it comprises), absent from VOL-I Section 2 (Definitions) and from the VOL-V extract; the Preferred Bidder Notification that starts the 120 days is not a pack event, and the pack states no consequence of missing Commercial Close (unlike Financial Close)."
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-02",
+   "quote": "The Preferred Bidder shall achieve Commercial Close within one hundred and twenty (120) days",
+   "parameters": {
+    "days_after_pbn": 120
+   },
+   "consequence": "none_stated",
+   "note": "ADD-02 Q13: the periods in VOL-I 12.2 are unchanged."
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-12.2-02",
+  "kind": "row_reading",
+  "row": "VOL-I-12.2-02",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:2.6 (the provision of ADD-03/2.6, which confirms a unit of the row unchanged)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-12.2-02",
+   "group": "VOL-I:12.2",
+   "scope": [
+    "award",
+    "financial_close",
+    "bid_security",
+    "post_award"
+   ],
+   "requirement": "Preferred Bidder to achieve Financial Close within 270 days of the Preferred Bidder Notification",
+   "units": [
+    "VOL-I:12.2"
+   ],
+   "discipline": "Finance",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification",
+     "parameters": {
+      "days_after_pbn": 270
+     },
+     "consequence": {
+      "class": "contractual",
+      "unit": "VOL-I:12.2",
+      "quote": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."
+     },
+     "note": "'Long-stop date' is not defined in Volume I."
+    },
+    {
+     "stage": "ADD-02",
+     "quote": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification",
+     "parameters": {
+      "days_after_pbn": 270
+     },
+     "consequence": {
+      "class": "contractual",
+      "unit": "VOL-I:12.2",
+      "quote": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."
+     },
+     "note": "ADD-02 Q13 (p2), asked whether the Authority will extend the Financial Close long-stop date, answers: 'The periods in Volume I Clause 12.2 are unchanged.'"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "PB-FINANCIAL-CLOSE",
+     "kind": "external",
+     "purpose": "deadline",
+     "anchor": "PBN",
+     "offset": 270,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:12.2",
+     "text": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification",
+     "note": ""
+    }
+   ],
+   "confidence": "medium",
+   "confidence_reason": "verbatim; 'long-stop date' undefined and the Bid Bond's 180-day validity may not reach it",
+   "issues": [
+    "I-VOL-I-BOND-LONGSTOP"
+   ],
+   "owner": "Financial modeller",
+   "post_award_evidence": {
+    "kind": "unresolved",
+    "text": "Unresolved: the record that would show Financial Close within 270 days of the Preferred Bidder Notification cannot be specified, because the pack defines neither Financial Close nor 'the long-stop date' by which failure entitles the Authority to call the Bid Bond.",
+    "basis": [
+     {
+      "unit": "VOL-I:12.2",
+      "page": 6,
+      "words": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"
+     },
+     {
+      "unit": "VOL-I:12.2",
+      "page": 6,
+      "words": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."
+     },
+     {
+      "unit": "ADD-02:Q13",
+      "page": 2,
+      "words": "Will the Authority extend the Financial Close long-stop date?"
+     },
+     {
+      "unit": "ADD-02:Q13",
+      "page": 2,
+      "words": "The periods in Volume I Clause 12.2 are unchanged."
+     }
+    ],
+    "missing": "What event constitutes Financial Close (VOL-V 1.4 defines the Financing Documents but not Financial Close) and what 'the long-stop date' in VOL-I 12.2 is (whether it is the 270-day date or a later one); neither is defined in VOL-I Section 2 or the VOL-V extract, and ADD-02 Q13 did not define it (I-VOL-I-BOND-LONGSTOP).",
+    "bid_stage_note": "Bid Bond exposure now: the Bid Bond must remain valid for 180 days from the Proposal Due Date and be extended on demand where the Authority extends Proposal validity (VOL-I 6.3), while VOL-I 12.2 lets the Authority call it if Financial Close is missed by the undefined long-stop date (I-VOL-I-BOND-LONGSTOP); if the VOL-I 8.9 undertaking route is used for a foreign member's investment licence, the licence is due 'prior to Financial Close', the same undefined event."
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "ADD-02",
+   "quote": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification",
+   "parameters": {
+    "days_after_pbn": 270
+   },
+   "consequence": {
+    "class": "contractual",
+    "unit": "VOL-I:12.2",
+    "quote": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder.",
+    "gloss": null
+   },
+   "note": "ADD-02 Q13 (p2), asked whether the Authority will extend the Financial Close long-stop date, answers: 'The periods in Volume I Clause 12.2 are unchanged.'"
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "row:VOL-I-8.9-01",
+  "kind": "row_reading",
+  "row": "VOL-I-8.9-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q15",
+   "VOL-I:8.9 changed since BASE (by ADD-03/Q15)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-I-8.9-01",
+   "group": "VOL-I:8.9",
+   "scope": [
+    "qualification",
+    "licensing",
+    "envelope_A"
+   ],
+   "requirement": "For each foreign member: a current investment licence, or a signed undertaking to obtain one before Financial Close",
+   "units": [
+    "VOL-I:8.9"
+   ],
+   "discipline": "Legal",
+   "assessment": "pass_fail",
+   "evidence": [
+    "EV-INVESTMENT-LICENCE"
+   ],
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+     "parameters": {},
+     "consequence": "none_stated"
+    }
+   ],
+   "date_rules": [
+    {
+     "rule_id": "INVESTMENT-LICENCE-BY-FC",
+     "kind": "external",
+     "purpose": "deadline",
+     "anchor": "FC",
+     "offset": 0,
+     "unit": "calendar_day",
+     "direction": "after",
+     "source_unit": "VOL-I:8.9",
+     "text": "a signed undertaking to obtain such licence prior to Financial Close",
+     "note": ""
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim; which members are foreign is a bidder fact; no consequence stated",
+   "issues": [
+    "I-NO-CONSEQUENCE",
+    "I-BIDDER-FACTS"
+   ],
+   "owner": "Legal counsel",
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+   "parameters": {},
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue",
+  "analysis_items": [
+   {
+    "item": "ADD-03/2.1-row",
+    "statement_type": "row_reading",
+    "provision": "ADD-03:2.1",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": "VOL-I-8.9-01",
+     "interpretation": {
+      "stage": "ADD-03",
+      "quote": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A either (a) a copy of its current investment licence or (b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1.",
+      "parameters": {
+       "route_a": "copy of its current investment licence",
+       "route_b": "Certificate of Investment Registration ... in accordance with Table 8-1",
+       "submitted_with": "Envelope A"
+      },
+      "consequence": {
+       "class": "rejection",
+       "unit": "VOL-I:8.9",
+       "quote": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected."
+      },
+      "note": "Replaces the ADD-02 reading: the option of an undertaking to obtain the licence before Financial Close is removed for the general class and kept only for the Section 2.4 class (row ADD-03-2.4-01). A person should revise the row's requirement text and any date rule tied to Financial Close."
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:2.1",
+      "page": 1,
+      "kind": "span",
+      "words": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "row:VOL-V-44.2-01",
+  "kind": "row_reading",
+  "row": "VOL-V-44.2-01",
+  "provisions": [],
+  "status_at_addendum": "ACTIVE",
+  "stale": [
+   "new dependency ADD-03:Q17 (the provision of ADD-03/Q17, which confirms a unit of the row unchanged)"
+  ],
+  "problems": [],
+  "row_def": {
+   "id": "VOL-V-44.2-01",
+   "group": "VOL-V:44.2",
+   "scope": [
+    "contract",
+    "post_award",
+    "disputes"
+   ],
+   "requirement": "Refer disputes first to senior representatives, then an expert if technical, then arbitration seated in Riyadh in English",
+   "units": [
+    "VOL-V:44.2"
+   ],
+   "discipline": "Legal",
+   "assessment": "contractual_post_award",
+   "interpretations": [
+    {
+     "stage": "BASE",
+     "quote": "The parties shall first refer a dispute to senior representatives, then to an expert where the dispute is technical, and failing resolution to arbitration seated in Riyadh conducted in the English language before three arbitrators",
+     "parameters": {
+      "seat": "Riyadh",
+      "language": "English",
+      "arbitrators": 3
+     },
+     "consequence": "none_stated"
+    }
+   ],
+   "confidence": "high",
+   "confidence_reason": "verbatim text-layer clause",
+   "owner": "Legal counsel",
+   "post_award_evidence": {
+    "kind": "proposed",
+    "text": "Post-award (proposed requirement): to be produced for each dispute, written records of its referral first to senior representatives, then to an expert where the dispute is technical, before any reference to arbitration (VOL-V 44.2); the extract states no time limit for any stage.",
+    "basis": [
+     {
+      "unit": "VOL-V:44.2",
+      "page": 4,
+      "words": "The parties shall first refer a dispute to senior representatives, then to an expert where the dispute is technical, and failing resolution to arbitration seated in Riyadh conducted in the English language before three arbitrators"
+     }
+    ],
+    "when": "on any dispute, at each stage of the procedure"
+   },
+   "review": "proposed"
+  },
+  "current_interpretation": {
+   "stage": "BASE",
+   "quote": "The parties shall first refer a dispute to senior representatives, then to an expert where the dispute is technical, and failing resolution to arbitration seated in Riyadh conducted in the English language before three arbitrators",
+   "parameters": {
+    "seat": "Riyadh",
+    "language": "English",
+    "arbitrators": 3
+   },
+   "consequence": "none_stated",
+   "note": null
+  },
+  "changed_units": [],
+  "expect": "a re-made interpretation at the addendum stage (quote from units_after), or an issue"
+ },
+ {
+  "id": "c46:ADD-03/cover/para3",
+  "kind": "row_new",
+  "op": "ADD-03/cover/para3",
+  "provisions": [
+   "ADD-03:cover/para3"
+  ],
+  "outputs": [
+   "A1",
+   "A3"
+  ],
+  "details": [
+   "ADD-03/cover/para3 (annotate) creates or amends an obligation that no A1 row in force at ADD-03 holds: 'SYNTHETIC: not tender content. Test material for blind rehearsal 08; not issued by any authority. This Addendum replaces Volume I Clause 8.9 so that a member of a Bidder incorporated outside the …",
+   "ADD-03/cover/para3 brings in consequence words ['rejected'] that no row's consequence carries at ADD-03: 'SYNTHETIC: not tender content. Test material for blind rehearsal 08; not issued by any authority. This Addendum replaces Volume I Clause 8.9 so that a member of a Bidder incorporated outside th…"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/cover/para3",
+   "provision": "ADD-03:cover/para3",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "analysis_items": [
+   {
+    "item": "ADD-03/row/ack-4A",
+    "statement_type": "row_new",
+    "provision": "ADD-03:cover/para3",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD03-ACK-4A",
+      "group": "submission_forms",
+      "scope": [
+       "Envelope A",
+       "Form 4-A"
+      ],
+      "requirement": "Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A.",
+      "units": [
+       "ADD-03:cover/para3"
+      ],
+      "discipline": "Bid management",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Bidders shall acknowledge receipt in Form 4-A.",
+        "consequence": "none_stated",
+        "note": "No consequence is printed with the acknowledgement obligation in ADD-03:cover/para3; none is inferred."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "The obligation is printed verbatim, but in cover text (which summarises); a person confirms that the cover's own obligation is recorded as a row, as for the equivalent words in Addenda 1 and 2.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03/cover/para3",
+       "evidence": {
+        "unit": "ADD-03:cover/para3",
+        "page": 1,
+        "words": "Bidders shall acknowledge receipt in Form 4-A."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:cover/para3",
+      "page": 1,
+      "kind": "span",
+      "words": "Bidders shall acknowledge receipt in Form 4-A.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "obligation": {
+   "op": "ADD-03/cover/para3",
+   "terms": [
+    "This Addendum",
+    "Volume II Clause",
+    "Scheduled PCOD",
+    "Authority Event of Default",
+    "RFP Documents"
+   ],
+   "related": {
+    "units": [
+     "ADD-01:2.2",
+     "ADD-01:5.1",
+     "ADD-01:Q1",
+     "ADD-01:cover/para3",
+     "ADD-02:1.1",
+     "ADD-02:4.1",
+     "ADD-02:F4-G/T1/1",
+     "ADD-02:Q11",
+     "ADD-02:cover/para3",
+     "VOL-I:13.2",
+     "VOL-I:2.1",
+     "VOL-I:3.1",
+     "VOL-I:3.2",
+     "VOL-I:3.4",
+     "VOL-I:5.1",
+     "VOL-V:1.5",
+     "VOL-V:12.1",
+     "VOL-V:18.1",
+     "VOL-V:18.3",
+     "VOL-V:39.4",
+     "VOL-V:42.1"
+    ],
+    "rows": [
+     "ADD-01-AppA-01",
+     "ADD-02-F4G-02",
+     "VOL-I-13.2-01",
+     "VOL-I-3.4-01",
+     "VOL-I-5.1-01",
+     "VOL-V-12.1-01",
+     "VOL-V-18.3-01",
+     "VOL-V-42.1-01",
+     "VOL-V-42.1-02"
+    ],
+    "answers": [
+     "ADD-01:Q1",
+     "ADD-02:Q11"
+    ]
+   },
+   "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+  },
+  "origins": [
+   "c46:ADD-03/cover/para3",
+   "oblig:ADD-03/cover/para3",
+   "ana:ADD-03/row/ack-4A"
+  ],
+  "origin_kinds": {
+   "oblig:ADD-03/cover/para3": "obligation_impact"
+  },
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "c46:ADD-03/3.1",
+  "kind": "row_new",
+  "op": "ADD-03/3.1",
+  "provisions": [
+   "ADD-03:3.1"
+  ],
+  "outputs": [
+   "A1"
+  ],
+  "details": [
+   "ADD-03/3.1 (insert_unit) creates or amends an obligation that no A1 row in force at ADD-03 holds (the item inserted after VOL-II:4.5; a row of the anchor VOL-II:4.5 does not count): 'The following new Clause 4.6 is inserted in Volume II after Clause 4.5: ‘4.6 The treated effluent storage reservoir …"
+  ],
+  "rows": [],
+  "units_changed": [
+   "VOL-II:4.5+ADD-03"
+  ],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03/3.1",
+   "provision": "ADD-03:3.1",
+   "expect": "the row's `introduced` names this stage and op (or the provision) and quotes the words of the provision (or of a unit the op changed) that introduce the obligation"
+  },
+  "analysis_items": [
+   {
+    "item": "ADD-03/row-4.6",
+    "statement_type": "row_new",
+    "provision": "ADD-03:3.1",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-VOLII-4.6",
+      "group": "VOL-II",
+      "scope": [
+       "Technical Proposal",
+       "process design"
+      ],
+      "requirement": "The treated effluent storage reservoir referred to in Clause 1.2 shall provide a working volume of not less than six (6) hours of the design flow and shall be divided into not fewer than two (2) compartments, each capable of being isolated for cleaning while the other remains in service.",
+      "units": [
+       "VOL-II:4.5+ADD-03"
+      ],
+      "discipline": "Technical",
+      "assessment": "contractual_post_award",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "The treated effluent storage reservoir referred to in Clause 1.2 shall provide a working volume of not less than six (6) hours of the design flow and shall be divided into not fewer than two (2) compartments, each capable of being isolated for cleaning while the other remains in service.",
+        "parameters": {
+         "working_volume": "not less than six (6) hours of the design flow",
+         "compartments": "not fewer than two (2)"
+        },
+        "consequence": "none_stated",
+        "note": "No consequence printed in the clause; the volume in m3 is not computed (design flow basis to be confirmed by a person)."
+       }
+      ],
+      "date_notes": [
+       {
+        "text": "six (6) hours of the design flow",
+        "treatment": "not_a_date",
+        "reason": "a storage volume expressed as hours of flow, not a date or period"
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "Requirement quoted verbatim from the inserted clause; the assessment class and which design flow applies are proposals.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03/3.1",
+       "evidence": {
+        "unit": "ADD-03:3.1",
+        "page": 2,
+        "words": "The following new Clause 4.6 is inserted in Volume II after Clause 4.5"
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:3.1",
+      "page": 2,
+      "kind": "span",
+      "words": "shall provide a working volume of not less than six (6) hours of the design flow and shall be divided into not fewer than two (2) compartments",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "obligation": {
+   "op": "ADD-03/3.1",
+   "terms": [
+    "Volume II"
+   ],
+   "related": {
+    "units": [
+     "ADD-01:5.1",
+     "ADD-01:Q1",
+     "ADD-01:Q2",
+     "ADD-01:cover/para3",
+     "ADD-02:4.1",
+     "ADD-02:5.1",
+     "ADD-02:5.2",
+     "ADD-02:F4-G/T1/1",
+     "ADD-02:Q11",
+     "ADD-02:T1-1-rev/A",
+     "ADD-02:cover/para3",
+     "VOL-I:1.3",
+     "VOL-I:3.1",
+     "VOL-I:3.2(d)",
+     "VOL-I:3.2(f)",
+     "VOL-I:9.2",
+     "VOL-V:1.5",
+     "VOL-V:31.1",
+     "VOL-V:42.1"
+    ],
+    "rows": [
+     "ADD-01-AppA-01",
+     "ADD-02-5.2-01",
+     "ADD-02-F4G-02",
+     "VOL-I-9.2-01",
+     "VOL-V-31.1-01",
+     "VOL-V-31.1-02",
+     "VOL-V-31.1-03",
+     "VOL-V-42.1-01",
+     "VOL-V-42.1-02"
+    ],
+    "answers": [
+     "ADD-01:Q1",
+     "ADD-01:Q2",
+     "ADD-02:Q11"
+    ]
+   },
+   "expect": "this op adds a unit or an obligation that no curated relationship reaches: find what it bears on (rows and dates that use its terms, earlier answers it qualifies, programme and pricing effects; `related` lists the units, rows and answers sharing its defined terms, a hint only); propose relationships (proposed), re-made readings, issues or escalations, or `no_change` with a verbatim quotation"
+  },
+  "origins": [
+   "c46:ADD-03/3.1",
+   "oblig:ADD-03/3.1",
+   "ana:ADD-03/row-4.6"
+  ],
+  "origin_kinds": {
+   "oblig:ADD-03/3.1": "obligation_impact"
+  },
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/2.3-row",
+  "provisions": [
+   "ADD-03:2.3"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:2.3",
+   "provision": "ADD-03:2.3",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/2.3-row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:2.3",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.3-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "Bidder",
+       "member incorporated outside the Kingdom relying on a Certificate of Investment Registration"
+      ],
+      "requirement": "Applications for a Certificate of Investment Registration shall be made by the member to the Office.",
+      "units": [
+       "ADD-03:2.3"
+      ],
+      "discipline": "Legal",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Applications for a Certificate of Investment Registration shall be made by the member to the Office.",
+        "parameters": {
+         "applicant": "the member",
+         "to": "the Office"
+        },
+        "consequence": "none_stated",
+        "note": "The undertaking to issue 'within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1' is the Office's, not the Bidder's. The period depends on the Arabic Table 8-1 reading (pending) and on the row 2 discrepancy issue."
+       }
+      ],
+      "date_notes": [
+       {
+        "text": "within the issue period stated in Table 8-1 for the class of the member",
+        "treatment": "duration",
+        "reason": "the Office's issue period, counted from receipt of a complete application (Table 8-1 Note 1). It is a lead time for A5, not a pack deadline; its row 2 value is the subject of an open issue"
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation is printed plainly; the issue periods it relies on come from a pending image reading, and the Arabic and English disagree on row 2",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.3",
+       "evidence": {
+        "unit": "ADD-03:2.3",
+        "page": 1,
+        "words": "Applications for a Certificate of Investment Registration shall be made by the member to the Office."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:2.3",
+      "page": 1,
+      "kind": "span",
+      "words": "Applications for a Certificate of Investment Registration shall be made by the member to the Office. The Office has undertaken to the Authority to issue a Certificate within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/2.4-row",
+  "provisions": [
+   "ADD-03:2.4"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:2.4",
+   "provision": "ADD-03:2.4",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/2.4-row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:2.4",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.4-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "member of the Bidder holding not more than ten per cent (10%) of the shares in the Project Company with no role in design, construction or operation of the Facility"
+      ],
+      "requirement": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+      "units": [
+       "ADD-03:2.4",
+       "VOL-I:8.9"
+      ],
+      "discipline": "Legal",
+      "assessment": "pass_fail",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+        "parameters": {
+         "document": "signed undertaking described in Volume I Clause 8.9 as issued",
+         "submitted_with": "Envelope A"
+        },
+        "consequence": "none_stated",
+        "note": "Section 2.4 states no consequence of its own. It does not say whether the rejection words of the new Clause 8.9 apply to a missing undertaking; that is for a person (see issue ADD-03/2.4-issue)."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation is printed, but the undertaking's content is given only by reference to text that Section 2.1 deletes, and the reach of 'Section 2.1' is an interpretation",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.4",
+       "evidence": {
+        "unit": "ADD-03:2.4",
+        "page": 1,
+        "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:2.4",
+      "page": 1,
+      "kind": "span",
+      "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+      "cell": null,
+      "crop_sha256": null
+     },
+     {
+      "doc": "VOL-I",
+      "unit_id": "VOL-I:8.9",
+      "page": 4,
+      "kind": "span",
+      "words": "a signed undertaking to obtain such licence prior to Financial Close",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/2.5-row",
+  "provisions": [
+   "ADD-03:2.5"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:2.5",
+   "provision": "ADD-03:2.5",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/2.5-row",
+    "statement_type": "row_new",
+    "provision": "ADD-03:2.5",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.5-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "Bidder relying on paragraph (b) of Volume I Clause 8.9 for any member"
+      ],
+      "requirement": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+      "units": [
+       "ADD-03:2.5"
+      ],
+      "discipline": "Bid management",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+        "parameters": {
+         "channel": "the Portal",
+         "content": "name of that member and the reference number of its application to the Office",
+         "deadline": "not later than three (3) Working Days before the Proposal Due Date"
+        },
+        "consequence": "none_stated",
+        "note": "Operative Section 2.5 states no consequence. The cover text says 'failing which the Proposal will be rejected', but the cover summarises and does not amend (issue ADD-03/2.5-issue)."
+       }
+      ],
+      "date_rules": [
+       {
+        "rule_id": "ADD-03-2.5-NOTIFY",
+        "kind": "relative",
+        "purpose": "deadline",
+        "anchor": "PDD",
+        "offset": 3,
+        "unit": "working_day",
+        "direction": "before",
+        "source_unit": "ADD-03:2.5",
+        "text": "not later than three (3) Working Days before the Proposal Due Date",
+        "note": "calculate (VOL-I 2.4 calendar) at PDD 2026-11-26 gives 2026-11-23 (stated_date_excluded; readings do not differ)"
+       }
+      ],
+      "confidence": "high",
+      "confidence_reason": "the operative provision prints the obligation, channel, content and deadline",
+      "issues": [],
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.5",
+       "evidence": {
+        "unit": "ADD-03:2.5",
+        "page": 1,
+        "words": "shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date"
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:2.5",
+      "page": 1,
+      "kind": "span",
+      "words": "shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "computed_dates": [
+   {
+    "unit": "ADD-03:2.5",
+    "words": "three (3) Working Days before the Proposal Due Date",
+    "computed_from": {
+     "method": "deadline",
+     "inputs": {
+      "offset": {
+       "count": 3,
+       "unit": "working_day",
+       "words": "three (3) Working Days before the Proposal Due Date"
+      },
+      "anchor": {
+       "name": "PDD",
+       "date": "2026-11-26",
+       "source": "VOL-I:6.1"
+      },
+      "direction": "before"
+     },
+     "counting": "working-days-before",
+     "result": "2026-11-23",
+     "fingerprint": "60b780e98a3a27dacdf6fba625e5ba3e239d77d6e14d9c9541ea8ef1f99d2710"
+    },
+    "status": "resolved",
+    "date_rule": {
+     "kind": "relative",
+     "purpose": "deadline",
+     "anchor": "PDD",
+     "offset": 3,
+     "unit": "working_day",
+     "direction": "before",
+     "source_unit": "ADD-03:2.5",
+     "text": "three (3) Working Days before the Proposal Due Date"
+    },
+    "readings": [
+     {
+      "key": "stated_date_excluded",
+      "value": "2026-11-23",
+      "basis": "stated in the pack (VOL-I 2.4)"
+     }
+    ],
+    "conditional": null,
+    "expect": "the row's date rule for these words plans this date (the program computed it; A1 shows the derivation and any disagreement)"
+   }
+  ],
+  "origins": [
+   "ana:ADD-03/2.5-row",
+   "date:ADD-03:2.5"
+  ],
+  "origin_kinds": {
+   "date:ADD-03:2.5": "computed_date"
+  },
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "ana:ADD-03/row-3.4",
+  "provisions": [
+   "ADD-03:3.4"
+  ],
+  "kind": "row_new",
+  "outputs": [],
+  "details": [
+   "an obligation the analysis phase proposed as a row"
+  ],
+  "rows": [],
+  "units_changed": [],
+  "introduce": {
+   "stage": "ADD-03",
+   "by": "ADD-03:3.4",
+   "provision": "ADD-03:3.4",
+   "expect": "the row's `introduced` names this stage and the provision and quotes the words of the provision that introduce the obligation"
+  },
+  "expect": "propose the row (or the re-made reading) the provision needs, checked against units_after; the analysis proposal in `analysis_items` is an UNVERIFIED reference; one you cannot establish gets an escalation (never 'no change')",
+  "analysis_items": [
+   {
+    "item": "ADD-03/row-3.4",
+    "statement_type": "row_new",
+    "provision": "ADD-03:3.4",
+    "verification_status": "interpretation_pending",
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "payload": {
+     "row": {
+      "id": "R-ADD03-3.4",
+      "group": "ADD-03",
+      "scope": [
+       "Technical Proposal",
+       "Financial Model"
+      ],
+      "requirement": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.",
+      "units": [
+       "ADD-03:3.4"
+      ],
+      "discipline": "Technical",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.",
+        "consequence": "none_stated",
+        "note": "No consequence is printed in ADD-03:3.4."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "The obligation is quoted verbatim; the effect of Section 3.3 is pending (its op is escalated), and the assessment class is a proposal.",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:3.4",
+       "evidence": {
+        "unit": "ADD-03:3.4",
+        "page": 2,
+        "words": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model."
+       }
+      }
+     }
+    },
+    "evidence": [
+     {
+      "doc": "ADD-03",
+      "unit_id": "ADD-03:3.4",
+      "page": 2,
+      "kind": "span",
+      "words": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.",
+      "cell": null,
+      "crop_sha256": null
+     }
+    ]
+   }
+  ],
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ },
+ {
+  "id": "act:investment-licence",
+  "kind": "activity",
+  "evidence_item": "EV-INVESTMENT-LICENCE",
+  "activity": {
+   "id": "investment-licence",
+   "name": "For each foreign member: evidence of a current investment licence, or a signed undertaking to obtain it before Financial Close (VOL-I 8.9)",
+   "owner": "Legal",
+   "discipline": "Legal",
+   "resource": "legal_counsel",
+   "issuer": "Licensing authority / each foreign member",
+   "duration": "investment_licence",
+   "per": "foreign_member",
+   "predecessors": [
+    "poa"
+   ],
+   "successors": [
+    "assemble-envelope-a"
+   ],
+   "item": "Investment licence evidence or signed undertaking (one per foreign member)"
+  },
+  "rows": [
+   "VOL-I-8.9-01"
+  ]
+ },
+ {
+  "id": "esc:ADD-03:2.1",
+  "kind": "escalation",
+  "provision": "ADD-03:2.1",
+  "status": "not promotable: ADD-03/2.1 conflicting (consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set); ADD-03/2.1-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))",
+  "scope": {
+   "cited": [
+    "VOL-I:8.9"
+   ],
+   "units": [
+    "VOL-I:8.9"
+   ],
+   "rows": [
+    "VOL-I-8.9-01"
+   ],
+   "activities": [
+    "investment-licence"
+   ],
+   "clarifications": []
+  },
+  "bid_out_rules": [
+   {
+    "row": "ADD-02-7.2-01",
+    "class": "non_responsive",
+    "unit": "ADD-02:7.2",
+    "quote": "Failure to submit Form 4-G shall render the Proposal non-responsive.",
+    "page": 3,
+    "shared": [
+     "Envelope A"
+    ]
+   },
+   {
+    "row": "VOL-I-6.2-02",
+    "class": "non_responsive",
+    "unit": "VOL-I:6.2",
+    "quote": "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.",
+    "page": 3,
+    "shared": [
+     "Envelope A"
+    ]
+   }
+  ],
+  "consequence_note": "read with these existing rules; a consequence is quoted from one of them (PROPOSED, a person decides whether it applies), never invented",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "esc:ADD-03:2.2",
+  "kind": "escalation",
+  "provision": "ADD-03:2.2",
+  "status": "not promotable: ADD-03/2.2 insufficient_evidence (dependencies: unknown ids ['S-F3']); ADD-03/2.2-issue insufficient_evidence (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated"
+ },
+ {
+  "id": "esc:ADD-03:2.4",
+  "kind": "escalation",
+  "provision": "ADD-03:2.4",
+  "status": "not promotable: ADD-03/2.4 interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.4-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.4, which is not ready); ADD-03/2.4-issue insufficient_evidence (dependencies: unknown ids ['S-F7', 'S-I2'])",
+  "scope": {
+   "cited": [
+    "VOL-I:8.9"
+   ],
+   "units": [
+    "VOL-I:8.9"
+   ],
+   "rows": [
+    "VOL-I-8.9-01"
+   ],
+   "activities": [
+    "investment-licence"
+   ],
+   "clarifications": []
+  },
+  "bid_out_rules": [
+   {
+    "row": "ADD-02-7.2-01",
+    "class": "non_responsive",
+    "unit": "ADD-02:7.2",
+    "quote": "Failure to submit Form 4-G shall render the Proposal non-responsive.",
+    "page": 3,
+    "shared": [
+     "Envelope A"
+    ]
+   },
+   {
+    "row": "VOL-I-6.2-02",
+    "class": "non_responsive",
+    "unit": "VOL-I:6.2",
+    "quote": "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.",
+    "page": 3,
+    "shared": [
+     "Envelope A"
+    ]
+   }
+  ],
+  "consequence_note": "read with these existing rules; a consequence is quoted from one of them (PROPOSED, a person decides whether it applies), never invented"
+ },
+ {
+  "id": "esc:ADD-03:2.5",
+  "kind": "escalation",
+  "provision": "ADD-03:2.5",
+  "status": "not promotable: ADD-03/2.5-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.5-issue insufficient_evidence (dependencies: unknown ids ['S-F4', 'S-F5'])",
+  "scope": {
+   "cited": [
+    "VOL-I:8.9"
+   ],
+   "units": [
+    "VOL-I:8.9"
+   ],
+   "rows": [
+    "VOL-I-8.9-01"
+   ],
+   "activities": [
+    "investment-licence"
+   ],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated"
+ },
+ {
+  "id": "esc:ADD-03:3.3",
+  "kind": "escalation",
+  "provision": "ADD-03:3.3",
+  "status": "escalated: software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company…",
+  "scope": {
+   "cited": [
+    "VOL-V:12.1"
+   ],
+   "units": [
+    "VOL-V:12.1"
+   ],
+   "rows": [
+    "VOL-V-12.1-01"
+   ],
+   "activities": [],
+   "clarifications": [
+    "CQ-VOL-V-SCHEDULES"
+   ]
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated"
+ },
+ {
+  "id": "esc:ADD-03:Q16",
+  "kind": "escalation",
+  "provision": "ADD-03:Q16",
+  "status": "escalated: software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 Nov…",
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": []
+  },
+  "bid_out_rules": [],
+  "consequence_note": "no bid-out consequence stated"
+ },
+ {
+  "id": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (blocked, failed op, unresolved): ADD-03:2.1, ADD-03:2.2, ADD-03:2.4, ADD-03:2.5, ADD-03:2.3; never an accepted fact",
+  "provisions": [
+   "ADD-03:2.1",
+   "ADD-03:2.2",
+   "ADD-03:2.4",
+   "ADD-03:2.5",
+   "ADD-03:2.3"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:2.1",
+    "basis": "unresolved",
+    "why": "not promotable: ADD-03/2.1 conflicting (consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set); ADD-03/2.1-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:2.1",
+     "state": "unresolved",
+     "why": "not promotable: ADD-03/2.1 conflicting (consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set); ADD-03/2.1-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))"
+    },
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.1",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.1 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.1",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.2",
+    "basis": "unresolved",
+    "why": "not promotable: ADD-03/2.2 insufficient_evidence (dependencies: unknown ids ['S-F3']); ADD-03/2.2-issue insufficient_evidence (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:2.2",
+     "state": "unaccounted",
+     "why": "not promotable: ADD-03/2.2 insufficient_evidence (dependencies: unknown ids ['S-F3']); ADD-03/2.2-issue insufficient_evidence (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.2",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:2.2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.2",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.4",
+    "basis": "unresolved",
+    "why": "not promotable: ADD-03/2.4 interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.4-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.4, which is not ready); ADD-03/2.4-issue insufficient_evidence (dependencies: unknown ids ['S-F7', 'S-I2'])",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:2.4",
+     "state": "unresolved",
+     "why": "not promotable: ADD-03/2.4 interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.4-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.4, which is not ready); ADD-03/2.4-issue insufficient…"
+    },
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.5",
+    "basis": "unresolved",
+    "why": "not promotable: ADD-03/2.5-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.5-issue insufficient_evidence (dependencies: unknown ids ['S-F4', 'S-F5'])",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:2.5",
+     "state": "unresolved",
+     "why": "not promotable: ADD-03/2.5-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.5-issue insufficient_evidence (dependencies: unknown ids ['S-F4', 'S-F5'])"
+    },
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.5",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.5 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.5",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.1",
+    "basis": "failed op",
+    "item": "ADD-03/2.1",
+    "statement_type": "amendment_op",
+    "status": "conflicting",
+    "why": "consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set",
+    "ready": true,
+    "conditional_on": {
+     "kind": "op",
+     "ref": "ADD-03/2.1",
+     "state": "invalid",
+     "why": "consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set"
+    },
+    "payload": {
+     "id": "ADD-03/2.1",
+     "provision": "ADD-03:2.1",
+     "type": "replace_text",
+     "target": "VOL-I:8.9",
+     "old": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+     "old_resolved": "matched_in_target",
+     "new": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A either (a) a copy of its current investment licence or (b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1. A Proposal that does not include the evidence required by this Clause for each such member shall be rejected."
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.1",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.1 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.1",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.1",
+    "basis": "blocked",
+    "item": "ADD-03/2.1-row",
+    "statement_type": "row_reading",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_reading is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `row:VOL-I-8.9-01` as an UNVE…)",
+    "blocked_by": [
+     "depends on ADD-03/2.1 (amendment_op, conflicting)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "row_reading",
+     "ref": "ADD-03/2.1-row",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_reading is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `row:VOL-I-8.9-01` as an UNVE…)"
+    },
+    "payload": {
+     "row": "VOL-I-8.9-01",
+     "interpretation": {
+      "stage": "ADD-03",
+      "quote": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A either (a) a copy of its current investment licence or (b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1.",
+      "parameters": {
+       "route_a": "copy of its current investment licence",
+       "route_b": "Certificate of Investment Registration ... in accordance with Table 8-1",
+       "submitted_with": "Envelope A"
+      },
+      "consequence": {
+       "class": "rejection",
+       "unit": "VOL-I:8.9",
+       "quote": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected."
+      },
+      "note": "Replaces the ADD-02 reading: the option of an undertaking to obtain the licence before Financial Close is removed for the general class and kept only for the Section 2.4 class (row ADD-03-2.4-01). A person should revise the row's requirement text and any date rule tied to Financial Close."
+     }
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.1",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.1 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.1",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.2",
+    "basis": "blocked",
+    "item": "ADD-03/2.2",
+    "statement_type": "amendment_op",
+    "status": "insufficient_evidence",
+    "why": "blocked: unknown dependencies ['S-F3'] (dependencies: unknown ids ['S-F3'])",
+    "blocked_by": [
+     "unknown dependencies ['S-F3']"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "op",
+     "ref": "ADD-03/2.2",
+     "state": "held",
+     "why": "blocked: unknown dependencies ['S-F3'] (dependencies: unknown ids ['S-F3'])"
+    },
+    "payload": {
+     "id": "ADD-03/2.2",
+     "provision": "ADD-03:2.2",
+     "type": "insert_table",
+     "new_group": "ADD-03:p3-image",
+     "into": "VOL-I",
+     "number": "8-1",
+     "precedence": {
+      "governs": "ADD-03:p3-image",
+      "over": [
+       "ADD-03:T8-1"
+      ],
+      "words": "The Arabic text governs."
+     }
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.2",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:2.2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.2",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.2",
+    "basis": "blocked",
+    "item": "ADD-03/2.2-issue",
+    "statement_type": "issue",
+    "status": "insufficient_evidence",
+    "why": "blocked: unknown dependencies ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1']; depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])",
+    "blocked_by": [
+     "unknown dependencies ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1']",
+     "depends on ADD-03/2.2 (amendment_op, insufficient_evidence)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/2.2-issue",
+     "state": "held",
+     "why": "blocked: unknown dependencies ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1']; depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])"
+    },
+    "payload": {
+     "text": "Table 8-1 row 2 (company incorporated outside the GCC states): the Arabic table at Appendix A prints 'مدة الإصدار (أيام عمل): ٥' (5 Working Days), while the English translation at Appendix B (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. Section 2.2 says 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' Q16 then reduces 'the issue period in row 2 of Table 8-1' by two (2) Working Days for applications lodged not later than Sunday 22 November 2026, so the base figure decides the reduced period. Open question: which issue period applies to row 2 when planning the Certificate route, and whether to seek clarification from the Authority. The Arabic image reading is itself pending approval. Decision pending a person.",
+     "owner": "Legal",
+     "short": "Table 8-1 row 2: Arabic ٥ vs English 3",
+     "theme": "investment registration"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.2",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:2.2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.2",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.3",
+    "basis": "blocked",
+    "item": "ADD-03/2.3-row",
+    "statement_type": "row_new",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting); depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.3-row` as an UNVERI…)",
+    "blocked_by": [
+     "depends on ADD-03/2.1 (amendment_op, conflicting)",
+     "depends on ADD-03/2.2 (amendment_op, insufficient_evidence)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "row_new",
+     "ref": "ADD-03/2.3-row",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting); depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.3-row` as an UNVERI…)"
+    },
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.3-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "Bidder",
+       "member incorporated outside the Kingdom relying on a Certificate of Investment Registration"
+      ],
+      "requirement": "Applications for a Certificate of Investment Registration shall be made by the member to the Office.",
+      "units": [
+       "ADD-03:2.3"
+      ],
+      "discipline": "Legal",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Applications for a Certificate of Investment Registration shall be made by the member to the Office.",
+        "parameters": {
+         "applicant": "the member",
+         "to": "the Office"
+        },
+        "consequence": "none_stated",
+        "note": "The undertaking to issue 'within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1' is the Office's, not the Bidder's. The period depends on the Arabic Table 8-1 reading (pending) and on the row 2 discrepancy issue."
+       }
+      ],
+      "date_notes": [
+       {
+        "text": "within the issue period stated in Table 8-1 for the class of the member",
+        "treatment": "duration",
+        "reason": "the Office's issue period, counted from receipt of a complete application (Table 8-1 Note 1). It is a lead time for A5, not a pack deadline; its row 2 value is the subject of an open issue"
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation is printed plainly; the issue periods it relies on come from a pending image reading, and the Arabic and English disagree on row 2",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.3",
+       "evidence": {
+        "unit": "ADD-03:2.3",
+        "page": 1,
+        "words": "Applications for a Certificate of Investment Registration shall be made by the member to the Office."
+       }
+      }
+     }
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:2.3",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.4",
+    "basis": "blocked",
+    "item": "ADD-03/2.4",
+    "statement_type": "amendment_op",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))",
+    "blocked_by": [
+     "depends on ADD-03/2.1 (amendment_op, conflicting)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "op",
+     "ref": "ADD-03/2.4",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))"
+    },
+    "payload": {
+     "id": "ADD-03/2.4",
+     "provision": "ADD-03:2.4",
+     "type": "annotate",
+     "targets": [
+      "VOL-I:8.9"
+     ],
+     "effect": "disapplies",
+     "scope": "a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.4",
+    "basis": "blocked",
+    "item": "ADD-03/2.4-row",
+    "statement_type": "row_new",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/2.4, which is not ready (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.4-row` as an UNVERI…)",
+    "blocked_by": [
+     "depends on ADD-03/2.4, which is not ready"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "row_new",
+     "ref": "ADD-03/2.4-row",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/2.4, which is not ready (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.4-row` as an UNVERI…)"
+    },
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.4-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "member of the Bidder holding not more than ten per cent (10%) of the shares in the Project Company with no role in design, construction or operation of the Facility"
+      ],
+      "requirement": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+      "units": [
+       "ADD-03:2.4",
+       "VOL-I:8.9"
+      ],
+      "discipline": "Legal",
+      "assessment": "pass_fail",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+        "parameters": {
+         "document": "signed undertaking described in Volume I Clause 8.9 as issued",
+         "submitted_with": "Envelope A"
+        },
+        "consequence": "none_stated",
+        "note": "Section 2.4 states no consequence of its own. It does not say whether the rejection words of the new Clause 8.9 apply to a missing undertaking; that is for a person (see issue ADD-03/2.4-issue)."
+       }
+      ],
+      "confidence": "medium",
+      "confidence_reason": "the obligation is printed, but the undertaking's content is given only by reference to text that Section 2.1 deletes, and the reach of 'Section 2.1' is an interpretation",
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.4",
+       "evidence": {
+        "unit": "ADD-03:2.4",
+        "page": 1,
+        "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued."
+       }
+      }
+     }
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.4",
+    "basis": "blocked",
+    "item": "ADD-03/2.4-issue",
+    "statement_type": "issue",
+    "status": "insufficient_evidence",
+    "why": "blocked: unknown dependencies ['S-F7', 'S-I2']; depends on ADD-03/2.4, which is not ready (dependencies: unknown ids ['S-F7', 'S-I2'])",
+    "blocked_by": [
+     "unknown dependencies ['S-F7', 'S-I2']",
+     "depends on ADD-03/2.4, which is not ready"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/2.4-issue",
+     "state": "held",
+     "why": "blocked: unknown dependencies ['S-F7', 'S-I2']; depends on ADD-03/2.4, which is not ready (dependencies: unknown ids ['S-F7', 'S-I2'])"
+    },
+    "payload": {
+     "text": "ambiguous: Section 2.4 says 'Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility. Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.' Reading 1: the new Clause 8.9, including its words 'A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.', does not apply to that member at all, so no rejection consequence is stated for a missing undertaking. Reading 2: the undertaking is the 'evidence required' for that member, and the rejection words still apply to it. Also, the undertaking is defined only by deleted text ('a signed undertaking to obtain such licence prior to Financial Close'). Open question: what the exception covers and whether rejection applies. Decision pending a person.",
+     "owner": "Legal",
+     "short": "Scope of 2.4 exception and its consequence",
+     "theme": "investment registration"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.4",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.4",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.5",
+    "basis": "blocked",
+    "item": "ADD-03/2.5-row",
+    "statement_type": "row_new",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.5-row` as an UNVERI…)",
+    "blocked_by": [
+     "depends on ADD-03/2.1 (amendment_op, conflicting)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "row_new",
+     "ref": "ADD-03/2.5-row",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.5-row` as an UNVERI…)"
+    },
+    "payload": {
+     "row": {
+      "id": "ADD-03-2.5-01",
+      "group": "VOL-I-8",
+      "scope": [
+       "Bidder relying on paragraph (b) of Volume I Clause 8.9 for any member"
+      ],
+      "requirement": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+      "units": [
+       "ADD-03:2.5"
+      ],
+      "discipline": "Bid management",
+      "assessment": "procedural",
+      "evidence": [],
+      "interpretations": [
+       {
+        "stage": "ADD-03",
+        "quote": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+        "parameters": {
+         "channel": "the Portal",
+         "content": "name of that member and the reference number of its application to the Office",
+         "deadline": "not later than three (3) Working Days before the Proposal Due Date"
+        },
+        "consequence": "none_stated",
+        "note": "Operative Section 2.5 states no consequence. The cover text says 'failing which the Proposal will be rejected', but the cover summarises and does not amend (issue ADD-03/2.5-issue)."
+       }
+      ],
+      "date_rules": [
+       {
+        "rule_id": "ADD-03-2.5-NOTIFY",
+        "kind": "relative",
+        "purpose": "deadline",
+        "anchor": "PDD",
+        "offset": 3,
+        "unit": "working_day",
+        "direction": "before",
+        "source_unit": "ADD-03:2.5",
+        "text": "not later than three (3) Working Days before the Proposal Due Date",
+        "note": "calculate (VOL-I 2.4 calendar) at PDD 2026-11-26 gives 2026-11-23 (stated_date_excluded; readings do not differ)"
+       }
+      ],
+      "confidence": "high",
+      "confidence_reason": "the operative provision prints the obligation, channel, content and deadline",
+      "issues": [],
+      "introduced": {
+       "stage": "ADD-03",
+       "by": "ADD-03:2.5",
+       "evidence": {
+        "unit": "ADD-03:2.5",
+        "page": 1,
+        "words": "shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date"
+       }
+      }
+     }
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.5",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.5 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.5",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:2.5",
+    "basis": "blocked",
+    "item": "ADD-03/2.5-issue",
+    "statement_type": "issue",
+    "status": "insufficient_evidence",
+    "why": "blocked: unknown dependencies ['S-F4', 'S-F5']; depends on ADD-03/2.5-row, which is not ready (dependencies: unknown ids ['S-F4', 'S-F5'])",
+    "blocked_by": [
+     "unknown dependencies ['S-F4', 'S-F5']",
+     "depends on ADD-03/2.5-row, which is not ready"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/2.5-issue",
+     "state": "held",
+     "why": "blocked: unknown dependencies ['S-F4', 'S-F5']; depends on ADD-03/2.5-row, which is not ready (dependencies: unknown ids ['S-F4', 'S-F5'])"
+    },
+    "payload": {
+     "text": "The cover and the operative provision differ. Cover (ADD-03:cover/para3): 'requires a Bidder relying on a Certificate to notify the Authority of its applications, failing which the Proposal will be rejected'. Operative Section 2.5: 'A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.' This prints no consequence. The cover summarises and does not amend, so row ADD-03-2.5-01 records 'none_stated'. Open question: whether a rejection consequence attaches to late or missing notification (possibly a clarification to the Authority). Decision pending a person.",
+     "owner": "Legal",
+     "short": "2.5 notification: cover says rejection, operative text silent",
+     "theme": "investment registration"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-I:8.9"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:2.5",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:2.5 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-I:8.9",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:2.5",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:2.1",
+    "state": "unresolved",
+    "why": "not promotable: ADD-03/2.1 conflicting (consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set); ADD-03/2.1-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:2.2",
+    "state": "unaccounted",
+    "why": "not promotable: ADD-03/2.2 insufficient_evidence (dependencies: unknown ids ['S-F3']); ADD-03/2.2-issue insufficient_evidence (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:2.4",
+    "state": "unresolved",
+    "why": "not promotable: ADD-03/2.4 interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.4-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.4, which is not ready); ADD-03/2.4-issue insufficient…"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:2.5",
+    "state": "unresolved",
+    "why": "not promotable: ADD-03/2.5-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.5-issue insufficient_evidence (dependencies: unknown ids ['S-F4', 'S-F5'])"
+   },
+   {
+    "kind": "op",
+    "ref": "ADD-03/2.1",
+    "state": "invalid",
+    "why": "consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set"
+   },
+   {
+    "kind": "row_reading",
+    "ref": "ADD-03/2.1-row",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_reading is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `row:VOL-I-8.9-01` as an UNVE…)"
+   },
+   {
+    "kind": "op",
+    "ref": "ADD-03/2.2",
+    "state": "held",
+    "why": "blocked: unknown dependencies ['S-F3'] (dependencies: unknown ids ['S-F3'])"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/2.2-issue",
+    "state": "held",
+    "why": "blocked: unknown dependencies ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1']; depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1'])"
+   },
+   {
+    "kind": "row_new",
+    "ref": "ADD-03/2.3-row",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting); depends on ADD-03/2.2 (amendment_op, insufficient_evidence) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.3-row` as an UNVERI…)"
+   },
+   {
+    "kind": "op",
+    "ref": "ADD-03/2.4",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting))"
+   },
+   {
+    "kind": "row_new",
+    "ref": "ADD-03/2.4-row",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/2.4, which is not ready (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.4-row` as an UNVERI…)"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/2.4-issue",
+    "state": "held",
+    "why": "blocked: unknown dependencies ['S-F7', 'S-I2']; depends on ADD-03/2.4, which is not ready (dependencies: unknown ids ['S-F7', 'S-I2'])"
+   },
+   {
+    "kind": "row_new",
+    "ref": "ADD-03/2.5-row",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/2.1 (amendment_op, conflicting) (an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task `ana:ADD-03/2.5-row` as an UNVERI…)"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/2.5-issue",
+    "state": "held",
+    "why": "blocked: unknown dependencies ['S-F4', 'S-F5']; depends on ADD-03/2.5-row, which is not ready (dependencies: unknown ids ['S-F4', 'S-F5'])"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-I:8.9"
+   ],
+   "units": [
+    "VOL-I:8.9"
+   ],
+   "rows": [
+    "VOL-I-8.9-01"
+   ],
+   "activities": [
+    "investment-licence"
+   ],
+   "clarifications": [],
+   "prices": [
+    "VOL-I-8.9-01"
+   ]
+  },
+  "status": "not promotable: ADD-03/2.1 conflicting (consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set); ADD-03/2.1-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); not promotable: ADD-03/2.2 insufficient_evidence (dependencies: unknown ids ['S-F3']); ADD-03/2.2-issue insufficient_evidence (dependencies: unknown ids ['S-F1', 'S-F2', 'S-F3', 'S-F6', 'S-I1']); not promotable: ADD-03/2.4 interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.4-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.4, which is not ready); ADD-03/2.4-issue insufficient_evidence (dependencies: unknown ids ['S-F7', 'S-I2']); not promotable: ADD-03/2.5-row interpretation_pending (dropped: not ready: promotion waits while depends on ADD-03/2.1 (amendment_op, conflicting)); ADD-03/2.5-issue insufficient_evidence (dependencies: unknown ids ['S-F4', 'S-F5']); consistency: VOL-I:8.9: ADD-03/2.1, ADD-03/2.4 change the same unit in different ways across the set; blocked: depends on ADD-03/2.1 (amend",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references"
+ },
+ {
+  "id": "impact:3. TREATED EFFLUENT STORAGE AND SCHEDULED PCOD",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (escalation, unaccounted, unresolved): ADD-03:3.3, ADD-03:3.4; never an accepted fact",
+  "provisions": [
+   "ADD-03:3.3",
+   "ADD-03:3.4"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:3.3",
+    "basis": "unresolved",
+    "why": "escalated: software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company…",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:3.3",
+     "state": "unresolved",
+     "why": "escalated: software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company…"
+    },
+    "units": [
+     "VOL-V:12.1"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:3.3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:3.3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-V:12.1",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:3.3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:3.3",
+    "basis": "escalation",
+    "item": "ADD-03/3.3",
+    "why": "software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).\" The adjust_value op was simulated and refused (C24): \"the previous value is also written in words ... …",
+    "conditional_on": {
+     "kind": "escalation",
+     "ref": "ADD-03/3.3",
+     "state": "escalated",
+     "why": "software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).\" Th…"
+    },
+    "payload": {
+     "why": "software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).\" The adjust_value op was simulated and refused (C24): \"the previous value is also written in words ... a computed figure cannot rewrite the words; a person writes the op\". The resulting period is not typed here. The cover (ADD-03:cover/para3) says \"extends the Scheduled PCOD in Volume V Clause 12.1 to forty-two (42) months\"; the cover summarises and does not amend, and a person should check the op they write against both. Dependents: VOL-V:18.1 (delay liquidated damages from the Scheduled PCOD), VOL-V:18.3 (365 days after the Scheduled PCOD), any A1 row on VOL-V:12.1, A5 construction-programme activities, the Financial Model, and ADD-03:3.4.",
+     "what_is_unsupported": "adjust_value cannot rewrite a previous value stated in both words and figures ('thirty-six (36) months'); the op (e.g. a replace_text with the new words) must be written by a person (Document control)."
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [
+     "VOL-V:12.1"
+    ],
+    "engine": [
+     {
+      "item": "impact:ADD-03:3.3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:3.3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on VOL-V:12.1",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:3.3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:3.4",
+    "basis": "unaccounted",
+    "item": "impact:ADD-03:3.4",
+    "why": "no op or disposition accounts for it",
+    "units": [],
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:3.4",
+     "state": "unaccounted",
+     "why": "no op or disposition accounts for it"
+    },
+    "investigate": "conditional on provision ADD-03:3.4 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:3.4"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:3.3",
+    "state": "unresolved",
+    "why": "escalated: software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company…"
+   },
+   {
+    "kind": "escalation",
+    "ref": "ADD-03/3.3",
+    "state": "escalated",
+    "why": "software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).\" Th…"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:3.4",
+    "state": "unaccounted",
+    "why": "no op or disposition accounts for it"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-V:12.1"
+   ],
+   "units": [
+    "VOL-V:12.1"
+   ],
+   "rows": [
+    "VOL-V-12.1-01"
+   ],
+   "activities": [],
+   "clarifications": [
+    "CQ-VOL-V-SCHEDULES"
+   ],
+   "prices": []
+  },
+  "status": "escalated: software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company…; software limitation: ADD-03:3.3 prints a relative change \"the period of thirty-six (36) months is increased by six (6) months\" of VOL-V:12.1, whose effective text at ADD-02 reads \"The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).\" The adjust_value op was simulated and refused (C24): \"the previous value is also written in words ... …; no op or disposition accounts for it",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references"
+ },
+ {
+  "id": "impact:5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue, blocked, escalation, unresolved): ADD-03:Q16, ADD-03:Q19; never an accepted fact",
+  "provisions": [
+   "ADD-03:Q16",
+   "ADD-03:Q19"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:Q16",
+    "basis": "unresolved",
+    "why": "escalated: software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 Nov…",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:Q16",
+     "state": "unresolved",
+     "why": "escalated: software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 Nov…"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:Q16",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:Q16 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:Q16",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:Q16",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:Q16",
+    "basis": "escalation",
+    "item": "ADD-03/Q16",
+    "why": "software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 November 2026'. Table 8-1 does not exist at ADD-02: it is inserted by Section 2.2 of this same Addendum from an image reading (ADD-03:p3-image, pending approval). A dry-run adjust_value on ADD-03:p3-imag…",
+    "conditional_on": {
+     "kind": "escalation",
+     "ref": "ADD-03/Q16",
+     "state": "escalated",
+     "why": "software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 November 2026'. Table 8-1 does not exist at ADD-02: it is inserted by Section 2.2 of this same Addendum…"
+    },
+    "payload": {
+     "why": "software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 November 2026'. Table 8-1 does not exist at ADD-02: it is inserted by Section 2.2 of this same Addendum from an image reading (ADD-03:p3-image, pending approval). A dry-run adjust_value on ADD-03:p3-image/r2 (column 'مدة الإصدار (أيام عمل)') with a condition was refused by C22 ('the provision cites no clause, table, form or section that exists in the pack'). The change is also per application (a period that varies with each member's lodging date), not a single event recorded once. Separately (an ambiguity, raised as an issue): the governing Arabic row 2 prints ٥ while the English translation row 2 prints 3, so the base value of the reduction differs between the two.",
+     "what_is_unsupported": "an adjust_value on a cell of a table inserted by the same addendum from a pending image reading, applying per application by lodging date (a conditional, application-specific variant of a table value)"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:Q16",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:Q16 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:Q16",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:Q16",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:Q16",
+    "basis": "blocked",
+    "item": "ADD-03/Q16-issue",
+    "statement_type": "issue",
+    "status": "interpretation_pending",
+    "why": "blocked: depends on ADD-03/Q16 (escalation, escalated) (not ready: promotion waits while depends on ADD-03/Q16 (escalation, escalated))",
+    "blocked_by": [
+     "depends on ADD-03/Q16 (escalation, escalated)"
+    ],
+    "ready": false,
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/Q16-issue",
+     "state": "held",
+     "why": "blocked: depends on ADD-03/Q16 (escalation, escalated) (not ready: promotion waits while depends on ADD-03/Q16 (escalation, escalated))"
+    },
+    "payload": {
+     "text": "ambiguous: Q16 states 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' for 'an application lodged not later than Sunday 22 November 2026'. (1) Row 2 of the Arabic Table 8-1 (Appendix A), which 'governs' under Section 2.2, prints the issue period as '٥'; row 2 of the English translation (Appendix B) prints '3'. The reduction therefore starts from a different base depending on the text read. (2) Reading A: Q16 amends Table 8-1 (part of Volume I) for such applications; Reading B: it reports the Office's confirmation to the Authority only, and Table 8-1 is unchanged. Open question: which value row 2 carries and whether and how Q16 changes it. Pending a human decision.",
+     "owner": "Document control",
+     "short": "Table 8-1 row 2: Arabic ٥ vs English 3; effect of Q16 reduction",
+     "theme": "investment registration"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks",
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:Q16",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:Q16 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:Q16",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:Q16",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:Q19",
+    "basis": "analysis issue",
+    "item": "ADD-03/Q19-issue",
+    "issue": "I-ADD-03-Q19-Q19-ISSUE-ANA",
+    "why": "ambiguous: the cover says the Addendum 'reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000'; Section 4.1 (to which the Q19 response points) says 'The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).' Clause 39.4 at ADD-02 states 'an undisputed sum exceeding SAR 20,000,000'. calculate (percentage_of) gives 40% …",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/Q19-issue",
+     "state": "proposed",
+     "why": "ambiguous: the cover says the Addendum 'reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000'; Section 4.1 (to which the Q19 response points) says 'The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).' Clause 39.4…"
+    },
+    "payload": {
+     "text": "ambiguous: the cover says the Addendum 'reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000'; Section 4.1 (to which the Q19 response points) says 'The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).' Clause 39.4 at ADD-02 states 'an undisputed sum exceeding SAR 20,000,000'. calculate (percentage_of) gives 40% x SAR 20,000,000 = SAR 8,000,000, which is the amount of the reduction, so the cover's figure and the figure Section 4.1 produces may differ. The cover summarises and does not amend; which governs and the resulting threshold are a person's decision.",
+     "owner": "Legal",
+     "short": "Clause 39.4 threshold: cover 'to SAR 8,000,000' vs Section 4.1 'reduced by forty per cent (40%)'",
+     "theme": "Authority Event of Default"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:Q16",
+    "state": "unresolved",
+    "why": "escalated: software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 Nov…"
+   },
+   {
+    "kind": "escalation",
+    "ref": "ADD-03/Q16",
+    "state": "escalated",
+    "why": "software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 November 2026'. Table 8-1 does not exist at ADD-02: it is inserted by Section 2.2 of this same Addendum…"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/Q16-issue",
+    "state": "held",
+    "why": "blocked: depends on ADD-03/Q16 (escalation, escalated) (not ready: promotion waits while depends on ADD-03/Q16 (escalation, escalated))"
+   },
+   {
+    "kind": "issue",
+    "ref": "ADD-03/Q19-issue",
+    "state": "proposed",
+    "why": "ambiguous: the cover says the Addendum 'reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000'; Section 4.1 (to which the Q19 response points) says 'The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).' Clause 39.4…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-V:39.4"
+   ],
+   "units": [
+    "VOL-V:39.4"
+   ],
+   "rows": [],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "escalated: software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 Nov…; software limitation: Q16 prints a relative change 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' that applies only 'for an application lodged not later than Sunday 22 November 2026'. Table 8-1 does not exist at ADD-02: it is inserted by Section 2.2 of this same Addendum from an image reading (ADD-03:p3-image, pending approval). A dry-run adjust_value on ADD-03:p3-imag…; blocked: depends on ADD-03/Q16 (escalation, escalated) (not ready: promotion waits while depends on ADD-03/Q16 (escalation, escalated)); ambiguous: the cover says the Addendum 'reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000'; Section 4.1 (to which the Q19 response points) says 'The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).' Clause 39.4 at ADD-02 states 'an undisputed sum exceeding SAR 20,000,000'. calculate (percentage_of) gives 40% …",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references"
+ },
+ {
+  "id": "impact:APPENDIX A — TABLE 8-1 (ARABIC)",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (pending reading, unresolved): ADD-03:p3-image/r1, ADD-03:p3-image/r2, ADD-03:p3-image/r3, ADD-03:p3-image/hdr-en, ADD-03:p3-image/hdr-ar, ADD-03:p3-image/date …; never an accepted fact",
+  "provisions": [
+   "ADD-03:p3-image/r1",
+   "ADD-03:p3-image/r2",
+   "ADD-03:p3-image/r3",
+   "ADD-03:p3-image/hdr-en",
+   "ADD-03:p3-image/hdr-ar",
+   "ADD-03:p3-image/date",
+   "ADD-03:p3-image/ref",
+   "ADD-03:p3-image/to",
+   "ADD-03:p3-image/subject",
+   "ADD-03:p3-image/tender",
+   "ADD-03:p3-image/notes-heading",
+   "ADD-03:p3-image/note1",
+   "ADD-03:p3-image/note2",
+   "ADD-03:p3-image/note3",
+   "ADD-03:p3-image/stamp",
+   "ADD-03:p3-image/signatory",
+   "ADD-03:p3-image/image-footer",
+   "ADD-03:p3-image"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:p3-image/r1",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/r1",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r1",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/r1 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/r1",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/r1",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/r2",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/r2",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r2",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/r2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/r2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/r2",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/r3",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/r3",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/r3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/r3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/r3",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/r3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/hdr-en",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/hdr-en",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/hdr-en",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/hdr-en (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/hdr-en",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/hdr-en",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/hdr-ar",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/hdr-ar",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/hdr-ar",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/hdr-ar (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/hdr-ar",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/hdr-ar",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/date",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/date",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/date",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/date (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/date",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/date",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/ref",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/ref",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/ref",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/ref (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/ref",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/ref",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/to",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/to",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/to",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/to (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/to",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/to",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/subject",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/subject",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/subject",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/subject (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/subject",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/subject",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/tender",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/tender",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/tender",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/tender (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/tender",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/tender",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/notes-heading",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/notes-heading",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/notes-heading",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/notes-heading (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/notes-heading",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/notes-heading",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/note1",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/note1",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/note1",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/note1 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/note1",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/note1",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/note2",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/note2",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/note2",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/note2 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/note2",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/note2",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/note3",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/note3",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/note3",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/note3 (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/note3",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/note3",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/stamp",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/stamp",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/stamp",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/stamp (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/stamp",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/stamp",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/signatory",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/signatory",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/signatory",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/signatory (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/signatory",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/signatory",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image/image-footer",
+    "basis": "unresolved",
+    "why": "no item proposed for it",
+    "conditional_on": {
+     "kind": "provision",
+     "ref": "ADD-03:p3-image/image-footer",
+     "state": "unaccounted",
+     "why": "no item proposed for it"
+    },
+    "units": [],
+    "engine": [
+     {
+      "item": "impact:ADD-03:p3-image/image-footer",
+      "why": "no op or disposition accounts for it",
+      "investigate": "conditional on provision ADD-03:p3-image/image-footer (unaccounted: no op or disposition accounts for it): investigate the rows, activities and prices that rest on the provision ADD-03:p3-image/image-footer",
+      "conditional_on": {
+       "kind": "provision",
+       "ref": "ADD-03:p3-image/image-footer",
+       "state": "unaccounted",
+       "why": "no op or disposition accounts for it"
+      }
+     }
+    ]
+   },
+   {
+    "provision": "ADD-03:p3-image",
+    "basis": "pending reading",
+    "item": "impact:ADD-03-p3-r1",
+    "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force",
+    "units": [
+     "ADD-03:p3-image",
+     "ADD-03:p3-image/r1",
+     "ADD-03:p3-image/r2",
+     "ADD-03:p3-image/r3",
+     "ADD-03:p3-image/hdr-en",
+     "ADD-03:p3-image/hdr-ar",
+     "ADD-03:p3-image/date",
+     "ADD-03:p3-image/ref",
+     "ADD-03:p3-image/to",
+     "ADD-03:p3-image/subject",
+     "ADD-03:p3-image/tender",
+     "ADD-03:p3-image/notes-heading",
+     "ADD-03:p3-image/note1",
+     "ADD-03:p3-image/note2",
+     "ADD-03:p3-image/note3",
+     "ADD-03:p3-image/stamp",
+     "ADD-03:p3-image/signatory",
+     "ADD-03:p3-image/image-footer"
+    ],
+    "conditional_on": {
+     "kind": "reading",
+     "ref": "ADD-03-p3-r1",
+     "state": "pending_reading",
+     "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force"
+    },
+    "investigate": "conditional on reading ADD-03-p3-r1 (pending_reading: the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force): investigate the rows, activities and prices that rest on ADD-03:p3-image, ADD-03:p3-image/r1, ADD-03:p3-image/r2, ADD-03:p3-image/r3, ADD-03:p3-image/hdr-en, ADD-03:p3-image/hdr-ar, ADD-03:p3-image/date, ADD-03:p3-image/ref, ADD-03:p3-image/to, ADD-03:p3-image/subject, ADD-03:p3-image/tender, ADD-03:p3-image/notes-heading (+6)"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/r1",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/r2",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/r3",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/hdr-en",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/hdr-ar",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/date",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/ref",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/to",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/subject",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/tender",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/notes-heading",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/note1",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/note2",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/note3",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/stamp",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/signatory",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "provision",
+    "ref": "ADD-03:p3-image/image-footer",
+    "state": "unaccounted",
+    "why": "no item proposed for it"
+   },
+   {
+    "kind": "reading",
+    "ref": "ADD-03-p3-r1",
+    "state": "pending_reading",
+    "why": "the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force"
+   }
+  ],
+  "scope": {
+   "cited": [],
+   "units": [
+    "ADD-03:p3-image",
+    "ADD-03:p3-image/date",
+    "ADD-03:p3-image/hdr-ar",
+    "ADD-03:p3-image/hdr-en",
+    "ADD-03:p3-image/image-footer",
+    "ADD-03:p3-image/note1",
+    "ADD-03:p3-image/note2",
+    "ADD-03:p3-image/note3",
+    "ADD-03:p3-image/notes-heading",
+    "ADD-03:p3-image/r1",
+    "ADD-03:p3-image/r2",
+    "ADD-03:p3-image/r3",
+    "ADD-03:p3-image/ref",
+    "ADD-03:p3-image/signatory",
+    "ADD-03:p3-image/stamp",
+    "ADD-03:p3-image/subject",
+    "ADD-03:p3-image/tender",
+    "ADD-03:p3-image/to"
+   ],
+   "rows": [],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; no item proposed for it; the reading ADD-03-p3-r1 of ADD-03 is pending a person's approval: its values are not in force",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references"
+ },
+ {
+  "id": "impact:1. RECITALS",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue): ADD-03:1.3; never an accepted fact",
+  "provisions": [
+   "ADD-03:1.3"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:1.3",
+    "basis": "analysis issue",
+    "item": "ADD-03/issue/cq20",
+    "issue": "I-ADD-03-1-3-CQ20-ANA",
+    "why": "ambiguous: the cover and the operative text differ on which clarification requests are answered. The cover says 'and responds to clarification requests 15 to 20'. Clause 1.3 says 'Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.', and the Section 5 heading reads '5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19'. No response to a request 20 was found in …",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/issue/cq20",
+     "state": "proposed",
+     "why": "ambiguous: the cover and the operative text differ on which clarification requests are answered. The cover says 'and responds to clarification requests 15 to 20'. Clause 1.3 says 'Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.', and the Section 5 headin…"
+    },
+    "payload": {
+     "text": "ambiguous: the cover and the operative text differ on which clarification requests are answered. The cover says 'and responds to clarification requests 15 to 20'. Clause 1.3 says 'Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.', and the Section 5 heading reads '5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19'. No response to a request 20 was found in ADD-03. VOL-I:5.2 provides 'Requests received after that time will not be answered.' Reading 1: the cover's '20' is a misprint. Reading 2: a request 20 exists but was not answered, for example because it was received late. Reading 3: a response to request 20 was intended but omitted. Not resolved here. Open question: does a request 20 exist, and is its response missing from the Addendum?",
+     "owner": "Document control",
+     "short": "Cover says CQ 15-20; Clause 1.3 and Section 5 say 15-19",
+     "theme": "cover vs operative discrepancy"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "issue",
+    "ref": "ADD-03/issue/cq20",
+    "state": "proposed",
+    "why": "ambiguous: the cover and the operative text differ on which clarification requests are answered. The cover says 'and responds to clarification requests 15 to 20'. Clause 1.3 says 'Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.', and the Section 5 headin…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-I:5.2"
+   ],
+   "units": [
+    "VOL-I:5.2"
+   ],
+   "rows": [
+    "VOL-I-5.2-01"
+   ],
+   "activities": [
+    "clarifications"
+   ],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "ambiguous: the cover and the operative text differ on which clarification requests are answered. The cover says 'and responds to clarification requests 15 to 20'. Clause 1.3 says 'Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.', and the Section 5 heading reads '5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19'. No response to a request 20 was found in …",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 8-1",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue): ADD-03:T8-1/2; never an accepted fact",
+  "provisions": [
+   "ADD-03:T8-1/2"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:T8-1/2",
+    "basis": "analysis issue",
+    "item": "ADD-03/T8-1/2:issue",
+    "issue": "I-ADD-03-T8-1-2-2-ISSUE-ANA",
+    "why": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states). The governing Arabic (ADD-03:p3-image/r2, reading pending) prints 'مدة الإصدار (أيام عمل): ٥'. The English translation (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. ADD-03:2.2 says 'The Arabic text governs.' ADD-03:Q16 says that 'for an application lodged not later than Sunday 22 November 2026, the issue period i…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/T8-1/2:issue",
+     "state": "proposed",
+     "why": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states). The governing Arabic (ADD-03:p3-image/r2, reading pending) prints 'مدة الإصدار (أيام عمل): ٥'. The English translation (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. ADD-03:2.2 says 'The Arabic text governs.' ADD-03…"
+    },
+    "payload": {
+     "text": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states). The governing Arabic (ADD-03:p3-image/r2, reading pending) prints 'مدة الإصدار (أيام عمل): ٥'. The English translation (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. ADD-03:2.2 says 'The Arabic text governs.' ADD-03:Q16 says that 'for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days.' Reading (a): the translation is wrong; the period is 5, reduced by 2 only for applications lodged by 22 November 2026. Reading (b): the translation shows the post-Q16 figure. Open question: which row 2 issue period (and which conditional reduction) A1 date rules and the A5 certificate lead time for non-GCC members should use. Pending a human decision; the program does not choose.",
+     "owner": "Legal",
+     "short": "Table 8-1 row 2: Arabic ٥ vs English 3 Working Days",
+     "theme": "translation discrepancy"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "issue",
+    "ref": "ADD-03/T8-1/2:issue",
+    "state": "proposed",
+    "why": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states). The governing Arabic (ADD-03:p3-image/r2, reading pending) prints 'مدة الإصدار (أيام عمل): ٥'. The English translation (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. ADD-03:2.2 says 'The Arabic text governs.' ADD-03…"
+   }
+  ],
+  "scope": {
+   "cited": [],
+   "units": [],
+   "rows": [],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states). The governing Arabic (ADD-03:p3-image/r2, reading pending) prints 'مدة الإصدار (أيام عمل): ٥'. The English translation (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. ADD-03:2.2 says 'The Arabic text governs.' ADD-03:Q16 says that 'for an application lodged not later than Sunday 22 November 2026, the issue period i…",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "impact:4. AUTHORITY EVENT OF DEFAULT",
+  "kind": "conditional_impact",
+  "conditional": true,
+  "accepted": false,
+  "label": "CONDITIONAL impact investigation (analysis issue): ADD-03:4.1; never an accepted fact",
+  "provisions": [
+   "ADD-03:4.1"
+  ],
+  "items": [
+   {
+    "provision": "ADD-03:4.1",
+    "basis": "analysis issue",
+    "item": "ADD-03/issue-4.1",
+    "issue": "I-ADD-03-4-1-ISSUE-4-1-ANA",
+    "why": "Cover and operative provision differ. ADD-03:4.1 prints \"The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).\" applied to \"SAR 20,000,000\" in VOL-V:39.4 (engine computation in the simulation: SAR 12,000,000), while the cover ADD-03:cover/para3 says it \"reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000\". The c…",
+    "conditional_on": {
+     "kind": "issue",
+     "ref": "ADD-03/issue-4.1",
+     "state": "proposed",
+     "why": "Cover and operative provision differ. ADD-03:4.1 prints \"The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).\" applied to \"SAR 20,000,000\" in VOL-V:39.4 (engine computation in the simulation: SAR 12,000,000), while the cover ADD-03:cover/para3 says it \"reduces the unpaid su…"
+    },
+    "payload": {
+     "text": "Cover and operative provision differ. ADD-03:4.1 prints \"The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).\" applied to \"SAR 20,000,000\" in VOL-V:39.4 (engine computation in the simulation: SAR 12,000,000), while the cover ADD-03:cover/para3 says it \"reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000\". The cover summarises and does not amend; which figure the Authority intends is not decided here. Open question for Legal/Commercial: whether to seek clarification from the Authority.",
+     "owner": "Legal",
+     "short": "ADD-03 4.1 vs cover: Authority EoD threshold figure differs",
+     "theme": "cover_vs_operative"
+    },
+    "reference": "UNVERIFIED reference: the analysis phase's proposal, never promoted as it stands; the downstream item answering this task is validated by the register's own checks"
+   }
+  ],
+  "conditional_on": [
+   {
+    "kind": "issue",
+    "ref": "ADD-03/issue-4.1",
+    "state": "proposed",
+    "why": "Cover and operative provision differ. ADD-03:4.1 prints \"The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).\" applied to \"SAR 20,000,000\" in VOL-V:39.4 (engine computation in the simulation: SAR 12,000,000), while the cover ADD-03:cover/para3 says it \"reduces the unpaid su…"
+   }
+  ],
+  "scope": {
+   "cited": [
+    "VOL-V:39.4"
+   ],
+   "units": [
+    "VOL-V:39.4"
+   ],
+   "rows": [],
+   "activities": [],
+   "clarifications": [],
+   "prices": []
+  },
+  "status": "Cover and operative provision differ. ADD-03:4.1 prints \"The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).\" applied to \"SAR 20,000,000\" in VOL-V:39.4 (engine computation in the simulation: SAR 12,000,000), while the cover ADD-03:cover/para3 says it \"reduces the unpaid sum that constitutes an Authority Event of Default under Volume V Clause 39.4 to SAR 8,000,000\". The c…",
+  "expect": "investigate what WOULD follow if these changes applied or these issues held (they are NOT applied: unresolved, failed or blocked; or proposed issues): re-reads of earlier answers, rows reached through relationships, programme and pricing effects. Propose issues, relationships and escalations that say CONDITIONAL and name what they rest on, or `no_change` with a verbatim quotation; never a row, a reading, an activity or an evidence item (nothing here is in force); the items' payloads are UNVERIFIED references",
+  "clarification_window": "the clarification window closed on 2026-11-12 (VOL-I 5.2): this question cannot be submitted as a clarification; it is a bid-decision for a person"
+ },
+ {
+  "id": "reading:ADD-03-p3-r1",
+  "kind": "reading_rows",
+  "reading": "ADD-03-p3-r1",
+  "status": "pending",
+  "subject_sha256": "4415b9e1a9e263aabf25ffdf479ea987d09fcf21c32dc7d76f04f72dff84ce42",
+  "pages": [
+   3
+  ],
+  "conditional_on": {
+   "reading": "ADD-03-p3-r1",
+   "until": "approval"
+  },
+  "units": [
+   {
+    "unit": "ADD-03:p3-image",
+    "kind": "table",
+    "label": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+    "translation": null,
+    "crops": [
+     "regions/ADD-03-p3-r1/crop.png"
+    ],
+    "bands": [],
+    "table": {
+     "column_lang": {
+      "المستندات المطلوبة مع الطلب": "ar",
+      "فئة العضو": "ar",
+      "م": "ar",
+      "مدة الإصدار (أيام عمل)": "ar"
+     },
+     "columns": [
+      "م",
+      "فئة العضو",
+      "المستندات المطلوبة مع الطلب",
+      "مدة الإصدار (أيام عمل)"
+     ],
+     "direction": "rtl",
+     "qualifier": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "title": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r1",
+    "kind": "table_row",
+    "label": "r1",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ١ | فئة العضو: شركة مؤسسة في إحدى دول مجلس التعاون الخليجي | المستندات المطلوبة مع الطلب: السجل التجاري مصدقاً | مدة الإصدار (أيام عمل): ٣",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r01.png",
+     "review/ADD-03-p3-r1/cells/r01c1.png",
+     "review/ADD-03-p3-r1/cells/r01c2.png",
+     "review/ADD-03-p3-r1/cells/r01c3.png",
+     "review/ADD-03-p3-r1/cells/r01c0.png"
+    ],
+    "bands": [
+     1
+    ],
+    "cells": {
+     "المستندات المطلوبة مع الطلب": "السجل التجاري مصدقاً",
+     "فئة العضو": "شركة مؤسسة في إحدى دول مجلس التعاون الخليجي",
+     "م": "١",
+     "مدة الإصدار (أيام عمل)": "٣"
+    },
+    "numeric": {
+     "م": {
+      "form": "single",
+      "text": "١",
+      "values": [
+       1.0
+      ]
+     },
+     "مدة الإصدار (أيام عمل)": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "period",
+      "meaning": "3 working days",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "row number 1",
+      "text": "١",
+      "uncertain": false,
+      "visual_ltr_expected": "١"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة العضو",
+      "المستندات المطلوبة مع الطلب",
+      "مدة الإصدار (أيام عمل)"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Region Investment Services Office",
+      "مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "التاريخ: ١٦ نوفمبر ٢٠٢٦م",
+      "الرقم: ٢٢٨/٢٠٢٦",
+      "إلى: الهيئة الشمالية للمشتريات المرفقية",
+      "الموضوع: تسجيل استثمار أعضاء الائتلافات المؤسسين خارج المملكة",
+      "مناقصة رقم: NUPA/ISTP/2026/014 (محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان)",
+      "ملاحظات:",
+      "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+      "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+      "٣. تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+      "",
+      "مدير مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. SYNTHETIC: not tender content."
+     ],
+     "qualifier": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "table_title": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r2",
+    "kind": "table_row",
+    "label": "r2",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٢ | فئة العضو: شركة مؤسسة خارج دول مجلس التعاون الخليجي | المستندات المطلوبة مع الطلب: السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة | مدة الإصدار (أيام عمل): ٥",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r02.png",
+     "review/ADD-03-p3-r1/cells/r02c1.png",
+     "review/ADD-03-p3-r1/cells/r02c2.png",
+     "review/ADD-03-p3-r1/cells/r02c3.png",
+     "review/ADD-03-p3-r1/cells/r02c0.png"
+    ],
+    "bands": [
+     2
+    ],
+    "cells": {
+     "المستندات المطلوبة مع الطلب": "السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة",
+     "فئة العضو": "شركة مؤسسة خارج دول مجلس التعاون الخليجي",
+     "م": "٢",
+     "مدة الإصدار (أيام عمل)": "٥"
+    },
+    "numeric": {
+     "م": {
+      "form": "single",
+      "text": "٢",
+      "values": [
+       2.0
+      ]
+     },
+     "مدة الإصدار (أيام عمل)": {
+      "form": "single",
+      "text": "٥",
+      "values": [
+       5.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "period",
+      "meaning": "5 working days",
+      "text": "٥",
+      "uncertain": false,
+      "visual_ltr_expected": "٥"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "row number 2",
+      "text": "٢",
+      "uncertain": false,
+      "visual_ltr_expected": "٢"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة العضو",
+      "المستندات المطلوبة مع الطلب",
+      "مدة الإصدار (أيام عمل)"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Region Investment Services Office",
+      "مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "التاريخ: ١٦ نوفمبر ٢٠٢٦م",
+      "الرقم: ٢٢٨/٢٠٢٦",
+      "إلى: الهيئة الشمالية للمشتريات المرفقية",
+      "الموضوع: تسجيل استثمار أعضاء الائتلافات المؤسسين خارج المملكة",
+      "مناقصة رقم: NUPA/ISTP/2026/014 (محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان)",
+      "ملاحظات:",
+      "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+      "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+      "٣. تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+      "",
+      "مدير مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. SYNTHETIC: not tender content."
+     ],
+     "qualifier": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "table_title": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/r3",
+    "kind": "table_row",
+    "label": "r3",
+    "role": null,
+    "lang": null,
+    "pages": [
+     3
+    ],
+    "text": "م: ٣ | فئة العضو: فرع مسجل في المملكة لشركة أجنبية | المستندات المطلوبة مع الطلب: شهادة تسجيل الفرع وقرار مجلس إدارة الشركة الأم بتفويض الفرع | مدة الإصدار (أيام عمل): ٨",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/rows/r03.png",
+     "review/ADD-03-p3-r1/cells/r03c1.png",
+     "review/ADD-03-p3-r1/cells/r03c2.png",
+     "review/ADD-03-p3-r1/cells/r03c3.png",
+     "review/ADD-03-p3-r1/cells/r03c0.png"
+    ],
+    "bands": [
+     3
+    ],
+    "cells": {
+     "المستندات المطلوبة مع الطلب": "شهادة تسجيل الفرع وقرار مجلس إدارة الشركة الأم بتفويض الفرع",
+     "فئة العضو": "فرع مسجل في المملكة لشركة أجنبية",
+     "م": "٣",
+     "مدة الإصدار (أيام عمل)": "٨"
+    },
+    "numeric": {
+     "م": {
+      "form": "single",
+      "text": "٣",
+      "values": [
+       3.0
+      ]
+     },
+     "مدة الإصدار (أيام عمل)": {
+      "form": "single",
+      "text": "٨",
+      "values": [
+       8.0
+      ]
+     }
+    },
+    "numerals": [
+     {
+      "alternatives": [],
+      "column": "period",
+      "meaning": "8 working days",
+      "text": "٨",
+      "uncertain": false,
+      "visual_ltr_expected": "٨"
+     },
+     {
+      "alternatives": [],
+      "column": "no",
+      "meaning": "row number 3",
+      "text": "٣",
+      "uncertain": false,
+      "visual_ltr_expected": "٣"
+     }
+    ],
+    "context": {
+     "column_headings": [
+      "م",
+      "فئة العضو",
+      "المستندات المطلوبة مع الطلب",
+      "مدة الإصدار (أيام عمل)"
+     ],
+     "interpretation": null,
+     "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, range or target is read from these headings and notes by a person",
+     "notes": [
+      "Northern Region Investment Services Office",
+      "مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "التاريخ: ١٦ نوفمبر ٢٠٢٦م",
+      "الرقم: ٢٢٨/٢٠٢٦",
+      "إلى: الهيئة الشمالية للمشتريات المرفقية",
+      "الموضوع: تسجيل استثمار أعضاء الائتلافات المؤسسين خارج المملكة",
+      "مناقصة رقم: NUPA/ISTP/2026/014 (محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان)",
+      "ملاحظات:",
+      "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+      "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+      "٣. تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+      "",
+      "مدير مكتب خدمات الاستثمار بالمنطقة الشمالية",
+      "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. SYNTHETIC: not tender content."
+     ],
+     "qualifier": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "table_title": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار"
+    }
+   },
+   {
+    "unit": "ADD-03:p3-image/hdr-en",
+    "kind": "reading_block",
+    "label": "hdr-en",
+    "role": "letterhead",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "Northern Region Investment Services Office",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b00-left.png"
+    ],
+    "bands": [
+     [
+      0,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/hdr-ar",
+    "kind": "reading_block",
+    "label": "hdr-ar",
+    "role": "letterhead",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "مكتب خدمات الاستثمار بالمنطقة الشمالية",
+    "translation": "Investment Services Office in the Northern Region",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b00-right.png"
+    ],
+    "bands": [
+     [
+      0,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/date",
+    "kind": "reading_block",
+    "label": "date",
+    "role": "letter-date",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "التاريخ: ١٦ نوفمبر ٢٠٢٦م",
+    "translation": "Date: 16 November 2026 AD",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b01-left.png"
+    ],
+    "bands": [
+     [
+      1,
+      "left"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/ref",
+    "kind": "reading_block",
+    "label": "ref",
+    "role": "letter-reference",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "الرقم: ٢٢٨/٢٠٢٦",
+    "translation": "No.: 228/2026",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b01-right.png"
+    ],
+    "bands": [
+     [
+      1,
+      "right"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/to",
+    "kind": "reading_block",
+    "label": "to",
+    "role": "addressee",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "إلى: الهيئة الشمالية للمشتريات المرفقية",
+    "translation": "To: the Northern Utilities Procurement Authority",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b02-full.png"
+    ],
+    "bands": [
+     [
+      2,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/subject",
+    "kind": "reading_block",
+    "label": "subject",
+    "role": "subject",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "الموضوع: تسجيل استثمار أعضاء الائتلافات المؤسسين خارج المملكة",
+    "translation": "Subject: investment registration of consortium founding members outside the Kingdom",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b03-full.png"
+    ],
+    "bands": [
+     [
+      3,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/tender",
+    "kind": "reading_block",
+    "label": "tender",
+    "role": "subject",
+    "lang": "mixed",
+    "pages": [
+     3
+    ],
+    "text": "مناقصة رقم: NUPA/ISTP/2026/014 (محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان)",
+    "translation": "Tender No.: NUPA/ISTP/2026/014 (Wadi Al-Sirhan Independent Sewage Treatment Plant)",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b04-full.png"
+    ],
+    "bands": [
+     [
+      4,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/notes-heading",
+    "kind": "reading_block",
+    "label": "notes-heading",
+    "role": "table-note-heading",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "ملاحظات:",
+    "translation": "Notes:",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b13-full.png"
+    ],
+    "bands": [
+     [
+      13,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note1",
+    "kind": "reading_block",
+    "label": "note1",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+    "translation": "1. The issue period is counted in working days from the working day following the day of receipt of the complete application.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b14-full.png"
+    ],
+    "bands": [
+     [
+      14,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note2",
+    "kind": "reading_block",
+    "label": "note2",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+    "translation": "2. The certificate is valid for ninety (90) days from the date of its issue.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b15-full.png"
+    ],
+    "bands": [
+     [
+      15,
+      "full"
+     ]
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/note3",
+    "kind": "reading_block",
+    "label": "note3",
+    "role": "table-note",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "٣. تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+    "translation": "3. Applications are submitted electronically through the Office's portal only, and an application is not considered complete unless all the documents shown above are attached.",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b16-full.png",
+     "review/ADD-03-p3-r1/bands/b17-full.png"
+    ],
+    "bands": [
+     [
+      16,
+      "full"
+     ],
+     [
+      17,
+      "full"
+     ]
+    ],
+    "uncertain": [
+     "vowel mark on the first word of band 16 (تُقدِّم as seen vs the passive تُقدَّم): the mark on the dal is small at native resolution; stored as seen, matching text removes tashkeel"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/stamp",
+    "kind": "reading_block",
+    "label": "stamp",
+    "role": "stamp",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b18-left.png"
+    ],
+    "bands": [
+     [
+      18,
+      "left"
+     ]
+    ],
+    "uncertain": [
+     "band 18 left holds only an empty oval stamp outline with no text inside; nothing is transcribed"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/signatory",
+    "kind": "reading_block",
+    "label": "signatory",
+    "role": "signature-block",
+    "lang": "ar",
+    "pages": [
+     3
+    ],
+    "text": "مدير مكتب خدمات الاستثمار بالمنطقة الشمالية",
+    "translation": "Director of the Investment Services Office in the Northern Region",
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b18-right.png"
+    ],
+    "bands": [
+     [
+      18,
+      "right"
+     ]
+    ],
+    "uncertain": [
+     "band 18 right also holds a handwritten signature stroke below the title; it carries no legible text"
+    ]
+   },
+   {
+    "unit": "ADD-03:p3-image/image-footer",
+    "kind": "reading_block",
+    "label": "image-footer",
+    "role": "image-footer",
+    "lang": "en",
+    "pages": [
+     3
+    ],
+    "text": "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. SYNTHETIC: not tender content.",
+    "translation": null,
+    "crops": [
+     "review/ADD-03-p3-r1/bands/b19-full.png"
+    ],
+    "bands": [
+     [
+      19,
+      "full"
+     ]
+    ]
+   }
+  ],
+  "expect": "propose the rows (row_new) the reading's table or form states (zones, heights, datum, scope, notices, units: the parameters read from these cells, the quote verbatim from the reading's source text, Arabic as printed; the translation is not evidence), each cites the reading's units and carries `conditional_on: {reading: ADD-03-p3-r1, until: approval}`, and the activities they need carry the same field. They are never in force while the reading is pending: A1 shows them as PENDING READING, A3 and A5 leave them out. Where the reading and another rendering differ (a translation, an English appendix), say so in an issue or an escalation; never choose between them",
+  "needs": "each new row names its evidence: an existing evidence item (vocabulary.evidence_items) or a new `evidence_item` proposal, with an activity producing it (vocabulary.activities_by_evidence_item, or a new `activity` proposal whose duration is a PROVISIONAL ASSUMPTION); or the row's `no_deliverable` with the reason; a contractual_post_award row states its `post_award_evidence`. A row without them is reported by check-register as a downstream gap"
+ }
+]

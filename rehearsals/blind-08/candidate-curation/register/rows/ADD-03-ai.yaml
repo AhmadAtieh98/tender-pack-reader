@@ -1,0 +1,477 @@
+# CANDIDATE rows written by AI workflow run ADD-03-run-host-20261008T053735Z-77b2: PROPOSED, not reviewed.
+doc: ADD-03
+prepared_by: AI workflow run ADD-03-run-host-20261008T053735Z-77b2 (route host, model claude-code headless (claude-opus-5-5));
+  PROPOSED; not reviewed
+method: AI workflow downstream proposals validated by tenderpack.ai.downstream
+rows:
+- id: ADD-03-cover-01
+  group: submission_forms
+  scope:
+  - Envelope A
+  - Form 4-A
+  - addendum acknowledgement
+  requirement: Bidders shall acknowledge receipt of Addendum No. 3 in Form 4-A.
+  units:
+  - ADD-03:cover/para3
+  discipline: Bid management
+  assessment: procedural
+  evidence:
+  - EV-FORM-4A
+  interpretations:
+  - stage: ADD-03
+    quote: Bidders shall acknowledge receipt in Form 4-A.
+    parameters:
+      form: Form 4-A
+    consequence: none_stated
+    note: No consequence is printed with the acknowledgement. The cover's 'failing which the Proposal will be rejected'
+      attaches to the notification summary, not to the acknowledgement (I-ADD03-COVER-2.5). [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+  confidence: medium
+  confidence_reason: Verbatim, but printed in cover text. A person confirms that it is recorded as an obligation,
+    as for the same words in Addenda 1 and 2.
+  owner: Bid manager
+  introduced:
+    stage: ADD-03
+    by: ADD-03/cover/para3
+    evidence:
+      unit: ADD-03:cover/para3
+      page: 1
+      words: Bidders shall acknowledge receipt in Form 4-A.
+    note: ''
+- id: ADD-03-3.1-01
+  group: VOL-II:4
+  scope:
+  - process design
+  - treated effluent storage reservoir
+  - post_award
+  requirement: The treated effluent storage reservoir shall provide a working volume of not less than six hours
+    of the design flow, in not fewer than two compartments, each able to be isolated for cleaning while the other
+    remains in service (new VOL-II 4.6).
+  units:
+  - VOL-II:4.5+ADD-03
+  discipline: Technical
+  assessment: contractual_post_award
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: The treated effluent storage reservoir referred to in Clause 1.2 shall provide a working volume of not
+      less than six (6) hours of the design flow and shall be divided into not fewer than two (2) compartments,
+      each capable of being isolated for cleaning while the other remains in service.
+    parameters:
+      working_volume_hours_of_design_flow: 6
+      min_compartments: 2
+    consequence: none_stated
+    note: 'No volume in m3 is computed: ''the design flow'' is ambiguous (I-ADD03-DESIGN-FLOW). The bid-stage reflection
+      in the Technical Proposal and the Financial Model is row ADD-03-3.4-01. [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]'
+  date_notes:
+  - text: six (6) hours of the design flow
+    treatment: not_a_date
+    reason: a storage volume expressed in hours of flow, not a date or period
+  confidence: medium
+  confidence_reason: Verbatim from the inserted clause. Which design flow sizes it is ambiguous.
+  issues:
+  - I-ADD03-DESIGN-FLOW
+  owner: Technical lead
+  post_award_evidence:
+    kind: proposed
+    text: 'Post-award (proposed requirement): design and as-built records showing that the reservoir''s working
+      volume is at least six hours of the design flow and that it has at least two separately isolatable compartments
+      (VOL-II 4.6 inserted by ADD-03 3.1).'
+    basis:
+    - unit: VOL-II:4.5+ADD-03
+      page: 2
+      words: shall provide a working volume of not less than six (6) hours of the design flow and shall be divided
+        into not fewer than two (2) compartments
+    when: at design and on completion of the reservoir
+  introduced:
+    stage: ADD-03
+    by: ADD-03/3.1
+    evidence:
+      unit: ADD-03:3.1
+      page: 2
+      words: The following new Clause 4.6 is inserted in Volume II after Clause 4.5
+    note: ''
+- id: ADD-03-2.3-01
+  group: VOL-I:8.9
+  scope:
+  - member incorporated outside the Kingdom relying on a Certificate of Investment Registration
+  requirement: Applications for a Certificate of Investment Registration shall be made by the member to the Office.
+  units:
+  - ADD-03:2.3
+  discipline: Legal
+  assessment: procedural
+  evidence: []
+  interpretations:
+  - stage: ADD-03
+    quote: Applications for a Certificate of Investment Registration shall be made by the member to the Office.
+    parameters:
+      applicant: the member
+      to: the Office
+    consequence: none_stated
+    note: The issue-period undertaking belongs to the Office, not the Bidder. Its periods come from Arabic Table
+      8-1, whose reading is not part of this packet; no period is used. The Certificate route exists in the pack
+      only through ADD-03/2.1, which is not applied (I-ADD03-8.9-CONDITIONAL). [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+  date_notes:
+  - text: within the issue period stated in Table 8-1 for the class of the member
+    treatment: duration
+    reason: 'the Office''s issue period, a lead time and not a pack deadline; its values rest on the Arabic Table
+      8-1 (ADD-03 2.2: ''The Arabic text governs'')'
+  confidence: low
+  confidence_reason: The words are printed, but the Certificate route depends on the replacement of VOL-I 8.9 (ADD-03/2.1),
+    which is not applied, and the issue periods depend on Table 8-1.
+  issues:
+  - I-ADD03-8.9-CONDITIONAL
+  owner: Legal counsel
+  no_deliverable: 'The provision directs where a member applies. Nothing is submitted to the Authority under it:
+    the Certificate is submitted under replaced VOL-I 8.9(b) and the application reference is notified under ADD-03
+    2.5 (row ADD-03-2.5-01).'
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.3
+    evidence:
+      unit: ADD-03:2.3
+      page: 1
+      words: Applications for a Certificate of Investment Registration shall be made by the member to the Office.
+    note: ''
+- id: ADD-03-2.4-01
+  group: VOL-I:8.9
+  scope:
+  - member holding not more than 10% of Project Company shares with no role in design, construction or operation
+    of the Facility
+  - Envelope A
+  requirement: Such a member shall submit with Envelope A the signed undertaking described in Volume I Clause 8.9
+    as issued.
+  units:
+  - ADD-03:2.4
+  discipline: Legal
+  assessment: pass_fail
+  evidence:
+  - EV-INVESTMENT-LICENCE
+  interpretations:
+  - stage: ADD-03
+    quote: Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause
+      8.9 as issued.
+    parameters:
+      shareholding_max: not more than ten per cent (10%)
+      document: signed undertaking described in Volume I Clause 8.9 as issued
+      submitted_with: Envelope A
+    consequence: none_stated
+    note: Section 2.4 states no consequence of its own. Whether the rejection words of replaced 8.9 (ADD-03/2.1,
+      not applied) reach a missing undertaking is for a person. Q15 adds that such a member 'shall give its own
+      undertaking'. [AI workflow run ADD-03-run-host-20261008T053735Z-77b2 (route host, model claude-code headless
+      (claude-opus-5-5)); PROPOSED; not reviewed]
+  confidence: low
+  confidence_reason: The obligation is printed, but it is an exception to ADD-03/2.1, which is not applied (the
+    conflicting ops are escalated). Which members fall in the class is a bidder fact.
+  issues:
+  - I-ADD03-8.9-CONDITIONAL
+  - I-BIDDER-FACTS
+  owner: Legal counsel
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.4
+    evidence:
+      unit: ADD-03:2.4
+      page: 1
+      words: Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause
+        8.9 as issued.
+    note: ''
+- id: ADD-03-2.5-01
+  group: VOL-I:8.9
+  scope:
+  - Bidder relying on paragraph (b) of Volume I Clause 8.9 for any member
+  - Portal notification
+  requirement: A Bidder relying on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority
+    through the Portal, not later than three Working Days before the Proposal Due Date, of that member's name and
+    the reference number of its application to the Office.
+  units:
+  - ADD-03:2.5
+  discipline: Bid management
+  assessment: procedural
+  evidence:
+  - EV-CIR-NOTIFICATION
+  interpretations:
+  - stage: ADD-03
+    quote: A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority
+      through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that
+      member and the reference number of its application to the Office.
+    parameters:
+      channel: the Portal
+      content: name of that member and the reference number of its application to the Office
+      offset_working_days_before_pdd: 3
+    consequence: none_stated
+    note: Operative 2.5 states no consequence. The cover's 'failing which the Proposal will be rejected' summarises
+      and is not carried (I-ADD03-COVER-2.5). 'Paragraph (b)' exists only in the replacement text of ADD-03/2.1,
+      which is not applied (I-ADD03-8.9-CONDITIONAL). [AI workflow run ADD-03-run-host-20261008T053735Z-77b2 (route
+      host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+  date_rules:
+  - rule_id: ADD-03-2.5-NOTIFY
+    kind: relative
+    purpose: deadline
+    anchor: PDD
+    offset: 3
+    unit: working_day
+    direction: before
+    source_unit: ADD-03:2.5
+    text: three (3) Working Days before the Proposal Due Date
+    note: computed by the program (working-days-before, VOL-I 2.4 calendar); readings do not differ
+  confidence: medium
+  confidence_reason: Obligation, channel, content and deadline are printed. Its trigger refers to paragraph (b)
+    of the replacement 8.9, which is not applied, and the consequence differs between the cover and 2.5.
+  issues:
+  - I-ADD03-COVER-2.5
+  - I-ADD03-8.9-CONDITIONAL
+  owner: Bid manager
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.5
+    evidence:
+      unit: ADD-03:2.5
+      page: 1
+      words: shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal
+        Due Date
+    note: ''
+- id: ADD-03-3.4-01
+  group: ADD-03:3
+  scope:
+  - Technical Proposal
+  - Financial Model
+  - construction programme
+  - process design
+  requirement: Bidders shall reflect ADD-03 Sections 3.1 (new VOL-II 4.6 reservoir) and 3.3 (Scheduled PCOD period)
+    in the process design and construction programme in the Technical Proposal and in the Financial Model.
+  units:
+  - ADD-03:3.4
+  discipline: Technical
+  assessment: procedural
+  evidence:
+  - EV-TECH-PROPOSAL
+  - EV-FIN-MODEL
+  interpretations:
+  - stage: ADD-03
+    quote: Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted
+      in the Technical Proposal and in the Financial Model.
+    parameters:
+      sections:
+      - '3.1'
+      - '3.3'
+      documents:
+      - Technical Proposal
+      - Financial Model
+    consequence: none_stated
+    note: 'No consequence is printed in 3.4. Section 3.3 is not applied as an op: VOL-V 12.1 is still effective
+      at 36 months, while the cover says 42 (I-ADD03-PCOD-3.3). [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]'
+  confidence: medium
+  confidence_reason: Verbatim. The Section 3.3 effect is pending and the design flow is ambiguous.
+  issues:
+  - I-ADD03-PCOD-3.3
+  - I-ADD03-DESIGN-FLOW
+  owner: Technical lead
+  introduced:
+    stage: ADD-03
+    by: ADD-03:3.4
+    evidence:
+      unit: ADD-03:3.4
+      page: 2
+      words: Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted
+        in the Technical Proposal and in the Financial Model.
+    note: ''
+- id: ADD-03-AppA-01
+  group: Investment registration of foreign members (Table 8-1)
+  scope:
+  - foreign_member
+  requirement: 'Table 8-1 row 1 (Arabic, as printed): a member that is a company incorporated in a GCC state applies
+    to the Office with its certified commercial registration. The Office''s issue period for this class is printed
+    in Working Days.'
+  units:
+  - ADD-03:p3-image/r1
+  - ADD-03:p3-image
+  - ADD-03:p3-image/note1
+  - ADD-03:p3-image/note3
+  discipline: Legal
+  assessment: procedural
+  evidence:
+  - EV-INVESTMENT-REG-CERT
+  interpretations:
+  - stage: ADD-03
+    quote: 'فئة العضو: شركة مؤسسة في إحدى دول مجلس التعاون الخليجي | المستندات المطلوبة مع الطلب: السجل التجاري
+      مصدقاً | مدة الإصدار (أيام عمل): ٣'
+    parameters:
+      table_row: ١
+      issue_period_as_printed: ٣
+      period_unit_heading: مدة الإصدار (أيام عمل)
+    consequence: none_stated
+    note: PENDING READING ADD-03-p3-r1. The reading states no consequence. The rejection in ADD-03:2.1 is not quoted
+      here (see I-INVREG-CONSEQUENCE). A person decides whether the number is a maximum or a target. [AI workflow
+      run ADD-03-run-host-20261008T053735Z-77b2 (route host, model claude-code headless (claude-opus-5-5)); PROPOSED;
+      not reviewed]
+  date_notes:
+  - text: 'مدة الإصدار (أيام عمل): ٣'
+    treatment: duration
+    reason: The Office's issue period, counted under note 1 from the working day after receipt of the complete application.
+      This is an event, not a pack date.
+  confidence: medium
+  confidence_reason: The crop clearly shows ٣ and Appendix B row 1 also prints 3, but the reading is pending approval.
+  issues:
+  - I-INVREG-CONSEQUENCE
+  owner: Legal
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.2
+    evidence:
+      unit: ADD-03:2.2
+      page: 1
+      words: Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume
+        I.
+    note: ''
+  conditional_on:
+    reading: ADD-03-p3-r1
+    until: approval
+    subject_sha256: 4415b9e1a9e263aabf25ffdf479ea987d09fcf21c32dc7d76f04f72dff84ce42
+- id: ADD-03-AppA-03
+  group: Investment registration of foreign members (Table 8-1)
+  scope:
+  - foreign_member
+  requirement: 'Table 8-1 row 3 (Arabic, as printed): a member that is a branch registered in the Kingdom of a foreign
+    company applies to the Office with the branch registration certificate and the parent company''s board resolution
+    authorising the branch. The Office''s issue period for this class is printed in Working Days.'
+  units:
+  - ADD-03:p3-image/r3
+  - ADD-03:p3-image
+  - ADD-03:p3-image/note1
+  - ADD-03:p3-image/note3
+  discipline: Legal
+  assessment: procedural
+  evidence:
+  - EV-INVESTMENT-REG-CERT
+  interpretations:
+  - stage: ADD-03
+    quote: 'فئة العضو: فرع مسجل في المملكة لشركة أجنبية | المستندات المطلوبة مع الطلب: شهادة تسجيل الفرع وقرار مجلس
+      إدارة الشركة الأم بتفويض الفرع | مدة الإصدار (أيام عمل): ٨'
+    parameters:
+      table_row: ٣
+      issue_period_as_printed: ٨
+      period_unit_heading: مدة الإصدار (أيام عمل)
+    consequence: none_stated
+    note: PENDING READING ADD-03-p3-r1. Appendix B row 3 also prints 8. A person decides whether a branch registered
+      in the Kingdom is a member 'incorporated outside the Kingdom' under ADD-03:2.1. [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+  date_notes:
+  - text: 'مدة الإصدار (أيام عمل): ٨'
+    treatment: duration
+    reason: The Office's issue period, counted under note 1 from an event, not a pack date.
+  confidence: medium
+  confidence_reason: The crop clearly shows ٨, which matches Appendix B. The reading is pending.
+  issues:
+  - I-INVREG-CONSEQUENCE
+  owner: Legal
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.2
+    evidence:
+      unit: ADD-03:2.2
+      page: 1
+      words: Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume
+        I.
+    note: ''
+  conditional_on:
+    reading: ADD-03-p3-r1
+    until: approval
+    subject_sha256: 4415b9e1a9e263aabf25ffdf479ea987d09fcf21c32dc7d76f04f72dff84ce42
+- id: ADD-03-AppA-04
+  group: Investment registration of foreign members (Table 8-1)
+  scope:
+  - foreign_member
+  requirement: 'Table 8-1 note 3 (Arabic, as printed): applications are made electronically through the Office''s
+    portal only. An application is complete only when all the documents listed for the member''s class are attached.
+    Under note 1, the issue period runs from the working day after receipt of the complete application.'
+  units:
+  - ADD-03:p3-image/note3
+  - ADD-03:p3-image/note1
+  - ADD-03:p3-image
+  discipline: Bid management
+  assessment: procedural
+  evidence:
+  - EV-INVESTMENT-REG-CERT
+  interpretations:
+  - stage: ADD-03
+    quote: تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة
+      أعلاه.
+    parameters:
+      channel: بوابة المكتب فقط
+      counting_start: يوم العمل التالي ليوم استلام الطلب المكتمل
+    consequence: none_stated
+    note: PENDING READING ADD-03-p3-r1. The reading flags a vowel-mark uncertainty on the first word (تُقدِّم as
+      seen, or تُقدَّم). Matching ignores tashkeel, and either form leaves the obligation's words unchanged. [AI
+      workflow run ADD-03-run-host-20261008T053735Z-77b2 (route host, model claude-code headless (claude-opus-5-5));
+      PROPOSED; not reviewed]
+  date_notes:
+  - text: اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل
+    treatment: duration
+    reason: The counting start for the Office's issue period is an event (receipt of the complete application),
+      not a pack date.
+  confidence: medium
+  confidence_reason: The text is clear in the crop (bands 16-17). The reading is pending.
+  owner: Bid management
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.2
+    evidence:
+      unit: ADD-03:2.2
+      page: 1
+      words: Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume
+        I.
+    note: ''
+  conditional_on:
+    reading: ADD-03-p3-r1
+    until: approval
+    subject_sha256: 4415b9e1a9e263aabf25ffdf479ea987d09fcf21c32dc7d76f04f72dff84ce42
+- id: ADD-03-AppA-05
+  group: Investment registration of foreign members (Table 8-1)
+  scope:
+  - foreign_member
+  requirement: 'Table 8-1 note 2 (Arabic, as printed): a Certificate of Investment Registration is valid for ninety
+    days from its date of issue.'
+  units:
+  - ADD-03:p3-image/note2
+  - ADD-03:p3-image
+  discipline: Legal
+  assessment: informational
+  evidence:
+  - EV-INVESTMENT-REG-CERT
+  interpretations:
+  - stage: ADD-03
+    quote: تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.
+    parameters:
+      validity_as_printed: تسعين (٩٠) يوماً
+      counted_from: تاريخ إصدارها
+    consequence: none_stated
+    note: PENDING READING ADD-03-p3-r1. The pack does not say on which date the certificate must be valid (submission,
+      evaluation or Financial Close). See I-INVREG-VALIDITY. [AI workflow run ADD-03-run-host-20261008T053735Z-77b2
+      (route host, model claude-code headless (claude-opus-5-5)); PROPOSED; not reviewed]
+  date_notes:
+  - text: تسعين (٩٠) يوماً من تاريخ إصدارها
+    treatment: duration
+    reason: Validity is counted from the certificate's issue date, an event with no pack date. No approved rule
+      ties it to a milestone.
+  confidence: medium
+  confidence_reason: The note is clear in the crop (band 15) and matches Appendix B note (2). The reading is pending.
+  issues:
+  - I-INVREG-VALIDITY
+  owner: Legal
+  introduced:
+    stage: ADD-03
+    by: ADD-03:2.2
+    evidence:
+      unit: ADD-03:2.2
+      page: 1
+      words: Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume
+        I.
+    note: ''
+  conditional_on:
+    reading: ADD-03-p3-r1
+    until: approval
+    subject_sha256: 4415b9e1a9e263aabf25ffdf479ea987d09fcf21c32dc7d76f04f72dff84ce42

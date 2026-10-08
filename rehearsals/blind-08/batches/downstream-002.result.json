@@ -1,0 +1,1905 @@
+{
+ "run_id": "ADD-03-run-host-20261008T053735Z-77b2-downstream-002",
+ "created": "2026-10-08T06:08:03Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "ST-F1",
+   "kind": "fact",
+   "text": "ADD-03 Section 2.1 prints a replacement of Volume I Clause 8.9. Under it, each member incorporated outside the Kingdom submits with Envelope A (a) its licence or (b) a Certificate under Table 8-1. The replacement carries its own rejection words.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 8.9 is deleted and replaced by the following:",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F2",
+   "kind": "fact",
+   "text": "After the proposed ops, the effective text of VOL-I:8.9 at ADD-03 is still the ADD-02 text, because op ADD-03/2.1 is not applied (it is conflicting). That text has no paragraph (b).",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.9",
+     "page": 4,
+     "kind": "span",
+     "words": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F3",
+   "kind": "fact",
+   "text": "Section 2.4 makes Section 2.1 inapplicable to one class of member. It points that class back to the undertaking in Clause 8.9 'as issued'.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F4",
+   "kind": "fact",
+   "text": "Section 2.2 says Table 8-1 is issued in Arabic, that the Arabic governs, and that the English Appendix B is for convenience only.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F5",
+   "kind": "fact",
+   "text": "Row 2 of Table 8-1, issue-period column: the Arabic image reading prints ٥ and the English translation prints 3. I looked at the crop: the row image and the full page image show ٥ in the column 'مدة الإصدار (أيام عمل)' of row ٢. The reading ADD-03-p3-r1 is still waiting for a person's approval.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "٥",
+     "cell": {
+      "row_key": "٢",
+      "column": "مدة الإصدار (أيام عمل)"
+     },
+     "crop_sha256": "c3cd62470d6bb87e308374d434c36c3be8f58b7e3c2057472583c7160a0e36d4"
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:T8-1/2",
+     "page": 4,
+     "kind": "cell",
+     "words": "3",
+     "cell": {
+      "row_key": "2",
+      "column": "Issue period (Working Days)"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F6",
+   "kind": "fact",
+   "text": "The Arabic notes to Table 8-1 do three things, read from the source text and pending approval: Note 1 says how the issue period is counted, Note 2 sets how long a certificate stays valid, and Note 3 says electronic lodging only and when an application counts as complete.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note1",
+     "page": 3,
+     "kind": "reading",
+     "words": "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note2",
+     "page": 3,
+     "kind": "reading",
+     "words": "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note3",
+     "page": 3,
+     "kind": "reading",
+     "words": "٣. تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F7",
+   "kind": "fact",
+   "text": "The cover says a Bidder relying on a Certificate must notify its applications, failing which the Proposal will be rejected. Operative Section 2.5 prints the notification obligation but no consequence.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "requires a Bidder relying on a Certificate to notify the Authority of its applications, failing which the Proposal will be rejected",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F8",
+   "kind": "fact",
+   "text": "Section 3.3 prints a relative change to the Clause 12.1 period, and the cover states a resulting figure. VOL-V:12.1 is unchanged at ADD-03 because no op was applied.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 2,
+     "kind": "span",
+     "words": "In Volume V Clause 12.1, the period of thirty-six (36) months is increased by six (6) months.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "extends the Scheduled PCOD in Volume V Clause 12.1 to forty-two (42) months",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:12.1",
+     "page": 2,
+     "kind": "span",
+     "words": "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F9",
+   "kind": "fact",
+   "text": "Section 3.4 requires Bidders to reflect Sections 3.1 and 3.3 in the Technical Proposal's process design and construction programme and in the Financial Model. No op or disposition accounts for it.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F10",
+   "kind": "fact",
+   "text": "The Q16 response reports a reduction in the row 2 issue period that depends on the lodging date. calculate (is_working_day, VOL-I 2.4 calendar) says Sunday 22 November 2026 is a working day.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "The Office has confirmed to the Authority that, for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F11",
+   "kind": "fact",
+   "text": "Table 8-1 lists three classes: a company incorporated in a GCC state, a company incorporated outside the GCC states, and a branch registered in the Kingdom of a foreign company. Replacement Clause 8.9 addresses each member 'incorporated outside the Kingdom'.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r3",
+     "page": 3,
+     "kind": "reading",
+     "words": "فرع مسجل في المملكة لشركة أجنبية",
+     "cell": {
+      "row_key": "٣",
+      "column": "فئة العضو"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F12",
+   "kind": "fact",
+   "text": "Op ADD-03/4.1 (promoted) applied a 40% reduction to VOL-V:39.4. The effective text after the ops reads SAR 12,000,000, and the 60-day period is unchanged.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 2,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:39.4",
+     "page": 4,
+     "kind": "span",
+     "words": "The Project Company may terminate for an Authority Event of Default, being a failure to pay an undisputed sum exceeding SAR 12,000,000 that continues for sixty (60) days after notice.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-F13",
+   "kind": "fact",
+   "text": "Clause 1.3 records requests 15 to 19, while the cover speaks of 15 to 20. VOL-I:5.2 says late requests are not answered.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:1.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "and responds to clarification requests 15 to 20",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Requests received after that time will not be answered.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-I1",
+   "kind": "interpretation",
+   "text": "ambiguous (pending a person): Section 2.4 says 'Section 2.1 does not apply' to the 10% non-role class. Reading 1: the rejection words of replacement Clause 8.9 do not reach that member's undertaking. Reading 2: the undertaking is that member's 'evidence required', and rejection applies. The undertaking's content is also defined only by text that Section 2.1 deletes ('Clause 8.9 as issued').",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "ST-I2",
+   "kind": "interpretation",
+   "text": "ambiguous (pending a person): it is unclear whether a member in Table 8-1 row 3 (a branch registered in the Kingdom of a foreign company) is a member 'incorporated outside the Kingdom' under replacement Clause 8.9. Row 3 is listed in a table whose heading speaks of members founded outside the Kingdom.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image",
+     "page": 3,
+     "kind": "reading",
+     "words": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "D-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.2",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "why": "software limitation: the insert_table op ADD-03/2.2 (Table 8-1 into Volume I from ADD-03:p3-image, with the precedence words 'The Arabic text governs.') was not promoted, because its analysis statements were missing. The downstream phase has no op type that inserts a table, so Table 8-1 is not part of Volume I at ADD-03 in this state. Independently, every value of the table comes from image reading ADD-03-p3-r1, which is pending a person's approval. That includes row 2, where the Arabic ٥ differs from the English 3 (open analysis issue on ADD-03:T8-1/2). No bid-out consequence is stated in Section 2.2. Dependents once the table is inserted: replacement Clause 8.9 (b) ('in accordance with Table 8-1'), Section 2.3 ('the issue period stated in Table 8-1'), Q16, row VOL-I-8.9-01, and activity investment-licence (lead-time key investment_licence).",
+    "what_is_unsupported": "Re-proposing the insert_table op for Table 8-1 (Document control / analysis phase) with valid supporting statements. Downstream cannot insert a table, and cannot make values from a pending image reading take effect."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Arabic text governs. The English translation at Appendix B is provided for convenience only.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F4",
+    "ST-F5"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:2.2 in units_after and viewed the crops of ADD-03-p3-r1 (row r02 image and full page): the table shows three rows with issue periods ٣, ٥ and ٨. I do not choose between the Arabic and the English values."
+  },
+  {
+   "id": "D-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "esc:ADD-03:2.2",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:2.2",
+    "to": "ADD-03:p3-image",
+    "kind": "cites",
+    "basis": "Section 2.2 says 'Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I.' Appendix A is the image region ADD-03:p3-image (reading ADD-03-p3-r1, pending approval).",
+    "note": "CONDITIONAL: rests on op ADD-03/2.2 (held) and reading ADD-03-p3-r1 (pending). Not in force.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F4"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.4",
+   "provision": "ADD-03:2.4",
+   "target": null,
+   "payload": {
+    "why": "software limitation: Section 2.1 replaces VOL-I:8.9 in full. Section 2.4 disapplies Section 2.1 for one class of member and sends that class back to Clause 8.9 'as issued'. The consistency check treats op ADD-03/2.1 (replace_text) and op ADD-03/2.4 (annotate, disapplies) as changing the same unit in different ways, so neither is applied. VOL-I:8.9 therefore keeps its ADD-02 text, and row VOL-I-8.9-01 and activity investment-licence stay on that text. CONDITIONAL on ADD-03/2.1 and ADD-03/2.4. The existing Envelope A rules listed with this task (ADD-02:7.2 on Form 4-G; VOL-I:6.2 on prices in Envelope A) address other documents on their words. I propose no consequence from them, and whether any rule covers a missing undertaking is for a person (issue I-ADD-03-2-4-EXCEPTION-REACH).",
+    "what_is_unsupported": "Recording, on one unit, a full replacement together with a class-limited disapplication that revives the replaced text for that class. A person (Document control) writes the ops, for example the replacement plus a separate unit for the exception."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.9",
+     "page": 4,
+     "kind": "span",
+     "words": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F2",
+    "ST-F3"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-04",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:2.4",
+   "provision": "ADD-03:2.4",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-2-4-EXCEPTION-REACH",
+    "text": "CONDITIONAL on ops ADD-03/2.1 and ADD-03/2.4, which are not applied. ambiguous: Section 2.4 says 'Section 2.1 does not apply to a member of the Bidder that is to hold not more than ten per cent (10%) of the shares in the Project Company and that has no role in the design, construction or operation of the Facility. Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.' Reading 1: the replacement Clause 8.9, including 'A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.', does not reach that member, so no consequence is stated for a missing undertaking. Reading 2: the undertaking is the evidence required for that member, and the rejection words apply. The undertaking itself is described only by the deleted words 'a signed undertaking to obtain such licence prior to Financial Close'. The existing Envelope A rules (ADD-02:7.2 'Failure to submit Form 4-G shall render the Proposal non-responsive.'; VOL-I:6.2 on commercial information in Envelope A) concern other documents on their words. Open question: what the exception covers and whether any bid-out consequence attaches. Decision pending a person.",
+    "owner": "Legal",
+    "theme": "investment registration",
+    "short": "Section 2.4 exception: reach of the Clause 8.9 rejection words"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.4",
+     "page": 1,
+     "kind": "span",
+     "words": "Such a member shall instead submit with Envelope A the signed undertaking described in Volume I Clause 8.9 as issued.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F3",
+    "ST-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-05",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:2.5",
+   "provision": "ADD-03:2.5",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-2-5-COVER-REJECTION",
+    "text": "The cover and the operative provision differ. Cover (ADD-03:cover/para3): 'requires a Bidder relying on a Certificate to notify the Authority of its applications, failing which the Proposal will be rejected'. Operative Section 2.5: 'A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.' Section 2.5 prints no consequence. The cover summarises and does not amend, so no consequence is recorded from it. Section 2.5 also relies on 'paragraph (b) of Volume I Clause 8.9', which exists only if Section 2.1 is applied (CONDITIONAL on ADD-03/2.1). The clarification window has closed (VOL-I 5.2), so this is a bid decision. Open question: whether a rejection consequence attaches to late or missing notification. Decision pending a person.",
+    "owner": "Legal",
+    "theme": "investment registration",
+    "short": "2.5 notification: cover says rejection, operative text silent"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "requires a Bidder relying on a Certificate to notify the Authority of its applications, failing which the Proposal will be rejected",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "A Bidder that relies on paragraph (b) of Volume I Clause 8.9 for any member shall notify the Authority through the Portal, not later than three (3) Working Days before the Proposal Due Date, of the name of that member and the reference number of its application to the Office.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F7",
+    "ST-F2"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-06",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.5",
+   "provision": "ADD-03:2.5",
+   "target": null,
+   "payload": {
+    "why": "software limitation: the Section 2.5 obligation (row ADD-03-2.5-01 in the analysis reference) is triggered by reliance on 'paragraph (b) of Volume I Clause 8.9'. After the proposed ops, the effective VOL-I:8.9 has no paragraph (b), because op ADD-03/2.1 is conflicting and not applied. A row created now would cite a paragraph that is not in force, so I propose none. Once 2.1 is resolved, the row's date rule is relative to the PDD ('not later than three (3) Working Days before the Proposal Due Date'). The program computes it; no date is typed here. Its activity is a new Portal notification, which can be done only after the member's application reference exists. No bid-out consequence is stated in the operative text (issue I-ADD-03-2-5-COVER-REJECTION).",
+    "what_is_unsupported": "A row whose trigger is a paragraph of a replacement clause that the engine holds as conflicting. It waits for a person to resolve ops ADD-03/2.1 and ADD-03/2.4."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.5",
+     "page": 1,
+     "kind": "span",
+     "words": "not later than three (3) Working Days before the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.9",
+     "page": 4,
+     "kind": "span",
+     "words": "The Bidder shall submit either evidence of a current investment licence for each foreign consortium member, or a signed undertaking to obtain such licence prior to Financial Close.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F2",
+    "ST-F7"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-07",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:3.3",
+   "provision": "ADD-03:3.3",
+   "target": null,
+   "payload": {
+    "why": "software limitation: Section 3.3 prints a relative change to VOL-V:12.1, where the period is written in both words and figures. adjust_value cannot rewrite the words, so no op is applied, and VOL-V:12.1 at ADD-03 still reads 'thirty-six (36) months'. I do not type the resulting period. The cover states 'extends the Scheduled PCOD in Volume V Clause 12.1 to forty-two (42) months'; the cover summarises and does not amend, so whoever writes the op should check it against both texts. Dependents, all CONDITIONAL until that op exists: row VOL-V-12.1-01; VOL-V:18.1 (delay liquidated damages run from the Scheduled PCOD); VOL-V:18.3 (period counted from the Scheduled PCOD); clarification CQ-VOL-V-SCHEDULES; Section 3.4 (construction programme in the Technical Proposal, and the Financial Model); and A5 activities technical-proposal and fin-model-build. No bid-out consequence is stated.",
+    "what_is_unsupported": "adjust_value on a value stated in words and figures ('thirty-six (36) months'). A person (Document control) writes the replace_text op."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 2,
+     "kind": "span",
+     "words": "In Volume V Clause 12.1, the period of thirty-six (36) months is increased by six (6) months.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:12.1",
+     "page": 2,
+     "kind": "span",
+     "words": "The Project Company shall achieve PCOD within thirty-six (36) months of the Notice to Proceed (the Scheduled PCOD).",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "extends the Scheduled PCOD in Volume V Clause 12.1 to forty-two (42) months",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F8"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-08",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:Q16",
+   "provision": "ADD-03:Q16",
+   "target": null,
+   "payload": {
+    "why": "software limitation: Q16 reports that 'for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days.' Table 8-1 is not in Volume I at ADD-03 (op ADD-03/2.2 held; reading ADD-03-p3-r1 pending), and the reduction depends on each application's lodging date. The engine cannot hold such a per-application conditional variant of a cell, so nothing is applied and I compute no reduced period. calculate (is_working_day, VOL-I 2.4 calendar) shows Sunday 22 November 2026 is a Working Day. The base value differs between the Arabic (٥) and the English (3), which is an open analysis issue on ADD-03:T8-1/2. Whether Q16 amends Table 8-1 or only reports the Office's confirmation is raised in issue I-ADD-03-Q16-REDUCTION-EFFECT. No bid-out consequence is stated.",
+    "what_is_unsupported": "A conditional, per-application adjustment of a cell in a table that the same addendum inserts from a pending image reading. A person decides how to record it, and the A5 lead time (investment_licence) is reviewed by Bid management."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "The Office has confirmed to the Authority that, for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F10",
+    "ST-F5"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-09",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:Q16",
+   "provision": "ADD-03:Q16",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-Q16-REDUCTION-EFFECT",
+    "text": "CONDITIONAL on op ADD-03/2.2 and reading ADD-03-p3-r1. ambiguous: the Q16 response says 'The Office has confirmed to the Authority that, for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days. The other issue periods in Table 8-1 are unchanged.' Reading A: Q16 amends Table 8-1 (part of Volume I under Section 2.2) for applications lodged by that day. Reading B: it reports the Office's confirmation to the Authority, and Table 8-1 itself is unchanged. The base value also differs: the Arabic row 2 (governing under Section 2.2) prints ٥, and the English Appendix B row 2 prints 3. Open question: which period the A5 certificate lead time for a non-GCC member should plan, and whether Q16 changes the table. Pending a human decision.",
+    "owner": "Document control",
+    "theme": "investment registration",
+    "short": "Effect of the Q16 row 2 reduction on Table 8-1"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "The other issue periods in Table 8-1 are unchanged.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "٥",
+     "cell": {
+      "row_key": "٢",
+      "column": "مدة الإصدار (أيام عمل)"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F10",
+    "ST-F5",
+    "ST-F4"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-10",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:2.1",
+    "to": "VOL-I-8.9-01",
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on op ADD-03/2.1 (conflicting, not applied) and ADD-03/2.4 (held). Section 2.1 says 'Volume I Clause 8.9 is deleted and replaced by the following:'. If applied, row VOL-I-8.9-01 would need a new reading: Envelope A, licence or Certificate per member incorporated outside the Kingdom, with the stated rejection, and the Financial Close undertaking kept only for the Section 2.4 class. The row stays on the ADD-02 text until then.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 8.9 is deleted and replaced by the following:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F2"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-11",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "from": [
+     "ADD-03:2.1",
+     "ADD-03:2.3"
+    ],
+    "to": "investment-licence",
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on ops ADD-03/2.1 and ADD-03/2.2 and reading ADD-03-p3-r1. If applied, the activity investment-licence (evidence EV-INVESTMENT-LICENCE, lead-time key investment_licence, a PROVISIONAL ASSUMPTION) would cover a Certificate route. Under that route the member applies to the Office ('Applications for a Certificate of Investment Registration shall be made by the member to the Office.'), and the Office issues within the Table 8-1 issue period for the member's class.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Applications for a Certificate of Investment Registration shall be made by the member to the Office.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "(b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F6"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-12",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-INVLIC-EVIDENCE-SCOPE",
+    "text": "CONDITIONAL on ops ADD-03/2.1, ADD-03/2.2 and ADD-03/2.4 (not applied) and reading ADD-03-p3-r1 (pending). The evidence item EV-INVESTMENT-LICENCE ('Investment licence or signed undertaking for each foreign member') and activity investment-licence rest on the ADD-02 text of VOL-I:8.9. If Section 2.1 were applied:\n(1) For a member incorporated outside the Kingdom, the evidence would be 'a copy of its current investment licence' or 'a Certificate of Investment Registration', submitted 'with Envelope A'. The undertaking would remain only for the Section 2.4 class.\n(2) Table 8-1 Note 1 (Arabic, pending) counts the issue period from the working day after receipt of a complete application.\n(3) Note 2 gives a certificate validity of ninety (٩٠) days from issue, so the timing of an application relative to the Proposal Due Date and the Proposal validity matters.\n(4) Note 3 allows electronic lodging only through the Office portal, complete only with all listed documents. For row 2 those are certified commercial registration and audited financial statements for the last financial year.\n(5) Any date rule on row VOL-I-8.9-01 tied to Financial Close would need review.\nOpen questions for Bid management (with Legal): whether to re-scope the evidence item and the lead time, and whether a Portal notification activity (Section 2.5) is needed. No bidder facts are stated here. Decision pending a person.",
+    "owner": "Bid management",
+    "theme": "investment registration",
+    "short": "EV-INVESTMENT-LICENCE and investment-licence activity if Clause 8.9 is replaced"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A either (a) a copy of its current investment licence or (b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note2",
+     "page": 3,
+     "kind": "reading",
+     "words": "٢. تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة",
+     "cell": {
+      "row_key": "٢",
+      "column": "المستندات المطلوبة مع الطلب"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F2",
+    "ST-F6"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-13",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-T8-1-CLASS-COVERAGE",
+    "text": "CONDITIONAL on ops ADD-03/2.1 and ADD-03/2.2 and reading ADD-03-p3-r1. ambiguous: replacement Clause 8.9 addresses 'Each member of the Bidder that is incorporated outside the Kingdom'. Table 8-1 (Arabic, pending) lists three classes: row ١ 'شركة مؤسسة في إحدى دول مجلس التعاون الخليجي', row ٢ 'شركة مؤسسة خارج دول مجلس التعاون الخليجي', and row ٣ 'فرع مسجل في المملكة لشركة أجنبية' (a branch registered in the Kingdom of a foreign company). Reading 1: a member acting through a Kingdom-registered branch is still incorporated outside the Kingdom, and row ٣ applies to it. Reading 2: such a member falls outside Clause 8.9 altogether. The class also decides the issue period planned in A5. Open question: which class and which period apply to each member. Pending a person.",
+    "owner": "Legal",
+    "theme": "investment registration",
+    "short": "Table 8-1 classes vs 'incorporated outside the Kingdom'"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r3",
+     "page": 3,
+     "kind": "reading",
+     "words": "فرع مسجل في المملكة لشركة أجنبية",
+     "cell": {
+      "row_key": "٣",
+      "column": "فئة العضو"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Each member of the Bidder that is incorporated outside the Kingdom shall submit with Envelope A",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F11",
+    "ST-I2"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-14",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "impact:2. INVESTMENT REGISTRATION OF FOREIGN MEMBERS",
+   "provision": "ADD-03:2.3",
+   "target": null,
+   "payload": {
+    "why": "software limitation: the rows proposed in analysis for Sections 2.3, 2.4 and 2.5 (ADD-03-2.3-01, ADD-03-2.4-01, ADD-03-2.5-01) and the new reading of VOL-I-8.9-01 are all blocked behind op ADD-03/2.1, which is conflicting with ADD-03/2.4. A conditional impact task may not propose rows. Section 2.3 prints an obligation on the member ('Applications for a Certificate of Investment Registration shall be made by the member to the Office.') and an undertaking by the Office about the issue period. That obligation has no row in force. Its row, evidence and activity wait until a person writes the ops for Sections 2.1, 2.2 and 2.4 and approves reading ADD-03-p3-r1. No bid-out consequence is stated in Section 2.3.",
+    "what_is_unsupported": "Proposing rows that rest on an op the engine holds as conflicting. A person (Document control) resolves ADD-03/2.1 and ADD-03/2.4, then the rows are re-proposed."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.3",
+     "page": 1,
+     "kind": "span",
+     "words": "The Office has undertaken to the Authority to issue a Certificate within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F1",
+    "ST-F3"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-15",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:3. TREATED EFFLUENT STORAGE AND SCHEDULED PCOD",
+   "provision": "ADD-03:3.3",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:3.3",
+    "to": "VOL-V-12.1-01",
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on escalation ADD-03/3.3 (no op applied). Section 3.3 changes 'the period of thirty-six (36) months' in VOL-V:12.1, which row VOL-V-12.1-01 quotes. If a person writes the op, the row needs a new reading. Clarification CQ-VOL-V-SCHEDULES, which cites VOL-V:12.1, should be re-read; its status is not changed here.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.3",
+     "page": 2,
+     "kind": "span",
+     "words": "In Volume V Clause 12.1, the period of thirty-six (36) months is increased by six (6) months.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F8"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-16",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "impact:3. TREATED EFFLUENT STORAGE AND SCHEDULED PCOD",
+   "provision": "ADD-03:3.4",
+   "target": null,
+   "payload": {
+    "why": "software limitation: no op or disposition accounts for Section 3.4, which prints a new bid-stage obligation: 'Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.' The Section 3.1 part rests on promoted op ADD-03/3.1 (new VOL-II 4.6). The Section 3.3 part rests on escalation ADD-03/3.3, which has no op applied. A conditional impact task may not propose the row. The analysis phase or Document control should account for ADD-03:3.4 (an annotate adds_obligation or a row). Its evidence would likely fall under the existing EV-TECH-PROPOSAL and EV-FIN-MODEL, produced by technical-proposal and fin-model-build. No bid-out consequence is stated in Section 3.4.",
+    "what_is_unsupported": "A row for an obligation whose provision has no op or disposition and that partly rests on an unapplied change (Section 3.3). It cannot be proposed from a conditional task."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall reflect Sections 3.1 and 3.3 in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F9",
+    "ST-F8"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-17",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:3. TREATED EFFLUENT STORAGE AND SCHEDULED PCOD",
+   "provision": "ADD-03:3.4",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:3.4",
+    "to": [
+     "technical-proposal",
+     "fin-model-build"
+    ],
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on ADD-03:3.4 (unaccounted) and escalation ADD-03/3.3. Section 3.4 names 'the construction programme submitted in the Technical Proposal' and 'the Financial Model'. These are produced by the existing activities technical-proposal (EV-TECH-PROPOSAL) and fin-model-build (EV-FIN-MODEL), which would need to reflect Sections 3.1 and 3.3.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.4",
+     "page": 2,
+     "kind": "span",
+     "words": "in the process design and the construction programme submitted in the Technical Proposal and in the Financial Model",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F9"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-18",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19",
+   "provision": "ADD-03:Q16",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:Q16",
+    "to": "investment-licence",
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on escalation ADD-03/Q16, issue I-ADD-03-Q16-REDUCTION-EFFECT, op ADD-03/2.2 and reading ADD-03-p3-r1. If the Q16 reduction applied, the issue period planned for a row 2 member under activity investment-licence (lead-time key investment_licence, PROVISIONAL ASSUMPTION) would depend on whether the application is 'lodged not later than Sunday 22 November 2026'.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "cell",
+     "words": "The Office has confirmed to the Authority that, for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days.",
+     "cell": {
+      "row_key": "16",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F10"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-19",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:5. RESPONSES TO CLARIFICATION REQUESTS 15 TO 19",
+   "provision": "ADD-03:Q19",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:Q19",
+    "to": "ADD-03:4.1",
+    "kind": "cites",
+    "basis": "The Q19 response reads 'Yes. See Section 4 of this Addendum.' Section 4.1 prints the reduction applied to VOL-V:39.4 by promoted op ADD-03/4.1. CONDITIONAL on the open analysis issue on the cover's 'to SAR 8,000,000' versus Section 4.1; which figure is intended is a person's decision. No A1 row or A5 activity rests on VOL-V:39.4.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q19",
+     "page": 2,
+     "kind": "cell",
+     "words": "Yes. See Section 4 of this Addendum.",
+     "cell": {
+      "row_key": "19",
+      "column": "Authority response"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 2,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F12"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-20",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "impact:APPENDIX A — TABLE 8-1 (ARABIC)",
+   "provision": "ADD-03:p3-image",
+   "target": null,
+   "payload": {
+    "id": "I-ADD-03-P3-READING-PENDING",
+    "text": "CONDITIONAL on reading ADD-03-p3-r1 (pending a person's approval) and op ADD-03/2.2 (held). Appendix A (ADD-03:p3-image) is the Office's Arabic letter carrying Table 8-1. While the reading is pending, nothing in it is in force: no row, date rule or A5 lead time rests on its values. If approved and inserted, the following would follow:\n(a) The issue periods by class: row ١ ٣, row ٢ ٥, row ٣ ٨. Row 2 differs from the English Appendix B ('3'); see the analysis issue on ADD-03:T8-1/2.\n(b) Note ١ counts from the working day after receipt of a complete application.\n(c) Note ٢ gives a validity of ninety (٩٠) days from issue.\n(d) Note ٣ allows electronic lodging only, and an application is complete only with all listed documents.\nAll of these would feed the investment-licence activity and the Section 2.5 notification. The crops (row r02 image, full page) show: the letter is dated 'التاريخ: ١٦ نوفمبر ٢٠٢٦م' with reference 'الرقم: ٢٢٨/٢٠٢٦'. The stamp area (ADD-03:p3-image/stamp) is an empty oval outline with no legible text. The signature block gives the title 'مدير مكتب خدمات الاستثمار بالمنطقة الشمالية' and a signature mark with no name. Whether the unstamped letter is acceptable as issued is a person's question. Owner: Document control (reading approval), with Legal.",
+    "owner": "Document control",
+    "theme": "investment registration",
+    "short": "Appendix A Table 8-1 reading pending: effects if approved; stamp empty"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image",
+     "page": 3,
+     "kind": "reading",
+     "words": "جدول ٨-١: مدد إصدار شهادة تسجيل الاستثمار",
+     "cell": null,
+     "crop_sha256": "cef2fb40880fc6e0fea30d3a8ecde54343270b460676f2cfc83a42242e34ecb7"
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note1",
+     "page": 3,
+     "kind": "reading",
+     "words": "١. تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/signatory",
+     "page": 3,
+     "kind": "reading",
+     "words": "مدير مكتب خدمات الاستثمار بالمنطقة الشمالية",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F5",
+    "ST-F6"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Viewed the stamp crop (band b18-left: an empty oval) and the full region crop/native image. Table rows ١/٢/٣ show periods ٣/٥/٨, and the notes ١-٣ match the reading's source text."
+  },
+  {
+   "id": "D-21",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "impact:APPENDIX A — TABLE 8-1 (ARABIC)",
+   "provision": "ADD-03:p3-image",
+   "target": null,
+   "payload": {
+    "why": "CONDITIONAL on reading ADD-03-p3-r1. These letterhead and administrative units state no obligation, period or consequence, so no existing row, activity or price rests on them: ADD-03:p3-image/hdr-en, hdr-ar, date, ref, to, subject, tender, notes-heading, signatory and image-footer. The image footer marks the material as synthetic. The table rows, the notes and the stamp are dealt with in I-ADD-03-P3-READING-PENDING. A person confirms that nothing follows from these units."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/hdr-en",
+     "page": 3,
+     "kind": "reading",
+     "words": "Northern Region Investment Services Office",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/to",
+     "page": 3,
+     "kind": "reading",
+     "words": "إلى: الهيئة الشمالية للمشتريات المرفقية",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/subject",
+     "page": 3,
+     "kind": "reading",
+     "words": "الموضوع: تسجيل استثمار أعضاء الائتلافات المؤسسين خارج المملكة",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/tender",
+     "page": 3,
+     "kind": "reading",
+     "words": "مناقصة رقم: NUPA/ISTP/2026/014 (محطة معالجة مياه الصرف الصحي المستقلة بوادي السرحان)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/image-footer",
+     "page": 3,
+     "kind": "reading",
+     "words": "FICTIONAL DOCUMENT - Lamar Holding internal assessment pack - not a real tender. SYNTHETIC: not tender content.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/notes-heading",
+     "page": 3,
+     "kind": "reading",
+     "words": "ملاحظات:",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/hdr-ar",
+     "page": 3,
+     "kind": "reading",
+     "words": "مكتب خدمات الاستثمار بالمنطقة الشمالية",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/date",
+     "page": 3,
+     "kind": "reading",
+     "words": "التاريخ: ١٦ نوفمبر ٢٠٢٦م",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/ref",
+     "page": 3,
+     "kind": "reading",
+     "words": "الرقم: ٢٢٨/٢٠٢٦",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F5"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-22",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "impact:1. RECITALS",
+   "provision": "ADD-03:1.3",
+   "target": null,
+   "payload": {
+    "why": "CONDITIONAL on analysis issue ADD-03/issue/cq20 (cover '15 to 20' vs Clause 1.3 and Section 5 '15 to 19'). Whichever reading a person takes, the words of VOL-I:5.2, which row VOL-I-5.2-01 and activity clarifications rest on, are unchanged at ADD-03. Clause 1.3 only records which requests were received in time, and no response to a request 20 is printed. The clarification window has closed (VOL-I 5.2), so no new clarification is drafted. Whether a request 20 exists is for Document control (insufficient evidence in the pack)."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:1.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Clarification requests 15 to 19 were received before the time stated in Volume I Clause 5.2.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F13"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-23",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:APPENDIX B — ENGLISH TRANSLATION OF TABLE 8-1",
+   "provision": "ADD-03:T8-1/2",
+   "target": null,
+   "payload": {
+    "from": [
+     "ADD-03:p3-image/r2",
+     "ADD-03:T8-1/2"
+    ],
+    "to": "investment-licence",
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on analysis issue ADD-03/T8-1/2:issue, reading ADD-03-p3-r1 and op ADD-03/2.2. The row 2 issue period (Arabic '٥', English 'Issue period (Working Days): 3') would set the Office's lead time for a member incorporated outside the GCC states under activity investment-licence (lead-time key investment_licence, a PROVISIONAL ASSUMPTION). Section 2.2 says 'The Arabic text governs.' Which value A5 uses is a person's decision; the program does not choose.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:T8-1/2",
+     "page": 4,
+     "kind": "cell",
+     "words": "3",
+     "cell": {
+      "row_key": "2",
+      "column": "Issue period (Working Days)"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "٥",
+     "cell": {
+      "row_key": "٢",
+      "column": "مدة الإصدار (أيام عمل)"
+     },
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Arabic text governs.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F4",
+    "ST-F5"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-24",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "impact:4. AUTHORITY EVENT OF DEFAULT",
+   "provision": "ADD-03:4.1",
+   "target": null,
+   "payload": {
+    "why": "CONDITIONAL on analysis issue ADD-03/issue-4.1 (the cover's 'to SAR 8,000,000' vs Section 4.1 'reduced by forty per cent (40%)'). The task scope lists no A1 row, A5 activity, clarification or price resting on VOL-V:39.4. Whichever figure a person takes, the change is post-award termination wording, and no bid-out consequence is stated. The engine's computed value from promoted op ADD-03/4.1 stands as proposed, and I do not retype or recompute it. Which figure the Authority intends stays with Legal."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:39.4",
+     "page": 4,
+     "kind": "span",
+     "words": "The Project Company may terminate for an Authority Event of Default, being a failure to pay an undisputed sum exceeding SAR 12,000,000 that continues for sixty (60) days after notice.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 2,
+     "kind": "span",
+     "words": "The amount stated in Volume V Clause 39.4 is reduced by forty per cent (40%).",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "ST-F12"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

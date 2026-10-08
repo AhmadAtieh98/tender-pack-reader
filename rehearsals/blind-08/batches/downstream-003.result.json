@@ -1,0 +1,1189 @@
+{
+ "run_id": "ADD-03-run-host-20261008T053735Z-77b2-downstream-003",
+ "created": "2026-10-08T06:14:51Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": null,
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-CROP",
+   "kind": "fact",
+   "text": "Both crops of reading ADD-03-p3-r1 were viewed: regions/ADD-03-p3-r1/crop.png (sha256 cef2fb40…) and native.png (sha256 3e8d7d19…). They show a letter from the Northern Region Investment Services Office containing Table 8-1. The table has three rows. The issue-period column clearly prints ٣ in row 1, ٥ in row 2 and ٨ in row 3. Three numbered notes follow, then an empty oval stamp outline and a signature stroke under the Director's title.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "مدة الإصدار (أيام عمل): ٥",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-EN-ROW2",
+   "kind": "fact",
+   "text": "The English translation at Appendix B, row 2 of Table 8-1, prints an issue period of 3 Working Days for the same class of member. The Arabic reading prints ٥ for that class.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:T8-1/2",
+     "page": 4,
+     "kind": "span",
+     "words": "Company incorporated outside the GCC states | Documents required with the application: Commercial registration and audited financial statements for the last financial year, certified | Issue period (Working Days): 3",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "شركة مؤسسة خارج دول مجلس التعاون الخليجي",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-GOVERNS",
+   "kind": "fact",
+   "text": "Section 2.2 of the Addendum states that the Arabic text governs and that Appendix B is for convenience only. Whether and how this settles the row-2 difference is for a person to decide.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Table 8-1 is issued in the Arabic language. The Arabic text governs. The English translation at Appendix B is provided for convenience only.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q16",
+   "kind": "fact",
+   "text": "The Q16 response states that row 2's issue period is reduced by two Working Days for an application lodged by a stated day, and that the other periods are unchanged.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "span",
+     "words": "the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days. The other issue periods in Table 8-1 are unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-REJECT-2-1",
+   "kind": "interpretation",
+   "text": "The rejection consequence for missing investment evidence is printed in ADD-03:2.1 (the replacement of VOL-I 8.9), not in the reading. The ADD-03:2.1 replacement is not among this packet's promoted ops. So these rows carry consequence none_stated. Whether the 2.1 rejection reaches the Table 8-1 application terms is a person's decision.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-ASSUME-APP",
+   "kind": "assumption",
+   "text": "PROVISIONAL ASSUMPTION: each member incorporated outside the Kingdom needs 5 Working Days to collect, certify and upload the Table 8-1 documents to the Office portal. The pack states no such duration. The Office's own issue period is not part of this assumption.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note3",
+     "page": 3,
+     "kind": "reading",
+     "words": "تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "D-ROW-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-AppA-01",
+     "group": "Investment registration of foreign members (Table 8-1)",
+     "scope": [
+      "foreign_member"
+     ],
+     "requirement": "Table 8-1 row 1 (Arabic, as printed): a member that is a company incorporated in a GCC state applies to the Office with its certified commercial registration. The Office's issue period for this class is printed in Working Days.",
+     "units": [
+      "ADD-03:p3-image/r1",
+      "ADD-03:p3-image",
+      "ADD-03:p3-image/note1",
+      "ADD-03:p3-image/note3"
+     ],
+     "discipline": "Legal",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-INVESTMENT-REG-CERT"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "فئة العضو: شركة مؤسسة في إحدى دول مجلس التعاون الخليجي | المستندات المطلوبة مع الطلب: السجل التجاري مصدقاً | مدة الإصدار (أيام عمل): ٣",
+       "parameters": {
+        "table_row": "١",
+        "issue_period_as_printed": "٣",
+        "period_unit_heading": "مدة الإصدار (أيام عمل)"
+       },
+       "consequence": "none_stated",
+       "note": "PENDING READING ADD-03-p3-r1. The reading states no consequence. The rejection in ADD-03:2.1 is not quoted here (see I-INVREG-CONSEQUENCE). A person decides whether the number is a maximum or a target."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "مدة الإصدار (أيام عمل): ٣",
+       "treatment": "duration",
+       "reason": "The Office's issue period, counted under note 1 from the working day after receipt of the complete application. This is an event, not a pack date."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "The crop clearly shows ٣ and Appendix B row 1 also prints 3, but the reading is pending approval.",
+     "issues": [
+      "I-INVREG-CONSEQUENCE"
+     ],
+     "owner": "Legal",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I."
+      }
+     },
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r1",
+     "page": 3,
+     "kind": "reading",
+     "words": "السجل التجاري مصدقاً",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT",
+    "investment-registration-application"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP",
+    "S-REJECT-2-1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I read the r1 crop and cells: ٣ is clear. The quote is the Arabic source text from units_after. The row is conditional on the reading and is not in force while the reading is pending."
+  },
+  {
+   "id": "D-ROW-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-AppA-02",
+     "group": "Investment registration of foreign members (Table 8-1)",
+     "scope": [
+      "foreign_member"
+     ],
+     "requirement": "Table 8-1 row 2 (Arabic, as printed): a member that is a company incorporated outside the GCC states applies to the Office with its commercial registration and its audited financial statements for the last financial year, certified. The Office's issue period for this class is printed in Working Days.",
+     "units": [
+      "ADD-03:p3-image/r2",
+      "ADD-03:p3-image",
+      "ADD-03:p3-image/note1",
+      "ADD-03:p3-image/note3"
+     ],
+     "discipline": "Legal",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-INVESTMENT-REG-CERT"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "فئة العضو: شركة مؤسسة خارج دول مجلس التعاون الخليجي | المستندات المطلوبة مع الطلب: السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة | مدة الإصدار (أيام عمل): ٥",
+       "parameters": {
+        "table_row": "٢",
+        "issue_period_as_printed": "٥",
+        "period_unit_heading": "مدة الإصدار (أيام عمل)"
+       },
+       "consequence": "none_stated",
+       "note": "PENDING READING ADD-03-p3-r1. The Arabic prints ٥, Appendix B row 2 prints 3, and the Q16 response states a reduction of two Working Days for row 2. Neither figure is chosen here: see I-T8-1-ROW2-AR-EN. No consequence is stated in the reading."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "مدة الإصدار (أيام عمل): ٥",
+       "treatment": "duration",
+       "reason": "The Office's issue period, counted under note 1 from an event, not a pack date. The Appendix B and Q16 figures differ and are left to a person (I-T8-1-ROW2-AR-EN)."
+      }
+     ],
+     "confidence": "low",
+     "confidence_reason": "The crop clearly shows ٥, but the English Appendix B prints 3 and Q16 changes the row-2 period on a condition. The reading is pending.",
+     "issues": [
+      "I-T8-1-ROW2-AR-EN",
+      "I-INVREG-CONSEQUENCE"
+     ],
+     "owner": "Legal",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I."
+      }
+     },
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "السجل التجاري والقوائم المالية المدققة لآخر سنة مالية، مصدقة",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT",
+    "investment-registration-application",
+    "I-T8-1-ROW2-AR-EN"
+   ],
+   "conflicts": [
+    "ADD-03:T8-1/2",
+    "ADD-03:Q16"
+   ],
+   "missing_information": [],
+   "statements": [
+    "S-CROP",
+    "S-EN-ROW2",
+    "S-GOVERNS",
+    "S-Q16",
+    "S-REJECT-2-1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I checked the r2 crop: the period cell plainly shows ٥, and the reading does not mark the numeral as uncertain. I compared it with Appendix B (ADD-03:T8-1/2, printed 3) and with Q16."
+  },
+  {
+   "id": "D-ROW-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-AppA-03",
+     "group": "Investment registration of foreign members (Table 8-1)",
+     "scope": [
+      "foreign_member"
+     ],
+     "requirement": "Table 8-1 row 3 (Arabic, as printed): a member that is a branch registered in the Kingdom of a foreign company applies to the Office with the branch registration certificate and the parent company's board resolution authorising the branch. The Office's issue period for this class is printed in Working Days.",
+     "units": [
+      "ADD-03:p3-image/r3",
+      "ADD-03:p3-image",
+      "ADD-03:p3-image/note1",
+      "ADD-03:p3-image/note3"
+     ],
+     "discipline": "Legal",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-INVESTMENT-REG-CERT"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "فئة العضو: فرع مسجل في المملكة لشركة أجنبية | المستندات المطلوبة مع الطلب: شهادة تسجيل الفرع وقرار مجلس إدارة الشركة الأم بتفويض الفرع | مدة الإصدار (أيام عمل): ٨",
+       "parameters": {
+        "table_row": "٣",
+        "issue_period_as_printed": "٨",
+        "period_unit_heading": "مدة الإصدار (أيام عمل)"
+       },
+       "consequence": "none_stated",
+       "note": "PENDING READING ADD-03-p3-r1. Appendix B row 3 also prints 8. A person decides whether a branch registered in the Kingdom is a member 'incorporated outside the Kingdom' under ADD-03:2.1."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "مدة الإصدار (أيام عمل): ٨",
+       "treatment": "duration",
+       "reason": "The Office's issue period, counted under note 1 from an event, not a pack date."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "The crop clearly shows ٨, which matches Appendix B. The reading is pending.",
+     "issues": [
+      "I-INVREG-CONSEQUENCE"
+     ],
+     "owner": "Legal",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I."
+      }
+     },
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r3",
+     "page": 3,
+     "kind": "reading",
+     "words": "شهادة تسجيل الفرع وقرار مجلس إدارة الشركة الأم بتفويض الفرع",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT",
+    "investment-registration-application"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP",
+    "S-REJECT-2-1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I checked the r3 crop: ٨ is clear. The quote is from the source text."
+  },
+  {
+   "id": "D-ROW-04",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-AppA-04",
+     "group": "Investment registration of foreign members (Table 8-1)",
+     "scope": [
+      "foreign_member"
+     ],
+     "requirement": "Table 8-1 note 3 (Arabic, as printed): applications are made electronically through the Office's portal only. An application is complete only when all the documents listed for the member's class are attached. Under note 1, the issue period runs from the working day after receipt of the complete application.",
+     "units": [
+      "ADD-03:p3-image/note3",
+      "ADD-03:p3-image/note1",
+      "ADD-03:p3-image"
+     ],
+     "discipline": "Bid management",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-INVESTMENT-REG-CERT"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط، ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+       "parameters": {
+        "channel": "بوابة المكتب فقط",
+        "counting_start": "يوم العمل التالي ليوم استلام الطلب المكتمل"
+       },
+       "consequence": "none_stated",
+       "note": "PENDING READING ADD-03-p3-r1. The reading flags a vowel-mark uncertainty on the first word (تُقدِّم as seen, or تُقدَّم). Matching ignores tashkeel, and either form leaves the obligation's words unchanged."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل",
+       "treatment": "duration",
+       "reason": "The counting start for the Office's issue period is an event (receipt of the complete application), not a pack date."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "The text is clear in the crop (bands 16-17). The reading is pending.",
+     "owner": "Bid management",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I."
+      }
+     },
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note3",
+     "page": 3,
+     "kind": "reading",
+     "words": "ولا يُعدّ الطلب مكتملاً إلا بإرفاق جميع المستندات المبيِّنة أعلاه.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note1",
+     "page": 3,
+     "kind": "reading",
+     "words": "تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT",
+    "investment-registration-application"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ROW-05",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-AppA-05",
+     "group": "Investment registration of foreign members (Table 8-1)",
+     "scope": [
+      "foreign_member"
+     ],
+     "requirement": "Table 8-1 note 2 (Arabic, as printed): a Certificate of Investment Registration is valid for ninety days from its date of issue.",
+     "units": [
+      "ADD-03:p3-image/note2",
+      "ADD-03:p3-image"
+     ],
+     "discipline": "Legal",
+     "assessment": "informational",
+     "evidence": [
+      "EV-INVESTMENT-REG-CERT"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+       "parameters": {
+        "validity_as_printed": "تسعين (٩٠) يوماً",
+        "counted_from": "تاريخ إصدارها"
+       },
+       "consequence": "none_stated",
+       "note": "PENDING READING ADD-03-p3-r1. The pack does not say on which date the certificate must be valid (submission, evaluation or Financial Close). See I-INVREG-VALIDITY."
+      }
+     ],
+     "date_notes": [
+      {
+       "text": "تسعين (٩٠) يوماً من تاريخ إصدارها",
+       "treatment": "duration",
+       "reason": "Validity is counted from the certificate's issue date, an event with no pack date. No approved rule ties it to a milestone."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "The note is clear in the crop (band 15) and matches Appendix B note (2). The reading is pending.",
+     "issues": [
+      "I-INVREG-VALIDITY"
+     ],
+     "owner": "Legal",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:2.2",
+      "evidence": {
+       "unit": "ADD-03:2.2",
+       "page": 1,
+       "words": "Table 8-1 is reproduced at Appendix A to this Addendum as issued by the Office and forms part of Volume I."
+      }
+     },
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note2",
+     "page": 3,
+     "kind": "reading",
+     "words": "تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-EV-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "evidence_item",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "id": "EV-INVESTMENT-REG-CERT",
+    "item": {
+     "name": "Certificate of Investment Registration (Table 8-1), applied for through the Office portal with the documents for the member's class",
+     "envelope": "A",
+     "issuer": "Northern Region Investment Services Office",
+     "per": "foreign_member",
+     "source": "ADD-03:p3-image",
+     "counted": true,
+     "note": "CONDITIONAL on approval of reading ADD-03-p3-r1, until approval. Envelope A is taken from ADD-03:2.1, whose replacement of VOL-I 8.9 is not among this packet's promoted ops. This item is the alternative (b) to the existing EV-INVESTMENT-LICENCE, which still names a signed undertaking."
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image",
+     "page": 3,
+     "kind": "reading",
+     "words": "يُصدر المكتب شهادة تسجيل الاستثمار للعضو المؤسس خارج المملكة خلال المدة المبيِّنة أدناه لفئته:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP",
+    "S-REJECT-2-1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ACT-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "activity",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "evidence_item": "EV-INVESTMENT-REG-CERT",
+    "activity": {
+     "id": "investment-registration-application",
+     "name": "Collect, certify and lodge the Table 8-1 application documents on the Office portal (per member incorporated outside the Kingdom)",
+     "owner": "Legal",
+     "discipline": "Legal",
+     "resource": "legal_counsel",
+     "issuer": "Northern Region Investment Services Office",
+     "duration": "investment_registration_application",
+     "per": "foreign_member",
+     "predecessors": [],
+     "successors": [],
+     "item": "EV-INVESTMENT-REG-CERT",
+     "condition": "CONDITIONAL: only for a member relying on the Certificate route; not in force until reading ADD-03-p3-r1 is approved. It can start no earlier than the ADD-03 issue date. The Office's issue period after lodgement is not modelled (see escalation D-ESC-01).",
+     "conditional_on": {
+      "reading": "ADD-03-p3-r1",
+      "until": "approval"
+     }
+    },
+    "rows": [
+     "ADD-03-AppA-01",
+     "ADD-03-AppA-02",
+     "ADD-03-AppA-03",
+     "ADD-03-AppA-04",
+     "ADD-03-AppA-05"
+    ],
+    "duration_assumption": {
+     "key": "investment_registration_application",
+     "value": 5,
+     "basis": "PROVISIONAL ASSUMPTION: 5 Working Days to collect, certify and upload the Table 8-1 documents for one member. The pack states no preparation time. The Office issue period is separate and is not included.",
+     "owner": "Legal"
+    },
+    "duration_label": "PROVISIONAL ASSUMPTION"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note3",
+     "page": 3,
+     "kind": "reading",
+     "words": "تُقدِّم الطلبات إلكترونياً عبر بوابة المكتب فقط",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-INVESTMENT-REG-CERT"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-ASSUME-APP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ISS-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "id": "I-T8-1-ROW2-AR-EN",
+    "text": "ambiguous: Table 8-1 row 2 (company incorporated outside the GCC states) gives different issue periods in three places. (1) The Arabic Appendix A reading prints 'مدة الإصدار (أيام عمل): ٥'. (2) The English Appendix B (ADD-03:T8-1/2) prints 'Issue period (Working Days): 3'. (3) The Q16 response says 'the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days' for 'an application lodged not later than Sunday 22 November 2026'. Section 2.2 says 'The Arabic text governs. The English translation at Appendix B is provided for convenience only.' Possible readings: (a) the period is as printed in Arabic, with Q16's reduction applying only to an application lodged in time; (b) Appendix B already shows the reduced period; (c) Appendix B is a translation error. No reading is chosen here. A person decides which figure applies and whether a clarification is needed. This is CONDITIONAL on approval of reading ADD-03-p3-r1.",
+    "owner": "Legal",
+    "theme": "Investment registration of foreign members",
+    "short": "Table 8-1 row 2: Arabic ٥ vs English 3 vs Q16 reduction",
+    "a3": null,
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "مدة الإصدار (أيام عمل): ٥",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:T8-1/2",
+     "page": 4,
+     "kind": "span",
+     "words": "Issue period (Working Days): 3",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q16",
+     "page": 2,
+     "kind": "span",
+     "words": "for an application lodged not later than Sunday 22 November 2026, the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Arabic text governs.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-EN-ROW2",
+    "S-GOVERNS",
+    "S-Q16",
+    "S-CROP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ISS-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "id": "I-INVREG-CONSEQUENCE",
+    "text": "CONDITIONAL on reading ADD-03-p3-r1 and on the ADD-03:2.1 replacement of VOL-I 8.9, which is not among this packet's promoted ops. The Table 8-1 rows (ADD-03-AppA-01 to -05) state no consequence. The only bid-out words are in ADD-03:2.1: 'A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.' Open questions for a person: does that rejection reach a Certificate not issued 'in accordance with Table 8-1'? Does a branch registered in the Kingdom (row 3) count as a member 'incorporated outside the Kingdom'? How does Section 2.4's exception interact? The existing evidence item EV-INVESTMENT-LICENCE ('Investment licence or signed undertaking for each foreign member') and the activity 'investment-licence' rest on the earlier VOL-I 8.9 wording. Whether they change is also left to a person.",
+    "owner": "Legal",
+    "theme": "Investment registration of foreign members",
+    "short": "Table 8-1 rows: rejection only in 2.1; 2.1 op not promoted",
+    "a3": null,
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "(b) a Certificate of Investment Registration issued by the Northern Region Investment Services Office (the Office) in accordance with Table 8-1. A Proposal that does not include the evidence required by this Clause for each such member shall be rejected.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r3",
+     "page": 3,
+     "kind": "reading",
+     "words": "فرع مسجل في المملكة لشركة أجنبية",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-REJECT-2-1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ISS-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "id": "I-INVREG-VALIDITY",
+    "text": "insufficient evidence: note 2 of Table 8-1 states 'تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.' I searched ADD-03 Section 2 and Q15-Q16 and found no words saying on which date a Certificate must be valid: Envelope A submission, evaluation, the proposal validity period or Financial Close. A person decides whether the 90-day validity matters for the bid. This is CONDITIONAL on approval of reading ADD-03-p3-r1.",
+    "owner": "Legal",
+    "theme": "Investment registration of foreign members",
+    "short": "Certificate 90-day validity: no as-at date stated",
+    "a3": null,
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note2",
+     "page": 3,
+     "kind": "reading",
+     "words": "تكون الشهادة سارية لمدة تسعين (٩٠) يوماً من تاريخ إصدارها.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-CQ-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "clarification_item",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "entry": {
+     "id": "CQ-ADD03-T8-1-ROW2",
+     "kind": "ambiguity",
+     "volume": "ADD-03",
+     "clause": "Table 8-1 row 2 (Appendix A / Appendix B); Q16",
+     "page": 3,
+     "units": [
+      "ADD-03:p3-image/r2",
+      "ADD-03:T8-1/2",
+      "ADD-03:Q16"
+     ],
+     "sources": [
+      {
+       "unit": "ADD-03:p3-image/r2",
+       "page": 3,
+       "words": "مدة الإصدار (أيام عمل): ٥"
+      },
+      {
+       "unit": "ADD-03:T8-1/2",
+       "page": 4,
+       "words": "Issue period (Working Days): 3"
+      },
+      {
+       "unit": "ADD-03:Q16",
+       "page": 2,
+       "words": "the issue period in row 2 of Table 8-1 is reduced by two (2) Working Days"
+      }
+     ],
+     "gap": "For row 2, the Arabic Table 8-1 prints ٥ and the English Appendix B prints 3. Q16 states a conditional reduction of two Working Days.",
+     "already_settled": "Section 2.2: 'The Arabic text governs.' Whether this settles the point is a person's decision.",
+     "practical_impact": "Planning the Office issue period, and so the latest date to lodge a row-2 member's application, before Envelope A.",
+     "proposed_question": "Please confirm the issue period for row 2 of Table 8-1 for an application lodged by the date stated in the response to Q16, and for one lodged after it, given that Appendix A prints ٥ and Appendix B prints 3.",
+     "interim_handling": "Leave both figures listed (I-T8-1-ROW2-AR-EN). Neither is chosen.",
+     "decision_owner": "Legal",
+     "response_status": "draft, not sent",
+     "linked_issues": [
+      "I-T8-1-ROW2-AR-EN"
+     ],
+     "theme": "Investment registration of foreign members"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/r2",
+     "page": 3,
+     "kind": "reading",
+     "words": "مدة الإصدار (أيام عمل): ٥",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:T8-1/2",
+     "page": 4,
+     "kind": "span",
+     "words": "Issue period (Working Days): 3",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-EN-ROW2",
+    "S-GOVERNS",
+    "S-Q16"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "D-ESC-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "e5d1ff4e390aab4b3a6055a7a32e3ec785db1c4eaf79b9369c89548d5a72b1ce",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": null,
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "09d13a4d76d1f94a63286feda57333c6c2b5aa5388e9f7516103024ac9a38be7",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "reading:ADD-03-p3-r1",
+   "provision": "ADD-03:2.3",
+   "target": null,
+   "payload": {
+    "why": "software limitation: the Office's issue period after lodgement is stated by the pack, not assumed. It varies by the member's class (rows ١, ٢, ٣ of Table 8-1), and for row 2 it differs between Arabic, English and Q16. An A5 activity's duration can only name a single lead-time assumption key. The Office wait cannot be modelled as a pack-stated, class-dependent period counted from 'يوم العمل التالي ليوم استلام الطلب المكتمل' without typing a figure as an assumption, which would choose between the readings. So I propose no 'issue' activity and no successor link to Envelope A assembly. A person decides how to plan the Office period once the reading is approved and I-T8-1-ROW2-AR-EN is decided.",
+    "what_is_unsupported": "A class-dependent, pack-stated activity duration from a pending image reading, counted from an event (receipt of the complete application)."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:p3-image/note1",
+     "page": 3,
+     "kind": "reading",
+     "words": "تُحسب مدة الإصدار بأيام العمل اعتباراً من يوم العمل التالي ليوم استلام الطلب المكتمل.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.3",
+     "page": 1,
+     "kind": "span",
+     "words": "The Office has undertaken to the Authority to issue a Certificate within the issue period stated in Table 8-1 for the class of the member, counted in accordance with the Notes to Table 8-1.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-CROP",
+    "S-EN-ROW2",
+    "S-Q16"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}
