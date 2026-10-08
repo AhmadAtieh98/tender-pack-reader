@@ -1,0 +1,58 @@
+== rebuild start 09:09:20Z ==
+C10 pass  524 units checked in full: text-layer units against spans re-extracted from the PDF (text, cells in order and column, matching text, anchor page and geometry); image-reading units against their region and crops; mismatches: none
+STRUCTURE OK. units: 524  ->  build/units.md, coverage.md, exclusions.md, review/
+STRUCTURE OK. units: 31  ->  build/fixture/units.md, coverage.md, exclusions.md, review/
+C13 pass  16 (+ VOL-IV-F4C-N1, which restates VOL-I-9.4-01) explicit bid-out triggers + 1 below the score threshold = 18 A3 rows, each row with an explicit quoted consequence
+C43 pass  A3 fits one page; smallest text 7.62 pt (scale 0.897)
+C11 ok  STALE rows: none
+C48 ok  200 A1 rows in force at ADD-02: 160 discharged by an activity, 30 reviewed for deviations (the VOL-V volume check), 10 excepted with a reason (listed in a5/requirements_not_carried.csv); not carried: none. Of these, 18 A3 (bid-out) rows: 16 carried, 2 excepted with a reason (the rows the A3 page lists: explicit plus the score row: ADD-02-7.2-01, VOL-I-1.4-01, VOL-I-10.5-01, VOL-I-11.3-01, VOL-I-11.5-01, VOL-I-4.2-01, VOL-I-5.4-01, VOL-I-6.1-01, VOL-I-6.2-02, VOL-I-8.1-01, VOL-I-8.2-01, VOL-I-8.5-01, VOL-I-8.6-01, VOL-I-9.3-01, VOL-I-9.4-01, VOL-I-9.6-01, VOL-IV-F4C-04, VOL-IV-F4C-N1)
+RELEASE BLOCKER [approval] 205 of 205 register rows not accepted by a person (a named decision bound to the current content): proposed 205
+RELEASE BLOCKER [approval] 38 of 38 amendment op(s) not accepted by a person (a named decision bound to the current content): proposed 38
+OUTPUTS PUBLISHED (WORKING DRAFT (not releasable)): /home/user/tender-pack-reader/out
+outputs exit 0 09:09:50Z
+STRUCTURE OK. units: 547  ->  build/drill/units.md, coverage.md, exclusions.md, review/
+RELEASE BLOCKER [coverage] ADD-03 is PARTIAL; unresolved provisions: ['ADD-03:6.1', 'ADD-03:7.1', 'ADD-03:Q15', 'ADD-03:Q16']
+RELEASE BLOCKER [coverage] 1 C46 finding(s): ADD-03/cover/para3
+RELEASE BLOCKER [stale] 13 row(s) STALE at ADD-03: VOL-I-6.1-01, VOL-I-5.2-01, VOL-I-6.3-01, VOL-I-7.1-01, VOL-I-8.3-01, VOL-I-8.5-01, VOL-V-31.3-01, VOL-I-3.4-01, VOL-I-6.7-01, VOL-II-T2-4-TP, VOL-V-29.3-01, VOL-V-31.3-02 ...
+RELEASE BLOCKER [approval] image readings pending the owner's review: VOL-II-p3-r1, VOL-IV-p6-r1
+RELEASE BLOCKER [approval] 205 of 205 register rows not accepted by a person (a named decision bound to the current content): proposed 205
+drill exit 0 09:10:28Z
+== strict ==
+RELEASE BLOCKER [approval] 205 of 205 register rows not accepted by a person (a named decision bound to the current content): proposed 205
+RELEASE BLOCKER [approval] 38 of 38 amendment op(s) not accepted by a person (a named decision bound to the current content): proposed 38
+RELEASE REFUSED (--strict); previous outputs kept; candidate in: /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/rebuild3/out-strict.rejected
+strict exit 3 09:10:39Z
+== check-register ==
+units: 524 (448 with a disposition); rows: 205; findings: 0
+C14 (for a person to confirm; not a failure): 16 obligation words in non-requirement units
+check-register exit 0
+== output files changed against a918d5e ==
+ 39 files changed, 6437 insertions(+), 3862 deletions(-)
+      1 README.md
+      3 a1
+      5 a2
+      3 a3
+      3 a4
+     14 a5
+      1 checks.json
+      9 review
+untracked new output files: 0
+== mac checks ==
+           RELEASE BLOCKER [approval] 38 of 38 amendment op(s) not accepted by a person (a named decision bound to the current content): proposed 38
+PASS     3 outputs --strict: exit 3, 2 approval blocker(s) only (human approvals pending; expected until you approve):
+           RELEASE BLOCKER [approval] 205 of 205 register rows not accepted by a person (a named decision bound to the current content): proposed 205
+           RELEASE BLOCKER [approval] 38 of 38 amendment op(s) not accepted by a person (a named decision bound to the current content): proposed 38
+PASS     4 A1 xlsx opens with openpyxl: /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/rebuild3/mac/tenderpack-checks-20261008T091042/out/a1/a1.xlsx (['A1 register', 'Dates', 'Issues', 'Stages', 'Assumptions', 'Evidence', 'Date coverage', 'Relationships'])
+PENDING  4 look at it in Numbers or Excel yourself: open "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/rebuild3/mac/tenderpack-checks-20261008T091042/out/a1/a1.xlsx"
+PASS     5 14 HTML file(s) parse
+PENDING  5 open one in a browser yourself (Arabic, links): open "/tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/rebuild3/mac/tenderpack-checks-20261008T091042/out/review/batch-09-rows.html"
+PENDING  6 skipped (--no-ai)
+PENDING  7 skipped (--no-ai)
+PASS     8 tenderpack panel answers --help (start it from launch.command, option 7)
+PENDING  8 open the panel in Safari yourself (docs/VERIFY_ON_MAC.md, the panel check)
+PASS     9 installed versions match requirements.lock.txt (all 15 applicable pins match the lock (requirements.lock.txt; python 3.11.15))
+PASS     10 tenderpack imports from /home/user/tender-pack-reader wherever the interpreter starts (/home/user/tender-pack-reader/.venv/lib/python3.11/site-packages/tenderpack-folder.pth)
+
+offline checks: 9 PASS, 0 PARTIAL, 5 PENDING, 0 FAIL  (everything in /tmp/claude-0/-home-user-tender-pack-reader/51ac768d-d630-5aa7-8c52-469fdeb8335c/scratchpad/s14/rebuild3/mac/tenderpack-checks-20261008T091042)
+checks exit 0 09:11:21Z
+== rebuild end 09:11:21Z ==
