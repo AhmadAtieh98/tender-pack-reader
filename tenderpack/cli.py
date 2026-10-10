@@ -547,8 +547,13 @@ def discover_cmd(evidence: Path, pack_path: Path, to: Path, include_addenda: boo
 
 
 def main(argv: list[str] | None = None) -> int:
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] == "interview":
+        from .interview import main as interview_main
+        return interview_main(args[1:])
     ap = argparse.ArgumentParser(prog="tenderpack")
     sub = ap.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("interview", help="frozen ADD02 baseline and reversible demo decisions (interview --help)")
     a = sub.add_parser("ingest")
     a.add_argument("--pack", default=str(ROOT / "config/pack.yaml"))
     a.add_argument("--out", default=str(ROOT / "build"))

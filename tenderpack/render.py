@@ -264,6 +264,8 @@ a {color: #000; text-decoration: none}
 .nw {white-space: nowrap}
 .grp {margin: 0.5px 0 0 0}
 .it2 {padding-left: 18px; text-indent: -9px; margin: 0 0 0.5px 0}
+.issue-columns {width: 100%; border-collapse: collapse}
+.issue-columns td {width: 50%; vertical-align: top; padding: 0 5px 0 0}
 """
 A3_FOOTER_CSS = """
 body {font-family: sans-serif; font-size: 8.5px; line-height: 1.2; color: #444}
@@ -377,7 +379,9 @@ def _a3_html(a3: dict) -> str:
         if g.get("note"):
             out.append(f'<p class="note">{_rich(g["note"])}</p>')
         link = _id
+        group_blocks = []
         for grp in g["groups"]:
+            block_start = len(out)
             qs = (f' <span class="meta">questions drafted: {", ".join(link(q) for q in grp["questions"])}</span>'
                   if grp.get("questions") else
                   f' <span class="meta">questions drafted: {grp["n_questions"]}</span>' if grp.get("n_questions") else "")
@@ -385,6 +389,7 @@ def _a3_html(a3: dict) -> str:
                 qs += f' <span class="meta">({_rich(grp["unlisted"])})</span>'
             if "count" in grp:                     # condensed to a count (stage2.condense_a3 level 4): ids on a3_detail.html
                 out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({grp["count"]})' + qs + "</p>")
+                group_blocks.append(out[block_start:]); del out[block_start:]
                 continue
             mark = lambda i: "\u2020\u00a0" if i.get("decide") else ""  # noqa: E731
             own = lambda i: f' <span class="meta">({_rich(i["owner"])})</span>' if i.get("owner") else ""  # noqa: E731
@@ -395,9 +400,20 @@ def _a3_html(a3: dict) -> str:
             if any(i.get("short") for i in grp["items"]):     # session 11 (A3-1, R-3): one line each, reason and owner
                 out.append(f'<p class="grp"><b>{_rich(grp["title"])}</b> ({len(grp["items"])})' + qs + "</p>")
                 out += [f'<p class="it2">{mark(i)}{link(i["id"])} {_rich(i["short"])}{own(i)}{fold(i)}</p>' for i in grp["items"]]
+                group_blocks.append(out[block_start:]); del out[block_start:]
                 continue
             items = [mark(i) + link(i["id"]) + own(i) + fold(i) for i in grp["items"]]   # condensed: ids and owners
             out.append(f'<p class="it"><b>{_rich(grp["title"])}</b> ({len(grp["items"])}): ' + "; ".join(items) + qs + "</p>")
+            group_blocks.append(out[block_start:]); del out[block_start:]
+        if a3.get('issue_columns') == 2 and len(group_blocks) > 1:
+            # Keep groups and identifiers intact; balance at a group boundary.
+            weights = [sum(len(re.sub('<[^>]+>', '', line)) for line in block) for block in group_blocks]
+            split = min(range(1, len(weights)), key=lambda n: abs(sum(weights[:n]) - sum(weights[n:])))
+            columns = [''.join(line for block in blocks for line in block)
+                       for blocks in (group_blocks[:split], group_blocks[split:])]
+            out.append('<table class="issue-columns"><tr>' + ''.join('<td>' + col + '</td>' for col in columns) + '</tr></table>')
+        else:
+            out.extend(line for block in group_blocks for line in block)
     return "\n".join(out)
 
 

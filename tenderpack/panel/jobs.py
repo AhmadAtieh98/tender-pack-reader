@@ -30,6 +30,7 @@ import time
 from pathlib import Path
 
 GROUPS = {"ingest": "build", "outputs": "build", "strict": "build", "check-register": "build",
+          "interview-decision": "build",
           "ai-run": "ai", "ai-resume": "ai", "diff": "diff", "decision": "decision",
           # session 13, part 4: the AI quick review has its own group (one at a time, beside the run, never blocking it)
           # and its notes (compare, an owner's answer, offering answers to a run) another
@@ -44,6 +45,8 @@ AI_EXIT = {0: "finished (complete or partial), or stopped where asked",
            5: "deferred: a batch hit a rate limit; resume after the reset time the run names",
            6: "stopped until a person acts (the reason says what to do); then resume"}
 EXIT_MEANING = {
+    "interview-decision": {0: "decision applied and validated outputs rebuilt; history retained",
+                           2: "decision refused or rolled back; see the validation details below"},
     "ingest": {0: "structure OK; the evidence build was written",
                2: "structural failure: the previous build is kept; the candidate is in <build>.failed",
                3: "readings still pending human review (--require-approved)"},

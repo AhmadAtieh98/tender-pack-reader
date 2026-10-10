@@ -608,6 +608,9 @@ def _fill(ctx: "Ctx", phase: str, start: str, **kw) -> None:
             break
         if k in pf.recs or k in pf.tried or ctx.cp.batch(k)["status"] not in ("pending", "deferred"):
             continue
+        if phase == "analysis" and ctx.s.get("route") == "host" and _submission_file(ctx, k).is_file():
+            # The ordered consumer revalidates this durable submission before deciding whether to retry.
+            continue
         pf.tried.add(k)
         try:
             rec = (_prep_analysis(ctx, k) if phase == "analysis" else _prep_downstream(ctx, k, **kw))
@@ -1191,6 +1194,7 @@ def approval(cp: Checkpoint) -> dict:
     decisions file, if any, are listed by name."""
     out = {"status": "none", "by_the_workflow": "nothing approved, accepted, rejected or sent", "decisions": []}
     pack = (cp.data.get("candidate") or {}).get("pack")
+    cfg = {}
     try:
         cfg = load_yaml(Path(pack)) or {} if pack and Path(pack).exists() else {}
         from .. import review
@@ -1198,8 +1202,11 @@ def approval(cp: Checkpoint) -> dict:
     except Exception as e:                                       # noqa: BLE001 (a report; never blocks the run)
         out["note"] = f"the candidate's decisions file could not be read: {type(e).__name__}: {_short(str(e), 200)}"
         dec = []
-    out["decisions"] = [f"{x.get('decision')} {x.get('kind')} {x.get('id')} by {x.get('reviewer')} ({x.get('date')})"
+    out["decisions"] = [f"{x.get('decision')} {x.get('kind')} {x.get('item') or x.get('id')} by {x.get('reviewer')} ({x.get('date')})"
                         for x in dec if isinstance(x, dict)]
+    if cfg.get("interview_demo") is True:
+        out.update(status="simulated", assumed_reviews=sum(d.get("origin") == "interview_demo" for d in dec),
+                   by_the_workflow="INTERVIEW DEMO: eligible reviews assumed approved on the owner's instruction; no actual human review or tender release")
     return out
 
 
@@ -1827,6 +1834,10 @@ def _take_reading(ctx: Ctx, bid: str, rid: str, prop, who: str) -> None:
         b.update(status="failed", error=f"the proposed reading is {prop.verification_status}: " + "; ".join(bad)[:900])
         return
     f = RR.write(_readings_dir(ctx), prop, ctx.run_id)
+    if (load_yaml(ctx.P["pack"]) or {}).get("interview_demo") is True:
+        from ..interview import assume_reading
+        assume_reading(ROOT, ctx.P["pack"], rid)
+        cp.event("demo_reading_assumed", region=rid, note="Assumed approved for demo; no observed human review")
     b.update(status="done", reading_file=str(f), unit_id=prop.reading.get("unit_id"))
     cp.event("reading_written", region=rid, file=str(f), status=prop.verification_status)
 
@@ -2541,6 +2552,8 @@ def _prep_converse(ctx: Ctx, bid: str, sp, prov, sess, packet: dict, n: int, ima
     s = ctx.s
     wsn = Workspace(ctx.P["build"], ctx.P["pack"], ROOT, ctx.dir / "ai", Path(s["worklog"]),
                     Path(s["ai_config"]) if s.get("ai_config") else None)
+    if getattr(ctx.ws, "downstream_context", None) is not None:
+        wsn.downstream_context = ctx.ws.downstream_context
 
     def work():
         return R.converse(sp, prov, packet, ws=wsn, route=route, caps_=a["caps_"], price=a["price"], policy=pol,
@@ -2829,6 +2842,7 @@ def step_validation(ctx: Ctx, st: dict) -> None:
                 continue
             it2 = it.model_copy(deep=True)
             it2.statements = [smap.get(x, x) for x in it2.statements]
+            it2.dependencies = [smap.get(x, x) for x in it2.dependencies]
             t = it2.payload.get("type") if it2.statement_type == "amendment_op" else None
             if it2.statement_type == "amendment_op" and t not in types:
                 converted.append({"item": it2.id, "batch": bid, "type": t})
@@ -3043,6 +3057,7 @@ def step_downstream(ctx: Ctx, st: dict) -> None:
     promoted = ctx.promoted()
     answers = _answers(ctx, cps, promoted, tasks=[])
     tasks, imp = DS.tasks(ws, cps, promoted, answers)
+    ws.downstream_context = {"analysis": cps.model_dump(mode="json"), "tasks": tasks}
     answers = _answers(ctx, cps, promoted, tasks=tasks)        # session 13: the analysis rows carried to their tasks
     ddir = ctx.dir / "downstream"
     ddir.mkdir(parents=True, exist_ok=True)
@@ -3300,15 +3315,28 @@ def _combined_downstream(ctx: Ctx) -> DownstreamSet:
             continue
         d = DownstreamSet.model_validate(json.loads(Path(b["result"]).read_text(encoding="utf-8")))
         meta = meta or d
+        ids = [it.id for it in d.items]
+        if len(ids) != len(set(ids)):
+            raise ValueError(f"{bid}: duplicate item ids inside one batch; references are ambiguous")
+        imap = {}
+        reserved = seen | set(ids)
+        for iid in ids:
+            target = iid
+            if target in seen:
+                target = f"{bid}/{iid}"
+                while target in reserved:
+                    target = f"{bid}/{target}"
+            imap[iid] = target
+            reserved.add(target)
+        seen.update(imap.values())
         smap = {x.id: f"{bid}/{x.id}" for x in d.statements}
         statements += [x.model_copy(update={"id": smap[x.id]}) for x in d.statements]
         for it in d.items:
             it2 = it.model_copy(deep=True)
             it2.statements = [smap.get(x, x) for x in it2.statements]
-            if it2.id in seen:
-                it2.id = f"{bid}/{it2.id}"
-            seen.add(it2.id)
-            it2.model_rationale = it2.model_rationale
+            refs = {**imap, **smap}
+            it2.dependencies = [refs.get(x, x) for x in it2.dependencies]
+            it2.id = imap[it.id]
             items.append((bid, it.id, it2))
     ds = DownstreamSet(run_id=f"{ctx.run_id}-downstream", created=now_iso(), route=ctx.s["route"],
                        provider=meta.provider if meta else ctx.s["route"],
@@ -3377,8 +3405,8 @@ def _critic_route(ctx: Ctx, keys: list[str]):
         return "ollama", None, None, model
     route = cs.get("route") or "host"
     if route == "host":
-        binary = (cs.get("host") or {}).get("claude_bin") or (ctx.cfg.get("host_session") or {}).get("claude_bin") \
-            or "claude"
+        from .hostsession import settings as host_settings
+        binary = (cs.get("host") or {}).get("claude_bin") or host_settings(ctx.cfg)["claude_bin"]
         if not (shutil.which(binary) or Path(binary).exists()):
             return None, None, f"the host CLI ({binary}) is not installed here: the host critic cannot run", None
     return route, None, None, cs.get("model")
@@ -3746,6 +3774,11 @@ def classify_register_findings(found: list, new_rows: set) -> dict:
 
 def step_outputs(ctx: Ctx, st: dict) -> None:
     from .. import stage2
+    if (load_yaml(ctx.P["pack"]) or {}).get("interview_demo") is True:
+        from ..interview import assume_reviews
+        st["demo_decisions"] = assume_reviews(ROOT, ctx.P["pack"], ctx.P["build"])
+        ctx.cp.event("demo_decisions_assumed", assumed=len(st["demo_decisions"]["assumed"]),
+                     skipped=len(st["demo_decisions"]["skipped"]))
     t0 = time.perf_counter()
     ob = _join_before(ctx)
     st["before"] = {k: v for k, v in ob.items() if k != "pid"}

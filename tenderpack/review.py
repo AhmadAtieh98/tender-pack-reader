@@ -165,6 +165,8 @@ def status_of(decisions: list[dict], kind: str, item: str, fp: str, flag: str | 
             out["flag_only"] = True
         return out
     base = {"reviewer": d["reviewer"], "date": d.get("date"), "note": d.get("note"), "decision": d["decision"]}
+    if d.get("origin") == "interview_demo":
+        base["origin"] = "interview_demo"
     if d.get("fingerprint") != fp:
         return {"status": "changed", **base}
     return {"status": "accepted" if d["decision"] == "accept" else "rejected", **base}
@@ -174,6 +176,8 @@ def label(st: dict) -> str:
     s = st["status"]
     note = f" — note: {st['note']}" if st.get("note") else ""
     if s == "accepted":
+        if st.get("origin") == "interview_demo":
+            return f"ASSUMED APPROVED FOR DEMO ({st.get('date')}); no observed human review{note}"
         return f"accepted by {st['reviewer']} ({st.get('date')}){note}"
     if s == "rejected":
         return f"REJECTED by {st['reviewer']} ({st.get('date')}){note}"
@@ -287,3 +291,15 @@ def decide(r: dict, items: list[str], decision: str, reviewer: str, note: str | 
     msgs += [f"{decision}ed {e['kind']} {e['item']} by {e['reviewer']}; bound to fingerprint {e['fingerprint'][:16]}"
              for e in entries] + [f"written to {path}"]
     return 0, msgs
+
+
+def ai_guard_decisions(cfg: dict, decisions: list[dict]) -> list[dict]:
+    """Protect actual operator choices; a simulated acceptance is not a human override.
+
+    This filtered view is only for AI conflict guards, never the decision ledger or
+    release checks. Explicit demo mode and controller provenance are both required.
+    Rejections and all operator decisions keep their existing protection.
+    """
+    if cfg.get("interview_demo") is not True:
+        return decisions
+    return [d for d in decisions if not (d.get("origin") == "interview_demo" and d.get("decision") == "accept")]

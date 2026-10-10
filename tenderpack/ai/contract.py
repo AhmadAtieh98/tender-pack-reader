@@ -278,19 +278,35 @@ def _strip_props(schema: dict, name: str, fields) -> None:
             node["required"].remove(f)
 
 
+def inherit_item_states(data: dict) -> dict:
+    """Expand compact replies from their declared set state, never from live state.
+
+    Explicit item states (including stale or malformed ones) are retained for the
+    normal validators. Missing/malformed set state still fails normal parsing.
+    """
+    if not isinstance(data.get("state"), dict) or not isinstance(data.get("items"), list):
+        return data
+    data = copy.deepcopy(data)
+    for item in data["items"]:
+        if isinstance(item, dict) and "state" not in item:
+            item["state"] = copy.deepcopy(data["state"])
+    return data
+
+
 def model_fill_schema() -> dict:
     """ProposalSet.model_json_schema() trimmed to what the model fills: the controller-written set fields
     (run id, route, usage, coverage, status, ...) and item fields (validation, verification_status) are removed."""
     s = copy.deepcopy(ProposalSet.model_json_schema())
     _strip_props(s, None, CONTROLLER_SET_FIELDS)
-    _strip_props(s, "ChangeProposal", CONTROLLER_ITEM_FIELDS)
+    _strip_props(s, "ChangeProposal", (*CONTROLLER_ITEM_FIELDS, "state"))
     s.get("$defs", {}).pop("Coverage", None)
     s.get("$defs", {}).pop("Resolution", None)
     s.get("$defs", {}).pop("Usage", None)
     s.get("$defs", {}).pop("ValidationRecord", None)
     s["title"] = "ProposalSet (fields the proposer fills)"
     s["description"] = ("Return exactly one JSON object of this shape. verification_status and validation are written "
-                        "by the controller; any value you supply is overwritten.")
+                        "by the controller; any value you supply is overwritten. Copy the packet state once at "
+                        "set level; items inherit that exact state. Do not repeat state inside items.")
     return s
 
 
@@ -444,7 +460,8 @@ class ActivityPayload(_Strict):
     evidence_item: str = Field(description="the evidence item (EV-...) the activity is listed under in the templates")
     activity: dict = Field(description="an activity template entry: id, name, owner, discipline, resource, issuer, "
                                        "duration (a lead-time assumption key), per, predecessors, successors, item, "
-                                       "condition, finish, gated_by. An existing id replaces that entry")
+                                       "condition, finish, gated_by. An existing id replaces the shared activity under "
+                                       "all its existing evidence-item associations; it does not add an association")
     rows: list[str] = Field(description="the A1 rows (existing or proposed in this set) that need it")
     duration_assumption: LeadTimeAssumption | None = Field(None, description="a NEW lead-time assumption when "
                                                                              "`duration` names none that exists")
@@ -520,12 +537,13 @@ def downstream_fill_schema() -> dict:
     """DownstreamSet.model_json_schema() trimmed to what the proposer fills (as model_fill_schema)."""
     s = copy.deepcopy(DownstreamSet.model_json_schema())
     _strip_props(s, None, CONTROLLER_SET_FIELDS)
-    _strip_props(s, "DownstreamItem", ("validation", "verification_status"))
+    _strip_props(s, "DownstreamItem", ("validation", "verification_status", "state"))
     for k in ("Usage", "ValidationRecord"):
         s.get("$defs", {}).pop(k, None)
     s["title"] = "DownstreamSet (fields the proposer fills)"
     s["description"] = ("Return exactly one JSON object of this shape. verification_status and validation are written "
-                        "by the controller; any value you supply is overwritten.")
+                        "by the controller; any value you supply is overwritten. Copy the packet state once at "
+                        "set level; items inherit that exact state. Do not repeat state inside items.")
     return s
 
 
@@ -715,6 +733,8 @@ def merge_repair(first: dict, repaired: dict, ids, indices=()) -> tuple[dict, di
     `refused`, why in `why_refused`; the first stands as first given). A statement is replaced only when named; a NEW
     statement is added only when a replaced item cites it and no kept item does (it cannot change a sibling's basis);
     every other statement of the repair is refused the same way."""
+    first = inherit_item_states(first)
+    repaired = inherit_item_states(repaired or {})
     ids = {str(x) for x in ids if x is not None}
     indices = {int(x) for x in indices if x is not None}
     rep_list = [it for it in (repaired or {}).get("items") or []]

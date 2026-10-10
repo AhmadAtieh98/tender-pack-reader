@@ -52,6 +52,7 @@ if [ -e "$INTO" ] && [ -n "$(ls -A "$INTO" 2>/dev/null)" ]; then
   echo "FAIL     $INTO is not empty: the packaged copy is verified in a FRESH place (give another --into)"; exit 2
 fi
 mkdir -p "$INTO"
+INTO="$(cd "$INTO" && pwd)"
 echo "verifying the packaged copy $ZIP in $INTO"
 
 # unzip -------------------------------------------------------------------------------------------------------------

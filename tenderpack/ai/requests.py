@@ -699,6 +699,9 @@ def check(sp: TaskSpec, answer, packet: dict | None = None, fields: dict | None 
         data = data["downstream_set"]
     if not isinstance(data, dict):
         return None, ["the answer must be a JSON object"], []
+    if sp.phase in ("analysis", "downstream"):
+        from .contract import inherit_item_states
+        data = inherit_item_states(data)
     fields = fields or _dummy_fields(sp)
     env: list[str] = []
     problems: list[dict] = []
@@ -1101,13 +1104,13 @@ def host_repair(sp: TaskSpec, cfg: dict, previous: str, env: list[str], problems
     """The bounded repair on the host route: ONE plain session (no tools) given the previous answer, the schema and the
     errors; returns (its final text, the session's record). The failure policy applies to it too."""
     from . import hostsession as HS
-    from . import policy
+    from . import policy as runtime_policy
     from .offline import check_host_session
     kw = {"runner": runner} if runner is not None else {}
     check_host_session(cfg, f"a plain host session (repair-{sp.phase})")     # offline mode, before composing anything
     # session 13: the repaired phase's rules + the repair rules + the plain mechanics (policy.compose), never the host
     # session's tool and submission rules beside "you have NO tools now" (the old contradiction)
-    ps = HS.PlainSession(cfg, policy.compose("repair", "host", of=sp.phase, cfg=cfg), model=model,
+    ps = HS.PlainSession(cfg, runtime_policy.compose("repair", "host", of=sp.phase, cfg=cfg), model=model,
                          label=f"repair-{sp.phase}", **kw)
     prompt = (repair_message(sp, env, problems) + "\n\nSCHEMA\n" + json.dumps(sp.schema, ensure_ascii=False)
               + "\n\nYOUR PREVIOUS ANSWER\n" + (previous or "(none: the session ended without an answer)"))

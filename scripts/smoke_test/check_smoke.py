@@ -4,16 +4,35 @@ Usage: python smoke-test/check_smoke.py RUN_DIR EXPECTED_YAML EXIT_CODE RUN_LOG
 
 PASS only when: the run exited 0; its checkpoint says `stopped` after ingest with every later step pending; its
 provisions are exactly the expected ones and every one is `pending` (nothing proposed, nothing accepted: approval
-`none`); the candidate stayed inside the run folder; and the run's log holds no model, host-session or network event.
+`none`, or an explicit demo's baseline decisions unchanged); the candidate stayed inside the run folder; and the
+run's log holds no model, host-session or network event.
 Prints one PASS / FAIL line per check and exits 0 (all pass) or 1."""
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import sys
 from pathlib import Path
 
 import yaml
+
+
+def demo_baseline_unchanged(cp: dict, rd: Path) -> bool:
+    """An ingest-only demo may inherit decisions, but may not add or change any."""
+    try:
+        candidate = cp['candidate']
+        cand = Path(candidate['dir']).resolve()
+        pack = Path(candidate['pack']).resolve()
+        rel = cp['inputs']['copied']['decisions']
+        decisions = (cand / rel).resolve()
+        expected = cp['inputs']['real_hashes'][rel]
+        return (cand.is_relative_to(rd.resolve()) and pack.is_relative_to(cand)
+                and decisions.is_relative_to(cand)
+                and (yaml.safe_load(pack.read_text()) or {}).get('interview_demo') is True
+                and hashlib.sha256(decisions.read_bytes()).hexdigest() == expected)
+    except (KeyError, OSError, TypeError, ValueError):
+        return False
 
 
 def main(run_dir: str, expected: str, rc: str, run_log: str) -> int:
@@ -41,8 +60,10 @@ def main(run_dir: str, expected: str, rc: str, run_log: str) -> int:
     check(states == ["pending"], f"every provision is pending (states: {states}); nothing proposed or accepted")
     ap = cp.get("approval")
     ap_status, decisions = (ap.get("status"), ap.get("decisions")) if isinstance(ap, dict) else (ap, [])
-    check(str(ap_status) == "none" and not decisions,
-          f"approval {ap_status!r} with {len(decisions or [])} decision(s) (expected 'none' and no decision recorded)")
+    inherited_demo = ap_status == 'simulated' and demo_baseline_unchanged(cp, rd)
+    check((str(ap_status) == "none" and not decisions) or inherited_demo,
+          f"approval {ap_status!r} with {len(decisions or [])} decision(s) "
+          "(expected none, or explicit demo baseline decisions unchanged by ingest)")
     log = rd / "log.jsonl"
     events = [json.loads(x).get("event") for x in log.read_text(encoding="utf-8").splitlines()] if log.is_file() else []
     calls = [e for e in events if re.search(r"request|response|session|call|prompt|capabilit", str(e))]

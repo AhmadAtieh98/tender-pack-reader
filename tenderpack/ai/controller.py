@@ -98,7 +98,7 @@ from ..summary import SUMMARY_RE, VERBS
 from .contract import (CONTROLLER_SET_FIELDS, CONTROLLER_VERSION, ChangeProposal,
                        ClarificationPayload, Coverage, EscalationPayload, IssuePayload, ProposalSet, Resolution,
                        RowNewPayload, RowReadingPayload, StateIdentity, Usage, ValidationRecord, model_fill_schema,
-                       payload_schemas)
+                       payload_schemas, inherit_item_states)
 from .providers import make as make_provider
 from .providers.base import ProviderError, Request, complete_with_retries
 from .providers.recorded import PACKET_MARK
@@ -645,6 +645,7 @@ def task_packet(ws: Workspace, addendum: str, provisions: list[str] | None = Non
     pst = ws.stage(prev).state
     order = [u["unit_id"] for u in r["units"]]
     allp = _provisions(ws, addendum)
+    complete_targets = bool((C.load(ws.ai_config).get("interview") or {}).get("complete_target_context"))
     chosen = [p for p in allp if not provisions or any(p == x or p.startswith(x) for x in provisions)]
     ids = set(pst)
     plist = []
@@ -654,12 +655,14 @@ def task_packet(ws: Workspace, addendum: str, provisions: list[str] | None = Non
         cands = []
         for t in dict.fromkeys(resolve(citations(u.text + " " + head), ids)):
             if t in pst:
-                cands.append({"target": t, "status": pst[t].status, "text": _short(pst[t].text, 240)})
+                cands.append({"target": t, "status": pst[t].status,
+                              "text": pst[t].text if complete_targets else _short(pst[t].text, 240),
+                              **({"pages": pst[t].pages, "cells": pst[t].cells, "complete": True} if complete_targets else {})})
             else:
                 cands.append({"target": t, "group_members": len(amend.group_members(pst, t)),
                               "title": _short(amend._group_title(pst, t), 120)})
         plist.append({"unit_id": p, "kind": u.kind, "pages": u.pages, "heading": head, "text": u.text,
-                      "candidate_targets": cands[:8], "origin": u.origin})
+                      "candidate_targets": cands if complete_targets else cands[:8], "origin": u.origin})
     from ..draft import draft
     d = draft(r["units"], addendum)
     image_units = [p for p in chosen if ws.units_by_id.get(p, {}).get("origin") == "image_reading"
@@ -722,7 +725,7 @@ def parse_set(data, controller: dict, overwrites: list) -> ProposalSet:
     if unknown:
         raise ParseError(f"unknown field(s) {unknown}; the set has only {list(MODEL_SET_FIELDS)}")
     try:
-        return ProposalSet.model_validate({**controller, **data})
+        return ProposalSet.model_validate({**controller, **inherit_item_states(data)})
     except ValidationError as e:
         raise ParseError(_short(str(e), 1500)) from None
 
@@ -1340,11 +1343,25 @@ def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, o
                     why = f"{prov}: a no_effect disposition and {getattr(op, 'id', i)} ({getattr(op, 'type', '?')} on {t}) in the same set"
                     out[j] = out.get(j) or why
                     out[i] = out.get(i) or why
-    change = ("replace_text", "set_status", "replace_unit", "set_value")
+    change = ("replace_text", "set_status", "replace_unit", "set_value", "adjust_value", "append_text")
+    def signature(op):
+        # Include each operation's actual writes, not just old/new (two distinct
+        # replacement units otherwise looked identical because both had new=None).
+        fields = ("type", "new", "old", "status", "column", "replacement", "new_text", "change", "effect", "note", "to", "scope")
+        return tuple(json.dumps(getattr(op, k, None), sort_keys=True, default=str) for k in fields)
+
+    def compatible(a, b, text):
+        if a.type == b.type == "set_value" and a.column and b.column and a.column != b.column:
+            return True
+        if {a.type, b.type} == {"append_text", "replace_text"}:
+            replace, append = (a, b) if a.type == "replace_text" else (b, a)
+            return (_span(text or "", replace.old) is not None and bool(append.new)
+                    and normalize_latin(replace.old) not in normalize_latin(append.new))
+        return disjoint_edits(a, b, text)[0]
     for t, lst in by_target.items():
         sigs = {}
         for i, op in lst:
-            sig = (getattr(op, "type", None), getattr(op, "new", None), getattr(op, "status", None), getattr(op, "old", None))
+            sig = signature(op)
             sigs.setdefault(sig, []).append((i, op))
         if len(sigs) > 1 and any(getattr(op, "type", None) in change for _, op in lst):
             # session 14 (W1): two text replacements on provably disjoint spans of the unit's previous text are
@@ -1353,11 +1370,10 @@ def cross_item_conflicts(ops: list[tuple[int, object]], disps: list[tuple[int, o
             for x in range(len(lst)):
                 for y in range(x + 1, len(lst)):
                     (i, a), (j, b) = lst[x], lst[y]
-                    sa = (a.type, a.new, getattr(a, "status", None), a.old) if hasattr(a, "type") else None
-                    sb = (b.type, b.new, getattr(b, "status", None), b.old) if hasattr(b, "type") else None
+                    sa, sb = signature(a), signature(b)
                     if sa == sb:
                         continue
-                    if texts is not None and disjoint_edits(a, b, texts.get(t))[0]:
+                    if compatible(a, b, (texts or {}).get(t)):
                         continue
                     clash |= {i, j}
             ids = ", ".join(str(getattr(op, "id", i)) for i, op in lst if i in clash)
@@ -1409,7 +1425,7 @@ def validate_set(ws: Workspace, ps: ProposalSet, log: RunLog | None = None, expe
     prev = ws.prev_stage(addendum)
     pst = ws.stage(prev).state
     rows = {x.id: x for x in r["rowfile"].rows}
-    decisions = r["decisions"]
+    decisions = review.ai_guard_decisions(r["cfg"], r["decisions"])
     withdrawn = review.withdrawn_ops(decisions)
 
     # statements: facts need verbatim evidence; assumptions and interpretations are never verified by evidence

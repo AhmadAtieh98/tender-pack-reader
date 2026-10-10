@@ -40,6 +40,7 @@ import email.policy
 import hashlib
 import hmac
 import json
+from ..util import load_yaml
 import os
 import re
 import secrets
@@ -220,6 +221,13 @@ class Panel:
             hs = (yaml.safe_load(self.cfg.ai_config.read_text(encoding="utf-8")) or {}).get("host_session") or {}
         except (OSError, yaml.YAMLError):
             hs = {}
+        if hs.get("driver") == "codex":
+            from ..ai.codex import discover
+            try:
+                discover(hs.get("codex_bin"))
+                return True
+            except FileNotFoundError:
+                return False
         return bool(shutil.which(str(hs.get("claude_bin") or "claude")))
 
     def addendum_box(self, advanced: bool = False) -> str:
@@ -365,6 +373,28 @@ def _rehearsal_match(root: Path, sha: str) -> str:
         except OSError:
             continue
     return ""
+
+
+def _pdf_view_links(data: bytes, url: str) -> bytes:
+    """Resolve generated PDF detail links for viewers that reject relative URIs.
+
+    Only the inline response carries this panel's temporary address. The stored
+    deliverable and downloads keep their portable relative links.
+    """
+    import pymupdf
+    with pymupdf.open(stream=data, filetype="pdf") as doc:
+        changed = False
+        for page in doc:
+            for link in page.get_links():
+                xref = link.get("xref")
+                if not xref:
+                    continue
+                kind, uri = doc.xref_get_key(xref, "A/URI")
+                parsed = urllib.parse.urlsplit(uri)
+                if kind == "string" and uri and not parsed.scheme and not parsed.netloc and not uri.startswith("/"):
+                    doc.xref_set_key(xref, "A/URI", pymupdf.get_pdf_str(urllib.parse.urljoin(url, uri)))
+                    changed = True
+        return doc.tobytes() if changed else data
 
 
 def _handler(panel: Panel):
@@ -518,6 +548,19 @@ def _handler(panel: Panel):
             if raw == "decisions":
                 pending, decided = panel.pending_items()
                 return self._html(200, V.decisions_page(base, pending, decided, panel.latest_decisions()))
+            if raw == "interview":
+                from .. import interview
+                try:
+                    pack, evidence, out, target = self._interview_target(self._query())
+                    data = interview.catalog(cfg.root, pack, evidence)
+                    busy = any(j["status"] == "running" for j in panel.jobs.list())
+                    try:
+                        interview.require_idle(cfg.root)
+                    except interview.InterviewError:
+                        busy = True
+                    return self._html(200, V.interview_page(base, data, target, busy, query=self._query().get("q", "")[:200]))
+                except (ValueError, OSError) as e:
+                    return self._html(400, V.message(base, "Interview decisions", str(e)))
             if raw == "decisions/form":
                 it = panel.find_item(self._query().get("item", ""))
                 if not it:
@@ -562,6 +605,8 @@ def _handler(panel: Panel):
             if kind == "download" or ctype == "application/octet-stream" or ctype.startswith(TYPES[".xlsx"]):
                 return self._send(200, data, ctype, {"Content-Disposition": f"attachment; filename*=UTF-8''{fname}"},
                                   csp=FILE_CSP)
+            if ctype == "application/pdf" and (area == "out" or (area == "runs" and "/candidate/out/" in rel)):
+                data = _pdf_view_links(data, panel.url + sub)
             if area == "runs":                                  # a candidate's file: the panel's banner on top
                 if ctype.startswith("text/html"):
                     data = _inject_banner(data)
@@ -602,10 +647,33 @@ def _handler(panel: Panel):
                     return self._refuse(400, "refused: unknown step")
                 args = ["ai", "resume", rid, *(["--from", frm] if frm else []), *panel.cfg.flag("staging", "--out"),
                         *panel.cfg.flag("worklog", "--worklog")]
+                if (load_yaml(panel.cfg.pack) or {}).get("interview_demo") is True:
+                    from ..interview import timed_args
+                    args = timed_args(args, load_yaml(panel.cfg.ai_config))
                 j = panel.jobs.start("ai-resume", args, {"run_id": rid})
                 return self._redirect(f"jobs/{j['id']}")
             if raw in ("decisions/confirm", "decisions/run"):
                 return self._decision(f, run=(raw == "decisions/run"))
+            if raw == "interview/apply":
+                from .. import interview
+                try:
+                    if any(j["status"] == "running" for j in panel.jobs.list()):
+                        return self._refuse(409, "a run or rebuild is active; retry this change when it finishes")
+                    pack, evidence, out, target = self._interview_target(f)
+                    interview.require_demo(pack)
+                    request = {k: f.get(k, "") for k in ("item", "fingerprint", "reason", "action")}
+                    if request["action"] == "edit":
+                        request["value"] = json.loads(f.get("value", ""))
+                    elif request["action"] == "planning":
+                        request.update({k: f.get(k, "") for k in ("planning_field", "planning_value")})
+                    req = panel.cfg.panel_dir / "interview" / (interview.stamp() + ".json")
+                    interview.atomic_json(req, request)
+                    args = ["interview", "apply", "--root", str(panel.cfg.root), "--pack", str(pack),
+                            "--evidence", str(evidence), "--out", str(out), "--request", str(req)]
+                    job = panel.jobs.start("interview-decision", args, {"item": request["item"]})
+                    return self._redirect(f"jobs/{job['id']}")
+                except (ValueError, OSError) as e:
+                    return self._refuse(400, str(e))
             m = re.match(r"^runs/([^/]+)/quickreview$", raw)
             if m:
                 return self._qr_from_run(m.group(1), f)
@@ -814,8 +882,24 @@ def _handler(panel: Panel):
             syn = _rehearsal_match(cfg.root, sha)
             if syn:
                 meta["synthetic"] = syn
+            if (load_yaml(panel.cfg.pack) or {}).get("interview_demo") is True:
+                from ..interview import timed_args
+                args = timed_args(args, load_yaml(panel.cfg.ai_config))
             panel.jobs.start("ai-run", args, meta)
             return self._redirect(f"runs/{rid}")                # the run's page follows it
+
+        def _interview_target(self, fields: dict):
+            cfg = panel.cfg
+            rid = fields.get("run", "")
+            if not rid:
+                return cfg.pack, cfg.evidence, cfg.out, {}
+            if not RUN_ID.fullmatch(rid):
+                raise ValueError("invalid run ID")
+            from ..ai import candidate
+            p = candidate.paths(cfg.staging / "runs" / rid)
+            if not p["pack"].is_file():
+                raise ValueError("candidate is not ready")
+            return p["pack"], p["build"], p["out"], {"run": rid}
 
         def _decision(self, f: dict, run: bool):
             item_id = f.get("item", "")

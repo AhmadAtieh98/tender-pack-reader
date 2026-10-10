@@ -169,6 +169,14 @@ def unresolved_rows(r: dict) -> dict[str, list[str]]:
             for rid in _rows_citing(r, w, _cited(_prev_state(r, s), u.text if u else c.get("text", ""), c["provision"])):
                 out.setdefault(rid, []).append(f"{c['provision']} {c['disposition'].upper()}: "
                                                f"{_short(c.get('reason') or 'no op or disposition', 160)}")
+            # A provision may omit a clause number yet have recorded possible targets.
+            # Warn on those rows without selecting a target or applying an amendment.
+            possible = {uid for d in s.dispositions if d.provision == c['provision']
+                        and d.disposition == 'unresolved' for uid in d.candidates}
+            for rid in _rows_citing(r, w, possible):
+                if not any(reason.startswith(c['provision'] + ' ') for reason in out.get(rid, [])):
+                    out.setdefault(rid, []).append(f"{c['provision']} UNRESOLVED POSSIBLE TARGET: "
+                                                   f"{_short(c.get('reason') or 'target not established', 160)}")
     for e in r["evals"]:
         ev = e["stages"][w]
         if ev["stale"] and in_force(ev["status"]):
@@ -335,6 +343,8 @@ def blockers(r: dict, unres_rows: dict, prog_c: dict | None, issues_c: list[dict
                 continue
             u = s.state.get(c["provision"])
             rows = _rows_citing(r, w, _cited(_prev_state(r, s), u.text if u else c.get("text", ""), c["provision"]))
+            rows = sorted(set(rows) | {rid for rid, reasons in unres_rows.items()
+                                      if any(why.startswith(c['provision'] + ' ') for why in reasons)})
             reason = c.get("reason") or ("no op or disposition accounts for it" if c["disposition"] == "UNACCOUNTED" else "")
             low = reason.lower()
             kind = ("escalated" if "escalat" in low else "conflicting" if "conflict" in low else
@@ -983,6 +993,11 @@ def markdown(c: dict) -> str:
         L += [f"  - source op {_md(o['label'])}" for o in x["ops"]] + [f"  - {_md(y)}" for y in x["why"]]
     if not c["changes"]:
         L.append("- none: no row enters, leaves or changes")
+    if (c.get('one_page') or {}).get('pages') == 1:
+        L += ['', '[One-page candidate A3 (NOT VALIDATED)](candidate/a3.pdf); '
+              '[candidate evidence and full reasons](candidate/a3_detail.html).']
+    elif c.get('one_page'):
+        L += ['', 'Candidate one-page fit unavailable: ' + c['one_page'].get('error', 'see full diagnostic')]
     from .derived import a3_lines                            # session 12 (W3b): derived, never in force
     L += [""] + [_md(x) if x.startswith("- ") else x for x in a3_lines(c.get("derived"))]
     L += ["", "## The candidate A3 (every section in full)", "", f"_{_md(a3c['subtitle'])}_", ""]
@@ -1076,6 +1091,48 @@ def markdown(c: dict) -> str:
 
 # ---------------------------------------------------------------------------------------------- files
 
+def write_candidate_one_page(c: dict, folder: Path) -> dict:
+    """Supplement the full diagnostic with one readable candidate page; never hide reasons to force a fit."""
+    import copy
+    from . import stage2
+    from .render import A3OverflowError, write_a3_pdf
+    data = copy.deepcopy(c['a3'])
+    demo = 'INTERVIEW DEMO' in data.get('banner', '')
+    data['title'] = f"A3 - Candidate bid-out risks ({c['stage']}; NOT VALIDATED)"
+    data['banner'] = (f"CANDIDATE - NOT VALIDATED. Validated outputs remain {c['validated_stage']}. "
+                      + ('INTERVIEW DEMO: approvals are simulated. ' if demo else 'Proposals require review. ')
+                      + 'Unknown answers remain open; full reasons and evidence in the linked detail.')
+    provisions = (c.get('blockers') or {}).get('provisions') or []
+    if provisions:
+        data['sections'].append({'heading': 'Unresolved addendum provisions - no interpretation selected',
+            'items': [{'id': p['provision'], 'text': _short(p.get('reason') or 'Not accounted for', 210)}
+                      for p in provisions]})
+        data.setdefault('issues_detail', []).extend(
+            {'id': p['provision'], 'text': p.get('reason') or 'Not accounted for',
+             'owner': 'Review required', 'rows': p.get('rows') or [], 'theme': 'Unresolved addendum'} for p in provisions)
+    folder = Path(folder)
+    folder.mkdir(parents=True, exist_ok=True)
+    write_text(folder / 'a3_detail.html', stage2.a3_detail_html(data))
+    dump_json(data, folder / 'a3.json')
+    # A3's brief is the document-stated bid-out consequences. Ordinary mandatory
+    # obligations without such a consequence remain in A1 and this linked detail.
+    data['sections'] = [s for s in data['sections'] if not s['heading'].startswith('General gate')]
+    failure = 'No one-page layout tried'
+    for level, words, page in stage2.a3_pages(data):
+        if level > 2:
+            break
+        for columns in ([1, 2] if level == 2 else [1]):
+            page['issue_columns'] = columns
+            try:
+                fit = write_a3_pdf(page, folder / 'a3.pdf')
+                return {**fit, 'condensed': level, 'reason_words': words, 'issue_columns': columns,
+                        'path': 'a3/candidate/a3.pdf'}
+            except A3OverflowError as exc:
+                failure = str(exc)
+    (folder / 'a3.pdf').unlink(missing_ok=True)
+    return {'pages': 0, 'error': failure, 'note': 'Full diagnostic retained; candidate one-page fit not achieved.'}
+
+
 def write(r: dict, out: Path, a3v: dict | None, prog_v: dict | None, prog_c: dict | None = None,
           op_status: dict | None = None) -> list[Path]:
     """out/a3/a3_candidate.{json,md,html,pdf} and out/a5/candidate/ (see the module docstring); [] without a working
@@ -1086,6 +1143,8 @@ def write(r: dict, out: Path, a3v: dict | None, prog_v: dict | None, prog_c: dic
         return []
     out = Path(out)
     paths = []
+    c['one_page'] = write_candidate_one_page(c, out / 'a3' / 'candidate')
+    paths += sorted((out / 'a3' / 'candidate').glob('a3*'))
     fit = write_candidate_a3_pdf(c, out / "a3" / "a3_candidate.pdf")
     c["pages"] = fit["pages"]
     paths.append(out / "a3" / "a3_candidate.pdf")
@@ -1124,6 +1183,9 @@ def review_lines(out: Path, build: Path | None, rel, op_status: dict | None = No
          f"({c.get('pages')} page(s)), {link('a3/a3_candidate.md')}, {link('a5/candidate/README.md')}, "
          f"{link('a5/candidate/gantt.html')}", "", f"**What may be changing.** {c['paragraph']}", ""]
     st = op_status or {}
+    if (c.get('one_page') or {}).get('pages') == 1:
+        L += [f"- **One-page candidate briefing (NOT VALIDATED)**: {link('a3/candidate/a3.pdf')}; "
+              f"{link('a3/candidate/a3_detail.html', 'full candidate evidence and reasons')}", '']
     for x in c.get("changes") or []:
         L.append(f"- {x['change'].upper()} {x['row']}: {_md('; '.join(x['what']))}; ops "
                  + (", ".join(o["op"] + (f" ({st.get(o['op']) or o.get('controller') or 'review ' + o['review']})")

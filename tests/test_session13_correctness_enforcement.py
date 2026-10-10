@@ -32,6 +32,7 @@ class _WS:
 
 def _session(cls, **kw):
     s = object.__new__(cls)
+    s.cfg = {}
     s.ws, s.claude_bin, s.output_format, s.max_turns, s.model, s.python = _WS(), "claude", "stream-json", 5, None, "py"
     for k, v in kw.items():
         setattr(s, k, v)

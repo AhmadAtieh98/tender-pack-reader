@@ -1,3 +1,5 @@
+> **Current interview demo:** see [implementation handover](docs/INTERVIEW_DEMO_HANDOVER.md) for the prepared ADD02 → ADD03 workflow, one-page candidate A3, editable simulated decisions, verification boundaries and continuation steps. Coding agents start with [AGENTS.md](AGENTS.md).
+
 # tender-pack-reader
 
 Working repository for the Lamar Holding PPP AI Partner Round 2 assessment.

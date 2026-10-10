@@ -554,6 +554,10 @@ def stage_planner(r: dict, stage: str | None = None, extended: bool = True):
     from .register import Register
     stage = stage or r["validated"].stage
     s = next(x for x in r["stages"] if x.stage == stage)
+    if not s.issued:
+        available = ", ".join(x.stage for x in r["stages"] if x.issued) or "none"
+        raise ValueError(f"{stage} has no validated issue date for the planning status date; "
+                         f"choose a dated stage: {available}. No planning date has been assumed.")
     status_date = date.fromisoformat(s.issued)
     cache: dict = {}
     open_issues = set(r.get("curated_issues") or {})

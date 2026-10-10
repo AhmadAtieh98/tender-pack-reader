@@ -105,7 +105,11 @@ def test_the_validated_outputs_are_the_same_bytes_with_or_without_the_candidate(
     assert r["validated"].stage == "ADD-02" and r["working"].stage == "ADD-03" and r["working"].status == "PARTIAL"
     off, on = _files(p02["off"]), _files(p02["on"])
     extra = sorted(set(on) - set(off))
+    briefing = ['a3/candidate/a3.json', 'a3/candidate/a3_detail.html']
+    if json.loads(on['a3/a3_candidate.json']).get('one_page', {}).get('pages') == 1:
+        briefing.append('a3/candidate/a3.pdf')
     assert extra == sorted(["a3/a3_candidate.html", "a3/a3_candidate.json", "a3/a3_candidate.md", "a3/a3_candidate.pdf"]
+                           + briefing
                            + [f"a5/candidate/{f}" for f in (
                                "README.md", "blockers.csv", "blockers.json", "changes.csv", "changes.json", "gantt.html",
                                "gantt.pdf", "gantt.svg", "marshalling.csv", "marshalling.json", "milestones.csv",

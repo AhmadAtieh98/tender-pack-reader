@@ -568,7 +568,7 @@ def parse_batch(data, fields: dict | None = None, overwrites: list | None = None
 
 def batch_packet(ws, addendum: str, entries: list[tuple[str, object, list[str], dict]]) -> dict:
     """The request of one batched review: `entries` are (key, item, reasons, statements by id). The units the items cite
-    (the provision, the target) are printed once under `units`; each item names them."""
+    (the provision, target and cited evidence/consequence clauses) are printed once under `units`."""
     prev, pst = None, {}
     if ws is not None:
         try:
@@ -589,7 +589,11 @@ def batch_packet(ws, addendum: str, entries: list[tuple[str, object, list[str], 
     for key, it, why, statements in entries:
         p = _payload(it)
         tgt = getattr(it, "target", None) or p.get("target")
-        for uid in (getattr(it, "provision", None), tgt):
+        cited = [getattr(it, "provision", None), tgt]
+        cited += [ref.unit_id for ref in (getattr(it, "evidence", None) or [])]
+        cited += [(reading.get("consequence") or {}).get("unit") for reading in _interps(it)
+                  if isinstance(reading.get("consequence"), dict)]
+        for uid in cited:
             if uid and uid not in units:
                 v = unit(uid)
                 if v is not None:
@@ -603,9 +607,18 @@ def batch_packet(ws, addendum: str, entries: list[tuple[str, object, list[str], 
                       "provision": getattr(it, "provision", None), "target": tgt,
                       "statements_relied_on": [statements[s].model_dump(mode="json") for s in it.statements
                                                if s in statements]})
+    records = {}
+    if ws is not None and prev:
+        from .downstream import packet_records
+        records = packet_records(ws.r, prev, items)
+        for uid in records['referenced_units']:
+            if uid not in units:
+                v = unit(uid)
+                if v is not None:
+                    units[uid] = v
     return {"task": CRITIC_TASK, "addendum": addendum, "stage_before_addendum": prev, "reminder": NOT_APPROVAL,
             "note": "the units are printed once; each item names its provision and target", "units": units,
-            "items": items}
+            "current_records": records, "items": items}
 
 
 def batch_prompt(packet: dict) -> str:

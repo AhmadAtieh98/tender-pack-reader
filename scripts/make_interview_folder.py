@@ -51,7 +51,7 @@ PREFIX = "LAMAR-PPP-R2-INTERVIEW"
 TREES = ("tenderpack", "sources", "config", "curation", "build", "out", "scripts/mac", "scripts/smoke_test")
 FILES = ("pyproject.toml", "uv.lock", "requirements.lock.txt", "scripts/make_interview_folder.py", "worklog/README.md",
          "worklog/ERROR_INDEX.md",
-         "scripts/bench_workflow.py")          # session 14: the timing tool two focused tests run (and the owner can)
+         "scripts/bench_workflow.py", "scripts/prepare_interview_demo.py")          # session 14: the timing tool two focused tests run (and the owner can)
 DOCS = ["OPERATING_GUIDE.md", "AI_ROUTES.md", "PANEL.md", "MAC_SETUP.md", "VERIFY_ON_MAC.md",
         "QUICK_REVIEW.md", "MAC_CHECKLIST.md"]           # session 14 (W6): the quick review and the one-page checklist
 OPTIONAL_DOCS = ["RUNTIME_INSTRUCTIONS.md"]
@@ -186,7 +186,8 @@ def _git(repo: Path, *args: str) -> str | None:
 def base_revision(repo: Path) -> str:
     """The short commit the folder is built from (`git rev-parse`, read only); in a folder without git, the base its
     INTERVIEW.json records (a folder rebuilt from itself keeps the original base)."""
-    sha = _git(repo, "rev-parse", "--short", "HEAD")
+    top = _git(repo, "rev-parse", "--show-toplevel")
+    sha = _git(repo, "rev-parse", "--short", "HEAD") if top and Path(top).resolve() == Path(repo).resolve() else None
     if sha:
         return sha
     try:
@@ -198,7 +199,7 @@ def base_revision(repo: Path) -> str:
 def focused_tests(repo: Path) -> list[str]:
     """The focused set: every session-13 AND session-14 test file (session 14, W6: all of them, by glob, so a new one
     cannot be left out), then FOCUSED."""
-    recent = sorted(p.relative_to(repo).as_posix() for pat in ("test_session13_*.py", "test_session14_*.py")
+    recent = sorted(p.relative_to(repo).as_posix() for pat in ("test_session13_*.py", "test_session14_*.py", "test_session15_*.py", "test_session16_*.py", "test_session17_*.py", "test_session18_*.py")
                     for p in (repo / "tests").glob(pat))
     return recent + [t for t in FOCUSED if (repo / t).is_file()]
 

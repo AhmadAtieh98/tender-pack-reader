@@ -64,6 +64,7 @@ import subprocess
 import sys
 import threading
 import time
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
@@ -237,6 +238,12 @@ def _now() -> dt.datetime:
 
 def settings(cfg: dict) -> dict:
     s = dict(cfg.get("host_session") or {})
+    driver = s.setdefault("driver", "claude")
+    if driver not in ("claude", "codex"):
+        raise ValueError(f"unknown host_session.driver: {driver}")
+    if driver == "codex":
+        from .codex import discover
+        s["claude_bin"] = discover(s.get("codex_bin"))
     s.setdefault("claude_bin", "claude")
     s.setdefault("max_turns", 40)
     s.setdefault("timeout_s", 900)
@@ -251,6 +258,28 @@ STOP = threading.Event()               # session 13 (E161): set by terminate_liv
                                        # session is started and no failed one is asked again (the workers' retries
                                        # restarted the sessions a SIGTERM had just killed, and the run could not end)
 STOPPING = "refused: the run is stopping (interrupted); no new host session is started"
+
+_SLOT_LOCK = threading.Lock()
+_SLOTS = {}
+
+
+@contextmanager
+def model_slot(cfg):
+    """One process-wide bound shared by batch, reading, repair and critic sessions."""
+    limit = int((cfg.get("concurrency") or {}).get("max_total_host_sessions", 4))
+    if not 1 <= limit <= 4:
+        raise ValueError("max_total_host_sessions must be between 1 and 4")
+    with _SLOT_LOCK:
+        sem = _SLOTS.setdefault(limit, threading.BoundedSemaphore(limit))
+    while not sem.acquire(timeout=0.2):
+        if STOP.is_set():
+            raise OSError(STOPPING)
+    try:
+        if STOP.is_set():
+            raise OSError(STOPPING)
+        yield
+    finally:
+        sem.release()
 
 
 def stopping() -> bool:
@@ -324,7 +353,7 @@ class HostSession:
         self.model = model if model is not None else s["model"]
         self.max_turns = int(max_turns or s["max_turns"])
         self.timeout_s = float(timeout_s or s["timeout_s"])
-        self.claude_bin = claude_bin or s["claude_bin"]
+        self.claude_bin = s["claude_bin"] if s.get("driver") == "codex" else (claude_bin or s["claude_bin"])
         self.output_format = s["output_format"]
         self.runner = runner or run_tracked           # session 13 (D): stoppable when the orchestrator is interrupted
         self.python = python or sys.executable
@@ -354,6 +383,10 @@ class HostSession:
                 "--worklog", str(Path(ws.worklog).resolve())]
         if ws.ai_config:
             args += ["--config", str(Path(ws.ai_config).resolve())]
+        if getattr(self, "downstream_context_file", None):
+            from ..util import sha256_file
+            args += ["--downstream-context", str(self.downstream_context_file),
+                     "--downstream-context-sha256", sha256_file(self.downstream_context_file)]
         # session 13: the server offers only this session's tools, accepts one submission, and refuses the submission
         # until every image target's crop was fetched (HOST_RULES B and D in code, not only in the prompt)
         args += ["--tools", ",".join(self.allowed_tools())]
@@ -391,9 +424,14 @@ class HostSession:
             cmd.append("--verbose")
         if self.model:
             cmd += ["--model", str(self.model)]
+        if settings(self.cfg)["driver"] == "codex":
+            from .codex import wrap_command
+            return wrap_command(cmd, self.cfg, self.model, self.timeout_s)
         return cmd
 
     def host_model_label(self) -> str:
+        if settings(self.cfg)["driver"] == "codex":
+            return f"codex exec (configured {self.model}; runtime identity recorded separately)"
         return (f"claude-code headless ({self.model})" if self.model else
                 "claude-code headless (the CLI's default model; recorded from the CLI output)")
 
@@ -429,11 +467,15 @@ class HostSession:
         self.require_crops = [str(u) for u in packet.get("image_targets") or []]
         log = RunLog(run_id, [Path(ws.worklog) / f"{run_id}.jsonl", run_dir / "log.jsonl"])
         mcp_path = run_dir / "mcp.json"
+        if self.PHASE == "downstream" and getattr(ws, "downstream_context", None):
+            self.downstream_context_file = run_dir / "downstream-context.json"
+            self.downstream_context_file.write_text(json.dumps(
+                {**ws.downstream_context, "tasks": packet.get("tasks", [])}, ensure_ascii=False), encoding="utf-8")
         mcp_path.write_text(json.dumps(self.mcp_config(), indent=1), encoding="utf-8")
         cmd = self.command(mcp_path)
         prompt = self.prompt(packet)
         (run_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
-        log.event("start", route="host", provider="host-session", via="claude -p (headless) over MCP",
+        log.event("start", route="host", provider="host-session", via=self.host_model_label() + " over MCP",
                   model_requested=self.model or "the CLI's default", addendum=addendum, provisions=provs,
                   command=[c if len(c) < 400 else c[:200] + f"... [{len(c)} characters]" for c in cmd],
                   mcp_config=self.mcp_config(), max_turns=self.max_turns, timeout_s=self.timeout_s,
@@ -461,7 +503,8 @@ class HostSession:
         try:
             if not shutil.which(self.claude_bin) and not Path(self.claude_bin).exists():
                 raise FileNotFoundError(f"{self.claude_bin} not found")
-            p = self.runner(cmd, input=prompt, capture_output=True, text=True, timeout=self.timeout_s, cwd=str(run_dir))
+            with model_slot(self.cfg):
+                p = self.runner(cmd, input=prompt, capture_output=True, text=True, timeout=self.timeout_s, cwd=str(run_dir))
             res.exit_code, stdout = p.returncode, p.stdout or ""
             if p.stderr:
                 (run_dir / "stderr.txt").write_text(p.stderr[-20000:], encoding="utf-8")
@@ -595,6 +638,10 @@ class HostSession:
             # what the server sent (crop files, by sha256) and what reached the host's model (the host CLI may
             # re-encode a large image, so a received sha256 can differ from the file's)
             res.images_received.append({"unit_id": uid, "sent": sent, "received": images})
+        if name == "get_region" and not b.get("is_error"):
+            res.images_received.append({"region_id": (call.get("arguments") or {}).get("region_id"),
+                                        "received": images,
+                                        "diagnostics": b.get("codex_image_transport_diagnostics", [])})
         if name == "submit_proposals" and not b.get("is_error"):
             try:
                 sub = json.loads(text)
@@ -702,6 +749,40 @@ class AnswerSession(HostSession):
     composition (policy.require_composed); there is no `rules` override any more."""
     PHASE = "downstream"
 
+    def run_batch(self, packet: dict) -> dict:
+        if not (self.cfg.get("host_session") or {}).get("durable_answers"):
+            return super().run_batch(packet)
+        # This is a transport cache, not a validation cache. requests.ask_host parses
+        # the answer again and the workflow runs the phase's native validator again.
+        from .checkpoint import code_identity
+        code_sha = code_identity(Path(__file__).resolve().parents[2])["content_sha256"]
+        bound = {"version": 2, "code_sha256": code_sha, "packet": packet, "state": self.ws.identity().model_dump(mode="json"),
+                 "policy": self.system_prompt(), "model": self.model, "settings": self.cfg,
+                 "downstream_context": getattr(self.ws, "downstream_context", None)}
+        digest = hashlib.sha256(json.dumps(bound, sort_keys=True, default=str).encode()).hexdigest()
+        path = Path(self.ws.staging) / "answer-cache" / f"{digest}.json"
+        try:
+            saved = json.loads(path.read_text())
+            body = saved["session"]
+            if saved["sha256"] != hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest():
+                raise ValueError("answer cache hash mismatch")
+            self.last = SessionResult(**body)
+            self.last.elapsed_s, self.last.usage = 0.0, {}
+            self.last.host_plan_cost_usd = None
+            self.cache_reused = str(path)
+            return {}
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
+        result = super().run_batch(packet)
+        if self.last and self.last.exit_code == 0 and not self.last.error and self.last.final_text:
+            body = self.last.to_dict()
+            path.parent.mkdir(parents=True, exist_ok=True)
+            tmp = path.with_suffix(f".tmp-{os.getpid()}-{threading.get_ident()}")
+            tmp.write_text(json.dumps({"session": body, "sha256": hashlib.sha256(
+                json.dumps(body, sort_keys=True).encode()).hexdigest()}, ensure_ascii=False))
+            tmp.replace(path)
+        return result
+
     def __init__(self, ws, cfg: dict | None = None, *, phase: str | None = None, system: str | None = None,
                  tools: list[str] | None = None, **kw):
         super().__init__(ws, cfg, **kw)                      # the offline check comes first (session 12)
@@ -753,7 +834,7 @@ class PlainSession:
         self.model = model if model is not None else s["model"]
         self.timeout_s = float(timeout_s or s.get("plain_timeout_s") or 300)
         self.max_turns = int(max_turns or 3)
-        self.claude_bin = claude_bin or s["claude_bin"]
+        self.claude_bin = s["claude_bin"] if s.get("driver") == "codex" else (claude_bin or s["claude_bin"])
         self.runner, self.label = runner, label
         self.last: SessionResult | None = None
 
@@ -765,9 +846,14 @@ class PlainSession:
             cmd += ["--json-schema", json.dumps(self.schema)]
         if self.model:
             cmd += ["--model", str(self.model)]
+        if settings(self.cfg)["driver"] == "codex":
+            from .codex import wrap_command
+            return wrap_command(cmd, self.cfg, self.model, self.timeout_s)
         return cmd
 
     def host_model_label(self) -> str:
+        if settings(self.cfg)["driver"] == "codex":
+            return f"codex exec (configured {self.model}; runtime identity recorded separately)"
         return (f"claude-code headless ({self.model})" if self.model else
                 "claude-code headless (the CLI's default model; recorded from the CLI output)")
 
@@ -782,8 +868,9 @@ class PlainSession:
                 raise OSError(STOPPING)
             if not shutil.which(self.claude_bin) and not Path(self.claude_bin).exists():
                 raise FileNotFoundError(f"{self.claude_bin} not found")
-            p = self.runner(self.command(), input=prompt, capture_output=True, text=True, timeout=self.timeout_s,
-                            cwd=str(cwd))
+            with model_slot(self.cfg):
+                p = self.runner(self.command(), input=prompt, capture_output=True, text=True, timeout=self.timeout_s,
+                                cwd=str(cwd))
             res.exit_code, stdout, stderr = p.returncode, p.stdout or "", p.stderr or ""
         except subprocess.TimeoutExpired:
             res.timed_out, res.error = True, f"timed out after {self.timeout_s:g} s"

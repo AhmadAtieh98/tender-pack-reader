@@ -2469,6 +2469,12 @@ def a3(r: dict, issues: list[dict], a5: dict | None) -> dict:
                  f"Image readings: {approval_covers(any(u.get('translation') for u in r['units'] if (u.get('reading') or {}).get('status') == 'approved'), plural=True)} "   # session 12 (R-2)
                  "confirmed by the owner (approval file); their interpretations are proposed. ")
               + "Explicit wording only.")
+    if r["cfg"].get("interview_demo") is True:
+        banner = ("INTERVIEW DEMO — review approvals are assumed for demonstration unless a recorded operator "
+                  "decision says otherwise. "
+                  + ", ".join(f"{k} {n}" for k, n in sorted(rc.items())) + " rows. "
+                  + "No actual human review or tender release is claimed. Open issues and unknown answers stay open. "
+                  + "Explicit wording only.")
     page = {
         "title": "A3 — What would put this bid out (working draft)",
         "subtitle": f"State after {v} (issued {val.issued}); Proposal Due Date (PDD) "  # from the anchor's effective text
@@ -2554,6 +2560,9 @@ def pending_mark(t: str) -> str:
     """A short line as the condensed page shows it (level 2): a leading HUMAN DECISION PENDING label (and its bracketed
     qualifier) written as the marker A3_PENDING_MARK, which the page's legend defines; the full label stays on
     a3_detail.html and in A1."""
+    demo = 'OPEN — REVIEW ASSUMED FOR DEMO (no observed human decision): '
+    if (t or '').startswith(demo):
+        return 'DEMO OPEN: ' + t[len(demo):]
     return re.sub(r"^" + re.escape(human_owned.HUMAN_DECISION_PENDING) + r"(?: \(([^()]*)\))?: ",
                   lambda m: A3_PENDING_MARK + (f" ({m.group(1)})" if m.group(1) else "") + " ", t or "")
 
@@ -2612,6 +2621,12 @@ def condense_a3(a3d: dict, level: int, reason_words: int | None = None) -> dict:
         page["groups"] = {**g, "groups": [{**x, "questions": [], "n_questions": len(x.get("questions") or []),
                                            "items": [{**i, "short": pending_mark(i.get("short"))} for i in x["items"]]}
                                           for x in g["groups"]]}
+        counts = g.get('counts') or {}
+        if counts.get('gate_note') and a3d.get('issue_counts'):
+            brief_counts = (f"{counts['all']} open issues: {counts['listed']} listed, {counts['folded']} folded (+n), "
+                            f"{counts['detail_only']} detail-only and {len(counts['gate_note'])} gate-note issues "
+                            "(identifiers and full reasons on a3_detail.html).")
+            page['groups']['note'] = g['note'].replace(a3d['issue_counts'], brief_counts, 1)
         used = any(i["short"].startswith(A3_PENDING_MARK) or i.get("folds_pending")
                    for x in page["groups"]["groups"] for i in x["items"]) or any(   # session 14 (F2; R2 m5): a line's ⚑
             A3_PENDING_MARK in str(i.get("confidence") or "") for sec in page["sections"] for i in sec.get("items") or [])
@@ -2967,6 +2982,10 @@ def build(evidence_dir: Path, out: Path, pack_path: Path, root: Path, quiet: boo
         (tmp / MARKER).write_text("tenderpack build directory (safe for tenderpack to replace)\n", encoding="utf-8")
         r = run(evidence_dir, pack_path, root)
         res = write(r, tmp, op_status=op_status)          # op_status: shown beside the candidate's ops (session 11)
+        if cfg.get("interview_demo") is True:
+            from .interview import mark_outputs
+            mark_outputs(tmp)
+            res["release"] = "INTERVIEW DEMO (assumed approvals; not a tender release)"
         if res["status"] == "ok" and strict and res["blockers"]:
             from .cli import _rejected_dir
             (tmp / "RELEASE_REJECTED.md").write_text(

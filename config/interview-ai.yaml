@@ -1,0 +1,211 @@
+# Interview demo profile. Configured model/capabilities; real speed is measured, not promised.
+# Two host sessions TOTAL per run process, including critic and repair.
+version: 1
+offline: false
+lock_stale_after_min: 120
+defaults:
+  caps:
+    max_turns: 16
+    max_tokens_per_call: 16000
+    call_timeout_s: 300
+    retries: 2
+    backoff_s: 2.0
+    max_tool_result_chars: 20000
+    concurrency: 2
+routes:
+  recorded:
+    paid: false
+    caps:
+      max_calls: 20
+      max_input_tokens: 4000000
+      max_output_tokens: 400000
+      max_usd: null
+      timeout_s: 300
+  host:
+    paid: false
+    note: the host drives `tenderpack ai serve-mcp` (or `tenderpack ai tool ...`)
+      and submits with `tenderpack ai submit`
+  anthropic:
+    paid: true
+    base_url: https://api.anthropic.com
+    api_version: '2023-06-01'
+    api_key_env: ANTHROPIC_API_KEY
+    retention: provider policy; not verified by this tool
+    structured_output:
+      mode: native
+    models:
+      propose:
+        id: claude-opus-5-5
+        status: unverified (configured; a live run needs GET /v1/models/{id} to confirm
+          the capabilities, else it is refused)
+        capabilities:
+          images: true
+          tools: true
+          structured_output: true
+          context_tokens: 1000000
+          max_output_tokens: 128000
+        request_extra:
+          output_config:
+            effort: high
+      check:
+        id: claude-haiku-4-5-20251001
+        status: unverified
+        capabilities:
+          images: true
+          tools: true
+          structured_output: true
+          context_tokens: 200000
+          max_output_tokens: 64000
+    caps:
+      max_calls: null
+      max_input_tokens: null
+      max_output_tokens: null
+      max_usd: null
+      timeout_s: 1800
+      concurrency: 1
+  openrouter:
+    paid: true
+    base_url: https://openrouter.ai/api/v1
+    api_key_env: OPENROUTER_API_KEY
+    app_title: tenderpack
+    retention: OpenRouter and upstream provider policy; not verified by this tool
+    structured_output:
+      mode: native
+    models:
+      propose:
+        id: anthropic/claude-opus-5.5
+        status: 'unverified (slug not checked: openrouter.ai is blocked from this
+          environment)'
+      check:
+        id: anthropic/claude-haiku-4.5
+        status: unverified
+      open_vision:
+        id: qwen/qwen3-vl-32b-instruct
+        status: unverified
+    caps:
+      max_calls: null
+      max_input_tokens: null
+      max_output_tokens: null
+      max_usd: null
+      timeout_s: 1800
+      concurrency: 1
+  ollama:
+    paid: false
+    base_url: http://127.0.0.1:11434
+    base_url_env: TENDERPACK_OLLAMA_URL
+    note: candidates only; capabilities come from /api/show; no performance is claimed
+      until measured on the Mac
+    machine:
+      unified_memory_gb: 48
+      usable_fraction: 0.75
+      basis: the owner's M5 Pro MacBook Pro; usable fraction assumed, not measured
+    structured_output:
+      mode: native
+      with_tools: false
+    batching:
+      prior_turns_tokens: 8000
+    models:
+      vision:
+        id: qwen3-vl:32b
+        status: candidate, unmeasured
+        approx_size: about 20 GB at 4-bit (from the published model card; not measured
+          here)
+        num_ctx: 32768
+      text:
+        id: qwen3:30b-a3b
+        status: candidate, unmeasured
+        num_ctx: 32768
+      critic:
+        id: qwen3-vl:32b
+        status: candidate, unmeasured (a different model from the proposer; no tools
+          or images needed)
+        num_ctx: 32768
+    caps:
+      max_calls: 40
+      max_input_tokens: 2000000
+      max_output_tokens: 200000
+      max_usd: null
+      timeout_s: 3600
+      concurrency: 1
+batching:
+  chars_per_token: 3.5
+  image_tokens: 4800
+  output_tokens_per_provision: 700
+  output_tokens_fixed: 1500
+  prior_turns_tokens: 30000
+  context_margin: 0.1
+  expected_output:
+    downstream:
+    - 1500
+    - 900
+    reading:
+    - 8000
+    - 0
+    critic:
+    - 300
+    - 350
+    repair:
+    - 1500
+    - 700
+failures:
+  rate_limit:
+    backoff_s:
+    - 10
+    jitter: 0.2
+    max_tries: 1
+    honour_reset_up_to_s: 30
+    on_deferred: stop
+    seed: null
+  provider:
+    host_retries: 1
+  malformed:
+    repairs: 1
+concurrency:
+  batches: 1
+  max_parallel_sessions: 2
+  max_total_host_sessions: 2
+critic:
+  route: host
+  model: gpt-6-astra
+  select:
+  - removal
+  - conflicting
+  - consequential_interpretation
+  - uncertain_target
+  max_items: 25
+  host:
+    timeout_s: 240
+    max_turns: 3
+  workflow: true
+host_session:
+  model: gpt-6-astra
+  max_turns: 40
+  timeout_s: 600
+  output_format: stream-json
+  plain_timeout_s: 240
+  capabilities:
+    images: true
+    tools: true
+    context_tokens: 200000
+    max_output_tokens: 32000
+    basis: 'Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are declared, not independently verified'
+  durable_answers: true
+  driver: codex
+  reasoning_effort: high
+  max_mcp_calls: 120
+prices:
+  claude-opus-5-5:
+    input_per_mtok: 4.0
+    output_per_mtok: 20.0
+  claude-haiku-4-5-20251001:
+    input_per_mtok: 1.0
+    output_per_mtok: 5.0
+  claude-haiku-4-5:
+    input_per_mtok: 1.0
+    output_per_mtok: 5.0
+
+interview:
+  complete_target_context: true
+  analysis_batch_size: 6
+  downstream_batch_size: 6
+  time_budget_s: 2700

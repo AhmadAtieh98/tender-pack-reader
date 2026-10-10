@@ -183,7 +183,8 @@ def check(build: Path, pack: Path, reading: dict, region_id: str | None = None,
     from ..readings import Reading, check_reading
     out: dict = {"parsed": False, "ok": False, "errors": [], "partial": [], "warnings": [], "findings": []}
     try:
-        r = Reading.model_validate(reading)
+        r = Reading.model_validate({**reading, "prepared_by": reading.get("prepared_by") or
+                                    "AI proposal dry run (controller attribution; nothing persisted)"})
     except ValidationError as e:
         out["errors"].append(f"not a Reading: {_short(str(e), 1500)}")
         return out

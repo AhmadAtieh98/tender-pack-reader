@@ -29,6 +29,7 @@ from .jobs import AI_EXIT, meaning
 
 TITLE = "tenderpack: operating panel"
 CANDIDATE_BANNER = "CANDIDATE, not approved; the validated outputs are under out/"
+DEMO_CANDIDATE_BANNER = "INTERVIEW DEMO — approvals are simulated and remain editable; unresolved evidence stays unresolved. Not a tender release."
 NOTHING_ACCEPTED = "Nothing is accepted; decisions are recorded with tenderpack accept/reject."
 CSS = ("body{font-family:system-ui,sans-serif;margin:12px auto;max-width:1200px;padding:0 14px;color:#111;"
        "background:#fff;line-height:1.4;font-size:15px}nav{padding:6px 0;border-bottom:1px solid #ccc}"
@@ -101,6 +102,7 @@ def page(base: str, heading: str, body: str, refresh: int | None = None) -> str:
                                                                 ("runs", "Runs"), ("jobs", "Jobs"),
                                                                 ("stages", "Stages and sources"),
                                                                 ("decisions", "Decisions"),
+                                                                ("interview", "All demo decisions"),
                                                                 ("quickreview", "Quick reviews")))
     meta = f'<meta http-equiv="refresh" content="{int(refresh)}">' if refresh else ""
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" '
@@ -289,7 +291,10 @@ DELIVERABLES = (
                 ("page", "worklog", "model calls and subagent briefs"), ("page", "history", "commit history"))),
     (REGISTER_LABEL, (("out", "a4/clarification_register.md", "open"), ("out", "a4/clarification_register.csv", "open"),
                       ("out", "a4/clarification_register.json", "open"))),
-    ("A5 Bid programme", (("out", "a5/gantt.html", "open"), ("out", "a5/gantt.pdf", "open"),
+    ("A5 Bid programme and submission marshalling", (
+                          ("out", "a5/programme.csv", "open"), ("out", "a5/programme.json", "open"),
+                          ("out", "a5/marshalling.csv", "open"), ("out", "a5/marshalling.json", "open"),
+                          ("out", "a5/gantt.html", "open"), ("out", "a5/gantt.pdf", "open"),
                           ("out", "a5/README.md", "open"))),
     ("Review batches (your decisions)", (("out", "review/index.html", "open"),)),
 )
@@ -317,6 +322,11 @@ def deliverables(base: str, cfg) -> str:
                 parts.append(f'<a href="{base}file/{area}/{esc(rel)}">{esc(name)}</a> '
                              f'(<a href="{base}download/{area}/{esc(rel)}">download</a>)')
         L.append(f'<div class="line"><b>{esc(label)}:</b> ' + " · ".join(parts) + "</div>")
+        if label.startswith("A5 "):
+            L.append('<div class="line note">The CSV/JSON programme and marshalling plan are the A5 deliverables; '
+                     'the chart is a supporting view. Use latest_start/latest_finish and drop_dead_start for the '
+                     'backward schedule. Earliest dates are feasibility diagnostics. Durations and resource '
+                     'capacities are labelled assumptions; review infeasible work and overloads.</div>')
     L.append('<div class="line note">Every other file (CSV and JSON tables, the scenarios, the evidence packets) is '
              'listed under "Outputs" below.</div></section>')
     return "".join(L)
@@ -328,7 +338,11 @@ def home(base: str, cfg, jobs: list[dict], addendum_box: str) -> str:
     stages = read_json(out / "stages.json") or []
     items = (read_json(out / "review" / "items.json") or {}).get("items") or []
     files = walk(out)
-    L = []
+    demo = bool(checks.get("_interview_demo"))
+    L = ['<p class="banner">INTERVIEW DEMO — approvals are simulated and remain editable. Not a tender release.</p>'] if demo else []
+    if demo:
+        addendum_box = addendum_box.replace("every proposal stays PROPOSED and out/ is not touched.",
+            "eligible reviews are assumed approved for this demo; missing evidence stays unresolved. The ADD02 outputs remain available.")
     if stages:
         L.append(stage_line(stages, checks))
     for b in (checks.get("release") or {}).get("blockers") or []:
@@ -374,7 +388,7 @@ def home(base: str, cfg, jobs: list[dict], addendum_box: str) -> str:
         L.append(f"<p>Structural status: {_okcell(checks.get('status') == 'ok', esc(checks.get('status')))}</p>")
     L.append(table(["Check", "Result", "Detail"], [[esc(c.get("id")), _okcell(c.get("ok")), esc(c.get("detail"))]
                                                    for c in checks.get("structural") or []]))
-    L.append("<h2>Human approval</h2>")
+    L.append("<h2>Demo approval status (assumed reviews)</h2>" if demo else "<h2>Human approval</h2>")
     cnt = Counter((i.get("kind"), i.get("status")) for i in items)
     L.append(table(["Kind", "Status", "Count"], [[esc(k), esc(s), esc(n)] for (k, s), n in sorted(cnt.items())]))
     return page(base, "Home: outputs and new addendum", "".join(L))
@@ -458,13 +472,14 @@ def route_choices(routes: dict | None, host_found: bool, cassette: bool) -> tupl
         rec = (rows.get(name) or {}).get("status") or {}
         st, where = rec.get("status"), rec.get("where")
         return (f" [{st} in {where}]" if st == "tested" and where and where != "-" else f" [{st}]") if st else ""
-    host_label = "host: Claude Code on this machine (your plan pays)" + status("host")
+    host_name = "Codex" if (routes or {}).get("host_driver") == "codex" else "Claude Code"
+    host_label = f"host: {host_name} on this machine (your signed-in account)" + status("host")
     if off:
         out.append({"value": "host", "label": host_label, "available": False,
                     "why": f"offline mode is on ({off}): only the local ollama route"})
     else:
         out.append({"value": "host", "label": host_label, "available": True, "why": "" if host_found else
-                    "the claude command is not found here: the run will stop and wait for each batch to be submitted "
+                    "the configured host command is not found here: the run will stop and wait for each batch to be submitted "
                     "by hand (tenderpack ai submit-batch)"})
     if "codex" in rows:
         out.append({"value": "codex", "label": "codex: Codex over MCP (manual path)" + status("codex"),
@@ -768,7 +783,8 @@ def needs(cp: dict, state: str, running_job: dict | None) -> str:
         unres = (cp.get("completeness") or {}).get("provisions") or {}
         n = len(unres.get("unresolved") or [])
         return ("Review the candidate: open its review packet first" + (f"; {n} provision(s) unresolved" if n else "")
-                + ". Nothing is accepted until you decide.")
+                + (". Demo approvals are simulated and remain editable." if (cp.get("approval") or {}).get("status") == "simulated"
+                   else ". Nothing is accepted until you decide."))
     return "Open the run to see where it stands."
 
 
@@ -811,7 +827,7 @@ def critic_disagreements(md: str) -> list[str]:
             cur.append(ln)
     if cur:
         out.append("\n".join(cur))
-    return [b for b in out if re.search(r"critic[^\n]*: (disagrees|does not agree|not agree)", b)]
+    return [b for b in out if re.search(r"critic[^\n]*: (disagrees|does not agree|not agree)", b, re.I)]
 
 
 def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, running_job: dict | None,
@@ -821,7 +837,8 @@ def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, r
     st = cp.get("steps") or {}
     b = cp.get("batches") or {}
     code = _exit_code(cp)
-    L = [f'<p class="banner">{CANDIDATE_BANNER}</p>']
+    demo = (cp.get("approval") or {}).get("status") == "simulated"
+    L = [f'<p class="banner">{DEMO_CANDIDATE_BANNER if demo else CANDIDATE_BANNER}</p>']
     syn = synthetic_label(cp, job)
     cur = next((k for k in steps if (st.get(k) or {}).get("status") == "running"), None)
     if running_job:
@@ -830,6 +847,7 @@ def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, r
         lead = {"partial": "Finished: partial (some provisions or tasks are not answered; see below)",
                 "complete": "Finished: complete"}.get(cp.get("status"), f"Status: {state}")
     L.append(f'<p class="lead">{esc(lead)}</p>')
+    L.append(f'<p><a href="{base}interview?run={esc(rid)}">Inspect or change all demo decisions for this run</a></p>')
     L.append(f"<p>Addendum {esc(cp.get('addendum'))} · route {esc(s.get('route'))} · started {esc(cp.get('created'))}"
              f" · duration {esc(duration(cp.get('created'), None if running_job else cp.get('updated')))}"
              + (f" · <b>{esc(syn)}</b>" if syn else "") + "</p>")
@@ -909,7 +927,8 @@ def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, r
                  f"{esc(cs.get('disagrees', 0))}. {esc(cs.get('note') or cs.get('reason') or '')}</p>")
     dis = critic_disagreements(md)
     L.append(("<pre>" + esc("\n\n".join(dis)) + "</pre>") if dis else
-             '<p class="note">no disagreement in the review packet (or the critic has not run yet)</p>')
+             ('<p class="note">Disagreements were recorded; open the review packet for the details.</p>'
+              if cs.get("disagrees") else '<p class="note">no disagreement recorded so far</p>'))
     # ---- completeness
     L.append("<h2>Completeness</h2>")
     comp = cp.get("completeness") or {}
@@ -941,10 +960,13 @@ def run_detail(base: str, rid: str, run_dir: Path, cp: dict, job: dict | None, r
     else:
         L.append('<p class="note">no candidate checks yet (the outputs step has not built them)</p>')
     # ---- human approval
-    L.append("<h2>Human approval</h2>")
+    L.append("<h2>Demo approval status (assumed reviews)</h2>" if demo else "<h2>Human approval</h2>")
     ap = cp.get("approval") or {}
-    L.append(f"<p>Approval: <b>{esc(ap.get('status') or 'none')}</b>. Everything the run proposed is PROPOSED; "
-             "nothing was approved, accepted, rejected or sent by the workflow or by this panel.</p>")
+    if demo:
+        L.append(f"<p>{DEMO_CANDIDATE_BANNER} Inspect or change the decisions using this run's decisions link.</p>")
+    else:
+        L.append(f"<p>Approval: <b>{esc(ap.get('status') or 'none')}</b>. Everything the run proposed is PROPOSED; "
+                 "nothing was approved, accepted, rejected or sent by the workflow or by this panel.</p>")
     for d in ap.get("decisions") or []:
         L.append(f"<p>{esc(json.dumps(d, ensure_ascii=False))}</p>")
     # ---- pending questions
@@ -973,8 +995,11 @@ def candidate_outputs(base: str, rid: str, run_dir: Path, cp: dict) -> str:
     diff next, then A1-A5."""
     cpath = cand_paths(run_dir, cp)
     out = Path(cpath["out"])
-    L = ['<h2 id="candidate">CANDIDATE outputs (not approved; apart from the validated outputs)</h2>',
-         f'<p class="banner">{CANDIDATE_BANNER}</p>', f"<p><b>{NOTHING_ACCEPTED}</b></p>"]
+    demo = (cp.get("approval") or {}).get("status") == "simulated"
+    L = (['<h2 id="candidate">Interview candidate outputs (simulated approvals; separate from ADD02)</h2>',
+          f'<p class="banner">{DEMO_CANDIDATE_BANNER}</p>'] if demo else
+         ['<h2 id="candidate">CANDIDATE outputs (not approved; apart from the validated outputs)</h2>',
+          f'<p class="banner">{CANDIDATE_BANNER}</p>', f"<p><b>{NOTHING_ACCEPTED}</b></p>"])
     rev = run_dir / "review"
     rows = []
     for f in ("index.html", "diff.md", "index.md", "diff.json", "outputs-before-after.json"):
@@ -988,7 +1013,7 @@ def candidate_outputs(base: str, rid: str, run_dir: Path, cp: dict) -> str:
         rel = "candidate/out"
     L.append("<h3>Candidate A1-A5</h3>")
     if walk(out):
-        L.append(listing(base, f"runs/{rid}/{rel}", out, "CANDIDATE (not approved)"))
+        L.append(listing(base, f"runs/{rid}/{rel}", out, "INTERVIEW DEMO (simulated approvals)" if demo else "CANDIDATE (not approved)"))
     else:
         L.append('<p class="note">no candidate outputs yet (the outputs step builds them)</p>')
     return "".join(L)
@@ -1341,3 +1366,49 @@ def quickreview_page(base: str, qid: str, d: Path, runs: list[tuple[str, dict]],
     else:
         L.append('<p class="note">not compared yet</p>')
     return page(base, f"Quick review {qid}", "".join(L), refresh=10 if running_job else None)
+
+
+def interview_page(base: str, data: dict, target: dict, busy: bool = False, query: str = "") -> str:
+    """All current decisions, including approvals; every edit binds the viewed version."""
+    import json
+    hidden = ''.join(f'<input type="hidden" name="{esc(k)}" value="{esc(v)}">' for k, v in target.items())
+    body = '<p class="banner">INTERVIEW DEMO — approvals may be assumed. This is not an actual human review or tender release.</p>'
+    body += f'<p>Stage {esc(data["stage"])} · {len(data["items"])} decisions. Expand an item to inspect evidence, edit its proposal, or change its decision. Edits rebuild outputs and preserve history.</p>'
+    if busy:
+        body += '<p class="banner">A run or rebuild is active. Decisions can be inspected; changes become available when it finishes.</p>'
+    body += (f'<form method="get" action="{base}interview">{hidden}'
+             f'<input id="decision-filter" name="q" value="{esc(query)}" '
+             'placeholder="Find by ID, owner, requirement or status" style="width:75%"> '
+             '<button>Search decisions</button></form>')
+    matches = [it for it in data['items'] if query.casefold() in json.dumps(it, ensure_ascii=False, default=str).casefold()]
+    if query:
+        body += f'<p>{len(matches)} matching decisions</p>'
+    for it in matches:
+        from ..interview import planning_fields
+        pretty = lambda x: esc(json.dumps(x, ensure_ascii=False, indent=2, default=str))
+        disabled = ' disabled' if busy else ''
+        body += f'<details class="demo-item"><summary><strong>{esc(it["id"])}</strong> · {esc(it["kind"])} · {esc(it["label"])}</summary>'
+        fields = planning_fields(it)
+        if fields:
+            body += (f'<form method="post" action="{base}interview/apply">{hidden}'
+                     f'<input type="hidden" name="item" value="{esc(it["id"])}">'
+                     f'<input type="hidden" name="fingerprint" value="{esc(it["fingerprint"])}">'
+                     '<p>Adjust a provisional planning assumption. Dates and resource loads are recalculated; no AI call is needed.</p>'
+                     '<p><label>Planning field <select name="planning_field">')
+            for field in fields:
+                body += f'<option value="{esc(field["path"])}">{esc(field["label"])} · current {esc(field["value"])}</option>'
+            body += ('</select></label></p><p><label>New value <input type="number" name="planning_value" min="0" step="any" required></label></p>'
+                     '<p><label>Reason / revised basis <input name="reason" required maxlength="2000" style="width:75%"></label></p>'
+                     f'<button name="action" value="planning"{disabled}>Update planning assumption and rebuild</button></form>')
+        body += '<details><summary>Advanced structured edit and approval</summary>'
+        body += f'<form method="post" action="{base}interview/apply">{hidden}<input type="hidden" name="item" value="{esc(it["id"])}"><input type="hidden" name="fingerprint" value="{esc(it["fingerprint"])}">'
+        body += f'<p>Proposal (editable structured fields)</p><textarea name="value" rows="14" style="width:98%">{pretty(it["value"])}</textarea>'
+        body += '<p><label>Reason for this change <input name="reason" required maxlength="2000" style="width:75%"></label></p>'
+        for action, label in (("edit", "Edit proposal and rebuild"), ("accept", "Approve current proposal"), ("reject", "Reject current proposal")):
+            if action not in it.get("actions", ["edit", "accept", "reject"]):
+                continue
+            body += f'<button name="action" value="{action}"{disabled}>{label}</button> '
+        body += '</form><p>Editing creates a new proposal; approve it separately after reviewing the rebuilt result.</p></details>'
+        body += f'<details><summary>Evidence and dependencies</summary><pre>{pretty(it["evidence"])}</pre></details>'
+        body += f'<details><summary>Decision history ({len(it["history"])})</summary><pre>{pretty(it["history"])}</pre></details></details>'
+    return page(base, 'All interview decisions', body)

@@ -448,7 +448,7 @@ def test_every_route_applies_the_same_validation_to_the_same_answer(ws, tmp_path
     cli = tmp_path / "standin_cli"                # a stand-in for the host CLI: prints the same answer as JSON
     (tmp_path / "answer.json").write_text(json.dumps({"result": answer, "num_turns": 1,
                                                       "modelUsage": {"stand-in": {}}}), encoding="utf-8")
-    cli.write_text(f"#!{sys.executable}\nimport sys\nsys.stdin.read()\n"
+    cli.write_text(f"#!{Path(sys.executable).resolve()}\nimport sys\nsys.stdin.read()\n"
                    f"print(open({str(tmp_path / 'answer.json')!r}).read())\n", encoding="utf-8")
     cli.chmod(0o755)
     cfg_h = copy.deepcopy(C.load())

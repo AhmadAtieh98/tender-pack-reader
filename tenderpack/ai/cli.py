@@ -104,6 +104,8 @@ def add_parser(sub) -> None:
     w.add_argument("--json", default="{}", help="the tool's arguments as a JSON object")
     common(w)
     m = s.add_parser("serve-mcp")
+    m.add_argument("--downstream-context", help="controller-written downstream validation context")
+    m.add_argument("--downstream-context-sha256", help="hash binding the downstream context to this session")
     m.add_argument("--tools", help="session 13: offer and run only these tools (comma-separated; deny-by-default for a "
                                    "session the program starts); default every tool")
     m.add_argument("--submit-once", action="store_true",
@@ -357,6 +359,13 @@ def run(a) -> int:
         if a.ai_cmd == "serve-mcp":
             from ..mcp_server import serve
             from .tools import TOOLS
+            if a.downstream_context:
+                from ..util import sha256_file
+                context_path = Path(a.downstream_context).resolve()
+                if not a.downstream_context_sha256 or sha256_file(context_path) != a.downstream_context_sha256:
+                    print("refused: downstream validation context hash mismatch")
+                    return 2
+                ws.downstream_context = json.loads(context_path.read_text(encoding="utf-8"))
             names = [x for x in (a.tools or "").split(",") if x] if a.tools is not None else None
             if names is not None and (not names or [x for x in names if x not in TOOLS]):
                 print(f"refused: --tools names unknown tool(s) {[x for x in names if x not in TOOLS] or names}")

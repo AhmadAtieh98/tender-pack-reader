@@ -417,6 +417,9 @@ def issue_label(iid: str, issue: dict, decisions: list[dict] | None, linked: lis
     basis = applied_basis(issue)                 # session 14 (W4): an applied rule's owner confirms; not a judgment
     judged = bool(asserted_judgment(issue)) or bool(linked) or (bool(owner_judgment(issue)) and not basis)
     d = decision(decisions, "issue", iid, issue) if (closing or issue.get(MARKER) or judged or basis) else None
+    if d is not None and d.get("origin") == "interview_demo":
+        state = "OPEN" if not closing else str(issue.get("status") or "resolved").upper() + " (simulated)"
+        return f"{state} — REVIEW ASSUMED FOR DEMO (no observed human decision)"
     if closing and d is not None:
         return f"{str(issue.get('status') or 'resolved').upper()} (decision recorded: {d.get('reviewer')}, {d.get('date')})"
     if closing:

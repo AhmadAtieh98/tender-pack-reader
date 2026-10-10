@@ -518,7 +518,7 @@ def test_the_downstream_packet_carries_every_unit_in_full():
     st = {"ADD-03:9.9": UState("ADD-03:9.9", "ADD-03", "clause", "active", long, None, [1], "text_layer", None)}
     ws = SimpleNamespace(prev_stage=lambda a: "ADD-02", r={"templates": {}, "rowfile": SimpleNamespace(anchors={}),
                                                          "evidence_items": {}, "curated_issues": {}, "assumptions": {}})
-    promoted = {"r2": {"stages": [StageResult("ADD-03", "ADD-03", None, "APPLIED", st)]}, "ops": {}}
+    promoted = {"r2": {"stages": [StageResult("ADD-03", "ADD-03", None, "APPLIED", st)], "evals": []}, "ops": {}}
     pk = DS.packet(ws, "ADD-03", [{"id": "esc:ADD-03:9.9", "kind": "escalation", "provision": "ADD-03:9.9",
                                    "scope": {"units": []}}], promoted, 1, {})
     assert pk["units_after"]["ADD-03:9.9"]["text"] == long

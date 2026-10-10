@@ -629,7 +629,8 @@ def compare_state(ws: Workspace, from_stage: str, to_stage: str) -> dict:
 DATE_KINDS = ("relative_date", "working_days_between", "add_working_days", "is_working_day", "printed_date")
 # session 11: derived quantities (tenderpack.calc): fixed methods, literal operands or quotes from the pack, an approved
 # formula by its registry id only (config/formulas.yaml); nothing a caller passes is evaluated
-QUANTITY_KINDS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula")
+QUANTITY_KINDS = ("percentage_of", "threshold_of_total", "ratio", "cap", "unit_conversion", "approved_formula",
+                  "relative_change", "deadline")
 CALC_KINDS = DATE_KINDS + QUANTITY_KINDS
 
 
@@ -871,13 +872,18 @@ def get_state(ws: Workspace) -> dict:
                         "opfile": s.prepared_by} for s in r["stages"]],
             "evidence_problems": r["problems"],
             "drafted_addenda": sorted(r.get("drafted") or {}),
-            "note": "copy `state` into every proposal; a proposal made against another state is stale"}
+            "note": "copy `state` unchanged once at proposal-set level; items inherit it. A standalone item needs its own state. A proposal made against another state is stale"}
 
 
 # ---------------------------------------------------------------------------------------------- controller-backed tools
 
 def validate_proposal(ws: Workspace, proposal: dict | None = None, schemas: list[str] | None = None) -> dict:
-    from . import controller
+    from . import controller, downstream
+    raw = (proposal or {}).get("downstream_set", proposal or {})
+    items = raw.get("items", [raw]) if isinstance(raw, dict) else []
+    if getattr(ws, "downstream_context", None) is not None or any(
+            isinstance(it, dict) and "task" in it and "items" not in it for it in items):
+        return downstream.validate_payload(ws, proposal, schemas)
     return controller.validate_payload(ws, proposal, schemas)
 
 
@@ -908,6 +914,41 @@ def _obj(props: dict, required: list[str] = ()) -> dict:
 S, I, B = {"type": "string"}, {"type": "integer"}, {"type": "boolean"}
 SA = {"type": "array", "items": {"type": "string"}}
 STAGE = {"type": ["string", "null"], "description": "a stage name (BASE, ADD-01, ...), 'validated' (default) or 'latest'"}
+
+
+def calculation_schemas() -> dict:
+    from ..calc import _ARGS
+    source = _obj({"unit": S, "unit_id": S, "words": S, "page": I, "stage": STAGE}, ["words"])
+    quantity = {"anyOf": [_obj({"name": S, "value": {"type": ["number", "string", "null"]},
+                                "unit": S, "source": source}), {"type": ["number", "string", "null"]}]}
+    before_after = {"type": "string", "enum": ["before", "after"]}
+    schemas = {
+        "relative_date": _obj({"anchor_date": S, "offset": I, "unit": S, "direction": before_after, "purpose": S}, ["anchor_date", "offset"]),
+        "working_days_between": _obj({"from": S, "to": S}, ["from", "to"]),
+        "add_working_days": _obj({"date": S, "n": I}, ["date", "n"]),
+        "is_working_day": _obj({"date": S}, ["date"]),
+        "printed_date": _obj({"unit_id": S, "stage": STAGE}, ["unit_id"])}
+    strings = {"to_unit", "anchor_date", "formula", "direction", "rounding"}
+    for kind, (required, optional) in _ARGS.items():
+        props = {k: S if k in strings else quantity for k in required | optional}
+        props["stage"] = STAGE
+        if "direction" in props:
+            props["direction"] = {"type": "string", "enum": ["increase", "decrease"]} if kind == "relative_change" else before_after
+        if kind == "approved_formula":
+            props["operands"] = {"type": "object", "additionalProperties": quantity}
+        if kind == "deadline":
+            props["anchor"] = _obj({"name": S, "date": {"type": ["string", "null"]}, "source": source})
+        if kind == "threshold_of_total":
+            props["rounding"] = {"type": "string", "enum": ["none", "up", "down", "nearest"]}
+        schemas[kind] = _obj(props, sorted(required))
+    return schemas
+
+
+def calculation_schema() -> dict:
+    schema = _obj({"kind": {"type": "string", "enum": list(CALC_KINDS)}, "args": {"type": "object"}}, ["kind", "args"])
+    schema["oneOf"] = [_obj({"kind": {"const": kind}, "args": args}, ["kind", "args"])
+                       for kind, args in calculation_schemas().items()]
+    return schema
 
 
 @dataclass
@@ -944,10 +985,12 @@ TOOLS: dict[str, Tool] = {t.name: t for t in [
          "rounding none|up|down|nearest}; ratio {numerator, denominator}; cap {cap, rate} (rate unit '<cap unit> per "
          "day'); unit_conversion {value, to_unit, anchor_date, direction} (m3/h<->m3/s, mm<->m, %<->fraction, "
          "days<->Working Days only); approved_formula {formula: a registry id of config/formulas.yaml, operands: "
-         "{variable: operand}}. An operand is {name, value (a literal number), unit, source {unit, words, page, stage}}: "
+         "{variable: operand}}; relative_change {previous, change, direction: increase|decrease}; "
+         "deadline {offset: operand, anchor: {name, date, source}, direction: before|after}, preserving ambiguous counting readings. "
+         "An operand is {name, value (a literal number), unit, source {unit, words, page, stage}}: "
          "quote the pack's words and the figure is read from them and checked. Each quantity may also take `stage`. A "
          "missing operand, a unit mismatch or an unknown formula returns status 'unresolved' with the reason.",
-         _obj({"kind": {"type": "string", "enum": list(CALC_KINDS)}, "args": {"type": "object"}}, ["kind", "args"]),
+         calculation_schema(),
          calculate),
     Tool("simulate_amendment", "Dry-run proposed ops (amend.Op objects) and dispositions for an addendum through the "
          "amendment engine over the state before it. Returns per-op validity with check records (C21-C27), C47, "
@@ -991,7 +1034,7 @@ def check_args(schema: dict, args) -> None:
     props = schema.get("properties", {})
     unknown = sorted(set(args) - set(props))
     if unknown:
-        raise ToolError(f"unknown argument(s) {unknown}; allowed: {sorted(props)}")
+        raise ToolError(f"unknown arguments {unknown}; allowed: {sorted(props)}")
     missing = [k for k in schema.get("required", []) if k not in args]
     if missing:
         raise ToolError(f"missing argument(s) {missing}")
@@ -1016,6 +1059,12 @@ def call_tool(ws: Workspace, name: str, args: dict | None, caller: str = "model"
                         f"{MODEL_TOOLS if caller == 'model' else list(TOOLS)}")
     args = dict(args or {})
     check_args(t.input_schema, args)
+    if name == "calculate":
+        try:
+            check_args(calculation_schemas()[args["kind"]], args["args"])
+        except ToolError as e:
+            shape = calculation_schemas()[args["kind"]]
+            raise ToolError(f"{args['kind']}: {e}; required: {shape['required']}; allowed: {sorted(shape['properties'])}") from None
     if name not in STATELESS:                    # the region tools read a (possibly refused) build's files only
         ws.refresh()
     if name in ("get_task_packet", "request_review", "submit_proposals"):

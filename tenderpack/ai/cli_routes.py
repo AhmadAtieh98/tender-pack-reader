@@ -331,7 +331,17 @@ def _routes(a) -> int:
         for k in ("works", "never_run", "ready"):              # session 14 (W6): what works, what never ran, what
             if row["status"].get(k):                           # is ready to try (config/routes_status.yaml)
                 row[k] = row["status"][k]
-    out = {"offline": cfg.get("_offline") if off else None, "routes": rows,
+    driver = (cfg.get("host_session") or {}).get("driver", "claude")
+    if driver == "codex":
+        for row in rows:
+            if row["route"] == "host":
+                row.update(kind="connected coding host (Codex exec)",
+                           verified="Codex driver configured; current run results and local smoke records are separate evidence")
+                row["status"] = {"status": "configured", "where": "this operating copy"}
+            elif row["route"] == "codex":
+                row.update(verified="Automated Codex is selected through the host route in this configuration",
+                           why="Choose host: Codex; this legacy manual route is not a separate workflow route")
+    out = {"offline": cfg.get("_offline") if off else None, "routes": rows, "host_driver": driver,
            "note": "kinds: connected coding host (Claude Code / Codex with their own model, over MCP or the CLI) | "
                    "hosted API (the application's paid calls) | local inference (Ollama on this machine) | recorded "
                    "(tests). Every route goes through the same request layer and the controller's validation."}
@@ -412,6 +422,13 @@ def availability(row: dict, cfg: dict, offline: bool) -> tuple[bool, str]:
     if offline and name in ("host", "codex", "anthropic", "openrouter"):
         return False, "offline mode is on: only the local ollama route (switch to connected to use it)"
     if name == "host":
+        hs = cfg.get("host_session") or {}
+        if hs.get("driver") == "codex":
+            from .codex import discover
+            try:
+                return True, f"Codex CLI found at {discover(hs.get('codex_bin'))}; uses the signed-in account"
+            except FileNotFoundError as e:
+                return False, str(e)
         binary = (cfg.get("host_session") or {}).get("claude_bin") or "claude"
         found = shutil.which(binary)
         return (True, f"{binary} found at {found}") if found else (

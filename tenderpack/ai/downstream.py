@@ -81,8 +81,8 @@ from ..schedule import in_force
 from .contract import (DOWNSTREAM_MODEL_FIELDS, DOWNSTREAM_TASK, ActivityPayload, ClarificationItemPayload,
                        DependencyPayload, DownstreamItem, DownstreamSet, EscalationPayload, EvidenceItemPayload,
                        IssueItemPayload, NoChangePayload, RowNewPayload, RowReadingPayload, ValidationRecord,
-                       downstream_fill_schema, downstream_payload_schemas)
-from .tools import Workspace, simulate
+                       downstream_fill_schema, downstream_payload_schemas, inherit_item_states)
+from .tools import Workspace, ToolError, simulate
 
 PROMOTABLE = controller.PROMOTABLE
 CAPPED = ("row_reading", "row_new", "activity", "dependency", "no_change")   # never above interpretation_pending
@@ -761,6 +761,90 @@ def obligation_tasks(ws: Workspace, promoted: dict, r2: dict, addendum: str, exi
     return out
 
 
+def packet_records(r2: dict, addendum: str, batch: list[dict]) -> dict:
+    """Supply records named by a task, including the rows its activity carries.
+
+    These are the current curated definitions and evaluations under the promoted
+    amendment ops, before downstream proposals. They confer no new approval.
+    """
+    rows, activities, clarifications, issues, units, ops = (set() for _ in range(6))
+    # Exact identifiers mentioned in task context select records, not accepted facts.
+    # In particular, an issue acknowledgement must not become a handling decision.
+    text = json.dumps(batch, ensure_ascii=False, default=str)
+    def mentioned(identifier):
+        return re.search(r'(?<![\w:/+.-])' + re.escape(identifier) + r'(?![\w:/+-]|\.[\w])', text) is not None
+    stage = _stage(r2, addendum)
+    units.update(uid for uid in stage.state if mentioned(uid))
+    issues.update(iid for iid in r2.get('curated_issues', {}) if mentioned(iid))
+    rows.update(e['row'].id for e in r2['evals']
+                if mentioned(e['row'].id) or set(e['row'].units) & units)
+    op_defs = {x.op.id: x.op.model_dump(mode='json') for s in r2['stages'] for x in s.ops}
+    ops.update(oid for oid in op_defs if mentioned(oid))
+    templates = {t['id']: {'evidence_item': ev, 'template': t}
+                 for ev, ts in (r2.get('templates') or {}).items() if not str(ev).startswith('_')
+                 for t in ts or []}
+    for aid, record in templates.items():
+        record['evidence_items'] = sorted(ev for ev, ts in r2['templates'].items()
+                                          if not str(ev).startswith('_') and any(t['id'] == aid for t in ts or []))
+    # A task may have been reached through EV-DELIVERY while the shared activity
+    # also discharges EV-COPIES. Reuse A5's row/check mapping, including the
+    # immediate inputs whose contents the assembly step must marshal.
+    planned = {}
+    row_defs = {e['row'].id: e['row'] for e in r2['evals']}
+    if any(t.get('kind') == 'activity' for t in batch):
+        from .. import programme
+        planned = {a['id']: a for a in programme.stage_planner(r2, addendum, extended=False)(r2['assumptions'])['activities']}
+    for task in batch:
+        scope = task.get('scope') or {}
+        rows.update(scope.get('rows') or [])
+        activities.update(scope.get('activities') or [])
+        clarifications.update(scope.get('clarifications') or [])
+        if task.get('kind') == 'activity':
+            rows.update(task.get('rows') or [])
+            template = task.get('activity') or {}
+            if template.get('id'):
+                activities.add(template['id'])
+            act = planned.get(template.get('id')) or {}
+            rows.update(act.get('req_ids') or [])
+            for aid in act.get('predecessors') or []:
+                # Input context concerns the submission item. Do not expand a
+                # packaging review into every technical/design or contract clause
+                # discharged by the input's preparation/review activity.
+                rows.update(rid for rid in (planned.get(aid) or {}).get('req_ids') or []
+                            if rid in row_defs and set(row_defs[rid].scope) &
+                            {'bid_submission', 'envelope_A', 'envelope_B', 'forms'})
+            for e in r2['evals']:
+                if task.get('evidence_item') in e['row'].evidence and schedule.envelope_ok(template, e['row']):
+                    rows.add(e['row'].id)
+    selected_rows = [e for e in r2['evals'] if e['row'].id in rows]
+    issues.update(iid for e in selected_rows for iid in e['row'].issues)
+    for c in (r2.get('clarifications') or {}).get('clarifications') or []:
+        if mentioned(c['id']):
+            clarifications.add(c['id'])
+    reviews = {(kind, identifier) for kind, identifiers in
+               [('row', rows), ('issue', issues), ('clarification', clarifications), ('op', ops)]
+               for identifier in identifiers}
+    return {'basis': 'Current curated records at the stated evaluation stage; not new approvals.',
+            'evaluation_stage': addendum,
+            'referenced_units': sorted(units),
+            'review_note': 'A review accepts or rejects the bound record; accepting an open issue is not a resolution. '
+                           'Preserve changed/proposed/rejected states and interview_demo origin. A missing handling '
+                           'instruction remains missing; do not infer one from acceptance.',
+            'rows': {e['row'].id: {'definition': _compact_row(e['row']),
+                                  'evaluation': copy.deepcopy({k: (e['stages'].get(addendum) or {}).get(k)
+                                                               for k in ('status', 'interpretation', 'stale', 'problems')})}
+                     for e in selected_rows},
+            'issues': {iid: copy.deepcopy(v) for iid, v in (r2.get('curated_issues') or {}).items() if iid in issues},
+            'ops': {oid: copy.deepcopy(v) for oid, v in op_defs.items() if oid in ops},
+            'reviews': {f'{kind}:{identifier}': copy.deepcopy({k: v for k, v in review.items() if k != 'binding'})
+                        for (kind, identifier), review in (r2.get('reviews') or {}).items()
+                        if (kind, identifier) in reviews},
+            'activities': {aid: copy.deepcopy(t) for aid, t in templates.items() if aid in activities},
+            'clarifications': {c['id']: copy.deepcopy(c)
+                               for c in (r2.get('clarifications') or {}).get('clarifications') or []
+                               if c.get('id') in clarifications}}
+
+
 def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, total: int, state: dict) -> dict:
     r2 = promoted["r2"]
     prev = ws.prev_stage(addendum)
@@ -785,6 +869,15 @@ def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, tota
         elif t["kind"] == "obligation_impact":            # session 14 (W2)
             ids += list(t.get("units_changed") or []) + list((t.get("related") or {}).get("units") or [])[:20]
         ids += t.get("provisions") or []
+    records = packet_records(r2, addendum, batch)
+    ids += records['referenced_units']
+    for record in records['rows'].values():
+        ids += record['definition'].get('units') or []
+        consequence = (record['evaluation'].get('interpretation') or {}).get('consequence') or {}
+        if isinstance(consequence, dict) and consequence.get('unit'):
+            ids.append(consequence['unit'])
+    for record in records['clarifications'].values():
+        ids += list(record.get('units') or []) + [s['unit'] for s in record.get('sources') or [] if s.get('unit')]
     units_after = {}
     for uid in dict.fromkeys(i for i in ids if i):
         u = st2.get(uid)
@@ -800,6 +893,7 @@ def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, tota
             "tasks_total": total, "tasks_in_packet": len(batch), "tasks": batch,
             "promoted_ops": [controller._compact_op(o) for o in promoted["ops"].values()],
             "units_after": units_after,
+            "current_records": records,
             "vocabulary": {"consequence_classes": list(_classes()), "anchors": r["rowfile"].anchors,
                            "assessment": ["pass_fail", "scored", "contractual_post_award", "procedural", "informational"],
                            "evidence_items": {k: v.name for k, v in r["evidence_items"].items()},
@@ -811,6 +905,47 @@ def packet(ws: Workspace, addendum: str, batch: list[dict], promoted: dict, tota
                            "disciplines": list(schedule.DISCIPLINES), "per": list(schedule.PER)},
             "schema": downstream_fill_schema(), "payload_schemas": downstream_payload_schemas(),
             "tools": [{"name": n, "description": controller.TOOLS[n].description} for n in controller.MODEL_TOOLS]}
+
+
+def validation_basis(ws):
+    """Controller-supplied dry-run context, bound to the same state as final validation."""
+    from .contract import ProposalSet
+    context = getattr(ws, "downstream_context", None)
+    if not context:
+        raise ToolError("downstream validation requires the workflow's controller context")
+    ps = ProposalSet.model_validate(context["analysis"])
+    if ps.state != ws.identity():
+        raise ToolError("downstream validation context is stale; resume the workflow to rebuild it")
+    key = ("downstream-validation-basis", ps.model_dump_json(),
+           json.dumps(context["tasks"], sort_keys=True, default=str))
+    return ws.memo(key, lambda: (promoted_ops(ws, ps), task_kinds(context["tasks"])))
+
+
+def validate_payload(ws, proposal=None, schemas=None):
+    """The same downstream parser, amended state and validator used at promotion; no writes."""
+    from .contract import downstream_payload_schemas
+    promoted, kinds = validation_basis(ws)
+    all_schemas = downstream_payload_schemas()
+    if schemas and any(s not in all_schemas for s in schemas):
+        raise ToolError("unknown downstream payload schema")
+    selected = {s: all_schemas[s] for s in schemas or []}
+    if proposal is None:
+        return {"schemas": selected or all_schemas, "note": "downstream payload schemas; nothing validated"}
+    fields = {"run_id": "validate-only", "created": "-", "route": "tool", "provider": "tool",
+              "model_requested": "-"}
+    data = proposal.get("downstream_set", proposal)
+    if "items" not in data:
+        data = {"addendum": ws.identity().working_stage, "state": data.get("state"), "items": [data]}
+    overwrites = []
+    try:
+        ds = parse(data, fields, overwrites)
+    except (DownstreamParseError, ValidationError) as exc:
+        return {"parsed": False, "error": str(exc), "schemas": selected or all_schemas}
+    report = validate(ws, ds, promoted, kinds, overwrites=overwrites)
+    return {"parsed": True, "phase": "downstream", "set_status": ds.status,
+            "items": [{"id": it.id, "verification_status": it.verification_status,
+                       "validation": [v.model_dump() for v in it.validation]} for it in ds.items],
+            "report": report, "schemas": selected}
 
 
 def _classes():
@@ -833,7 +968,7 @@ def parse(data, fields: dict, overwrites: list) -> DownstreamSet:
     if unknown:
         raise DownstreamParseError(f"unknown field(s) {unknown}; the set has only {list(DOWNSTREAM_MODEL_FIELDS)}")
     try:
-        return DownstreamSet.model_validate({**fields, **data})
+        return DownstreamSet.model_validate({**fields, **inherit_item_states(data)})
     except ValidationError as e:
         raise DownstreamParseError(_short(str(e), 1500)) from None
 
@@ -896,6 +1031,22 @@ def program_counted_rules(row: dict, computed: list[dict]) -> list[str]:
 # {deadline_of, buffer}, the links lists of activity ids, `conditional_on` an object. A string where an object is
 # expected ("finish": "milestone") is refused with a named finding, never left for the planner to fail on.
 _ACT_SHAPES = {"finish": dict, "conditional_on": dict, "predecessors": list, "successors": list, "gated_by": list}
+
+
+def replace_activity(templates: dict, evidence_item: str, activity: dict) -> list[str]:
+    """An activity id is global in A5; keep all its existing evidence associations.
+
+    Used identically by validation and candidate promotion. This neither creates
+    a new evidence association for an existing id nor changes any review state.
+    """
+    associations = sorted(ev for ev, ts in templates.items() if not str(ev).startswith('_')
+                          and any(t['id'] == activity['id'] for t in ts or []))
+    if associations and evidence_item not in associations:
+        raise ValueError(f"activity {activity['id']} is not associated with {evidence_item}")
+    for ev in associations or [evidence_item]:
+        entries = templates.setdefault(ev, [])
+        entries[:] = [t for t in entries if t['id'] != activity['id']] + [copy.deepcopy(activity)]
+    return associations or [evidence_item]
 
 
 def activity_shape_problems(a: dict) -> list[str]:
@@ -1033,7 +1184,8 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
               "clarification_item": ClarificationItemPayload, "evidence_item": EvidenceItemPayload,
               "activity": ActivityPayload, "dependency": DependencyPayload, "escalation": EscalationPayload,
               "no_change": NoChangePayload}
-    decisions = r["decisions"]
+    from .. import review
+    decisions = review.ai_guard_decisions(r["cfg"], r["decisions"])
     # session 12 (blind-06 follow-ups 12 and 6 b): points the documents settle, and reversals of the analysis phase
     from .controller import APPLIED_RULE, _provisions, applied_rule_review, phase_reversals
     texts_all = {k: (u.get("text") or "") for k, u in ws.units_by_id.items()}
@@ -1185,7 +1337,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
             if a["id"] in new_ids["activity"]:
                 rec(i, "id", False, f"activity {a['id']} proposed twice", "invalid")
             new_ids["activity"].add(a["id"])
-            if a["id"] in acts_existing and acts_existing[a["id"]] != pl.evidence_item:
+            if a["id"] in acts_existing and not any(t['id'] == a['id'] for t in templates.get(pl.evidence_item) or []):
                 rec(i, "id", False, f"activity {a['id']} exists under {acts_existing[a['id']]}, not {pl.evidence_item}",
                     "invalid")
             da = pl.duration_assumption
@@ -1484,8 +1636,7 @@ def validate(ws: Workspace, ds: DownstreamSet, promoted: dict, task_ids, overwri
         evidence2[k] = EvidenceItem.model_validate(F[j]["pl"].item)
     for a_id, j in proposed_acts.items():
         pl = F[j]["pl"]
-        lst = templates2.setdefault(pl.evidence_item, [])
-        lst[:] = [t for t in lst if t["id"] != a_id] + [dict(pl.activity)]
+        replace_activity(templates2, pl.evidence_item, pl.activity)
         if pl.duration_assumption is not None:
             assumptions2.setdefault("lead_times", {})[pl.duration_assumption.key] = \
                 pl.duration_assumption.model_dump(exclude_none=True, exclude={"key"})
@@ -1605,6 +1756,10 @@ def _broken_refs(it: DownstreamItem, pl, issues: set, promotable_issues: set) ->
         refs = [i for _, i in SG.activity_issue_refs(pl.activity or {})]
     elif t == "clarification_item":
         refs = [i for _, i in SG.clarification_issue_refs(pl.entry or {})]
+    elif t == "dependency":
+        # A proposed issue can pass the initial shape check and later be held back.
+        # Keep its inferred links out too, so promotion cannot create dangling IDs.
+        refs = list(pl.issues or [])
     return SG.broken_issue_refs(refs, set(issues) | set(promotable_issues))
 
 
@@ -2239,8 +2394,7 @@ def promote(ws: Workspace, cand: dict, run_id: str, ps, promoted: dict, ds: Down
         for it in acts:
             pl = it.payload
             a = dict(pl["activity"])
-            lst = tdata.setdefault(pl["evidence_item"], [])
-            lst[:] = [t for t in lst if t["id"] != a["id"]] + [a]
+            replace_activity(tdata, pl['evidence_item'], a)
             summary["activities"].append(a["id"])
             da = pl.get("duration_assumption")
             if da:

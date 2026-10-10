@@ -109,18 +109,24 @@ def code_identity(root: Path) -> dict:
         h.update(f.relative_to(root).as_posix().encode() + b"\0" + f.read_bytes() + b"\0")
     head = dirty = None
     try:
-        r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, timeout=10)
-        if r.returncode == 0:
+        top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=root, capture_output=True, text=True, timeout=10)
+        own_checkout = top.returncode == 0 and Path(top.stdout.strip()).resolve() == root.resolve()
+        r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, timeout=10) if own_checkout else None
+        if r is not None and r.returncode == 0:
             head = r.stdout.strip()
             st = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=root, capture_output=True,
                                 text=True, timeout=20)
             dirty = bool(st.stdout.strip()) if st.returncode == 0 else None
     except (OSError, subprocess.SubprocessError):
         pass
+    try:
+        package_base = json.loads((root / "INTERVIEW.json").read_text()).get("base")
+    except (OSError, ValueError):
+        package_base = None
     from .policy import identity as policy_identity
     pol = policy_identity(root / POLICY_DIR) if (root / POLICY_DIR).is_dir() else None
     return {"content_sha256": h.hexdigest(), "files": len(files), "git_head": head, "git_dirty": dirty,
-            "policy": pol, "recorded": now_iso()}
+            "policy": pol, "recorded": now_iso(), "package_base": package_base}
 
 
 class Checkpoint:

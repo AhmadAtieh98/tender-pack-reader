@@ -119,7 +119,7 @@ def test_launcher_with_dependencies_that_do_not_import(tmp_path):
     f = _folder(tmp_path)
     fake = tmp_path / "py-noimport"
     fake.write_text(f'#!/usr/bin/env bash\nif [ "$1" = "-c" ] && [[ "$2" == *pymupdf* ]]; then echo "ModuleNotFoundError: '
-                    f"No module named 'pymupdf'\" >&2; exit 1; fi\nexec {PY} \"$@\"\n", encoding="utf-8")
+                    f"No module named 'pymupdf'\" >&2; exit 1; fi\nexec \"{PY}\" \"$@\"\n", encoding="utf-8")
     fake.chmod(0o755)
     r = _bash(f / "scripts/mac/launch.command", env={"TENDERPACK_PY": str(fake)})
     problem, nxt = _problem_and_next(r.stdout)
@@ -475,7 +475,9 @@ KNOWN_SITES = {
     # HostSession constructor runs check_host_session first)
     ("tenderpack/ai/quick_review.py", "make"), ("tenderpack/ai/quick_review.py", "_session_class"),
 }
-PROCESS_SITES = {   # subprocess users in tenderpack/: none of them may start the host CLI except the guarded sessions
+PROCESS_SITES = {
+    "tenderpack/ai/codex.py": "guarded by check_host_session in the transport and parent session; watchdog is local",
+    "tenderpack/interview.py": "AI CLI delegates to its offline guards; caffeinate is local",   # subprocess users in tenderpack/: none of them may start the host CLI except the guarded sessions
     "tenderpack/cli.py": "git log (read only)",
     "tenderpack/ai/candidate.py": "python -m tenderpack.ai.candidate build-before (deterministic, no model)",
     # session 13 (implementer A, merged after this test was written): the run's code identity reads `git rev-parse HEAD`

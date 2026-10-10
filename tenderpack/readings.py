@@ -145,7 +145,7 @@ class Reading(_Strict):
         if self.table is None:
             return list(self.blocks)
         t = self.table
-        return [b for b in (t.title, t.qualifier) if b is not None] + list(t.notes)
+        return [b for b in (t.title, t.qualifier) if b is not None] + list(t.notes) + list(self.blocks)
 
     def column_of(self, key: str) -> Column | None:
         return next((c for c in self.table.columns if c.key == key), None) if self.table else None
@@ -485,7 +485,7 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
         title = t.title.source if t.title else None
         context = {"table_title": title, "column_headings": cols,
                    "qualifier": t.qualifier.source if t.qualifier else None,
-                   "notes": [b.source for b in t.notes], "interpretation": None,
+                   "notes": [b.source for b in [*t.notes, *reading.blocks]], "interpretation": None,
                    "interpretation_note": "not decided by the program: whether a number is a maximum, minimum, "
                                           "range or target is read from these headings and notes by a person"}
         top = dict(base, unit_id=reading.unit_id, kind="table", label=title or reading.title,
@@ -521,7 +521,7 @@ def reading_units(reading: Reading, region: Region, status: dict, evidence: dict
             if row.uncertain:
                 u["uncertain"] = row.uncertain
             units.append(u)
-        for blk in t.notes:
+        for blk in [*t.notes, *reading.blocks]:
             units.append(block_unit(blk, f"{reading.unit_id}/{blk.key}", reading.unit_id))
     elif reading.content_type == "graphic":
         units.append(dict(base, unit_id=reading.unit_id, kind="graphic", label=reading.title,
