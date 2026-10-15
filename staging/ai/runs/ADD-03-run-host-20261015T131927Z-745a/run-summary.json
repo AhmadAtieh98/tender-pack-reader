@@ -1,0 +1,328 @@
+{
+  "run_id": "ADD-03-run-host-20261015T131927Z-745a",
+  "status": "partial",
+  "created_utc": "2026-10-15T13:19:27Z",
+  "finished_utc": "2026-10-15T14:30:36Z",
+  "wall_seconds": 4269,
+  "source_revision": "cbe0e944d0db804b5894d3fb42080e3774c3443d",
+  "source_pdf_sha256": "6f9f9d7c7d68bc83b947d20fa348271b91695463eae5435a70b09afd1955ad25",
+  "execution": {
+    "run_status": "partial",
+    "steps": {
+      "ingest": "done",
+      "readings": "done",
+      "analysis": "done",
+      "validation": "done",
+      "downstream": "done",
+      "downstream_validation": "done",
+      "critic": "done",
+      "promotion": "done",
+      "pin": "done",
+      "check_register": "done",
+      "outputs": "done",
+      "diff": "done",
+      "review": "done"
+    },
+    "batches": {
+      "analysis": {
+        "done": 4
+      },
+      "downstream": {
+        "done": 10
+      }
+    }
+  },
+  "completeness": {
+    "status": "partial",
+    "reasons": [
+      "5 provision(s) unresolved in the candidate (listed first in the review packet)",
+      "14 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-F4G-06, row:ADD-02-F4G-07, act:form-4g-review, act:form-4g-sign, act:clarifications, act:copies, act:assemble-envelope-a, act:assemble-envelope-b \u2026"
+    ],
+    "provisions": {
+      "total": 19,
+      "unresolved": [
+        "ADD-03:2.2",
+        "ADD-03:3.1",
+        "ADD-03:4.1",
+        "ADD-03:Q17",
+        "ADD-03:4.3"
+      ],
+      "answered": 14
+    },
+    "downstream": {
+      "tasks": 58,
+      "answered": 44,
+      "unanswered": [],
+      "unresolved": [
+        {
+          "task": "row:ADD-02-F4G-06",
+          "kind": "row_reading",
+          "items": {
+            "D-ADD-02-F4G-06-WITHDRAWAL": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "row:ADD-02-F4G-07",
+          "kind": "row_reading",
+          "items": {
+            "D-ADD-02-F4G-07-WITHDRAWAL": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "act:form-4g-review",
+          "kind": "activity",
+          "items": {
+            "ADD-03-form-4g-review-followup": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "act:form-4g-sign",
+          "kind": "activity",
+          "items": {
+            "ADD-03-form-4g-sign-followup": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "act:clarifications",
+          "kind": "activity",
+          "items": {
+            "P-ADD03-D006-CLARIFICATIONS": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "act:copies",
+          "kind": "activity",
+          "items": {
+            "P-ADD03-D006-COPIES": "conflicting"
+          }
+        },
+        {
+          "task": "act:assemble-envelope-a",
+          "kind": "activity",
+          "items": {
+            "P-ADD03-D006-ENVELOPE-A-GAP": "conflicting"
+          }
+        },
+        {
+          "task": "act:assemble-envelope-b",
+          "kind": "activity",
+          "items": {
+            "P-ADD03-D006-ENVELOPE-B": "conflicting",
+            "P-ADD03-D006-ENVELOPE-B-INSTRUCTION": "conflicting"
+          }
+        },
+        {
+          "task": "act:form-4a",
+          "kind": "activity",
+          "items": {
+            "D-ADD03-D007-FORM-SIGN": "conflicting",
+            "D-ADD03-D007-FORM-INSTRUCTION": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "esc:ADD-03:2.2",
+          "kind": "escalation",
+          "items": {
+            "D008-PDD-ESC": "escalated",
+            "D008-PDD-LINK": "insufficient_evidence"
+          }
+        },
+        {
+          "task": "esc:ADD-03:3.1",
+          "kind": "escalation",
+          "items": {
+            "D008-F4G-ESC": "escalated",
+            "D008-F4G-HANDLING": "escalated"
+          }
+        },
+        {
+          "task": "esc:ADD-03:4.3",
+          "kind": "escalation",
+          "items": {
+            "D008-CORRESPOND-ESC": "escalated"
+          }
+        },
+        {
+          "task": "impact:8. RESPONSES TO CLARIFICATION REQUESTS 15 TO 18",
+          "kind": "conditional_impact",
+          "items": {
+            "DS009-Q17-COVERAGE": "escalated"
+          }
+        },
+        {
+          "task": "impact:3. WITHDRAWAL OF FORM 4-G",
+          "kind": "conditional_impact",
+          "items": {
+            "DS009-F4G-WITHDRAWAL": "escalated"
+          }
+        }
+      ],
+      "batches_not_done": [],
+      "no_change": [
+        "act:form-4a-prep",
+        "act:seal-and-mark"
+      ]
+    },
+    "check_register": {
+      "exit_code": 0,
+      "findings": 0,
+      "by_kind": {},
+      "c46": []
+    },
+    "outputs": {
+      "published": true,
+      "refused": false,
+      "reason": null,
+      "exit_code": 0
+    }
+  },
+  "steps": {
+    "ingest": {
+      "status": "done",
+      "seconds": 9.644,
+      "attempts": 1,
+      "started": "2026-10-15T13:19:27Z",
+      "finished": "2026-10-15T13:19:37Z",
+      "exit_code": 0
+    },
+    "readings": {
+      "status": "done",
+      "seconds": 0.0,
+      "attempts": 1,
+      "started": "2026-10-15T13:19:37Z",
+      "finished": "2026-10-15T13:19:37Z"
+    },
+    "analysis": {
+      "status": "done",
+      "seconds": 565.839,
+      "attempts": 1,
+      "started": "2026-10-15T13:19:37Z",
+      "finished": "2026-10-15T13:29:03Z"
+    },
+    "validation": {
+      "status": "done",
+      "seconds": 3.044,
+      "attempts": 1,
+      "started": "2026-10-15T13:29:03Z",
+      "finished": "2026-10-15T13:29:06Z"
+    },
+    "downstream": {
+      "status": "done",
+      "seconds": 3475.212,
+      "attempts": 2,
+      "started": "2026-10-15T13:29:06Z",
+      "finished": "2026-10-15T14:27:30Z"
+    },
+    "downstream_validation": {
+      "status": "done",
+      "seconds": 0.429,
+      "attempts": 1,
+      "started": "2026-10-15T14:27:30Z",
+      "finished": "2026-10-15T14:27:31Z"
+    },
+    "critic": {
+      "status": "done",
+      "seconds": 159.003,
+      "attempts": 1,
+      "started": "2026-10-15T14:27:31Z",
+      "finished": "2026-10-15T14:30:10Z"
+    },
+    "promotion": {
+      "status": "done",
+      "seconds": 8.736,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:10Z",
+      "finished": "2026-10-15T14:30:19Z"
+    },
+    "pin": {
+      "status": "done",
+      "seconds": 0.607,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:19Z",
+      "finished": "2026-10-15T14:30:19Z",
+      "exit_code": 0
+    },
+    "check_register": {
+      "status": "done",
+      "seconds": 2.117,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:19Z",
+      "finished": "2026-10-15T14:30:21Z",
+      "exit_code": 0
+    },
+    "outputs": {
+      "status": "done",
+      "seconds": 10.663,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:21Z",
+      "finished": "2026-10-15T14:30:32Z",
+      "exit_code": 0
+    },
+    "diff": {
+      "status": "done",
+      "seconds": 1.872,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:32Z",
+      "finished": "2026-10-15T14:30:34Z"
+    },
+    "review": {
+      "status": "done",
+      "seconds": 1.726,
+      "attempts": 1,
+      "started": "2026-10-15T14:30:34Z",
+      "finished": "2026-10-15T14:30:36Z"
+    }
+  },
+  "critic": {
+    "reviewed": 31,
+    "disagrees": 11,
+    "sessions": 9,
+    "note": "agreement between models is not approval; the critic changes no status"
+  },
+  "code_identity": {
+    "content_sha256": "bbf58cf324573bcd364278e552e104f3bd6f82b99fa16cde04f0436ff41f09be",
+    "files": 102,
+    "git_head": null,
+    "policy": {
+      "sha256": "12c41c01900c2de837e3dc34c278ed485d179f887116a3766b7e3b4a1a4c63a9",
+      "files": [
+        "00_shared.md",
+        "10_reading.md",
+        "20_analysis.md",
+        "21_analysis_checklist.md",
+        "30_downstream.md",
+        "40_critic.md",
+        "41_critic_item.md",
+        "42_critic_batch.md",
+        "50_repair.md",
+        "51_repair_reask.md",
+        "60_derived.md",
+        "70_quick_review.md",
+        "80_routes.md",
+        "90_host_entry.md"
+      ]
+    }
+  },
+  "code_changed_during_run": false,
+  "baseline_hash_check": "passed; frozen baseline and real input fingerprints unchanged",
+  "approval": "INTERVIEW DEMO ONLY: simulated eligible approvals; no actual human review or tender release",
+  "recovery": {
+    "first_batch_timeout_seconds": 595,
+    "overall_guard_seconds": 2700,
+    "initial_job_exit_code": 130,
+    "resume_started_utc": "2026-10-15T14:04:56Z",
+    "resume_exit_code": 0,
+    "completed_batches_reused": true,
+    "service_tier_requested": "fast",
+    "actual_tier_reported": false,
+    "configured_model": "gpt-6-astra",
+    "reasoning": "high"
+  },
+  "a3_primary": "candidate/out/a3/a3_candidate.html",
+  "a3_one_page_pdf_fit": {
+    "error": "A3 content does not fit on one A4 page at scale >= 0.89 (20 items, 12 unresolved); shorten or prioritise it",
+    "note": "Full diagnostic retained; candidate one-page fit not achieved.",
+    "pages": 0
+  },
+  "archive_scope": "Read-only publication of results/evidence; not a resumable checkpoint. Runtime exchanges and raw checkpoint excluded."
+}

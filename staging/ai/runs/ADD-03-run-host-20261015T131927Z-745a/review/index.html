@@ -1,0 +1,974 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Review: ADD-03, run ADD-03-run-host-20261015T131927Z-745a</title><style>body{font:14px/1.45 sans-serif;max-width:1200px;margin:16px auto;padding:0 16px;color:#111}table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid #bbb;padding:3px 6px;vertical-align:top;font-size:13px}th{background:#eee}code{background:#f3f3f3;padding:0 3px}li.sub{margin-left:24px;list-style:circle}blockquote{background:#fde2e2;border:2px solid #b00000;color:#7a0000;padding:6px 10px;margin:8px 0;font-weight:bold}</style></head><body><div class="tp-candidate-banner" style="background:#fde2e2;border:2px solid #b00000;color:#7a0000;font:bold 14px sans-serif;padding:6px 10px;margin:0 0 8px 0">CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted</div><h1>Review packet: ADD-03, AI workflow run ADD-03-run-host-20261015T131927Z-745a</h1>
+<blockquote><strong>CANDIDATE: proposed by the AI workflow; not reviewed; nothing accepted.</strong> Statuses are the controller's; a person decides every item. The real <code>curation/</code>, <code>config/</code> and <code>out/</code> were only read: everything below lives in this run's folder.</blockquote>
+<ul>
+<li>PDF: <code>${INTERVIEW_ROOT}/staging/panel/uploads/6f9f9d7c7d68bc83b947d20fa348271b91695463eae5435a70b09afd1955ad25.pdf</code> (sha256 6f9f9d7c7d68bc83…, 2 pages); preceding state: pack <code>${INTERVIEW_ROOT}/config/pack.yaml</code> (NUPA-ISTP-2026-014), previous evidence build <code>${INTERVIEW_ROOT}/build</code></li>
+<li>route <strong>host</strong>; model requested <code>codex exec (configured gpt-6-astra; runtime model identity reported separately)</code>, reported <code>None</code></li>
+<li>status <strong>partial</strong>: 5 provision(s) unresolved in the candidate (listed first in the review packet); 14 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-F4G-06, row:ADD-02-F4G-07, act:form-4g-review, act:form-4g-sign, act:clarifications, act:copies, act:assemble-envelope-a, act:assemble-envelope-b …</li>
+<li>usage (application routes): none: the run's route is host, every exchange ran in a host session (below)</li>
+<li>host sessions: 13 (their own records); usage of the 11 that reported it: input 2525271, cache write 0, cache read 0 / output 60114 tokens; usage <strong>unknown</strong> for 2 session(s): ADD-03-hostsession-20261015T134601Z-a6f3 (batch not recorded), ADD-03-hostsession-20261015T135558Z-c8a1 (batch not recorded)</li>
+<li>code at start: content bbf58cf324573bcd… over 102 files; git not available; recorded 2026-10-15T13:19:27Z</li>
+</ul>
+<h2>Execution, completeness and approval (three separate things)</h2>
+<ul>
+<li><strong>Execution</strong> (what ran): ingest done, readings done, analysis done, validation done, downstream done, downstream_validation done, critic done, promotion done, pin done, check_register done, outputs done, diff done, review running; batches analysis: {'done': 4}; downstream: {'done': 10}</li>
+<li><strong>Completeness</strong> (what the run completed): <strong>partial</strong>: 5 provision(s) unresolved in the candidate (listed first in the review packet); 14 downstream task(s) answered only by items that cannot be promoted: row:ADD-02-F4G-06, row:ADD-02-F4G-07, act:form-4g-review, act:form-4g-sign, act:clarifications, act:copies, act:assemble-envelope-a, act:assemble-envelope-b …</li>
+<li class=sub>downstream tasks: 58; answered 44; unanswered 0; answered only by items that cannot be promoted 14; answered 'no change' 2</li>
+<li><strong>Human approval</strong>: <strong>simulated</strong> (INTERVIEW DEMO: eligible reviews assumed approved on the owner's instruction; no actual human review or tender release); decisions a person recorded in the candidate's decisions file: accept row ADD-01-3.1-01 by Interview demo assumption (2026-10-10); accept row ADD-01-AppA-01 by Interview demo assumption (2026-10-10); accept row ADD-01-Q4-01 by Interview demo assumption (2026-10-10); accept op ADD-01/2.1 by Interview demo assumption (2026-10-10); accept op ADD-01/2.2 by Interview demo assumption (2026-10-10); accept op ADD-01/3.1 by Interview demo assumption (2026-10-10); accept op ADD-01/3.2 by Interview demo assumption (2026-10-10); accept op ADD-01/4.1 by Interview demo assumption (2026-10-10); accept op ADD-01/4.2 by Interview demo assumption (2026-10-10); accept op ADD-01/5.1 by Interview demo assumption (2026-10-10)</li>
+</ul>
+<h2>What is candidate and what is real</h2>
+<ul>
+<li><strong>Candidate</strong> (proposed by this run, nothing accepted): <code>../candidate/</code> — a copy of the curation and configuration with ADD-03 added, its evidence build, its op file, rows, issues, templates and outputs.</li>
+<li><strong>Last validated state</strong>: <code>../candidate/out-before/</code> (the pre-addendum outputs built from the copied curation and the previous evidence build; done)</li>
+<li><strong>Real</strong> (untouched): <code>curation/</code>, <code>config/</code>, <code>out/</code>; the owner's approvals and readings were copied unchanged and used read-only.</li>
+</ul>
+<ul>
+<li>real inputs changed since the run started: none</li>
+</ul>
+<h2>Candidate outputs</h2>
+<p>Exit 0 (INTERVIEW DEMO (assumed approvals; not a tender release)); every file carries the banner (<code>../candidate/out/CANDIDATE.md</code>); A1 has a candidate status column {'DECIDED': 203, 'UNRESOLVED': 7}.</p>
+<table>
+<tr><th>Output</th><th>Candidate</th><th>Before (ADD-03 not applied)</th></tr>
+<tr><td>A1 register</td><td><a href="../candidate/out/a1/a1.xlsx">../candidate/out/a1/a1.xlsx</a></td><td><a href="../candidate/out-before/a1/a1.xlsx">../candidate/out-before/a1/a1.xlsx</a></td></tr>
+<tr><td>A2 changes</td><td><a href="../candidate/out/a2/a2.md">../candidate/out/a2/a2.md</a></td><td><a href="../candidate/out-before/a2/a2.md">../candidate/out-before/a2/a2.md</a></td></tr>
+<tr><td>A3 consequences</td><td><a href="../candidate/out/a3/a3.pdf">../candidate/out/a3/a3.pdf</a></td><td><a href="../candidate/out-before/a3/a3.pdf">../candidate/out-before/a3/a3.pdf</a></td></tr>
+<tr><td>A4 clarification register</td><td><a href="../candidate/out/a4/clarification_register.md">../candidate/out/a4/clarification_register.md</a></td><td><a href="../candidate/out-before/a4/clarification_register.md">../candidate/out-before/a4/clarification_register.md</a></td></tr>
+<tr><td>A5 programme</td><td><a href="../candidate/out/a5/README.md">../candidate/out/a5/README.md</a></td><td><a href="../candidate/out-before/a5/README.md">../candidate/out-before/a5/README.md</a></td></tr>
+<tr><td>A5 Gantt</td><td><a href="../candidate/out/a5/gantt.html">../candidate/out/a5/gantt.html</a></td><td><a href="../candidate/out-before/a5/gantt.html">../candidate/out-before/a5/gantt.html</a></td></tr>
+<tr><td>A5 marshalling</td><td><a href="../candidate/out/a5/marshalling.csv">../candidate/out/a5/marshalling.csv</a></td><td><a href="../candidate/out-before/a5/marshalling.csv">../candidate/out-before/a5/marshalling.csv</a></td></tr>
+<tr><td>Checks</td><td><a href="../candidate/out/checks.json">../candidate/out/checks.json</a></td><td><a href="../candidate/out-before/checks.json">../candidate/out-before/checks.json</a></td></tr>
+</table>
+<ul>
+<li>before → after: {"a1": {"rows_before": 205, "rows_after": 210, "new": 5, "gone": 0}, "a3": {"before": 17, "after": 17, "enters": 0, "leaves": 0}, "a5": {"activities_before": 44, "activities_after": 44, "new": 0, "gone": 0}}</li>
+</ul>
+<ul>
+<li>ADD-03 is <strong>PARTIAL</strong> in the candidate (provisions unresolved): A3 and the A5 programme show the validated state (ADD-02); ADD-03 as proposed is in A1's <code>Status after ADD-03</code> column, in A2, in the candidate A3 and A5 below, in <code>a5/working/ADD-03.json</code> and in the diff below.</li>
+</ul>
+<h3>Validated and candidate A3 / A5 (partial should not mean useless)</h3>
+<ul>
+<li><strong>Validated</strong> (unchanged; ADD-02): <a href="../candidate/out/a3/a3.pdf">a3/a3.pdf</a> (one page), <a href="../candidate/out/a5/README.md">a5/README.md</a>, <a href="../candidate/out/a5/gantt.html">a5/gantt.html</a></li>
+<li><strong>Candidate</strong> (CANDIDATE — NOT VALIDATED; ADD-03 as proposed): <a href="../candidate/out/a3/a3_candidate.pdf">a3/a3_candidate.pdf</a> (7 page(s)), <a href="../candidate/out/a3/a3_candidate.md">a3/a3_candidate.md</a>, <a href="../candidate/out/a5/candidate/README.md">a5/candidate/README.md</a>, <a href="../candidate/out/a5/candidate/gantt.html">a5/candidate/gantt.html</a></li>
+</ul>
+<p><strong>What may be changing.</strong> ADD-03 is PARTIAL: 3 of 19 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 14 op(s) that are valid there stood (each still a proposal: review accepted 14), A3 would gain 0 row(s) (none), lose 1 (ADD-02-7.2-01 (ADD-03/3.1(b))) and change 5 (ADD-02-F4G-04 (register), VOL-I-6.1-01 (ADD-03/2.1(a), ADD-03/2.1(b)), VOL-I-6.3-01 (ADD-03/5.2(a)), VOL-I-6.4-01 (ADD-03/5.1) and 1 more); A5, replanned at ADD-03's issue date (2026-11-08), would move the latest dates of 43 activities (assemble-envelope-a, assemble-envelope-b, bond-approval, bond-issue and 39 more), add 0 (none) and remove 0 (none), and marks 17 REVIEW through relationships. Not settled: 5 activities blocked by an unresolved row (fin-model-build, fin-model-freeze, form-4g-review, form-4f and 1 more), 7 STALE row(s), 0 obligation(s) reaching no output (C46), 8 relationship chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT and 7 more. Nothing here is validated, accepted or applied to the real state.</p>
+<ul>
+<li>CHANGES ADD-02-F4G-04: now STALE; ops none (status NEW -&gt; ACTIVE (as amended by ADD-02/7.1); NOT SETTLED: STALE at ADD-03: its reading was not re-made (ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))))</li>
+<li>CHANGES VOL-I-6.1-01: text: “Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address — “Thursday 26 Novem…” -&gt; “Deliver the Proposal to the Authority by the Proposal Due Date and time, at the Appendix 3 address — “Proposals shall b…”; ops ADD-03/2.1(a) (evidence_verified), ADD-03/2.1(b) (interpretation_pending)</li>
+<li>CHANGES VOL-I-6.3-01: text: “Bid Bond valid for two hundred and ten (210) days from the Proposal Due Date and extended on demand where the Authority…” -&gt; “Bid Bond valid for two hundred and ten (210) days from the Proposal Due Date and extended on demand where the Authority…”; ops ADD-03/5.2(a) (evidence_verified)</li>
+<li>CHANGES VOL-I-6.4-01: text: “Bid Bond of SAR 5,600,000, unconditional and payable on first written demand — “in the amount of SAR 4,500,000”” -&gt; “Bid Bond of SAR 5,600,000, unconditional and payable on first written demand”; ops ADD-03/5.1 (evidence_verified)</li>
+<li>CHANGES VOL-I-8.5-01: text: “Evidence at least two (2) reference sewage treatment plants of at least 100,000 m3/day, each having achieved commercial…” -&gt; “Evidence at least two (2) reference sewage treatment plants of at least 100,000 m3/day, each having achieved commercial…”; ops ADD-03/4.2 (evidence_verified)</li>
+<li>LEAVES ADD-02-7.2-01: was explicit (non-responsive); ops ADD-03/3.1(b) (evidence_verified)</li>
+</ul>
+<ul>
+<li>blockers: 3 unresolved provision(s), 5 blocked activit(y/ies), 7 STALE row(s), 0 C46 gap(s), 8 relationship chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT, I-VOL-III, I-ADD-03-DS009-FLOW-ANSWER, I-VOL-II-MISSING, I-VOL-V-MISSING, I-VOL-II-COMPLIANCE-POINT, I-VOL-IV-SCALE, I-OP-ADD-01/Q4</li>
+<li>conditional scenarios: 0</li>
+</ul>
+<p><strong>Image-read units</strong> (the review packet of each region shows every crop beside its reading; translations are proposals, not evidence):</p>
+<ul>
+<li>VOL-II-p3-r1 (VOL-II p3; reading approved): <a href="../candidate/build/review/VOL-II-p3-r1/packet.html">packet</a>; 5 unit(s) touched</li>
+<li class=sub><code>VOL-II:T2-4/BOD5</code>: “Parameter: Biochemical Oxygen Demand (BOD5) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average”; unit mg/l; issues I-PERMIT, I-READING-T24, I-VOL-II-COMPLIANCE-POINT</li>
+<li class=sub><code>VOL-II:T2-4/COD</code>: “Parameter: Chemical Oxygen Demand (COD) / Unit: mg/l / Limit: 50 / Basis of assessment: 30-day rolling average”; unit mg/l; issues I-PERMIT, I-READING-T24, I-VOL-II-COMPLIANCE-POINT</li>
+<li class=sub><code>VOL-II:T2-4/TSS</code>: “Parameter: Total Suspended Solids (TSS) / Unit: mg/l / Limit: 10 / Basis of assessment: 30-day rolling average”; unit mg/l; issues I-PERMIT, I-READING-T24, I-VOL-II-COMPLIANCE-POINT</li>
+<li class=sub><code>VOL-II:T2-4/TN</code>: “Parameter: Total Nitrogen (TN) / Unit: mg/l / Limit: 5 / Basis of assessment: 30-day rolling average”; unit mg/l; issues I-PERMIT, I-READING-T24, I-VOL-II-COMPLIANCE-POINT</li>
+<li class=sub><code>VOL-II:T2-4/TP</code>: “Parameter: Total Phosphorus (TP) / Unit: mg/l / Limit: 1 / Basis of assessment: 30-day rolling average”; unit mg/l; issues I-PERMIT, I-READING-T24, I-VOL-II-COMPLIANCE-POINT</li>
+<li>VOL-IV-p6-r1 (VOL-IV p6; reading approved): <a href="../candidate/build/review/VOL-IV-p6-r1/packet.html">packet</a>; not touched by this addendum</li>
+</ul>
+<h2>Timings (wall clock per step)</h2>
+<table>
+<tr><th>Step</th><th>Seconds</th><th>Status</th></tr>
+<tr><td>ingest</td><td>9.6</td><td>done</td></tr>
+<tr><td>readings</td><td>0.0</td><td>done</td></tr>
+<tr><td>analysis</td><td>565.8</td><td>done</td></tr>
+<tr><td>validation</td><td>3.0</td><td>done</td></tr>
+<tr><td>downstream</td><td>3475.2</td><td>done</td></tr>
+<tr><td>downstream_validation</td><td>0.4</td><td>done</td></tr>
+<tr><td>critic</td><td>159.0</td><td>done</td></tr>
+<tr><td>promotion</td><td>8.7</td><td>done</td></tr>
+<tr><td>pin</td><td>0.6</td><td>done</td></tr>
+<tr><td>check_register</td><td>2.1</td><td>done</td></tr>
+<tr><td>outputs</td><td>10.7</td><td>done</td></tr>
+<tr><td>diff</td><td>1.9</td><td>done</td></tr>
+<tr><td>review</td><td>0.0</td><td>running</td></tr>
+<tr><td><strong>total</strong></td><td><strong>4237.0</strong> (70.6 min)</td><td>target 30 min from the PDF to candidate outputs and this packet, human review excluded</td></tr>
+</table>
+<h2>First: unresolved provisions and escalations</h2>
+<p>5 of 19 provisions are not applied or settled by a promoted item (each is <code>unresolved</code> in the candidate op file with the reason); 5 escalation(s).</p>
+<ul>
+<li>states (session 14: kept distinct): applied 10, no effect 4, partly applied 2, unresolved but accounted for 3, unaccounted 0; approved by a person: none (only a person's recorded decision approves; see Human approval above)</li>
+</ul>
+<ul>
+<li><strong>ESCALATED ADD-03/2.2</strong> (ADD-03:2.2): software limitation: ADD-03:2.2 states 'Every period calculated by reference to the Proposal Due Date is adjusted accordingly.' The amendment engine rejected annotate targets VOL-I:5.2, VOL-I:6.3, VOL-I:7.1 and VOL-I:8.5#fn12 with C22 'not cited' because this provision identifies the affected perio…</li>
+<li class=sub>unsupported: Applying a collectively scoped period adjustment to evidenced PDD-dependent units without explicit clause citations: simulate_amendment C22 cannot represent this targeting. The listed follow-on work must remain available for human review and the date/register/programme phases.</li>
+<li class=sub>evidence: ADD-03:2.2 p1: “Every period calculated by reference to the Proposal Due Date is adjusted accordingly.”; VOL-I:2.6 p2: “Proposal Due Date means the date and time stated in Clause 6.1, as the same may be amended by Addendum.”; VOL-I:5.2 p3: “Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be a…”; VOL-I:6.3 p3: “Envelope A shall be accompanied by a Bid Bond which shall remain valid for one hundred and eighty (180) days from the Proposal Due Date and shall be extended o…”; VOL-I:7.1 p4: “Each Proposal shall remain open for acceptance for one hundred and fifty (150) days from the Proposal Due Date.”; VOL-I:8.5#fn12 p4: “For the avoidance of doubt, a Bidder that does not evidence at least two (2) reference sewage treatment plants, each of nominal capacity not less than 80,000 m…”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>ESCALATED ADD-03/3.1(a)-escalation</strong> (ADD-03:3.1): software limitation: the provision states ‘Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.’ The form is supplied as group ADD-02:F4-G; set_status on that group fails C22 target existence, and set_status on its heading fails C22 citation. Document co…</li>
+<li class=sub>unsupported: Group withdrawal with set_status and citation of the group's member units. The form's heading, table headings, undertaking rows (including Item, Undertaking and Confirmed cells) and signature field are all included in the evidence. Do not substitute revocation of the whole Section 7. Follow-on: ins…</li>
+<li class=sub>evidence: ADD-03:3.1 p1: “Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7…”; ADD-02:H:F4-G p3: “FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING”; ADD-02:F4-G/T1 p3: “Item | Undertaking | Confirmed”; ADD-02:F4-G/T1/1 p3: “Item: 1 | Undertaking: The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2. | Confirmed…”; ADD-02:F4-G/T1/2 p3: “Item: 2 | Undertaking: An information security management system covering the operational technology environment will be implemented before commissioning. | Co…”; ADD-02:F4-G/T1/3 p3: “Item: 3 | Undertaking: A named accountable security officer will be appointed for the concession period. | Confirmed: Yes / No”; ADD-02:F4-G/T1/4 p3: “Item: 4 | Undertaking: Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection. | Confirmed: Yes…”; ADD-02:F4-G/T1/5 p3: “Item: 5 | Undertaking: An independent penetration test of the operational technology environment will be carried out annually and the report provided to the Au…”; ADD-02:F4-G/T1/6 p3: “Item: 6 | Undertaking: Remote access to the control system will require multi-factor authentication and will be logged. | Confirmed: Yes / No”; ADD-02:F4-G/para1 p3: “Signed for and on behalf of the Bidder: _______________________ Name: _______________________ Date: ____________”; ADD-02:7.1 p3: “A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e).”; VOL-I:9.1(e)+ADD-02 p3: “FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING”</li>
+<li class=sub>affected scope: units ADD-02:7.2, ADD-02:F4-G/T1, ADD-02:F4-G/T1/1, ADD-02:F4-G/T1/2, ADD-02:F4-G/T1/3, ADD-02:F4-G/T1/4, ADD-02:F4-G/T1/5, ADD-02:F4-G/T1/6, ADD-02:F4-G/para1, ADD-02:H:F4-G, ADD-02:H:S7; rows ADD-02-7.2-01, ADD-02-F4G-01, ADD-02-F4G-02, ADD-02-F4G-03, ADD-02-F4G-04, ADD-02-F4G-05, ADD-02-F4G-06, ADD-02-F4G-07; activities form-4g-review, form-4g-sign; clarifications none</li>
+<li><strong>ESCALATED ADD-03/4.1(b)-escalation</strong> (ADD-03:4.1): software limitation: The printed replacement ‘120,000 m³/day’ to ‘150,000 m³/day’ expressly names Table 2-6 row 2-6.1. set_value of its Value cell to the printed numeric component 150,000 fails C22 because the engine recognises only VOL-II:2.1 as cited. Document control owns correction of the citat…</li>
+<li class=sub>unsupported: Recognition of the explicitly printed Table 2-6 row citation. Keep row 2-6.1 Value and row 2-6.2 Value distinct, with their respective Unit cells. No substitute target or neighbouring cell change is proposed.</li>
+<li class=sub>evidence: ADD-03:4.1 p1: “In Volume II Clause 2.1 and in Table 2-6 row 2-6.1, ‘120,000 m³/day’ is deleted and ‘150,000 m³/day’ is substituted. The peak hourly flow in Table 2-6 row 2-6.…”; VOL-II:T2-6/2-6.1 p3: “Ref: 2-6.1 | Criterion: Average daily flow | Value: 120,000 | Unit: m³/day”; VOL-II:T2-6/2-6.1 p3: “Average daily flow”; VOL-II:T2-6/2-6.1 p3: “2-6.1”; VOL-II:T2-6/2-6.1 p3: “m³/day”; VOL-II:T2-6/2-6.1 p3: “120,000”</li>
+<li class=sub>affected scope: units VOL-II:2.1; rows VOL-II-2.1-01; activities technical-proposal; clarifications none</li>
+<li><strong>ESCALATED ADD-03/4.1(c)-escalation</strong> (ADD-03:4.1): software limitation: The provision expressly states ‘The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.’ An annotate/confirms operation on that row fails C22 because the engine does not recognise its citation. Document control owns correction of the citation mapping; Technical reviews the re…</li>
+<li class=sub>unsupported: Recognition of the explicitly printed Table 2-6 row citation. Keep row 2-6.1 Value and row 2-6.2 Value distinct, with their respective Unit cells. No substitute target or neighbouring cell change is proposed.</li>
+<li class=sub>evidence: ADD-03:4.1 p1: “In Volume II Clause 2.1 and in Table 2-6 row 2-6.1, ‘120,000 m³/day’ is deleted and ‘150,000 m³/day’ is substituted. The peak hourly flow in Table 2-6 row 2-6.…”; VOL-II:T2-6/2-6.2 p3: “Ref: 2-6.2 | Criterion: Peak hourly flow (design) | Value: 7,500 | Unit: m³/h”; VOL-II:T2-6/2-6.2 p3: “Peak hourly flow (design)”; VOL-II:T2-6/2-6.2 p3: “2-6.2”; VOL-II:T2-6/2-6.2 p3: “m³/h”; VOL-II:T2-6/2-6.2 p3: “7,500”</li>
+<li class=sub>affected scope: units VOL-II:2.1; rows VOL-II-2.1-01; activities technical-proposal; clarifications none</li>
+<li><strong>ESCALATED ADD-03/Q17-coverage</strong> (ADD-03:Q17): software limitation: validate_proposal accepts the well-formed row_new ADD-03/Q17, verifies its quotation and reports it ready with interpretation_pending, but still lists ADD-03:Q17 as UNACCOUNTED in amendment coverage. The source obligation is "Bidders shall price the Project as amended by this A…</li>
+<li class=sub>unsupported: Accounting for a free-standing addendum obligation through row_new alone in the amendment-coverage result. Retain the accompanying row proposal for human review; do not substitute a guessed volume amendment or no_effect disposition.</li>
+<li class=sub>evidence: ADD-03:Q17 p2: “No: 17 | Bidder question: Will the Availability Payment be adjusted for the increased capacity? | Authority response: Bidders shall price the Project as amende…”</li>
+<li class=sub>affected scope: units none; rows none; activities none; clarifications none</li>
+<li><strong>UNRESOLVED ADD-03:4.3</strong> (clause, p1): unresolved (accounted for by the promoted <code>unresolved</code> disposition ADD-03/4.3-unresolved; nothing applied): insufficient evidence: ADD-03:4.3 states ‘Volume I Clause 1.3 is amended correspondingly.’ After reading that provision, ADD-03:4.1 and VOL-I:1.3 at ADD-02, no exact replacement text is supplied for ‘one hundred and twenty thousand cubic metres per day (120,000 m³/day)’. The target is identified, but a literal replacement of the complete worded and numeric phrase cannot be quoted from this provis…</li>
+</ul>
+<h2>Earlier answers to re-read against the new text (never revoked; a person decides)</h2>
+<ul>
+<li><code>ADD-01:Q1</code> (ADD-01): relies on VOL-II:3.1, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-T24-PROCESS-DESIGN; relies on VOL-II:3.1, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-AI-007; to be re-read against the new text of VOL-II:T2-4/TP (ADD-03/7.1); a person decides whether the answer still holds (downstream task <code>reread:ADD-01:Q1</code>)</li>
+<li><code>ADD-01:Q3</code> (ADD-01): cites VOL-I:6.4, changed by ADD-03/5.1; to be re-read against the new text of VOL-I:6.4 (ADD-03/5.1); a person decides whether the answer still holds (downstream task <code>reread:ADD-01:Q3</code>)</li>
+<li><code>ADD-01:Q5</code> (ADD-01): cites VOL-I:8.5#fn12, changed by ADD-03/4.2; to be re-read against the new text of VOL-I:8.5#fn12 (ADD-03/4.2); a person decides whether the answer still holds (downstream task <code>reread:ADD-01:Q5</code>)</li>
+<li><code>ADD-01:Q6</code> (ADD-01): relies on VOL-V:29.3, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-AI-007; to be re-read against the new text of VOL-II:T2-4/TP (ADD-03/7.1); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q7</code> (ADD-02): relies on VOL-I:12.1, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; to be re-read against the new text of VOL-I:11.5+ADD-03 (ADD-03/6.1); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q8</code> (ADD-02): cites VOL-I:6.4, changed by ADD-03/5.1; to be re-read against the new text of VOL-I:6.4 (ADD-03/5.1); a person decides whether the answer still holds (downstream task <code>reread:ADD-02:Q8</code>)</li>
+<li><code>ADD-02:Q11</code> (ADD-02): quotes '120,000 m³/day', a figure ADD-03/4.1(a) replaced; to be re-read against the new text of VOL-II:2.1 (ADD-03/4.1(a)); a person decides whether the answer still holds (downstream task <code>reread:ADD-02:Q11</code>)</li>
+<li><code>ADD-02:Q13</code> (ADD-02): relies on VOL-I:12.2, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; relies on VOL-I:12.2, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; to be re-read against the new text of VOL-I:11.5+ADD-03 (ADD-03/6.1); a person decides whether the answer still holds</li>
+</ul>
+<h2>Derived effects (session 12: pending readings, computed deadlines, conditions, consequences)</h2>
+<h2>Computed deadlines and the Working Days left (PROPOSED; nothing typed)</h2>
+<ul>
+<li>Working Days left from the issue date (2026-11-08) to the PDD (2026-12-10): 24 (the issue date not counted, the PDD counted; Working Days per VOL-I 2.4 (weekend [4, 5] as date.weekday numbers; holidays none declared))</li>
+<li>no 'N days before/after' deadline in the addendum's provisions</li>
+</ul>
+<h2>Conditional impact investigations (CONDITIONAL; never accepted facts)</h2>
+<ul>
+<li><code>impact:ADD-03:4.3</code> conditional on disposition ADD-03:4.3 (unresolved: insufficient evidence: ADD-03:4.3 states ‘Volume I Clause 1.3 is amended correspondingly.’ After reading that provision, ADD-03:4.1 and VOL-I:1.3 at ADD-02, no exact replacement text is supplied for …): investigate the rows, activities and prices that rest on VOL-I:1.3</li>
+<li><code>impact:ADD-03:2.2</code> conditional on disposition ADD-03:2.2 (unresolved: escalated: software limitation: ADD-03:2.2 states 'Every period calculated by reference to the Proposal Due Date is adjusted accordingly.' The amendment engine rejected annotate targets VOL-I:5.2, VO…): investigate the rows, activities and prices that rest on the provision ADD-03:2.2</li>
+<li><code>impact:ADD-03:Q17</code> conditional on disposition ADD-03:Q17 (unresolved: escalated: software limitation: validate_proposal accepts the well-formed row_new ADD-03/Q17, verifies its quotation and reports it ready with interpretation_pending, but still lists ADD-03:Q17 as UN…): investigate the rows, activities and prices that rest on the provision ADD-03:Q17</li>
+</ul>
+<h2>Per provision: source evidence → proposed transition → validation → downstream impact → output difference</h2>
+<h3>ADD-03:cover/para1 (paragraph, p1) — no effect (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “Issued 8 November 2026”</li>
+<li>transition: <code>ADD-03/cover/para1</code> disposition no_effect: “Issued 8 November 2026” identifies the issue date; it contains no amendment or bidder obligation. Retain it as stage-date evidence.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para2 (paragraph, p1) — no effect (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “Tender NUPA/ISTP/2026/014”</li>
+<li>transition: <code>ADD-03/cover/para2</code> disposition no_effect: “Tender NUPA/ISTP/2026/014” identifies the tender; it contains no amendment or bidder obligation.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+</ul>
+<h3>ADD-03:cover/para3 (paragraph, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “This Addendum amends the Proposal Due Date and Bid Bond, withdraws Form 4-G, increases the nominal capacity with a consequential change to the reference project threshold, amends Table 2-4, adds a new Clause 11.6, and responds to clarification requests 15 to 18. This Addendum forms part of the RFP Documents and takes precedence in accordance with Volume I C…”</li>
+<li>transition: <code>ADD-03/cover/para3</code> amendment_op annotate ADD-03:cover/para3 effect adds_obligation</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/cover/para3/acknowledgement-row</code> row_new {"row": {"id": "ADD-03-cover-acknowledgement-01", "group": "Addendum acknowledgement", "scope": ["bid"], "requirement": "Bidders shall acknowledge receipt in Form 4-A.", "units": ["ADD-03:cover/para3…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>downstream proposal <code>ADD-03-D004-ACK-ROW</code> row_new (c46:ADD-03/cover/para3): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-ACK-FOLLOW</code> dependency (c46:ADD-03/cover/para3): <strong>insufficient_evidence</strong> — held back: endpoints not promotable: ['form-4a']</li>
+<li class=sub>downstream proposal <code>ADD-03-D004-FORM-ISSUE</code> issue (c46:ADD-03/cover/para3): <strong>insufficient_evidence — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: NEW ADD-03-cover-01; A5 REWORK form-4a; A5 REWORK form-4a-prep</li>
+</ul>
+<h3>ADD-03:1.1 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “This Addendum takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.”</li>
+<li>transition: <code>ADD-03/1.1</code> amendment_op annotate VOL-I:3.2 effect confirms</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING — applied rule: ADD-03 1.1 provides: 'This Addendum takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.' (applied, not decided); a person confirms the application</strong></li>
+</ul>
+<h3>ADD-03:2.1 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.”</li>
+<li>transition: <code>ADD-03/2.1(a)</code> amendment_op replace_text VOL-I:6.1 “Thursday 26 November 2026” → “Thursday 10 December 2026”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li>transition: <code>ADD-03/2.1(b)</code> amendment_op annotate VOL-I:6.1 effect confirms</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li>transition: <code>ADD-03/2.1/form-date-review</code> issue {"owner": "Document control", "short": "Revised Form 4-A prints an earlier due date", "theme": "Form and clause discrepancy", "text": "ambiguous: ADD-03:2.1 substitutes 'Thursday 10 December 2026' in…</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>downstream: units changed VOL-I:6.1; rows citing them VOL-I-6.1-01</li>
+<li class=sub>downstream proposal <code>D-ADD-03-OMISSION</code> row_reading (row:VOL-I-3.4-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li class=sub>downstream proposal <code>D-ADD-03-CLARIFICATION</code> row_reading (row:VOL-I-5.2-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: the relative deadline rule and consequence are supported, but no calculate(deadline) result is printed to substantiate the claimed calculation confirmation. VOL-I:2.4 supports excluding the stated date; provide the calculation record or attribute that reading directly to the …</li>
+<li class=sub>downstream proposal <code>D-ADD-03-DELIVERY</code> row_reading (row:VOL-I-6.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: the amended deadline, retained time and address reference, and rejection consequence are supported. However, no activity records or supporting clauses establish the named seal-and-mark, copies, assemble-envelope-a and assemble-envelope-b activities or their dependencies under…</li>
+<li class=sub>downstream proposal <code>D-ADD-03-LINK-DELIVERY</code> dependency (row:VOL-I-6.1-01): <strong>insufficient_evidence</strong> — held back: endpoints not promotable: ['copies', 'assemble-envelope-b']</li>
+<li class=sub>downstream proposal <code>D003-READ-3</code> row_reading (row:VOL-I-6.7-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li class=sub>downstream proposal <code>D003-READ-5</code> row_reading (row:VOL-I-8.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D003-LINK-3</code> dependency (row:VOL-I-6.7-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D003-LINK-5</code> dependency (row:VOL-I-8.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>P-ADD03-D006-DELIVER</code> activity (act:deliver): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS009-DATE-PROPAGATION</code> escalation (impact:2. AMENDMENT TO THE PROPOSAL DUE DATE): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FORM-DATE</code> issue (impact:2. AMENDMENT TO THE PROPOSAL DUE DATE): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-6.1-01; CHANGED VOL-I-5.2-01; CHANGED VOL-I-8.3-01; CHANGED VOL-I-3.4-01; CHANGED VOL-I-6.7-01; A5 REWORK assemble-envelope-a; A5 REWORK assemble-envelope-b; A5 REWORK clarifications; A5 REWORK copies; A5 REWORK deliver; A5 REWORK iso-copy; A5 REWORK seal-and-mark; A5 REVIEW (proposed relationship) assemble-envelope-a; A5 REVIEW (proposed relationship) assemble-envelope-b; A5 REVIEW (proposed relationship) copies; A5 REVIEW (proposed relationship) deliver; A5 REVIEW (proposed relationship) seal-and-mark</li>
+</ul>
+<h3>ADD-03:2.2 (clause, p1) — UNRESOLVED (accounted for, not applied)</h3>
+<ul>
+<li>source: “Every period calculated by reference to the Proposal Due Date is adjusted accordingly.”</li>
+<li>transition: <code>ADD-03/2.2</code> escalation why: software limitation: ADD-03:2.2 states 'Every period calculated by reference to the Proposal Due Date is adjusted accordingly.' The amendment engine rejected annotate targets VOL-I:5.2, VOL-I:6.3, VO…</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li>transition: <code>ADD-03/2.2/propagation-review</code> issue {"owner": "Bid management", "short": "Propagate the amended Proposal Due Date", "theme": "Date rules and bid programme", "text": "Review and carry forward the instruction 'Every period calculated by …</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: insufficient evidence: the printed records support the listed PDD-linked requirements, but contain no activities or programme simulation results supporting the specifically named A5 activity chain.</li>
+<li class=sub>concern: insufficient evidence: no printed controller record supports the rationale's claim that the engine cannot annotate this scope. The claimed software limitation cannot be verified.</li>
+<li class=sub>concern: The controller's keyword flags do not reflect the issue's meaning: it expressly leaves questions unanswered and unwithdrawn.</li>
+<li class=sub>downstream proposal <code>D008-PDD-ESC</code> escalation (esc:ADD-03:2.2): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-DATE-PROPAGATION</code> escalation (impact:2. AMENDMENT TO THE PROPOSAL DUE DATE): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FORM-DATE</code> issue (impact:2. AMENDMENT TO THE PROPOSAL DUE DATE): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+</ul>
+<h3>ADD-03:3.1 (clause, p1) — PARTLY APPLIED (an escalated sibling stays unresolved)</h3>
+<ul>
+<li>source: “Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.”</li>
+<li>transition: <code>ADD-03/3.1(b)</code> amendment_op set_status ADD-02:7.2</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because removal; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/3.1(a)-escalation</code> escalation why: software limitation: the provision states ‘Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.’ The form is supplied as group ADD-02:F4-G; set_status on …</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is a group; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: The withdrawal and identified form members are supported. However, the asserted C22 failures are not printed in the controller records; those records verify only payload structure and quotations. The claimed software limitation cannot be independently verified without the failed simulation records.</li>
+<li>transition: <code>ADD-03/3.1-nonsubmission-row</code> row_new {"row": {"id": "ADD-03-3.1-01", "group": "ADD-03 Section 3", "scope": ["bid"], "requirement": "Bidders shall disregard it and shall not submit it.", "units": ["ADD-03:3.1"], "discipline": "Bid manage…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/3.1-list-review</code> issue {"owner": "Document control", "short": "Carry form withdrawal into the inserted Envelope A entry", "text": "ADD-03:3.1 states: Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2…</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>downstream: units changed ADD-02:7.2; rows citing them ADD-02-7.2-01</li>
+<li class=sub>downstream proposal <code>DS-F4G-SUBMISSION-RECONCILIATION</code> issue (row:ADD-02-7.2-01): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-F4G-01-WITHDRAWAL</code> issue (row:ADD-02-F4G-01): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-F4G-02-WITHDRAWAL</code> issue (row:ADD-02-F4G-02): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-F4G-03-WITHDRAWAL</code> issue (row:ADD-02-F4G-03): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-F4G-04-WITHDRAWAL</code> issue (row:ADD-02-F4G-04): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-F4G-05-WITHDRAWAL</code> issue (row:ADD-02-F4G-05): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D-ADD-02-F4G-06-WITHDRAWAL</code> issue (row:ADD-02-F4G-06): <strong>insufficient_evidence — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D-ADD-02-F4G-07-WITHDRAWAL</code> issue (row:ADD-02-F4G-07): <strong>insufficient_evidence — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-3.1-01-proposal</code> row_new (ana:ADD-03/3.1-nonsubmission-row): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>P-ADD03-D006-ENVELOPE-A-GAP</code> escalation (act:assemble-envelope-a): <strong>conflicting</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting</li>
+<li class=sub>concern: insufficient evidence: the request does not print the promoted operations or assembly template. The assertions that an operation only revokes ADD-02:7.2 and that assemble-envelope-a still includes Form 4-G cannot be verified. The printed ADD-02 register establishes the previous-stage contents, not …</li>
+<li class=sub>concern: ADD-03:3.1 expressly withdraws Form 4-G and prohibits submission. Any uncertainty should concern implementation of that instruction, without implying that the withdrawal itself lacks evidence.</li>
+<li class=sub>concern: The item declares I-VOL-I-ENV-A-PRICES as a conflict without showing how Form 4-G withdrawal affects that separate issue.</li>
+<li class=sub>downstream proposal <code>D008-F4G-ESC</code> escalation (esc:ADD-03:3.1): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>D008-F4G-HANDLING</code> escalation (esc:ADD-03:3.1): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-F4G-WITHDRAWAL</code> escalation (impact:3. WITHDRAWAL OF FORM 4-G): <strong>escalated</strong></li>
+<li class=sub>output difference: NEW ADD-03-3.1-01; OUT ADD-02-7.2-01</li>
+</ul>
+<h3>ADD-03:3.2 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technical Proposal narrative.”</li>
+<li>transition: <code>ADD-03/3.2(a)</code> amendment_op annotate VOL-II:S6 effect confirms</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is a group; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: The rationale states that VOL-II:S6 contains only its heading. Annotating that group does not establish that the confirmation reaches substantive clauses VOL-II:6.1–6.3. Explicitly target those clauses or provide validation showing that the group annotation covers them; the successful dry run does …</li>
+<li>transition: <code>ADD-03/3.2-narrative-row</code> row_new {"row": {"id": "ADD-03-3.2-01", "group": "ADD-03 Section 3", "scope": ["bid"], "requirement": "The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technica…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>downstream proposal <code>ADD-03-3.2-01-proposal</code> row_new (ana:ADD-03/3.2-narrative-row): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-3.2-programme</code> dependency (ana:ADD-03/3.2-narrative-row): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: NEW ADD-03-3.2-01; A5 REWORK technical-proposal; A5 REVIEW (proposed relationship) technical-proposal</li>
+</ul>
+<h3>ADD-03:4.1 (clause, p1) — PARTLY APPLIED (an escalated sibling stays unresolved)</h3>
+<ul>
+<li>source: “In Volume II Clause 2.1 and in Table 2-6 row 2-6.1, ‘120,000 m³/day’ is deleted and ‘150,000 m³/day’ is substituted. The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.”</li>
+<li>transition: <code>ADD-03/4.1(a)</code> amendment_op replace_text VOL-II:2.1 “120,000 m³/day” → “150,000 m³/day”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li>transition: <code>ADD-03/4.1(b)-escalation</code> escalation why: software limitation: The printed replacement ‘120,000 m³/day’ to ‘150,000 m³/day’ expressly names Table 2-6 row 2-6.1. set_value of its Value cell to the printed numeric component 150,000 fails C22 b…</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: The provision expressly identifies row 2-6.1 and supports changing only its Value cell to 150,000 while retaining m³/day. However, no failed simulation or citation-mapping record is printed to substantiate the asserted C22 software limitation; payload validation alone does not verify it.</li>
+<li>transition: <code>ADD-03/4.1(c)-escalation</code> escalation why: software limitation: The provision expressly states ‘The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.’ An annotate/confirms operation on that row fails C22 because the engine does not recogn…</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: The provision expressly confirms that row 2-6.2 is unchanged. However, no failed simulation or citation-mapping record is printed to substantiate the asserted C22 software limitation; payload validation alone does not verify it.</li>
+<li>transition: <code>ADD-03/4.1-flow-review</code> issue {"owner": "Technical", "short": "Re-read the earlier flow answer against the amended daily flow", "text": "ADD-03:4.1 states: In Volume II Clause 2.1 and in Table 2-6 row 2-6.1, ‘120,000 m³/day’ is d…</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: Correct the rationale's attribution: the former daily figure appears in the bidder question, not the Authority response. The changed premise nevertheless supports the proposed human review without establishing a conflict or withdrawing the earlier answer.</li>
+<li class=sub>downstream: units changed VOL-II:2.1; rows citing them VOL-II-2.1-01</li>
+<li class=sub>downstream proposal <code>ADD-03-D004-CAPACITY</code> row_reading (row:VOL-II-2.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-CAPACITY-FOLLOW</code> dependency (row:VOL-II-2.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D008-FLOWS-ESC</code> escalation (esc:ADD-03:4.1): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-CAPACITY-WORDING</code> escalation (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FLOW-TARGETS</code> escalation (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FLOW-ANSWER</code> issue (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-REREAD-ADD02-Q11</code> issue (reread:ADD-02:Q11): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: CHANGED VOL-II-2.1-01; A5 REWORK technical-proposal</li>
+</ul>
+<h3>ADD-03:4.2 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “Consequentially, footnote 12 to Volume I Clause 8.5 is amended by deleting ‘80,000 m³/day’ and substituting ‘100,000 m³/day’. The requirement for two (2) reference plants and the ten (10) year look-back are unchanged.”</li>
+<li>transition: <code>ADD-03/4.2</code> amendment_op replace_text VOL-I:8.5#fn12 “80,000 m³/day” → “100,000 m³/day”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-I:8.5#fn12; rows citing them VOL-I-8.5-01</li>
+<li class=sub>downstream proposal <code>D003-READ-6</code> row_reading (row:VOL-I-8.5-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li class=sub>downstream proposal <code>D003-LINK-6</code> dependency (row:VOL-I-8.5-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D-ADD03-D007-REFERENCES</code> activity (act:references): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS-REREAD-ADD01-Q5</code> issue (reread:ADD-01:Q5): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-8.5-01; A5 REWORK references</li>
+</ul>
+<h3>ADD-03:4.3 (clause, p1) — UNRESOLVED (accounted for, not applied)</h3>
+<ul>
+<li>source: “Volume I Clause 1.3 is amended correspondingly.”</li>
+<li>transition: <code>ADD-03/4.3-unresolved</code> disposition unresolved: insufficient evidence: ADD-03:4.3 states ‘Volume I Clause 1.3 is amended correspondingly.’ After reading that provision, ADD-03:4.1 and VOL-I:1.3 at ADD-02, no…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li>transition: <code>ADD-03/4.3-wording-question</code> clarification {"gap": "insufficient evidence: ADD-03:4.3 states ‘Volume I Clause 1.3 is amended correspondingly.’ After reading that provision, ADD-03:4.1 and VOL-I:1.3 at ADD-02, no exact replacement text is supp…</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D008-CORRESPOND-ESC</code> escalation (esc:ADD-03:4.3): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-CAPACITY-WORDING</code> escalation (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FLOW-TARGETS</code> escalation (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS009-FLOW-ANSWER</code> issue (impact:4. AMENDMENT TO NOMINAL CAPACITY): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+</ul>
+<h3>ADD-03:5.1 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “In Volume I Clause 6.4, ‘SAR 4,500,000 (four million five hundred thousand Saudi Riyals)’ is deleted and ‘SAR 5,600,000 (five million six hundred thousand Saudi Riyals)’ is substituted.”</li>
+<li>transition: <code>ADD-03/5.1</code> amendment_op replace_text VOL-I:6.4 “SAR 4,500,000 (four million five hundred thousand Saudi Riyals)” → “SAR 5,600,000 (five million six hundred thousand Saudi Riyals)”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-I:6.4; rows citing them VOL-I-6.4-01, VOL-I-6.4-02</li>
+<li class=sub>downstream proposal <code>D003-READ-1</code> row_reading (row:VOL-I-6.4-01): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D003-READ-2</code> row_reading (row:VOL-I-6.4-02): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D003-LINK-1</code> dependency (row:VOL-I-6.4-01): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D-ADD03-D007-BOND-APPROVAL</code> activity (act:bond-approval): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D-ADD03-D007-BOND-LABEL</code> escalation (act:bond-issue): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>DS-REREAD-ADD01-Q3</code> issue (reread:ADD-01:Q3): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS-REREAD-ADD02-Q8</code> issue (reread:ADD-02:Q8): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-6.4-01; CHANGED VOL-I-6.4-02; A5 REWORK bond-approval; A5 REWORK bond-issue</li>
+</ul>
+<h3>ADD-03:5.2 (clause, p1) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “In Volume I Clause 6.3, ‘one hundred and eighty (180) days’ is deleted and ‘two hundred and ten (210) days’ is substituted. The Proposal validity period in Clause 7.1 is unchanged.”</li>
+<li>transition: <code>ADD-03/5.2(a)</code> amendment_op replace_text VOL-I:6.3 “one hundred and eighty (180) days” → “two hundred and ten (210) days”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li>transition: <code>ADD-03/5.2(b)</code> amendment_op annotate VOL-I:7.1 effect confirms</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-I:6.3; rows citing them VOL-I-6.3-01</li>
+<li class=sub>downstream proposal <code>D-ADD-03-BOND</code> row_reading (row:VOL-I-6.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D-ADD-03-BOND-COUNTING</code> issue (row:VOL-I-6.3-01): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>D-ADD-03-BOND-RULE-GAP</code> escalation (row:VOL-I-6.3-01): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>D-ADD-03-LINK-BOND</code> dependency (row:VOL-I-6.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D003-READ-4</code> row_reading (row:VOL-I-7.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>D003-LINK-4</code> dependency (row:VOL-I-7.1-01): <strong>insufficient_evidence</strong> — held back: endpoints not promotable: ['form-4a']</li>
+<li class=sub>downstream proposal <code>D-ADD03-D007-BOND-ISSUE</code> activity (act:bond-issue): <strong>interpretation_pending</strong></li>
+<li class=sub>output difference: CHANGED VOL-I-6.3-01; CHANGED VOL-I-7.1-01; A5 REWORK bond-approval; A5 REWORK bond-issue; A5 REWORK form-4a; A5 REWORK form-4a-prep</li>
+</ul>
+<h3>ADD-03:6.1 (clause, p1,2) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “A new Clause 11.6 is added to Volume I: ‘11.6 Where, on completion of the combined evaluation, two or more Proposals are within two per cent (2%) of one another, the Authority may apply such further criteria as it considers appropriate to determine the Preferred Bidder, and its determination shall be final.’”</li>
+<li>transition: <code>ADD-03/6.1</code> amendment_op insert_unit VOL-I:11.5 “Where, on completion of the combined evaluation, two or more Proposals are within two per cent (2%) of one another, the…”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/6.1/A1</code> row_new {"row": {"id": "VOL-I-11.6-01", "group": "Evaluation", "scope": ["bid"], "requirement": "Where, on completion of the combined evaluation, two or more Proposals are within two per cent (2%) of one ano…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/6.1/threshold-issue</code> issue {"text": "ambiguous: “within two per cent (2%) of one another” does not state whether the comparison is a relative percentage difference between combined scores or an absolute difference in percentag…</li>
+<li class=sub>validation: <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>downstream: units changed VOL-I:11.5+ADD-03; rows citing them none</li>
+<li class=sub>downstream proposal <code>ADD-03-D004-EVAL-ROW</code> row_new (c46:ADD-03/6.1): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-EVAL-ISSUE</code> issue (c46:ADD-03/6.1): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-EVAL-FOLLOW</code> dependency (c46:ADD-03/6.1): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS009-EVALUATION-BASIS</code> issue (impact:6. NEW VOLUME I CLAUSE 11.6): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: NEW ADD-03-6.1-01</li>
+</ul>
+<h3>ADD-03:7.1 (clause, p2) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “In Volume II Table 2-4, the limit for Total Phosphorus (TP) is amended from the value shown to 0.5 mg/l, assessed on the same basis.”</li>
+<li>transition: <code>ADD-03/7.1</code> amendment_op set_value VOL-II:T2-4/TP “” → “0.5”</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream: units changed VOL-II:T2-4/TP; rows citing them VOL-II-T2-4-TP, VOL-V-29.3-01</li>
+<li class=sub>downstream proposal <code>ADD-03-D004-TP</code> row_reading (row:VOL-II-T2-4-TP): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-RAMP</code> row_reading (row:VOL-V-29.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-TP-FOLLOW</code> dependency (row:VOL-II-T2-4-TP): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-RAMP-FOLLOW</code> dependency (row:VOL-V-29.3-01): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>DS009-Q1-REREAD</code> issue (reread:ADD-01:Q1): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>output difference: CHANGED VOL-II-T2-4-TP; CHANGED VOL-V-29.3-01; A5 REWORK deviations-review; A5 REWORK form-4e; A5 REWORK technical-proposal; A5 REVIEW (confirmed dependency) deviations-review; A5 REVIEW (proposed relationship) deviations-review; A5 REVIEW (confirmed dependency) form-4e; A5 REVIEW (proposed relationship) form-4e</li>
+</ul>
+<h3>ADD-03:Q15 (table_row, p2) — applied (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “No: 15 | Bidder question: Following the capacity increase, will the Authority extend the construction period in Volume V Clause 12.1? | Authority response: No. The period of thirty-six (36) months is unchanged.”</li>
+<li>transition: <code>ADD-03/Q15</code> amendment_op annotate VOL-V:12.1 effect confirms</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-D004-PCOD</code> row_reading (row:VOL-V-12.1-01): <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: The proposed review against amended reliability-run requirements has no supporting provision in the supplied evidence. Q15 supports the unchanged construction period and references a capacity increase only.</li>
+<li class=sub>concern: insufficient evidence: No crop or image-inspection record is supplied for table row ADD-03:Q15, so the required image check cannot be verified.</li>
+<li class=sub>concern: The obligation, Notice to Proceed anchor, unchanged month-based date rule and contractual delay-damages consequence are supported. However, the rationale's claim that the reading became stale is not established by the supplied records; the ADD-02 record has no stale entries, and no later staleness …</li>
+<li class=sub>output difference: CHANGED VOL-V-12.1-01; A5 REWORK deviations-review; A5 REWORK form-4e; A5 REVIEW (proposed relationship) deviations-review; A5 REVIEW (proposed relationship) form-4e</li>
+</ul>
+<h3>ADD-03:Q16 (table_row, p2) — no effect (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “No: 16 | Bidder question: Does the increase in capacity change the design influent characteristics in Table 2-2? | Authority response: No. Table 2-2 is unchanged.”</li>
+<li>transition: <code>ADD-03/Q16</code> disposition no_effect: The response states "No. Table 2-2 is unchanged." It prints no replacement, changed value or added obligation. Propose no_effect for human confirmation.</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+</ul>
+<h3>ADD-03:Q17 (table_row, p2) — UNRESOLVED (accounted for, not applied)</h3>
+<ul>
+<li>source: “No: 17 | Bidder question: Will the Availability Payment be adjusted for the increased capacity? | Authority response: Bidders shall price the Project as amended by this Addendum.”</li>
+<li>transition: <code>ADD-03/Q17</code> row_new {"row": {"id": "ADD03-Q17-PRICING", "group": "Commercial proposal", "scope": ["bid"], "requirement": "Bidders shall price the Project as amended by this Addendum.", "units": ["ADD-03:Q17"], "discipli…</li>
+<li class=sub>validation: <strong>interpretation_pending</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li>transition: <code>ADD-03/Q17-coverage</code> escalation why: software limitation: validate_proposal accepts the well-formed row_new ADD-03/Q17, verifies its quotation and reports it ready with interpretation_pending, but still lists ADD-03:Q17 as UNACCOUNTED i…</li>
+<li class=sub>validation: <strong>escalated</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+<li class=sub>concern: The printed controller records verify the row payload and quotation, but do not show Q17 reported as UNACCOUNTED or the claimed amendment-engine restriction. The asserted software limitation cannot be verified without those validation results; the proposer's rationale alone does not establish it.</li>
+<li class=sub>downstream proposal <code>ADD-03-Q17-01-proposal</code> row_new (ana:ADD-03/Q17): <strong>interpretation_pending</strong></li>
+<li class=sub>downstream proposal <code>ADD-03-Q17-programme</code> dependency (ana:ADD-03/Q17): <strong>insufficient_evidence</strong> — held back: endpoints not promotable: ['assemble-envelope-b']</li>
+<li class=sub>downstream proposal <code>D008-Q17-ESC</code> escalation (esc:ADD-03:Q17): <strong>escalated</strong></li>
+<li class=sub>downstream proposal <code>D008-Q17-QUESTION</code> issue (esc:ADD-03:Q17): <strong>interpretation_pending — HUMAN DECISION PENDING</strong></li>
+<li class=sub>downstream proposal <code>DS009-Q17-COVERAGE</code> escalation (impact:8. RESPONSES TO CLARIFICATION REQUESTS 15 TO 18): <strong>escalated</strong></li>
+<li class=sub>output difference: NEW ADD-03-Q17-01; A5 REWORK fin-model-build; A5 REWORK fin-model-freeze; A5 REWORK form-4f</li>
+</ul>
+<h3>ADD-03:Q18 (table_row, p2) — no effect (PROPOSED; not approved)</h3>
+<ul>
+<li>source: “No: 18 | Bidder question: Please confirm the Proposal validity period following this Addendum. | Authority response: One hundred and fifty (150) days from the Proposal Due Date as amended.”</li>
+<li>transition: <code>ADD-03/Q18</code> disposition no_effect: The question requests confirmation and the response states "One hundred and fifty (150) days from the Proposal Due Date as amended." VOL-I:7.1 at ADD-02 alread…</li>
+<li class=sub>validation: <strong>evidence_verified</strong></li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites; model codex exec (configured gpt-6-astra; runtime identity recorded separately)</li>
+</ul>
+<h2>Downstream proposals (validated in the candidate)</h2>
+<table>
+<tr><th>Item</th><th>Type</th><th>Task</th><th>Status</th><th>First failed check, or what a person confirms</th></tr>
+<tr><td>DS-F4G-SUBMISSION-RECONCILIATION</td><td>issue</td><td>row:ADD-02-7.2-01</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words withdraws a question ('…</td></tr>
+<tr><td>DS-F4G-01-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-01</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+<tr><td>DS-F4G-02-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-02</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+<tr><td>DS-F4G-03-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-03</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+<tr><td>DS-F4G-04-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-04</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words withdraws a question ('…</td></tr>
+<tr><td>DS-F4G-05-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-05</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+<tr><td>D-ADD-02-F4G-06-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-06</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: insufficient evidence: no human handling instruction appears in the scoped current_records for reconciling the retained undertaking row with the fo…</td></tr>
+<tr><td>D-ADD-02-F4G-07-WITHDRAWAL</td><td>issue</td><td>row:ADD-02-F4G-07</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: insufficient evidence: no human handling instruction appears in the scoped current_records for reconciling the retained undertaking row with the fo…</td></tr>
+<tr><td>D-ADD-03-OMISSION</td><td>row_reading</td><td>row:VOL-I-3.4-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D-ADD-03-CLARIFICATION</td><td>row_reading</td><td>row:VOL-I-5.2-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D-ADD-03-DELIVERY</td><td>row_reading</td><td>row:VOL-I-6.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D-ADD-03-BOND</td><td>row_reading</td><td>row:VOL-I-6.3-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D-ADD-03-BOND-COUNTING</td><td>issue</td><td>row:VOL-I-6.3-01</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>D-ADD-03-BOND-RULE-GAP</td><td>escalation</td><td>row:VOL-I-6.3-01</td><td>escalated</td><td></td></tr>
+<tr><td>D-ADD-03-LINK-OMISSION</td><td>dependency</td><td>row:VOL-I-3.4-01</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['clarifications']</td></tr>
+<tr><td>D-ADD-03-LINK-CLARIFICATION</td><td>dependency</td><td>row:VOL-I-5.2-01</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['clarifications']</td></tr>
+<tr><td>D-ADD-03-LINK-DELIVERY</td><td>dependency</td><td>row:VOL-I-6.1-01</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['copies', 'assemble-envelope-b']</td></tr>
+<tr><td>D-ADD-03-LINK-BOND</td><td>dependency</td><td>row:VOL-I-6.3-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>D003-READ-1</td><td>row_reading</td><td>row:VOL-I-6.4-01</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): its own words declares a matter resolved ('resolution')</td></tr>
+<tr><td>D003-READ-2</td><td>row_reading</td><td>row:VOL-I-6.4-02</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D003-READ-3</td><td>row_reading</td><td>row:VOL-I-6.7-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D003-READ-4</td><td>row_reading</td><td>row:VOL-I-7.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D003-READ-5</td><td>row_reading</td><td>row:VOL-I-8.3-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D003-READ-6</td><td>row_reading</td><td>row:VOL-I-8.5-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>D003-LINK-1</td><td>dependency</td><td>row:VOL-I-6.4-01</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): its own words declares a matter resolved ('resolved')</td></tr>
+<tr><td>D003-LINK-3</td><td>dependency</td><td>row:VOL-I-6.7-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>D003-LINK-4</td><td>dependency</td><td>row:VOL-I-7.1-01</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['form-4a']</td></tr>
+<tr><td>D003-LINK-5</td><td>dependency</td><td>row:VOL-I-8.3-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>D003-LINK-6</td><td>dependency</td><td>row:VOL-I-8.5-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-D004-CAPACITY</td><td>row_reading</td><td>row:VOL-II-2.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-D004-TP</td><td>row_reading</td><td>row:VOL-II-T2-4-TP</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-D004-PCOD</td><td>row_reading</td><td>row:VOL-V-12.1-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-D004-RAMP</td><td>row_reading</td><td>row:VOL-V-29.3-01</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-D004-ACK-ROW</td><td>row_new</td><td>c46:ADD-03/cover/para3</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-D004-EVAL-ROW</td><td>row_new</td><td>c46:ADD-03/6.1</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): its own words a waiver ('waiver')</td></tr>
+<tr><td>ADD-03-D004-CAPACITY-FOLLOW</td><td>dependency</td><td>row:VOL-II-2.1-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-D004-TP-FOLLOW</td><td>dependency</td><td>row:VOL-II-T2-4-TP</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-D004-PCOD-FOLLOW</td><td>dependency</td><td>row:VOL-V-12.1-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-D004-RAMP-FOLLOW</td><td>dependency</td><td>row:VOL-V-29.3-01</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-D004-ACK-FOLLOW</td><td>dependency</td><td>c46:ADD-03/cover/para3</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['form-4a']</td></tr>
+<tr><td>ADD-03-D004-FORM-ISSUE</td><td>issue</td><td>c46:ADD-03/cover/para3</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: An explicit human instruction for preparing and executing the reissued Form 4-A.</td></tr>
+<tr><td>ADD-03-D004-EVAL-ISSUE</td><td>issue</td><td>c46:ADD-03/6.1</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>ADD-03-D004-EVAL-FOLLOW</td><td>dependency</td><td>c46:ADD-03/6.1</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): its own words decides which clause governs ('govern')</td></tr>
+<tr><td>ADD-03-3.1-01-proposal</td><td>row_new</td><td>ana:ADD-03/3.1-nonsubmission-row</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-3.2-01-proposal</td><td>row_new</td><td>ana:ADD-03/3.2-narrative-row</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-Q17-01-proposal</td><td>row_new</td><td>ana:ADD-03/Q17</td><td>interpretation_pending</td><td>a row reading is an interpretation: a person decides it</td></tr>
+<tr><td>ADD-03-3.2-programme</td><td>dependency</td><td>ana:ADD-03/3.2-narrative-row</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>ADD-03-Q17-programme</td><td>dependency</td><td>ana:ADD-03/Q17</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['assemble-envelope-b']</td></tr>
+<tr><td>ADD-03-bond-clarification</td><td>clarification_item</td><td>clar:CQ-BOND-FC-COVERAGE</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: Engine-derived current bond expiry and counting alternatives.; Express Financial Close coverage instruction and definition of the long-stop date.</td></tr>
+<tr><td>ADD-03-bond-coverage-issue</td><td>issue</td><td>clar:CQ-BOND-FC-COVERAGE</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>ADD-03-form-4g-review-followup</td><td>issue</td><td>act:form-4g-review</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: Human instruction on the surviving scope of the separately recorded undertakings and their evidence route.</td></tr>
+<tr><td>ADD-03-form-4g-sign-followup</td><td>issue</td><td>act:form-4g-sign</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: Human instruction reconciling the active form rows and EV-FORM-4G associations with the withdrawal.</td></tr>
+<tr><td>P-ADD03-D006-CLARIFICATIONS</td><td>activity</td><td>act:clarifications</td><td>insufficient_evidence</td><td>held back: neighbouring activities not promotable: ['consortium-check']</td></tr>
+<tr><td>P-ADD03-D006-DELIVER</td><td>activity</td><td>act:deliver</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>P-ADD03-D006-SEAL</td><td>no_change</td><td>act:seal-and-mark</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>P-ADD03-D006-COPIES</td><td>activity</td><td>act:copies</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-VOL-I-COPIES; I-VOL-I-FILE-NAMES</td></tr>
+<tr><td>P-ADD03-D006-ENVELOPE-A-GAP</td><td>escalation</td><td>act:assemble-envelope-a</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-F4G-LETTERING; I-F4G-NO; I-VOL-I-ENV-A-PRICES</td></tr>
+<tr><td>P-ADD03-D006-ENVELOPE-B</td><td>activity</td><td>act:assemble-envelope-b</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-VOL-I-ENV-B</td></tr>
+<tr><td>P-ADD03-D006-ENVELOPE-B-INSTRUCTION</td><td>escalation</td><td>act:assemble-envelope-b</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-VOL-I-ENV-B</td></tr>
+<tr><td>D-ADD03-D007-BOND-APPROVAL</td><td>activity</td><td>act:bond-approval</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>D-ADD03-D007-BOND-ISSUE</td><td>activity</td><td>act:bond-issue</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>D-ADD03-D007-BOND-LABEL</td><td>escalation</td><td>act:bond-issue</td><td>escalated</td><td></td></tr>
+<tr><td>D-ADD03-D007-FORM-PREP</td><td>no_change</td><td>act:form-4a-prep</td><td>interpretation_pending</td><td></td></tr>
+<tr><td>D-ADD03-D007-FORM-SIGN</td><td>activity</td><td>act:form-4a</td><td>conflicting</td><td>declared_conflicts: the proposer declares: I-F4A-FIELDS</td></tr>
+<tr><td>D-ADD03-D007-FORM-INSTRUCTION</td><td>issue</td><td>act:form-4a</td><td>insufficient_evidence — HUMAN DECISION PENDING</td><td>missing_information: the proposer declares missing: A recorded Legal handling instruction distinct from acceptance of the open issue.</td></tr>
+<tr><td>D-ADD03-D007-ISO</td><td>activity</td><td>act:iso-copy</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>D-ADD03-D007-REFERENCES</td><td>activity</td><td>act:references</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>D008-TECH-ACTIVITY</td><td>activity</td><td>act:technical-proposal</td><td>interpretation_pending</td><td>the duration is a PROVISIONAL ASSUMPTION (a person confirms it)</td></tr>
+<tr><td>D008-PDD-ESC</td><td>escalation</td><td>esc:ADD-03:2.2</td><td>escalated</td><td></td></tr>
+<tr><td>D008-PDD-LINK</td><td>dependency</td><td>esc:ADD-03:2.2</td><td>insufficient_evidence</td><td>held back: endpoints not promotable: ['form-4a']</td></tr>
+<tr><td>D008-F4G-ESC</td><td>escalation</td><td>esc:ADD-03:3.1</td><td>escalated</td><td></td></tr>
+<tr><td>D008-F4G-HANDLING</td><td>escalation</td><td>esc:ADD-03:3.1</td><td>escalated</td><td>missing_information: the proposer declares missing: Named human handling instruction for the partly modeled withdrawal</td></tr>
+<tr><td>D008-FLOWS-ESC</td><td>escalation</td><td>esc:ADD-03:4.1</td><td>escalated</td><td></td></tr>
+<tr><td>D008-CAPACITY-LINK</td><td>dependency</td><td>esc:ADD-03:4.1</td><td>interpretation_pending</td><td>an inferred relationship stays <code>proposed</code>: a person confirms or rejects it</td></tr>
+<tr><td>D008-CORRESPOND-ESC</td><td>escalation</td><td>esc:ADD-03:4.3</td><td>escalated</td><td>missing_information: the proposer declares missing: Complete source wording for the corresponding worded and numeric capacity replacement</td></tr>
+<tr><td>D008-Q17-ESC</td><td>escalation</td><td>esc:ADD-03:Q17</td><td>escalated</td><td></td></tr>
+<tr><td>D008-Q17-QUESTION</td><td>issue</td><td>esc:ADD-03:Q17</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words a waiver ('waiver')</td></tr>
+<tr><td>DS009-DATE-PROPAGATION</td><td>escalation</td><td>impact:2. AMENDMENT TO THE PROPOSAL DUE DATE</td><td>escalated</td><td></td></tr>
+<tr><td>DS009-FORM-DATE</td><td>issue</td><td>impact:2. AMENDMENT TO THE PROPOSAL DUE DATE</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words a precedence question (…</td></tr>
+<tr><td>DS009-CAPACITY-WORDING</td><td>escalation</td><td>impact:4. AMENDMENT TO NOMINAL CAPACITY</td><td>escalated</td><td></td></tr>
+<tr><td>DS009-FLOW-TARGETS</td><td>escalation</td><td>impact:4. AMENDMENT TO NOMINAL CAPACITY</td><td>escalated</td><td></td></tr>
+<tr><td>DS009-FLOW-ANSWER</td><td>issue</td><td>impact:4. AMENDMENT TO NOMINAL CAPACITY</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+<tr><td>DS009-Q17-COVERAGE</td><td>escalation</td><td>impact:8. RESPONSES TO CLARIFICATION REQUESTS 15 TO 18</td><td>escalated</td><td></td></tr>
+<tr><td>DS009-F4G-WITHDRAWAL</td><td>escalation</td><td>impact:3. WITHDRAWAL OF FORM 4-G</td><td>escalated</td><td></td></tr>
+<tr><td>DS009-EVALUATION-BASIS</td><td>issue</td><td>impact:6. NEW VOLUME I CLAUSE 11.6</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>DS009-Q1-REREAD</td><td>issue</td><td>reread:ADD-01:Q1</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>DS-REREAD-ADD01-Q3</td><td>issue</td><td>reread:ADD-01:Q3</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>DS-REREAD-ADD01-Q5</td><td>issue</td><td>reread:ADD-01:Q5</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>DS-REREAD-ADD02-Q8</td><td>issue</td><td>reread:ADD-02:Q8</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's</td></tr>
+<tr><td>DS-REREAD-ADD02-Q11</td><td>issue</td><td>reread:ADD-02:Q11</td><td>interpretation_pending — HUMAN DECISION PENDING</td><td>evidence verified; conclusion is a human decision (HUMAN DECISION PENDING): an issue is a matter kept open for people: its framing and conclusion are a person's; its own words declares a matter resol…</td></tr>
+</table>
+<h2>Promoted into the candidate (PROPOSED; nothing accepted)</h2>
+<ul>
+<li>ops: ADD-03/cover/para3, ADD-03/1.1, ADD-03/2.1(a), ADD-03/2.1(b), ADD-03/3.1(b), ADD-03/3.2(a), ADD-03/4.1(a), ADD-03/4.2, ADD-03/5.1, ADD-03/5.2(a), ADD-03/5.2(b), ADD-03/6.1, ADD-03/7.1, ADD-03/Q15</li>
+<li>dispositions: ADD-03:cover/para1: no_effect, ADD-03:cover/para2: no_effect, ADD-03:Q16: no_effect, ADD-03:Q18: no_effect</li>
+<li>accounted unresolved: ADD-03:4.3</li>
+<li>rows new: ADD-03-cover-01, ADD-03-6.1-01, ADD-03-3.1-01, ADD-03-3.2-01, ADD-03-Q17-01</li>
+<li>readings: VOL-I-3.4-01, VOL-I-5.2-01, VOL-I-6.1-01, VOL-I-6.3-01, VOL-I-6.4-01, VOL-I-6.4-02, VOL-I-6.7-01, VOL-I-7.1-01, VOL-I-8.3-01, VOL-I-8.5-01, VOL-II-2.1-01, VOL-II-T2-4-TP, VOL-V-12.1-01, VOL-V-29.3-01</li>
+<li>issues: I-ADD-03-BOND-COUNTING, I-ADD-03-BOND-COVERAGE-REVIEW, I-ADD-03-D008-Q17-PRICE, I-ADD-03-DS009-EVALUATION-BASIS, I-ADD-03-DS009-FLOW-ANSWER, I-ADD-03-DS009-FORM-DATE, I-ADD-03-DS009-Q1-REREAD, I-ADD-03-F4G-01-WITHDRAWAL, I-ADD-03-F4G-02-WITHDRAWAL, I-ADD-03-F4G-03-WITHDRAWAL, I-ADD-03-F4G-04-WITHDRAWAL, I-ADD-03-F4G-05-WITHDRAWAL, I-ADD-03-F4G-SUBMISSION-RECONCILIATION, I-ADD03-6-1-THRESHOLD, I-ADD03-REREAD-ADD01-Q3, I-ADD03-REREAD-ADD01-Q5, I-ADD03-REREAD-ADD02-Q11, I-ADD03-REREAD-ADD02-Q8</li>
+<li>activities: deliver, bond-approval, bond-issue, iso-copy, references, technical-proposal</li>
+<li>relationships: REL-AI-001, REL-AI-002, REL-AI-003, REL-AI-004, REL-AI-005, REL-AI-006, REL-AI-007, REL-AI-008, REL-AI-009, REL-AI-010, REL-AI-011, REL-AI-012</li>
+<li>no change: act:seal-and-mark, act:form-4a-prep</li>
+<li>the same question promoted once (analysis issue -&gt; the issue it was merged into): I-ADD-03-2-2-PROPAGATION-REVIEW-ANA -&gt; I-ADD-03-DS009-FORM-DATE; I-ADD-03-2-1-FORM-DATE-REVIEW-ANA -&gt; I-ADD-03-DS009-FORM-DATE; I-ADD-03-4-1-4-1-FLOW-REVIEW-ANA -&gt; I-ADD-03-DS009-FLOW-ANSWER; I-ADD-03-3-1-3-1-LIST-REVIEW-ANA -&gt; I-ADD-03-F4G-SUBMISSION-RECONCILIATION; I-ADD-03-6-1-THRESHOLD-ISSUE-ANA -&gt; I-ADD-03-DS009-EVALUATION-BASIS</li>
+<li>unresolved provisions: 5</li>
+<li>note: ADD-03:3.1: partly answered by ADD-03/3.1(b); escalated: software limitation: the provision states ‘Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.’ The form is supplied as group ADD-02:F4-G; set_status on … (the promoted item stands; the escalation is for a person)</li>
+<li>note: ADD-03:4.1: partly answered by ADD-03/4.1(a); escalated: software limitation: The printed replacement ‘120,000 m³/day’ to ‘150,000 m³/day’ expressly names Table 2-6 row 2-6.1. set_value of its Value cell to the printed numeric component 150,000 fails C22 b…; software limitation: The provision expressly states ‘The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.’ An annotate/confirms operation on that row fails C22 because the engine does not recogn… (the promoted item stands; the escalation is for a person)</li>
+<li>note: rows.yaml: 2 comment line(s) inside row VOL-I-6.1-01 were not kept (the row was rewritten; the file's other comments are kept)</li>
+<li>note: rows.yaml: 5 comment line(s) inside row VOL-I-8.5-01 were not kept (the row was rewritten; the file's other comments are kept)</li>
+<li>note: VOL-II.yaml: 1 comment line(s) inside row VOL-II-T2-4-TP were not kept (the row was rewritten; the file's other comments are kept)</li>
+<li>note: VOL-V.yaml: 1 comment line(s) inside row VOL-V-12.1-01 were not kept (the row was rewritten; the file's other comments are kept)</li>
+<li>note: VOL-V.yaml: 1 comment line(s) inside row VOL-V-29.3-01 were not kept (the row was rewritten; the file's other comments are kept)</li>
+</ul>
+<ul>
+<li>left out of the promoted ops: ADD-03/cover/para3/acknowledgement-row: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>c46:ADD-03/cover/para3</code> as an UN…; ADD-03/2.2/propagation-review: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-2-2-PROPAGATION-REVIEW-ANA; HUMAN DE…; ADD-03/2.1/form-date-review: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-2-1-FORM-DATE-REVIEW-ANA; HUMAN DECI…; ADD-03/3.1-nonsubmission-row: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>ana:ADD-03/3.1-nonsubmission-row…; ADD-03/3.2-narrative-row: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task </code>ana:ADD-03/3.2-narrative-row<code> as…; ADD-03/4.3-wording-question: an analysis clarification is not promoted (the analysis set promotes ops and dispositions only): listed for a person in the review packet with its evidence; th…; ADD-03/4.1-flow-review: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-4-1-4-1-FLOW-REVIEW-ANA; HUMAN DECIS…; ADD-03/3.1-list-review: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-3-1-3-1-LIST-REVIEW-ANA; HUMAN DECIS…; ADD-03/6.1/A1: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task </code>c46:ADD-03/6.1<code> as an UNVERIFIED…; ADD-03/6.1/threshold-issue: an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-6-1-THRESHOLD-ISSUE-ANA; HUMAN DECIS…; ADD-03/Q17: an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task </code>ana:ADD-03/Q17` as an UNVERIFIED…</li>
+</ul>
+<h2>check-register on the candidate</h2>
+<ul>
+<li>exit 0; 0 finding(s) {}</li>
+<li>missing because the downstream phase did not propose them (the run's own new rows): 0</li>
+<li>defects: 0</li>
+</ul>
+<h2>Analysis rows carried to downstream tasks (and other analysis items not promoted)</h2>
+<ul>
+<li><code>ADD-03/cover/para3/acknowledgement-row</code> row_new (ADD-03:cover/para3, interpretation_pending): an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>c46:ADD-03/cover/para3</code> as an UNVERIFIED reference — applied as the new row(s) ADD-03-cover-01 (proposed downstream: ADD-03-cover-01 (row_new, interpretation_pending); task(s) c46:ADD-03/cover/para3; PROPOSED, not approved): the provision's obligation is that row; a person confirms it</li>
+<li><code>ADD-03/2.2/propagation-review</code> issue (ADD-03:2.2, interpretation_pending): an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-2-2-PROPAGATION-REVIEW-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task</li>
+<li><code>ADD-03/2.1/form-date-review</code> issue (ADD-03:2.1, interpretation_pending): an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-2-1-FORM-DATE-REVIEW-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task</li>
+<li><code>ADD-03/3.1-nonsubmission-row</code> row_new (ADD-03:3.1, interpretation_pending): an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>ana:ADD-03/3.1-nonsubmission-row</code> as an UNVERIFIED reference — applied as the new row(s) ADD-03-3.1-01 (proposed downstream: ADD-03-3.1-01 (row_new, interpretation_pending); task(s) ana:ADD-03/3.1-nonsubmission-row; PROPOSED, not approved): the provision's obligation is that row; a person confirms it</li>
+<li><code>ADD-03/3.2-narrative-row</code> row_new (ADD-03:3.2, interpretation_pending): an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>ana:ADD-03/3.2-narrative-row</code> as an UNVERIFIED reference — applied as the new row(s) ADD-03-3.2-01 (proposed downstream: ADD-03-3.2-01 (row_new, interpretation_pending), ADD-03-3.2-programme (dependency, interpretation_pending); task(s) ana:ADD-03/3.2-narrative-row; PROPOSED, not approved): the provision's obligation is that row; a person confirms it</li>
+<li><code>ADD-03/4.3-wording-question</code> clarification (ADD-03:4.3, interpretation_pending): an analysis clarification is not promoted (the analysis set promotes ops and dispositions only): listed for a person in the review packet with its evidence; the downstream phase proposes issues and clarification entries against the candidate</li>
+<li><code>ADD-03/4.1-flow-review</code> issue (ADD-03:4.1, interpretation_pending): an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-4-1-4-1-FLOW-REVIEW-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task</li>
+<li><code>ADD-03/3.1-list-review</code> issue (ADD-03:3.1, interpretation_pending): an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-3-1-3-1-LIST-REVIEW-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task</li>
+<li><code>ADD-03/6.1/A1</code> row_new (ADD-03:6.1, interpretation_pending): an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>c46:ADD-03/6.1</code> as an UNVERIFIED reference — applied as the new row(s) ADD-03-6.1-01 (proposed downstream: ADD-03-6.1-01 (row_new, interpretation_pending), ADD-03-D004-EVAL-ISSUE (issue, interpretation_pending), ADD-03-D004-EVAL-FOLLOW (dependency, interpretation_pending); task(s) c46:ADD-03/6.1; PROPOSED, not approved): the provision's oblig…</li>
+<li><code>ADD-03/6.1/threshold-issue</code> issue (ADD-03:6.1, interpretation_pending): an analysis issue is not an op or a disposition: it is written into the candidate's register as a PROPOSED issue (I-ADD-03-6-1-THRESHOLD-ISSUE-ANA; HUMAN DECISION PENDING) and its possible effects get a conditional downstream task</li>
+<li><code>ADD-03/Q17</code> row_new (ADD-03:Q17, interpretation_pending): an analysis row_new is not promoted from the analysis set (it promotes ops and dispositions only): carried to downstream task <code>ana:ADD-03/Q17</code> as an UNVERIFIED reference — applied as the new row(s) ADD-03-Q17-01 (proposed downstream: ADD-03-Q17-01 (row_new, interpretation_pending); task(s) ana:ADD-03/Q17; PROPOSED, not approved): the provision's obligation is that row; a person confirms it</li>
+</ul>
+<h2>Coverage</h2>
+<ul>
+<li>provisions: 19; accounted for by the combined set: 19; states {'validated': 19}</li>
+<li>the analysis ITEMS' resolution by the controller (items, not provisions; session 14): resolved 11, pending 8, invalid 0, unaccounted 0; approved 0</li>
+<li>structural units of ADD-03 that are not provisions (listed so nothing is dropped): ADD-03:H:cover (heading), ADD-03:H:cover-2 (heading), ADD-03:H:S1 (heading), ADD-03:H:S2 (heading), ADD-03:H:S3 (heading), ADD-03:H:S4 (heading), ADD-03:H:S5 (heading), ADD-03:H:S6 (heading), ADD-03:H:S7 (heading), ADD-03:H:S8 (heading), ADD-03:S8/QA (table)</li>
+<li>batches: analysis-001 done, analysis-002 done, analysis-003 done, analysis-004 done, downstream-001 done, downstream-002 done, downstream-003 done, downstream-004 done, downstream-005 done, downstream-006 done, downstream-007 done, downstream-008 done, downstream-009 done, downstream-010 done</li>
+</ul>
+<h2>Critic (a second model over the selected items; it changed no status)</h2>
+<p><strong>Agreement between the critic and the proposer is not approval</strong>: every item still needs a person's decision, and a disagreement is a concern for that person, not a rejection. The critic reviews only the selected classes (consequential interpretations, uncertain targets, removals, conflicting evidence), in one request per batch.</p>
+<table>
+<tr><th>Batch</th><th>Critic</th><th>Selected</th><th>Reviewed</th><th>Agrees</th><th>Does not agree</th><th>Note</th></tr>
+<tr><td>analysis-001</td><td>done</td><td>4</td><td>4</td><td>3</td><td>1</td><td></td></tr>
+<tr><td>analysis-002</td><td>done</td><td>9</td><td>9</td><td>5</td><td>4</td><td></td></tr>
+<tr><td>analysis-003</td><td>done</td><td>3</td><td>3</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>analysis-004</td><td>done</td><td>4</td><td>4</td><td>3</td><td>1</td><td></td></tr>
+<tr><td>downstream-001</td><td>not_needed</td><td>0</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+<tr><td>downstream-002</td><td>done</td><td>3</td><td>3</td><td>1</td><td>2</td><td></td></tr>
+<tr><td>downstream-003</td><td>done</td><td>2</td><td>2</td><td>2</td><td>0</td><td></td></tr>
+<tr><td>downstream-004</td><td>done</td><td>1</td><td>1</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>downstream-005</td><td>not_needed</td><td>0</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+<tr><td>downstream-006</td><td>done</td><td>4</td><td>4</td><td>2</td><td>2</td><td></td></tr>
+<tr><td>downstream-007</td><td>done</td><td>1</td><td>1</td><td>1</td><td>0</td><td></td></tr>
+<tr><td>downstream-008</td><td>not_needed</td><td>0</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+<tr><td>downstream-009</td><td>not_needed</td><td>0</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+<tr><td>downstream-010</td><td>not_needed</td><td>0</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+</table>
+<ul>
+<li><strong>ADD-03/cover/para3</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation, uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/cover/para3/acknowledgement-row</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/2.2/propagation-review</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li class=sub>concern: insufficient evidence: the printed records support the listed PDD-linked requirements, but contain no activities or programme simulation results supporting the specifically named A5 activity chain.</li>
+<li class=sub>concern: insufficient evidence: no printed controller record supports the rationale's claim that the engine cannot annotate this scope. The claimed software limitation cannot be verified.</li>
+<li class=sub>concern: The controller's keyword flags do not reflect the issue's meaning: it expressly leaves questions unanswered and unwithdrawn.</li>
+<li><strong>ADD-03/2.1/form-date-review</strong> (analysis-001; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/3.1(b)</strong> (analysis-002; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because removal</li>
+<li><strong>ADD-03/3.2(a)</strong> (analysis-002; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is a group</li>
+<li class=sub>concern: The rationale states that VOL-II:S6 contains only its heading. Annotating that group does not establish that the confirmation reaches substantive clauses VOL-II:6.1–6.3. Explicitly target those clauses or provide validation showing that the group annotation covers them; the successful dry run does …</li>
+<li><strong>ADD-03/3.1(a)-escalation</strong> (analysis-002; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is a group</li>
+<li class=sub>concern: The withdrawal and identified form members are supported. However, the asserted C22 failures are not printed in the controller records; those records verify only payload structure and quotations. The claimed software limitation cannot be independently verified without the failed simulation records.</li>
+<li><strong>ADD-03/4.1(b)-escalation</strong> (analysis-002; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li class=sub>concern: The provision expressly identifies row 2-6.1 and supports changing only its Value cell to 150,000 while retaining m³/day. However, no failed simulation or citation-mapping record is printed to substantiate the asserted C22 software limitation; payload validation alone does not verify it.</li>
+<li><strong>ADD-03/4.1(c)-escalation</strong> (analysis-002; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li class=sub>concern: The provision expressly confirms that row 2-6.2 is unchanged. However, no failed simulation or citation-mapping record is printed to substantiate the asserted C22 software limitation; payload validation alone does not verify it.</li>
+<li><strong>ADD-03/3.1-nonsubmission-row</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/3.2-narrative-row</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/4.1-flow-review</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li class=sub>concern: Correct the rationale's attribution: the former daily figure appears in the bidder question, not the Authority response. The changed premise nevertheless supports the proposed human review without establishing a conflict or withdrawing the earlier answer.</li>
+<li><strong>ADD-03/3.1-list-review</strong> (analysis-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/6.1</strong> (analysis-003; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: resolved through a group, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/6.1/A1</strong> (analysis-003; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/6.1/threshold-issue</strong> (analysis-003; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/Q16</strong> (analysis-004; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/Q17</strong> (analysis-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/Q18</strong> (analysis-004; controller status <strong>evidence_verified</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li><strong>ADD-03/Q17-coverage</strong> (analysis-004; controller status <strong>escalated</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because uncertain_target, uncertain_target: target is not among the units the provision cites</li>
+<li class=sub>concern: The printed controller records verify the row payload and quotation, but do not show Q17 reported as UNACCOUNTED or the claimed amendment-engine restriction. The asserted software limitation cannot be verified without those validation results; the proposer's rationale alone does not establish it.</li>
+<li><strong>D-ADD-03-OMISSION</strong> (downstream-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li><strong>D-ADD-03-CLARIFICATION</strong> (downstream-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: the relative deadline rule and consequence are supported, but no calculate(deadline) result is printed to substantiate the claimed calculation confirmation. VOL-I:2.4 supports excluding the stated date; provide the calculation record or attribute that reading directly to the …</li>
+<li><strong>D-ADD-03-DELIVERY</strong> (downstream-002; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: the amended deadline, retained time and address reference, and rejection consequence are supported. However, no activity records or supporting clauses establish the named seal-and-mark, copies, assemble-envelope-a and assemble-envelope-b activities or their dependencies under…</li>
+<li><strong>D003-READ-3</strong> (downstream-003; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li><strong>D003-READ-6</strong> (downstream-003; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because consequential_interpretation</li>
+<li><strong>ADD-03-D004-PCOD</strong> (downstream-004; controller status <strong>interpretation_pending</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because consequential_interpretation</li>
+<li class=sub>concern: insufficient evidence: The proposed review against amended reliability-run requirements has no supporting provision in the supplied evidence. Q15 supports the unchanged construction period and references a capacity increase only.</li>
+<li class=sub>concern: insufficient evidence: No crop or image-inspection record is supplied for table row ADD-03:Q15, so the required image check cannot be verified.</li>
+<li class=sub>concern: The obligation, Notice to Proceed anchor, unchanged month-based date rule and contractual delay-damages consequence are supported. However, the rationale's claim that the reading became stale is not established by the supplied records; the ADD-02 record has no stale entries, and no later staleness …</li>
+<li><strong>P-ADD03-D006-COPIES</strong> (downstream-006; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting</li>
+<li class=sub>concern: The proposed preparation and pending instructions follow the quoted requirements and existing issues. However, the claimed preservation of both EV-COPIES and EV-DELIVERY associations is not established: the payload names only EV-DELIVERY and VOL-I-6.1-01, current_records.activities is empty, and th…</li>
+<li><strong>P-ADD03-D006-ENVELOPE-A-GAP</strong> (downstream-006; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): DOES NOT agree — selected because conflicting</li>
+<li class=sub>concern: insufficient evidence: the request does not print the promoted operations or assembly template. The assertions that an operation only revokes ADD-02:7.2 and that assemble-envelope-a still includes Form 4-G cannot be verified. The printed ADD-02 register establishes the previous-stage contents, not …</li>
+<li class=sub>concern: ADD-03:3.1 expressly withdraws Form 4-G and prohibits submission. Any uncertainty should concern implementation of that instruction, without implying that the withdrawal itself lacks evidence.</li>
+<li class=sub>concern: The item declares I-VOL-I-ENV-A-PRICES as a conflict without showing how Form 4-G withdrawal affects that separate issue.</li>
+<li><strong>P-ADD03-D006-ENVELOPE-B</strong> (downstream-006; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting</li>
+<li><strong>P-ADD03-D006-ENVELOPE-B-INSTRUCTION</strong> (downstream-006; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting</li>
+<li><strong>D-ADD03-D007-FORM-SIGN</strong> (downstream-007; controller status <strong>conflicting</strong>, unchanged)</li>
+<li class=sub>critic (a second model; agreement is not approval): agrees — selected because conflicting</li>
+</ul>
+<h2>Requests: failures, deferrals, repairs and route notices</h2>
+<ul>
+<li>every request was answered at the first call, parsed, and fitted its context</li>
+</ul>
+<p>Route notices (how the requests were served; they change no status):</p>
+<ul>
+<li><strong>capabilities_declared</strong> (analysis-001): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-001): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-002): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-003): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-004): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-005): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-006): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-007): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-008): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-009): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+<li><strong>capabilities_declared</strong> (downstream-010): capabilities declared, not verified: host codex exec (configured gpt-6-astra; runtime identity recorded separately) (config/ai.yaml host_session.capabilities: DECLARED, not verified by this tool (a host's model cannot be queried; image input and tool use as observed in real host sessions); basis: Codex CLI text/tool/image conformance observed locally on 8 Oct 2026; context and output limits are d…</li>
+</ul>
+<h2>Manual interventions (the person's actions)</h2>
+<ul>
+<li>2026-10-15T14:04:27Z: stop (the person's action) by a person (a signal from outside the run: the panel's Stop, Ctrl-C or a kill); SIGTERM during step downstream; 1 host session process(es) stopped</li>
+<li>2026-10-15T14:04:56Z: resume (the person's action) by a person (tenderpack ai resume, or the panel's Resume); process 14995; status before: stopped</li>
+</ul>
+<h3>What the run did with them, and its automatic host sessions (not a person)</h3>
+<ul>
+<li>2026-10-15T13:24:03Z: host session (automatic) — batch analysis-001 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session over the MCP tools; not a person</li>
+<li>2026-10-15T13:27:21Z: submission reused (automatic) — batch analysis-002 by tenderpack.ai.workflow; the host session's staged set ADD-03-host-20261015T132340Z-09b2 (made in this drive) was revalidated and taken instead of asking the batch again</li>
+<li>2026-10-15T13:28:17Z: submission reused (automatic) — batch analysis-003 by tenderpack.ai.workflow; the host session's staged set ADD-03-host-20261015T132628Z-e556 (made in this drive) was revalidated and taken instead of asking the batch again</li>
+<li>2026-10-15T13:28:37Z: submission reused (automatic) — batch analysis-004 by tenderpack.ai.workflow; the host session's staged set ADD-03-host-20261015T132659Z-9dd7 (made in this drive) was revalidated and taken instead of asking the batch again</li>
+<li>2026-10-15T13:33:59Z: host session (automatic) — batch downstream-001 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T13:42:14Z: host session (automatic) — batch downstream-002 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T13:46:00Z: host session (automatic) — batch downstream-003 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:04:27Z: host session stopped by the person's stop — batch downstream-004 by tenderpack.ai.workflow (automatic); its exchange was cut before its answer was taken; on resume its staged submission is reused if it made one, else it is asked again</li>
+<li>2026-10-15T14:13:24Z: host session (automatic) — batch downstream-004 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:13:25Z: host session (automatic) — batch downstream-005 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:16:58Z: host session (automatic) — batch downstream-006 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:17:21Z: host session (automatic) — batch downstream-007 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:24:51Z: host session (automatic) — batch downstream-008 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:24:56Z: host session (automatic) — batch downstream-009 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+<li>2026-10-15T14:27:30Z: host session (automatic) — batch downstream-010 by tenderpack.ai.hostsession; host model codex exec (configured gpt-6-astra; runtime identity recorded separately); a headless host session; not a person</li>
+</ul>
+<h2>The diff (ADD-02 → ADD-03; <a href="diff.md">diff.md</a>)</h2>
+<h2>What changed from ADD-02 to ADD-03</h2>
+<h3>ADD-03: PARTIAL (issued 2026-11-08)</h3>
+<ul>
+<li>ops: 14 (0 invalid); provisions: 19 (3 unresolved)</li>
+<li>validated state: ADD-02 — this addendum does NOT replace it until every provision is treated and every op is valid</li>
+<li>UNRESOLVED ADD-03:2.2: Every period calculated by reference to the Proposal Due Date is adjusted accordingly.</li>
+<li>UNRESOLVED ADD-03:4.3: Volume I Clause 1.3 is amended correspondingly.</li>
+<li>UNRESOLVED ADD-03:Q17: No: 17 | Bidder question: Will the Availability Payment be adjusted for the increased capacity? | Authority response: Bidders shall price the Project as amended</li>
+<li>cover summary vs provisions (C28, report only): 9 finding(s)</li>
+<li class=sub>not found: 'withdraws Form 4-G': no provision of ADD-03 does this</li>
+<li class=sub>not found: 'adds a new Clause 11.6': no provision of ADD-03 does this</li>
+<li class=sub>omitted: ADD-03/1.1 confirms VOL-I:3.2; the summary does not mention it: 'This Addendum takes precedence over Addenda Nos. 1 and 2 in accordance with Volume I Clause 3.2.'</li>
+<li class=sub>omitted: ADD-03/3.1(b) ends the effect of ADD-02:7.2; the summary does not mention it: 'Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.'</li>
+<li class=sub>omitted: ADD-03/3.2(a) confirms VOL-II:S6; the summary does not mention it: 'The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technical Proposal narrative.'</li>
+<li class=sub>omitted: ADD-03/5.1 amends VOL-I:6.4; the summary does not mention it: 'In Volume I Clause 6.4, ‘SAR 4,500,000 (four million five hundred thousand Saudi Riyals)’ is deleted and ‘SAR 5,600,000 (five million six hundred thousand Saudi Riyals)’ is substituted.'</li>
+<li class=sub>omitted: ADD-03/5.2(a) amends VOL-I:6.3; the summary does not mention it: 'In Volume I Clause 6.3, ‘one hundred and eighty (180) days’ is deleted and ‘two hundred and ten (210) days’ is substituted. The Proposal validity period in Clause 7.1 is unchanged.'</li>
+<li class=sub>omitted: ADD-03/5.2(b) confirms VOL-I:7.1; the summary does not mention it: 'In Volume I Clause 6.3, ‘one hundred and eighty (180) days’ is deleted and ‘two hundred and ten (210) days’ is substituted. The Proposal validity period in Clause 7.1 is unchanged.'</li>
+<li class=sub>omitted: ADD-03/6.1 inserts new text after VOL-I:11.5; the summary does not mention it: 'A new Clause 11.6 is added to Volume I: ‘11.6 Where, on completion of the combined evaluation, two or more Proposals are within two per cent (2%) of one another, the Authority may apply such further criteria as it considers appropriate to …'</li>
+</ul>
+<h4>Validated vs candidate (partial should not mean useless)</h4>
+<ul>
+<li>validated (unchanged, ADD-02): <code>&lt;outputs&gt;/a3/a3.pdf</code> (one page), <code>&lt;outputs&gt;/a5/</code></li>
+<li>candidate (CANDIDATE — NOT VALIDATED, ADD-03 as proposed): <code>&lt;outputs&gt;/a3/a3_candidate.pdf</code> / <code>.md</code>, <code>&lt;outputs&gt;/a5/candidate/</code></li>
+</ul>
+<p><strong>What may be changing.</strong> ADD-03 is PARTIAL: 3 of 19 provisions unresolved, so A3 and A5 stay validated at ADD-02. If the 14 op(s) that are valid there stood (each still a proposal: review accepted 14), A3 would gain 0 row(s) (none), lose 1 (ADD-02-7.2-01 (ADD-03/3.1(b))) and change 5 (ADD-02-F4G-04 (register), VOL-I-6.1-01 (ADD-03/2.1(a), ADD-03/2.1(b)), VOL-I-6.3-01 (ADD-03/5.2(a)), VOL-I-6.4-01 (ADD-03/5.1) and 1 more); A5, replanned at ADD-03's issue date (2026-11-08), would move the latest dates of 43 activities (assemble-envelope-a, assemble-envelope-b, bond-approval, bond-issue and 39 more), add 0 (none) and remove 0 (none), and marks 17 REVIEW through relationships. Not settled: 5 activities blocked by an unresolved row (fin-model-build, fin-model-freeze, form-4g-review, form-4f and 1 more), 7 STALE row(s), 0 obligation(s) reaching no output (C46), 8 relationship chain(s) blocked or incomplete, 1 conflict(s); documents not supplied: the Environmental Permit issued for the site, Volume V Schedule 11 (Project Company Events of Default), Volume V Schedule 7 (deductions), I-PERMIT and 7 more. Nothing here is validated, accepted or applied to the real state.</p>
+<h3>Requirements</h3>
+<ul>
+<li>new: 5; out of force: 1; changed: 21</li>
+</ul>
+<ul>
+<li>NEW ADD-03-cover-01: NEW (introduced by ADD-03/cover/para3)</li>
+<li>NEW ADD-03-6.1-01: NEW (introduced by ADD-03/6.1) (by ADD-03/6.1)</li>
+<li>NEW ADD-03-3.1-01: NEW (introduced by ADD-03:3.1)</li>
+<li>NEW ADD-03-3.2-01: NEW (introduced by ADD-03:3.2)</li>
+<li>NEW ADD-03-Q17-01: NEW (introduced by ADD-03:Q17)</li>
+<li>OUT ADD-02-7.2-01: REVOKED (ADD-03/3.1(b))</li>
+<li>CHANGED VOL-I-6.1-01: wording; quoted words; PDD 2026-11-26 -&gt; 2026-12-10 (by ADD-03/2.1(a))</li>
+<li>CHANGED VOL-I-5.2-01: CLARIFICATION-CUTOFF 2026-11-12 -&gt; 2026-11-26; reading: parameters</li>
+<li>CHANGED VOL-I-6.3-01: wording; quoted words; BID-BOND-VALIDITY 2027-05-25 -&gt; 2027-07-08; reading: parameters (by ADD-03/5.2(a))</li>
+<li>CHANGED VOL-I-6.4-01: wording; quoted words; reading: parameters (by ADD-03/5.1)</li>
+<li>CHANGED VOL-I-6.4-02: wording (by ADD-03/5.1)</li>
+<li>CHANGED VOL-I-7.1-01: PROPOSAL-VALIDITY 2027-04-25 -&gt; 2027-05-09</li>
+<li>CHANGED VOL-I-8.3-01: ISO-CURRENT-AT 2026-11-26 -&gt; 2026-12-10; reading: parameters</li>
+<li>CHANGED VOL-I-8.5-01: wording; quoted words; REFERENCE-LOOKBACK 2016-11-27 -&gt; 2016-12-11; reading: parameters (by ADD-03/4.2)</li>
+<li>CHANGED VOL-IV-F4A-01: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)</li>
+<li>CHANGED VOL-I-3.4-01: OMISSION-CLAIM-CUTOFF 2026-11-26 -&gt; 2026-12-10; reading: parameters</li>
+<li>CHANGED VOL-I-6.7-01: MODIFY-CUTOFF 2026-11-26 -&gt; 2026-12-10; reading: parameters</li>
+<li>CHANGED VOL-II-2.1-01: wording; quoted words; reading: parameters (by ADD-03/4.1(a))</li>
+<li>CHANGED VOL-II-2.4-01: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-COMPLIANCE-MONITORING-STREAMS (limit_applies, confirmed))</li>
+<li>CHANGED VOL-II-T2-4-TP: wording; quoted words; reading: parameters (by ADD-03/7.1)</li>
+<li>CHANGED VOL-II-3.1-01: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-PROCESS-DESIGN (limit_applies, confirmed))</li>
+<li>CHANGED VOL-II-4.3-02: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-COMPLIANCE-MONITORING-STREAMS (limit_applies, confirmed))</li>
+<li>CHANGED VOL-II-7.2-01: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-RELIABILITY-RUN (limit_applies, confirmed))</li>
+<li>CHANGED VOL-IV-F4A-02: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)</li>
+<li>CHANGED VOL-V-12.1-01: quoted words; reading: consequence</li>
+<li>CHANGED VOL-V-29.3-01: quoted words; secondary unit VOL-II:T2-4/TP amended by ADD-03/7.1 (Limit: 1 -&gt; 0.5) (by ADD-03/7.1)</li>
+<li>CHANGED VOL-V-31.1-02: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-UNAVAILABILITY (limit_applies, confirmed))</li>
+</ul>
+<h3>Stale readings and decisions</h3>
+<ul>
+<li>STALE ADD-02-F4G-01: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-05: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-06: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-07: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-02: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-03: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>STALE ADD-02-F4G-04: ADD-02:7.2 changed since ADD-02 (by ADD-03/3.1(b))</li>
+<li>DECISION VOID (content changed since review): ADD-02-F4G-01, ADD-02-F4G-05, ADD-02-F4G-06, ADD-02-F4G-07, ADD-02-F4G-02, ADD-02-F4G-03, ADD-02-F4G-04</li>
+<li>IMAGE-READ VALUE CHANGED: VOL-II:T2-4/TP Limit: image shows 1, ADD-03 makes it 0.5 (reading approved; the image itself is unchanged)</li>
+</ul>
+<h3>Obligations not reaching the outputs (C46)</h3>
+<ul>
+<li>none</li>
+</ul>
+<h3>Reached through relationships (indirect: for review, not direct citations)</h3>
+<p>Curated links (relationships file) followed from what changed. The requirements above cite a changed unit; these are reached through another provision, in three classes that are never merged. A5 marks the activities that serve them REVIEW with their dates unchanged.</p>
+<p>Relationship status: confirmed = stated in the documents (the entry quotes the cross-reference), not confirmed by a person; proposed = inferred by a curator or a model, a person decides; possible = a weaker inference.</p>
+<h4>Confirmed dependency (6)</h4>
+<ul>
+<li>VOL-II-2.4-01 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS [limit_applies; link confirmed]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-II-3.1-01 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-PROCESS-DESIGN [limit_applies; link confirmed]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [at VOL-II:T2-4, REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-II-4.3-02 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-COMPLIANCE-MONITORING-STREAMS [limit_applies; link confirmed]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [at VOL-II:T2-4, REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-II-7.2-01 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-RELIABILITY-RUN [limit_applies; link confirmed]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [at VOL-II:T2-4, REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-V-29.3-01 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-RAMP-UP-DEDUCTIONS [limit_applies; link confirmed]; also changed directly; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [at VOL-II:T2-4, REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-V-31.1-02 (row; ACTIVE) &lt;- VOL-II:T2-4 via REL-T24-UNAVAILABILITY [limit_applies; link confirmed]; BLOCKED: cannot be established: Volume V Schedule 7 (deductions) not supplied (the amount of the deduction for each Unavailability Event under 31.1(a), (b) and (c), so the price risk of each) [REL-MISSING-SCHEDULE-7-DEDUCTIONS]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [at VOL-II:T2-4, REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+</ul>
+<h4>Proposed relationship (47)</h4>
+<ul>
+<li>ADD-03-3.2-01 (row; NEW (introduced by ADD-03:3.2)) &lt;- ADD-03:3.2 via REL-AI-011 [depends_on; link proposed]; also changed directly</li>
+<li>BID-BOND-VALIDITY (date rule) &lt;- VOL-I:6.1, VOL-I:6.3 via REL-AI-001 [feeds_calculation; link proposed]</li>
+<li>EV-BID-BOND (evidence item) &lt;- VOL-I:6.4 via REL-AI-002 [depends_on; link proposed]</li>
+<li>EV-COMPLETION-CERT (evidence item) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>EV-FORM-4B (evidence item) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>EV-ISO (evidence item) &lt;- VOL-I:6.1 via REL-AI-004 [depends_on; link proposed]</li>
+<li>EV-REFERENCES (evidence item) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>EV-TECH-PROPOSAL (evidence item) &lt;- ADD-03:3.2 via REL-AI-011 [depends_on; link proposed]</li>
+<li>ISO-CURRENT-AT (date rule) &lt;- VOL-I:6.1 via REL-AI-004 [depends_on; link proposed]</li>
+<li>MODIFY-CUTOFF (date rule) &lt;- VOL-I:6.1 via REL-AI-003 [depends_on; link proposed]</li>
+<li>REFERENCE-LOOKBACK (date rule) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>VOL-I-11.5-01 (row; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-I-12.2-01 (row; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-I-12.2-02 (row; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-I-4.2-01 (row; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-I-6.1-01 (row; AMENDED (ADD-03/2.1(a))) &lt;- VOL-I:6.1 via REL-AI-003 [depends_on; link proposed]; also changed directly</li>
+<li>VOL-I:12.1 (unit; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-I:12.3 (unit; ACTIVE) &lt;- VOL-I:11.5+ADD-03 via REL-AI-010 [depends_on; link proposed]</li>
+<li>VOL-II-2.3-01 (row; ACTIVE) &lt;- VOL-II:2.1 via REL-AI-012 [depends_on; link proposed]</li>
+<li>VOL-II-2.4-01 (row; ACTIVE) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]; BLOCKED: cannot be established: the Environmental Permit issued for the site not supplied (that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed) [REL-MISSING-ENVIRONMENTAL-PERMIT]</li>
+<li>VOL-II-3.1-01 (row; ACTIVE) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]</li>
+<li>VOL-II-7.2-01 (row; ACTIVE) &lt;- VOL-II:2.1 via REL-AI-006 [depends_on; link proposed]</li>
+<li>VOL-II-7.2-01 (row; ACTIVE) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]</li>
+<li>VOL-II-7.2-01 (row; ACTIVE) &lt;- VOL-II:2.1 via REL-AI-012 [depends_on; link proposed]</li>
+<li>VOL-V-12.1-01 (row; ACTIVE) &lt;- VOL-II:2.1 via REL-AI-006 [depends_on; link proposed]; also changed directly</li>
+<li>VOL-V-12.1-01 (row; ACTIVE) &lt;- ADD-03:Q15 via REL-AI-008 [depends_on; link proposed]; also changed directly</li>
+<li>VOL-V-29.3-01 (row; ACTIVE) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]; also changed directly</li>
+<li>VOL-V-31.1-02 (row; ACTIVE) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]; BLOCKED: cannot be established: Volume V Schedule 7 (deductions) not supplied (the amount of the deduction for each Unavailability Event under 31.1(a), (b) and (c), so the price risk of each) [REL-MISSING-SCHEDULE-7-DEDUCTIONS]</li>
+<li>bond-approval (activity) &lt;- VOL-I:6.1, VOL-I:6.3 via REL-AI-001 [feeds_calculation; link proposed]</li>
+<li>bond-approval (activity) &lt;- VOL-I:6.4 via REL-AI-002 [depends_on; link proposed]</li>
+<li>bond-issue (activity) &lt;- VOL-I:6.1, VOL-I:6.3 via REL-AI-001 [feeds_calculation; link proposed]</li>
+<li>bond-issue (activity) &lt;- VOL-I:6.4 via REL-AI-002 [depends_on; link proposed]</li>
+<li>completion-certs (activity) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>fin-model-build (activity) &lt;- VOL-II:2.1 via REL-AI-006 [depends_on; link proposed]</li>
+<li>fin-model-build (activity) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]</li>
+<li>fin-model-build (activity) &lt;- ADD-03:Q15 via REL-AI-008 [depends_on; link proposed]</li>
+<li>fin-model-build (activity) &lt;- VOL-II:2.1 via REL-AI-012 [depends_on; link proposed]</li>
+<li>form-4b (activity) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>form-4b-prep (activity) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>form-4f (activity) &lt;- VOL-II:2.1 via REL-AI-012 [depends_on; link proposed]</li>
+<li>iso-copy (activity) &lt;- VOL-I:6.1 via REL-AI-004 [depends_on; link proposed]</li>
+<li>references (activity) &lt;- VOL-I:6.1, VOL-I:8.5#fn12 via REL-AI-005 [depends_on; link proposed]</li>
+<li>technical-proposal (activity) &lt;- VOL-II:2.1 via REL-AI-006 [depends_on; link proposed]</li>
+<li>technical-proposal (activity) &lt;- VOL-II:T2-4/TP via REL-AI-007 [depends_on; link proposed]</li>
+<li>technical-proposal (activity) &lt;- ADD-03:Q15 via REL-AI-008 [depends_on; link proposed]</li>
+<li>technical-proposal (activity) &lt;- ADD-03:3.2 via REL-AI-011 [depends_on; link proposed]</li>
+<li>technical-proposal (activity) &lt;- VOL-II:2.1 via REL-AI-012 [depends_on; link proposed]</li>
+</ul>
+<h4>Possible impact (0)</h4>
+<ul>
+<li>none</li>
+</ul>
+<h4>Referenced but not supplied: conclusions in play that cannot be established (1)</h4>
+<ul>
+<li>VOL-II-T2-4-TP (row; AMENDED (ADD-03/7.1)) &lt;- target changed via REL-MISSING-ENVIRONMENTAL-PERMIT [missing_document; link confirmed]; also changed directly. NOT SUPPLIED: the Environmental Permit issued for the site; cannot be established: that the reproduced Table 2-4 limits, as amended by the addenda, are the limits that govern (the Permit prevails over the reproduction), and the limit of any parameter not listed (Note 1); Permit compliance is not claimed; context (not binding): ADD-01:AppB/item-5-effluent-standards p4 'the permit was under review by the regulator and that any change would be issued by Addendum.' (pre-bid minutes; they do not bind the Authority (ADD-01 3.2, p1))</li>
+</ul>
+<h3>Disqualifiers (A3)</h3>
+<ul>
+<li>LEAVES ADD-02-7.2-01</li>
+</ul>
+<h3>Earlier answers to re-read against the new text (never revoked; a person decides)</h3>
+<ul>
+<li><code>ADD-01:Q1</code> (ADD-01): relies on VOL-II:3.1, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-T24-PROCESS-DESIGN; relies on VOL-II:3.1, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-AI-007; to be re-read against the new text of VOL-II:T2-4/TP (ADD-03/7.1); a person decides whether the answer still holds</li>
+<li><code>ADD-01:Q3</code> (ADD-01): cites VOL-I:6.4, changed by ADD-03/5.1; to be re-read against the new text of VOL-I:6.4 (ADD-03/5.1); a person decides whether the answer still holds</li>
+<li><code>ADD-01:Q5</code> (ADD-01): cites VOL-I:8.5#fn12, changed by ADD-03/4.2; to be re-read against the new text of VOL-I:8.5#fn12 (ADD-03/4.2); a person decides whether the answer still holds</li>
+<li><code>ADD-01:Q6</code> (ADD-01): relies on VOL-V:29.3, which VOL-II:T2-4/TP (changed by ADD-03/7.1) governs through REL-AI-007; to be re-read against the new text of VOL-II:T2-4/TP (ADD-03/7.1); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q7</code> (ADD-02): relies on VOL-I:12.1, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; to be re-read against the new text of VOL-I:11.5+ADD-03 (ADD-03/6.1); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q8</code> (ADD-02): cites VOL-I:6.4, changed by ADD-03/5.1; to be re-read against the new text of VOL-I:6.4 (ADD-03/5.1); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q11</code> (ADD-02): quotes '120,000 m³/day', a figure ADD-03/4.1(a) replaced; to be re-read against the new text of VOL-II:2.1 (ADD-03/4.1(a)); a person decides whether the answer still holds</li>
+<li><code>ADD-02:Q13</code> (ADD-02): relies on VOL-I:12.2, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; relies on VOL-I:12.2, which VOL-I:11.5+ADD-03 (changed by ADD-03/6.1) governs through REL-AI-010; to be re-read against the new text of VOL-I:11.5+ADD-03 (ADD-03/6.1); a person decides whether the answer still holds</li>
+</ul>
+<h3>Programme impact (status date 2026-10-22 -&gt; 2026-11-08)</h3>
+<ul>
+<li>REWORK assemble-envelope-a: requirement changed: VOL-I-6.1-01 (text, dates, status, quote)</li>
+<li>MOVED assemble-envelope-a: latest start 2026-11-24 -&gt; 2026-12-08</li>
+<li>STATUS assemble-envelope-a: timing INFEASIBLE by 12 WD -&gt; INFEASIBLE by 13 WD; total float -12 -&gt; -13 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK assemble-envelope-b: requirement changed: VOL-I-6.1-01 (text, dates, status, quote)</li>
+<li>MOVED assemble-envelope-b: latest start 2026-11-24 -&gt; 2026-12-08</li>
+<li>STATUS assemble-envelope-b: timing OK -&gt; INFEASIBLE by 1 WD; total float 0 -&gt; -1 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>STATUS attendance-notice: timing CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known -&gt; CONDITIONAL — window elapsed 2026-10-14; whether the condition arose is not known; total float -7 -&gt; -18 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK bond-approval: requirement changed: VOL-I-6.3-01 (text, dates, status, quote, parameters), VOL-I-6.4-01 (text, status, quote, parameters), VOL-I-6.4-02 (text, status)</li>
+<li>MOVED bond-approval: latest start 2026-11-05 -&gt; 2026-11-19</li>
+<li>STATUS bond-approval: timing OK -&gt; OK; total float +10 -&gt; +9 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK bond-issue: requirement changed: VOL-I-6.3-01 (text, dates, status, quote, parameters), VOL-I-6.4-01 (text, status, quote, parameters), VOL-I-6.4-02 (text, status)</li>
+<li>MOVED bond-issue: latest start 2026-11-19 -&gt; 2026-12-03</li>
+<li>STATUS bond-issue: timing OK -&gt; OK; total float +10 -&gt; +9 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK clarifications: requirement changed: VOL-I-3.4-01 (dates, parameters), VOL-I-5.2-01 (dates, parameters)</li>
+<li>MOVED clarifications: latest start 2026-11-11 -&gt; 2026-11-25</li>
+<li>STATUS clarifications: timing OK -&gt; OK; total float +13 -&gt; +12 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED completion-certs: latest start 2026-11-02 -&gt; 2026-11-16</li>
+<li>STATUS completion-certs: timing OK -&gt; OK; total float +7 -&gt; +6 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED consortium-check: latest start 2026-11-10 -&gt; 2026-11-24</li>
+<li>STATUS consortium-check: timing OK -&gt; OK; total float +13 -&gt; +12 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK copies: requirement changed: VOL-I-6.1-01 (text, dates, status, quote)</li>
+<li>MOVED copies: latest start 2026-11-25 -&gt; 2026-12-09</li>
+<li>STATUS copies: timing INFEASIBLE by 12 WD -&gt; INFEASIBLE by 13 WD; total float -12 -&gt; -13 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK deliver: requirement changed: VOL-I-6.1-01 (text, dates, status, quote)</li>
+<li>MOVED deliver: latest start 2026-11-26 -&gt; 2026-12-10</li>
+<li>STATUS deliver: timing INFEASIBLE by 12 WD -&gt; INFEASIBLE by 13 WD; total float -12 -&gt; -13 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK deviations-review: requirement changed: VOL-V-12.1-01 (consequence, quote), VOL-V-29.3-01 (cited units, quote: cited unit VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1), VOL-V-31.1-02 (dependency: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-UNAVAILABILITY (limit_applies, confirmed)))</li>
+<li>MOVED deviations-review: latest start 2026-11-08 -&gt; 2026-11-22</li>
+<li>STATUS deviations-review: timing OK -&gt; OK; total float +11 -&gt; +10 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED fin-assumptions: latest start 2026-11-22 -&gt; 2026-12-06</li>
+<li>STATUS fin-assumptions: timing OK -&gt; OK; total float +5 -&gt; +4 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK fin-model-build: requirement changed: ADD-03-Q17-01 (text, status, consequence, quote)</li>
+<li>MOVED fin-model-build: latest start 2026-10-22 -&gt; 2026-11-05</li>
+<li>STATUS fin-model-build: timing OK -&gt; INFEASIBLE by 1 WD; total float 0 -&gt; -1 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK fin-model-freeze: requirement changed: ADD-03-Q17-01 (text, status, consequence, quote)</li>
+<li>MOVED fin-model-freeze: latest start 2026-11-12 -&gt; 2026-11-26</li>
+<li>STATUS fin-model-freeze: timing OK -&gt; INFEASIBLE by 1 WD; total float 0 -&gt; -1 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED fin-standing: latest start 2026-11-19 -&gt; 2026-12-03</li>
+<li>STATUS fin-standing: timing OK -&gt; OK; total float +15 -&gt; +14 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED fin-statements: latest start 2026-11-12 -&gt; 2026-11-26</li>
+<li>STATUS fin-statements: timing OK -&gt; OK; total float +15 -&gt; +14 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4a: requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: 'Bidders shall acknowledge receipt in Form 4-A.'), ADD-03-cover-01 (text, status, consequence, quote, parameters), VOL-I-7.1-01 (dates), VOL-IV-F4A-01 (anchor date: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)), VOL-IV-F4A-02 (anchor date: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides))</li>
+<li>MOVED form-4a: latest start 2026-11-23 -&gt; 2026-12-07</li>
+<li>STATUS form-4a: timing OK -&gt; OK; total float +12 -&gt; +11 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4a-prep: requirement changed: ADD-01-AppA-01 (Addenda to acknowledge: ADD-03 issued since ADD-02: 'Bidders shall acknowledge receipt in Form 4-A.'), ADD-03-cover-01 (text, status, consequence, quote, parameters), VOL-I-7.1-01 (dates), VOL-IV-F4A-01 (anchor date: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides)), VOL-IV-F4A-02 (anchor date: PDD moved 2026-11-26 -&gt; 2026-12-10 (VOL-I 6.1 as amended by ADD-01 2.1, ADD-03 2.1); ADD-01 AppA/proposal-due-date prints 2026-11-12: CONFLICT with the amended PDD, not corrected (a person decides))</li>
+<li>MOVED form-4a-prep: latest start 2026-11-22 -&gt; 2026-12-06</li>
+<li>STATUS form-4a-prep: timing OK -&gt; OK; total float +20 -&gt; +19 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED form-4b: latest start 2026-11-23 -&gt; 2026-12-07</li>
+<li>STATUS form-4b: timing OK -&gt; OK; total float +7 -&gt; +6 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED form-4b-prep: latest start 2026-11-18 -&gt; 2026-12-02</li>
+<li>STATUS form-4b-prep: timing OK -&gt; OK; total float +9 -&gt; +8 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED form-4c-prep: latest start 2026-11-17 -&gt; 2026-12-01</li>
+<li>STATUS form-4c-prep: timing OK -&gt; OK; total float +18 -&gt; +17 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED form-4c-sign: latest start 2026-11-19 -&gt; 2026-12-03</li>
+<li>STATUS form-4c-sign: timing OK -&gt; OK; total float +10 -&gt; +9 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4e: requirement changed: VOL-V-12.1-01 (consequence, quote), VOL-V-29.3-01 (cited units, quote: cited unit VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1), VOL-V-31.1-02 (dependency: VOL-II T2-4/TP: Limit 1 -&gt; 0.5 mg/l by ADD-03/7.1 (depends on it: REL-T24-UNAVAILABILITY (limit_applies, confirmed)))</li>
+<li>MOVED form-4e: latest start 2026-11-22 -&gt; 2026-12-06</li>
+<li>STATUS form-4e: timing OK -&gt; OK; total float +1 -&gt; 0 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4f: requirement changed: ADD-03-Q17-01 (text, status, consequence, quote)</li>
+<li>MOVED form-4f: latest start 2026-11-22 -&gt; 2026-12-06</li>
+<li>STATUS form-4f: timing OK -&gt; INFEASIBLE by 1 WD; total float 0 -&gt; -1 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4g-review: requirement changed: ADD-02-F4G-01 (stale), ADD-02-F4G-02 (stale), ADD-02-F4G-03 (stale), ADD-02-F4G-04 (stale), ADD-02-F4G-05 (stale), ADD-02-F4G-06 (stale), ADD-02-F4G-07 (stale)</li>
+<li>MOVED form-4g-review: latest start 2026-11-16 -&gt; 2026-11-30</li>
+<li>STATUS form-4g-review: timing OK -&gt; OK; total float +17 -&gt; +16 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK form-4g-sign: requirement changed: ADD-02-F4G-01 (stale), ADD-02-F4G-02 (stale), ADD-02-F4G-03 (stale), ADD-02-F4G-04 (stale), ADD-02-F4G-05 (stale), ADD-02-F4G-06 (stale), ADD-02-F4G-07 (stale)</li>
+<li>MOVED form-4g-sign: latest start 2026-11-23 -&gt; 2026-12-07</li>
+<li>STATUS form-4g-sign: timing OK -&gt; OK; total float +12 -&gt; +11 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED ground-dd: latest start 2026-10-29 -&gt; 2026-11-12</li>
+<li>STATUS ground-dd: timing OK -&gt; OK; total float +5 -&gt; +4 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED investment-licence: latest start 2026-11-17 -&gt; 2026-12-01</li>
+<li>STATUS investment-licence: timing OK -&gt; OK; total float +8 -&gt; +7 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>REWORK iso-copy: requirement changed: VOL-I-8.3-01 (dates, parameters)</li>
+<li>MOVED iso-copy: latest start 2026-11-22 -&gt; 2026-12-06</li>
+<li>STATUS iso-copy: timing OK -&gt; OK; total float +21 -&gt; +20 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED lcc-certificate: latest start 2026-10-13 -&gt; 2026-10-27</li>
+<li>STATUS lcc-certificate: timing INFEASIBLE by 12 WD -&gt; INFEASIBLE by 13 WD; total float -12 -&gt; -13 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED lcc-ratio: latest start 2026-10-06 -&gt; 2026-10-20</li>
+<li>STATUS lcc-ratio: timing INFEASIBLE by 12 WD -&gt; INFEASIBLE by 13 WD; total float -12 -&gt; -13 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED lender-terms: latest start 2026-10-29 -&gt; 2026-11-12</li>
+<li>STATUS lender-terms: timing OK -&gt; OK; total float +5 -&gt; +4 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED model-audit-opinion: latest start 2026-11-15 -&gt; 2026-11-29</li>
+<li>STATUS model-audit-opinion: timing OK -&gt; INFEASIBLE by 1 WD; total float 0 -&gt; -1 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED model-audit-review: latest start 2026-11-01 -&gt; 2026-11-15</li>
+<li>STATUS model-audit-review: timing OK -&gt; OK; total float +1 -&gt; 0 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED model-auditor-appoint: latest start 2026-10-25 -&gt; 2026-11-08</li>
+<li>STATUS model-auditor-appoint: timing OK -&gt; OK; total float +1 -&gt; 0 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED om-evidence: latest start 2026-11-10 -&gt; 2026-11-24</li>
+<li>STATUS om-evidence: timing OK -&gt; OK; total float +13 -&gt; +12 WD; the planning date moved 2026-10-22 -&gt; 2026-11-08, which by itself shifts every float by the Working Days between them</li>
+<li>MOVED pcg-execution: latest start 2026-11-10 -&gt; 2026-11-24</li>
+</ul>
+<p>… 49 more lines in <a href="diff.md">diff.md</a></p>
+<h2>Next (a person)</h2>
+<ul>
+<li>read the unresolved and escalated provisions first, then each item against its evidence (<code>../ai/ADD-03-run-host-20261015T131927Z-745a-combined/proposals.yaml</code>, <code>../downstream/proposals.yaml</code>)</li>
+<li>nothing here is applied to the real curation: to take an item over, add the PDF to the pack (OPERATING_GUIDE §3 steps 1-2) and copy the reviewed files listed in <code>promotion.json</code>; then <code>pin</code>, <code>check-register</code>, <code>outputs</code> and decide with <code>accept</code> / <code>reject</code> as usual</li>
+</ul></body></html>

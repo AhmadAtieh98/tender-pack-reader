@@ -1,0 +1,343 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-002:
+    selected: 3
+    selected_items:
+      D-ADD-03-OMISSION: &id001
+      - consequential_interpretation
+      D-ADD-03-CLARIFICATION: &id002
+      - consequential_interpretation
+      D-ADD-03-DELIVERY: &id003
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-002-critic
+    route: host
+    reviewed: 3
+    agrees: 1
+    disagrees: 2
+    missing: []
+    model_requested: codex exec (configured gpt-6-astra; runtime identity recorded separately)
+    model_reported: null
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-003:
+    selected: 2
+    selected_items:
+      D003-READ-3: &id004
+      - consequential_interpretation
+      D003-READ-6: &id005
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-003-critic
+    route: host
+    reviewed: 2
+    agrees: 2
+    disagrees: 0
+    missing: []
+    model_requested: codex exec (configured gpt-6-astra; runtime identity recorded separately)
+    model_reported: null
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-004:
+    selected: 1
+    selected_items:
+      ADD-03-D004-PCOD: &id006
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-004-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: codex exec (configured gpt-6-astra; runtime identity recorded separately)
+    model_reported: null
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-005:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-006:
+    selected: 4
+    selected_items:
+      P-ADD03-D006-COPIES: &id007
+      - conflicting
+      P-ADD03-D006-ENVELOPE-A-GAP: &id008
+      - conflicting
+      P-ADD03-D006-ENVELOPE-B: &id009
+      - conflicting
+      P-ADD03-D006-ENVELOPE-B-INSTRUCTION: &id010
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-006-critic
+    route: host
+    reviewed: 4
+    agrees: 2
+    disagrees: 2
+    missing: []
+    model_requested: codex exec (configured gpt-6-astra; runtime identity recorded separately)
+    model_reported: null
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-007:
+    selected: 1
+    selected_items:
+      D-ADD03-D007-FORM-SIGN: &id011
+      - conflicting
+    status: done
+    critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-007-critic
+    route: host
+    reviewed: 1
+    agrees: 1
+    disagrees: 0
+    missing: []
+    model_requested: codex exec (configured gpt-6-astra; runtime identity recorded separately)
+    model_reported: null
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-008:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-009:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-010:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+items:
+  D-ADD-03-OMISSION:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:3.4
+        - VOL-I:5.2
+        - VOL-I:6.1
+        - VOL-I-3.4-01 recorded owner interpretation
+        - I-VOL-III and its review record
+        - Controller validation of proposed ADD-03 effective quotations
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-002-critic
+        model_reported: null
+  D-ADD-03-CLARIFICATION:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'insufficient evidence: the relative deadline rule and consequence are supported, but no calculate(deadline)
+          result is printed to substantiate the claimed calculation confirmation. VOL-I:2.4 supports excluding the
+          stated date; provide the calculation record or attribute that reading directly to the clause.'
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:2.4
+        - VOL-I:5.2
+        - VOL-I:6.1
+        - VOL-I-5.2-01
+        - Controller validation records
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-002-critic
+        model_reported: null
+  D-ADD-03-DELIVERY:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'insufficient evidence: the amended deadline, retained time and address reference, and rejection consequence
+          are supported. However, no activity records or supporting clauses establish the named seal-and-mark, copies,
+          assemble-envelope-a and assemble-envelope-b activities or their dependencies under EV-DELIVERY. Supply
+          their basis or label them as proposed activities requiring verification.'
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.1
+        - VOL-I:6.6
+        - VOL-I-6.1-01
+        - current_records.activities (empty)
+        - Controller validation records
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-002-critic
+        model_reported: null
+  D003-READ-3:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.1
+        - VOL-I:6.7
+        - current_records.rows.VOL-I-6.7-01
+        - D003-READ-3 controller_validation
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-003-critic
+        model_reported: null
+  D003-READ-6:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - ADD-03:4.2
+        - ADD-03:2.1
+        - VOL-I:8.5#fn12
+        - VOL-I:8.5
+        - VOL-I:6.1
+        - VOL-I:7.1
+        - current_records.rows.VOL-I-8.5-01
+        - current_records.rows.VOL-I-7.1-01
+        - D003-READ-6 controller_validation
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-003-critic
+        model_reported: null
+  ADD-03-D004-PCOD:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'insufficient evidence: The proposed review against amended reliability-run requirements has no supporting
+          provision in the supplied evidence. Q15 supports the unchanged construction period and references a capacity
+          increase only.'
+        - 'insufficient evidence: No crop or image-inspection record is supplied for table row ADD-03:Q15, so the
+          required image check cannot be verified.'
+        - The obligation, Notice to Proceed anchor, unchanged month-based date rule and contractual delay-damages
+          consequence are supported. However, the rationale's claim that the reading became stale is not established
+          by the supplied records; the ADD-02 record has no stale entries, and no later staleness trigger is shown.
+        evidence_checked:
+        - ADD-03:Q15, including Bidder question and Authority response cells
+        - VOL-V:12.1
+        - VOL-V:18.1
+        - current_records.rows.VOL-V-12.1-01
+        - current_records.reviews.row:VOL-V-12.1-01
+        - ADD-03-D004-PCOD controller_validation
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-004-critic
+        model_reported: null
+  P-ADD03-D006-COPIES:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'The proposed preparation and pending instructions follow the quoted requirements and existing issues.
+          However, the claimed preservation of both EV-COPIES and EV-DELIVERY associations is not established: the
+          payload names only EV-DELIVERY and VOL-I-6.1-01, current_records.activities is empty, and the controller
+          does not verify preservation of EV-COPIES. Show the resulting associations before claiming they are retained.'
+        evidence_checked:
+        - VOL-I:6.5
+        - VOL-I:App2/para1
+        - VOL-I:10.3
+        - current_records.rows.VOL-I-6.5-01
+        - current_records.rows.VOL-I-6.5-02
+        - current_records.issues.I-VOL-I-COPIES
+        - current_records.issues.I-VOL-I-FILE-NAMES
+        - P-ADD03-D006-COPIES payload and controller_validation
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-006-critic
+        model_reported: null
+  P-ADD03-D006-ENVELOPE-A-GAP:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'insufficient evidence: the request does not print the promoted operations or assembly template. The assertions
+          that an operation only revokes ADD-02:7.2 and that assemble-envelope-a still includes Form 4-G cannot
+          be verified. The printed ADD-02 register establishes the previous-stage contents, not the resulting ADD-03
+          implementation gap.'
+        - ADD-03:3.1 expressly withdraws Form 4-G and prohibits submission. Any uncertainty should concern implementation
+          of that instruction, without implying that the withdrawal itself lacks evidence.
+        - The item declares I-VOL-I-ENV-A-PRICES as a conflict without showing how Form 4-G withdrawal affects that
+          separate issue.
+        evidence_checked:
+        - ADD-03:3.1
+        - ADD-03:3.2
+        - ADD-02:7.1
+        - ADD-02:7.2
+        - VOL-I:9.1
+        - current_records.rows.VOL-I-9.1-01
+        - current_records.ops
+        - current_records.activities
+        - current_records.issues.I-VOL-I-ENV-A-PRICES
+        selected_because: *id008
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-006-critic
+        model_reported: null
+  P-ADD03-D006-ENVELOPE-B:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - VOL-I:10.1
+        - VOL-I:10.3
+        - VOL-I:10.6
+        - current_records.issues.I-VOL-I-ENV-B
+        - current_records.reviews.issue:I-VOL-I-ENV-B
+        - downstream-006/S-ADD03-D006-ENV-B
+        - downstream-006/S-ADD03-D006-DURATIONS
+        - P-ADD03-D006-ENVELOPE-B controller_validation
+        selected_because: *id009
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-006-critic
+        model_reported: null
+  P-ADD03-D006-ENVELOPE-B-INSTRUCTION:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - VOL-I:10.1
+        - VOL-I:10.3
+        - VOL-I:10.6
+        - current_records.issues.I-VOL-I-ENV-B
+        - current_records.reviews.issue:I-VOL-I-ENV-B
+        - current_records.review_note
+        - downstream-006/S-ADD03-D006-ENV-B
+        selected_because: *id010
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-006-critic
+        model_reported: null
+  D-ADD03-D007-FORM-SIGN:
+    batch: downstream-007
+    review:
+      critic:
+        agrees: true
+        concerns: []
+        evidence_checked:
+        - VOL-I:9.3
+        - VOL-IV:cover/para5
+        - VOL-I:7.1
+        - ADD-01:AppA/para1
+        - 'current_records: I-F4A-FIELDS and its interview_demo review; acceptance does not resolve handling'
+        - 'current_records: linked EV-FORM-4A rows and changed review of VOL-I-7.1-01'
+        - 'controller_validation: provisional duration, row dependencies and A5 checks'
+        selected_because: *id011
+        route: host
+        critic_run: ADD-03-run-host-20261015T131927Z-745a-downstream-007-critic
+        model_reported: null

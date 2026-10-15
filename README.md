@@ -1,4 +1,6 @@
-> **Current interview demo:** see [implementation handover](docs/INTERVIEW_DEMO_HANDOVER.md) for the prepared ADD02 → ADD03 workflow, one-page candidate A3, editable simulated decisions, verification boundaries and continuation steps. Coding agents start with [AGENTS.md](AGENTS.md).
+> **Latest live ADD-03 results (15 October 2026): PARTIAL / NOT VALIDATED.** Start with [what changed in the outputs](staging/ai/runs/ADD-03-run-host-20261015T131927Z-745a/OUTPUT_DIFF.md), then [candidate outputs, timeout recovery and required human decisions](staging/ai/runs/ADD-03-run-host-20261015T131927Z-745a/README.md). A3 uses the full candidate HTML page; the one-page candidate PDF fit failed. All 13 workflow steps finished after resume; five provisions and fourteen downstream tasks remain unresolved. Demo approvals are simulated, not actual tender approval.
+
+> **Demo implementation:** see [implementation handover](docs/INTERVIEW_DEMO_HANDOVER.md) for the prepared ADD02 → ADD03 workflow, earlier rehearsal results and continuation steps. Its earlier one-page A3 result does not describe the live ADD-03 result above. Coding agents start with [AGENTS.md](AGENTS.md).
 
 # tender-pack-reader
 

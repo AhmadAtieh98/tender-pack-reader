@@ -1,5 +1,7 @@
 # Interview demo: implementation handover
 
+> **Live-result update, 15 October 2026:** the actual ADD-03 run completed all 13 steps after timeout/resume and remains PARTIAL. See the [published result and review actions](../staging/ai/runs/ADD-03-run-host-20261015T131927Z-745a/README.md) and [before/after output diff](../staging/ai/runs/ADD-03-run-host-20261015T131927Z-745a/OUTPUT_DIFF.md). Its primary candidate A3 is HTML; the live one-page candidate PDF fit failed. The timings, counts and one-page success below describe earlier rehearsals, not this live result.
+
 ## Current state
 
 The application has a prepared ADD02 interview profile, a signed-in Codex host transport and an incremental ADD03 workflow. Demo approvals are explicitly labelled and editable. A partial result remains partial when evidence or interpretation is missing. The normal source pack and its approval files have not been changed.

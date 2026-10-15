@@ -1,0 +1,425 @@
+# A1 register rows for Volume IV, Form Sheets 4-A to 4-F (Stage 3). PROPOSED: drafted by the register agent,
+# session 05. No row has been reviewed or accepted by a person. Rows already held in curation/register/rows.yaml
+# (VOL-IV-F4A-01 printed PDD, VOL-I-9.4-01 Form 4-C execution, VOL-IV-F4C-04 declaration 4, VOL-IV-F4C-N1 Form 4-C
+# note) are not repeated here. Form 4-C rows rest on an image reading still PENDING the owner's review.
+# Rule for re-interpretation: a row gets an interpretation at an addendum stage only where that addendum addresses
+# one of its units (ADD-01 App A replaces Form 4-A; ADD-02 Q9 annotates Form 4-C).
+# Form 4-A confirmations that the reissued form drops (paragraphs 1-5) do NOT follow the replacement: they show
+# REPLACED from ADD-01, which is what the documents say; whether to give them anyway is I-F4A-FIELDS.
+doc: VOL-IV
+prepared_by: "AI-assisted draft (register agent, session 05); not reviewed"
+method: >-
+  Every Volume IV unit read in order (build/units.json), including the Form 4-C image reading (Arabic, logical
+  order; translations are proposals). One row per form for its completion and execution, plus one row per
+  independently testable confirmation, declaration or guarantee term (D3). Form notes that restate a Volume I
+  clause are dispositioned as duplicates of the Volume I row. Quotes copied from the effective text at each stage
+  (tenderpack.amend); consequences quoted only from the unit that states them, never inferred.
+rows:
+  # ---------------------------------------------------------------- general rule for all forms (VOL-IV p2)
+  - id: VOL-IV-FORMS-01
+    group: "VOL-IV:cover/para5"
+    scope: [forms, wording]
+    requirement: "Reproduce every Form without alteration to its wording"
+    units: ["VOL-IV:cover/para5"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: procedural
+    no_deliverable: "a rule on how each Form is reproduced; the Forms themselves are the deliverables of their own rows"
+    interpretations:
+      - stage: BASE
+        quote: "Forms shall be reproduced without alteration to their wording."
+        consequence: {class: lesser, unit: "VOL-IV:cover/para5", quote: "A Bidder that alters the wording of a Form does so at its own risk."}
+        note: "Bears on the reissued Form 4-A, which prints the old Proposal Due Date (VOL-IV-F4A-01, I-F4A-FIELDS), and on Form 4-D, which VOL-I 8.7 requires only 'substantially in the form'."
+    confidence: high
+    confidence_reason: "verbatim; 'at its own risk' does not say what the Authority will do"
+    issues: [I-F4A-FIELDS]
+  # ---------------------------------------------------------------- Form 4-A (replaced by ADD-01 Appendix A)
+  - id: VOL-IV-F4A-02
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, reissued_form]
+    requirement: "Complete Form 4-A (Envelope A, mandatory) in the form reissued by ADD-01 App A; VOL-I states no consequence for a blank field. Execution and its consequence (unsigned or improperly executed: non-responsive) are row VOL-I-9.3-01"
+    units: ["VOL-IV:F4-A/name-of-bidder-lead-member", "VOL-IV:cover/T1/4-A", "VOL-IV:F4-A/tender-reference", "VOL-IV:F4-A/project",
+            "VOL-IV:F4-A/proposal-due-date", "VOL-IV:F4-A/commercial-registration-number", "VOL-IV:F4-A/registered-address",
+            "VOL-IV:F4-A/single-point-of-contact-name-title", "VOL-IV:F4-A/contact-email-and-telephone", "VOL-IV:F4-A/signature",
+            "VOL-IV:F4-A/name-of-signatory", "VOL-IV:F4-A/capacity", "VOL-IV:F4-A/power-of-attorney-reference-and-date",
+            "VOL-IV:F4-A/date", "VOL-IV:F4-A/company-seal", "ADD-01:AppA/para1", "ADD-01:AppA/single-point-of-contact",
+            "ADD-01:AppA/signature-name-capacity"]
+    follows_replacement: true
+    discipline: Legal
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "Name of Bidder / lead member:"
+        note: "The form's fields are to be completed (mandatory form, VOL-IV cover table). VOL-I 9.3's consequence is for an 'unsigned or improperly executed' Form 4-A; it is not read as 'every blank field causes rejection' (row VOL-I-9.3-01 carries it). Whether a particular omission would make the form improperly executed is for a person."
+      - stage: ADD-01
+        quote: "Name of Bidder / lead member:"
+        note: "No consequence is stated for a blank field; VOL-I 9.3's 'unsigned or improperly executed' trigger is row VOL-I-9.3-01. ADD-01 App A reissues Form 4-A ('Bidders shall use this version'). It keeps tender reference, project, PDD, name, single point of contact, 'Signature / name / capacity' and date; it drops the CR number, registered address, contact email/telephone, Power of Attorney reference and date, and company seal. Not resolved: I-F4A-FIELDS."
+    confidence: medium
+    confidence_reason: "verbatim fields; the reissued form drops fields and still prints the old PDD (a decision for a person)"
+    issues: [I-F4A-FIELDS]
+  - id: VOL-IV-F4A-03
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, confirmation, addenda_acknowledgement, dropped_in_reissue]
+    requirement: "Form 4-A para 1: acknowledge receipt of the Addenda by number and offer the Project in conformity with the RFP Documents"
+    units: ["VOL-IV:F4-A/item1"]
+    discipline: Legal
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "the receipt of which is hereby acknowledged, we offer to design, finance, construct, own, operate, maintain and transfer the Project in conformity with the RFP Documents"
+        note: "No consequence stated in the form. The reissued Form 4-A (ADD-01 App A) has no paragraph 1 and no offer wording; it has an 'Addenda acknowledged (numbers)' field (row ADD-01-AppA-01)."
+    confidence: medium
+    confidence_reason: "verbatim; dropped by the reissued form from ADD-01 (whether to give it anyway is for a person)"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE]
+  - id: VOL-IV-F4A-04
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, confirmation, validity, dropped_in_reissue]
+    requirement: "Form 4-A para 2: confirm the Proposal is valid for 150 days from the Proposal Due Date"
+    units: ["VOL-IV:F4-A/item2"]
+    discipline: Commercial
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    date_rules:
+      - {rule_id: PROPOSAL-VALIDITY-F4A, kind: relative, purpose: validity_end, anchor: PDD, offset: 150, unit: calendar_day, direction: after, source_unit: "VOL-IV:F4-A/item2", text: "valid for one hundred and fifty (150) days from the Proposal Due Date"}
+    interpretations:
+      - stage: BASE
+        quote: "We confirm that this Proposal is valid for one hundred and fifty (150) days from the Proposal Due Date."
+        parameters: {validity_days: 150}
+        note: "Confirms VOL-I 7.1 (row VOL-I-7.1-01). No consequence stated. Dropped by the reissued Form 4-A from ADD-01."
+    confidence: medium
+    confidence_reason: "verbatim; dropped by the reissued form from ADD-01; day 0 / day 1 not stated"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE]
+  - id: VOL-IV-F4A-05
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, confirmation, bid_security, dropped_in_reissue]
+    requirement: "Form 4-A para 3: confirm the Bid Bond required by VOL-I 6.4 accompanies the Proposal"
+    units: ["VOL-IV:F4-A/item3"]
+    discipline: Commercial
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "We confirm that the Bid Bond required by Volume I Clause 6.4 accompanies this Proposal."
+        note: "The Bid Bond itself is VOL-I-6.3-01, VOL-I-6.4-01 and VOL-I-6.4-02. No consequence stated. Dropped by the reissued Form 4-A from ADD-01."
+    confidence: medium
+    confidence_reason: "verbatim; dropped by the reissued form from ADD-01"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE]
+  - id: VOL-IV-F4A-06
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, confirmation, multiple_participation, dropped_in_reissue]
+    requirement: "Form 4-A para 4: confirm no consortium member participates in any other Proposal for the Project"
+    units: ["VOL-IV:F4-A/item4"]
+    discipline: Legal
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "We confirm that no member of our consortium participates in any other Proposal for this Project."
+        note: "No consequence stated in the form; multiple participation itself leads to rejection under VOL-I 8.2 (row VOL-I-8.2-01). Also declared in Form 4-C (VOL-IV-F4C-02). Dropped by the reissued Form 4-A from ADD-01."
+    confidence: medium
+    confidence_reason: "verbatim; dropped by the reissued form from ADD-01; the confirmation rests on bidder facts"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-IV-F4A-07
+    group: "VOL-IV:F4-A"
+    scope: [envelope_A, forms, confirmation, pre_bid, dropped_in_reissue]
+    requirement: "Form 4-A para 5: confirm attendance at the Pre-Bid Conference held under VOL-I 5.4"
+    units: ["VOL-IV:F4-A/item5"]
+    discipline: Bid management
+    owner: Bid manager
+    assessment: pass_fail
+    evidence: [EV-FORM-4A]
+    interpretations:
+      - stage: BASE
+        quote: "We confirm that we attended the Pre-Bid Conference held under Volume I Clause 5.4."
+        note: "No consequence stated in the form; non-attendance itself leads to disqualification under VOL-I 5.4 (row VOL-I-5.4-01). Dropped by the reissued Form 4-A from ADD-01."
+    confidence: medium
+    confidence_reason: "verbatim; dropped by the reissued form from ADD-01; attendance is a bidder fact"
+    issues: [I-F4A-FIELDS, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  # ---------------------------------------------------------------- Form 4-B
+  - id: VOL-IV-F4B-01
+    group: "VOL-IV:F4-B"
+    scope: [envelope_A, forms, references]
+    requirement: "Form 4-B, one per reference project (Envelope A): complete every field, incl. the completion certificate question"
+    units: ["VOL-IV:cover/T1/4-B", "VOL-IV:F4-B/reference-project-number", "VOL-IV:F4-B/project-name", "VOL-IV:F4-B/country-and-location",
+            "VOL-IV:F4-B/client-owner", "VOL-IV:F4-B/role-of-the-consortium-member", "VOL-IV:F4-B/nominal-treatment-capacity-m3-day",
+            "VOL-IV:F4-B/process-type", "VOL-IV:F4-B/date-of-commercial-operation-dd-mm-yyyy",
+            "VOL-IV:F4-B/was-the-member-responsible-for-design", "VOL-IV:F4-B/was-the-member-responsible-for-construction",
+            "VOL-IV:F4-B/was-the-member-responsible-for-operation", "VOL-IV:F4-B/years-of-operation-by-the-member",
+            "VOL-IV:F4-B/contract-value-sar-equivalent", "VOL-IV:F4-B/client-contact-for-verification",
+            "VOL-IV:F4-B/completion-certificate-attached"]
+    discipline: Technical
+    owner: Technical lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4B]
+    interpretations:
+      - stage: BASE
+        quote: "Envelope: A | Status: Mandatory (one per project)"
+        note: "No consequence stated for an incomplete form. A reference without a completion certificate is disregarded (VOL-I 9.5, row VOL-I-9.5-01, restated in the form's note); fewer than two qualifying plants leads to rejection (VOL-I-8.5-01). The 'Contract value (SAR equivalent)' field sits in Envelope A (I-VOL-I-ENV-A-PRICES)."
+    confidence: medium
+    confidence_reason: "verbatim fields; the contract value field conflicts with VOL-I 6.2 (no commercial information in Envelope A)"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-A-PRICES, I-BIDDER-FACTS]
+  # ---------------------------------------------------------------- Form 4-C declarations (image, Arabic; transcription confirmed 3 Oct 2026)
+  - id: VOL-IV-F4C-01
+    group: "VOL-IV:F4-C"
+    scope: [envelope_A, forms, arabic, declaration, image]
+    requirement: "Form 4-C declaration 1 (Arabic only): no actual or potential conflict of interest with the Authority or its advisers on this project"
+    units: ["VOL-IV:F4-C/image/decl1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع"
+        note: "Proposed translation: 'that there is no conflict of interest, actual or potential, between us and the Authority or any of its advisers in relation to this project'. No English clause states this obligation. No consequence stated in this declaration; whether declaration 4's 'any incorrect statement leads to the exclusion of the proposal' (VOL-IV-F4C-04) reaches it is for a person."
+      - stage: ADD-02
+        quote: "أنه لا يوجد أي تضارب في المصالح، فعلي أو محتمل، بيننا وبين الهيئة أو أي من مستشاريها فيما يتعلق بهذا المشروع"
+        note: "ADD-02 Q9 (Form 4-C completed in Arabic; English translation for convenience only) reviewed: no change to this declaration."
+    confidence: medium
+    confidence_reason: "from an image reading (transcription and displayed translation confirmed by the owner, 3 Oct 2026, VOL-IV-p6-r1; the consequence category mapping stays open: I-F4C-EXCLUSION)"
+    issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-IV-F4C-02
+    group: "VOL-IV:F4-C"
+    scope: [envelope_A, forms, arabic, declaration, image, multiple_participation]
+    requirement: "Form 4-C declaration 2 (Arabic): the member has not taken part, directly or indirectly, in more than one proposal for this tender"
+    units: ["VOL-IV:F4-C/image/decl2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة"
+        note: "Proposed translation: 'that the company has not participated, directly or indirectly, in more than one proposal for this tender'. No consequence stated in the declaration; multiple participation itself leads to rejection under VOL-I 8.2 (row VOL-I-8.2-01)."
+      - stage: ADD-02
+        quote: "أن الشركة لم تشارك، بصورة مباشرة أو غير مباشرة، في أكثر من عرض واحد لهذه المناقصة"
+        note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
+    confidence: medium
+    confidence_reason: "from an image reading (transcription and displayed translation confirmed by the owner, 3 Oct 2026, VOL-IV-p6-r1; the consequence category mapping stays open: I-F4C-EXCLUSION)"
+    issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-IV-F4C-03
+    group: "VOL-IV:F4-C"
+    scope: [envelope_A, forms, arabic, declaration, image, debarment]
+    requirement: "Form 4-C declaration 3 (Arabic): the member is not, and in the previous five years was not, on any Kingdom government debarment list"
+    units: ["VOL-IV:F4-C/image/decl3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر صادرة عن جهة حكومية في المملكة"
+        parameters: {lookback_years: 5}
+        note: "Proposed translation: 'that the company is not listed, and has not been listed during the previous five years, on any debarment list issued by a government body in the Kingdom'. This is the declaration VOL-I 8.10 requires (row VOL-I-8.10-01); the English says 'any debarment by a public authority', the Arabic 'a debarment list issued by a government body'. The end point of the five years is not stated. No consequence stated."
+      - stage: ADD-02
+        quote: "أن الشركة غير مدرجة، ولم تكن مدرجة خلال الخمس سنوات السابقة، في أي قائمة حظر صادرة عن جهة حكومية في المملكة"
+        parameters: {lookback_years: 5}
+        note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
+    confidence: medium
+    confidence_reason: "from an image reading (transcription confirmed by the owner, 3 Oct 2026); wording differs from VOL-I 8.10"
+    issues: [I-READING-F4C, I-NO-CONSEQUENCE, I-BIDDER-FACTS]
+  - id: VOL-IV-F4C-05
+    group: "VOL-IV:F4-C"
+    scope: [envelope_A, forms, arabic, declaration, image, communications]
+    requirement: "Form 4-C declaration 5 (Arabic): undertake to comply with the communication rules of Volume I clause 4.2 (blackout)"
+    units: ["VOL-IV:F4-C/image/decl5"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4C]
+    interpretations:
+      - stage: BASE
+        quote: "نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول"
+        parameters: {clause_referenced: "VOL-I 4.2", clause_confirmed_by: "the owner's review of the Form 4-C reading (Ahmad, 3 Oct 2026)"}
+        note: "Proposed translation: 'we undertake to comply with the communication rules set out in Clause 4-2 of Volume I'. The owner's review of the reading (approval of VOL-IV-p6-r1, 3 Oct 2026) settles the clause as VOL-I 4.2 (blackout; a breach of 4.2 leads to disqualification, row VOL-I-4.2-01); the earlier alternative 4.3 is set aside. No consequence is stated in the declaration itself."
+      - stage: ADD-02
+        quote: "نلتزم بقواعد الاتصال المنصوص عليها في البند ٤-٢ من المجلد الأول"
+        parameters: {clause_referenced: "VOL-I 4.2", clause_confirmed_by: "the owner's review of the Form 4-C reading (Ahmad, 3 Oct 2026)"}
+        note: "ADD-02 Q9 (Form 4-C in Arabic) reviewed: no change to this declaration."
+    confidence: medium
+    confidence_reason: "transcription confirmed by the owner, 3 Oct 2026, including the clause numeral (4.2); the interpretation is proposed"
+    issues: [I-READING-F4C, I-NO-CONSEQUENCE]
+  # ---------------------------------------------------------------- Form 4-D Parent Company Guarantee
+  - id: VOL-IV-F4D-01
+    group: "VOL-IV:F4-D"
+    scope: [envelope_A, forms, guarantee]
+    requirement: "Form 4-D (Envelope A, EPC parent): name guarantor, jurisdiction and EPC Contractor; execute with name, capacity, date, authority reference"
+    units: ["VOL-IV:cover/T1/4-D", "VOL-IV:F4-D/guarantor-ultimate-parent-of-epc-contractor", "VOL-IV:F4-D/jurisdiction-of-incorporation",
+            "VOL-IV:F4-D/epc-contractor-guaranteed", "VOL-IV:F4-D/guaranteed-obligations", "VOL-IV:F4-D/limit-of-liability",
+            "VOL-IV:F4-D/expiry", "VOL-IV:F4-D/governing-law", "VOL-IV:F4-D/signature", "VOL-IV:F4-D/name-and-capacity",
+            "VOL-IV:F4-D/date", "VOL-IV:F4-D/corporate-authority-reference"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "Envelope: A | Status: Mandatory (EPC parent)"
+        note: "Executed by the ultimate parent of the EPC Contractor, 'substantially in the form' (VOL-I 8.7, row VOL-I-8.7-01; ADD-02 Q10: not from the O&M Operator). No consequence stated. The guarantee terms are separate rows (VOL-IV-F4D-02 to -08)."
+    confidence: high
+    confidence_reason: "verbatim fields; no consequence stated"
+    issues: [I-NO-CONSEQUENCE, I-F4D-WORDING]   # session 12 (F5): the Form 4-D wording decision
+  - id: VOL-IV-F4D-02
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award]
+    requirement: "Guarantee covers all EPC Contractor obligations under the EPC Contract during construction, incl. payment of liquidated damages"
+    units: ["VOL-IV:F4-D/guaranteed-obligations"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "All obligations of the EPC Contractor under the EPC Contract during the construction period, including the payment of liquidated damages."
+        note: "A pre-printed term of the pro forma; the executed guarantee is submitted with Envelope A and binds the guarantor after award."
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-03
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award, liability]
+    requirement: "Guarantor's liability unlimited as to the guaranteed obligations"
+    units: ["VOL-IV:F4-D/limit-of-liability"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "Limit of liability: Unlimited as to the guaranteed obligations"
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-04
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award, expiry]
+    requirement: "Guarantee expires at the later of the final completion certificate and the end of the defects notification period"
+    units: ["VOL-IV:F4-D/expiry"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "The later of the issue of the final completion certificate under the EPC Contract and the expiry of the defects notification period"
+        note: "Both events are under the EPC Contract, which is not in the pack; no date can be computed."
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-05
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award, governing_law]
+    requirement: "Guarantee governed by the laws of the Kingdom"
+    units: ["VOL-IV:F4-D/governing-law"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "Governing law: Laws of the Kingdom"
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-06
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award]
+    requirement: "Irrevocable, unconditional guarantee of the EPC Contractor's performance to the Project Company and, by collateral warranty, the Authority"
+    units: ["VOL-IV:F4-D/item1"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "The Guarantor irrevocably and unconditionally guarantees to the Project Company and, by way of collateral warranty, to the Authority, the due and punctual performance by the EPC Contractor of the guaranteed obligations."
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-07
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award]
+    requirement: "Guarantor liable as primary obligor; not discharged by any amendment, indulgence or waiver granted to the EPC Contractor"
+    units: ["VOL-IV:F4-D/item2"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "The Guarantor's liability is that of a primary obligor and is not discharged by any amendment, indulgence or waiver granted to the EPC Contractor."
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  - id: VOL-IV-F4D-08
+    group: "VOL-IV:F4-D"
+    scope: [forms, guarantee, post_award]
+    requirement: "Guarantee not conditional on any demand first being made of the EPC Contractor"
+    units: ["VOL-IV:F4-D/item3"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: contractual_post_award
+    evidence: [EV-FORM-4D]
+    interpretations:
+      - stage: BASE
+        quote: "This guarantee is not conditional on any demand first being made of the EPC Contractor."
+    confidence: high
+    confidence_reason: "verbatim pre-printed term"
+  # ---------------------------------------------------------------- Form 4-E
+  - id: VOL-IV-F4E-01
+    group: "VOL-IV:F4-E"
+    scope: [envelope_A, forms, deviations]
+    requirement: "Form 4-E (Envelope A, mandatory): one line per deviation (Volume/Clause, nature, proposed wording, rationale), total declared, signed, dated"
+    units: ["VOL-IV:cover/T1/4-E", "VOL-IV:F4-E/T1/1", "VOL-IV:F4-E/T1/2", "VOL-IV:F4-E/T1/3", "VOL-IV:F4-E/T1/4", "VOL-IV:F4-E/T1/5",
+            "VOL-IV:F4-E/T1/6", "VOL-IV:F4-E/total-number-of-deviations-declared", "VOL-IV:F4-E/signature-of-authorised-signatory",
+            "VOL-IV:F4-E/date"]
+    discipline: Legal
+    owner: Legal counsel
+    assessment: pass_fail
+    evidence: [EV-FORM-4E]
+    interpretations:
+      - stage: BASE
+        quote: "Title: Schedule of Deviations | Envelope: A | Status: Mandatory"
+        note: "No consequence stated for completing the form. What it must list, and the non-responsive consequence of 'no deviations' with a qualification elsewhere, are VOL-I-9.6-01 (restated in the form's note). VOL-V's note: a deviation not listed is taken as accepted."
+    confidence: high
+    confidence_reason: "verbatim; no consequence stated for the form itself"
+    issues: [I-NO-CONSEQUENCE]
+  # ---------------------------------------------------------------- Form 4-F (Envelope B)
+  - id: VOL-IV-F4F-01
+    group: "VOL-IV:F4-F"
+    scope: [envelope_B, forms, commercial]
+    requirement: "Form 4-F (Envelope B, mandatory): complete every field (Availability Payment in figures and words, cost, financing, IRRs, model audit) and sign"
+    units: ["VOL-IV:cover/T1/4-F", "VOL-IV:F4-F/bidder", "VOL-IV:F4-F/availability-payment-sar-per-annum-year-1-of-operations",
+            "VOL-IV:F4-F/availability-payment-in-words", "VOL-IV:F4-F/estimated-project-cost-sar",
+            "VOL-IV:F4-F/assumed-senior-debt-tenor-years-from-financial-close", "VOL-IV:F4-F/assumed-senior-debt-margin-bps",
+            "VOL-IV:F4-F/assumed-gearing-debt-equity", "VOL-IV:F4-F/project-irr-nominal-post-tax",
+            "VOL-IV:F4-F/equity-irr-nominal-post-tax", "VOL-IV:F4-F/indexation-basis-assumed", "VOL-IV:F4-F/model-auditor",
+            "VOL-IV:F4-F/date-of-model-audit-opinion", "VOL-IV:F4-F/signature", "VOL-IV:F4-F/name-and-capacity", "VOL-IV:F4-F/date"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F]
+    interpretations:
+      - stage: BASE
+        quote: "Title: Financial Proposal Schedule | Envelope: B | Status: Mandatory"
+        note: "No consequence stated for an incomplete form. Envelope B holds only this Form and the Financial Model (VOL-I-10.1-01); its tenor, margin, gearing, model auditor and opinion-date fields partly overlap VOL-I 10.3 and 10.6 (I-VOL-I-ENV-B). Indexation basis printed as 'Per Volume V Clause 29.2'."
+    confidence: high
+    confidence_reason: "verbatim fields; where the 10.3 and 10.6 documents go is an open issue"
+    issues: [I-NO-CONSEQUENCE, I-VOL-I-ENV-B]
+  - id: VOL-IV-F4F-02
+    group: "VOL-IV:F4-F"
+    scope: [envelope_B, forms, confirmation, commercial]
+    requirement: "Form 4-F: confirm the Availability Payment is unconditional, unqualified and derived from the Financial Model submitted with the Form"
+    units: ["VOL-IV:F4-F/para1"]
+    discipline: Commercial
+    owner: Commercial lead
+    assessment: pass_fail
+    evidence: [EV-FORM-4F, EV-FIN-MODEL]
+    interpretations:
+      - stage: BASE
+        quote: "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form."
+        note: "No consequence stated in the confirmation; a conditional or alternative price is non-responsive under VOL-I 10.5 (row VOL-I-10.5-01)."
+    confidence: high
+    confidence_reason: "verbatim"
+    issues: [I-NO-CONSEQUENCE]
