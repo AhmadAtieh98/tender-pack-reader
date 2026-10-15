@@ -1,0 +1,597 @@
+{
+ "run_id": "ADD-03-run-host-20261015T140902Z-ab89-downstream-001",
+ "created": "2026-10-15T14:18:39Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-F1",
+   "kind": "fact",
+   "text": "ADD-03:3.1 says that Form 4-G is withdrawn, that Bidders shall disregard it and shall not submit it, and that Section 7.2 of Addendum No. 2 ceases to have effect.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F2",
+   "kind": "fact",
+   "text": "ADD-03/3.1(a) is the only promoted op on ADD-03:3.1. It sets ADD-02:7.2 to revoked. In units_after, ADD-02:7.2 is revoked. The Form 4-G units ADD-02:F4-G/T1/1 to T1/4 and ADD-02:F4-G/para1, and the Envelope A list insertion VOL-I:9.1(e)+ADD-02, are all still active. get_group ADD-02:F4-G at ADD-03 also shows T1/5 and T1/6 as active.",
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:7.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Form 4-G shall be completed and submitted with Envelope A. Failure to submit Form 4-G shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F3",
+   "kind": "fact",
+   "text": "Dry run with simulate_amendment on ADD-03 (nothing was saved): set_status revoked fails C22 on all three other targets tried. On ADD-02:F4-G it fails with 'target ADD-02:F4-G exists' because the form is a group, not a unit. On ADD-02:F4-G/T1/3 it fails with 'is a row of cited ADD-02:F4-G, but the provision does not name it'. On VOL-I:9.1(e)+ADD-02 it fails with 'is not cited; the provision cites [ADD-02:F4-G, ADD-02:S7, ADD-02:7.2]'. Only ADD-03/3.1(a) on ADD-02:7.2 is valid.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I1",
+   "kind": "interpretation",
+   "text": "Rows ADD-02-F4G-01 to -05 quote Form 4-G units that are still active at ADD-03 only because no op can take the withdrawn form out of force. Re-making their readings at ADD-03 with the same words would show the undertakings of a form the Bidder 'shall not submit' as still in force. A person must decide whether the following stop applying from ADD-03: these rows, the Form 4-G item in row VOL-I-9.1-01, evidence item EV-FORM-4G, A5 activities form-4g-review and form-4g-sign, and issues I-F4G-NO and I-F4G-LETTERING. Nothing is concluded here.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-ADD03-01",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "row:ADD-02-7.2-01",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:7.2",
+   "payload": {
+    "id": "I-ADD03-F4G-SCOPE",
+    "text": "ADD-03 3.1 says: 'Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.' The proposed op ADD-03/3.1(a) revokes only ADD-02:7.2. Row ADD-02-7.2-01 is therefore REVOKED and needs no new reading. Two things stay ACTIVE at ADD-03: the form itself (ADD-02:F4-G, meaning undertakings 1-6 and the signature line) and its entry in the Envelope A list (VOL-I:9.1(e)+ADD-02, 'FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING'). They stay active because the op engine cannot revoke the form as a group, and it rejects the form's member units as targets the provision does not name (dry run, C22). A person needs to decide: (1) whether rows ADD-02-F4G-01 to -05, and any rows on undertakings 5 and 6, stop applying from ADD-03; (2) whether the ADD-02 item list of row VOL-I-9.1-01, which includes Form 4-G, should be re-read without it; (3) whether evidence item EV-FORM-4G and A5 activities form-4g-review and form-4g-sign should come off the programme; (4) whether issues I-F4G-NO and I-F4G-LETTERING lapse. Those two issues were accepted only under an interview_demo assumption, which acknowledges them and nothing more. No handling instruction is recorded for any of these points, and none is inferred. The interview_demo 'changed' review status of the Form 4-G rows is kept as it is.",
+    "owner": "Bid management",
+    "theme": "forms",
+    "short": "ADD-03 3.1 withdraws Form 4-G, but the form units and the VOL-I 9.1 entry are still active",
+    "a3": "ADD-03 3.1 withdraws Form 4-G ('shall not submit it'), but the register revokes only ADD-02 7.2. A person must decide on the form's rows, the VOL-I 9.1 list entry and the Form 4-G activities",
+    "show_in_a3": true
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:7.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Form 4-G shall be completed and submitted with Envelope A.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1",
+     "page": 4,
+     "kind": "span",
+     "words": "Envelope A shall contain, in the following order and separated by numbered dividers:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01",
+    "ADD-02-F4G-02",
+    "ADD-02-F4G-03",
+    "ADD-02-F4G-04",
+    "ADD-02-F4G-05",
+    "VOL-I-9.1-01",
+    "EV-FORM-4G",
+    "form-4g-review",
+    "form-4g-sign",
+    "I-F4G-NO",
+    "I-F4G-LETTERING"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I read ADD-03:3.1 with get_unit (text layer, so no crop), and read the ADD-02:F4-G group and VOL-I:9.1(e)+ADD-02 at ADD-03. I dry-ran set_status ops on the group, on one member row and on the list insertion. The obligation words of row ADD-02-7.2-01 appear only in ADD-02:7.2, which is now revoked as a whole unit, so a reading with 'removed' does not apply and none is proposed."
+  },
+  {
+   "id": "DS-ADD03-02",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-7.2-01",
+   "provision": "ADD-03:3.1",
+   "target": "VOL-I:9.1(e)+ADD-02",
+   "payload": {
+    "why": "software limitation: ADD-03:3.1 withdraws Form 4-G ('is withdrawn ... shall not submit it'), but the only op the engine can represent is set_status on ADD-02:7.2. The row's second unit, VOL-I:9.1(e)+ADD-02 ('FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING'), stays active. set_status on that unit fails C22 ('not cited; the provision cites [ADD-02:F4-G, ADD-02:S7, ADD-02:7.2]'), and set_status on the cited group ADD-02:F4-G fails C22 because a group is not a unit. Row ADD-02-7.2-01 is REVOKED through ADD-02:7.2 and needs no reading. The leftover Envelope A entry is recorded in issue I-ADD03-F4G-SCOPE for a person to decide.",
+    "what_is_unsupported": "Revoking a whole form that an earlier addendum inserted (a group the provision cites), together with the list entry that inserted it. set_status accepts only a single named unit that the provision cites."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-7.2-01",
+    "VOL-I-9.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-03",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-F4G-01",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G/T1/3",
+   "payload": {
+    "why": "software limitation: the row's unit ADD-02:F4-G/T1/3 is an undertaking in Form 4-G. ADD-03:3.1 says the form 'is withdrawn' and that 'Bidders shall ... not submit' it. No op can revoke this unit: set_status on ADD-02:F4-G/T1/3 fails C22 ('is a row of cited ADD-02:F4-G, but the provision does not name it'). So the unit stays active and the row shows as ACTIVE and STALE. A re-made reading at ADD-03 quoting 'A named accountable security officer will be appointed for the concession period.' would show an undertaking from a withdrawn form as in force. A 'removed' reading is not available because no op deleted these words. No reading is proposed. A person decides whether the row stops applying from ADD-03 (issue I-ADD03-F4G-SCOPE). The review status 'changed' (interview_demo) is kept as it is.",
+    "what_is_unsupported": "Taking a table row out of force when a later addendum withdraws the whole form by name but does not name the row."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/T1/3",
+     "page": 3,
+     "kind": "span",
+     "words": "A named accountable security officer will be appointed for the concession period.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-F4G-01",
+    "I-F4G-NO"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-04",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-F4G-02",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G/T1/1",
+   "payload": {
+    "why": "software limitation: the row's unit ADD-02:F4-G/T1/1 is an undertaking in Form 4-G. ADD-03:3.1 says the form 'is withdrawn' and that 'Bidders shall ... not submit' it. No op can revoke a member row that the provision does not name (dry run, C22), so the unit stays active and the row shows as ACTIVE and STALE. A re-made reading quoting 'The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2.' would show the withdrawn form's undertaking as in force. ADD-03:3.1 does not touch the underlying obligation in VOL-II 6.2, which has its own row. No reading is proposed. A person decides whether this row stops applying from ADD-03 (issue I-ADD03-F4G-SCOPE). The review status 'changed' (interview_demo) is kept as it is.",
+    "what_is_unsupported": "Taking a table row out of force when a later addendum withdraws the whole form by name but does not name the row."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/T1/1",
+     "page": 3,
+     "kind": "span",
+     "words": "The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-F4G-02",
+    "I-F4G-NO"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-05",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-F4G-03",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G/T1/2",
+   "payload": {
+    "why": "software limitation: the row's unit ADD-02:F4-G/T1/2 is an undertaking in Form 4-G. ADD-03:3.1 says the form 'is withdrawn' and that 'Bidders shall ... not submit' it. No op can revoke a member row that the provision does not name (dry run, C22), so the unit stays active and the row shows as ACTIVE and STALE. A re-made reading quoting 'An information security management system covering the operational technology environment will be implemented before commissioning.' would show the withdrawn form's undertaking as in force. ADD-03:3.1 does not touch VOL-II 6.3. No reading is proposed. A person decides whether this row stops applying from ADD-03 (issue I-ADD03-F4G-SCOPE). The review status 'changed' (interview_demo) is kept as it is.",
+    "what_is_unsupported": "Taking a table row out of force when a later addendum withdraws the whole form by name but does not name the row."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/T1/2",
+     "page": 3,
+     "kind": "span",
+     "words": "An information security management system covering the operational technology environment will be implemented before commissioning.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-F4G-03",
+    "I-F4G-NO"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-06",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-F4G-04",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G/para1",
+   "payload": {
+    "why": "software limitation: the row's unit ADD-02:F4-G/para1 is the signature line of Form 4-G. ADD-03:3.1 says the form 'is withdrawn' and that 'Bidders shall ... not submit' it. No op can revoke a member of the form that the provision does not name (dry run, C22), so the unit stays active and the row shows as ACTIVE and STALE. The row's ADD-02 note relied on ADD-02:7.2, which ADD-03/3.1(a) now revokes. Re-making the reading 'Signed for and on behalf of the Bidder' at ADD-03 would ask for a signature on a form that is not to be submitted. No reading is proposed. A person decides whether the row stops applying from ADD-03 (issue I-ADD03-F4G-SCOPE). A5 activity form-4g-sign depends on this row. The review status 'changed' (interview_demo) is kept as it is.",
+    "what_is_unsupported": "Taking a member of a form out of force when a later addendum withdraws the whole form by name but does not name the member."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-F4G-04",
+    "form-4g-sign",
+    "I-NO-CONSEQUENCE"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-07",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "row:ADD-02-F4G-05",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G/T1/4",
+   "payload": {
+    "why": "software limitation: the row's unit ADD-02:F4-G/T1/4 is an undertaking in Form 4-G. ADD-03:3.1 says the form 'is withdrawn' and that 'Bidders shall ... not submit' it. No op can revoke a member row that the provision does not name (dry run, C22), so the unit stays active and the row shows as ACTIVE and STALE. A re-made reading quoting 'Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection.', with its post-award date note, would show the withdrawn form's undertaking as in force. No reading is proposed. A person decides whether the row stops applying from ADD-03 (issue I-ADD03-F4G-SCOPE). The review status 'changed' (interview_demo) is kept as it is.",
+    "what_is_unsupported": "Taking a table row out of force when a later addendum withdraws the whole form by name but does not name the row."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/T1/4",
+     "page": 3,
+     "kind": "span",
+     "words": "Security incidents affecting the Facility will be notified to the Authority within twenty-four (24) hours of detection.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-ADD03-F4G-SCOPE",
+    "ADD-02-F4G-05",
+    "I-F4G-NO"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F1",
+    "S-F2",
+    "S-F3",
+    "S-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

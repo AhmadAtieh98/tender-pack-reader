@@ -483,7 +483,7 @@ def route_choices(routes: dict | None, host_found: bool, cassette: bool) -> tupl
                     "by hand (tenderpack ai submit-batch)"})
     if "codex" in rows:
         out.append({"value": "codex", "label": "codex: Codex over MCP (manual path)" + status("codex"),
-                    "available": False, "why": rows["codex"].get("why") or "the workflow starts Claude Code only"})
+                    "available": False, "why": rows["codex"].get("why") or "the manual path; automated Codex is the host route with the Codex driver"})
     for name, label in (("anthropic", "anthropic: the Messages API with your key (paid)"),
                         ("openrouter", "openrouter: OpenRouter with your key (paid)")):
         if name not in rows:

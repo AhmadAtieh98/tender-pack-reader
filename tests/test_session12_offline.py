@@ -312,7 +312,7 @@ def test_ai_routes_lists_kinds_checks_ollama_and_marks_what_is_pending(tmp_path,
     assert r["host"]["kind"] == "connected coding host" and r["ollama"]["kind"] == "local inference"
     assert r["anthropic"]["kind"] == r["openrouter"]["kind"] == "hosted API"
     assert r["recorded"]["kind"].startswith("recorded")
-    assert "MCP interface tested; automated Codex execution unverified" in r["host"]["verified"]
+    assert "MCP server is tested" in r["host"]["verified"] and "host_session.driver is codex" in r["host"]["verified"]   # session 19
     assert "not checked by this command" in r["anthropic"]["checked"]
     ol = {m["role"]: m for m in r["ollama"]["models"]}
     assert ol["text"]["tools"] is True and ol["vision"]["installed"] is False

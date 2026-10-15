@@ -139,6 +139,7 @@ class SessionResult:
     mcp_servers: list = field(default_factory=list)   # session 13 (E159): the CLI's init message, server by status
     reset_in_s: float | None = None             # seconds until the reset time a rate-limit message names, if any
     structured_output: object = None            # PlainSession with --json-schema: the CLI's structured_output
+    model_auxiliary: dict = field(default_factory=dict)   # session 19: modelUsage models with no answer turn
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -176,6 +177,21 @@ def reset_seconds(text: str, now: dt.datetime | None = None) -> float | None:
 
 
 SETUP_ERROR = "the tenderpack MCP server "      # the prefix every setup failure's error starts with (classify)
+# session 19: a host CLI that rejects its own command line (an older Claude Code: "error: unknown option
+# '--permission-prompts'") exits before any model turn; asking again cannot help, so it is a setup failure too
+CLI_REJECTED = "the host CLI rejected its command line"
+_USAGE_RE = re.compile(r"^error: (?:unknown option|unknown command|option '|missing required argument|too many arguments)",
+                       re.M)
+
+
+def no_result_error(exit_code, stderr: str) -> str | None:
+    """The error of a session whose CLI exited non-zero without a result message: the CLI's own words (stderr), named
+    a rejected command line when they are a usage error; None when the CLI said nothing."""
+    tail = (stderr or "").strip()[-600:]
+    if _USAGE_RE.search(stderr or ""):
+        return (f"{CLI_REJECTED} (exit {exit_code}): {tail} (update the host CLI, e.g. `claude update`, or correct "
+                "config host_session)")
+    return f"the host CLI exited {exit_code} without a result: {tail}" if tail else None
 
 
 def _mcp_cli_stderr(run_dir: Path) -> str:
@@ -217,7 +233,7 @@ def classify(res: SessionResult, stderr: str = "") -> str | None:
     cls = None
     if (res.error or "").startswith("refused:"):
         cls = "refused"                                   # session 11 (E135): a local refusal (a lock), never an answer
-    elif (res.error or "").startswith(SETUP_ERROR):
+    elif (res.error or "").startswith((SETUP_ERROR, CLI_REJECTED)):
         cls = "setup"                                     # session 13 (E159): the session had no tools; never an answer
     elif res.api_error_status == 429 or (res.error and RATE_LIMIT_RE.search(text)):
         cls = "rate_limit"
@@ -250,6 +266,27 @@ def settings(cfg: dict) -> dict:
     s.setdefault("model", None)
     s.setdefault("output_format", "stream-json")
     return s
+
+
+def split_models(model_usage: dict, ran_on: list[str]) -> tuple[list[str], dict]:
+    """Session 19: (the models a session ran on, {other model: its usage}) from the CLI's modelUsage. `ran_on` are the
+    models its init and assistant messages name; without them (a plain json session) the models with the most output
+    tokens. Usage without token counts (the Codex transport's) names every model as reported: nothing is ranked."""
+    usage = {str(k): v for k, v in (model_usage or {}).items()}
+    primary = list(dict.fromkeys(ran_on))
+    if not primary:
+        outs = {k: (v or {}).get("outputTokens") for k, v in usage.items()}
+        counted = {k: n for k, n in outs.items() if isinstance(n, (int, float))}
+        top = max(counted.values()) if counted else None
+        primary = [k for k in usage if top is None or counted.get(k) == top]
+    return primary, {k: v for k, v in usage.items() if k not in primary}
+
+
+def effort_args(cfg: dict) -> list[str]:
+    """Session 19: the configured reasoning effort on the Claude Code CLI (`--effort`); the Codex transport reads the
+    same `host_session.reasoning_effort` from its own settings. None configured: the CLI's default."""
+    effort = (cfg.get("host_session") or {}).get("reasoning_effort")
+    return ["--effort", str(effort)] if effort else []
 
 
 _LIVE: set = set()                     # session 13 (D): the host CLI processes running now (run_tracked)
@@ -427,7 +464,7 @@ class HostSession:
         if settings(self.cfg)["driver"] == "codex":
             from .codex import wrap_command
             return wrap_command(cmd, self.cfg, self.model, self.timeout_s)
-        return cmd
+        return cmd + effort_args(self.cfg)
 
     def host_model_label(self) -> str:
         if settings(self.cfg)["driver"] == "codex":
@@ -519,7 +556,11 @@ class HostSession:
                 lock.release()          # no-op when the submission already released it (route host)
         self._parse(stdout, res, log, run_dir)
         err_path = run_dir / "stderr.txt"
-        classify(res, err_path.read_text(encoding="utf-8") if err_path.exists() else "")
+        stderr = err_path.read_text(encoding="utf-8") if err_path.exists() else ""
+        if res.exit_code not in (0, None) and res.num_turns is None and not res.error and not res.final_text \
+                and not res.submission:
+            res.error = no_result_error(res.exit_code, stderr)      # session 19: the CLI's own reason, not a silence
+        classify(res, stderr)
         if res.failure_class:
             log.event("failure_class", failure_class=res.failure_class, api_error_status=res.api_error_status,
                       terminal_reason=res.terminal_reason, reset_in_s=res.reset_in_s, error=res.error,
@@ -542,15 +583,20 @@ class HostSession:
                 continue
         pending: dict[str, dict] = {}
         kept = []
+        ran_on: list[str] = []
+        model_usage = None
         for m in msgs:
             t = m.get("type")
             if t == "system" and m.get("subtype") == "init":
                 if m.get("model"):
-                    res.model_reported.append(str(m["model"]))
+                    ran_on.append(str(m["model"]))
                 log.event("host_init", model=m.get("model"), tools=m.get("tools"), mcp_servers=m.get("mcp_servers"),
                           permission_mode=m.get("permissionMode"))
                 self._judge_init(m, res, run_dir)
             elif t in ("assistant", "user"):
+                mm = str((m.get("message") or {}).get("model") or "")
+                if t == "assistant" and mm and not mm.startswith("<"):      # not the CLI's '<synthetic>' messages
+                    ran_on.append(mm)
                 for b in (m.get("message") or {}).get("content") or []:
                     if not isinstance(b, dict):
                         continue
@@ -572,9 +618,7 @@ class HostSession:
                 res.terminal_reason = m.get("terminal_reason")
                 if m.get("structured_output") is not None:
                     res.structured_output = m.get("structured_output")
-                for k in (m.get("modelUsage") or {}):
-                    if k not in res.model_reported:
-                        res.model_reported.append(k)
+                model_usage = m.get("modelUsage") or {}
                 if m.get("is_error") and not res.error:
                     res.error = f"the host ended with an error ({m.get('subtype')}: {m.get('api_error_status')})"
                 log.event("host_result", subtype=m.get("subtype"), is_error=m.get("is_error"), num_turns=res.num_turns,
@@ -582,6 +626,7 @@ class HostSession:
                           host_plan_cost_usd=res.host_plan_cost_usd, permission_denials=m.get("permission_denials"),
                           note="total_cost_usd is the host's own plan usage, not the application's spend")
             kept.append(_strip_images(m))
+        res.model_reported, res.model_auxiliary = split_models(model_usage or {}, ran_on)
         (run_dir / "transcript.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in kept) + "\n",
                                                   encoding="utf-8")
 
@@ -849,7 +894,7 @@ class PlainSession:
         if settings(self.cfg)["driver"] == "codex":
             from .codex import wrap_command
             return wrap_command(cmd, self.cfg, self.model, self.timeout_s)
-        return cmd
+        return cmd + effort_args(self.cfg)
 
     def host_model_label(self) -> str:
         if settings(self.cfg)["driver"] == "codex":
@@ -889,18 +934,20 @@ class PlainSession:
             res.structured_output = out.get("structured_output")
             res.num_turns, res.usage = out.get("num_turns"), out.get("usage")
             res.host_plan_cost_usd = out.get("total_cost_usd")
-            res.model_reported = list(out.get("modelUsage") or {})
+            res.model_reported, res.model_auxiliary = split_models(out.get("modelUsage") or {}, [])
             res.api_error_status = out.get("api_error_status") if isinstance(out.get("api_error_status"), int) else None
             res.terminal_reason = out.get("terminal_reason")
             if out.get("is_error") and not res.error:
                 res.error = f"the host ended with an error ({out.get('subtype')}: {out.get('api_error_status')})"
         elif not res.error:
-            res.error = f"the host CLI printed no JSON (exit {res.exit_code}): {(stdout or stderr)[:300]}"
+            res.error = ((no_result_error(res.exit_code, stderr) if _USAGE_RE.search(stderr or "") else None)
+                         or f"the host CLI printed no JSON (exit {res.exit_code}): {(stdout or stderr)[:300]}")
         classify(res, stderr)
         if log is not None:
             log.event("plain_session", label=self.label, elapsed_s=res.elapsed_s, exit_code=res.exit_code,
                       error=res.error, failure_class=res.failure_class, api_error_status=res.api_error_status,
-                      reset_in_s=res.reset_in_s, model_reported=res.model_reported, usage=res.usage,
+                      reset_in_s=res.reset_in_s, model_reported=res.model_reported,
+                      model_auxiliary=res.model_auxiliary, usage=res.usage,
                       host_plan_cost_usd=res.host_plan_cost_usd, result=truncate(res.final_text, 4000),
                       note="the host plan's figures; never the application's spend")
         return res

@@ -1,0 +1,688 @@
+# The selective critic's findings on the downstream items (a second model). Agreement is not approval; no status was changed.
+note: agreement between models is not approval; the critic changes no status; the downstream items' review.critic,
+  by item id in downstream/proposals.yaml
+batches:
+  downstream-001:
+    selected: 1
+    selected_items:
+      DS-ADD03-01: &id001
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-001-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-002:
+    selected: 4
+    selected_items:
+      D-F4G06-ISSUE: &id002
+      - consequential_interpretation
+      D-VOL-I-3.4-READING: &id003
+      - consequential_interpretation
+      D-VOL-I-5.2-READING: &id004
+      - consequential_interpretation
+      D-VOL-I-6.1-READING: &id005
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-002-critic
+    route: host
+    reviewed: 4
+    agrees: 3
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-003:
+    selected: 3
+    selected_items:
+      DS-ADD03-R-6.7-01: &id006
+      - consequential_interpretation
+      DS-ADD03-R-8.5-01: &id007
+      - consequential_interpretation
+      DS-ADD03-I-REF-THRESHOLD: &id008
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-003-critic
+    route: host
+    reviewed: 3
+    agrees: 3
+    disagrees: 0
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-004:
+    selected: 2
+    selected_items:
+      D-ADD03-04: &id009
+      - consequential_interpretation
+      D-ADD03-09: &id010
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-004-critic
+    route: host
+    reviewed: 2
+    agrees: 1
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-005:
+    selected: 1
+    selected_items:
+      DS-31-ISSUE: &id011
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-005-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-006:
+    selected: 1
+    selected_items:
+      DS-ADD03-ISSUE-F4G: &id012
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-006-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-007:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-008:
+    selected: 1
+    selected_items:
+      DS-ADD03-ISS-31: &id013
+      - consequential_interpretation
+    status: done
+    critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-008-critic
+    route: host
+    reviewed: 1
+    agrees: 0
+    disagrees: 1
+    missing: []
+    model_requested: claude-code headless (claude-opus-5-5)
+    model_reported: claude-opus-5-5
+    note: agreement between models is not approval; the critic changes no status
+    not_reviewed_over_limit: []
+  downstream-009:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+  downstream-010:
+    status: not_needed
+    selected: 0
+    note: no item of the selected classes
+items:
+  DS-ADD03-01:
+    batch: downstream-001
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'Mostly sound: the quotations match the printed units, and the core point is real. ADD-03:3.1 says Form
+          4-G ''is withdrawn'' and that Bidders ''shall not submit it''. Yet the only op, ADD-03/3.1, targets ADD-02:7.2
+          alone, so the form units (ADD-02:F4-G/T1/1, T1/3, para1) and the Envelope A list entry VOL-I:9.1(e)+ADD-02
+          stay active. Passing this to a person, without deciding it, is the right handling.'
+        - The item states a status as fact. It says 'Row ADD-02-7.2-01 is therefore REVOKED and needs no new reading',
+          but op ADD-03/3.1 is only at review 'proposed'. Statuses are set by the code and accepted by a person,
+          so this should say 'would be revoked if the op is accepted'.
+        - Even after the op, row ADD-02-7.2-01 still cites VOL-I:9.1(e)+ADD-02, which the item itself says stays
+          active. Saying the row 'needs no new reading' is therefore a conclusion that the evidence shown does not
+          support. The point should stay open.
+        - 'It merges two classes of uncertainty. The reason given for the form staying active is a tool limit: the
+          op engine cannot revoke a group, and check C22 rejects the member rows and the list insertion as targets.
+          That is a software limitation and should be an escalation beginning ''software limitation:'' that states
+          what is unsupported (what_is_unsupported). The questions about scope are a separate class.'
+        - 'The real ambiguity is not stated with its readings. ADD-03:3.1 withdraws the form ''added by Addendum
+          No. 2 Section 7'' but says only that ''Section 7.2 ... ceases to have effect''; it says nothing on Section
+          7.1, which inserted the form into the VOL-I 9.1 list. That should be an ''ambiguous:'' point that quotes
+          both texts and gives both readings: the whole of Section 7 falls, or only 7.2 falls and the list entry
+          survives. The ADD-02 7.1 text is not quoted or printed in this request.'
+        - Some claims cannot be checked from the evidence printed. Units ADD-02:F4-G/T1/2, T1/4, T1/5 and T1/6 are
+          not in the request; the item and S-F2 say T1/5 and T1/6 are active. The current records list no activities,
+          so form-4g-review and form-4g-sign cannot be checked. The EV-FORM-4G item record and the dry-run results
+          behind S-F3 are not shown either.
+        - The op is named inconsistently. The item and S-F2 call it 'ADD-03/3.1(a)', but the ops record has id 'ADD-03/3.1'.
+        - Losing the non_responsive consequence is not named as follow-on work. That consequence is quoted from
+          ADD-02:7.2 in row ADD-02-7.2-01, and row ADD-02-F4G-04's note also relies on it. If 7.2 ceases, A3 changes,
+          and the item should say so explicitly.
+        - The owner is given as Bid management only. The open questions also cover I-F4G-NO (owned by Technical)
+          and how far a withdrawal reaches in the documents (arguably Legal or Document control). Naming the other
+          owners would help the decision.
+        evidence_checked:
+        - ADD-03:3.1
+        - ADD-02:7.2
+        - VOL-I:9.1
+        - VOL-I:9.1(e)+ADD-02
+        - ADD-02:F4-G/T1/1
+        - ADD-02:F4-G/T1/3
+        - ADD-02:F4-G/para1
+        - ops ADD-03/3.1 (set_status revoked, review proposed)
+        - rows ADD-02-7.2-01, ADD-02-F4G-01..05, VOL-I-9.1-01
+        - reviews (interview_demo origin, op proposed)
+        - issues I-F4G-NO, I-F4G-LETTERING
+        - statements downstream-001/S-F1, S-F2, S-F3, S-I1
+        - controller_validation records
+        selected_because: *id001
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-001-critic
+        model_reported: claude-opus-5-5
+  D-F4G06-ISSUE:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The main finding is supported. ADD-03:3.1 withdraws the whole of Form 4-G ('is withdrawn. Bidders shall
+          disregard it and shall not submit it.'). The op record shows ADD-03/3.1 as one set_status op with status
+          'revoked' on ADD-02:7.2 only. The form heading VOL-I:9.1(e)+ADD-02 and the rows ADD-02:F4-G/T1/5 and /6
+          are printed as 'active'. Raising this as an open issue for Document control and Technical is the right
+          handling.
+        - The issue cites op 'ADD-03/3.1(a)'. The ops record only has 'ADD-03/3.1'. The id needs correcting.
+        - The list of units still active is incomplete. Op ADD-02/7.1 also covers ADD-02:F4-G/para1, and the issue
+          leaves it out. It lists only the heading and T1/1-6.
+        - Open question (1) mentions 'the VOL-I 9.1 list entry', but the dependencies leave out row VOL-I-9.1-01.
+          That row lists 'Form 4-G' among the Envelope A items at ADD-02. The withdrawal directly affects it.
+        - 'The A5 activities ''form-4g-review'' and ''form-4g-sign'' cannot be checked from this request: current_records.activities
+          is empty. I cannot confirm they exist.'
+        - Two readings for the open interpretation are stated, (a) and (b), and they are hard to tell apart. The
+          register records undertakings 5 and 6 as not in VOL-II 6. So reading (b), 'survive only so far as VOL-II
+          6 itself requires them', leads to the same result as reading (a) for those duties. The ambiguity should
+          be stated so that each reading has a different outcome, or the issue should say why they differ.
+        - The point that the undertakings are 'not in VOL-II 6' rests on a note in the register, not on quoted VOL-II
+          6 text. No VOL-II 6 unit is in the evidence, so I cannot check it.
+        - The rationale says 'no op supports a removal'. A set_status op type does exist, as ADD-03/3.1 uses one.
+          The rationale should say that no op has been proposed for the form units, which is amendment-phase work.
+          As written, it can be read as a software limitation, which would be the wrong class.
+        evidence_checked:
+        - ADD-03:3.1
+        - ADD-03:3.2
+        - VOL-I:9.1(e)+ADD-02
+        - ADD-02:7.2
+        - ADD-02:F4-G/T1/5
+        - ADD-02:F4-G/T1/6
+        - ops ADD-03/3.1 (set_status revoked, target ADD-02:7.2)
+        - ops ADD-02/7.1 covers list (T1/1-6, para1)
+        - row VOL-I-9.1-01 ADD-02 items list
+        - rows ADD-02-F4G-06, ADD-02-F4G-07, ADD-02-7.2-01
+        - current_records.activities (empty)
+        selected_because: *id002
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-002-critic
+        model_reported: claude-opus-5-5
+  D-VOL-I-3.4-READING:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The 3 Oct 2026 direction is carried forward 'unchanged', but its dependency, the PDD, did change. The
+          note does name the direction and says only the PDD moved, and the reading stays pending a person. The
+          reviewer should still confirm that the direction applies to the new date and is not re-decided here.
+        - VOL-I 3.4 says only 'after the Proposal Due Date'. The time element '14:00 hours' in the cut-off comes
+          from the recorded owner direction, not from the words of 3.4. This is not new, but it is still not stated
+          in 3.4.
+        - 'The clarification date (Thursday 26 November 2026) depends on the quoted calculate output, which cannot
+          be reproduced here. The earlier row called its date ''the planning reading''. This item now says ''single
+          reading'' (readings_differ: false). That is consistent with the quoted tool output.'
+        - The note says the new clarification cut-off falls on the old omission-claim cut-off date. This is accurate
+          and useful for the bid team, and the note correctly keeps the two cut-offs separate. The interview_demo
+          record and the I-VOL-III issue are kept as recorded and are not treated as resolved.
+        evidence_checked:
+        - VOL-I:3.4
+        - 'VOL-I:6.1 (effective at ADD-03: ''Thursday 10 December 2026'')'
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - VOL-I:5.2
+        - row VOL-I-3.4-01 ADD-01 interpretation and owner direction note
+        - date rule OMISSION-CLAIM-CUTOFF
+        - statement downstream-002/S-CLAR-CUTOFF-CALC
+        - review row:VOL-I-3.4-01 (interview_demo)
+        selected_because: *id003
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-002-critic
+        model_reported: claude-opus-5-5
+  D-VOL-I-5.2-READING:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The dependencies list only VOL-I-6.1-01. Row VOL-I-3.4-01 states its own cut-off as separate from this
+          deadline and quotes this deadline's date in a parameter, so it could be listed too. So could any clarification-register
+          or A5 items that use this cut-off, though none are shown in the request.
+        - The computed date (Thursday 26 November 2026) depends on the quoted calculate output, which cannot be
+          reproduced here. It is correctly kept out of the date rule.
+        evidence_checked:
+        - VOL-I:5.2
+        - ADD-03:2.2
+        - ADD-03:2.1
+        - VOL-I:6.1 (effective at ADD-03)
+        - row VOL-I-5.2-01 date rule CLARIFICATION-CUTOFF
+        - statement downstream-002/S-CLAR-CUTOFF-CALC
+        selected_because: *id004
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-002-critic
+        model_reported: claude-opus-5-5
+  D-VOL-I-6.1-READING:
+    batch: downstream-002
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The note relies on 'the VOL-I 7.1 Proposal validity, whose length ADD-03 5.2 states is unchanged'. Neither
+          VOL-I:7.1 nor ADD-03:5.2 is printed in the request, so I cannot check this. It should be backed by quoted
+          evidence or removed.
+        - The note says VOL-I-6.3-01 is 're-read in this set', but no reading of VOL-I-6.3-01 is among the items
+          reviewed here, so I cannot check that.
+        - ADD-03 2.1 ends with '14:00 Riyadh time'; the target reads '14:00 hours Riyadh time'. Treating this as
+          a restatement of the unchanged time is reasonable, and the note quotes both. The quote and the VOL-I 6.6
+          consequence ('will be rejected unopened and returned to the Bidder') match the evidence.
+        evidence_checked:
+        - VOL-I:6.1
+        - VOL-I:6.6
+        - ADD-03:2.1
+        - ADD-03:2.2
+        - ops ADD-03/2.1 (old 'Thursday 26 November 2026', new 'Thursday 10 December 2026')
+        - row VOL-I-6.1-01 date rule PDD
+        selected_because: *id005
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-002-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-R-6.7-01:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The reading treats the VOL-I 6.7 cut-off ('before the Proposal Due Date') as following the date in VOL-I
+          6.1 as amended. The earlier recorded reading relied on VOL-I 2.6 for that link, but VOL-I 2.6 is not printed
+          in this request and the item's note does not cite it. The carry-over to 10 December 2026 can only be checked
+          through the records, not through clause text shown here.
+        - 'The note says ''The time is unchanged: 14:00 hours Riyadh time'' but quotes only VOL-I 6.1. ADD-03:2.1
+          itself ends with '', 14:00 Riyadh time'', outside the quoted substitution. The op replaces only the date,
+          which fits reading that phrase as a restatement. The item should quote the provision''s own trailing words,
+          so that the provision is fully accounted for and that reading is visible.'
+        - The parameter express_late_prohibition ('modifications only ... not extended to withdrawals') carries
+          the owner's session-08 direction. That direction named 26 November 2026, and the review behind it is interview_demo
+          origin ('no observed human review'). The item correctly leaves the carry-over to a person (I-ADD03-PDD-OWNER-DIRECTIONS).
+          The issue's own text is not printed in this request, so its framing and owner cannot be checked.
+        - The statement relied on, downstream-003/S-F-REVIEW-ORIGIN, cites as evidence VOL-I:6.4 'The Bid Bond shall
+          be in the amount of SAR 5,600,000'. That span does not support a statement about review origin and status.
+          VOL-I:6.4 is printed in this request only at SAR 4,500,000 (before the addendum), and the ADD-03 provision
+          behind 5,600,000 is not printed here.
+        - S-F-REVIEW-ORIGIN names ADD-03 ops 4.2(a), 4.2(b), 5.1 and 5.2(b). Of these, only ADD-03/4.2 (unsplit)
+          appears in current_records.ops; the others cannot be checked here.
+        evidence_checked:
+        - ADD-03:2.1
+        - VOL-I:6.1
+        - VOL-I:6.7
+        - current_records.rows.VOL-I-6.7-01
+        - current_records.rows.VOL-I-6.1-01
+        - current_records.ops.ADD-03/2.1
+        - current_records.reviews.row:VOL-I-6.7-01
+        - current_records.reviews.op:ADD-03/2.1
+        - controller_validation (VOL-I:6.7 p3, VOL-I:6.1 p3, statements, register C16)
+        - downstream-003/S-F-PDD
+        - downstream-003/S-I-OWNER-DIRECTIONS
+        - downstream-003/S-F-REVIEW-ORIGIN
+        selected_because: *id006
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-003-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-R-8.5-01:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The item rests on ops ''ADD-03/4.2(a)'' and ''ADD-03/4.2(b)'', which are not in current_records.ops.
+          The only printed op for this provision, ADD-03/4.2, targets ''VOL-I:8.5'' (the clause body, which does
+          not contain the threshold) rather than ''VOL-I:8.5#fn12''. It quotes old ''80,000 m3/day'' rather than
+          the printed ''80,000 m³/day'' and is recorded valid: false. The item should state this discrepancy openly,
+          so that a person sees the printed op is wrong-targeted and invalid and that the reading depends on a re-proposed
+          op this request does not show. The controller''s ''ADD-03: AMENDED (ADD-03/4.2(a))'' suggests such an
+          op exists, but it cannot be checked here.'
+        - 'Substance checks out against ADD-03:4.2: ''deleting ‘80,000 m³/day’ and substituting ‘100,000 m³/day’''
+          in footnote 12; two plants and the ten-year look-back ''are unchanged''; the rejection words in fn12 are
+          untouched. The target (fn12, not the body of 8.5) is correct.'
+        - The note asserts 'ADD-03 does not change ADD-01 Q5'. Only ADD-03:2.1 and ADD-03:4.2 are printed, so this
+          claim about the whole addendum cannot be checked from the evidence shown.
+        - The new parameter lookback_anchor moves the window with the PDD as amended by ADD-03/2.1. That rests on
+          VOL-I 2.6 (not printed) and on reading 'the ten (10) year look-back are unchanged' as fixing the length
+          of the period, not the window as it stood before. That reading is the natural one, but the basis should
+          be cited. The proposed op 2.1 is correctly flagged as not accepted.
+        - The rationale's claims (no other statement of 80,000 m³/day besides footnote 12; the Form 4-B capacity
+          field; VOL-I 9.5) rest on searches and units not printed in this request and cannot be checked here.
+        - As for the first item, statement S-F-REVIEW-ORIGIN cites unrelated evidence (VOL-I:6.4 'SAR 5,600,000')
+          for a statement about review origin and status.
+        evidence_checked:
+        - ADD-03:4.2
+        - VOL-I:8.5#fn12
+        - VOL-I:8.5
+        - VOL-I:6.1
+        - current_records.rows.VOL-I-8.5-01
+        - current_records.ops.ADD-03/4.2
+        - 'current_records.reviews.op:ADD-03/4.2 (valid: false)'
+        - current_records.reviews.row:VOL-I-8.5-01
+        - controller_validation (VOL-I:8.5#fn12 p4, ADD-03:4.2 p1, register C16, stages)
+        - downstream-003/S-F-REF-CAPACITY
+        - downstream-003/S-F-PDD
+        - downstream-003/S-F-REVIEW-ORIGIN
+        selected_because: *id007
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-003-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-I-REF-THRESHOLD:
+    batch: downstream-003
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - 'The A3 line reads: ''Reference plants: two plants each not less than 100,000 m³/day (ADD-03 4.2), else
+          ‘shall be rejected without further evaluation’''. It leaves out the other condition footnote 12 attaches
+          to the same rejection: ''each having achieved commercial operation within the ten (10) years preceding
+          the Proposal Due Date''. The consequence words are quoted correctly, but the shortened condition could
+          mislead the bid-out list. The A3 text should carry the look-back condition too, or quote footnote 12''s
+          condition in full.'
+        - The dependencies EV-FORM-4B, EV-COMPLETION-CERT and the activity 'references' are not in the evidence
+          printed here; current_records.activities is empty. Their link to footnote 12 cannot be checked from this
+          request.
+        - The quotation from VOL-I:8.5 leaves off the footnote marker printed in the unit ('Form 4-B.¹²'). The controller
+          accepted it as verbatim, so this is minor.
+        - No bidder facts are asserted, the issue is left open with decision owner 'Technical', and the consequence
+          is quoted from fn12 and not inferred. This is consistent with the rules. The issue rests on ops 4.2(a)
+          and 2.1, which are proposed only and not accepted. The record for 4.2(a) is not printed, and the printed
+          ADD-03/4.2 is invalid (see the review of DS-ADD03-R-8.5-01).
+        evidence_checked:
+        - ADD-03:4.2
+        - VOL-I:8.5#fn12
+        - VOL-I:8.5
+        - VOL-I:6.1
+        - current_records.rows.VOL-I-8.5-01
+        - current_records.ops.ADD-03/4.2
+        - current_records.activities
+        - controller_validation (VOL-I:8.5#fn12 p4 x2, VOL-I:8.5 p4, human-owned)
+        - downstream-003/S-F-REF-CAPACITY
+        - downstream-003/S-F-PDD
+        selected_because: *id008
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-003-critic
+        model_reported: claude-opus-5-5
+  D-ADD03-04:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: true
+        concerns:
+        - The note says the programme 'must now reach PCOD within the same 36 months for the 150,000 m³/day capacity
+          of VOL-II 2.1 as amended by ADD-03/4.1(a)'. This rests on op ADD-03/4.1(a), which is still only proposed
+          (S-F1 is checked against the text 'after the proposed ops'). The note should say that this sentence depends
+          on that op being accepted. As written, it reads as a settled effective text.
+        - 'Q15 is a bidder question and Authority answer printed in ADD-03. The note treats it as an op (''confirms'').
+          Whether answers in the ADD-03 Q&A table bind is not shown in the evidence: the pack''s own words on how
+          Q&A answers bind are not printed, and ADD-01 3.2 says the pre-bid minutes do not bind. This is a person''s
+          decision (Legal / Document control) and the item should flag it, not assume it.'
+        - The note names VOL-V 18.4 (the cap) and VOL-II 7.2 (the 90% reliability run). Neither unit is printed
+          in this request. They can be checked only through the quotes in the curated records VOL-V-12.1-01 and
+          VOL-II-7.2-01.
+        - The note says PCOD needs the reliability run 'at 90% of nominal capacity'. The quote in VOL-II-7.2-01
+          says 'not less than 90%'. The note should keep the 'not less than' wording. It also implies, without saying
+          so, that the run is now tied to the amended 150,000 m³/day nominal capacity. Any figure that follows from
+          this must come from calculate, not be worked out here.
+        - The rationale says 'Text-layer units only'. ADD-03:Q15 is a table row with no crop hash. The request does
+          not show whether that row came from the text layer or from an image, so this cannot be checked.
+        - Passing programme-risk and pricing to the Technical and Commercial leads is right. But no issue or escalation
+          is opened with a named decision owner. The handover sits only in the note text.
+        evidence_checked:
+        - 'VOL-V:12.1 text_before_addendum: ''The Project Company shall achieve PCOD within thirty-six (36) months
+          of the Notice to Proceed (the Scheduled PCOD).'''
+        - 'ADD-03:Q15 cells: ''Following the capacity increase, will the Authority extend the construction period
+          in Volume V Clause 12.1?'' / ''No. The period of thirty-six (36) months is unchanged.'''
+        - 'VOL-V:18.1: ''the Project Company shall pay to the Authority delay liquidated damages at the rate of
+          SAR 180,000 for each day of delay'''
+        - 'ADD-03:4.1: ''In Volume II Clause 2.1 and in Table 2-6 row 2-6.1, ‘120,000 m³/day’ is deleted and ‘150,000
+          m³/day’ is substituted.'''
+        - VOL-II:2.1 text_before_addendum (120,000 m³/day)
+        - current_records VOL-V-12.1-01 (interpretation, date rule, note on 18.4)
+        - current_records VOL-II-7.2-01 quote ('not less than 90% of nominal capacity')
+        - controller_validation for D-ADD03-04
+        selected_because: *id009
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-004-critic
+        model_reported: claude-opus-5-5
+  D-ADD03-09:
+    batch: downstream-004
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The ambiguity itself is real. The printed words 'within two per cent (2%) of one another' do not say what
+          the 2% is measured on. But Reading A depends on a quotation from VOL-I 11.2 ('on a combined score calculated
+          on a weighting of sixty per cent (60%) technical and forty per cent (40%) commercial', p5). That unit
+          is not printed in this request and is not in the item's evidence, so it cannot be checked. The same applies
+          to the VOL-I 5.2 clarification cut-off and to 'Availability Payment' (Reading C), which is not shown to
+          be a term used in the pack.
+        - Page mismatch. The evidence cites doc 'VOL-I', unit 'VOL-I:11.5+ADD-03', page 2, but the issue itself
+          puts VOL-I 11.2 on p5. The inserted wording is printed in ADD-03:6.1 (pp. 1-2). Page 2 looks like an ADD-03
+          page credited to VOL-I. Document control should check this.
+        - 'Three different points are filed under one ''ambiguous:'' label: (1) what the 2% is measured on (a genuine
+          ambiguity); (2) the ''further criteria'' not being stated (an open discretion given to the Authority,
+          not two competing readings of the words); (3) what ''its determination shall be final'' means (a legal
+          question). The policy is one point, one class. These should be separate points, each with its own class.'
+        - The owner is Bid management. The meaning of 'its determination shall be final' is a legal question, so
+          Legal should be named as its decision owner.
+        - show_in_a3 is true, and the a3 text describes a discretion. A3 holds only the bid-out consequences the
+          pack states (rejection, disqualification, non-responsiveness, exclusion). New 11.6 states none of these.
+          Putting it in A3 lists as a consequence something the words do not state.
+        - '''The clause bears on bid strategy and pricing near the margin'' is the proposer''s own framing. No unit
+          in the pack says this. It should be marked as framing, not presented as an effect.'
+        - The draft clarification CQ-ADD03-TIE-BAND is mentioned, but the request carries no clarification records,
+          so it cannot be checked.
+        evidence_checked:
+        - 'ADD-03:6.1 text_before_addendum: ''A new Clause 11.6 is added to Volume I: ‘11.6 Where, on completion
+          of the combined evaluation, two or more Proposals are within two per cent (2%) of one another, the Authority
+          may apply such further criteria as it considers appropriate to determine the Preferred Bidder, and its
+          determination shall be final.’'''
+        - item evidence VOL-I:11.5+ADD-03 p2 (verbatim per controller)
+        - statements downstream-004/S-I1 and S-F5
+        - controller_validation for D-ADD03-09
+        - 'VOL-I:11.2 and VOL-I:5.2: not printed in request (unverifiable)'
+        selected_because: *id010
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-004-critic
+        model_reported: claude-opus-5-5
+  DS-31-ISSUE:
+    batch: downstream-005
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The main point is supported by the evidence shown. ADD-03:3.1 says Form 4-G 'is withdrawn. Bidders shall
+          disregard it and shall not submit it.' The only op, ADD-03/3.1, is a set_status to 'revoked' and its only
+          target is ADD-02:7.2. VOL-I:9.1(e)+ADD-02, ADD-02:F4-G/para1 and ADD-02:F4-G/T1/1 are printed with status
+          'active'. The controller found all three quotations verbatim at ADD-03 after the proposed ops. Leaving
+          it to Document control and Technical, without choosing whether more ops are needed, is consistent with
+          the human-review rule.
+        - 'Several claims in the issue text cannot be checked against the evidence shown. Units ADD-02:F4-G/T1/2
+          to T1/6 are not printed. Of rows ADD-02-F4G-01 to -07, only -01, -02 and -04 are printed. The A5 activities
+          form-4g-review and form-4g-sign do not appear: current_records.activities is empty. The claim that the
+          rows are ''still evaluated ACTIVE'' after the ops is not shown either: the printed evaluations are status
+          NEW at stage ADD-02. These claims rest on the proposer''s own statements (S-31-F1, S-F4G-F1), not on evidence
+          printed in the request.'
+        - The issue calls the op 'the promoted op ADD-03/3.1(a)'. The record shown has id 'ADD-03/3.1' with no '(a)',
+          and its review status is 'proposed', not promoted. The item misstates the status of the op it relies on.
+        - The follow-on list is incomplete. Row VOL-I-9.1-01 (owner Bid manager) still lists 'Form 4-G' among its
+          Envelope A items at ADD-02. Row ADD-02-7.2-01 lists unit VOL-I:9.1(e)+ADD-02, which stays active. Issue
+          I-F4G-LETTERING (re-lettering after Form 4-G was inserted into VOL-I 9.1) depends directly on the withdrawn
+          entry. The issue routes only rows ADD-02-F4G-01 to -07 for re-reading and says I-F4G-LETTERING and I-F4G-NO
+          are 'not changed', without naming them as possibly affected for a person to reconsider.
+        - 'The A3 line (show_in_a3 true) does not state a consequence printed in the pack: S-31-F1 itself says ''no
+          consequence is printed for submitting it''. A3 is limited to consequences the pack states. Whether this
+          belongs in A3 should be confirmed so that a reader does not take it as a stated bid-out consequence.'
+        - The controller's human-owned check reads 'withdrawn' as the issue withdrawing a question. In fact the
+          word quotes the provision ('is withdrawn'), so it should not be read as a resolution. The issue still
+          has to stay open pending a human decision.
+        - The reviews of the related rows and issues all have origin 'interview_demo' ('no observed human review').
+          Nothing in this item should treat them as observed human approvals. The item does not, but those records
+          should keep that origin.
+        evidence_checked:
+        - ADD-03:3.1
+        - VOL-I:9.1(e)+ADD-02
+        - ADD-02:F4-G/para1
+        - ADD-02:F4-G/T1/1
+        - ADD-02:7.2
+        - VOL-I:9.1
+        - op ADD-03/3.1 (type set_status, target ADD-02:7.2, status revoked, review proposed)
+        - rows ADD-02-7.2-01, ADD-02-F4G-01, ADD-02-F4G-02, ADD-02-F4G-04, VOL-I-9.1-01
+        - issues I-F4G-LETTERING, I-F4G-NO, I-NO-CONSEQUENCE
+        - current_records.activities (empty)
+        - controller_validation records
+        - quotation 'Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.'
+        - quotation 'FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING'
+        - quotation 'Signed for and on behalf of the Bidder'
+        - quotation 'Bidders shall disregard it and shall not submit it.'
+        selected_because: *id011
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-005-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-ISSUE-F4G:
+    batch: downstream-006
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - The main point holds on the evidence shown. ADD-03:3.1 withdraws the whole of Form 4-G ('added by Addendum
+          No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it.'). The only op shown,
+          ADD-03/3.1, sets just ADD-02:7.2 to 'revoked'. ADD-02:7.1 is printed with status 'active'. So the amendment
+          record keeps text that the provision removes, and raising this as an open issue for Document control is
+          justified.
+        - 'The dependencies leave out row ADD-02-7.2-01. That row carries the A3 consequence quoted from ADD-02:7.2
+          (''Failure to submit Form 4-G shall render the Proposal non-responsive.''), and the op revokes that clause.
+          It is the row the withdrawal affects most and should be listed. The issue also does not name the issues
+          that depend on Form 4-G: I-F4G-NO (show_in_a3 true) and I-F4G-LETTERING.'
+        - show_in_a3 is false, but A3 currently shows a Form 4-G non-responsive consequence (row ADD-02-7.2-01)
+          and I-F4G-NO. The issue does not explain why the withdrawal should stay out of A3. The issue's own 'a3'
+          text also conflicts with show_in_a3 false.
+        - The text refers to 'promoted ops' and 'op ADD-03/3.1(a)'. The ops record shown has the id 'ADD-03/3.1'
+          with no '(a)', and current_records give op:ADD-03/3.1 the status 'proposed', not promoted. The statement
+          S-F4G-OPS-PARTIAL makes the same claim.
+        - Several claims cannot be checked against the evidence shown. The units ADD-02:F4-G/T1/1-6 are not printed,
+          so their 'active' status at ADD-03 is unverified. current_records.activities is empty, so the activities
+          form-4g-review, form-4g-sign and assemble-envelope-a cannot be confirmed to exist.
+        - The sentence "Activity 'assemble-envelope-a' is proposed to drop its Form 4-G instruction" puts an A5
+          proposal inside the issue text, and nothing shown supports it. That is follow-on work for the phase that
+          owns it. In the same text where the question is asked of Document control, it also partly decides how
+          the withdrawal is handled.
+        - 'The issue does not state the uncertainty class. ADD-03:3.1 withdraws the form ''added by Addendum No.
+          2 Section 7'' but says only that ''Section 7.2 ... ceases to have effect''. That supports more than one
+          reading: either all of Section 7, including the 7.1 insertion into the VOL-I 9.1 list, falls away, or
+          only 7.2 does by its own words. If the issue is genuine ambiguity, it should begin ''ambiguous:'' and
+          set out both readings. If it is only a gap in op coverage, it should say so.'
+        - The issue's evidence list does not cite the target ADD-02:7.1, although the text quotes it. The evidence
+          cites only the last sentence of ADD-03:3.1 and ADD-02:F4-G/para1. A quotation of the signature line shows
+          the form's text, not its 'active' status.
+        - Rows ADD-02-F4G-01 to -07, VOL-I-9.1-01 and the related issues carry reviews whose origin is 'interview_demo'
+          ('no observed human review'). The issue does not call these approved, which is correct, but it should
+          keep that origin visible when it says the rows 'still stand'.
+        evidence_checked:
+        - ADD-03:3.1
+        - ADD-02:7.1
+        - ADD-02:7.2
+        - ADD-02:F4-G/para1
+        - ops.ADD-03/3.1 (set_status, target ADD-02:7.2, status revoked, review proposed)
+        - reviews.op:ADD-03/3.1 (status proposed)
+        - rows ADD-02-7.2-01, ADD-02-F4G-01..07, VOL-I-9.1-01
+        - issues I-F4G-NO, I-F4G-LETTERING, I-NO-CONSEQUENCE
+        - current_records.activities (empty)
+        - controller_validation records
+        selected_because: *id012
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-006-critic
+        model_reported: claude-opus-5-5
+  DS-ADD03-ISS-31:
+    batch: downstream-008
+    review:
+      critic:
+        agrees: false
+        concerns:
+        - 'Opening the issue is sound, and its quotations are verbatim. ''Bidders shall disregard it and shall not
+          submit it. Section 7.2 of Addendum No. 2 ceases to have effect.'' matches ADD-03:3.1. ''FORM 4-G — CYBERSECURITY
+          COMPLIANCE UNDERTAKING'' matches VOL-I:9.1(e)+ADD-02. ''Only ADD-02 7.2 is revoked'' matches op ADD-03/3.1:
+          set_status, target ADD-02:7.2, status revoked.'
+        - 'Paraphrase: ''takes Form 4-G out of the RFP Documents'' is not in the provision. ADD-03:3.1 says the
+          form ''is withdrawn''. The issue should quote that word instead of describing the effect in its own terms.'
+        - 'Can''t verify from the evidence shown: the issue says ''rows ADD-02-F4G-01 to -07'' remain, but only
+          ADD-02-F4G-01 and ADD-02-F4G-04 are in current_records. Rows -02, -03 and -05 to -07 are not shown.'
+        - 'Can''t verify from the evidence shown: the issue names activities ''form-4g-review'' and ''form-4g-sign'',
+          but current_records.activities is empty ({}). Nothing in the request shows these activities exist.'
+        - 'Missing knock-on effect (bid-out consequence, A3): row ADD-02-7.2-01 rests directly on the revoked ADD-02:7.2.
+          It quotes the consequence ''Failure to submit Form 4-G shall render the Proposal non-responsive.'' (class
+          non_responsive), and its review is an interview_demo ''changed'' record. The issue never names this row.
+          With 7.2 ceasing to have effect, that consequence and the requirement ''Complete and submit the new Form
+          4-G'' need to be named for retirement by a person.'
+        - 'Missing knock-on effect: row VOL-I-9.1-01 (accepted through interview_demo) still lists ''Form 4-G''
+          among its Envelope A items at ADD-02. It is not named among the records that rest on Form 4-G. The issue
+          names the unit VOL-I:9.1(e)+ADD-02 but not this row. The confidence_reason of row VOL-II-6.3-01 also cites
+          Form 4-G undertakings 3-6 and I-F4G-NO.'
+        - 'Wrong class: point (2) is labelled ''ambiguous:'', but no words shown support Reading B (''the Authority
+          may still expect them through another document''). ADD-03:3.1 withdraws the whole form and says ''Bidders
+          shall disregard it''. No unit shown carries undertakings 3-6 elsewhere. A genuine ambiguity needs quoted
+          words that support each reading. This looks like an open question about how to handle the records, or
+          at most missing evidence, rather than an ambiguity.'
+        - 'Can''t verify from the evidence shown: undertakings 3-6 (''24-hour incident notice, annual penetration
+          test, multi-factor remote access'') and VOL-II 6.2 are not in the units shown. Only undertaking 3 is quoted,
+          in row ADD-02-F4G-01, and only VOL-II:6.3 is printed.'
+        - 'Point (1) could be handled differently: ADD-03:3.1 names its target directly (''Form 4-G ... is withdrawn'').
+          Withdrawal ops on the form units and the VOL-I 9.1 entry could arguably be proposed rather than only escalated.
+          If the tool can''t represent them, the reason should start with ''software limitation:''. ADD-02 7.1''s
+          insertion into the VOL-I 9.1 list isn''t expressly revoked, and this point isn''t classified.'
+        - The issue's own wording is right to say 'No decision recorded; pending a human decision' and that the
+          interview_demo acceptances carry no handling instruction.
+        evidence_checked:
+        - ADD-03:3.1
+        - VOL-I:9.1(e)+ADD-02
+        - ADD-02:7.2
+        - ADD-02:F4-G/para1
+        - VOL-I:9.1
+        - VOL-II:6.3
+        - op ADD-03/3.1
+        - row ADD-02-7.2-01
+        - row ADD-02-F4G-01
+        - row ADD-02-F4G-04
+        - row VOL-I-9.1-01
+        - row VOL-II-6.3-01
+        - issues I-F4G-NO, I-F4G-LETTERING
+        - current_records.activities (empty)
+        - statements downstream-008/S-F-F4G, downstream-008/S-I-F4G-POSTAWARD
+        - controller_validation records
+        selected_because: *id013
+        route: host
+        critic_run: ADD-03-run-host-20261015T140902Z-ab89-downstream-008-critic
+        model_reported: claude-opus-5-5

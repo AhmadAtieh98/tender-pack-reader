@@ -1,0 +1,606 @@
+{
+ "run_id": "ADD-03-run-host-20261015T140902Z-ab89-downstream-006",
+ "created": "2026-10-15T14:21:45Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-PDD-MOVED",
+   "kind": "fact",
+   "text": "Op ADD-03/2.1 changes the date in VOL-I 6.1. The time and the Appendix 3 address stay as they were. The clause as amended reads as quoted.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.1",
+     "page": 3,
+     "kind": "span",
+     "words": "Proposals shall be received by the Authority not later than 14:00 hours Riyadh time on Thursday 10 December 2026 at the address given in Appendix 3.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-RULE-DRIVEN-FINISH",
+   "kind": "fact",
+   "text": "Two activity templates have a finish constraint: 'deliver' ends on the PDD date rule and 'clarifications' on the CLARIFICATION-CUTOFF date rule. No activity name or field types a pack date or time: 'deliver' uses the {PDD_TIME} {PDD_TZ} placeholders. The program recomputes both milestones from the date rules, so the date change reaches these activities without any edit to the templates. VOL-I 5.2 counts from the Proposal Due Date and is not changed by ADD-03.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date. Requests received after that time will not be answered.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.6",
+     "page": 3,
+     "kind": "span",
+     "words": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F4G-WITHDRAWN-WORDS",
+   "kind": "fact",
+   "text": "ADD-03 3.1 withdraws Form 4-G and tells Bidders not to submit it. It says that ADD-02 Section 7.2 'ceases to have effect'.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F4G-OPS-PARTIAL",
+   "kind": "fact",
+   "text": "Among the promoted ops, only ADD-03/3.1(a) acts on Form 4-G: it sets ADD-02:7.2 to 'revoked'. Neither ADD-02:7.1 (which adds Form 4-G 'to the list at Volume I Clause 9.1, to be inserted after item (e)') nor the Form 4-G units is withdrawn by any op. In units_after the Form 4-G units are still 'active', for example ADD-02:F4-G/para1.",
+   "evidence": [
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder: _______________________ Name: _______________________ Date: ____________",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-ENV-A-NAME",
+   "kind": "interpretation",
+   "text": "The name of activity 'assemble-envelope-a' tells document control to place Form 4-G after item (e). That instruction goes against ADD-03 3.1 ('shall not submit it'). The proposed new name drops the Form 4-G instruction and quotes the addendum. A person accepts or rejects the change. The effective-text gap (ADD-02 7.1 and the Form 4-G units are still active) is a separate open issue.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1",
+     "page": 4,
+     "kind": "span",
+     "words": "Envelope A shall contain, in the following order and separated by numbered dividers:",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-ADD03-ACT-CLAR",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:clarifications",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-I:5.2",
+   "payload": {
+    "why": "The 'clarifications' template ends on the CLARIFICATION-CUTOFF rule. That rule counts 'ten (10) Working Days before the Proposal Due Date' (VOL-I 5.2, not changed by ADD-03), so the program recomputes the milestone from the PDD as amended by ADD-03/2.1. The template's name, owner, duration key (clarification_drafting), predecessor (consortium-check) and finish rule carry no date and do not change. Its rows (VOL-I-5.2-01, VOL-I-3.4-01) are re-read under their own row tasks, not under this one. A person confirms that nothing changes."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Requests for clarification shall be submitted no later than ten (10) Working Days before the Proposal Due Date.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.1",
+     "page": 3,
+     "kind": "span",
+     "words": "not later than 14:00 hours Riyadh time on Thursday 10 December 2026",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-5.2-01",
+    "VOL-I-3.4-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-PDD-MOVED",
+    "S-RULE-DRIVEN-FINISH"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read VOL-I:5.2 and VOL-I:6.1 in units_after, ADD-03:2.1, and simulate_programme at ADD-03. The programme recomputes CLARIFICATION-CUTOFF from the amended PDD; readings_differ is false. I typed no date into the template. ADD-03 also answers clarification requests 15 to 18. Those answers belong to the clarification-register tasks, not this activity template."
+  },
+  {
+   "id": "DS-ADD03-ACT-DELIVER",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:deliver",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-I:6.1",
+   "payload": {
+    "why": "The 'deliver' template finishes on {deadline_of: PDD} with the buffer key submission.delivery_buffer_wd. Its name uses {PDD_TIME} {PDD_TZ} and {ROW:VOL-I-App3-01:address} placeholders and types no date. ADD-03/2.1 changes only the date in VOL-I 6.1. The time ('14:00 hours Riyadh time'), the Appendix 3 address and the late-receipt rule in VOL-I 6.6 are unchanged in units_after. The template therefore stays as it is, and the program recomputes the PDD milestone. A person confirms that nothing changes. Separately, the ADD-03 programme still reports this chain as INFEASIBLE. That result rests on PROVISIONAL lead-time assumptions (e.g. lcc_certificate) owned by Commercial, not on this template."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.1",
+     "page": 3,
+     "kind": "span",
+     "words": "Proposals shall be received by the Authority not later than 14:00 hours Riyadh time on Thursday 10 December 2026 at the address given in Appendix 3.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.6",
+     "page": 3,
+     "kind": "span",
+     "words": "A Proposal received after the time stated in Clause 6.1 will be rejected unopened and returned to the Bidder.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.1-01",
+    "VOL-I-App3-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-PDD-MOVED",
+    "S-RULE-DRIVEN-FINISH"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read VOL-I:6.1, 6.6 and App3/para1 in units_after and ran simulate_programme at ADD-03. The PDD milestone follows the amended clause. No crops were needed: these are text-layer units."
+  },
+  {
+   "id": "DS-ADD03-ACT-SEAL",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:seal-and-mark",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-I:6.1",
+   "payload": {
+    "why": "'seal-and-mark' has no finish constraint of its own; its timing comes through 'deliver'. Its name takes the marking from row VOL-I-App3-01. That marking refers to 'THE PROPOSAL DUE DATE' and prints no date, so ADD-03/2.1 does not change it. The marking and VOL-I 6.2 are unchanged in units_after. A person confirms that nothing changes."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:App3/para1",
+     "page": 7,
+     "kind": "span",
+     "words": "Marked: ‘NUPA/ISTP/2026/014 — NOT TO BE OPENED BEFORE 14:00 ON THE PROPOSAL DUE DATE’.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Each Proposal shall be submitted in two separately sealed and clearly marked envelopes: Envelope A (Technical Proposal) and Envelope B (Commercial Proposal).",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-App3-01",
+    "VOL-I-6.2-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-PDD-MOVED",
+    "S-RULE-DRIVEN-FINISH"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "The marking names the PDD by reference, not by date, so it follows the amended clause without an edit."
+  },
+  {
+   "id": "DS-ADD03-ACT-COPIES",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:copies",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-I:6.5",
+   "payload": {
+    "why": "ADD-03 does not amend VOL-I 6.5 (copies, encrypted USB) or the Appendix 2 naming convention; both read in units_after as before. The [YYYYMMDD] element of the file name is undefined in Appendix 2, as already recorded in I-VOL-I-FILE-NAMES. It is not tied to the PDD by the pack, and I did not tie it. The gate on I-VOL-I-COPIES stays. The PDD change reaches this activity only through 'deliver'. A person confirms that nothing changes."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.5",
+     "page": 3,
+     "kind": "span",
+     "words": "Each Proposal shall be submitted as one (1) marked original, three (3) hard copies, and one (1) searchable electronic copy on encrypted USB media.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:App2/para1",
+     "page": 7,
+     "kind": "span",
+     "words": "Files shall be named: ISTP2026-014_[BIDDER]_[ENV]_[VOL]_[NN]_[YYYYMMDD].pdf",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.5-01",
+    "VOL-I-6.5-02"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-PDD-MOVED"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read VOL-I:6.5 and VOL-I:App2/para1 in units_after; neither changed."
+  },
+  {
+   "id": "DS-ADD03-ACT-ENVA",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "activity",
+   "task": "act:assemble-envelope-a",
+   "provision": "ADD-03:3.1",
+   "target": "assemble-envelope-a",
+   "payload": {
+    "evidence_item": "EV-DELIVERY",
+    "activity": {
+     "id": "assemble-envelope-a",
+     "name": "Assemble the marked original of Envelope A in the VOL-I 9.1 order with numbered dividers; do not include Form 4-G (ADD-03 3.1: withdrawn, 'shall not submit it'; see I-ADD03-F4G-EFFECTIVE-TEXT); check that no price or commercial information appears (VOL-I 6.2)",
+     "owner": "Bid management",
+     "discipline": "Document control",
+     "resource": "document_controller",
+     "issuer": "Bidder",
+     "duration": "envelope_assembly",
+     "predecessors": [],
+     "envelope_rules": "A"
+    },
+    "rows": [
+     "VOL-I-6.1-01"
+    ]
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1",
+     "page": 4,
+     "kind": "span",
+     "words": "Envelope A shall contain, in the following order and separated by numbered dividers:",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.2",
+     "page": 3,
+     "kind": "span",
+     "words": "The appearance of any price, rate, or other commercial information within Envelope A shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.1-01",
+    "VOL-I-9.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F4G-WITHDRAWN-WORDS",
+    "S-F4G-OPS-PARTIAL",
+    "S-ENV-A-NAME"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "The current template name says '(Form 4-G after item (e))', which goes against ADD-03 3.1 'shall not submit it'. I replace only the name. The id, owner, resource, duration key (existing envelope_assembly), predecessors and envelope rules are unchanged, and no date is typed. The PDD change reaches this activity through copies, seal-and-mark and deliver, and needs no edit here. Open dependencies, not re-decided here: rows ADD-02-F4G-01 to -07 and VOL-I-9.1-01 (whose ADD-02 reading lists Form 4-G) still rest on units that are active in units_after. Activities form-4g-review and form-4g-sign (EV-FORM-4G) also still exist. I list these for their own tasks and for the issue below."
+  },
+  {
+   "id": "DS-ADD03-ISSUE-F4G",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "act:assemble-envelope-a",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:7.1",
+   "payload": {
+    "id": "I-ADD03-F4G-EFFECTIVE-TEXT",
+    "text": "ADD-03 3.1 (p1): 'Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.' The promoted ops act only on ADD-02:7.2 (op ADD-03/3.1(a): set_status 'revoked'). ADD-02 7.1 (p3), 'A new Form 4-G is added to Volume IV and to the list at Volume I Clause 9.1, to be inserted after item (e).', and the Form 4-G units (ADD-02:F4-G/T1/1-6, F4-G/para1) are still active in the effective text at ADD-03. As a result, row VOL-I-9.1-01 (whose ADD-02 reading lists Form 4-G after item (e)), rows ADD-02-F4G-01 to -07, evidence item EV-FORM-4G and activities form-4g-review and form-4g-sign still stand. Open question for Document control: should the withdrawal be represented in the amendment record for ADD-02 7.1 and the Form 4-G units, and how should those rows, the evidence item and the activities be treated? HUMAN DECISION PENDING. Activity 'assemble-envelope-a' is proposed to drop its Form 4-G instruction on the words of ADD-03 3.1.",
+    "owner": "Document control",
+    "theme": "forms",
+    "short": "Form 4-G withdrawn (ADD-03 3.1) but ADD-02 7.1 and the Form 4-G units are still active",
+    "a3": "Form 4-G withdrawn by ADD-03 3.1 ('shall not submit it'); the amendment record revokes only ADD-02 7.2: Document control to align",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder: _______________________ Name: _______________________ Date: ____________",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-9.1-01",
+    "ADD-02-F4G-01",
+    "ADD-02-F4G-02",
+    "ADD-02-F4G-03",
+    "ADD-02-F4G-04",
+    "ADD-02-F4G-05",
+    "ADD-02-F4G-06",
+    "ADD-02-F4G-07"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F4G-WITHDRAWN-WORDS",
+    "S-F4G-OPS-PARTIAL"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I read ADD-03:3.1, ADD-02:7.1 and ADD-02:7.2 with get_unit, the promoted ops, and units_after, where the Form 4-G units show status 'active'. This is a new issue only. It changes no existing issue and resolves nothing."
+  },
+  {
+   "id": "DS-ADD03-ACT-ENVB",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:assemble-envelope-b",
+   "provision": "ADD-03:2.1",
+   "target": "VOL-I:10.1",
+   "payload": {
+    "why": "ADD-03 does not amend VOL-I 10.1, 10.3 or 10.6; they read in units_after as before. The gate on I-VOL-I-ENV-B is unchanged and stays open. The PDD change reaches this activity only through copies, seal-and-mark and deliver; it has no finish constraint of its own. ADD-03/Q17 ('Bidders shall price the Project as amended by this Addendum') affects the content of the Financial Model and Form 4-F (its own row), not this packaging activity. A person confirms that nothing changes."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.1",
+     "page": 5,
+     "kind": "span",
+     "words": "Envelope B shall contain only (a) Form 4-F (Financial Proposal Schedule) and (b) the Financial Model. No other document shall be placed in Envelope B.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-10.1-01",
+    "VOL-I-6.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-PDD-MOVED"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I read VOL-I:10.1, 10.3 and 10.6 in units_after. ADD-03 does not touch them. The programme shows assemble-envelope-b INFEASIBLE by 1 WD on PROVISIONAL Commercial lead times (fin_model_build and others). That is a matter for the owners of those assumptions, not for this template."
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

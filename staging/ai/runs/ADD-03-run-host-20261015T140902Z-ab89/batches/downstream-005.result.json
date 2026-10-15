@@ -1,0 +1,1128 @@
+{
+ "run_id": "ADD-03-run-host-20261015T140902Z-ab89-downstream-005",
+ "created": "2026-10-15T14:21:24Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-Q17-F1",
+   "kind": "fact",
+   "text": "ADD-03 Q17 answers the bidder question 'Will the Availability Payment be adjusted for the increased capacity?' with 'Bidders shall price the Project as amended by this Addendum.' No consequence is printed in ADD-03:Q17.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Will the Availability Payment be adjusted for the increased capacity?",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall price the Project as amended by this Addendum.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q17-I1",
+   "kind": "interpretation",
+   "text": "ambiguous: the response 'Bidders shall price the Project as amended by this Addendum.' does not say 'yes' or 'no' to the question 'Will the Availability Payment be adjusted for the increased capacity?'. Reading (a): no adjustment mechanism is offered; the single Availability Payment quoted under VOL-I 10.2 and Form 4-F must itself reflect the Project as amended by ADD-03 (including the capacity change of ADD-03 4.1). Reading (b): the response addresses only the basis of pricing and leaves open whether the payment mechanism (VOL-V Clauses 29 and 31) is adjusted for capacity. Pending a Commercial decision; not chosen here.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Will the Availability Payment be adjusted for the increased capacity?",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.2",
+     "page": 5,
+     "kind": "span",
+     "words": "The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum, calculated in accordance with the payment mechanism at Volume V Clause 29.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-V",
+     "unit_id": "VOL-V:1.1",
+     "page": 2,
+     "kind": "span",
+     "words": "Availability Payment means the annual payment calculated under Clause 29 and adjusted under Clause 31.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q17-F2",
+   "kind": "fact",
+   "text": "Form 4-F requires the Bidder to confirm that the Availability Payment is unconditional, not subject to any qualification and derived from the Financial Model submitted with the Form; pricing the Project as amended therefore flows into Form 4-F and the Financial Model (rows VOL-IV-F4F-01, VOL-IV-F4F-02, VOL-I-10.2-01).",
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-F/para1",
+     "page": 9,
+     "kind": "span",
+     "words": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-Q17-F3",
+   "kind": "fact",
+   "text": "VOL-I 11.5 governs responses to the Authority's clarification of a submitted Proposal (not bidder questions answered in an addendum); it is listed in `related` by the shared term 'Availability Payment' only and is not changed by Q17.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:11.5",
+     "page": 5,
+     "kind": "span",
+     "words": "A response to a clarification shall not change the Availability Payment quoted; any response that does so shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-31-F1",
+   "kind": "fact",
+   "text": "ADD-03 3.1 withdraws Form 4-G and prohibits its submission; no consequence is printed for submitting it. The promoted op ADD-03/3.1(a) sets ADD-02:7.2 to revoked only; in units_after the VOL-I 9.1 list entry inserted by ADD-02 and the Form 4-G units (ADD-02:F4-G/T1/1 to T1/6 and ADD-02:F4-G/para1) are still 'active'.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-32-F1",
+   "kind": "fact",
+   "text": "ADD-03 3.2 requires the substantive requirements of Volume II Section 6 (heading 'SECTION 6 — SCADA, CONTROL AND CYBER SECURITY', VOL-II:H:S6, p4) to be addressed in the Technical Proposal narrative; no consequence is printed in ADD-03:3.2. The narrative is subject to the VOL-I 9.2 page limit, whose excess pages are removed before evaluation.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technical Proposal narrative.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.2",
+     "page": 5,
+     "kind": "span",
+     "words": "Pages in excess of the limit will be removed before evaluation and will not be scored.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-BOND-F1",
+   "kind": "fact",
+   "text": "After ADD-03/5.2(a), VOL-I 6.3 prints a Bid Bond validity of two hundred and ten (210) days from the Proposal Due Date; VOL-I 7.1 still prints one hundred and fifty (150) days of Proposal validity; VOL-I 12.2 still lets the Authority call the Bid Bond if Financial Close is missed by the long-stop date. The sources, gap and interim handling of CQ-BOND-FC-COVERAGE quote or rest on the superseded 180-day words, and its interim handling carries a date counted from the superseded period (and from the Proposal Due Date before ADD-03/2.1).",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "shall remain valid for two hundred and ten (210) days from the Proposal Due Date and shall be extended on demand where the Authority extends the period of Proposal validity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:7.1",
+     "page": 4,
+     "kind": "span",
+     "words": "Each Proposal shall remain open for acceptance for one hundred and fifty (150) days from the Proposal Due Date.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:12.2",
+     "page": 6,
+     "kind": "span",
+     "words": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-BOND-I1",
+   "kind": "interpretation",
+   "text": "The words that raised CQ-BOND-FC-COVERAGE are still printed after ADD-03: no unit in units_after requires the Bid Bond to remain valid until Financial Close or the long-stop date, which runs from the Preferred Bidder Notification rather than from the Proposal Due Date. Whether the 210-day period now reaches the long-stop date in any case is not established here (no date is computed) and whether the question is still needed is a Commercial decision.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:12.2",
+     "page": 6,
+     "kind": "span",
+     "words": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F4G-F1",
+   "kind": "fact",
+   "text": "Activities form-4g-review and form-4g-sign produce EV-FORM-4G (the signed Form 4-G for Envelope A); ADD-03 3.1 now says Bidders 'shall not submit it'. The rows that list EV-FORM-4G are ADD-02-7.2-01 (evaluated REVOKED by ADD-03/3.1(a)) and ADD-02-F4G-01 to -07 (still evaluated ACTIVE, stale), because their units remain active.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:7.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Form 4-G shall be completed and submitted with Envelope A.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-Q17-ROW",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "c46:ADD-03/Q17",
+   "provision": "ADD-03:Q17",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-Q17-01",
+     "group": "ADD-03:Q17",
+     "scope": [
+      "envelope_B",
+      "price",
+      "new_in_addendum"
+     ],
+     "requirement": "Price the Project as amended by Addendum No. 3 (Authority response to bidder question 17 on adjusting the Availability Payment for the increased capacity)",
+     "units": [
+      "ADD-03:Q17"
+     ],
+     "discipline": "Commercial",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-FORM-4F",
+      "EV-FIN-MODEL"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "Bidders shall price the Project as amended by this Addendum.",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Authority response to bidder question 17 ('Will the Availability Payment be adjusted for the increased capacity?'). No consequence is printed in ADD-03:Q17. The price is quoted as a single Availability Payment (VOL-I 10.2, row VOL-I-10.2-01) on Form 4-F, confirmed unconditional and derived from the Financial Model (rows VOL-IV-F4F-01, VOL-IV-F4F-02). Whether the response says the Availability Payment will or will not be adjusted for capacity is ambiguous (I-ADD03-Q17-AP-CAPACITY); not decided here. The analysis phase's reference id R-ADD03-Q17 is not used: new row ids follow <ADDENDUM>-<provision>-NN."
+      }
+     ],
+     "confidence": "medium",
+     "confidence_reason": "verbatim; what the response means for the Availability Payment question is ambiguous and pending a Commercial decision; no consequence printed",
+     "issues": [
+      "I-ADD03-Q17-AP-CAPACITY"
+     ],
+     "owner": "Commercial lead",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03/Q17",
+      "evidence": {
+       "unit": "ADD-03:Q17",
+       "page": 2,
+       "words": "Bidders shall price the Project as amended by this Addendum."
+      }
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall price the Project as amended by this Addendum.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Will the Availability Payment be adjusted for the increased capacity?",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-10.2-01",
+    "VOL-IV-F4F-01",
+    "VOL-IV-F4F-02",
+    "EV-FORM-4F",
+    "EV-FIN-MODEL"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q17-F1",
+    "S-Q17-F2",
+    "S-Q17-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:Q17 (units_after and get_unit) and the related units VOL-I:10.2, 10.6, 11.5, VOL-IV:F4-F, VOL-V:1.1, 29.x, 31.2. The obligation is to price; the deliverables that carry the price are the existing EV-FORM-4F (activity form-4f) and EV-FIN-MODEL (activities fin-model-build, fin-model-freeze), so no new evidence item or activity is proposed. No crops used (text layer)."
+  },
+  {
+   "id": "DS-Q17-ISSUE",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "c46:ADD-03/Q17",
+   "provision": "ADD-03:Q17",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-Q17-AP-CAPACITY",
+    "text": "ambiguous: ADD-03 Q17 asks 'Will the Availability Payment be adjusted for the increased capacity?' and the Authority responds 'Bidders shall price the Project as amended by this Addendum.' Reading (a): no adjustment is offered and the single Availability Payment quoted under VOL-I 10.2 on Form 4-F (confirmed 'unconditional' and 'not subject to any qualification') must itself reflect the Project as amended by ADD-03, including its capacity change. Reading (b): the response states only the pricing basis and does not say whether the Availability Payment mechanism (VOL-V Clause 29, adjusted under Clause 31 per VOL-V 1.1) changes for capacity. Which reading holds, and whether a follow-up clarification is sought, is a Commercial decision; the Financial Model and Form 4-F rest on it (rows VOL-I-10.2-01, VOL-IV-F4F-01, VOL-IV-F4F-02, VOL-V-29.2-01, ADD-03-Q17-01).",
+    "owner": "Commercial",
+    "theme": "price",
+    "short": "Q17: 'price the Project as amended' vs an Availability Payment adjustment for capacity"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Will the Availability Payment be adjusted for the increased capacity?",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall price the Project as amended by this Addendum.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-F/para1",
+     "page": 9,
+     "kind": "span",
+     "words": "We confirm that the Availability Payment stated above is unconditional, is not subject to any qualification, and has been derived from the Financial Model submitted with this Form.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q17-I1",
+    "S-Q17-F2"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-Q17-DEP",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "c46:ADD-03/Q17",
+   "provision": "ADD-03:Q17",
+   "target": null,
+   "payload": {
+    "from": "ADD-03-Q17-01",
+    "to": [
+     "VOL-I-10.2-01",
+     "VOL-IV-F4F-01",
+     "VOL-IV-F4F-02"
+    ],
+    "kind": "depends_on",
+    "basis": "ADD-03 Q17 instructs 'Bidders shall price the Project as amended by this Addendum.' in answer to a question on the Availability Payment; the Availability Payment is quoted under VOL-I 10.2 ('The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum') on Form 4-F, which confirms it is 'derived from the Financial Model submitted with this Form'.",
+    "issues": [
+     "I-ADD03-Q17-AP-CAPACITY"
+    ],
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:10.2",
+     "page": 5,
+     "kind": "span",
+     "words": "The Bidder shall quote a single Availability Payment expressed in Saudi Riyals per annum, calculated in accordance with the payment mechanism at Volume V Clause 29.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q17",
+     "page": 2,
+     "kind": "span",
+     "words": "Bidders shall price the Project as amended by this Addendum.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-Q17-F2",
+    "S-Q17-F3"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-31-ROW",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "ana:ROW-ADD03-3.1",
+   "provision": "ADD-03:3.1",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-3.1-01",
+     "group": "ADD-03:3.1",
+     "scope": [
+      "envelope_A",
+      "forms",
+      "new_in_addendum"
+     ],
+     "requirement": "Disregard Form 4-G (Cybersecurity Compliance Undertaking, withdrawn by ADD-03 3.1) and do not submit it",
+     "units": [
+      "ADD-03:3.1"
+     ],
+     "discipline": "Bid management",
+     "assessment": "procedural",
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "Bidders shall disregard it and shall not submit it.",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "'it' is Form 4-G (Cybersecurity Compliance Undertaking), which the same provision states 'is withdrawn'. No consequence is printed for submitting it. The VOL-I 9.1 list entry and the Form 4-G units added by ADD-02 remain active after the promoted ops (I-ADD03-F4G-UNITS-ACTIVE)."
+      }
+     ],
+     "confidence": "high",
+     "confidence_reason": "verbatim prohibition; no consequence printed",
+     "issues": [
+      "I-ADD03-F4G-UNITS-ACTIVE"
+     ],
+     "owner": "Bid manager",
+     "no_deliverable": "a prohibition: nothing is produced; Form 4-G is not prepared, signed or placed in Envelope A",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:3.1",
+      "evidence": {
+       "unit": "ADD-03:3.1",
+       "page": 1,
+       "words": "Bidders shall disregard it and shall not submit it."
+      }
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-31-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:3.1 at ADD-03 (text layer, no crop) and VOL-I:9.1(e)+ADD-02 at ADD-03 (still active, inserted by ADD-02/7.1)."
+  },
+  {
+   "id": "DS-31-ISSUE",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "ana:ROW-ADD03-3.1",
+   "provision": "ADD-03:3.1",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-F4G-UNITS-ACTIVE",
+    "text": "ADD-03 3.1 states that Form 4-G 'is withdrawn' and that Bidders 'shall not submit it'; the promoted op ADD-03/3.1(a) revokes only ADD-02:7.2. After the ops the Envelope A list entry inserted in VOL-I 9.1 by ADD-02 ('FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING', VOL-I:9.1(e)+ADD-02) and the Form 4-G units (ADD-02:F4-G/T1/1 to T1/6, ADD-02:F4-G/para1) are still active, so rows ADD-02-F4G-01 to -07 are still evaluated ACTIVE and A5 still plans form-4g-review and form-4g-sign, whose output 3.1 forbids submitting. Open for Document control: whether further ops on those units are needed to give effect to 'is withdrawn' (amendment phase), and for Technical: re-reading of rows ADD-02-F4G-01 to -07 and the A5 activities. Not decided here; the existing issues I-F4G-LETTERING and I-F4G-NO are not changed.",
+    "owner": "Document control",
+    "theme": "forms",
+    "short": "Form 4-G withdrawn by ADD-03 3.1, but its list entry and form units are still active",
+    "a3": "Form 4-G withdrawn (ADD-03 3.1: 'shall not submit it'); its VOL-I 9.1 list entry and form units still active pending further ops",
+    "show_in_a3": true
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-31-F1",
+    "S-F4G-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-32-ROW",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "row_new",
+   "task": "ana:ROW-ADD03-3.2",
+   "provision": "ADD-03:3.2",
+   "target": null,
+   "payload": {
+    "row": {
+     "id": "ADD-03-3.2-01",
+     "group": "ADD-03:3.2",
+     "scope": [
+      "envelope_A",
+      "technical_proposal",
+      "cybersecurity",
+      "new_in_addendum"
+     ],
+     "requirement": "Address the substantive requirements of Volume II Section 6 (SCADA, control and cyber security) in the Technical Proposal narrative",
+     "units": [
+      "ADD-03:3.2"
+     ],
+     "discipline": "Technical",
+     "assessment": "procedural",
+     "evidence": [
+      "EV-TECH-PROPOSAL"
+     ],
+     "interpretations": [
+      {
+       "stage": "ADD-03",
+       "quote": "The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technical Proposal narrative.",
+       "parameters": {},
+       "consequence": "none_stated",
+       "note": "Volume II Section 6 is headed 'SECTION 6 — SCADA, CONTROL AND CYBER SECURITY' (VOL-II:H:S6, p4; Clauses 6.1 to 6.3). No consequence is printed in ADD-03:3.2. The narrative is subject to the VOL-I 9.2 page limit (row VOL-I-9.2-01; pages over the limit are removed before evaluation); how the Section 6 content is scored is not stated here."
+      }
+     ],
+     "confidence": "high",
+     "confidence_reason": "verbatim; no consequence printed",
+     "owner": "Technical lead",
+     "introduced": {
+      "stage": "ADD-03",
+      "by": "ADD-03:3.2",
+      "evidence": {
+       "unit": "ADD-03:3.2",
+       "page": 1,
+       "words": "shall be addressed in the Technical Proposal narrative."
+      }
+     }
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The substantive requirements of Volume II Section 6 are unchanged and shall be addressed in the Technical Proposal narrative.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-32-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:3.2 and searched VOL-II for Section 6 (VOL-II:H:S6, 6.1, 6.2). Evidence is the existing EV-TECH-PROPOSAL produced by the existing activity technical-proposal."
+  },
+  {
+   "id": "DS-32-DEP",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "ana:ROW-ADD03-3.2",
+   "provision": "ADD-03:3.2",
+   "target": null,
+   "payload": {
+    "from": "VOL-I-9.2-01",
+    "to": "ADD-03-3.2-01",
+    "kind": "limit_applies",
+    "basis": "ADD-03 3.2 places the Volume II Section 6 content 'in the Technical Proposal narrative'; VOL-I 9.2 limits that narrative to one hundred and fifty (150) pages of A4 and removes excess pages before evaluation.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.2",
+     "page": 5,
+     "kind": "span",
+     "words": "The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4, excluding the Form Sheets and the appendices expressly permitted by Volume II.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.2",
+     "page": 1,
+     "kind": "span",
+     "words": "shall be addressed in the Technical Proposal narrative.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-32-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-CQ-BOND",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "clarification_item",
+   "task": "clar:CQ-BOND-FC-COVERAGE",
+   "provision": "ADD-03:5.2",
+   "target": "CQ-BOND-FC-COVERAGE",
+   "payload": {
+    "entry": {
+     "id": "CQ-BOND-FC-COVERAGE",
+     "topic": "bond coverage (follow-up to ADD-02 Q13)",
+     "kind": "discrepancy",
+     "volume": "Volume I",
+     "clause": "6.3 (with 12.2)",
+     "page": 3,
+     "units": [
+      "VOL-I:6.3",
+      "VOL-I:12.2",
+      "VOL-I:7.1",
+      "VOL-I:7.2",
+      "ADD-02:Q13",
+      "ADD-02:Q8",
+      "ADD-01:Q3"
+     ],
+     "sources": [
+      {
+       "unit": "VOL-I:6.3",
+       "page": 3,
+       "words": "shall remain valid for two hundred and ten (210) days from the Proposal Due Date and shall be extended on demand where the Authority extends the period of Proposal validity"
+      },
+      {
+       "unit": "VOL-I:7.1",
+       "page": 4,
+       "words": "Each Proposal shall remain open for acceptance for one hundred and fifty (150) days from the Proposal Due Date."
+      },
+      {
+       "unit": "VOL-I:12.2",
+       "page": 6,
+       "words": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder."
+      },
+      {
+       "unit": "VOL-I:12.2",
+       "page": 6,
+       "words": "Financial Close within two hundred and seventy (270) days, of the date of the Preferred Bidder Notification"
+      },
+      {
+       "unit": "ADD-02:Q13",
+       "page": 2,
+       "words": "The periods in Volume I Clause 12.2 are unchanged."
+      }
+     ],
+     "gap": "As amended by ADD-03 5.2, the Bid Bond runs two hundred and ten (210) days from the Proposal Due Date and must be extended only when Proposal validity (still 150 days under VOL-I 7.1) is extended, but VOL-I 12.2 lets the Authority call it if Financial Close is missed by the long-stop date, counted from the Preferred Bidder Notification (270 days). No clause requires the bond to cover that period, and 'long-stop date' is not defined. Whether the 210-day period reaches the long-stop date depends on when the Preferred Bidder Notification is given; no date is computed here.",
+     "already_settled": "ADD-02 Q13 settles that the 12.2 periods (Commercial Close 120 days, Financial Close 270 days from the Preferred Bidder Notification) are unchanged; ADD-02 Q8 and ADD-01 Q3 settle the bond amount basis and issuer; ADD-03 5.1 and 5.2 restate the bond amount and validity period and confirm the Proposal validity period in Clause 7.1 is unchanged. None of these is re-asked.",
+     "practical_impact": "Determines the expiry date and extension commitment the issuing bank must give, and its cost, and the Preferred Bidder's exposure to a call at Financial Close; a fixed-expiry bank instrument must be drafted to match.",
+     "proposed_question": "Volume I, Clause 6.3, page 3 (as amended by Addendum No. 3 Clause 5.2), and Clause 12.2, page 6: Clause 6.3 requires the Bid Bond to remain valid for 210 days from the Proposal Due Date, extended where Proposal validity is extended, while Clause 12.2 entitles the Authority to call the Bid Bond if Financial Close is not achieved by the long-stop date, which may fall up to 270 days after the Preferred Bidder Notification. Will the Preferred Bidder be required to extend the Bid Bond so that it remains valid until Financial Close or the long-stop date and, if so, to what date?",
+     "interim_handling": "Arrange the bond to VOL-I 6.3-6.4 as amended by ADD-03 5.1 and 5.2, with an expiry no earlier than the later counting reading of the program's computed 210-day validity date (counted from the Proposal Due Date as amended by ADD-03 2.1; the date previously carried here was counted from the superseded 180-day period and is withdrawn from this entry, not retyped), and obtain the bank's indicative agreement to extend it through a Financial Close long-stop; carry that extension cost in the bid budget without assuming the Authority's answer.",
+     "decision_owner": "Commercial",
+     "response_status": "draft, not sent",
+     "linked_issues": [
+      "I-VOL-I-BOND-LONGSTOP"
+     ],
+     "theme": "contract"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "shall remain valid for two hundred and ten (210) days from the Proposal Due Date and shall be extended on demand where the Authority extends the period of Proposal validity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:12.2",
+     "page": 6,
+     "kind": "span",
+     "words": "Failure to achieve Financial Close by the long-stop date entitles the Authority to call the Bid Bond and to proceed with the next ranked Bidder.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.3-01",
+    "VOL-I-12.2-02",
+    "I-VOL-I-BOND-LONGSTOP"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-BOND-F1",
+    "S-BOND-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "VOL-I:6.3 changed by ADD-03/5.2(a) (180 to 210 days). The entry's 6.3 source quoted the superseded words and its gap and interim handling carried a date counted from them; the entry is re-stated against units_after, sources re-quoted, the typed date removed rather than recomputed (the program's date rule BID-BOND-VALIDITY on row VOL-I-6.3-01 carries the computation once that row is re-read). Response status unchanged ('draft, not sent'); the entry's existing review (interview_demo origin, accepted) is not a human approval of this change and is left to the controller. The linked issue I-VOL-I-BOND-LONGSTOP still prints '180-day validity'; it is not changed by this proposal (see I-ADD03-BOND-210)."
+  },
+  {
+   "id": "DS-CQ-BOND-ISSUE",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "clar:CQ-BOND-FC-COVERAGE",
+   "provision": "ADD-03:5.2",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-BOND-210",
+    "text": "Existing issue I-VOL-I-BOND-LONGSTOP (and the 'gap' of CQ-BOND-FC-COVERAGE as previously recorded) refers to 'the Bid Bond's 180-day validity from the PDD (VOL-I 6.3)'; after ADD-03/5.2(a) VOL-I 6.3 prints 'two hundred and ten (210) days from the Proposal Due Date'. The existing issue is not changed by a proposal; whether its open question still stands at 210 days, and whether CQ-BOND-FC-COVERAGE is still to be sent, is a Commercial decision.",
+    "owner": "Commercial",
+    "theme": "contract",
+    "short": "bond long-stop issue still cites 180 days; VOL-I 6.3 now 210 days (ADD-03 5.2)"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "Envelope A shall be accompanied by a Bid Bond which shall remain valid for two hundred and ten (210) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-BOND-F1",
+    "S-BOND-I1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ACT-F4G-REVIEW",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "act:form-4g-review",
+   "provision": "ADD-03:3.1",
+   "target": "form-4g-review",
+   "payload": {
+    "why": "software limitation: ADD-03 3.1 withdraws Form 4-G ('Bidders shall disregard it and shall not submit it.'), so the review activity for its undertakings produces an item the Bidder may not submit; but the downstream statement types cannot retire an A5 activity or detach it from EV-FORM-4G (an activity proposal only replaces the shared template), and the rows that list EV-FORM-4G are still in force: ADD-02-F4G-01 to -07 evaluate ACTIVE because their units (ADD-02:F4-G/T1/1 to T1/6, ADD-02:F4-G/para1) and the VOL-I 9.1 list entry remain active after the promoted ops, which revoke only ADD-02:7.2. Follow-on work: Document control decides whether ops on those units are needed (amendment phase, I-ADD03-F4G-UNITS-ACTIVE); Technical re-reads rows ADD-02-F4G-01 to -07; Bid management then removes or keeps form-4g-review in A5. Nothing is decided here; the rows' interview_demo review states are preserved.",
+    "what_is_unsupported": "retiring an A5 activity (form-4g-review) and its EV-FORM-4G association through a downstream proposal while rows listing EV-FORM-4G remain in force"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/T1/1",
+     "page": 3,
+     "kind": "span",
+     "words": "The operational technology environment will be segregated from any business network in accordance with Volume II Clause 6.2.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01",
+    "ADD-02-F4G-02",
+    "ADD-02-F4G-03",
+    "ADD-02-F4G-04",
+    "ADD-02-F4G-05",
+    "ADD-02-F4G-06",
+    "ADD-02-F4G-07",
+    "ADD-03-3.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F4G-F1",
+    "S-31-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ACT-F4G-SIGN",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "act:form-4g-sign",
+   "provision": "ADD-03:3.1",
+   "target": "form-4g-sign",
+   "payload": {
+    "why": "software limitation: form-4g-sign produces 'Form 4-G (signed)' for assemble-envelope-a, which ADD-03 3.1 now prohibits ('Bidders shall disregard it and shall not submit it.'); the obligation to submit it (ADD-02 7.2, 'Form 4-G shall be completed and submitted with Envelope A.') is revoked by ADD-03/3.1(a). The downstream statement types cannot retire the activity, remove its successor link to assemble-envelope-a or detach it from EV-FORM-4G, and the rows listing EV-FORM-4G (ADD-02-F4G-01 to -07, including the signature row ADD-02-F4G-04 on ADD-02:F4-G/para1) are still evaluated ACTIVE because their units remain active. Follow-on work: Document control (I-ADD03-F4G-UNITS-ACTIVE: further ops on the Form 4-G units and the VOL-I 9.1 list entry), Technical (re-reading rows ADD-02-F4G-01 to -07), then Bid management (A5: remove form-4g-sign and its link to assemble-envelope-a). Nothing is decided here.",
+    "what_is_unsupported": "retiring an A5 activity (form-4g-sign), its successor link and its EV-FORM-4G association through a downstream proposal while rows listing EV-FORM-4G remain in force"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:7.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Form 4-G shall be completed and submitted with Envelope A.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-04",
+    "ADD-03-3.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F4G-F1",
+    "S-31-F1"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

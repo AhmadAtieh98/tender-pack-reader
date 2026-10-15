@@ -2548,12 +2548,31 @@ A3_REASON_WORDS = (16, 10)     # level 2, if it still does not fit: each issue's
 def a3_pages(a3d: dict):
     """(level, reason words, page) in the order stage2.write tries them for the one page: levels 0, 1 and 2; then level 2
     with each issue's reason abbreviated to its first N words and '…' (A3_REASON_WORDS; never dropped; in full on
-    a3_detail.html); then level 3 (reasons dropped: the last resort) and level 4."""
+    a3_detail.html); then level 3 (reasons dropped: the last resort) and level 4. Session 19: each level-2 page is
+    tried in one issue column, then in two (`issue_columns`), before any reason is dropped."""
     for level in range(A3_LEVELS + 1):
-        yield level, None, condense_a3(a3d, level)
-        if level == 2:
-            for n in A3_REASON_WORDS:
-                yield level, n, condense_a3(a3d, level, reason_words=n)
+        if level != 2:
+            yield level, None, condense_a3(a3d, level)
+            continue
+        for n in (None, *A3_REASON_WORDS):
+            page = condense_a3(a3d, level, reason_words=n)
+            yield level, n, page
+            yield level, n, {**page, "issue_columns": 2}
+
+
+def fit_a3(a3d: dict, path: Path) -> dict:
+    """The first page of a3_pages that fits one A4 page, written to `path`; the fit, its level, reason words and issue
+    columns (a3d gets `condensed` and `issue_columns`). Nothing fits: {pages: 0, error} at the last level tried."""
+    fit: dict = {}
+    for level, words, page in a3_pages(a3d):
+        try:
+            fit = dict(write_a3_pdf(page, path), condensed=level, issue_columns=page.get("issue_columns", 1),
+                       **({"reason_words": words} if words else {}))
+            a3d["condensed"], a3d["issue_columns"] = level, fit["issue_columns"]
+            return fit
+        except A3OverflowError as e:
+            fit = {"pages": 0, "error": str(e), "condensed": level}
+    return fit
 
 
 def pending_mark(t: str) -> str:
@@ -2626,7 +2645,8 @@ def condense_a3(a3d: dict, level: int, reason_words: int | None = None) -> dict:
             brief_counts = (f"{counts['all']} open issues: {counts['listed']} listed, {counts['folded']} folded (+n), "
                             f"{counts['detail_only']} detail-only and {len(counts['gate_note'])} gate-note issues "
                             "(identifiers and full reasons on a3_detail.html).")
-            page['groups']['note'] = g['note'].replace(a3d['issue_counts'], brief_counts, 1)
+            if len(brief_counts) < len(a3d['issue_counts']):    # session 19: a condensing step never lengthens
+                page['groups']['note'] = g['note'].replace(a3d['issue_counts'], brief_counts, 1)
         used = any(i["short"].startswith(A3_PENDING_MARK) or i.get("folds_pending")
                    for x in page["groups"]["groups"] for i in x["items"]) or any(   # session 14 (F2; R2 m5): a line's ⚑
             A3_PENDING_MARK in str(i.get("confidence") or "") for sec in page["sections"] for i in sec.get("items") or [])
@@ -2793,16 +2813,10 @@ def write(r: dict, out: Path, candidate: bool = True, op_status: dict | None = N
     main = progs.get(val)
     issues = collect_issues(r, main)
     a3d = a3(r, issues, main)
-    a3_fit: dict = {}
-    for level, words, page in a3_pages(a3d):        # session 12 (F2): level 2 abbreviates reasons before level 3
-        try:
-            fit = write_a3_pdf(page, out / "a3" / "a3.pdf")
-            a3_fit = dict(fit, explicit_ids=a3d["explicit_ids"], condensed=level, count_words=a3d.get("a3_count_words"),
-                          **({"reason_words": words} if words else {}))
-            a3d["condensed"] = level
-            break
-        except A3OverflowError as e:
-            a3_fit = {"pages": 0, "error": str(e), "explicit_ids": a3d["explicit_ids"], "condensed": level}
+    # session 12 (F2): level 2 abbreviates reasons before level 3; session 19: and tries two issue columns
+    a3_fit = dict(fit_a3(a3d, out / "a3" / "a3.pdf"), explicit_ids=a3d["explicit_ids"])
+    if a3_fit.get("pages"):
+        a3_fit["count_words"] = a3d.get("a3_count_words")
     dump_json(a3d, out / "a3" / "a3.json")
     r["a3_count_words"] = a3d.get("a3_count_words")      # session 13 (F2; audit R2-9): batch 2 prints the same count
     write_text(out / "a3" / "a3_detail.html", a3_detail_html(a3d))

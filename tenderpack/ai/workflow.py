@@ -1864,7 +1864,7 @@ def _reading_host_session(ctx: Ctx, hs, rws: Workspace, bid: str, packet: dict):
         last = sess.last
         if last is not None:
             ctx.cp.batch(bid)["host_session"] = {"run_id": last.run_id, "elapsed_s": last.elapsed_s,
-                                                 "error": last.error, "model_reported": last.model_reported,
+                                                 "error": last.error, "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}),
                                                  "tool_calls": len(last.tool_calls),
                                                  "failure_class": last.failure_class,
                                                  "note": "the session's final message is the proposed reading"}
@@ -2420,7 +2420,7 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
                 last = sess.last
                 out.host_sessions.append({"run_id": last.run_id, "elapsed_s": last.elapsed_s, "error": last.error,
                                           "failure_class": last.failure_class, "crops_read": last.crops_read,
-                                          "model_reported": last.model_reported, "reset_in_s": last.reset_in_s})
+                                          "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}), "reset_in_s": last.reset_in_s})
                 return last
 
             def rec(a):
@@ -2453,7 +2453,7 @@ def _host_analysis(ctx: Ctx, st: dict, bid: str, todo: list[str]) -> ProposalSet
             last = sess.last
             if last is not None:
                 b["host_session"] = {"run_id": last.run_id, "elapsed_s": last.elapsed_s, "error": last.error,
-                                     "crops_read": last.crops_read, "model_reported": last.model_reported,
+                                     "crops_read": last.crops_read, "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}),
                                      "failure_class": last.failure_class, "sessions": len(out.host_sessions)}
                 cp.intervention(kind="host session (automatic)", batch=bid, by="tenderpack.ai.hostsession",
                                 host_model=sess.host_model_label(), sessions=len(out.host_sessions),
@@ -2519,7 +2519,7 @@ def _prep_analysis(ctx: Ctx, bid: str) -> dict | None:
                 last = sess.last
                 sessions.append({"run_id": last.run_id, "elapsed_s": last.elapsed_s, "error": last.error,
                                  "failure_class": last.failure_class, "crops_read": last.crops_read,
-                                 "model_reported": last.model_reported, "reset_in_s": last.reset_in_s})
+                                 "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}), "reset_in_s": last.reset_in_s})
                 return last
             res = R.call_host(run, pol, sleep=ctx.sleep, rng=ctx.rng, record=attempts.append)
             return {"res": res, "data": box.get("data")}
@@ -3294,7 +3294,7 @@ def _downstream_host_session(ctx: Ctx, hs, bid: str, packet: dict) -> Downstream
         last = sess.last
         if last is not None:
             ctx.cp.batch(bid)["host_session"] = {"run_id": last.run_id, "elapsed_s": last.elapsed_s,
-                                                 "error": last.error, "model_reported": last.model_reported,
+                                                 "error": last.error, "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}),
                                                  "failure_class": last.failure_class,
                                                  "note": "a downstream session submits nothing: its final message is "
                                                          "the set"}
@@ -3999,6 +3999,13 @@ def _rel(p, base: Path) -> str:
         return str(p)
 
 
+
+def _auxiliary_models(d: dict) -> str:
+    """Session 19: models the host CLI listed in its usage without an answer turn (Claude Code's auxiliary calls), named
+    apart from the models the sessions ran on; "" when there are none."""
+    aux = sorted({m for b in d["batches"].values() for m in (b.get("host_session") or {}).get("model_auxiliary") or []})
+    return f"; also in the host CLI's usage, with no answer turn: {', '.join(aux)}" if aux else ""
+
 def review_markdown(ctx: Ctx) -> str:
     cp, d = ctx.cp, ctx.cp.data
     rd = ctx.dir / "review"
@@ -4031,7 +4038,8 @@ def review_markdown(ctx: Ctx) -> str:
          f"`{cps.model_reported if cps else None}`" + (" (a recorded fixture: NOT a live model)" if ctx.s["route"] == "recorded" else "")
          + (("; host sessions report: " + ", ".join(sorted({m for b in d["batches"].values()
                                                             for m in (b.get("host_session") or {}).get("model_reported") or []})))
-            if any((b.get("host_session") or {}).get("model_reported") for b in d["batches"].values()) else ""),
+            if any((b.get("host_session") or {}).get("model_reported") for b in d["batches"].values()) else "")
+         + _auxiliary_models(d),
          "- status **{}**".format(*(_final_status(cp)[:1])) + (": " + _final_status(cp)[1] if _final_status(cp)[1] else "")]
     L += usage_lines(cp)                            # session 14 (W2): the host's own usage; unknown is never 0
     L += code_lines(cp)                             # session 13: the code identity; DIFFERENT_CODE when it changed

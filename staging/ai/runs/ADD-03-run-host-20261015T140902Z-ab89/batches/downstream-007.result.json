@@ -1,0 +1,960 @@
+{
+ "run_id": "ADD-03-run-host-20261015T140902Z-ab89-downstream-007",
+ "created": "2026-10-15T14:22:32Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-F-BOND-AMOUNT",
+   "kind": "fact",
+   "text": "After ADD-03/5.1, VOL-I:6.4 states the Bid Bond amount as SAR 5,600,000. The issuer wording (a bank licensed in the Kingdom with a long-term rating not lower than A-) is unchanged.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.4",
+     "page": 3,
+     "kind": "span",
+     "words": "The Bid Bond shall be in the amount of SAR 5,600,000 (five million six hundred thousand Saudi Riyals)",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "‘SAR 4,500,000 (four million five hundred thousand Saudi Riyals)’ is deleted and ‘SAR 5,600,000 (five million six hundred thousand Saudi Riyals)’ is substituted",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-BOND-VALIDITY",
+   "kind": "fact",
+   "text": "After ADD-03/5.2(a), VOL-I:6.3 states that the Bid Bond is valid for 210 days from the Proposal Due Date. ADD-03:5.2 states that the Proposal validity in VOL-I 7.1 is unchanged.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "valid for two hundred and ten (210) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Proposal validity period in Clause 7.1 is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-PDD",
+   "kind": "fact",
+   "text": "ADD-03:2.1 deletes 'Thursday 26 November 2026' from VOL-I 6.1 and substitutes 'Thursday 10 December 2026'. The program's ADD-03 programme recomputes the milestones anchored on the Proposal Due Date (PDD, ISO-CURRENT-AT, BID-BOND-VALIDITY, PROPOSAL-VALIDITY, REFERENCE-LOOKBACK) from the amended date. No date is typed here.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-ACK",
+   "kind": "fact",
+   "text": "ADD-03's cover requires bidders to acknowledge receipt in Form 4-A (op ADD-03/cover/para3, adds_obligation). Form 4-A as reissued by ADD-01 Appendix A has the field 'Addenda acknowledged (numbers)'.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall acknowledge receipt in Form 4-A.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-01",
+     "unit_id": "ADD-01:AppA/addenda-acknowledged-numbers",
+     "page": 3,
+     "kind": "span",
+     "words": "Addenda acknowledged (numbers):",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-REF-THRESHOLD",
+   "kind": "fact",
+   "text": "After ADD-03/4.2(a), footnote 12 to VOL-I 8.5 requires each of the two reference plants to have a nominal capacity of not less than 100,000 m³/day. The rejection words are unchanged. ADD-03:4.2 states that the two plants and the ten-year look-back are unchanged.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "each of nominal capacity not less than 100,000 m³/day",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "shall be rejected without further evaluation",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The requirement for two (2) reference plants and the ten (10) year look-back are unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-F4A-PRINTED",
+   "kind": "fact",
+   "text": "Form 4-A's printed Proposal Due Date field reads '12 November 2026, 14:00 Riyadh time'. In current_records, issue I-F4A-FIELDS has only an interview_demo acceptance (2026-10-11, 'no observed human review'). That acceptance acknowledges the record. It gives no instruction on how to correct the printed date.",
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-A/proposal-due-date",
+     "page": 3,
+     "kind": "span",
+     "words": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-ISO-DIRECTION",
+   "kind": "fact",
+   "text": "Row VOL-I-8.3-01's ADD-01 reading records the owner's direction of 3 Oct 2026: the ISO certificate must be current at '26 November 2026, 14:00 Riyadh time'. ADD-03:2.1 deletes 'Thursday 26 November 2026' from VOL-I 6.1. VOL-I 8.3 itself ties currency to the Proposal Due Date.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.3",
+     "page": 4,
+     "kind": "span",
+     "words": "current as at the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-TEMPLATES-GENERIC",
+   "kind": "interpretation",
+   "text": "None of the six activity templates names an amount, validity period, date or capacity figure. They refer to the clause, to 'the PDD' or to 'the look-back window' in general terms, so their wording reads the amended values without change. A person confirms this.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "Envelope A shall be accompanied by a Bid Bond",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-A-DURATIONS",
+   "kind": "assumption",
+   "text": "PROVISIONAL ASSUMPTION: the lead-time keys bid_bond_bank_approval, bid_bond_issue, form_4a_preparation, form_4a_signature, iso_certificate_copy and reference_evidence keep their current values in config/assumptions.yaml. The pack states no duration. Whether the higher bond amount or the higher reference threshold makes any of them longer is for the owner (Commercial or Technical) to decide and edit.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.4",
+     "page": 3,
+     "kind": "span",
+     "words": "SAR 5,600,000 (five million six hundred thousand Saudi Riyals)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-EV-LABEL",
+   "kind": "fact",
+   "text": "In the vocabulary, the description of evidence item EV-BID-BOND reads 'Bid Bond (SAR 4,500,000, first demand)'. ADD-03/5.1 deletes that amount from VOL-I 6.4.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume I Clause 6.4, ‘SAR 4,500,000 (four million five hundred thousand Saudi Riyals)’ is deleted",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-ADD03-001",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:bond-approval",
+   "provision": "ADD-03:5.1",
+   "target": "bond-approval",
+   "payload": {
+    "why": "The template 'Obtain bank approval for the Bid Bond' names no amount. Its issuer, 'Bank licensed in the Kingdom, rated A- or better', restates VOL-I 6.4's issuer words, which ADD-03/5.1 does not change. The approval sought must now cover the amended amount, 'SAR 5,600,000 (five million six hundred thousand Saudi Riyals)'. Rows VOL-I-6.4-01 and VOL-I-6.4-02 carry that amount; their readings are re-made under their own row tasks. The duration key bid_bond_bank_approval is kept (PROVISIONAL ASSUMPTION, S-A-DURATIONS). A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.4",
+     "page": 3,
+     "kind": "span",
+     "words": "issued by a bank licensed to operate in the Kingdom holding a long-term credit rating of not lower than A-",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.4",
+     "page": 3,
+     "kind": "span",
+     "words": "The Bid Bond shall be in the amount of SAR 5,600,000 (five million six hundred thousand Saudi Riyals)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.4-01",
+    "VOL-I-6.4-02",
+    "EV-BID-BOND"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-BOND-AMOUNT",
+    "S-I-TEMPLATES-GENERIC",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read VOL-I:6.4 in units_after, and ADD-03:5.1 with get_unit at ADD-03. Both are text-layer units, so there is no crop."
+  },
+  {
+   "id": "DS-ADD03-002",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "act:bond-approval",
+   "provision": "ADD-03:5.1",
+   "target": "EV-BID-BOND",
+   "payload": {
+    "why": "software limitation: the existing evidence item EV-BID-BOND is described as 'Bid Bond (SAR 4,500,000, first demand)'. ADD-03/5.1 deletes that amount from VOL-I 6.4, which now reads 'SAR 5,600,000 (five million six hundred thousand Saudi Riyals)'. A downstream proposal can only propose a new evidence item id; it cannot change an existing item's description. Document control or Commercial should update the EV-BID-BOND description in the curated evidence items, or decide otherwise. Activities bond-approval and bond-issue produce this item.",
+    "what_is_unsupported": "changing the description of an existing evidence item (EV-BID-BOND) through a downstream proposal"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume I Clause 6.4, ‘SAR 4,500,000 (four million five hundred thousand Saudi Riyals)’ is deleted and ‘SAR 5,600,000 (five million six hundred thousand Saudi Riyals)’ is substituted.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "EV-BID-BOND",
+    "bond-approval",
+    "bond-issue"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-EV-LABEL",
+    "S-F-BOND-AMOUNT"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-003",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:bond-issue",
+   "provision": "ADD-03:5.2",
+   "target": "bond-issue",
+   "payload": {
+    "why": "The template 'Issue the Bid Bond (validity per VOL-I 6.3)' refers to the clause, not to a figure, so it reads the amended validity, 'two hundred and ten (210) days from the Proposal Due Date', without change. The end of the validity period is the program's date rule BID-BOND-VALIDITY on row VOL-I-6.3-01. Its offset is re-made under that row's own task and is never typed here; it now counts from the Proposal Due Date as amended by ADD-03:2.1. The predecessor (bond-approval) and successor (assemble-envelope-a) are unchanged. In the ADD-03 programme, bond-issue is not on an infeasible chain. The bond must also cover the amended amount in VOL-I 6.4. The duration key bid_bond_issue is kept (PROVISIONAL ASSUMPTION). A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "valid for two hundred and ten (210) days from the Proposal Due Date and shall be extended on demand where the Authority extends the period of Proposal validity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.2",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume I Clause 6.3, ‘one hundred and eighty (180) days’ is deleted and ‘two hundred and ten (210) days’ is substituted.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-6.3-01",
+    "VOL-I-6.4-01",
+    "EV-BID-BOND",
+    "bond-approval"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-BOND-VALIDITY",
+    "S-F-PDD",
+    "S-I-TEMPLATES-GENERIC",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "simulate_programme(latest) lists BID-BOND-VALIDITY from VOL-I:6.3, where the day-0 and day-1 readings differ, and shows no infeasible chain through bond-issue."
+  },
+  {
+   "id": "DS-ADD03-004",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:form-4a-prep",
+   "provision": "ADD-03:cover/para3",
+   "target": "form-4a-prep",
+   "payload": {
+    "why": "The template already prepares the Addenda acknowledgement on the ADD-01 Appendix A form, whose field reads 'Addenda acknowledged (numbers):'. ADD-03's cover repeats 'Bidders shall acknowledge receipt in Form 4-A.', so the acknowledgement must now also cover ADD-03. ADD-03 does not reissue Form 4-A. The template names no addendum numbers, so its wording is unchanged. Follow-on, not decided here: row ADD-01-AppA-01 lists ADD-01:cover/para3 and ADD-02:cover/para3 but not ADD-03:cover/para3; that belongs to the row's own task. A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall acknowledge receipt in Form 4-A.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-01",
+     "unit_id": "ADD-01:AppA/addenda-acknowledged-numbers",
+     "page": 3,
+     "kind": "span",
+     "words": "Addenda acknowledged (numbers):",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-01-AppA-01",
+    "EV-FORM-4A",
+    "VOL-I-7.1-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-ACK",
+    "S-I-TEMPLATES-GENERIC",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-005",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "act:form-4a-prep",
+   "provision": "ADD-03:cover/para3",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:cover/para3",
+    "to": "form-4a-prep",
+    "kind": "depends_on",
+    "basis": "ADD-03:cover/para3 states 'Bidders shall acknowledge receipt in Form 4-A.' Activity form-4a-prep prepares the 'Addenda acknowledged (numbers):' field of the reissued Form 4-A, which must now include ADD-03.",
+    "issues": [
+     "I-F4A-FIELDS"
+    ],
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:cover/para3",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall acknowledge receipt in Form 4-A.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-ACK"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-006",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:form-4a",
+   "provision": "ADD-03:2.1",
+   "target": "form-4a",
+   "payload": {
+    "why": "The template stays as it is and remains gated_by I-F4A-FIELDS. Its name says 'as decided on I-F4A-FIELDS', but the record shows no handling decision. I-F4A-FIELDS has only an interview_demo acceptance ('Assumed approved for an interview demonstration on the owner's instruction; no observed human review'). That acceptance acknowledges the issue. It says nothing about which form version or fields to use, or how to correct the printed Proposal Due Date. That instruction is MISSING and is not inferred here. ADD-03/2.1 widens the gap between the printed field and VOL-I 6.1 (new issue I-ADD03-F4A-PDD). The words of rows VOL-I-7.1-01 (150 days, confirmed unchanged by ADD-03:5.2) and VOL-I-9.3-01 are not changed. A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-A/proposal-due-date",
+     "page": 3,
+     "kind": "span",
+     "words": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:7.1",
+     "page": 4,
+     "kind": "span",
+     "words": "Each Proposal shall remain open for acceptance for one hundred and fifty (150) days from the Proposal Due Date.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:5.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The Proposal validity period in Clause 7.1 is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-F4A-FIELDS",
+    "VOL-I-7.1-01",
+    "VOL-I-9.3-01",
+    "VOL-IV-F4A-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4A-PRINTED",
+    "S-F-PDD",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-007",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "act:form-4a",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-F4A-PDD",
+    "text": "ADD-03:2.1 amends VOL-I 6.1 to 'Thursday 10 December 2026', 14:00 Riyadh time. The reissued Form 4-A still prints 'Proposal Due Date: 12 November 2026, 14:00 Riyadh time' (row VOL-IV-F4A-01). VOL-IV cover paragraph 5 says 'Forms shall be reproduced without alteration to their wording.' The open question on I-F4A-FIELDS (how to correct the out-of-date printed date) is the same kind of question, but it now follows a second amendment of the Proposal Due Date. I-F4A-FIELDS has only an interview_demo acceptance and no handling instruction, so nothing says what to print and sign. Activity form-4a stays gated. Open question for Legal: how should Form 4-A's printed Proposal Due Date be handled after ADD-03, and should clarification be sought before the cut-off? HUMAN DECISION PENDING.",
+    "owner": "Legal",
+    "theme": "forms",
+    "short": "Form 4-A printed PDD now two amendments out of date (ADD-03 2.1); no handling instruction recorded",
+    "show_in_a3": false
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:F4-A/proposal-due-date",
+     "page": 3,
+     "kind": "span",
+     "words": "Proposal Due Date: 12 November 2026, 14:00 Riyadh time",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-IV",
+     "unit_id": "VOL-IV:cover/para5",
+     "page": 2,
+     "kind": "span",
+     "words": "Forms shall be reproduced without alteration to their wording. A Bidder that alters the wording of a Form does so at its own risk.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "I-F4A-FIELDS",
+    "VOL-IV-F4A-01",
+    "VOL-IV-FORMS-01",
+    "form-4a"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4A-PRINTED",
+    "S-F-PDD"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-008",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:iso-copy",
+   "provision": "ADD-03:2.1",
+   "target": "iso-copy",
+   "payload": {
+    "why": "The template's 'check it is current at the PDD' refers to the defined Proposal Due Date, not to a calendar date. ADD-03 does not change VOL-I 8.3 ('current as at the Proposal Due Date'). The program's ISO-CURRENT-AT milestone (as_at, anchored on the PDD) follows the date as amended by ADD-03:2.1. The owner's earlier direction recorded on row VOL-I-8.3-01 names the superseded date. That is raised for a person in I-ADD03-ISO-DATE and is not re-decided here. The duration key iso_certificate_copy is kept (PROVISIONAL ASSUMPTION). A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.3",
+     "page": 4,
+     "kind": "span",
+     "words": "The proposed EPC Contractor shall hold a valid ISO 9001:2015 quality management certificate, current as at the Proposal Due Date, issued by an accredited certification body.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-8.3-01",
+    "EV-ISO"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-ISO-DIRECTION",
+    "S-F-PDD",
+    "S-I-TEMPLATES-GENERIC",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-009",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "act:iso-copy",
+   "provision": "ADD-03:2.1",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-ISO-DATE",
+    "text": "Row VOL-I-8.3-01 (reading at ADD-01) records the owner's direction of 3 Oct 2026: the EPC Contractor's ISO 9001:2015 certificate must be current at '26 November 2026, 14:00 Riyadh time'. ADD-03:2.1 deletes 'Thursday 26 November 2026' from VOL-I 6.1 and substitutes 'Thursday 10 December 2026'. VOL-I 8.3 ties currency to 'the Proposal Due Date'. So the date that recorded decision rests on has changed. The owner (Technical) should restate whether the direction now applies at the amended Proposal Due Date. The certificate's expiry date is a bidder fact that is not in the pack, and it must be checked against the amended date. Nothing is re-decided here. HUMAN DECISION PENDING.",
+    "owner": "Technical",
+    "theme": "dates",
+    "short": "ISO currency direction names the superseded PDD; restate against the ADD-03 PDD"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 6.1 is amended by deleting ‘Thursday 26 November 2026’ and substituting ‘Thursday 10 December 2026’, 14:00 Riyadh time.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.3",
+     "page": 4,
+     "kind": "span",
+     "words": "current as at the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-8.3-01",
+    "iso-copy",
+    "I-BIDDER-FACTS"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-ISO-DIRECTION",
+    "S-F-PDD"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-010",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "no_change",
+   "task": "act:references",
+   "provision": "ADD-03:4.2",
+   "target": "references",
+   "payload": {
+    "why": "The template 'Collect commercial-operation evidence for the reference plants (capacity, commercial operation within the look-back window)' names no capacity figure and no window date, so it reads the amended threshold, 'not less than 100,000 m³/day', without change. Its 'per reference' setting is unchanged because ADD-03:4.2 states that the two plants and the ten-year look-back are unchanged. The look-back window (program milestone REFERENCE-LOOKBACK, where the readings differ) counts from the Proposal Due Date as amended by ADD-03:2.1. Whether the assumed reference plants still qualify is raised in I-ADD03-REF-THRESHOLD. The duration key reference_evidence is kept (PROVISIONAL ASSUMPTION). A person confirms that the template needs no change."
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "at least two (2) reference sewage treatment plants, each of nominal capacity not less than 100,000 m³/day and each having achieved commercial operation within the ten (10) years preceding the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.2",
+     "page": 1,
+     "kind": "span",
+     "words": "The requirement for two (2) reference plants and the ten (10) year look-back are unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-8.5-01",
+    "EV-REFERENCES"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-REF-THRESHOLD",
+    "S-F-PDD",
+    "S-I-TEMPLATES-GENERIC",
+    "S-A-DURATIONS"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-011",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "act:references",
+   "provision": "ADD-03:4.2",
+   "target": null,
+   "payload": {
+    "id": "I-ADD03-REF-THRESHOLD",
+    "text": "ADD-03/4.2(a) raises the reference-plant threshold in footnote 12 to VOL-I 8.5 from '80,000 m³/day' to '100,000 m³/day'. The footnote states that a Bidder that does not evidence two such plants 'shall be rejected without further evaluation'. The reference plants offered are bidder facts, held only as configurable assumptions (I-BIDDER-FACTS). The pack cannot show whether they meet the new threshold, or whether they fall within the ten-year window counted from the amended Proposal Due Date. The Technical lead must confirm both before the references activity relies on those plants. HUMAN DECISION PENDING.",
+    "owner": "Technical",
+    "theme": "programme",
+    "short": "re-confirm reference plants at ≥100,000 m³/day (footnote 12 rejection)"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "each of nominal capacity not less than 100,000 m³/day",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "shall be rejected without further evaluation",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Consequentially, footnote 12 to Volume I Clause 8.5 is amended by deleting ‘80,000 m³/day’ and substituting ‘100,000 m³/day’.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-8.5-01",
+    "references",
+    "I-BIDDER-FACTS"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-REF-THRESHOLD"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

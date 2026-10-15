@@ -1,0 +1,1194 @@
+{
+ "run_id": "ADD-03-run-host-20261015T140902Z-ab89-downstream-008",
+ "created": "2026-10-15T14:22:34Z",
+ "route": "host",
+ "provider": "host-session",
+ "model_requested": "claude-code headless (claude-opus-5-5)",
+ "model_reported": "claude-opus-5-5",
+ "task": "propose_downstream",
+ "addendum": "ADD-03",
+ "state": {
+  "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+  "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+  "validated_stage": "ADD-02",
+  "working_stage": "ADD-03",
+  "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+  "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+  "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+  "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+  "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+  "unrecorded_crops_sha256": null,
+  "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+  "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+  "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+  "base_run": null,
+  "base_candidate_sha256": null
+ },
+ "statements": [
+  {
+   "id": "S-F-CAP",
+   "kind": "fact",
+   "text": "At ADD-03 (after op ADD-03/4.1(a), proposed) VOL-II 2.1 reads a nominal treatment capacity of 150,000 m³/day.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.1",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal treatment capacity of 150,000 m³/day average daily flow",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-T26",
+   "kind": "fact",
+   "text": "ADD-03:4.1 names Table 2-6 row 2-6.1 as well as VOL-II 2.1, but no op changed VOL-II:T2-6/2-6.1, which still reads 120,000 at ADD-03 in the tool's state.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume II Clause 2.1 and in Table 2-6 row 2-6.1",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.1",
+     "page": 3,
+     "kind": "span",
+     "words": "Value: 120,000",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-TP",
+   "kind": "fact",
+   "text": "At ADD-03 (after op ADD-03/7.1, proposed) the Table 2-4 Total Phosphorus limit reads 0.5, on a 30-day rolling average basis.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-4/TP",
+     "page": 3,
+     "kind": "span",
+     "words": "Limit: 0.5",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-A-TPDUR",
+   "kind": "assumption",
+   "text": "PROVISIONAL ASSUMPTION: the existing lead-time key technical_proposal is kept unchanged for the technical-proposal activity. The pack states no duration for writing the narrative; whether the higher nominal capacity (ADD-03 4.1) and the lower TP limit (ADD-03 7.1) lengthen the work is not stated. A person may edit the key in config/assumptions.yaml.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.2",
+     "page": 5,
+     "kind": "span",
+     "words": "The Technical Proposal narrative shall not exceed one hundred and fifty (150) pages of A4",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-F4G",
+   "kind": "fact",
+   "text": "ADD-03:3.1 withdraws Form 4-G and says Section 7.2 of Addendum No. 2 ceases to have effect. Only ADD-02:7.2 is revoked (op ADD-03/3.1(a)). The Form 4-G units (heading, table, six undertakings, signature block), the VOL-I 9.1 Envelope A entry and the ADD-02 Section 7 heading still read active at ADD-03.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:F4-G/para1",
+     "page": 3,
+     "kind": "span",
+     "words": "Signed for and on behalf of the Bidder",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-F4G-POSTAWARD",
+   "kind": "interpretation",
+   "text": "ambiguous: whether the post-award undertakings that existed only on Form 4-G (undertakings 3 to 6: security officer, 24-hour incident notice, annual penetration test, multi-factor remote access) survive in any other form once the form is taken out is a reading for a person. VOL-II 6.2 and 6.3 (segregation; information security management system) remain in force on their own words. Reading A: the undertakings fall away with the form. Reading B: the Authority may still expect them through another document. No reading is chosen here.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:6.3",
+     "page": 4,
+     "kind": "span",
+     "words": "shall implement and maintain an information security management system covering the operational technology environment",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-22",
+   "kind": "fact",
+   "text": "ADD-03:2.2 names no clause; ADD-01:2.2 used similar words but listed Volume I Clauses 5.2, 6.3, 7.1 and footnote 12 to Clause 8.5.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Every period calculated by reference to the Proposal Due Date is adjusted accordingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-01",
+     "unit_id": "ADD-01:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "including without limitation the period in Volume I Clause 5.2 (clarification cut-off), Clause 6.3 (Bid Bond validity), Clause 7.1 (Proposal validity) and footnote 12 to Clause 8.5 (reference project look-back)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-22",
+   "kind": "interpretation",
+   "text": "ambiguous: ADD-03:2.2 supports two readings. Reading A: it adjusts the same periods ADD-01:2.2 listed. Reading B: it adjusts every period at ADD-03 that is calculated by reference to the Proposal Due Date, including those other ADD-03 provisions amend (VOL-I 6.3 now 210 days; Q18 'One hundred and fifty (150) days from the Proposal Due Date as amended.'). No reading is chosen; Bid management decides.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Every period calculated by reference to the Proposal Due Date is adjusted accordingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:Q18",
+     "page": 2,
+     "kind": "span",
+     "words": "One hundred and fifty (150) days from the Proposal Due Date as amended.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-PDDRULES",
+   "kind": "fact",
+   "text": "Each of the four periods ADD-01:2.2 listed is worded by reference to the Proposal Due Date at ADD-03. The rows' date rules (CLARIFICATION-CUTOFF, BID-BOND-VALIDITY, PROPOSAL-VALIDITY, REFERENCE-LOOKBACK) are anchored on PDD, which is defined in VOL-I:6.1, the unit op ADD-03/2.1 amends.",
+   "evidence": [
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "no later than ten (10) Working Days before the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "valid for two hundred and ten (210) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:7.1",
+     "page": 4,
+     "kind": "span",
+     "words": "one hundred and fifty (150) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "within the ten (10) years preceding the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-13",
+   "kind": "fact",
+   "text": "ADD-03:4.3 prints no old or new words. VOL-I 1.3 still reads 120,000 m³/day, in figures and in words.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 1.3 is amended correspondingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:1.3",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal capacity one hundred and twenty thousand cubic metres per day (120,000 m³/day)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-I-13",
+   "kind": "interpretation",
+   "text": "ambiguous: 'amended correspondingly' supports two readings. Reading (a): both the spelled-out words and the figure in VOL-I 1.3 change to correspond to the 150,000 m³/day ADD-03:4.1 substitutes; the new spelled-out words are printed nowhere. Reading (b): only what ADD-03:4.1 itself prints ('120,000 m³/day' to '150,000 m³/day') is substituted, so the spelled-out words stay as printed. No reading is chosen.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 1.3 is amended correspondingly.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-NOMCAP-DEP",
+   "kind": "fact",
+   "text": "VOL-II 7.2 (reliability run) and VOL-II 2.3 (future expansion) state their quantities as a percentage of 'nominal capacity', which VOL-II 2.1 now sets at 150,000 m³/day. Their own words are unchanged.",
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:7.2",
+     "page": 4,
+     "kind": "span",
+     "words": "at not less than 90% of nominal capacity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.3",
+     "page": 2,
+     "kind": "span",
+     "words": "a future expansion of 50% of nominal capacity",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  },
+  {
+   "id": "S-F-PEAK",
+   "kind": "fact",
+   "text": "ADD-03:4.1 leaves the Table 2-6 peak hourly flow unchanged, at 7,500 m³/h. The accepted issue I-FLOWS (interview_demo acceptance; no observed human review) holds an engineering reading based on the 120,000 m³/day average ('120,000 m3/day is 5,000 m3/h on average and 7,500 m3/h a peaking factor of 1.5'). That basis has now changed for VOL-II 2.1.",
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Value: 7,500",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "DS-ADD03-ACT-TP",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "activity",
+   "task": "act:technical-proposal",
+   "provision": "ADD-03:4.1",
+   "target": "technical-proposal",
+   "payload": {
+    "evidence_item": "EV-TECH-PROPOSAL",
+    "activity": {
+     "id": "technical-proposal",
+     "name": "Write the Technical Proposal narrative (process design to the effective nominal capacity and the effective Table 2-4 limits, incl. TN and TP; standby power duration; page limit as amended)",
+     "owner": "Technical",
+     "discipline": "Technical",
+     "resource": "proposal_writers",
+     "issuer": "Bidder",
+     "duration": "technical_proposal",
+     "predecessors": [],
+     "successors": [
+      "assemble-envelope-a"
+     ],
+     "item": "Technical Proposal narrative (page limit per VOL-I 9.2 as amended)"
+    },
+    "rows": [
+     "VOL-II-2.1-01",
+     "VOL-II-T2-4-TP"
+    ],
+    "duration_label": "PROVISIONAL ASSUMPTION"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.1",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal treatment capacity of 150,000 m³/day average daily flow",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-4/TP",
+     "page": 3,
+     "kind": "span",
+     "words": "Limit: 0.5",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-2.1-01",
+    "VOL-II-T2-4-TP",
+    "EV-TECH-PROPOSAL"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-CAP",
+    "S-F-TP",
+    "S-F-T26",
+    "S-A-TPDUR"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "I read VOL-II:2.1 and VOL-II:T2-4/TP in units_after and the technical-proposal template in current_records. The activity's inputs change: ADD-03 4.1 raises the nominal capacity and ADD-03 7.1 lowers the TP limit, and the template's name mentioned only the TN limit. The name is widened to the effective capacity and the effective Table 2-4 limits, with no values typed. Id, owner, resource, duration key, predecessors and successors are unchanged; the duration stays a PROVISIONAL ASSUMPTION (S-A-TPDUR). Table 2-6 row 2-6.1 still reads 120,000 in the tool state (see esc:ADD-03:4.1), so the process design basis waits for the capacity a person confirms. The rows VOL-II-2.1-01 and VOL-II-T2-4-TP are stale; their readings are re-made under their own row tasks, not here. TP is an image-read table, but no crop was needed: the amended value is printed by ADD-03 7.1 in text."
+  },
+  {
+   "id": "DS-ADD03-ESC-22",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:2.2",
+   "provision": "ADD-03:2.2",
+   "target": "ADD-03:2.2",
+   "payload": {
+    "why": "ambiguous: ADD-03:2.2 reads 'Every period calculated by reference to the Proposal Due Date is adjusted accordingly.' and names no clause. ADD-01:2.2 used similar words but listed Volume I Clauses 5.2, 6.3, 7.1 and footnote 12 to Clause 8.5. Reading A: the same four periods. Reading B: every PDD-referenced period at ADD-03, including periods other ADD-03 provisions amend (VOL-I 6.3 now 'two hundred and ten (210) days'; Q18 'One hundred and fifty (150) days from the Proposal Due Date as amended.'). The promoted disposition ADD-03/2.2-disp is unresolved and nothing is applied. Each of the four periods is worded 'from', 'before' or 'preceding' the Proposal Due Date, and the rows' date rules are anchored on PDD (VOL-I:6.1, amended by op ADD-03/2.1). Whether ADD-03:2.2 does anything beyond that anchoring, and which periods it reaches, is for Bid management; no decision recorded. No bid-out consequence stated.",
+    "what_is_unsupported": "Open question for a person (Bid management): which periods ADD-03:2.2 adjusts (Reading A or B). The disposition stays unresolved; no op can be written until the targets are named."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Every period calculated by reference to the Proposal Due Date is adjusted accordingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-01",
+     "unit_id": "ADD-01:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "including without limitation the period in Volume I Clause 5.2 (clarification cut-off), Clause 6.3 (Bid Bond validity), Clause 7.1 (Proposal validity) and footnote 12 to Clause 8.5 (reference project look-back)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-22",
+    "S-I-22",
+    "S-F-PDDRULES"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:2.2 and ADD-01:2.2 in units_after, and ADD-03:Q18 and ADD-03:2.1 with search_evidence and get_unit. Kept as an ambiguity escalation; no reading chosen."
+  },
+  {
+   "id": "DS-ADD03-ESC-31",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:3.1",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G",
+   "payload": {
+    "why": "software limitation: ADD-03:3.1 withdraws the whole of Form 4-G ('Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it.'). Only ADD-02:7.2 is revoked (op ADD-03/3.1(a)). The following still read 'active' at ADD-03: the form's units ADD-02:H:F4-G, ADD-02:F4-G/T1, ADD-02:F4-G/T1/1 to /6 and ADD-02:F4-G/para1; the section heading ADD-02:H:S7; and the VOL-I Envelope A entry VOL-I:9.1(e)+ADD-02. As a result, rows ADD-02-F4G-01 to -07 are evaluated ACTIVE. Activities form-4g-review and form-4g-sign, both producing EV-FORM-4G, still feed assemble-envelope-a, although the addendum says 'shall not submit it'. The bid-out rule of row ADD-02-7.2-01 ('Failure to submit Form 4-G shall render the Proposal non-responsive.', non_responsive) is in ADD-02:7.2, which is revoked; the row is REVOKED and its consequence must not be carried to A3. No row reading can mark the F4G rows removed, because no op deleted their words. Issues I-F4G-NO and I-F4G-LETTERING rest on Form 4-G. Their acceptance is an interview_demo record with no observed human review and does not close them. No handling instruction for them is recorded.",
+    "what_is_unsupported": "A withdrawal of a whole form group (the 9-member group ADD-02:F4-G plus the heading ADD-02:H:S7 and the VOL-I:9.1(e)+ADD-02 entry) is not represented by the applied ops. As a result: the form units stay active; the rows ADD-02-F4G-01..07 cannot be taken out of force by a row reading; and EV-FORM-4G with activities form-4g-review and form-4g-sign stays in the A5 programme. Document control decides how to record the withdrawal (e.g. set_status on each member) and whether to retire the rows, evidence item and activities."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Form 4-G (Cybersecurity Compliance Undertaking), added by Addendum No. 2 Section 7, is withdrawn. Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:7.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Failure to submit Form 4-G shall render the Proposal non-responsive.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "ADD-02",
+     "unit_id": "ADD-02:H:F4-G",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "ADD-02-7.2-01",
+    "ADD-02-F4G-01",
+    "ADD-02-F4G-02",
+    "ADD-02-F4G-03",
+    "ADD-02-F4G-04",
+    "ADD-02-F4G-05",
+    "ADD-02-F4G-06",
+    "ADD-02-F4G-07",
+    "form-4g-review",
+    "form-4g-sign",
+    "EV-FORM-4G"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4G"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:3.1, ADD-02:7.2 (revoked) and the F4-G members in units_after, plus the current_records rows, activities and reviews. The interview_demo 'changed' states of the F4G rows are preserved and not treated as human approval."
+  },
+  {
+   "id": "DS-ADD03-ISS-31",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:3.1",
+   "provision": "ADD-03:3.1",
+   "target": "ADD-02:F4-G",
+   "payload": {
+    "id": "I-ADD03-F4G-TAKEN-OUT",
+    "text": "ADD-03 3.1 (p1) takes Form 4-G out of the RFP Documents: 'Bidders shall disregard it and shall not submit it. Section 7.2 of Addendum No. 2 ceases to have effect.' Only ADD-02 7.2 is revoked in the tool. The form units, the VOL-I 9.1 Envelope A entry ('FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING'), rows ADD-02-F4G-01 to -07, evidence item EV-FORM-4G and activities form-4g-review and form-4g-sign remain. Open: (1) how to record the remaining form units as no longer in force and retire the rows, evidence item and activities (Document control); (2) ambiguous: whether undertakings 3 to 6, which had no counterpart in VOL-II 6, survive in any other form, or fall away with the form (Technical). VOL-II 6.2 and 6.3 stand on their own words. Earlier records that rest on Form 4-G: I-F4G-NO and I-F4G-LETTERING (interview_demo acceptances; no handling instruction recorded). No decision recorded; pending a human decision.",
+    "owner": "Document control",
+    "theme": "forms",
+    "short": "Form 4-G taken out by ADD-03 3.1: only ADD-02 7.2 revoked; form units, rows, EV-FORM-4G and activities remain",
+    "a3": "Form 4-G: ADD-03 3.1 'shall not submit it'. The tool still lists its rows and activities pending a person's handling",
+    "show_in_a3": true
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:3.1",
+     "page": 1,
+     "kind": "span",
+     "words": "Bidders shall disregard it and shall not submit it.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:9.1(e)+ADD-02",
+     "page": 3,
+     "kind": "span",
+     "words": "FORM 4-G — CYBERSECURITY COMPLIANCE UNDERTAKING",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-F4G",
+    "S-I-F4G-POSTAWARD"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "A new issue keeps the handling question open. Existing issues I-F4G-NO and I-F4G-LETTERING are named, not changed."
+  },
+  {
+   "id": "DS-ADD03-ESC-41",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:4.1",
+   "provision": "ADD-03:4.1",
+   "target": "VOL-II:T2-6/2-6.1",
+   "payload": {
+    "why": "software limitation: ADD-03:4.1 substitutes '150,000 m³/day' in VOL-II 2.1 and in 'Table 2-6 row 2-6.1'. Only VOL-II:2.1 was changed (op ADD-03/4.1(a)). VOL-II:T2-6/2-6.1 still reads 'Value: 120,000' with 'Unit: m³/day' at ADD-03, because the printed old words '120,000 m³/day' span the Value and Unit cells. As a result, row VOL-II-T2-6-1 is evaluated ACTIVE at 120,000 and does not show stale. VOL-II-2.1-01 (stale; its reading is re-made under its own task) and the technical-proposal activity now see two different average flows. Further follow-on that rests on the nominal capacity, with words unchanged: VOL-II 7.2 'at not less than 90% of nominal capacity' (row VOL-II-7.2-01), VOL-II 2.3 'a future expansion of 50% of nominal capacity' (row VOL-II-2.3-01), and VOL-II 4.1 (Table 2-6 flows, row VOL-II-4.1-01). Earlier responses that rested on 120,000: ADD-02 Q11 and issue I-FLOWS, whose engineering reading was based on 120,000 m³/day. Pricing: ADD-03 Q17 'Bidders shall price the Project as amended by this Addendum.' No bid-out consequence stated.",
+    "what_is_unsupported": "A value substitution in a table row whose printed old words span two cells (Value '120,000' and Unit 'm³/day') was not applied: VOL-II:T2-6/2-6.1 needs a set_value on its Value cell (120,000 to 150,000) that a person confirms. Until then row VOL-II-T2-6-1 is not flagged stale."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 1,
+     "kind": "span",
+     "words": "In Volume II Clause 2.1 and in Table 2-6 row 2-6.1",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.1",
+     "page": 3,
+     "kind": "span",
+     "words": "Value: 120,000",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.1",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal treatment capacity of 150,000 m³/day average daily flow",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-II-2.1-01",
+    "VOL-II-T2-6-1",
+    "VOL-II-7.2-01",
+    "VOL-II-2.3-01",
+    "VOL-II-4.1-01",
+    "technical-proposal"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-CAP",
+    "S-F-T26",
+    "S-F-NOMCAP-DEP",
+    "S-F-PEAK"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "Read ADD-03:4.1, VOL-II:2.1 and VOL-II:T2-6/2-6.1 in units_after, and the T2-6 rows and I-FLOWS in current_records. No calculation was made; the peaking-factor reading of I-FLOWS is for the Process engineer."
+  },
+  {
+   "id": "DS-ADD03-ISS-41",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "issue",
+   "task": "esc:ADD-03:4.1",
+   "provision": "ADD-03:4.1",
+   "target": "VOL-II:T2-6/2-6.2",
+   "payload": {
+    "id": "I-ADD03-FLOWS-BASIS",
+    "text": "ADD-03 4.1 (p1) raises the average daily flow in VOL-II 2.1 to '150,000 m³/day' (and names Table 2-6 row 2-6.1, which the tool has not yet changed). It also says 'The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.' (Table 2-6: 'Value: 7,500', m³/h). The engineering reading recorded in I-FLOWS, that 7,500 m³/h is a peaking factor of 1.5 on an average of 5,000 m³/h, was based on 120,000 m³/day. The Authority's ADD-02 Q11 response ('Bidders shall design to the figures stated in Volume II.') was given when the figures read 120,000. Open (Technical, Process engineer): whether the peak, storm (3 x dry weather flow) and transmission main sizing (VOL-II 5.2) figures remain consistent with the new average, and whether to raise a clarification before the VOL-I 5.2 cut-off. No figure is recomputed here; no decision recorded.",
+    "owner": "Technical",
+    "theme": "technical",
+    "short": "peak flow 7,500 m³/h kept while the average rises to 150,000 m³/day: I-FLOWS basis changed"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.1",
+     "page": 1,
+     "kind": "span",
+     "words": "The peak hourly flow in Table 2-6 row 2-6.2 is unchanged.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:T2-6/2-6.2",
+     "page": 3,
+     "kind": "span",
+     "words": "Value: 7,500",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-PEAK",
+    "S-F-CAP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-DEP-72",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "esc:ADD-03:4.1",
+   "provision": "ADD-03:4.1",
+   "target": null,
+   "payload": {
+    "from": "VOL-II-7.2-01",
+    "to": "VOL-II:2.1",
+    "kind": "depends_on",
+    "basis": "VOL-II 7.2 requires the reliability run 'at not less than 90% of nominal capacity'. VOL-II 2.1 sets the nominal treatment capacity, now 150,000 m³/day under op ADD-03/4.1(a). The run load therefore follows VOL-II 2.1.",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:7.2",
+     "page": 4,
+     "kind": "span",
+     "words": "at not less than 90% of nominal capacity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.1",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal treatment capacity of 150,000 m³/day average daily flow",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-NOMCAP-DEP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-DEP-23",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "esc:ADD-03:4.1",
+   "provision": "ADD-03:4.1",
+   "target": null,
+   "payload": {
+    "from": "VOL-II-2.3-01",
+    "to": "VOL-II:2.1",
+    "kind": "depends_on",
+    "basis": "VOL-II 2.3 requires space for 'a future expansion of 50% of nominal capacity'. VOL-II 2.1 sets the nominal treatment capacity, now 150,000 m³/day under op ADD-03/4.1(a).",
+    "status": "proposed"
+   },
+   "evidence": [
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.3",
+     "page": 2,
+     "kind": "span",
+     "words": "a future expansion of 50% of nominal capacity",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-II",
+     "unit_id": "VOL-II:2.1",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal treatment capacity of 150,000 m³/day average daily flow",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-NOMCAP-DEP"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-ESC-43",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "esc:ADD-03:4.3",
+   "provision": "ADD-03:4.3",
+   "target": "VOL-I:1.3",
+   "payload": {
+    "why": "ambiguous: ADD-03:4.3 prints only 'Volume I Clause 1.3 is amended correspondingly.', with no old or new words. VOL-I 1.3 at ADD-03 still reads 'nominal capacity one hundred and twenty thousand cubic metres per day (120,000 m³/day)'. Reading (a): both the spelled-out words and the figure change to correspond to the 150,000 m³/day ADD-03:4.1 substitutes; the new spelled-out words are printed nowhere in the pack. Reading (b): only the words ADD-03:4.1 prints ('120,000 m³/day' to '150,000 m³/day') are substituted, so the spelled-out words stay as printed. The disposition DISP-ADD03-4.3 is unresolved and nothing is applied. No A1 row quotes VOL-I:1.3. The clause describes the Project and states no obligation or bid-out consequence of its own. No bid-out consequence stated.",
+    "what_is_unsupported": "Open question for a person (Document control, with Technical): which words of VOL-I 1.3 are amended and to what text. An op cannot be written without printed new words. A DRAFT clarification question (CQ-ADD03-VOL-I-1-3, not sent) is proposed alongside."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 1.3 is amended correspondingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:1.3",
+     "page": 2,
+     "kind": "span",
+     "words": "nominal capacity one hundred and twenty thousand cubic metres per day (120,000 m³/day)",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-13",
+    "S-I-13"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-CQ-43",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "clarification_item",
+   "task": "esc:ADD-03:4.3",
+   "provision": "ADD-03:4.3",
+   "target": "VOL-I:1.3",
+   "payload": {
+    "entry": {
+     "id": "CQ-ADD03-VOL-I-1-3",
+     "kind": "ambiguity",
+     "volume": "Volume I",
+     "clause": "1.3",
+     "page": 2,
+     "units": [
+      "VOL-I:1.3",
+      "ADD-03:4.3",
+      "ADD-03:4.1"
+     ],
+     "sources": [
+      {
+       "unit": "ADD-03:4.3",
+       "page": 1,
+       "words": "Volume I Clause 1.3 is amended correspondingly."
+      },
+      {
+       "unit": "VOL-I:1.3",
+       "page": 2,
+       "words": "nominal capacity one hundred and twenty thousand cubic metres per day (120,000 m³/day)"
+      }
+     ],
+     "gap": "ADD-03 4.3 prints no amended wording for VOL-I 1.3, which states the capacity both in words and in figures.",
+     "already_settled": "No. ADD-03 4.1 prints the substitution for VOL-II 2.1 and Table 2-6 row 2-6.1 only.",
+     "practical_impact": "The project description in VOL-I 1.3 and the VOL-II design capacity may read differently in the bid documents and in any Proposal text that restates them.",
+     "proposed_question": "Addendum No. 3 Clause 4.3 states that Volume I Clause 1.3 is amended correspondingly. Please confirm the amended wording of Volume I Clause 1.3, including the capacity stated in words ('one hundred and twenty thousand cubic metres per day').",
+     "interim_handling": "Read VOL-I 1.3 with the unresolved disposition DISP-ADD03-4.3; no op is applied and no reading is chosen.",
+     "decision_owner": "Document control",
+     "response_status": "draft, not sent",
+     "linked_issues": [],
+     "theme": "capacity"
+    }
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:4.3",
+     "page": 1,
+     "kind": "span",
+     "words": "Volume I Clause 1.3 is amended correspondingly.",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-13",
+    "S-I-13"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": "A DRAFT only; whether to send it before the VOL-I 5.2 cut-off is a person's decision."
+  },
+  {
+   "id": "DS-ADD03-ESC-IMP22",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "escalation",
+   "task": "impact:2. AMENDMENT TO THE PROPOSAL DUE DATE",
+   "provision": "ADD-03:2.2",
+   "target": "ADD-03:2.2",
+   "payload": {
+    "why": "CONDITIONAL on disposition ADD-03/2.2-disp (unresolved) and on issue ADD-03/2.2-issue (proposed); never an accepted fact. ambiguous: 'Every period calculated by reference to the Proposal Due Date is adjusted accordingly.' names no clause. What WOULD rest on it: rows VOL-I-5.2-01 (CLARIFICATION-CUTOFF, 'no later than ten (10) Working Days before the Proposal Due Date'), VOL-I-6.3-01 (BID-BOND-VALIDITY, now 'two hundred and ten (210) days from the Proposal Due Date' after op ADD-03/5.2(a)), VOL-I-7.1-01 (PROPOSAL-VALIDITY, 'one hundred and fifty (150) days from the Proposal Due Date', confirmed unchanged by ADD-03/5.2(b)) and VOL-I-8.5-01 (REFERENCE-LOOKBACK, 'within the ten (10) years preceding the Proposal Due Date'; the price-relevant qualification window). Each rule is anchored on PDD (VOL-I:6.1). Op ADD-03/2.1 (proposed) amends VOL-I:6.1, so the program recomputes the four dates from the amended PDD whatever the outcome of 2.2. Under Reading A, ADD-03:2.2 would add nothing to that anchoring for the four periods. Under Reading B, it would also reach any other PDD-referenced period at ADD-03. How Reading B would combine with the periods ADD-03 5.2 and Q18 restate is for Bid management. No new period, date or price is proposed here. The four rows' readings are re-made under their own row tasks, not here. No bid-out consequence is stated by ADD-03:2.2. VOL-I-8.5-01 keeps its own rejection rule in VOL-I:8.5#fn12, untouched by this task.",
+    "what_is_unsupported": "Nothing is applied: the disposition is unresolved and the analysis issue is only proposed. Which periods ADD-03:2.2 reaches stays a person's decision (Bid management). Whether any reference plant's eligibility moves with the look-back window is a bidder fact the pack does not hold."
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Every period calculated by reference to the Proposal Due Date is adjusted accordingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:5.2",
+     "page": 3,
+     "kind": "span",
+     "words": "no later than ten (10) Working Days before the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:8.5#fn12",
+     "page": 4,
+     "kind": "span",
+     "words": "within the ten (10) years preceding the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [
+    "VOL-I-5.2-01",
+    "VOL-I-6.3-01",
+    "VOL-I-7.1-01",
+    "VOL-I-8.5-01"
+   ],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-F-22",
+    "S-I-22",
+    "S-F-PDDRULES"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  },
+  {
+   "id": "DS-ADD03-DEP-IMP22",
+   "state": {
+    "pack_id": "NUPA-ISTP-2026-014+ADD-03-CANDIDATE",
+    "evidence_build_id": "a8bc5e6292dfad25f11ca392f4fed668962051f6b9ae0f766a0416d88838a7dd",
+    "validated_stage": "ADD-02",
+    "working_stage": "ADD-03",
+    "decisions_sha256": "1d5a98cdf27f5e3f39fc097ca3c1ad29565cb08b8aef6f4bc2743e2ad490db5d",
+    "assumptions_sha256": "1be8633a5dbbfbee53f7637e0fe9f82ab864f0adf635993ad4d69bac9f45ce4d",
+    "activity_templates_sha256": "8f720c1d04e5f6d1926872e7bdeca2e28537782912cdc237796e2fe98e30d005",
+    "readings_sha256": "1598817c0e039e6cd5baa431818eab87d59175de3bd065055dc1664bccafb187",
+    "amendments_sha256": "3edcf917cfc134e6f46c5e95e8b0f9c45b18dd217d59e0c837d695d96aa5fa91",
+    "unrecorded_crops_sha256": null,
+    "register_sha256": "7f7fa1b15632133b0e2e1a52f97887f4be357e56287a236085431e9c1281d3b1",
+    "relationships_sha256": "653db1deb98f2206e8388f488582235916fe1a63ea46294131413bc4263946fe",
+    "curation_sha256": "3a73172478b35e7f27656ab26428f93be1ce9a617c9772e36fff8a72564a2884",
+    "base_run": null,
+    "base_candidate_sha256": null
+   },
+   "statement_type": "dependency",
+   "task": "impact:2. AMENDMENT TO THE PROPOSAL DUE DATE",
+   "provision": "ADD-03:2.2",
+   "target": null,
+   "payload": {
+    "from": "ADD-03:2.2",
+    "to": [
+     "CLARIFICATION-CUTOFF",
+     "BID-BOND-VALIDITY",
+     "PROPOSAL-VALIDITY",
+     "REFERENCE-LOOKBACK"
+    ],
+    "kind": "depends_on",
+    "basis": "CONDITIONAL on disposition ADD-03/2.2-disp (unresolved) and issue ADD-03/2.2-issue (proposed). If ADD-03:2.2 is read as adjusting the periods ADD-01:2.2 listed (Reading A), or every PDD-referenced period (Reading B), these four date rules would be among them: each is worded by reference to the Proposal Due Date (VOL-I 5.2, 6.3, 7.1, 8.5 footnote 12). Not a confirmed link; a person decides.",
+    "status": "possible"
+   },
+   "evidence": [
+    {
+     "doc": "ADD-03",
+     "unit_id": "ADD-03:2.2",
+     "page": 1,
+     "kind": "span",
+     "words": "Every period calculated by reference to the Proposal Due Date is adjusted accordingly.",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:6.3",
+     "page": 3,
+     "kind": "span",
+     "words": "valid for two hundred and ten (210) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    },
+    {
+     "doc": "VOL-I",
+     "unit_id": "VOL-I:7.1",
+     "page": 4,
+     "kind": "span",
+     "words": "one hundred and fifty (150) days from the Proposal Due Date",
+     "cell": null,
+     "crop_sha256": null
+    }
+   ],
+   "dependencies": [],
+   "conflicts": [],
+   "missing_information": [],
+   "statements": [
+    "S-I-22",
+    "S-F-PDDRULES"
+   ],
+   "validation": [],
+   "verification_status": "unverified",
+   "model_rationale": null
+  }
+ ],
+ "usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": null,
+  "cost_basis": "no price configured"
+ },
+ "status": "partial",
+ "controller_version": "s10-ai-1"
+}

@@ -41,10 +41,13 @@ def test_each_route_says_what_works_what_never_ran_and_what_is_ready():
         for k in ("status", "where", "when", "result", "works", "never_run", "ready", "next"):
             assert st[name].get(k), (name, k)
     h, c, a, o, ol = (st[n] for n in ROUTES)
-    assert h["status"] == "tested" and "sessions 10-13" in h["where"] and "not yet on the Mac" in h["where"]
+    assert h["status"] == "tested" and "sessions 10-13" in h["where"] and "not yet on the Mac" not in h["where"]
+    assert "the owner's Mac on 11 Oct 2026" in h["where"] and "2.1.296" in h["where"]       # session 19
     assert "twin of the interview folder" in h["where"] and "blind-07" in _flat(h["result"])
-    assert "Mac" in h["never_run"] and "--route host" in _flat(h["ready"])
+    assert "20:34" in _flat(h["result"]) and "quick review" in _flat(h["never_run"])
+    assert "--route host" in _flat(h["ready"])
     assert c["status"] == "built, unverified" and "Codex session" in c["never_run"]
+    assert "driver: codex" in _flat(c["result"]) and "no Codex session has ever run" not in _flat(c["result"])
     assert "--host-manual" in _flat(c["ready"]) and "submit-batch" in _flat(c["ready"])
     assert "~/.codex/config.toml" in _flat(c["ready"]) and "serve-mcp" in _flat(c["ready"])
     assert a["status"] == "untested" and "ai capabilities --route anthropic --model claude-opus-5-5" in _flat(a["ready"])
@@ -73,7 +76,8 @@ def test_ai_routes_the_launcher_list_and_the_panel_say_what_the_record_says():
         for k in ("works", "never_run", "ready"):
             assert rows[name][k] == _flat(st[name][k]), (name, k)
         assert rows[name]["status"]["status"] == st[name]["status"]
-    assert "sessions 10-13" in rows["host"]["verified"] and "PENDING ON THE MAC" in rows["host"]["verified"]
+    assert "sessions 10-13" in rows["host"]["verified"] and "the owner's Mac (11 Oct 2026" in rows["host"]["verified"]
+    assert "no Codex session has run" not in rows["host"]["verified"] + rows["codex"]["verified"]       # session 19
     assert rows["anthropic"]["verified"].startswith("untested")
     assert rows["openrouter"]["verified"].startswith("blocked here, unverified")
     assert rows["ollama"]["verified"].startswith("prepared for local use")

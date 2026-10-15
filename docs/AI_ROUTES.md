@@ -29,8 +29,8 @@ availability on this machine and why it is not usable (`--brief`: one line each,
 
 | Route | Status (config/routes_status.yaml) | Usable now when |
 |---|---|---|
-| `host` (Claude Code; the first route to rehearse) | tested: the cloud container, sessions 10–13, the last time the sealed blind-07 run from a twin of the interview folder; pending on the Mac | connected, and `claude` on PATH |
-| `codex` (Codex over MCP) | built, unverified: the MCP server and the manual host path are tested, no Codex session has run | never automatically (the workflow starts Claude Code only); by hand, §3 |
+| `host` (Claude Code; the first route to rehearse) | tested: the cloud container, sessions 10–13, the last time the sealed blind-07 run from a twin of the interview folder; on the owner's Mac on 11 Oct 2026 (CLI 2.1.296, the drill ADD03 from an interview package's panel, 20:34 to the review packet) | connected, and `claude` on PATH, signed in, a CLI that accepts `--permission-prompts` |
+| `codex` (Codex over MCP) | built, unverified: the MCP server and the manual host path are tested; this manual path has not run with Codex (automated Codex runs as the host route with `host_session.driver: codex`) | by hand, §3; automatically only as the host route with the Codex driver |
 | `anthropic` (API key) | untested: recorded responses only; ready: the dry run in §4 | connected, a key through the secure configuration (§11), the paid caps set |
 | `openrouter` (API key) | blocked here, unverified; ready for a later key: the configuration and dry run in §5 | as `anthropic` |
 | `ollama` (offline) | pending on the Mac: prepared for local use (§6), tested against a fake local server | a configured model installed and usable (`tenderpack ai ollama-models`) |
@@ -161,7 +161,7 @@ args = ["-m", "tenderpack", "ai", "serve-mcp"]
   (`tests/test_session09_ai_mcp.py`), and the manual host path: `ai run ... --route host --host-manual` stops with
   exit 4 at the first batch and names its task packet; `ai submit-batch RUN FILE --by NAME --host-model MODEL`
   validates the answer exactly as any route's and continues (`tests/test_session10_workflow.py`).
-- Never run: a Codex session of any kind, the `~/.codex/config.toml` registration, Codex reading the runtime prompt.
+- Never run: a Codex session over this manual path, the `~/.codex/config.toml` registration. Automated Codex sessions have run through the host route with `host_session.driver: codex` (docs/INTERVIEW_DEMO_HANDOVER.md).
   The workflow's automatic host sessions start Claude Code (`claude -p`) only; Codex is the manual path (MCP tools,
   then `tenderpack ai submit` or `submit-batch`), never chosen automatically.
 
@@ -328,7 +328,7 @@ ollama serve                    # default http://127.0.0.1:11434 (or export TEND
 | Anthropic | adapter written over `urllib`; **no live call made** (no key in this environment) |
 | OpenRouter | adapter written; the model listing is **blocked by policy** here, so live use is refused |
 | Ollama | adapter written; **not reachable** from the cloud. Session 12: the adapter, offline mode, the capability and memory checks and a whole workflow run were tested against a FAKE local server on 127.0.0.1 (real HTTP; recorded answers; `tests/test_session12_offline.py`). A real local model: **PENDING ON THE MAC** (`docs/MAC_SETUP.md`) |
-| Codex | **MCP interface tested; automated Codex execution unverified** (no Codex session has run; the workflow starts Claude Code only) |
+| Codex | **MCP interface tested; automated Codex execution through the host route with the Codex driver** (docs/INTERVIEW_DEMO_HANDOVER.md); the manual path has not run with Codex |
 
 ## 9. Budgets, spend and cost
 

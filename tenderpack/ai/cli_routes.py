@@ -264,9 +264,9 @@ def _plan(a) -> int:
 VERIFIED = {   # session 14 (W6): the same facts as config/routes_status.yaml (tests/test_session14_routes_status.py)
     "host": ("Claude Code headless sessions (claude -p over the MCP tools) have run for real on the host's own plan in "
              "the cloud container (sessions 10-13, blind rehearsals 03-07; the sealed blind-07 run from a twin of the "
-             "interview folder); PENDING ON THE MAC. The MCP server is tested (stdio JSON-RPC); MCP interface "
-             "tested; automated Codex execution unverified (no Codex session has run; the workflow starts Claude "
-             "Code only, Codex is the manual MCP / submit-batch path)"),
+             "interview folder) and on the owner's Mac (11 Oct 2026, Claude Code CLI 2.1.296: an interview package's "
+             "panel upload to the review packet). The MCP server is tested (stdio JSON-RPC); Codex runs through this "
+             "route when host_session.driver is codex (docs/INTERVIEW_DEMO_HANDOVER.md)"),
     "anthropic": "untested: recorded responses only (tests); no API-key call has been made from this project's "
                  "environment",
     "openrouter": "blocked here, unverified: recorded responses only (tests); openrouter.ai is blocked from the cloud "
@@ -319,7 +319,8 @@ def _routes(a) -> int:
             row["checked"] = "nothing to check (a cassette per test)"
         rows.append(row)
     rows.insert(1, {"route": "codex", "kind": "connected coding host (manual path over MCP)", "paid": False,
-                    "verified": "MCP interface tested; no Codex session has run (docs/AI_ROUTES.md section 3)",
+                    "verified": "MCP interface tested; this manual path has not run with Codex (automated Codex "
+                                "runs as the host route with host_session.driver: codex; docs/AI_ROUTES.md section 3)",
                     "checked": "not checked by this command (it would start a process); `codex` looked up on PATH"})
     status = route_status(Path(a.config).parent / "routes_status.yaml")
     from .quick_review import ROUTE_STATUS as QR_STATUS     # session 13, part 4: where the quick review has run
@@ -436,9 +437,9 @@ def availability(row: dict, cfg: dict, offline: bool) -> tuple[bool, str]:
                    "tenderpack ai submit-batch)")
     if name == "codex":
         found = shutil.which("codex")
-        return False, ("the workflow starts Claude Code only; Codex is used by hand over the MCP server "
-                       "(docs/AI_ROUTES.md section 3) and has never run here" + (f"; codex found at {found}" if found
-                                                                                 else "; codex is not on PATH"))
+        return False, ("not a separate workflow route: automated Codex is the host route with host_session.driver: "
+                       "codex (prepare_interview_demo.py --host codex); by hand over the MCP server, docs/AI_ROUTES.md "
+                       "section 3" + (f"; codex found at {found}" if found else "; codex is not on PATH"))
     if name in ("anthropic", "openrouter"):
         rc = C.route(cfg, name)
         ok, why = keys.status(rc.get("api_key_env") or ("ANTHROPIC_API_KEY" if name == "anthropic"

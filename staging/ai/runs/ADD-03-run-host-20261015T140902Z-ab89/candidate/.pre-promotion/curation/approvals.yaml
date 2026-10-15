@@ -1,0 +1,121 @@
+# Human approvals of readings, written only by `tenderpack approve` on a person's instruction.
+# Each entry pins the review subject: the reading (content, uncertainties, source claims)
+# and its evidence (source PDF, region position, native image).
+approvals:
+- region_id: VOL-IV-p6-r1
+  reviewer: Ahmad
+  date: '2026-10-03'
+  subject_sha256: f433c2ca4e56267920ad7819090469185ae2b28ac9dc5d52ee04390fec934247
+  covers: reading (content, uncertainties, source claims, preparer, method) + evidence
+    (source PDF sha256, region page/bbox/kind, native image sha256)
+  evidence:
+    doc: VOL-IV
+    doc_sha256: 642cbb79da7924f12e0e3f578faf572e6eb9fbc1ef86a70521cf6152d2a0721a
+    page: 6
+    bbox:
+    - 66.6
+    - 68.4
+    - 528.7
+    - 721.8
+    kind: image
+    native_sha256: 521e024a9cc624d8669d12300f97f1b653375029b1af5963ea39f922a673f6ff
+  reading_file:
+    path: curation/readings/VOL-IV-p6-r1.yaml
+    sha256: 06c7a596f2aa2d3de358d090f6e4f49fd1fdb9ff6885acd6a5a62e0c3b46e466
+    last_commit: ff523267e7cf337b133250382cc0e4ad73d82bc5
+    snapshot: curation/reading-snapshots/VOL-IV-p6-r1@f433c2ca4e562679.yaml
+  notes: Confirms the visible Arabic text and the displayed translations of the Form
+    4-C reading, including the headings, declarations, fields and footer.
+  confirmation_record: 'worklog/2026-10-03_session-08_prompt.md, section 2 (''Record
+    my source-reading confirmations''): the owner''s written confirmation of 3 Oct
+    2026, received about 19:30 UTC; recorded by the assistant (Claude Code) on that
+    instruction. The confirmation was made on the reading as shown in the session
+    07 review packets (reading file unchanged since commit 1997ef8)'
+  resolutions:
+  - 'Declaration 5 (خامساً) refers to Volume I clause 4.2 (البند ٤-٢): the reviewer
+    settles the uncertain left glyph of the clause numeral as ٢; the alternative recorded
+    in the reading (٤-٣, VOL-I 4.3) is set aside by the reviewer'
+  keeps_open:
+  - the exact placement of diacritics (tanween on the ordinal words and كاملاً, hamza
+    forms) stays uncertain, as recorded in the reading
+  - '''exclusion of the proposal'' (استبعاد العرض, declaration 4) is not automatically
+    equivalent to every other consequence category of the pack (rejection, disqualification,
+    non-responsiveness); how it maps stays for a person to decide'
+  does_not_cover:
+  - 'changed or unseen content: any later change to the reading, its uncertainties
+    or its evidence makes it pending again; differences are shown before any approval
+    is extended'
+  - the register's interpretations of this content (A1 rows stay proposed until decided
+    row by row)
+  - amendment operations
+  - bidder compliance
+- region_id: VOL-II-p3-r1
+  reviewer: Ahmad
+  date: '2026-10-03'
+  subject_sha256: 6bc6505956429dc7fef21c829905f5e0177568e81a74481593d324460101f012
+  covers: reading (content, uncertainties, source claims, preparer, method) + evidence
+    (source PDF sha256, region page/bbox/kind, native image sha256)
+  evidence:
+    doc: VOL-II
+    doc_sha256: 4874b612da9c93a9648cc58690b4fc5458cce6eae817b3b577d978d15dd12e04
+    page: 3
+    bbox:
+    - 56.7
+    - 143.2
+    - 538.6
+    - 446.1
+    kind: image
+    native_sha256: 27373c58a989d8ddc62ac537efca5551184ed992ae34ee3cc0b4fb33ff3acec6
+  reading_file:
+    path: curation/readings/VOL-II-p3-r1.yaml
+    sha256: dd0bfe127a8caecb44bede40b6c6653549a4465f2fbf2d562c09ffea68a8cd64
+    last_commit: 1997ef88511d7dd0e63d072cbd9990f821ed9b21
+    snapshot: curation/reading-snapshots/VOL-II-p3-r1@6bc6505956429dc7.yaml
+  notes: 'Confirms the visible Table 2-4 transcription: rows, headings, units, limits,
+    assessment bases and the visible note (Note 1). TN = 5 mg/l is the original reading;
+    3 mg/l is the separate amended value (ADD-02 5.1).'
+  confirmation_record: 'worklog/2026-10-03_session-08_prompt.md, section 2 (''Record
+    my source-reading confirmations''): the owner''s written confirmation of 3 Oct
+    2026, received about 19:30 UTC; recorded by the assistant (Claude Code) on that
+    instruction. The confirmation was made on the reading as shown in the session
+    07 review packets (reading file unchanged since commit 1997ef8)'
+  resolutions:
+  - 'the printed qualifier is confirmed as read: ''(all values are maxima; compliance
+    assessed as a 30-day rolling average unless stated)'''
+  - the limits are confirmed as read, including Faecal Coliforms 2.2 MPN/100 ml (the
+    decimal-point question in the reading is settled by this confirmation of the visible
+    limits)
+  keeps_open:
+  - how the 'all values are maxima' qualifier interacts with the Residual Chlorine
+    (0.5 - 1.0 mg/l) and pH (6.0 - 9.0) ranges is unresolved
+  - each parameter keeps its own printed basis of assessment (30-day rolling average,
+    maximum instantaneous, maximum any single sample, continuous at outlet); the qualifier's
+    default applies only 'unless stated'
+  - anything outside the visible image stays uncertain (e.g. whether a further note
+    was cut off below Note 1)
+  - 'register, not part of the reading: VOL-V 29.3''s first-12-month availability-deduction
+    exception for rolling-average parameters is retained; it is not an exemption from
+    technical compliance or commissioning requirements'
+  does_not_cover:
+  - 'changed or unseen content: any later change to the reading, its uncertainties
+    or its evidence makes it pending again; differences are shown before any approval
+    is extended'
+  - the register's interpretations of this content (A1 rows stay proposed until decided
+    row by row)
+  - amendment operations (e.g. ADD-02/5.1, TN 5 -> 3 mg/l, stays proposed)
+  - bidder compliance
+  permit:
+    confirmed: 'the location of the precedence language only: it is in the VOL-II
+      p3 reproduction preamble (text layer, unit VOL-II:T2-4-heading/para1, printed
+      above the image, so outside this reading): ''In the event of any discrepancy
+      between this reproduction and the Environmental Permit, the Environmental Permit
+      shall prevail.'''
+    not_confirmed:
+    - the contents of the Environmental Permit, which is not in the pack
+    - compliance with the Environmental Permit, which is not claimed, including after
+      the TN amendment (ADD-02 5.1)
+  record_amended: '3 Oct 2026, by the assistant, from the owner''s follow-up message
+    (worklog/2026-10-03_session-08_prompt.md, follow-up): the permit wording was split
+    into what the owner''s confirmation covers (the location of the precedence language)
+    and what it does not (the Permit''s contents, Permit compliance). Reviewer, date
+    and review subject unchanged.'

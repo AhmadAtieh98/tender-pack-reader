@@ -1,0 +1,41 @@
+# Page furniture: text that is excluded from content. Every rule is specific.
+# A span is excluded only when ALL stated attributes match. Anything else, including
+# other rotated text, stays content. Every exclusion is written to build/exclusions.md.
+#
+# Measured on the received pack (session 02, inventory of every grey or rotated span):
+#   watermark: 32 spans, one per page, Helvetica-Bold 34.0 pt, colour #dbdbdb, baseline angle 52.0 deg
+#   header:    Helvetica 6.8 pt #5a5a5a, y1 < 45 (title and tender reference, two spans per page)
+#   footer:    Helvetica 6.4 pt #5a5a5a, y0 > 790 (disclaimer and 'Page N', two spans per page)
+# Cover pages also use #5a5a5a for title-block text in mid-page; those spans match no rule and stay content.
+rules:
+  - id: WATERMARK
+    reason: diagonal watermark printed on every page
+    text: "FICTIONAL — ASSESSMENT PACK"
+    color: "#dbdbdb"
+    size: [30.0, 40.0]
+    angle: [47.0, 57.0]
+    expect_per_page: 1
+  - id: HEADER-TITLE
+    reason: running header (document title), top margin
+    max_y1: 45.0
+    color: "#5a5a5a"
+    size: [6.0, 7.5]
+    pattern: '^(Volume I — Instructions to Bidders|Volume II — Technical Requirements \(extract\)|Volume IV — Form Sheets|Volume V — Draft Project Agreement \(extract\)|Addendum No\. [0-9]+)$'
+  - id: HEADER-REF
+    reason: running header (tender reference), top margin
+    max_y1: 45.0
+    color: "#5a5a5a"
+    size: [6.0, 7.5]
+    pattern: '^NUPA/ISTP/2026/014$'
+  - id: FOOTER-DISCLAIMER
+    reason: running footer disclaimer, bottom margin
+    min_y0: 790.0
+    color: "#5a5a5a"
+    size: [6.0, 7.5]
+    pattern: '^FICTIONAL DOCUMENT — prepared solely for a Lamar Holding internal capability assessment\. Not a real tender\.$'
+  - id: FOOTER-PAGE
+    reason: running footer printed page number, bottom margin (captured as printed_page)
+    min_y0: 790.0
+    color: "#5a5a5a"
+    size: [6.0, 7.5]
+    pattern: '^Page (?P<printed_page>[0-9]+)$'

@@ -1118,17 +1118,15 @@ def write_candidate_one_page(c: dict, folder: Path) -> dict:
     # obligations without such a consequence remain in A1 and this linked detail.
     data['sections'] = [s for s in data['sections'] if not s['heading'].startswith('General gate')]
     failure = 'No one-page layout tried'
-    for level, words, page in stage2.a3_pages(data):
+    for level, words, page in stage2.a3_pages(data):     # session 19: a3_pages offers the two-column pages itself
         if level > 2:
             break
-        for columns in ([1, 2] if level == 2 else [1]):
-            page['issue_columns'] = columns
-            try:
-                fit = write_a3_pdf(page, folder / 'a3.pdf')
-                return {**fit, 'condensed': level, 'reason_words': words, 'issue_columns': columns,
-                        'path': 'a3/candidate/a3.pdf'}
-            except A3OverflowError as exc:
-                failure = str(exc)
+        try:
+            fit = write_a3_pdf(page, folder / 'a3.pdf')
+            return {**fit, 'condensed': level, 'reason_words': words, 'issue_columns': page.get('issue_columns', 1),
+                    'path': 'a3/candidate/a3.pdf'}
+        except A3OverflowError as exc:
+            failure = str(exc)
     (folder / 'a3.pdf').unlink(missing_ok=True)
     return {'pages': 0, 'error': failure, 'note': 'Full diagnostic retained; candidate one-page fit not achieved.'}
 

@@ -17,8 +17,8 @@ routes:
   host:
     label: Claude Code (connected coding host; the host's own plan pays; no application API call)
     status: tested
-    where: the cloud container (sessions 10-13), the last time from an unzipped twin of the interview folder, its own .venv and its panel; not yet on the Mac   # session 13 (F4; audit R3 N-3): the panel prints it
-    when: 2026-10-04 to 2026-10-06
+    where: the owner's Mac on 11 Oct 2026 (Claude Code CLI 2.1.296, an unzipped copy of the interview package through its panel); before that the cloud container (sessions 10-13), the last time from an unzipped twin of the interview folder, its own .venv and its panel   # session 13 (F4; audit R3 N-3): the panel prints it
+    when: 2026-10-04 to 2026-10-11
     result: >-
       headless `claude -p` sessions over the tenderpack MCP tools ran for real on blind rehearsals 03-07 (readings,
       analysis, downstream, critic, repairs); a rate limit stopped blind-04 after about seven sessions (deferral exit 5
@@ -26,28 +26,33 @@ routes:
       its panel, two sessions in flight) ran to the candidate outputs and review packet in 19.6 minutes of steps with a
       planned SIGTERM after the second analysis batch and a resume from the panel; three defects found and fixed on the
       way (E159: the server started where the package was not importable; E160: a letterhead rule counted as a table
-      rule; E161: killed sessions retried after the stop)
+      rule; E161: killed sessions retried after the stop). On the owner's Mac (11 Oct 2026, session 19, the drill
+      ADD03, claude-opus-5-5 as the CLI reported it): the panel upload ran to the review packet in 20:34 (PARTIAL,
+      6.1 and 7.1 unresolved); a separate probe copy was stopped and resumed. An older CLI (2.1.206) rejected
+      --permission-prompts and the model: now a named setup failure (docs/INTERVIEW_DEMO_HANDOVER.md)
     works: >-
-      in the cloud container: the workflow starting Claude Code sessions itself, every phase, the stop and resume, the
+      on the owner's Mac: the panel upload, every phase that ran (analysis, downstream, critic), image crops, the stop
+      and resume, one bounded repair session; in the cloud container: the workflow starting Claude Code sessions itself, every phase, the stop and resume, the
       rate-limit deferral, the run from an unzipped interview folder (sessions 10-13)
-    never_run: "on the owner's Mac (its Claude Code login, its PATH, its Terminal); the AI quick review on a real host"
+    never_run: "on the owner's Mac: the launcher path (INTERVIEW_START.command), a rate-limit deferral, a reading-phase region; the AI quick review on a real host"
     ready: >-
       `claude` on PATH and logged in; launcher option 1 (connected), then option 6, route host (Enter); or
       `.venv/bin/python -m tenderpack ai run ADD-03 --pdf smoke-test/ADD-03_Addendum_No_3.pdf --route host`
-    next: on the Mac, docs/MAC_CHECKLIST.md step 6 (docs/VERIFY_ON_MAC.md "connected route with Claude Code"; PENDING)
+    next: on the Mac, docs/MAC_CHECKLIST.md step 6 from the launcher (docs/VERIFY_ON_MAC.md "connected route with Claude Code")
   codex:
     label: Codex (connected coding host over MCP; manual path)
     status: built, unverified
     where: the MCP server Codex would use, over stdio JSON-RPC (tests/test_session09_ai_mcp.py), and the manual host path (tests/test_session10_workflow.py); no Codex here
     when: 2026-10-04 (the MCP server tests)
     result: >-
-      no Codex session has ever run against tenderpack; the workflow starts Claude Code only, so Codex is the manual
-      path (MCP tools, then `tenderpack ai submit` / `submit-batch`), never chosen automatically
+      this manual path (MCP tools, then `tenderpack ai submit` / `submit-batch`) has not run with Codex. Codex sessions
+      have run automatically through the host route with host_session.driver: codex on the development machine (8-10
+      Oct 2026, as recorded in docs/INTERVIEW_DEMO_HANDOVER.md; config/interview-ai-codex.yaml); not re-run in session 19
     works: >-
       tested in the cloud container: the MCP server Codex would talk to (stdio JSON-RPC, the tool list, a submission),
       the manual host path (`ai run --route host --host-manual` stops with exit 4 and a task packet; `ai submit-batch`
       validates the answer exactly as any route's)
-    never_run: "a Codex session of any kind; the ~/.codex/config.toml registration; Codex reading the runtime prompt"
+    never_run: "a Codex session over this manual path; the ~/.codex/config.toml registration"
     ready: >-
       in ~/.codex/config.toml: [mcp_servers.tenderpack] command = "<folder>/.venv/bin/python", args = ["-m",
       "tenderpack", "ai", "serve-mcp"]; then `.venv/bin/python -m tenderpack ai run ADD-03 --pdf <pdf> --route host

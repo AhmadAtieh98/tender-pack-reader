@@ -45,15 +45,17 @@ def test_demo_issue_marker_preserves_reason_space_on_a3():
 
 def test_condensed_a3_moves_gate_id_catalogue_to_detail_before_dropping_reasons():
     from tenderpack.stage2 import condense_a3
-    counts = '3 open issues: 1 listed, 0 folded (+n), 0 on a3_detail.html only, I-LONG-1, I-LONG-2 in the gate note.'
+    # session 19: a catalogue long enough that moving it to a3_detail.html shortens the line (a rewrite that would
+    # lengthen it is not made: test_condensing_never_lengthens_the_issue_count_line)
+    ids = ['I-LONG-1', 'I-LONG-2', 'I-ADD03-BID-SECURITY-PERIOD', 'I-ADD03-Q15-PAGE-LIMIT', 'I-ADD03-LCC-DELETED']
+    counts = f"7 open issues: 1 listed, 0 folded (+n), 0 on a3_detail.html only, {', '.join(ids)} in the gate note."
     a3 = {'sections': [], 'subtitle': '', 'banner': '', 'issue_counts': counts,
           'groups': {'note': counts + ' Unknown answers stay unknown.',
-                     'counts': {'all': 3, 'listed': 1, 'folded': 0, 'detail_only': 0,
-                                'gate_note': ['I-LONG-1', 'I-LONG-2']},
+                     'counts': {'all': 7, 'listed': 1, 'folded': 0, 'detail_only': 0, 'gate_note': ids},
                      'groups': [{'questions': [], 'items': [{'id': 'I-X', 'short': 'Missing evidence', 'owner': 'Legal'}]}]}}
     page = condense_a3(a3, 2)
     assert 'I-LONG-1' not in page['groups']['note']
-    assert '2 gate-note issues' in page['groups']['note']
+    assert '5 gate-note issues' in page['groups']['note']
     assert page['groups']['groups'][0]['items'][0]['short'] == 'Missing evidence'
     assert 'I-LONG-1' in a3['groups']['note']
 
@@ -78,3 +80,18 @@ def test_candidate_one_page_keeps_unresolved_reason_and_its_own_detail(tmp_path)
         assert all('a3_detail.html' in (link.get('uri') or link.get('file') or '') for link in links)
         assert all('/URI' in doc.xref_object(link['xref']) for link in links)
     assert 'clause and period are not identified' in (tmp_path / 'a3_detail.html').read_text()
+
+
+def test_condensing_never_lengthens_the_issue_count_line():
+    """Session 19: the validated ADD-02 A3 (one gate-note id) got a LONGER count line at level 2 (129 vs 103
+    characters), fell to level 3 and dropped every issue's reason (tests/test_session12_signals_fixes.py)."""
+    from tenderpack.stage2 import condense_a3
+    counts = '52 open issues: 25 listed, 22 folded (+n), 4 on a3_detail.html only, I-NO-CONSEQUENCE in the gate note.'
+    a3 = {'sections': [], 'subtitle': '', 'banner': '', 'issue_counts': counts,
+          'groups': {'note': counts + ' Unknown answers stay unknown.',
+                     'counts': {'all': 52, 'listed': 25, 'folded': 22, 'detail_only': 4,
+                                'gate_note': ['I-NO-CONSEQUENCE']},
+                     'groups': [{'questions': [], 'items': [{'id': 'I-X', 'short': 'Missing evidence', 'owner': 'Legal'}]}]}}
+    page = condense_a3(a3, 2)
+    assert len(page['groups']['note']) <= len(a3['groups']['note'])
+    assert counts in page['groups']['note']

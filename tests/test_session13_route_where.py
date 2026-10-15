@@ -25,7 +25,8 @@ def test_the_recorded_host_status_names_the_cloud_container_and_the_mac():
     from tenderpack.panel import views as V
     st = route_status(ROOT / "config/routes_status.yaml")
     assert st["host"]["status"] == "tested"
-    assert st["host"]["where"].startswith("the cloud container (sessions 10") and "not yet on the Mac" in st["host"]["where"]
+    # session 19: tested on the owner's Mac (11 Oct 2026) as well as in the cloud container; the label names both
+    assert st["host"]["where"].startswith("the owner's Mac on 11 Oct 2026") and "the cloud container (sessions 10" in st["host"]["where"]
     routes = {"offline": None, "routes": [{"route": "host", "available": True, "why": "", "status": st["host"]}]}
     label = V.route_choices(routes, True, False)[0][0]["label"]
-    assert "[tested in the cloud container (sessions 10" in label and "not yet on the Mac]" in label, label
+    assert "[tested in the owner's Mac on 11 Oct 2026" in label and "the cloud container (sessions 10" in label, label

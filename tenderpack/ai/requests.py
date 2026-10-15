@@ -1154,7 +1154,7 @@ def ask_host(sp: TaskSpec, session, packet: dict, *, cfg: dict, policy: FailureP
             session.run_batch(packet)
             last = session.last
             out.host_sessions.append({"run_id": last.run_id, "elapsed_s": last.elapsed_s, "error": last.error,
-                                      "failure_class": last.failure_class, "model_reported": last.model_reported,
+                                      "failure_class": last.failure_class, "model_reported": last.model_reported, "model_auxiliary": sorted(getattr(last, "model_auxiliary", None) or {}),
                                       "tool_calls": len(last.tool_calls), "crops_read": last.crops_read})
             return last
         try:
